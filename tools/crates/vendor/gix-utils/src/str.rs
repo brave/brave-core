@@ -1,13 +1,11 @@
-use std::borrow::Cow;
-use std::ffi::OsStr;
-use std::path::Path;
+use std::{borrow::Cow, ffi::OsStr, path::Path};
 
 /// Assure that `s` is precomposed, i.e. `ä` is a single code-point, and not two i.e. `a` and `<umlaut>`.
 ///
 /// At the expense of extra-compute, it does nothing if there is no work to be done, returning the original input without allocating.
 pub fn precompose(s: Cow<'_, str>) -> Cow<'_, str> {
-    use unicode_normalization::UnicodeNormalization;
-    if s.as_ref().nfc().cmp(s.as_ref().chars()).is_eq() {
+    use unicode_normalization::{is_nfc, UnicodeNormalization};
+    if is_nfc(s.as_ref()) {
         s
     } else {
         Cow::Owned(s.as_ref().nfc().collect())
@@ -18,8 +16,8 @@ pub fn precompose(s: Cow<'_, str>) -> Cow<'_, str> {
 ///
 /// At the expense of extra-compute, it does nothing if there is no work to be done, returning the original input without allocating.
 pub fn decompose(s: Cow<'_, str>) -> Cow<'_, str> {
-    use unicode_normalization::UnicodeNormalization;
-    if s.as_ref().nfd().cmp(s.as_ref().chars()).is_eq() {
+    use unicode_normalization::{is_nfd, UnicodeNormalization};
+    if is_nfd(s.as_ref()) {
         s
     } else {
         Cow::Owned(s.as_ref().nfd().collect())

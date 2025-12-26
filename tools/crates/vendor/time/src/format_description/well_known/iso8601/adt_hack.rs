@@ -1,6 +1,6 @@
 //! Hackery to work around not being able to use ADTs in const generics on stable.
 
-use core::num::NonZeroU8;
+use core::num::NonZero;
 
 #[cfg(feature = "formatting")]
 use super::Iso8601;
@@ -65,8 +65,8 @@ impl Config {
             FC::DateTimeOffset => 5,
             FC::TimeOffset => 6,
         };
-        bytes[1] = self.use_separators as _;
-        bytes[2] = self.year_is_six_digits as _;
+        bytes[1] = self.use_separators as u8;
+        bytes[2] = self.year_is_six_digits as u8;
         bytes[3] = match self.date_kind {
             DateKind::Calendar => 0,
             DateKind::Week => 1,
@@ -126,13 +126,13 @@ impl Config {
         };
         let time_precision = match bytes[4] {
             0 => TimePrecision::Hour {
-                decimal_digits: NonZeroU8::new(bytes[5]),
+                decimal_digits: NonZero::new(bytes[5]),
             },
             1 => TimePrecision::Minute {
-                decimal_digits: NonZeroU8::new(bytes[5]),
+                decimal_digits: NonZero::new(bytes[5]),
             },
             2 => TimePrecision::Second {
-                decimal_digits: NonZeroU8::new(bytes[5]),
+                decimal_digits: NonZero::new(bytes[5]),
             },
             _ => panic!("invalid configuration"),
         };
@@ -213,13 +213,13 @@ mod tests {
             decimal_digits: None,
         }));
         assert_roundtrip!(Config::DEFAULT.set_time_precision(TimePrecision::Hour {
-            decimal_digits: NonZeroU8::new(1),
+            decimal_digits: NonZero::new(1),
         }));
         assert_roundtrip!(Config::DEFAULT.set_time_precision(TimePrecision::Minute {
-            decimal_digits: NonZeroU8::new(1),
+            decimal_digits: NonZero::new(1),
         }));
         assert_roundtrip!(Config::DEFAULT.set_time_precision(TimePrecision::Second {
-            decimal_digits: NonZeroU8::new(1),
+            decimal_digits: NonZero::new(1),
         }));
         assert_roundtrip!(Config::DEFAULT.set_offset_precision(OffsetPrecision::Hour));
         assert_roundtrip!(Config::DEFAULT.set_offset_precision(OffsetPrecision::Minute));

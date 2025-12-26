@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 30
-  |
-1 | "backslash is the last char\
-  |                              ^
-invalid escape sequence
-expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

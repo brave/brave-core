@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.65.0"
 name = "winnow"
-version = "0.7.2"
+version = "0.7.14"
 build = false
 include = [
     "build.rs",
@@ -22,7 +22,6 @@ include = [
     "Cargo.lock",
     "LICENSE*",
     "README.md",
-    "benches/**/*",
     "examples/**/*",
 ]
 autolib = false
@@ -45,52 +44,48 @@ repository = "https://github.com/winnow-rs/winnow"
 
 [package.metadata.docs.rs]
 features = ["unstable-doc"]
-rustdoc-args = [
-    "--cfg",
-    "docsrs",
-    "--generate-link-to-definition",
-]
+rustdoc-args = ["--generate-link-to-definition"]
 
 [[package.metadata.release.pre-release-replacements]]
 file = "CHANGELOG.md"
-min = 1
-replace = "{{version}}"
 search = "Unreleased"
-
-[[package.metadata.release.pre-release-replacements]]
-exactly = 1
-file = "CHANGELOG.md"
-replace = "...{{tag_name}}"
-search = '\.\.\.HEAD'
-
-[[package.metadata.release.pre-release-replacements]]
-file = "CHANGELOG.md"
+replace = "{{version}}"
 min = 1
-replace = "{{date}}"
-search = "ReleaseDate"
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = '\.\.\.HEAD'
+replace = "...{{tag_name}}"
+exactly = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "ReleaseDate"
+replace = "{{date}}"
+min = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "<!-- next-header -->"
 replace = """
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 """
-search = "<!-- next-header -->"
+exactly = 1
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = "<!-- next-url -->"
 replace = """
 <!-- next-url -->
 [Unreleased]: https://github.com/winnow-rs/winnow/compare/{{tag_name}}...HEAD"""
-search = "<!-- next-url -->"
+exactly = 1
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "src/lib.rs"
-replace = "blob/v{{version}}/CHANGELOG.md"
 search = 'blob/v.+\..+\..+/CHANGELOG.md'
+replace = "blob/v{{version}}/CHANGELOG.md"
+exactly = 1
 
 [features]
 alloc = []
@@ -98,7 +93,7 @@ debug = [
     "std",
     "dep:anstream",
     "dep:anstyle",
-    "dep:is-terminal",
+    "dep:is_terminal_polyfill",
     "dep:terminal_size",
 ]
 default = ["std"]
@@ -124,6 +119,11 @@ name = "arithmetic"
 path = "examples/arithmetic/main.rs"
 test = true
 required-features = ["alloc"]
+
+[[example]]
+name = "c_expression"
+path = "examples/c_expression/main.rs"
+required-features = ["std"]
 
 [[example]]
 name = "css"
@@ -186,14 +186,10 @@ harness = false
 required-features = ["alloc"]
 
 [[bench]]
-name = "contains_token"
-path = "benches/contains_token.rs"
+name = "c_expression"
+path = "examples/c_expression/bench.rs"
 harness = false
-
-[[bench]]
-name = "find_slice"
-path = "benches/find_slice.rs"
-harness = false
+required-features = ["std"]
 
 [[bench]]
 name = "http"
@@ -208,55 +204,40 @@ harness = false
 required-features = ["std"]
 
 [[bench]]
-name = "iter"
-path = "benches/iter.rs"
-harness = false
-
-[[bench]]
 name = "json"
 path = "examples/json/bench.rs"
 harness = false
 required-features = ["std"]
 
-[[bench]]
-name = "next_slice"
-path = "benches/next_slice.rs"
-harness = false
-
-[[bench]]
-name = "number"
-path = "benches/number.rs"
-harness = false
-
 [dependencies.anstream]
-version = "0.3.2"
+version = "0.6.15"
 optional = true
 
 [dependencies.anstyle]
-version = "1.0.1"
+version = "1.0.8"
 optional = true
 
-[dependencies.is-terminal]
-version = "0.4.9"
+[dependencies.is_terminal_polyfill]
+version = "1.48.1"
 optional = true
 
 [dependencies.memchr]
-version = "2.5"
+version = "2.7"
 optional = true
 default-features = false
 
 [dependencies.terminal_size]
-version = "0.4.0"
+version = "0.4.3"
 optional = true
 
 [dev-dependencies.annotate-snippets]
-version = "0.11.3"
+version = "0.11.4"
 
 [dev-dependencies.anyhow]
-version = "1.0.86"
+version = "1.0.100"
 
 [dev-dependencies.automod]
-version = "1.0.14"
+version = "1.0.15"
 
 [dev-dependencies.circular]
 version = "0.3.0"
@@ -265,13 +246,13 @@ version = "0.3.0"
 version = "0.5.1"
 
 [dev-dependencies.lexopt]
-version = "0.3.0"
+version = "0.3.1"
 
 [dev-dependencies.proptest]
-version = "1.2.0"
+version = "1.6.0"
 
 [dev-dependencies.rustc-hash]
-version = "1.1.0"
+version = "2.1.1"
 
 [dev-dependencies.snapbox]
 version = "0.6.21"
@@ -316,7 +297,7 @@ lossy_float_literal = "warn"
 macro_use_imports = "warn"
 mem_forget = "warn"
 mutex_integer = "warn"
-needless_continue = "warn"
+needless_continue = "allow"
 needless_for_each = "warn"
 negative_feature_names = "warn"
 path_buf_push_overwrite = "warn"
@@ -341,6 +322,7 @@ wildcard_imports = "allow"
 zero_sized_map_values = "warn"
 
 [lints.rust]
+unnameable_types = "warn"
 unreachable_pub = "warn"
 unsafe_op_in_unsafe_fn = "warn"
 unused_lifetimes = "warn"
@@ -354,3 +336,11 @@ priority = -1
 lto = true
 codegen-units = 1
 debug = 2
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"

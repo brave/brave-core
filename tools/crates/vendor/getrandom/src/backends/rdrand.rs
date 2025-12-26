@@ -147,6 +147,7 @@ unsafe fn rdrand_u64() -> Option<u64> {
     Some((u64::from(a) << 32) | u64::from(b))
 }
 
+#[inline]
 pub fn inner_u32() -> Result<u32, Error> {
     if !RDRAND_GOOD.unsync_init(is_rdrand_good) {
         return Err(Error::NO_RDRAND);
@@ -155,6 +156,7 @@ pub fn inner_u32() -> Result<u32, Error> {
     unsafe { rdrand_u32() }.ok_or(Error::FAILED_RDRAND)
 }
 
+#[inline]
 pub fn inner_u64() -> Result<u64, Error> {
     if !RDRAND_GOOD.unsync_init(is_rdrand_good) {
         return Err(Error::NO_RDRAND);
@@ -163,6 +165,7 @@ pub fn inner_u64() -> Result<u64, Error> {
     unsafe { rdrand_u64() }.ok_or(Error::FAILED_RDRAND)
 }
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     if !RDRAND_GOOD.unsync_init(is_rdrand_good) {
         return Err(Error::NO_RDRAND);

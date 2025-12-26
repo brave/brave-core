@@ -1,25 +1,19 @@
 use super::plumbing::*;
 use super::*;
-use crate::math::div_round_up;
 use std::iter;
-use std::usize;
 
 /// `StepBy` is an iterator that skips `n` elements between each yield, where `n` is the given step.
 /// This struct is created by the [`step_by()`] method on [`IndexedParallelIterator`]
 ///
-/// [`step_by()`]: trait.IndexedParallelIterator.html#method.step_by
-/// [`IndexedParallelIterator`]: trait.IndexedParallelIterator.html
+/// [`step_by()`]: IndexedParallelIterator::step_by()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Debug, Clone)]
-pub struct StepBy<I: IndexedParallelIterator> {
+pub struct StepBy<I> {
     base: I,
     step: usize,
 }
 
-impl<I> StepBy<I>
-where
-    I: IndexedParallelIterator,
-{
+impl<I> StepBy<I> {
     /// Creates a new `StepBy` iterator.
     pub(super) fn new(base: I, step: usize) -> Self {
         StepBy { base, step }
@@ -53,7 +47,7 @@ where
     }
 
     fn len(&self) -> usize {
-        div_round_up(self.base.len(), self.step)
+        self.base.len().div_ceil(self.step)
     }
 
     fn with_producer<CB>(self, callback: CB) -> CB::Output
@@ -93,8 +87,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Producer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Producer implementation
 
 struct StepByProducer<P> {
     base: P,
@@ -132,7 +126,7 @@ where
     }
 
     fn min_len(&self) -> usize {
-        div_round_up(self.base.min_len(), self.step)
+        self.base.min_len().div_ceil(self.step)
     }
 
     fn max_len(&self) -> usize {

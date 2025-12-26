@@ -1,0 +1,60 @@
+restore_registry: &RESTORE_REGISTRY
+  restore_cache:
+    key: registry
+save_registry: &SAVE_REGISTRY
+  save_cache:
+    key: registry-{{ .BuildNum }}
+    paths:
+    - /usr/local/cargo/registry/index
+deps_key: &DEPS_KEY
+  key: deps-{{ checksum "~/rust-version" }}-{{ checksum "Cargo.lock" }}
+restore_deps: &RESTORE_DEPS
+  restore_cache:
+    <<: *DEPS_KEY
+save_deps: &SAVE_DEPS
+  save_cache:
+    <<: *DEPS_KEY
+    paths:
+    - target
+    - /usr/local/cargo/registry/cache
+
+version: 2
+jobs:
+  stable:
+    docker:
+    - image: rust:1.33.0
+    environment:
+      RUSTFLAGS: -D warnings
+    working_directory: ~/build
+    steps:
+    - checkout
+    - *RESTORE_REGISTRY
+    - run: cargo generate-lockfile
+    - *SAVE_REGISTRY
+    - run: rustc --version > ~/rust-version
+    - *RESTORE_DEPS
+    - run: cargo test
+    - run: cargo test --features std
+    - *SAVE_DEPS
+  nightly:
+    docker:
+    - image: rustlang/rust:nightly
+    environment:
+      RUSTFLAGS: -D warnings
+    working_directory: ~/build
+    steps:
+    - checkout
+    - *RESTORE_REGISTRY
+    - run: cargo generate-lockfile
+    - *SAVE_REGISTRY
+    - run: rustc --version > ~/rust-version
+    - *RESTORE_DEPS
+    - run: cargo test --features alloc
+    - *SAVE_DEPS
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+    - stable
+    - nightly

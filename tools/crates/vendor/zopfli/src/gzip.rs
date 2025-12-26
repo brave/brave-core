@@ -61,10 +61,10 @@ impl<W: Write> GzipEncoder<W> {
     /// dropped, but explicitly finishing it with this method allows
     /// handling I/O errors.
     pub fn finish(mut self) -> Result<W, Error> {
-        self._finish().map(|sink| sink.unwrap())
+        self.__finish().map(|sink| sink.unwrap())
     }
 
-    fn _finish(&mut self) -> Result<Option<W>, Error> {
+    fn __finish(&mut self) -> Result<Option<W>, Error> {
         if self.deflate_encoder.is_none() {
             return Ok(None);
         }
@@ -75,6 +75,19 @@ impl<W: Write> GzipEncoder<W> {
         sink.write_all(&self.input_size.to_le_bytes())?;
 
         Ok(Some(sink))
+    }
+
+    /// Gets a reference to the underlying writer.
+    pub fn get_ref(&self) -> &W {
+        self.deflate_encoder.as_ref().unwrap().get_ref()
+    }
+
+    /// Gets a mutable reference to the underlying writer.
+    ///
+    /// Note that mutating the output/input state of the stream may corrupt
+    /// this object, so care must be taken when using this method.
+    pub fn get_mut(&mut self) -> &mut W {
+        self.deflate_encoder.as_mut().unwrap().get_mut()
     }
 }
 
@@ -98,7 +111,7 @@ impl<W: Write> Write for GzipEncoder<W> {
 
 impl<W: Write> Drop for GzipEncoder<W> {
     fn drop(&mut self) {
-        self._finish().ok();
+        self.__finish().ok();
     }
 }
 

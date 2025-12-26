@@ -33,4 +33,5 @@
 //! ```
 
 pub use super::chapter_7 as previous;
+pub use crate::_topic as next;
 pub use crate::_tutorial as table_of_contents;

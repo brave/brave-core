@@ -3,8 +3,11 @@
 //! These are used by some Windows linkers as a more compact way to describe
 //! dynamically imported symbols.
 
-use crate::read::{Architecture, Error, ReadError, ReadRef, Result};
-use crate::{pe, ByteString, Bytes, LittleEndian as LE, SubArchitecture};
+use crate::endian::LittleEndian as LE;
+use crate::pe;
+use crate::read::{
+    Architecture, ByteString, Bytes, Error, ReadError, ReadRef, Result, SubArchitecture,
+};
 
 /// A Windows short form description of a symbol to import.
 ///

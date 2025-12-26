@@ -27,7 +27,7 @@ pub(crate) struct StackDelegate<'a, 'find> {
     pub statistics: &'a mut super::Statistics,
 }
 
-impl<'a, 'find> gix_fs::stack::Delegate for StackDelegate<'a, 'find> {
+impl gix_fs::stack::Delegate for StackDelegate<'_, '_> {
     fn push_directory(&mut self, stack: &gix_fs::Stack) -> std::io::Result<()> {
         self.statistics.delegate.push_directory += 1;
         let rela_dir_bstr = gix_path::into_bstr(stack.current_relative());
@@ -65,7 +65,7 @@ impl<'a, 'find> gix_fs::stack::Delegate for StackDelegate<'a, 'find> {
                     self.objects,
                     self.case,
                     &mut self.statistics.ignore,
-                )?
+                )?;
             }
             State::IgnoreStack(ignore) => ignore.push_directory(
                 stack.root(),
@@ -98,7 +98,7 @@ impl<'a, 'find> gix_fs::stack::Delegate for StackDelegate<'a, 'find> {
                     self.mode,
                     &mut self.statistics.delegate.num_mkdir_calls,
                     *unlink_on_collision,
-                )?
+                )?;
             }
             #[cfg(feature = "attributes")]
             State::AttributesAndIgnoreStack { .. } | State::AttributesStack(_) => {}
@@ -135,15 +135,12 @@ fn validate_last_component(
     let Some(last_component) = stack.current_relative().components().next_back() else {
         return Ok(());
     };
-    let last_component =
-        gix_path::try_into_bstr(std::borrow::Cow::Borrowed(last_component.as_os_str().as_ref())).map_err(|_err| {
-            std::io::Error::new(
-                std::io::ErrorKind::Other,
-                format!(
-                    "Path component {last_component:?} of path \"{}\" contained invalid UTF-8 and could not be validated",
-                    stack.current_relative().display()
-                ),
-            )
+    let last_component = gix_path::try_into_bstr(std::borrow::Cow::Borrowed(last_component.as_os_str().as_ref()))
+        .map_err(|_err| {
+            std::io::Error::other(format!(
+                "Path component {last_component:?} of path \"{}\" contained invalid UTF-8 and could not be validated",
+                stack.current_relative().display()
+            ))
         })?;
 
     if let Err(err) = gix_validate::path::component(
@@ -153,7 +150,7 @@ fn validate_last_component(
         }),
         opts,
     ) {
-        return Err(std::io::Error::new(std::io::ErrorKind::Other, err));
+        return Err(std::io::Error::other(err));
     }
     Ok(())
 }

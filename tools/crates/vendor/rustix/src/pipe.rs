@@ -1,8 +1,4 @@
 //! `pipe` and related APIs.
-//!
-//! # Safety
-//!
-//! `vmsplice` is an unsafe function.
 
 #![allow(unsafe_code)]
 
@@ -40,6 +36,7 @@ pub use backend::pipe::types::{IoSliceRaw, SpliceFlags};
     windows,
     target_os = "espidf",
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "hurd",
     target_os = "redox",
     target_os = "vita",
@@ -51,6 +48,8 @@ pub const PIPE_BUF: usize = c::PIPE_BUF;
 ///
 /// This function creates a pipe and returns two file descriptors, for the
 /// reading and writing ends of the pipe, respectively.
+///
+/// See [`pipe_with`] to pass additional flags.
 ///
 /// # References
 ///  - [POSIX]
@@ -79,6 +78,8 @@ pub fn pipe() -> io::Result<(OwnedFd, OwnedFd)> {
 
 /// `pipe2(flags)`—Creates a pipe, with flags.
 ///
+/// `pipe_with` is the same as [`pipe`] but adds an additional flags operand.
+///
 /// This function creates a pipe and returns two file descriptors, for the
 /// reading and writing ends of the pipe, respectively.
 ///
@@ -101,6 +102,7 @@ pub fn pipe() -> io::Result<(OwnedFd, OwnedFd)> {
     target_os = "aix",
     target_os = "espidf",
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "nto"
 )))]
 #[inline]
@@ -209,16 +211,12 @@ pub fn fcntl_getpipe_size<Fd: AsFd>(fd: Fd) -> io::Result<usize> {
 
 /// `fnctl(fd, F_SETPIPE_SZ)`—Set the buffer capacity of a pipe.
 ///
-/// The OS may decide to use a larger size than `size`. To know the precise
-/// size, call [`fcntl_getpipe_size`] after setting the size. In future
-/// versions of rustix, this function will return the new size.
-///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/fcntl.2.html
 #[cfg(linux_kernel)]
 #[inline]
-pub fn fcntl_setpipe_size<Fd: AsFd>(fd: Fd, size: usize) -> io::Result<()> {
+pub fn fcntl_setpipe_size<Fd: AsFd>(fd: Fd, size: usize) -> io::Result<usize> {
     backend::pipe::syscalls::fcntl_setpipe_size(fd.as_fd(), size)
 }

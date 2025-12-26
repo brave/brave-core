@@ -1,54 +1,84 @@
 use alloc::borrow::Cow;
 use alloc::vec::Vec;
 
+use crate::endian::Endianness;
 use crate::read::{
     self, Architecture, CodeView, ComdatKind, CompressedData, CompressedFileRange, Export,
-    FileFlags, Import, ObjectKind, ObjectMap, Relocation, Result, SectionFlags, SectionIndex,
-    SectionKind, SegmentFlags, SubArchitecture, SymbolFlags, SymbolIndex, SymbolKind, SymbolMap,
-    SymbolMapName, SymbolScope, SymbolSection,
+    FileFlags, Import, ObjectKind, ObjectMap, Relocation, RelocationMap, Result, SectionFlags,
+    SectionIndex, SectionKind, SegmentFlags, SubArchitecture, SymbolFlags, SymbolIndex, SymbolKind,
+    SymbolMap, SymbolMapName, SymbolScope, SymbolSection,
 };
-use crate::Endianness;
 
 /// An object file.
 ///
 /// This is the primary trait for the unified read API.
-pub trait Object<'data: 'file, 'file>: read::private::Sealed {
+pub trait Object<'data>: read::private::Sealed {
     /// A loadable segment in the object file.
-    type Segment: ObjectSegment<'data>;
+    type Segment<'file>: ObjectSegment<'data>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// An iterator for the loadable segments in the object file.
-    type SegmentIterator: Iterator<Item = Self::Segment>;
+    type SegmentIterator<'file>: Iterator<Item = Self::Segment<'file>>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// A section in the object file.
-    type Section: ObjectSection<'data>;
+    type Section<'file>: ObjectSection<'data>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// An iterator for the sections in the object file.
-    type SectionIterator: Iterator<Item = Self::Section>;
+    type SectionIterator<'file>: Iterator<Item = Self::Section<'file>>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// A COMDAT section group in the object file.
-    type Comdat: ObjectComdat<'data>;
+    type Comdat<'file>: ObjectComdat<'data>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// An iterator for the COMDAT section groups in the object file.
-    type ComdatIterator: Iterator<Item = Self::Comdat>;
+    type ComdatIterator<'file>: Iterator<Item = Self::Comdat<'file>>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// A symbol in the object file.
-    type Symbol: ObjectSymbol<'data>;
+    type Symbol<'file>: ObjectSymbol<'data>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// An iterator for symbols in the object file.
-    type SymbolIterator: Iterator<Item = Self::Symbol>;
+    type SymbolIterator<'file>: Iterator<Item = Self::Symbol<'file>>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// A symbol table in the object file.
-    type SymbolTable: ObjectSymbolTable<
+    type SymbolTable<'file>: ObjectSymbolTable<
         'data,
-        Symbol = Self::Symbol,
-        SymbolIterator = Self::SymbolIterator,
-    >;
+        Symbol = Self::Symbol<'file>,
+        SymbolIterator = Self::SymbolIterator<'file>,
+    >
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// An iterator for the dynamic relocations in the file.
     ///
     /// The first field in the item tuple is the address
     /// that the relocation applies to.
-    type DynamicRelocationIterator: Iterator<Item = (u64, Relocation)>;
+    type DynamicRelocationIterator<'file>: Iterator<Item = (u64, Relocation)>
+    where
+        Self: 'file,
+        'data: 'file;
 
     /// Get the architecture type of the file.
     fn architecture(&self) -> Architecture;
@@ -87,28 +117,33 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     /// For Mach-O, this is load commands with type [`LC_SEGMENT`](crate::macho::LC_SEGMENT)
     /// or [`LC_SEGMENT_64`](crate::macho::LC_SEGMENT_64).
     /// For PE, this is all sections.
-    fn segments(&'file self) -> Self::SegmentIterator;
+    fn segments(&self) -> Self::SegmentIterator<'_>;
 
     /// Get the section named `section_name`, if such a section exists.
     ///
-    /// If `section_name` starts with a '.' then it is treated as a system section name,
-    /// and is compared using the conventions specific to the object file format. This
-    /// includes:
-    /// - if ".debug_str_offsets" is requested for a Mach-O object file, then the actual
-    /// section name that is searched for is "__debug_str_offs".
+    /// If `section_name` starts with a '.' then it is treated as a system
+    /// section name, and is compared using the conventions specific to the
+    /// object file format. This includes:
+    /// - if ".debug_str_offsets" is requested for a Mach-O object file, then
+    ///   the actual section name that is searched for is "__debug_str_offs".
     /// - if ".debug_info" is requested for an ELF object file, then
-    /// ".zdebug_info" may be returned (and similarly for other debug sections).
+    ///   ".zdebug_info" may be returned (and similarly for other debug
+    ///   sections). Similarly, if ".debug_info" is requested for a Mach-O
+    ///   object file, then "__zdebug_info" may be returned.
     ///
-    /// For some object files, multiple segments may contain sections with the same
-    /// name. In this case, the first matching section will be used.
+    /// For some object files, multiple segments may contain sections with the
+    /// same name. In this case, the first matching section will be used.
     ///
     /// This method skips over sections with invalid names.
-    fn section_by_name(&'file self, section_name: &str) -> Option<Self::Section> {
+    fn section_by_name(&self, section_name: &str) -> Option<Self::Section<'_>> {
         self.section_by_name_bytes(section_name.as_bytes())
     }
 
     /// Like [`Self::section_by_name`], but allows names that are not UTF-8.
-    fn section_by_name_bytes(&'file self, section_name: &[u8]) -> Option<Self::Section>;
+    fn section_by_name_bytes<'file>(
+        &'file self,
+        section_name: &[u8],
+    ) -> Option<Self::Section<'file>>;
 
     /// Get the section at the given index.
     ///
@@ -117,38 +152,38 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     /// For some object files, this requires iterating through all sections.
     ///
     /// Returns an error if the index is invalid.
-    fn section_by_index(&'file self, index: SectionIndex) -> Result<Self::Section>;
+    fn section_by_index(&self, index: SectionIndex) -> Result<Self::Section<'_>>;
 
     /// Get an iterator for the sections in the file.
-    fn sections(&'file self) -> Self::SectionIterator;
+    fn sections(&self) -> Self::SectionIterator<'_>;
 
     /// Get an iterator for the COMDAT section groups in the file.
-    fn comdats(&'file self) -> Self::ComdatIterator;
+    fn comdats(&self) -> Self::ComdatIterator<'_>;
 
     /// Get the debugging symbol table, if any.
-    fn symbol_table(&'file self) -> Option<Self::SymbolTable>;
+    fn symbol_table(&self) -> Option<Self::SymbolTable<'_>>;
 
     /// Get the debugging symbol at the given index.
     ///
     /// The meaning of the index depends on the object file.
     ///
     /// Returns an error if the index is invalid.
-    fn symbol_by_index(&'file self, index: SymbolIndex) -> Result<Self::Symbol>;
+    fn symbol_by_index(&self, index: SymbolIndex) -> Result<Self::Symbol<'_>>;
 
     /// Get an iterator for the debugging symbols in the file.
     ///
     /// This may skip over symbols that are malformed or unsupported.
     ///
     /// For Mach-O files, this does not include STAB entries.
-    fn symbols(&'file self) -> Self::SymbolIterator;
+    fn symbols(&self) -> Self::SymbolIterator<'_>;
 
     /// Get the symbol named `symbol_name`, if the symbol exists.
-    fn symbol_by_name(&'file self, symbol_name: &str) -> Option<Self::Symbol> {
+    fn symbol_by_name<'file>(&'file self, symbol_name: &str) -> Option<Self::Symbol<'file>> {
         self.symbol_by_name_bytes(symbol_name.as_bytes())
     }
 
     /// Like [`Self::symbol_by_name`], but allows names that are not UTF-8.
-    fn symbol_by_name_bytes(&'file self, symbol_name: &[u8]) -> Option<Self::Symbol> {
+    fn symbol_by_name_bytes<'file>(&'file self, symbol_name: &[u8]) -> Option<Self::Symbol<'file>> {
         self.symbols()
             .find(|sym| sym.name_bytes() == Ok(symbol_name))
     }
@@ -157,7 +192,7 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     ///
     /// Only ELF has a separate dynamic linking symbol table.
     /// Consider using [`Self::exports`] or [`Self::imports`] instead.
-    fn dynamic_symbol_table(&'file self) -> Option<Self::SymbolTable>;
+    fn dynamic_symbol_table(&self) -> Option<Self::SymbolTable<'_>>;
 
     /// Get an iterator for the dynamic linking symbols in the file.
     ///
@@ -166,20 +201,20 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     /// Only ELF has dynamic linking symbols.
     /// Other file formats will return an empty iterator.
     /// Consider using [`Self::exports`] or [`Self::imports`] instead.
-    fn dynamic_symbols(&'file self) -> Self::SymbolIterator;
+    fn dynamic_symbols(&self) -> Self::SymbolIterator<'_>;
 
     /// Get the dynamic relocations for this file.
     ///
     /// Symbol indices in these relocations refer to the dynamic symbol table.
     ///
     /// Only ELF has dynamic relocations.
-    fn dynamic_relocations(&'file self) -> Option<Self::DynamicRelocationIterator>;
+    fn dynamic_relocations(&self) -> Option<Self::DynamicRelocationIterator<'_>>;
 
     /// Construct a map from addresses to symbol names.
     ///
     /// The map will only contain defined text and data symbols.
     /// The dynamic symbol table will only be used if there are no debugging symbols.
-    fn symbol_map(&'file self) -> SymbolMap<SymbolMapName<'data>> {
+    fn symbol_map(&self) -> SymbolMap<SymbolMapName<'data>> {
         let mut symbols = Vec::new();
         if let Some(table) = self.symbol_table().or_else(|| self.dynamic_symbol_table()) {
             // Sometimes symbols share addresses. Collect them all then choose the "best".
@@ -241,7 +276,7 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     /// Construct a map from addresses to symbol names and object file names.
     ///
     /// This is derived from Mach-O STAB entries.
-    fn object_map(&'file self) -> ObjectMap<'data> {
+    fn object_map(&self) -> ObjectMap<'data> {
         ObjectMap::default()
     }
 
@@ -290,10 +325,10 @@ pub trait Object<'data: 'file, 'file>: read::private::Sealed {
     /// Get the base address used for relative virtual addresses.
     ///
     /// Currently this is only non-zero for PE.
-    fn relative_address_base(&'file self) -> u64;
+    fn relative_address_base(&self) -> u64;
 
     /// Get the virtual address of the entry point of the binary.
-    fn entry(&'file self) -> u64;
+    fn entry(&self) -> u64;
 
     /// File flags that are specific to each file format.
     fn flags(&self) -> FileFlags;
@@ -398,12 +433,12 @@ pub trait ObjectSection<'data>: read::private::Sealed {
     }
 
     /// Returns the name of the section.
-    fn name_bytes(&self) -> Result<&[u8]>;
+    fn name_bytes(&self) -> Result<&'data [u8]>;
 
     /// Returns the name of the section.
     ///
     /// Returns an error if the name is not UTF-8.
-    fn name(&self) -> Result<&str>;
+    fn name(&self) -> Result<&'data str>;
 
     /// Returns the name of the segment for this section.
     fn segment_name_bytes(&self) -> Result<Option<&[u8]>>;
@@ -418,6 +453,9 @@ pub trait ObjectSection<'data>: read::private::Sealed {
 
     /// Get the relocations for this section.
     fn relocations(&self) -> Self::RelocationIterator;
+
+    /// Construct a relocation map for this section.
+    fn relocation_map(&self) -> Result<RelocationMap>;
 
     /// Section flags that are specific to each file format.
     fn flags(&self) -> SectionFlags;
@@ -437,12 +475,12 @@ pub trait ObjectComdat<'data>: read::private::Sealed {
     fn symbol(&self) -> SymbolIndex;
 
     /// Returns the name of the COMDAT section group.
-    fn name_bytes(&self) -> Result<&[u8]>;
+    fn name_bytes(&self) -> Result<&'data [u8]>;
 
     /// Returns the name of the COMDAT section group.
     ///
     /// Returns an error if the name is not UTF-8.
-    fn name(&self) -> Result<&str>;
+    fn name(&self) -> Result<&'data str>;
 
     /// Get the sections in this section group.
     fn sections(&self) -> Self::SectionIterator;

@@ -149,7 +149,7 @@ pub fn all(out: &mut impl io::Write, show_progress: bool, state: &mut State, con
         let level_range = config
             .level_filter
             .clone()
-            .unwrap_or(RangeInclusive::new(0, progress::key::Level::max_value()));
+            .unwrap_or(RangeInclusive::new(0, progress::key::Level::MAX));
         let lines_to_be_drawn = state
             .tree
             .iter()
@@ -253,7 +253,7 @@ fn draw_progress_bar(p: &Value, style: Style, mut blocks_available: u16, colored
             const CHARS: [char; 6] = ['=', '=', '=', ' ', ' ', ' '];
             buf.push(
                 styled_brush.paint(
-                    (p.step.load(Ordering::SeqCst)..std::usize::MAX)
+                    (p.step.load(Ordering::SeqCst)..usize::MAX)
                         .take(blocks_available as usize)
                         .map(|idx| CHARS[idx % CHARS.len()])
                         .rev()

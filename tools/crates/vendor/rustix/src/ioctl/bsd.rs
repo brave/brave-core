@@ -1,13 +1,13 @@
 //! `ioctl` opcode behavior for BSD platforms.
 
-use super::{Direction, RawOpcode};
+use super::{Direction, Opcode};
 
 pub(super) const fn compose_opcode(
     dir: Direction,
-    group: RawOpcode,
-    num: RawOpcode,
-    size: RawOpcode,
-) -> RawOpcode {
+    group: Opcode,
+    num: Opcode,
+    size: Opcode,
+) -> Opcode {
     let dir = match dir {
         Direction::None => NONE,
         Direction::Read => READ,
@@ -19,9 +19,9 @@ pub(super) const fn compose_opcode(
 }
 
 // `IOC_VOID`
-pub const NONE: RawOpcode = 0x2000_0000;
+pub const NONE: Opcode = 0x2000_0000;
 // `IOC_OUT` (“out” is from the perspective of the kernel)
-pub const READ: RawOpcode = 0x4000_0000;
+pub const READ: Opcode = 0x4000_0000;
 // `IOC_IN` (“in” is from the perspective of the kernel)
-pub const WRITE: RawOpcode = 0x8000_0000;
-pub const IOCPARAM_MASK: RawOpcode = 0x1FFF;
+pub const WRITE: Opcode = 0x8000_0000;
+pub const IOCPARAM_MASK: Opcode = 0x1FFF;

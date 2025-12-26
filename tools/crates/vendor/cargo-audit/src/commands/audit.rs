@@ -14,7 +14,7 @@ use crate::{
     prelude::*,
 };
 use abscissa_core::{
-    config::Override, error::Context, terminal::ColorChoice, FrameworkError, FrameworkErrorKind,
+    FrameworkError, FrameworkErrorKind, config::Override, error::Context, terminal::ColorChoice,
 };
 use clap::{Parser, ValueEnum};
 use rustsec::platforms::target::{Arch, OS};
@@ -108,13 +108,6 @@ pub struct AuditCommand {
     )]
     ignore: Vec<String>,
 
-    /// Ignore the sources of packages in Cargo.toml
-    #[arg(
-        long = "ignore-source",
-        help = "Ignore sources of packages in Cargo.toml, matching advisories regardless of source"
-    )]
-    ignore_source: bool,
-
     /// Skip fetching the advisory database git repository
     #[arg(
         short = 'n',
@@ -152,6 +145,14 @@ pub struct AuditCommand {
         help = "Avoid printing unnecessary information"
     )]
     quiet: bool,
+
+    /// Output format
+    #[arg(
+        long = "format",
+        value_name = "FORMAT",
+        help = "Output format: terminal, json, or sarif"
+    )]
+    output_format: Option<OutputFormat>,
 
     /// Output reports as JSON
     #[arg(long = "json", help = "Output report in JSON format")]
@@ -210,7 +211,6 @@ impl Override<AuditConfig> for AuditCommand {
             );
         }
 
-        config.advisories.ignore_source |= self.ignore_source;
         config.database.fetch &= !self.no_fetch;
         config.database.stale |= self.stale;
 
@@ -236,8 +236,11 @@ impl Override<AuditConfig> for AuditCommand {
 
         config.output.quiet |= self.quiet;
 
+        // Handle output format (--json flag takes precedence for backward compatibility)
         if self.output_json {
             config.output.format = OutputFormat::Json;
+        } else if let Some(format) = self.output_format {
+            config.output.format = format;
         }
 
         Ok(config)
@@ -299,23 +302,23 @@ mod tests {
     fn override_default_fetch_option() {
         // Assert the default value for the fetch option is true
         let mut config: AuditConfig = AuditConfig::default();
-        assert_eq!(config.database.fetch, true);
+        assert!(config.database.fetch);
 
         let mut audit_command = AuditCommand::default();
 
         let overridden_config = audit_command.override_config(config.clone()).unwrap();
-        assert_eq!(overridden_config.database.fetch, true);
+        assert!(overridden_config.database.fetch);
 
         // as the CLI flag --no-fetch is false when not provided
         // override_config should not change the fetch option
         // when it is set to false in the config file
         config.database.fetch = false;
         let overridden_config = audit_command.override_config(config.clone()).unwrap();
-        assert_eq!(overridden_config.database.fetch, false);
+        assert!(!overridden_config.database.fetch);
 
         config.database.fetch = true;
         audit_command.no_fetch = true;
         let overridden_config = audit_command.override_config(config.clone()).unwrap();
-        assert_eq!(overridden_config.database.fetch, false);
+        assert!(!overridden_config.database.fetch);
     }
 }

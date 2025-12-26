@@ -37,6 +37,11 @@ pub enum Push<'a> {
         /// If true, allow non-fast-forward updates of `dest`.
         allow_non_fast_forward: bool,
     },
+    /// Exclude a single ref.
+    Exclude {
+        /// A full or partial ref name to exclude, or multiple if a single `*` is used.
+        src: &'a BStr,
+    },
 }
 
 /// Any source can either be a ref name (full or partial) or a fully spelled out hex-sha for an object, on the remote side.

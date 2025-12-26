@@ -8,11 +8,10 @@ use std::thread;
 ///
 /// This struct is created by the [`panic_fuse()`] method on [`ParallelIterator`]
 ///
-/// [`panic_fuse()`]: trait.ParallelIterator.html#method.panic_fuse
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`panic_fuse()`]: ParallelIterator::panic_fuse()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Debug, Clone)]
-pub struct PanicFuse<I: ParallelIterator> {
+pub struct PanicFuse<I> {
     base: I,
 }
 
@@ -36,10 +35,7 @@ impl<'a> Fuse<'a> {
     }
 }
 
-impl<I> PanicFuse<I>
-where
-    I: ParallelIterator,
-{
+impl<I> PanicFuse<I> {
     /// Creates a new `PanicFuse` iterator.
     pub(super) fn new(base: I) -> PanicFuse<I> {
         PanicFuse { base }
@@ -120,8 +116,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Producer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Producer implementation
 
 struct PanicFuseProducer<'a, P> {
     base: P,
@@ -221,8 +217,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Consumer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Consumer implementation
 
 struct PanicFuseConsumer<'a, C> {
     base: C,

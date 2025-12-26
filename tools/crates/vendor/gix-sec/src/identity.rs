@@ -8,6 +8,8 @@ pub struct Account {
     pub username: String,
     /// The user's password
     pub password: String,
+    /// An OAuth refresh token that may accompany the password. It is to be treated confidentially, just like the password.
+    pub oauth_refresh_token: Option<String>,
 }
 
 /// Returns true if the given `path` is owned by the user who is executing the current process.
@@ -80,7 +82,7 @@ mod impl_ {
 
     pub fn is_path_owned_by_current_user(path: &Path) -> io::Result<bool> {
         use windows_sys::Win32::{
-            Foundation::{GetLastError, LocalFree, ERROR_INSUFFICIENT_BUFFER, ERROR_SUCCESS},
+            Foundation::{GetLastError, LocalFree, ERROR_INSUFFICIENT_BUFFER, ERROR_INVALID_FUNCTION, ERROR_SUCCESS},
             Security::{
                 Authorization::{GetNamedSecurityInfoW, SE_FILE_OBJECT},
                 CheckTokenMembership, EqualSid, GetTokenInformation, IsWellKnownSid, TokenOwner,
@@ -121,6 +123,11 @@ mod impl_ {
                 );
 
                 if result != ERROR_SUCCESS {
+                    if result == ERROR_INVALID_FUNCTION {
+                        // We cannot obtain security information, so we default to reduced trust
+                        // (false) rather than failing completely.
+                        return Ok(false);
+                    }
                     let inner = io::Error::from_raw_os_error(result as _);
                     error!(
                         inner,
@@ -200,7 +207,7 @@ mod impl_ {
             }
 
             let mut is_member = 0;
-            if CheckTokenMembership(0, token_owner, &mut is_member) == 0 {
+            if CheckTokenMembership(std::ptr::null_mut(), token_owner, &mut is_member) == 0 {
                 error!("Couldn't check if user is an administrator");
             }
 

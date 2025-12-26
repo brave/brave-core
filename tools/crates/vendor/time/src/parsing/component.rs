@@ -1,20 +1,18 @@
 //! Parsing implementations for all [`Component`](crate::format_description::Component)s.
 
-use core::num::{NonZeroU16, NonZeroU8};
+use core::num::NonZero;
 
 use num_conv::prelude::*;
 
 use crate::convert::*;
 use crate::format_description::modifier;
-#[cfg(feature = "large-dates")]
-use crate::parsing::combinator::n_to_m_digits_padded;
 use crate::parsing::combinator::{
-    any_digit, exactly_n_digits, exactly_n_digits_padded, first_match, n_to_m_digits, opt, sign,
+    any_digit, exactly_n_digits, exactly_n_digits_padded, first_match, n_to_m_digits,
+    n_to_m_digits_padded, opt, sign,
 };
 use crate::parsing::ParsedItem;
 use crate::{Month, Weekday};
 
-// region: date components
 /// Parse the "year" component of a `Date`.
 pub(crate) fn parse_year(
     input: &[u8],
@@ -25,12 +23,13 @@ pub(crate) fn parse_year(
             let ParsedItem(input, sign) = opt(sign)(input);
 
             if let Some(sign) = sign {
-                #[cfg(not(feature = "large-dates"))]
-                let ParsedItem(input, year) =
-                    exactly_n_digits_padded::<4, u32>(modifiers.padding)(input)?;
-                #[cfg(feature = "large-dates")]
-                let ParsedItem(input, year) =
-                    n_to_m_digits_padded::<4, 6, u32>(modifiers.padding)(input)?;
+                let ParsedItem(input, year) = if cfg!(feature = "large-dates")
+                    && modifiers.range == modifier::YearRange::Extended
+                {
+                    n_to_m_digits_padded::<4, 6, u32>(modifiers.padding)(input)?
+                } else {
+                    exactly_n_digits_padded::<4, u32>(modifiers.padding)(input)?
+                };
 
                 Some(if sign == b'-' {
                     ParsedItem(input, (-year.cast_signed(), true))
@@ -49,12 +48,13 @@ pub(crate) fn parse_year(
             let ParsedItem(input, sign) = opt(sign)(input);
 
             if let Some(sign) = sign {
-                #[cfg(not(feature = "large-dates"))]
-                let ParsedItem(input, year) =
-                    exactly_n_digits_padded::<2, u32>(modifiers.padding)(input)?;
-                #[cfg(feature = "large-dates")]
-                let ParsedItem(input, year) =
-                    n_to_m_digits_padded::<2, 4, u32>(modifiers.padding)(input)?;
+                let ParsedItem(input, year) = if cfg!(feature = "large-dates")
+                    && modifiers.range == modifier::YearRange::Extended
+                {
+                    n_to_m_digits_padded::<2, 4, u32>(modifiers.padding)(input)?
+                } else {
+                    exactly_n_digits_padded::<2, u32>(modifiers.padding)(input)?
+                };
 
                 Some(if sign == b'-' {
                     ParsedItem(input, (-year.cast_signed(), true))
@@ -65,7 +65,7 @@ pub(crate) fn parse_year(
                 None
             } else {
                 let ParsedItem(input, year) =
-                    exactly_n_digits_padded::<2, u32>(modifiers.padding)(input)?;
+                    n_to_m_digits_padded::<1, 2, u32>(modifiers.padding)(input)?;
                 Some(ParsedItem(input, (year.cast_signed(), false)))
             }
         }
@@ -197,23 +197,23 @@ pub(crate) fn parse_weekday(
 }
 
 /// Parse the "ordinal" component of a `Date`.
+#[inline]
 pub(crate) fn parse_ordinal(
     input: &[u8],
     modifiers: modifier::Ordinal,
-) -> Option<ParsedItem<'_, NonZeroU16>> {
+) -> Option<ParsedItem<'_, NonZero<u16>>> {
     exactly_n_digits_padded::<3, _>(modifiers.padding)(input)
 }
 
 /// Parse the "day" component of a `Date`.
+#[inline]
 pub(crate) fn parse_day(
     input: &[u8],
     modifiers: modifier::Day,
-) -> Option<ParsedItem<'_, NonZeroU8>> {
+) -> Option<ParsedItem<'_, NonZero<u8>>> {
     exactly_n_digits_padded::<2, _>(modifiers.padding)(input)
 }
-// endregion date components
 
-// region: time components
 /// Indicate whether the hour is "am" or "pm".
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Period {
@@ -224,11 +224,13 @@ pub(crate) enum Period {
 }
 
 /// Parse the "hour" component of a `Time`.
+#[inline]
 pub(crate) fn parse_hour(input: &[u8], modifiers: modifier::Hour) -> Option<ParsedItem<'_, u8>> {
     exactly_n_digits_padded::<2, _>(modifiers.padding)(input)
 }
 
 /// Parse the "minute" component of a `Time`.
+#[inline]
 pub(crate) fn parse_minute(
     input: &[u8],
     modifiers: modifier::Minute,
@@ -237,6 +239,7 @@ pub(crate) fn parse_minute(
 }
 
 /// Parse the "second" component of a `Time`.
+#[inline]
 pub(crate) fn parse_second(
     input: &[u8],
     modifiers: modifier::Second,
@@ -245,6 +248,7 @@ pub(crate) fn parse_second(
 }
 
 /// Parse the "period" component of a `Time`. Required if the hour is on a 12-hour clock.
+#[inline]
 pub(crate) fn parse_period(
     input: &[u8],
     modifiers: modifier::Period,
@@ -296,9 +300,7 @@ pub(crate) fn parse_subsecond(
         }
     })
 }
-// endregion time components
 
-// region: offset components
 /// Parse the "hour" component of a `UtcOffset`.
 ///
 /// Returns the value and whether the value is negative. This is used for when "-0" is parsed.
@@ -316,6 +318,7 @@ pub(crate) fn parse_offset_hour(
 }
 
 /// Parse the "minute" component of a `UtcOffset`.
+#[inline]
 pub(crate) fn parse_offset_minute(
     input: &[u8],
     modifiers: modifier::OffsetMinute,
@@ -327,6 +330,7 @@ pub(crate) fn parse_offset_minute(
 }
 
 /// Parse the "second" component of a `UtcOffset`.
+#[inline]
 pub(crate) fn parse_offset_second(
     input: &[u8],
     modifiers: modifier::OffsetSecond,
@@ -336,9 +340,9 @@ pub(crate) fn parse_offset_second(
             .map(|offset_second| offset_second.cast_signed()),
     )
 }
-// endregion offset components
 
 /// Ignore the given number of bytes.
+#[inline]
 pub(crate) fn parse_ignore(
     input: &[u8],
     modifiers: modifier::Ignore,
@@ -355,12 +359,13 @@ pub(crate) fn parse_unix_timestamp(
 ) -> Option<ParsedItem<'_, i128>> {
     let ParsedItem(input, sign) = opt(sign)(input);
     let ParsedItem(input, nano_timestamp) = match modifiers.precision {
-        modifier::UnixTimestampPrecision::Second => n_to_m_digits::<1, 14, u128>(input)?
-            .map(|val| val * Nanosecond::per(Second).extend::<u128>()),
+        modifier::UnixTimestampPrecision::Second => {
+            n_to_m_digits::<1, 14, u128>(input)?.map(|val| val * Nanosecond::per_t::<u128>(Second))
+        }
         modifier::UnixTimestampPrecision::Millisecond => n_to_m_digits::<1, 17, u128>(input)?
-            .map(|val| val * Nanosecond::per(Millisecond).extend::<u128>()),
+            .map(|val| val * Nanosecond::per_t::<u128>(Millisecond)),
         modifier::UnixTimestampPrecision::Microsecond => n_to_m_digits::<1, 20, u128>(input)?
-            .map(|val| val * Nanosecond::per(Microsecond).extend::<u128>()),
+            .map(|val| val * Nanosecond::per_t::<u128>(Microsecond)),
         modifier::UnixTimestampPrecision::Nanosecond => n_to_m_digits::<1, 23, _>(input)?,
     };
 
@@ -373,6 +378,7 @@ pub(crate) fn parse_unix_timestamp(
 
 /// Parse the `end` component, which represents the end of input. If any input is remaining, `None`
 /// is returned.
+#[inline]
 pub(crate) const fn parse_end(input: &[u8], end: modifier::End) -> Option<ParsedItem<'_, ()>> {
     let modifier::End {} = end;
 

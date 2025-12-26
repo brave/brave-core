@@ -8,7 +8,6 @@ use iai::black_box;
 mod samples;
 use samples::*;
 
-use zerovec::ule::VarULE;
 use zerovec::VarZeroSlice;
 use zerovec::ZeroVec;
 
@@ -17,7 +16,7 @@ fn sum_slice() -> u32 {
 }
 
 fn sum_zerovec() -> u32 {
-    ZeroVec::<u32>::parse_byte_slice(black_box(TEST_BUFFER_LE))
+    ZeroVec::<u32>::parse_bytes(black_box(TEST_BUFFER_LE))
         .unwrap()
         .iter()
         .sum::<u32>()
@@ -28,28 +27,28 @@ fn binarysearch_slice() -> Result<usize, usize> {
 }
 
 fn binarysearch_zerovec() -> Result<usize, usize> {
-    ZeroVec::<u32>::parse_byte_slice(black_box(TEST_BUFFER_LE))
+    ZeroVec::<u32>::parse_bytes(black_box(TEST_BUFFER_LE))
         .unwrap()
         .binary_search(&0x0c0d0c)
 }
 
 fn varzeroslice_parse_get() -> Option<&'static str> {
     let slice: &'static VarZeroSlice<str> =
-        VarZeroSlice::parse_byte_slice(black_box(TEST_VARZEROSLICE_BYTES)).unwrap();
+        VarZeroSlice::parse_bytes(black_box(TEST_VARZEROSLICE_BYTES)).unwrap();
     slice.get(black_box(1))
 }
 
 fn varzeroslice_get() -> Option<&'static str> {
     // Safety: The bytes are valid.
     let slice: &'static VarZeroSlice<str> =
-        unsafe { VarZeroSlice::from_byte_slice_unchecked(black_box(TEST_VARZEROSLICE_BYTES)) };
+        unsafe { VarZeroSlice::from_bytes_unchecked(black_box(TEST_VARZEROSLICE_BYTES)) };
     slice.get(black_box(1))
 }
 
 fn varzeroslice_get_unchecked() -> &'static str {
     // Safety: The bytes are valid.
     let slice: &'static VarZeroSlice<str> =
-        unsafe { VarZeroSlice::from_byte_slice_unchecked(black_box(TEST_VARZEROSLICE_BYTES)) };
+        unsafe { VarZeroSlice::from_bytes_unchecked(black_box(TEST_VARZEROSLICE_BYTES)) };
     // Safety: The VarZeroVec has length 4.
     unsafe { slice.get_unchecked(black_box(1)) }
 }

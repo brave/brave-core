@@ -11,68 +11,78 @@
 
 [package]
 edition = "2021"
+rust-version = "1.74"
 name = "prodash"
-version = "28.0.0"
+version = "30.0.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+build = false
 include = [
     "src/**/*",
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A dashboard for visualizing progress of asynchronous and possibly blocking tasks"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/Byron/prodash"
+repository = "https://github.com/GitoxideLabs/prodash"
 
 [package.metadata.docs.rs]
 all-features = true
 
+[features]
+default = ["progress-tree"]
+local-time = ["jiff"]
+progress-log = ["log"]
+progress-tree = ["parking_lot"]
+progress-tree-hp-hashmap = ["dashmap"]
+progress-tree-log = ["log"]
+render-line = [
+    "crosstermion/color",
+    "jiff",
+    "unicode-width",
+]
+render-line-autoconfigure = ["is-terminal"]
+render-line-crossterm = ["crosstermion/crossterm"]
+render-tui = [
+    "tui",
+    "unicode-segmentation",
+    "unicode-width",
+    "crosstermion/input-async",
+    "tui-react",
+    "futures-lite",
+    "futures-core",
+    "async-io",
+    "jiff",
+]
+render-tui-crossterm = [
+    "crosstermion/tui-react-crossterm",
+    "crosstermion/input-async-crossterm",
+]
+unit-bytes = ["bytesize"]
+unit-duration = ["jiff"]
+unit-human = ["human_format"]
+
 [lib]
+name = "prodash"
+path = "src/lib.rs"
 doctest = true
-
-[[example]]
-name = "dashboard"
-path = "examples/dashboard.rs"
-required-features = [
-    "render-tui",
-    "render-tui-crossterm",
-    "render-line",
-    "render-line-crossterm",
-    "signal-hook",
-    "render-line-autoconfigure",
-    "progress-tree",
-]
-
-[[example]]
-name = "units"
-path = "examples/units.rs"
-required-features = [
-    "unit-bytes",
-    "unit-duration",
-    "unit-human",
-    "render-tui",
-    "render-tui-crossterm",
-    "render-line",
-    "render-line-crossterm",
-    "signal-hook",
-]
-
-[[bench]]
-name = "usage"
-path = "benches/usage.rs"
-harness = false
 
 [dependencies.async-io]
 version = "2.2.1"
 optional = true
 
 [dependencies.bytesize]
-version = "1.0.1"
+version = "2.0.1"
 optional = true
 
 [dependencies.crosstermion]
-version = "0.13.0"
+version = "0.14.0"
 optional = true
 default-features = false
 
@@ -83,7 +93,7 @@ optional = true
 default-features = false
 
 [dependencies.dashmap]
-version = "5.1.0"
+version = "6.0.1"
 optional = true
 default-features = false
 
@@ -100,12 +110,12 @@ optional = true
 version = "1.0.3"
 optional = true
 
-[dependencies.humantime]
-version = "2.1.0"
-optional = true
-
 [dependencies.is-terminal]
 version = "0.4.9"
+optional = true
+
+[dependencies.jiff]
+version = "0.2.4"
 optional = true
 
 [dependencies.log]
@@ -122,24 +132,14 @@ version = "0.3.9"
 optional = true
 default-features = false
 
-[dependencies.time]
-version = "0.3.2"
-features = [
-    "std",
-    "local-offset",
-    "formatting",
-]
-optional = true
-default-features = false
-
 [dependencies.tui]
-version = "0.25.0"
+version = "0.26.0"
 optional = true
 default-features = false
 package = "ratatui"
 
 [dependencies.tui-react]
-version = "0.22.0"
+version = "0.23.0"
 optional = true
 
 [dependencies.unicode-segmentation]
@@ -167,7 +167,7 @@ version = "0.5.1"
 default-features = false
 
 [dev-dependencies.env_logger]
-version = "0.10.0"
+version = "0.11.0"
 features = ["humantime"]
 default-features = false
 
@@ -186,39 +186,3 @@ version = "1.4.0"
 
 [dev-dependencies.rand]
 version = "0.8.1"
-
-[features]
-default = [
-    "progress-tree",
-    "progress-tree-log",
-]
-local-time = ["time"]
-progress-log = ["log"]
-progress-tree = ["parking_lot"]
-progress-tree-hp-hashmap = ["dashmap"]
-progress-tree-log = ["log"]
-render-line = [
-    "crosstermion/color",
-    "humantime",
-    "unicode-width",
-]
-render-line-autoconfigure = ["is-terminal"]
-render-line-crossterm = ["crosstermion/crossterm"]
-render-tui = [
-    "tui",
-    "unicode-segmentation",
-    "unicode-width",
-    "crosstermion/input-async",
-    "tui-react",
-    "futures-lite",
-    "futures-core",
-    "async-io",
-    "humantime",
-]
-render-tui-crossterm = [
-    "crosstermion/tui-react-crossterm",
-    "crosstermion/input-async-crossterm",
-]
-unit-bytes = ["bytesize"]
-unit-duration = ["humantime"]
-unit-human = ["human_format"]

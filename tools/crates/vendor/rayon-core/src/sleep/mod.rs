@@ -6,7 +6,6 @@ use crate::sync::{Condvar, Mutex};
 use crossbeam_utils::CachePadded;
 use std::sync::atomic::Ordering;
 use std::thread;
-use std::usize;
 
 mod counters;
 pub(crate) use self::counters::THREADS_MAX;
@@ -264,10 +263,10 @@ impl Sleep {
         // -- clearly the existing idle jobs aren't enough. Otherwise,
         // check to see if we have enough idle workers.
         if !queue_was_empty {
-            let num_to_wake = std::cmp::min(num_jobs, num_sleepers);
+            let num_to_wake = Ord::min(num_jobs, num_sleepers);
             self.wake_any_threads(num_to_wake);
         } else if num_awake_but_idle < num_jobs {
-            let num_to_wake = std::cmp::min(num_jobs - num_awake_but_idle, num_sleepers);
+            let num_to_wake = Ord::min(num_jobs - num_awake_but_idle, num_sleepers);
             self.wake_any_threads(num_to_wake);
         }
     }

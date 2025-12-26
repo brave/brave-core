@@ -1,0 +1,46 @@
+stages:
+  - test
+  - doc
+
+tests:
+  stage: test
+  image: "rust:latest"
+  variables:
+    CARGO_HOME: "$CI_PROJECT_DIR/cargo"
+    RUST_BACKTRACE: "1"
+  before_script:
+    - rustc --version
+    - cargo --version
+    - rustup component add rustfmt-preview
+    - rustup component add clippy-preview
+  script:
+    - cargo b
+    - cargo fmt -- --check
+    - cargo clippy
+    - cargo t
+  cache:
+    key: tests
+    untracked: true
+    paths:
+      - "$CARGO_HOME/"
+      - target/
+
+pages:
+  stage: doc
+  image: "rust:latest"
+  variables:
+    CARGO_HOME: "$CI_PROJECT_DIR/cargo"
+  script:
+    - cargo doc
+    - rm -rf public
+    - mv target/doc public
+  cache:
+    key: pages
+    untracked: true
+    paths:
+      - "$CARGO_HOME/"
+  only:
+    - master
+  artifacts:
+    paths:
+      - public

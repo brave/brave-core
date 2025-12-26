@@ -24,6 +24,7 @@ pub(crate) fn new_socket(domain: libc::c_int, socket_type: libc::c_int) -> io::R
         target_os = "openbsd",
         target_os = "solaris",
         target_os = "hermit",
+        target_os = "cygwin",
     ))]
     let socket_type = socket_type | libc::SOCK_NONBLOCK | libc::SOCK_CLOEXEC;
     #[cfg(target_os = "nto")]
@@ -31,7 +32,7 @@ pub(crate) fn new_socket(domain: libc::c_int, socket_type: libc::c_int) -> io::R
 
     let socket = syscall!(socket(domain, socket_type, 0))?;
 
-    // Mimick `libstd` and set `SO_NOSIGPIPE` on apple systems.
+    // Mimic `libstd` and set `SO_NOSIGPIPE` on apple systems.
     #[cfg(any(
         target_os = "ios",
         target_os = "macos",
@@ -52,6 +53,7 @@ pub(crate) fn new_socket(domain: libc::c_int, socket_type: libc::c_int) -> io::R
 
     // Darwin (and others) doesn't have SOCK_NONBLOCK or SOCK_CLOEXEC.
     #[cfg(any(
+        target_os = "aix",
         target_os = "ios",
         target_os = "macos",
         target_os = "tvos",

@@ -1,6 +1,6 @@
 # nu-ansi-term
 
-> This is a copy of rust-ansi-term but with Color change to Color and light foreground colors added (90-97) as well as light background colors added (100-107).
+> This is a copy of rust-ansi-term but with Colour change to Color and light foreground colors added (90-97) as well as light background colors added (100-107).
 
 This is a library for controlling colors and formatting, such as red bold text or blue underlined text, on ANSI terminals.
 
@@ -12,7 +12,10 @@ This crate works with [Cargo](http://crates.io). Add the following to your `Carg
 
 ```toml
 [dependencies]
-nu_ansi_term = "0.46"
+nu-ansi-term = "0.49"
+
+# optional gnu-legacy mode to have two digit instead of one digit styles
+nu-ansi-term = { version="0.49", features=["gnu_legacy"] }
 ```
 
 ## Basic usage
@@ -22,8 +25,6 @@ There are three main types in this crate that you need to be concerned with: `An
 A `Style` holds stylistic information: foreground and background colors, whether the text should be bold, or blinking, or other properties.
 The `Color` enum represents the available colors.
 And an `AnsiString` is a string paired with a `Style`.
-
-`Color` is also available as an alias to `Color`.
 
 To format a string, call the `paint` method on a `Style` or a `Color`, passing in the string you want to format as the argument.
 For example, here’s how to get some red text:
@@ -104,6 +105,18 @@ Red.normal().paint("yet another red string");
 Style::default().paint("a completely regular string");
 ```
 
+Sometimes it is desirable to hard-reset a style/color just before
+applying a new one. To reset and apply, the `reset_before_style` method can
+be used on either `Color` or `Style` structs.
+
+```rust
+use nu_ansi_term::Style;
+
+println!("\x1b[33mHow about some {} \x1b[33mand {}?\x1b[0m",
+         Style::new().reset_before_style().bold().paint("bold"),
+         Style::new().reset_before_style().underline().paint("underline"));
+```
+
 ## Extended colors
 
 You can access the extended range of 256 colors by using the `Color::Fixed` variant, which takes an argument of the color number to use.
@@ -127,9 +140,9 @@ use nu_ansi_term::Color::RGB;
 RGB(70, 130, 180).paint("Steel blue");
 ```
 
-## Combining successive coloured strings
+## Combining successive colored strings
 
-The benefit of writing ANSI escape codes to the terminal is that they _stack_: you do not need to end every coloured string with a reset code if the text that follows it is of a similar style.
+The benefit of writing ANSI escape codes to the terminal is that they _stack_: you do not need to end every colored string with a reset code if the text that follows it is of a similar style.
 For example, if you want to have some blue text followed by some blue bold text, it’s possible to send the ANSI code for blue, followed by the ANSI code for bold, and finishing with a reset code without having to have an extra one between the two strings.
 
 This crate can optimise the ANSI codes that get printed in situations like this, making life easier for your terminal renderer.

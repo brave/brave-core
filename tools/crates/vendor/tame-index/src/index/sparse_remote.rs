@@ -1,7 +1,7 @@
 use super::{FileLock, SparseIndex};
 use crate::{Error, IndexKrate, KrateName};
-pub use reqwest::blocking::Client;
 pub use reqwest::Client as AsyncClient;
+pub use reqwest::blocking::Client;
 use std::collections::{BTreeMap, BTreeSet};
 
 /// Allows **blocking** access to a remote HTTP sparse registry index
@@ -176,7 +176,7 @@ impl AsyncRemoteSparseIndex {
             let res = client.execute(reqc).await;
 
             match res {
-                Err(err) if err.is_connect() || err.is_timeout() || err.is_request() => continue,
+                Err(err) if err.is_connect() || err.is_timeout() || err.is_request() => {}
                 Err(err) => return Err(err.into()),
                 Ok(res) => break res,
             }

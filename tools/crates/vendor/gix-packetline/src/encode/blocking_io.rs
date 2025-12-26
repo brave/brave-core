@@ -50,15 +50,12 @@ fn prefixed_and_suffixed_data_to_write(
 ) -> io::Result<usize> {
     let data_len = prefix.len() + data.len() + suffix.len();
     if data_len > MAX_DATA_LEN {
-        return Err(io::Error::new(
-            io::ErrorKind::Other,
-            Error::DataLengthLimitExceeded {
-                length_in_bytes: data_len,
-            },
-        ));
+        return Err(io::Error::other(Error::DataLengthLimitExceeded {
+            length_in_bytes: data_len,
+        }));
     }
     if data.is_empty() {
-        return Err(io::Error::new(io::ErrorKind::Other, Error::DataIsEmpty));
+        return Err(io::Error::other(Error::DataIsEmpty));
     }
 
     let data_len = data_len + 4;

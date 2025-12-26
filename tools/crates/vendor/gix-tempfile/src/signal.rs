@@ -1,4 +1,4 @@
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
 use crate::REGISTRY;
 
@@ -12,11 +12,10 @@ use crate::REGISTRY;
 /// from a signal handler under the application's control.
 pub fn setup(mode: handler::Mode) {
     handler::MODE.store(mode as usize, std::sync::atomic::Ordering::SeqCst);
-    Lazy::force(&REGISTRY);
+    LazyLock::force(&REGISTRY);
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod handler {
     use std::sync::atomic::AtomicUsize;
 

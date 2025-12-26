@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.70"
 name = "jiff-tzdb"
-version = "0.1.2"
+version = "0.1.5"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 build = false
 include = [
@@ -29,7 +29,7 @@ autoexamples = false
 autotests = false
 autobenches = false
 description = "The entire Time Zone Database embedded into your binary."
-homepage = "https://github.com/BurntSushi/jiff/tree/master/jiff-tzdb"
+homepage = "https://github.com/BurntSushi/jiff/tree/master/crates/jiff-tzdb"
 documentation = "https://docs.rs/jiff-tzdb"
 readme = "README.md"
 keywords = [

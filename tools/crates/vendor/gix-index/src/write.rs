@@ -67,7 +67,7 @@ impl State {
             extensions,
             skip_hash: _,
         }: Options,
-    ) -> std::io::Result<Version> {
+    ) -> Result<Version, gix_hash::io::Error> {
         let _span = gix_features::trace::detail!("gix_index::State::write()");
         let version = self.detect_required_version();
 
@@ -95,7 +95,7 @@ impl State {
                 .is_some()
             && !extension_toc.is_empty()
         {
-            extension::end_of_index_entry::write_to(out, self.object_hash, offset_to_extensions, extension_toc)?
+            extension::end_of_index_entry::write_to(out, self.object_hash, offset_to_extensions, extension_toc)?;
         }
 
         Ok(version)
@@ -176,7 +176,7 @@ fn entries<T: std::io::Write>(out: &mut CountBytes<T>, state: &State, header_siz
                 let eight_null_bytes = [0u8; 8];
                 out.write_all(&eight_null_bytes[n as usize..])?;
             }
-        };
+        }
     }
 
     Ok(out.count)
@@ -206,12 +206,7 @@ mod util {
             self.count = self
                 .count
                 .checked_add(u32::try_from(written).expect("we don't write 4GB buffers"))
-                .ok_or_else(|| {
-                    std::io::Error::new(
-                        std::io::ErrorKind::Other,
-                        "Cannot write indices larger than 4 gigabytes",
-                    )
-                })?;
+                .ok_or_else(|| std::io::Error::other("Cannot write indices larger than 4 gigabytes"))?;
             Ok(written)
         }
 

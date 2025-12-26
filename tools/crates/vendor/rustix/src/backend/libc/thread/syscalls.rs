@@ -1,8 +1,12 @@
 //! libc syscalls supporting `rustix::thread`.
 
+#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
+use super::types::RawCpuSet;
 use crate::backend::c;
 use crate::backend::conv::ret;
 use crate::io;
+#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
+use crate::pid::Pid;
 #[cfg(not(any(
     apple,
     freebsdlike,
@@ -15,24 +19,23 @@ use crate::io;
     target_os = "wasi",
 )))]
 use crate::thread::ClockId;
+#[cfg(linux_kernel)]
+use crate::thread::{Cpuid, MembarrierCommand, MembarrierQuery};
 #[cfg(not(target_os = "redox"))]
 use crate::thread::{NanosleepRelativeResult, Timespec};
 #[cfg(all(target_env = "gnu", fix_y2038))]
 use crate::timespec::LibcTimespec;
-#[cfg(all(
-    linux_kernel,
-    target_pointer_width = "32",
-    not(any(target_arch = "aarch64", target_arch = "x86_64"))
-))]
+#[cfg(not(fix_y2038))]
+use crate::timespec::{as_libc_timespec_mut_ptr, as_libc_timespec_ptr};
+#[cfg(linux_kernel)]
 use crate::utils::option_as_ptr;
 use core::mem::MaybeUninit;
 #[cfg(linux_kernel)]
 use core::sync::atomic::AtomicU32;
 #[cfg(linux_kernel)]
 use {
-    crate::backend::conv::{borrowed_fd, ret_c_int, ret_usize},
+    crate::backend::conv::{borrowed_fd, ret_c_int, ret_u32, ret_usize},
     crate::fd::BorrowedFd,
-    crate::pid::Pid,
     crate::thread::futex,
     crate::utils::as_mut_ptr,
 };
@@ -49,6 +52,7 @@ weak!(fn __nanosleep64(*const LibcTimespec, *mut LibcTimespec) -> c::c_int);
     target_os = "espidf",
     target_os = "freebsd", // FreeBSD 12 has clock_nanosleep, but libc targets FreeBSD 11.
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "openbsd",
     target_os = "redox",
     target_os = "vita",
@@ -90,7 +94,12 @@ pub(crate) fn clock_nanosleep_relative(id: ClockId, request: &Timespec) -> Nanos
         let flags = 0;
         let mut remain = MaybeUninit::<Timespec>::uninit();
 
-        match c::clock_nanosleep(id as c::clockid_t, flags, request, remain.as_mut_ptr()) {
+        match c::clock_nanosleep(
+            id as c::clockid_t,
+            flags,
+            as_libc_timespec_ptr(request),
+            as_libc_timespec_mut_ptr(&mut remain),
+        ) {
             0 => NanosleepRelativeResult::Ok,
             err if err == io::Errno::INTR.0 => {
                 NanosleepRelativeResult::Interrupted(remain.assume_init())
@@ -106,6 +115,7 @@ pub(crate) fn clock_nanosleep_relative(id: ClockId, request: &Timespec) -> Nanos
         apple,
         target_os = "emscripten",
         target_os = "haiku",
+        target_os = "horizon",
         target_os = "vita"
     ))
 ))]
@@ -153,6 +163,7 @@ fn clock_nanosleep_relative_old(
     target_os = "espidf",
     target_os = "freebsd", // FreeBSD 12 has clock_nanosleep, but libc targets FreeBSD 11.
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "openbsd",
     target_os = "redox",
     target_os = "vita",
@@ -168,14 +179,12 @@ pub(crate) fn clock_nanosleep_absolute(id: ClockId, request: &Timespec) -> io::R
         if let Some(libc_clock_nanosleep) = __clock_nanosleep_time64.get() {
             let flags = c::TIMER_ABSTIME;
             unsafe {
-                return match {
-                    libc_clock_nanosleep(
-                        id as c::clockid_t,
-                        flags,
-                        &request.clone().into(),
-                        core::ptr::null_mut(),
-                    )
-                } {
+                return match libc_clock_nanosleep(
+                    id as c::clockid_t,
+                    flags,
+                    &request.clone().into(),
+                    core::ptr::null_mut(),
+                ) {
                     0 => Ok(()),
                     err => Err(io::Errno(err)),
                 };
@@ -194,7 +203,7 @@ pub(crate) fn clock_nanosleep_absolute(id: ClockId, request: &Timespec) -> io::R
             c::clock_nanosleep(
                 id as c::clockid_t,
                 flags as _,
-                request,
+                as_libc_timespec_ptr(request),
                 core::ptr::null_mut(),
             )
         } {
@@ -210,6 +219,7 @@ pub(crate) fn clock_nanosleep_absolute(id: ClockId, request: &Timespec) -> io::R
         apple,
         target_os = "emscripten",
         target_os = "haiku",
+        target_os = "horizon",
         target_os = "vita"
     ))
 ))]
@@ -262,7 +272,10 @@ pub(crate) fn nanosleep(request: &Timespec) -> NanosleepRelativeResult {
     unsafe {
         let mut remain = MaybeUninit::<Timespec>::uninit();
 
-        match ret(c::nanosleep(request, remain.as_mut_ptr())) {
+        match ret(c::nanosleep(
+            as_libc_timespec_ptr(request),
+            as_libc_timespec_mut_ptr(&mut remain),
+        )) {
             Ok(()) => NanosleepRelativeResult::Ok,
             Err(io::Errno::INTR) => NanosleepRelativeResult::Interrupted(remain.assume_init()),
             Err(err) => NanosleepRelativeResult::Err(err),
@@ -330,8 +343,8 @@ pub(crate) fn setns(fd: BorrowedFd<'_>, nstype: c::c_int) -> io::Result<c::c_int
 
 #[cfg(linux_kernel)]
 #[inline]
-pub(crate) fn unshare(flags: crate::thread::UnshareFlags) -> io::Result<()> {
-    unsafe { ret(c::unshare(flags.bits() as i32)) }
+pub(crate) unsafe fn unshare(flags: crate::thread::UnshareFlags) -> io::Result<()> {
+    ret(c::unshare(flags.bits() as i32))
 }
 
 #[cfg(linux_kernel)]
@@ -385,9 +398,9 @@ pub(crate) fn setuid_thread(uid: crate::ugid::Uid) -> io::Result<()> {
 #[cfg(linux_kernel)]
 #[inline]
 pub(crate) fn setresuid_thread(
-    ruid: crate::ugid::Uid,
-    euid: crate::ugid::Uid,
-    suid: crate::ugid::Uid,
+    ruid: Option<crate::ugid::Uid>,
+    euid: Option<crate::ugid::Uid>,
+    suid: Option<crate::ugid::Uid>,
 ) -> io::Result<()> {
     #[cfg(any(target_arch = "x86", target_arch = "arm", target_arch = "sparc"))]
     const SYS: c::c_long = c::SYS_setresuid32 as c::c_long;
@@ -398,7 +411,13 @@ pub(crate) fn setresuid_thread(
         fn setresuid(ruid: c::uid_t, euid: c::uid_t, suid: c::uid_t) via SYS -> c::c_int
     }
 
-    unsafe { ret(setresuid(ruid.as_raw(), euid.as_raw(), suid.as_raw())) }
+    unsafe {
+        ret(setresuid(
+            ruid.map_or(-1_i32 as u32, |x| x.as_raw()),
+            euid.map_or(-1_i32 as u32, |x| x.as_raw()),
+            suid.map_or(-1_i32 as u32, |x| x.as_raw()),
+        ))
+    }
 }
 
 #[cfg(linux_kernel)]
@@ -414,9 +433,9 @@ pub(crate) fn setgid_thread(gid: crate::ugid::Gid) -> io::Result<()> {
 #[cfg(linux_kernel)]
 #[inline]
 pub(crate) fn setresgid_thread(
-    rgid: crate::ugid::Gid,
-    egid: crate::ugid::Gid,
-    sgid: crate::ugid::Gid,
+    rgid: Option<crate::ugid::Gid>,
+    egid: Option<crate::ugid::Gid>,
+    sgid: Option<crate::ugid::Gid>,
 ) -> io::Result<()> {
     #[cfg(any(target_arch = "x86", target_arch = "arm", target_arch = "sparc"))]
     const SYS: c::c_long = c::SYS_setresgid32 as c::c_long;
@@ -427,7 +446,13 @@ pub(crate) fn setresgid_thread(
         fn setresgid(rgid: c::gid_t, egid: c::gid_t, sgid: c::gid_t) via SYS -> c::c_int
     }
 
-    unsafe { ret(setresgid(rgid.as_raw(), egid.as_raw(), sgid.as_raw())) }
+    unsafe {
+        ret(setresgid(
+            rgid.map_or(-1_i32 as u32, |x| x.as_raw()),
+            egid.map_or(-1_i32 as u32, |x| x.as_raw()),
+            sgid.map_or(-1_i32 as u32, |x| x.as_raw()),
+        ))
+    }
 }
 
 /// # Safety
@@ -492,7 +517,7 @@ pub(crate) unsafe fn futex_val2(
                 uaddr: *const AtomicU32,
                 futex_op: c::c_int,
                 val: u32,
-                timeout: *const linux_raw_sys::general::__kernel_timespec,
+                timeout: *const Timespec,
                 uaddr2: *const AtomicU32,
                 val3: u32
             ) via SYS_futex -> c::c_long
@@ -518,7 +543,7 @@ pub(crate) unsafe fn futex_timeout(
     op: super::futex::Operation,
     flags: futex::Flags,
     val: u32,
-    timeout: *const Timespec,
+    timeout: Option<&Timespec>,
     uaddr2: *const AtomicU32,
     val3: u32,
 ) -> io::Result<usize> {
@@ -546,13 +571,12 @@ pub(crate) unsafe fn futex_timeout(
             uaddr,
             op as i32 | flags.bits() as i32,
             val,
-            timeout,
+            option_as_ptr(timeout),
             uaddr2,
             val3,
         ))
         .or_else(|err| {
-            // See the comments in `rustix_clock_gettime_via_syscall` about
-            // emulation.
+            // See the comments in `clock_gettime_via_syscall` about emulation.
             if err == io::Errno::NOSYS {
                 futex_old_timespec(uaddr, op, flags, val, timeout, uaddr2, val3)
             } else {
@@ -572,7 +596,7 @@ pub(crate) unsafe fn futex_timeout(
                 uaddr: *const AtomicU32,
                 futex_op: c::c_int,
                 val: u32,
-                timeout: *const linux_raw_sys::general::__kernel_timespec,
+                timeout: *const Timespec,
                 uaddr2: *const AtomicU32,
                 val3: u32
             ) via SYS_futex -> c::c_long
@@ -582,7 +606,7 @@ pub(crate) unsafe fn futex_timeout(
             uaddr,
             op as i32 | flags.bits() as i32,
             val,
-            timeout.cast(),
+            option_as_ptr(timeout).cast(),
             uaddr2,
             val3,
         ) as isize)
@@ -602,7 +626,7 @@ unsafe fn futex_old_timespec(
     op: super::futex::Operation,
     flags: futex::Flags,
     val: u32,
-    timeout: *const Timespec,
+    timeout: Option<&Timespec>,
     uaddr2: *const AtomicU32,
     val3: u32,
 ) -> io::Result<usize> {
@@ -617,16 +641,13 @@ unsafe fn futex_old_timespec(
         ) via SYS_futex -> c::c_long
     }
 
-    let old_timeout = if timeout.is_null() {
-        None
-    } else {
+    let old_timeout = if let Some(timeout) = timeout {
         Some(linux_raw_sys::general::__kernel_old_timespec {
-            tv_sec: (*timeout).tv_sec.try_into().map_err(|_| io::Errno::INVAL)?,
-            tv_nsec: (*timeout)
-                .tv_nsec
-                .try_into()
-                .map_err(|_| io::Errno::INVAL)?,
+            tv_sec: timeout.tv_sec.try_into().map_err(|_| io::Errno::INVAL)?,
+            tv_nsec: timeout.tv_nsec.try_into().map_err(|_| io::Errno::INVAL)?,
         })
+    } else {
+        None
     };
     ret_usize(futex(
         uaddr,
@@ -639,10 +660,133 @@ unsafe fn futex_old_timespec(
 }
 
 #[cfg(linux_kernel)]
+pub(crate) fn futex_waitv(
+    waiters: &[futex::Wait],
+    flags: futex::WaitvFlags,
+    timeout: Option<&Timespec>,
+    clockid: ClockId,
+) -> io::Result<usize> {
+    use futex::Wait as FutexWait;
+    use linux_raw_sys::general::__kernel_clockid_t as clockid_t;
+    syscall! {
+        fn futex_waitv(
+            waiters: *const FutexWait,
+            nr_futexes: c::c_uint,
+            flags: c::c_uint,
+            timeout: *const Timespec,
+            clockid: clockid_t
+        ) via SYS_futex_waitv -> c::c_int
+    }
+
+    let nr_futexes: c::c_uint = waiters.len().try_into().map_err(|_| io::Errno::INVAL)?;
+
+    unsafe {
+        ret_c_int(futex_waitv(
+            waiters.as_ptr(),
+            nr_futexes,
+            flags.bits(),
+            option_as_ptr(timeout).cast(),
+            clockid as _,
+        ))
+        .map(|n| n as usize)
+    }
+}
+
+#[cfg(linux_kernel)]
 #[inline]
 pub(crate) fn setgroups_thread(groups: &[crate::ugid::Gid]) -> io::Result<()> {
     syscall! {
         fn setgroups(size: c::size_t, list: *const c::gid_t) via SYS_setgroups -> c::c_int
     }
     ret(unsafe { setgroups(groups.len(), groups.as_ptr().cast()) })
+}
+
+#[cfg(any(linux_kernel, target_os = "dragonfly"))]
+#[inline]
+pub(crate) fn sched_getcpu() -> usize {
+    let r = unsafe { c::sched_getcpu() };
+    debug_assert!(r >= 0);
+    r as usize
+}
+
+#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
+#[inline]
+pub(crate) fn sched_getaffinity(pid: Option<Pid>, cpuset: &mut RawCpuSet) -> io::Result<()> {
+    unsafe {
+        ret(c::sched_getaffinity(
+            Pid::as_raw(pid) as _,
+            core::mem::size_of::<RawCpuSet>(),
+            cpuset,
+        ))
+    }
+}
+
+#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
+#[inline]
+pub(crate) fn sched_setaffinity(pid: Option<Pid>, cpuset: &RawCpuSet) -> io::Result<()> {
+    unsafe {
+        ret(c::sched_setaffinity(
+            Pid::as_raw(pid) as _,
+            core::mem::size_of::<RawCpuSet>(),
+            cpuset,
+        ))
+    }
+}
+
+#[inline]
+pub(crate) fn sched_yield() {
+    unsafe {
+        let _ = c::sched_yield();
+    }
+}
+
+// The `membarrier` syscall has a third argument, but it's only used when
+// the `flags` argument is `MEMBARRIER_CMD_FLAG_CPU`.
+#[cfg(linux_kernel)]
+syscall! {
+    fn membarrier_all(
+        cmd: c::c_int,
+        flags: c::c_uint
+    ) via SYS_membarrier -> c::c_int
+}
+
+#[cfg(linux_kernel)]
+pub(crate) fn membarrier_query() -> MembarrierQuery {
+    // glibc does not have a wrapper for `membarrier`; [the documentation]
+    // says to use `syscall`.
+    //
+    // [the documentation]: https://man7.org/linux/man-pages/man2/membarrier.2.html#NOTES
+    const MEMBARRIER_CMD_QUERY: u32 = 0;
+    unsafe {
+        match ret_u32(membarrier_all(MEMBARRIER_CMD_QUERY as i32, 0)) {
+            Ok(query) => MembarrierQuery::from_bits_retain(query),
+            Err(_) => MembarrierQuery::empty(),
+        }
+    }
+}
+
+#[cfg(linux_kernel)]
+pub(crate) fn membarrier(cmd: MembarrierCommand) -> io::Result<()> {
+    unsafe { ret(membarrier_all(cmd as i32, 0)) }
+}
+
+#[cfg(linux_kernel)]
+pub(crate) fn membarrier_cpu(cmd: MembarrierCommand, cpu: Cpuid) -> io::Result<()> {
+    const MEMBARRIER_CMD_FLAG_CPU: u32 = 1;
+
+    syscall! {
+        fn membarrier_cpu(
+            cmd: c::c_int,
+            flags: c::c_uint,
+            cpu_id: c::c_int
+        ) via SYS_membarrier -> c::c_int
+    }
+
+    unsafe {
+        ret(membarrier_cpu(
+            cmd as i32,
+            MEMBARRIER_CMD_FLAG_CPU,
+            bitcast!(cpu.as_raw()),
+        ))
+    }
 }

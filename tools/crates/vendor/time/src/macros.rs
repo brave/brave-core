@@ -130,3 +130,20 @@ pub use time_macros::offset;
 /// # Ok::<_, time::Error>(())
 /// ```
 pub use time_macros::time;
+/// Construct a [`UtcDateTime`] with a statically known value.
+///
+/// The resulting expression can be used in `const` or `static` declarations.
+///
+/// The syntax accepted by this macro is the same as a space-separated [`date!`] and [`time!`].
+///
+/// [`UtcDateTime`]: crate::UtcDateTime
+///
+/// ```rust
+/// # use time::{Date, Month, macros::utc_datetime};
+/// assert_eq!(
+///     utc_datetime!(2020-01-01 0:00),
+///     Date::from_calendar_date(2020, Month::January, 1)?.midnight().as_utc()
+/// );
+/// # Ok::<_, time::Error>(())
+/// ```
+pub use time_macros::utc_datetime;

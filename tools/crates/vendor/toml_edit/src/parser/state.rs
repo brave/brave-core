@@ -231,39 +231,43 @@ impl ParseState {
         dotted: bool,
     ) -> Result<&'t mut Table, CustomError> {
         for (i, key) in path.iter().enumerate() {
-            let entry = table.entry_format(key).or_insert_with(|| {
-                let mut new_table = Table::new();
-                new_table.set_implicit(true);
-                new_table.set_dotted(dotted);
+            table = match table.entry_format(key) {
+                crate::Entry::Vacant(entry) => {
+                    let mut new_table = Table::new();
+                    new_table.set_implicit(true);
+                    new_table.set_dotted(dotted);
 
-                Item::Table(new_table)
-            });
-            match *entry {
-                Item::Value(ref v) => {
-                    return Err(CustomError::extend_wrong_type(path, i, v.type_name()));
+                    entry.insert(Item::Table(new_table)).as_table_mut().unwrap()
                 }
-                Item::ArrayOfTables(ref mut array) => {
-                    debug_assert!(!array.is_empty());
+                crate::Entry::Occupied(entry) => {
+                    match entry.into_mut() {
+                        Item::Value(ref v) => {
+                            return Err(CustomError::extend_wrong_type(path, i, v.type_name()));
+                        }
+                        Item::ArrayOfTables(ref mut array) => {
+                            debug_assert!(!array.is_empty());
 
-                    let index = array.len() - 1;
-                    let last_child = array.get_mut(index).unwrap();
+                            let index = array.len() - 1;
+                            let last_child = array.get_mut(index).unwrap();
 
-                    table = last_child;
-                }
-                Item::Table(ref mut sweet_child_of_mine) => {
-                    // Since tables cannot be defined more than once, redefining such tables using a
-                    // [table] header is not allowed. Likewise, using dotted keys to redefine tables
-                    // already defined in [table] form is not allowed.
-                    if dotted && !sweet_child_of_mine.is_implicit() {
-                        return Err(CustomError::DuplicateKey {
-                            key: key.get().into(),
-                            table: None,
-                        });
+                            last_child
+                        }
+                        Item::Table(ref mut sweet_child_of_mine) => {
+                            // Since tables cannot be defined more than once, redefining such tables using a
+                            // [table] header is not allowed. Likewise, using dotted keys to redefine tables
+                            // already defined in [table] form is not allowed.
+                            if dotted && !sweet_child_of_mine.is_implicit() {
+                                return Err(CustomError::DuplicateKey {
+                                    key: key.get().into(),
+                                    table: None,
+                                });
+                            }
+                            sweet_child_of_mine
+                        }
+                        Item::None => unreachable!(),
                     }
-                    table = sweet_child_of_mine;
                 }
-                Item::None => unreachable!(),
-            }
+            };
         }
         Ok(table)
     }

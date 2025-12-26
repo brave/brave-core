@@ -19,8 +19,8 @@ pub struct ZopfliLongestMatchCache {
 }
 
 impl ZopfliLongestMatchCache {
-    pub fn new(blocksize: usize) -> ZopfliLongestMatchCache {
-        ZopfliLongestMatchCache {
+    pub fn new(blocksize: usize) -> Self {
+        Self {
             /* length > 0 and dist 0 is invalid combination, which indicates on purpose
             that this cache value is not filled in yet. */
             length: vec![1; blocksize],
@@ -52,7 +52,7 @@ impl ZopfliLongestMatchCache {
         if self.sublen[start + 1] == 0 && self.sublen[start + 2] == 0 {
             return 0; // No sublen cached.
         }
-        self.sublen[start + ((ZOPFLI_CACHE_LENGTH - 1) * 3)] as u32 + 3
+        u32::from(self.sublen[start + ((ZOPFLI_CACHE_LENGTH - 1) * 3)]) + 3
     }
 
     /// Stores sublen array in the cache.
@@ -100,8 +100,8 @@ impl ZopfliLongestMatchCache {
 
         for j in 0..ZOPFLI_CACHE_LENGTH {
             let length = self.sublen[start + (j * 3)] as usize + 3;
-            let dist = self.sublen[start + (j * 3 + 1)] as u16
-                + 256 * self.sublen[start + (j * 3 + 2)] as u16;
+            let dist = u16::from(self.sublen[start + (j * 3 + 1)])
+                + 256 * u16::from(self.sublen[start + (j * 3 + 2)]);
 
             let mut i = prevlength;
             while i <= length {
@@ -178,7 +178,7 @@ impl Cache for ZopfliLongestMatchCache {
             || (sublen.is_some() && max_sublen >= limit as u32);
 
         if limit_ok_for_cache && cache_available {
-            if sublen.is_none() || length_lmcpos as u32 <= max_sublen {
+            if sublen.is_none() || u32::from(length_lmcpos) <= max_sublen {
                 let length = cmp::min(length_lmcpos, limit as u16);
                 let distance;
                 if let Some(ref mut subl) = *sublen {

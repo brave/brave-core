@@ -1,6 +1,0 @@
-TOML parse error at line 4, column 1
-  |
-4 | [fruit.apple] # INVALID
-  | ^
-invalid table header
-duplicate key `apple` in table `fruit`

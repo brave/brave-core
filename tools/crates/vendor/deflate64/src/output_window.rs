@@ -1,4 +1,4 @@
-use crate::input_buffer::InputBuffer;
+use crate::{buffer::Buffer, input_buffer::InputBuffer};
 use std::cmp::min;
 
 // With Deflate64 we can have up to a 65536 length as well as up to a 65538 distance. This means we need a Window that is at
@@ -128,33 +128,38 @@ impl OutputWindow {
     }
 
     /// <summary>Copy the decompressed bytes to output buffer.</summary>
-    pub fn copy_to(&mut self, mut output: &mut [u8]) -> usize {
-        let copy_end;
-
-        if output.len() > self.bytes_used {
+    pub fn copy_to(&mut self, output: Buffer<'_>) -> usize {
+        let (copy_end, mut output) = if output.len() > self.bytes_used {
             // we can copy all the decompressed bytes out
-            copy_end = self.end;
-            output = &mut output[..self.bytes_used];
+            (self.end, output.index_mut(..self.bytes_used))
         } else {
-            #[rustfmt::skip]
-            {
-                copy_end = (self.end
-                    .overflowing_sub(self.bytes_used).0
-                    .overflowing_add(output.len()).0)
-                    & WINDOW_MASK;
-            };
             // copy length of bytes
-        }
+            (
+                (self
+                    .end
+                    .overflowing_sub(self.bytes_used)
+                    .0
+                    .overflowing_add(output.len())
+                    .0)
+                    & WINDOW_MASK,
+                output,
+            )
+        };
 
         let copied = output.len();
 
-        if output.len() > copy_end {
+        let mut output = if output.len() > copy_end {
             let tail_len = output.len() - copy_end;
             // this means we need to copy two parts separately
             // copy the tail_len bytes from the end of the output window
-            output[..tail_len].copy_from_slice(&self.window[WINDOW_SIZE - tail_len..][..tail_len]);
-            output = &mut output[tail_len..][..copy_end];
-        }
+            output
+                .reborrow()
+                .index_mut(..tail_len)
+                .copy_from_slice(&self.window[WINDOW_SIZE - tail_len..][..tail_len]);
+            output.index_mut(tail_len..).index_mut(..copy_end)
+        } else {
+            output
+        };
         output.copy_from_slice(&self.window[copy_end - output.len()..][..output.len()]);
         self.bytes_used -= copied;
         //debug_assert!(self.bytes_used >= 0, "check this function and find why we copied more bytes than we have");

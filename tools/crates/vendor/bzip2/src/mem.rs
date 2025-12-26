@@ -6,20 +6,20 @@ use std::marker;
 use std::mem;
 use std::slice;
 
-use libc::{c_int, c_uint};
+use core::ffi::{c_int, c_uint};
 
-use {ffi, Compression};
+use crate::{ffi, Compression};
 
 /// Representation of an in-memory compression stream.
 ///
-/// An instance of `Compress` can be used to compress a stream of bz2 data.
+/// An instance of [`Compress`] can be used to compress a stream of bz2 data.
 pub struct Compress {
     inner: Stream<DirCompress>,
 }
 
 /// Representation of an in-memory decompression stream.
 ///
-/// An instance of `Decompress` can be used to inflate a stream of bz2-encoded
+/// An instance of [`Decompress`] can be used to decompress a stream of bz2-encoded
 /// data.
 pub struct Decompress {
     inner: Stream<DirDecompress>,
@@ -46,7 +46,7 @@ enum DirDecompress {}
 pub enum Action {
     /// Normal compression.
     Run = ffi::BZ_RUN as isize,
-    /// Request that the current compression block is terminate.
+    /// Flush any existing output, but do not read any more input
     Flush = ffi::BZ_FLUSH as isize,
     /// Request that the compression stream be finalized.
     Finish = ffi::BZ_FINISH as isize,
@@ -61,7 +61,7 @@ pub enum Status {
     /// The Flush action on a compression went ok.
     FlushOk,
 
-    /// THe Run action on compression went ok.
+    /// The Run action on compression went ok.
     RunOk,
 
     /// The Finish action on compression went ok.
@@ -126,7 +126,7 @@ impl Compress {
             );
             Compress {
                 inner: Stream {
-                    raw: raw,
+                    raw,
                     _marker: marker::PhantomData,
                 },
             }
@@ -135,8 +135,11 @@ impl Compress {
 
     /// Compress a block of input into a block of output.
     ///
-    /// If anything other than BZ_OK is seen, `Err` is returned. The action
-    /// given must be one of Run, Flush or Finish.
+    /// If anything other than [`BZ_OK`] is seen, `Err` is returned.
+    ///
+    /// The action given must be one of [`Action::Run`], [`Action::Flush`] or [`Action::Finish`].
+    ///
+    /// [`BZ_OK`]: ffi::BZ_OK
     pub fn compress(
         &mut self,
         input: &[u8],
@@ -146,7 +149,7 @@ impl Compress {
         // apparently 0-length compression requests which don't actually make
         // any progress are returned as BZ_PARAM_ERROR, which we don't want, to
         // just translate to a success here.
-        if input.len() == 0 && action == Action::Run {
+        if input.is_empty() && action == Action::Run {
             return Ok(Status::RunOk);
         }
         self.inner.raw.next_in = input.as_ptr() as *mut _;
@@ -182,12 +185,13 @@ impl Compress {
         unsafe {
             let before = self.total_out();
             let ret = {
-                let ptr = output.as_mut_ptr().offset(len as isize);
+                let ptr = output.as_mut_ptr().add(len);
                 let out = slice::from_raw_parts_mut(ptr, cap - len);
                 self.compress(input, out, action)
             };
             output.set_len((self.total_out() - before) as usize + len);
-            return ret;
+
+            ret
         }
     }
 
@@ -208,14 +212,14 @@ impl Decompress {
     /// If `small` is true, then the library will use an alternative
     /// decompression algorithm which uses less memory but at the cost of
     /// decompressing more slowly (roughly speaking, half the speed, but the
-    /// maximum memory requirement drops to around 2300k). See
+    /// maximum memory requirement drops to around 2300k).
     pub fn new(small: bool) -> Decompress {
         unsafe {
             let mut raw = Box::new(mem::zeroed());
             assert_eq!(ffi::BZ2_bzDecompressInit(&mut *raw, 0, small as c_int), 0);
             Decompress {
                 inner: Stream {
-                    raw: raw,
+                    raw,
                     _marker: marker::PhantomData,
                 },
             }
@@ -254,12 +258,13 @@ impl Decompress {
         unsafe {
             let before = self.total_out();
             let ret = {
-                let ptr = output.as_mut_ptr().offset(len as isize);
+                let ptr = output.as_mut_ptr().add(len);
                 let out = slice::from_raw_parts_mut(ptr, cap - len);
                 self.decompress(input, out)
             };
             output.set_len((self.total_out() - before) as usize + len);
-            return ret;
+
+            ret
         }
     }
 

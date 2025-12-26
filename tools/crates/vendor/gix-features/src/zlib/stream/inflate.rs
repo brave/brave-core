@@ -1,6 +1,6 @@
 use std::{io, io::BufRead};
 
-use flate2::{Decompress, FlushDecompress, Status};
+use crate::zlib::{Decompress, FlushDecompress, Status};
 
 /// Read bytes from `rd` and decompress them using `state` into a pre-allocated fitting buffer `dst`, returning the amount of bytes written.
 pub fn read(rd: &mut impl BufRead, state: &mut Decompress, mut dst: &mut [u8]) -> io::Result<usize> {

@@ -26,14 +26,29 @@ use core::mem::MaybeUninit;
 pub use crate::util::{inner_u32, inner_u64};
 
 // Binding to the Windows.Win32.Security.Cryptography.ProcessPrng API. As
-// bcryptprimitives.dll lacks an import library, we use the windows-targets
-// crate to link to it.
-//
-// TODO(MSRV 1.71): Migrate to linking as raw-dylib directly.
-// https://github.com/joboet/rust/blob/5c1c72572479afe98734d5f78fa862abe662c41a/library/std/src/sys/pal/windows/c.rs#L119
-// https://github.com/microsoft/windows-rs/blob/0.60.0/crates/libs/targets/src/lib.rs
-windows_targets::link!("bcryptprimitives.dll" "system" fn ProcessPrng(pbdata: *mut u8, cbdata: usize) -> i32);
+// bcryptprimitives.dll lacks an import library, we use "raw-dylib". This
+// was added in Rust 1.65 for x86_64/aarch64 and in Rust 1.71 for x86.
+// We don't need MSRV 1.71, as we only use this backend on Rust 1.78 and later.
+#[cfg_attr(
+    target_arch = "x86",
+    link(
+        name = "bcryptprimitives",
+        kind = "raw-dylib",
+        import_name_type = "undecorated"
+    )
+)]
+#[cfg_attr(
+    not(target_arch = "x86"),
+    link(name = "bcryptprimitives", kind = "raw-dylib")
+)]
+extern "system" {
+    fn ProcessPrng(pbdata: *mut u8, cbdata: usize) -> BOOL;
+}
+#[allow(clippy::upper_case_acronyms, clippy::incompatible_msrv)]
+type BOOL = core::ffi::c_int; // MSRV 1.64, similarly OK for this backend.
+const TRUE: BOOL = 1;
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     let result = unsafe { ProcessPrng(dest.as_mut_ptr().cast::<u8>(), dest.len()) };
     // Since Windows 10, calls to the user-mode RNG are guaranteed to never
@@ -41,6 +56,6 @@ pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     // return 1 (which is how windows represents TRUE).
     // See the bottom of page 6 of the aforementioned Windows RNG
     // whitepaper for more information.
-    debug_assert!(result == 1);
+    debug_assert!(result == TRUE);
     Ok(())
 }

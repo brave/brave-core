@@ -1,17 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
+# project.
 # ====================================================================
 #
 # January 2015
@@ -45,7 +50,7 @@ require "x86asm.pl";
 $output=pop;
 open STDOUT,">$output";
 
-&asm_init($ARGV[0],$ARGV[$#ARGV] eq "386");
+&asm_init($ARGV[0]);
 
 $xmm=$ymm=1;
 $gasver=999;  # enable everything
@@ -55,308 +60,8 @@ $a="eax";
 ($c,$c_)=("ecx","esi");
 ($d,$d_)=("edx","edi");
 
-sub QUARTERROUND {
-my ($ai,$bi,$ci,$di,$i)=@_;
-my ($an,$bn,$cn,$dn)=map(($_&~3)+(($_+1)&3),($ai,$bi,$ci,$di));	# next
-my ($ap,$bp,$cp,$dp)=map(($_&~3)+(($_-1)&3),($ai,$bi,$ci,$di));	# previous
-
-	#       a   b   c   d
-	#
-	#       0   4   8  12 < even round
-	#       1   5   9  13
-	#       2   6  10  14
-	#       3   7  11  15
-	#       0   5  10  15 < odd round
-	#       1   6  11  12
-	#       2   7   8  13
-	#       3   4   9  14
-
-	if ($i==0) {
-            my $j=4;
-	    ($ap,$bp,$cp,$dp)=map(($_&~3)+(($_-$j--)&3),($ap,$bp,$cp,$dp));
-	} elsif ($i==3) {
-            my $j=0;
-	    ($an,$bn,$cn,$dn)=map(($_&~3)+(($_+$j++)&3),($an,$bn,$cn,$dn));
-	} elsif ($i==4) {
-            my $j=4;
-	    ($ap,$bp,$cp,$dp)=map(($_&~3)+(($_+$j--)&3),($ap,$bp,$cp,$dp));
-	} elsif ($i==7) {
-            my $j=0;
-	    ($an,$bn,$cn,$dn)=map(($_&~3)+(($_-$j++)&3),($an,$bn,$cn,$dn));
-	}
-
-	#&add	($a,$b);			# see elsewhere
-	&xor	($d,$a);
-	 &mov	(&DWP(4*$cp,"esp"),$c_)		if ($ai>0 && $ai<3);
-	&rol	($d,16);
-	 &mov	(&DWP(4*$bp,"esp"),$b_)		if ($i!=0);
-	&add	($c,$d);
-	 &mov	($c_,&DWP(4*$cn,"esp"))		if ($ai>0 && $ai<3);
-	&xor	($b,$c);
-	 &mov	($d_,&DWP(4*$dn,"esp"))		if ($di!=$dn);
-	&rol	($b,12);
-	 &mov	($b_,&DWP(4*$bn,"esp"))		if ($i<7);
-	 &mov	($b_,&DWP(128,"esp"))		if ($i==7);	# loop counter
-	&add	($a,$b);
-	&xor	($d,$a);
-	&mov	(&DWP(4*$ai,"esp"),$a);
-	&rol	($d,8);
-	&mov	($a,&DWP(4*$an,"esp"));
-	&add	($c,$d);
-	&mov	(&DWP(4*$di,"esp"),$d)		if ($di!=$dn);
-	&mov	($d_,$d)			if ($di==$dn);
-	&xor	($b,$c);
-	 &add	($a,$b_)			if ($i<7);	# elsewhere
-	&rol	($b,7);
-
-	($b,$b_)=($b_,$b);
-	($c,$c_)=($c_,$c);
-	($d,$d_)=($d_,$d);
-}
-
-&static_label("ssse3_shortcut");
 &static_label("ssse3_data");
 &static_label("pic_point");
-
-&function_begin("ChaCha20_ctr32");
-	&xor	("eax","eax");
-	&cmp	("eax",&wparam(2));		# len==0?
-	&je	(&label("no_data"));
-if ($xmm) {
-	&call	(&label("pic_point"));
-&set_label("pic_point");
-	&blindpop("eax");
-	&picmeup("ebp","OPENSSL_ia32cap_P","eax",&label("pic_point"));
-	&test	(&DWP(0,"ebp"),1<<24);		# test FXSR bit
-	&jz	(&label("x86"));
-	&test	(&DWP(4,"ebp"),1<<9);		# test SSSE3 bit
-	&jz	(&label("x86"));
-	&jmp	(&label("ssse3_shortcut"));
-&set_label("x86");
-}
-	&mov	("esi",&wparam(3));		# key
-	&mov	("edi",&wparam(4));		# counter and nonce
-
-	&stack_push(33);
-
-	&mov	("eax",&DWP(4*0,"esi"));	# copy key
-	&mov	("ebx",&DWP(4*1,"esi"));
-	&mov	("ecx",&DWP(4*2,"esi"));
-	&mov	("edx",&DWP(4*3,"esi"));
-	&mov	(&DWP(64+4*4,"esp"),"eax");
-	&mov	(&DWP(64+4*5,"esp"),"ebx");
-	&mov	(&DWP(64+4*6,"esp"),"ecx");
-	&mov	(&DWP(64+4*7,"esp"),"edx");
-	&mov	("eax",&DWP(4*4,"esi"));
-	&mov	("ebx",&DWP(4*5,"esi"));
-	&mov	("ecx",&DWP(4*6,"esi"));
-	&mov	("edx",&DWP(4*7,"esi"));
-	&mov	(&DWP(64+4*8,"esp"),"eax");
-	&mov	(&DWP(64+4*9,"esp"),"ebx");
-	&mov	(&DWP(64+4*10,"esp"),"ecx");
-	&mov	(&DWP(64+4*11,"esp"),"edx");
-	&mov	("eax",&DWP(4*0,"edi"));	# copy counter and nonce
-	&mov	("ebx",&DWP(4*1,"edi"));
-	&mov	("ecx",&DWP(4*2,"edi"));
-	&mov	("edx",&DWP(4*3,"edi"));
-	&sub	("eax",1);
-	&mov	(&DWP(64+4*12,"esp"),"eax");
-	&mov	(&DWP(64+4*13,"esp"),"ebx");
-	&mov	(&DWP(64+4*14,"esp"),"ecx");
-	&mov	(&DWP(64+4*15,"esp"),"edx");
-	&jmp	(&label("entry"));
-
-&set_label("outer_loop",16);
-	&mov	(&wparam(1),$b);		# save input
-	&mov	(&wparam(0),$a);		# save output
-	&mov	(&wparam(2),$c);		# save len
-&set_label("entry");
-	&mov	($a,0x61707865);
-	&mov	(&DWP(4*1,"esp"),0x3320646e);
-	&mov	(&DWP(4*2,"esp"),0x79622d32);
-	&mov	(&DWP(4*3,"esp"),0x6b206574);
-
-	&mov	($b, &DWP(64+4*5,"esp"));	# copy key material
-	&mov	($b_,&DWP(64+4*6,"esp"));
-	&mov	($c, &DWP(64+4*10,"esp"));
-	&mov	($c_,&DWP(64+4*11,"esp"));
-	&mov	($d, &DWP(64+4*13,"esp"));
-	&mov	($d_,&DWP(64+4*14,"esp"));
-	&mov	(&DWP(4*5,"esp"),$b);
-	&mov	(&DWP(4*6,"esp"),$b_);
-	&mov	(&DWP(4*10,"esp"),$c);
-	&mov	(&DWP(4*11,"esp"),$c_);
-	&mov	(&DWP(4*13,"esp"),$d);
-	&mov	(&DWP(4*14,"esp"),$d_);
-
-	&mov	($b, &DWP(64+4*7,"esp"));
-	&mov	($d_,&DWP(64+4*15,"esp"));
-	&mov	($d, &DWP(64+4*12,"esp"));
-	&mov	($b_,&DWP(64+4*4,"esp"));
-	&mov	($c, &DWP(64+4*8,"esp"));
-	&mov	($c_,&DWP(64+4*9,"esp"));
-	&add	($d,1);				# counter value
-	&mov	(&DWP(4*7,"esp"),$b);
-	&mov	(&DWP(4*15,"esp"),$d_);
-	&mov	(&DWP(64+4*12,"esp"),$d);	# save counter value
-
-	&mov	($b,10);			# loop counter
-	&jmp	(&label("loop"));
-
-&set_label("loop",16);
-	&add	($a,$b_);			# elsewhere
-	&mov	(&DWP(128,"esp"),$b);		# save loop counter
-	&mov	($b,$b_);
-	&QUARTERROUND(0, 4, 8, 12, 0);
-	&QUARTERROUND(1, 5, 9, 13, 1);
-	&QUARTERROUND(2, 6,10, 14, 2);
-	&QUARTERROUND(3, 7,11, 15, 3);
-	&QUARTERROUND(0, 5,10, 15, 4);
-	&QUARTERROUND(1, 6,11, 12, 5);
-	&QUARTERROUND(2, 7, 8, 13, 6);
-	&QUARTERROUND(3, 4, 9, 14, 7);
-	&dec	($b);
-	&jnz	(&label("loop"));
-
-	&mov	($b,&wparam(2));		# load len
-
-	&add	($a,0x61707865);		# accumulate key material
-	&add	($b_,&DWP(64+4*4,"esp"));
-	&add	($c, &DWP(64+4*8,"esp"));
-	&add	($c_,&DWP(64+4*9,"esp"));
-
-	&cmp	($b,64);
-	&jb	(&label("tail"));
-
-	&mov	($b,&wparam(1));		# load input pointer
-	&add	($d, &DWP(64+4*12,"esp"));
-	&add	($d_,&DWP(64+4*14,"esp"));
-
-	&xor	($a, &DWP(4*0,$b));		# xor with input
-	&xor	($b_,&DWP(4*4,$b));
-	&mov	(&DWP(4*0,"esp"),$a);
-	&mov	($a,&wparam(0));		# load output pointer
-	&xor	($c, &DWP(4*8,$b));
-	&xor	($c_,&DWP(4*9,$b));
-	&xor	($d, &DWP(4*12,$b));
-	&xor	($d_,&DWP(4*14,$b));
-	&mov	(&DWP(4*4,$a),$b_);		# write output
-	&mov	(&DWP(4*8,$a),$c);
-	&mov	(&DWP(4*9,$a),$c_);
-	&mov	(&DWP(4*12,$a),$d);
-	&mov	(&DWP(4*14,$a),$d_);
-
-	&mov	($b_,&DWP(4*1,"esp"));
-	&mov	($c, &DWP(4*2,"esp"));
-	&mov	($c_,&DWP(4*3,"esp"));
-	&mov	($d, &DWP(4*5,"esp"));
-	&mov	($d_,&DWP(4*6,"esp"));
-	&add	($b_,0x3320646e);		# accumulate key material
-	&add	($c, 0x79622d32);
-	&add	($c_,0x6b206574);
-	&add	($d, &DWP(64+4*5,"esp"));
-	&add	($d_,&DWP(64+4*6,"esp"));
-	&xor	($b_,&DWP(4*1,$b));
-	&xor	($c, &DWP(4*2,$b));
-	&xor	($c_,&DWP(4*3,$b));
-	&xor	($d, &DWP(4*5,$b));
-	&xor	($d_,&DWP(4*6,$b));
-	&mov	(&DWP(4*1,$a),$b_);
-	&mov	(&DWP(4*2,$a),$c);
-	&mov	(&DWP(4*3,$a),$c_);
-	&mov	(&DWP(4*5,$a),$d);
-	&mov	(&DWP(4*6,$a),$d_);
-
-	&mov	($b_,&DWP(4*7,"esp"));
-	&mov	($c, &DWP(4*10,"esp"));
-	&mov	($c_,&DWP(4*11,"esp"));
-	&mov	($d, &DWP(4*13,"esp"));
-	&mov	($d_,&DWP(4*15,"esp"));
-	&add	($b_,&DWP(64+4*7,"esp"));
-	&add	($c, &DWP(64+4*10,"esp"));
-	&add	($c_,&DWP(64+4*11,"esp"));
-	&add	($d, &DWP(64+4*13,"esp"));
-	&add	($d_,&DWP(64+4*15,"esp"));
-	&xor	($b_,&DWP(4*7,$b));
-	&xor	($c, &DWP(4*10,$b));
-	&xor	($c_,&DWP(4*11,$b));
-	&xor	($d, &DWP(4*13,$b));
-	&xor	($d_,&DWP(4*15,$b));
-	&lea	($b,&DWP(4*16,$b));
-	&mov	(&DWP(4*7,$a),$b_);
-	&mov	($b_,&DWP(4*0,"esp"));
-	&mov	(&DWP(4*10,$a),$c);
-	&mov	($c,&wparam(2));		# len
-	&mov	(&DWP(4*11,$a),$c_);
-	&mov	(&DWP(4*13,$a),$d);
-	&mov	(&DWP(4*15,$a),$d_);
-	&mov	(&DWP(4*0,$a),$b_);
-	&lea	($a,&DWP(4*16,$a));
-	&sub	($c,64);
-	&jnz	(&label("outer_loop"));
-
-	&jmp	(&label("done"));
-
-&set_label("tail");
-	&add	($d, &DWP(64+4*12,"esp"));
-	&add	($d_,&DWP(64+4*14,"esp"));
-	&mov	(&DWP(4*0,"esp"),$a);
-	&mov	(&DWP(4*4,"esp"),$b_);
-	&mov	(&DWP(4*8,"esp"),$c);
-	&mov	(&DWP(4*9,"esp"),$c_);
-	&mov	(&DWP(4*12,"esp"),$d);
-	&mov	(&DWP(4*14,"esp"),$d_);
-
-	&mov	($b_,&DWP(4*1,"esp"));
-	&mov	($c, &DWP(4*2,"esp"));
-	&mov	($c_,&DWP(4*3,"esp"));
-	&mov	($d, &DWP(4*5,"esp"));
-	&mov	($d_,&DWP(4*6,"esp"));
-	&add	($b_,0x3320646e);		# accumulate key material
-	&add	($c, 0x79622d32);
-	&add	($c_,0x6b206574);
-	&add	($d, &DWP(64+4*5,"esp"));
-	&add	($d_,&DWP(64+4*6,"esp"));
-	&mov	(&DWP(4*1,"esp"),$b_);
-	&mov	(&DWP(4*2,"esp"),$c);
-	&mov	(&DWP(4*3,"esp"),$c_);
-	&mov	(&DWP(4*5,"esp"),$d);
-	&mov	(&DWP(4*6,"esp"),$d_);
-
-	&mov	($b_,&DWP(4*7,"esp"));
-	&mov	($c, &DWP(4*10,"esp"));
-	&mov	($c_,&DWP(4*11,"esp"));
-	&mov	($d, &DWP(4*13,"esp"));
-	&mov	($d_,&DWP(4*15,"esp"));
-	&add	($b_,&DWP(64+4*7,"esp"));
-	&add	($c, &DWP(64+4*10,"esp"));
-	&add	($c_,&DWP(64+4*11,"esp"));
-	&add	($d, &DWP(64+4*13,"esp"));
-	&add	($d_,&DWP(64+4*15,"esp"));
-	&mov	(&DWP(4*7,"esp"),$b_);
-	&mov	($b_,&wparam(1));		# load input
-	&mov	(&DWP(4*10,"esp"),$c);
-	&mov	($c,&wparam(0));		# load output
-	&mov	(&DWP(4*11,"esp"),$c_);
-	&xor	($c_,$c_);
-	&mov	(&DWP(4*13,"esp"),$d);
-	&mov	(&DWP(4*15,"esp"),$d_);
-
-	&xor	("eax","eax");
-	&xor	("edx","edx");
-&set_label("tail_loop");
-	&movb	("al",&BP(0,$c_,$b_));
-	&movb	("dl",&BP(0,"esp",$c_));
-	&lea	($c_,&DWP(1,$c_));
-	&xor	("al","dl");
-	&mov	(&BP(-1,$c,$c_),"al");
-	&dec	($b);
-	&jnz	(&label("tail_loop"));
-
-&set_label("done");
-	&stack_pop(33);
-&set_label("no_data");
-&function_end("ChaCha20_ctr32");
 
 if ($xmm) {
 my ($xa,$xa_,$xb,$xb_,$xc,$xc_,$xd,$xd_)=map("xmm$_",(0..7));
@@ -428,8 +133,11 @@ my ($ap,$bp,$cp,$dp)=map(($_&~3)+(($_-1)&3),($ai,$bi,$ci,$di));	# previous
 	($xd,$xd_)=($xd_,$xd);
 }
 
-&function_begin("_ChaCha20_ssse3");
-&set_label("ssse3_shortcut");
+&function_begin("ChaCha20_ctr32_ssse3");
+	&call	(&label("pic_point"));
+&set_label("pic_point");
+	&blindpop("eax");
+
 	&mov		($out,&wparam(0));
 	&mov		($inp,&wparam(1));
 	&mov		($len,&wparam(2));
@@ -751,7 +459,7 @@ sub SSSE3ROUND {	# critical path is 20 "SIMD ticks" per round
 }
 &set_label("done");
 	&mov		("esp",&DWP(512,"esp"));
-&function_end("_ChaCha20_ssse3");
+&function_end("ChaCha20_ctr32_ssse3");
 
 &align	(64);
 &set_label("ssse3_data");

@@ -65,7 +65,7 @@ fn validate_impl<'a>(
             return Err(Error::MissingDefinition(declaration.to_string()));
         }
     };
-    if stack.iter().any(|dec| *dec == declaration) {
+    if stack.contains(&declaration) {
         return Ok(());
     }
     stack.push(declaration);

@@ -53,19 +53,6 @@ fn main() {
 
 ## FAQ
 
-**How does h2 compare to [solicit] or [rust-http2]?**
-
-The h2 library has implemented more of the details of the HTTP/2 specification
-than any other Rust library. It also passes the [h2spec] set of tests. The h2
-library is rapidly approaching "production ready" quality.
-
-Besides the above, Solicit is built on blocking I/O and does not appear to be
-actively maintained.
-
 **Is this an embedded Java SQL database engine?**
 
 [No](https://www.h2database.com).
-
-[solicit]: https://github.com/mlalic/solicit
-[rust-http2]: https://github.com/stepancheg/rust-http2
-[h2spec]: https://github.com/summerwind/h2spec

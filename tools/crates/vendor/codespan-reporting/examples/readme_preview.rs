@@ -7,33 +7,54 @@
 //! cargo run --example readme_preview svg > codespan-reporting/assets/readme_preview.svg
 //! ```
 
-use codespan_reporting::diagnostic::{Diagnostic, Label};
+use codespan_reporting::diagnostic::{Diagnostic, Label, LabelStyle, Severity};
 use codespan_reporting::files::SimpleFile;
-use codespan_reporting::term::termcolor::{Color, ColorSpec, StandardStream, WriteColor};
-use codespan_reporting::term::{self, ColorArg};
-use std::io::{self, Write};
-use structopt::StructOpt;
+use codespan_reporting::term::{self, Config};
+use codespan_reporting::term::{GeneralWrite, GeneralWriteResult};
 
-#[derive(Debug, StructOpt)]
-#[structopt(name = "emit")]
-pub enum Opts {
-    /// Render SVG output
-    Svg,
-    /// Render Stderr output
-    Stderr {
-        /// Configure coloring of output
-        #[structopt(
-            long = "color",
-            parse(try_from_str),
-            default_value = "auto",
-            possible_values = ColorArg::VARIANTS,
-            case_insensitive = true
-        )]
-        color: ColorArg,
-    },
+#[cfg(feature = "termcolor")]
+use codespan_reporting::term::termcolor::{ColorChoice, StandardStream};
+
+#[cfg(not(feature = "std"))]
+fn main() {
+    panic!("example requires std feature");
 }
 
+#[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    #[derive(Debug)]
+    pub enum Opts {
+        /// Render SVG output
+        Svg,
+        /// Render Stderr output
+        #[cfg(feature = "termcolor")]
+        Stderr {
+            /// Configure coloring of output
+            color: ColorChoice,
+        },
+    }
+
+    fn parse_args() -> Result<Opts, pico_args::Error> {
+        let mut pargs = pico_args::Arguments::from_env();
+        match pargs.subcommand()? {
+            Some(value) => match value.as_str() {
+                "svg" => Ok(Opts::Svg),
+                #[cfg(feature = "termcolor")]
+                "stderr" => {
+                    let color = pargs
+                        .opt_value_from_str("--color")?
+                        .unwrap_or(ColorChoice::Auto);
+                    Ok(Opts::Stderr { color })
+                }
+                _ => Err(pico_args::Error::Utf8ArgumentParsingFailed {
+                    value,
+                    cause: "not a valid subcommand".to_owned(),
+                }),
+            },
+            None => Err(pico_args::Error::MissingArgument),
+        }
+    }
+
     let file = SimpleFile::new(
         "FizzBuzz.fun",
         unindent::unindent(
@@ -76,27 +97,24 @@ fn main() -> anyhow::Result<()> {
             ",
         )])];
 
-    // let mut files = SimpleFiles::new();
-    match Opts::from_args() {
+    match parse_args()? {
         Opts::Svg => {
-            let mut buffer = Vec::new();
-            let mut writer = HtmlEscapeWriter::new(SvgWriter::new(&mut buffer));
-            let config = codespan_reporting::term::Config {
-                styles: codespan_reporting::term::Styles::with_blue(Color::Blue),
-                ..codespan_reporting::term::Config::default()
-            };
+            let mut writer = SvgWriter::new();
+            let config = Config::default();
 
             for diagnostic in &diagnostics {
-                term::emit(&mut writer, &config, &file, &diagnostic)?;
+                term::emit_to_write_style(&mut writer, &config, &file, diagnostic)?;
             }
 
-            let num_lines = buffer.iter().filter(|byte| **byte == b'\n').count() + 1;
+            let num_lines = writer.line_count();
 
             let padding = 10;
             let font_size = 12;
             let line_spacing = 3;
             let width = 882;
             let height = padding + num_lines * (font_size + line_spacing) + padding;
+
+            let content = writer.into_string();
 
             let stdout = std::io::stdout();
             let writer = &mut stdout.lock();
@@ -106,79 +124,93 @@ fn main() -> anyhow::Result<()> {
                 r#"<svg viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
   <style>
     /* https://github.com/aaron-williamson/base16-alacritty/blob/master/colors/base16-tomorrow-night-256.yml */
-    pre {{
-      background: #1d1f21;
-      margin: 0;
-      padding: {padding}px;
-      border-radius: 6px;
-      color: #ffffff;
-      font: {font_size}px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-    }}
-
-    pre .bold {{ font-weight: bold; }}
-
-    pre .fg.black   {{ color: #1d1f21; }}
-    pre .fg.red     {{ color: #cc6666; }}
-    pre .fg.green   {{ color: #b5bd68; }}
-    pre .fg.yellow  {{ color: #f0c674; }}
-    pre .fg.blue    {{ color: #81a2be; }}
-    pre .fg.magenta {{ color: #b294bb; }}
-    pre .fg.cyan    {{ color: #8abeb7; }}
-    pre .fg.white   {{ color: #c5c8c6; }}
-
-    pre .fg.black.bright    {{ color: #969896; }}
-    pre .fg.red.bright      {{ color: #cc6666; }}
-    pre .fg.green.bright    {{ color: #b5bd68; }}
-    pre .fg.yellow.bright   {{ color: #f0c674; }}
-    pre .fg.blue.bright     {{ color: #81a2be; }}
-    pre .fg.magenta.bright  {{ color: #b294bb; }}
-    pre .fg.cyan.bright     {{ color: #8abeb7; }}
-    pre .fg.white.bright    {{ color: #ffffff; }}
-
-    pre .bg.black   {{ background-color: #1d1f21; }}
-    pre .bg.red     {{ background-color: #cc6666; }}
-    pre .bg.green   {{ background-color: #b5bd68; }}
-    pre .bg.yellow  {{ background-color: #f0c674; }}
-    pre .bg.blue    {{ background-color: #81a2be; }}
-    pre .bg.magenta {{ background-color: #b294bb; }}
-    pre .bg.cyan    {{ background-color: #8abeb7; }}
-    pre .bg.white   {{ background-color: #c5c8c6; }}
-
-    pre .bg.black.bright    {{ background-color: #969896; }}
-    pre .bg.red.bright      {{ background-color: #cc6666; }}
-    pre .bg.green.bright    {{ background-color: #b5bd68; }}
-    pre .bg.yellow.bright   {{ background-color: #f0c674; }}
-    pre .bg.blue.bright     {{ background-color: #81a2be; }}
-    pre .bg.magenta.bright  {{ background-color: #b294bb; }}
-    pre .bg.cyan.bright     {{ background-color: #8abeb7; }}
-    pre .bg.white.bright    {{ background-color: #ffffff; }}
+        pre {{
+            background: #1d1f21;
+            margin: 0;
+            padding: {padding}px;
+            border-radius: 6px;
+            color: #ffffff;
+            font: {font_size}px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+        }}
+        
+        pre .bold {{
+            font-weight: bold;
+        }}
+        
+        pre .header-bug,
+        pre .header-error {{
+            color: #cc6666;
+            font-weight: bold;
+        }}
+        
+        pre .header-warning {{
+            color: #f0c674;
+            font-weight: bold;
+        }}
+        
+        pre .header-note {{
+            color: #b5bd68;
+            font-weight: bold;
+        }}
+        
+        pre .header-help {{
+            color: #8abeb7;
+            font-weight: bold;
+        }}
+        
+        pre .header-message {{
+            color: #c5c8c6;
+            font-weight: bold;
+        }}
+        
+        pre .line-number,
+        pre .source-border,
+        pre .note-bullet {{
+            color: #81a2be;
+        }}
+        
+        pre .label-primary-bug,
+        pre .label-primary-error {{
+            color: #cc6666;
+        }}
+        
+        pre .label-primary-warning {{
+            color: #f0c674;
+        }}
+        
+        pre .label-primary-note {{
+            color: #b5bd68;
+        }}
+        
+        pre .label-primary-help {{
+            color: #8abeb7;
+        }}
+        
+        pre .label-secondary-bug,
+        pre .label-secondary-error,
+        pre .label-secondary-warning,
+        pre .label-secondary-note,
+        pre .label-secondary-help {{
+            color: #81a2be;
+        }}
   </style>
 
   <foreignObject x="0" y="0" width="{width}" height="{height}">
     <div xmlns="http://www.w3.org/1999/xhtml">
-      <pre>"#,
-                padding = padding,
-                font_size = font_size,
-                width = width,
-                height = height,
-            )?;
-
-            writer.write_all(&buffer)?;
-
-            write!(
-                writer,
-                "</pre>
+      <pre>
+        {content}
+      </pre>
     </div>
   </foreignObject>
-</svg>
-"
+</svg>"#
             )?;
         }
+        #[cfg(feature = "termcolor")]
         Opts::Stderr { color } => {
-            let writer = StandardStream::stderr(color.into());
-            let config = codespan_reporting::term::Config::default();
+            let writer = StandardStream::stderr(color);
+            let config = Config::default();
             for diagnostic in &diagnostics {
-                term::emit(&mut writer.lock(), &config, &file, &diagnostic)?;
+                term::emit_to_write_style(&mut writer.lock(), &config, &file, diagnostic)?;
             }
         }
     }
@@ -186,171 +218,155 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-/// Rudimentary HTML escaper which performs the following conversions:
-///
-/// - `<` ⇒ `&lt;`
-/// - `>` ⇒ `&gt;`
-/// - `&` ⇒ `&amp;`
-pub struct HtmlEscapeWriter<W> {
-    upstream: W,
+// This whole example requires the std feature, but below is feature agnostic for reference
+
+#[cfg(feature = "std")]
+type WriterBuffer = Vec<u8>;
+
+#[cfg(not(feature = "std"))]
+type WriterBuffer = String;
+
+pub struct SvgWriter {
+    buffer: WriterBuffer,
+    span_open: bool,
 }
 
-impl<W> HtmlEscapeWriter<W> {
-    pub fn new(upstream: W) -> HtmlEscapeWriter<W> {
-        HtmlEscapeWriter { upstream }
+impl SvgWriter {
+    pub fn new() -> Self {
+        SvgWriter {
+            buffer: WriterBuffer::default(),
+            span_open: false,
+        }
+    }
+
+    #[cfg(feature = "std")]
+    pub fn into_string(self) -> String {
+        String::from_utf8(self.buffer).unwrap()
+    }
+
+    #[cfg(not(feature = "std"))]
+    pub fn into_string(self) -> String {
+        self.buffer
+    }
+
+    #[cfg(feature = "std")]
+    pub fn line_count(&self) -> usize {
+        self.buffer.iter().filter(|byte| **byte == b'\n').count() + 1
+    }
+
+    #[cfg(not(feature = "std"))]
+    pub fn line_count(&self) -> usize {
+        self.buffer.lines().count()
+    }
+
+    /// Close any open span
+    fn close_span(&mut self) -> GeneralWriteResult {
+        if self.span_open {
+            write!(self.buffer, "</span>")?;
+            self.span_open = false;
+        }
+        Ok(())
+    }
+
+    /// Open a new span with the given CSS class
+    fn open_span(&mut self, class: &str) -> GeneralWriteResult {
+        // close existing first
+        self.close_span()?;
+        write!(self.buffer, "<span class=\"{}\">", class)?;
+        self.span_open = true;
+        Ok(())
     }
 }
 
-impl<W: Write> Write for HtmlEscapeWriter<W> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        let mut last_term = 0usize;
-        for (i, byte) in buf.iter().enumerate() {
-            let escape = match byte {
-                b'<' => &b"&lt;"[..],
-                b'>' => &b"&gt;"[..],
-                b'&' => &b"&amp;"[..],
+#[cfg(feature = "std")]
+impl std::io::Write for SvgWriter {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        let mut last = 0;
+        for (i, &b) in buf.iter().enumerate() {
+            let escape = match b {
+                b'<' => b"&lt;"[..].as_ref(),
+                b'>' => b"&gt;"[..].as_ref(),
+                b'&' => b"&amp;"[..].as_ref(),
                 _ => continue,
             };
-            self.upstream.write_all(&buf[last_term..i])?;
-            last_term = i + 1;
-            self.upstream.write_all(escape)?;
+            self.buffer.write_all(&buf[last..i])?;
+            self.buffer.write_all(escape)?;
+            last = i + 1;
         }
-        self.upstream.write_all(&buf[last_term..])?;
+        self.buffer.write_all(&buf[last..])?;
         Ok(buf.len())
     }
 
-    fn flush(&mut self) -> io::Result<()> {
-        self.upstream.flush()
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.buffer.flush()
     }
 }
 
-impl<W: WriteColor> WriteColor for HtmlEscapeWriter<W> {
-    fn supports_color(&self) -> bool {
-        self.upstream.supports_color()
-    }
-
-    fn set_color(&mut self, spec: &ColorSpec) -> io::Result<()> {
-        self.upstream.set_color(spec)
-    }
-
-    fn reset(&mut self) -> io::Result<()> {
-        self.upstream.reset()
-    }
-}
-
-pub struct SvgWriter<W> {
-    upstream: W,
-    color: ColorSpec,
-}
-
-impl<W> SvgWriter<W> {
-    pub fn new(upstream: W) -> SvgWriter<W> {
-        SvgWriter {
-            upstream,
-            color: ColorSpec::new(),
+#[cfg(not(feature = "std"))]
+impl core::fmt::Write for SvgWriter {
+    fn write_str(&mut self, s: &str) -> Result<(), core::fmt::Error> {
+        let mut last = 0;
+        // TODO match indices
+        for (i, b) in s.chars().enumerate() {
+            let escape = match b {
+                '<' => "&lt;",
+                '>' => "&gt;",
+                '&' => "&amp;",
+                _ => continue,
+            };
+            self.buffer.write_str(&s[last..i])?;
+            self.buffer.write_str(escape)?;
+            last = i + 1;
         }
-    }
-}
-
-impl<W: Write> Write for SvgWriter<W> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.upstream.write(buf)
-    }
-
-    fn flush(&mut self) -> io::Result<()> {
-        self.upstream.flush()
-    }
-}
-
-impl<W: Write> WriteColor for SvgWriter<W> {
-    fn supports_color(&self) -> bool {
-        true
-    }
-
-    fn set_color(&mut self, spec: &ColorSpec) -> io::Result<()> {
-        #![allow(unused_assignments)]
-
-        if self.color == *spec {
-            return Ok(());
-        } else {
-            if !self.color.is_none() {
-                write!(self, "</span>")?;
-            }
-            self.color = spec.clone();
-        }
-
-        if spec.is_none() {
-            write!(self, "</span>")?;
-            return Ok(());
-        } else {
-            write!(self, "<span class=\"")?;
-        }
-
-        let mut first = true;
-
-        fn write_first<W: Write>(first: bool, writer: &mut SvgWriter<W>) -> io::Result<bool> {
-            if !first {
-                write!(writer, " ")?;
-            }
-
-            Ok(false)
-        };
-
-        fn write_color<W: Write>(color: &Color, writer: &mut SvgWriter<W>) -> io::Result<()> {
-            match color {
-                Color::Black => write!(writer, "black"),
-                Color::Blue => write!(writer, "blue"),
-                Color::Green => write!(writer, "green"),
-                Color::Red => write!(writer, "red"),
-                Color::Cyan => write!(writer, "cyan"),
-                Color::Magenta => write!(writer, "magenta"),
-                Color::Yellow => write!(writer, "yellow"),
-                Color::White => write!(writer, "white"),
-                // TODO: other colors
-                _ => Ok(()),
-            }
-        };
-
-        if let Some(fg) = spec.fg() {
-            first = write_first(first, self)?;
-            write!(self, "fg ")?;
-            write_color(fg, self)?;
-        }
-
-        if let Some(bg) = spec.bg() {
-            first = write_first(first, self)?;
-            write!(self, "bg ")?;
-            write_color(bg, self)?;
-        }
-
-        if spec.bold() {
-            first = write_first(first, self)?;
-            write!(self, "bold")?;
-        }
-
-        if spec.underline() {
-            first = write_first(first, self)?;
-            write!(self, "underline")?;
-        }
-
-        if spec.intense() {
-            first = write_first(first, self)?;
-            write!(self, "bright")?;
-        }
-
-        write!(self, "\">")?;
-
+        self.buffer.write_str(&s[last..])?;
         Ok(())
     }
+}
 
-    fn reset(&mut self) -> io::Result<()> {
-        let color = self.color.clone();
+impl codespan_reporting::term::WriteStyle for SvgWriter {
+    fn set_header(&mut self, severity: Severity) -> GeneralWriteResult {
+        let class = match severity {
+            Severity::Bug => "header-bug",
+            Severity::Error => "header-error",
+            Severity::Warning => "header-warning",
+            Severity::Note => "header-note",
+            Severity::Help => "header-help",
+        };
+        self.open_span(class)
+    }
 
-        if color != ColorSpec::new() {
-            write!(self, "</span>")?;
-            self.color = ColorSpec::new();
-        }
+    fn set_header_message(&mut self) -> GeneralWriteResult {
+        self.open_span("header-message")
+    }
 
-        Ok(())
+    fn set_line_number(&mut self) -> GeneralWriteResult {
+        self.open_span("line-number")
+    }
+
+    fn set_note_bullet(&mut self) -> GeneralWriteResult {
+        self.open_span("note-bullet")
+    }
+
+    fn set_source_border(&mut self) -> GeneralWriteResult {
+        self.open_span("source-border")
+    }
+
+    fn set_label(&mut self, severity: Severity, label_style: LabelStyle) -> GeneralWriteResult {
+        let sev = match severity {
+            Severity::Bug => "bug",
+            Severity::Error => "error",
+            Severity::Warning => "warning",
+            Severity::Note => "note",
+            Severity::Help => "help",
+        };
+        let typ = match label_style {
+            LabelStyle::Primary => "primary",
+            LabelStyle::Secondary => "secondary",
+        };
+        self.open_span(&format!("label-{}-{}", typ, sev))
+    }
+
+    fn reset(&mut self) -> GeneralWriteResult {
+        self.close_span()
     }
 }

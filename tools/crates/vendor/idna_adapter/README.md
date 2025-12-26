@@ -10,7 +10,13 @@ It is generally a good idea to refer to the [README of the latest version](https
 
 ## ICU4X as the default
 
-If you take no action, Cargo will choose the 1.2.x version stream i.e. ICU4X.
+If you take no action, Cargo will choose the 1.2.x version stream i.e. latest ICU4X (2.0 as of writing).
+
+### Opting to use ICU4X 1.x
+
+To choose ICU4X 1.x, run `cargo update -p idna_adapter --precise 1.2.0` in the top-level directory of your application.
+
+This may make sense if your application has other ways of depending on ICU4X 1.x, and you are not ready to update those dependencies to ICU4X 2.0 just yet.
 
 ## Opting to use unicode-rs
 

@@ -8,7 +8,7 @@ use env_logger::{Builder, WriteStyle};
 
 use log::{Level, LevelFilter, Log, MetadataBuilder, Record};
 
-#[cfg(feature = "unstable-kv")]
+#[cfg(feature = "kv")]
 static KVS: (&str, &str) = ("test", "something");
 
 fn record() -> Record<'static> {
@@ -24,7 +24,7 @@ fn record() -> Record<'static> {
         .line(Some(433))
         .file(Some("app.rs"))
         .module_path(Some("server"));
-    #[cfg(feature = "unstable-kv")]
+    #[cfg(feature = "kv")]
     {
         builder.key_values(&KVS);
     }

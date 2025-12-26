@@ -2,7 +2,6 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
-use crate::trait_hack::YokeTraitHack;
 use crate::Yoke;
 use crate::Yokeable;
 
@@ -11,20 +10,10 @@ use stable_deref_trait::StableDeref;
 
 use crate::ZeroFrom;
 
-impl<'zf, C: ?Sized, T> ZeroFrom<'zf, C> for YokeTraitHack<T>
-where
-    T: ZeroFrom<'zf, C>,
-{
-    #[inline]
-    fn zero_from(cart: &'zf C) -> Self {
-        YokeTraitHack(T::zero_from(cart))
-    }
-}
-
 impl<Y, C> Yoke<Y, C>
 where
     Y: for<'a> Yokeable<'a>,
-    for<'a> YokeTraitHack<<Y as Yokeable<'a>>::Output>: ZeroFrom<'a, <C as Deref>::Target>,
+    for<'a> <Y as Yokeable<'a>>::Output: ZeroFrom<'a, <C as Deref>::Target>,
     C: StableDeref + Deref,
     <C as Deref>::Target: 'static,
 {
@@ -50,8 +39,6 @@ where
     /// assert_eq!("demo", yoke.get());
     /// ```
     pub fn attach_to_zero_copy_cart(cart: C) -> Self {
-        Yoke::<Y, C>::attach_to_cart(cart, |c| {
-            YokeTraitHack::<<Y as Yokeable>::Output>::zero_from(c).0
-        })
+        Yoke::<Y, C>::attach_to_cart(cart, |c| <Y as Yokeable>::Output::zero_from(c))
     }
 }

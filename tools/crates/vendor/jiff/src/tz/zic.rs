@@ -430,11 +430,11 @@ impl RuleP {
 
 /// A group of one or more `Zone` lines.
 ///
-/// A group of zones alwasys starts with a `Zone` line that has a name, and is
+/// A group of zones always starts with a `Zone` line that has a name, and is
 /// followed by zero or more continuation `Zone` lines.
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct ZoneP {
-    /// The first zone line, alwasys present.
+    /// The first zone line, always present.
     first: ZoneFirstP,
     /// All continuation lines, may be empty.
     continuations: Vec<ZoneContinuationP>,
@@ -704,7 +704,8 @@ impl RuleOnP {
             RuleOnP::Day { day } => Date::new_ranged(year, month, day),
             RuleOnP::Last { weekday } => {
                 // Always a valid month given that year/month are valid.
-                let date = Date::new_ranged(year, month, C(1)).unwrap();
+                let date =
+                    Date::new_ranged(year, month, C(1).rinto()).unwrap();
                 date.nth_weekday_of_month(-1, weekday)
             }
             RuleOnP::OnOrBefore { weekday, day } => {
@@ -1268,7 +1269,7 @@ fn parse_span(span: &str) -> Result<Span, Error> {
     let minutes_ranged = t::Minute::new(minutes).ok_or_else(|| {
         err!("duration minutes '{minutes:?}' is out of range")
     })?;
-    span = span.minutes_ranged(minutes_ranged * sign);
+    span = span.minutes_ranged((minutes_ranged * sign).rinto());
     if rest.is_empty() {
         return Ok(span);
     }
@@ -1290,7 +1291,7 @@ fn parse_span(span: &str) -> Result<Span, Error> {
     let seconds_ranged = t::Second::new(seconds).ok_or_else(|| {
         err!("duration seconds '{seconds:?}' is out of range")
     })?;
-    span = span.seconds_ranged(seconds_ranged * sign);
+    span = span.seconds_ranged((seconds_ranged * sign).rinto());
     if rest.is_empty() {
         return Ok(span);
     }
@@ -1309,15 +1310,15 @@ fn parse_span(span: &str) -> Result<Span, Error> {
              but found {rest:?} instead"
         ));
     }
-    let nanoseconds = parse::fraction(nanosecond_digits.as_bytes(), 9)
-        .map_err(|e| {
+    let nanoseconds =
+        parse::fraction(nanosecond_digits.as_bytes()).map_err(|e| {
             e.context("failed to parse nanoseconds in time duration")
         })?;
     let nanoseconds_ranged = t::FractionalNanosecond::new(nanoseconds)
         .ok_or_else(|| {
             err!("duration nanoseconds '{nanoseconds:?}' is out of range")
         })?;
-    span = span.nanoseconds_ranged(nanoseconds_ranged * sign);
+    span = span.nanoseconds_ranged((nanoseconds_ranged * sign).rinto());
 
     // We should have consumed everything at this point.
     if !rest.is_empty() {
@@ -1592,6 +1593,7 @@ mod tests {
         assert_eq!(wall, date(2024, 3, 10).at(2, 0, 0, 0));
     }
 
+    #[cfg(not(miri))]
     #[test]
     fn parse_zic_man1() {
         // An example from `man zic`.
@@ -1608,6 +1610,7 @@ mod tests {
         insta::assert_debug_snapshot!(zic);
     }
 
+    #[cfg(not(miri))]
     #[test]
     fn parse_zic_man2() {
         // An example from `man zic`.
@@ -1690,6 +1693,7 @@ mod tests {
         assert!(ZicP::default().parse(data).is_err());
     }
 
+    #[cfg(not(miri))]
     #[test]
     fn parse_rule_ok() {
         let rule: RuleP = RuleP::parse(&[
@@ -1749,6 +1753,7 @@ mod tests {
         .is_err());
     }
 
+    #[cfg(not(miri))]
     #[test]
     fn parse_zone_first_ok() {
         let zone: ZoneFirstP =
@@ -1830,6 +1835,7 @@ mod tests {
         .is_err());
     }
 
+    #[cfg(not(miri))]
     #[test]
     fn parse_zone_continuation_ok() {
         let zone: ZoneContinuationP =
@@ -2006,62 +2012,62 @@ mod tests {
     #[test]
     fn parse_rule_in_ok() {
         let inn: RuleInP = "Ja".parse().unwrap();
-        assert_eq!(inn.month, 1);
+        assert_eq!(inn.month.get(), 1);
         let inn: RuleInP = "January".parse().unwrap();
-        assert_eq!(inn.month, 1);
+        assert_eq!(inn.month.get(), 1);
 
         let inn: RuleInP = "F".parse().unwrap();
-        assert_eq!(inn.month, 2);
+        assert_eq!(inn.month.get(), 2);
         let inn: RuleInP = "February".parse().unwrap();
-        assert_eq!(inn.month, 2);
+        assert_eq!(inn.month.get(), 2);
 
         let inn: RuleInP = "Mar".parse().unwrap();
-        assert_eq!(inn.month, 3);
+        assert_eq!(inn.month.get(), 3);
         let inn: RuleInP = "March".parse().unwrap();
-        assert_eq!(inn.month, 3);
+        assert_eq!(inn.month.get(), 3);
 
         let inn: RuleInP = "Ap".parse().unwrap();
-        assert_eq!(inn.month, 4);
+        assert_eq!(inn.month.get(), 4);
         let inn: RuleInP = "April".parse().unwrap();
-        assert_eq!(inn.month, 4);
+        assert_eq!(inn.month.get(), 4);
 
         let inn: RuleInP = "May".parse().unwrap();
-        assert_eq!(inn.month, 5);
+        assert_eq!(inn.month.get(), 5);
 
         let inn: RuleInP = "Jun".parse().unwrap();
-        assert_eq!(inn.month, 6);
+        assert_eq!(inn.month.get(), 6);
         let inn: RuleInP = "June".parse().unwrap();
-        assert_eq!(inn.month, 6);
+        assert_eq!(inn.month.get(), 6);
 
         let inn: RuleInP = "Jul".parse().unwrap();
-        assert_eq!(inn.month, 7);
+        assert_eq!(inn.month.get(), 7);
         let inn: RuleInP = "July".parse().unwrap();
-        assert_eq!(inn.month, 7);
+        assert_eq!(inn.month.get(), 7);
 
         let inn: RuleInP = "Au".parse().unwrap();
-        assert_eq!(inn.month, 8);
+        assert_eq!(inn.month.get(), 8);
         let inn: RuleInP = "August".parse().unwrap();
-        assert_eq!(inn.month, 8);
+        assert_eq!(inn.month.get(), 8);
 
         let inn: RuleInP = "S".parse().unwrap();
-        assert_eq!(inn.month, 9);
+        assert_eq!(inn.month.get(), 9);
         let inn: RuleInP = "September".parse().unwrap();
-        assert_eq!(inn.month, 9);
+        assert_eq!(inn.month.get(), 9);
 
         let inn: RuleInP = "O".parse().unwrap();
-        assert_eq!(inn.month, 10);
+        assert_eq!(inn.month.get(), 10);
         let inn: RuleInP = "October".parse().unwrap();
-        assert_eq!(inn.month, 10);
+        assert_eq!(inn.month.get(), 10);
 
         let inn: RuleInP = "N".parse().unwrap();
-        assert_eq!(inn.month, 11);
+        assert_eq!(inn.month.get(), 11);
         let inn: RuleInP = "November".parse().unwrap();
-        assert_eq!(inn.month, 11);
+        assert_eq!(inn.month.get(), 11);
 
         let inn: RuleInP = "D".parse().unwrap();
-        assert_eq!(inn.month, 12);
+        assert_eq!(inn.month.get(), 12);
         let inn: RuleInP = "December".parse().unwrap();
-        assert_eq!(inn.month, 12);
+        assert_eq!(inn.month.get(), 12);
     }
 
     #[test]
@@ -2571,12 +2577,12 @@ mod tests {
 
     #[test]
     fn parse_year_ok() {
-        assert_eq!(parse_year("0").unwrap(), 0);
-        assert_eq!(parse_year("1").unwrap(), 1);
-        assert_eq!(parse_year("-1").unwrap(), -1);
-        assert_eq!(parse_year("2025").unwrap(), 2025);
-        assert_eq!(parse_year("9999").unwrap(), 9999);
-        assert_eq!(parse_year("-9999").unwrap(), -9999);
+        assert_eq!(parse_year("0").unwrap().get(), 0);
+        assert_eq!(parse_year("1").unwrap().get(), 1);
+        assert_eq!(parse_year("-1").unwrap().get(), -1);
+        assert_eq!(parse_year("2025").unwrap().get(), 2025);
+        assert_eq!(parse_year("9999").unwrap().get(), 9999);
+        assert_eq!(parse_year("-9999").unwrap().get(), -9999);
     }
 
     #[test]
@@ -2660,15 +2666,15 @@ mod tests {
 
     #[test]
     fn parse_day_ok() {
-        assert_eq!(parse_day("1").unwrap(), 1);
-        assert_eq!(parse_day("2").unwrap(), 2);
-        assert_eq!(parse_day("20").unwrap(), 20);
-        assert_eq!(parse_day("30").unwrap(), 30);
-        assert_eq!(parse_day("31").unwrap(), 31);
+        assert_eq!(parse_day("1").unwrap().get(), 1);
+        assert_eq!(parse_day("2").unwrap().get(), 2);
+        assert_eq!(parse_day("20").unwrap().get(), 20);
+        assert_eq!(parse_day("30").unwrap().get(), 30);
+        assert_eq!(parse_day("31").unwrap().get(), 31);
 
-        assert_eq!(parse_day("01").unwrap(), 1);
-        assert_eq!(parse_day("00000001").unwrap(), 1);
-        assert_eq!(parse_day("0000000000000000000001").unwrap(), 1);
+        assert_eq!(parse_day("01").unwrap().get(), 1);
+        assert_eq!(parse_day("00000001").unwrap().get(), 1);
+        assert_eq!(parse_day("0000000000000000000001").unwrap().get(), 1);
     }
 
     #[test]

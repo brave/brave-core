@@ -2,7 +2,12 @@ use crate::{worktree, Worktree};
 
 /// Interact with individual worktrees and their information.
 impl crate::Repository {
-    /// Return a list of all _linked_ worktrees sorted by private git dir path as a lightweight proxy.
+    /// Return a list of all **linked** worktrees sorted by private git dir path as a lightweight proxy.
+    ///
+    /// This means the number is `0` even if there is the main worktree, as it is not counted as linked worktree.
+    /// This also means it will be `1` if there is one linked worktree next to the main worktree.
+    /// It's worth noting that a *bare* repository may have one or more linked worktrees, but has no *main* worktree,
+    /// which is the reason why the *possibly* available main worktree isn't listed here.
     ///
     /// Note that these need additional processing to become usable, but provide a first glimpse a typical worktree information.
     pub fn worktrees(&self) -> std::io::Result<Vec<worktree::Proxy<'_>>> {
@@ -19,7 +24,7 @@ impl crate::Repository {
                 res.push(worktree::Proxy {
                     parent: self,
                     git_dir: worktree_git_dir,
-                })
+                });
             }
         }
         res.sort_by(|a, b| a.git_dir.cmp(&b.git_dir));
@@ -40,7 +45,7 @@ impl crate::Repository {
     /// registered worktree in the current working dir, even if no `.git` file or directory exists.
     /// It's merely based on configuration, see [Worktree::dot_git_exists()] for a way to perform more validation.
     pub fn worktree(&self) -> Option<Worktree<'_>> {
-        self.work_dir().map(|path| Worktree { parent: self, path })
+        self.workdir().map(|path| Worktree { parent: self, path })
     }
 
     /// Return true if this repository is bare, and has no main work tree.
@@ -48,7 +53,7 @@ impl crate::Repository {
     /// This is not to be confused with the [`worktree()`][crate::Repository::worktree()] worktree, which may exists if this instance
     /// was opened in a worktree that was created separately.
     pub fn is_bare(&self) -> bool {
-        self.config.is_bare && self.work_dir().is_none()
+        self.config.is_bare && self.workdir().is_none()
     }
 
     /// If `id` points to a tree, produce a stream that yields one worktree entry after the other. The index of the tree at `id`
@@ -126,7 +131,7 @@ impl crate::Repository {
             &mut stream,
             |stream| {
                 if should_interrupt.load(std::sync::atomic::Ordering::Relaxed) {
-                    return Err(std::io::Error::new(std::io::ErrorKind::Other, "Cancelled by user").into());
+                    return Err(std::io::Error::other("Cancelled by user").into());
                 }
                 let res = stream.next_entry();
                 blobs.inc();

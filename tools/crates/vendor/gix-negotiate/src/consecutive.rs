@@ -19,11 +19,11 @@ impl Default for Algorithm {
 
 impl Algorithm {
     /// Add `id` to our priority queue and *add* `flags` to it.
-    fn add_to_queue(&mut self, id: ObjectId, mark: Flags, graph: &mut crate::Graph<'_>) -> Result<(), Error> {
+    fn add_to_queue(&mut self, id: ObjectId, mark: Flags, graph: &mut crate::Graph<'_, '_>) -> Result<(), Error> {
         let mut is_common = false;
         let mut has_mark = false;
         if let Some(commit) = graph
-            .try_lookup_or_insert_commit(id, |data| {
+            .get_or_insert_commit(id, |data| {
                 has_mark = data.flags.intersects(mark);
                 data.flags |= mark;
                 is_common = data.flags.contains(Flags::COMMON);
@@ -43,11 +43,11 @@ impl Algorithm {
         id: ObjectId,
         mode: Mark,
         ancestors: Ancestors,
-        graph: &mut crate::Graph<'_>,
+        graph: &mut crate::Graph<'_, '_>,
     ) -> Result<(), Error> {
         let mut is_common = false;
         if let Some(commit) = graph
-            .try_lookup_or_insert_commit(id, |data| is_common = data.flags.contains(Flags::COMMON))?
+            .get_or_insert_commit(id, |data| is_common = data.flags.contains(Flags::COMMON))?
             .filter(|_| !is_common)
         {
             let mut queue = gix_revwalk::PriorityQueue::from_iter(Some((commit.commit_time, (id, 0_usize))));
@@ -60,15 +60,15 @@ impl Algorithm {
             while let Some((id, generation)) = queue.pop_value() {
                 if graph
                     .get(&id)
-                    .map_or(true, |commit| !commit.data.flags.contains(Flags::SEEN))
+                    .is_none_or(|commit| !commit.data.flags.contains(Flags::SEEN))
                 {
                     self.add_to_queue(id, Flags::SEEN, graph)?;
                 } else if matches!(ancestors, Ancestors::AllUnseen) || generation < 2 {
-                    if let Some(commit) = graph.try_lookup_or_insert_commit(id, |_| {})? {
+                    if let Some(commit) = graph.get_or_insert_commit(id, |_| {})? {
                         for parent_id in commit.parents.clone() {
                             let mut prev_flags = Flags::default();
                             if let Some(parent) = graph
-                                .try_lookup_or_insert_commit(parent_id, |data| {
+                                .get_or_insert_commit(parent_id, |data| {
                                     prev_flags = data.flags;
                                     data.flags |= Flags::COMMON;
                                 })?
@@ -77,7 +77,7 @@ impl Algorithm {
                                 if prev_flags.contains(Flags::SEEN) && !prev_flags.contains(Flags::POPPED) {
                                     self.non_common_revs -= 1;
                                 }
-                                queue.insert(parent.commit_time, (parent_id, generation + 1))
+                                queue.insert(parent.commit_time, (parent_id, generation + 1));
                             }
                         }
                     }
@@ -89,10 +89,10 @@ impl Algorithm {
 }
 
 impl Negotiator for Algorithm {
-    fn known_common(&mut self, id: ObjectId, graph: &mut crate::Graph<'_>) -> Result<(), Error> {
+    fn known_common(&mut self, id: ObjectId, graph: &mut crate::Graph<'_, '_>) -> Result<(), Error> {
         if graph
             .get(&id)
-            .map_or(true, |commit| !commit.data.flags.contains(Flags::SEEN))
+            .is_none_or(|commit| !commit.data.flags.contains(Flags::SEEN))
         {
             self.add_to_queue(id, Flags::COMMON_REF | Flags::SEEN, graph)?;
             self.mark_common(id, Mark::AncestorsOnly, Ancestors::DirectUnseen, graph)?;
@@ -100,11 +100,11 @@ impl Negotiator for Algorithm {
         Ok(())
     }
 
-    fn add_tip(&mut self, id: ObjectId, graph: &mut crate::Graph<'_>) -> Result<(), Error> {
+    fn add_tip(&mut self, id: ObjectId, graph: &mut crate::Graph<'_, '_>) -> Result<(), Error> {
         self.add_to_queue(id, Flags::SEEN, graph)
     }
 
-    fn next_have(&mut self, graph: &mut crate::Graph<'_>) -> Option<Result<ObjectId, Error>> {
+    fn next_have(&mut self, graph: &mut crate::Graph<'_, '_>) -> Option<Result<ObjectId, Error>> {
         loop {
             let id = self.revs.pop_value().filter(|_| self.non_common_revs != 0)?;
             let commit = graph.get_mut(&id).expect("it was added to the graph by now");
@@ -126,7 +126,7 @@ impl Negotiator for Algorithm {
             for parent_id in commit.parents.clone() {
                 if graph
                     .get(&parent_id)
-                    .map_or(true, |commit| !commit.data.flags.contains(Flags::SEEN))
+                    .is_none_or(|commit| !commit.data.flags.contains(Flags::SEEN))
                 {
                     if let Err(err) = self.add_to_queue(parent_id, mark, graph) {
                         return Some(Err(err));
@@ -145,10 +145,10 @@ impl Negotiator for Algorithm {
         }
     }
 
-    fn in_common_with_remote(&mut self, id: ObjectId, graph: &mut crate::Graph<'_>) -> Result<bool, Error> {
+    fn in_common_with_remote(&mut self, id: ObjectId, graph: &mut crate::Graph<'_, '_>) -> Result<bool, Error> {
         let known_to_be_common = graph
             .get(&id)
-            .map_or(false, |commit| commit.data.flags.contains(Flags::COMMON));
+            .is_some_and(|commit| commit.data.flags.contains(Flags::COMMON));
         self.mark_common(id, Mark::ThisCommitAndAncestors, Ancestors::DirectUnseen, graph)?;
         Ok(known_to_be_common)
     }

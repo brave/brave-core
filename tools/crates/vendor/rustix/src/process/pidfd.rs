@@ -1,6 +1,6 @@
 use crate::fd::OwnedFd;
 use crate::process::{Pid, Signal};
-use crate::{backend, io};
+use crate::{backend, ffi, io};
 use backend::fd::AsFd;
 
 bitflags::bitflags! {
@@ -9,8 +9,8 @@ bitflags::bitflags! {
     /// [`pidfd_open`]: crate::process::pidfd_open
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct PidfdFlags: backend::c::c_uint {
-        /// `PIDFD_NONBLOCK`.
+    pub struct PidfdFlags: ffi::c_uint {
+        /// `PIDFD_NONBLOCK`
         const NONBLOCK = backend::c::PIDFD_NONBLOCK;
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>

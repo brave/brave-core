@@ -212,8 +212,7 @@ impl CommonInformationEntry {
 
         if encoding.version >= 4 {
             w.write_u8(encoding.address_size)?;
-            // TODO: segment_selector_size
-            w.write_u8(0)?;
+            w.write_u8(0)?; // segment_selector_size
         }
 
         w.write_uleb128(self.code_alignment_factor.into())?;
@@ -341,16 +340,18 @@ impl FrameDescriptionEntry {
         }
 
         if cie.has_augmentation() {
-            let mut augmentation_length = 0u64;
-            if self.lsda.is_some() {
-                augmentation_length += u64::from(encoding.address_size);
-            }
-            w.write_uleb128(augmentation_length)?;
+            let augmentation_length_offset = w.len();
+            w.write_u8(0)?;
+            let augmentation_length_base = w.len();
 
             debug_assert_eq!(self.lsda.is_some(), cie.lsda_encoding.is_some());
             if let (Some(lsda), Some(lsda_encoding)) = (self.lsda, cie.lsda_encoding) {
                 w.write_eh_pointer(lsda, lsda_encoding, encoding.address_size)?;
             }
+
+            let augmentation_length = (w.len() - augmentation_length_base) as u64;
+            debug_assert!(augmentation_length < 0x80);
+            w.write_udata_at(augmentation_length_offset, augmentation_length, 1)?;
         }
 
         let mut prev_offset = 0;
@@ -454,7 +455,7 @@ impl CallFrameInstruction {
             }
             CallFrameInstruction::CfaExpression(ref expression) => {
                 w.write_u8(constants::DW_CFA_def_cfa_expression.0)?;
-                w.write_uleb128(expression.size(encoding, None) as u64)?;
+                w.write_uleb128(expression.size(encoding, None)? as u64)?;
                 expression.write(w, None, encoding, None)?;
             }
             CallFrameInstruction::Restore(register) => {
@@ -508,13 +509,13 @@ impl CallFrameInstruction {
             CallFrameInstruction::Expression(register, ref expression) => {
                 w.write_u8(constants::DW_CFA_expression.0)?;
                 w.write_uleb128(register.0.into())?;
-                w.write_uleb128(expression.size(encoding, None) as u64)?;
+                w.write_uleb128(expression.size(encoding, None)? as u64)?;
                 expression.write(w, None, encoding, None)?;
             }
             CallFrameInstruction::ValExpression(register, ref expression) => {
                 w.write_u8(constants::DW_CFA_val_expression.0)?;
                 w.write_uleb128(register.0.into())?;
-                w.write_uleb128(expression.size(encoding, None) as u64)?;
+                w.write_uleb128(expression.size(encoding, None)? as u64)?;
                 expression.write(w, None, encoding, None)?;
             }
             CallFrameInstruction::RememberState => {
@@ -690,6 +691,7 @@ pub(crate) mod convert {
                 if let Some(instruction) = CallFrameInstruction::from(
                     from_instruction,
                     from_cie,
+                    frame,
                     convert_address,
                     &mut offset,
                 )? {
@@ -734,6 +736,7 @@ pub(crate) mod convert {
                 if let Some(instruction) = CallFrameInstruction::from(
                     from_instruction,
                     from_cie,
+                    frame,
                     convert_address,
                     &mut offset,
                 )? {
@@ -746,12 +749,17 @@ pub(crate) mod convert {
     }
 
     impl CallFrameInstruction {
-        fn from<R: Reader<Offset = usize>>(
-            from_instruction: read::CallFrameInstruction<R>,
+        fn from<R, Section>(
+            from_instruction: read::CallFrameInstruction<R::Offset>,
             from_cie: &read::CommonInformationEntry<R>,
+            frame: &Section,
             convert_address: &dyn Fn(u64) -> Option<Address>,
             offset: &mut u32,
-        ) -> ConvertResult<Option<CallFrameInstruction>> {
+        ) -> ConvertResult<Option<CallFrameInstruction>>
+        where
+            R: Reader<Offset = usize>,
+            Section: read::UnwindSection<R>,
+        {
             let convert_expression =
                 |x| Expression::from(x, from_cie.encoding(), None, None, None, convert_address);
             // TODO: validate integer type conversions
@@ -785,6 +793,7 @@ pub(crate) mod convert {
                     CallFrameInstruction::CfaOffset(offset as i32)
                 }
                 read::CallFrameInstruction::DefCfaExpression { expression } => {
+                    let expression = expression.get(frame)?;
                     CallFrameInstruction::CfaExpression(convert_expression(expression)?)
                 }
                 read::CallFrameInstruction::Undefined { register } => {
@@ -828,11 +837,17 @@ pub(crate) mod convert {
                 read::CallFrameInstruction::Expression {
                     register,
                     expression,
-                } => CallFrameInstruction::Expression(register, convert_expression(expression)?),
+                } => {
+                    let expression = expression.get(frame)?;
+                    CallFrameInstruction::Expression(register, convert_expression(expression)?)
+                }
                 read::CallFrameInstruction::ValExpression {
                     register,
                     expression,
-                } => CallFrameInstruction::ValExpression(register, convert_expression(expression)?),
+                } => {
+                    let expression = expression.get(frame)?;
+                    CallFrameInstruction::ValExpression(register, convert_expression(expression)?)
+                }
                 read::CallFrameInstruction::Restore { register } => {
                     CallFrameInstruction::Restore(register)
                 }
@@ -897,9 +912,14 @@ mod tests {
                     frames.add_fde(cie2_id, fde4.clone());
 
                     let mut cie3 = CommonInformationEntry::new(encoding, 1, 8, X86_64::RA);
-                    cie3.fde_address_encoding = constants::DW_EH_PE_pcrel;
-                    cie3.lsda_encoding = Some(constants::DW_EH_PE_pcrel);
-                    cie3.personality = Some((constants::DW_EH_PE_pcrel, Address::Constant(0x1235)));
+                    cie3.fde_address_encoding =
+                        constants::DW_EH_PE_pcrel | constants::DW_EH_PE_sdata4;
+                    cie3.lsda_encoding =
+                        Some(constants::DW_EH_PE_pcrel | constants::DW_EH_PE_sdata4);
+                    cie3.personality = Some((
+                        constants::DW_EH_PE_pcrel | constants::DW_EH_PE_sdata4,
+                        Address::Constant(0x1235),
+                    ));
                     cie3.signal_trampoline = true;
                     let cie3_id = frames.add_cie(cie3.clone());
                     assert_ne!(cie2_id, cie3_id);

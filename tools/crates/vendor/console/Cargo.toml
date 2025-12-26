@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
 rust-version = "1.66"
 name = "console"
-version = "0.15.10"
+version = "0.15.11"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 build = false
 autolib = false
@@ -34,6 +34,14 @@ keywords = [
 ]
 license = "MIT"
 repository = "https://github.com/console-rs/console"
+
+[features]
+ansi-parsing = []
+default = [
+    "unicode-width",
+    "ansi-parsing",
+]
+windows-console-colors = ["ansi-parsing"]
 
 [lib]
 name = "console"
@@ -84,14 +92,6 @@ default-features = false
 
 [dev-dependencies.regex]
 version = "1.4.2"
-
-[features]
-ansi-parsing = []
-default = [
-    "unicode-width",
-    "ansi-parsing",
-]
-windows-console-colors = ["ansi-parsing"]
 
 [target."cfg(windows)".dependencies.encode_unicode]
 version = "1"

@@ -1,7 +1,7 @@
+use alloc::{format, string::String};
+
 // Code liberally borrowed from here
 // https://github.com/navierr/coloriz
-use std::ops;
-use std::u32;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rgb {
     /// Red
@@ -68,7 +68,7 @@ impl Rgb {
         Self::from_f32(x, x, x)
     }
 
-    /// Creates a new [Rgb] color from a [HSL] color
+    // Creates a new [Rgb] color from a [HSL] color
     // pub fn from_hsl(hsl: HSL) -> Self {
     //     if hsl.s == 0.0 {
     //         return Self::gray_f32(hsl.l);
@@ -123,51 +123,174 @@ impl ANSIColorCode for Rgb {
     }
 }
 
-overload::overload!(
-    (lhs: ?Rgb) + (rhs: ?Rgb) -> Rgb {
-        Rgb::new(
-            lhs.r.saturating_add(rhs.r),
-            lhs.g.saturating_add(rhs.g),
-            lhs.b.saturating_add(rhs.b)
-        )
-    }
-);
+const fn rgb_add(lhs: &Rgb, rhs: &Rgb) -> Rgb {
+    Rgb::new(
+        lhs.r.saturating_add(rhs.r),
+        lhs.g.saturating_add(rhs.g),
+        lhs.b.saturating_add(rhs.b),
+    )
+}
 
-overload::overload!(
-    (lhs: ?Rgb) - (rhs: ?Rgb) -> Rgb {
-        Rgb::new(
-            lhs.r.saturating_sub(rhs.r),
-            lhs.g.saturating_sub(rhs.g),
-            lhs.b.saturating_sub(rhs.b)
-        )
-    }
-);
+const fn rgb_sub(lhs: &Rgb, rhs: &Rgb) -> Rgb {
+    Rgb::new(
+        lhs.r.saturating_sub(rhs.r),
+        lhs.g.saturating_sub(rhs.g),
+        lhs.b.saturating_sub(rhs.b),
+    )
+}
 
-overload::overload!(
-    (lhs: ?Rgb) * (rhs: ?f32) -> Rgb {
-        Rgb::new(
-            (lhs.r as f32 * rhs.clamp(0.0, 1.0)) as u8,
-            (lhs.g as f32 * rhs.clamp(0.0, 1.0)) as u8,
-            (lhs.b as f32 * rhs.clamp(0.0, 1.0)) as u8
-        )
-    }
-);
+fn rgb_mul_f32(lhs: &Rgb, rhs: &f32) -> Rgb {
+    Rgb::new(
+        (lhs.r as f32 * rhs.clamp(0.0, 1.0)) as u8,
+        (lhs.g as f32 * rhs.clamp(0.0, 1.0)) as u8,
+        (lhs.b as f32 * rhs.clamp(0.0, 1.0)) as u8,
+    )
+}
 
-overload::overload!(
-    (lhs: ?f32) * (rhs: ?Rgb) -> Rgb {
-        Rgb::new(
-            (rhs.r as f32 * lhs.clamp(0.0, 1.0)) as u8,
-            (rhs.g as f32 * lhs.clamp(0.0, 1.0)) as u8,
-            (rhs.b as f32 * lhs.clamp(0.0, 1.0)) as u8
-        )
-    }
-);
+const fn rgb_negate(rgb: &Rgb) -> Rgb {
+    Rgb::new(255 - rgb.r, 255 - rgb.g, 255 - rgb.b)
+}
 
-overload::overload!(
-    -(rgb: ?Rgb) -> Rgb {
-        Rgb::new(
-            255 - rgb.r,
-            255 - rgb.g,
-            255 - rgb.b)
+impl core::ops::Add<Rgb> for Rgb {
+    type Output = Rgb;
+
+    fn add(self, rhs: Rgb) -> Self::Output {
+        rgb_add(&self, &rhs)
     }
-);
+}
+
+impl core::ops::Add<&Rgb> for Rgb {
+    type Output = Rgb;
+
+    fn add(self, rhs: &Rgb) -> Self::Output {
+        rgb_add(&self, rhs)
+    }
+}
+
+impl core::ops::Add<Rgb> for &Rgb {
+    type Output = Rgb;
+
+    fn add(self, rhs: Rgb) -> Self::Output {
+        rgb_add(self, &rhs)
+    }
+}
+
+impl core::ops::Add<&Rgb> for &Rgb {
+    type Output = Rgb;
+
+    fn add(self, rhs: &Rgb) -> Self::Output {
+        rgb_add(self, rhs)
+    }
+}
+
+impl core::ops::Sub<Rgb> for Rgb {
+    type Output = Rgb;
+
+    fn sub(self, rhs: Rgb) -> Self::Output {
+        rgb_sub(&self, &rhs)
+    }
+}
+
+impl core::ops::Sub<&Rgb> for Rgb {
+    type Output = Rgb;
+
+    fn sub(self, rhs: &Rgb) -> Self::Output {
+        rgb_sub(&self, rhs)
+    }
+}
+
+impl core::ops::Sub<Rgb> for &Rgb {
+    type Output = Rgb;
+
+    fn sub(self, rhs: Rgb) -> Self::Output {
+        rgb_sub(self, &rhs)
+    }
+}
+
+impl core::ops::Sub<&Rgb> for &Rgb {
+    type Output = Rgb;
+
+    fn sub(self, rhs: &Rgb) -> Self::Output {
+        rgb_sub(self, rhs)
+    }
+}
+
+impl core::ops::Mul<f32> for Rgb {
+    type Output = Rgb;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        rgb_mul_f32(&self, &rhs)
+    }
+}
+
+impl core::ops::Mul<&f32> for Rgb {
+    type Output = Rgb;
+
+    fn mul(self, rhs: &f32) -> Self::Output {
+        rgb_mul_f32(&self, rhs)
+    }
+}
+
+impl core::ops::Mul<f32> for &Rgb {
+    type Output = Rgb;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        rgb_mul_f32(self, &rhs)
+    }
+}
+
+impl core::ops::Mul<&f32> for &Rgb {
+    type Output = Rgb;
+
+    fn mul(self, rhs: &f32) -> Self::Output {
+        rgb_mul_f32(self, rhs)
+    }
+}
+
+impl core::ops::Mul<Rgb> for f32 {
+    type Output = Rgb;
+
+    fn mul(self, rhs: Rgb) -> Self::Output {
+        rgb_mul_f32(&rhs, &self)
+    }
+}
+
+impl core::ops::Mul<&Rgb> for f32 {
+    type Output = Rgb;
+
+    fn mul(self, rhs: &Rgb) -> Self::Output {
+        rgb_mul_f32(rhs, &self)
+    }
+}
+
+impl core::ops::Mul<Rgb> for &f32 {
+    type Output = Rgb;
+
+    fn mul(self, rhs: Rgb) -> Self::Output {
+        rgb_mul_f32(&rhs, self)
+    }
+}
+
+impl core::ops::Mul<&Rgb> for &f32 {
+    type Output = Rgb;
+
+    fn mul(self, rhs: &Rgb) -> Self::Output {
+        rgb_mul_f32(rhs, self)
+    }
+}
+
+impl core::ops::Neg for Rgb {
+    type Output = Rgb;
+
+    fn neg(self) -> Self::Output {
+        rgb_negate(&self)
+    }
+}
+
+impl core::ops::Neg for &Rgb {
+    type Output = Rgb;
+
+    fn neg(self) -> Self::Output {
+        rgb_negate(self)
+    }
+}

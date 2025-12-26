@@ -1,8 +1,4 @@
-use crate::{
-    non_nil::NonNilUuid,
-    std::convert::{TryFrom, TryInto},
-    Builder, Uuid,
-};
+use crate::{non_nil::NonNilUuid, Builder, Uuid};
 
 use arbitrary::{Arbitrary, Unstructured};
 

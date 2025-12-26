@@ -32,7 +32,8 @@ pub mod futures {
             // All current test cases are < 100kB
             let mut output = Cursor::new(vec![0; 102_400]);
             pin_mut!(read);
-            let len = block_on(copy_buf(BufReader::with_capacity(2, read), &mut output)).unwrap();
+            // With more flushing from encoders, 4 appears to be the minimal buffer size that works.
+            let len = block_on(copy_buf(BufReader::with_capacity(4, read), &mut output)).unwrap();
             let mut output = output.into_inner();
             output.truncate(len as usize);
             output
@@ -104,7 +105,8 @@ pub mod tokio {
         pub fn to_vec(read: impl AsyncRead) -> Vec<u8> {
             let mut output = Cursor::new(vec![0; 102_400]);
             pin_mut!(read);
-            let len = block_on(copy_buf(BufReader::with_capacity(2, read), &mut output)).unwrap();
+            // With more flushing from encoders, 4 appears to be the minimal buffer size that works.
+            let len = block_on(copy_buf(BufReader::with_capacity(4, read), &mut output)).unwrap();
             let mut output = output.into_inner();
             output.truncate(len as usize);
             output

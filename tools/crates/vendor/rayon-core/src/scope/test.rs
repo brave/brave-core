@@ -3,7 +3,6 @@ use crate::ThreadPoolBuilder;
 use crate::{scope, scope_fifo, Scope, ScopeFifo};
 use rand::{Rng, SeedableRng};
 use rand_xorshift::XorShiftRng;
-use std::cmp;
 use std::iter::once;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Barrier, Mutex};
@@ -120,13 +119,13 @@ fn random_tree1(depth: usize, rng: &mut XorShiftRng) -> Tree<u32> {
     let children = if depth == 0 {
         vec![]
     } else {
-        (0..rng.gen_range(0..4)) // somewhere between 0 and 3 children at each level
+        (0..rng.random_range(0..4)) // somewhere between 0 and 3 children at each level
             .map(|_| random_tree1(depth - 1, rng))
             .collect()
     };
 
     Tree {
-        value: rng.gen_range(0..1_000_000),
+        value: rng.random_range(0..1_000_000),
         children,
     }
 }
@@ -164,8 +163,7 @@ fn linear_stack_growth() {
         let ratio = diff_when_5 / diff_when_500;
         assert!(
             ratio > 0.9 && ratio < 1.1,
-            "stack usage ratio out of bounds: {}",
-            ratio
+            "stack usage ratio out of bounds: {ratio}"
         );
     });
 }
@@ -179,10 +177,10 @@ fn the_final_countdown<'scope>(
     let top_of_stack = 0;
     let p = bottom_of_stack as *const i32 as usize;
     let q = &top_of_stack as *const i32 as usize;
-    let diff = if p > q { p - q } else { q - p };
+    let diff = p.abs_diff(q);
 
     let mut data = max.lock().unwrap();
-    *data = cmp::max(diff, *data);
+    *data = Ord::max(diff, *data);
 
     if n > 0 {
         s.spawn(move |s| the_final_countdown(s, bottom_of_stack, max, n - 1));
@@ -217,12 +215,13 @@ fn panic_propagate_nested_scope_spawn() {
 #[cfg_attr(not(panic = "unwind"), ignore)]
 fn panic_propagate_still_execute_1() {
     let mut x = false;
-    match unwind::halt_unwinding(|| {
+    let result = unwind::halt_unwinding(|| {
         scope(|s| {
             s.spawn(|_| panic!("Hello, world!")); // job A
             s.spawn(|_| x = true); // job B, should still execute even though A panics
         });
-    }) {
+    });
+    match result {
         Ok(_) => panic!("failed to propagate panic"),
         Err(_) => assert!(x, "job b failed to execute"),
     }
@@ -232,12 +231,13 @@ fn panic_propagate_still_execute_1() {
 #[cfg_attr(not(panic = "unwind"), ignore)]
 fn panic_propagate_still_execute_2() {
     let mut x = false;
-    match unwind::halt_unwinding(|| {
+    let result = unwind::halt_unwinding(|| {
         scope(|s| {
             s.spawn(|_| x = true); // job B, should still execute even though A panics
             s.spawn(|_| panic!("Hello, world!")); // job A
         });
-    }) {
+    });
+    match result {
         Ok(_) => panic!("failed to propagate panic"),
         Err(_) => assert!(x, "job b failed to execute"),
     }
@@ -247,12 +247,13 @@ fn panic_propagate_still_execute_2() {
 #[cfg_attr(not(panic = "unwind"), ignore)]
 fn panic_propagate_still_execute_3() {
     let mut x = false;
-    match unwind::halt_unwinding(|| {
+    let result = unwind::halt_unwinding(|| {
         scope(|s| {
             s.spawn(|_| x = true); // spawned job should still execute despite later panic
             panic!("Hello, world!");
         });
-    }) {
+    });
+    match result {
         Ok(_) => panic!("failed to propagate panic"),
         Err(_) => assert!(x, "panic after spawn, spawn failed to execute"),
     }
@@ -262,12 +263,13 @@ fn panic_propagate_still_execute_3() {
 #[cfg_attr(not(panic = "unwind"), ignore)]
 fn panic_propagate_still_execute_4() {
     let mut x = false;
-    match unwind::halt_unwinding(|| {
+    let result = unwind::halt_unwinding(|| {
         scope(|s| {
             s.spawn(|_| panic!("Hello, world!"));
             x = true;
         });
-    }) {
+    });
+    match result {
         Ok(_) => panic!("failed to propagate panic"),
         Err(_) => assert!(x, "panic in spawn tainted scope"),
     }

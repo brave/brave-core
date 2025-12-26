@@ -81,7 +81,7 @@ impl std::fmt::Display for Url {
         let mut storage;
         let to_print = if self.password.is_some() {
             storage = self.clone();
-            storage.password = Some("<redacted>".into());
+            storage.password = Some("redacted".into());
             &storage
         } else {
             self

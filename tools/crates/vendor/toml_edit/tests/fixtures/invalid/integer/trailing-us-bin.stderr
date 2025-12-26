@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 23
-  |
-1 | trailing-us-bin = 0b1_
-  |                       ^
-invalid binary integer
-expected digit

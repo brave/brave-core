@@ -1,4 +1,5 @@
 #![deny(unsafe_code, missing_docs)]
+#![allow(clippy::empty_docs)]
 
 /*!
 Prodash is a dashboard for displaying the progress of concurrent application.
@@ -21,7 +22,7 @@ By default, a TUI is provided to visualize all state. Have a look at [the exampl
 
 # Logging
 
-If the feature `progress-tree-log` is enabled (default), most calls to `progress` will also be logged.
+If the feature `progress-tree-log` is enabled, most calls to `progress` will also be logged.
 That way, even without a terminal user interface, there will be progress messages.
 Please note that logging to stdout should not be performed with this feature enabled and a terminal user interface is shown, as this will
 seriously interfere with the TUI.
@@ -33,10 +34,7 @@ Please have a look at the [dashboard demo](https://github.com/Byron/crates-io-cl
 [![asciicast](https://asciinema.org/a/301838.svg)](https://asciinema.org/a/301838)
 
 Run it with `cargo run --example dashboard` and see what else it can do by checking out `cargo run --example dashboard -- --help`.
-*/
-#[cfg(feature = "atty")]
-pub use atty;
-
+ */
 #[cfg(feature = "progress-tree")]
 ///
 pub mod tree;
@@ -49,7 +47,7 @@ pub use log::info;
 #[cfg(feature = "progress-tree-log")]
 pub use log::warn;
 
-#[cfg(any(feature = "humantime", feature = "time"))]
+#[cfg(any(feature = "jiff", feature = "local-time"))]
 ///
 pub mod time;
 

@@ -1,10 +1,20 @@
 use crate::off_t;
 use crate::prelude::*;
 
-pub type c_char = u8;
 pub type wchar_t = i32;
 
 s! {
+    pub struct termios {
+        pub c_iflag: crate::tcflag_t,
+        pub c_oflag: crate::tcflag_t,
+        pub c_cflag: crate::tcflag_t,
+        pub c_lflag: crate::tcflag_t,
+        pub c_cc: [crate::cc_t; crate::NCCS],
+        pub c_line: crate::cc_t,
+        pub __c_ispeed: crate::speed_t,
+        pub __c_ospeed: crate::speed_t,
+    }
+
     pub struct stat {
         pub st_dev: crate::dev_t,
         pub st_ino: crate::ino_t,
@@ -23,7 +33,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 2],
+        __unused: Padding<[c_long; 2]>,
     }
 
     pub struct stat64 {
@@ -44,7 +54,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 2],
+        __unused: Padding<[c_long; 2]>,
     }
 
     pub struct stack_t {
@@ -54,6 +64,14 @@ s! {
     }
 
     pub struct ipc_perm {
+        #[cfg(musl_v1_2_3)]
+        pub __key: crate::key_t,
+        #[cfg(not(musl_v1_2_3))]
+        #[deprecated(
+            since = "0.2.173",
+            note = "This field is incorrectly named and will be changed
+                to __key in a future release."
+        )]
         pub __ipc_perm_key: crate::key_t,
         pub uid: crate::uid_t,
         pub gid: crate::gid_t,
@@ -61,43 +79,43 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
         pub __seq: c_int,
-        __pad1: c_int,
-        __pad2: c_longlong,
-        __pad3: c_longlong,
+        __pad1: Padding<c_int>,
+        __pad2: Padding<c_longlong>,
+        __pad3: Padding<c_longlong>,
     }
 
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
-        __unused1: c_int,
+        __unused1: Padding<c_int>,
         pub shm_atime: crate::time_t,
-        __unused2: c_int,
+        __unused2: Padding<c_int>,
         pub shm_dtime: crate::time_t,
-        __unused3: c_int,
+        __unused3: Padding<c_int>,
         pub shm_ctime: crate::time_t,
-        __unused4: c_int,
+        __unused4: Padding<c_int>,
         pub shm_segsz: size_t,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: c_ulong,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
 
     pub struct msqid_ds {
         pub msg_perm: crate::ipc_perm,
-        __unused1: c_int,
+        __unused1: Padding<c_int>,
         pub msg_stime: crate::time_t,
-        __unused2: c_int,
+        __unused2: Padding<c_int>,
         pub msg_rtime: crate::time_t,
-        __unused3: c_int,
+        __unused3: Padding<c_int>,
         pub msg_ctime: crate::time_t,
-        __msg_cbytes: c_ulong,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
         pub msg_lrpid: crate::pid_t,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
 }
 
@@ -204,9 +222,6 @@ pub const MAP_SYNC: c_int = 0x080000;
 
 pub const PTRACE_SYSEMU: c_int = 0x1d;
 pub const PTRACE_SYSEMU_SINGLESTEP: c_int = 0x1e;
-
-pub const SOCK_STREAM: c_int = 1;
-pub const SOCK_DGRAM: c_int = 2;
 
 pub const EDEADLK: c_int = 35;
 pub const ENAMETOOLONG: c_int = 36;
@@ -469,9 +484,11 @@ pub const SYS_modify_ldt: c_long = 123;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 127;
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 130;
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
@@ -508,6 +525,7 @@ pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
 pub const SYS_setresuid: c_long = 164;
 pub const SYS_getresuid: c_long = 165;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 166;
 pub const SYS_poll: c_long = 167;
 pub const SYS_nfsservctl: c_long = 168;
@@ -743,7 +761,3 @@ pub const SYS_process_mrelease: c_long = 448;
 pub const SYS_futex_waitv: c_long = 449;
 pub const SYS_set_mempolicy_home_node: c_long = 450;
 pub const SYS_mseal: c_long = 462;
-
-extern "C" {
-    pub fn getrandom(buf: *mut c_void, buflen: size_t, flags: c_uint) -> ssize_t;
-}

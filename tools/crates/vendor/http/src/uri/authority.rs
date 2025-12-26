@@ -8,6 +8,19 @@ use bytes::Bytes;
 use super::{ErrorKind, InvalidUri, Port, URI_CHARS};
 use crate::byte_str::ByteStr;
 
+/// Validation result for authority parsing.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum AuthorityError {
+    Empty,
+    InvalidUriChar,
+    InvalidAuthority,
+    TooManyColons,
+    MismatchedBrackets,
+    InvalidBracketUsage,
+    EmptyAfterAt,
+    InvalidPercent,
+}
+
 /// Represents the authority component of a URI.
 #[derive(Clone)]
 pub struct Authority {
@@ -45,9 +58,14 @@ impl Authority {
     /// let authority = Authority::from_static("example.com");
     /// assert_eq!(authority.host(), "example.com");
     /// ```
-    pub fn from_static(src: &'static str) -> Self {
-        Authority::from_shared(Bytes::from_static(src.as_bytes()))
-            .expect("static str is not valid authority")
+    #[inline]
+    pub const fn from_static(src: &'static str) -> Self {
+        match validate_authority_bytes(src.as_bytes()) {
+            Ok(_) => Authority {
+                data: ByteStr::from_static(src),
+            },
+            Err(_) => panic!("static str is not valid authority"),
+        }
     }
 
     /// Attempt to convert a `Bytes` buffer to a `Authority`.
@@ -69,95 +87,19 @@ impl Authority {
     // Postcondition: for all Ok() returns, s[..ret.unwrap()] is valid UTF-8 where
     // ret is the return value.
     pub(super) fn parse(s: &[u8]) -> Result<usize, InvalidUri> {
-        let mut colon_cnt = 0u32;
-        let mut start_bracket = false;
-        let mut end_bracket = false;
-        let mut has_percent = false;
-        let mut end = s.len();
-        let mut at_sign_pos = None;
-        const MAX_COLONS: u32 = 8; // e.g., [FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80
-
-        // Among other things, this loop checks that every byte in s up to the
-        // first '/', '?', or '#' is a valid URI character (or in some contexts,
-        // a '%'). This means that each such byte is a valid single-byte UTF-8
-        // code point.
-        for (i, &b) in s.iter().enumerate() {
-            match URI_CHARS[b as usize] {
-                b'/' | b'?' | b'#' => {
-                    end = i;
-                    break;
-                }
-                b':' => {
-                    if colon_cnt >= MAX_COLONS {
-                        return Err(ErrorKind::InvalidAuthority.into());
-                    }
-                    colon_cnt += 1;
-                }
-                b'[' => {
-                    if has_percent || start_bracket {
-                        // Something other than the userinfo has a `%`, so reject it.
-                        return Err(ErrorKind::InvalidAuthority.into());
-                    }
-                    start_bracket = true;
-                }
-                b']' => {
-                    if (!start_bracket) || end_bracket {
-                        return Err(ErrorKind::InvalidAuthority.into());
-                    }
-                    end_bracket = true;
-
-                    // Those were part of an IPv6 hostname, so forget them...
-                    colon_cnt = 0;
-                    has_percent = false;
-                }
-                b'@' => {
-                    at_sign_pos = Some(i);
-
-                    // Those weren't a port colon, but part of the
-                    // userinfo, so it needs to be forgotten.
-                    colon_cnt = 0;
-                    has_percent = false;
-                }
-                0 if b == b'%' => {
-                    // Per https://tools.ietf.org/html/rfc3986#section-3.2.1 and
-                    // https://url.spec.whatwg.org/#authority-state
-                    // the userinfo can have a percent-encoded username and password,
-                    // so record that a `%` was found. If this turns out to be
-                    // part of the userinfo, this flag will be cleared.
-                    // Also per https://tools.ietf.org/html/rfc6874, percent-encoding can
-                    // be used to indicate a zone identifier.
-                    // If the flag hasn't been cleared at the end, that means this
-                    // was part of the hostname (and not part of an IPv6 address), and
-                    // will fail with an error.
-                    has_percent = true;
-                }
-                0 => {
-                    return Err(ErrorKind::InvalidUriChar.into());
-                }
-                _ => {}
+        validate_authority_bytes(s).map_err(|e| {
+            match e {
+                AuthorityError::Empty => ErrorKind::Empty,
+                AuthorityError::InvalidUriChar => ErrorKind::InvalidUriChar,
+                AuthorityError::InvalidAuthority
+                | AuthorityError::MismatchedBrackets
+                | AuthorityError::InvalidBracketUsage
+                | AuthorityError::EmptyAfterAt
+                | AuthorityError::InvalidPercent
+                | AuthorityError::TooManyColons => ErrorKind::InvalidAuthority,
             }
-        }
-
-        if start_bracket ^ end_bracket {
-            return Err(ErrorKind::InvalidAuthority.into());
-        }
-
-        if colon_cnt > 1 {
-            // Things like 'localhost:8080:3030' are rejected.
-            return Err(ErrorKind::InvalidAuthority.into());
-        }
-
-        if end > 0 && at_sign_pos == Some(end - 1) {
-            // If there's nothing after an `@`, this is bonkers.
-            return Err(ErrorKind::InvalidAuthority.into());
-        }
-
-        if has_percent {
-            // Something after the userinfo has a `%`, so reject it.
-            return Err(ErrorKind::InvalidAuthority.into());
-        }
-
-        Ok(end)
+            .into()
+        })
     }
 
     // Parse bytes as an Authority, not allowing an empty string.
@@ -526,6 +468,105 @@ where
         // that this is carried through to bytes.
         data: unsafe { ByteStr::from_utf8_unchecked(bytes) },
     })
+}
+
+/// Shared validation logic for authority bytes.
+/// Returns the end position of valid authority bytes, or an error.
+const fn validate_authority_bytes(s: &[u8]) -> Result<usize, AuthorityError> {
+    if s.is_empty() {
+        return Err(AuthorityError::Empty);
+    }
+
+    let mut colon_cnt: u32 = 0;
+    let mut start_bracket = false;
+    let mut end_bracket = false;
+    let mut has_percent = false;
+    let mut end = s.len();
+    let mut at_sign_pos: usize = s.len();
+    const MAX_COLONS: u32 = 8; // e.g., [FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80
+
+    let mut i = 0;
+    // Among other things, this loop checks that every byte in s up to the
+    // first '/', '?', or '#' is a valid URI character (or in some contexts,
+    // a '%'). This means that each such byte is a valid single-byte UTF-8
+    // code point.
+    while i < s.len() {
+        let b = s[i];
+        let ch = URI_CHARS[b as usize];
+
+        if ch == b'/' || ch == b'?' || ch == b'#' {
+            end = i;
+            break;
+        }
+
+        if ch == 0 {
+            if b == b'%' {
+                // Per https://tools.ietf.org/html/rfc3986#section-3.2.1 and
+                // https://url.spec.whatwg.org/#authority-state
+                // the userinfo can have a percent-encoded username and password,
+                // so record that a `%` was found. If this turns out to be
+                // part of the userinfo, this flag will be cleared.
+                // Also per https://tools.ietf.org/html/rfc6874, percent-encoding can
+                // be used to indicate a zone identifier.
+                // If the flag hasn't been cleared at the end, that means this
+                // was part of the hostname (and not part of an IPv6 address), and
+                // will fail with an error.
+                has_percent = true;
+            } else {
+                return Err(AuthorityError::InvalidUriChar);
+            }
+        } else if ch == b':' {
+            if colon_cnt >= MAX_COLONS {
+                return Err(AuthorityError::TooManyColons);
+            }
+            colon_cnt += 1;
+        } else if ch == b'[' {
+            if has_percent || start_bracket {
+                // Something other than the userinfo has a `%`, so reject it.
+                return Err(AuthorityError::InvalidBracketUsage);
+            }
+            start_bracket = true;
+        } else if ch == b']' {
+            if !start_bracket || end_bracket {
+                return Err(AuthorityError::InvalidBracketUsage);
+            }
+            end_bracket = true;
+
+            // Those were part of an IPv6 hostname, so forget them...
+            colon_cnt = 0;
+            has_percent = false;
+        } else if ch == b'@' {
+            at_sign_pos = i;
+
+            // Those weren't a port colon, but part of the
+            // userinfo, so it needs to be forgotten.
+            colon_cnt = 0;
+            has_percent = false;
+        }
+
+        i += 1;
+    }
+
+    if start_bracket != end_bracket {
+        return Err(AuthorityError::MismatchedBrackets);
+    }
+
+    if colon_cnt > 1 {
+        // Things like 'localhost:8080:3030' are rejected.
+        return Err(AuthorityError::InvalidAuthority);
+    }
+
+    if end > 0 && at_sign_pos == end - 1 {
+        // If there's nothing after an `@`, this is bonkers.
+        return Err(AuthorityError::EmptyAfterAt);
+    }
+
+    if has_percent {
+        // Something after the userinfo has a `%`, so reject it.
+        return Err(AuthorityError::InvalidPercent);
+    }
+
+    Ok(end)
 }
 
 #[cfg(test)]

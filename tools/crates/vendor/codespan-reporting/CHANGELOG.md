@@ -7,6 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+The minimum supported rustc version is now `1.67.0` (was `1.40.0`).
+This is because some dependencies now require this Rust version.
+
+### Added
+
+-   Add the option to display a configurable amount of lines in front of and after any label.
+-   The `Severity` enum now implements full `Ord`. (#335)
+
+### Changed
+
+-   Broken lines are now rendered properly with multiline spans.
+
+    We used to render the wrong lines in the gutter when there were multiline spans
+    and there were breaks in the file.
+
+    <details>
+    <summary>Example</summary>
+
+    Before:
+
+    ```text
+    error[0001]: oh noes, a cupcake has occurred!
+       ┌─ test:4:1
+       │
+     4 │   ╭ Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake
+     5 │   │ muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly
+       │ ╭─│─────────'
+       ·   │
+    10 │ │ │ Muffin danish chocolate soufflé pastry icing bonbon oat cake.
+    11 │ │ │ Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow
+       │ │ ╰─────────────────────────────' blah blah
+       · │ │
+    19 │ │   soufflé marzipan. Chocolate bar oat cake jujubes lollipop pastry
+    20 │ │   cupcake. Candy canes cupcake toffee gingerbread candy canes muffin
+       │ ╰──────────' blah blah
+    ```
+
+    After:
+
+    ```text
+    error[0001]: oh noes, a cupcake has occurred!
+       ┌─ test:4:1
+       │
+     4 │   ╭ Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake
+     5 │   │ muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly
+       │ ╭─│─────────'
+       · │ │
+    10 │ │ │ Muffin danish chocolate soufflé pastry icing bonbon oat cake.
+    11 │ │ │ Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow
+       │ │ ╰─────────────────────────────' blah blah
+       · │
+    19 │ │   soufflé marzipan. Chocolate bar oat cake jujubes lollipop pastry
+    20 │ │   cupcake. Candy canes cupcake toffee gingerbread candy canes muffin
+       │ ╰──────────' blah blah
+    ```
+
+    </details>
+
 ## [0.11.1] - 2021-01-18
 
 ### Added

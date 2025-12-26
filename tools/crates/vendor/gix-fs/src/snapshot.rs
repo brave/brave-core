@@ -39,6 +39,16 @@ impl<T: Clone + std::fmt::Debug> Clone for FileSnapshot<T> {
     }
 }
 
+impl<T: Clone + std::fmt::Debug> FileSnapshot<T> {
+    /// Return the contained instance if nobody else is holding it, or clone it otherwise.
+    pub fn into_owned_or_cloned(self: OwnShared<Self>) -> T {
+        match OwnShared::try_unwrap(self) {
+            Ok(this) => this.value,
+            Err(this) => this.value.clone(),
+        }
+    }
+}
+
 /// A snapshot of a resource which is up-to-date in the moment it is retrieved.
 pub type SharedFileSnapshot<T> = OwnShared<FileSnapshot<T>>;
 

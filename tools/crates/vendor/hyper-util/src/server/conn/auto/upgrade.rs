@@ -12,8 +12,10 @@ use crate::common::rewind::Rewind;
 ///
 /// On success, returns the downcasted parts. On error, returns the Upgraded back.
 /// This is a kludge to work around the fact that the machinery provided by
-/// [`hyper_util::server::con::auto`] wraps the inner `T` with a private type
+/// [`hyper_util::server::conn::auto`] wraps the inner `T` with a private type
 /// that is not reachable from outside the crate.
+///
+/// [`hyper_util::server::conn::auto`]: crate::server::conn::auto
 ///
 /// This kludge will be removed when this machinery is added back to the main
 /// `hyper` code.

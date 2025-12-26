@@ -1,5 +1,72 @@
 # fs-err Changelog
 
+## 3.2.2
+
+* Add wrappers for `File::set_modified` and `File::set_times` ([#84](https://github.com/andrewhickman/fs-err/pull/84))
+
+## 3.2.1
+
+* Rename parameters of `symlink`, `soft_link` and `hard_link` functions to match `std` ([#83](https://github.com/andrewhickman/fs-err/pull/83))
+
+## 3.2.0
+
+* Introduce `debug` and `debug_tokio` feature. Debug filesystem errors faster by exposing more information ([#81](https://github.com/andrewhickman/fs-err/pull/81)). Without this feature on, errors might look like this:
+
+  ```
+  failed to open file `file.txt`: The system cannot find the file specified. (os error 2)
+  ```
+
+  With this feature on, it will include additional information. For example:
+
+  ```
+  failed to open file `file.txt`: The system cannot find the file specified. (os error 2)
+
+  Path does not exist `file.txt`
+  - Absolute path `/path/to/dir/file.txt`
+  - Missing `file.txt` from parent directory:
+    `/path/to/dir`
+      └── `file.md`
+      └── `different.txt`
+  ```
+
+  It's suggested to enable this feature in `dev-dependencies` for security and performance reasons.
+
+## 3.1.3
+
+* Add wrappers for `std::fs::exists` and `tokio::fs::try_exists` ([#77](https://github.com/andrewhickman/fs-err/pull/77))
+
+## 3.1.2
+
+* Added wrappers for locking methods added to `File` in Rust 1.89 ([#75](https://github.com/andrewhickman/fs-err/pull/75))
+
+## 3.1.1
+
+* Added `File::into_file` and `File::into_path` ([#73](https://github.com/andrewhickman/fs-err/pull/73))
+
+## 3.1.0
+
+* Added new wrappers for `create_new` and `options` functions on `File` ([#69](https://github.com/andrewhickman/fs-err/pull/69))
+
+## 3.0.0
+
+* Error messages now include the original message from `std::io::Error` by default ([#60](https://github.com/andrewhickman/fs-err/pull/60)). Previously this was exposed through the [`Error::source()`](https://doc.rust-lang.org/stable/std/error/trait.Error.html#method.source) method. For example, previously a message would look like:
+
+  ```
+  failed to open file `file.txt`
+  ```
+
+  and you would have to remember to print the source, or use a library like `anyhow` to print the full chain of source errors. The new error message includes the cause by default
+
+  ```
+  failed to open file `file.txt`: The system cannot find the file specified. (os error 2)
+  ```
+
+  Note that the original error is no longer exposed though [`Error::source()`](https://doc.rust-lang.org/stable/std/error/trait.Error.html#method.source) by default. If you need access to it, you can restore the previous behaviour with the `expose_original_error` feature flag.
+
+* The `io_safety` feature flag has been removed, and this functionality is now always enabled on Rust versions which support it (1.63.0 and greater).
+
+* Removed deprecated APIs: `File::from_options`, `tokio::symlink`
+
 ## 2.11.0
 
 * Added the first line of the standard library documentation to each function's rustdocs, to make them more useful in IDEs ([#50](https://github.com/andrewhickman/fs-err/issues/45))

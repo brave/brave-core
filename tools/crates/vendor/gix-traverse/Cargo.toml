@@ -11,15 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.65"
+rust-version = "1.82"
 name = "gix-traverse"
-version = "0.41.0"
+version = "0.48.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
     "src/**/*",
     "LICENSE-*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -27,7 +28,7 @@ autobenches = false
 description = "A crate of the gitoxide project"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Byron/gitoxide"
+repository = "https://github.com/GitoxideLabs/gitoxide"
 
 [lib]
 name = "gix_traverse"
@@ -38,25 +39,104 @@ doctest = false
 version = "2"
 
 [dependencies.gix-commitgraph]
-version = "^0.24.3"
+version = "^0.30.0"
 
 [dependencies.gix-date]
-version = "^0.9.0"
+version = "^0.10.6"
 
 [dependencies.gix-hash]
-version = "^0.14.2"
+version = "^0.20.0"
 
 [dependencies.gix-hashtable]
-version = "^0.5.2"
+version = "^0.10.0"
 
 [dependencies.gix-object]
-version = "^0.44.0"
+version = "^0.51.0"
 
 [dependencies.gix-revwalk]
-version = "^0.15.0"
+version = "^0.22.0"
 
 [dependencies.smallvec]
-version = "1.10.0"
+version = "1.15.1"
 
 [dependencies.thiserror]
-version = "1.0.32"
+version = "2.0.17"
+
+[lints.clippy]
+bool_to_int_with_if = "allow"
+borrow_as_ptr = "allow"
+cast_lossless = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+checked_conversions = "allow"
+copy_iterator = "allow"
+default_trait_access = "allow"
+doc_markdown = "allow"
+empty_docs = "allow"
+enum_glob_use = "allow"
+explicit_deref_methods = "allow"
+explicit_into_iter_loop = "allow"
+explicit_iter_loop = "allow"
+filter_map_next = "allow"
+fn_params_excessive_bools = "allow"
+from_iter_instead_of_collect = "allow"
+if_not_else = "allow"
+ignored_unit_patterns = "allow"
+implicit_clone = "allow"
+inconsistent_struct_constructor = "allow"
+inefficient_to_string = "allow"
+inline_always = "allow"
+items_after_statements = "allow"
+iter_not_returning_iterator = "allow"
+iter_without_into_iter = "allow"
+large_enum_variant = "allow"
+large_stack_arrays = "allow"
+manual_assert = "allow"
+manual_is_variant_and = "allow"
+manual_let_else = "allow"
+manual_string_new = "allow"
+many_single_char_names = "allow"
+match_bool = "allow"
+match_same_arms = "allow"
+match_wild_err_arm = "allow"
+match_wildcard_for_single_variants = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+mut_mut = "allow"
+naive_bytecount = "allow"
+needless_continue = "allow"
+needless_for_each = "allow"
+needless_pass_by_value = "allow"
+needless_raw_string_hashes = "allow"
+no_effect_underscore_binding = "allow"
+option_option = "allow"
+range_plus_one = "allow"
+redundant_else = "allow"
+result_large_err = "allow"
+return_self_not_must_use = "allow"
+should_panic_without_expect = "allow"
+similar_names = "allow"
+single_match_else = "allow"
+stable_sort_primitive = "allow"
+struct_excessive_bools = "allow"
+struct_field_names = "allow"
+too_long_first_doc_paragraph = "allow"
+too_many_lines = "allow"
+transmute_ptr_to_ptr = "allow"
+trivially_copy_pass_by_ref = "allow"
+unnecessary_join = "allow"
+unnecessary_wraps = "allow"
+unreadable_literal = "allow"
+unused_self = "allow"
+used_underscore_binding = "allow"
+wildcard_imports = "allow"
+
+[lints.clippy.pedantic]
+level = "warn"
+priority = -1
+
+[lints.rust]

@@ -1,3 +1,67 @@
+# 0.3.22 (November 28, 2025)
+
+#### Important
+
+The previous release [0.3.21] was yanked as it depended explicitly on
+[tracing-0.1.42], which was yanked due to a breaking change (see [#3424] for
+details). This release contains all the changes from the previous release, plus
+an update to the newer version of `tracing`.
+
+### Changed
+
+- `tracing`: updated to 0.1.43 ([#3427])
+
+[#3424]: https://github.com/tokio-rs/tracing/pull/3424
+[#3427]: https://github.com/tokio-rs/tracing/pull/3427
+[0.3.21]: https://github.com/tokio-rs/tracing/releases/tag/tracing-subscriber-0.3.21
+[tracing-0.1.42]: https://github.com/tokio-rs/tracing/releases/tag/tracing-0.1.42
+
+# 0.3.21 (November 26, 2025)
+
+### Fixed
+
+- Change registry exit to decrement local span ref only ([#3331])
+- Make Layered propagate `on_register_dispatch` ([#3379])
+
+### Changed
+
+- `tracing`: updated to 0.1.42 ([#3418])
+
+### Performance
+
+- Remove `clone_span` on enter ([#3289]) 
+
+### Documented
+
+- Fix a few small things in the format module ([#3339])
+- Fix extra closing brace in layer docs ([#3350])
+- Fix link in `FmtSpan` docs ([#3411])
+
+[#3289]: https://github.com/tokio-rs/tracing/pull/3289
+[#3331]: https://github.com/tokio-rs/tracing/pull/3331
+[#3339]: https://github.com/tokio-rs/tracing/pull/3339
+[#3350]: https://github.com/tokio-rs/tracing/pull/3350
+[#3379]: https://github.com/tokio-rs/tracing/pull/3379
+[#3411]: https://github.com/tokio-rs/tracing/pull/3411
+[#3418]: https://github.com/tokio-rs/tracing/pull/3418
+
+# 0.3.20 (August 29, 2025)
+
+[ [crates.io][crate-0.3.20] ] | [ [docs.rs][docs-0.3.20] ]
+
+### Fixed
+
+- Escape ANSI escape sequences in logs ([#3368])
+
+### Added
+
+- Implement `Clone` for `EnvFilter` ([#3360])
+
+[#3360]: https://github.com/tokio-rs/tracing/pull/3360
+[#3368]: https://github.com/tokio-rs/tracing/pull/3368
+[docs-0.3.20]: https://docs.rs/tracing-subscriber/0.3.20/tracing_subscriber/
+[crate-0.3.20]: https://crates.io/crates/tracing-subscriber/0.3.20
+
 # 0.3.19 (November 29, 2024)
 
 [ [crates.io][crate-0.3.19] ] | [ [docs.rs][docs-0.3.19] ]

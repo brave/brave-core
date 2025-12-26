@@ -10,171 +10,278 @@ error: unrecognized representation hint
 25 | #[repr(foo)]
    |        ^^^
 
-error: unsupported representation for deriving FromBytes, AsBytes, or Unaligned on an enum
-  --> tests/ui-msrv/enum.rs:31:8
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:30:10
    |
-31 | #[repr(transparent)]
-   |        ^^^^^^^^^^^
-
-error: conflicting representation hints
-  --> tests/ui-msrv/enum.rs:37:1
-   |
-37 | #[repr(u8, u16)]
-   | ^
-
-error: must have a non-align #[repr(...)] attribute in order to guarantee this type's memory layout
-  --> tests/ui-msrv/enum.rs:42:22
-   |
-42 | #[derive(FromZeroes, FromBytes)]
-   |                      ^^^^^^^^^
+30 | #[derive(FromBytes)]
+   |          ^^^^^^^^^
    |
    = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: only C-like enums can implement FromZeroes
-  --> tests/ui-msrv/enum.rs:52:1
+error: this conflicts with another representation hint
+  --> tests/ui-msrv/enum.rs:37:12
    |
-52 | / enum FromZeroes1 {
-53 | |     A(u8),
-54 | | }
-   | |_^
+37 | #[repr(u8, u16)]
+   |            ^^^
 
-error: only C-like enums can implement FromZeroes
-  --> tests/ui-msrv/enum.rs:57:1
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:42:10
    |
-57 | / enum FromZeroes2 {
-58 | |     A,
-59 | |     B(u8),
-60 | | }
-   | |_^
-
-error: FromZeroes only supported on enums with a variant that has a discriminant of `0`
-  --> tests/ui-msrv/enum.rs:63:1
+42 | #[derive(FromBytes)]
+   |          ^^^^^^^^^
    |
-63 | / enum FromZeroes3 {
-64 | |     A = 1,
-65 | |     B,
-66 | | }
-   | |_^
+   = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-  --> tests/ui-msrv/enum.rs:73:8
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:69:10
    |
-73 | #[repr(C)]
-   |        ^
-
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-  --> tests/ui-msrv/enum.rs:79:8
+69 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
    |
-79 | #[repr(usize)]
-   |        ^^^^^
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-  --> tests/ui-msrv/enum.rs:85:8
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:74:10
    |
-85 | #[repr(isize)]
-   |        ^^^^^
-
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-  --> tests/ui-msrv/enum.rs:91:8
+74 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
    |
-91 | #[repr(u32)]
-   |        ^^^
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-  --> tests/ui-msrv/enum.rs:97:8
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:92:10
    |
-97 | #[repr(i32)]
-   |        ^^^
+92 | #[derive(FromZeros)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `FromZeros` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-   --> tests/ui-msrv/enum.rs:103:8
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+  --> tests/ui-msrv/enum.rs:97:10
+   |
+97 | #[derive(FromZeros)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `FromZeros` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+   --> tests/ui-msrv/enum.rs:103:10
     |
-103 | #[repr(u64)]
-    |        ^^^
-
-error: FromBytes requires repr of "u8", "u16", "i8", or "i16"
-   --> tests/ui-msrv/enum.rs:109:8
+103 | #[derive(FromZeros)]
+    |          ^^^^^^^^^
     |
-109 | #[repr(i64)]
-    |        ^^^
+    = note: this error originates in the derive macro `FromZeros` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:119:8
+error: FromZeros only supported on enums with a variant that has a discriminant of `0`
+   --> tests/ui-msrv/enum.rs:110:1
     |
-119 | #[repr(C)]
+110 | / #[repr(u8)]
+111 | | enum FromZeros4 {
+112 | |     A = 1,
+113 | |     B = 2,
+114 | | }
+    | |_^
+
+error: FromZeros only supported on enums with a variant that has a discriminant of `0`
+help: This enum has discriminants which are not literal integers. One of those may define or imply which variant has a discriminant of zero. Use a literal integer to define or imply the variant with a discriminant of zero.
+   --> tests/ui-msrv/enum.rs:119:1
+    |
+119 | / #[repr(i8)]
+120 | | enum FromZeros5 {
+121 | |     A = NEGATIVE_ONE,
+122 | |     B,
+123 | | }
+    | |_^
+
+error: FromZeros only supported on enums with a variant that has a discriminant of `0`
+   --> tests/ui-msrv/enum.rs:134:1
+    |
+134 | / #[repr(u8)]
+135 | | enum FromZeros7 {
+136 | |     A = 1,
+137 | |     B(NotFromZeros),
+138 | | }
+    | |_^
+
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+   --> tests/ui-msrv/enum.rs:144:10
+    |
+144 | #[derive(FromBytes)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:150:8
+    |
+150 | #[repr(C)]
     |        ^
 
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:125:8
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:156:8
     |
-125 | #[repr(u16)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:131:8
-    |
-131 | #[repr(i16)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:137:8
-    |
-137 | #[repr(u32)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:143:8
-    |
-143 | #[repr(i32)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:149:8
-    |
-149 | #[repr(u64)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:155:8
-    |
-155 | #[repr(i64)]
-    |        ^^^
-
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:161:8
-    |
-161 | #[repr(usize)]
+156 | #[repr(usize)]
     |        ^^^^^
 
-error: Unaligned requires repr of "u8" or "i8", and no alignment (i.e., repr(align(N > 1)))
-   --> tests/ui-msrv/enum.rs:167:8
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:162:8
     |
-167 | #[repr(isize)]
+162 | #[repr(isize)]
     |        ^^^^^
 
-error: cannot derive Unaligned with repr(align(N > 1))
-   --> tests/ui-msrv/enum.rs:173:12
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:168:8
     |
-173 | #[repr(u8, align(2))]
-    |            ^^^^^^^^
+168 | #[repr(u32)]
+    |        ^^^
 
-error: cannot derive Unaligned with repr(align(N > 1))
-   --> tests/ui-msrv/enum.rs:179:12
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:174:8
     |
-179 | #[repr(i8, align(2))]
-    |            ^^^^^^^^
+174 | #[repr(i32)]
+    |        ^^^
 
-error: cannot derive Unaligned with repr(align(N > 1))
-   --> tests/ui-msrv/enum.rs:185:18
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:180:8
     |
-185 | #[repr(align(1), align(2))]
-    |                  ^^^^^^^^
+180 | #[repr(u64)]
+    |        ^^^
 
-error: cannot derive Unaligned with repr(align(N > 1))
-   --> tests/ui-msrv/enum.rs:191:8
+error: `FromBytes` only supported on enums with `#[repr(...)]` attributes `u8`, `i8`, `u16`, or `i16`
+   --> tests/ui-msrv/enum.rs:186:8
     |
-191 | #[repr(align(2), align(4))]
-    |        ^^^^^^^^
+186 | #[repr(i64)]
+    |        ^^^
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:456:10
+    |
+456 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:462:10
+    |
+462 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:468:10
+    |
+468 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:474:10
+    |
+474 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:480:10
+    |
+480 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:486:10
+    |
+486 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:492:10
+    |
+492 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:498:10
+    |
+498 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(u8)] or #[repr(i8)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/enum.rs:504:10
+    |
+504 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: cannot derive `Unaligned` on type with alignment greater than 1
+   --> tests/ui-msrv/enum.rs:511:12
+    |
+511 | #[repr(u8, align(2))]
+    |            ^^^^^
+
+error: cannot derive `Unaligned` on type with alignment greater than 1
+   --> tests/ui-msrv/enum.rs:517:12
+    |
+517 | #[repr(i8, align(2))]
+    |            ^^^^^
+
+error: this conflicts with another representation hint
+   --> tests/ui-msrv/enum.rs:523:18
+    |
+523 | #[repr(align(1), align(2))]
+    |                  ^^^^^
+
+error: this conflicts with another representation hint
+   --> tests/ui-msrv/enum.rs:529:18
+    |
+529 | #[repr(align(2), align(4))]
+    |                  ^^^^^
+
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+   --> tests/ui-msrv/enum.rs:562:10
+    |
+562 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(C)] or #[repr(Int)] attribute in order to guarantee this type's memory layout
+   --> tests/ui-msrv/enum.rs:568:10
+    |
+568 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: generic parameters may not be used in const operations
+   --> tests/ui-msrv/enum.rs:576:7
+    |
+576 |     A(T),
+    |       ^ cannot perform const operation using `T`
+    |
+    = note: type parameters may not be used in const expressions
+
+error[E0658]: custom discriminant values are not allowed in enums with tuple or struct variants
+   --> tests/ui-msrv/enum.rs:136:9
+    |
+136 |     A = 1,
+    |         ^ disallowed custom discriminant
+137 |     B(NotFromZeros),
+    |     --------------- tuple variant defined here
+    |
+    = note: see issue #60553 <https://github.com/rust-lang/rust/issues/60553> for more information
 
 error[E0565]: meta item in `repr` must be an identifier
   --> tests/ui-msrv/enum.rs:19:8
@@ -197,3 +304,103 @@ error[E0566]: conflicting representation hints
    = note: `#[deny(conflicting_repr_hints)]` on by default
    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
    = note: for more information, see issue #68585 <https://github.com/rust-lang/rust/issues/68585>
+
+error[E0277]: the trait bound `UnsafeCell<()>: Immutable` is not satisfied
+  --> tests/ui-msrv/enum.rs:51:10
+   |
+51 | #[derive(Immutable)]
+   |          ^^^^^^^^^ the trait `Immutable` is not implemented for `UnsafeCell<()>`
+   |
+   = help: see issue #48214
+   = note: this error originates in the derive macro `Immutable` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `UnsafeCell<u8>: Immutable` is not satisfied
+  --> tests/ui-msrv/enum.rs:59:10
+   |
+59 | #[derive(Immutable)]
+   |          ^^^^^^^^^ the trait `Immutable` is not implemented for `UnsafeCell<u8>`
+   |
+   = help: see issue #48214
+   = note: this error originates in the derive macro `Immutable` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `NotTryFromBytes: TryFromBytes` is not satisfied
+  --> tests/ui-msrv/enum.rs:82:10
+   |
+82 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^ the trait `TryFromBytes` is not implemented for `NotTryFromBytes`
+   |
+   = help: see issue #48214
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `NotFromZeros: TryFromBytes` is not satisfied
+   --> tests/ui-msrv/enum.rs:127:10
+    |
+127 | #[derive(FromZeros)]
+    |          ^^^^^^^^^ the trait `TryFromBytes` is not implemented for `NotFromZeros`
+    |
+    = help: see issue #48214
+    = note: this error originates in the derive macro `FromZeros` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `NotFromZeros: FromZeros` is not satisfied
+   --> tests/ui-msrv/enum.rs:127:10
+    |
+127 | #[derive(FromZeros)]
+    |          ^^^^^^^^^ the trait `FromZeros` is not implemented for `NotFromZeros`
+    |
+    = help: see issue #48214
+    = note: this error originates in the derive macro `FromZeros` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `bool: FromBytes` is not satisfied
+   --> tests/ui-msrv/enum.rs:191:10
+    |
+191 | #[derive(FromBytes)]
+    |          ^^^^^^^^^ the trait `FromBytes` is not implemented for `bool`
+    |
+    = help: see issue #48214
+    = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes1, 1_usize>` is not satisfied
+   --> tests/ui-msrv/enum.rs:538:10
+    |
+538 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes1, 1_usize>` is not implemented for `()`
+    |
+    = help: the following implementations were found:
+              <() as PaddingFree<T, 0_usize>>
+    = help: see issue #48214
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes2, 3_usize>` is not satisfied
+   --> tests/ui-msrv/enum.rs:549:10
+    |
+549 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes2, 3_usize>` is not implemented for `()`
+    |
+    = help: the following implementations were found:
+              <() as PaddingFree<T, 0_usize>>
+    = help: see issue #48214
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes3, 2_usize>` is not satisfied
+   --> tests/ui-msrv/enum.rs:555:10
+    |
+555 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes3, 2_usize>` is not implemented for `()`
+    |
+    = help: the following implementations were found:
+              <() as PaddingFree<T, 0_usize>>
+    = help: see issue #48214
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: generic `Self` types are currently not permitted in anonymous constants
+   --> tests/ui-msrv/enum.rs:573:10
+    |
+573 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^
+    |
+note: not a concrete type
+   --> tests/ui-msrv/enum.rs:573:10
+    |
+573 | #[derive(IntoBytes)]
+    |          ^^^^^^^^^
+    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)

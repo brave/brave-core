@@ -2,21 +2,26 @@
 //!
 //! # Safety
 //!
-//! These access the file descriptors by absolute index value, and nothing
-//! prevents them from being closed and reused. They should only be used in
-//! `main` or other situations where one is in control of the process' stdio
-//! streams.
+//! Some of the functions in this module can cause the process' stdio file
+//! descriptors to be closed, which breaks the assumption made in Rust's std
+//! that these file descriptors are always open.
+//!
+//! And in no-std mode, some of the functions in this module similarly assume
+//! that the process' stdio file descriptors are open, which we don't take as
+//! given in no-std mode because we don't have std also making that assumption.
+//!
+//! See the individual functions' safety comments for more details.
 #![allow(unsafe_code)]
 
 use crate::backend;
 use crate::fd::OwnedFd;
 use backend::c;
-use backend::fd::{BorrowedFd, FromRawFd, RawFd};
+use backend::fd::{BorrowedFd, FromRawFd as _, RawFd};
 
 #[cfg(not(any(windows, target_os = "wasi")))]
 use {
     crate::io,
-    backend::fd::{AsFd, AsRawFd},
+    backend::fd::{AsFd, AsRawFd as _},
     core::mem::ManuallyDrop,
 };
 
@@ -67,10 +72,10 @@ pub const fn stdin() -> BorrowedFd<'static> {
 ///
 /// # Safety
 ///
-/// In `no_std` configurations, the stdin file descriptor can be closed,
-/// potentially on other threads, in which case the file descriptor index
-/// value could be dynamically reused for other purposes, potentially on
-/// different threads.
+/// In `no_std` configurations, the process' stdin file descriptor can be
+/// closed, potentially on other threads, in which case the file descriptor
+/// index number (`STDIN_FILENO`) could be dynamically reused for other
+/// purposes, potentially on different threads.
 ///
 /// # Warning
 ///
@@ -189,10 +194,10 @@ pub const fn stdout() -> BorrowedFd<'static> {
 ///
 /// # Safety
 ///
-/// In `no_std` configurations, the stdout file descriptor can be closed,
-/// potentially on other threads, in which case the file descriptor index
-/// value could be dynamically reused for other purposes, potentially on
-/// different threads.
+/// In `no_std` configurations, the process' stdout file descriptor can be
+/// closed, potentially on other threads, in which case the file descriptor
+/// index number (`STDOUT_FILENO`) could be dynamically reused for other
+/// purposes, potentially on different threads.
 ///
 /// # Warning
 ///
@@ -305,10 +310,10 @@ pub const fn stderr() -> BorrowedFd<'static> {
 ///
 /// # Safety
 ///
-/// In `no_std` configurations, the stderr file descriptor can be closed,
-/// potentially on other threads, in which case the file descriptor index
-/// value could be dynamically reused for other purposes, potentially on
-/// different threads.
+/// In `no_std` configurations, the process' stderr file descriptor can be
+/// closed, potentially on other threads, in which case the file descriptor
+/// index number (`STDERR_FILENO`) could be dynamically reused for other
+/// purposes, potentially on different threads.
 ///
 /// # References
 ///  - [POSIX]

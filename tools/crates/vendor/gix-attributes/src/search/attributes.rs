@@ -58,12 +58,13 @@ impl Search {
     ) -> std::io::Result<bool> {
         // TODO: should `Pattern` trait use an instance as first argument to carry this information
         //       (so no `retain` later, it's slower than skipping)
-        let was_added = gix_glob::search::add_patterns_file(&mut self.patterns, source, follow_symlinks, root, buf)?;
+        let was_added =
+            gix_glob::search::add_patterns_file(&mut self.patterns, source, follow_symlinks, root, buf, Attributes)?;
         if was_added {
             let last = self.patterns.last_mut().expect("just added");
             if !allow_macros {
                 last.patterns
-                    .retain(|p| !matches!(p.value, Value::MacroAssignments { .. }))
+                    .retain(|p| !matches!(p.value, Value::MacroAssignments { .. }));
             }
             collection.update_from_list(last);
         }
@@ -80,11 +81,12 @@ impl Search {
         collection: &mut MetadataCollection,
         allow_macros: bool,
     ) {
-        self.patterns.push(pattern::List::from_bytes(bytes, source, root));
+        self.patterns
+            .push(pattern::List::from_bytes(bytes, source, root, Attributes));
         let last = self.patterns.last_mut().expect("just added");
         if !allow_macros {
             last.patterns
-                .retain(|p| !matches!(p.value, Value::MacroAssignments { .. }))
+                .retain(|p| !matches!(p.value, Value::MacroAssignments { .. }));
         }
         collection.update_from_list(last);
     }
@@ -124,7 +126,7 @@ impl Search {
 impl Pattern for Attributes {
     type Value = Value;
 
-    fn bytes_to_patterns(bytes: &[u8], _source: &std::path::Path) -> Vec<pattern::Mapping<Self::Value>> {
+    fn bytes_to_patterns(&self, bytes: &[u8], _source: &std::path::Path) -> Vec<pattern::Mapping<Self::Value>> {
         fn into_owned_assignments<'a>(
             attrs: impl Iterator<Item = Result<crate::AssignmentRef<'a>, crate::name::Error>>,
         ) -> Option<Assignments> {

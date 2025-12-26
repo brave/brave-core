@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 18
-  |
-1 | us-after-oct = 0o_1
-  |                  ^
-invalid octal integer

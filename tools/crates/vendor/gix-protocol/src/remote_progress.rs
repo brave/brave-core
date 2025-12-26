@@ -21,7 +21,7 @@ pub struct RemoteProgress<'a> {
     pub max: Option<usize>,
 }
 
-impl<'a> RemoteProgress<'a> {
+impl RemoteProgress<'_> {
     /// Parse the progress from a typical git progress `line` as sent by the remote.
     pub fn from_bytes(mut line: &[u8]) -> Option<RemoteProgress<'_>> {
         parse_progress(&mut line).ok().and_then(|r| {
@@ -66,18 +66,18 @@ impl<'a> RemoteProgress<'a> {
                     }
                 }
                 None => progress.set_name(progress_name(progress.name(), text)),
-            };
+            }
         }
     }
 }
 
-fn parse_number(i: &mut &[u8]) -> PResult<usize, ()> {
+fn parse_number(i: &mut &[u8]) -> ModalResult<usize, ()> {
     take_till(0.., |c: u8| !c.is_ascii_digit())
         .try_map(gix_utils::btoi::to_signed)
         .parse_next(i)
 }
 
-fn next_optional_percentage(i: &mut &[u8]) -> PResult<Option<u32>, ()> {
+fn next_optional_percentage(i: &mut &[u8]) -> ModalResult<Option<u32>, ()> {
     opt(terminated(
         preceded(
             take_till(0.., |c: u8| c.is_ascii_digit()),
@@ -88,11 +88,11 @@ fn next_optional_percentage(i: &mut &[u8]) -> PResult<Option<u32>, ()> {
     .parse_next(i)
 }
 
-fn next_optional_number(i: &mut &[u8]) -> PResult<Option<usize>, ()> {
+fn next_optional_number(i: &mut &[u8]) -> ModalResult<Option<usize>, ()> {
     opt(preceded(take_till(0.., |c: u8| c.is_ascii_digit()), parse_number)).parse_next(i)
 }
 
-fn parse_progress<'i>(line: &mut &'i [u8]) -> PResult<RemoteProgress<'i>, ()> {
+fn parse_progress<'i>(line: &mut &'i [u8]) -> ModalResult<RemoteProgress<'i>, ()> {
     let action = take_till(1.., |c| c == b':').parse_next(line)?;
     let percent = next_optional_percentage.parse_next(line)?;
     let step = next_optional_number.parse_next(line)?;

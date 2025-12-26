@@ -16,6 +16,7 @@ use tokio::fs::File;
 
 use futures_core::Stream;
 use futures_util::{future, stream, StreamExt};
+use http_body_util::BodyExt;
 
 use super::Body;
 use crate::header::HeaderMap;
@@ -140,9 +141,21 @@ impl Form {
     }
 
     /// Consume this instance and transform into an instance of Body for use in a request.
-    pub(crate) fn stream(mut self) -> Body {
+    pub(crate) fn stream(self) -> Body {
         if self.inner.fields.is_empty() {
             return Body::empty();
+        }
+
+        Body::stream(self.into_stream())
+    }
+
+    /// Produce a stream of the bytes in this `Form`, consuming it.
+    pub fn into_stream(mut self) -> impl Stream<Item = Result<Bytes, crate::Error>> + Send + Sync {
+        if self.inner.fields.is_empty() {
+            let empty_stream: Pin<
+                Box<dyn Stream<Item = Result<Bytes, crate::Error>> + Send + Sync>,
+            > = Box::pin(futures_util::stream::empty());
+            return empty_stream;
         }
 
         // create initial part to init reduce chain
@@ -161,7 +174,7 @@ impl Form {
         let last = stream::once(future::ready(Ok(
             format!("--{}--\r\n", self.boundary()).into()
         )));
-        Body::stream(stream.chain(last))
+        Box::pin(stream.chain(last))
     }
 
     /// Generate a hyper::Body stream for a single Part instance of a Form request.
@@ -189,7 +202,7 @@ impl Form {
         // then append form data followed by terminating CRLF
         boundary
             .chain(header)
-            .chain(part.value.into_stream())
+            .chain(part.value.into_data_stream())
             .chain(stream::once(future::ready(Ok("\r\n".into()))))
     }
 
@@ -390,7 +403,7 @@ impl<P: PartProps> FormParts<P> {
     }
 
     // If predictable, computes the length the request will have
-    // The length should be preditable if only String and file fields have been added,
+    // The length should be predictable if only String and file fields have been added,
     // but not if a generic reader has been added;
     pub(crate) fn compute_length(&mut self) -> Option<u64> {
         let mut length = 0u64;
@@ -589,8 +602,9 @@ fn gen_boundary() -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use futures_util::stream;
     use futures_util::TryStreamExt;
-    use futures_util::{future, stream};
+    use std::future;
     use tokio::{self, runtime};
 
     #[test]
@@ -601,7 +615,7 @@ mod tests {
             .enable_all()
             .build()
             .expect("new rt");
-        let body = form.stream().into_stream();
+        let body = form.stream().into_data_stream();
         let s = body.map_ok(|try_c| try_c.to_vec()).try_concat();
 
         let out = rt.block_on(s);
@@ -620,7 +634,10 @@ mod tests {
                 ))))),
             )
             .part("key1", Part::text("value1"))
-            .part("key2", Part::text("value2").mime(mime::IMAGE_BMP))
+            .part(
+                "key2",
+                Part::text("value2").mime(mime_guess::mime::IMAGE_BMP),
+            )
             .part(
                 "reader2",
                 Part::stream(Body::stream(stream::once(future::ready::<
@@ -651,7 +668,7 @@ mod tests {
             .enable_all()
             .build()
             .expect("new rt");
-        let body = form.stream().into_stream();
+        let body = form.stream().into_data_stream();
         let s = body.map(|try_c| try_c.map(|r| r.to_vec())).try_concat();
 
         let out = rt.block_on(s).unwrap();
@@ -666,7 +683,7 @@ mod tests {
 
     #[test]
     fn stream_to_end_with_header() {
-        let mut part = Part::text("value2").mime(mime::IMAGE_BMP);
+        let mut part = Part::text("value2").mime(mime_guess::mime::IMAGE_BMP);
         let mut headers = HeaderMap::new();
         headers.insert("Hdr3", "/a/b/c".parse().unwrap());
         part = part.headers(headers);
@@ -683,7 +700,7 @@ mod tests {
             .enable_all()
             .build()
             .expect("new rt");
-        let body = form.stream().into_stream();
+        let body = form.stream().into_data_stream();
         let s = body.map(|try_c| try_c.map(|r| r.to_vec())).try_concat();
 
         let out = rt.block_on(s).unwrap();

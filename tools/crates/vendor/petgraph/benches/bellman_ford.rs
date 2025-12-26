@@ -3,13 +3,14 @@
 extern crate petgraph;
 extern crate test;
 
+use core::cmp::{max, min};
 use petgraph::prelude::*;
-use std::cmp::{max, min};
 use test::Bencher;
 
 use petgraph::algo::{bellman_ford, find_negative_cycle};
 
 #[bench]
+#[allow(clippy::needless_range_loop)]
 fn bellman_ford_bench(bench: &mut Bencher) {
     static NODE_COUNT: usize = 100;
     let mut g = Graph::new();
@@ -23,7 +24,7 @@ fn bellman_ford_bench(bench: &mut Bencher) {
             let n2 = nodes[j];
             let mut distance: f64 = ((i + 3) % 10) as f64;
             if n1 != n2 {
-                distance -= 1.0
+                distance -= 0.5
             }
             g.add_edge(n1, n2, distance);
         }
@@ -35,6 +36,7 @@ fn bellman_ford_bench(bench: &mut Bencher) {
 }
 
 #[bench]
+#[allow(clippy::needless_range_loop)]
 fn find_negative_cycle_bench(bench: &mut Bencher) {
     static NODE_COUNT: usize = 100;
     let mut g = Graph::new();

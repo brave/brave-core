@@ -8,7 +8,7 @@ pub struct Bytes;
 
 impl Bytes {
     fn format_bytes(w: &mut dyn fmt::Write, value: Step) -> fmt::Result {
-        let string = bytesize::to_string(value as u64, false);
+        let string = bytesize::ByteSize(value as u64).display().si().to_string();
         for token in string.split(' ') {
             w.write_str(token)?;
         }

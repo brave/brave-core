@@ -1,4 +1,4 @@
-use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
 
 bitflags! {
@@ -8,7 +8,7 @@ bitflags! {
     /// [`fcntl_setfd`]: crate::io::fcntl_setfd
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct FdFlags: c::c_uint {
+    pub struct FdFlags: ffi::c_uint {
         /// `FD_CLOEXEC`
         const CLOEXEC = linux_raw_sys::general::FD_CLOEXEC;
 
@@ -24,7 +24,7 @@ bitflags! {
     /// [`pwritev2`]: crate::io::pwritev
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct ReadWriteFlags: c::c_uint {
+    pub struct ReadWriteFlags: ffi::c_uint {
         /// `RWF_DSYNC` (since Linux 4.7)
         const DSYNC = linux_raw_sys::general::RWF_DSYNC;
         /// `RWF_HIPRI` (since Linux 4.6)
@@ -47,7 +47,7 @@ bitflags! {
     /// [`dup2`]: crate::io::dup2
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct DupFlags: c::c_uint {
+    pub struct DupFlags: ffi::c_uint {
         /// `O_CLOEXEC`
         const CLOEXEC = linux_raw_sys::general::O_CLOEXEC;
 

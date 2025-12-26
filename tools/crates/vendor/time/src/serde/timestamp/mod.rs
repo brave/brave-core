@@ -9,6 +9,7 @@
 
 pub mod microseconds;
 pub mod milliseconds;
+pub mod milliseconds_i64;
 pub mod nanoseconds;
 
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
@@ -16,6 +17,7 @@ use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use crate::OffsetDateTime;
 
 /// Serialize an `OffsetDateTime` as its Unix timestamp
+#[inline]
 pub fn serialize<S: Serializer>(
     datetime: &OffsetDateTime,
     serializer: S,
@@ -24,6 +26,7 @@ pub fn serialize<S: Serializer>(
 }
 
 /// Deserialize an `OffsetDateTime` from its Unix timestamp
+#[inline]
 pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDateTime, D::Error> {
     OffsetDateTime::from_unix_timestamp(<_>::deserialize(deserializer)?)
         .map_err(|err| de::Error::invalid_value(de::Unexpected::Signed(err.value), &err))
@@ -39,10 +42,10 @@ pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDat
 /// [Unix timestamp]: https://en.wikipedia.org/wiki/Unix_time
 /// [with]: https://serde.rs/field-attrs.html#with
 pub mod option {
-    #[allow(clippy::wildcard_imports)]
     use super::*;
 
     /// Serialize an `Option<OffsetDateTime>` as its Unix timestamp
+    #[inline]
     pub fn serialize<S: Serializer>(
         option: &Option<OffsetDateTime>,
         serializer: S,
@@ -53,6 +56,7 @@ pub mod option {
     }
 
     /// Deserialize an `Option<OffsetDateTime>` from its Unix timestamp
+    #[inline]
     pub fn deserialize<'a, D: Deserializer<'a>>(
         deserializer: D,
     ) -> Result<Option<OffsetDateTime>, D::Error> {

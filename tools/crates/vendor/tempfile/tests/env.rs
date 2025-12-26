@@ -4,6 +4,7 @@ use std::path::Path;
 
 #[test]
 fn test_override_temp_dir() {
+    #[cfg(not(target_os = "wasi"))]
     assert_eq!(tempfile::env::temp_dir(), std::env::temp_dir());
 
     let new_tmp = Path::new("/tmp/override");

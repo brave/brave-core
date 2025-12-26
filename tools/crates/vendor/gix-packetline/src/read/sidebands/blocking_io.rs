@@ -15,7 +15,7 @@ where
     cap: usize,
 }
 
-impl<'a, T, F> Drop for WithSidebands<'a, T, F>
+impl<T, F> Drop for WithSidebands<'_, T, F>
 where
     T: io::Read,
 {
@@ -69,7 +69,7 @@ where
 
     /// Forwards to the parent [`StreamingPeekableIter::reset_with()`]
     pub fn reset_with(&mut self, delimiters: &'static [PacketLineRef<'static>]) {
-        self.parent.reset_with(delimiters)
+        self.parent.reset_with(delimiters);
     }
 
     /// Forwards to the parent [`StreamingPeekableIter::stopped_at()`]
@@ -119,7 +119,7 @@ where
             self.cap, 0,
             "we don't support partial buffers right now - read-line must be used consistently"
         );
-        let line = std::str::from_utf8(self.fill_buf()?).map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+        let line = std::str::from_utf8(self.fill_buf()?).map_err(io::Error::other)?;
         buf.push_str(line);
         let bytes = line.len();
         self.cap = 0;
@@ -127,7 +127,7 @@ where
     }
 }
 
-impl<'a, T, F> BufRead for WithSidebands<'a, T, F>
+impl<T, F> BufRead for WithSidebands<'_, T, F>
 where
     T: io::Read,
     F: FnMut(bool, &[u8]) -> ProgressAction,
@@ -136,14 +136,12 @@ where
         if self.pos >= self.cap {
             let (ofs, cap) = loop {
                 let line = match self.parent.read_line() {
-                    Some(line) => line?.map_err(|err| io::Error::new(io::ErrorKind::Other, err))?,
+                    Some(line) => line?.map_err(io::Error::other)?,
                     None => break (0, 0),
                 };
                 match self.handle_progress.as_mut() {
                     Some(handle_progress) => {
-                        let band = line
-                            .decode_band()
-                            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+                        let band = line.decode_band().map_err(io::Error::other)?;
                         const ENCODED_BAND: usize = 1;
                         match band {
                             BandRef::Data(d) => {
@@ -157,26 +155,20 @@ where
                                 match handle_progress(false, text) {
                                     ProgressAction::Continue => {}
                                     ProgressAction::Interrupt => {
-                                        return Err(std::io::Error::new(
-                                            std::io::ErrorKind::Other,
-                                            "interrupted by user",
-                                        ))
+                                        return Err(std::io::Error::other("interrupted by user"))
                                     }
-                                };
+                                }
                             }
                             BandRef::Error(d) => {
                                 let text = TextRef::from(d).0;
                                 match handle_progress(true, text) {
                                     ProgressAction::Continue => {}
                                     ProgressAction::Interrupt => {
-                                        return Err(std::io::Error::new(
-                                            std::io::ErrorKind::Other,
-                                            "interrupted by user",
-                                        ))
+                                        return Err(std::io::Error::other("interrupted by user"))
                                     }
-                                };
+                                }
                             }
-                        };
+                        }
                     }
                     None => {
                         break match line.as_slice() {
@@ -202,7 +194,7 @@ where
     }
 }
 
-impl<'a, T, F> io::Read for WithSidebands<'a, T, F>
+impl<T, F> io::Read for WithSidebands<'_, T, F>
 where
     T: io::Read,
     F: FnMut(bool, &[u8]) -> ProgressAction,

@@ -10,18 +10,39 @@ pub(crate) type size_t = usize;
 pub(crate) use linux_raw_sys::ctypes::*;
 pub(crate) use linux_raw_sys::errno::{EBADF, EINVAL};
 pub(crate) use linux_raw_sys::general::{__kernel_fd_set as fd_set, __FD_SETSIZE as FD_SETSIZE};
-pub(crate) use linux_raw_sys::ioctl::{FIONBIO, FIONREAD};
+pub(crate) use linux_raw_sys::ioctl::{FIOCLEX, FIONBIO, FIONCLEX, FIONREAD};
 // Import the kernel's `uid_t` and `gid_t` if they're 32-bit.
+#[cfg(feature = "thread")]
+pub(crate) use linux_raw_sys::general::futex_waitv;
 #[cfg(not(any(target_arch = "arm", target_arch = "sparc", target_arch = "x86")))]
 pub(crate) use linux_raw_sys::general::{__kernel_gid_t as gid_t, __kernel_uid_t as uid_t};
 pub(crate) use linux_raw_sys::general::{
     __kernel_pid_t as pid_t, __kernel_time64_t as time_t, __kernel_timespec as timespec, iovec,
     O_CLOEXEC, O_NOCTTY, O_NONBLOCK, O_RDWR,
 };
+#[cfg(feature = "system")]
+pub(crate) use linux_raw_sys::system::sysinfo;
+
+#[cfg(feature = "fs")]
+#[cfg(target_arch = "x86")]
+#[cfg(test)]
+pub(crate) use linux_raw_sys::general::stat64;
+#[cfg(feature = "fs")]
+#[cfg(test)]
+pub(crate) use linux_raw_sys::general::{
+    __kernel_fsid_t as fsid_t, stat, statfs64, statx, statx_timestamp,
+};
 
 #[cfg(feature = "event")]
 #[cfg(test)]
 pub(crate) use linux_raw_sys::general::epoll_event;
+
+#[cfg(feature = "mm")]
+mod mm {
+    pub(crate) use linux_raw_sys::general::{MAP_HUGETLB, MAP_HUGE_SHIFT};
+}
+#[cfg(feature = "mm")]
+pub(crate) use mm::*;
 
 #[cfg(any(
     feature = "fs",
@@ -30,8 +51,8 @@ pub(crate) use linux_raw_sys::general::epoll_event;
         not(feature = "use-explicitly-provided-auxv"),
         any(
             feature = "param",
-            feature = "process",
             feature = "runtime",
+            feature = "thread",
             feature = "time",
             target_arch = "x86",
         )
@@ -57,28 +78,31 @@ pub(crate) use linux_raw_sys::{
     general::{O_CLOEXEC as SOCK_CLOEXEC, O_NONBLOCK as SOCK_NONBLOCK},
     if_ether::*,
     net::{
-        linger, msghdr, sockaddr, sockaddr_in, sockaddr_in6, sockaddr_un, socklen_t, AF_DECnet,
         __kernel_sa_family_t as sa_family_t, __kernel_sockaddr_storage as sockaddr_storage,
-        cmsghdr, in6_addr, in_addr, ip_mreq, ip_mreq_source, ip_mreqn, ipv6_mreq, AF_APPLETALK,
-        AF_ASH, AF_ATMPVC, AF_ATMSVC, AF_AX25, AF_BLUETOOTH, AF_BRIDGE, AF_CAN, AF_ECONET,
-        AF_IEEE802154, AF_INET, AF_INET6, AF_IPX, AF_IRDA, AF_ISDN, AF_IUCV, AF_KEY, AF_LLC,
-        AF_NETBEUI, AF_NETLINK, AF_NETROM, AF_PACKET, AF_PHONET, AF_PPPOX, AF_RDS, AF_ROSE,
-        AF_RXRPC, AF_SECURITY, AF_SNA, AF_TIPC, AF_UNIX, AF_UNSPEC, AF_WANPIPE, AF_X25, AF_XDP,
-        IP6T_SO_ORIGINAL_DST, IPPROTO_FRAGMENT, IPPROTO_ICMPV6, IPPROTO_MH, IPPROTO_ROUTING,
-        IPV6_ADD_MEMBERSHIP, IPV6_DROP_MEMBERSHIP, IPV6_FREEBIND, IPV6_MULTICAST_HOPS,
-        IPV6_MULTICAST_LOOP, IPV6_RECVTCLASS, IPV6_TCLASS, IPV6_UNICAST_HOPS, IPV6_V6ONLY,
-        IP_ADD_MEMBERSHIP, IP_ADD_SOURCE_MEMBERSHIP, IP_DROP_MEMBERSHIP, IP_DROP_SOURCE_MEMBERSHIP,
-        IP_FREEBIND, IP_MULTICAST_LOOP, IP_MULTICAST_TTL, IP_RECVTOS, IP_TOS, IP_TTL,
-        MSG_CMSG_CLOEXEC, MSG_CONFIRM, MSG_DONTROUTE, MSG_DONTWAIT, MSG_EOR, MSG_ERRQUEUE,
-        MSG_MORE, MSG_NOSIGNAL, MSG_OOB, MSG_PEEK, MSG_TRUNC, MSG_WAITALL, SCM_CREDENTIALS,
-        SCM_RIGHTS, SHUT_RD, SHUT_RDWR, SHUT_WR, SOCK_DGRAM, SOCK_RAW, SOCK_RDM, SOCK_SEQPACKET,
-        SOCK_STREAM, SOL_SOCKET, SOL_XDP, SO_ACCEPTCONN, SO_BROADCAST, SO_COOKIE, SO_DOMAIN,
-        SO_ERROR, SO_INCOMING_CPU, SO_KEEPALIVE, SO_LINGER, SO_OOBINLINE, SO_ORIGINAL_DST,
-        SO_PASSCRED, SO_PROTOCOL, SO_RCVBUF, SO_RCVBUFFORCE, SO_RCVTIMEO_NEW,
+        cmsghdr, in6_addr, in_addr, ip_mreq, ip_mreq_source, ip_mreqn, ipv6_mreq, linger, mmsghdr,
+        msghdr, sockaddr, sockaddr_in, sockaddr_in6, sockaddr_un, socklen_t, AF_DECnet,
+        AF_APPLETALK, AF_ASH, AF_ATMPVC, AF_ATMSVC, AF_AX25, AF_BLUETOOTH, AF_BRIDGE, AF_CAN,
+        AF_ECONET, AF_IEEE802154, AF_INET, AF_INET6, AF_IPX, AF_IRDA, AF_ISDN, AF_IUCV, AF_KEY,
+        AF_LLC, AF_NETBEUI, AF_NETLINK, AF_NETROM, AF_PACKET, AF_PHONET, AF_PPPOX, AF_RDS, AF_ROSE,
+        AF_RXRPC, AF_SECURITY, AF_SNA, AF_TIPC, AF_UNIX, AF_UNSPEC, AF_VSOCK, AF_WANPIPE, AF_X25,
+        AF_XDP, IP6T_SO_ORIGINAL_DST, IPPROTO_FRAGMENT, IPPROTO_ICMPV6, IPPROTO_MH,
+        IPPROTO_ROUTING, IPV6_ADD_MEMBERSHIP, IPV6_DROP_MEMBERSHIP, IPV6_FREEBIND,
+        IPV6_MULTICAST_HOPS, IPV6_MULTICAST_LOOP, IPV6_PMTUDISC_DO, IPV6_PMTUDISC_DONT,
+        IPV6_PMTUDISC_INTERFACE, IPV6_PMTUDISC_OMIT, IPV6_PMTUDISC_PROBE, IPV6_PMTUDISC_WANT,
+        IPV6_RECVTCLASS, IPV6_TCLASS, IPV6_UNICAST_HOPS, IPV6_V6ONLY, IP_ADD_MEMBERSHIP,
+        IP_ADD_SOURCE_MEMBERSHIP, IP_DROP_MEMBERSHIP, IP_DROP_SOURCE_MEMBERSHIP, IP_FREEBIND,
+        IP_MULTICAST_LOOP, IP_MULTICAST_TTL, IP_PMTUDISC_DO, IP_PMTUDISC_DONT,
+        IP_PMTUDISC_INTERFACE, IP_PMTUDISC_OMIT, IP_PMTUDISC_PROBE, IP_PMTUDISC_WANT, IP_RECVTOS,
+        IP_TOS, IP_TTL, MSG_CMSG_CLOEXEC, MSG_CONFIRM, MSG_CTRUNC, MSG_DONTROUTE, MSG_DONTWAIT,
+        MSG_EOR, MSG_ERRQUEUE, MSG_MORE, MSG_NOSIGNAL, MSG_OOB, MSG_PEEK, MSG_TRUNC, MSG_WAITALL,
+        SCM_CREDENTIALS, SCM_RIGHTS, SHUT_RD, SHUT_RDWR, SHUT_WR, SOCK_DGRAM, SOCK_RAW, SOCK_RDM,
+        SOCK_SEQPACKET, SOCK_STREAM, SOL_SOCKET, SOL_XDP, SO_ACCEPTCONN, SO_BROADCAST, SO_COOKIE,
+        SO_DOMAIN, SO_ERROR, SO_INCOMING_CPU, SO_KEEPALIVE, SO_LINGER, SO_OOBINLINE,
+        SO_ORIGINAL_DST, SO_PASSCRED, SO_PROTOCOL, SO_RCVBUF, SO_RCVBUFFORCE, SO_RCVTIMEO_NEW,
         SO_RCVTIMEO_NEW as SO_RCVTIMEO, SO_RCVTIMEO_OLD, SO_REUSEADDR, SO_REUSEPORT, SO_SNDBUF,
-        SO_SNDTIMEO_NEW, SO_SNDTIMEO_NEW as SO_SNDTIMEO, SO_SNDTIMEO_OLD, SO_TYPE, TCP_CONGESTION,
-        TCP_CORK, TCP_KEEPCNT, TCP_KEEPIDLE, TCP_KEEPINTVL, TCP_NODELAY, TCP_QUICKACK,
-        TCP_THIN_LINEAR_TIMEOUTS, TCP_USER_TIMEOUT,
+        SO_SNDBUFFORCE, SO_SNDTIMEO_NEW, SO_SNDTIMEO_NEW as SO_SNDTIMEO, SO_SNDTIMEO_OLD, SO_TYPE,
+        TCP_CONGESTION, TCP_CORK, TCP_KEEPCNT, TCP_KEEPIDLE, TCP_KEEPINTVL, TCP_NODELAY,
+        TCP_QUICKACK, TCP_THIN_LINEAR_TIMEOUTS, TCP_USER_TIMEOUT,
     },
     netlink::*,
     xdp::{
@@ -92,6 +116,19 @@ pub(crate) use linux_raw_sys::{
         XSK_UNALIGNED_BUF_ADDR_MASK, XSK_UNALIGNED_BUF_OFFSET_SHIFT,
     },
 };
+
+#[cfg(any(feature = "io_uring", feature = "time", feature = "thread"))]
+pub use linux_raw_sys::general::__kernel_clockid_t as clockid_t;
+
+#[cfg(feature = "net")]
+pub use linux_raw_sys::net::{sock_txtime, SCM_TXTIME, SO_TXTIME};
+
+#[cfg(all(feature = "net", feature = "time"))]
+pub(crate) const SOF_TXTIME_DEADLINE_MODE: u32 =
+    linux_raw_sys::net::txtime_flags::SOF_TXTIME_DEADLINE_MODE as _;
+#[cfg(all(feature = "net", feature = "time"))]
+pub(crate) const SOF_TXTIME_REPORT_ERRORS: u32 =
+    linux_raw_sys::net::txtime_flags::SOF_TXTIME_REPORT_ERRORS as _;
 
 // Cast away bindgen's `enum` type to make these consistent with the other
 // `setsockopt`/`getsockopt` level values.
@@ -165,11 +202,20 @@ pub(crate) const CLONE_CHILD_SETTID: c_int = linux_raw_sys::general::CLONE_CHILD
 #[cfg(feature = "process")]
 pub(crate) use linux_raw_sys::{
     general::{
-        CLD_CONTINUED, CLD_DUMPED, CLD_EXITED, CLD_KILLED, CLD_STOPPED, CLD_TRAPPED,
-        O_NONBLOCK as PIDFD_NONBLOCK, P_ALL, P_PGID, P_PID, P_PIDFD,
+        CLD_CONTINUED, CLD_DUMPED, CLD_EXITED, CLD_KILLED, CLD_STOPPED, CLD_TRAPPED, F_RDLCK,
+        F_UNLCK, F_WRLCK, O_NONBLOCK as PIDFD_NONBLOCK, P_ALL, P_PGID, P_PID, P_PIDFD, SEEK_CUR,
+        SEEK_END, SEEK_SET,
     },
     ioctl::TIOCSCTTY,
 };
+
+#[cfg(feature = "process")]
+#[cfg(target_pointer_width = "32")]
+pub(crate) use linux_raw_sys::general::{flock64 as flock, F_GETLK64};
+
+#[cfg(feature = "process")]
+#[cfg(target_pointer_width = "64")]
+pub(crate) use linux_raw_sys::general::{flock, F_GETLK};
 
 #[cfg(feature = "pty")]
 pub(crate) use linux_raw_sys::ioctl::TIOCGPTPEER;
@@ -275,13 +321,13 @@ pub(crate) const CLOCK_THREAD_CPUTIME_ID: c_int =
     linux_raw_sys::general::CLOCK_THREAD_CPUTIME_ID as _;
 pub(crate) const CLOCK_PROCESS_CPUTIME_ID: c_int =
     linux_raw_sys::general::CLOCK_PROCESS_CPUTIME_ID as _;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 pub(crate) const CLOCK_BOOTTIME: c_int = linux_raw_sys::general::CLOCK_BOOTTIME as _;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 pub(crate) const CLOCK_BOOTTIME_ALARM: c_int = linux_raw_sys::general::CLOCK_BOOTTIME_ALARM as _;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 pub(crate) const CLOCK_TAI: c_int = linux_raw_sys::general::CLOCK_TAI as _;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 pub(crate) const CLOCK_REALTIME_ALARM: c_int = linux_raw_sys::general::CLOCK_REALTIME_ALARM as _;
 
 #[cfg(feature = "system")]
@@ -309,8 +355,47 @@ mod reboot_symbols {
 #[cfg(feature = "system")]
 pub(crate) use reboot_symbols::*;
 
-// TODO: This is new in Linux 6.11; remove when linux-raw-sys is updated.
-pub(crate) const MAP_DROPPABLE: u32 = 0x8;
+#[cfg(any(
+    feature = "fs",
+    all(
+        linux_raw,
+        not(feature = "use-libc-auxv"),
+        not(feature = "use-explicitly-provided-auxv"),
+        any(
+            feature = "param",
+            feature = "runtime",
+            feature = "thread",
+            feature = "time",
+            target_arch = "x86",
+        )
+    )
+))]
+mod statx_flags {
+    pub(crate) use linux_raw_sys::general::{
+        STATX_ALL, STATX_ATIME, STATX_BASIC_STATS, STATX_BLOCKS, STATX_BTIME, STATX_CTIME,
+        STATX_DIOALIGN, STATX_GID, STATX_INO, STATX_MNT_ID, STATX_MODE, STATX_MTIME, STATX_NLINK,
+        STATX_SIZE, STATX_TYPE, STATX_UID,
+    };
 
-// TODO: This is new in Linux 6.5; remove when linux-raw-sys is updated.
-pub(crate) const MOVE_MOUNT_BENEATH: u32 = 0x200;
+    pub(crate) use linux_raw_sys::general::{
+        STATX_ATTR_APPEND, STATX_ATTR_AUTOMOUNT, STATX_ATTR_COMPRESSED, STATX_ATTR_DAX,
+        STATX_ATTR_ENCRYPTED, STATX_ATTR_IMMUTABLE, STATX_ATTR_MOUNT_ROOT, STATX_ATTR_NODUMP,
+        STATX_ATTR_VERITY,
+    };
+}
+#[cfg(any(
+    feature = "fs",
+    all(
+        linux_raw,
+        not(feature = "use-libc-auxv"),
+        not(feature = "use-explicitly-provided-auxv"),
+        any(
+            feature = "param",
+            feature = "runtime",
+            feature = "thread",
+            feature = "time",
+            target_arch = "x86",
+        )
+    )
+))]
+pub(crate) use statx_flags::*;

@@ -1,5 +1,6 @@
-use super::colors::*;
 use super::OwoColorize;
+use super::colors::*;
+use crate::Style;
 use crate::colors::css::Lavender;
 use crate::{AnsiColors, DynColors};
 
@@ -40,6 +41,15 @@ fn test_dyn_bg() {
         "blah blah".on_color(AnsiColors::Red).to_string(),
         "\x1b[41mblah blah\x1b[49m"
     );
+}
+
+#[test]
+fn test_bg_effect() {
+    let style = Style::new().underline().on_blue();
+    assert_eq!("test".style(style).to_string(), "\x1b[44;4mtest\x1b[0m");
+
+    let style = Style::new().italic().on_red();
+    assert_eq!("test".style(style).to_string(), "\x1b[41;3mtest\x1b[0m");
 }
 
 #[test]

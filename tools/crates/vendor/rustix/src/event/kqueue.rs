@@ -1,16 +1,16 @@
 //! An API for interfacing with `kqueue`.
 
+use crate::buffer::Buffer;
 use crate::fd::{AsFd, OwnedFd, RawFd};
 use crate::pid::Pid;
 use crate::signal::Signal;
+use crate::timespec::Timespec;
 use crate::{backend, io};
 
 use backend::c::{self, intptr_t, kevent as kevent_t, uintptr_t};
 use backend::event::syscalls;
 
-use alloc::vec::Vec;
 use core::mem::zeroed;
-use core::ptr::slice_from_raw_parts_mut;
 use core::time::Duration;
 
 /// A `kqueue` event for use with [`kevent`].
@@ -24,7 +24,7 @@ pub struct Event {
 impl Event {
     /// Create a new `Event`.
     #[allow(clippy::needless_update)]
-    pub fn new(filter: EventFilter, flags: EventFlags, udata: isize) -> Event {
+    pub fn new(filter: EventFilter, flags: EventFlags, udata: *mut c::c_void) -> Event {
         let (ident, data, filter, fflags) = match filter {
             EventFilter::Read(fd) => (fd as uintptr_t, 0, c::EVFILT_READ, 0),
             EventFilter::Write(fd) => (fd as _, 0, c::EVFILT_WRITE, 0),
@@ -34,7 +34,9 @@ impl Event {
             EventFilter::Proc { pid, flags } => {
                 (Pid::as_raw(Some(pid)) as _, 0, c::EVFILT_PROC, flags.bits())
             }
-            EventFilter::Signal { signal, times: _ } => (signal as _, 0, c::EVFILT_SIGNAL, 0),
+            EventFilter::Signal { signal, times: _ } => {
+                (signal.as_raw() as _, 0, c::EVFILT_SIGNAL, 0)
+            }
             EventFilter::Timer { ident, timer } => {
                 #[cfg(any(apple, target_os = "freebsd", target_os = "netbsd"))]
                 let (data, fflags) = match timer {
@@ -78,7 +80,6 @@ impl Event {
                 },
                 udata: {
                     // On NetBSD, udata is an `isize` and not a pointer.
-                    // TODO: Strict provenance, prevent int-to-ptr cast.
                     udata as _
                 },
                 ..unsafe { zeroed() }
@@ -92,10 +93,8 @@ impl Event {
     }
 
     /// Get the user data for this event.
-    pub fn udata(&self) -> isize {
+    pub fn udata(&self) -> *mut c::c_void {
         // On NetBSD, udata is an isize and not a pointer.
-        // TODO: Strict provenance, prevent ptr-to-int cast.
-
         self.inner.udata as _
     }
 
@@ -121,7 +120,8 @@ impl Event {
                 flags: ProcessEvents::from_bits_retain(self.inner.fflags),
             },
             c::EVFILT_SIGNAL => EventFilter::Signal {
-                signal: Signal::from_raw(self.inner.ident as _).unwrap(),
+                // SAFETY: `EventFilter::new` requires a valid `Signal`.
+                signal: unsafe { Signal::from_raw_unchecked(self.inner.ident as _) },
                 times: self.inner.data as _,
             },
             c::EVFILT_TIMER => EventFilter::Timer {
@@ -155,7 +155,7 @@ impl Event {
     }
 }
 
-/// Bottom 24 bits of a u32.
+/// Bottom 24 bits of a `u32`.
 #[cfg(any(apple, freebsdlike))]
 const EVFILT_USER_FLAGS: u32 = 0x00ff_ffff;
 
@@ -331,6 +331,7 @@ bitflags::bitflags! {
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     pub struct UserFlags: u32 {
         /// Ignore the user input flags.
+        #[doc(alias = "NOP")]
         const NOINPUT = c::NOTE_FFNOP;
 
         /// Bitwise AND `fflags`.
@@ -398,8 +399,8 @@ pub fn kqueue() -> io::Result<OwnedFd> {
 /// `kevent(kqueue, changelist, eventlist, timeout)`—Wait for events on a
 /// `kqueue`.
 ///
-/// Note: in order to receive events, make sure to allocate capacity in the
-/// eventlist! Otherwise, the function will return immediately.
+/// If an unsupported timeout is passed, this function fails with
+/// [`io::Errno::INVAL`].
 ///
 /// # Safety
 ///
@@ -418,32 +419,48 @@ pub fn kqueue() -> io::Result<OwnedFd> {
 /// [OpenBSD]: https://man.openbsd.org/kevent.2
 /// [NetBSD]: https://man.netbsd.org/kevent.2
 /// [DragonFly BSD]: https://man.dragonflybsd.org/?command=kevent&section=2
-pub unsafe fn kevent(
-    kqueue: impl AsFd,
+pub unsafe fn kevent_timespec<Fd: AsFd, Buf: Buffer<Event>>(
+    kqueue: Fd,
     changelist: &[Event],
-    eventlist: &mut Vec<Event>,
-    timeout: Option<Duration>,
-) -> io::Result<usize> {
-    let timeout = timeout.map(|timeout| backend::c::timespec {
-        tv_sec: timeout.as_secs() as _,
-        tv_nsec: timeout.subsec_nanos() as _,
-    });
-
+    mut eventlist: Buf,
+    timeout: Option<&Timespec>,
+) -> io::Result<Buf::Output> {
     // Populate the event list with events.
-    eventlist.set_len(0);
-    let out_slice = slice_from_raw_parts_mut(eventlist.as_mut_ptr().cast(), eventlist.capacity());
-    let res = syscalls::kevent(
-        kqueue.as_fd(),
-        changelist,
-        &mut *out_slice,
-        timeout.as_ref(),
-    )
-    .map(|res| res as _);
+    let len = syscalls::kevent(kqueue.as_fd(), changelist, eventlist.parts_mut(), timeout)
+        .map(|res| res as _)?;
 
-    // Update the event list.
-    if let Ok(len) = res {
-        eventlist.set_len(len);
-    }
+    Ok(eventlist.assume_init(len))
+}
 
-    res
+/// `kevent(kqueue, changelist, eventlist, timeout)`—Wait for events on a
+/// `kqueue`.
+///
+/// This is a wrapper around [`kevent_timespec`] which takes a `Duration`
+/// instead of a `Timespec` for the timemout value. `Timespec` has a signed
+/// `i64` seconds field; if converting `Duration` to `Timespec` overflows,
+/// `None` is passed as the timeout instead, such such a large timeout would
+/// be effectively infinite in practice.
+///
+/// # Safety
+///
+/// The file descriptors referred to by the `Event` structs must be valid for
+/// the lifetime of the `kqueue` file descriptor.
+pub unsafe fn kevent<Fd: AsFd, Buf: Buffer<Event>>(
+    kqueue: Fd,
+    changelist: &[Event],
+    eventlist: Buf,
+    timeout: Option<Duration>,
+) -> io::Result<Buf::Output> {
+    let timeout = match timeout {
+        Some(timeout) => match timeout.as_secs().try_into() {
+            Ok(tv_sec) => Some(Timespec {
+                tv_sec,
+                tv_nsec: timeout.subsec_nanos() as _,
+            }),
+            Err(_) => None,
+        },
+        None => None,
+    };
+
+    kevent_timespec(kqueue, changelist, eventlist, timeout.as_ref())
 }

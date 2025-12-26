@@ -1,11 +1,9 @@
 use pki_types::ServerName;
 
 use crate::enums::SignatureScheme;
-use crate::error::Error;
-use crate::msgs::handshake::CertificateChain;
 use crate::msgs::persist;
 use crate::sync::Arc;
-use crate::{client, sign, NamedGroup};
+use crate::{NamedGroup, client, sign};
 
 /// An implementer of `ClientSessionStore` which does nothing.
 #[derive(Debug)]
@@ -42,7 +40,7 @@ mod cache {
 
     use crate::lock::Mutex;
     use crate::msgs::persist;
-    use crate::{limited_cache, NamedGroup};
+    use crate::{NamedGroup, limited_cache};
 
     const MAX_TLS13_TICKETS_PER_SERVER: usize = 8;
 
@@ -211,35 +209,6 @@ impl client::ResolvesClientCert for FailResolveClientCert {
     }
 }
 
-#[derive(Debug)]
-pub(super) struct AlwaysResolvesClientCert(Arc<sign::CertifiedKey>);
-
-impl AlwaysResolvesClientCert {
-    pub(super) fn new(
-        private_key: Arc<dyn sign::SigningKey>,
-        chain: CertificateChain<'static>,
-    ) -> Result<Self, Error> {
-        Ok(Self(Arc::new(sign::CertifiedKey::new(
-            chain.0,
-            private_key,
-        ))))
-    }
-}
-
-impl client::ResolvesClientCert for AlwaysResolvesClientCert {
-    fn resolve(
-        &self,
-        _root_hint_subjects: &[&[u8]],
-        _sigschemes: &[SignatureScheme],
-    ) -> Option<Arc<sign::CertifiedKey>> {
-        Some(Arc::clone(&self.0))
-    }
-
-    fn has_certs(&self) -> bool {
-        true
-    }
-}
-
 /// An exemplar `ResolvesClientCert` implementation that always resolves to a single
 /// [RFC 7250] raw public key.
 ///
@@ -259,7 +228,7 @@ impl client::ResolvesClientCert for AlwaysResolvesClientRawPublicKeys {
         _root_hint_subjects: &[&[u8]],
         _sigschemes: &[SignatureScheme],
     ) -> Option<Arc<sign::CertifiedKey>> {
-        Some(Arc::clone(&self.0))
+        Some(self.0.clone())
     }
 
     fn only_raw_public_keys(&self) -> bool {
@@ -282,23 +251,28 @@ mod tests {
 
     use pki_types::{ServerName, UnixTime};
 
-    use super::provider::cipher_suite;
     use super::NoClientSessionStorage;
-    use crate::client::ClientSessionStore;
+    use super::provider::cipher_suite;
+    use crate::client::danger::{HandshakeSignatureValid, ServerCertVerified, ServerCertVerifier};
+    use crate::client::{ClientSessionStore, ResolvesClientCert};
     use crate::msgs::base::PayloadU16;
     use crate::msgs::enums::NamedGroup;
     use crate::msgs::handshake::CertificateChain;
     #[cfg(feature = "tls12")]
     use crate::msgs::handshake::SessionId;
     use crate::msgs::persist::Tls13ClientSessionValue;
+    use crate::pki_types::CertificateDer;
     use crate::suites::SupportedCipherSuite;
     use crate::sync::Arc;
+    use crate::{DigitallySignedStruct, Error, SignatureScheme, sign};
 
     #[test]
     fn test_noclientsessionstorage_does_nothing() {
         let c = NoClientSessionStorage {};
         let name = ServerName::try_from("example.com").unwrap();
         let now = UnixTime::now();
+        let server_cert_verifier: Arc<dyn ServerCertVerifier> = Arc::new(DummyServerCertVerifier);
+        let resolves_client_cert: Arc<dyn ResolvesClientCert> = Arc::new(DummyResolvesClientCert);
 
         c.set_kx_hint(name.clone(), NamedGroup::X25519);
         assert_eq!(None, c.kx_hint(&name));
@@ -320,6 +294,8 @@ mod tests {
                     Arc::new(PayloadU16::empty()),
                     &[],
                     CertificateChain::default(),
+                    &server_cert_verifier,
+                    &resolves_client_cert,
                     now,
                     0,
                     true,
@@ -340,6 +316,8 @@ mod tests {
                 Arc::new(PayloadU16::empty()),
                 &[],
                 CertificateChain::default(),
+                &server_cert_verifier,
+                &resolves_client_cert,
                 now,
                 0,
                 0,
@@ -347,5 +325,66 @@ mod tests {
             ),
         );
         assert!(c.take_tls13_ticket(&name).is_none());
+    }
+
+    #[derive(Debug)]
+    struct DummyServerCertVerifier;
+
+    impl ServerCertVerifier for DummyServerCertVerifier {
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn verify_server_cert(
+            &self,
+            _end_entity: &CertificateDer<'_>,
+            _intermediates: &[CertificateDer<'_>],
+            _server_name: &ServerName<'_>,
+            _ocsp_response: &[u8],
+            _now: UnixTime,
+        ) -> Result<ServerCertVerified, Error> {
+            unreachable!()
+        }
+
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn verify_tls12_signature(
+            &self,
+            _message: &[u8],
+            _cert: &CertificateDer<'_>,
+            _dss: &DigitallySignedStruct,
+        ) -> Result<HandshakeSignatureValid, Error> {
+            unreachable!()
+        }
+
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn verify_tls13_signature(
+            &self,
+            _message: &[u8],
+            _cert: &CertificateDer<'_>,
+            _dss: &DigitallySignedStruct,
+        ) -> Result<HandshakeSignatureValid, Error> {
+            unreachable!()
+        }
+
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn supported_verify_schemes(&self) -> Vec<SignatureScheme> {
+            unreachable!()
+        }
+    }
+
+    #[derive(Debug)]
+    struct DummyResolvesClientCert;
+
+    impl ResolvesClientCert for DummyResolvesClientCert {
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn resolve(
+            &self,
+            _root_hint_subjects: &[&[u8]],
+            _sigschemes: &[SignatureScheme],
+        ) -> Option<Arc<sign::CertifiedKey>> {
+            unreachable!()
+        }
+
+        #[cfg_attr(coverage_nightly, coverage(off))]
+        fn has_certs(&self) -> bool {
+            unreachable!()
+        }
     }
 }

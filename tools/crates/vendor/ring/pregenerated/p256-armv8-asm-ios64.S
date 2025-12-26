@@ -4,8 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(__APPLE__)
-#include "ring-core/arm_arch.h"
-
 .section	__TEXT,__const
 .align	5
 Lpoly:

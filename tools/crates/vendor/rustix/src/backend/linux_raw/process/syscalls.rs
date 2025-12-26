@@ -5,62 +5,33 @@
 //! See the `rustix::backend` module documentation for details.
 #![allow(unsafe_code, clippy::undocumented_unsafe_blocks)]
 
-use super::types::RawCpuSet;
 use crate::backend::c;
 #[cfg(all(feature = "alloc", feature = "fs"))]
 use crate::backend::conv::slice_mut;
 use crate::backend::conv::{
     by_mut, by_ref, c_int, c_uint, negative_pid, pass_usize, raw_fd, ret, ret_c_int,
-    ret_c_int_infallible, ret_c_uint, ret_infallible, ret_owned_fd, ret_usize, size_of,
-    slice_just_addr, zero,
+    ret_c_int_infallible, ret_infallible, ret_owned_fd, zero,
 };
-use crate::fd::{AsRawFd, BorrowedFd, OwnedFd, RawFd};
+use crate::fd::{AsRawFd as _, BorrowedFd, OwnedFd, RawFd};
 #[cfg(feature = "fs")]
 use crate::ffi::CStr;
 use crate::io;
 use crate::pid::RawPid;
 use crate::process::{
-    Cpuid, MembarrierCommand, MembarrierQuery, Pid, PidfdFlags, PidfdGetfdFlags, Resource, Rlimit,
-    Uid, WaitId, WaitOptions, WaitStatus, WaitidOptions, WaitidStatus,
+    Flock, Pid, PidfdFlags, PidfdGetfdFlags, Resource, Rlimit, Uid, WaitId, WaitIdOptions,
+    WaitIdStatus, WaitOptions, WaitStatus,
 };
 use crate::signal::Signal;
-use crate::utils::as_mut_ptr;
 use core::mem::MaybeUninit;
 use core::ptr::{null, null_mut};
-use linux_raw_sys::general::{
-    membarrier_cmd, membarrier_cmd_flag, rlimit64, PRIO_PGRP, PRIO_PROCESS, PRIO_USER,
-    RLIM64_INFINITY,
-};
+use linux_raw_sys::general::{rlimit64, PRIO_PGRP, PRIO_PROCESS, PRIO_USER, RLIM64_INFINITY};
 #[cfg(feature = "fs")]
 use {crate::backend::conv::ret_c_uint_infallible, crate::fs::Mode};
 #[cfg(feature = "alloc")]
-use {crate::backend::conv::slice_just_addr_mut, crate::process::Gid};
-
-// `sched_getcpu` has special optimizations via the vDSO on some architectures.
-#[cfg(any(
-    target_arch = "x86_64",
-    target_arch = "x86",
-    target_arch = "riscv64",
-    target_arch = "powerpc64"
-))]
-pub(crate) use crate::backend::vdso_wrappers::sched_getcpu;
-
-// `sched_getcpu` on platforms without a vDSO entry for it.
-#[cfg(not(any(
-    target_arch = "x86_64",
-    target_arch = "x86",
-    target_arch = "riscv64",
-    target_arch = "powerpc64"
-)))]
-#[inline]
-pub(crate) fn sched_getcpu() -> usize {
-    let mut cpu = MaybeUninit::<u32>::uninit();
-    unsafe {
-        let r = ret(syscall!(__NR_getcpu, &mut cpu, zero(), zero()));
-        debug_assert!(r.is_ok());
-        cpu.assume_init() as usize
-    }
-}
+use {
+    crate::backend::conv::{ret_usize, slice_just_addr_mut},
+    crate::process::Gid,
+};
 
 #[cfg(feature = "fs")]
 #[inline]
@@ -87,37 +58,7 @@ pub(crate) fn getcwd(buf: &mut [MaybeUninit<u8>]) -> io::Result<usize> {
 }
 
 #[inline]
-pub(crate) fn membarrier_query() -> MembarrierQuery {
-    unsafe {
-        match ret_c_uint(syscall!(
-            __NR_membarrier,
-            c_int(membarrier_cmd::MEMBARRIER_CMD_QUERY as _),
-            c_uint(0)
-        )) {
-            Ok(query) => MembarrierQuery::from_bits_retain(query),
-            Err(_) => MembarrierQuery::empty(),
-        }
-    }
-}
-
-#[inline]
-pub(crate) fn membarrier(cmd: MembarrierCommand) -> io::Result<()> {
-    unsafe { ret(syscall!(__NR_membarrier, cmd, c_uint(0))) }
-}
-
-#[inline]
-pub(crate) fn membarrier_cpu(cmd: MembarrierCommand, cpu: Cpuid) -> io::Result<()> {
-    unsafe {
-        ret(syscall!(
-            __NR_membarrier,
-            cmd,
-            c_uint(membarrier_cmd_flag::MEMBARRIER_CMD_FLAG_CPU as _),
-            cpu
-        ))
-    }
-}
-
-#[inline]
+#[must_use]
 pub(crate) fn getppid() -> Option<Pid> {
     unsafe {
         let ppid = ret_c_int_infallible(syscall_readonly!(__NR_getppid));
@@ -146,6 +87,7 @@ pub(crate) fn setpgid(pid: Option<Pid>, pgid: Option<Pid>) -> io::Result<()> {
 }
 
 #[inline]
+#[must_use]
 pub(crate) fn getpgrp() -> Pid {
     // Use the `getpgrp` syscall if available.
     #[cfg(not(any(target_arch = "aarch64", target_arch = "riscv64")))]
@@ -161,47 +103,6 @@ pub(crate) fn getpgrp() -> Pid {
         let pgid = ret_c_int_infallible(syscall_readonly!(__NR_getpgid, c_uint(0)));
         debug_assert!(pgid > 0);
         Pid::from_raw_unchecked(pgid)
-    }
-}
-
-#[inline]
-pub(crate) fn sched_getaffinity(pid: Option<Pid>, cpuset: &mut RawCpuSet) -> io::Result<()> {
-    unsafe {
-        // The raw Linux syscall returns the size (in bytes) of the `cpumask_t`
-        // data type that is used internally by the kernel to represent the CPU
-        // set bit mask.
-        let size = ret_usize(syscall!(
-            __NR_sched_getaffinity,
-            c_int(Pid::as_raw(pid)),
-            size_of::<RawCpuSet, _>(),
-            by_mut(&mut cpuset.bits)
-        ))?;
-        let bytes = as_mut_ptr(cpuset).cast::<u8>();
-        let rest = bytes.wrapping_add(size);
-        // Zero every byte in the cpuset not set by the kernel.
-        rest.write_bytes(0, core::mem::size_of::<RawCpuSet>() - size);
-        Ok(())
-    }
-}
-
-#[inline]
-pub(crate) fn sched_setaffinity(pid: Option<Pid>, cpuset: &RawCpuSet) -> io::Result<()> {
-    unsafe {
-        ret(syscall_readonly!(
-            __NR_sched_setaffinity,
-            c_int(Pid::as_raw(pid)),
-            size_of::<RawCpuSet, _>(),
-            slice_just_addr(&cpuset.bits)
-        ))
-    }
-}
-
-#[inline]
-pub(crate) fn sched_yield() {
-    unsafe {
-        // See the documentation for [`crate::process::sched_yield`] for why
-        // errors are ignored.
-        syscall_readonly!(__NR_sched_yield).decode_void();
     }
 }
 
@@ -399,7 +300,7 @@ pub(crate) fn _waitpid(
     waitopts: WaitOptions,
 ) -> io::Result<Option<(Pid, WaitStatus)>> {
     unsafe {
-        let mut status = MaybeUninit::<u32>::uninit();
+        let mut status = MaybeUninit::<i32>::uninit();
         let pid = ret_c_int(syscall!(
             __NR_wait4,
             c_int(pid as _),
@@ -412,7 +313,7 @@ pub(crate) fn _waitpid(
 }
 
 #[inline]
-pub(crate) fn waitid(id: WaitId<'_>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+pub(crate) fn waitid(id: WaitId<'_>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // Get the id to wait on.
     match id {
         WaitId::All => _waitid_all(options),
@@ -423,7 +324,7 @@ pub(crate) fn waitid(id: WaitId<'_>, options: WaitidOptions) -> io::Result<Optio
 }
 
 #[inline]
-fn _waitid_all(options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_all(options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -432,7 +333,7 @@ fn _waitid_all(options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
             __NR_waitid,
             c_uint(c::P_ALL),
             c_uint(0),
-            by_mut(&mut status),
+            &mut status,
             c_int(options.bits() as _),
             zero()
         ))?
@@ -442,7 +343,7 @@ fn _waitid_all(options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
 }
 
 #[inline]
-fn _waitid_pid(pid: Pid, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pid(pid: Pid, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -451,7 +352,7 @@ fn _waitid_pid(pid: Pid, options: WaitidOptions) -> io::Result<Option<WaitidStat
             __NR_waitid,
             c_uint(c::P_PID),
             c_int(Pid::as_raw(Some(pid))),
-            by_mut(&mut status),
+            &mut status,
             c_int(options.bits() as _),
             zero()
         ))?
@@ -461,7 +362,7 @@ fn _waitid_pid(pid: Pid, options: WaitidOptions) -> io::Result<Option<WaitidStat
 }
 
 #[inline]
-fn _waitid_pgid(pgid: Option<Pid>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pgid(pgid: Option<Pid>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -470,7 +371,7 @@ fn _waitid_pgid(pgid: Option<Pid>, options: WaitidOptions) -> io::Result<Option<
             __NR_waitid,
             c_uint(c::P_PGID),
             c_int(Pid::as_raw(pgid)),
-            by_mut(&mut status),
+            &mut status,
             c_int(options.bits() as _),
             zero()
         ))?
@@ -480,7 +381,7 @@ fn _waitid_pgid(pgid: Option<Pid>, options: WaitidOptions) -> io::Result<Option<
 }
 
 #[inline]
-fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -489,7 +390,7 @@ fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitidOptions) -> io::Result<Optio
             __NR_waitid,
             c_uint(c::P_PIDFD),
             c_uint(fd.as_raw_fd() as _),
-            by_mut(&mut status),
+            &mut status,
             c_int(options.bits() as _),
             zero()
         ))?
@@ -498,20 +399,26 @@ fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitidOptions) -> io::Result<Optio
     Ok(unsafe { cvt_waitid_status(status) })
 }
 
-/// Convert a `siginfo_t` to a `WaitidStatus`.
+/// Convert a `siginfo_t` to a `WaitIdStatus`.
 ///
 /// # Safety
 ///
 /// The caller must ensure that `status` is initialized and that `waitid`
 /// returned successfully.
 #[inline]
-#[rustfmt::skip]
-unsafe fn cvt_waitid_status(status: MaybeUninit<c::siginfo_t>) -> Option<WaitidStatus> {
+unsafe fn cvt_waitid_status(status: MaybeUninit<c::siginfo_t>) -> Option<WaitIdStatus> {
     let status = status.assume_init();
-    if status.__bindgen_anon_1.__bindgen_anon_1._sifields._sigchld._pid == 0 {
+    if status
+        .__bindgen_anon_1
+        .__bindgen_anon_1
+        ._sifields
+        ._sigchld
+        ._pid
+        == 0
+    {
         None
     } else {
-        Some(WaitidStatus(status))
+        Some(WaitIdStatus(status))
     }
 }
 
@@ -618,5 +525,36 @@ pub(crate) fn getgroups(buf: &mut [Gid]) -> io::Result<usize> {
             c_int(len),
             slice_just_addr_mut(buf)
         ))
+    }
+}
+
+#[inline]
+pub(crate) fn fcntl_getlk(fd: BorrowedFd<'_>, lock: &Flock) -> io::Result<Option<Flock>> {
+    let mut curr_lock: c::flock = lock.as_raw();
+    #[cfg(target_pointer_width = "32")]
+    unsafe {
+        ret(syscall!(
+            __NR_fcntl64,
+            fd,
+            c_uint(c::F_GETLK64),
+            by_mut(&mut curr_lock)
+        ))?
+    }
+    #[cfg(target_pointer_width = "64")]
+    unsafe {
+        ret(syscall!(
+            __NR_fcntl,
+            fd,
+            c_uint(c::F_GETLK),
+            by_mut(&mut curr_lock)
+        ))?
+    }
+
+    // If no blocking lock is found, `fcntl(GETLK, ..)` sets `l_type` to
+    // `F_UNLCK`.
+    if curr_lock.l_type == c::F_UNLCK as _ {
+        Ok(None)
+    } else {
+        Ok(Some(unsafe { Flock::from_raw_unchecked(curr_lock) }))
     }
 }

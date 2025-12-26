@@ -1,18 +1,17 @@
-use std::collections::HashSet;
-
 use gix_features::progress::Progress;
 use gix_protocol::transport::client::Transport;
 
 use crate::{
-    bstr,
-    bstr::{BString, ByteVec},
-    remote::{connection::HandshakeWithRefs, fetch, fetch::SpecIndex, Connection, Direction},
+    bstr::BString,
+    remote::{fetch, Connection, Direction},
 };
 
 /// The error returned by [`Connection::ref_map()`].
 #[derive(Debug, thiserror::Error)]
 #[allow(missing_docs)]
 pub enum Error {
+    #[error(transparent)]
+    InitRefMap(#[from] gix_protocol::fetch::refmap::init::Error),
     #[error("Failed to configure the transport before connecting to {url:?}")]
     GatherTransportConfig {
         url: BString,
@@ -22,23 +21,16 @@ pub enum Error {
     ConfigureTransport(#[from] Box<dyn std::error::Error + Send + Sync + 'static>),
     #[error(transparent)]
     Handshake(#[from] gix_protocol::handshake::Error),
-    #[error("The object format {format:?} as used by the remote is unsupported")]
-    UnknownObjectFormat { format: BString },
-    #[error(transparent)]
-    ListRefs(#[from] gix_protocol::ls_refs::Error),
     #[error(transparent)]
     Transport(#[from] gix_protocol::transport::client::Error),
     #[error(transparent)]
     ConfigureCredentials(#[from] crate::config::credential_helpers::Error),
-    #[error(transparent)]
-    MappingValidation(#[from] gix_refspec::match_group::validate::Error),
 }
 
 impl gix_protocol::transport::IsSpuriousError for Error {
     fn is_spurious(&self) -> bool {
         match self {
             Error::Transport(err) => err.is_spurious(),
-            Error::ListRefs(err) => err.is_spurious(),
             Error::Handshake(err) => err.is_spurious(),
             _ => false,
         }
@@ -71,7 +63,7 @@ impl Default for Options {
     }
 }
 
-impl<'remote, 'repo, T> Connection<'remote, 'repo, T>
+impl<T> Connection<'_, '_, T>
 where
     T: Transport,
 {
@@ -93,19 +85,23 @@ where
     /// - `gitoxide.userAgent` is read to obtain the application user agent for git servers and for HTTP servers as well.
     #[allow(clippy::result_large_err)]
     #[gix_protocol::maybe_async::maybe_async]
-    pub async fn ref_map(mut self, progress: impl Progress, options: Options) -> Result<fetch::RefMap, Error> {
-        let res = self.ref_map_inner(progress, options).await;
-        gix_protocol::indicate_end_of_interaction(&mut self.transport, self.trace)
-            .await
-            .ok();
-        res
+    pub async fn ref_map(
+        mut self,
+        progress: impl Progress,
+        options: Options,
+    ) -> Result<(fetch::RefMap, gix_protocol::handshake::Outcome), Error> {
+        let refmap = self.ref_map_by_ref(progress, options).await?;
+        let handshake = self
+            .handshake
+            .expect("refmap always performs handshake and stores it if it succeeds");
+        Ok((refmap, handshake))
     }
 
     #[allow(clippy::result_large_err)]
     #[gix_protocol::maybe_async::maybe_async]
-    pub(crate) async fn ref_map_inner(
+    pub(crate) async fn ref_map_by_ref(
         &mut self,
-        progress: impl Progress,
+        mut progress: impl Progress,
         Options {
             prefix_from_spec_as_filter_on_remote,
             handshake_parameters,
@@ -113,84 +109,13 @@ where
         }: Options,
     ) -> Result<fetch::RefMap, Error> {
         let _span = gix_trace::coarse!("remote::Connection::ref_map()");
-        let null = gix_hash::ObjectId::null(gix_hash::Kind::Sha1); // OK to hardcode Sha1, it's not supposed to match, ever.
-
         if let Some(tag_spec) = self.remote.fetch_tags.to_refspec().map(|spec| spec.to_owned()) {
             if !extra_refspecs.contains(&tag_spec) {
                 extra_refspecs.push(tag_spec);
             }
-        };
-        let specs = {
-            let mut s = self.remote.fetch_specs.clone();
-            s.extend(extra_refspecs.clone());
-            s
-        };
-        let remote = self
-            .fetch_refs(
-                prefix_from_spec_as_filter_on_remote,
-                handshake_parameters,
-                &specs,
-                progress,
-            )
-            .await?;
-        let num_explicit_specs = self.remote.fetch_specs.len();
-        let group = gix_refspec::MatchGroup::from_fetch_specs(specs.iter().map(gix_refspec::RefSpec::to_ref));
-        let (res, fixes) = group
-            .match_remotes(remote.refs.iter().map(|r| {
-                let (full_ref_name, target, object) = r.unpack();
-                gix_refspec::match_group::Item {
-                    full_ref_name,
-                    target: target.unwrap_or(&null),
-                    object,
-                }
-            }))
-            .validated()?;
-
-        let mappings = res.mappings;
-        let mappings = mappings
-            .into_iter()
-            .map(|m| fetch::Mapping {
-                remote: m.item_index.map_or_else(
-                    || {
-                        fetch::Source::ObjectId(match m.lhs {
-                            gix_refspec::match_group::SourceRef::ObjectId(id) => id,
-                            _ => unreachable!("no item index implies having an object id"),
-                        })
-                    },
-                    |idx| fetch::Source::Ref(remote.refs[idx].clone()),
-                ),
-                local: m.rhs.map(std::borrow::Cow::into_owned),
-                spec_index: if m.spec_index < num_explicit_specs {
-                    SpecIndex::ExplicitInRemote(m.spec_index)
-                } else {
-                    SpecIndex::Implicit(m.spec_index - num_explicit_specs)
-                },
-            })
-            .collect();
-
-        let object_hash = extract_object_format(self.remote.repo, &remote.outcome)?;
-        Ok(fetch::RefMap {
-            mappings,
-            extra_refspecs,
-            fixes,
-            remote_refs: remote.refs,
-            handshake: remote.outcome,
-            object_hash,
-        })
-    }
-
-    #[allow(clippy::result_large_err)]
-    #[gix_protocol::maybe_async::maybe_async]
-    async fn fetch_refs(
-        &mut self,
-        filter_by_prefix: bool,
-        extra_parameters: Vec<(String, Option<String>)>,
-        refspecs: &[gix_refspec::RefSpec],
-        mut progress: impl Progress,
-    ) -> Result<HandshakeWithRefs, Error> {
-        let _span = gix_trace::coarse!("remote::Connection::fetch_refs()");
+        }
         let mut credentials_storage;
-        let url = self.transport.to_url();
+        let url = self.transport.inner.to_url();
         let authenticate = match self.authenticate.as_mut() {
             Some(f) => f,
             None => {
@@ -203,10 +128,9 @@ where
             }
         };
 
+        let repo = self.remote.repo;
         if self.transport_options.is_none() {
-            self.transport_options = self
-                .remote
-                .repo
+            self.transport_options = repo
                 .transport_options(url.as_ref(), self.remote.name().map(crate::remote::Name::as_bstr))
                 .map_err(|err| Error::GatherTransportConfig {
                     source: err,
@@ -214,63 +138,31 @@ where
                 })?;
         }
         if let Some(config) = self.transport_options.as_ref() {
-            self.transport.configure(&**config)?;
+            self.transport.inner.configure(&**config)?;
         }
-        let mut outcome =
-            gix_protocol::fetch::handshake(&mut self.transport, authenticate, extra_parameters, &mut progress).await?;
-        let refs = match outcome.refs.take() {
-            Some(refs) => refs,
-            None => {
-                let agent_feature = self.remote.repo.config.user_agent_tuple();
-                gix_protocol::ls_refs(
-                    &mut self.transport,
-                    &outcome.capabilities,
-                    move |_capabilities, arguments, features| {
-                        features.push(agent_feature);
-                        if filter_by_prefix {
-                            let mut seen = HashSet::new();
-                            for spec in refspecs {
-                                let spec = spec.to_ref();
-                                if seen.insert(spec.instruction()) {
-                                    let mut prefixes = Vec::with_capacity(1);
-                                    spec.expand_prefixes(&mut prefixes);
-                                    for mut prefix in prefixes {
-                                        prefix.insert_str(0, "ref-prefix ");
-                                        arguments.push(prefix);
-                                    }
-                                }
-                            }
-                        }
-                        Ok(gix_protocol::ls_refs::Action::Continue)
-                    },
-                    &mut progress,
-                    self.trace,
-                )
-                .await?
-            }
-        };
-        Ok(HandshakeWithRefs { outcome, refs })
+        let mut handshake = gix_protocol::fetch::handshake(
+            &mut self.transport.inner,
+            authenticate,
+            handshake_parameters,
+            &mut progress,
+        )
+        .await?;
+        let refmap = gix_protocol::fetch::RefMap::new(
+            progress,
+            &self.remote.fetch_specs,
+            gix_protocol::fetch::Context {
+                handshake: &mut handshake,
+                transport: &mut self.transport.inner,
+                user_agent: self.remote.repo.config.user_agent_tuple(),
+                trace_packetlines: self.trace,
+            },
+            gix_protocol::fetch::refmap::init::Options {
+                prefix_from_spec_as_filter_on_remote,
+                extra_refspecs,
+            },
+        )
+        .await?;
+        self.handshake = Some(handshake);
+        Ok(refmap)
     }
-}
-
-/// Assume sha1 if server says nothing, otherwise configure anything beyond sha1 in the local repo configuration
-#[allow(clippy::result_large_err)]
-fn extract_object_format(
-    _repo: &crate::Repository,
-    outcome: &gix_protocol::handshake::Outcome,
-) -> Result<gix_hash::Kind, Error> {
-    use bstr::ByteSlice;
-    let object_hash =
-        if let Some(object_format) = outcome.capabilities.capability("object-format").and_then(|c| c.value()) {
-            let object_format = object_format.to_str().map_err(|_| Error::UnknownObjectFormat {
-                format: object_format.into(),
-            })?;
-            match object_format {
-                "sha1" => gix_hash::Kind::Sha1,
-                unknown => return Err(Error::UnknownObjectFormat { format: unknown.into() }),
-            }
-        } else {
-            gix_hash::Kind::Sha1
-        };
-    Ok(object_hash)
 }

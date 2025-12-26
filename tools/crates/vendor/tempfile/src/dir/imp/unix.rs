@@ -6,7 +6,7 @@ use std::path::PathBuf;
 pub fn create(
     path: PathBuf,
     permissions: Option<&std::fs::Permissions>,
-    keep: bool,
+    disable_cleanup: bool,
 ) -> io::Result<TempDir> {
     let mut dir_options = std::fs::DirBuilder::new();
     #[cfg(not(target_os = "wasi"))]
@@ -21,6 +21,6 @@ pub fn create(
         .with_err_path(|| &path)
         .map(|_| TempDir {
             path: path.into_boxed_path(),
-            keep,
+            disable_cleanup,
         })
 }

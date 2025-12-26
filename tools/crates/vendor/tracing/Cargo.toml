@@ -11,14 +11,15 @@
 
 [package]
 edition = "2018"
-rust-version = "1.63.0"
+rust-version = "1.65.0"
 name = "tracing"
-version = "0.1.41"
+version = "0.1.44"
 authors = [
     "Eliza Weisman <eliza@buoyant.io>",
     "Tokio Contributors <team@tokio.rs>",
 ]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -46,16 +47,42 @@ resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
-rustc-args = [
-    "--cfg",
-    "tracing_unstable",
-]
 rustdoc-args = [
     "--cfg",
     "docsrs",
     "--cfg",
     "tracing_unstable",
 ]
+rustc-args = [
+    "--cfg",
+    "tracing_unstable",
+]
+
+[badges.maintenance]
+status = "actively-developed"
+
+[features]
+async-await = []
+attributes = ["tracing-attributes"]
+default = [
+    "std",
+    "attributes",
+]
+log-always = ["log"]
+max_level_debug = []
+max_level_error = []
+max_level_info = []
+max_level_off = []
+max_level_trace = []
+max_level_warn = []
+release_max_level_debug = []
+release_max_level_error = []
+release_max_level_info = []
+release_max_level_off = []
+release_max_level_trace = []
+release_max_level_warn = []
+std = ["tracing-core/std"]
+valuable = ["tracing-core/valuable"]
 
 [lib]
 name = "tracing"
@@ -194,11 +221,11 @@ optional = true
 version = "0.2.9"
 
 [dependencies.tracing-attributes]
-version = "0.1.28"
+version = "0.1.31"
 optional = true
 
 [dependencies.tracing-core]
-version = "0.1.33"
+version = "0.1.36"
 default-features = false
 
 [dev-dependencies.criterion]
@@ -212,34 +239,8 @@ default-features = false
 [dev-dependencies.log]
 version = "0.4.17"
 
-[features]
-async-await = []
-attributes = ["tracing-attributes"]
-default = [
-    "std",
-    "attributes",
-]
-log-always = ["log"]
-max_level_debug = []
-max_level_error = []
-max_level_info = []
-max_level_off = []
-max_level_trace = []
-max_level_warn = []
-release_max_level_debug = []
-release_max_level_error = []
-release_max_level_info = []
-release_max_level_off = []
-release_max_level_trace = []
-release_max_level_warn = []
-std = ["tracing-core/std"]
-valuable = ["tracing-core/valuable"]
-
 [target.'cfg(target_arch = "wasm32")'.dev-dependencies.wasm-bindgen-test]
 version = "0.3.38"
-
-[badges.maintenance]
-status = "actively-developed"
 
 [lints.rust.unexpected_cfgs]
 level = "warn"
@@ -247,4 +248,5 @@ priority = 0
 check-cfg = [
     "cfg(flaky_tests)",
     "cfg(tracing_unstable)",
+    "cfg(unsound_local_offset)",
 ]

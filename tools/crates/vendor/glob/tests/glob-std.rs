@@ -62,7 +62,10 @@ fn main() {
     }
 
     fn glob_with_vec(pattern: &str, options: glob::MatchOptions) -> Vec<PathBuf> {
-        glob_with(pattern, options).unwrap().map(|r| r.unwrap()).collect()
+        glob_with(pattern, options)
+            .unwrap()
+            .map(|r| r.unwrap())
+            .collect()
     }
 
     let root = TempDir::new("glob-tests");

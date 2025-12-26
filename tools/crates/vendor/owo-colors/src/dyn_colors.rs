@@ -4,9 +4,10 @@ use crate::{
 };
 use core::fmt;
 
-/// An enum describing runtime-configurable colors which can be displayed using [`FgDynColorDisplay`](FgDynColorDisplay)
-/// or [`BgDynColorDisplay`](BgDynColorDisplay), allowing for multiple types of colors to be used
-/// at runtime.
+/// An enum describing runtime-configurable colors
+///
+/// This can be displayed using [`FgDynColorDisplay`](FgDynColorDisplay) or [`BgDynColorDisplay`](BgDynColorDisplay),
+/// allowing for multiple types of colors to be used at runtime.
 #[allow(missing_docs)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum DynColors {
@@ -15,6 +16,8 @@ pub enum DynColors {
     Xterm(XtermColors),
     Rgb(u8, u8, u8),
 }
+
+impl crate::private::Sealed for DynColors {}
 
 impl DynColor for DynColors {
     fn fmt_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -92,8 +95,7 @@ impl core::str::FromStr for DynColors {
                 "green" => AnsiColors::Green,
                 "yellow" => AnsiColors::Yellow,
                 "blue" => AnsiColors::Blue,
-                "magenta" => AnsiColors::Magenta,
-                "purple" => AnsiColors::Magenta,
+                "magenta" | "purple" => AnsiColors::Magenta,
                 "cyan" => AnsiColors::Cyan,
                 "white" => AnsiColors::White,
                 "bright black" => AnsiColors::BrightBlack,

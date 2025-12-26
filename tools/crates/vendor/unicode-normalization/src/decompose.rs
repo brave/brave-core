@@ -53,7 +53,7 @@ impl<I: Iterator<Item = char>> Decompositions<I> {
 
     /// Create a new decomposition iterator for compatability decompositions (NFkD)
     ///
-    /// Note that this iterator can also be obtained by directly calling [`.nfd()`](crate::UnicodeNormalization::nfd)
+    /// Note that this iterator can also be obtained by directly calling [`.nfkd()`](crate::UnicodeNormalization::nfkd)
     /// on the iterator.
     #[inline]
     pub fn new_compatible(iter: I) -> Decompositions<I> {

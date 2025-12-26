@@ -1,6 +1,97 @@
-use std::path::{Component, Path, PathBuf};
+use std::{
+    ffi::OsStr,
+    path::{Component, Path, PathBuf},
+};
+
+use bstr::{BStr, BString, ByteSlice};
 
 use crate::Stack;
+
+///
+pub mod to_normal_path_components {
+    use std::path::PathBuf;
+
+    /// The error used in [`ToNormalPathComponents::to_normal_path_components()`](super::ToNormalPathComponents::to_normal_path_components()).
+    #[derive(Debug, thiserror::Error)]
+    #[allow(missing_docs)]
+    pub enum Error {
+        #[error("Input path \"{path}\" contains relative or absolute components", path = .0.display())]
+        NotANormalComponent(PathBuf),
+        #[error("Could not convert to UTF8 or from UTF8 due to ill-formed input")]
+        IllegalUtf8,
+    }
+}
+
+/// Obtain an iterator over `OsStr`-components which are normal, none-relative and not absolute.
+pub trait ToNormalPathComponents {
+    /// Return an iterator over the normal components of a path, without the separator.
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>>;
+}
+
+impl ToNormalPathComponents for &Path {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+        self.components().map(|c| component_to_os_str(c, self))
+    }
+}
+
+impl ToNormalPathComponents for PathBuf {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+        self.components().map(|c| component_to_os_str(c, self))
+    }
+}
+
+fn component_to_os_str<'a>(
+    component: Component<'a>,
+    path_with_component: &Path,
+) -> Result<&'a OsStr, to_normal_path_components::Error> {
+    match component {
+        Component::Normal(os_str) => Ok(os_str),
+        _ => Err(to_normal_path_components::Error::NotANormalComponent(
+            path_with_component.to_owned(),
+        )),
+    }
+}
+
+impl ToNormalPathComponents for &BStr {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+        self.split(|b| *b == b'/')
+            .filter_map(|c| bytes_component_to_os_str(c, self))
+    }
+}
+
+impl ToNormalPathComponents for &str {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+        self.split('/')
+            .filter_map(|c| bytes_component_to_os_str(c.as_bytes(), (*self).into()))
+    }
+}
+
+impl ToNormalPathComponents for &BString {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+        self.split(|b| *b == b'/')
+            .filter_map(|c| bytes_component_to_os_str(c, self.as_bstr()))
+    }
+}
+
+fn bytes_component_to_os_str<'a>(
+    component: &'a [u8],
+    path: &BStr,
+) -> Option<Result<&'a OsStr, to_normal_path_components::Error>> {
+    if component.is_empty() {
+        return None;
+    }
+    let component = match gix_path::try_from_byte_slice(component.as_bstr())
+        .map_err(|_| to_normal_path_components::Error::IllegalUtf8)
+    {
+        Ok(c) => c,
+        Err(err) => return Some(Err(err)),
+    };
+    let component = component.components().next()?;
+    Some(component_to_os_str(
+        component,
+        gix_path::try_from_byte_slice(path.as_ref()).ok()?,
+    ))
+}
 
 /// Access
 impl Stack {
@@ -62,26 +153,32 @@ impl Stack {
     /// `relative` paths are terminal, so point to their designated file or directory.
     /// The path is also expected to be normalized, and should not contain extra separators, and must not contain `..`
     /// or have leading or trailing slashes (or additionally backslashes on Windows).
-    pub fn make_relative_path_current(&mut self, relative: &Path, delegate: &mut dyn Delegate) -> std::io::Result<()> {
-        if self.valid_components != 0 && relative.as_os_str().is_empty() {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                "empty inputs are not allowed",
-            ));
+    pub fn make_relative_path_current(
+        &mut self,
+        relative: impl ToNormalPathComponents,
+        delegate: &mut dyn Delegate,
+    ) -> std::io::Result<()> {
+        let mut components = relative.to_normal_path_components().peekable();
+        if self.valid_components != 0 && components.peek().is_none() {
+            return Err(std::io::Error::other("empty inputs are not allowed"));
         }
         if self.valid_components == 0 {
             delegate.push_directory(self)?;
         }
 
-        let mut components = relative.components().peekable();
         let mut existing_components = self.current_relative.components();
         let mut matching_components = 0;
         while let (Some(existing_comp), Some(new_comp)) = (existing_components.next(), components.peek()) {
-            if existing_comp == *new_comp {
-                components.next();
-                matching_components += 1;
-            } else {
-                break;
+            match new_comp {
+                Ok(new_comp) => {
+                    if existing_comp.as_os_str() == *new_comp {
+                        components.next();
+                        matching_components += 1;
+                    } else {
+                        break;
+                    }
+                }
+                Err(err) => return Err(std::io::Error::other(format!("{err}"))),
             }
         }
 
@@ -100,15 +197,7 @@ impl Stack {
         }
 
         while let Some(comp) = components.next() {
-            if !matches!(comp, Component::Normal(_)) {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    format!(
-                        "Input path \"{}\" contains relative or absolute components",
-                        relative.display()
-                    ),
-                ));
-            }
+            let comp = comp.map_err(std::io::Error::other)?;
             let is_last_component = components.peek().is_none();
             self.current_is_directory = !is_last_component;
             self.current.push(comp);

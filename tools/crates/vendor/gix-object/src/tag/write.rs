@@ -1,6 +1,7 @@
 use std::io;
 
 use bstr::BStr;
+use gix_date::parse::TimeBuf;
 
 use crate::{encode, encode::NL, Kind, Tag, TagRef};
 
@@ -16,7 +17,7 @@ pub enum Error {
 
 impl From<Error> for io::Error {
     fn from(err: Error) -> Self {
-        io::Error::new(io::ErrorKind::Other, err)
+        io::Error::other(err)
     }
 }
 
@@ -26,13 +27,14 @@ impl crate::WriteTo for Tag {
         encode::trusted_header_field(b"type", self.target_kind.as_bytes(), out)?;
         encode::header_field(b"tag", validated_name(self.name.as_ref())?, out)?;
         if let Some(tagger) = &self.tagger {
-            encode::trusted_header_signature(b"tagger", &tagger.to_ref(), out)?;
+            let mut buf = TimeBuf::default();
+            encode::trusted_header_signature(b"tagger", &tagger.to_ref(&mut buf), out)?;
         }
 
-        out.write_all(NL)?;
-        if !self.message.is_empty() {
-            out.write_all(self.message.as_ref())?;
+        if !self.message.iter().all(|b| *b == b'\n') {
+            out.write_all(NL)?;
         }
+        out.write_all(self.message.as_ref())?;
         if let Some(message) = &self.pgp_signature {
             out.write_all(NL)?;
             out.write_all(message.as_ref())?;
@@ -52,12 +54,12 @@ impl crate::WriteTo for Tag {
             .tagger
             .as_ref()
             .map_or(0, |t| b"tagger".len() + 1 /* space */ + t.size() + 1 /* nl */)
-            + 1 /* nl */ + self.message.len()
+            + if self.message.iter().all(|b| *b == b'\n') { 0 } else { 1 /* nl */ } + self.message.len()
             + self.pgp_signature.as_ref().map_or(0, |m| 1 /* nl */ + m.len())) as u64
     }
 }
 
-impl<'a> crate::WriteTo for TagRef<'a> {
+impl crate::WriteTo for TagRef<'_> {
     fn write_to(&self, mut out: &mut dyn io::Write) -> io::Result<()> {
         encode::trusted_header_field(b"object", self.target, &mut out)?;
         encode::trusted_header_field(b"type", self.target_kind.as_bytes(), &mut out)?;
@@ -66,10 +68,10 @@ impl<'a> crate::WriteTo for TagRef<'a> {
             encode::trusted_header_signature(b"tagger", tagger, &mut out)?;
         }
 
-        out.write_all(NL)?;
-        if !self.message.is_empty() {
-            out.write_all(self.message)?;
+        if !self.message.iter().all(|b| *b == b'\n') {
+            out.write_all(NL)?;
         }
+        out.write_all(self.message)?;
         if let Some(message) = self.pgp_signature {
             out.write_all(NL)?;
             out.write_all(message)?;
@@ -89,7 +91,7 @@ impl<'a> crate::WriteTo for TagRef<'a> {
                 .tagger
                 .as_ref()
                 .map_or(0, |t| b"tagger".len() + 1 /* space */ + t.size() + 1 /* nl */)
-            + 1 /* nl */ + self.message.len()
+            + if self.message.iter().all(|b| *b == b'\n') { 0 } else { 1 /* nl */ } + self.message.len()
             + self.pgp_signature.as_ref().map_or(0, |m| 1 /* nl */ + m.len())) as u64
     }
 }

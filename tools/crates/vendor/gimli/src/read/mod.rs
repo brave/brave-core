@@ -41,7 +41,9 @@
 //!
 //! Full example programs:
 //!
-//!   * [A simple parser](https://github.com/gimli-rs/gimli/blob/master/crates/examples/src/bin/simple.rs)
+//!   * [A simple `.debug_info` parser](https://github.com/gimli-rs/gimli/blob/master/crates/examples/src/bin/simple.rs)
+//!
+//!   * [A simple `.debug_line` parser](https://github.com/gimli-rs/gimli/blob/master/crates/examples/src/bin/simple_line.rs)
 //!
 //!   * [A `dwarfdump`
 //!     clone](https://github.com/gimli-rs/gimli/blob/master/crates/examples/src/bin/dwarfdump.rs)
@@ -64,18 +66,22 @@
 //! * Basic familiarity with DWARF is assumed.
 //!
 //! * The [`Dwarf`](./struct.Dwarf.html) type contains the commonly used DWARF
-//! sections. It has methods that simplify access to debugging data that spans
-//! multiple sections. Use of this type is optional, but recommended.
+//!   sections. It has methods that simplify access to debugging data that spans
+//!   multiple sections. Use of this type is optional, but recommended.
+//!
+//! * The [`DwarfPackage`](./struct.Dwarf.html) type contains the DWARF
+//!   package (DWP) sections. It has methods to find a DWARF object (DWO)
+//!   within the package.
 //!
 //! * Each section gets its own type. Consider these types the entry points to
-//! the library:
+//!   the library:
 //!
 //!   * [`DebugAbbrev`](./struct.DebugAbbrev.html): The `.debug_abbrev` section.
 //!
 //!   * [`DebugAddr`](./struct.DebugAddr.html): The `.debug_addr` section.
 //!
 //!   * [`DebugAranges`](./struct.DebugAranges.html): The `.debug_aranges`
-//!   section.
+//!     section.
 //!
 //!   * [`DebugFrame`](./struct.DebugFrame.html): The `.debug_frame` section.
 //!
@@ -90,10 +96,10 @@
 //!   * [`DebugLocLists`](./struct.DebugLocLists.html): The `.debug_loclists` section.
 //!
 //!   * [`DebugPubNames`](./struct.DebugPubNames.html): The `.debug_pubnames`
-//!   section.
+//!     section.
 //!
 //!   * [`DebugPubTypes`](./struct.DebugPubTypes.html): The `.debug_pubtypes`
-//!   section.
+//!     section.
 //!
 //!   * [`DebugRanges`](./struct.DebugRanges.html): The `.debug_ranges` section.
 //!
@@ -114,15 +120,15 @@
 //!   * [`EhFrameHdr`](./struct.EhFrameHdr.html): The `.eh_frame_hdr` section.
 //!
 //! * Each section type exposes methods for accessing the debugging data encoded
-//! in that section. For example, the [`DebugInfo`](./struct.DebugInfo.html)
-//! struct has the [`units`](./struct.DebugInfo.html#method.units) method for
-//! iterating over the compilation units defined within it.
+//!   in that section. For example, the [`DebugInfo`](./struct.DebugInfo.html)
+//!   struct has the [`units`](./struct.DebugInfo.html#method.units) method for
+//!   iterating over the compilation units defined within it.
 //!
 //! * Offsets into a section are strongly typed: an offset into `.debug_info` is
-//! the [`DebugInfoOffset`](./struct.DebugInfoOffset.html) type. It cannot be
-//! used to index into the [`DebugLine`](./struct.DebugLine.html) type because
-//! `DebugLine` represents the `.debug_line` section. There are similar types
-//! for offsets relative to a compilation unit rather than a section.
+//!   the [`DebugInfoOffset`](./struct.DebugInfoOffset.html) type. It cannot be
+//!   used to index into the [`DebugLine`](./struct.DebugLine.html) type because
+//!   `DebugLine` represents the `.debug_line` section. There are similar types
+//!   for offsets relative to a compilation unit rather than a section.
 //!
 //! ## Using with `FallibleIterator`
 //!
@@ -202,6 +208,9 @@ pub use self::endian_reader::*;
 mod reader;
 pub use self::reader::*;
 
+mod relocate;
+pub use self::relocate::*;
+
 #[cfg(feature = "read")]
 mod abbrev;
 #[cfg(feature = "read")]
@@ -225,6 +234,11 @@ pub use self::loclists::*;
 
 #[cfg(feature = "read")]
 mod lookup;
+
+#[cfg(feature = "read")]
+mod macros;
+#[cfg(feature = "read")]
+pub use self::macros::*;
 
 mod op;
 pub use self::op::*;
@@ -268,6 +282,7 @@ pub type EndianBuf<'input, Endian> = EndianSlice<'input, Endian>;
 
 /// An error that occurred when parsing.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Error {
     /// An I/O error occurred while reading.
     Io,
@@ -298,7 +313,7 @@ pub enum Error {
     /// The specified length is impossible.
     BadLength,
     /// Found an unknown `DW_FORM_*` type.
-    UnknownForm,
+    UnknownForm(constants::DwForm),
     /// Expected a zero, found something else.
     ExpectedZero,
     /// Found an abbreviation code that has already been used.
@@ -310,7 +325,7 @@ pub enum Error {
     /// Found an unknown DWARF version.
     UnknownVersion(u64),
     /// Found a record with an unknown abbreviation code.
-    UnknownAbbreviation,
+    UnknownAbbreviation(u64),
     /// Hit the end of input before it was expected.
     UnexpectedEof(ReaderOffsetId),
     /// Read a null entry before it was expected.
@@ -319,6 +334,10 @@ pub enum Error {
     UnknownStandardOpcode(constants::DwLns),
     /// Found an unknown extended opcode.
     UnknownExtendedOpcode(constants::DwLne),
+    /// Found an unknown location-lists format.
+    UnknownLocListsEntry(constants::DwLle),
+    /// Found an unknown range-lists format.
+    UnknownRangeListsEntry(constants::DwRle),
     /// The specified address size is not supported.
     UnsupportedAddressSize(u8),
     /// The specified offset size is not supported.
@@ -371,12 +390,17 @@ pub enum Error {
     UnsupportedTypeOperation,
     /// The shift value in an expression must be a non-negative integer.
     InvalidShiftExpression,
+    /// The size of a deref expression must not be larger than the size of an address.
+    InvalidDerefSize(u8),
     /// An unknown DW_CFA_* instruction.
     UnknownCallFrameInstruction(constants::DwCfa),
     /// The end of an address range was before the beginning.
     InvalidAddressRange,
-    /// The end offset of a loc list entry was before the beginning.
-    InvalidLocationAddressRange,
+    /// An address calculation overflowed.
+    ///
+    /// This is returned in cases where the address is expected to be
+    /// larger than a previous address, but the calculation overflowed.
+    AddressOverflow,
     /// Encountered a call frame instruction in a context in which it is not
     /// valid.
     CfiInstructionInInvalidContext,
@@ -388,7 +412,7 @@ pub enum Error {
     /// An offset value was larger than the maximum supported value.
     UnsupportedOffset,
     /// The given pointer encoding is either unknown or invalid.
-    UnknownPointerEncoding,
+    UnknownPointerEncoding(constants::DwEhPe),
     /// Did not find an entry at the given offset.
     NoEntryAtGivenOffset,
     /// The given offset is out of bounds.
@@ -430,12 +454,20 @@ pub enum Error {
     /// Invalid hash row in `.dwp` index.
     InvalidIndexRow,
     /// Unknown section type in `.dwp` index.
-    UnknownIndexSection,
+    UnknownIndexSection(constants::DwSect),
+    /// Unknown section type in version 2 `.dwp` index.
+    UnknownIndexSectionV2(constants::DwSectV2),
+    /// Invalid macinfo type in `.debug_macinfo`.
+    InvalidMacinfoType(constants::DwMacinfo),
+    /// Invalid macro type in `.debug_macro`.
+    InvalidMacroType(constants::DwMacro),
+    /// The optional `opcode_operands_table` in `.debug_macro` is currently not supported.
+    UnsupportedOpcodeOperandsTable,
 }
 
 impl fmt::Display for Error {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> ::core::result::Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> ::core::result::Result<(), fmt::Error> {
         write!(f, "{}", self.description())
     }
 }
@@ -475,7 +507,7 @@ impl Error {
                  `DW_CHILDREN_{yes,no}`"
             }
             Error::BadLength => "The specified length is impossible",
-            Error::UnknownForm => "Found an unknown `DW_FORM_*` type",
+            Error::UnknownForm(_) => "Found an unknown `DW_FORM_*` type",
             Error::ExpectedZero => "Expected a zero, found something else",
             Error::DuplicateAbbreviationCode => {
                 "Found an abbreviation code that has already been used"
@@ -483,11 +515,13 @@ impl Error {
             Error::DuplicateArange => "Found a duplicate arange",
             Error::UnknownReservedLength => "Found an unknown reserved length value",
             Error::UnknownVersion(_) => "Found an unknown DWARF version",
-            Error::UnknownAbbreviation => "Found a record with an unknown abbreviation code",
+            Error::UnknownAbbreviation(_) => "Found a record with an unknown abbreviation code",
             Error::UnexpectedEof(_) => "Hit the end of input before it was expected",
             Error::UnexpectedNull => "Read a null entry before it was expected.",
             Error::UnknownStandardOpcode(_) => "Found an unknown standard opcode",
             Error::UnknownExtendedOpcode(_) => "Found an unknown extended opcode",
+            Error::UnknownLocListsEntry(_) => "Found an unknown location lists entry",
+            Error::UnknownRangeListsEntry(_) => "Found an unknown range lists entry",
             Error::UnsupportedAddressSize(_) => "The specified address size is not supported",
             Error::UnsupportedOffsetSize(_) => "The specified offset size is not supported",
             Error::UnsupportedFieldSize(_) => "The specified field size is not supported",
@@ -526,13 +560,14 @@ impl Error {
             Error::InvalidShiftExpression => {
                 "The shift value in an expression must be a non-negative integer."
             }
-            Error::UnknownCallFrameInstruction(_) => "An unknown DW_CFA_* instructiion",
+            Error::InvalidDerefSize(_) => {
+                "The size of a deref expression must not be larger than the size of an address."
+            }
+            Error::UnknownCallFrameInstruction(_) => "An unknown DW_CFA_* instruction",
             Error::InvalidAddressRange => {
                 "The end of an address range must not be before the beginning."
             }
-            Error::InvalidLocationAddressRange => {
-                "The end offset of a location list entry must not be before the beginning."
-            }
+            Error::AddressOverflow => "An address calculation overflowed.",
             Error::CfiInstructionInInvalidContext => {
                 "Encountered a call frame instruction in a context in which it is not valid."
             }
@@ -544,7 +579,7 @@ impl Error {
             Error::UnsupportedOffset => {
                 "An offset value was larger than the maximum supported value."
             }
-            Error::UnknownPointerEncoding => {
+            Error::UnknownPointerEncoding(_) => {
                 "The given pointer encoding is either unknown or invalid."
             }
             Error::NoEntryAtGivenOffset => "Did not find an entry at the given offset.",
@@ -579,7 +614,13 @@ impl Error {
             Error::InvalidIndexSectionCount => "Invalid section count in `.dwp` index.",
             Error::InvalidIndexSlotCount => "Invalid slot count in `.dwp` index.",
             Error::InvalidIndexRow => "Invalid hash row in `.dwp` index.",
-            Error::UnknownIndexSection => "Unknown section type in `.dwp` index.",
+            Error::UnknownIndexSection(_) => "Unknown section type in `.dwp` index.",
+            Error::UnknownIndexSectionV2(_) => "Unknown section type in version 2 `.dwp` index.",
+            Error::InvalidMacinfoType(_) => "Invalid macinfo type in `.debug_macinfo`.",
+            Error::InvalidMacroType(_) => "Invalid macro type in `.debug_macro`.",
+            Error::UnsupportedOpcodeOperandsTable => {
+                "The optional `opcode_operands_table` in `.debug_macro` is currently not supported."
+            }
         }
     }
 }
@@ -734,7 +775,7 @@ mod tests {
 
         let input = &mut EndianSlice::new(&buf, LittleEndian);
         match input.read_initial_length() {
-            Err(Error::UnknownReservedLength) => assert!(true),
+            Err(Error::UnknownReservedLength) => {}
             otherwise => panic!("Unexpected result: {:?}", otherwise),
         };
     }
@@ -745,7 +786,7 @@ mod tests {
 
         let input = &mut EndianSlice::new(&buf, LittleEndian);
         match input.read_initial_length() {
-            Err(Error::UnexpectedEof(_)) => assert!(true),
+            Err(Error::UnexpectedEof(_)) => {}
             otherwise => panic!("Unexpected result: {:?}", otherwise),
         };
     }
@@ -761,7 +802,7 @@ mod tests {
 
         let input = &mut EndianSlice::new(&buf, LittleEndian);
         match input.read_initial_length() {
-            Err(Error::UnexpectedEof(_)) => assert!(true),
+            Err(Error::UnexpectedEof(_)) => {}
             otherwise => panic!("Unexpected result: {:?}", otherwise),
         };
     }
@@ -820,7 +861,7 @@ mod tests {
 
         let input = &mut EndianSlice::new(&buf, LittleEndian);
         match input.read_offset(Format::Dwarf64) {
-            Err(Error::UnsupportedOffset) => assert!(true),
+            Err(Error::UnsupportedOffset) => {}
             otherwise => panic!("Unexpected result: {:?}", otherwise),
         };
     }

@@ -2,10 +2,11 @@
 
 use super::Iter;
 use crate::{
+    Map,
     advisory::{self, Advisory},
     collection::Collection,
     error::{Error, ErrorKind},
-    map, Map,
+    map,
 };
 use std::{
     ffi::{OsStr, OsString},
@@ -49,7 +50,7 @@ impl Entries {
         };
 
         // Ensure advisory has the correct filename
-        if path.file_name().unwrap() != expected_filename {
+        if path.file_name().unwrap() != expected_filename && !Advisory::is_draft(path) {
             fail!(
                 ErrorKind::Repo,
                 "expected {} to be named {:?}",
@@ -60,10 +61,9 @@ impl Entries {
 
         // Ensure advisory is in a directory named after its package
         let package_dir = path.parent().ok_or_else(|| {
-            format_err!(
+            Error::new(
                 ErrorKind::Repo,
-                "advisory has no parent dir: {}",
-                path.display()
+                format!("advisory has no parent dir: {}", path.display()),
             )
         })?;
 
@@ -81,10 +81,9 @@ impl Entries {
         let collection_dir = package_dir
             .parent()
             .ok_or_else(|| {
-                format_err!(
+                Error::new(
                     ErrorKind::Repo,
-                    "advisory has no collection: {}",
-                    path.display()
+                    format!("advisory has no collection: {}", path.display()),
                 )
             })?
             .file_name()

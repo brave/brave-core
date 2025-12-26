@@ -72,14 +72,14 @@ impl State {
     /// Each call to this method will cause the corresponding filter to be invoked unless `driver` indicates a `process` filter,
     /// which is only launched once and maintained using this state.
     ///
-    /// Note that it's not an error if there is no filter process for `operation` or if a long-running process doesn't supported
+    /// Note that it's not an error if there is no filter process for `operation` or if a long-running process doesn't support
     /// the desired capability.
     ///
     /// ### Deviation
     ///
-    /// If a long running process returns the 'abort' status after receiving the data, it will be removed similar to how `git` does it.
-    /// However, it delivers an unsuccessful error status later, it will not be removed, but reports the error only.
-    /// If any other non-'error' status is received, the process will be stopped. But that doesn't happen if if such a status is received
+    /// If a long running process returns the 'abort' status after receiving the data, it will be removed similarly to how `git` does it.
+    /// However, if it returns an unsuccessful error status later, it will not be removed, but reports the error only.
+    /// If any other non-'error' status is received, the process will be stopped. But that doesn't happen if such a status is received
     /// after reading the filtered result.
     pub fn apply<'a>(
         &'a mut self,
@@ -228,10 +228,7 @@ impl std::io::Read for ReadFilterOutput {
                     if let Some((mut child, cmd)) = self.child.take() {
                         let status = child.wait()?;
                         if !status.success() {
-                            return Err(std::io::Error::new(
-                                std::io::ErrorKind::Other,
-                                format!("Driver process {cmd:?} failed"),
-                            ));
+                            return Err(std::io::Error::other(format!("Driver process {cmd:?} failed")));
                         }
                     }
                 }

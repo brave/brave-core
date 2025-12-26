@@ -317,6 +317,58 @@ impl BorshSerialize for bson::oid::ObjectId {
     }
 }
 
+#[cfg(feature = "indexmap")]
+// Taken from https://github.com/indexmap-rs/indexmap/blob/dd06e5773e4f91748396c67d00c83637f5c0dd49/src/borsh.rs#L74C1-L86C2
+// license: MIT OR Apache-2.0
+impl<T, S> BorshSerialize for indexmap::IndexSet<T, S>
+where
+    T: BorshSerialize,
+{
+    #[inline]
+    fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
+        check_zst::<T>()?;
+
+        let iterator = self.iter();
+
+        u32::try_from(iterator.len())
+            .map_err(|_| ErrorKind::InvalidData)?
+            .serialize(writer)?;
+
+        for item in iterator {
+            item.serialize(writer)?;
+        }
+
+        Ok(())
+    }
+}
+
+#[cfg(feature = "indexmap")]
+// Taken from https://github.com/indexmap-rs/indexmap/blob/dd06e5773e4f91748396c67d00c83637f5c0dd49/src/borsh.rs#L15
+// license: MIT OR Apache-2.0
+impl<K, V, S> BorshSerialize for indexmap::IndexMap<K, V, S>
+where
+    K: BorshSerialize,
+    V: BorshSerialize,
+{
+    #[inline]
+    fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
+        check_zst::<K>()?;
+
+        let iterator = self.iter();
+
+        u32::try_from(iterator.len())
+            .map_err(|_| ErrorKind::InvalidData)?
+            .serialize(writer)?;
+
+        for (key, value) in iterator {
+            key.serialize(writer)?;
+            value.serialize(writer)?;
+        }
+
+        Ok(())
+    }
+}
+
 impl<T> BorshSerialize for VecDeque<T>
 where
     T: BorshSerialize,
@@ -454,16 +506,15 @@ where
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::SocketAddr {
+impl BorshSerialize for core::net::SocketAddr {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         match *self {
-            std::net::SocketAddr::V4(ref addr) => {
+            core::net::SocketAddr::V4(ref addr) => {
                 0u8.serialize(writer)?;
                 addr.serialize(writer)
             }
-            std::net::SocketAddr::V6(ref addr) => {
+            core::net::SocketAddr::V6(ref addr) => {
                 1u8.serialize(writer)?;
                 addr.serialize(writer)
             }
@@ -471,8 +522,7 @@ impl BorshSerialize for std::net::SocketAddr {
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::SocketAddrV4 {
+impl BorshSerialize for core::net::SocketAddrV4 {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         self.ip().serialize(writer)?;
@@ -480,8 +530,7 @@ impl BorshSerialize for std::net::SocketAddrV4 {
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::SocketAddrV6 {
+impl BorshSerialize for core::net::SocketAddrV6 {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         self.ip().serialize(writer)?;
@@ -489,32 +538,29 @@ impl BorshSerialize for std::net::SocketAddrV6 {
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::Ipv4Addr {
+impl BorshSerialize for core::net::Ipv4Addr {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         writer.write_all(&self.octets())
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::Ipv6Addr {
+impl BorshSerialize for core::net::Ipv6Addr {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         writer.write_all(&self.octets())
     }
 }
 
-#[cfg(feature = "std")]
-impl BorshSerialize for std::net::IpAddr {
+impl BorshSerialize for core::net::IpAddr {
     #[inline]
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         match self {
-            std::net::IpAddr::V4(ipv4) => {
+            core::net::IpAddr::V4(ipv4) => {
                 writer.write_all(&0u8.to_le_bytes())?;
                 ipv4.serialize(writer)
             }
-            std::net::IpAddr::V6(ipv6) => {
+            core::net::IpAddr::V6(ipv6) => {
                 writer.write_all(&1u8.to_le_bytes())?;
                 ipv6.serialize(writer)
             }
@@ -669,7 +715,7 @@ where
     fn serialize<W: Write>(&self, writer: &mut W) -> Result<()> {
         match self.try_borrow() {
             Ok(ref value) => value.serialize(writer),
-            Err(_) => Err(Error::new(ErrorKind::Other, "already mutably borrowed")),
+            Err(_) => Err(Error::other("already mutably borrowed")),
         }
     }
 }

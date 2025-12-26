@@ -45,6 +45,7 @@ type GetRandomFn = unsafe extern "C" fn(*mut c_void, libc::size_t, libc::c_uint)
 static GETRANDOM: AtomicPtr<c_void> = AtomicPtr::new(ptr::null_mut());
 
 #[cold]
+#[inline(never)]
 fn init() -> *mut c_void {
     static NAME: &[u8] = b"getrandom\0";
     let name_ptr = NAME.as_ptr().cast::<libc::c_char>();
@@ -58,6 +59,7 @@ fn init() -> *mut c_void {
     ptr
 }
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     // Despite being only a single atomic variable, we still cannot always use
     // Ordering::Relaxed, as we need to make sure a successful call to `init`

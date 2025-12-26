@@ -32,20 +32,20 @@ impl Default for Options {
     }
 }
 
-/// Configures the amount of slots in the index slotmap, which is fixed throughout the existence of the store.
+/// Configures the number of slots in the index slotmap, which is fixed throughout the existence of the store.
 #[derive(Copy, Clone, Debug)]
 pub enum Slots {
-    /// The amount of slots to use, that is the total amount of indices we can hold at a time.
+    /// The number of slots to use, that is the total number of indices we can hold at a time.
     /// Using this has the advantage of avoiding an initial directory listing of the repository, and is recommended
     /// on the server side where the repository setup is controlled.
     ///
     /// Note that this won't affect their packs, as each index can have one or more packs associated with it.
     Given(u16),
-    /// Compute the amount of slots needed, as probably best used on the client side where a variety of repositories is encountered.
+    /// Compute the number of slots needed, as probably best used on the client side where a variety of repositories is encountered.
     AsNeededByDiskState {
         /// 1.0 means no safety, 1.1 means 10% more slots than needed
         multiplier: f32,
-        /// The minimum amount of slots to assume
+        /// The minimum number of slots to assume
         minimum: usize,
     },
 }
@@ -88,29 +88,35 @@ impl Store {
             Ok,
         )?;
         if !objects_dir.is_dir() {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other, // TODO: use NotADirectory when stabilized
-                format!("'{}' wasn't a directory", objects_dir.display()),
-            ));
+            return Err(std::io::Error::other(format!(
+                "'{}' wasn't a directory",
+                objects_dir.display()
+            )));
         }
         let slot_count = match slots {
             Slots::Given(n) => n as usize,
             Slots::AsNeededByDiskState { multiplier, minimum } => {
-                let mut db_paths = crate::alternate::resolve(objects_dir.clone(), &current_dir)
-                    .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
+                let mut db_paths =
+                    crate::alternate::resolve(objects_dir.clone(), &current_dir).map_err(std::io::Error::other)?;
                 db_paths.insert(0, objects_dir.clone());
-                let num_slots = super::Store::collect_indices_and_mtime_sorted_by_size(db_paths, None, None)
-                    .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?
+                let num_slots = Store::collect_indices_and_mtime_sorted_by_size(db_paths, None, None)
+                    .map_err(std::io::Error::other)?
                     .len();
 
-                ((num_slots as f32 * multiplier) as usize).max(minimum)
+                let candidate = ((num_slots as f32 * multiplier) as usize).max(minimum);
+                if candidate > crate::store::types::PackId::max_indices() {
+                    // A chance for this to work without 10% extra allocation - this already
+                    // is an insane amount of packs.
+                    num_slots
+                } else {
+                    candidate
+                }
             }
         };
         if slot_count > crate::store::types::PackId::max_indices() {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                "Cannot use more than 1^15 slots",
-            ));
+            return Err(std::io::Error::other(format!(
+                "Cannot use more than 2^15-1 slots, got {slot_count}"
+            )));
         }
         let mut replacements: Vec<_> = replacements.collect();
         replacements.sort_by(|a, b| a.0.cmp(&b.0));

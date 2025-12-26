@@ -176,6 +176,8 @@ s! {
         pub f_namemax: c_ulong,
     }
 
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_handler: extern "C" fn(arg1: c_int),
         pub sa_mask: sigset_t,
@@ -557,10 +559,6 @@ cfg_if! {
 
 pub const RTLD_LAZY: c_int = 0x1;
 
-pub const STDIN_FILENO: c_int = 0;
-pub const STDOUT_FILENO: c_int = 1;
-pub const STDERR_FILENO: c_int = 2;
-
 pub const SEEK_SET: c_int = 0;
 pub const SEEK_CUR: c_int = 1;
 pub const SEEK_END: c_int = 2;
@@ -568,28 +566,28 @@ pub const SEEK_END: c_int = 2;
 pub const FIOCLEX: c_ulong = 0x20006601;
 pub const FIONCLEX: c_ulong = 0x20006602;
 
-pub const S_BLKSIZE: crate::mode_t = 1024;
-pub const S_IREAD: crate::mode_t = 0o0400;
-pub const S_IWRITE: crate::mode_t = 0o0200;
-pub const S_IEXEC: crate::mode_t = 0o0100;
-pub const S_ENFMT: crate::mode_t = 0o2000;
-pub const S_IFMT: crate::mode_t = 0o17_0000;
-pub const S_IFDIR: crate::mode_t = 0o4_0000;
-pub const S_IFCHR: crate::mode_t = 0o2_0000;
-pub const S_IFBLK: crate::mode_t = 0o6_0000;
-pub const S_IFREG: crate::mode_t = 0o10_0000;
-pub const S_IFLNK: crate::mode_t = 0o12_0000;
-pub const S_IFSOCK: crate::mode_t = 0o14_0000;
-pub const S_IFIFO: crate::mode_t = 0o1_0000;
-pub const S_IRUSR: crate::mode_t = 0o0400;
-pub const S_IWUSR: crate::mode_t = 0o0200;
-pub const S_IXUSR: crate::mode_t = 0o0100;
-pub const S_IRGRP: crate::mode_t = 0o0040;
-pub const S_IWGRP: crate::mode_t = 0o0020;
-pub const S_IXGRP: crate::mode_t = 0o0010;
-pub const S_IROTH: crate::mode_t = 0o0004;
-pub const S_IWOTH: crate::mode_t = 0o0002;
-pub const S_IXOTH: crate::mode_t = 0o0001;
+pub const S_BLKSIZE: mode_t = 1024;
+pub const S_IREAD: mode_t = 0o0400;
+pub const S_IWRITE: mode_t = 0o0200;
+pub const S_IEXEC: mode_t = 0o0100;
+pub const S_ENFMT: mode_t = 0o2000;
+pub const S_IFMT: mode_t = 0o17_0000;
+pub const S_IFDIR: mode_t = 0o4_0000;
+pub const S_IFCHR: mode_t = 0o2_0000;
+pub const S_IFBLK: mode_t = 0o6_0000;
+pub const S_IFREG: mode_t = 0o10_0000;
+pub const S_IFLNK: mode_t = 0o12_0000;
+pub const S_IFSOCK: mode_t = 0o14_0000;
+pub const S_IFIFO: mode_t = 0o1_0000;
+pub const S_IRUSR: mode_t = 0o0400;
+pub const S_IWUSR: mode_t = 0o0200;
+pub const S_IXUSR: mode_t = 0o0100;
+pub const S_IRGRP: mode_t = 0o0040;
+pub const S_IWGRP: mode_t = 0o0020;
+pub const S_IXGRP: mode_t = 0o0010;
+pub const S_IROTH: mode_t = 0o0004;
+pub const S_IWOTH: mode_t = 0o0002;
+pub const S_IXOTH: mode_t = 0o0001;
 
 pub const SOL_TCP: c_int = 6;
 
@@ -837,20 +835,20 @@ pub const PRIO_USER: c_int = 2;
 
 f! {
     pub fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
-        let bits = mem::size_of_val(&(*set).fds_bits[0]) * 8;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
         let fd = fd as usize;
         (*set).fds_bits[fd / bits] &= !(1 << (fd % bits));
         return;
     }
 
     pub fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
-        let bits = mem::size_of_val(&(*set).fds_bits[0]) * 8;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
         let fd = fd as usize;
         return ((*set).fds_bits[fd / bits] & (1 << (fd % bits))) != 0;
     }
 
     pub fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
-        let bits = mem::size_of_val(&(*set).fds_bits[0]) * 8;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
         let fd = fd as usize;
         (*set).fds_bits[fd / bits] |= 1 << (fd % bits);
         return;

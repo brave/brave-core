@@ -1,0 +1,58 @@
+
+name: nervosnetwork/faster-hex CI
+
+on: [push, pull_request]
+
+jobs:
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.73.0
+          components: rustfmt
+      - name: Run rustfmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/audit-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    name: ${{ matrix.build }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [Linux, macOS, windows-2019]
+        include:
+          - build: Linux
+            os: ubuntu-22.04
+          - build: macOS
+            os: macos-12
+          - build: windows-2019
+            os: windows-2019
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.74.0
+          components: rustfmt
+      - name: Run tests
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        uses: actions-rs/cargo@v1
+        with:
+          command: test

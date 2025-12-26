@@ -1,0 +1,54 @@
+lints.workspace = true
+
+[package]
+name = "gix-diff"
+version = "0.54.1"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "Calculate differences between various git objects"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+autotests = false
+
+[features]
+default = ["blob", "index"]
+## Enable diffing of blobs using imara-diff.
+blob = ["dep:imara-diff", "dep:gix-filter", "dep:gix-worktree", "dep:gix-path", "dep:gix-fs", "dep:gix-command", "dep:gix-tempfile", "dep:gix-trace", "dep:gix-traverse"]
+## Enable diffing of two indices, which also allows for a generic rewrite tracking implementation.
+index = ["dep:gix-index", "dep:gix-pathspec", "dep:gix-attributes"]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "gix-hash/serde", "gix-object/serde", "gix-index?/serde"]
+## Make it possible to compile to the `wasm32-unknown-unknown` target.
+wasm = ["dep:getrandom"]
+
+[lib]
+doctest = false
+
+[dependencies]
+gix-index = { version = "^0.42.1", path = "../gix-index", optional = true }
+gix-pathspec = { version = "^0.13.0", path = "../gix-pathspec", optional = true }
+gix-attributes = { version = "^0.28.1", path = "../gix-attributes", optional = true }
+gix-hash = { version = "^0.20.1", path = "../gix-hash" }
+gix-object = { version = "^0.51.1", path = "../gix-object" }
+gix-filter = { version = "^0.21.0", path = "../gix-filter", optional = true }
+gix-worktree = { version = "^0.43.1", path = "../gix-worktree", default-features = false, features = ["attributes"], optional = true }
+gix-command = { version = "^0.6.3", path = "../gix-command", optional = true }
+gix-path = { version = "^0.10.21", path = "../gix-path", optional = true }
+gix-fs = { version = "^0.17.0", path = "../gix-fs", optional = true }
+gix-tempfile = { version = "^19.0.0", path = "../gix-tempfile", optional = true }
+gix-trace = { version = "^0.1.15", path = "../gix-trace", optional = true }
+gix-traverse = { version = "^0.48.0", path = "../gix-traverse", optional = true }
+
+thiserror = "2.0.17"
+imara-diff = { version = "0.1.8", optional = true }
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
+getrandom = { version = "0.2.8", optional = true, default-features = false, features = ["js"] }
+bstr = { version = "1.12.0", default-features = false }
+
+document-features = { version = "0.2.0", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]

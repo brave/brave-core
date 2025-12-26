@@ -1,4 +1,4 @@
-//! This crate exposes a compile-time temporary directory sharable by multiple
+//! This crate exposes a compile-time temporary directory shareable by multiple
 //! crates in a build graph and erased by `cargo clean`.
 //!
 //! The intended usage is from a build.rs Cargo build script, or more likely
@@ -62,7 +62,7 @@
 //! fn main() -> io::Result<()> {
 //!     let dir = scratch::path("demo");
 //!     let flock = File::create(dir.join(".lock"))?;
-//!     fs2::FileExt::lock_exclusive(&flock)?;
+//!     flock.lock()?;
 //!
 //!     // ... now do work
 //!     # Ok(())
@@ -85,13 +85,13 @@
 //!     let sdk = dir.join("thing.sdk");
 //!
 //!     if !sdk.exists() {
-//!         fs2::FileExt::lock_exclusive(&flock)?;
+//!         flock.lock()?;
 //!         if !sdk.exists() {
 //!             let download_location = sdk.with_file_name("thing.sdk.partial");
 //!             download_sdk_to(&download_location)?;
 //!             fs::rename(&download_location, &sdk)?;
 //!         }
-//!         fs2::FileExt::unlock(&flock)?;
+//!         flock.unlock()?;
 //!     }
 //!
 //!     // ... now use the SDK
@@ -107,20 +107,11 @@
 //!
 //! For use cases that are not just a matter of the first build script writing
 //! to the directory and the rest reading, more elaborate schemes involving
-//! `lock_shared` might be something to consider.
+//! [`lock_shared`][std::fs::File::lock_shared] might be something to consider.
 
-#![doc(html_root_url = "https://docs.rs/scratch/1.0.7")]
-#![cfg_attr(feature = "cargo-clippy", allow(renamed_and_removed_lints))]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        doc_markdown,
-        let_underscore_drop,
-        let_underscore_untyped,
-        must_use_candidate,
-        needless_doctest_main
-    )
-)]
+#![doc(html_root_url = "https://docs.rs/scratch/1.0.9")]
+#![cfg_attr(clippy, allow(renamed_and_removed_lints))]
+#![cfg_attr(clippy, allow(doc_markdown, must_use_candidate, needless_doctest_main))]
 
 use std::fs;
 use std::path::{Path, PathBuf};

@@ -3,7 +3,7 @@
 /*
 128-bit atomic implementation without inline assembly.
 
-Adapted from https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/sync/atomic.rs.
+Adapted from https://github.com/rust-lang/rust/blob/1.84.0/library/core/src/sync/atomic.rs.
 
 Note: This module is currently only enabled on Miri and ThreadSanitizer which
 do not support inline assembly.
@@ -25,6 +25,9 @@ Note:
 - On powerpc64, LLVM (as of 17) doesn't support 128-bit atomic min/max:
   https://github.com/llvm/llvm-project/issues/68390
 - On powerpc64le, LLVM (as of 17) generates broken code. (wrong result from fetch_add)
+- On riscv64, LLVM does not automatically use 128-bit atomic instructions even if zacas feature is
+  enabled, because doing it changes the ABI. (If the ability to do that is provided by LLVM in the
+  future, it should probably be controlled by another ABI feature similar to forced-atomics.)
 */
 
 include!("macros.rs");
@@ -40,21 +43,17 @@ mod fallback;
 #[path = "../detect/x86_64.rs"]
 mod detect;
 
-use core::sync::atomic::Ordering;
 #[cfg(not(target_arch = "x86_64"))]
-use core::{
-    intrinsics,
-    sync::atomic::Ordering::{AcqRel, Acquire, Relaxed, Release, SeqCst},
-};
+use core::intrinsics;
+use core::sync::atomic::Ordering::{self, AcqRel, Acquire, Relaxed, Release, SeqCst};
 
-// https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/sync/atomic.rs#L3267
 #[cfg(target_arch = "x86_64")]
 #[inline]
 fn strongest_failure_ordering(order: Ordering) -> Ordering {
     match order {
-        Ordering::Release | Ordering::Relaxed => Ordering::Relaxed,
-        Ordering::SeqCst => Ordering::SeqCst,
-        Ordering::Acquire | Ordering::AcqRel => Ordering::Acquire,
+        Release | Relaxed => Relaxed,
+        SeqCst => SeqCst,
+        Acquire | AcqRel => Acquire,
         _ => unreachable!(),
     }
 }
@@ -126,7 +125,7 @@ unsafe fn atomic_compare_exchange(
             debug_assert!(dst as usize % 16 == 0);
             #[cfg(not(target_feature = "cmpxchg16b"))]
             {
-                debug_assert!(detect::detect().has_cmpxchg16b());
+                debug_assert!(detect::detect().cmpxchg16b());
             }
             // SAFETY: the caller must guarantee that `dst` is valid for both writes and
             // reads, 16-byte aligned (required by CMPXCHG16B), that there are no
@@ -148,7 +147,7 @@ unsafe fn atomic_compare_exchange(
             ifunc!(unsafe fn(
                 dst: *mut u128, old: u128, new: u128, success: Ordering, failure: Ordering
             ) -> (u128, bool) {
-                if detect::detect().has_cmpxchg16b() {
+                if detect::detect().cmpxchg16b() {
                     cmpxchg16b
                 } else {
                     fallback::atomic_compare_exchange
@@ -178,11 +177,7 @@ unsafe fn atomic_compare_exchange(
             _ => unreachable!(),
         }
     };
-    if ok {
-        Ok(val)
-    } else {
-        Err(val)
-    }
+    if ok { Ok(val) } else { Err(val) }
 }
 
 #[cfg(target_arch = "x86_64")]
@@ -218,11 +213,7 @@ unsafe fn atomic_compare_exchange_weak(
             _ => unreachable!(),
         }
     };
-    if ok {
-        Ok(val)
-    } else {
-        Err(val)
-    }
+    if ok { Ok(val) } else { Err(val) }
 }
 
 #[inline(always)]
@@ -493,7 +484,7 @@ fn is_lock_free() -> bool {
     }
     #[cfg(not(target_feature = "cmpxchg16b"))]
     {
-        detect::detect().has_cmpxchg16b()
+        detect::detect().cmpxchg16b()
     }
 }
 #[cfg(target_arch = "x86_64")]

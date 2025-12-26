@@ -1,18 +1,16 @@
-use std::ops::Range;
+use alloc::string::{String, ToString};
+use alloc::vec;
+use alloc::vec::Vec;
+use core::ops::Range;
 
 use crate::diagnostic::{Diagnostic, LabelStyle};
 use crate::files::{Error, Files, Location};
 use crate::term::renderer::{Locus, MultiLabel, Renderer, SingleLabel};
 use crate::term::Config;
 
-/// Count the number of decimal digits in `n`.
-fn count_digits(mut n: usize) -> usize {
-    let mut count = 0;
-    while n != 0 {
-        count += 1;
-        n /= 10; // remove last digit
-    }
-    count
+/// Calculate the number of decimal digits in `n`.
+fn count_digits(n: usize) -> usize {
+    n.ilog10() as usize + 1
 }
 
 /// Output a richly formatted diagnostic, with source code previews.
@@ -25,6 +23,7 @@ impl<'diagnostic, 'config, FileId> RichDiagnostic<'diagnostic, 'config, FileId>
 where
     FileId: Copy + PartialEq,
 {
+    #[must_use]
     pub fn new(
         diagnostic: &'diagnostic Diagnostic<FileId>,
         config: &'config Config,
@@ -34,13 +33,13 @@ where
 
     pub fn render<'files>(
         &self,
-        files: &'files impl Files<'files, FileId = FileId>,
+        files: &'files (impl Files<'files, FileId = FileId> + ?Sized),
         renderer: &mut Renderer<'_, '_>,
     ) -> Result<(), Error>
     where
         FileId: 'files,
     {
-        use std::collections::BTreeMap;
+        use alloc::collections::BTreeMap;
 
         struct LabeledFile<'diagnostic, FileId> {
             file_id: FileId,
@@ -72,7 +71,7 @@ where
 
         struct Line<'diagnostic> {
             number: usize,
-            range: std::ops::Range<usize>,
+            range: core::ops::Range<usize>,
             // TODO: How do we reuse these allocations?
             single_labels: Vec<SingleLabel<'diagnostic>>,
             multi_labels: Vec<(usize, LabelStyle, MultiLabel<'diagnostic>)>,
@@ -94,46 +93,80 @@ where
             let end_line_number = files.line_number(label.file_id, end_line_index)?;
             let end_line_range = files.line_range(label.file_id, end_line_index)?;
 
-            outer_padding = std::cmp::max(outer_padding, count_digits(start_line_number));
-            outer_padding = std::cmp::max(outer_padding, count_digits(end_line_number));
+            outer_padding = core::cmp::max(outer_padding, count_digits(start_line_number));
+            outer_padding = core::cmp::max(outer_padding, count_digits(end_line_number));
 
             // NOTE: This could be made more efficient by using an associative
             // data structure like a hashmap or B-tree,  but we use a vector to
             // preserve the order that unique files appear in the list of labels.
-            let labeled_file = match labeled_files
+            let labeled_file = labeled_files
                 .iter_mut()
-                .find(|labeled_file| label.file_id == labeled_file.file_id)
-            {
-                Some(labeled_file) => {
-                    // another diagnostic also referenced this file
-                    if labeled_file.max_label_style > label.style
-                        || (labeled_file.max_label_style == label.style
-                            && labeled_file.start > label.range.start)
-                    {
-                        // this label has a higher style or has the same style but starts earlier
-                        labeled_file.start = label.range.start;
-                        labeled_file.location = files.location(label.file_id, label.range.start)?;
-                        labeled_file.max_label_style = label.style;
-                    }
-                    labeled_file
+                .find(|labeled_file| label.file_id == labeled_file.file_id);
+            let labeled_file = if let Some(labeled_file) = labeled_file {
+                // another diagnostic also referenced this file
+                if labeled_file.max_label_style > label.style
+                    || (labeled_file.max_label_style == label.style
+                        && labeled_file.start > label.range.start)
+                {
+                    // this label has a higher style or has the same style but starts earlier
+                    labeled_file.start = label.range.start;
+                    labeled_file.location = files.location(label.file_id, label.range.start)?;
+                    labeled_file.max_label_style = label.style;
                 }
-                None => {
-                    // no other diagnostic referenced this file yet
-                    labeled_files.push(LabeledFile {
-                        file_id: label.file_id,
-                        start: label.range.start,
-                        name: files.name(label.file_id)?.to_string(),
-                        location: files.location(label.file_id, label.range.start)?,
-                        num_multi_labels: 0,
-                        lines: BTreeMap::new(),
-                        max_label_style: label.style,
-                    });
-                    // this unwrap should never fail because we just pushed an element
-                    labeled_files
-                        .last_mut()
-                        .expect("just pushed an element that disappeared")
-                }
+                labeled_file
+            } else {
+                // no other diagnostic referenced this file yet
+                labeled_files.push(LabeledFile {
+                    file_id: label.file_id,
+                    start: label.range.start,
+                    name: files.name(label.file_id)?.to_string(),
+                    location: files.location(label.file_id, label.range.start)?,
+                    num_multi_labels: 0,
+                    lines: BTreeMap::new(),
+                    max_label_style: label.style,
+                });
+                // this unwrap should never fail because we just pushed an element
+                labeled_files
+                    .last_mut()
+                    .expect("just pushed an element that disappeared")
             };
+
+            // insert context lines before label
+            // start from 1 because 0 would be the start of the label itself
+            for offset in 1..=self.config.before_label_lines {
+                let index = if let Some(index) = start_line_index.checked_sub(offset) {
+                    index
+                } else {
+                    // we are going from smallest to largest offset, so if
+                    // the offset can not be subtracted from the start we
+                    // reached the first line
+                    break;
+                };
+
+                if let Ok(range) = files.line_range(label.file_id, index) {
+                    let line =
+                        labeled_file.get_or_insert_line(index, range, start_line_number - offset);
+                    line.must_render = true;
+                } else {
+                    break;
+                }
+            }
+
+            // insert context lines after label
+            // start from 1 because 0 would be the end of the label itself
+            for offset in 1..=self.config.after_label_lines {
+                let index = end_line_index
+                    .checked_add(offset)
+                    .expect("line index too big");
+
+                if let Ok(range) = files.line_range(label.file_id, index) {
+                    let line =
+                        labeled_file.get_or_insert_line(index, range, end_line_number + offset);
+                    line.must_render = true;
+                } else {
+                    break;
+                }
+            }
 
             if start_line_index == end_line_index {
                 // Single line
@@ -217,7 +250,7 @@ where
                     let line_range = files.line_range(label.file_id, line_index)?;
                     let line_number = files.line_number(label.file_id, line_index)?;
 
-                    outer_padding = std::cmp::max(outer_padding, count_digits(line_number));
+                    outer_padding = core::cmp::max(outer_padding, count_digits(line_number));
 
                     let line = labeled_file.get_or_insert_line(line_index, line_range, line_number);
 
@@ -324,7 +357,7 @@ where
 
                 // Check to see if we need to render any intermediate stuff
                 // before rendering the next line.
-                if let Some((next_line_index, _)) = lines.peek() {
+                if let Some((next_line_index, next_line)) = lines.peek() {
                     match next_line_index.checked_sub(*line_index) {
                         // Consecutive lines
                         Some(1) => {}
@@ -361,7 +394,7 @@ where
                                 outer_padding,
                                 self.diagnostic.severity,
                                 labeled_file.num_multi_labels,
-                                &line.multi_labels,
+                                &next_line.multi_labels,
                             )?;
                         }
                     }
@@ -408,6 +441,7 @@ impl<'diagnostic, FileId> ShortDiagnostic<'diagnostic, FileId>
 where
     FileId: Copy + PartialEq,
 {
+    #[must_use]
     pub fn new(
         diagnostic: &'diagnostic Diagnostic<FileId>,
         show_notes: bool,
@@ -420,7 +454,7 @@ where
 
     pub fn render<'files>(
         &self,
-        files: &'files impl Files<'files, FileId = FileId>,
+        files: &'files (impl Files<'files, FileId = FileId> + ?Sized),
         renderer: &mut Renderer<'_, '_>,
     ) -> Result<(), Error>
     where

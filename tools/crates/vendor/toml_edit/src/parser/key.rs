@@ -96,11 +96,6 @@ fn unquoted_key<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
     .parse_next(input)
 }
 
-pub(crate) fn is_unquoted_char(c: u8) -> bool {
-    use winnow::stream::ContainsToken;
-    UNQUOTED_CHAR.contains_token(c)
-}
-
 const UNQUOTED_CHAR: (
     RangeInclusive<u8>,
     RangeInclusive<u8>,

@@ -1,5 +1,8 @@
 # Changelog
 
+Newer changelog entries can be found [on
+GitHub](https://github.com/console-rs/console/releases).
+
 ## 0.15.8
 
 ### Enhancements

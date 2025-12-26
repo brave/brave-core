@@ -16,6 +16,14 @@ Generated asm:
 #[cfg(not(portable_atomic_no_asm))]
 use core::arch::asm;
 
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(test, portable_atomic_no_atomic_cas))
+)]
+#[cfg_attr(
+    not(portable_atomic_no_cfg_target_has_atomic),
+    cfg(any(test, not(target_has_atomic = "ptr")))
+)]
 pub(super) use super::super::msp430 as atomic;
 
 pub(super) type State = u16;
@@ -27,14 +35,14 @@ pub(super) fn disable() -> State {
     // SAFETY: reading the status register and disabling interrupts are safe.
     // (see module-level comments of interrupt/mod.rs on the safety of using privileged instructions)
     unsafe {
-        // Do not use `nomem` and `readonly` because prevent subsequent memory accesses from being reordered before interrupts are disabled.
-        // Do not use `preserves_flags` because DINT modifies the GIE (global interrupt enable) bit of the status register.
         // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
         #[cfg(not(portable_atomic_no_asm))]
         asm!(
             "mov r2, {sr}", // sr = SR
             "dint {{ nop",  // SR.GIE = 0
             sr = out(reg) sr,
+            // Do not use `nomem` and `readonly` because prevent subsequent memory accesses from being reordered before interrupts are disabled.
+            // Do not use `preserves_flags` because DINT modifies the GIE (global interrupt enable) bit of the status register.
             options(nostack),
         );
         #[cfg(portable_atomic_no_asm)]
@@ -62,13 +70,13 @@ pub(super) unsafe fn restore(prev_sr: State) {
         // so it is safe to clobber them here.
         // See also the discussion at https://github.com/taiki-e/portable-atomic/pull/40.
         //
-        // Do not use `nomem` and `readonly` because prevent preceding memory accesses from being reordered after interrupts are enabled.
-        // Do not use `preserves_flags` because MOV modifies the status register.
         // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
         #[cfg(not(portable_atomic_no_asm))]
         asm!(
             "nop {{ mov {prev_sr}, r2 {{ nop", // SR = prev_sr
             prev_sr = in(reg) prev_sr,
+            // Do not use `nomem` and `readonly` because prevent preceding memory accesses from being reordered after interrupts are enabled.
+            // Do not use `preserves_flags` because MOV modifies the status register.
             options(nostack),
         );
         #[cfg(portable_atomic_no_asm)]

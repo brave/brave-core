@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -31,10 +31,13 @@
 
 use super::{
     chacha::{self, *},
-    chacha20_poly1305::derive_poly1305_key,
-    cpu, poly1305, Nonce, Tag,
+    chacha20_poly1305, cpu, poly1305, Aad, Nonce, Tag,
 };
-use crate::{constant_time, error};
+use crate::{
+    bb,
+    error::{self, InputTooLongError},
+    polyfill::slice,
+};
 
 /// A key for sealing packets.
 pub struct SealingKey {
@@ -56,30 +59,47 @@ impl SealingKey {
     /// `padding_length||payload||random padding`. It will be overwritten by
     /// `encrypted_packet_length||ciphertext`, where `encrypted_packet_length`
     /// is encrypted with `K_1` and `ciphertext` is encrypted by `K_2`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `plaintext_in_ciphertext_out.len() < PACKET_LENGTH_LEN`.
+    ///
+    /// Panics if `plaintext_in_ciphertext_out` is longer than the maximum
+    /// input size for ChaCha20-Poly1305. Note that this limit is much,
+    /// much larger than SSH's 256KB maximum record size.
     pub fn seal_in_place(
         &self,
         sequence_number: u32,
         plaintext_in_ciphertext_out: &mut [u8],
         tag_out: &mut [u8; TAG_LEN],
     ) {
-        let cpu_features = cpu::features();
-        let mut counter = make_counter(sequence_number);
-        let poly_key = derive_poly1305_key(&self.key.k_2, counter.increment());
+        // XXX/TODO(SemVer): Refactor API to return an error.
+        let (len_in_out, data_and_padding_in_out): (&mut [u8; PACKET_LENGTH_LEN], _) =
+            slice::split_first_chunk_mut(plaintext_in_ciphertext_out).unwrap();
 
-        {
-            let (len_in_out, data_and_padding_in_out) =
-                plaintext_in_ciphertext_out.split_at_mut(PACKET_LENGTH_LEN);
+        let cpu = cpu::features();
+        // XXX/TODO(SemVer): Refactor API to return an error.
+        let (counter, poly_key) = chacha20_poly1305::begin(
+            &self.key.k_2,
+            make_nonce(sequence_number),
+            Aad::from(len_in_out),
+            data_and_padding_in_out,
+            cpu,
+        )
+        .map_err(error::erase::<InputTooLongError>)
+        .unwrap();
 
-            self.key
-                .k_1
-                .encrypt_in_place(make_counter(sequence_number), len_in_out);
-            self.key
-                .k_2
-                .encrypt_in_place(counter, data_and_padding_in_out);
-        }
+        let _: Counter = self.key.k_1.encrypt_single_block_with_ctr_0(
+            make_nonce(sequence_number),
+            len_in_out,
+            cpu,
+        );
+        self.key
+            .k_2
+            .encrypt(counter, data_and_padding_in_out.into(), cpu);
 
-        let Tag(tag) = poly1305::sign(poly_key, plaintext_in_ciphertext_out, cpu_features);
-        tag_out.copy_from_slice(tag.as_ref());
+        let Tag(tag) = poly1305::sign(poly_key, plaintext_in_ciphertext_out, cpu);
+        *tag_out = tag;
     }
 }
 
@@ -105,9 +125,13 @@ impl OpeningKey {
         sequence_number: u32,
         encrypted_packet_length: [u8; PACKET_LENGTH_LEN],
     ) -> [u8; PACKET_LENGTH_LEN] {
+        let cpu = cpu::features();
         let mut packet_length = encrypted_packet_length;
-        let counter = make_counter(sequence_number);
-        self.key.k_1.encrypt_in_place(counter, &mut packet_length);
+        let _: Counter = self.key.k_1.encrypt_single_block_with_ctr_0(
+            make_nonce(sequence_number),
+            &mut packet_length,
+            cpu,
+        );
         packet_length
     }
 
@@ -126,20 +150,33 @@ impl OpeningKey {
         ciphertext_in_plaintext_out: &'a mut [u8],
         tag: &[u8; TAG_LEN],
     ) -> Result<&'a [u8], error::Unspecified> {
-        let mut counter = make_counter(sequence_number);
+        let (packet_length, after_packet_length): (&mut [u8; PACKET_LENGTH_LEN], _) =
+            slice::split_first_chunk_mut(ciphertext_in_plaintext_out).ok_or(error::Unspecified)?;
+
+        let cpu = cpu::features();
+        let (counter, poly_key) = chacha20_poly1305::begin(
+            &self.key.k_2,
+            make_nonce(sequence_number),
+            Aad::from(packet_length),
+            after_packet_length,
+            cpu,
+        )
+        .map_err(error::erase::<InputTooLongError>)?;
 
         // We must verify the tag before decrypting so that
         // `ciphertext_in_plaintext_out` is unmodified if verification fails.
         // This is beyond what we guarantee.
-        let poly_key = derive_poly1305_key(&self.key.k_2, counter.increment());
-        verify(poly_key, ciphertext_in_plaintext_out, tag)?;
+        let calculated_tag = poly1305::sign(poly_key, ciphertext_in_plaintext_out, cpu);
+        bb::verify_slices_are_equal(calculated_tag.as_ref(), tag)?;
 
-        let plaintext_in_ciphertext_out = &mut ciphertext_in_plaintext_out[PACKET_LENGTH_LEN..];
+        // Won't panic because the length was checked above.
+        let after_packet_length = &mut ciphertext_in_plaintext_out[PACKET_LENGTH_LEN..];
+
         self.key
             .k_2
-            .encrypt_in_place(counter, plaintext_in_ciphertext_out);
+            .encrypt(counter, after_packet_length.into(), cpu);
 
-        Ok(plaintext_in_ciphertext_out)
+        Ok(after_packet_length)
     }
 }
 
@@ -159,10 +196,10 @@ impl Key {
     }
 }
 
-fn make_counter(sequence_number: u32) -> Counter {
+fn make_nonce(sequence_number: u32) -> Nonce {
     let [s0, s1, s2, s3] = sequence_number.to_be_bytes();
     let nonce = [0, 0, 0, 0, 0, 0, 0, 0, s0, s1, s2, s3];
-    Counter::zero(Nonce::assume_unique_for_key(nonce))
+    Nonce::assume_unique_for_key(nonce)
 }
 
 /// The length of key.
@@ -173,8 +210,3 @@ pub const PACKET_LENGTH_LEN: usize = 4; // 32 bits
 
 /// The length in bytes of an authentication tag.
 pub const TAG_LEN: usize = super::TAG_LEN;
-
-fn verify(key: poly1305::Key, msg: &[u8], tag: &[u8; TAG_LEN]) -> Result<(), error::Unspecified> {
-    let Tag(calculated_tag) = poly1305::sign(key, msg, cpu::features());
-    constant_time::verify_slices_are_equal(calculated_tag.as_ref(), tag)
-}

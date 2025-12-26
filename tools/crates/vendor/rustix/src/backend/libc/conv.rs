@@ -4,8 +4,8 @@
 
 use super::c;
 #[cfg(all(feature = "alloc", not(any(windows, target_os = "espidf"))))]
-use super::fd::IntoRawFd;
-use super::fd::{AsRawFd, BorrowedFd, FromRawFd, LibcFd, OwnedFd, RawFd};
+use super::fd::IntoRawFd as _;
+use super::fd::{AsRawFd as _, BorrowedFd, FromRawFd as _, LibcFd, OwnedFd, RawFd};
 #[cfg(not(windows))]
 use crate::ffi::CStr;
 use crate::io;
@@ -16,7 +16,13 @@ pub(super) fn c_str(c: &CStr) -> *const c::c_char {
     c.as_ptr().cast()
 }
 
-#[cfg(not(any(windows, target_os = "espidf", target_os = "vita", target_os = "wasi")))]
+#[cfg(not(any(
+    windows,
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
 #[inline]
 pub(super) fn no_fd() -> LibcFd {
     -1
@@ -151,7 +157,7 @@ pub(super) fn ret_discarded_char_ptr(raw: *mut c::c_char) -> io::Result<()> {
 }
 
 /// Convert the buffer-length argument value of a `send` or `recv` call.
-#[cfg(not(any(windows, target_os = "redox", target_os = "wasi")))]
+#[cfg(not(any(windows, target_os = "wasi")))]
 #[inline]
 pub(super) fn send_recv_len(len: usize) -> usize {
     len
@@ -168,7 +174,7 @@ pub(super) fn send_recv_len(len: usize) -> i32 {
 }
 
 /// Convert the return value of a `send` or `recv` call.
-#[cfg(not(any(windows, target_os = "redox", target_os = "wasi")))]
+#[cfg(not(any(windows, target_os = "wasi")))]
 #[inline]
 pub(super) fn ret_send_recv(len: isize) -> io::Result<usize> {
     ret_usize(len)
@@ -179,83 +185,4 @@ pub(super) fn ret_send_recv(len: isize) -> io::Result<usize> {
 #[inline]
 pub(super) fn ret_send_recv(len: i32) -> io::Result<usize> {
     ret_usize(len as isize)
-}
-
-/// Convert the value to the `msg_iovlen` field of a `msghdr` struct.
-#[cfg(all(
-    not(any(windows, target_os = "espidf", target_os = "redox", target_os = "wasi")),
-    any(
-        target_os = "android",
-        all(
-            target_os = "linux",
-            not(target_env = "musl"),
-            not(all(target_env = "uclibc", any(target_arch = "arm", target_arch = "mips")))
-        )
-    )
-))]
-#[inline]
-pub(super) fn msg_iov_len(len: usize) -> c::size_t {
-    len
-}
-
-/// Convert the value to the `msg_iovlen` field of a `msghdr` struct.
-#[cfg(all(
-    not(any(
-        windows,
-        target_os = "espidf",
-        target_os = "redox",
-        target_os = "vita",
-        target_os = "wasi"
-    )),
-    not(any(
-        target_os = "android",
-        all(
-            target_os = "linux",
-            not(target_env = "musl"),
-            not(all(target_env = "uclibc", any(target_arch = "arm", target_arch = "mips")))
-        )
-    ))
-))]
-#[inline]
-pub(crate) fn msg_iov_len(len: usize) -> c::c_int {
-    len.try_into().unwrap_or(c::c_int::MAX)
-}
-
-/// Convert the value to a `socklen_t`.
-#[cfg(any(
-    bsd,
-    solarish,
-    target_env = "musl",
-    target_os = "aix",
-    target_os = "emscripten",
-    target_os = "fuchsia",
-    target_os = "haiku",
-    target_os = "hurd",
-    target_os = "nto",
-))]
-#[inline]
-pub(crate) fn msg_control_len(len: usize) -> c::socklen_t {
-    len.try_into().unwrap_or(c::socklen_t::MAX)
-}
-
-/// Convert the value to a `size_t`.
-#[cfg(not(any(
-    bsd,
-    solarish,
-    windows,
-    target_env = "musl",
-    target_os = "aix",
-    target_os = "emscripten",
-    target_os = "espidf",
-    target_os = "fuchsia",
-    target_os = "haiku",
-    target_os = "hurd",
-    target_os = "nto",
-    target_os = "redox",
-    target_os = "vita",
-    target_os = "wasi",
-)))]
-#[inline]
-pub(crate) fn msg_control_len(len: usize) -> c::size_t {
-    len
 }

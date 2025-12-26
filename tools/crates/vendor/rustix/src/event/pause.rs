@@ -1,10 +1,10 @@
 use crate::backend;
 
-/// `pause()`
+/// `pause()`—Sleep until interrupted by a signal.
 ///
 /// The POSIX `pause` interface returns an error code, but the only thing
-/// `pause` does is sleep until interrupted by a signal, so it always
-/// returns the same thing with the same error code, so in rustix, the
+/// `pause` does is sleep until interrupted by a signal. If it were exposed in
+/// the API here it would always return `Errno::INTR`, so for simplicity the
 /// return value is omitted.
 ///
 /// # References

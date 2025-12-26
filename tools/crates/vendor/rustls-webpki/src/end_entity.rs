@@ -20,8 +20,8 @@ use pki_types::{
 
 use crate::crl::RevocationOptions;
 use crate::error::Error;
-use crate::subject_name::{verify_dns_names, verify_ip_address_names, NameIterator};
-use crate::verify_cert::{self, KeyUsage, VerifiedPath};
+use crate::subject_name::{verify_dns_names, verify_ip_address_names};
+use crate::verify_cert::{self, ExtendedKeyUsageValidator, VerifiedPath};
 use crate::{cert, signed_data};
 
 /// An end-entity certificate.
@@ -31,7 +31,7 @@ use crate::{cert, signed_data};
 ///
 /// * [`EndEntityCert::verify_for_usage()`]: Verify that the peer's certificate
 ///   is valid for the current usage scenario. For server authentication, use
-///   [`KeyUsage::server_auth()`].
+///   [`crate::KeyUsage::server_auth()`].
 /// * [`EndEntityCert::verify_is_valid_for_subject_name()`]: Verify that the server's
 ///   certificate is valid for the host or IP address that is being connected to.
 /// * [`EndEntityCert::verify_signature()`]: Verify that the signature of server's
@@ -42,7 +42,7 @@ use crate::{cert, signed_data};
 ///
 /// * [`EndEntityCert::verify_for_usage()`]: Verify that the peer's certificate
 ///   is valid for the current usage scenario. For client authentication, use
-///   [`KeyUsage::client_auth()`].
+///   [`crate::KeyUsage::client_auth()`].
 /// * [`EndEntityCert::verify_signature()`]: Verify that the signature of client's
 ///   `CertificateVerify` message is valid using the public key from the
 ///   client's certificate.
@@ -72,7 +72,7 @@ impl<'a> TryFrom<&'a CertificateDer<'a>> for EndEntityCert<'a> {
     }
 }
 
-impl<'a> EndEntityCert<'a> {
+impl EndEntityCert<'_> {
     /// Verifies that the end-entity certificate is valid for use against the
     /// specified Extended Key Usage (EKU).
     ///
@@ -85,7 +85,8 @@ impl<'a> EndEntityCert<'a> {
     /// * `time` is the time for which the validation is effective (usually the
     ///   current time).
     /// * `usage` is the intended usage of the certificate, indicating what kind
-    ///   of usage we're verifying the certificate for.
+    ///   of usage we're verifying the certificate for. The default [`ExtendedKeyUsageValidator`]
+    ///   implementation is [`KeyUsage`](crate::KeyUsage).
     /// * `crls` is the list of certificate revocation lists to check
     ///   the certificate against.
     /// * `verify_path` is an optional verification function for path candidates.
@@ -105,7 +106,7 @@ impl<'a> EndEntityCert<'a> {
         trust_anchors: &'p [TrustAnchor<'_>],
         intermediate_certs: &'p [CertificateDer<'p>],
         time: UnixTime,
-        usage: KeyUsage,
+        usage: impl ExtendedKeyUsageValidator,
         revocation: Option<RevocationOptions<'_>>,
         verify_path: Option<&dyn Fn(&VerifiedPath<'_>) -> Result<(), Error>>,
     ) -> Result<VerifiedPath<'p>, Error> {
@@ -125,16 +126,10 @@ impl<'a> EndEntityCert<'a> {
         server_name: &ServerName<'_>,
     ) -> Result<(), Error> {
         match server_name {
-            ServerName::DnsName(dns_name) => verify_dns_names(
-                dns_name,
-                NameIterator::new(Some(self.inner.subject), self.inner.subject_alt_name),
-            ),
+            ServerName::DnsName(dns_name) => verify_dns_names(dns_name, &self.inner),
             // IP addresses are not compared against the subject field;
             // only against Subject Alternative Names.
-            ServerName::IpAddress(ip_address) => verify_ip_address_names(
-                ip_address,
-                NameIterator::new(None, self.inner.subject_alt_name),
-            ),
+            ServerName::IpAddress(ip_address) => verify_ip_address_names(ip_address, &self.inner),
             _ => Err(Error::UnsupportedNameType),
         }
     }
@@ -206,14 +201,13 @@ mod tests {
             params.distinguished_name.push(
                 rcgen::DnType::CommonName,
                 rcgen::DnValue::PrintableString(
-                    rcgen::PrintableString::try_from("example.com").unwrap(),
+                    rcgen::string::PrintableString::try_from("example.com").unwrap(),
                 ),
             );
             params
                 .signed_by(
                     &rcgen::KeyPair::generate_for(RCGEN_SIGNATURE_ALG).unwrap(),
-                    &issuer.cert,
-                    &issuer.key_pair,
+                    &issuer,
                 )
                 .expect("failed to make ee cert (this is a test bug)")
         };

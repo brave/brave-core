@@ -2,7 +2,8 @@
 //!
 //! This module should provide `fill_inner` with the signature
 //! `fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error>`.
-//! The function MUST fully initialize `dest` when `Ok(())` is returned.
+//! The function MUST fully initialize `dest` when `Ok(())` is returned;
+//! the function may need to use `sanitizer::unpoison` as well.
 //! The function MUST NOT ever write uninitialized bytes into `dest`,
 //! regardless of what value it returns.
 
@@ -11,27 +12,45 @@ cfg_if! {
         mod custom;
         pub use custom::*;
     } else if #[cfg(getrandom_backend = "linux_getrandom")] {
-        mod linux_android;
-        pub use linux_android::*;
+        mod getrandom;
+        mod sanitizer;
+        pub use getrandom::*;
+    } else if #[cfg(getrandom_backend = "linux_raw")] {
+        mod linux_raw;
+        mod sanitizer;
+        pub use linux_raw::*;
     } else if #[cfg(getrandom_backend = "rdrand")] {
         mod rdrand;
         pub use rdrand::*;
     } else if #[cfg(getrandom_backend = "rndr")] {
         mod rndr;
         pub use rndr::*;
-    } else if #[cfg(all(getrandom_backend = "wasm_js"))] {
+    } else if #[cfg(getrandom_backend = "efi_rng")] {
+        mod efi_rng;
+        pub use efi_rng::*;
+    } else if #[cfg(getrandom_backend = "windows_legacy")] {
+        mod windows_legacy;
+        pub use windows_legacy::*;
+    } else if #[cfg(getrandom_backend = "wasm_js")] {
         cfg_if! {
             if #[cfg(feature = "wasm_js")] {
                 mod wasm_js;
                 pub use wasm_js::*;
             } else {
-                compile_error!(
+                compile_error!(concat!(
                     "The \"wasm_js\" backend requires the `wasm_js` feature \
                     for `getrandom`. For more information see: \
-                    https://docs.rs/getrandom/#webassembly-support"
-                );
+                    https://docs.rs/getrandom/", env!("CARGO_PKG_VERSION"), "/#webassembly-support"
+                ));
             }
         }
+    } else if #[cfg(getrandom_backend = "unsupported")] {
+        mod unsupported;
+        pub use unsupported::*;
+    } else if #[cfg(all(target_os = "linux", target_env = ""))] {
+        mod linux_raw;
+        mod sanitizer;
+        pub use linux_raw::*;
     } else if #[cfg(target_os = "espidf")] {
         mod esp_idf;
         pub use esp_idf::*;
@@ -51,17 +70,6 @@ cfg_if! {
     ))] {
         mod getentropy;
         pub use getentropy::*;
-    } else if #[cfg(any(
-        target_os = "dragonfly",
-        target_os = "freebsd",
-        target_os = "hurd",
-        target_os = "illumos",
-        // Check for target_arch = "arm" to only include the 3DS. Does not
-        // include the Nintendo Switch (which is target_arch = "aarch64").
-        all(target_os = "horizon", target_arch = "arm"),
-    ))] {
-        mod getrandom;
-        pub use getrandom::*;
     } else if #[cfg(any(
         // Rust supports Android API level 19 (KitKat) [0] and the next upgrade targets
         // level 21 (Lollipop) [1], while `getrandom(2)` was added only in
@@ -95,16 +103,38 @@ cfg_if! {
                 // Minimum supported Linux kernel version for MUSL targets
                 // is not specified explicitly (as of Rust 1.77) and they
                 // are used in practice to target pre-3.17 kernels.
-                target_env = "musl",
+                all(
+                    target_env = "musl",
+                    not(
+                        any(
+                            target_arch = "riscv64",
+                            target_arch = "riscv32",
+                        ),
+                    ),
+                ),
             ),
         )
     ))] {
         mod use_file;
         mod linux_android_with_fallback;
+        mod sanitizer;
         pub use linux_android_with_fallback::*;
-    } else if #[cfg(any(target_os = "android", target_os = "linux"))] {
-        mod linux_android;
-        pub use linux_android::*;
+    } else if #[cfg(any(
+        target_os = "android",
+        target_os = "linux",
+        target_os = "dragonfly",
+        target_os = "freebsd",
+        target_os = "hurd",
+        target_os = "illumos",
+        target_os = "cygwin",
+        // Check for target_arch = "arm" to only include the 3DS. Does not
+        // include the Nintendo Switch (which is target_arch = "aarch64").
+        all(target_os = "horizon", target_arch = "arm"),
+    ))] {
+        mod getrandom;
+        #[cfg(any(target_os = "android", target_os = "linux"))]
+        mod sanitizer;
+        pub use getrandom::*;
     } else if #[cfg(target_os = "solaris")] {
         mod solaris;
         pub use solaris::*;
@@ -147,8 +177,8 @@ cfg_if! {
         mod solid;
         pub use solid::*;
     } else if #[cfg(all(windows, target_vendor = "win7"))] {
-        mod windows7;
-        pub use windows7::*;
+        mod windows_legacy;
+        pub use windows_legacy::*;
     } else if #[cfg(windows)] {
         mod windows;
         pub use windows::*;
@@ -156,16 +186,24 @@ cfg_if! {
         mod rdrand;
         pub use rdrand::*;
     } else if #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))] {
-        compile_error!(
-            "The wasm32-unknown-unknown targets are not supported by default; \
-            you may need to enable the \"wasm_js\" configuration flag. Note \
-            that enabling the `wasm_js` feature flag alone is insufficient. \
-            For more information see: \
-            https://docs.rs/getrandom/#webassembly-support"
-        );
+        cfg_if! {
+            if #[cfg(feature = "wasm_js")] {
+                mod wasm_js;
+                pub use wasm_js::*;
+            } else {
+                compile_error!(concat!(
+                    "The wasm32-unknown-unknown targets are not supported by default; \
+                    you may need to enable the \"wasm_js\" configuration flag. Note \
+                    that enabling the `wasm_js` feature flag alone is insufficient. \
+                    For more information see: \
+                    https://docs.rs/getrandom/", env!("CARGO_PKG_VERSION"), "/#webassembly-support"
+                ));
+            }
+        }
     } else {
-        compile_error!("target is not supported. You may need to define \
-                        a custom backend see: \
-                        https://docs.rs/getrandom/#custom-backends");
+        compile_error!(concat!(
+            "target is not supported. You may need to define a custom backend see: \
+            https://docs.rs/getrandom/", env!("CARGO_PKG_VERSION"), "/#custom-backend"
+        ));
     }
 }

@@ -1,13 +1,9 @@
 //! Uname and other system-level functions.
-//!
-//! # Safety
-//!
-//! This function converts from `struct utsname` fields provided from the
-//! kernel into `&str` references, which assumes that they're NUL-terminated.
+
 #![allow(unsafe_code)]
 
 use crate::backend;
-#[cfg(linux_kernel)]
+#[cfg(target_os = "linux")]
 use crate::backend::c;
 use crate::ffi::CStr;
 #[cfg(not(any(target_os = "espidf", target_os = "emscripten", target_os = "vita")))]
@@ -20,7 +16,7 @@ pub use backend::system::types::Sysinfo;
 #[cfg(linux_kernel)]
 use crate::fd::AsFd;
 #[cfg(linux_kernel)]
-use c::c_int;
+use crate::ffi::c_int;
 
 /// `uname()`—Returns high-level information about the runtime OS and
 /// hardware.
@@ -58,13 +54,13 @@ pub fn uname() -> Uname {
 pub struct Uname(backend::system::types::RawUname);
 
 impl Uname {
-    /// `sysname`—Operating system release name
+    /// `sysname`—Operating system release name.
     #[inline]
     pub fn sysname(&self) -> &CStr {
         Self::to_cstr(self.0.sysname.as_ptr().cast())
     }
 
-    /// `nodename`—Name with vague meaning
+    /// `nodename`—Name with vague meaning.
     ///
     /// This is intended to be a network name, however it's unable to convey
     /// information about hosts that have multiple names, or any information
@@ -76,25 +72,25 @@ impl Uname {
         Self::to_cstr(self.0.nodename.as_ptr().cast())
     }
 
-    /// `release`—Operating system release version string
+    /// `release`—Operating system release version string.
     #[inline]
     pub fn release(&self) -> &CStr {
         Self::to_cstr(self.0.release.as_ptr().cast())
     }
 
-    /// `version`—Operating system build identifiers
+    /// `version`—Operating system build identifiers.
     #[inline]
     pub fn version(&self) -> &CStr {
         Self::to_cstr(self.0.version.as_ptr().cast())
     }
 
-    /// `machine`—Hardware architecture identifier
+    /// `machine`—Hardware architecture identifier.
     #[inline]
     pub fn machine(&self) -> &CStr {
         Self::to_cstr(self.0.machine.as_ptr().cast())
     }
 
-    /// `domainname`—NIS or YP domain identifier
+    /// `domainname`—NIS or YP domain identifier.
     #[cfg(linux_kernel)]
     #[inline]
     pub fn domainname(&self) -> &CStr {
@@ -159,6 +155,7 @@ pub fn sysinfo() -> Sysinfo {
 #[cfg(not(any(
     target_os = "emscripten",
     target_os = "espidf",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -177,14 +174,16 @@ pub fn sethostname(name: &[u8]) -> io::Result<()> {
 /// [Linux]: https://man7.org/linux/man-pages/man2/setdomainname.2.html
 /// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=setdomainname&sektion=3
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "emscripten",
     target_os = "espidf",
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "illumos",
     target_os = "redox",
     target_os = "solaris",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
 pub fn setdomainname(name: &[u8]) -> io::Result<()> {
@@ -199,9 +198,11 @@ pub fn setdomainname(name: &[u8]) -> io::Result<()> {
 pub enum RebootCommand {
     /// Disables the Ctrl-Alt-Del keystroke.
     ///
-    /// When disabled, the keystroke will send a [`Signal::Int`] to pid 1.
+    /// When disabled, the keystroke will send a [`Signal::INT`] to
+    /// [`Pid::INIT`].
     ///
-    /// [`Signal::Int`]: crate::process::Signal::Int
+    /// [`Signal::INT`]: crate::process::Signal::INT
+    /// [`Pid::INIT`]: crate::process::Pid::INIT
     CadOff = c::LINUX_REBOOT_CMD_CAD_OFF,
     /// Enables the Ctrl-Alt-Del keystroke.
     ///
@@ -230,16 +231,16 @@ pub enum RebootCommand {
 /// reboot.
 ///
 /// Among other things, it can:
-/// - Restart, Halt, Power Off, and Suspend the system
-/// - Enable and disable the Ctrl-Alt-Del keystroke
-/// - Execute other kernels
-/// - Terminate init inside PID namespaces
+///  - Restart, Halt, Power Off, and Suspend the system
+///  - Enable and disable the Ctrl-Alt-Del keystroke
+///  - Execute other kernels
+///  - Terminate init inside PID namespaces
 ///
 /// It is highly recommended to carefully read the kernel documentation before
 /// calling this function.
 ///
 /// # References
-/// - [Linux]
+///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/reboot.2.html
 #[cfg(target_os = "linux")]
@@ -250,7 +251,7 @@ pub fn reboot(cmd: RebootCommand) -> io::Result<()> {
 /// `init_module`—Load a kernel module.
 ///
 /// # References
-/// - [Linux]
+///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/init_module.2.html
 #[inline]
@@ -262,7 +263,7 @@ pub fn init_module(image: &[u8], param_values: &CStr) -> io::Result<()> {
 /// `finit_module`—Load a kernel module from a file descriptor.
 ///
 /// # References
-/// - [Linux]
+///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/finit_module.2.html
 #[inline]
@@ -274,11 +275,43 @@ pub fn finit_module<Fd: AsFd>(fd: Fd, param_values: &CStr, flags: c_int) -> io::
 /// `delete_module`—Unload a kernel module.
 ///
 /// # References
-/// - [Linux]
+///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/delete_module.2.html
 #[inline]
 #[cfg(linux_kernel)]
 pub fn delete_module(name: &CStr, flags: c_int) -> io::Result<()> {
     backend::system::syscalls::delete_module(name, flags)
+}
+
+#[cfg(test)]
+mod tests {
+    #[allow(unused_imports)]
+    use super::*;
+    #[allow(unused_imports)]
+    use crate::backend::c;
+
+    #[cfg(linux_kernel)]
+    #[test]
+    fn test_sysinfo_layouts() {
+        // Don't assert the size for `Sysinfo` because `c::sysinfo` has a
+        // computed-size padding field at the end that bindgen doesn't support,
+        // and `c::sysinfo` may add fields over time.
+        assert_eq!(
+            core::mem::align_of::<Sysinfo>(),
+            core::mem::align_of::<c::sysinfo>()
+        );
+        check_renamed_struct_field!(Sysinfo, sysinfo, uptime);
+        check_renamed_struct_field!(Sysinfo, sysinfo, loads);
+        check_renamed_struct_field!(Sysinfo, sysinfo, totalram);
+        check_renamed_struct_field!(Sysinfo, sysinfo, freeram);
+        check_renamed_struct_field!(Sysinfo, sysinfo, sharedram);
+        check_renamed_struct_field!(Sysinfo, sysinfo, bufferram);
+        check_renamed_struct_field!(Sysinfo, sysinfo, totalswap);
+        check_renamed_struct_field!(Sysinfo, sysinfo, freeswap);
+        check_renamed_struct_field!(Sysinfo, sysinfo, procs);
+        check_renamed_struct_field!(Sysinfo, sysinfo, totalhigh);
+        check_renamed_struct_field!(Sysinfo, sysinfo, freehigh);
+        check_renamed_struct_field!(Sysinfo, sysinfo, mem_unit);
+    }
 }

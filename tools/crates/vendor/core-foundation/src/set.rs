@@ -14,8 +14,8 @@ pub use core_foundation_sys::set::*;
 
 use crate::base::{CFIndexConvertible, TCFType};
 
+use core::ffi::c_void;
 use std::marker::PhantomData;
-use std::os::raw::c_void;
 
 /// An immutable bag of elements.
 pub struct CFSet<T = *const c_void>(CFSetRef, PhantomData<T>);

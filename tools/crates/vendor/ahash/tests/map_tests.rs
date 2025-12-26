@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "specialize", feature(build_hasher_simple_hash_one))]
+#![cfg_attr(specialize, feature(build_hasher_simple_hash_one))]
 
 use std::hash::{BuildHasher, Hash, Hasher};
 
@@ -151,13 +151,13 @@ fn check_for_collisions<H: Hash, B: BuildHasher>(build_hasher: &B, items: &[H], 
     );
 }
 
-#[cfg(feature = "specialize")]
+#[cfg(specialize)]
 #[allow(unused)] // False positive
 fn hash<H: Hash, B: BuildHasher>(b: &H, build_hasher: &B) -> u64 {
     build_hasher.hash_one(b)
 }
 
-#[cfg(not(feature = "specialize"))]
+#[cfg(not(specialize))]
 #[allow(unused)] // False positive
 fn hash<H: Hash, B: BuildHasher>(b: &H, build_hasher: &B) -> u64 {
     let mut hasher = build_hasher.build_hasher();

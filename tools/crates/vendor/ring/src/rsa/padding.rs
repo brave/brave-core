@@ -4,15 +4,15 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::{bits, digest, error, rand};
+use crate::{bb, bits, digest, error, rand};
 
 mod pkcs1;
 mod pss;
@@ -30,11 +30,23 @@ pub trait Padding: 'static + Sync + crate::sealed::Sealed + core::fmt::Debug {
     fn digest_alg(&self) -> &'static digest::Algorithm;
 }
 
+pub(super) fn encode(
+    encoding: &dyn RsaEncoding,
+    m_hash: digest::Digest,
+    m_out: &mut [u8],
+    mod_bits: bits::BitLength,
+    rng: &dyn rand::SecureRandom,
+) -> Result<(), error::Unspecified> {
+    #[allow(deprecated)]
+    encoding.encode(m_hash, m_out, mod_bits, rng)
+}
+
 /// An RSA signature encoding as described in [RFC 3447 Section 8].
 ///
 /// [RFC 3447 Section 8]: https://tools.ietf.org/html/rfc3447#section-8
 #[cfg(feature = "alloc")]
 pub trait RsaEncoding: Padding {
+    #[deprecated(note = "internal API that will be removed")]
     #[doc(hidden)]
     fn encode(
         &self,
@@ -71,24 +83,24 @@ fn mgf1(digest_alg: &'static digest::Algorithm, seed: &[u8], out: &mut [u8]) {
         // long inputs very early.
         ctx.update(&u32::to_be_bytes(i.try_into().unwrap()));
         let digest = ctx.finish();
-        // `zip` does the right thing as the the last chunk may legitimately be
-        // shorter than `digest`, and `digest` will never be shorter than `out`.
-        for (m, &d) in out.iter_mut().zip(digest.as_ref().iter()) {
-            *m ^= d;
-        }
+
+        // The last chunk may legitimately be shorter than `digest`, but
+        // `digest` will never be shorter than `out`.
+        bb::xor_assign_at_start(out, digest.as_ref());
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{digest, error, test};
+    use crate::testutil as test;
+    use crate::{digest, error};
     use alloc::vec;
 
     #[test]
     fn test_pss_padding_verify() {
         test::run(
-            test_file!("rsa_pss_padding_tests.txt"),
+            test_vector_file!("rsa_pss_padding_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -127,7 +139,7 @@ mod test {
     #[test]
     fn test_pss_padding_encode() {
         test::run(
-            test_file!("rsa_pss_padding_tests.txt"),
+            test_vector_file!("rsa_pss_padding_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -154,6 +166,7 @@ mod test {
 
                 let mut m_out = vec![0u8; bit_len.as_usize_bytes_rounded_up()];
                 let digest = digest::digest(alg.digest_alg(), &msg);
+                #[allow(deprecated)]
                 alg.encode(digest, &mut m_out, bit_len, &rng).unwrap();
                 assert_eq!(m_out, encoded);
 

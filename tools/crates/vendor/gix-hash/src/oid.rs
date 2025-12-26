@@ -30,23 +30,23 @@ pub struct oid {
 #[allow(clippy::derived_hash_with_manual_eq)]
 impl hash::Hash for oid {
     fn hash<H: hash::Hasher>(&self, state: &mut H) {
-        state.write(self.as_bytes())
+        state.write(self.as_bytes());
     }
 }
 
-/// A utility able to format itself with the given amount of characters in hex.
+/// A utility able to format itself with the given number of characters in hex.
 #[derive(PartialEq, Eq, Hash, Ord, PartialOrd)]
 pub struct HexDisplay<'a> {
     inner: &'a oid,
     hex_len: usize,
 }
 
-impl<'a> std::fmt::Display for HexDisplay<'a> {
+impl std::fmt::Display for HexDisplay<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut hex = Kind::hex_buf();
-        let max_len = self.inner.hex_to_buf(hex.as_mut());
-        let hex = std::str::from_utf8(&hex[..self.hex_len.min(max_len)]).expect("ascii only in hex");
-        f.write_str(hex)
+        let hex = self.inner.hex_to_buf(hex.as_mut());
+        let max_len = hex.len();
+        f.write_str(&hex[..self.hex_len.min(max_len)])
     }
 }
 
@@ -80,7 +80,7 @@ impl oid {
             20 => Ok(
                 #[allow(unsafe_code)]
                 unsafe {
-                    &*(digest as *const [u8] as *const oid)
+                    &*(std::ptr::from_ref::<[u8]>(digest) as *const oid)
                 },
             ),
             len => Err(Error::InvalidByteSliceLength(len)),
@@ -97,7 +97,7 @@ impl oid {
     pub(crate) fn from_bytes(value: &[u8]) -> &Self {
         #[allow(unsafe_code)]
         unsafe {
-            &*(value as *const [u8] as *const oid)
+            &*(std::ptr::from_ref::<[u8]>(value) as *const oid)
         }
     }
 }
@@ -148,26 +148,41 @@ impl oid {
             Kind::Sha1 => &self.bytes == oid::null_sha1().as_bytes(),
         }
     }
+
+    /// Returns `true` if this hash is equal to an empty blob.
+    #[inline]
+    pub fn is_empty_blob(&self) -> bool {
+        match self.kind() {
+            Kind::Sha1 => &self.bytes == oid::empty_blob_sha1().as_bytes(),
+        }
+    }
+
+    /// Returns `true` if this hash is equal to an empty tree.
+    #[inline]
+    pub fn is_empty_tree(&self) -> bool {
+        match self.kind() {
+            Kind::Sha1 => &self.bytes == oid::empty_tree_sha1().as_bytes(),
+        }
+    }
 }
 
 /// Sha1 specific methods
 impl oid {
-    /// Write ourselves to the `out` in hexadecimal notation, returning the amount of written bytes.
+    /// Write ourselves to the `out` in hexadecimal notation, returning the hex-string ready for display.
     ///
     /// **Panics** if the buffer isn't big enough to hold twice as many bytes as the current binary size.
     #[inline]
     #[must_use]
-    pub fn hex_to_buf(&self, buf: &mut [u8]) -> usize {
+    pub fn hex_to_buf<'a>(&self, buf: &'a mut [u8]) -> &'a mut str {
         let num_hex_bytes = self.bytes.len() * 2;
-        faster_hex::hex_encode(&self.bytes, &mut buf[..num_hex_bytes]).expect("to count correctly");
-        num_hex_bytes
+        faster_hex::hex_encode(&self.bytes, &mut buf[..num_hex_bytes]).expect("to count correctly")
     }
 
     /// Write ourselves to `out` in hexadecimal notation.
     #[inline]
     pub fn write_hex_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
         let mut hex = Kind::hex_buf();
-        let hex_len = self.hex_to_buf(&mut hex);
+        let hex_len = self.hex_to_buf(&mut hex).len();
         out.write_all(&hex[..hex_len])
     }
 
@@ -175,6 +190,18 @@ impl oid {
     #[inline]
     pub(crate) fn null_sha1() -> &'static Self {
         oid::from_bytes([0u8; SIZE_OF_SHA1_DIGEST].as_ref())
+    }
+
+    /// Returns an oid representing the hash of an empty blob.
+    #[inline]
+    pub(crate) fn empty_blob_sha1() -> &'static Self {
+        oid::from_bytes(b"\xe6\x9d\xe2\x9b\xb2\xd1\xd6\x43\x4b\x8b\x29\xae\x77\x5a\xd8\xc2\xe4\x8c\x53\x91")
+    }
+
+    /// Returns an oid representing the hash of an empty tree.
+    #[inline]
+    pub(crate) fn empty_tree_sha1() -> &'static Self {
+        oid::from_bytes(b"\x4b\x82\x5d\xc6\x42\xcb\x6e\xb9\xa0\x60\xe5\x4b\xf8\xd6\x92\x88\xfb\xee\x49\x04")
     }
 }
 
@@ -210,10 +237,8 @@ impl<'a> From<&'a [u8; SIZE_OF_SHA1_DIGEST]> for &'a oid {
 
 impl std::fmt::Display for &oid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for b in self.as_bytes() {
-            write!(f, "{b:02x}")?;
-        }
-        Ok(())
+        let mut buf = Kind::hex_buf();
+        f.write_str(self.hex_to_buf(&mut buf))
     }
 }
 

@@ -16,14 +16,35 @@ use backend::fd::AsFd;
 ///
 /// This is similar to `fcntl(fd, F_SETFD, FD_CLOEXEC)`, except that it avoids
 /// clearing any other flags that might be set.
-#[cfg(apple)]
+///
+/// Linux: Note that `ioctl` can not be used on `OFlags::PATH` file
+/// descriptors.
+#[cfg(any(apple, linux_kernel))]
 #[inline]
 #[doc(alias = "FIOCLEX")]
 #[doc(alias = "FD_CLOEXEC")]
 pub fn ioctl_fioclex<Fd: AsFd>(fd: Fd) -> io::Result<()> {
     // SAFETY: `FIOCLEX` is a no-argument setter opcode.
     unsafe {
-        let ctl = ioctl::NoArg::<ioctl::BadOpcode<{ c::FIOCLEX }>>::new();
+        let ctl = ioctl::NoArg::<{ c::FIOCLEX }>::new();
+        ioctl::ioctl(fd, ctl)
+    }
+}
+
+/// `ioctl(fd, FIONCLEX, NULL)`—Remove the close-on-exec flag.
+///
+/// This is similar to `fcntl_setfd(fd, FdFlags::empty())`, except that it avoids
+/// clearing any other flags that might be set.
+///
+/// Linux: Note that `ioctl` can not be used on `OFlags::PATH` file
+/// descriptors.
+#[cfg(any(apple, linux_kernel))]
+#[inline]
+#[doc(alias = "FIONCLEX")]
+pub fn ioctl_fionclex<Fd: AsFd>(fd: Fd) -> io::Result<()> {
+    // SAFETY: `FIONCLEX` is a no-argument setter opcode.
+    unsafe {
+        let ctl = ioctl::NoArg::<{ c::FIONCLEX }>::new();
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -43,7 +64,7 @@ pub fn ioctl_fioclex<Fd: AsFd>(fd: Fd) -> io::Result<()> {
 pub fn ioctl_fionbio<Fd: AsFd>(fd: Fd, value: bool) -> io::Result<()> {
     // SAFETY: `FIONBIO` is a pointer setter opcode.
     unsafe {
-        let ctl = ioctl::Setter::<ioctl::BadOpcode<{ c::FIONBIO }>, c::c_int>::new(value.into());
+        let ctl = ioctl::Setter::<{ c::FIONBIO }, c::c_int>::new(value.into());
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -71,7 +92,7 @@ pub fn ioctl_fionbio<Fd: AsFd>(fd: Fd, value: bool) -> io::Result<()> {
 pub fn ioctl_fionread<Fd: AsFd>(fd: Fd) -> io::Result<u64> {
     // SAFETY: `FIONREAD` is a getter opcode that gets a `c_int`.
     unsafe {
-        let ctl = ioctl::Getter::<ioctl::BadOpcode<{ c::FIONREAD }>, c::c_int>::new();
+        let ctl = ioctl::Getter::<{ c::FIONREAD }, c::c_int>::new();
         ioctl::ioctl(fd, ctl).map(|n| n as u64)
     }
 }

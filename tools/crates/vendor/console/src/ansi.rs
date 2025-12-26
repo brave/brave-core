@@ -125,7 +125,7 @@ struct Match<'a> {
 
 impl<'a> Match<'a> {
     #[inline]
-    pub fn as_str(&self) -> &'a str {
+    pub(crate) fn as_str(&self) -> &'a str {
         &self.text[self.start..self.end]
     }
 }

@@ -4,7 +4,7 @@ use crate::{
     Target,
 };
 
-impl<'s, 'p> Transaction<'s, 'p> {
+impl Transaction<'_, '_> {
     /// Make all [prepared][Transaction::prepare()] permanent and return the performed edits which represent the current
     /// state of the affected refs in the ref store in that instant. Please note that the obtained edits may have been
     /// adjusted to contain more dependent edits or additional information.
@@ -72,7 +72,7 @@ impl<'s, 'p> Transaction<'s, 'p> {
                             }
                         };
                         if let Some((previous, new_oid)) = log_update {
-                            let do_update = previous.as_ref().map_or(true, |previous| previous != new_oid);
+                            let do_update = previous.as_ref() != Some(new_oid);
                             if do_update {
                                 self.store.reflog_create_or_append(
                                     change.update.name.as_ref(),
@@ -97,7 +97,7 @@ impl<'s, 'p> Transaction<'s, 'p> {
                             // TODO: when Kind::IsADirectory becomes stable, use that.
                             let err = if err.instance.resource_path().is_dir() {
                                 gix_tempfile::remove_dir::empty_depth_first(err.instance.resource_path())
-                                    .map_err(|io_err| std::io::Error::new(std::io::ErrorKind::Other, io_err))
+                                    .map_err(std::io::Error::other)
                                     .and_then(|_| err.instance.commit().map_err(|err| err.error))
                                     .err()
                             } else {
@@ -110,7 +110,7 @@ impl<'s, 'p> Transaction<'s, 'p> {
                                     full_name: change.name(),
                                 });
                             }
-                        };
+                        }
                     }
                 }
                 Change::Delete { .. } => {}
@@ -170,7 +170,7 @@ impl<'s, 'p> Transaction<'s, 'p> {
                         });
                     }
                 }
-                drop(lock)
+                drop(lock);
             }
         }
         Ok(updates.into_iter().map(|edit| edit.update).collect())

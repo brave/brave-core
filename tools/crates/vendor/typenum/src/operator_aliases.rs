@@ -18,7 +18,7 @@
 
 // Aliases!!!
 use crate::type_operators::{
-    Abs, Cmp, Gcd, Len, Logarithm2, Max, Min, PartialDiv, Pow, SquareRoot,
+    Abs, Cmp, FoldAdd, FoldMul, Gcd, Len, Logarithm2, Max, Min, PartialDiv, Pow, SquareRoot,
 };
 use core::ops::{Add, BitAnd, BitOr, BitXor, Div, Mul, Neg, Rem, Shl, Shr, Sub};
 
@@ -82,6 +82,12 @@ pub type Compare<A, B> = <A as Cmp<B>>::Output;
 
 /// Alias for the associated type of `Len`: `Length<A> = <A as Len>::Output`
 pub type Length<T> = <T as Len>::Output;
+
+/// Alias for the associated type of `FoldAdd`: `FoldSum<A> = <A as FoldAdd>::Output`
+pub type FoldSum<A> = <A as FoldAdd>::Output;
+
+/// Alias for the associated type of `FoldMul`: `FoldProd<A> = <A as FoldMul>::Output`
+pub type FoldProd<A> = <A as FoldMul>::Output;
 
 /// Alias for the associated type of `Min`: `Minimum<A, B> = <A as Min<B>>::Output`
 pub type Minimum<A, B> = <A as Min<B>>::Output;

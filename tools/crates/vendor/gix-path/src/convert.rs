@@ -1,8 +1,7 @@
-use std::path::Component;
 use std::{
     borrow::Cow,
     ffi::{OsStr, OsString},
-    path::{Path, PathBuf},
+    path::{Component, Path, PathBuf},
 };
 
 use bstr::{BStr, BString};
@@ -45,9 +44,9 @@ pub fn try_os_str_into_bstr(path: Cow<'_, OsStr>) -> Result<Cow<'_, BStr>, Utf8E
     }
 }
 
-/// Convert the given path either into its raw bytes on unix or its UTF8 encoded counterpart on windows.
+/// Convert the given path either into its raw bytes on Unix or its UTF-8 encoded counterpart on Windows.
 ///
-/// On windows, if the source Path contains ill-formed, lone surrogates, the UTF-8 conversion will fail
+/// On Windows, if the source `Path`` contains ill-formed, lone surrogates, the UTF-8 conversion will fail
 /// causing `Utf8Error` to be returned.
 pub fn try_into_bstr<'a>(path: impl Into<Cow<'a, Path>>) -> Result<Cow<'a, BStr>, Utf8Error> {
     let path = path.into();
@@ -86,7 +85,7 @@ pub fn try_into_bstr<'a>(path: impl Into<Cow<'a, Path>>) -> Result<Cow<'a, BStr>
     Ok(path_str)
 }
 
-/// Similar to [`try_into_bstr()`] but **panics** if malformed surrogates are encountered on windows.
+/// Similar to [`try_into_bstr()`] but **panics** if malformed surrogates are encountered on Windows.
 pub fn into_bstr<'a>(path: impl Into<Cow<'a, Path>>) -> Cow<'a, BStr> {
     try_into_bstr(path).expect("prefix path doesn't contain ill-formed UTF-8")
 }
@@ -101,11 +100,11 @@ pub fn join_bstr_unix_pathsep<'a, 'b>(base: impl Into<Cow<'a, BStr>>, path: impl
     base
 }
 
-/// Given `input` bytes, produce a `Path` from them ignoring encoding entirely if on unix.
+/// Given `input` bytes, produce a `Path` from them ignoring encoding entirely if on Unix.
 ///
-/// On windows, the input is required to be valid UTF-8, which is guaranteed if we wrote it before. There are some potential
-/// git versions and windows installation which produce mal-formed UTF-16 if certain emojies are in the path. It's as rare as
-/// it sounds, but possible.
+/// On Windows, the input is required to be valid UTF-8, which is guaranteed if we wrote it before.
+/// There are some potential Git versions and Windows installations which produce malformed UTF-16
+/// if certain emojis are in the path. It's as rare as it sounds, but possible.
 pub fn try_from_byte_slice(input: &[u8]) -> Result<&Path, Utf8Error> {
     #[cfg(unix)]
     let p = {
@@ -131,7 +130,7 @@ pub fn try_from_bstr<'a>(input: impl Into<Cow<'a, BStr>>) -> Result<Cow<'a, Path
     }
 }
 
-/// Similar to [`try_from_bstr()`], but **panics** if malformed surrogates are encountered on windows.
+/// Similar to [`try_from_bstr()`], but **panics** if malformed surrogates are encountered on Windows.
 pub fn from_bstr<'a>(input: impl Into<Cow<'a, BStr>>) -> Cow<'a, Path> {
     try_from_bstr(input).expect("prefix path doesn't contain ill-formed UTF-8")
 }
@@ -205,7 +204,8 @@ pub fn to_native_separators<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, BStr>
     p
 }
 
-/// Convert paths with slashes to backslashes on windows and do nothing on unix, but **panics** if malformed surrogates are encountered on windows.
+/// Convert paths with slashes to backslashes on Windows and do nothing on Unix,
+/// but **panic** if unpaired surrogates are encountered on Windows.
 pub fn to_native_path_on_windows<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, std::path::Path> {
     #[cfg(not(windows))]
     {
@@ -217,11 +217,11 @@ pub fn to_native_path_on_windows<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, 
     }
 }
 
-/// Replaces windows path separators with slashes, but only do so on windows.
+/// Replace Windows path separators with slashes, but only do so on Windows.
 pub fn to_unix_separators_on_windows<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, BStr> {
     #[cfg(windows)]
     {
-        replace(path, b'\\', b'/')
+        to_unix_separators(path)
     }
     #[cfg(not(windows))]
     {
@@ -229,35 +229,56 @@ pub fn to_unix_separators_on_windows<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<
     }
 }
 
-/// Replaces windows path separators with slashes, unconditionally.
+/// Replace Windows path separators with slashes, which typically resembles a Unix path, unconditionally.
 ///
 /// **Note** Do not use these and prefer the conditional versions of this method.
-// TODO: use https://lib.rs/crates/path-slash to handle escapes
 pub fn to_unix_separators<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, BStr> {
     replace(path, b'\\', b'/')
 }
 
-/// Find backslashes and replace them with slashes, which typically resembles a unix path, unconditionally.
+/// Find slashes and replace them with backslashes, unconditionally.
 ///
 /// **Note** Do not use these and prefer the conditional versions of this method.
-// TODO: use https://lib.rs/crates/path-slash to handle escapes
 pub fn to_windows_separators<'a>(path: impl Into<Cow<'a, BStr>>) -> Cow<'a, BStr> {
     replace(path, b'/', b'\\')
 }
 
-/// Resolve relative components virtually without accessing the file system, e.g. turn `a/./b/c/.././..` into `a`,
-/// without keeping intermediate `..` and `/a/../b/..` becomes `/`.
-/// If the input path was relative and ends up being the `current_dir`, `.` is returned instead of the full path to `current_dir`.
-/// Note that single `.` components as well as duplicate separators are left untouched.
+/// Resolve relative components virtually, eliminating intermediate `..` without accessing the filesystem.
 ///
-/// This is particularly useful when manipulating paths that are based on user input, and not resolving intermediate
-/// symlinks keeps the path similar to what the user provided. If that's not desirable, use `[realpath()][crate::realpath()`
-/// instead.
+/// For example, this turns `a/./b/c/.././..` into `a`, and turns `/a/../b/..` into `/`.
 ///
-/// Note that we might access the `current_dir` if we run out of path components to pop off, which is expected to be absolute
-/// as typical return value of `std::env::current_dir()` or `gix_fs::current_dir(…)` when `core.precomposeUnicode` is known.
-/// As a `current_dir` like `/c` can be exhausted by paths like `../../r`, `None` will be returned to indicate the inability
-/// to produce a logically consistent path.
+/// ```
+/// # fn main() {
+/// # use std::path::Path;
+/// # use gix_path::normalize;
+/// for (input, expected) in [
+///     ("a/./b/c/.././..", "a"),
+///     ("/a/../b/..", "/"),
+///     ("/base/a/..", "/base"),
+///     ("./a/..", "."),
+///     ("./a/../..", "/"),
+///     (".///", ".///"),
+///     ("a//b", "a//b"),
+///     ("/base/../base", "/base"),
+/// ] {
+///     let input = Path::new(input);
+///     let expected = Path::new(expected);
+///     assert_eq!(normalize(input.into(), Path::new("/cwd")), Some(expected.into()));
+/// }
+/// # }
+/// ```
+///
+/// Leading `.` components as well as duplicate separators are left untouched.
+///
+/// This is particularly useful when manipulating paths that are based on user input, and not
+/// resolving intermediate symlinks keeps the path similar to what the user provided. If that's not
+/// desirable, use [`realpath()`](crate::realpath()) instead.
+///
+/// Note that we will use the `current_dir` if we run out of path components to pop off, which
+/// is expected to be absolute as typical return value of `std::env::current_dir()` or
+/// `gix_fs::current_dir(…)` when `core.precomposeUnicode` is known. As a `current_dir` like `/c`
+/// can be exhausted by paths like `../../r`, `None` will be returned to indicate the inability to
+/// produce a logically consistent path.
 pub fn normalize<'a>(path: Cow<'a, Path>, current_dir: &Path) -> Option<Cow<'a, Path>> {
     use std::path::Component::ParentDir;
 
@@ -290,14 +311,16 @@ pub fn normalize<'a>(path: Cow<'a, Path>, current_dir: &Path) -> Option<Cow<'a, 
     .into()
 }
 
-/// Rebuild the worktree-relative `relative_path` to be relative to `prefix`, which is the worktree-relative
-/// path equivalent to the position of the user, or current working directory.
+/// Rebuild the worktree-relative `relative_path` to be relative to `prefix`, which is the
+/// worktree-relative path equivalent to the position of the user, or current working directory.
+///
 /// This is a no-op if `prefix` is empty.
 ///
-/// Note that both `relative_path` and `prefix` are assumed to be [normalized](normalize()), and failure to do so
-/// will lead to incorrect results.
+/// Note that both `relative_path` and `prefix` are assumed to be [normalized](normalize()), and
+/// failure to do so will lead to incorrect results.
 ///
-/// Note that both input paths are expected to be equal in terms of case too, as comparisons will be case-sensitive.
+/// Note that both input paths are expected to be equal in terms of case too, as comparisons will
+/// be case-sensitive.
 pub fn relativize_with_prefix<'a>(relative_path: &'a Path, prefix: &Path) -> Cow<'a, Path> {
     if prefix.as_os_str().is_empty() {
         return Cow::Borrowed(relative_path);

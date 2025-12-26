@@ -44,15 +44,19 @@ pub struct Pkcs12ImportOptions {
 }
 
 #[cfg(target_os = "macos")]
-impl crate::Pkcs12ImportOptionsInternals for Pkcs12ImportOptions {
+impl Pkcs12ImportOptions {
+    /// Specifies macOS keychain in which to import the identity.
+    ///
+    /// If this is not called, the default keychain will be used.
     #[inline(always)]
-    fn keychain(&mut self, keychain: SecKeychain) -> &mut Self {
+    pub fn keychain(&mut self, keychain: SecKeychain) -> &mut Self {
         self.keychain = Some(keychain);
         self
     }
 
+    /// Specifies the access control to be associated with the identity. macOS only.
     #[inline(always)]
-    fn access(&mut self, access: SecAccess) -> &mut Self {
+    pub fn access(&mut self, access: SecAccess) -> &mut Self {
         self.access = Some(access);
         self
     }

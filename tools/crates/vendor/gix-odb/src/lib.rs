@@ -12,7 +12,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 
 use std::{
@@ -47,7 +47,6 @@ pub struct Cache<S> {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod cache;
 
 ///
@@ -67,23 +66,18 @@ pub fn sink(object_hash: gix_hash::Kind) -> Sink {
     }
 }
 
+///
+pub mod memory;
+
 mod sink;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod find;
 
 /// An object database equivalent to `/dev/null`, dropping all objects stored into it.
 mod traits;
 
-pub use traits::{Header, HeaderExt, Write};
-
-///
-#[allow(clippy::empty_docs)]
-pub mod write {
-    /// The error type returned by the [`Write`](crate::Write) trait.
-    pub type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
-}
+pub use traits::{Header, HeaderExt};
 
 /// A thread-local handle to access any object.
 pub type Handle = Cache<store::Handle<OwnShared<Store>>>;
@@ -125,7 +119,7 @@ pub struct Store {
 
     /// The below state acts like a slot-map with each slot is mutable when the write lock is held, but readable independently of it.
     /// This allows multiple file to be loaded concurrently if there is multiple handles requesting to load packs or additional indices.
-    /// The map is static and cannot typically change.
+    /// The map is static and cannot change.
     /// It's read often and changed rarely.
     pub(crate) files: Vec<types::MutableIndexAndPack>,
 

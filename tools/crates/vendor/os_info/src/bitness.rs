@@ -9,12 +9,14 @@ use std::fmt::{self, Display, Formatter};
     target_os = "linux",
     target_os = "macos",
     target_os = "netbsd",
-    target_os = "openbsd"
+    target_os = "openbsd",
+    target_os = "cygwin"
 ))]
 use std::process::{Command, Output};
 
 /// Operating system architecture in terms of how many bits compose the basic values it can deal with.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[non_exhaustive]
 pub enum Bitness {
@@ -40,6 +42,7 @@ impl Display for Bitness {
     target_os = "dragonfly",
     target_os = "freebsd",
     target_os = "linux",
+    target_os = "cygwin",
     target_os = "macos",
 ))]
 pub fn get() -> Bitness {
@@ -107,7 +110,8 @@ pub fn get() -> Bitness {
         target_os = "linux",
         target_os = "macos",
         target_os = "netbsd",
-        target_os = "openbsd"
+        target_os = "openbsd",
+        target_os = "cygwin"
     )
 ))]
 mod tests {

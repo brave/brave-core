@@ -21,7 +21,7 @@ thread_local = "1.1"
 
 ## Minimum Rust version
 
-This crate's minimum supported Rust version (MSRV) is 1.59.0.
+This crate's minimum supported Rust version (MSRV) is 1.63.0.
 
 ## License
 

@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::usize;
 
 use crate::registry::{Registry, WorkerThread};
 use crate::sync::{Condvar, Mutex};
@@ -168,7 +167,7 @@ impl<'r> SpinLatch<'r> {
         }
     }
 
-    /// Creates a new spin latch for cross-threadpool blocking.  Notably, we
+    /// Creates a new spin latch for cross-thread-pool blocking.  Notably, we
     /// need to make sure the registry is kept alive after setting, so we can
     /// safely call the notification.
     #[inline]
@@ -185,26 +184,23 @@ impl<'r> SpinLatch<'r> {
     }
 }
 
-impl<'r> AsCoreLatch for SpinLatch<'r> {
+impl AsCoreLatch for SpinLatch<'_> {
     #[inline]
     fn as_core_latch(&self) -> &CoreLatch {
         &self.core_latch
     }
 }
 
-impl<'r> Latch for SpinLatch<'r> {
+impl Latch for SpinLatch<'_> {
     #[inline]
     unsafe fn set(this: *const Self) {
-        let cross_registry;
-
         let registry: &Registry = if (*this).cross {
             // Ensure the registry stays alive while we notify it.
             // Otherwise, it would be possible that we set the spin
             // latch and the other thread sees it and exits, causing
             // the registry to be deallocated, all before we get a
             // chance to invoke `registry.notify_worker_latch_is_set`.
-            cross_registry = Arc::clone((*this).registry);
-            &cross_registry
+            &Arc::clone((*this).registry)
         } else {
             // If this is not a "cross-registry" spin-latch, then the
             // thread which is performing `set` is itself ensuring
@@ -236,7 +232,7 @@ pub(super) struct LockLatch {
 
 impl LockLatch {
     #[inline]
-    pub(super) fn new() -> LockLatch {
+    pub(super) const fn new() -> LockLatch {
         LockLatch {
             m: Mutex::new(false),
             v: Condvar::new(),
@@ -328,7 +324,7 @@ pub(super) struct CountLatch {
 }
 
 enum CountLatchKind {
-    /// A latch for scopes created on a rayon thread which will participate in work-
+    /// A latch for scopes created on a rayon thread which will participate in work
     /// stealing while it waits for completion. This thread is not necessarily part
     /// of the same registry as the scope itself!
     Stealing {

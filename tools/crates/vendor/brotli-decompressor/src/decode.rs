@@ -1988,8 +1988,8 @@ pub fn ReadDistanceInternal<AllocU8: alloc::Allocator<u8>,
     if (!safe && (s.distance_postfix_bits == 0)) {
       nbits = (distval as u32 >> 1) + 1;
       offset = ((2 + (distval & 1)) << nbits) - 4;
-      s.distance_code = s.num_direct_distance_codes as i32 + offset +
-                        bit_reader::BrotliReadBits(&mut s.br, nbits, input) as i32;
+      s.distance_code = (s.num_direct_distance_codes as i64 + offset as i64 +
+                        bit_reader::BrotliReadBits(&mut s.br, nbits, input) as i64) as i32;
     } else {
       // This branch also works well when s.distance_postfix_bits == 0
       let mut bits: u32 = 0;
@@ -2006,7 +2006,7 @@ pub fn ReadDistanceInternal<AllocU8: alloc::Allocator<u8>,
         bits = bit_reader::BrotliReadBits(&mut s.br, nbits, input);
       }
       offset = (((distval & 1).wrapping_add(2)) << nbits).wrapping_sub(4);
-      s.distance_code = ((offset + bits as i32) << s.distance_postfix_bits).wrapping_add(postfix).wrapping_add(s.num_direct_distance_codes as i32);
+      s.distance_code = ((i64::from(offset) + i64::from(bits)) << s.distance_postfix_bits).wrapping_add(i64::from(postfix)).wrapping_add(i64::from(s.num_direct_distance_codes)) as i32;
     }
   }
   s.distance_code = s.distance_code.wrapping_sub(NUM_DISTANCE_SHORT_CODES as i32).wrapping_add(1);

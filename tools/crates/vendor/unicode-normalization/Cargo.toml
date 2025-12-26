@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.36"
 name = "unicode-normalization"
-version = "0.1.24"
+version = "0.1.25"
 authors = [
     "kwantam <kwantam@gmail.com>",
     "Manish Goregaokar <manishsmail@gmail.com>",
@@ -26,6 +26,7 @@ exclude = [
     "*.txt",
     "tests/*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -46,8 +47,12 @@ keywords = [
     "decomposition",
     "recomposition",
 ]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/unicode-rs/unicode-normalization"
+
+[features]
+default = ["std"]
+std = []
 
 [lib]
 name = "unicode_normalization"
@@ -60,7 +65,3 @@ path = "benches/bench.rs"
 [dependencies.tinyvec]
 version = "1"
 features = ["alloc"]
-
-[features]
-default = ["std"]
-std = []

@@ -2,8 +2,9 @@ use std::borrow::Cow;
 
 use crate::RawString;
 
-/// A value together with its `to_string` representation,
-/// including surrounding it whitespaces and comments.
+/// A scalar TOML [`Value`][crate::Value]'s logical value and its representation in a `&str`
+///
+/// This includes the surrounding whitespace and comments.
 #[derive(Eq, PartialEq, Clone, Hash)]
 pub struct Formatted<T> {
     value: T,
@@ -134,7 +135,7 @@ mod inner {
     impl ValueRepr for toml_datetime::Datetime {}
 }
 
-/// TOML-encoded value
+/// A TOML [`Value`][crate::Value] encoded as a `&str`
 #[derive(Eq, PartialEq, Clone, Hash)]
 pub struct Repr {
     raw_value: RawString,

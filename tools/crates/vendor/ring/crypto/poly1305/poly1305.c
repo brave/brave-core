@@ -16,13 +16,10 @@
 // (https://github.com/floodyberry/poly1305-donna) and released as public
 // domain.
 
-#include <ring-core/poly1305.h>
+#include <ring-core/base.h>
 
-#include "internal.h"
 #include "../internal.h"
-
-
-#if !defined(BORINGSSL_HAS_UINT128) || !defined(OPENSSL_X86_64)
+#include "ring-core/check.h"
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic ignored "-Wsign-conversion"
@@ -31,30 +28,22 @@
 
 static uint64_t mul32x32_64(uint32_t a, uint32_t b) { return (uint64_t)a * b; }
 
+// Keep in sync with `poly1305_state_st` in ffi_fallback.rs.
 struct poly1305_state_st {
-  uint32_t r0, r1, r2, r3, r4;
+  alignas(64) uint32_t r0;
+  uint32_t r1, r2, r3, r4;
   uint32_t s1, s2, s3, s4;
   uint32_t h0, h1, h2, h3, h4;
-  uint8_t buf[16];
-  size_t buf_used;
   uint8_t key[16];
 };
-
-OPENSSL_STATIC_ASSERT(
-    sizeof(struct poly1305_state_st) + 63 <= sizeof(poly1305_state),
-    "poly1305_state isn't large enough to hold aligned poly1305_state_st");
-
-static inline struct poly1305_state_st *poly1305_aligned_state(
-    poly1305_state *state) {
-  dev_assert_secret(((uintptr_t)state & 63) == 0);
-  return (struct poly1305_state_st *)(((uintptr_t)state + 63) & ~63);
-}
 
 // poly1305_blocks updates |state| given some amount of input data. This
 // function may only be called with a |len| that is not a multiple of 16 at the
 // end of the data. Otherwise the input must be buffered into 16 byte blocks.
 static void poly1305_update(struct poly1305_state_st *state, const uint8_t *in,
                             size_t len) {
+  debug_assert_nonsecret((uintptr_t)state % 64 == 0);
+
   uint32_t t0, t1, t2, t3;
   uint64_t t[5];
   uint32_t b;
@@ -147,8 +136,9 @@ poly1305_donna_atmost15bytes:
   goto poly1305_donna_mul;
 }
 
-void CRYPTO_poly1305_init(poly1305_state *statep, const uint8_t key[32]) {
-  struct poly1305_state_st *state = poly1305_aligned_state(statep);
+void CRYPTO_poly1305_init(struct poly1305_state_st *state, const uint8_t key[32]) {
+  debug_assert_nonsecret((uintptr_t)state % 64 == 0);
+
   uint32_t t0, t1, t2, t3;
 
   t0 = CRYPTO_load_u32_le(key + 0);
@@ -182,60 +172,22 @@ void CRYPTO_poly1305_init(poly1305_state *statep, const uint8_t key[32]) {
   state->h3 = 0;
   state->h4 = 0;
 
-  state->buf_used = 0;
   OPENSSL_memcpy(state->key, key + 16, sizeof(state->key));
 }
 
-void CRYPTO_poly1305_update(poly1305_state *statep, const uint8_t *in,
+void CRYPTO_poly1305_update(struct poly1305_state_st *state, const uint8_t *in,
                             size_t in_len) {
-  struct poly1305_state_st *state = poly1305_aligned_state(statep);
-
   // Work around a C language bug. See https://crbug.com/1019588.
   if (in_len == 0) {
     return;
   }
 
-  if (state->buf_used) {
-    size_t todo = 16 - state->buf_used;
-    if (todo > in_len) {
-      todo = in_len;
-    }
-    for (size_t i = 0; i < todo; i++) {
-      state->buf[state->buf_used + i] = in[i];
-    }
-    state->buf_used += todo;
-    in_len -= todo;
-    in += todo;
-
-    if (state->buf_used == 16) {
-      poly1305_update(state, state->buf, 16);
-      state->buf_used = 0;
-    }
-  }
-
-  if (in_len >= 16) {
-    size_t todo = in_len & ~0xf;
-    poly1305_update(state, in, todo);
-    in += todo;
-    in_len &= 0xf;
-  }
-
-  if (in_len) {
-    for (size_t i = 0; i < in_len; i++) {
-      state->buf[i] = in[i];
-    }
-    state->buf_used = in_len;
-  }
+  poly1305_update(state, in, in_len);
 }
 
-void CRYPTO_poly1305_finish(poly1305_state *statep, uint8_t mac[16]) {
-  struct poly1305_state_st *state = poly1305_aligned_state(statep);
+void CRYPTO_poly1305_finish(struct poly1305_state_st *state, uint8_t mac[16]) {
   uint32_t g0, g1, g2, g3, g4;
   uint32_t b, nb;
-
-  if (state->buf_used) {
-    poly1305_update(state, state->buf, state->buf_used);
-  }
 
   b = state->h0 >> 26;
   state->h0 = state->h0 & 0x3ffffff;
@@ -292,5 +244,3 @@ void CRYPTO_poly1305_finish(poly1305_state *statep, uint8_t mac[16]) {
   f3 += (f2 >> 32);
   CRYPTO_store_u32_le(&mac[12], (uint32_t)f3);
 }
-
-#endif  // !BORINGSSL_HAS_UINT128 || !OPENSSL_X86_64

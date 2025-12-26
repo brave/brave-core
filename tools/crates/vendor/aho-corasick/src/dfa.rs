@@ -494,7 +494,7 @@ impl Builder {
             matches: vec![vec![]; num_match_states],
             matches_memory_usage: 0,
             pattern_lens: nnfa.pattern_lens_raw().to_vec(),
-            prefilter: nnfa.prefilter().map(|p| p.clone()),
+            prefilter: nnfa.prefilter().cloned(),
             match_kind: nnfa.match_kind(),
             state_len,
             alphabet_len: byte_classes.alphabet_len(),

@@ -52,7 +52,7 @@ pub(crate) fn document<'s, 'i>(
     }
 }
 
-pub(crate) fn parse_comment<'s, 'i>(
+fn parse_comment<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {
@@ -65,7 +65,7 @@ pub(crate) fn parse_comment<'s, 'i>(
     }
 }
 
-pub(crate) fn parse_ws<'s, 'i>(
+fn parse_ws<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {
@@ -75,7 +75,7 @@ pub(crate) fn parse_ws<'s, 'i>(
     }
 }
 
-pub(crate) fn parse_newline<'s, 'i>(
+fn parse_newline<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {
@@ -86,7 +86,7 @@ pub(crate) fn parse_newline<'s, 'i>(
     }
 }
 
-pub(crate) fn keyval<'s, 'i>(
+fn keyval<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {
@@ -97,7 +97,7 @@ pub(crate) fn keyval<'s, 'i>(
 }
 
 // keyval = key keyval-sep val
-pub(crate) fn parse_keyval(input: &mut Input<'_>) -> ModalResult<(Vec<Key>, (Key, Item))> {
+fn parse_keyval(input: &mut Input<'_>) -> ModalResult<(Vec<Key>, (Key, Item))> {
     trace(
         "keyval",
         (

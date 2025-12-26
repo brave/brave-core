@@ -20,6 +20,14 @@
 #include <sys/types.h>
 #endif
 
+#if __cplusplus >= 201703L
+#include <string_view>
+#endif
+
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
+
 namespace rust {
 inline namespace cxxbridge1 {
 
@@ -45,7 +53,7 @@ public:
   String(const char *, std::size_t);
   String(const char16_t *);
   String(const char16_t *, std::size_t);
-#if __cplusplus >= 202002L
+#ifdef __cpp_char8_t
   String(const char8_t *s);
   String(const char8_t *s, std::size_t len);
 #endif
@@ -120,6 +128,9 @@ public:
   Str &operator=(const Str &) & noexcept = default;
 
   explicit operator std::string() const;
+#if __cplusplus >= 201703L
+  explicit operator std::string_view() const;
+#endif
 
   // Note: no null terminator.
   const char *data() const noexcept;
@@ -216,6 +227,12 @@ private:
 
   std::array<std::uintptr_t, 2> repr;
 };
+
+#ifdef __cpp_deduction_guides
+template <typename C>
+explicit Slice(C &c)
+    -> Slice<std::remove_reference_t<decltype(*std::declval<C>().data())>>;
+#endif // __cpp_deduction_guides
 
 template <typename T>
 class Slice<T>::iterator final {

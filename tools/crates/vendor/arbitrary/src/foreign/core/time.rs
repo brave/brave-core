@@ -3,6 +3,7 @@ use {
     core::time::Duration,
 };
 
+/// Returns zero, not an error, if this `Unstructured` [is empty][Unstructured::is_empty].
 impl<'a> Arbitrary<'a> for Duration {
     fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
         Ok(Self::new(

@@ -403,7 +403,7 @@ mod aligned {
 
     impl<E: Endian> U16<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 2]) -> Self {
+        pub const fn from_bytes(n: [u8; 2]) -> Self {
             Self(u16::from_ne_bytes(n), PhantomData)
         }
 
@@ -430,7 +430,7 @@ mod aligned {
 
     impl<E: Endian> U32<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 4]) -> Self {
+        pub const fn from_bytes(n: [u8; 4]) -> Self {
             Self(u32::from_ne_bytes(n), PhantomData)
         }
 
@@ -455,7 +455,7 @@ mod aligned {
 
     impl<E: Endian> U64<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 8]) -> Self {
+        pub const fn from_bytes(n: [u8; 8]) -> Self {
             Self(u64::from_ne_bytes(n), PhantomData)
         }
 
@@ -480,7 +480,7 @@ mod aligned {
 
     impl<E: Endian> I16<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 2]) -> Self {
+        pub const fn from_bytes(n: [u8; 2]) -> Self {
             Self(i16::from_ne_bytes(n), PhantomData)
         }
 
@@ -505,7 +505,7 @@ mod aligned {
 
     impl<E: Endian> I32<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 4]) -> Self {
+        pub const fn from_bytes(n: [u8; 4]) -> Self {
             Self(i32::from_ne_bytes(n), PhantomData)
         }
 
@@ -530,7 +530,7 @@ mod aligned {
 
     impl<E: Endian> I64<E> {
         /// Construct a new value given bytes that already have the required endianness.
-        pub fn from_bytes(n: [u8; 8]) -> Self {
+        pub const fn from_bytes(n: [u8; 8]) -> Self {
             Self(i64::from_ne_bytes(n), PhantomData)
         }
 
@@ -621,7 +621,7 @@ pub struct U16Bytes<E: Endian>([u8; 2], PhantomData<E>);
 
 impl<E: Endian> U16Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 2]) -> Self {
+    pub const fn from_bytes(n: [u8; 2]) -> Self {
         Self(n, PhantomData)
     }
 
@@ -648,7 +648,7 @@ pub struct U32Bytes<E: Endian>([u8; 4], PhantomData<E>);
 
 impl<E: Endian> U32Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 4]) -> Self {
+    pub const fn from_bytes(n: [u8; 4]) -> Self {
         Self(n, PhantomData)
     }
 
@@ -675,7 +675,7 @@ pub struct U64Bytes<E: Endian>([u8; 8], PhantomData<E>);
 
 impl<E: Endian> U64Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 8]) -> Self {
+    pub const fn from_bytes(n: [u8; 8]) -> Self {
         Self(n, PhantomData)
     }
 
@@ -702,7 +702,7 @@ pub struct I16Bytes<E: Endian>([u8; 2], PhantomData<E>);
 
 impl<E: Endian> I16Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 2]) -> Self {
+    pub const fn from_bytes(n: [u8; 2]) -> Self {
         Self(n, PhantomData)
     }
 
@@ -729,7 +729,7 @@ pub struct I32Bytes<E: Endian>([u8; 4], PhantomData<E>);
 
 impl<E: Endian> I32Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 4]) -> Self {
+    pub const fn from_bytes(n: [u8; 4]) -> Self {
         Self(n, PhantomData)
     }
 
@@ -756,7 +756,7 @@ pub struct I64Bytes<E: Endian>([u8; 8], PhantomData<E>);
 
 impl<E: Endian> I64Bytes<E> {
     /// Construct a new value given bytes that already have the required endianness.
-    pub fn from_bytes(n: [u8; 8]) -> Self {
+    pub const fn from_bytes(n: [u8; 8]) -> Self {
         Self(n, PhantomData)
     }
 

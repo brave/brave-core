@@ -1,5 +1,5 @@
-use owo_colors::colors::xterm;
 use owo_colors::OwoColorize;
+use owo_colors::colors::xterm;
 
 macro_rules! xterm_colors {
     ($(

@@ -47,6 +47,8 @@ macro_rules! tarr {
     ($n:ty,) => ( $crate::TArr<$n, $crate::ATerm> );
     ($n:ty, $($tail:ty),+) => ( $crate::TArr<$n, tarr![$($tail),+]> );
     ($n:ty, $($tail:ty),+,) => ( $crate::TArr<$n, tarr![$($tail),+]> );
+    ($n:ty | $rest:ty) => ( $crate::TArr<$n, $rest> );
+    ($n:ty, $($tail:ty),+ | $rest:ty) => ( $crate::TArr<$n, tarr![$($tail),+ | $rest]> );
 }
 
 // ---------------------------------------------------------------------------------------
@@ -73,6 +75,60 @@ where
     fn len(&self) -> Self::Output {
         self.rest.len() + B1
     }
+}
+
+// ---------------------------------------------------------------------------------------
+// FoldAdd
+
+/// Hide our `Null` type
+const _: () = {
+    /// A type which contributes nothing when adding (i.e. a zero)
+    pub struct Null;
+    impl<T> Add<T> for Null {
+        type Output = T;
+        fn add(self, rhs: T) -> Self::Output {
+            rhs
+        }
+    }
+
+    impl FoldAdd for ATerm {
+        type Output = Null;
+    }
+};
+
+impl<V, A> FoldAdd for TArr<V, A>
+where
+    A: FoldAdd,
+    FoldSum<A>: Add<V>,
+{
+    type Output = Sum<FoldSum<A>, V>;
+}
+
+// ---------------------------------------------------------------------------------------
+// FoldMul
+
+/// Hide our `Null` type
+const _: () = {
+    /// A type which contributes nothing when multiplying (i.e. a one)
+    pub struct Null;
+    impl<T> Mul<T> for Null {
+        type Output = T;
+        fn mul(self, rhs: T) -> Self::Output {
+            rhs
+        }
+    }
+
+    impl FoldMul for ATerm {
+        type Output = Null;
+    }
+};
+
+impl<V, A> FoldMul for TArr<V, A>
+where
+    A: FoldMul,
+    FoldProd<A>: Mul<V>,
+{
+    type Output = Prod<FoldProd<A>, V>;
 }
 
 // ---------------------------------------------------------------------------------------

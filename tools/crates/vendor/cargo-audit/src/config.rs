@@ -1,9 +1,9 @@
 //! The configuration file
 
 use rustsec::{
-    advisory,
+    Error, ErrorKind, WarningKind, advisory,
     platforms::target::{Arch, OS},
-    report, Error, ErrorKind, WarningKind,
+    report,
 };
 use serde::{Deserialize, Serialize};
 use std::{path::PathBuf, str::FromStr};
@@ -100,10 +100,6 @@ pub struct AdvisoryConfig {
     #[serde(default)]
     pub ignore: Vec<advisory::Id>,
 
-    /// Ignore the source of this advisory, matching any package of the same name.
-    #[serde(default)]
-    pub ignore_source: bool,
-
     /// Warn for the given types of informational advisories
     pub informational_warnings: Option<Vec<advisory::Informational>>,
 
@@ -168,7 +164,7 @@ pub struct OutputConfig {
 impl OutputConfig {
     /// Is quiet mode enabled?
     pub fn is_quiet(&self) -> bool {
-        self.quiet || self.format == OutputFormat::Json
+        self.quiet || self.format == OutputFormat::Json || self.format == OutputFormat::Sarif
     }
 }
 
@@ -228,23 +224,43 @@ impl FromStr for DenyOption {
             "yanked" => Ok(DenyOption::Yanked),
             other => Err(Error::new(
                 ErrorKind::Parse,
-                &format!("invalid deny option: {other}"),
+                format!("invalid deny option: {other}"),
             )),
         }
     }
 }
 
 /// Output format
-#[derive(Default, Copy, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Default, Copy, Clone, Debug, Deserialize, Eq, PartialEq, Serialize, clap::ValueEnum)]
 pub enum OutputFormat {
     /// Display JSON
     #[serde(rename = "json")]
     Json,
 
+    /// Display SARIF (Static Analysis Results Interchange Format)
+    #[serde(rename = "sarif")]
+    Sarif,
+
     /// Display human-readable output to the terminal
     #[serde(rename = "terminal")]
     #[default]
     Terminal,
+}
+
+impl FromStr for OutputFormat {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Error> {
+        match s {
+            "json" => Ok(OutputFormat::Json),
+            "sarif" => Ok(OutputFormat::Sarif),
+            "terminal" => Ok(OutputFormat::Terminal),
+            other => Err(Error::new(
+                ErrorKind::Parse,
+                format!("invalid output format: {other}"),
+            )),
+        }
+    }
 }
 
 /// Helper enum for configuring filter values

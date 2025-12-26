@@ -13,8 +13,16 @@
 edition = "2021"
 rust-version = "1.60"
 name = "rustls-pki-types"
-version = "1.11.0"
+version = "1.13.2"
 build = false
+include = [
+    "Cargo.toml",
+    "LICENSE-APACHE",
+    "LICENSE-MIT",
+    "src/**/*.rs",
+    "README.md",
+    "src/data/*.der",
+]
 autolib = false
 autobins = false
 autoexamples = false
@@ -36,34 +44,25 @@ repository = "https://github.com/rustls/pki-types"
 all-features = true
 rustdoc-args = [
     "--cfg",
-    "docsrs",
+    "rustls_pki_types_docsrs",
 ]
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = ["zeroize::Zeroize"]
+
+[features]
+alloc = ["dep:zeroize"]
+default = ["alloc"]
+std = ["alloc"]
+web = ["web-time"]
 
 [lib]
 name = "rustls_pki_types"
 path = "src/lib.rs"
 
-[[test]]
-name = "dns_name"
-path = "tests/dns_name.rs"
-
-[[test]]
-name = "key_type"
-path = "tests/key_type.rs"
-
-[[test]]
-name = "pem"
-path = "tests/pem.rs"
-
-[[test]]
-name = "server_name"
-path = "tests/server_name.rs"
-
-[features]
-alloc = []
-default = ["alloc"]
-std = ["alloc"]
-web = ["web-time"]
+[dependencies.zeroize]
+version = "1"
+optional = true
 
 [target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dependencies.web-time]
 version = "1"
@@ -71,3 +70,8 @@ optional = true
 
 [target.'cfg(all(target_os = "linux", target_arch = "x86_64"))'.dev-dependencies.crabgrind]
 version = "=0.1.9"
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(rustls_pki_types_docsrs)"]

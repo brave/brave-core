@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.74.0"
+edition = "2024"
+rust-version = "1.85"
 name = "cargo-audit"
-version = "0.21.1"
+version = "0.22.0"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
 build = false
 exclude = ["tests/"]
@@ -34,6 +34,15 @@ keywords = [
 categories = ["development-tools::cargo-plugins"]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/rustsec/rustsec"
+resolver = "2"
+
+[badges.maintenance]
+status = "actively-developed"
+
+[features]
+binary-scanning = ["rustsec/binary-scanning"]
+default = ["binary-scanning"]
+fix = []
 
 [lib]
 name = "cargo_audit"
@@ -47,7 +56,7 @@ path = "src/bin/cargo-audit/main.rs"
 version = "0.8"
 
 [dependencies.cargo-lock]
-version = "10.1.0"
+version = "11"
 
 [dependencies.clap]
 version = "4"
@@ -59,7 +68,7 @@ version = "0.2.0"
 version = "0.5"
 
 [dependencies.rustsec]
-version = "0.30.1"
+version = "0.31"
 features = ["dependency-tree"]
 
 [dependencies.serde]
@@ -70,7 +79,7 @@ features = ["serde_derive"]
 version = "1"
 
 [dependencies.thiserror]
-version = "1"
+version = "2"
 
 [dev-dependencies.abscissa_core]
 version = "0.8"
@@ -83,12 +92,4 @@ version = "1.15.0"
 version = "3"
 
 [dev-dependencies.toml]
-version = "0.8"
-
-[features]
-binary-scanning = ["rustsec/binary-scanning"]
-default = ["binary-scanning"]
-fix = []
-
-[badges.maintenance]
-status = "actively-developed"
+version = "0.9"

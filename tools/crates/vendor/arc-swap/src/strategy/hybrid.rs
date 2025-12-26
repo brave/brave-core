@@ -51,7 +51,10 @@ impl<T: RefCnt> HybridProtection<T> {
         let confirm = storage.load(SeqCst);
         if ptr == confirm {
             // Successfully got a debt
-            Some(unsafe { Self::new(ptr, Some(debt)) })
+            // NOTE: we *must* use `confirm` here instead of `ptr`. The address may compare equal,
+            // but they could have different provenance, if the pointer is freed and then
+            // subsequently reused.
+            Some(unsafe { Self::new(confirm, Some(debt)) })
         } else if debt.pay::<T>(ptr) {
             // It changed in the meantime, we return the debt (that is on the outdated pointer,
             // possibly destroyed) and fail.

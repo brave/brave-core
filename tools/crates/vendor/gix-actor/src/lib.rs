@@ -5,9 +5,8 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
-#![deny(missing_docs, rust_2018_idioms)]
-#![forbid(unsafe_code)]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
+#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 
 /// The re-exported `bstr` crate.
 ///
@@ -18,20 +17,22 @@ use bstr::{BStr, BString};
 ///
 /// For convenience to allow using `gix-date` without adding it to own cargo manifest.
 pub use gix_date as date;
-use gix_date::Time;
 
 mod identity;
 ///
-#[allow(clippy::empty_docs)]
 pub mod signature;
 
 /// A person with name and email.
 #[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Identity {
-    /// The actors name.
+    /// The actors name, potentially with whitespace as parsed.
+    ///
+    /// Use [IdentityRef::trim()] or trim manually to be able to clean it up.
     pub name: BString,
-    /// The actor's email.
+    /// The actor's email, potentially with whitespace and garbage as parsed.
+    ///
+    /// Use [IdentityRef::trim()] or trim manually to be able to clean it up.
     pub email: BString,
 }
 
@@ -39,38 +40,56 @@ pub struct Identity {
 #[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentityRef<'a> {
-    /// The actors name.
+    /// The actors name, potentially with whitespace as parsed.
+    ///
+    /// Use [IdentityRef::trim()] or trim manually to be able to clean it up.
     #[cfg_attr(feature = "serde", serde(borrow))]
     pub name: &'a BStr,
-    /// The actor's email.
+    /// The actor's email, potentially with whitespace and garbage as parsed.
+    ///
+    /// Use [IdentityRef::trim()] or trim manually to be able to clean it up.
     pub email: &'a BStr,
 }
 
-/// A mutable signature is created by an actor at a certain time.
+/// A mutable signature that is created by an actor at a certain time.
 ///
 /// Note that this is not a cryptographical signature.
 #[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Signature {
-    /// The actors name.
+    /// The actors name, potentially with whitespace as parsed.
+    ///
+    /// Use [SignatureRef::trim()] or trim manually to be able to clean it up.
     pub name: BString,
-    /// The actor's email.
+    /// The actor's email, potentially with whitespace and garbage as parsed.
+    ///
+    /// Use [SignatureRef::trim()] or trim manually to be able to clean it up.
     pub email: BString,
     /// The time stamp at which the signature is performed.
-    pub time: Time,
+    pub time: date::Time,
 }
 
-/// A immutable signature is created by an actor at a certain time.
+/// An immutable signature that is created by an actor at a certain time.
+///
+/// All of its fields are references to the backing buffer to allow lossless
+/// round-tripping, as decoding the `time` field could be a lossy transformation.
 ///
 /// Note that this is not a cryptographical signature.
 #[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SignatureRef<'a> {
-    /// The actor's name.
+    /// The actors name, potentially with whitespace as parsed.
+    ///
+    /// Use [SignatureRef::trim()] or trim manually for cleanup.
     #[cfg_attr(feature = "serde", serde(borrow))]
     pub name: &'a BStr,
-    /// The actor's email.
+    /// The actor's email, potentially with whitespace and garbage as parsed.
+    ///
+    /// Use [SignatureRef::trim()] or trim manually for cleanup.
     pub email: &'a BStr,
-    /// The time stamp at which the signature was performed.
-    pub time: gix_date::Time,
+    /// The timestamp at which the signature was performed,
+    /// potentially malformed due to lenient parsing.
+    ///
+    /// Use [`SignatureRef::time()`] to decode.
+    pub time: &'a str,
 }

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "rustls"
-version = "0.23.22"
+version = "0.23.35"
 build = "build.rs"
 exclude = [
     "src/testdata",
@@ -34,12 +34,6 @@ categories = [
 license = "Apache-2.0 OR ISC OR MIT"
 repository = "https://github.com/rustls/rustls"
 
-[package.metadata.cargo_check_external_types]
-allowed_external_types = [
-    "rustls_pki_types",
-    "rustls_pki_types::*",
-]
-
 [package.metadata.docs.rs]
 features = [
     "read_buf",
@@ -47,8 +41,61 @@ features = [
 ]
 rustdoc-args = [
     "--cfg",
-    "docsrs",
+    "rustls_docsrs",
 ]
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = [
+    "rustls_pki_types",
+    "rustls_pki_types::*",
+]
+
+[package.metadata.cargo-semver-checks.lints]
+enum_no_repr_variant_discriminant_changed = "warn"
+
+[features]
+aws-lc-rs = ["aws_lc_rs"]
+aws_lc_rs = [
+    "dep:aws-lc-rs",
+    "webpki/aws-lc-rs",
+    "aws-lc-rs/aws-lc-sys",
+    "aws-lc-rs/prebuilt-nasm",
+]
+brotli = [
+    "dep:brotli",
+    "dep:brotli-decompressor",
+    "std",
+]
+custom-provider = []
+default = [
+    "aws_lc_rs",
+    "logging",
+    "prefer-post-quantum",
+    "std",
+    "tls12",
+]
+fips = [
+    "aws_lc_rs",
+    "aws-lc-rs?/fips",
+    "webpki/aws-lc-rs-fips",
+]
+logging = ["log"]
+prefer-post-quantum = ["aws_lc_rs"]
+read_buf = [
+    "rustversion",
+    "std",
+]
+ring = [
+    "dep:ring",
+    "webpki/ring",
+]
+std = [
+    "webpki/std",
+    "pki-types/std",
+    "once_cell/std",
+]
+tls12 = []
+zlib = ["dep:zlib-rs"]
 
 [lib]
 name = "rustls"
@@ -65,22 +112,18 @@ harness = false
 required-features = ["ring"]
 
 [dependencies.aws-lc-rs]
-version = "1.12"
-features = [
-    "aws-lc-sys",
-    "prebuilt-nasm",
-]
+version = "1.14"
 optional = true
 default-features = false
 
 [dependencies.brotli]
-version = "7"
+version = "8"
 features = ["std"]
 optional = true
 default-features = false
 
 [dependencies.brotli-decompressor]
-version = "4.0.1"
+version = "5.0.0"
 optional = true
 
 [dependencies.hashbrown]
@@ -105,7 +148,7 @@ features = [
 default-features = false
 
 [dependencies.pki-types]
-version = "1.10"
+version = "1.12"
 features = ["alloc"]
 package = "rustls-pki-types"
 
@@ -118,16 +161,16 @@ version = "2.5.0"
 default-features = false
 
 [dependencies.webpki]
-version = "0.102.8"
+version = "0.103.5"
 features = ["alloc"]
 default-features = false
 package = "rustls-webpki"
 
 [dependencies.zeroize]
-version = "1.7"
+version = "1.8"
 
 [dependencies.zlib-rs]
-version = "0.4"
+version = "0.5"
 optional = true
 
 [dev-dependencies.base64]
@@ -152,7 +195,7 @@ version = "0.2"
 version = "0.4.4"
 
 [dev-dependencies.rcgen]
-version = "0.13"
+version = "0.14"
 features = [
     "pem",
     "aws_lc_rs",
@@ -171,7 +214,7 @@ version = "0.3.6"
 default-features = false
 
 [dev-dependencies.webpki-roots]
-version = "0.26"
+version = "1"
 
 [dev-dependencies.x509-parser]
 version = "0.17"
@@ -180,42 +223,12 @@ version = "0.17"
 version = "1.0.6"
 optional = true
 
-[features]
-aws-lc-rs = ["aws_lc_rs"]
-aws_lc_rs = [
-    "dep:aws-lc-rs",
-    "webpki/aws_lc_rs",
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    "cfg(bench)",
+    "cfg(coverage_nightly)",
+    "cfg(read_buf)",
+    "cfg(rustls_docsrs)",
 ]
-brotli = [
-    "dep:brotli",
-    "dep:brotli-decompressor",
-    "std",
-]
-custom-provider = []
-default = [
-    "aws_lc_rs",
-    "logging",
-    "std",
-    "tls12",
-]
-fips = [
-    "aws_lc_rs",
-    "aws-lc-rs?/fips",
-]
-logging = ["log"]
-prefer-post-quantum = ["aws_lc_rs"]
-read_buf = [
-    "rustversion",
-    "std",
-]
-ring = [
-    "dep:ring",
-    "webpki/ring",
-]
-std = [
-    "webpki/std",
-    "pki-types/std",
-    "once_cell/std",
-]
-tls12 = []
-zlib = ["dep:zlib-rs"]

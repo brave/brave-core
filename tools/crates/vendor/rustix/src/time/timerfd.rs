@@ -1,14 +1,38 @@
 use crate::fd::{AsFd, OwnedFd};
+use crate::timespec::Timespec;
 use crate::{backend, io};
 
-pub use backend::time::types::{Itimerspec, TimerfdClockId, TimerfdFlags, TimerfdTimerFlags};
+pub use backend::time::types::{TimerfdClockId, TimerfdFlags, TimerfdTimerFlags};
+
+/// `struct itimerspec` for use with [`timerfd_gettime`] and
+/// [`timerfd_settime`].
+///
+/// [`timerfd_gettime`]: crate::time::timerfd_gettime
+/// [`timerfd_settime`]: crate::time::timerfd_settime
+#[derive(Debug, Clone)]
+pub struct Itimerspec {
+    /// Interval between times.
+    pub it_interval: Timespec,
+    /// Value of the time.
+    pub it_value: Timespec,
+}
 
 /// `timerfd_create(clockid, flags)`—Create a timer.
 ///
+/// For a higher-level API to timerfd functionality, see the [timerfd] crate.
+///
+/// [timerfd]: https://crates.io/crates/timerfd
+///
 /// # References
 ///  - [Linux]
+///  - [FreeBSD]
+///  - [illumos]
+///  - [NetBSD]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/timerfd_create.2.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=timerfd_create&sektion=2
+/// [illumos]: https://illumos.org/man/3C/timerfd_create
+/// [NetBSD]: https://man.netbsd.org/timerfd_create.2
 #[inline]
 pub fn timerfd_create(clockid: TimerfdClockId, flags: TimerfdFlags) -> io::Result<OwnedFd> {
     backend::time::syscalls::timerfd_create(clockid, flags)
@@ -18,8 +42,14 @@ pub fn timerfd_create(clockid: TimerfdClockId, flags: TimerfdFlags) -> io::Resul
 ///
 /// # References
 ///  - [Linux]
+///  - [FreeBSD]
+///  - [illumos]
+///  - [NetBSD]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/timerfd_settime.2.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=timerfd_settime&sektion=2
+/// [illumos]: https://illumos.org/man/3C/timerfd_settime
+/// [NetBSD]: https://man.netbsd.org/timerfd_settime.2
 #[inline]
 pub fn timerfd_settime<Fd: AsFd>(
     fd: Fd,
@@ -33,8 +63,14 @@ pub fn timerfd_settime<Fd: AsFd>(
 ///
 /// # References
 ///  - [Linux]
+///  - [FreeBSD]
+///  - [illumos]
+///  - [NetBSD]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/timerfd_gettime.2.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=timerfd_gettime&sektion=2
+/// [illumos]: https://illumos.org/man/3C/timerfd_gettime
+/// [NetBSD]: https://man.netbsd.org/timerfd_gettime.2
 #[inline]
 pub fn timerfd_gettime<Fd: AsFd>(fd: Fd) -> io::Result<Itimerspec> {
     backend::time::syscalls::timerfd_gettime(fd.as_fd())

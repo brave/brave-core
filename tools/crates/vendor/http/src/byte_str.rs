@@ -45,6 +45,12 @@ impl ByteStr {
         // Invariant: assumed by the safety requirements of this function.
         ByteStr { bytes }
     }
+
+    pub(crate) fn from_utf8(bytes: Bytes) -> Result<ByteStr, std::str::Utf8Error> {
+        str::from_utf8(&bytes)?;
+        // Invariant: just checked is utf8
+        Ok(ByteStr { bytes })
+    }
 }
 
 impl ops::Deref for ByteStr {

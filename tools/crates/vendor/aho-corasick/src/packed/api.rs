@@ -676,7 +676,7 @@ impl<'s, 'h> Iterator for FindIter<'s, 'h> {
         if self.span.start > self.span.end {
             return None;
         }
-        match self.searcher.find_in(&self.haystack, self.span) {
+        match self.searcher.find_in(self.haystack, self.span) {
             None => None,
             Some(m) => {
                 self.span.start = m.end();

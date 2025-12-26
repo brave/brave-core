@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 /*
-128-bit atomic implementation on x86_64 using CMPXCHG16B (DWCAS).
+128-bit atomic implementation on x86_64.
+
+This architecture provides the following 128-bit atomic instructions:
+
+- CMPXCHG16B: CAS (CMPXCHG16B)
+- VMOVDQA: load/store (Intel, AMD, or Zhaoxin CPU with AVX)
 
 Note: On Miri and ThreadSanitizer which do not support inline assembly, we don't use
 this module and use intrinsics.rs instead.
@@ -45,7 +50,7 @@ macro_rules! debug_assert_cmpxchg16b {
             portable_atomic_target_feature = "cmpxchg16b",
         )))]
         {
-            debug_assert!(detect::detect().has_cmpxchg16b());
+            debug_assert!(detect::detect().cmpxchg16b());
         }
     };
 }
@@ -54,7 +59,7 @@ macro_rules! debug_assert_cmpxchg16b {
 macro_rules! debug_assert_vmovdqa_atomic {
     () => {{
         debug_assert_cmpxchg16b!();
-        debug_assert!(detect::detect().has_vmovdqa_atomic());
+        debug_assert!(detect::detect().vmovdqa_atomic());
     }};
 }
 
@@ -145,7 +150,7 @@ unsafe fn cmpxchg16b(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
 // baseline and is always available, but the SSE target feature is disabled for
 // use cases such as kernels and firmware that should not use vector registers.
 // So, do not use vector registers unless SSE target feature is enabled.
-// See also https://github.com/rust-lang/rust/blob/1.80.0/src/doc/rustc/src/platform-support/x86_64-unknown-none.md.
+// See also https://github.com/rust-lang/rust/blob/1.84.0/src/doc/rustc/src/platform-support/x86_64-unknown-none.md.
 #[cfg(not(any(portable_atomic_no_outline_atomics, target_env = "sgx")))]
 #[cfg(target_feature = "sse")]
 #[target_feature(enable = "avx")]
@@ -193,12 +198,12 @@ unsafe fn atomic_store_vmovdqa(dst: *mut u128, val: u128, order: Ordering) {
                 let p = core::cell::UnsafeCell::new(core::mem::MaybeUninit::<u64>::uninit());
                 asm!(
                     concat!("vmovdqa xmmword ptr [{dst", ptr_modifier!(), "}], {val}"),
-                    // Equivalent to mfence, but is up to 3.1x faster on Coffee Lake and up to 2.4x faster on Raptor Lake-H at least in simple cases.
+                    // Equivalent to `mfence`, but is up to 3.1x faster on Coffee Lake and up to 2.4x faster on Raptor Lake-H at least in simple cases.
                     // - https://github.com/taiki-e/portable-atomic/pull/156
-                    // - LLVM uses lock or for x86_32 64-bit atomic SeqCst store using SSE https://godbolt.org/z/9sKEr8YWc
-                    // - Windows uses xchg for x86_32 for MemoryBarrier https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-memorybarrier
-                    // - MSVC STL uses lock inc https://github.com/microsoft/STL/pull/740
-                    // - boost uses lock or https://github.com/boostorg/atomic/commit/559eba81af71386cedd99f170dc6101c6ad7bf22
+                    // - LLVM uses `lock or` https://godbolt.org/z/vv6rjzfYd
+                    // - Windows uses `xchg` for x86_32 for MemoryBarrier https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-memorybarrier
+                    // - MSVC STL uses `lock inc` https://github.com/microsoft/STL/pull/740
+                    // - boost uses `lock or` https://github.com/boostorg/atomic/commit/559eba81af71386cedd99f170dc6101c6ad7bf22
                     concat!("xchg qword ptr [{p", ptr_modifier!(), "}], {tmp}"),
                     dst = in(reg) dst,
                     val = in(xmm_reg) val,
@@ -229,15 +234,11 @@ macro_rules! load_store_detect {
         )))]
         {
             // Check CMPXCHG16B first to prevent mixing atomic and non-atomic access.
-            if cpuid.has_cmpxchg16b() {
+            if cpuid.cmpxchg16b() {
                 // We only use VMOVDQA when SSE is enabled. See atomic_load_vmovdqa() for more.
                 #[cfg(target_feature = "sse")]
                 {
-                    if cpuid.has_vmovdqa_atomic() {
-                        $vmovdqa
-                    } else {
-                        $cmpxchg16b
-                    }
+                    if cpuid.vmovdqa_atomic() { $vmovdqa } else { $cmpxchg16b }
                 }
                 #[cfg(not(target_feature = "sse"))]
                 {
@@ -249,11 +250,7 @@ macro_rules! load_store_detect {
         }
         #[cfg(any(target_feature = "cmpxchg16b", portable_atomic_target_feature = "cmpxchg16b"))]
         {
-            if cpuid.has_vmovdqa_atomic() {
-                $vmovdqa
-            } else {
-                $cmpxchg16b
-            }
+            if cpuid.vmovdqa_atomic() { $vmovdqa } else { $cmpxchg16b }
         }
     }};
 }
@@ -422,7 +419,7 @@ unsafe fn atomic_compare_exchange(
     // reads, 16-byte aligned, and that there are no different kinds of concurrent accesses.
     let (prev, ok) = unsafe {
         ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-            if detect::detect().has_cmpxchg16b() {
+            if detect::detect().cmpxchg16b() {
                 cmpxchg16b
             } else {
                 // Use SeqCst because cmpxchg16b is always SeqCst.
@@ -430,11 +427,7 @@ unsafe fn atomic_compare_exchange(
             }
         })
     };
-    if ok {
-        Ok(prev)
-    } else {
-        Err(prev)
-    }
+    if ok { Ok(prev) } else { Err(prev) }
 }
 
 // cmpxchg16b is always strong.
@@ -769,7 +762,7 @@ macro_rules! select_atomic_rmw {
             // we only calls cmpxchg16b_fn if cmpxchg16b is available.
             unsafe {
                 ifunc!(unsafe fn($($arg)*) $(-> $ret_ty)? {
-                    if detect::detect().has_cmpxchg16b() {
+                    if detect::detect().cmpxchg16b() {
                         cmpxchg16b_seqcst_fn
                     } else {
                         // Use SeqCst because cmpxchg16b is always SeqCst.
@@ -856,7 +849,7 @@ fn is_lock_free() -> bool {
     }
     #[cfg(not(any(target_feature = "cmpxchg16b", portable_atomic_target_feature = "cmpxchg16b")))]
     {
-        detect::detect().has_cmpxchg16b()
+        detect::detect().cmpxchg16b()
     }
 }
 const IS_ALWAYS_LOCK_FREE: bool =

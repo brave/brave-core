@@ -1,18 +1,18 @@
 use winnow::{
-    combinator::{alt, eof, preceded, rest, terminated},
+    combinator::{alt, eof, preceded, terminated},
     error::ParserError,
     prelude::*,
     stream::{Offset, Stream},
-    token::take_till,
+    token::{rest, take_till},
 };
 
 use crate::bstr::{BStr, ByteSlice};
 
-pub(crate) fn newline<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> PResult<&'a [u8], E> {
+pub(crate) fn newline<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> ModalResult<&'a [u8], E> {
     alt((b"\n", b"\r\n")).parse_next(i)
 }
 
-fn subject_and_body<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> PResult<(&'a BStr, Option<&'a BStr>), E> {
+fn subject_and_body<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> ModalResult<(&'a BStr, Option<&'a BStr>), E> {
     let start_i = *i;
     let start = i.checkpoint();
     while !i.is_empty() {

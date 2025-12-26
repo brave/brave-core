@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -139,11 +139,11 @@ macro_rules! pkcs1_digestinfo_prefix {
     ( $name:ident, $digest_len:expr, $digest_oid_len:expr,
       [ $( $digest_oid:expr ),* ] ) => {
         static $name: [u8; 2 + 8 + $digest_oid_len] = [
-            der::Tag::Sequence as u8, 8 + $digest_oid_len + $digest_len,
-                der::Tag::Sequence as u8, 2 + $digest_oid_len + 2,
-                    der::Tag::OID as u8, $digest_oid_len, $( $digest_oid ),*,
-                    der::Tag::Null as u8, 0,
-                der::Tag::OctetString as u8, $digest_len,
+            der::Tag::Sequence.into(), 8 + $digest_oid_len + $digest_len,
+                der::Tag::Sequence.into(), 2 + $digest_oid_len + 2,
+                    der::Tag::OID.into(), $digest_oid_len, $( $digest_oid ),*,
+                    der::Tag::Null.into(), 0,
+                der::Tag::OctetString.into(), $digest_len,
         ];
     }
 }

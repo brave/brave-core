@@ -13,7 +13,7 @@ mod audit;
 
 use self::audit::AuditCommand;
 use crate::config::AuditConfig;
-use abscissa_core::{config::Override, Command, Configurable, FrameworkError, Runnable};
+use abscissa_core::{Command, Configurable, FrameworkError, Runnable, config::Override};
 use clap::Parser;
 use std::{ops::Deref, path::PathBuf};
 

@@ -21,8 +21,8 @@ pub(crate) type c_long = i32;
 pub(crate) type c_ulong = u32;
 pub(crate) use core::ffi::c_void;
 
-// windows-sys declares these constants as u16. For better compatibility
-// with Unix-family APIs, redeclare them as u32.
+// windows-sys declares these constants as `u16`. For better compatibility with
+// Unix-family APIs, redeclare them as `i32`.
 pub(crate) const AF_INET: i32 = WinSock::AF_INET as _;
 pub(crate) const AF_INET6: i32 = WinSock::AF_INET6 as _;
 pub(crate) const AF_UNSPEC: i32 = WinSock::AF_UNSPEC as _;
@@ -62,6 +62,6 @@ pub(crate) use WinSock::{
 // in its public API. So define one, and we'll convert it internally.
 pub struct timespec {
     pub tv_sec: time_t,
-    pub tv_nsec: i64,
+    pub tv_nsec: crate::ffi::c_long,
 }
 pub type time_t = i64;

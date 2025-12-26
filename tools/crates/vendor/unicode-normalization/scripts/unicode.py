@@ -22,7 +22,7 @@ import collections
 import urllib.request
 from itertools import batched
 
-UNICODE_VERSION = "16.0.0"
+UNICODE_VERSION = "17.0.0"
 UCD_URL = "https://www.unicode.org/Public/%s/ucd/" % UNICODE_VERSION
 
 PREAMBLE = """// Copyright 2012-2018 The Rust Project Developers. See the COPYRIGHT

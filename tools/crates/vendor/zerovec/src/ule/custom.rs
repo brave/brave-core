@@ -61,20 +61,20 @@
 //! //     a struct with only ULE fields)
 //! //  2. FooULE is aligned to 1 byte. (achieved by `#[repr(C, packed)]` on
 //! //     a struct with only ULE fields)
-//! //  3. The impl of `validate_byte_slice()` returns an error if any byte is not valid.
-//! //  4. The impl of `validate_byte_slice()` returns an error if the slice cannot be used in its entirety
-//! //  5. The impl of `from_byte_slice_unchecked()` returns a reference to the same data.
+//! //  3. The impl of `validate_bytes()` returns an error if any byte is not valid.
+//! //  4. The impl of `validate_bytes()` returns an error if the slice cannot be used in its entirety
+//! //  5. The impl of `from_bytes_unchecked()` returns a reference to the same data.
 //! //  6. The other VarULE methods use the default impl.
 //! //  7. FooULE byte equality is semantic equality
 //! unsafe impl VarULE for FooULE {
-//!     fn validate_byte_slice(bytes: &[u8]) -> Result<(), ZeroVecError> {
+//!     fn validate_bytes(bytes: &[u8]) -> Result<(), UleError> {
 //!         // validate each field
-//!         <char as AsULE>::ULE::validate_byte_slice(&bytes[0..3]).map_err(|_| ZeroVecError::parse::<Self>())?;
-//!         <u32 as AsULE>::ULE::validate_byte_slice(&bytes[3..7]).map_err(|_| ZeroVecError::parse::<Self>())?;
-//!         let _ = ZeroVec::<u32>::parse_byte_slice(&bytes[7..]).map_err(|_| ZeroVecError::parse::<Self>())?;
+//!         <char as AsULE>::ULE::validate_bytes(&bytes[0..3]).map_err(|_| UleError::parse::<Self>())?;
+//!         <u32 as AsULE>::ULE::validate_bytes(&bytes[3..7]).map_err(|_| UleError::parse::<Self>())?;
+//!         let _ = ZeroVec::<u32>::parse_bytes(&bytes[7..]).map_err(|_| UleError::parse::<Self>())?;
 //!         Ok(())
 //!     }
-//!     unsafe fn from_byte_slice_unchecked(bytes: &[u8]) -> &Self {
+//!     unsafe fn from_bytes_unchecked(bytes: &[u8]) -> &Self {
 //!         let ptr = bytes.as_ptr();
 //!         let len = bytes.len();
 //!         // subtract the length of the char and u32 to get the length of the array
@@ -89,8 +89,8 @@
 //! unsafe impl EncodeAsVarULE<FooULE> for Foo<'_> {
 //!    fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
 //!        // take each field, convert to ULE byte slices, and pass them through
-//!        cb(&[<char as AsULE>::ULE::as_byte_slice(&[self.field1.to_unaligned()]),
-//!             <u32 as AsULE>::ULE::as_byte_slice(&[self.field2.to_unaligned()]),
+//!        cb(&[<char as AsULE>::ULE::slice_as_bytes(&[self.field1.to_unaligned()]),
+//!             <u32 as AsULE>::ULE::slice_as_bytes(&[self.field2.to_unaligned()]),
 //!             // the ZeroVec is already in the correct slice format
 //!             self.field3.as_bytes()])
 //!    }

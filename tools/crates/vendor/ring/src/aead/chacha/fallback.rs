@@ -15,15 +15,11 @@
 // Adapted from the public domain, estream code by D. Bernstein.
 // Adapted from the BoringSSL crypto/chacha/chacha.c.
 
-use super::{Counter, Key, BLOCK_LEN};
-use core::ops::RangeFrom;
+use super::{super::overlapping::IndexError, Counter, Key, Overlapping, BLOCK_LEN};
+use crate::{bb, polyfill::sliceutil};
+use core::mem::size_of;
 
-pub(super) fn ChaCha20_ctr32(
-    key: &Key,
-    counter: Counter,
-    in_out: &mut [u8],
-    src: RangeFrom<usize>,
-) {
+pub(super) fn ChaCha20_ctr32(key: &Key, counter: Counter, mut in_out: Overlapping<'_>) {
     const SIGMA: [u32; 4] = [
         u32::from_le_bytes(*b"expa"),
         u32::from_le_bytes(*b"nd 3"),
@@ -39,25 +35,34 @@ pub(super) fn ChaCha20_ctr32(
         key[6], key[7], counter[0], counter[1], counter[2], counter[3],
     ];
 
-    let mut in_out_len = in_out.len().checked_sub(src.start).unwrap();
-    let mut input = in_out[src].as_ptr();
-    let mut output = in_out.as_mut_ptr();
+    let mut in_out_len = in_out.len();
 
     let mut buf = [0u8; BLOCK_LEN];
     while in_out_len > 0 {
         chacha_core(&mut buf, &state);
         state[12] += 1;
 
-        let todo = core::cmp::min(BLOCK_LEN, in_out_len);
-        for (i, &b) in buf[..todo].iter().enumerate() {
-            let input = unsafe { *input.add(i) };
-            let b = input ^ b;
-            unsafe { *output.add(i) = b };
+        debug_assert_eq!(in_out_len, in_out.len());
+
+        // Both branches do the same thing, but the duplication helps the
+        // compiler optimize (vectorize) the `BLOCK_LEN` case.
+        if in_out_len >= BLOCK_LEN {
+            in_out = in_out
+                .split_first_chunk::<BLOCK_LEN>(|in_out| {
+                    bb::xor_assign_at_start(&mut buf, in_out.input());
+                    sliceutil::overwrite_at_start(in_out.into_unwritten_output(), &buf);
+                })
+                .unwrap_or_else(|IndexError { .. }| {
+                    // Since `in_out_len == in_out.len() && in_out_len >= BLOCK_LEN`.
+                    unreachable!()
+                });
+        } else {
+            bb::xor_assign_at_start(&mut buf, in_out.input());
+            sliceutil::overwrite_at_start(in_out.into_unwritten_output(), &buf);
+            break;
         }
 
-        in_out_len -= todo;
-        input = unsafe { input.add(todo) };
-        output = unsafe { output.add(todo) };
+        in_out_len -= BLOCK_LEN;
     }
 }
 
@@ -82,7 +87,7 @@ fn chacha_core(output: &mut [u8; BLOCK_LEN], input: &State) {
     }
 
     output
-        .chunks_exact_mut(core::mem::size_of::<u32>())
+        .chunks_exact_mut(size_of::<u32>())
         .zip(x.iter())
         .for_each(|(output, &x)| output.copy_from_slice(&x.to_le_bytes()));
 }

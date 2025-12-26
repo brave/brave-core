@@ -151,7 +151,7 @@ impl CFString {
     }
 }
 
-impl<'a> PartialEq<&'a str> for CFString {
+impl PartialEq<&str> for CFString {
     fn eq(&self, other: &&str) -> bool {
         unsafe {
             let temp = CFStringCreateWithBytesNoCopy(
@@ -167,7 +167,7 @@ impl<'a> PartialEq<&'a str> for CFString {
     }
 }
 
-impl<'a> PartialEq<CFString> for &'a str {
+impl PartialEq<CFString> for &str {
     #[inline]
     fn eq(&self, other: &CFString) -> bool {
         other.eq(self)

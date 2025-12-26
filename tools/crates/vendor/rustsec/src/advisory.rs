@@ -32,7 +32,7 @@ use crate::{
     fs,
 };
 use serde::{Deserialize, Serialize};
-use std::{path::Path, str::FromStr};
+use std::{ffi::OsStr, path::Path, str::FromStr};
 
 /// RustSec Security Advisories
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -53,12 +53,21 @@ impl Advisory {
     pub fn load_file(path: impl AsRef<Path>) -> Result<Self, Error> {
         let path = path.as_ref();
 
-        let advisory_data = fs::read_to_string(path)
-            .map_err(|e| format_err!(ErrorKind::Io, "couldn't open {}: {}", path.display(), e))?;
+        let advisory_data = fs::read_to_string(path).map_err(|e| {
+            Error::with_source(
+                ErrorKind::Io,
+                format!("couldn't open {}", path.display()),
+                e,
+            )
+        })?;
 
-        advisory_data
-            .parse()
-            .map_err(|e| format_err!(ErrorKind::Parse, "error parsing {}: {}", path.display(), e))
+        advisory_data.parse().map_err(|e| {
+            Error::with_source(
+                ErrorKind::Parse,
+                format!("error parsing {}", path.display()),
+                e,
+            )
+        })
     }
 
     /// Get advisory ID
@@ -89,6 +98,14 @@ impl Advisory {
     /// Whether the advisory has been withdrawn, i.e. soft-deleted
     pub fn withdrawn(&self) -> bool {
         self.metadata.withdrawn.is_some()
+    }
+
+    /// Whether the given `path` represents a draft advisory
+    pub fn is_draft(path: &Path) -> bool {
+        matches!(
+            path.file_name().and_then(OsStr::to_str),
+            Some(name) if name.starts_with("RUSTSEC-0000-0000."),
+        )
     }
 }
 

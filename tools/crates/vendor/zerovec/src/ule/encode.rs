@@ -5,10 +5,15 @@
 use crate::ule::*;
 use crate::varzerovec::VarZeroVecFormat;
 use crate::{VarZeroSlice, VarZeroVec, ZeroSlice, ZeroVec};
+#[cfg(feature = "alloc")]
 use alloc::borrow::{Cow, ToOwned};
+#[cfg(feature = "alloc")]
 use alloc::boxed::Box;
+#[cfg(feature = "alloc")]
 use alloc::string::String;
+#[cfg(feature = "alloc")]
 use alloc::{vec, vec::Vec};
+#[cfg(feature = "alloc")]
 use core::mem;
 
 /// Allows types to be encoded as VarULEs. This is highly useful for implementing VarULE on
@@ -26,7 +31,7 @@ use core::mem;
 /// it is not possible to implement [`Self::encode_var_ule_as_slices()`] but the other methods still work.
 ///
 /// A typical implementation will take each field in the order found in the [`VarULE`] type,
-/// convert it to ULE, call [`ULE::as_byte_slice()`] on them, and pass the slices to `cb` in order.
+/// convert it to ULE, call [`ULE::slice_as_bytes()`] on them, and pass the slices to `cb` in order.
 /// A trailing [`ZeroVec`](crate::ZeroVec) or [`VarZeroVec`](crate::VarZeroVec) can have their underlying
 /// byte representation passed through.
 ///
@@ -34,12 +39,18 @@ use core::mem;
 /// implementation will add up the sizes of each field on the [`VarULE`] type and then add in the byte length of the
 /// dynamically-sized part.
 ///
+/// # Reverse-encoding VarULE
+///
+/// This trait maps a struct to its bytes representation ("serialization"), and
+/// [`ZeroFrom`](zerofrom::ZeroFrom) performs the opposite operation, taking those bytes and
+/// creating a struct from them ("deserialization").
+///
 /// # Safety
 ///
 /// The safety invariants of [`Self::encode_var_ule_as_slices()`] are:
 /// - It must call `cb` (only once)
 /// - The slices passed to `cb`, if concatenated, should be a valid instance of the `T` [`VarULE`] type
-///   (i.e. if fed to [`VarULE::validate_byte_slice()`] they must produce a successful result)
+///   (i.e. if fed to [`VarULE::validate_bytes()`] they must produce a successful result)
 /// - It must return the return value of `cb` to the caller
 ///
 /// One or more of [`Self::encode_var_ule_len()`] and [`Self::encode_var_ule_write()`] may be provided.
@@ -69,7 +80,7 @@ pub unsafe trait EncodeAsVarULE<T: VarULE + ?Sized> {
     fn encode_var_ule_write(&self, mut dst: &mut [u8]) {
         debug_assert_eq!(self.encode_var_ule_len(), dst.len());
         self.encode_var_ule_as_slices(move |slices| {
-            #[allow(clippy::indexing_slicing)] // by debug_assert
+            #[expect(clippy::indexing_slicing)] // by debug_assert
             for slice in slices {
                 dst[..slice.len()].copy_from_slice(slice);
                 dst = &mut dst[slice.len()..];
@@ -81,15 +92,16 @@ pub unsafe trait EncodeAsVarULE<T: VarULE + ?Sized> {
 /// Given an [`EncodeAsVarULE`] type `S`, encode it into a `Box<T>`
 ///
 /// This is primarily useful for generating `Deserialize` impls for VarULE types
-pub fn encode_varule_to_box<S: EncodeAsVarULE<T>, T: VarULE + ?Sized>(x: &S) -> Box<T> {
+#[cfg(feature = "alloc")]
+pub fn encode_varule_to_box<S: EncodeAsVarULE<T> + ?Sized, T: VarULE + ?Sized>(x: &S) -> Box<T> {
     // zero-fill the vector to avoid uninitialized data UB
     let mut vec: Vec<u8> = vec![0; x.encode_var_ule_len()];
     x.encode_var_ule_write(&mut vec);
     let boxed = mem::ManuallyDrop::new(vec.into_boxed_slice());
     unsafe {
         // Safety: `ptr` is a box, and `T` is a VarULE which guarantees it has the same memory layout as `[u8]`
-        // and can be recouped via from_byte_slice_unchecked()
-        let ptr: *mut T = T::from_byte_slice_unchecked(&boxed) as *const T as *mut T;
+        // and can be recouped via from_bytes_unchecked()
+        let ptr: *mut T = T::from_bytes_unchecked(&boxed) as *const T as *mut T;
 
         // Safety: we can construct an owned version since we have mem::forgotten the older owner
         Box::from_raw(ptr)
@@ -98,32 +110,55 @@ pub fn encode_varule_to_box<S: EncodeAsVarULE<T>, T: VarULE + ?Sized>(x: &S) -> 
 
 unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for T {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
-        cb(&[T::as_byte_slice(self)])
+        cb(&[T::as_bytes(self)])
     }
 }
 
 unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for &'_ T {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
-        cb(&[T::as_byte_slice(self)])
+        cb(&[T::as_bytes(self)])
     }
 }
 
+unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for &'_ &'_ T {
+    fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
+        cb(&[T::as_bytes(self)])
+    }
+}
+
+#[cfg(feature = "alloc")]
 unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for Cow<'_, T>
 where
     T: ToOwned,
 {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
-        cb(&[T::as_byte_slice(self.as_ref())])
+        cb(&[T::as_bytes(self.as_ref())])
     }
 }
 
+#[cfg(feature = "alloc")]
 unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for Box<T> {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
-        cb(&[T::as_byte_slice(self)])
+        cb(&[T::as_bytes(self)])
     }
 }
 
+#[cfg(feature = "alloc")]
+unsafe impl<T: VarULE + ?Sized> EncodeAsVarULE<T> for &'_ Box<T> {
+    fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
+        cb(&[T::as_bytes(self)])
+    }
+}
+
+#[cfg(feature = "alloc")]
 unsafe impl EncodeAsVarULE<str> for String {
+    fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
+        cb(&[self.as_bytes()])
+    }
+}
+
+#[cfg(feature = "alloc")]
+unsafe impl EncodeAsVarULE<str> for &'_ String {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
         cb(&[self.as_bytes()])
     }
@@ -131,12 +166,13 @@ unsafe impl EncodeAsVarULE<str> for String {
 
 // Note: This impl could technically use `T: AsULE`, but we want users to prefer `ZeroSlice<T>`
 // for cases where T is not a ULE. Therefore, we can use the more efficient `memcpy` impl here.
+#[cfg(feature = "alloc")]
 unsafe impl<T> EncodeAsVarULE<[T]> for Vec<T>
 where
     T: ULE,
 {
     fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
-        cb(&[<[T] as VarULE>::as_byte_slice(self)])
+        cb(&[<[T] as VarULE>::as_bytes(self)])
     }
 }
 
@@ -160,11 +196,12 @@ where
         debug_assert_eq!(self.len() * S, dst.len());
         for (item, ref mut chunk) in self.iter().zip(dst.chunks_mut(S)) {
             let ule = item.to_unaligned();
-            chunk.copy_from_slice(ULE::as_byte_slice(core::slice::from_ref(&ule)));
+            chunk.copy_from_slice(ULE::slice_as_bytes(core::slice::from_ref(&ule)));
         }
     }
 }
 
+#[cfg(feature = "alloc")]
 unsafe impl<T> EncodeAsVarULE<ZeroSlice<T>> for Vec<T>
 where
     T: AsULE + 'static,
@@ -216,7 +253,7 @@ where
         unimplemented!()
     }
 
-    #[allow(clippy::unwrap_used)] // TODO(#1410): Rethink length errors in VZV.
+    #[expect(clippy::unwrap_used)] // TODO(#1410): Rethink length errors in VZV.
     fn encode_var_ule_len(&self) -> usize {
         crate::varzerovec::components::compute_serializable_len::<T, E, F>(self).unwrap() as usize
     }
@@ -226,6 +263,7 @@ where
     }
 }
 
+#[cfg(feature = "alloc")]
 unsafe impl<T, E, F> EncodeAsVarULE<VarZeroSlice<T, F>> for Vec<E>
 where
     T: VarULE + ?Sized,

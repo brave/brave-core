@@ -16,7 +16,6 @@ For more details, see:
 - [API Reference](https://docs.rs/winnow)
 - [List of combinators](https://docs.rs/winnow/latest/winnow/combinator/index.html)
 
-# Contributors
 
 winnow is the fruit of the work of many contributors over the years, many
 thanks for your help! In particular, thanks to [Geal](https://github.com/Geal)

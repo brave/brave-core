@@ -11,11 +11,12 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.71"
 name = "tokio-util"
-version = "0.7.13"
+version = "0.7.17"
 authors = ["Tokio Contributors <team@tokio.rs>"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -31,13 +32,13 @@ repository = "https://github.com/tokio-rs/tokio"
 
 [package.metadata.docs.rs]
 all-features = true
-rustc-args = [
+rustdoc-args = [
     "--cfg",
     "docsrs",
     "--cfg",
     "tokio_unstable",
 ]
-rustdoc-args = [
+rustc-args = [
     "--cfg",
     "docsrs",
     "--cfg",
@@ -46,6 +47,41 @@ rustdoc-args = [
 
 [package.metadata.playground]
 features = ["full"]
+
+[features]
+__docs_rs = ["futures-util"]
+codec = []
+compat = ["futures-io"]
+default = []
+full = [
+    "codec",
+    "compat",
+    "io-util",
+    "time",
+    "net",
+    "rt",
+    "join-map",
+]
+io = []
+io-util = [
+    "io",
+    "tokio/rt",
+    "tokio/io-util",
+]
+join-map = [
+    "rt",
+    "hashbrown",
+]
+net = ["tokio/net"]
+rt = [
+    "tokio/rt",
+    "tokio/sync",
+    "futures-util",
+]
+time = [
+    "tokio/time",
+    "slab",
+]
 
 [lib]
 name = "tokio_util"
@@ -86,6 +122,10 @@ path = "tests/framed_stream.rs"
 [[test]]
 name = "framed_write"
 path = "tests/framed_write.rs"
+
+[[test]]
+name = "future"
+path = "tests/future.rs"
 
 [[test]]
 name = "io_inspect"
@@ -140,6 +180,10 @@ name = "task_join_map"
 path = "tests/task_join_map.rs"
 
 [[test]]
+name = "task_join_queue"
+path = "tests/task_join_queue.rs"
+
+[[test]]
 name = "task_tracker"
 path = "tests/task_tracker.rs"
 
@@ -152,7 +196,7 @@ name = "udp"
 path = "tests/udp.rs"
 
 [dependencies.bytes]
-version = "1.0.0"
+version = "1.5.0"
 
 [dependencies.futures-core]
 version = "0.3.0"
@@ -167,6 +211,11 @@ version = "0.3.0"
 [dependencies.futures-util]
 version = "0.3.0"
 optional = true
+
+[dependencies.hashbrown]
+version = "0.15.0"
+optional = true
+default-features = false
 
 [dependencies.pin-project-lite]
 version = "0.2.11"
@@ -210,38 +259,17 @@ version = "0.1"
 [dev-dependencies.tokio-test]
 version = "0.4.0"
 
-[features]
-__docs_rs = ["futures-util"]
-codec = []
-compat = ["futures-io"]
-default = []
-full = [
-    "codec",
-    "compat",
-    "io-util",
-    "time",
-    "net",
-    "rt",
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    "cfg(fuzzing)",
+    "cfg(loom)",
+    "cfg(mio_unsupported_force_poll_poll)",
+    "cfg(tokio_allow_from_blocking_fd)",
+    "cfg(tokio_internal_mt_counters)",
+    "cfg(tokio_no_parking_lot)",
+    "cfg(tokio_no_tuning_tests)",
+    "cfg(tokio_unstable)",
+    'cfg(target_os, values("cygwin"))',
 ]
-io = []
-io-util = [
-    "io",
-    "tokio/rt",
-    "tokio/io-util",
-]
-net = ["tokio/net"]
-rt = [
-    "tokio/rt",
-    "tokio/sync",
-    "futures-util",
-    "hashbrown",
-]
-time = [
-    "tokio/time",
-    "slab",
-]
-
-[target."cfg(tokio_unstable)".dependencies.hashbrown]
-version = "0.14.0"
-optional = true
-default-features = false

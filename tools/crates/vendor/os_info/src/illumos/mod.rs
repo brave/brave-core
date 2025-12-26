@@ -3,12 +3,16 @@ use std::str;
 
 use log::{error, trace};
 
-use crate::{bitness, uname::uname, Info, Type, Version};
+use crate::{
+    bitness,
+    uname::{uname, UnameField},
+    Info, Type, Version,
+};
 
 pub fn current_platform() -> Info {
     trace!("illumos::current_platform is called");
 
-    let version = uname("-v")
+    let version = uname(UnameField::Version)
         .map(Version::from_string)
         .unwrap_or_else(|| Version::Unknown);
 
@@ -24,7 +28,7 @@ pub fn current_platform() -> Info {
 }
 
 fn get_os() -> Type {
-    match uname("-o").as_deref() {
+    match uname(UnameField::OperatingSystem).as_deref() {
         Some("illumos") => Type::Illumos,
         _ => Type::Unknown,
     }

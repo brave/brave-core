@@ -1,4 +1,4 @@
-// Copyright 2012-2015 The Rust Project Developers. See the COPYRIGHT
+// Copyright 2012-2025 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at
 // http://rust-lang.org/COPYRIGHT.
 //
@@ -199,6 +199,8 @@ fn test_text_presentation() {
     assert_width!('\u{FE0E}', Some(0), Some(0));
     assert_width!('\u{2648}', Some(2), Some(2));
     assert_width!("\u{2648}\u{FE0E}", 1, 2);
+    assert_width!("\u{2648}\u{FE0E}\u{FE0F}", 1, 2);
+    assert_width!("\u{2648}\u{FE0F}\u{FE0E}", 2, 2);
     assert_width!("\u{1F21A}\u{FE0E}", 2, 2);
     assert_width!("\u{0301}\u{FE0E}", 0, 0);
     assert_width!("a\u{FE0E}", 1, 1);
@@ -584,6 +586,65 @@ fn emoji_test_file() {
                 .collect();
             dbg!(&emoji);
             assert_width!(emoji, 2, 2);
+        }
+    }
+}
+
+#[test]
+fn ambiguous_line_break() {
+    assert_width!("\u{24EA}", 1, 2);
+    assert_width!("\u{2616}", 1, 2);
+    assert_width!("\u{2780}", 1, 2);
+}
+
+#[test]
+fn test_vs1_vs2_vs3() {
+    assert_width!('\u{FE00}', Some(0), Some(0));
+    assert_width!('\u{FE01}', Some(0), Some(0));
+    assert_width!('\u{FE02}', Some(0), Some(0));
+    for c in '\0'..=char::MAX {
+        if matches!(c, '\u{2018}' | '\u{2019}' | '\u{201C}' | '\u{201D}') {
+            assert_width!(c, Some(1), Some(2));
+            assert_width!(format!("{c}\u{FE00}"), 1, 1);
+            assert_width!(format!("{c}\u{FE00}\u{FE01}"), 1, 1);
+            assert_width!(format!("{c}\u{FE01}"), 2, 2);
+            assert_width!(format!("{c}\u{FE01}\u{FE00}"), 2, 2);
+            assert_width!(format!("{c}\u{FE02}"), 1, 1);
+            assert_width!(format!("{c}\u{FE02}\u{FE01}"), 1, 1);
+        } else {
+            assert_eq!(
+                format!("{c}\u{FE00}").width(),
+                c.width().unwrap_or(1),
+                "{c:?}"
+            );
+            #[cfg(feature = "cjk")]
+            assert_eq!(
+                format!("{c}\u{FE00}").width_cjk(),
+                c.width_cjk().unwrap_or(1),
+                "{c:?}"
+            );
+            assert_eq!(
+                format!("{c}\u{FE01}").width(),
+                c.width().unwrap_or(1),
+                "{c:?}"
+            );
+            #[cfg(feature = "cjk")]
+            assert_eq!(
+                format!("{c}\u{FE01}").width_cjk(),
+                c.width_cjk().unwrap_or(1),
+                "{c:?}"
+            );
+            assert_eq!(
+                format!("{c}\u{FE02}").width(),
+                c.width().unwrap_or(1),
+                "{c:?}"
+            );
+            #[cfg(feature = "cjk")]
+            assert_eq!(
+                format!("{c}\u{FE02}").width_cjk(),
+                c.width_cjk().unwrap_or(1),
+                "{c:?}"
+            );
         }
     }
 }

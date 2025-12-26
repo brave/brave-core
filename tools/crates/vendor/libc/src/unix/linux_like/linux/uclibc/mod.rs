@@ -1,3 +1,6 @@
+// FIXME(ulibc): this module has definitions that are redundant with the parent
+#![allow(dead_code)]
+
 use crate::off64_t;
 use crate::prelude::*;
 
@@ -114,6 +117,42 @@ s! {
     pub struct pthread_condattr_t {
         size: [u8; crate::__SIZEOF_PTHREAD_CONDATTR_T],
     }
+
+    pub struct tcp_info {
+        pub tcpi_state: u8,
+        pub tcpi_ca_state: u8,
+        pub tcpi_retransmits: u8,
+        pub tcpi_probes: u8,
+        pub tcpi_backoff: u8,
+        pub tcpi_options: u8,
+        /// This contains the bitfields `tcpi_snd_wscale` and `tcpi_rcv_wscale`.
+        /// Each is 4 bits.
+        pub tcpi_snd_rcv_wscale: u8,
+        pub tcpi_rto: u32,
+        pub tcpi_ato: u32,
+        pub tcpi_snd_mss: u32,
+        pub tcpi_rcv_mss: u32,
+        pub tcpi_unacked: u32,
+        pub tcpi_sacked: u32,
+        pub tcpi_lost: u32,
+        pub tcpi_retrans: u32,
+        pub tcpi_fackets: u32,
+        pub tcpi_last_data_sent: u32,
+        pub tcpi_last_ack_sent: u32,
+        pub tcpi_last_data_recv: u32,
+        pub tcpi_last_ack_recv: u32,
+        pub tcpi_pmtu: u32,
+        pub tcpi_rcv_ssthresh: u32,
+        pub tcpi_rtt: u32,
+        pub tcpi_rttvar: u32,
+        pub tcpi_snd_ssthresh: u32,
+        pub tcpi_snd_cwnd: u32,
+        pub tcpi_advmss: u32,
+        pub tcpi_reordering: u32,
+        pub tcpi_rcv_rtt: u32,
+        pub tcpi_rcv_space: u32,
+        pub tcpi_total_retrans: u32,
+    }
 }
 
 impl siginfo_t {
@@ -142,36 +181,29 @@ impl siginfo_t {
     }
 }
 
-// Internal, for casts to access union fields
-#[repr(C)]
-struct sifields_sigchld {
-    si_pid: crate::pid_t,
-    si_uid: crate::uid_t,
-    si_status: c_int,
-    si_utime: c_long,
-    si_stime: c_long,
-}
-impl Copy for sifields_sigchld {}
-impl Clone for sifields_sigchld {
-    fn clone(&self) -> sifields_sigchld {
-        *self
+s_no_extra_traits! {
+    // Internal, for casts to access union fields
+    struct sifields_sigchld {
+        si_pid: crate::pid_t,
+        si_uid: crate::uid_t,
+        si_status: c_int,
+        si_utime: c_long,
+        si_stime: c_long,
     }
-}
 
-// Internal, for casts to access union fields
-#[repr(C)]
-union sifields {
-    _align_pointer: *mut c_void,
-    sigchld: sifields_sigchld,
-}
+    // Internal, for casts to access union fields
+    union sifields {
+        _align_pointer: *mut c_void,
+        sigchld: sifields_sigchld,
+    }
 
-// Internal, for casts to access union fields. Note that some variants
-// of sifields start with a pointer, which makes the alignment of
-// sifields vary on 32-bit and 64-bit architectures.
-#[repr(C)]
-struct siginfo_f {
-    _siginfo_base: [c_int; 3],
-    sifields: sifields,
+    // Internal, for casts to access union fields. Note that some variants
+    // of sifields start with a pointer, which makes the alignment of
+    // sifields vary on 32-bit and 64-bit architectures.
+    struct siginfo_f {
+        _siginfo_base: [c_int; 3],
+        sifields: sifields,
+    }
 }
 
 impl siginfo_t {
@@ -382,6 +414,7 @@ pub const RUSAGE_THREAD: c_int = 1;
 pub const SHM_EXEC: c_int = 0o100000;
 pub const SIGPOLL: c_int = SIGIO;
 pub const SOCK_DCCP: c_int = 6;
+#[deprecated(since = "0.2.70", note = "AF_PACKET must be used instead")]
 pub const SOCK_PACKET: c_int = 10;
 pub const TCP_COOKIE_TRANSACTIONS: c_int = 15;
 pub const UDP_GRO: c_int = 104;

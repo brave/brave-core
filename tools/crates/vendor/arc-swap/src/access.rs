@@ -21,15 +21,14 @@
 //! relevant part, without knowing what the big structure is.
 //!
 //! For technical reasons, the [`Access`] trait is not object safe. If type erasure is desired, it
-//! is possible use the [`DynAccess`][crate::access::DynAccess] instead, which is object safe, but
-//! slightly slower.
+//! is possible use the [`DynAccess`] instead, which is object safe, but slightly slower.
 //!
 //! For some cases, it is possible to use [`ArcSwapAny::map`]. If that is not flexible enough, the
 //! [`Map`] type can be created directly.
 //!
 //! Note that the [`Access`] trait is also implemented for [`ArcSwapAny`] itself. Additionally,
-//! there's the [`Constant`][crate::access::Constant] helper type, which is useful mostly for
-//! testing (it doesn't allow reloading).
+//! there's the [`Constant`] helper type, which is useful mostly for testing (it doesn't allow
+//! reloading).
 //!
 //! # Performance
 //!
@@ -86,9 +85,7 @@
 use core::marker::PhantomData;
 use core::ops::Deref;
 
-use alloc::boxed::Box;
-use alloc::rc::Rc;
-use alloc::sync::Arc;
+use crate::imports::{Arc, Box, Rc};
 
 use super::ref_cnt::RefCnt;
 use super::strategy::Strategy;

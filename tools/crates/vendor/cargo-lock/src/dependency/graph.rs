@@ -1,8 +1,8 @@
 //! `petgraph` types used for modeling the `dependency::Tree`.
 
-pub use petgraph::{graph::NodeIndex, EdgeDirection};
+pub use petgraph::{EdgeDirection, graph::NodeIndex};
 
-use crate::{dependency::Dependency, package::Package, Map};
+use crate::{Map, dependency::Dependency, package::Package};
 
 /// Dependency graph (modeled using `petgraph`)
 pub type Graph = petgraph::graph::Graph<Package, Dependency>;

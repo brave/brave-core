@@ -6,13 +6,7 @@ use std::fmt::{self, Debug};
 use std::marker::PhantomData;
 use std::ops::ControlFlow::{self, Break, Continue};
 
-impl<U, I, ID, F> TryFold<I, U, ID, F>
-where
-    I: ParallelIterator,
-    F: Fn(U::Output, I::Item) -> U + Sync + Send,
-    ID: Fn() -> U::Output + Sync + Send,
-    U: Try + Send,
-{
+impl<I, U, ID, F> TryFold<I, U, ID, F> {
     pub(super) fn new(base: I, identity: ID, fold_op: F) -> Self {
         TryFold {
             base,
@@ -26,8 +20,7 @@ where
 /// `TryFold` is an iterator that applies a function over an iterator producing a single value.
 /// This struct is created by the [`try_fold()`] method on [`ParallelIterator`]
 ///
-/// [`try_fold()`]: trait.ParallelIterator.html#method.try_fold
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`try_fold()`]: ParallelIterator::try_fold()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
 pub struct TryFold<I, U, ID, F> {
@@ -168,13 +161,7 @@ where
 
 // ///////////////////////////////////////////////////////////////////////////
 
-impl<U, I, F> TryFoldWith<I, U, F>
-where
-    I: ParallelIterator,
-    F: Fn(U::Output, I::Item) -> U + Sync,
-    U: Try + Send,
-    U::Output: Clone + Send,
-{
+impl<I, U: Try, F> TryFoldWith<I, U, F> {
     pub(super) fn new(base: I, item: U::Output, fold_op: F) -> Self {
         TryFoldWith {
             base,
@@ -187,8 +174,7 @@ where
 /// `TryFoldWith` is an iterator that applies a function over an iterator producing a single value.
 /// This struct is created by the [`try_fold_with()`] method on [`ParallelIterator`]
 ///
-/// [`try_fold_with()`]: trait.ParallelIterator.html#method.try_fold_with
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`try_fold_with()`]: ParallelIterator::try_fold_with()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
 pub struct TryFoldWith<I, U: Try, F> {
@@ -197,9 +183,10 @@ pub struct TryFoldWith<I, U: Try, F> {
     fold_op: F,
 }
 
-impl<I: ParallelIterator + Debug, U: Try, F> Debug for TryFoldWith<I, U, F>
+impl<I, U, F> Debug for TryFoldWith<I, U, F>
 where
-    U::Output: Debug,
+    I: Debug,
+    U: Try<Output: Debug>,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("TryFoldWith")
@@ -213,8 +200,7 @@ impl<U, I, F> ParallelIterator for TryFoldWith<I, U, F>
 where
     I: ParallelIterator,
     F: Fn(U::Output, I::Item) -> U + Sync + Send,
-    U: Try + Send,
-    U::Output: Clone + Send,
+    U: Try<Output: Clone + Send> + Send,
 {
     type Item = U;
 
@@ -241,8 +227,7 @@ impl<'r, U, T, C, F> Consumer<T> for TryFoldWithConsumer<'r, C, U, F>
 where
     C: Consumer<U>,
     F: Fn(U::Output, T) -> U + Sync,
-    U: Try + Send,
-    U::Output: Clone + Send,
+    U: Try<Output: Clone + Send> + Send,
 {
     type Folder = TryFoldFolder<'r, C::Folder, U, F>;
     type Reducer = C::Reducer;
@@ -281,8 +266,7 @@ impl<'r, U, T, C, F> UnindexedConsumer<T> for TryFoldWithConsumer<'r, C, U, F>
 where
     C: UnindexedConsumer<U>,
     F: Fn(U::Output, T) -> U + Sync,
-    U: Try + Send,
-    U::Output: Clone + Send,
+    U: Try<Output: Clone + Send> + Send,
 {
     fn split_off_left(&self) -> Self {
         TryFoldWithConsumer {

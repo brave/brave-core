@@ -11,12 +11,12 @@ use crate::combinator::repeat;
 use crate::combinator::trace;
 use crate::error::Needed;
 use crate::error::ParserError;
-use crate::lib::std::ops::{Add, Shl};
 use crate::stream::Accumulate;
 use crate::stream::{Stream, StreamIsPartial};
 use crate::stream::{ToUsize, UpdateSlice};
 use crate::Parser;
 use crate::Result;
+use core::ops::{Add, Shl};
 
 /// Configurable endianness
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]

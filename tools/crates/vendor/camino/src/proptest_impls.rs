@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! [proptest::Arbitrary](Arbitrary) implementation for `Utf8PathBuf` and `Box<Utf8Path>`.  Note
-//! that implementions for `Rc<Utf8Path>` and `Arc<Utf8Path>` are not currently possible due to
+//! that implementations for `Rc<Utf8Path>` and `Arc<Utf8Path>` are not currently possible due to
 //! orphan rules - this crate doesn't define `Rc`/`Arc` nor `Arbitrary`, so it can't define those
 //! implementations.
 

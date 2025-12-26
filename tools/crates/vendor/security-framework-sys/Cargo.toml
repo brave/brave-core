@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.65"
+rust-version = "1.66"
 name = "security-framework-sys"
-version = "2.14.0"
+version = "2.15.0"
 authors = [
     "Steven Fackler <sfackler@gmail.com>",
     "Kornel <kornel@geekhood.net>",
@@ -47,15 +47,8 @@ targets = [
     "aarch64-apple-ios",
 ]
 
-[lib]
-name = "security_framework_sys"
-path = "src/lib.rs"
-
-[dependencies.core-foundation-sys]
-version = "0.8.6"
-
-[dependencies.libc]
-version = "0.2.150"
+[badges.maintenance]
+status = "looking-for-maintainer"
 
 [features]
 OSX_10_10 = ["OSX_10_9"]
@@ -67,13 +60,22 @@ OSX_10_15 = ["OSX_10_14"]
 OSX_10_9 = []
 default = ["OSX_10_12"]
 
-[badges.maintenance]
-status = "looking-for-maintainer"
+[lib]
+name = "security_framework_sys"
+path = "src/lib.rs"
+
+[dependencies.core-foundation-sys]
+version = "0.8.6"
+
+[dependencies.libc]
+version = "0.2.150"
 
 [lints.clippy]
 cast_possible_truncation = "allow"
 cast_possible_wrap = "allow"
 cast_sign_loss = "allow"
+default_trait_access = "allow"
+doc_markdown = "allow"
 if_not_else = "allow"
 inline_always = "allow"
 items_after_statements = "allow"
@@ -82,8 +84,11 @@ map_unwrap_or = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
 module_name_repetitions = "allow"
+needless_continue = "allow"
+needless_pass_by_value = "allow"
 redundant_closure_for_method_calls = "allow"
 similar_names = "allow"
+struct_field_names = "allow"
 unnested_or_patterns = "allow"
 wildcard_imports = "allow"
 

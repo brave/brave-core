@@ -1,7 +1,7 @@
 //! # Chapter 5: Repetition
 //!
 //! In [`chapter_3`], we covered how to sequence different parsers into a tuple but sometimes you need to run a
-//! single parser multiple times, collecting the result into a container, like [`Vec`].
+//! single parser multiple times, collecting the result into a container, like `Vec`.
 //!
 //! Let's collect the result of `parse_digits`:
 //! ```rust
@@ -203,7 +203,7 @@
 //! ```
 //!
 //! If you look closely at [`separated`] and [`repeat`], they aren't limited to collecting
-//! the result into a [`Vec`], but rather anything that implements the [`Accumulate`] trait.
+//! the result into a `Vec`, but rather anything that implements the [`Accumulate`] trait.
 //! [`Accumulate`] is for instance also implemented for [`HashSet`], [`String`] and `()`.
 //!
 //! This lets us build more complex parsers than we did in
@@ -294,7 +294,6 @@ use crate::stream::Accumulate;
 use crate::stream::Stream;
 use crate::Parser;
 use std::collections::HashSet;
-use std::vec::Vec;
 
 pub use super::chapter_4 as previous;
 pub use super::chapter_6 as next;

@@ -13,12 +13,18 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd"
-version = "0.13.2"
+version = "0.13.3"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
+build = false
 exclude = [
     "assets/*.zst",
     "/.github",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Binding for the zstd compression library."
 documentation = "https://docs.rs/zstd"
 readme = "Readme.md"
@@ -42,27 +48,8 @@ features = [
     "doc-cfg",
 ]
 
-[[example]]
-name = "train"
-required-features = ["zdict_builder"]
-
-[dependencies.zstd-safe]
-version = "7.1.0"
-features = ["std"]
-default-features = false
-
-[dev-dependencies.clap]
-version = "4.0"
-features = ["derive"]
-
-[dev-dependencies.humansize]
-version = "2.0"
-
-[dev-dependencies.partial-io]
-version = "0.5"
-
-[dev-dependencies.walkdir]
-version = "2.2"
+[badges.travis-ci]
+repository = "gyscos/zstd-rs"
 
 [features]
 arrays = ["zstd-safe/arrays"]
@@ -85,5 +72,53 @@ wasm = []
 zdict_builder = ["zstd-safe/zdict_builder"]
 zstdmt = ["zstd-safe/zstdmt"]
 
-[badges.travis-ci]
-repository = "gyscos/zstd-rs"
+[lib]
+name = "zstd"
+path = "src/lib.rs"
+
+[[example]]
+name = "basic"
+path = "examples/basic.rs"
+
+[[example]]
+name = "benchmark"
+path = "examples/benchmark.rs"
+
+[[example]]
+name = "stream"
+path = "examples/stream.rs"
+
+[[example]]
+name = "train"
+path = "examples/train.rs"
+required-features = ["zdict_builder"]
+
+[[example]]
+name = "zstd"
+path = "examples/zstd.rs"
+
+[[example]]
+name = "zstdcat"
+path = "examples/zstdcat.rs"
+
+[[test]]
+name = "issue_182"
+path = "tests/issue_182.rs"
+
+[dependencies.zstd-safe]
+version = "7.1.0"
+features = ["std"]
+default-features = false
+
+[dev-dependencies.clap]
+version = "4.0"
+features = ["derive"]
+
+[dev-dependencies.humansize]
+version = "2.0"
+
+[dev-dependencies.partial-io]
+version = "0.5"
+
+[dev-dependencies.walkdir]
+version = "2.2"

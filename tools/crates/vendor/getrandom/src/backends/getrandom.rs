@@ -16,15 +16,24 @@
 //! nothing. On illumos, the default pool is used to implement getentropy(2),
 //! so we assume it is acceptable here.
 use crate::Error;
-use core::{ffi::c_void, mem::MaybeUninit};
+use core::mem::MaybeUninit;
 
 pub use crate::util::{inner_u32, inner_u64};
 
 #[path = "../util_libc.rs"]
 mod util_libc;
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     util_libc::sys_fill_exact(dest, |buf| unsafe {
-        libc::getrandom(buf.as_mut_ptr().cast::<c_void>(), buf.len(), 0)
+        let ret = libc::getrandom(buf.as_mut_ptr().cast(), buf.len(), 0);
+
+        #[cfg(any(target_os = "android", target_os = "linux"))]
+        #[allow(unused_unsafe)] // TODO(MSRV 1.65): Remove this.
+        unsafe {
+            super::sanitizer::unpoison_linux_getrandom_result(buf, ret);
+        }
+
+        ret
     })
 }

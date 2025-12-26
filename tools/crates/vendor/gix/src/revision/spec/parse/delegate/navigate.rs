@@ -18,14 +18,20 @@ use crate::{
     Object,
 };
 
-impl<'repo> delegate::Navigate for Delegate<'repo> {
+impl delegate::Navigate for Delegate<'_> {
     fn traverse(&mut self, kind: Traversal) -> Option<()> {
         self.unset_disambiguate_call();
         self.follow_refs_to_objects_if_needed()?;
 
         let mut replacements = Replacements::default();
         let mut errors = Vec::new();
-        let objs = self.objs[self.idx].as_mut()?;
+        let objs = match self.objs[self.idx].as_mut() {
+            Some(objs) => objs,
+            None => {
+                self.err.push(Error::TraversalWithoutStartObject);
+                return None;
+            }
+        };
         let repo = self.repo;
 
         for obj in objs.iter() {
@@ -140,7 +146,7 @@ impl<'repo> delegate::Navigate for Delegate<'repo> {
                                 // Technically this is letting the last one win, but so be it.
                                 self.paths[self.idx] = Some((path.to_owned(), mode));
                             }
-                            replacements.push((*obj, replace))
+                            replacements.push((*obj, replace));
                         }
                         Err(err) => errors.push((*obj, err)),
                     }
@@ -192,7 +198,7 @@ impl<'repo> delegate::Navigate for Delegate<'repo> {
                     match oid
                         .attach(repo)
                         .ancestors()
-                        .sorting(gix_traverse::commit::simple::Sorting::ByCommitTimeNewestFirst)
+                        .sorting(crate::revision::walk::Sorting::ByCommitTime(Default::default()))
                         .all()
                     {
                         Ok(iter) => {
@@ -224,7 +230,7 @@ impl<'repo> delegate::Navigate for Delegate<'repo> {
                                         commits_searched: count,
                                         oid: oid.attach(repo).shorten_or_id(),
                                     },
-                                ))
+                                ));
                             }
                         }
                         Err(err) => errors.push((*oid, err.into())),
@@ -242,10 +248,10 @@ impl<'repo> delegate::Navigate for Delegate<'repo> {
                                     .peeled()
                                     .ok()?
                                     .filter_map(Result::ok)
-                                    .filter(|r| r.id().header().ok().map_or(false, |obj| obj.kind().is_commit()))
+                                    .filter(|r| r.id().header().ok().is_some_and(|obj| obj.kind().is_commit()))
                                     .filter_map(|r| r.detach().peeled),
                             )
-                            .sorting(gix_traverse::commit::simple::Sorting::ByCommitTimeNewestFirst)
+                            .sorting(crate::revision::walk::Sorting::ByCommitTime(Default::default()))
                             .all()
                         {
                             Ok(iter) => {
@@ -334,8 +340,8 @@ impl<'repo> delegate::Navigate for Delegate<'repo> {
                         .find_map(|stage| index.entry_index_by_path_and_stage(path, *stage).map(|_| *stage));
                     let exists = self
                         .repo
-                        .work_dir()
-                        .map_or(false, |root| root.join(gix_path::from_bstr(path)).exists());
+                        .workdir()
+                        .is_some_and(|root| root.join(gix_path::from_bstr(path)).exists());
                     self.err.push(Error::IndexLookup {
                         desired_path: path.into(),
                         desired_stage: stage,

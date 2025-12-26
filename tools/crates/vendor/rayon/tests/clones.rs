@@ -1,9 +1,9 @@
 use rayon::prelude::*;
+use std::fmt::Debug;
 
 fn check<I>(iter: I)
 where
-    I: ParallelIterator + Clone,
-    I::Item: std::fmt::Debug + PartialEq,
+    I: ParallelIterator<Item: Debug + PartialEq> + Clone,
 {
     let a: Vec<_> = iter.clone().collect();
     let b: Vec<_> = iter.collect();
@@ -196,7 +196,7 @@ fn clone_once() {
 fn clone_repeat() {
     let x: Option<i32> = None;
     check(rayon::iter::repeat(x).while_some());
-    check(rayon::iter::repeatn(x, 1000));
+    check(rayon::iter::repeat_n(x, 1000));
 }
 
 #[test]

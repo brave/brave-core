@@ -86,7 +86,7 @@
 //!   requires the `alloc` crate to be present.
 
 #![no_std]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_docs)]
 #![warn(rust_2018_idioms)]
 
@@ -100,6 +100,7 @@ extern crate alloc;
 pub struct GuardSend(());
 
 /// Marker type which indicates that the Guard type for a lock is not `Send`.
+#[allow(dead_code)]
 pub struct GuardNoSend(*mut ());
 
 unsafe impl Sync for GuardNoSend {}

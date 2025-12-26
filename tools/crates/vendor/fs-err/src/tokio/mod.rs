@@ -64,13 +64,17 @@ pub async fn create_dir_all(path: impl AsRef<Path>) -> io::Result<()> {
 
 /// Creates a new hard link on the filesystem.
 ///
+/// The `link` path will be a link pointing to the `original` path. Note that
+/// systems often require these two paths to both be located on the same
+/// filesystem.
+///
 /// Wrapper for [`tokio::fs::hard_link`].
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
-pub async fn hard_link(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
-    let (src, dst) = (src.as_ref(), dst.as_ref());
-    tokio::fs::hard_link(src, dst)
+pub async fn hard_link(original: impl AsRef<Path>, link: impl AsRef<Path>) -> io::Result<()> {
+    let (original, link) = (original.as_ref(), link.as_ref());
+    tokio::fs::hard_link(original, link)
         .await
-        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::HardLink, src, dst))
+        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::HardLink, link, original))
 }
 
 /// Given a path, queries the file system to get information about a file,
@@ -83,6 +87,17 @@ pub async fn metadata(path: impl AsRef<Path>) -> io::Result<Metadata> {
     tokio::fs::metadata(path)
         .await
         .map_err(|err| Error::build(err, ErrorKind::Metadata, path))
+}
+
+/// Returns `Ok(true)` if the path points at an existing entity.
+///
+/// Wrapper for [`tokio::fs::try_exists`].
+#[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
+pub async fn try_exists(path: impl AsRef<Path>) -> io::Result<bool> {
+    let path = path.as_ref();
+    tokio::fs::try_exists(path)
+        .await
+        .map_err(|err| Error::build(err, ErrorKind::FileExists, path))
 }
 
 /// Reads the entire contents of a file into a bytes vector.
@@ -188,48 +203,46 @@ pub async fn symlink_metadata(path: impl AsRef<Path>) -> io::Result<Metadata> {
 
 /// Creates a new symbolic link on the filesystem.
 ///
+/// The `link` path will be a symbolic link pointing to the `original` path.
+///
 /// Wrapper for [`tokio::fs::symlink`].
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
-pub async fn symlink(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
-    let (src, dst) = (src.as_ref(), dst.as_ref());
-    tokio::fs::symlink(src, dst)
+pub async fn symlink(original: impl AsRef<Path>, link: impl AsRef<Path>) -> io::Result<()> {
+    let (original, link) = (original.as_ref(), link.as_ref());
+    tokio::fs::symlink(original, link)
         .await
-        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::Symlink, src, dst))
+        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::Symlink, link, original))
 }
 
 /// Creates a new directory symlink on the filesystem.
 ///
-/// Wrapper for [`tokio::fs::symlink_dir`].
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
-#[deprecated = "use fs_err::tokio::symlink_dir instead"]
-pub async fn symlink(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
-    symlink_dir(src, dst).await
-}
-
-/// Creates a new directory symlink on the filesystem.
+/// The `link` path will be a symbolic link pointing to the `original` path.
 ///
 /// Wrapper for [`tokio::fs::symlink_dir`].
 #[cfg(windows)]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
-pub async fn symlink_dir(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
-    let (src, dst) = (src.as_ref(), dst.as_ref());
-    tokio::fs::symlink_dir(src, dst)
+pub async fn symlink_dir(original: impl AsRef<Path>, link: impl AsRef<Path>) -> io::Result<()> {
+    let (original, link) = (original.as_ref(), link.as_ref());
+    tokio::fs::symlink_dir(original, link)
         .await
-        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::SymlinkDir, src, dst))
+        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::SymlinkDir, link, original))
 }
 
 /// Creates a new file symbolic link on the filesystem.
 ///
+/// The `link` path will be a symbolic link pointing to the `original` path.
+///
 /// Wrapper for [`tokio::fs::symlink_file`].
 #[cfg(windows)]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio")))]
-pub async fn symlink_file(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
-    let (src, dst) = (src.as_ref(), dst.as_ref());
-    tokio::fs::symlink_file(src, dst)
+pub async fn symlink_file(original: impl AsRef<Path>, link: impl AsRef<Path>) -> io::Result<()> {
+    let (original, link) = (original.as_ref(), link.as_ref());
+    tokio::fs::symlink_file(original, link)
         .await
-        .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::SymlinkFile, src, dst))
+        .map_err(|err| {
+            SourceDestError::build(err, SourceDestErrorKind::SymlinkFile, link, original)
+        })
 }
 
 /// Creates a future that will open a file for writing and write the entire

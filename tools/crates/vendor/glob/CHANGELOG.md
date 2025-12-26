@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
+
+## [0.3.3](https://github.com/rust-lang/glob/compare/v0.3.2...v0.3.3) - 2025-08-11
+
+- Optimize memory allocations ([#147](https://github.com/rust-lang/glob/pull/147))
+- Bump the MSRV to 1.63 ([#172](https://github.com/rust-lang/glob/pull/172))
+- Fix spelling in pattern documentation ([#164](https://github.com/rust-lang/glob/pull/164))
+- Fix version numbers and some formatting ([#157](https://github.com/rust-lang/glob/pull/157))
+- Style fixes ([#137](https://github.com/rust-lang/glob/pull/137))
 
 ## [0.3.2](https://github.com/rust-lang/glob/compare/v0.3.1...v0.3.2) - 2024-12-28
 

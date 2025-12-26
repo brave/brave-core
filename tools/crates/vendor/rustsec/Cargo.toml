@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.73"
+edition = "2024"
+rust-version = "1.85"
 name = "rustsec"
-version = "0.30.1"
+version = "0.31.0"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
 build = false
 autolib = false
@@ -37,13 +37,59 @@ categories = [
 ]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/rustsec/rustsec"
+resolver = "2"
 
 [package.metadata.docs.rs]
-all-features = true
+features = [
+    "dependency-tree",
+    "osv-export",
+    "binary-scanning",
+]
 rustdoc-args = [
     "--cfg",
     "docsrs",
 ]
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = [
+    "binfarce::Format",
+    "cargo_lock",
+    "cargo_lock::*",
+    "cvss::*",
+    "platforms",
+    "platforms::*",
+    "semver",
+    "semver::*",
+    "serde::*",
+    "time::offset_date_time::OffsetDateTime",
+    "url::Url",
+]
+
+[features]
+binary-scanning = [
+    "dep:auditable-info",
+    "dep:auditable-serde",
+    "dep:binfarce",
+    "dep:quitters",
+    "dep:once_cell",
+]
+default = ["gix-reqwest"]
+dependency-tree = ["cargo-lock/dependency-tree"]
+git = [
+    "dep:tame-index",
+    "dep:home",
+    "dep:time",
+    "dep:gix",
+]
+gix-curl = [
+    "tame-index/gix-curl",
+    "git",
+]
+gix-reqwest = [
+    "tame-index/gix-reqwest",
+    "git",
+]
+osv-export = ["git"]
 
 [lib]
 name = "rustsec"
@@ -70,12 +116,12 @@ name = "query"
 path = "tests/query.rs"
 
 [dependencies.auditable-info]
-version = "0.8"
+version = "0.10"
 features = ["wasm"]
 optional = true
 
 [dependencies.auditable-serde]
-version = "0.7"
+version = "0.9"
 optional = true
 
 [dependencies.binfarce]
@@ -83,17 +129,17 @@ version = "0.2"
 optional = true
 
 [dependencies.cargo-lock]
-version = "10.1.0"
+version = "11"
 
 [dependencies.cvss]
-version = "2.0.0"
+version = "2.2"
 features = ["serde"]
 
 [dependencies.fs-err]
-version = "2.11"
+version = "3"
 
 [dependencies.gix]
-version = "0.66"
+version = "0.74"
 features = [
     "worktree-mutation",
     "revision",
@@ -127,9 +173,8 @@ version = "1"
 features = ["serde_derive"]
 
 [dependencies.tame-index]
-version = "0.14"
+version = "0.24"
 features = [
-    "git",
     "sparse",
     "native-certs",
 ]
@@ -137,7 +182,7 @@ optional = true
 default-features = false
 
 [dependencies.thiserror]
-version = "1"
+version = "2"
 
 [dependencies.time]
 version = "0.3"
@@ -150,7 +195,7 @@ optional = true
 default-features = false
 
 [dependencies.toml]
-version = "0.8"
+version = "0.9"
 
 [dependencies.url]
 version = "2"
@@ -164,21 +209,3 @@ version = "1"
 
 [dev-dependencies.tempfile]
 version = "3"
-
-[features]
-binary-scanning = [
-    "dep:auditable-info",
-    "dep:auditable-serde",
-    "dep:binfarce",
-    "dep:quitters",
-    "dep:once_cell",
-]
-default = ["git"]
-dependency-tree = ["cargo-lock/dependency-tree"]
-git = [
-    "dep:tame-index",
-    "dep:home",
-    "dep:time",
-    "dep:gix",
-]
-osv-export = ["git"]

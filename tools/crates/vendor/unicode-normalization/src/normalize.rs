@@ -41,11 +41,12 @@ pub fn decompose_compatible<F: FnMut(char)>(c: char, emit_char: F) {
 ///
 /// [Standardized Variation Sequences] are used instead of the standard canonical
 /// decompositions, notably for CJK codepoints with singleton canonical decompositions,
-/// to avoid losing information. See the
-/// [Unicode Variation Sequence FAQ](http://unicode.org/faq/vs.html) and the
-/// "Other Enhancements" section of the
-/// [Unicode 6.3 Release Summary](https://www.unicode.org/versions/Unicode6.3.0/#Summary)
-/// for more information.
+/// to avoid losing information. See the [Unicode Variation Sequence FAQ] and the
+/// "Other Enhancements" section of the [Unicode 6.3 Release Summary] for more information.
+///
+/// [Standardized Variation Sequences]: https://www.unicode.org/glossary/#standardized_variation_sequence
+/// [Unicode Variation Sequence FAQ]: http://unicode.org/faq/vs.html
+/// [Unicode 6.3 Release Summary]: https://www.unicode.org/versions/Unicode6.3.0/#Summary
 #[inline]
 pub fn decompose_cjk_compat_variants<F>(c: char, mut emit_char: F)
 where

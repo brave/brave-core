@@ -4,7 +4,7 @@ use crate::backend::c;
 #[cfg(not(target_os = "wasi"))]
 use crate::backend::conv::ret_discarded_fd;
 use crate::backend::conv::{borrowed_fd, ret, ret_c_int, ret_owned_fd, ret_usize};
-use crate::fd::{AsFd, BorrowedFd, OwnedFd, RawFd};
+use crate::fd::{AsFd as _, BorrowedFd, OwnedFd, RawFd};
 #[cfg(not(any(
     target_os = "aix",
     target_os = "espidf",
@@ -13,21 +13,23 @@ use crate::fd::{AsFd, BorrowedFd, OwnedFd, RawFd};
     target_os = "wasi"
 )))]
 use crate::io::DupFlags;
-#[cfg(linux_kernel)]
+#[cfg(all(linux_kernel, not(target_os = "android")))]
 use crate::io::ReadWriteFlags;
 use crate::io::{self, FdFlags};
-use crate::ioctl::{IoctlOutput, RawOpcode};
+use crate::ioctl::{IoctlOutput, Opcode};
 use core::cmp::min;
-#[cfg(all(feature = "fs", feature = "net"))]
-use libc_errno::errno;
 #[cfg(not(any(target_os = "espidf", target_os = "horizon")))]
 use {
     crate::backend::MAX_IOV,
     crate::io::{IoSlice, IoSliceMut},
 };
 
-pub(crate) unsafe fn read(fd: BorrowedFd<'_>, buf: *mut u8, len: usize) -> io::Result<usize> {
-    ret_usize(c::read(borrowed_fd(fd), buf.cast(), min(len, READ_LIMIT)))
+pub(crate) unsafe fn read(fd: BorrowedFd<'_>, buf: (*mut u8, usize)) -> io::Result<usize> {
+    ret_usize(c::read(
+        borrowed_fd(fd),
+        buf.0.cast(),
+        min(buf.1, READ_LIMIT),
+    ))
 }
 
 pub(crate) fn write(fd: BorrowedFd<'_>, buf: &[u8]) -> io::Result<usize> {
@@ -42,20 +44,18 @@ pub(crate) fn write(fd: BorrowedFd<'_>, buf: &[u8]) -> io::Result<usize> {
 
 pub(crate) unsafe fn pread(
     fd: BorrowedFd<'_>,
-    buf: *mut u8,
-    len: usize,
+    buf: (*mut u8, usize),
     offset: u64,
 ) -> io::Result<usize> {
-    let len = min(len, READ_LIMIT);
+    let len = min(buf.1, READ_LIMIT);
 
     // Silently cast; we'll get `EINVAL` if the value is negative.
     let offset = offset as i64;
 
-    // ESP-IDF and Vita don't support 64-bit offsets.
-    #[cfg(any(target_os = "espidf", target_os = "vita"))]
-    let offset: i32 = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
+    // ESP-IDF and Vita don't support 64-bit offsets, for example.
+    let offset = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
 
-    ret_usize(c::pread(borrowed_fd(fd), buf.cast(), len, offset))
+    ret_usize(c::pread(borrowed_fd(fd), buf.0.cast(), len, offset))
 }
 
 pub(crate) fn pwrite(fd: BorrowedFd<'_>, buf: &[u8], offset: u64) -> io::Result<usize> {
@@ -64,9 +64,8 @@ pub(crate) fn pwrite(fd: BorrowedFd<'_>, buf: &[u8], offset: u64) -> io::Result<
     // Silently cast; we'll get `EINVAL` if the value is negative.
     let offset = offset as i64;
 
-    // ESP-IDF and Vita don't support 64-bit offsets.
-    #[cfg(any(target_os = "espidf", target_os = "vita"))]
-    let offset: i32 = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
+    // ESP-IDF and Vita don't support 64-bit offsets, for example.
+    let offset = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
 
     unsafe { ret_usize(c::pwrite(borrowed_fd(fd), buf.as_ptr().cast(), len, offset)) }
 }
@@ -94,13 +93,14 @@ pub(crate) fn writev(fd: BorrowedFd<'_>, bufs: &[IoSlice<'_>]) -> io::Result<usi
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
     target_os = "haiku",
     target_os = "horizon",
     target_os = "nto",
     target_os = "redox",
     target_os = "solaris",
-    target_os = "vita"
+    target_os = "vita",
 )))]
 pub(crate) fn preadv(
     fd: BorrowedFd<'_>,
@@ -109,6 +109,10 @@ pub(crate) fn preadv(
 ) -> io::Result<usize> {
     // Silently cast; we'll get `EINVAL` if the value is negative.
     let offset = offset as i64;
+
+    // ESP-IDF and Vita don't support 64-bit offsets, for example.
+    let offset = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
+
     unsafe {
         ret_usize(c::preadv(
             borrowed_fd(fd),
@@ -120,17 +124,22 @@ pub(crate) fn preadv(
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
     target_os = "haiku",
     target_os = "nto",
     target_os = "horizon",
     target_os = "redox",
     target_os = "solaris",
-    target_os = "vita"
+    target_os = "vita",
 )))]
 pub(crate) fn pwritev(fd: BorrowedFd<'_>, bufs: &[IoSlice<'_>], offset: u64) -> io::Result<usize> {
     // Silently cast; we'll get `EINVAL` if the value is negative.
     let offset = offset as i64;
+
+    // ESP-IDF and Vita don't support 64-bit offsets, for example.
+    let offset = offset.try_into().map_err(|_| io::Errno::OVERFLOW)?;
+
     unsafe {
         ret_usize(c::pwritev(
             borrowed_fd(fd),
@@ -141,7 +150,7 @@ pub(crate) fn pwritev(fd: BorrowedFd<'_>, bufs: &[IoSlice<'_>], offset: u64) -> 
     }
 }
 
-#[cfg(linux_kernel)]
+#[cfg(all(linux_kernel, not(target_os = "android")))]
 pub(crate) fn preadv2(
     fd: BorrowedFd<'_>,
     bufs: &mut [IoSliceMut<'_>],
@@ -161,7 +170,7 @@ pub(crate) fn preadv2(
     }
 }
 
-#[cfg(linux_kernel)]
+#[cfg(all(linux_kernel, not(target_os = "android")))]
 pub(crate) fn pwritev2(
     fd: BorrowedFd<'_>,
     bufs: &[IoSlice<'_>],
@@ -209,7 +218,7 @@ pub(crate) unsafe fn try_close(raw_fd: RawFd) -> io::Result<()> {
 #[inline]
 pub(crate) unsafe fn ioctl(
     fd: BorrowedFd<'_>,
-    request: RawOpcode,
+    request: Opcode,
     arg: *mut c::c_void,
 ) -> io::Result<IoctlOutput> {
     ret_c_int(c::ioctl(borrowed_fd(fd), request, arg))
@@ -218,64 +227,10 @@ pub(crate) unsafe fn ioctl(
 #[inline]
 pub(crate) unsafe fn ioctl_readonly(
     fd: BorrowedFd<'_>,
-    request: RawOpcode,
+    request: Opcode,
     arg: *mut c::c_void,
 ) -> io::Result<IoctlOutput> {
     ioctl(fd, request, arg)
-}
-
-#[cfg(not(any(target_os = "redox", target_os = "wasi")))]
-#[cfg(all(feature = "fs", feature = "net"))]
-pub(crate) fn is_read_write(fd: BorrowedFd<'_>) -> io::Result<(bool, bool)> {
-    use core::mem::MaybeUninit;
-
-    let (mut read, mut write) = crate::fs::fd::_is_file_read_write(fd)?;
-    let mut not_socket = false;
-    if read {
-        // Do a `recv` with `PEEK` and `DONTWAIT` for 1 byte. A 0 indicates
-        // the read side is shut down; an `EWOULDBLOCK` indicates the read
-        // side is still open.
-        match unsafe {
-            c::recv(
-                borrowed_fd(fd),
-                MaybeUninit::<[u8; 1]>::uninit()
-                    .as_mut_ptr()
-                    .cast::<c::c_void>(),
-                1,
-                c::MSG_PEEK | c::MSG_DONTWAIT,
-            )
-        } {
-            0 => read = false,
-            -1 => {
-                #[allow(unreachable_patterns)] // `EAGAIN` may equal `EWOULDBLOCK`
-                match errno().0 {
-                    c::EAGAIN | c::EWOULDBLOCK => (),
-                    c::ENOTSOCK => not_socket = true,
-                    err => return Err(io::Errno(err)),
-                }
-            }
-            _ => (),
-        }
-    }
-    if write && !not_socket {
-        // Do a `send` with `DONTWAIT` for 0 bytes. An `EPIPE` indicates
-        // the write side is shut down.
-        if unsafe { c::send(borrowed_fd(fd), [].as_ptr(), 0, c::MSG_DONTWAIT) } == -1 {
-            #[allow(unreachable_patterns)] // `EAGAIN` may equal `EWOULDBLOCK`
-            match errno().0 {
-                c::EAGAIN | c::EWOULDBLOCK | c::ENOTSOCK => (),
-                c::EPIPE => write = false,
-                err => return Err(io::Errno(err)),
-            }
-        }
-    }
-    Ok((read, write))
-}
-
-#[cfg(target_os = "wasi")]
-#[cfg(all(feature = "fs", feature = "net"))]
-pub(crate) fn is_read_write(_fd: BorrowedFd<'_>) -> io::Result<(bool, bool)> {
-    todo!("Implement is_read_write for WASI in terms of fd_fdstat_get");
 }
 
 pub(crate) fn fcntl_getfd(fd: BorrowedFd<'_>) -> io::Result<FdFlags> {

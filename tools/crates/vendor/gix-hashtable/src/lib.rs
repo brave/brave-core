@@ -5,7 +5,7 @@
 #![forbid(unsafe_code)]
 
 use gix_hash::ObjectId;
-pub use hashbrown::{hash_map, hash_set, raw, Equivalent};
+pub use hashbrown::{hash_map, hash_set, hash_table, Equivalent};
 
 /// thread-safe types
 pub mod sync {
@@ -34,7 +34,6 @@ pub mod sync {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod hash {
     /// A Hasher for usage with `HashMap` keys that are already robust hashes (like an `ObjectId`).
     /// The first `8` bytes of the hash are used as the `HashMap` hash

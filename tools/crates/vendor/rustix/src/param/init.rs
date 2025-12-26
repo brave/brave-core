@@ -14,8 +14,8 @@ use crate::backend;
 /// # Safety
 ///
 /// This must be passed a pointer to the original environment variable block
-/// set up by the OS at process startup, and it must be called before any
-/// other rustix functions are called.
+/// set up by the OS at process startup, and it must be called before any other
+/// rustix functions are called.
 #[inline]
 #[doc(hidden)]
 pub unsafe fn init(envp: *mut *mut u8) {

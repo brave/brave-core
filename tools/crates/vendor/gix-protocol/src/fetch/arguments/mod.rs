@@ -24,6 +24,7 @@ pub struct Arguments {
     #[cfg(any(feature = "async-client", feature = "blocking-client"))]
     version: gix_transport::Protocol,
 
+    #[cfg(any(feature = "async-client", feature = "blocking-client"))]
     trace: bool,
 }
 
@@ -164,6 +165,7 @@ impl Arguments {
     /// Permanently allow the server to include tags that point to commits or objects it would return.
     ///
     /// Needs to only be called once.
+    #[cfg(any(feature = "async-client", feature = "blocking-client"))]
     pub fn use_include_tag(&mut self) {
         debug_assert!(self.supports_include_tag, "'include-tag' feature required");
         if self.supports_include_tag {
@@ -176,6 +178,7 @@ impl Arguments {
     /// Note that sending an unknown or unsupported feature may cause the remote to terminate
     /// the connection. Use this method if you know what you are doing *and* there is no specialized
     /// method for this, e.g. [`Self::use_include_tag()`].
+    #[cfg(any(feature = "async-client", feature = "blocking-client"))]
     pub fn add_feature(&mut self, feature: &str) {
         match self.version {
             gix_transport::Protocol::V0 | gix_transport::Protocol::V1 => {
@@ -183,7 +186,7 @@ impl Arguments {
                     .features_for_first_want
                     .as_mut()
                     .expect("call add_feature before first want()");
-                features.push(feature.into())
+                features.push(feature.into());
             }
             gix_transport::Protocol::V2 => {
                 self.args.push(feature.into());
@@ -228,7 +231,7 @@ impl Arguments {
             }
             gix_transport::Protocol::V2 => {
                 supports_include_tag = true;
-                (Command::Fetch.initial_arguments(&features), None)
+                (Command::Fetch.initial_v2_arguments(&features), None)
             }
         };
 

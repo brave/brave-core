@@ -1,5 +1,6 @@
 use alloc::vec::Vec;
 
+use crate::endian::*;
 use crate::pe as coff;
 use crate::write::coff::writer;
 use crate::write::util::*;
@@ -76,54 +77,251 @@ impl<'a> Object<'a> {
 
     pub(crate) fn coff_subsection_name(&self, section: &[u8], value: &[u8]) -> Vec<u8> {
         let mut name = section.to_vec();
-        name.push(b'$');
-        name.extend_from_slice(value);
+        if !value.is_empty() {
+            name.push(b'$');
+            name.extend_from_slice(value);
+        }
         name
     }
 
-    pub(crate) fn coff_fixup_relocation(&mut self, relocation: &mut Relocation) -> i64 {
-        if relocation.kind == RelocationKind::GotRelative {
+    pub(crate) fn coff_section_flags(&self, section: &Section<'_>) -> SectionFlags {
+        let characteristics = match section.kind {
+            SectionKind::Text => {
+                coff::IMAGE_SCN_CNT_CODE | coff::IMAGE_SCN_MEM_EXECUTE | coff::IMAGE_SCN_MEM_READ
+            }
+            SectionKind::Data => {
+                coff::IMAGE_SCN_CNT_INITIALIZED_DATA
+                    | coff::IMAGE_SCN_MEM_READ
+                    | coff::IMAGE_SCN_MEM_WRITE
+            }
+            SectionKind::UninitializedData => {
+                coff::IMAGE_SCN_CNT_UNINITIALIZED_DATA
+                    | coff::IMAGE_SCN_MEM_READ
+                    | coff::IMAGE_SCN_MEM_WRITE
+            }
+            SectionKind::ReadOnlyData
+            | SectionKind::ReadOnlyDataWithRel
+            | SectionKind::ReadOnlyString => {
+                coff::IMAGE_SCN_CNT_INITIALIZED_DATA | coff::IMAGE_SCN_MEM_READ
+            }
+            SectionKind::Debug
+            | SectionKind::DebugString
+            | SectionKind::Other
+            | SectionKind::OtherString => {
+                coff::IMAGE_SCN_CNT_INITIALIZED_DATA
+                    | coff::IMAGE_SCN_MEM_READ
+                    | coff::IMAGE_SCN_MEM_DISCARDABLE
+            }
+            SectionKind::Linker => coff::IMAGE_SCN_LNK_INFO | coff::IMAGE_SCN_LNK_REMOVE,
+            SectionKind::Common
+            | SectionKind::Tls
+            | SectionKind::UninitializedTls
+            | SectionKind::TlsVariables
+            | SectionKind::Note
+            | SectionKind::Unknown
+            | SectionKind::Metadata
+            | SectionKind::Elf(_) => {
+                return SectionFlags::None;
+            }
+        };
+        SectionFlags::Coff { characteristics }
+    }
+
+    pub(crate) fn coff_symbol_flags(&self, _symbol: &Symbol) -> SymbolFlags<SectionId, SymbolId> {
+        // TODO: Need SymbolFlags::Coff for COFF-specific flags (type and storage class).
+        SymbolFlags::None
+    }
+
+    pub(crate) fn coff_translate_relocation(&mut self, reloc: &mut Relocation) -> Result<()> {
+        use RelocationEncoding as E;
+        use RelocationKind as K;
+
+        let (mut kind, encoding, size) = if let RelocationFlags::Generic {
+            kind,
+            encoding,
+            size,
+        } = reloc.flags
+        {
+            (kind, encoding, size)
+        } else {
+            return Ok(());
+        };
+        if kind == K::GotRelative {
             // Use a stub symbol for the relocation instead.
             // This isn't really a GOT, but it's a similar purpose.
             // TODO: need to handle DLL imports differently?
-            relocation.kind = RelocationKind::Relative;
-            relocation.symbol = self.coff_add_stub_symbol(relocation.symbol);
-        } else if relocation.kind == RelocationKind::PltRelative {
+            kind = K::Relative;
+            reloc.symbol = self.coff_add_stub_symbol(reloc.symbol)?;
+        } else if kind == K::PltRelative {
             // Windows doesn't need a separate relocation type for
             // references to functions in import libraries.
             // For convenience, treat this the same as Relative.
-            relocation.kind = RelocationKind::Relative;
+            kind = K::Relative;
         }
 
-        let constant = match self.architecture {
-            Architecture::I386 | Architecture::Arm | Architecture::Aarch64 => match relocation.kind
-            {
-                RelocationKind::Relative => {
-                    // IMAGE_REL_I386_REL32, IMAGE_REL_ARM_REL32, IMAGE_REL_ARM64_REL32
-                    relocation.addend + 4
-                }
-                _ => relocation.addend,
+        let unsupported_reloc = || Err(Error(format!("unimplemented relocation {:?}", reloc)));
+        let typ = match self.architecture {
+            Architecture::I386 => match (kind, size) {
+                (K::Absolute, 16) => coff::IMAGE_REL_I386_DIR16,
+                (K::Relative, 16) => coff::IMAGE_REL_I386_REL16,
+                (K::Absolute, 32) => coff::IMAGE_REL_I386_DIR32,
+                (K::ImageOffset, 32) => coff::IMAGE_REL_I386_DIR32NB,
+                (K::SectionIndex, 16) => coff::IMAGE_REL_I386_SECTION,
+                (K::SectionOffset, 32) => coff::IMAGE_REL_I386_SECREL,
+                (K::SectionOffset, 7) => coff::IMAGE_REL_I386_SECREL7,
+                (K::Relative, 32) => coff::IMAGE_REL_I386_REL32,
+                _ => return unsupported_reloc(),
             },
-            Architecture::X86_64 => match relocation.kind {
-                RelocationKind::Relative => {
-                    // IMAGE_REL_AMD64_REL32 through to IMAGE_REL_AMD64_REL32_5
-                    if relocation.addend <= -4 && relocation.addend >= -9 {
-                        0
-                    } else {
-                        relocation.addend + 4
-                    }
-                }
-                _ => relocation.addend,
+            Architecture::X86_64 => match (kind, size) {
+                (K::Absolute, 64) => coff::IMAGE_REL_AMD64_ADDR64,
+                (K::Absolute, 32) => coff::IMAGE_REL_AMD64_ADDR32,
+                (K::ImageOffset, 32) => coff::IMAGE_REL_AMD64_ADDR32NB,
+                (K::Relative, 32) => match reloc.addend {
+                    -5 => coff::IMAGE_REL_AMD64_REL32_1,
+                    -6 => coff::IMAGE_REL_AMD64_REL32_2,
+                    -7 => coff::IMAGE_REL_AMD64_REL32_3,
+                    -8 => coff::IMAGE_REL_AMD64_REL32_4,
+                    -9 => coff::IMAGE_REL_AMD64_REL32_5,
+                    _ => coff::IMAGE_REL_AMD64_REL32,
+                },
+                (K::SectionIndex, 16) => coff::IMAGE_REL_AMD64_SECTION,
+                (K::SectionOffset, 32) => coff::IMAGE_REL_AMD64_SECREL,
+                (K::SectionOffset, 7) => coff::IMAGE_REL_AMD64_SECREL7,
+                _ => return unsupported_reloc(),
             },
-            _ => unimplemented!(),
+            Architecture::Arm => match (kind, size) {
+                (K::Absolute, 32) => coff::IMAGE_REL_ARM_ADDR32,
+                (K::ImageOffset, 32) => coff::IMAGE_REL_ARM_ADDR32NB,
+                (K::Relative, 32) => coff::IMAGE_REL_ARM_REL32,
+                (K::SectionIndex, 16) => coff::IMAGE_REL_ARM_SECTION,
+                (K::SectionOffset, 32) => coff::IMAGE_REL_ARM_SECREL,
+                _ => return unsupported_reloc(),
+            },
+            Architecture::Aarch64 => match (kind, encoding, size) {
+                (K::Absolute, _, 32) => coff::IMAGE_REL_ARM64_ADDR32,
+                (K::ImageOffset, _, 32) => coff::IMAGE_REL_ARM64_ADDR32NB,
+                (K::SectionIndex, _, 16) => coff::IMAGE_REL_ARM64_SECTION,
+                (K::SectionOffset, _, 32) => coff::IMAGE_REL_ARM64_SECREL,
+                (K::Absolute, _, 64) => coff::IMAGE_REL_ARM64_ADDR64,
+                (K::Relative, _, 32) => coff::IMAGE_REL_ARM64_REL32,
+                (K::Relative, E::AArch64Call, 26) => coff::IMAGE_REL_ARM64_BRANCH26,
+                _ => return unsupported_reloc(),
+            },
+            _ => {
+                return Err(Error(format!(
+                    "unimplemented architecture {:?}",
+                    self.architecture
+                )));
+            }
         };
-        relocation.addend -= constant;
-        constant
+        reloc.flags = RelocationFlags::Coff { typ };
+        Ok(())
     }
 
-    fn coff_add_stub_symbol(&mut self, symbol_id: SymbolId) -> SymbolId {
+    pub(crate) fn coff_adjust_addend(&self, relocation: &mut Relocation) -> Result<bool> {
+        let typ = if let RelocationFlags::Coff { typ } = relocation.flags {
+            typ
+        } else {
+            return Err(Error(format!("invalid relocation flags {:?}", relocation)));
+        };
+        let offset = match self.architecture {
+            Architecture::Arm => {
+                if typ == coff::IMAGE_REL_ARM_REL32 {
+                    4
+                } else {
+                    0
+                }
+            }
+            Architecture::Aarch64 => {
+                if typ == coff::IMAGE_REL_ARM64_REL32 {
+                    4
+                } else {
+                    0
+                }
+            }
+            Architecture::I386 => {
+                if typ == coff::IMAGE_REL_I386_REL32 {
+                    4
+                } else {
+                    0
+                }
+            }
+            Architecture::X86_64 => match typ {
+                coff::IMAGE_REL_AMD64_REL32 => 4,
+                coff::IMAGE_REL_AMD64_REL32_1 => 5,
+                coff::IMAGE_REL_AMD64_REL32_2 => 6,
+                coff::IMAGE_REL_AMD64_REL32_3 => 7,
+                coff::IMAGE_REL_AMD64_REL32_4 => 8,
+                coff::IMAGE_REL_AMD64_REL32_5 => 9,
+                _ => 0,
+            },
+            Architecture::PowerPc | Architecture::PowerPc64 => 0,
+            _ => return Err(Error(format!("unimplemented relocation {:?}", relocation))),
+        };
+        relocation.addend += offset;
+        Ok(true)
+    }
+
+    pub(crate) fn coff_relocation_size(&self, reloc: &Relocation) -> Result<u8> {
+        let typ = if let RelocationFlags::Coff { typ } = reloc.flags {
+            typ
+        } else {
+            return Err(Error(format!("unexpected relocation for size {:?}", reloc)));
+        };
+        let size = match self.architecture {
+            Architecture::I386 => match typ {
+                coff::IMAGE_REL_I386_DIR16
+                | coff::IMAGE_REL_I386_REL16
+                | coff::IMAGE_REL_I386_SECTION => Some(16),
+                coff::IMAGE_REL_I386_DIR32
+                | coff::IMAGE_REL_I386_DIR32NB
+                | coff::IMAGE_REL_I386_SECREL
+                | coff::IMAGE_REL_I386_TOKEN
+                | coff::IMAGE_REL_I386_REL32 => Some(32),
+                _ => None,
+            },
+            Architecture::X86_64 => match typ {
+                coff::IMAGE_REL_AMD64_SECTION => Some(16),
+                coff::IMAGE_REL_AMD64_ADDR32
+                | coff::IMAGE_REL_AMD64_ADDR32NB
+                | coff::IMAGE_REL_AMD64_REL32
+                | coff::IMAGE_REL_AMD64_REL32_1
+                | coff::IMAGE_REL_AMD64_REL32_2
+                | coff::IMAGE_REL_AMD64_REL32_3
+                | coff::IMAGE_REL_AMD64_REL32_4
+                | coff::IMAGE_REL_AMD64_REL32_5
+                | coff::IMAGE_REL_AMD64_SECREL
+                | coff::IMAGE_REL_AMD64_TOKEN => Some(32),
+                coff::IMAGE_REL_AMD64_ADDR64 => Some(64),
+                _ => None,
+            },
+            Architecture::Arm => match typ {
+                coff::IMAGE_REL_ARM_SECTION => Some(16),
+                coff::IMAGE_REL_ARM_ADDR32
+                | coff::IMAGE_REL_ARM_ADDR32NB
+                | coff::IMAGE_REL_ARM_TOKEN
+                | coff::IMAGE_REL_ARM_REL32
+                | coff::IMAGE_REL_ARM_SECREL => Some(32),
+                _ => None,
+            },
+            Architecture::Aarch64 => match typ {
+                coff::IMAGE_REL_ARM64_SECTION => Some(16),
+                coff::IMAGE_REL_ARM64_ADDR32
+                | coff::IMAGE_REL_ARM64_ADDR32NB
+                | coff::IMAGE_REL_ARM64_SECREL
+                | coff::IMAGE_REL_ARM64_TOKEN
+                | coff::IMAGE_REL_ARM64_REL32 => Some(32),
+                coff::IMAGE_REL_ARM64_ADDR64 => Some(64),
+                _ => None,
+            },
+            _ => None,
+        };
+        size.ok_or_else(|| Error(format!("unsupported relocation for size {:?}", reloc)))
+    }
+
+    fn coff_add_stub_symbol(&mut self, symbol_id: SymbolId) -> Result<SymbolId> {
         if let Some(stub_id) = self.stub_symbols.get(&symbol_id) {
-            return *stub_id;
+            return Ok(*stub_id);
         }
         let stub_size = self.architecture.address_size().unwrap().bytes();
 
@@ -131,14 +329,19 @@ impl<'a> Object<'a> {
         let section_id = self.add_section(Vec::new(), name, SectionKind::ReadOnlyData);
         let section = self.section_mut(section_id);
         section.set_data(vec![0; stub_size as usize], u64::from(stub_size));
-        section.relocations = vec![Relocation {
-            offset: 0,
-            size: stub_size * 8,
-            kind: RelocationKind::Absolute,
-            encoding: RelocationEncoding::Generic,
-            symbol: symbol_id,
-            addend: 0,
-        }];
+        self.add_relocation(
+            section_id,
+            Relocation {
+                offset: 0,
+                symbol: symbol_id,
+                addend: 0,
+                flags: RelocationFlags::Generic {
+                    kind: RelocationKind::Absolute,
+                    encoding: RelocationEncoding::Generic,
+                    size: stub_size * 8,
+                },
+            },
+        )?;
 
         let mut name = b".refptr.".to_vec();
         name.extend_from_slice(&self.symbol(symbol_id).name);
@@ -154,7 +357,7 @@ impl<'a> Object<'a> {
         });
         self.stub_symbols.insert(symbol_id, stub_id);
 
-        stub_id
+        Ok(stub_id)
     }
 
     /// Appends linker directives to the `.drectve` section to tell the linker
@@ -237,12 +440,96 @@ impl<'a> Object<'a> {
             }
         }
 
+        // Prepare creation of weak default symbols
+        let weak_symbol_count = self.symbols.iter().filter(|symbol| symbol.weak).count();
+        let mut weak_default_names = HashMap::new();
+        let mut weak_default_offsets = HashMap::new();
+
+        if weak_symbol_count > 0 {
+            weak_default_names.reserve(weak_symbol_count);
+            weak_default_offsets.reserve(weak_symbol_count);
+
+            let defined_external_symbol = |symbol: &&Symbol| -> bool {
+                !symbol.weak
+                    && (symbol.scope == SymbolScope::Linkage
+                        || symbol.scope == SymbolScope::Dynamic)
+                    && (matches!(symbol.section, SymbolSection::Section(_))
+                        || matches!(symbol.section, SymbolSection::Absolute))
+            };
+
+            let mut weak_default_unique_name = Default::default();
+
+            // search for an external symbol defined in a non-COMDAT section to
+            // use for the weak default names
+            for symbol in self.symbols.iter().filter(defined_external_symbol) {
+                let SymbolSection::Section(section_id) = symbol.section else {
+                    weak_default_unique_name = &*symbol.name;
+                    break;
+                };
+
+                if !self
+                    .comdats
+                    .iter()
+                    .flat_map(|comdat| comdat.sections.iter())
+                    .any(|comdat_section| *comdat_section == section_id)
+                {
+                    weak_default_unique_name = &*symbol.name;
+                    break;
+                }
+            }
+
+            // fallback to also include COMDAT defined symbols
+            if weak_default_unique_name.is_empty() {
+                for symbol in self.symbols.iter().filter(defined_external_symbol) {
+                    if matches!(symbol.section, SymbolSection::Section(_)) {
+                        weak_default_unique_name = &*symbol.name;
+                        break;
+                    }
+                }
+            }
+
+            // create and store the names for the weak default symbols
+            for (index, symbol) in self
+                .symbols
+                .iter()
+                .enumerate()
+                .filter(|(_, symbol)| symbol.weak)
+            {
+                let mut weak_default_name = [b".weak.", symbol.name.as_slice()].concat();
+                if !weak_default_unique_name.is_empty() {
+                    weak_default_name.push(b'.');
+                    weak_default_name.extend(weak_default_unique_name);
+                }
+
+                weak_default_names.insert(index, weak_default_name);
+            }
+        }
+
         // Reserve symbol indices and add symbol strings to strtab.
         let mut symbol_offsets = vec![SymbolOffsets::default(); self.symbols.len()];
         for (index, symbol) in self.symbols.iter().enumerate() {
+            if symbol.weak {
+                // Reserve the weak default symbol
+                let weak_default_name = weak_default_names.get(&index).unwrap_or_else(|| {
+                    unreachable!("weak default symbol name should have been created")
+                });
+
+                weak_default_offsets.insert(
+                    index,
+                    SymbolOffsets {
+                        name: writer.add_name(weak_default_name.as_slice()),
+                        index: writer.reserve_symbol_index(),
+                        aux_count: 0,
+                    },
+                );
+            }
+
             symbol_offsets[index].index = writer.reserve_symbol_index();
             let mut name = &*symbol.name;
             match symbol.kind {
+                _ if symbol.weak => {
+                    symbol_offsets[index].aux_count = writer.reserve_aux_weak_external();
+                }
                 SymbolKind::File => {
                     // Name goes in auxiliary symbol records.
                     symbol_offsets[index].aux_count = writer.reserve_aux_file_name(&symbol.name);
@@ -268,14 +555,20 @@ impl<'a> Object<'a> {
 
         // Start writing.
         writer.write_file_header(writer::FileHeader {
-            machine: match (self.architecture, self.sub_architecture) {
-                (Architecture::Arm, None) => coff::IMAGE_FILE_MACHINE_ARMNT,
-                (Architecture::Aarch64, None) => coff::IMAGE_FILE_MACHINE_ARM64,
-                (Architecture::Aarch64, Some(SubArchitecture::Arm64EC)) => {
+            machine: match (self.architecture, self.sub_architecture, self.endian) {
+                (Architecture::Arm, None, _) => coff::IMAGE_FILE_MACHINE_ARMNT,
+                (Architecture::Aarch64, None, _) => coff::IMAGE_FILE_MACHINE_ARM64,
+                (Architecture::Aarch64, Some(SubArchitecture::Arm64EC), _) => {
                     coff::IMAGE_FILE_MACHINE_ARM64EC
                 }
-                (Architecture::I386, None) => coff::IMAGE_FILE_MACHINE_I386,
-                (Architecture::X86_64, None) => coff::IMAGE_FILE_MACHINE_AMD64,
+                (Architecture::I386, None, _) => coff::IMAGE_FILE_MACHINE_I386,
+                (Architecture::X86_64, None, _) => coff::IMAGE_FILE_MACHINE_AMD64,
+                (Architecture::PowerPc | Architecture::PowerPc64, None, Endianness::Little) => {
+                    coff::IMAGE_FILE_MACHINE_POWERPC
+                }
+                (Architecture::PowerPc | Architecture::PowerPc64, None, Endianness::Big) => {
+                    coff::IMAGE_FILE_MACHINE_POWERPCBE
+                }
                 _ => {
                     return Err(Error(format!(
                         "unimplemented architecture {:?} with sub-architecture {:?}",
@@ -292,54 +585,16 @@ impl<'a> Object<'a> {
 
         // Write section headers.
         for (index, section) in self.sections.iter().enumerate() {
-            let mut characteristics = if let SectionFlags::Coff {
-                characteristics, ..
-            } = section.flags
-            {
-                characteristics
-            } else {
-                match section.kind {
-                    SectionKind::Text => {
-                        coff::IMAGE_SCN_CNT_CODE
-                            | coff::IMAGE_SCN_MEM_EXECUTE
-                            | coff::IMAGE_SCN_MEM_READ
-                    }
-                    SectionKind::Data => {
-                        coff::IMAGE_SCN_CNT_INITIALIZED_DATA
-                            | coff::IMAGE_SCN_MEM_READ
-                            | coff::IMAGE_SCN_MEM_WRITE
-                    }
-                    SectionKind::UninitializedData => {
-                        coff::IMAGE_SCN_CNT_UNINITIALIZED_DATA
-                            | coff::IMAGE_SCN_MEM_READ
-                            | coff::IMAGE_SCN_MEM_WRITE
-                    }
-                    SectionKind::ReadOnlyData
-                    | SectionKind::ReadOnlyDataWithRel
-                    | SectionKind::ReadOnlyString => {
-                        coff::IMAGE_SCN_CNT_INITIALIZED_DATA | coff::IMAGE_SCN_MEM_READ
-                    }
-                    SectionKind::Debug | SectionKind::Other | SectionKind::OtherString => {
-                        coff::IMAGE_SCN_CNT_INITIALIZED_DATA
-                            | coff::IMAGE_SCN_MEM_READ
-                            | coff::IMAGE_SCN_MEM_DISCARDABLE
-                    }
-                    SectionKind::Linker => coff::IMAGE_SCN_LNK_INFO | coff::IMAGE_SCN_LNK_REMOVE,
-                    SectionKind::Common
-                    | SectionKind::Tls
-                    | SectionKind::UninitializedTls
-                    | SectionKind::TlsVariables
-                    | SectionKind::Note
-                    | SectionKind::Unknown
-                    | SectionKind::Metadata
-                    | SectionKind::Elf(_) => {
-                        return Err(Error(format!(
-                            "unimplemented section `{}` kind {:?}",
-                            section.name().unwrap_or(""),
-                            section.kind
-                        )));
-                    }
-                }
+            let SectionFlags::Coff {
+                mut characteristics,
+                ..
+            } = self.section_flags(section)
+            else {
+                return Err(Error(format!(
+                    "unimplemented section `{}` kind {:?}",
+                    section.name().unwrap_or(""),
+                    section.kind
+                )));
             };
             if section_offsets[index].selection != 0 {
                 characteristics |= coff::IMAGE_SCN_LNK_COMDAT;
@@ -390,69 +645,10 @@ impl<'a> Object<'a> {
                 //debug_assert_eq!(section_offsets[index].reloc_offset, buffer.len());
                 writer.write_relocations_count(section.relocations.len());
                 for reloc in &section.relocations {
-                    //assert!(reloc.implicit_addend);
-                    let typ = match self.architecture {
-                        Architecture::I386 => match (reloc.kind, reloc.size, reloc.addend) {
-                            (RelocationKind::Absolute, 16, 0) => coff::IMAGE_REL_I386_DIR16,
-                            (RelocationKind::Relative, 16, 0) => coff::IMAGE_REL_I386_REL16,
-                            (RelocationKind::Absolute, 32, 0) => coff::IMAGE_REL_I386_DIR32,
-                            (RelocationKind::ImageOffset, 32, 0) => coff::IMAGE_REL_I386_DIR32NB,
-                            (RelocationKind::SectionIndex, 16, 0) => coff::IMAGE_REL_I386_SECTION,
-                            (RelocationKind::SectionOffset, 32, 0) => coff::IMAGE_REL_I386_SECREL,
-                            (RelocationKind::SectionOffset, 7, 0) => coff::IMAGE_REL_I386_SECREL7,
-                            (RelocationKind::Relative, 32, -4) => coff::IMAGE_REL_I386_REL32,
-                            (RelocationKind::Coff(x), _, _) => x,
-                            _ => {
-                                return Err(Error(format!("unimplemented relocation {:?}", reloc)));
-                            }
-                        },
-                        Architecture::X86_64 => match (reloc.kind, reloc.size, reloc.addend) {
-                            (RelocationKind::Absolute, 64, 0) => coff::IMAGE_REL_AMD64_ADDR64,
-                            (RelocationKind::Absolute, 32, 0) => coff::IMAGE_REL_AMD64_ADDR32,
-                            (RelocationKind::ImageOffset, 32, 0) => coff::IMAGE_REL_AMD64_ADDR32NB,
-                            (RelocationKind::Relative, 32, -4) => coff::IMAGE_REL_AMD64_REL32,
-                            (RelocationKind::Relative, 32, -5) => coff::IMAGE_REL_AMD64_REL32_1,
-                            (RelocationKind::Relative, 32, -6) => coff::IMAGE_REL_AMD64_REL32_2,
-                            (RelocationKind::Relative, 32, -7) => coff::IMAGE_REL_AMD64_REL32_3,
-                            (RelocationKind::Relative, 32, -8) => coff::IMAGE_REL_AMD64_REL32_4,
-                            (RelocationKind::Relative, 32, -9) => coff::IMAGE_REL_AMD64_REL32_5,
-                            (RelocationKind::SectionIndex, 16, 0) => coff::IMAGE_REL_AMD64_SECTION,
-                            (RelocationKind::SectionOffset, 32, 0) => coff::IMAGE_REL_AMD64_SECREL,
-                            (RelocationKind::SectionOffset, 7, 0) => coff::IMAGE_REL_AMD64_SECREL7,
-                            (RelocationKind::Coff(x), _, _) => x,
-                            _ => {
-                                return Err(Error(format!("unimplemented relocation {:?}", reloc)));
-                            }
-                        },
-                        Architecture::Arm => match (reloc.kind, reloc.size, reloc.addend) {
-                            (RelocationKind::Absolute, 32, 0) => coff::IMAGE_REL_ARM_ADDR32,
-                            (RelocationKind::ImageOffset, 32, 0) => coff::IMAGE_REL_ARM_ADDR32NB,
-                            (RelocationKind::Relative, 32, -4) => coff::IMAGE_REL_ARM_REL32,
-                            (RelocationKind::SectionIndex, 16, 0) => coff::IMAGE_REL_ARM_SECTION,
-                            (RelocationKind::SectionOffset, 32, 0) => coff::IMAGE_REL_ARM_SECREL,
-                            (RelocationKind::Coff(x), _, _) => x,
-                            _ => {
-                                return Err(Error(format!("unimplemented relocation {:?}", reloc)));
-                            }
-                        },
-                        Architecture::Aarch64 => match (reloc.kind, reloc.size, reloc.addend) {
-                            (RelocationKind::Absolute, 32, 0) => coff::IMAGE_REL_ARM64_ADDR32,
-                            (RelocationKind::ImageOffset, 32, 0) => coff::IMAGE_REL_ARM64_ADDR32NB,
-                            (RelocationKind::SectionIndex, 16, 0) => coff::IMAGE_REL_ARM64_SECTION,
-                            (RelocationKind::SectionOffset, 32, 0) => coff::IMAGE_REL_ARM64_SECREL,
-                            (RelocationKind::Absolute, 64, 0) => coff::IMAGE_REL_ARM64_ADDR64,
-                            (RelocationKind::Relative, 32, -4) => coff::IMAGE_REL_ARM64_REL32,
-                            (RelocationKind::Coff(x), _, _) => x,
-                            _ => {
-                                return Err(Error(format!("unimplemented relocation {:?}", reloc)));
-                            }
-                        },
-                        _ => {
-                            return Err(Error(format!(
-                                "unimplemented architecture {:?}",
-                                self.architecture
-                            )));
-                        }
+                    let typ = if let RelocationFlags::Coff { typ } = reloc.flags {
+                        typ
+                    } else {
+                        return Err(Error("invalid relocation flags".into()));
                     };
                     writer.write_relocation(writer::Relocation {
                         virtual_address: reloc.offset as u32,
@@ -465,7 +661,16 @@ impl<'a> Object<'a> {
 
         // Write symbols.
         for (index, symbol) in self.symbols.iter().enumerate() {
+            let SymbolFlags::None = symbol.flags else {
+                return Err(Error(format!(
+                    "unimplemented symbol `{}` kind {:?}",
+                    symbol.name().unwrap_or(""),
+                    symbol.kind
+                )));
+            };
             let section_number = match symbol.section {
+                // weak symbols are always undefined
+                _ if symbol.weak => coff::IMAGE_SYM_UNDEFINED as u16,
                 SymbolSection::None => {
                     debug_assert_eq!(symbol.kind, SymbolKind::File);
                     coff::IMAGE_SYM_DEBUG as u16
@@ -481,6 +686,7 @@ impl<'a> Object<'a> {
                 coff::IMAGE_SYM_TYPE_NULL
             };
             let storage_class = match symbol.kind {
+                _ if symbol.weak => coff::IMAGE_SYM_CLASS_WEAK_EXTERNAL,
                 SymbolKind::File => coff::IMAGE_SYM_CLASS_FILE,
                 SymbolKind::Section => {
                     if symbol.section.id().is_some() {
@@ -490,50 +696,76 @@ impl<'a> Object<'a> {
                     }
                 }
                 SymbolKind::Label => coff::IMAGE_SYM_CLASS_LABEL,
-                SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => {
-                    match symbol.section {
-                        SymbolSection::None => {
+                SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => match symbol.section {
+                    SymbolSection::None => {
+                        return Err(Error(format!(
+                            "missing section for symbol `{}`",
+                            symbol.name().unwrap_or("")
+                        )));
+                    }
+                    SymbolSection::Undefined | SymbolSection::Common => {
+                        coff::IMAGE_SYM_CLASS_EXTERNAL
+                    }
+                    SymbolSection::Absolute | SymbolSection::Section(_) => match symbol.scope {
+                        SymbolScope::Unknown => {
                             return Err(Error(format!(
-                                "missing section for symbol `{}`",
-                                symbol.name().unwrap_or("")
+                                "unimplemented symbol `{}` scope {:?}",
+                                symbol.name().unwrap_or(""),
+                                symbol.scope
                             )));
                         }
-                        SymbolSection::Undefined | SymbolSection::Common => {
+                        SymbolScope::Compilation => coff::IMAGE_SYM_CLASS_STATIC,
+                        SymbolScope::Linkage | SymbolScope::Dynamic => {
                             coff::IMAGE_SYM_CLASS_EXTERNAL
                         }
-                        SymbolSection::Absolute | SymbolSection::Section(_) => {
-                            match symbol.scope {
-                                // TODO: does this need aux symbol records too?
-                                _ if symbol.weak => coff::IMAGE_SYM_CLASS_WEAK_EXTERNAL,
-                                SymbolScope::Unknown => {
-                                    return Err(Error(format!(
-                                        "unimplemented symbol `{}` scope {:?}",
-                                        symbol.name().unwrap_or(""),
-                                        symbol.scope
-                                    )));
-                                }
-                                SymbolScope::Compilation => coff::IMAGE_SYM_CLASS_STATIC,
-                                SymbolScope::Linkage | SymbolScope::Dynamic => {
-                                    coff::IMAGE_SYM_CLASS_EXTERNAL
-                                }
-                            }
-                        }
+                    },
+                },
+                SymbolKind::Unknown => match symbol.section {
+                    SymbolSection::Undefined => coff::IMAGE_SYM_CLASS_EXTERNAL,
+                    _ => {
+                        return Err(Error(format!(
+                            "unimplemented symbol `{}` kind {:?}",
+                            symbol.name().unwrap_or(""),
+                            symbol.kind
+                        )))
                     }
-                }
-                SymbolKind::Unknown | SymbolKind::Null => {
-                    return Err(Error(format!(
-                        "unimplemented symbol `{}` kind {:?}",
-                        symbol.name().unwrap_or(""),
-                        symbol.kind
-                    )));
-                }
+                },
             };
             let number_of_aux_symbols = symbol_offsets[index].aux_count;
-            let value = if symbol.section == SymbolSection::Common {
+            let value = if symbol.weak {
+                // weak symbols should have a value of 0
+                0
+            } else if symbol.section == SymbolSection::Common {
                 symbol.size as u32
             } else {
                 symbol.value as u32
             };
+
+            // write the weak default symbol before the weak symbol
+            if symbol.weak {
+                let weak_default_symbol = weak_default_offsets.get(&index).unwrap_or_else(|| {
+                    unreachable!("weak symbol should have a weak default offset")
+                });
+
+                writer.write_symbol(writer::Symbol {
+                    name: weak_default_symbol.name,
+                    value: symbol.value as u32,
+                    section_number: match symbol.section {
+                        SymbolSection::Section(id) => id.0 as u16 + 1,
+                        SymbolSection::Undefined => coff::IMAGE_SYM_ABSOLUTE as u16,
+                        o => {
+                            return Err(Error(format!(
+                                "invalid symbol section for weak external `{}` section {o:?}",
+                                symbol.name().unwrap_or("")
+                            )));
+                        }
+                    },
+                    number_of_aux_symbols: 0,
+                    typ: 0,
+                    storage_class: coff::IMAGE_SYM_CLASS_EXTERNAL,
+                });
+            }
+
             writer.write_symbol(writer::Symbol {
                 name: symbol_offsets[index].name,
                 value,
@@ -545,6 +777,18 @@ impl<'a> Object<'a> {
 
             // Write auxiliary symbols.
             match symbol.kind {
+                _ if symbol.weak => {
+                    let weak_default_offset =
+                        weak_default_offsets.get(&index).unwrap_or_else(|| {
+                            unreachable!("weak symbol should have a weak default offset")
+                        });
+
+                    let weak_default_sym_index = weak_default_offset.index;
+                    writer.write_aux_weak_external(writer::AuxSymbolWeak {
+                        weak_default_sym_index,
+                        weak_search_type: coff::IMAGE_WEAK_EXTERN_SEARCH_ALIAS,
+                    });
+                }
                 SymbolKind::File => {
                     writer.write_aux_file_name(&symbol.name, number_of_aux_symbols);
                 }
@@ -556,7 +800,11 @@ impl<'a> Object<'a> {
                         length: section.size as u32,
                         number_of_relocations: section.relocations.len() as u32,
                         number_of_linenumbers: 0,
-                        check_sum: checksum(section.data()),
+                        check_sum: if section.is_bss() {
+                            0
+                        } else {
+                            checksum(section.data())
+                        },
                         number: section_offsets[section_index].associative_section,
                         selection: section_offsets[section_index].selection,
                     });

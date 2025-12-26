@@ -110,7 +110,7 @@ pub struct RevocationOptions<'a> {
     pub(crate) expiration_policy: ExpirationPolicy,
 }
 
-impl<'a> RevocationOptions<'a> {
+impl RevocationOptions<'_> {
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn check(
         &self,
@@ -210,9 +210,17 @@ impl KeyUsageMode {
 // signature, not a certificate.
 fn crl_signature_err(err: Error) -> Error {
     match err {
+        #[allow(deprecated)]
         Error::UnsupportedSignatureAlgorithm => Error::UnsupportedCrlSignatureAlgorithm,
+        Error::UnsupportedSignatureAlgorithmContext(cx) => {
+            Error::UnsupportedCrlSignatureAlgorithmContext(cx)
+        }
+        #[allow(deprecated)]
         Error::UnsupportedSignatureAlgorithmForPublicKey => {
             Error::UnsupportedCrlSignatureAlgorithmForPublicKey
+        }
+        Error::UnsupportedSignatureAlgorithmForPublicKeyContext(cx) => {
+            Error::UnsupportedCrlSignatureAlgorithmForPublicKeyContext(cx)
         }
         Error::InvalidSignatureForPublicKey => Error::InvalidCrlSignatureForPublicKey,
         _ => err,
@@ -294,7 +302,7 @@ mod tests {
         #[cfg(feature = "alloc")]
         {
             // The builder should be debug, and clone when alloc is enabled
-            std::println!("{:?}", builder);
+            std::println!("{builder:?}");
             _ = builder.clone();
         }
         let opts = builder.build();

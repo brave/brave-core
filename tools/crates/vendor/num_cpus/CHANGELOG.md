@@ -1,3 +1,10 @@
+## v1.17.0
+
+### Fixes
+
+- update hermit-abi to 0.5.0
+- remove special support for nacl
+
 ## v1.16.0
 
 ### Features

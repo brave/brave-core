@@ -689,7 +689,7 @@ where
             let mut cert_chain = mem::zeroed();
 
             let res = Cryptography::CertGetCertificateChain(
-                Cryptography::HCERTCHAINENGINE::default(),
+                ptr::null_mut(),
                 cert_context.as_inner(),
                 ptr::null_mut(),
                 cert_store,

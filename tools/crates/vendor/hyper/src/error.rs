@@ -131,6 +131,9 @@ pub(super) enum User {
         feature = "ffi"
     ))]
     BodyWriteAborted,
+    /// User tried to send a connect request with a nonzero body
+    #[cfg(all(feature = "client", feature = "http2"))]
+    InvalidConnectWithBody,
     /// Error from future of user's Service.
     #[cfg(any(
         all(any(feature = "client", feature = "server"), feature = "http1"),
@@ -236,6 +239,15 @@ impl Error {
             feature = "ffi"
         ))]
         matches!(self.inner.kind, Kind::User(User::BodyWriteAborted))
+    }
+
+    /// Returns true if the error was caused while calling `AsyncWrite::shutdown()`.
+    pub fn is_shutdown(&self) -> bool {
+        #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
+        if matches!(self.inner.kind, Kind::Shutdown) {
+            return true;
+        }
+        false
     }
 
     /// Returns true if the error was caused by a timeout.
@@ -395,6 +407,11 @@ impl Error {
         Error::new_user(User::Body).with(cause)
     }
 
+    #[cfg(all(feature = "client", feature = "http2"))]
+    pub(super) fn new_user_invalid_connect() -> Error {
+        Error::new_user(User::InvalidConnectWithBody)
+    }
+
     #[cfg(all(any(feature = "client", feature = "server"), feature = "http1"))]
     pub(super) fn new_shutdown(cause: std::io::Error) -> Error {
         Error::new(Kind::Shutdown).with(cause)
@@ -492,6 +509,10 @@ impl Error {
                 feature = "ffi"
             ))]
             Kind::User(User::BodyWriteAborted) => "user body write aborted",
+            #[cfg(all(feature = "client", feature = "http2"))]
+            Kind::User(User::InvalidConnectWithBody) => {
+                "user sent CONNECT request with non-zero body"
+            }
             #[cfg(any(
                 all(any(feature = "client", feature = "server"), feature = "http1"),
                 all(feature = "server", feature = "http2")

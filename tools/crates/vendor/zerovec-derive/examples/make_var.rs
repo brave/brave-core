@@ -3,6 +3,7 @@
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
 use std::borrow::Cow;
+use std::fmt::Debug;
 
 use zerofrom::ZeroFrom;
 use zerovec::{ule::AsULE, *};
@@ -62,6 +63,7 @@ struct MultiFieldStruct<'a> {
 #[make_varule(MultiFieldConsecutiveStructULE)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, serde::Serialize, serde::Deserialize)]
 #[zerovec::derive(Serialize, Deserialize, Debug)]
+#[zerovec::format(zerovec::vecs::Index8)]
 struct MultiFieldConsecutiveStruct<'a> {
     #[serde(borrow)]
     a: Cow<'a, str>,
@@ -86,6 +88,7 @@ struct CustomVarField<'a> {
 #[make_varule(MultiFieldTupleULE)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, serde::Serialize, serde::Deserialize)]
 #[zerovec::derive(Serialize, Deserialize, Debug)]
+#[zerovec::format(zerovec::vecs::Index32)]
 struct MultiFieldTuple<'a>(
     u8,
     char,
@@ -105,6 +108,8 @@ where
     U: ule::EncodeAsVarULE<T> + serde::Serialize,
     F: Fn(&U, &T),
     for<'a> Box<T>: serde::Deserialize<'a>,
+    for<'a> &'a T: serde::Deserialize<'a>,
+    T: PartialEq + Debug,
 {
     let varzerovec: VarZeroVec<T> = slice.into();
 
@@ -116,7 +121,7 @@ where
 
     let bytes = varzerovec.as_bytes();
     let name = std::any::type_name::<T>();
-    let reparsed: VarZeroVec<T> = VarZeroVec::parse_byte_slice(bytes)
+    let reparsed: VarZeroVec<T> = VarZeroVec::parse_bytes(bytes)
         .unwrap_or_else(|_| panic!("Parsing VarZeroVec<{name}> should succeed"));
 
     assert_eq!(reparsed.len(), slice.len());
@@ -141,6 +146,27 @@ where
 
     for (stack, zero) in slice.iter().zip(deserialized.iter()) {
         assert(stack, zero)
+    }
+
+    if let Some(first) = varzerovec.get(0) {
+        let bincode = bincode::serialize(first).unwrap();
+        let deserialized: &T = bincode::deserialize(&bincode).unwrap();
+        let deserialized_box: Box<T> = bincode::deserialize(&bincode).unwrap();
+        assert_eq!(
+            first, deserialized,
+            "Single element roundtrips with bincode"
+        );
+        assert_eq!(
+            first, &*deserialized_box,
+            "Single element roundtrips with bincode"
+        );
+
+        let json = serde_json::to_string(first).unwrap();
+        let deserialized: Box<T> = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            first, &*deserialized,
+            "Single element roundtrips with serde"
+        );
     }
 }
 

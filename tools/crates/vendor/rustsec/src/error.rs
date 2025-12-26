@@ -4,26 +4,14 @@ use std::{
     fmt::{self, Display},
     io,
     str::Utf8Error,
+    sync::Arc,
 };
 use thiserror::Error;
-
-/// Create a new error (of a given enum variant) with a formatted message
-macro_rules! format_err {
-    ($kind:path, $msg:expr) => {
-        crate::error::Error::new(
-            $kind,
-            &$msg.to_string()
-        )
-    };
-    ($kind:path, $fmt:expr, $($arg:tt)+) => {
-        format_err!($kind, &format!($fmt, $($arg)+))
-    };
-}
 
 /// Create and return an error with a formatted message
 macro_rules! fail {
     ($kind:path, $msg:expr) => {
-        return Err(format_err!($kind, $msg).into())
+        return Err(crate::error::Error::new($kind, $msg))
     };
     ($kind:path, $fmt:expr, $($arg:tt)+) => {
         fail!($kind, &format!($fmt, $($arg)+))
@@ -34,7 +22,7 @@ macro_rules! fail {
 pub type Result<T> = std::result::Result<T, Error>;
 
 /// Error type
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Error {
     /// Kind of error
     kind: ErrorKind,
@@ -48,14 +36,14 @@ pub struct Error {
     ///
     /// The specific type of this error should not be considered part of the stable interface of
     /// this crate.
-    source: Option<Box<dyn std::error::Error + Send + Sync>>,
+    source: Option<Arc<dyn std::error::Error + Send + Sync>>,
 }
 
 impl Error {
     /// Creates a new [`Error`](struct@Error) with the given description.
     ///
     /// Do not use this for wrapping [`std::error::Error`]; use [`Error::with_source()`] instead.
-    pub fn new<S: ToString>(kind: ErrorKind, description: &S) -> Self {
+    pub fn new(kind: ErrorKind, description: impl Display) -> Self {
         // TODO: In a semver-breaking release, deprecate accepting anything but a `String`,
         // or maybe `AsRef<str>`. This will discourage putting error types in the `description`
         // position, which makes it impossible to retrieve their `.source()` info. It will also
@@ -65,6 +53,13 @@ impl Error {
             msg: description.to_string(),
             source: None,
         }
+    }
+
+    pub(crate) fn from_source(
+        kind: ErrorKind,
+        source: impl std::error::Error + Send + Sync + 'static,
+    ) -> Self {
+        Self::with_source(kind, source.to_string(), source)
     }
 
     /// Creates a new [`Error`](struct@Error) whose [`std::error::Error::source()`] is `source`.
@@ -80,7 +75,7 @@ impl Error {
         Self {
             kind,
             msg,
-            source: Some(Box::new(source)),
+            source: Some(Arc::new(source)),
         }
     }
 
@@ -148,25 +143,25 @@ pub enum ErrorKind {
 
 impl From<Utf8Error> for Error {
     fn from(other: Utf8Error) -> Self {
-        format_err!(ErrorKind::Parse, &other)
+        Self::from_source(ErrorKind::Parse, other)
     }
 }
 
 impl From<cargo_lock::Error> for Error {
     fn from(other: cargo_lock::Error) -> Self {
-        format_err!(ErrorKind::Io, &other)
+        Self::from_source(ErrorKind::Io, other)
     }
 }
 
 impl From<fmt::Error> for Error {
     fn from(other: fmt::Error) -> Self {
-        format_err!(ErrorKind::Io, &other)
+        Self::from_source(ErrorKind::Io, other)
     }
 }
 
 impl From<io::Error> for Error {
     fn from(other: io::Error) -> Self {
-        format_err!(ErrorKind::Io, &other)
+        Self::from_source(ErrorKind::Io, other)
     }
 }
 
@@ -185,11 +180,11 @@ impl Error {
         match err {
             tame_index::Error::Lock(lock_err) => match &lock_err.source {
                 LockError::TimedOut | LockError::Contested => {
-                    format_err!(ErrorKind::LockTimeout, "{}", lock_err)
+                    Self::from_source(ErrorKind::LockTimeout, lock_err)
                 }
-                _ => format_err!(ErrorKind::Io, "{}", lock_err),
+                _ => Self::from_source(ErrorKind::Io, lock_err),
             },
-            other => format_err!(ErrorKind::Registry, "{}", other),
+            other => Self::from_source(ErrorKind::Registry, other),
         }
     }
 
@@ -198,12 +193,6 @@ impl Error {
     /// This is used so rarely that there is no need to `impl From`,
     /// and this way we can avoid leaking it into the public API.
     pub(crate) fn from_toml(other: toml::de::Error) -> Self {
-        format_err!(ErrorKind::Parse, &other)
-    }
-}
-
-impl From<toml::ser::Error> for Error {
-    fn from(other: toml::ser::Error) -> Self {
-        format_err!(ErrorKind::Parse, &other)
+        Self::with_source(ErrorKind::Parse, other.to_string(), other)
     }
 }

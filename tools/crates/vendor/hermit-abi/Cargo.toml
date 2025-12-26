@@ -12,8 +12,14 @@
 [package]
 edition = "2021"
 name = "hermit-abi"
-version = "0.3.9"
+version = "0.5.2"
 authors = ["Stefan Lankes"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Hermit system calls definitions."
 readme = "README.md"
 keywords = [
@@ -24,24 +30,23 @@ categories = ["os"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/hermit-os/hermit-rs"
 
-[dependencies.alloc]
-version = "1.0.0"
-optional = true
-package = "rustc-std-workspace-alloc"
-
-[dependencies.compiler_builtins]
-version = "0.1"
-optional = true
-
-[dependencies.core]
-version = "1.0.0"
-optional = true
-package = "rustc-std-workspace-core"
-
 [features]
 default = []
 rustc-dep-of-std = [
     "core",
     "alloc",
-    "compiler_builtins/rustc-dep-of-std",
 ]
+
+[lib]
+name = "hermit_abi"
+path = "src/lib.rs"
+
+[dependencies.alloc]
+version = "1.0.0"
+optional = true
+package = "rustc-std-workspace-alloc"
+
+[dependencies.core]
+version = "1.0.0"
+optional = true
+package = "rustc-std-workspace-core"

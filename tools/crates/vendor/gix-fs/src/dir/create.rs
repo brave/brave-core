@@ -47,7 +47,7 @@ mod error {
         },
     }
 
-    impl<'a> fmt::Display for Error<'a> {
+    impl fmt::Display for Error<'_> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Error::Intermediate { dir, kind } => write!(
@@ -63,13 +63,14 @@ mod error {
                     retries,
                 } => write!(
                     f,
-                    "Permanently failing to create directory {dir:?} ({retries_left:?} of {retries:?})",
+                    "Permanently failing to create directory '{dir}' ({retries_left:?} of {retries:?})",
+                    dir = dir.display(),
                 ),
             }
         }
     }
 
-    impl<'a> std::error::Error for Error<'a> {
+    impl std::error::Error for Error<'_> {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
                 Error::Permanent { err, .. } => Some(err),
@@ -165,7 +166,7 @@ impl<'a> Iterator for Iter<'a> {
                         }
                         if self.retries.on_create_directory_failure < 1 {
                             return self.permanent_failure(dir, NotFound);
-                        };
+                        }
                         self.cursors.push(dir);
                         self.cursors.push(match dir.parent() {
                             None => return self.permanent_failure(dir, InvalidInput),
@@ -177,7 +178,7 @@ impl<'a> Iterator for Iter<'a> {
                         self.retries.on_interrupt -= 1;
                         if self.retries.on_interrupt <= 1 {
                             return self.permanent_failure(dir, Interrupted);
-                        };
+                        }
                         self.cursors.push(dir);
                         self.intermediate_failure(dir, err)
                     }

@@ -4,6 +4,7 @@ use std::{
 };
 
 use bstr::{BStr, BString, ByteSlice, ByteVec};
+use gix_sec::Trust;
 use smallvec::SmallVec;
 
 use crate::{
@@ -27,7 +28,7 @@ pub struct SectionMut<'a, 'event> {
 }
 
 /// Mutating methods.
-impl<'a, 'event> SectionMut<'a, 'event> {
+impl<'event> SectionMut<'_, 'event> {
     /// Adds an entry to the end of this section name `value_name` and `value`. If `value` is `None`, no equal sign will be written leaving
     /// just the key. This is useful for boolean values which are true if merely the key exists.
     pub fn push<'b>(&mut self, value_name: ValueName<'event>, value: Option<&'b BStr>) -> &mut Self {
@@ -70,7 +71,7 @@ impl<'a, 'event> SectionMut<'a, 'event> {
                 text: Cow::Owned({
                     let mut c = Vec::with_capacity(comment.len());
                     let mut bytes = comment.iter().peekable();
-                    if !bytes.peek().map_or(true, |b| b.is_ascii_whitespace()) {
+                    if !bytes.peek().is_none_or(|b| b.is_ascii_whitespace()) {
                         c.insert(0, b' ');
                     }
                     c.extend(bytes.map(|b| if *b == b'\n' { b' ' } else { *b }));
@@ -142,6 +143,14 @@ impl<'a, 'event> SectionMut<'a, 'event> {
         }
     }
 
+    /// Set the trust level in the meta-data of this section to `trust`.
+    pub fn set_trust(&mut self, trust: Trust) -> &mut Self {
+        let mut meta = (*self.section.meta).clone();
+        meta.trust = trust;
+        self.section.meta = meta.into();
+        self
+    }
+
     /// Removes the latest value by key and returns it, if it exists.
     pub fn remove(&mut self, value_name: &str) -> Option<Cow<'event, BStr>> {
         let key = ValueName::from_str_unchecked(value_name);
@@ -185,7 +194,7 @@ impl<'a, 'event> SectionMut<'a, 'event> {
         assert!(
             whitespace
                 .as_deref()
-                .map_or(true, |ws| ws.iter().all(u8::is_ascii_whitespace)),
+                .is_none_or(|ws| ws.iter().all(u8::is_ascii_whitespace)),
             "input whitespace must only contain whitespace characters."
         );
         self.whitespace.pre_key = whitespace;
@@ -274,11 +283,7 @@ impl<'a, 'event> SectionMut<'a, 'event> {
     /// Performs the removal, assuming the range is valid.
     fn remove_internal(&mut self, range: Range<usize>, fix_whitespace: bool) -> Cow<'event, BStr> {
         let events = &mut self.section.body.0;
-        if fix_whitespace
-            && events
-                .get(range.end)
-                .map_or(false, |ev| matches!(ev, Event::Newline(_)))
-        {
+        if fix_whitespace && events.get(range.end).is_some_and(|ev| matches!(ev, Event::Newline(_))) {
             events.remove(range.end);
         }
         let value = events
@@ -294,7 +299,7 @@ impl<'a, 'event> SectionMut<'a, 'event> {
                 .start
                 .checked_sub(1)
                 .and_then(|pos| events.get(pos))
-                .map_or(false, |ev| matches!(ev, Event::Whitespace(_)))
+                .is_some_and(|ev| matches!(ev, Event::Whitespace(_)))
         {
             events.remove(range.start - 1);
         }

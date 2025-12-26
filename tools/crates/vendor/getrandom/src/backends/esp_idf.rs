@@ -8,6 +8,7 @@ extern "C" {
     fn esp_fill_random(buf: *mut c_void, len: usize) -> u32;
 }
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     // Not that NOT enabling WiFi, BT, or the voltage noise entropy source (via `bootloader_random_enable`)
     // will cause ESP-IDF to return pseudo-random numbers based on the voltage noise entropy, after the initial boot process:

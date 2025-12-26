@@ -1,4 +1,3 @@
-use std::convert::TryInto;
 use std::io;
 use std::mem::{size_of, MaybeUninit};
 use std::net::{self, SocketAddr};
@@ -38,8 +37,7 @@ pub(crate) fn connect(socket: &net::TcpStream, addr: SocketAddr) -> io::Result<(
     }
 }
 
-pub(crate) fn listen(socket: &net::TcpListener, backlog: u32) -> io::Result<()> {
-    let backlog = backlog.try_into().unwrap_or(i32::MAX);
+pub(crate) fn listen(socket: &net::TcpListener, backlog: i32) -> io::Result<()> {
     syscall!(listen(socket.as_raw_fd(), backlog))?;
     Ok(())
 }
@@ -75,6 +73,7 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
         target_os = "netbsd",
         target_os = "openbsd",
         target_os = "solaris",
+        target_os = "cygwin",
     ))]
     let stream = {
         syscall!(accept4(
@@ -118,6 +117,7 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
             // See https://github.com/tokio-rs/mio/issues/1450
             #[cfg(any(
                 all(target_arch = "x86", target_os = "android"),
+                target_os = "aix",
                 target_os = "espidf",
                 target_os = "vita",
                 target_os = "hermit",

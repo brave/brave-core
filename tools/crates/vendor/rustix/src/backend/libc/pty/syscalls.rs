@@ -17,7 +17,7 @@ use crate::io;
 use {
     crate::ffi::{CStr, CString},
     crate::path::SMALL_PATH_BUFFER_SIZE,
-    alloc::borrow::ToOwned,
+    alloc::borrow::ToOwned as _,
     alloc::vec::Vec,
 };
 
@@ -66,7 +66,7 @@ pub(crate) fn ptsname(fd: BorrowedFd<'_>, mut buffer: Vec<u8>) -> io::Result<CSt
             if let Some(func) = ptsname_r.get() {
                 func(borrowed_fd(fd), buffer.as_mut_ptr().cast(), buffer.len())
             } else {
-                libc::ENOSYS
+                c::ENOSYS
             }
         };
 
@@ -85,7 +85,7 @@ pub(crate) fn ptsname(fd: BorrowedFd<'_>, mut buffer: Vec<u8>) -> io::Result<CSt
                 match c::ioctl(borrowed_fd(fd), c::TIOCPTYGNAME as _, &mut name) {
                     0 => {
                         let len = CStr::from_ptr(name.as_ptr().cast()).to_bytes().len();
-                        std::ptr::copy_nonoverlapping(name.as_ptr(), buffer.as_mut_ptr(), len + 1);
+                        core::ptr::copy_nonoverlapping(name.as_ptr(), buffer.as_mut_ptr(), len + 1);
                         0
                     }
                     _ => libc_errno::errno().0,

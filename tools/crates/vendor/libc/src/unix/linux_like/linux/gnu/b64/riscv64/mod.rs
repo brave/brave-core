@@ -1,11 +1,11 @@
 //! RISC-V-specific definitions for 64-bit linux-like values
 
 use crate::prelude::*;
-use crate::{off64_t, off_t};
+use crate::{
+    off64_t,
+    off_t,
+};
 
-pub type c_char = u8;
-pub type c_long = i64;
-pub type c_ulong = u64;
 pub type wchar_t = c_int;
 
 pub type nlink_t = c_uint;
@@ -40,7 +40,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_int; 2usize],
+        __unused: Padding<[c_int; 2usize]>,
     }
 
     pub struct stat64 {
@@ -62,7 +62,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_int; 2],
+        __unused: Padding<[c_int; 2]>,
     }
 
     pub struct statfs {
@@ -146,6 +146,8 @@ s! {
         pub ss_size: size_t,
     }
 
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
@@ -160,11 +162,11 @@ s! {
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
         pub mode: c_ushort,
-        __pad1: c_ushort,
+        __pad1: Padding<c_ushort>,
         pub __seq: c_ushort,
-        __pad2: c_ushort,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __pad2: Padding<c_ushort>,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     pub struct shmid_ds {
@@ -176,8 +178,8 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __unused5: c_ulong,
-        __unused6: c_ulong,
+        __unused5: Padding<c_ulong>,
+        __unused6: Padding<c_ulong>,
     }
 
     pub struct flock {
@@ -248,7 +250,6 @@ s! {
 }
 
 s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
     pub struct ucontext_t {
         pub __uc_flags: c_ulong,
         pub uc_link: *mut ucontext_t,
@@ -257,7 +258,6 @@ s_no_extra_traits! {
         pub uc_mcontext: mcontext_t,
     }
 
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct mcontext_t {
         pub __gregs: [c_ulong; 32],
@@ -270,19 +270,16 @@ s_no_extra_traits! {
         pub __q: __riscv_mc_q_ext_state,
     }
 
-    #[allow(missing_debug_implementations)]
     pub struct __riscv_mc_f_ext_state {
         pub __f: [c_uint; 32],
         pub __fcsr: c_uint,
     }
 
-    #[allow(missing_debug_implementations)]
     pub struct __riscv_mc_d_ext_state {
         pub __f: [c_ulonglong; 32],
         pub __fcsr: c_uint,
     }
 
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct __riscv_mc_q_ext_state {
         pub __f: [c_ulonglong; 64],
@@ -604,6 +601,7 @@ pub const REG_NARGS: usize = 8;
 
 pub const COMPAT_HWCAP_ISA_I: c_ulong = 1 << (b'I' - b'A');
 pub const COMPAT_HWCAP_ISA_M: c_ulong = 1 << (b'M' - b'A');
+#[allow(clippy::eq_op)]
 pub const COMPAT_HWCAP_ISA_A: c_ulong = 1 << (b'A' - b'A');
 pub const COMPAT_HWCAP_ISA_F: c_ulong = 1 << (b'F' - b'A');
 pub const COMPAT_HWCAP_ISA_D: c_ulong = 1 << (b'D' - b'A');

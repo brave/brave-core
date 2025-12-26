@@ -121,6 +121,28 @@ impl From<i64> for Limit {
     }
 }
 
+/// Specifies whether a search should match cloud-synchronized items.
+#[derive(Debug, Copy, Clone)]
+pub enum CloudSync {
+    /// Match only items that are cloud-synchronized.
+    MatchSyncYes,
+    /// Match only items that are not cloud-synchronized.
+    MatchSyncNo,
+    /// Match items whether they are cloud-synchronized or not.
+    MatchSyncAny,
+}
+
+impl From<Option<bool>> for CloudSync {
+    #[inline]
+    fn from(is_sync: Option<bool>) -> Self {
+        match is_sync {
+            Some(true) => Self::MatchSyncYes,
+            Some(false) => Self::MatchSyncNo,
+            None => Self::MatchSyncAny,
+        }
+    }
+}
+
 /// A builder type to search for items in keychains.
 #[derive(Default)]
 pub struct ItemSearchOptions {
@@ -128,6 +150,7 @@ pub struct ItemSearchOptions {
     keychains: Option<CFArray<SecKeychain>>,
     #[cfg(not(target_os = "macos"))]
     keychains: Option<CFArray<CFType>>,
+    ignore_legacy_keychains: bool, // defined everywhere, only consulted on macOS
     case_insensitive: Option<bool>,
     class: Option<ItemClass>,
     key_class: Option<KeyClass>,
@@ -141,18 +164,36 @@ pub struct ItemSearchOptions {
     subject: Option<CFString>,
     account: Option<CFString>,
     access_group: Option<CFString>,
+    cloud_sync: Option<CloudSync>,
     pub_key_hash: Option<CFData>,
     serial_number: Option<CFData>,
     app_label: Option<CFData>,
     #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     authentication_context: Option<CFType>,
+    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    skip_authenticated_items: bool,
 }
 
 #[cfg(target_os = "macos")]
-impl crate::ItemSearchOptionsInternals for ItemSearchOptions {
+impl ItemSearchOptions {
+    /// Search within the specified macOS keychains.
+    ///
+    /// If this is not called, the default keychain will be searched.
     #[inline]
-    fn keychains(&mut self, keychains: &[SecKeychain]) -> &mut Self {
+    pub fn keychains(&mut self, keychains: &[SecKeychain]) -> &mut Self {
         self.keychains = Some(CFArray::from_CFTypes(keychains));
+        self
+    }
+
+    /// Only search the protected data macOS keychains.
+    ///
+    /// Has no effect if a legacy keychain has been explicitly specified
+    /// using [keychains](ItemSearchOptions::keychains).
+    ///
+    /// Has no effect except in sandboxed applications on macOS 10.15 and above
+    #[inline]
+    pub fn ignore_legacy_keychains(&mut self) -> &mut Self {
+        self.ignore_legacy_keychains = true;
         self
     }
 }
@@ -262,6 +303,14 @@ impl ItemSearchOptions {
         self
     }
 
+    /// Search for an item based on whether it's cloud-synchronized
+    ///
+    /// If not specified, only searches non-synchronized entries.
+    pub fn cloud_sync<T: Into<CloudSync>>(&mut self, spec: T) -> &mut Self {
+        self.cloud_sync = Some(spec.into());
+        self
+    }
+
     /// Sets `kSecAttrAccessGroup` to `kSecAttrAccessGroupToken`
     #[inline(always)]
     pub fn access_group_token(&mut self) -> &mut Self {
@@ -300,12 +349,28 @@ impl ItemSearchOptions {
         self
     }
 
+    #[doc(hidden)]
+    #[deprecated(note = "use local_authentication_context")]
+    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    pub unsafe fn authentication_context(&mut self, authentication_context: *mut std::os::raw::c_void) -> &mut Self {
+        self.authentication_context = unsafe { Some(CFType::wrap_under_create_rule(authentication_context)) };
+        self
+    }
+
     /// The corresponding value is of type LAContext, and represents a reusable
     /// local authentication context that should be used for keychain item authentication.
     #[inline(always)]
     #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
-    pub fn authentication_context(&mut self, authentication_context: *mut std::os::raw::c_void) -> &mut Self {
-        self.authentication_context = unsafe { Some(CFType::wrap_under_create_rule(authentication_context)) };
+    pub fn local_authentication_context<LAContext: TCFType>(&mut self, authentication_context: Option<LAContext>) -> &mut Self {
+        self.authentication_context = authentication_context.map(|la| la.into_CFType());
+        self
+    }
+
+    /// Whether to skip items in the search that require authentication (default false)
+    #[inline(always)]
+    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    pub fn skip_authenticated_items(&mut self, do_skip: bool) -> &mut Self {
+        self.skip_authenticated_items = do_skip;
         self
     }
 
@@ -321,6 +386,12 @@ impl ItemSearchOptions {
                     &kSecMatchSearchList.to_void(),
                     &keychains.as_CFType().to_void(),
                 );
+            } else if self.ignore_legacy_keychains {
+                #[cfg(all(target_os = "macos", feature = "OSX_10_15"))]
+                params.add(
+                    &kSecUseDataProtectionKeychain.to_void(),
+                    &CFBoolean::true_value().to_void(),
+                )
             }
 
             if let Some(class) = self.class {
@@ -390,6 +461,20 @@ impl ItemSearchOptions {
                 params.add(&kSecAttrAccessGroup.to_void(), &access_group.to_void());
             }
 
+            if let Some(ref cloud_sync) = self.cloud_sync {
+                match cloud_sync {
+                    CloudSync::MatchSyncYes => {
+                        params.add(&kSecAttrSynchronizable.to_void(), &CFBoolean::true_value().to_void());
+                    },
+                    CloudSync::MatchSyncNo => {
+                        params.add(&kSecAttrSynchronizable.to_void(), &CFBoolean::false_value().to_void());
+                    },
+                    CloudSync::MatchSyncAny => {
+                        params.add(&kSecAttrSynchronizable.to_void(), &kSecAttrSynchronizableAny.to_void());
+                    },
+                }
+            }
+
             if let Some(ref pub_key_hash) = self.pub_key_hash {
                 params.add(&kSecAttrPublicKeyHash.to_void(), &pub_key_hash.to_void());
             }
@@ -405,6 +490,11 @@ impl ItemSearchOptions {
             #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
             if let Some(ref authentication_context) = self.authentication_context {
                 params.add(&kSecUseAuthenticationContext.to_void(), &authentication_context.to_void());
+            }
+
+            #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+            if self.skip_authenticated_items {
+                params.add(&kSecUseAuthenticationUI.to_void(), &kSecUseAuthenticationUISkip.to_void());
             }
 
             params.to_immutable()
@@ -570,11 +660,10 @@ impl SearchResult {
                             let mut vec = Vec::new();
                             vec.extend_from_slice(buf.bytes());
                             format!("{}", String::from_utf8_lossy(&vec))
-                        }
-                        cfdate if cfdate == CFDate::type_id() => format!(
-                            "{}",
-                            CFString::wrap_under_create_rule(CFCopyDescription(*v))
-                        ),
+                        },
+                        cfdate if cfdate == CFDate::type_id() => {
+                            format!("{}", CFString::wrap_under_create_rule(CFCopyDescription(*v)))
+                        },
                         _ => String::from("unknown"),
                     };
                     retmap.insert(format!("{keycfstr}"), val);
@@ -678,6 +767,7 @@ impl ItemAddOptions {
     /// Populates a `CFDictionary` to be passed to `add_item`.
     #[deprecated(since = "3.0.0", note = "use `ItemAddOptions::add` instead")]
     // CFDictionary should not be exposed in public Rust APIs.
+    #[must_use]
     pub fn to_dictionary(&self) -> CFDictionary {
         let mut dict = CFMutableDictionary::from_CFType_pairs(&[]);
 

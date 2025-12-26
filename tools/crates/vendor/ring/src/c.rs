@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -20,35 +20,14 @@
 //! probably change if/when we support 16-bit platforms or platforms where
 //! `usize` and `uintptr_t` are different sizes.
 //!
-//! TODO(MSRV-1.64): Use `core::ffi::{c_int, c_uint}`, remove the libc
-//! compatibility testing, and remove the libc dev-dependency.
+//! TODO(MSRV, feature(c_size_t)): Use `core::{ffi::c_size_t}`.
+//! TODO(MSRV-1.79): Use `NonZero<c_size_t>`.
 
 // Keep in sync with the checks in base.h that verify these assumptions.
 
-pub(crate) type int = i32;
-pub(crate) type uint = u32;
+#![allow(dead_code)]
+
+use core::num::NonZeroUsize;
+
 pub(crate) type size_t = usize;
-
-#[cfg(all(test, any(unix, windows)))]
-mod tests {
-    use crate::c;
-
-    #[test]
-    fn test_libc_compatible() {
-        {
-            let x: c::int = 1;
-            let _x: libc::c_int = x;
-        }
-
-        {
-            let x: c::uint = 1;
-            let _x: libc::c_uint = x;
-        }
-
-        {
-            let x: c::size_t = 1;
-            let _x: libc::size_t = x;
-            let _x: usize = x;
-        }
-    }
-}
+pub(crate) type NonZero_size_t = NonZeroUsize;

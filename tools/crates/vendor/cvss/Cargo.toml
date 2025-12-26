@@ -10,22 +10,30 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.56"
+edition = "2024"
+rust-version = "1.85"
 name = "cvss"
-version = "2.0.0"
+version = "2.2.0"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Common Vulnerability Scoring System parser/serializer"
 readme = "README.md"
 keywords = [
     "cvssv3",
+    "cvssv4",
     "security",
     "advisory",
     "vulnerability",
 ]
 categories = ["parser-implementations"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustSec/rustsec/tree/main/cvss"
+repository = "https://github.com/rustsec/rustsec"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -34,14 +42,36 @@ rustdoc-args = [
     "docsrs",
 ]
 
-[dependencies.serde]
-version = "1"
-optional = true
-
 [features]
 default = [
     "std",
     "v3",
+    "v4",
 ]
 std = []
 v3 = []
+v4 = []
+
+[lib]
+name = "cvss"
+path = "src/lib.rs"
+
+[[test]]
+name = "base"
+path = "tests/base.rs"
+
+[[test]]
+name = "redhat-v3"
+path = "tests/redhat-v3.rs"
+
+[[test]]
+name = "redhat-v4"
+path = "tests/redhat-v4.rs"
+
+[[test]]
+name = "uncovered-v4"
+path = "tests/uncovered-v4.rs"
+
+[dependencies.serde]
+version = "1"
+optional = true

@@ -1,20 +1,10 @@
-/*!
-Learn more about Rust for Windows here: <https://github.com/microsoft/windows-rs>
-*/
-
+#![doc = include_str!("../readme.md")]
 #![cfg(windows)]
-#![allow(non_snake_case)]
-#![cfg_attr(
-    windows_debugger_visualizer,
-    debugger_visualizer(natvis_file = "../.natvis")
-)]
+#![debugger_visualizer(natvis_file = "../windows-strings.natvis")]
 #![cfg_attr(all(not(feature = "std")), no_std)]
 
 extern crate alloc;
 use alloc::string::String;
-
-pub use windows_result::Result;
-use windows_result::*;
 
 mod bstr;
 pub use bstr::*;
@@ -51,6 +41,6 @@ pub use pstr::*;
 mod pwstr;
 pub use pwstr::*;
 
-extern "C" {
+unsafe extern "C" {
     fn strlen(s: PCSTR) -> usize;
 }

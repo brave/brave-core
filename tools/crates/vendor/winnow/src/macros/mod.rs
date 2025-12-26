@@ -15,7 +15,7 @@ macro_rules! impl_partial_eq {
         impl<'a> PartialEq<$rhs> for $lhs {
             #[inline]
             fn eq(&self, other: &$rhs) -> bool {
-                let l = self.as_ref();
+                let l = self;
                 let r: &Self = other.as_ref();
                 PartialEq::eq(l, r)
             }
@@ -37,7 +37,7 @@ macro_rules! impl_partial_ord {
         impl<'a> PartialOrd<$rhs> for $lhs {
             #[inline]
             fn partial_cmp(&self, other: &$rhs) -> Option<Ordering> {
-                let l = self.as_ref();
+                let l = self;
                 let r: &Self = other.as_ref();
                 PartialOrd::partial_cmp(l, r)
             }

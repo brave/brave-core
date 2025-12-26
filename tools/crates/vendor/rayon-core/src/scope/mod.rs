@@ -1,9 +1,7 @@
 //! Methods for custom fork-join scopes, created by the [`scope()`]
 //! and [`in_place_scope()`] functions. These are a more flexible alternative to [`join()`].
 //!
-//! [`scope()`]: fn.scope.html
-//! [`in_place_scope()`]: fn.in_place_scope.html
-//! [`join()`]: ../join/join.fn.html
+//! [`join()`]: crate::join()
 
 use crate::broadcast::BroadcastContext;
 use crate::job::{ArcJob, HeapJob, JobFifo, JobRef};
@@ -23,8 +21,6 @@ mod test;
 
 /// Represents a fork-join scope which can be used to spawn any number of tasks.
 /// See [`scope()`] for more information.
-///
-///[`scope()`]: fn.scope.html
 pub struct Scope<'scope> {
     base: ScopeBase<'scope>,
 }
@@ -32,8 +28,6 @@ pub struct Scope<'scope> {
 /// Represents a fork-join scope which can be used to spawn any number of tasks.
 /// Those spawned from the same thread are prioritized in relative FIFO order.
 /// See [`scope_fifo()`] for more information.
-///
-///[`scope_fifo()`]: fn.scope_fifo.html
 pub struct ScopeFifo<'scope> {
     base: ScopeBase<'scope>,
     fifos: Vec<JobFifo>,
@@ -55,6 +49,7 @@ struct ScopeBase<'scope> {
     /// all of which outlive `'scope`.  They're not actually required to be
     /// `Sync`, but it's still safe to let the `Scope` implement `Sync` because
     /// the closures are only *moved* across threads to be executed.
+    #[allow(clippy::type_complexity)]
     marker: PhantomData<Box<dyn FnOnce(&Scope<'scope>) + Send + Sync + 'scope>>,
 }
 
@@ -98,7 +93,7 @@ struct ScopeBase<'scope> {
 ///
 /// # A note on threading
 ///
-/// The closure given to `scope()` executes in the Rayon thread-pool,
+/// The closure given to `scope()` executes in the Rayon thread pool,
 /// as do those given to `spawn()`. This means that you can't access
 /// thread-local variables (well, you can, but they may have
 /// unexpected values).
@@ -178,8 +173,6 @@ struct ScopeBase<'scope> {
 /// in the local CPU's cache, while other threads can steal older
 /// "stale" tasks.  For an alternate approach, consider
 /// [`scope_fifo()`] instead.
-///
-/// [`scope_fifo()`]: fn.scope_fifo.html
 ///
 /// # Accessing stack data
 ///
@@ -304,8 +297,6 @@ where
 /// Tasks in a `scope_fifo()` run similarly to [`scope()`], but there's a
 /// difference in the order of execution. Consider a similar example:
 ///
-/// [`scope()`]: fn.scope.html
-///
 /// ```rust
 /// # use rayon_core as rayon;
 /// // point start
@@ -359,8 +350,8 @@ where
 ///
 /// For more details on this design, see Rayon [RFC #1].
 ///
-/// [`breadth_first`]: struct.ThreadPoolBuilder.html#method.breadth_first
-/// [RFC #1]: https://github.com/rayon-rs/rfcs/blob/master/accepted/rfc0001-scope-scheduling.md
+/// [`breadth_first`]: crate::ThreadPoolBuilder::breadth_first
+/// [RFC #1]: https://github.com/rayon-rs/rfcs/blob/main/accepted/rfc0001-scope-scheduling.md
 ///
 /// # Panics
 ///
@@ -415,9 +406,23 @@ pub(crate) fn do_in_place_scope<'scope, OP, R>(registry: Option<&Arc<Registry>>,
 where
     OP: FnOnce(&Scope<'scope>) -> R,
 {
-    let thread = unsafe { WorkerThread::current().as_ref() };
+    let (thread, registry) = get_in_place_thread_registry(registry);
     let scope = Scope::<'scope>::new(thread, registry);
     scope.base.complete(thread, || op(&scope))
+}
+
+fn get_in_place_thread_registry(
+    registry: Option<&Arc<Registry>>,
+) -> (Option<&WorkerThread>, Option<&Arc<Registry>>) {
+    let thread = unsafe { WorkerThread::current().as_ref() };
+    if thread.is_none() && registry.is_none() {
+        // A new global registry may use the current thread, especially on WebAssembly,
+        // so we have to re-check our current status after it's built.
+        let global = global_registry();
+        (global.current_thread(), Some(global))
+    } else {
+        (thread, registry)
+    }
 }
 
 /// Creates a "fork-join" scope `s` with FIFO order, and invokes the
@@ -452,7 +457,7 @@ pub(crate) fn do_in_place_scope_fifo<'scope, OP, R>(registry: Option<&Arc<Regist
 where
     OP: FnOnce(&ScopeFifo<'scope>) -> R,
 {
-    let thread = unsafe { WorkerThread::current().as_ref() };
+    let (thread, registry) = get_in_place_thread_registry(registry);
     let scope = ScopeFifo::<'scope>::new(thread, registry);
     scope.base.complete(thread, || op(&scope))
 }
@@ -514,7 +519,7 @@ impl<'scope> Scope<'scope> {
     /// The [`scope` function] has more extensive documentation about
     /// task spawning.
     ///
-    /// [`scope` function]: fn.scope.html
+    /// [`scope` function]: scope()
     pub fn spawn<BODY>(&self, body: BODY)
     where
         BODY: FnOnce(&Scope<'scope>) + Send + 'scope,
@@ -573,8 +578,7 @@ impl<'scope> ScopeFifo<'scope> {
     /// priority.  The [`scope_fifo` function] has more details about
     /// this distinction.
     ///
-    /// [`Scope::spawn()`]: struct.Scope.html#method.spawn
-    /// [`scope_fifo` function]: fn.scope_fifo.html
+    /// [`scope_fifo` function]: scope_fifo()
     pub fn spawn_fifo<BODY>(&self, body: BODY)
     where
         BODY: FnOnce(&ScopeFifo<'scope>) + Send + 'scope,

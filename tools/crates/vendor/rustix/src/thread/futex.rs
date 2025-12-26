@@ -1,7 +1,8 @@
 //! Linux `futex`.
 //!
 //! Futex is a very low-level mechanism for implementing concurrency primitives
-//! such as mutexes, rwlocks, and condvars.
+//! such as mutexes, rwlocks, and condvars. For a higher-level API that
+//! provides those abstractions, see [rustix-futex-sync].
 //!
 //! # Examples
 //!
@@ -22,23 +23,25 @@
 //!
 //! [Linux `futex` system call]: https://man7.org/linux/man-pages/man2/futex.2.html
 //! [Linux `futex` feature]: https://man7.org/linux/man-pages/man7/futex.7.html
+//! [rustix-futex-sync]: https://crates.io/crates/rustix-futex-sync
 #![allow(unsafe_code)]
 
+use core::ffi::c_void;
 use core::num::NonZeroU32;
 use core::ptr;
 use core::sync::atomic::AtomicU32;
 
 use crate::backend::thread::futex::Operation;
 use crate::backend::thread::syscalls::{futex_timeout, futex_val2};
-use crate::fd::{FromRawFd, OwnedFd, RawFd};
-use crate::utils::option_as_ptr;
+use crate::fd::{FromRawFd as _, OwnedFd, RawFd};
 use crate::{backend, io};
 
+pub use crate::clockid::ClockId;
 pub use crate::timespec::{Nsecs, Secs, Timespec};
 
-pub use backend::thread::futex::{Flags, OWNER_DIED, WAITERS};
+pub use backend::thread::futex::{Flags, WaitFlags, OWNER_DIED, WAITERS};
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAIT, val, timeout, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAIT, val, timeout, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -54,20 +57,11 @@ pub fn wait(
     uaddr: &AtomicU32,
     flags: Flags,
     val: u32,
-    timeout: Option<Timespec>,
+    timeout: Option<&Timespec>,
 ) -> io::Result<()> {
     // SAFETY: The raw pointers come from references or null.
     unsafe {
-        futex_timeout(
-            uaddr,
-            Operation::Wait,
-            flags,
-            val,
-            option_as_ptr(timeout.as_ref()),
-            ptr::null(),
-            0,
-        )
-        .map(|val| {
+        futex_timeout(uaddr, Operation::Wait, flags, val, timeout, ptr::null(), 0).map(|val| {
             debug_assert_eq!(
                 val, 0,
                 "The return value should always equal zero, if the call is successful"
@@ -76,7 +70,7 @@ pub fn wait(
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAKE, val, NULL, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAKE, val, NULL, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -93,7 +87,7 @@ pub fn wake(uaddr: &AtomicU32, flags: Flags, val: u32) -> io::Result<usize> {
     unsafe { futex_val2(uaddr, Operation::Wake, flags, val, 0, ptr::null(), 0) }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_FD, val, NULL, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_FD, val, NULL, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -116,7 +110,7 @@ pub fn fd(uaddr: &AtomicU32, flags: Flags, val: u32) -> io::Result<OwnedFd> {
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_REQUEUE, val, val2, uaddr2, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_REQUEUE, val, val2, uaddr2, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -139,7 +133,7 @@ pub fn requeue(
     unsafe { futex_val2(uaddr, Operation::Requeue, flags, val, val2, uaddr2, 0) }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_CMP_REQUEUE, val, val2, uaddr2, val3)`
+/// `syscall(SYS_futex, uaddr, FUTEX_CMP_REQUEUE, val, val2, uaddr2, val3)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -208,7 +202,7 @@ pub enum WakeOpCmp {
     Ge = 5,
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAKE_OP, val, val2, uaddr2, val3)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAKE_OP, val, val2, uaddr2, val3)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -243,7 +237,7 @@ pub fn wake_op(
     unsafe { futex_val2(uaddr, Operation::WakeOp, flags, val, val2, uaddr2, val3) }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_LOCK_PI, 0, timeout, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_LOCK_PI, 0, timeout, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -255,19 +249,10 @@ pub fn wake_op(
 /// [Linux `futex` system call]: https://man7.org/linux/man-pages/man2/futex.2.html
 /// [Linux `futex` feature]: https://man7.org/linux/man-pages/man7/futex.7.html
 #[inline]
-pub fn lock_pi(uaddr: &AtomicU32, flags: Flags, timeout: Option<Timespec>) -> io::Result<()> {
+pub fn lock_pi(uaddr: &AtomicU32, flags: Flags, timeout: Option<&Timespec>) -> io::Result<()> {
     // SAFETY: The raw pointers come from references or null.
     unsafe {
-        futex_timeout(
-            uaddr,
-            Operation::LockPi,
-            flags,
-            0,
-            option_as_ptr(timeout.as_ref()),
-            ptr::null(),
-            0,
-        )
-        .map(|val| {
+        futex_timeout(uaddr, Operation::LockPi, flags, 0, timeout, ptr::null(), 0).map(|val| {
             debug_assert_eq!(
                 val, 0,
                 "The return value should always equal zero, if the call is successful"
@@ -276,7 +261,7 @@ pub fn lock_pi(uaddr: &AtomicU32, flags: Flags, timeout: Option<Timespec>) -> io
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_UNLOCK_PI, 0, NULL, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_UNLOCK_PI, 0, NULL, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -300,7 +285,7 @@ pub fn unlock_pi(uaddr: &AtomicU32, flags: Flags) -> io::Result<()> {
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_TRYLOCK_PI, 0, NULL, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_TRYLOCK_PI, 0, NULL, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -319,7 +304,7 @@ pub fn trylock_pi(uaddr: &AtomicU32, flags: Flags) -> io::Result<bool> {
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAIT_BITSET, val, timeout, NULL, val3)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAIT_BITSET, val, timeout, NULL, val3)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -335,7 +320,7 @@ pub fn wait_bitset(
     uaddr: &AtomicU32,
     flags: Flags,
     val: u32,
-    timeout: Option<Timespec>,
+    timeout: Option<&Timespec>,
     val3: NonZeroU32,
 ) -> io::Result<()> {
     // SAFETY: The raw pointers come from references or null.
@@ -345,7 +330,7 @@ pub fn wait_bitset(
             Operation::WaitBitset,
             flags,
             val,
-            option_as_ptr(timeout.as_ref()),
+            timeout,
             ptr::null(),
             val3.get(),
         )
@@ -358,7 +343,7 @@ pub fn wait_bitset(
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAKE_BITSET, val, NULL, NULL, val3)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAKE_BITSET, val, NULL, NULL, val3)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -390,7 +375,7 @@ pub fn wake_bitset(
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_WAIT_REQUEUE_PI, val, timeout, uaddr2, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_WAIT_REQUEUE_PI, val, timeout, uaddr2, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -406,7 +391,7 @@ pub fn wait_requeue_pi(
     uaddr: &AtomicU32,
     flags: Flags,
     val: u32,
-    timeout: Option<Timespec>,
+    timeout: Option<&Timespec>,
     uaddr2: &AtomicU32,
 ) -> io::Result<()> {
     // SAFETY: The raw pointers come from references or null.
@@ -416,7 +401,7 @@ pub fn wait_requeue_pi(
             Operation::WaitRequeuePi,
             flags,
             val,
-            option_as_ptr(timeout.as_ref()),
+            timeout,
             uaddr2,
             0,
         )
@@ -429,7 +414,7 @@ pub fn wait_requeue_pi(
     }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_CMP_REQUEUE_PI, 1, val2, uaddr2, val3)`
+/// `syscall(SYS_futex, uaddr, FUTEX_CMP_REQUEUE_PI, 1, val2, uaddr2, val3)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -452,7 +437,7 @@ pub fn cmp_requeue_pi(
     unsafe { futex_val2(uaddr, Operation::CmpRequeuePi, flags, 1, val2, uaddr2, val3) }
 }
 
-/// Equivalent to `syscall(SYS_futex, uaddr, FUTEX_LOCK_PI2, 0, timeout, NULL, 0)`
+/// `syscall(SYS_futex, uaddr, FUTEX_LOCK_PI2, 0, timeout, NULL, 0)`
 ///
 /// This is a very low-level feature for implementing synchronization
 /// primitives. See the references links.
@@ -464,23 +449,152 @@ pub fn cmp_requeue_pi(
 /// [Linux `futex` system call]: https://man7.org/linux/man-pages/man2/futex.2.html
 /// [Linux `futex` feature]: https://man7.org/linux/man-pages/man7/futex.7.html
 #[inline]
-pub fn lock_pi2(uaddr: &AtomicU32, flags: Flags, timeout: Option<Timespec>) -> io::Result<()> {
+pub fn lock_pi2(uaddr: &AtomicU32, flags: Flags, timeout: Option<&Timespec>) -> io::Result<()> {
     // SAFETY: The raw pointers come from references or null.
     unsafe {
-        futex_timeout(
-            uaddr,
-            Operation::LockPi2,
-            flags,
-            0,
-            option_as_ptr(timeout.as_ref()),
-            ptr::null(),
-            0,
-        )
-        .map(|val| {
+        futex_timeout(uaddr, Operation::LockPi2, flags, 0, timeout, ptr::null(), 0).map(|val| {
             debug_assert_eq!(
                 val, 0,
                 "The return value should always equal zero, if the call is successful"
             );
         })
+    }
+}
+
+/// A pointer in the [`Wait`] struct.
+#[repr(C)]
+#[derive(Copy, Clone)]
+#[non_exhaustive]
+pub struct WaitPtr {
+    #[cfg(all(target_pointer_width = "32", target_endian = "big"))]
+    #[doc(hidden)]
+    pub __pad32: u32,
+    #[cfg(all(target_pointer_width = "16", target_endian = "big"))]
+    #[doc(hidden)]
+    pub __pad16: u16,
+
+    /// The pointer value.
+    pub ptr: *mut c_void,
+
+    #[cfg(all(target_pointer_width = "16", target_endian = "little"))]
+    #[doc(hidden)]
+    pub __pad16: u16,
+    #[cfg(all(target_pointer_width = "32", target_endian = "little"))]
+    #[doc(hidden)]
+    pub __pad32: u32,
+}
+
+impl WaitPtr {
+    /// Construct a new `WaitPtr` holding the given raw pointer value.
+    #[inline]
+    pub const fn new(ptr: *mut c_void) -> Self {
+        Self {
+            ptr,
+
+            #[cfg(target_pointer_width = "16")]
+            __pad16: 0,
+            #[cfg(any(target_pointer_width = "16", target_pointer_width = "32"))]
+            __pad32: 0,
+        }
+    }
+}
+
+impl Default for WaitPtr {
+    #[inline]
+    fn default() -> Self {
+        Self::new(ptr::null_mut())
+    }
+}
+
+impl From<*mut c_void> for WaitPtr {
+    #[inline]
+    fn from(ptr: *mut c_void) -> Self {
+        Self::new(ptr)
+    }
+}
+
+impl core::fmt::Debug for WaitPtr {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        self.ptr.fmt(f)
+    }
+}
+
+/// For use with [`waitv`].
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+#[non_exhaustive]
+pub struct Wait {
+    /// The expected value.
+    pub val: u64,
+    /// The address to wait for.
+    pub uaddr: WaitPtr,
+    /// The type and size of futex to perform.
+    pub flags: WaitFlags,
+
+    /// Reserved for future use.
+    pub(crate) __reserved: u32,
+}
+
+impl Wait {
+    /// Construct a zero-initialized `Wait`.
+    #[inline]
+    pub const fn new() -> Self {
+        Self {
+            val: 0,
+            uaddr: WaitPtr::new(ptr::null_mut()),
+            flags: WaitFlags::empty(),
+            __reserved: 0,
+        }
+    }
+}
+
+impl Default for Wait {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// `futex_waitv(waiters.as_ptr(), waiters.len(), flags, timeout, clockd)`—
+/// Wait on an array of futexes, wake on any.
+///
+/// This requires Linux ≥ 5.16.
+///
+/// # References
+///  - [Linux]
+///
+/// [Linux]: https://www.kernel.org/doc/html/latest/userspace-api/futex2.html
+#[inline]
+pub fn waitv(
+    waiters: &[Wait],
+    flags: WaitvFlags,
+    timeout: Option<&Timespec>,
+    clockid: ClockId,
+) -> io::Result<usize> {
+    backend::thread::syscalls::futex_waitv(waiters, flags, timeout, clockid)
+}
+
+bitflags::bitflags! {
+    /// Flags for use with the flags argument in [`waitv`].
+    ///
+    /// At this time, no flags are defined.
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct WaitvFlags: u32 {
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+#[cfg(linux_raw)]
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_layouts() {
+        use crate::backend::c;
+
+        check_renamed_struct!(Wait, futex_waitv, val, uaddr, flags, __reserved);
     }
 }

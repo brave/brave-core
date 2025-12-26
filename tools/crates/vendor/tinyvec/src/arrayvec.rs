@@ -155,7 +155,6 @@ impl<A: Array> Default for ArrayVec<A> {
 impl<A: Array> Deref for ArrayVec<A> {
   type Target = [A::Item];
   #[inline(always)]
-  #[must_use]
   fn deref(&self) -> &Self::Target {
     &self.data.as_slice()[..self.len as usize]
   }
@@ -163,7 +162,6 @@ impl<A: Array> Deref for ArrayVec<A> {
 
 impl<A: Array> DerefMut for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn deref_mut(&mut self) -> &mut Self::Target {
     &mut self.data.as_slice_mut()[..self.len as usize]
   }
@@ -172,7 +170,6 @@ impl<A: Array> DerefMut for ArrayVec<A> {
 impl<A: Array, I: SliceIndex<[A::Item]>> Index<I> for ArrayVec<A> {
   type Output = <I as SliceIndex<[A::Item]>>::Output;
   #[inline(always)]
-  #[must_use]
   fn index(&self, index: I) -> &Self::Output {
     &self.deref()[index]
   }
@@ -180,7 +177,6 @@ impl<A: Array, I: SliceIndex<[A::Item]>> Index<I> for ArrayVec<A> {
 
 impl<A: Array, I: SliceIndex<[A::Item]>> IndexMut<I> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn index_mut(&mut self, index: I) -> &mut Self::Output {
     &mut self.deref_mut()[index]
   }
@@ -192,7 +188,6 @@ impl<A: Array> Serialize for ArrayVec<A>
 where
   A::Item: Serialize,
 {
-  #[must_use]
   fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
   where
     S: Serializer,
@@ -216,6 +211,53 @@ where
     D: Deserializer<'de>,
   {
     deserializer.deserialize_seq(ArrayVecVisitor(PhantomData))
+  }
+}
+
+#[cfg(feature = "borsh")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "borsh")))]
+impl<A: Array> borsh::BorshSerialize for ArrayVec<A>
+where
+  <A as Array>::Item: borsh::BorshSerialize,
+{
+  fn serialize<W: borsh::io::Write>(
+    &self, writer: &mut W,
+  ) -> borsh::io::Result<()> {
+    <usize as borsh::BorshSerialize>::serialize(&self.len(), writer)?;
+    for elem in self.iter() {
+      <<A as Array>::Item as borsh::BorshSerialize>::serialize(elem, writer)?;
+    }
+    Ok(())
+  }
+}
+
+#[cfg(feature = "borsh")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "borsh")))]
+impl<A: Array> borsh::BorshDeserialize for ArrayVec<A>
+where
+  <A as Array>::Item: borsh::BorshDeserialize,
+{
+  fn deserialize_reader<R: borsh::io::Read>(
+    reader: &mut R,
+  ) -> borsh::io::Result<Self> {
+    let len = <usize as borsh::BorshDeserialize>::deserialize_reader(reader)?;
+    let mut new_arrayvec = Self::default();
+
+    for idx in 0..len {
+      let value =
+        <<A as Array>::Item as borsh::BorshDeserialize>::deserialize_reader(
+          reader,
+        )?;
+      if idx >= new_arrayvec.capacity() {
+        return Err(borsh::io::Error::new(
+          borsh::io::ErrorKind::InvalidData,
+          "invalid ArrayVec length",
+        ));
+      }
+      new_arrayvec.push(value)
+    }
+
+    Ok(new_arrayvec)
   }
 }
 
@@ -1071,7 +1113,28 @@ impl<A: Array> ArrayVec<A> {
   /// If the given length is greater than the capacity of the array this will
   /// error, and you'll get the array back in the `Err`.
   #[inline]
+  #[cfg(not(feature = "latest_stable_rust"))]
   pub fn try_from_array_len(data: A, len: usize) -> Result<Self, A> {
+    /* Note(Soveu): Should we allow A::CAPACITY > u16::MAX for now? */
+    if len <= A::CAPACITY {
+      Ok(Self { data, len: len as u16 })
+    } else {
+      Err(data)
+    }
+  }
+
+  /// Wraps an array, using the given length as the starting length.
+  ///
+  /// If you want to use the whole length of the array, you can just use the
+  /// `From` impl.
+  ///
+  /// ## Failure
+  ///
+  /// If the given length is greater than the capacity of the array this will
+  /// error, and you'll get the array back in the `Err`.
+  #[inline]
+  #[cfg(feature = "latest_stable_rust")]
+  pub const fn try_from_array_len(data: A, len: usize) -> Result<Self, A> {
     /* Note(Soveu): Should we allow A::CAPACITY > u16::MAX for now? */
     if len <= A::CAPACITY {
       Ok(Self { data, len: len as u16 })
@@ -1305,7 +1368,6 @@ impl<'p, A: Array, I: Iterator<Item = A::Item>> Drop
 
 impl<A: Array> AsMut<[A::Item]> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn as_mut(&mut self) -> &mut [A::Item] {
     &mut *self
   }
@@ -1313,7 +1375,6 @@ impl<A: Array> AsMut<[A::Item]> for ArrayVec<A> {
 
 impl<A: Array> AsRef<[A::Item]> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn as_ref(&self) -> &[A::Item] {
     &*self
   }
@@ -1321,7 +1382,6 @@ impl<A: Array> AsRef<[A::Item]> for ArrayVec<A> {
 
 impl<A: Array> Borrow<[A::Item]> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn borrow(&self) -> &[A::Item] {
     &*self
   }
@@ -1329,7 +1389,6 @@ impl<A: Array> Borrow<[A::Item]> for ArrayVec<A> {
 
 impl<A: Array> BorrowMut<[A::Item]> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   fn borrow_mut(&mut self) -> &mut [A::Item] {
     &mut *self
   }
@@ -1346,7 +1405,6 @@ impl<A: Array> Extend<A::Item> for ArrayVec<A> {
 
 impl<A: Array> From<A> for ArrayVec<A> {
   #[inline(always)]
-  #[must_use]
   /// The output has a length equal to the full array.
   ///
   /// If you want to select a length, use
@@ -1407,7 +1465,6 @@ where
 
 impl<A: Array> FromIterator<A::Item> for ArrayVec<A> {
   #[inline]
-  #[must_use]
   fn from_iter<T: IntoIterator<Item = A::Item>>(iter: T) -> Self {
     let mut av = Self::default();
     for i in iter {
@@ -1444,7 +1501,6 @@ impl<A: Array> Iterator for ArrayVecIterator<A> {
     return Some(core::mem::take(itemref));
   }
   #[inline(always)]
-  #[must_use]
   fn size_hint(&self) -> (usize, Option<usize>) {
     let s = self.tail - self.base;
     let s = s as usize;
@@ -1524,7 +1580,6 @@ impl<A: Array> IntoIterator for ArrayVec<A> {
   type Item = A::Item;
   type IntoIter = ArrayVecIterator<A>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     ArrayVecIterator { base: 0, tail: self.len, data: self.data }
   }
@@ -1534,7 +1589,6 @@ impl<'a, A: Array> IntoIterator for &'a mut ArrayVec<A> {
   type Item = &'a mut A::Item;
   type IntoIter = core::slice::IterMut<'a, A::Item>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     self.iter_mut()
   }
@@ -1544,7 +1598,6 @@ impl<'a, A: Array> IntoIterator for &'a ArrayVec<A> {
   type Item = &'a A::Item;
   type IntoIter = core::slice::Iter<'a, A::Item>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     self.iter()
   }
@@ -1555,7 +1608,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &Self) -> bool {
     self.as_slice().eq(other.as_slice())
   }
@@ -1567,7 +1619,6 @@ where
   A::Item: PartialOrd,
 {
   #[inline]
-  #[must_use]
   fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
     self.as_slice().partial_cmp(other.as_slice())
   }
@@ -1577,7 +1628,6 @@ where
   A::Item: Ord,
 {
   #[inline]
-  #[must_use]
   fn cmp(&self, other: &Self) -> core::cmp::Ordering {
     self.as_slice().cmp(other.as_slice())
   }
@@ -1588,7 +1638,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &&A) -> bool {
     self.as_slice().eq(other.as_slice())
   }
@@ -1599,7 +1648,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &&[A::Item]) -> bool {
     self.as_slice().eq(*other)
   }
@@ -1883,6 +1931,7 @@ impl<A: Array> ArrayVec<A> {
   /// assert_eq!(v, &[1, 2, 3]);
   /// assert_eq!(v.capacity(), 13);
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_drain_to_vec_and_reserve(
     &mut self, n: usize,
@@ -1925,6 +1974,7 @@ impl<A: Array> ArrayVec<A> {
   /// // Vec may reserve more than necessary in order to prevent more future allocations.
   /// assert!(v.capacity() >= 3);
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_drain_to_vec(&mut self) -> Result<Vec<A::Item>, TryReserveError> {
     self.try_drain_to_vec_and_reserve(0)

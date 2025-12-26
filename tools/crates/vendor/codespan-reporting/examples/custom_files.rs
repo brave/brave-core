@@ -10,11 +10,18 @@
 //! ```
 
 use codespan_reporting::diagnostic::{Diagnostic, Label};
-use codespan_reporting::term;
-use codespan_reporting::term::termcolor::{ColorChoice, StandardStream};
-use std::ops::Range;
+use codespan_reporting::term::{self, Config};
+use core::ops::Range;
 
+#[cfg(not(feature = "termcolor"))]
+fn main() {
+    panic!("this example requires termcolor feature");
+}
+
+#[cfg(feature = "termcolor")]
 fn main() -> anyhow::Result<()> {
+    use codespan_reporting::term::termcolor::{ColorChoice, StandardStream};
+
     let mut files = files::Files::new();
 
     let file_id0 = files.add("0.greeting", "hello world!").unwrap();
@@ -30,10 +37,14 @@ fn main() -> anyhow::Result<()> {
     ];
 
     let writer = StandardStream::stderr(ColorChoice::Always);
-    let config = term::Config::default();
+    let config = Config::default();
     for message in &messages {
-        let writer = &mut writer.lock();
-        term::emit(writer, &config, &files, &message.to_diagnostic())?;
+        term::emit_to_write_style(
+            &mut writer.lock(),
+            &config,
+            &files,
+            &message.to_diagnostic(),
+        )?;
     }
 
     Ok(())
@@ -42,7 +53,7 @@ fn main() -> anyhow::Result<()> {
 /// A module containing the file implementation
 mod files {
     use codespan_reporting::files;
-    use std::ops::Range;
+    use core::ops::Range;
 
     /// A file that is backed by an `Arc<String>`.
     #[derive(Debug, Clone)]
@@ -57,14 +68,13 @@ mod files {
 
     impl File {
         fn line_start(&self, line_index: usize) -> Result<usize, files::Error> {
-            use std::cmp::Ordering;
+            use core::cmp::Ordering;
 
             match line_index.cmp(&self.line_starts.len()) {
-                Ordering::Less => Ok(self
+                Ordering::Less => Ok(*self
                     .line_starts
                     .get(line_index)
-                    .expect("failed despite previous check")
-                    .clone()),
+                    .expect("failed despite previous check")),
                 Ordering::Equal => Ok(self.source.len()),
                 Ordering::Greater => Err(files::Error::LineTooLarge {
                     given: line_index,
@@ -96,7 +106,7 @@ mod files {
             name: impl Into<String>,
             source: impl Into<String>,
         ) -> Option<FileId> {
-            use std::convert::TryFrom;
+            use core::convert::TryFrom;
 
             let file_id = FileId(u32::try_from(self.files.len()).ok()?);
             let name = name.into();

@@ -330,7 +330,7 @@ struct Packed(packed::Searcher);
 impl PrefilterI for Packed {
     fn find_in(&self, haystack: &[u8], span: Span) -> Candidate {
         self.0
-            .find_in(&haystack, span)
+            .find_in(haystack, span)
             .map_or(Candidate::None, Candidate::Match)
     }
 }
@@ -549,7 +549,7 @@ impl RareBytesBuilder {
             let (mut bytes, mut len) = ([0; 3], 0);
             for b in 0..=255 {
                 if builder.rare_set.contains(b) {
-                    bytes[len] = b as u8;
+                    bytes[len] = b;
                     len += 1;
                 }
             }
@@ -604,7 +604,7 @@ impl RareBytesBuilder {
             self.available = false;
             return;
         }
-        let mut rarest = match bytes.get(0) {
+        let mut rarest = match bytes.first() {
             None => return,
             Some(&b) => (b, freq_rank(b)),
         };
@@ -835,7 +835,7 @@ impl StartBytesBuilder {
         if self.count > 3 {
             return;
         }
-        if let Some(&byte) = bytes.get(0) {
+        if let Some(&byte) = bytes.first() {
             self.add_one_byte(byte);
             if self.ascii_case_insensitive {
                 self.add_one_byte(opposite_ascii_case(byte));

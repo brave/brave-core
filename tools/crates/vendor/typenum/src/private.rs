@@ -41,7 +41,6 @@ pub trait Trim {
 pub type TrimOut<A> = <A as Trim>::Output;
 
 /// Gets rid of all zeros until it hits a one.
-
 // ONLY IMPLEMENT FOR INVERTED NUMBERS!
 pub trait TrimTrailingZeros {
     type Output;
@@ -395,6 +394,7 @@ use crate::{Equal, False, Greater, Less, True};
 pub trait IsLessPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_less_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 
@@ -426,6 +426,7 @@ impl<A, B> IsLessPrivate<B, Greater> for A {
 pub trait IsEqualPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_equal_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 
@@ -457,6 +458,7 @@ impl<A, B> IsEqualPrivate<B, Greater> for A {
 pub trait IsGreaterPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_greater_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 
@@ -488,6 +490,7 @@ impl<A, B> IsGreaterPrivate<B, Greater> for A {
 pub trait IsLessOrEqualPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_less_or_equal_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 
@@ -519,6 +522,7 @@ impl<A, B> IsLessOrEqualPrivate<B, Greater> for A {
 pub trait IsNotEqualPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_not_equal_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 
@@ -550,6 +554,7 @@ impl<A, B> IsNotEqualPrivate<B, Greater> for A {
 pub trait IsGreaterOrEqualPrivate<Rhs, Cmp> {
     type Output: Bit;
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_greater_or_equal_private(self, _: Rhs, _: Cmp) -> Self::Output;
 }
 

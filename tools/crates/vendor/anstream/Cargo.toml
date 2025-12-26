@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.66.0"
 name = "anstream"
-version = "0.6.18"
+version = "0.6.21"
 build = false
 include = [
     "build.rs",
@@ -22,15 +22,14 @@ include = [
     "Cargo.lock",
     "LICENSE*",
     "README.md",
-    "benches/**/*",
     "examples/**/*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "A simple cross platform library for writing colored text to a terminal."
-homepage = "https://github.com/rust-cli/anstyle"
+description = "IO stream adapters for writing colored text that will gracefully degrade according to your terminal's capabilities."
 readme = "README.md"
 keywords = [
     "ansi",
@@ -48,42 +47,52 @@ all-features = true
 rustdoc-args = [
     "--cfg",
     "docsrs",
+    "--generate-link-to-definition",
 ]
 
 [[package.metadata.release.pre-release-replacements]]
 file = "CHANGELOG.md"
-min = 1
-replace = "{{version}}"
 search = "Unreleased"
-
-[[package.metadata.release.pre-release-replacements]]
-exactly = 1
-file = "CHANGELOG.md"
-replace = "...{{tag_name}}"
-search = '\.\.\.HEAD'
-
-[[package.metadata.release.pre-release-replacements]]
-file = "CHANGELOG.md"
+replace = "{{version}}"
 min = 1
-replace = "{{date}}"
-search = "ReleaseDate"
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = '\.\.\.HEAD'
+replace = "...{{tag_name}}"
+exactly = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "ReleaseDate"
+replace = "{{date}}"
+min = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "<!-- next-header -->"
 replace = """
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 """
-search = "<!-- next-header -->"
+exactly = 1
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = "<!-- next-url -->"
 replace = """
 <!-- next-url -->
 [Unreleased]: https://github.com/rust-cli/anstyle/compare/{{tag_name}}...HEAD"""
-search = "<!-- next-url -->"
+exactly = 1
+
+[features]
+auto = ["dep:anstyle-query"]
+default = [
+    "auto",
+    "wincon",
+]
+test = []
+wincon = ["dep:anstyle-wincon"]
 
 [lib]
 name = "anstream"
@@ -98,21 +107,6 @@ required-features = ["auto"]
 name = "query-stream"
 path = "examples/query-stream.rs"
 required-features = ["auto"]
-
-[[bench]]
-name = "stream"
-path = "benches/stream.rs"
-harness = false
-
-[[bench]]
-name = "strip"
-path = "benches/strip.rs"
-harness = false
-
-[[bench]]
-name = "wincon"
-path = "benches/wincon.rs"
-harness = false
 
 [dependencies.anstyle]
 version = "1.0.0"
@@ -131,31 +125,22 @@ version = "1.0.0"
 version = "1.48"
 
 [dependencies.utf8parse]
-version = "0.2.1"
+version = "0.2.2"
 
 [dev-dependencies.divan]
-version = "0.1.11"
+version = "0.1.16"
 
 [dev-dependencies.lexopt]
-version = "0.3.0"
+version = "0.3.1"
 
 [dev-dependencies.owo-colors]
 version = "4.0.0"
 
 [dev-dependencies.proptest]
-version = "1.4.0"
+version = "1.7.0"
 
 [dev-dependencies.strip-ansi-escapes]
-version = "0.2.0"
-
-[features]
-auto = ["dep:anstyle-query"]
-default = [
-    "auto",
-    "wincon",
-]
-test = []
-wincon = ["dep:anstyle-wincon"]
+version = "0.2.1"
 
 [target."cfg(windows)".dependencies.anstyle-wincon]
 version = "3.0.5"
@@ -197,7 +182,7 @@ lossy_float_literal = "warn"
 macro_use_imports = "warn"
 mem_forget = "warn"
 mutex_integer = "warn"
-needless_continue = "warn"
+needless_continue = "allow"
 needless_for_each = "warn"
 negative_feature_names = "warn"
 path_buf_push_overwrite = "warn"
@@ -206,6 +191,7 @@ rc_mutex = "warn"
 redundant_feature_names = "warn"
 ref_option_ref = "warn"
 rest_pat_in_fully_bound_structs = "warn"
+result_large_err = "allow"
 same_functions_in_if_condition = "warn"
 self_named_module_files = "warn"
 semicolon_if_nothing_returned = "warn"
@@ -222,6 +208,7 @@ wildcard_imports = "warn"
 zero_sized_map_values = "warn"
 
 [lints.rust]
+unnameable_types = "warn"
 unreachable_pub = "warn"
 unsafe_op_in_unsafe_fn = "warn"
 unused_lifetimes = "warn"

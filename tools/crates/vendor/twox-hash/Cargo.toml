@@ -10,10 +10,17 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.81"
 name = "twox-hash"
-version = "1.6.3"
+version = "2.1.2"
 authors = ["Jake Goulding <jake.goulding@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A Rust implementation of the XXHash and XXH3 algorithms"
 documentation = "https://docs.rs/twox-hash/"
 readme = "README.md"
@@ -27,45 +34,52 @@ categories = ["algorithms"]
 license = "MIT"
 repository = "https://github.com/shepmaster/twox-hash"
 
-[dependencies.cfg-if]
-version = ">= 0.1, < 2"
-default-features = false
+[package.metadata.docs.rs]
+all-features = true
 
-[dependencies.digest]
-version = "0.8"
-optional = true
-default-features = false
-package = "digest"
+[features]
+alloc = []
+default = [
+    "random",
+    "xxhash32",
+    "xxhash64",
+    "xxhash3_64",
+    "xxhash3_128",
+    "std",
+]
+random = ["dep:rand"]
+serialize = ["dep:serde"]
+std = ["alloc"]
+xxhash32 = []
+xxhash3_128 = []
+xxhash3_64 = []
+xxhash64 = []
 
-[dependencies.digest_0_10]
-version = "0.10"
-optional = true
-default-features = false
-package = "digest"
-
-[dependencies.digest_0_9]
-version = "0.9"
-optional = true
-default-features = false
-package = "digest"
+[lib]
+name = "twox_hash"
+path = "src/lib.rs"
 
 [dependencies.rand]
-version = ">= 0.3.10, < 0.9"
+version = "0.9.0"
+features = ["thread_rng"]
 optional = true
+default-features = false
 
 [dependencies.serde]
-version = "1.0"
+version = "1.0.0"
 features = ["derive"]
 optional = true
-
-[dependencies.static_assertions]
-version = "1.0"
 default-features = false
 
 [dev-dependencies.serde_json]
-version = "1.0"
+version = "1.0.117"
 
-[features]
-default = ["std"]
-serialize = ["serde"]
-std = ["rand"]
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    "cfg(_internal_xxhash3_force_scalar)",
+    "cfg(_internal_xxhash3_force_neon)",
+    "cfg(_internal_xxhash3_force_sse2)",
+    "cfg(_internal_xxhash3_force_avx2)",
+]

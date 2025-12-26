@@ -38,11 +38,11 @@ pub fn build_thread() -> std::thread::Builder {
 }
 
 /// Read items from `input` and `consume` them in multiple threads,
-/// whose output output is collected by a `reducer`. Its task is to
-/// aggregate these outputs into the final result returned by this function with the benefit of not having to be thread-safe.
+/// whose output is collected by a `reducer`. Its task is to
+/// aggregate these outputs into the final result returned by this function, with the benefit of not having to be thread-safe.
 ///
-/// * if `thread_limit` is `Some`, the given amount of threads will be used. If `None`, all logical cores will be used.
-/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be based to `consume`
+/// * if `thread_limit` is `Some`, then the given number of threads will be used. If `None`, all logical cores will be used.
+/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be passed to `consume`
 /// * `consume(Item, &mut State) -> Output` produces an output given an input obtained by `input` along with mutable state initially
 ///   created by `new_thread_state(…)`.
 /// * For `reducer`, see the [`Reduce`] trait
@@ -103,12 +103,12 @@ where
 }
 
 /// Read items from `input` and `consume` them in multiple threads,
-/// whose output output is collected by a `reducer`. Its task is to
+/// whose output is collected by a `reducer`. Its task is to
 /// aggregate these outputs into the final result returned by this function with the benefit of not having to be thread-safe.
-/// Caall `finalize` to finish the computation, once per thread, if there was no error sending results earlier.
+/// Call `finalize` to finish the computation, once per thread, if there was no error sending results earlier.
 ///
-/// * if `thread_limit` is `Some`, the given amount of threads will be used. If `None`, all logical cores will be used.
-/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be based to `consume`
+/// * if `thread_limit` is `Some`, then the given number of threads will be used. If `None`, all logical cores will be used.
+/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be passed to `consume`
 /// * `consume(Item, &mut State) -> Output` produces an output given an input obtained by `input` along with mutable state initially
 ///   created by `new_thread_state(…)`.
 /// * `finalize(State) -> Output` is called to potentially process remaining work that was placed in `State`.

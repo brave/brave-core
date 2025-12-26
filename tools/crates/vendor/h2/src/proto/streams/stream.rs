@@ -2,6 +2,7 @@ use crate::Reason;
 
 use super::*;
 
+use std::fmt;
 use std::task::{Context, Waker};
 use std::time::Instant;
 
@@ -16,7 +17,6 @@ use std::time::Instant;
 /// It's important to note that when the stream is placed in an internal queue
 /// (such as an accept queue), this is **not** tracked by a reference count.
 /// Thus, `ref_count` can be zero and the stream still has to be kept around.
-#[derive(Debug)]
 pub(super) struct Stream {
     /// The h2 stream identifier
     pub id: StreamId,
@@ -388,6 +388,59 @@ impl Stream {
         self.state.set_reset(self.id, reason, initiator);
         self.notify_push();
         self.notify_recv();
+    }
+}
+
+impl fmt::Debug for Stream {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Stream")
+            .field("id", &self.id)
+            .field("state", &self.state)
+            .field("is_counted", &self.is_counted)
+            .field("ref_count", &self.ref_count)
+            .h2_field_some("next_pending_send", &self.next_pending_send)
+            .h2_field_if("is_pending_send", &self.is_pending_send)
+            .field("send_flow", &self.send_flow)
+            .field("requested_send_capacity", &self.requested_send_capacity)
+            .field("buffered_send_data", &self.buffered_send_data)
+            .h2_field_some("send_task", &self.send_task.as_ref().map(|_| ()))
+            .h2_field_if_then(
+                "pending_send",
+                !self.pending_send.is_empty(),
+                &self.pending_send,
+            )
+            .h2_field_some(
+                "next_pending_send_capacity",
+                &self.next_pending_send_capacity,
+            )
+            .h2_field_if("is_pending_send_capacity", &self.is_pending_send_capacity)
+            .h2_field_if("send_capacity_inc", &self.send_capacity_inc)
+            .h2_field_some("next_open", &self.next_open)
+            .h2_field_if("is_pending_open", &self.is_pending_open)
+            .h2_field_if("is_pending_push", &self.is_pending_push)
+            .h2_field_some("next_pending_accept", &self.next_pending_accept)
+            .h2_field_if("is_pending_accept", &self.is_pending_accept)
+            .field("recv_flow", &self.recv_flow)
+            .field("in_flight_recv_data", &self.in_flight_recv_data)
+            .h2_field_some("next_window_update", &self.next_window_update)
+            .h2_field_if("is_pending_window_update", &self.is_pending_window_update)
+            .h2_field_some("reset_at", &self.reset_at)
+            .h2_field_some("next_reset_expire", &self.next_reset_expire)
+            .h2_field_if_then(
+                "pending_recv",
+                !self.pending_recv.is_empty(),
+                &self.pending_recv,
+            )
+            .h2_field_if("is_recv", &self.is_recv)
+            .h2_field_some("recv_task", &self.recv_task.as_ref().map(|_| ()))
+            .h2_field_some("push_task", &self.push_task.as_ref().map(|_| ()))
+            .h2_field_if_then(
+                "pending_push_promises",
+                !self.pending_push_promises.is_empty(),
+                &self.pending_push_promises,
+            )
+            .field("content_length", &self.content_length)
+            .finish()
     }
 }
 

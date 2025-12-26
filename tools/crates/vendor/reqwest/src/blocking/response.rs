@@ -6,7 +6,9 @@ use std::pin::Pin;
 use std::time::Duration;
 
 use bytes::Bytes;
+use futures_util::TryStreamExt;
 use http;
+use http_body_util::BodyExt;
 use hyper::header::HeaderMap;
 #[cfg(feature = "json")]
 use serde::de::DeserializeOwned;
@@ -188,13 +190,19 @@ impl Response {
         self.inner.extensions_mut()
     }
 
-    /// Get the content-length of the response, if it is known.
+    /// Get the content length of the response, if it is known.
+    ///
+    ///
+    /// This value does not directly represents the value of the `Content-Length`
+    /// header, but rather the size of the response's body. To read the header's
+    /// value, please use the [`Response::headers`] method instead.
     ///
     /// Reasons it may not be known:
     ///
-    /// - The server didn't send a `content-length` header.
-    /// - The response is gzipped and automatically decoded (thus changing
-    ///   the actual decoded length).
+    /// - The response does not include a body (e.g. it responds to a `HEAD`
+    ///   request).
+    /// - The response is gzipped and automatically decoded (thus changing the
+    ///   actual decoded length).
     pub fn content_length(&self) -> Option<u64> {
         self.inner.content_length()
     }
@@ -266,7 +274,7 @@ impl Response {
     /// Get the response text.
     ///
     /// This method decodes the response body with BOM sniffing
-    /// and with malformed sequences replaced with the REPLACEMENT CHARACTER.
+    /// and with malformed sequences replaced with the [`char::REPLACEMENT_CHARACTER`].
     /// Encoding is determined from the `charset` parameter of `Content-Type` header,
     /// and defaults to `utf-8` if not presented.
     ///
@@ -294,7 +302,7 @@ impl Response {
     /// Get the response text given a specific encoding.
     ///
     /// This method decodes the response body with BOM sniffing
-    /// and with malformed sequences replaced with the REPLACEMENT CHARACTER.
+    /// and with malformed sequences replaced with the [`char::REPLACEMENT_CHARACTER`].
     /// You can provide a default encoding for decoding the raw message, while the
     /// `charset` parameter of `Content-Type` header is still prioritized. For more information
     /// about the possible encoding name, please go to [`encoding_rs`] docs.
@@ -407,13 +415,18 @@ impl Response {
     // private
 
     fn body_mut(&mut self) -> Pin<&mut dyn futures_util::io::AsyncRead> {
-        use futures_util::TryStreamExt;
         if self.body.is_none() {
-            let body = mem::replace(self.inner.body_mut(), async_impl::Decoder::empty());
+            let body = mem::replace(
+                self.inner.body_mut(),
+                async_impl::body::boxed(http_body_util::Empty::new()),
+            );
 
-            let body = body.into_stream().into_async_read();
-
-            self.body = Some(Box::pin(body));
+            self.body = Some(Box::pin(
+                async_impl::body::Body::wrap(body)
+                    .into_data_stream()
+                    .map_err(crate::error::Error::into_io)
+                    .into_async_read(),
+            ));
         }
         self.body.as_mut().expect("body was init").as_mut()
     }

@@ -30,10 +30,7 @@ pub enum Error {
         err: std::io::Error,
         path: PathBuf,
     },
-    #[error(
-        "Commit-graph files contain {0} commits altogether, but only {} commits are allowed",
-        MAX_COMMITS
-    )]
+    #[error("Commit-graph files contain {0} commits altogether, but only {MAX_COMMITS} commits are allowed")]
     TooManyCommits(u64),
 }
 

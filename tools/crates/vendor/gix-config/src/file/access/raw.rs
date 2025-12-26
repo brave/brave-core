@@ -4,7 +4,7 @@ use bstr::BStr;
 use smallvec::ToSmallVec;
 
 use crate::{
-    file::{mutable::multi_value::EntryData, Index, MetadataFilter, MultiValueMut, Size, ValueMut},
+    file::{mutable::multi_value::EntryData, Index, Metadata, MultiValueMut, Size, ValueMut},
     lookup,
     parse::{section, Event},
     AsKey, File,
@@ -20,7 +20,7 @@ impl<'event> File<'event> {
     /// a multivar instead.
     pub fn raw_value(&self, key: impl AsKey) -> Result<Cow<'_, BStr>, lookup::existing::Error> {
         let key = key.as_key();
-        self.raw_value_filter_by(key.section_name, key.subsection_name, key.value_name, &mut |_| true)
+        self.raw_value_filter_by(key.section_name, key.subsection_name, key.value_name, |_| true)
     }
 
     /// Returns an uninterpreted value given a section, an optional subsection
@@ -34,7 +34,7 @@ impl<'event> File<'event> {
         subsection_name: Option<&BStr>,
         value_name: impl AsRef<str>,
     ) -> Result<Cow<'_, BStr>, lookup::existing::Error> {
-        self.raw_value_filter_by(section_name, subsection_name, value_name, &mut |_| true)
+        self.raw_value_filter_by(section_name, subsection_name, value_name, |_| true)
     }
 
     /// Returns an uninterpreted value given a `key`, if it passes the `filter`.
@@ -44,7 +44,7 @@ impl<'event> File<'event> {
     pub fn raw_value_filter(
         &self,
         key: impl AsKey,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Cow<'_, BStr>, lookup::existing::Error> {
         let key = key.as_key();
         self.raw_value_filter_by(key.section_name, key.subsection_name, key.value_name, filter)
@@ -60,7 +60,7 @@ impl<'event> File<'event> {
         section_name: impl AsRef<str>,
         subsection_name: Option<&BStr>,
         value_name: impl AsRef<str>,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Cow<'_, BStr>, lookup::existing::Error> {
         self.raw_value_filter_inner(section_name.as_ref(), subsection_name, value_name.as_ref(), filter)
     }
@@ -70,7 +70,7 @@ impl<'event> File<'event> {
         section_name: &str,
         subsection_name: Option<&BStr>,
         value_name: &str,
-        filter: &mut MetadataFilter,
+        mut filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Cow<'_, BStr>, lookup::existing::Error> {
         let section_ids = self.section_ids_by_name_and_subname(section_name, subsection_name)?;
         for section_id in section_ids.rev() {
@@ -110,7 +110,7 @@ impl<'event> File<'event> {
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
     ) -> Result<ValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
-        self.raw_value_mut_filter(section_name, subsection_name, value_name, &mut |_| true)
+        self.raw_value_mut_filter(section_name, subsection_name, value_name, |_| true)
     }
 
     /// Returns a mutable reference to an uninterpreted value given a section,
@@ -123,7 +123,7 @@ impl<'event> File<'event> {
         section_name: impl AsRef<str>,
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<ValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
         self.raw_value_mut_filter_inner(section_name.as_ref(), subsection_name, value_name, filter)
     }
@@ -133,7 +133,7 @@ impl<'event> File<'event> {
         section_name: &str,
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
-        filter: &mut MetadataFilter,
+        mut filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<ValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
         let mut section_ids = self
             .section_ids_by_name_and_subname(section_name, subsection_name)?
@@ -272,7 +272,7 @@ impl<'event> File<'event> {
         subsection_name: Option<&BStr>,
         value_name: impl AsRef<str>,
     ) -> Result<Vec<Cow<'_, BStr>>, lookup::existing::Error> {
-        self.raw_values_filter_by(section_name, subsection_name, value_name, &mut |_| true)
+        self.raw_values_filter_by(section_name, subsection_name, value_name, |_| true)
     }
 
     /// Returns all uninterpreted values given a `key`, if the value passes `filter`, in order of occurrence.
@@ -282,7 +282,7 @@ impl<'event> File<'event> {
     pub fn raw_values_filter(
         &self,
         key: impl AsKey,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Vec<Cow<'_, BStr>>, lookup::existing::Error> {
         let key = key.as_key();
         self.raw_values_filter_by(key.section_name, key.subsection_name, key.value_name, filter)
@@ -298,7 +298,7 @@ impl<'event> File<'event> {
         section_name: impl AsRef<str>,
         subsection_name: Option<&BStr>,
         value_name: impl AsRef<str>,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Vec<Cow<'_, BStr>>, lookup::existing::Error> {
         self.raw_values_filter_inner(section_name.as_ref(), subsection_name, value_name.as_ref(), filter)
     }
@@ -308,7 +308,7 @@ impl<'event> File<'event> {
         section_name: &str,
         subsection_name: Option<&BStr>,
         value_name: &str,
-        filter: &mut MetadataFilter,
+        mut filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Vec<Cow<'_, BStr>>, lookup::existing::Error> {
         let mut values = Vec::new();
         let section_ids = self.section_ids_by_name_and_subname(section_name, subsection_name)?;
@@ -440,7 +440,7 @@ impl<'event> File<'event> {
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
     ) -> Result<MultiValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
-        self.raw_values_mut_filter_by(section_name, subsection_name, value_name, &mut |_| true)
+        self.raw_values_mut_filter_by(section_name, subsection_name, value_name, |_| true)
     }
 
     /// Returns mutable references to all uninterpreted values given a `key`,
@@ -448,7 +448,7 @@ impl<'event> File<'event> {
     pub fn raw_values_mut_filter<'lookup>(
         &mut self,
         key: &'lookup impl AsKey,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<MultiValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
         let key = key.as_key();
         self.raw_values_mut_filter_by(key.section_name, key.subsection_name, key.value_name, filter)
@@ -461,7 +461,7 @@ impl<'event> File<'event> {
         section_name: impl AsRef<str>,
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<MultiValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
         self.raw_values_mut_filter_inner(section_name.as_ref(), subsection_name, value_name, filter)
     }
@@ -471,7 +471,7 @@ impl<'event> File<'event> {
         section_name: &str,
         subsection_name: Option<&'lookup BStr>,
         value_name: &'lookup str,
-        filter: &mut MetadataFilter,
+        mut filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<MultiValueMut<'_, 'lookup, 'event>, lookup::existing::Error> {
         let section_ids = self.section_ids_by_name_and_subname(section_name, subsection_name)?;
         let key = section::ValueName(Cow::<BStr>::Borrowed(value_name.into()));
@@ -692,7 +692,7 @@ impl<'event> File<'event> {
         Key: TryInto<section::ValueName<'event>, Error = E>,
         section::value_name::Error: From<E>,
     {
-        self.set_raw_value_filter_by(section_name, subsection_name, value_name, new_value, &mut |_| true)
+        self.set_raw_value_filter_by(section_name, subsection_name, value_name, new_value, |_| true)
     }
 
     /// Similar to [`set_raw_value()`](Self::set_raw_value()), but only sets existing values in sections matching
@@ -701,7 +701,7 @@ impl<'event> File<'event> {
         &mut self,
         key: &'event impl AsKey,
         new_value: impl Into<&'b BStr>,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Option<Cow<'event, BStr>>, crate::file::set_raw_value::Error> {
         let key = key.as_key();
         self.set_raw_value_filter_by(key.section_name, key.subsection_name, key.value_name, new_value, filter)
@@ -715,7 +715,7 @@ impl<'event> File<'event> {
         subsection_name: Option<&BStr>,
         key: Key,
         new_value: impl Into<&'b BStr>,
-        filter: &mut MetadataFilter,
+        filter: impl FnMut(&Metadata) -> bool,
     ) -> Result<Option<Cow<'event, BStr>>, crate::file::set_raw_value::Error>
     where
         Key: TryInto<section::ValueName<'event>, Error = E>,

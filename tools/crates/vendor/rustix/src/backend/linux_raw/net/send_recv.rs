@@ -16,11 +16,6 @@ bitflags! {
         const DONTROUTE = c::MSG_DONTROUTE;
         /// `MSG_DONTWAIT`
         const DONTWAIT = c::MSG_DONTWAIT;
-        /// Deprecated alias for [`EOR`].
-        ///
-        /// [`EOR`]: Self::EOR
-        #[deprecated(note = "`rustix::net::SendFlags::EOT` is renamed to `rustix::net::SendFlags::EOR`.")]
-        const EOT = c::MSG_EOR;
         /// `MSG_EOR`
         const EOR = c::MSG_EOR;
         /// `MSG_MORE`
@@ -58,6 +53,33 @@ bitflags! {
         const TRUNC = c::MSG_TRUNC;
         /// `MSG_WAITALL`
         const WAITALL = c::MSG_WAITALL;
+
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+bitflags! {
+    /// `MSG_*` flags returned from [`recvmsg`], in the `flags` field of
+    /// [`RecvMsg`]
+    ///
+    /// [`recvmsg`]: crate::net::recvmsg
+    /// [`RecvMsg`]: crate::net::RecvMsg
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct ReturnFlags: u32 {
+        /// `MSG_OOB`
+        const OOB = c::MSG_OOB;
+        /// `MSG_EOR`
+        const EOR = c::MSG_EOR;
+        /// `MSG_TRUNC`
+        const TRUNC = c::MSG_TRUNC;
+        /// `MSG_CTRUNC`
+        const CTRUNC = c::MSG_CTRUNC;
+        /// `MSG_ERRQUEUE`
+        const ERRQUEUE = c::MSG_ERRQUEUE;
+        /// `MSG_CMSG_CLOEXEC`
+        const CMSG_CLOEXEC = c::MSG_CMSG_CLOEXEC;
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;

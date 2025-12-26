@@ -9,7 +9,7 @@ use core::marker::PhantomData;
 use core::ops::{
     Add, AddAssign, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not,
 };
-use zerocopy::{transmute, AsBytes, FromBytes, FromZeroes};
+use zerocopy::transmute;
 
 macro_rules! impl_binop {
     ($vec:ident, $trait:ident, $fn:ident, $impl_fn:ident) => {
@@ -39,14 +39,16 @@ macro_rules! impl_binop_assign {
 
 macro_rules! def_vec {
     ($vec:ident, $word:ident) => {
-        #[allow(non_camel_case_types)]
-        #[derive(Copy, Clone, FromBytes, AsBytes, FromZeroes)]
-        #[repr(transparent)]
-        pub struct $vec<S3, S4, NI> {
-            x: __m128i,
-            s3: PhantomData<S3>,
-            s4: PhantomData<S4>,
-            ni: PhantomData<NI>,
+        zerocopy::cryptocorrosion_derive_traits! {
+            #[repr(transparent)]
+            #[allow(non_camel_case_types)]
+            #[derive(Copy, Clone)]
+            pub struct $vec<S3, S4, NI> {
+                x: __m128i,
+                s3: PhantomData<S3>,
+                s4: PhantomData<S4>,
+                ni: PhantomData<NI>,
+            }
         }
 
         impl<S3, S4, NI> Store<vec128_storage> for $vec<S3, S4, NI> {
@@ -1384,13 +1386,15 @@ pub mod avx2 {
     use core::arch::x86_64::*;
     use core::marker::PhantomData;
     use core::ops::*;
-    use zerocopy::{transmute, AsBytes, FromBytes, FromZeroes};
+    use zerocopy::transmute;
 
-    #[derive(Copy, Clone, FromBytes, AsBytes, FromZeroes)]
-    #[repr(transparent)]
-    pub struct u32x4x2_avx2<NI> {
-        x: __m256i,
-        ni: PhantomData<NI>,
+    zerocopy::cryptocorrosion_derive_traits! {
+        #[repr(transparent)]
+        #[derive(Copy, Clone)]
+        pub struct u32x4x2_avx2<NI> {
+            x: __m256i,
+            ni: PhantomData<NI>,
+        }
     }
 
     impl<NI> u32x4x2_avx2<NI> {

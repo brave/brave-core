@@ -6,13 +6,18 @@
 // This file may not be copied, modified, or distributed except according to
 // those terms.
 
-include!("../../zerocopy-derive/tests/util.rs");
+include!("../../zerocopy-derive/tests/include.rs");
 
 extern crate zerocopy;
 
+use util::AU16;
 use zerocopy::transmute_ref;
 
 fn main() {}
 
+#[derive(zerocopy::Immutable)]
+#[repr(transparent)]
+struct Dst(AU16);
+
 // `transmute_ref` requires that the destination type implements `FromBytes`
-const DST_NOT_FROM_BYTES: &NotZerocopy = transmute_ref!(&AU16(0));
+const DST_NOT_FROM_BYTES: &Dst = transmute_ref!(&AU16(0));

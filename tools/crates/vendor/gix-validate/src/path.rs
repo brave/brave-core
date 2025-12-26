@@ -8,18 +8,20 @@ pub mod component {
     pub enum Error {
         #[error("A path component must not be empty")]
         Empty,
-        #[error("Path separators like / or \\ are not allowed")]
+        #[error(r"Path separators like / or \ are not allowed")]
         PathSeparator,
         #[error("Windows path prefixes are not allowed")]
         WindowsPathPrefix,
         #[error("Windows device-names may have side-effects and are not allowed")]
         WindowsReservedName,
-        #[error("Trailing spaces or dots, and the following characters anywhere, are forbidden in Windows paths, along with non-printable ones: <>:\"|?*")]
+        #[error(r#"Trailing spaces or dots, and the following characters anywhere, are forbidden in Windows paths, along with non-printable ones: <>:"|?*"#)]
         WindowsIllegalCharacter,
         #[error("The .git name may never be used")]
         DotGitDir,
         #[error("The .gitmodules file must not be a symlink")]
         SymlinkedGitModules,
+        #[error("Relative components '.' and '..' are disallowed")]
+        Relative,
     }
 
     /// Further specify what to check for in [`component()`](super::component())
@@ -78,8 +80,11 @@ pub fn component(
     if input.is_empty() {
         return Err(component::Error::Empty);
     }
+    if input == ".." || input == "." {
+        return Err(component::Error::Relative);
+    }
     if protect_windows {
-        if input.find_byteset(b"/\\").is_some() {
+        if input.find_byteset(br"/\").is_some() {
             return Err(component::Error::PathSeparator);
         }
         if input.chars().nth(1) == Some(':') {
@@ -295,7 +300,7 @@ fn is_dot_ntfs(input: &BStr, search_case_insensitive: &str, ntfs_shortname_prefi
                 || b & 0x80 == 0x80
                 || ntfs_shortname_prefix
                     .get(pos)
-                    .map_or(true, |ob| !b.eq_ignore_ascii_case(ob))
+                    .is_none_or(|ob| !b.eq_ignore_ascii_case(ob))
             {
                 return false;
             }

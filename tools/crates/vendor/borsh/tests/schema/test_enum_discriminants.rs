@@ -23,22 +23,22 @@ fn test_schema_discriminant_no_unit_type() {
             "XY" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                     (0, "A".to_string(), "XYA".to_string()),
-                     (20, "B".to_string(), "XYB".to_string()),
-                     (21, "C".to_string(), "XYC".to_string()),
-                     (22, "D".to_string(), "XYD".to_string()),
-                     (10, "E".to_string(), "XYE".to_string()),
-                     (11, "F".to_string(), "XYF".to_string())
+                     (0, "A".to_string(), "XY__A".to_string()),
+                     (20, "B".to_string(), "XY__B".to_string()),
+                     (21, "C".to_string(), "XY__C".to_string()),
+                     (22, "D".to_string(), "XY__D".to_string()),
+                     (10, "E".to_string(), "XY__E".to_string()),
+                     (11, "F".to_string(), "XY__F".to_string())
                 ]
             },
-            "XYA" => Definition::Struct{ fields: Fields::Empty },
-            "XYB" => Definition::Struct{ fields: Fields::Empty },
-            "XYC" => Definition::Struct{ fields: Fields::Empty },
-            "XYD" => Definition::Struct{ fields: Fields::UnnamedFields(
+            "XY__A" => Definition::Struct{ fields: Fields::Empty },
+            "XY__B" => Definition::Struct{ fields: Fields::Empty },
+            "XY__C" => Definition::Struct{ fields: Fields::Empty },
+            "XY__D" => Definition::Struct{ fields: Fields::UnnamedFields(
                 vec!["u32".to_string(), "u32".to_string()]
             )},
-            "XYE" => Definition::Struct{ fields: Fields::Empty },
-            "XYF" => Definition::Struct{ fields: Fields::UnnamedFields(
+            "XY__E" => Definition::Struct{ fields: Fields::Empty },
+            "XY__F" => Definition::Struct{ fields: Fields::UnnamedFields(
                 vec!["u64".to_string()]
 
             )},
@@ -75,22 +75,22 @@ fn test_schema_discriminant_no_unit_type_no_use_discriminant() {
             "XYNoDiscriminant" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                     (0, "A".to_string(), "XYNoDiscriminantA".to_string()),
-                     (1, "B".to_string(), "XYNoDiscriminantB".to_string()),
-                     (2, "C".to_string(), "XYNoDiscriminantC".to_string()),
-                     (3, "D".to_string(), "XYNoDiscriminantD".to_string()),
-                     (4, "E".to_string(), "XYNoDiscriminantE".to_string()),
-                     (5, "F".to_string(), "XYNoDiscriminantF".to_string())
+                     (0, "A".to_string(), "XYNoDiscriminant__A".to_string()),
+                     (1, "B".to_string(), "XYNoDiscriminant__B".to_string()),
+                     (2, "C".to_string(), "XYNoDiscriminant__C".to_string()),
+                     (3, "D".to_string(), "XYNoDiscriminant__D".to_string()),
+                     (4, "E".to_string(), "XYNoDiscriminant__E".to_string()),
+                     (5, "F".to_string(), "XYNoDiscriminant__F".to_string())
                 ]
             },
-            "XYNoDiscriminantA" => Definition::Struct{ fields: Fields::Empty },
-            "XYNoDiscriminantB" => Definition::Struct{ fields: Fields::Empty },
-            "XYNoDiscriminantC" => Definition::Struct{ fields: Fields::Empty },
-            "XYNoDiscriminantD" => Definition::Struct{ fields: Fields::UnnamedFields(
+            "XYNoDiscriminant__A" => Definition::Struct{ fields: Fields::Empty },
+            "XYNoDiscriminant__B" => Definition::Struct{ fields: Fields::Empty },
+            "XYNoDiscriminant__C" => Definition::Struct{ fields: Fields::Empty },
+            "XYNoDiscriminant__D" => Definition::Struct{ fields: Fields::UnnamedFields(
                 vec!["u32".to_string(), "u32".to_string()]
             )},
-            "XYNoDiscriminantE" => Definition::Struct{ fields: Fields::Empty },
-            "XYNoDiscriminantF" => Definition::Struct{ fields: Fields::UnnamedFields(
+            "XYNoDiscriminant__E" => Definition::Struct{ fields: Fields::Empty },
+            "XYNoDiscriminant__F" => Definition::Struct{ fields: Fields::UnnamedFields(
                 vec!["u64".to_string()]
 
             )},

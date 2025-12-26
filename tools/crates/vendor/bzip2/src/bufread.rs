@@ -3,16 +3,11 @@
 use std::io;
 use std::io::prelude::*;
 
-#[cfg(feature = "tokio")]
-use futures::Poll;
-#[cfg(feature = "tokio")]
-use tokio_io::{AsyncRead, AsyncWrite};
-
-use {Action, Compress, Compression, Decompress, Status};
+use crate::{Action, Compress, Compression, Decompress, Status};
 
 /// A bz2 encoder, or compressor.
 ///
-/// This structure implements a `BufRead` interface and will read uncompressed
+/// This structure implements a [`BufRead`] interface and will read uncompressed
 /// data from an underlying stream and emit a stream of compressed data.
 pub struct BzEncoder<R> {
     obj: R,
@@ -22,7 +17,7 @@ pub struct BzEncoder<R> {
 
 /// A bz2 decoder, or decompressor.
 ///
-/// This structure implements a `BufRead` interface and takes a stream of
+/// This structure implements a [`BufRead`] interface and takes a stream of
 /// compressed data as input, providing the decompressed data when read from.
 pub struct BzDecoder<R> {
     obj: R,
@@ -108,7 +103,7 @@ impl<R: BufRead> Read for BzEncoder<R> {
             // If we haven't ready any data and we haven't hit EOF yet, then we
             // need to keep asking for more data because if we return that 0
             // bytes of data have been read then it will be interpreted as EOF.
-            if read == 0 && !eof && buf.len() > 0 {
+            if read == 0 && !eof && !buf.is_empty() {
                 continue;
             }
             if ret == Status::StreamEnd {
@@ -119,9 +114,6 @@ impl<R: BufRead> Read for BzEncoder<R> {
     }
 }
 
-#[cfg(feature = "tokio")]
-impl<R: AsyncRead + BufRead> AsyncRead for BzEncoder<R> {}
-
 impl<W: Write> Write for BzEncoder<W> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         self.get_mut().write(buf)
@@ -129,13 +121,6 @@ impl<W: Write> Write for BzEncoder<W> {
 
     fn flush(&mut self) -> io::Result<()> {
         self.get_mut().flush()
-    }
-}
-
-#[cfg(feature = "tokio")]
-impl<R: AsyncWrite> AsyncWrite for BzEncoder<R> {
-    fn shutdown(&mut self) -> Poll<(), io::Error> {
-        self.get_mut().shutdown()
     }
 }
 
@@ -229,15 +214,12 @@ impl<R: BufRead> Read for BzDecoder<R> {
                 ));
             }
 
-            if read > 0 || buf.len() == 0 {
+            if read > 0 || buf.is_empty() {
                 return Ok(read);
             }
         }
     }
 }
-
-#[cfg(feature = "tokio")]
-impl<R: AsyncRead + BufRead> AsyncRead for BzDecoder<R> {}
 
 impl<W: Write> Write for BzDecoder<W> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
@@ -249,17 +231,10 @@ impl<W: Write> Write for BzDecoder<W> {
     }
 }
 
-#[cfg(feature = "tokio")]
-impl<R: AsyncWrite> AsyncWrite for BzDecoder<R> {
-    fn shutdown(&mut self) -> Poll<(), io::Error> {
-        self.get_mut().shutdown()
-    }
-}
-
 /// A bzip2 streaming decoder that decodes all members of a multistream.
 ///
 /// Wikipedia, particularly, uses bzip2 multistream for their dumps, and the
-/// `pbzip2` tool creates such data as well;
+/// `pbzip2` tool creates such data as well.
 pub struct MultiBzDecoder<R>(BzDecoder<R>);
 
 impl<R: BufRead> MultiBzDecoder<R> {
@@ -296,9 +271,6 @@ impl<R: BufRead> Read for MultiBzDecoder<R> {
     }
 }
 
-#[cfg(feature = "tokio")]
-impl<R: AsyncRead + BufRead> AsyncRead for MultiBzDecoder<R> {}
-
 impl<R: BufRead + Write> Write for MultiBzDecoder<R> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         self.get_mut().write(buf)
@@ -306,13 +278,6 @@ impl<R: BufRead + Write> Write for MultiBzDecoder<R> {
 
     fn flush(&mut self) -> io::Result<()> {
         self.get_mut().flush()
-    }
-}
-
-#[cfg(feature = "tokio")]
-impl<R: AsyncWrite + BufRead> AsyncWrite for MultiBzDecoder<R> {
-    fn shutdown(&mut self) -> Poll<(), io::Error> {
-        self.get_mut().shutdown()
     }
 }
 

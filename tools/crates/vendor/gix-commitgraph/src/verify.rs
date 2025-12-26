@@ -164,9 +164,7 @@ impl Graph {
                         file::verify::Error::RootTreeId { id, root_tree_id } => {
                             file::verify::Error::RootTreeId { id, root_tree_id }
                         }
-                        file::verify::Error::Mismatch { actual, expected } => {
-                            file::verify::Error::Mismatch { actual, expected }
-                        }
+                        file::verify::Error::Checksum(err) => file::verify::Error::Checksum(err),
                         file::verify::Error::Generation { generation, id } => {
                             file::verify::Error::Generation { generation, id }
                         }

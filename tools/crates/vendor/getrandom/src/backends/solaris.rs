@@ -22,6 +22,7 @@ mod util_libc;
 
 const MAX_BYTES: usize = 1024;
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     for chunk in dest.chunks_mut(MAX_BYTES) {
         let ptr = chunk.as_mut_ptr().cast::<c_void>();

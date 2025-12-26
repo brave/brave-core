@@ -66,6 +66,7 @@ pub enum InvalidFormatDescription {
 }
 
 impl From<InvalidFormatDescription> for crate::Error {
+    #[inline]
     fn from(original: InvalidFormatDescription) -> Self {
         Self::InvalidFormatDescription(original)
     }
@@ -74,6 +75,7 @@ impl From<InvalidFormatDescription> for crate::Error {
 impl TryFrom<crate::Error> for InvalidFormatDescription {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: crate::Error) -> Result<Self, Self::Error> {
         match err {
             crate::Error::InvalidFormatDescription(err) => Ok(err),
@@ -83,6 +85,7 @@ impl TryFrom<crate::Error> for InvalidFormatDescription {
 }
 
 impl fmt::Display for InvalidFormatDescription {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use InvalidFormatDescription::*;
         match self {
@@ -128,6 +131,4 @@ impl fmt::Display for InvalidFormatDescription {
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for InvalidFormatDescription {}
+impl core::error::Error for InvalidFormatDescription {}

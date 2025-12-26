@@ -1,4 +1,10 @@
-#[cfg(not(any(solarish, target_os = "haiku", target_os = "nto", target_os = "vita")))]
+#[cfg(not(any(
+    solarish,
+    target_os = "aix",
+    target_os = "haiku",
+    target_os = "nto",
+    target_os = "vita"
+)))]
 use super::types::FileType;
 use crate::backend::c;
 use crate::backend::conv::owned_fd;
@@ -10,6 +16,7 @@ use crate::fs::{fstat, Stat};
 #[cfg(not(any(
     solarish,
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "netbsd",
     target_os = "nto",
     target_os = "redox",
@@ -17,19 +24,13 @@ use crate::fs::{fstat, Stat};
     target_os = "wasi",
 )))]
 use crate::fs::{fstatfs, StatFs};
-#[cfg(not(any(
-    solarish,
-    target_os = "haiku",
-    target_os = "redox",
-    target_os = "vita",
-    target_os = "wasi"
-)))]
+#[cfg(not(any(solarish, target_os = "vita", target_os = "wasi")))]
 use crate::fs::{fstatvfs, StatVfs};
 use crate::io;
 #[cfg(not(any(target_os = "fuchsia", target_os = "vita", target_os = "wasi")))]
 #[cfg(feature = "process")]
 use crate::process::fchdir;
-use alloc::borrow::ToOwned;
+use alloc::borrow::ToOwned as _;
 #[cfg(not(any(linux_like, target_os = "hurd")))]
 use c::readdir as libc_readdir;
 #[cfg(any(linux_like, target_os = "hurd"))]
@@ -71,6 +72,27 @@ impl Dir {
                 let _ = c::close(raw);
                 Err(err)
             }
+        }
+    }
+
+    /// Returns the file descriptor associated with the directory stream.
+    ///
+    /// The file descriptor is used internally by the directory stream. As a result, it is useful
+    /// only for functions which do not depend or alter the file position.
+    ///
+    /// # References
+    ///
+    ///   - [POSIX]
+    ///
+    /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/dirfd.html
+    #[inline]
+    #[doc(alias = "dirfd")]
+    pub fn fd<'a>(&'a self) -> io::Result<BorrowedFd<'a>> {
+        let raw_fd = unsafe { c::dirfd(self.libc_dir.as_ptr()) };
+        if raw_fd < 0 {
+            Err(io::Errno::last_os_error())
+        } else {
+            Ok(unsafe { BorrowedFd::borrow_raw(raw_fd) })
         }
     }
 
@@ -129,9 +151,27 @@ impl Dir {
         unsafe { c::rewinddir(self.libc_dir.as_ptr()) }
     }
 
+    /// `seekdir(self, offset)`
+    ///
+    /// This function is only available on 64-bit platforms because it's
+    /// implemented using [`libc::seekdir`] which only supports offsets that
+    /// fit in a `c_long`.
+    ///
+    /// [`libc::seekdir`]: https://docs.rs/libc/*/arm-unknown-linux-gnueabihf/libc/fn.seekdir.html
+    #[cfg(target_pointer_width = "64")]
+    #[cfg_attr(docsrs, doc(cfg(target_pointer_width = "64")))]
+    #[doc(alias = "seekdir")]
+    #[inline]
+    pub fn seek(&mut self, offset: i64) -> io::Result<()> {
+        self.any_errors = false;
+        unsafe { c::seekdir(self.libc_dir.as_ptr(), offset) }
+        Ok(())
+    }
+
     /// `readdir(self)`, where `None` means the end of the directory.
     pub fn read(&mut self) -> Option<io::Result<DirEntry>> {
-        // If we've seen errors, don't continue to try to read anything further.
+        // If we've seen errors, don't continue to try to read anything
+        // further.
         if self.any_errors {
             return None;
         }
@@ -171,10 +211,20 @@ impl Dir {
                     #[cfg(not(any(freebsdlike, netbsdlike, target_os = "vita")))]
                     d_ino: dirent.d_ino,
 
+                    #[cfg(any(
+                        linux_like,
+                        solarish,
+                        target_os = "fuchsia",
+                        target_os = "hermit",
+                        target_os = "openbsd",
+                        target_os = "redox"
+                    ))]
+                    d_off: dirent.d_off,
+
                     #[cfg(any(freebsdlike, netbsdlike))]
                     d_fileno: dirent.d_fileno,
 
-                    name: CStr::from_ptr(dirent.d_name.as_ptr()).to_owned(),
+                    name: CStr::from_ptr(dirent.d_name.as_ptr().cast()).to_owned(),
                 };
 
                 Some(Ok(result))
@@ -183,7 +233,7 @@ impl Dir {
     }
 
     /// `fstat(self)`
-    #[cfg(not(target_os = "vita"))]
+    #[cfg(not(any(target_os = "horizon", target_os = "vita")))]
     #[inline]
     pub fn stat(&self) -> io::Result<Stat> {
         fstat(unsafe { BorrowedFd::borrow_raw(c::dirfd(self.libc_dir.as_ptr())) })
@@ -193,6 +243,7 @@ impl Dir {
     #[cfg(not(any(
         solarish,
         target_os = "haiku",
+        target_os = "horizon",
         target_os = "netbsd",
         target_os = "nto",
         target_os = "redox",
@@ -207,8 +258,7 @@ impl Dir {
     /// `fstatvfs(self)`
     #[cfg(not(any(
         solarish,
-        target_os = "haiku",
-        target_os = "redox",
+        target_os = "horizon",
         target_os = "vita",
         target_os = "wasi"
     )))]
@@ -219,7 +269,12 @@ impl Dir {
 
     /// `fchdir(self)`
     #[cfg(feature = "process")]
-    #[cfg(not(any(target_os = "fuchsia", target_os = "vita", target_os = "wasi")))]
+    #[cfg(not(any(
+        target_os = "fuchsia",
+        target_os = "horizon",
+        target_os = "vita",
+        target_os = "wasi"
+    )))]
     #[cfg_attr(docsrs, doc(cfg(feature = "process")))]
     #[inline]
     pub fn chdir(&self) -> io::Result<()> {
@@ -253,7 +308,7 @@ impl Iterator for Dir {
 impl fmt::Debug for Dir {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut s = f.debug_struct("Dir");
-        #[cfg(not(target_os = "vita"))]
+        #[cfg(not(any(target_os = "horizon", target_os = "vita")))]
         s.field("fd", unsafe { &c::dirfd(self.libc_dir.as_ptr()) });
         s.finish()
     }
@@ -278,6 +333,16 @@ pub struct DirEntry {
     d_fileno: c::ino_t,
 
     name: CString,
+
+    #[cfg(any(
+        linux_like,
+        solarish,
+        target_os = "fuchsia",
+        target_os = "hermit",
+        target_os = "openbsd",
+        target_os = "redox"
+    ))]
+    d_off: c::off_t,
 }
 
 impl DirEntry {
@@ -285,6 +350,22 @@ impl DirEntry {
     #[inline]
     pub fn file_name(&self) -> &CStr {
         &self.name
+    }
+
+    /// Returns the “offset” of this directory entry. This is not a true
+    /// numerical offset but an opaque cookie that identifies a position in the
+    /// given stream.
+    #[cfg(any(
+        linux_like,
+        solarish,
+        target_os = "fuchsia",
+        target_os = "hermit",
+        target_os = "openbsd",
+        target_os = "redox"
+    ))]
+    #[inline]
+    pub fn offset(&self) -> i64 {
+        self.d_off as i64
     }
 
     /// Returns the type of this directory entry.
@@ -381,44 +462,49 @@ fn check_dirent_layout(dirent: &c::dirent) {
     );
 }
 
-#[test]
-fn dir_iterator_handles_io_errors() {
-    // create a dir, keep the FD, then delete the dir
-    let tmp = tempfile::tempdir().unwrap();
-    let fd = crate::fs::openat(
-        crate::fs::CWD,
-        tmp.path(),
-        crate::fs::OFlags::RDONLY | crate::fs::OFlags::CLOEXEC,
-        crate::fs::Mode::empty(),
-    )
-    .unwrap();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let file_fd = crate::fs::openat(
-        &fd,
-        tmp.path().join("test.txt"),
-        crate::fs::OFlags::WRONLY | crate::fs::OFlags::CREATE,
-        crate::fs::Mode::RWXU,
-    )
-    .unwrap();
+    #[test]
+    fn dir_iterator_handles_io_errors() {
+        // create a dir, keep the FD, then delete the dir
+        let tmp = tempfile::tempdir().unwrap();
+        let fd = crate::fs::openat(
+            crate::fs::CWD,
+            tmp.path(),
+            crate::fs::OFlags::RDONLY | crate::fs::OFlags::CLOEXEC,
+            crate::fs::Mode::empty(),
+        )
+        .unwrap();
 
-    let mut dir = Dir::read_from(&fd).unwrap();
+        let file_fd = crate::fs::openat(
+            &fd,
+            tmp.path().join("test.txt"),
+            crate::fs::OFlags::WRONLY | crate::fs::OFlags::CREATE,
+            crate::fs::Mode::RWXU,
+        )
+        .unwrap();
 
-    // Reach inside the `Dir` and replace its directory with a file, which
-    // will cause the subsequent `readdir` to fail.
-    unsafe {
-        let raw_fd = c::dirfd(dir.libc_dir.as_ptr());
-        let mut owned_fd: crate::fd::OwnedFd = crate::fd::FromRawFd::from_raw_fd(raw_fd);
-        crate::io::dup2(&file_fd, &mut owned_fd).unwrap();
-        core::mem::forget(owned_fd);
+        let mut dir = Dir::read_from(&fd).unwrap();
+
+        // Reach inside the `Dir` and replace its directory with a file, which
+        // will cause the subsequent `readdir` to fail.
+        unsafe {
+            let raw_fd = c::dirfd(dir.libc_dir.as_ptr());
+            let mut owned_fd: crate::fd::OwnedFd = crate::fd::FromRawFd::from_raw_fd(raw_fd);
+            crate::io::dup2(&file_fd, &mut owned_fd).unwrap();
+            core::mem::forget(owned_fd);
+        }
+
+        // FreeBSD and macOS seem to read some directory entries before we call
+        // `.next()`.
+        #[cfg(any(apple, freebsdlike))]
+        {
+            dir.rewind();
+        }
+
+        assert!(matches!(dir.next(), Some(Err(_))));
+        assert!(dir.next().is_none());
     }
-
-    // FreeBSD and macOS seem to read some directory entries before we call
-    // `.next()`.
-    #[cfg(any(apple, freebsdlike))]
-    {
-        dir.rewind();
-    }
-
-    assert!(matches!(dir.next(), Some(Err(_))));
-    assert!(dir.next().is_none());
 }

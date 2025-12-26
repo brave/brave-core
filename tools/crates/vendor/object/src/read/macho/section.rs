@@ -5,8 +5,8 @@ use crate::endian::{self, Endianness};
 use crate::macho;
 use crate::pod::Pod;
 use crate::read::{
-    self, CompressedData, CompressedFileRange, ObjectSection, ReadError, ReadRef, Result,
-    SectionFlags, SectionIndex, SectionKind,
+    self, gnu_compression, CompressedData, CompressedFileRange, ObjectSection, ReadError, ReadRef,
+    RelocationMap, Result, SectionFlags, SectionIndex, SectionKind,
 };
 
 use super::{MachHeader, MachOFile, MachORelocationIterator};
@@ -25,7 +25,7 @@ where
     R: ReadRef<'data>,
 {
     pub(super) file: &'file MachOFile<'data, Mach, R>,
-    pub(super) iter: slice::Iter<'file, MachOSectionInternal<'data, Mach>>,
+    pub(super) iter: slice::Iter<'file, MachOSectionInternal<'data, Mach, R>>,
 }
 
 impl<'data, 'file, Mach, R> fmt::Debug for MachOSectionIterator<'data, 'file, Mach, R>
@@ -71,7 +71,7 @@ where
     R: ReadRef<'data>,
 {
     pub(super) file: &'file MachOFile<'data, Mach, R>,
-    pub(super) internal: MachOSectionInternal<'data, Mach>,
+    pub(super) internal: MachOSectionInternal<'data, Mach, R>,
 }
 
 impl<'data, 'file, Mach, R> MachOSection<'data, 'file, Mach, R>
@@ -79,13 +79,43 @@ where
     Mach: MachHeader,
     R: ReadRef<'data>,
 {
-    fn bytes(&self) -> Result<&'data [u8]> {
-        let segment_index = self.internal.segment_index;
-        let segment = self.file.segment_internal(segment_index)?;
+    /// Get the Mach-O file containing this section.
+    pub fn macho_file(&self) -> &'file MachOFile<'data, Mach, R> {
+        self.file
+    }
+
+    /// Get the raw Mach-O section structure.
+    pub fn macho_section(&self) -> &'data Mach::Section {
+        self.internal.section
+    }
+
+    /// Get the raw Mach-O relocation entries.
+    pub fn macho_relocations(&self) -> Result<&'data [macho::Relocation<Mach::Endian>]> {
         self.internal
             .section
-            .data(self.file.endian, segment.data)
+            .relocations(self.file.endian, self.internal.data)
+    }
+
+    fn bytes(&self) -> Result<&'data [u8]> {
+        self.internal
+            .section
+            .data(self.file.endian, self.internal.data)
             .read_error("Invalid Mach-O section size or offset")
+    }
+
+    // Try GNU-style "ZLIB" header decompression.
+    fn maybe_compressed_gnu(&self) -> Result<Option<CompressedFileRange>> {
+        if !self
+            .name()
+            .map_or(false, |name| name.starts_with("__zdebug_"))
+        {
+            return Ok(None);
+        }
+        let (section_offset, section_size) = self
+            .file_range()
+            .read_error("Invalid ELF GNU compressed section type")?;
+        gnu_compression::compressed_file_range(self.internal.data, section_offset, section_size)
+            .map(Some)
     }
 }
 
@@ -147,23 +177,25 @@ where
         ))
     }
 
-    #[inline]
     fn compressed_file_range(&self) -> Result<CompressedFileRange> {
-        Ok(CompressedFileRange::none(self.file_range()))
+        Ok(if let Some(data) = self.maybe_compressed_gnu()? {
+            data
+        } else {
+            CompressedFileRange::none(self.file_range())
+        })
+    }
+
+    fn compressed_data(&self) -> read::Result<CompressedData<'data>> {
+        self.compressed_file_range()?.data(self.file.data)
     }
 
     #[inline]
-    fn compressed_data(&self) -> Result<CompressedData<'data>> {
-        self.data().map(CompressedData::none)
-    }
-
-    #[inline]
-    fn name_bytes(&self) -> Result<&[u8]> {
+    fn name_bytes(&self) -> Result<&'data [u8]> {
         Ok(self.internal.section.name())
     }
 
     #[inline]
-    fn name(&self) -> Result<&str> {
+    fn name(&self) -> Result<&'data str> {
         str::from_utf8(self.internal.section.name())
             .ok()
             .read_error("Non UTF-8 Mach-O section name")
@@ -190,13 +222,12 @@ where
     fn relocations(&self) -> MachORelocationIterator<'data, 'file, Mach, R> {
         MachORelocationIterator {
             file: self.file,
-            relocations: self
-                .internal
-                .section
-                .relocations(self.file.endian, self.file.data)
-                .unwrap_or(&[])
-                .iter(),
+            relocations: self.macho_relocations().unwrap_or(&[]).iter(),
         }
+    }
+
+    fn relocation_map(&self) -> read::Result<RelocationMap> {
+        RelocationMap::new(self.file, self)
     }
 
     fn flags(&self) -> SectionFlags {
@@ -207,19 +238,19 @@ where
 }
 
 #[derive(Debug, Clone, Copy)]
-pub(super) struct MachOSectionInternal<'data, Mach: MachHeader> {
+pub(super) struct MachOSectionInternal<'data, Mach: MachHeader, R: ReadRef<'data>> {
     pub index: SectionIndex,
-    pub segment_index: usize,
     pub kind: SectionKind,
     pub section: &'data Mach::Section,
+    /// The data for the file that contains the section data.
+    ///
+    /// This is required for dyld caches, where this may be a different subcache
+    /// from the file containing the Mach-O load commands.
+    pub data: R,
 }
 
-impl<'data, Mach: MachHeader> MachOSectionInternal<'data, Mach> {
-    pub(super) fn parse(
-        index: SectionIndex,
-        segment_index: usize,
-        section: &'data Mach::Section,
-    ) -> Self {
+impl<'data, Mach: MachHeader, R: ReadRef<'data>> MachOSectionInternal<'data, Mach, R> {
+    pub(super) fn parse(index: SectionIndex, section: &'data Mach::Section, data: R) -> Self {
         // TODO: we don't validate flags, should we?
         let kind = match (section.segment_name(), section.name()) {
             (b"__TEXT", b"__text") => SectionKind::Text,
@@ -242,9 +273,9 @@ impl<'data, Mach: MachHeader> MachOSectionInternal<'data, Mach> {
         };
         MachOSectionInternal {
             index,
-            segment_index,
             kind,
             section,
+            data,
         }
     }
 }

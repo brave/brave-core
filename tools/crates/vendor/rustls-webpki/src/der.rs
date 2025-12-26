@@ -16,8 +16,9 @@
 use alloc::vec::Vec;
 use core::marker::PhantomData;
 
-use crate::{error::DerTypeId, Error};
+use crate::{Error, error::DerTypeId};
 
+/// Iterator to parse a sequence of DER-encoded values of type `T`.
 #[derive(Debug)]
 pub struct DerIterator<'a, T> {
     reader: untrusted::Reader<'a>,
@@ -111,9 +112,10 @@ pub(crate) fn nested_limited<'a, R>(
     decoder: impl FnOnce(&mut untrusted::Reader<'a>) -> Result<R, Error>,
     size_limit: usize,
 ) -> Result<R, Error> {
-    expect_tag_and_get_value_limited(input, tag, size_limit)
-        .map_err(|_| error)?
-        .read_all(error, decoder)
+    match expect_tag_and_get_value_limited(input, tag, size_limit) {
+        Ok(value) => value.read_all(error, decoder),
+        Err(_) => Err(error),
+    }
 }
 
 // TODO: investigate taking decoder as a reference to reduce generated code
@@ -221,7 +223,7 @@ pub(crate) fn read_tag_and_get_value_limited<'a>(
 pub(crate) fn asn1_wrap(tag: Tag, bytes: &[u8]) -> Vec<u8> {
     let len = bytes.len();
     // The length is encoded differently depending on how many bytes there are
-    if len < SHORT_FORM_LEN_MAX.into() {
+    if len < usize::from(SHORT_FORM_LEN_MAX) {
         // Short form: the length is encoded using a single byte
         // Contents: Tag byte, single length byte, and passed bytes
         let mut ret = Vec::with_capacity(2 + len);
@@ -310,11 +312,15 @@ pub(crate) fn nested_of_mut<'a>(
     outer_tag: Tag,
     inner_tag: Tag,
     error: Error,
+    allow_empty: bool,
     mut decoder: impl FnMut(&mut untrusted::Reader<'a>) -> Result<(), Error>,
 ) -> Result<(), Error> {
-    nested(input, outer_tag, error, |outer| {
+    nested(input, outer_tag, error.clone(), |outer| {
+        if allow_empty && outer.at_end() {
+            return Ok(());
+        }
         loop {
-            nested(outer, inner_tag, error, |inner| decoder(inner))?;
+            nested(outer, inner_tag, error.clone(), |inner| decoder(inner))?;
             if outer.at_end() {
                 break;
             }
@@ -344,7 +350,7 @@ pub(crate) struct BitStringFlags<'a> {
     raw_bits: &'a [u8],
 }
 
-impl<'a> BitStringFlags<'a> {
+impl BitStringFlags<'_> {
     pub(crate) fn bit_set(&self, bit: usize) -> bool {
         let byte_index = bit / 8;
         let bit_shift = 7 - (bit % 8);
@@ -550,7 +556,7 @@ mod tests {
 
     #[test]
     fn test_bit_string_with_no_unused_bits() {
-        use super::{bit_string_with_no_unused_bits, Error};
+        use super::{Error, bit_string_with_no_unused_bits};
 
         // Unexpected type
         assert_eq!(
@@ -587,12 +593,12 @@ mod tests {
     }
 
     fn bytes_reader(bytes: &[u8]) -> untrusted::Reader<'_> {
-        return untrusted::Reader::new(untrusted::Input::from(bytes));
+        untrusted::Reader::new(untrusted::Input::from(bytes))
     }
 
     #[test]
     fn read_tag_and_get_value_default_limit() {
-        use super::{read_tag_and_get_value, Error};
+        use super::{Error, read_tag_and_get_value};
 
         let inputs = &[
             // DER with short-form length encoded as three bytes.
@@ -614,7 +620,7 @@ mod tests {
 
     #[test]
     fn read_tag_and_get_value_limited_high_form() {
-        use super::{read_tag_and_get_value_limited, Error, LONG_FORM_LEN_TWO_BYTES_MAX};
+        use super::{Error, LONG_FORM_LEN_TWO_BYTES_MAX, read_tag_and_get_value_limited};
 
         let mut bytes = untrusted::Reader::new(untrusted::Input::from(&[0xFF]));
         // read_tag_and_get_value_limited_high_form should reject DER with "high tag number form" tags.
@@ -626,7 +632,7 @@ mod tests {
 
     #[test]
     fn read_tag_and_get_value_limited_non_canonical() {
-        use super::{read_tag_and_get_value_limited, Error, LONG_FORM_LEN_TWO_BYTES_MAX};
+        use super::{Error, LONG_FORM_LEN_TWO_BYTES_MAX, read_tag_and_get_value_limited};
 
         let inputs = &[
             // Two byte length, with expressed length < 128.
@@ -652,7 +658,7 @@ mod tests {
     #[test]
     #[cfg(feature = "alloc")]
     fn read_tag_and_get_value_limited_limits() {
-        use super::{read_tag_and_get_value_limited, Error};
+        use super::{Error, read_tag_and_get_value_limited};
 
         let short_input = &[0xFF];
         let short_input_encoded = &[
@@ -703,11 +709,11 @@ mod tests {
             let mut bytes = untrusted::Reader::new(untrusted::Input::from(tc.input));
 
             let res = read_tag_and_get_value_limited(&mut bytes, tc.limit);
-            match tc.err {
+            match &tc.err {
                 None => assert!(res.is_ok()),
                 Some(e) => {
                     let actual = res.unwrap_err();
-                    assert_eq!(actual, e)
+                    assert_eq!(&actual, e)
                 }
             }
         }
@@ -740,7 +746,7 @@ mod tests {
 
     #[test]
     fn misencoded_bit_string_flags() {
-        use super::{bit_string_flags, Error};
+        use super::{Error, bit_string_flags};
 
         let bad_padding_example = untrusted::Input::from(&[
             0x08, // 8 bit of padding (illegal!).

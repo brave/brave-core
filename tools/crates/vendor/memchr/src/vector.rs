@@ -78,7 +78,7 @@ pub(crate) trait Vector: Copy + core::fmt::Debug {
 /// a slightly different representation. We could do extra work to unify the
 /// representations, but then would require additional costs in the hot path
 /// for `memchr` and `packedpair`. So instead, we abstraction over the specific
-/// representation with this trait an ddefine the operations we actually need.
+/// representation with this trait and define the operations we actually need.
 pub(crate) trait MoveMask: Copy + core::fmt::Debug {
     /// Return a mask that is all zeros except for the least significant `n`
     /// lanes in a corresponding vector.
@@ -344,7 +344,7 @@ mod aarch64neon {
 
         /// This is the only interesting implementation of this routine.
         /// Basically, instead of doing the "shift right narrow" dance, we use
-        /// adajacent folding max to determine whether there are any non-zero
+        /// adjacent folding max to determine whether there are any non-zero
         /// bytes in our mask. If there are, *then* we'll do the "shift right
         /// narrow" dance. In benchmarks, this does lead to slightly better
         /// throughput, but the win doesn't appear huge.
@@ -376,18 +376,10 @@ mod aarch64neon {
     impl NeonMoveMask {
         /// Get the mask in a form suitable for computing offsets.
         ///
-        /// Basically, this normalizes to little endian. On big endian, this
-        /// swaps the bytes.
+        /// The mask is always already in host-endianness, so this is a no-op.
         #[inline(always)]
         fn get_for_offset(self) -> u64 {
-            #[cfg(target_endian = "big")]
-            {
-                self.0.swap_bytes()
-            }
-            #[cfg(target_endian = "little")]
-            {
-                self.0
-            }
+            self.0
         }
     }
 

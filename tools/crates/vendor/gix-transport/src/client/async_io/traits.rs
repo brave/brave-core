@@ -31,7 +31,7 @@ pub trait Transport: TransportWithoutIO {
     /// `extra_parameters` are interpreted as `key=value` pairs if the second parameter is `Some` or as `key`
     /// if it is None.
     ///
-    /// Returns the service capabilities according according to the actual [Protocol] it supports,
+    /// Returns the service capabilities according to the actual [Protocol] it supports,
     /// and possibly a list of refs to be obtained.
     /// This means that asking for an unsupported protocol might result in a protocol downgrade to the given one
     /// if [TransportWithoutIO::supported_protocol_versions()] includes it or is empty.

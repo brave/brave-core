@@ -4,12 +4,13 @@ use std::sync::Arc;
 
 use rand::{Rng, SeedableRng};
 
+use crate::congestion::ControllerMetrics;
 use crate::congestion::bbr::bw_estimation::BandwidthEstimation;
 use crate::congestion::bbr::min_max::MinMax;
 use crate::connection::RttEstimator;
 use crate::{Duration, Instant};
 
-use super::{Controller, ControllerFactory, BASE_DATAGRAM_SIZE};
+use super::{BASE_DATAGRAM_SIZE, Controller, ControllerFactory};
 
 mod bw_estimation;
 mod min_max;
@@ -96,7 +97,7 @@ impl Bbr {
             bw_at_last_round: 0,
             round_wo_bw_gain: 0,
             ack_aggregation: AckAggregationState::default(),
-            random_number_generator: rand::rngs::StdRng::from_entropy(),
+            random_number_generator: rand::rngs::StdRng::from_os_rng(),
         }
     }
 
@@ -115,7 +116,7 @@ impl Bbr {
         // follow each other.
         let mut rand_index = self
             .random_number_generator
-            .gen_range(0..K_PACING_GAIN.len() as u8 - 1);
+            .random_range(0..K_PACING_GAIN.len() as u8 - 1);
         if rand_index >= 1 {
             rand_index += 1;
         }
@@ -483,6 +484,14 @@ impl Controller for Bbr {
             return self.cwnd.min(self.recovery_window);
         }
         self.cwnd
+    }
+
+    fn metrics(&self) -> ControllerMetrics {
+        ControllerMetrics {
+            congestion_window: self.window(),
+            ssthresh: None,
+            pacing_rate: Some(self.pacing_rate * 8),
+        }
     }
 
     fn clone_box(&self) -> Box<dyn Controller> {

@@ -27,11 +27,19 @@ extern crate std;
 #[cfg(test)]
 mod tests;
 
+#[cfg(feature = "seekable")]
+pub mod seekable;
+
 // Re-export zstd-sys
 pub use zstd_sys;
 
 /// How to compress data.
 pub use zstd_sys::ZSTD_strategy as Strategy;
+
+/// Frame progression state.
+#[cfg(feature = "experimental")]
+#[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
+pub use zstd_sys::ZSTD_frameProgression as FrameProgression;
 
 /// Reset directive.
 // pub use zstd_sys::ZSTD_ResetDirective as ResetDirective;
@@ -47,6 +55,9 @@ include!("constants.rs");
 
 #[cfg(feature = "experimental")]
 include!("constants_experimental.rs");
+
+#[cfg(feature = "seekable")]
+include!("constants_seekable.rs");
 
 /// Represents the compression level used by zstd.
 pub type CompressionLevel = i32;
@@ -835,6 +846,13 @@ impl<'a> CCtx<'a> {
                 core::ptr::null_mut(),
             )
         })
+    }
+
+    #[cfg(feature = "experimental")]
+    #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
+    pub fn get_frame_progression(&self) -> FrameProgression {
+        // Safety: Just FFI
+        unsafe { zstd_sys::ZSTD_getFrameProgression(self.0.as_ptr()) }
     }
 }
 
@@ -2078,9 +2096,9 @@ pub enum DictAttachPref {
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[repr(u32)]
 pub enum ParamSwitch {
-    Auto = zstd_sys::ZSTD_paramSwitch_e::ZSTD_ps_auto as u32,
-    Enable = zstd_sys::ZSTD_paramSwitch_e::ZSTD_ps_enable as u32,
-    Disable = zstd_sys::ZSTD_paramSwitch_e::ZSTD_ps_disable as u32,
+    Auto = zstd_sys::ZSTD_ParamSwitch_e::ZSTD_ps_auto as u32,
+    Enable = zstd_sys::ZSTD_ParamSwitch_e::ZSTD_ps_enable as u32,
+    Disable = zstd_sys::ZSTD_ParamSwitch_e::ZSTD_ps_disable as u32,
 }
 
 /// A compression parameter.

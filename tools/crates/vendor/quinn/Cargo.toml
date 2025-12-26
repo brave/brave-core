@@ -11,10 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70.0"
+rust-version = "1.74.1"
 name = "quinn"
-version = "0.11.6"
-build = false
+version = "0.11.9"
+build = "build.rs"
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -30,7 +31,70 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/quinn-rs/quinn"
 
 [package.metadata.docs.rs]
-all-features = true
+features = [
+    "lock_tracking",
+    "rustls-aws-lc-rs",
+    "rustls-ring",
+    "runtime-tokio",
+    "runtime-async-std",
+    "runtime-smol",
+    "log",
+    "rustls-log",
+]
+
+[features]
+aws-lc-rs = ["proto/aws-lc-rs"]
+aws-lc-rs-fips = ["proto/aws-lc-rs-fips"]
+bloom = ["proto/bloom"]
+default = [
+    "log",
+    "platform-verifier",
+    "runtime-tokio",
+    "rustls-ring",
+    "bloom",
+]
+lock_tracking = []
+log = [
+    "tracing/log",
+    "proto/log",
+    "udp/log",
+]
+platform-verifier = ["proto/platform-verifier"]
+qlog = ["proto/qlog"]
+ring = ["proto/ring"]
+runtime-async-std = [
+    "async-io",
+    "async-std",
+]
+runtime-smol = [
+    "async-io",
+    "smol",
+]
+runtime-tokio = [
+    "tokio/time",
+    "tokio/rt",
+    "tokio/net",
+]
+rustls = ["rustls-ring"]
+rustls-aws-lc-rs = [
+    "dep:rustls",
+    "aws-lc-rs",
+    "proto/rustls-aws-lc-rs",
+    "proto/aws-lc-rs",
+]
+rustls-aws-lc-rs-fips = [
+    "dep:rustls",
+    "aws-lc-rs-fips",
+    "proto/rustls-aws-lc-rs-fips",
+    "proto/aws-lc-rs-fips",
+]
+rustls-log = ["rustls?/logging"]
+rustls-ring = [
+    "dep:rustls",
+    "ring",
+    "proto/rustls-ring",
+    "proto/ring",
+]
 
 [lib]
 name = "quinn"
@@ -90,7 +154,7 @@ optional = true
 version = "0.2"
 
 [dependencies.proto]
-version = "0.11.7"
+version = "0.11.12"
 default-features = false
 package = "quinn-proto"
 
@@ -106,9 +170,6 @@ default-features = false
 [dependencies.smol]
 version = "2"
 optional = true
-
-[dependencies.socket2]
-version = "0.5"
 
 [dependencies.thiserror]
 version = "2.0.3"
@@ -145,10 +206,10 @@ version = "3"
 version = "2"
 
 [dev-dependencies.rand]
-version = "0.8"
+version = "0.9"
 
 [dev-dependencies.rcgen]
-version = "0.13"
+version = "0.14"
 
 [dev-dependencies.rustls-pemfile]
 version = "2"
@@ -182,53 +243,11 @@ default-features = false
 [dev-dependencies.url]
 version = "2"
 
-[features]
-aws-lc-rs = ["proto/aws-lc-rs"]
-aws-lc-rs-fips = ["proto/aws-lc-rs-fips"]
-default = [
-    "log",
-    "platform-verifier",
-    "runtime-tokio",
-    "rustls-ring",
-]
-lock_tracking = []
-log = [
-    "tracing/log",
-    "proto/log",
-    "udp/log",
-]
-platform-verifier = ["proto/platform-verifier"]
-ring = ["proto/ring"]
-runtime-async-std = [
-    "async-io",
-    "async-std",
-]
-runtime-smol = [
-    "async-io",
-    "smol",
-]
-runtime-tokio = [
-    "tokio/time",
-    "tokio/rt",
-    "tokio/net",
-]
-rustls = ["rustls-ring"]
-rustls-aws-lc-rs = [
-    "dep:rustls",
-    "aws-lc-rs",
-    "proto/rustls-aws-lc-rs",
-    "proto/aws-lc-rs",
-]
-rustls-aws-lc-rs-fips = [
-    "dep:rustls",
-    "aws-lc-rs-fips",
-    "proto/rustls-aws-lc-rs-fips",
-    "proto/aws-lc-rs-fips",
-]
-rustls-log = ["rustls?/logging"]
-rustls-ring = [
-    "dep:rustls",
-    "ring",
-    "proto/rustls-ring",
-    "proto/ring",
-]
+[build-dependencies.cfg_aliases]
+version = "0.2"
+
+[target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dependencies.web-time]
+version = "1"
+
+[target.'cfg(not(all(target_family = "wasm", target_os = "unknown")))'.dependencies.socket2]
+version = ">=0.5, <0.7"

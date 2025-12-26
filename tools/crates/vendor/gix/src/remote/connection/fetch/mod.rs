@@ -72,6 +72,8 @@ pub enum Status {
 pub struct Outcome {
     /// The result of the initial mapping of references, the prerequisite for any fetch.
     pub ref_map: RefMap,
+    /// The outcome of the handshake with the server.
+    pub handshake: gix_protocol::handshake::Outcome,
     /// The status of the operation to indicate what happened.
     pub status: Status,
 }
@@ -86,60 +88,13 @@ pub mod outcome {
         /// The negotiation graph indicating what kind of information 'the algorithm' collected in the end.
         pub graph: gix_negotiate::IdMap,
         /// Additional information for each round of negotiation.
-        pub rounds: Vec<negotiate::Round>,
-    }
-
-    ///
-    #[allow(clippy::empty_docs)]
-    pub mod negotiate {
-        /// Key information about each round in the pack-negotiation.
-        #[derive(Debug, Clone)]
-        pub struct Round {
-            /// The amount of `HAVE` lines sent this round.
-            ///
-            /// Each `HAVE` is an object that we tell the server about which would acknowledge each one it has as well.
-            pub haves_sent: usize,
-            /// A total counter, over all previous rounds, indicating how many `HAVE`s we sent without seeing a single acknowledgement,
-            /// i.e. the indication of a common object.
-            ///
-            /// This number maybe zero or be lower compared to the previous round if we have received at least one acknowledgement.
-            pub in_vain: usize,
-            /// The amount of haves we should send in this round.
-            ///
-            /// If the value is lower than `haves_sent` (the `HAVE` lines actually sent), the negotiation algorithm has run out of options
-            /// which typically indicates the end of the negotiation phase.
-            pub haves_to_send: usize,
-            /// If `true`, the server reported, as response to our previous `HAVE`s, that at least one of them is in common by acknowledging it.
-            ///
-            /// This may also lead to the server responding with a pack.
-            pub previous_response_had_at_least_one_in_common: bool,
-        }
+        pub rounds: Vec<gix_protocol::fetch::negotiate::Round>,
     }
 }
 
-/// The progress ids used in during various steps of the fetch operation.
-///
-/// Note that tagged progress isn't very widely available yet, but support can be improved as needed.
-///
-/// Use this information to selectively extract the progress of interest in case the parent application has custom visualization.
-#[derive(Debug, Copy, Clone)]
-pub enum ProgressId {
-    /// The progress name is defined by the remote and the progress messages it sets, along with their progress values and limits.
-    RemoteProgress,
-}
-
-impl From<ProgressId> for gix_features::progress::Id {
-    fn from(v: ProgressId) -> Self {
-        match v {
-            ProgressId::RemoteProgress => *b"FERP",
-        }
-    }
-}
-
-pub(crate) mod negotiate;
+pub use gix_protocol::fetch::ProgressId;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod prepare {
     /// The error returned by [`prepare_fetch()`][super::Connection::prepare_fetch()].
     #[derive(Debug, thiserror::Error)]
@@ -184,10 +139,10 @@ where
         progress: impl Progress,
         options: ref_map::Options,
     ) -> Result<Prepare<'remote, 'repo, T>, prepare::Error> {
-        if self.remote.refspecs(remote::Direction::Fetch).is_empty() {
+        if self.remote.refspecs(remote::Direction::Fetch).is_empty() && options.extra_refspecs.is_empty() {
             return Err(prepare::Error::MissingRefSpecs);
         }
-        let ref_map = self.ref_map_inner(progress, options).await?;
+        let ref_map = self.ref_map_by_ref(progress, options).await?;
         Ok(Prepare {
             con: Some(self),
             ref_map,
@@ -199,7 +154,7 @@ where
     }
 }
 
-impl<'remote, 'repo, T> Prepare<'remote, 'repo, T>
+impl<T> Prepare<'_, '_, T>
 where
     T: Transport,
 {
@@ -229,7 +184,7 @@ where
 }
 
 /// Builder
-impl<'remote, 'repo, T> Prepare<'remote, 'repo, T>
+impl<T> Prepare<'_, '_, T>
 where
     T: Transport,
 {
@@ -266,31 +221,5 @@ where
     pub fn with_shallow(mut self, shallow: remote::fetch::Shallow) -> Self {
         self.shallow = shallow;
         self
-    }
-}
-
-impl<'remote, 'repo, T> Drop for Prepare<'remote, 'repo, T>
-where
-    T: Transport,
-{
-    fn drop(&mut self) {
-        if let Some(mut con) = self.con.take() {
-            #[cfg(feature = "async-network-client")]
-            {
-                // TODO: this should be an async drop once the feature is available.
-                //       Right now we block the executor by forcing this communication, but that only
-                //       happens if the user didn't actually try to receive a pack, which consumes the
-                //       connection in an async context.
-                gix_protocol::futures_lite::future::block_on(gix_protocol::indicate_end_of_interaction(
-                    &mut con.transport,
-                    con.trace,
-                ))
-                .ok();
-            }
-            #[cfg(not(feature = "async-network-client"))]
-            {
-                gix_protocol::indicate_end_of_interaction(&mut con.transport, con.trace).ok();
-            }
-        }
     }
 }

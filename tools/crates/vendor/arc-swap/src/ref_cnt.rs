@@ -1,8 +1,9 @@
 use core::mem;
+#[rustversion::since(1.33)]
+use core::pin::Pin;
 use core::ptr;
 
-use alloc::rc::Rc;
-use alloc::sync::Arc;
+use crate::imports::{Arc, Rc};
 
 /// A trait describing smart reference counted pointers.
 ///
@@ -171,6 +172,167 @@ unsafe impl<T: RefCnt> RefCnt for Option<T> {
             None
         } else {
             Some(T::from_ptr(ptr))
+        }
+    }
+}
+
+// Pin is only available since Rust 1.33.
+#[rustversion::since(1.33)]
+unsafe impl<T> RefCnt for Pin<Arc<T>> {
+    type Base = T;
+
+    fn into_ptr(me: Pin<Arc<T>>) -> *mut T {
+        // SAFETY: We only expose an opaque pointer, which maintains the `Pin` invariant.
+        Arc::into_raw(unsafe { Pin::into_inner_unchecked(me) }) as *mut T
+    }
+
+    fn as_ptr(me: &Pin<Arc<T>>) -> *mut T {
+        // Slightly convoluted way to do this, but this avoids stacked borrows violations. The same
+        // intention as
+        //
+        // me as &T as *const T as *mut T
+        //
+        // We first create a "shallow copy" of me - one that doesn't really own its ref count
+        // (that's OK, me _does_ own it, so it can't be destroyed in the meantime).
+        // Then we can use into_raw (which preserves not having the ref count).
+        //
+        // We need to "revert" the changes we did. In current std implementation, the combination
+        // of from_raw and forget is no-op. But formally, into_raw shall be paired with from_raw
+        // and that read shall be paired with forget to properly "close the brackets". In future
+        // versions of STD, these may become something else that's not really no-op (unlikely, but
+        // possible), so we future-proof it a bit.
+
+        // SAFETY: &T cast to *const T will always be aligned, initialised and valid for reads
+        // We only expose an opaque pointer, which maintains the `Pin` invariant.
+        let me = Arc::into_raw(unsafe { Pin::into_inner_unchecked(ptr::read(me)) });
+        let ptr = me as *mut T;
+
+        // SAFETY: We got the pointer from into_raw just above
+        mem::forget(unsafe { Arc::from_raw(ptr) });
+
+        ptr
+    }
+
+    unsafe fn from_ptr(ptr: *const T) -> Self {
+        // SAFETY: `ptr` came from a previous `{into_ptr,as_ptr}` call, which is pinned.
+        unsafe { Pin::new_unchecked(Arc::from_raw(ptr)) }
+    }
+}
+
+// Pin is only available since Rust 1.33.
+#[rustversion::since(1.33)]
+unsafe impl<T> RefCnt for Pin<Rc<T>> {
+    type Base = T;
+
+    fn into_ptr(me: Pin<Rc<T>>) -> *mut T {
+        // SAFETY: We only expose an opaque pointer, which maintains the `Pin` invariant.
+        Rc::into_raw(unsafe { Pin::into_inner_unchecked(me) }) as *mut T
+    }
+
+    fn as_ptr(me: &Pin<Rc<T>>) -> *mut T {
+        // Slightly convoluted way to do this, but this avoids stacked borrows violations. The same
+        // intention as
+        //
+        // me as &T as *const T as *mut T
+        //
+        // We first create a "shallow copy" of me - one that doesn't really own its ref count
+        // (that's OK, me _does_ own it, so it can't be destroyed in the meantime).
+        // Then we can use into_raw (which preserves not having the ref count).
+        //
+        // We need to "revert" the changes we did. In current std implementation, the combination
+        // of from_raw and forget is no-op. But formally, into_raw shall be paired with from_raw
+        // and that read shall be paired with forget to properly "close the brackets". In future
+        // versions of STD, these may become something else that's not really no-op (unlikely, but
+        // possible), so we future-proof it a bit.
+
+        // SAFETY: &T cast to *const T will always be aligned, initialised and valid for reads
+        // We only expose an opaque pointer, which maintains the `Pin` invariant.
+        let me = Rc::into_raw(unsafe { Pin::into_inner_unchecked(ptr::read(me)) });
+        let ptr = me as *mut T;
+
+        // SAFETY: We got the pointer from into_raw just above
+        mem::forget(unsafe { Rc::from_raw(ptr) });
+
+        ptr
+    }
+
+    unsafe fn from_ptr(ptr: *const T) -> Self {
+        // SAFETY: `ptr` came from a previous `{into_ptr,as_ptr}` call, which is pinned.
+        unsafe { Pin::new_unchecked(Rc::from_raw(ptr)) }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn ref_cnt_arc() {
+        struct Data(u32);
+
+        let arc = Arc::new(Data(114514));
+        let ptr = RefCnt::as_ptr(&arc);
+        assert_eq!(ptr, RefCnt::into_ptr(arc));
+
+        let arc: Arc<Data> = unsafe { RefCnt::from_ptr(ptr) };
+        assert_eq!(arc.0, 114514);
+        assert_eq!(ptr, RefCnt::as_ptr(&arc));
+        assert_eq!(ptr, RefCnt::into_ptr(arc));
+
+        // Let it drop.
+        let _: Arc<Data> = unsafe { RefCnt::from_ptr(ptr) };
+    }
+
+    // Pin is only available since Rust 1.33.
+    #[rustversion::since(1.33)]
+    mod pin {
+        use super::*;
+        use core::marker::PhantomPinned;
+
+        #[test]
+        fn ref_cnt_pin_arc() {
+            struct Unmovable {
+                value: u32,
+                _phantom: PhantomPinned,
+            }
+
+            let pinned = Arc::pin(Unmovable {
+                value: 114514,
+                _phantom: PhantomPinned,
+            });
+            let ptr = RefCnt::as_ptr(&pinned);
+            assert_eq!(ptr, RefCnt::into_ptr(pinned));
+
+            let pinned: Pin<Arc<Unmovable>> = unsafe { RefCnt::from_ptr(ptr) };
+            assert_eq!(pinned.value, 114514);
+            assert_eq!(ptr, RefCnt::as_ptr(&pinned));
+            assert_eq!(ptr, RefCnt::into_ptr(pinned));
+
+            // Let it drop.
+            let _: Pin<Arc<Unmovable>> = unsafe { RefCnt::from_ptr(ptr) };
+        }
+
+        #[test]
+        fn ref_cnt_pin_rc() {
+            struct Unmovable {
+                value: u32,
+                _phantom: PhantomPinned,
+            }
+
+            let pinned = Rc::pin(Unmovable {
+                value: 114514,
+                _phantom: PhantomPinned,
+            });
+            let ptr = RefCnt::as_ptr(&pinned);
+            assert_eq!(ptr, RefCnt::into_ptr(pinned));
+
+            let pinned: Pin<Rc<Unmovable>> = unsafe { RefCnt::from_ptr(ptr) };
+            assert_eq!(pinned.value, 114514);
+            assert_eq!(ptr, RefCnt::as_ptr(&pinned));
+            assert_eq!(ptr, RefCnt::into_ptr(pinned));
+
+            // Let it drop.
+            let _: Pin<Rc<Unmovable>> = unsafe { RefCnt::from_ptr(ptr) };
         }
     }
 }

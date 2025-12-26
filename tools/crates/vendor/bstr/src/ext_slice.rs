@@ -528,7 +528,7 @@ pub trait ByteSlice: private::Sealed {
 
         #[cfg(not(unix))]
         #[inline]
-        fn imp(bytes: &[u8]) -> Cow<OsStr> {
+        fn imp(bytes: &[u8]) -> Cow<'_, OsStr> {
             use std::ffi::OsString;
 
             match bytes.to_str_lossy() {
@@ -2783,11 +2783,11 @@ pub trait ByteSlice: private::Sealed {
     /// The dual of this function is [`ByteVec::unescape_bytes`].
     ///
     /// Note that this is similar to, but not equivalent to the `Debug`
-    /// implementation on [`BStr`] and [`BString`]. The `Debug` implementations
-    /// also use the debug representation for all Unicode codepoints. However,
-    /// this escaping routine only escapes individual bytes. All Unicode
-    /// codepoints above `U+007F` are passed through unchanged without any
-    /// escaping.
+    /// implementation on [`BStr`] and [`BString`](crate::BString). The `Debug`
+    /// implementations also use the debug representation for all Unicode
+    /// codepoints. However, this escaping routine only escapes individual
+    /// bytes. All Unicode codepoints above `U+007F` are passed through
+    /// unchanged without any escaping.
     ///
     /// # Examples
     ///

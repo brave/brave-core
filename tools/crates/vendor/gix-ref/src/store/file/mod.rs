@@ -1,9 +1,6 @@
-use std::{
-    borrow::Cow,
-    path::{Path, PathBuf},
-};
+use std::path::PathBuf;
 
-use crate::{bstr::BStr, store::WriteReflog, Namespace};
+use crate::{store::WriteReflog, Namespace};
 
 /// A store for reference which uses plain files.
 ///
@@ -56,7 +53,7 @@ mod access {
         }
     }
 
-    use crate::file;
+    use crate::{file, Target};
 
     /// Access
     impl file::Store {
@@ -81,6 +78,35 @@ mod access {
         pub fn common_dir_resolved(&self) -> &Path {
             self.common_dir.as_deref().unwrap_or(&self.git_dir)
         }
+
+        /// Return `Some(true)` if this is a freshly initialized ref store without any observable changes.
+        /// Return `None` if `HEAD` couldn't be read.
+        ///
+        /// This is the case if:
+        ///
+        /// * the ref-store is valid
+        /// * `HEAD` exists
+        /// * `HEAD` still points to `default_ref`
+        /// * there are no packed refs
+        /// * There are no observable references in `refs/`
+        pub fn is_pristine(&self, default_ref: &crate::FullNameRef) -> Option<bool> {
+            let head = self.find_loose("HEAD").ok()?;
+            match head.target {
+                Target::Object(_) => return Some(false),
+                Target::Symbolic(name) => {
+                    if name.as_ref() != default_ref {
+                        return Some(false);
+                    }
+                }
+            }
+            if self.loose_iter().ok()?.filter_map(Result::ok).next().is_some() {
+                return Some(false);
+            }
+            if self.packed_refs_path().is_file() {
+                return Some(false);
+            }
+            Some(true)
+        }
     }
 }
 
@@ -92,42 +118,30 @@ pub struct Transaction<'s, 'p> {
     packed_refs: transaction::PackedRefs<'p>,
 }
 
-pub(in crate::store_impl::file) fn path_to_name<'a>(path: impl Into<Cow<'a, Path>>) -> Cow<'a, BStr> {
-    let path = gix_path::into_bstr(path.into());
-    gix_path::to_unix_separators_on_windows(path)
-}
-
 ///
-#[allow(clippy::empty_docs)]
 pub mod loose;
 mod overlay_iter;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod iter {
     pub use super::overlay_iter::{LooseThenPacked, Platform};
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod loose_then_packed {
         pub use super::super::overlay_iter::Error;
     }
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod log;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod find;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod transaction;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod packed;
 
 mod raw_ext;

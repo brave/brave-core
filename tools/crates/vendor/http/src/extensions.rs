@@ -1,4 +1,4 @@
-use std::any::{Any, TypeId};
+use std::any::{type_name, Any, TypeId};
 use std::collections::HashMap;
 use std::fmt;
 use std::hash::{BuildHasherDefault, Hasher};
@@ -267,7 +267,21 @@ impl Extensions {
 
 impl fmt::Debug for Extensions {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Extensions").finish()
+        struct TypeName(&'static str);
+        impl fmt::Debug for TypeName {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str(self.0)
+            }
+        }
+
+        let mut set = f.debug_set();
+        if let Some(map) = &self.map {
+            set.entries(
+                map.values()
+                    .map(|any_clone| TypeName(any_clone.as_ref().type_name())),
+            );
+        }
+        set.finish()
     }
 }
 
@@ -276,6 +290,7 @@ trait AnyClone: Any {
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
     fn into_any(self: Box<Self>) -> Box<dyn Any>;
+    fn type_name(&self) -> &'static str;
 }
 
 impl<T: Clone + Send + Sync + 'static> AnyClone for T {
@@ -294,6 +309,10 @@ impl<T: Clone + Send + Sync + 'static> AnyClone for T {
     fn into_any(self: Box<Self>) -> Box<dyn Any> {
         self
     }
+
+    fn type_name(&self) -> &'static str {
+        type_name::<T>()
+    }
 }
 
 impl Clone for Box<dyn AnyClone + Send + Sync> {
@@ -308,12 +327,22 @@ fn test_extensions() {
     struct MyType(i32);
 
     let mut extensions = Extensions::new();
+    assert_eq!(format!("{extensions:?}"), "{}");
 
     extensions.insert(5i32);
     extensions.insert(MyType(10));
 
     assert_eq!(extensions.get(), Some(&5i32));
     assert_eq!(extensions.get_mut(), Some(&mut 5i32));
+
+    let dbg = format!("{extensions:?}");
+    // map order is NOT deterministic
+    assert!(
+        (dbg == "{http::extensions::test_extensions::MyType, i32}")
+            || (dbg == "{i32, http::extensions::test_extensions::MyType}"),
+        "{}",
+        dbg
+    );
 
     let ext2 = extensions.clone();
 

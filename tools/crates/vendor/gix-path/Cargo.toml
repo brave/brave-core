@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.82"
 name = "gix-path"
-version = "0.10.14"
+version = "0.10.22"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
@@ -33,38 +33,36 @@ repository = "https://github.com/GitoxideLabs/gitoxide"
 [lib]
 name = "gix_path"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bstr]
-version = "1.3.0"
+version = "1.12.0"
 features = ["std"]
 default-features = false
 
 [dependencies.gix-trace]
-version = "^0.1.12"
+version = "^0.1.14"
 
-[dependencies.once_cell]
-version = "1.17.1"
+[dependencies.gix-validate]
+version = "^0.10.1"
 
 [dependencies.thiserror]
-version = "2.0.0"
+version = "2.0.17"
 
 [dev-dependencies.serial_test]
 version = "3.1.0"
 default-features = false
 
-[target.'cfg(not(target_family = "wasm"))'.dependencies.home]
-version = "0.5.5"
-
-[target."cfg(windows)".dev-dependencies.known-folders]
-version = "1.1.0"
-
 [target."cfg(windows)".dev-dependencies.windows]
-version = "0.58.0"
-features = ["Win32_System_Threading"]
+version = "0.62.1"
+features = [
+    "Win32_System_Com",
+    "Win32_System_Threading",
+    "Win32_UI_Shell",
+]
 
 [target."cfg(windows)".dev-dependencies.winreg]
-version = "0.52.0"
+version = "0.55.0"
 
 [lints.clippy]
 bool_to_int_with_if = "allow"
@@ -95,6 +93,7 @@ inline_always = "allow"
 items_after_statements = "allow"
 iter_not_returning_iterator = "allow"
 iter_without_into_iter = "allow"
+large_enum_variant = "allow"
 large_stack_arrays = "allow"
 manual_assert = "allow"
 manual_is_variant_and = "allow"
@@ -111,6 +110,7 @@ module_name_repetitions = "allow"
 must_use_candidate = "allow"
 mut_mut = "allow"
 naive_bytecount = "allow"
+needless_continue = "allow"
 needless_for_each = "allow"
 needless_pass_by_value = "allow"
 needless_raw_string_hashes = "allow"
@@ -118,6 +118,7 @@ no_effect_underscore_binding = "allow"
 option_option = "allow"
 range_plus_one = "allow"
 redundant_else = "allow"
+result_large_err = "allow"
 return_self_not_must_use = "allow"
 should_panic_without_expect = "allow"
 similar_names = "allow"

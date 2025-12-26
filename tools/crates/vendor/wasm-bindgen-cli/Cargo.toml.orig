@@ -1,0 +1,62 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+categories = ["wasm"]
+default-run = 'wasm-bindgen'
+description = """
+Command line interface of the `#[wasm_bindgen]` attribute and project. For more
+information see https://github.com/rustwasm/wasm-bindgen.
+"""
+documentation = "https://rustwasm.github.io/wasm-bindgen/"
+edition = "2021"
+homepage = "https://rustwasm.github.io/wasm-bindgen/"
+include = ["/LICENSE-*", "/src"]
+license = "MIT OR Apache-2.0"
+name = "wasm-bindgen-cli"
+repository = "https://github.com/rustwasm/wasm-bindgen/tree/master/crates/cli"
+rust-version = "1.76"
+version = "0.2.100"
+
+[package.metadata.binstall]
+bin-dir = "wasm-bindgen-{ version }-{ target }/{ bin }{ binary-ext }"
+pkg-url = "https://github.com/rustwasm/wasm-bindgen/releases/download/{ version }/wasm-bindgen-{ version }-{ target }{ archive-suffix }"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4", features = ["derive"] }
+env_logger = "0.11.5"
+log = "0.4"
+native-tls = { version = "0.2", default-features = false, optional = true }
+rouille = { version = "3.0.0", default-features = false }
+serde = { version = "1.0", features = ['derive'] }
+serde_derive = "1.0"
+serde_json = "1.0"
+tempfile = "3.0"
+ureq = { version = "2.7", default-features = false, features = ["brotli", "gzip"] }
+walrus = "0.23"
+wasm-bindgen-cli-support = { path = "../cli-support", version = "=0.2.100" }
+wasm-bindgen-shared = { path = "../shared", version = "=0.2.100" }
+
+[dev-dependencies]
+assert_cmd = "2"
+diff = "0.1"
+predicates = "3"
+rayon = "1.0"
+wasmparser = "0.214"
+wasmprinter = "0.214"
+
+[[test]]
+harness = false
+name = "reference"
+
+[features]
+default = ["rustls-tls"]
+
+native-tls = ["ureq/native-tls"]
+rustls-tls = ["ureq/tls"]
+
+# Legacy support
+openssl = ["dep:native-tls"]
+vendored-openssl = ["openssl", "native-tls/vendored"]
+
+[lints]
+workspace = true

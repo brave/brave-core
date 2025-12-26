@@ -15,6 +15,9 @@ mod full;
 mod limited;
 mod stream;
 
+#[cfg(feature = "channel")]
+pub mod channel;
+
 mod util;
 
 use self::combinators::{BoxBody, MapErr, MapFrame, UnsyncBoxBody};
@@ -25,6 +28,9 @@ pub use self::empty::Empty;
 pub use self::full::Full;
 pub use self::limited::{LengthLimitError, Limited};
 pub use self::stream::{BodyDataStream, BodyStream, StreamBody};
+
+#[cfg(feature = "channel")]
+pub use self::channel::Channel;
 
 /// An extension trait for [`http_body::Body`] adding various combinators and adapters
 pub trait BodyExt: http_body::Body {

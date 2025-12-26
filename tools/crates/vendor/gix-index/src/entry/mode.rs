@@ -28,9 +28,9 @@ impl Mode {
     /// If there is a type change then we will use whatever information is
     /// present on the FS. Specifically if `has_symlinks` is false we will
     /// never generate `Change::TypeChange { new_mode: Mode::SYMLINK }`. and
-    /// iff `executable_bit` is false we will never generate `Change::TypeChange
+    /// if `executable_bit` is false we will never generate `Change::TypeChange
     /// { new_mode: Mode::FILE_EXECUTABLE }` (all files are assumed to be not
-    /// executable). That measn that unstaging and staging files can be a lossy
+    /// executable). That means that unstaging and staging files can be a lossy
     /// operation on such file systems.
     ///
     /// If a directory replaced a normal file/symlink we assume that the
@@ -49,17 +49,20 @@ impl Mode {
     ) -> Option<Change> {
         match self {
             Mode::FILE if !stat.is_file() => (),
+            Mode::SYMLINK if stat.is_symlink() => return None,
             Mode::SYMLINK if has_symlinks && !stat.is_symlink() => (),
             Mode::SYMLINK if !has_symlinks && !stat.is_file() => (),
             Mode::COMMIT | Mode::DIR if !stat.is_dir() => (),
             Mode::FILE if executable_bit && stat.is_executable() => return Some(Change::ExecutableBit),
             Mode::FILE_EXECUTABLE if executable_bit && !stat.is_executable() => return Some(Change::ExecutableBit),
             _ => return None,
-        };
+        }
         let new_mode = if stat.is_dir() {
             Mode::COMMIT
         } else if executable_bit && stat.is_executable() {
             Mode::FILE_EXECUTABLE
+        } else if has_symlinks && stat.is_symlink() {
+            Mode::SYMLINK
         } else {
             Mode::FILE
         };
@@ -69,7 +72,8 @@ impl Mode {
 
 impl From<gix_object::tree::EntryMode> for Mode {
     fn from(value: gix_object::tree::EntryMode) -> Self {
-        Self::from_bits_truncate(value.0 as u32)
+        let value: u16 = value.value();
+        Self::from_bits_truncate(u32::from(value))
     }
 }
 

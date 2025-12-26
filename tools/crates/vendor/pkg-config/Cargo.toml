@@ -13,9 +13,10 @@
 edition = "2018"
 rust-version = "1.31"
 name = "pkg-config"
-version = "0.3.31"
+version = "0.3.32"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false

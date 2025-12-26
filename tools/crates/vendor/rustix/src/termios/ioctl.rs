@@ -8,6 +8,9 @@ use backend::c;
 
 /// `ioctl(fd, TIOCEXCL)`—Enables exclusive mode on a terminal.
 ///
+/// In exclusive mode, subsequent unprivileged `open` calls on the terminal
+/// device fail with [`io::Errno::BUSY`].
+///
 /// # References
 ///  - [Linux]
 ///  - [FreeBSD]
@@ -18,13 +21,18 @@ use backend::c;
 /// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=tty&sektion=4
 /// [NetBSD]: https://man.netbsd.org/tty.4
 /// [OpenBSD]: https://man.openbsd.org/tty.4
-#[cfg(not(any(windows, target_os = "redox", target_os = "wasi")))]
+#[cfg(not(any(
+    windows,
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "wasi"
+)))]
 #[inline]
 #[doc(alias = "TIOCEXCL")]
 pub fn ioctl_tiocexcl<Fd: AsFd>(fd: Fd) -> io::Result<()> {
     // SAFETY: `TIOCEXCL` is a no-argument setter opcode.
     unsafe {
-        let ctl = ioctl::NoArg::<ioctl::BadOpcode<{ c::TIOCEXCL as _ }>>::new();
+        let ctl = ioctl::NoArg::<{ c::TIOCEXCL as _ }>::new();
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -41,13 +49,18 @@ pub fn ioctl_tiocexcl<Fd: AsFd>(fd: Fd) -> io::Result<()> {
 /// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=tty&sektion=4
 /// [NetBSD]: https://man.netbsd.org/tty.4
 /// [OpenBSD]: https://man.openbsd.org/tty.4
-#[cfg(not(any(windows, target_os = "redox", target_os = "wasi")))]
+#[cfg(not(any(
+    windows,
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "wasi"
+)))]
 #[inline]
 #[doc(alias = "TIOCNXCL")]
 pub fn ioctl_tiocnxcl<Fd: AsFd>(fd: Fd) -> io::Result<()> {
     // SAFETY: `TIOCNXCL` is a no-argument setter opcode.
     unsafe {
-        let ctl = ioctl::NoArg::<ioctl::BadOpcode<{ c::TIOCNXCL as _ }>>::new();
+        let ctl = ioctl::NoArg::<{ c::TIOCNXCL as _ }>::new();
         ioctl::ioctl(fd, ctl)
     }
 }

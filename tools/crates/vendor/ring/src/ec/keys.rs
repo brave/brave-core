@@ -7,8 +7,11 @@ pub struct KeyPair {
 }
 
 impl KeyPair {
-    pub fn derive(seed: Seed) -> Result<Self, error::Unspecified> {
-        let public_key = seed.compute_public_key()?;
+    pub(super) fn derive(
+        seed: Seed,
+        cpu_features: cpu::Features,
+    ) -> Result<Self, error::Unspecified> {
+        let public_key = seed.compute_public_key(cpu_features)?;
         Ok(Self { seed, public_key })
     }
 
@@ -23,38 +26,35 @@ impl KeyPair {
 pub struct Seed {
     bytes: [u8; SEED_MAX_BYTES],
     curve: &'static Curve,
-    pub(crate) cpu_features: cpu::Features,
 }
 
 impl Seed {
     pub(crate) fn generate(
         curve: &'static Curve,
         rng: &dyn rand::SecureRandom,
-        cpu_features: cpu::Features,
+        cpu: cpu::Features,
     ) -> Result<Self, error::Unspecified> {
         let mut r = Self {
             bytes: [0u8; SEED_MAX_BYTES],
             curve,
-            cpu_features,
         };
-        (curve.generate_private_key)(rng, &mut r.bytes[..curve.elem_scalar_seed_len])?;
+        (curve.generate_private_key)(rng, &mut r.bytes[..curve.elem_scalar_seed_len], cpu)?;
         Ok(r)
     }
 
     pub(crate) fn from_bytes(
         curve: &'static Curve,
         bytes: untrusted::Input,
-        cpu_features: cpu::Features,
+        cpu: cpu::Features,
     ) -> Result<Self, error::Unspecified> {
         let bytes = bytes.as_slice_less_safe();
         if curve.elem_scalar_seed_len != bytes.len() {
             return Err(error::Unspecified);
         }
-        (curve.check_private_key_bytes)(bytes)?;
+        (curve.check_private_key_bytes)(bytes, cpu)?;
         let mut r = Self {
             bytes: [0; SEED_MAX_BYTES],
             curve,
-            cpu_features,
         };
         r.bytes[..curve.elem_scalar_seed_len].copy_from_slice(bytes);
         Ok(r)
@@ -64,12 +64,19 @@ impl Seed {
         &self.bytes[..self.curve.elem_scalar_seed_len]
     }
 
-    pub fn compute_public_key(&self) -> Result<PublicKey, error::Unspecified> {
+    pub(crate) fn compute_public_key(
+        &self,
+        cpu_features: cpu::Features,
+    ) -> Result<PublicKey, error::Unspecified> {
         let mut public_key = PublicKey {
             bytes: [0u8; PUBLIC_KEY_MAX_LEN],
             len: self.curve.public_key_len,
         };
-        (self.curve.public_from_private)(&mut public_key.bytes[..public_key.len], self)?;
+        (self.curve.public_from_private)(
+            &mut public_key.bytes[..public_key.len],
+            self,
+            cpu_features,
+        )?;
         Ok(public_key)
     }
 }

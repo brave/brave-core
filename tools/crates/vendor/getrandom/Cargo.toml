@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "getrandom"
-version = "0.3.1"
+version = "0.3.4"
 authors = ["The Rand Project Developers"]
 build = "build.rs"
 exclude = [".*"]
@@ -32,6 +32,9 @@ categories = [
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-random/getrandom"
 
+[package.metadata.docs.rs]
+features = ["std"]
+
 [package.metadata.cross.target.x86_64-unknown-netbsd]
 pre-build = [
     "mkdir -p /tmp/netbsd",
@@ -42,8 +45,12 @@ pre-build = [
     "rm -rf /tmp/netbsd",
 ]
 
-[package.metadata.docs.rs]
-features = ["std"]
+[features]
+std = []
+wasm_js = [
+    "dep:wasm-bindgen",
+    "dep:js-sys",
+]
 
 [lib]
 name = "getrandom"
@@ -60,27 +67,7 @@ path = "benches/buffer.rs"
 [dependencies.cfg-if]
 version = "1"
 
-[dependencies.compiler_builtins]
-version = "0.1"
-optional = true
-
-[dependencies.core]
-version = "1.0"
-optional = true
-package = "rustc-std-workspace-core"
-
-[features]
-rustc-dep-of-std = [
-    "dep:compiler_builtins",
-    "dep:core",
-]
-std = []
-wasm_js = [
-    "dep:wasm-bindgen",
-    "dep:js-sys",
-]
-
-[target.'cfg(all(any(target_os = "linux", target_os = "android"), not(any(getrandom_backend = "custom", getrandom_backend = "rdrand", getrandom_backend = "rndr"))))'.dependencies.libc]
+[target.'cfg(all(any(target_os = "linux", target_os = "android"), not(any(all(target_os = "linux", target_env = ""), getrandom_backend = "custom", getrandom_backend = "linux_raw", getrandom_backend = "rdrand", getrandom_backend = "rndr"))))'.dependencies.libc]
 version = "0.2.154"
 default-features = false
 
@@ -97,14 +84,15 @@ version = "0.3.77"
 optional = true
 default-features = false
 
-[target.'cfg(all(target_arch = "wasm32", target_os = "wasi", target_env = "p2"))'.dependencies.wasi]
-version = "0.13"
+[target.'cfg(all(target_arch = "wasm32", target_os = "wasi", target_env = "p2"))'.dependencies.wasip2]
+version = "1"
 default-features = false
 
-[target.'cfg(all(windows, not(target_vendor = "win7")))'.dependencies.windows-targets]
-version = "0.52"
+[target.'cfg(all(target_os = "uefi", getrandom_backend = "efi_rng"))'.dependencies.r-efi]
+version = "5.1"
+default-features = false
 
-[target.'cfg(any(target_os = "dragonfly", target_os = "freebsd", target_os = "hurd", target_os = "illumos", all(target_os = "horizon", target_arch = "arm")))'.dependencies.libc]
+[target.'cfg(any(target_os = "dragonfly", target_os = "freebsd", target_os = "hurd", target_os = "illumos", target_os = "cygwin", all(target_os = "horizon", target_arch = "arm")))'.dependencies.libc]
 version = "0.2.154"
 default-features = false
 
@@ -136,8 +124,10 @@ default-features = false
 level = "warn"
 priority = 0
 check-cfg = [
-    'cfg(getrandom_backend, values("custom", "rdrand", "rndr", "linux_getrandom", "wasm_js"))',
+    'cfg(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js", "windows_legacy", "unsupported"))',
     "cfg(getrandom_msan)",
     "cfg(getrandom_test_linux_fallback)",
+    "cfg(getrandom_test_linux_without_fallback)",
     "cfg(getrandom_test_netbsd_fallback)",
+    'cfg(target_os, values("cygwin"))',
 ]

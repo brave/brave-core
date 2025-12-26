@@ -118,8 +118,8 @@ maximum datetime values.][cppchrono]
 * [Jiff aims to have reasonable performance and may not be capable of doing the
 fastest possible thing.][perf]
 
-At present, it is recommended to use the [`icu`] crate for localization and
-non-Gregorian use cases.
+At present, it is recommended to use the [`icu`] crate via [`jiff-icu`] for
+localization and non-Gregorian use cases.
 
 [Leap seconds]: https://github.com/BurntSushi/jiff/issues/7
 [Calendars other than Gregorian]: https://github.com/BurntSushi/jiff/issues/6
@@ -127,6 +127,7 @@ non-Gregorian use cases.
 [cppchrono]: https://github.com/BurntSushi/jiff/issues/3
 [perf]: https://github.com/BurntSushi/jiff/issues/17
 [`icu`]: https://docs.rs/icu
+[`jiff-icu`]: https://docs.rs/jiff-icu
 
 Please file an issue if you can think of more (substantial) things to add to
 the above list.
@@ -175,8 +176,8 @@ Fourth, run it with `cargo run`:
 
 ```text
 $ cargo run
-   Compiling jiff v0.1.0 (/home/andrew/rust/jiff)
-   Compiling jiff-play v0.1.0 (/home/andrew/tmp/scratch/rust/jiff-play)
+   Compiling jiff v0.2.0 (/home/andrew/rust/jiff)
+   Compiling jiff-play v0.2.0 (/home/andrew/tmp/scratch/rust/jiff-play)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.37s
      Running `target/debug/jiff-play`
 2024-07-10T19:54:20-04:00[America/New_York]
@@ -250,7 +251,7 @@ println!("{zdt}");
 # Ok::<(), Box<dyn std::error::Error>>(())
 ```
 
-Or, if the time is known to be valid, you can use the infallibe
+Or, if the time is known to be valid, you can use the infallible
 [`civil::time`](civil::time()) convenience constructor:
 
 ```
@@ -368,7 +369,7 @@ use jiff::civil::date;
 
 let zdt1 = date(2020, 8, 26).at(6, 27, 0, 0).in_tz("America/New_York")?;
 let zdt2 = date(2023, 12, 31).at(18, 30, 0, 0).in_tz("America/New_York")?;
-let span = &zdt2 - &zdt1;
+let span = zdt2 - zdt1;
 assert_eq!(format!("{span:#}"), "29341h 3m");
 
 # Ok::<(), Box<dyn std::error::Error>>(())
@@ -637,6 +638,13 @@ For more, see the [`fmt::serde`] sub-module. (This requires enabling Jiff's
   looking at the symlink information on `/etc/localtime`. But in general, it's
   very platform specific and heuristic oriented. On some platforms, this may
   require extra dependencies. (For example, `windows-sys` on Windows.)
+* **tz-fat** (enabled by default) -
+  When enabled, Jiff will "fatten" time zone data with extra transitions to
+  make time zone lookups faster. This may result in increased heap memory
+  (when loading time zones from `/usr/share/zoneinfo`) or increased binary
+  size (when using the `jiff-static` proc macros). Note that this doesn't add
+  more transitions than are likely already in `/usr/share/zoneinfo`, depending
+  on how it was generated.
 * **tzdb-bundle-always** -
   When enabled, Jiff will forcefully depend on the `jiff-tzdb` crate, which
   embeds an entire copy of the Time Zone Database. You should avoid this unless
@@ -657,7 +665,27 @@ For more, see the [`fmt::serde`] sub-module. (This requires enabling Jiff's
   environment variables (with sensible default fallbacks) are used to construct
   candidate paths to look for this database. For more on this, see the
   [Android section of the platform support documentation](crate::_documentation::platform#android).
+* **static** -
+  When enabled, new procedural macros will be added to the `tz` sub-module for
+  creating static `TimeZone` values at compile-time. This adds a dependency on
+  [`jiff-static`] and [`jiff-tzdb`]. `jiff-static` defines the macros, and Jiff
+  re-exports them. This also enables `static-tz`.
+* **static-tz** -
+  When enabled, a `jiff::tz::include` procedural macro will become available.
+  This takes a TZif file path, like `/usr/share/zoneinfo/Israel`, as input and
+  returns a `TimeZone` value at compile time.
 
+### Performance features
+
+* **perf-inline** (enabled by default) -
+  When enabled, a number of `inline(always)` annotations are used inside of
+  Jiff to improve performance. This can especially impact formatting and
+  parsing of datetimes. If the extra performance isn't needed or if you want
+  to prioritize smaller binary sizes and shorter compilation times over
+  runtime performance, then it can be useful to disable this feature.
+
+[`jiff-static`]: https://docs.rs/jiff-static
+[`jiff-tzdb`]: https://docs.rs/jiff-tzdb
 [Concatenated Time Zone Database]: https://android.googlesource.com/platform/libcore/+/jb-mr2-release/luni/src/main/java/libcore/util/ZoneInfoDB.java
 */
 
@@ -665,8 +693,22 @@ For more, see the [`fmt::serde`] sub-module. (This requires enabling Jiff's
 // Lots of rustdoc links break when disabling default features because docs
 // aren't written conditionally.
 #![cfg_attr(
-    all(feature = "std", feature = "serde", feature = "tzdb-zoneinfo"),
+    all(
+        feature = "std",
+        feature = "serde",
+        feature = "static",
+        feature = "tzdb-zoneinfo"
+    ),
     deny(rustdoc::broken_intra_doc_links)
+)]
+#![cfg_attr(
+    not(all(
+        feature = "std",
+        feature = "serde",
+        feature = "static",
+        feature = "tzdb-zoneinfo"
+    )),
+    allow(rustdoc::broken_intra_doc_links)
 )]
 // These are just too annoying to squash otherwise.
 #![cfg_attr(
@@ -678,10 +720,9 @@ For more, see the [`fmt::serde`] sub-module. (This requires enabling Jiff's
     )),
     allow(dead_code, unused_imports)
 )]
-// No clue why this thing is still unstable because it's pretty amazing. This
-// adds Cargo feature annotations to items in the rustdoc output. Which is
+// This adds Cargo feature annotations to items in the rustdoc output. Which is
 // sadly hugely beneficial for this crate due to the number of features.
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs_jiff, feature(doc_cfg))]
 // We generally want all types to impl Debug.
 #![warn(missing_debug_implementations)]
 // Document ALL THE THINGS!
@@ -718,7 +759,10 @@ pub use crate::{
         TimestampDisplayWithOffset, TimestampRound, TimestampSeries,
     },
     util::round::mode::RoundMode,
-    zoned::{Zoned, ZonedArithmetic, ZonedDifference, ZonedRound, ZonedWith},
+    zoned::{
+        Zoned, ZonedArithmetic, ZonedDifference, ZonedRound, ZonedSeries,
+        ZonedWith,
+    },
 };
 
 #[macro_use]
@@ -730,6 +774,8 @@ mod error;
 pub mod fmt;
 #[cfg(feature = "std")]
 mod now;
+#[doc(hidden)]
+pub mod shared;
 mod signed_duration;
 mod span;
 mod timestamp;
@@ -764,7 +810,7 @@ mod tests {
 
     #[cfg(feature = "std")]
     #[test]
-    fn topscratch() {
+    fn ranges() {
         use crate::util::t;
 
         dbg!((t::SpanYears::MIN, t::SpanYears::MAX));
@@ -777,5 +823,42 @@ mod tests {
         dbg!((t::SpanMilliseconds::MIN, t::SpanMilliseconds::MAX));
         dbg!((t::SpanMicroseconds::MIN, t::SpanMicroseconds::MAX));
         dbg!((t::SpanNanoseconds::MIN, t::SpanNanoseconds::MAX));
+        dbg!((t::UnixSeconds::MIN, t::UnixSeconds::MAX));
+        dbg!((t::UnixEpochDay::MIN, t::UnixEpochDay::MAX));
+    }
+
+    #[cfg(feature = "std")]
+    #[test]
+    fn maximally_long_span() {
+        use crate::{fmt::friendly, util::t};
+
+        let span = Span::new()
+            .years(t::SpanYears::MAX_REPR)
+            .months(t::SpanMonths::MAX_REPR)
+            .weeks(t::SpanWeeks::MAX_REPR)
+            .days(t::SpanDays::MAX_REPR)
+            .hours(t::SpanHours::MAX_REPR)
+            .minutes(t::SpanMinutes::MAX_REPR)
+            .seconds(t::SpanSeconds::MAX_REPR)
+            .milliseconds(t::SpanMilliseconds::MAX_REPR)
+            .microseconds(t::SpanMicroseconds::MAX_REPR)
+            .nanoseconds(t::SpanNanoseconds::MAX_REPR)
+            .negate();
+        std::println!("{span}");
+        std::println!("{span:#}");
+
+        let long_printer = friendly::SpanPrinter::new()
+            .designator(friendly::Designator::Verbose)
+            .spacing(friendly::Spacing::BetweenUnitsAndDesignators)
+            .comma_after_designator(true);
+        std::println!("{}", long_printer.span_to_string(&span));
+    }
+
+    #[cfg(feature = "std")]
+    #[test]
+    fn maximally_long_duration() {
+        let sdur = SignedDuration::MIN;
+        std::println!("{sdur}");
+        std::println!("{sdur:#}");
     }
 }

@@ -1,6 +1,8 @@
 use std::ops::{Deref, DerefMut};
 
-use crate::{bstr::BStr, types::AttributeStack, Repository};
+use gix_fs::stack::ToNormalPathComponents;
+
+use crate::{types::AttributeStack, Repository};
 
 /// Lifecycle
 impl<'repo> AttributeStack<'repo> {
@@ -32,7 +34,7 @@ impl DerefMut for AttributeStack<'_> {
 }
 
 /// Platform retrieval
-impl<'repo> AttributeStack<'repo> {
+impl AttributeStack<'_> {
     /// Append the `relative` path to the root directory of the cache and load all attribute or ignore files on the way as needed.
     /// Use `mode` to specify what kind of item lives at `relative` - directories may match against rules specifically.
     /// If `mode` is `None`, the item at `relative` is assumed to be a file.
@@ -44,18 +46,18 @@ impl<'repo> AttributeStack<'repo> {
         relative: impl AsRef<std::path::Path>,
         mode: Option<gix_index::entry::Mode>,
     ) -> std::io::Result<gix_worktree::stack::Platform<'_>> {
-        self.inner.at_path(relative, mode, &self.repo.objects)
+        self.inner.at_path(relative.as_ref(), mode, &self.repo.objects)
     }
 
     /// Obtain a platform for attribute or ignore lookups from a repo-`relative` path, typically obtained from an index entry.
     /// `mode` should reflect whether it's a directory or not, or left at `None` if unknown.
     ///
     /// If `relative` ends with `/` and `mode` is `None`, it is automatically assumed to be a directory.
-    pub fn at_entry<'r>(
+    pub fn at_entry(
         &mut self,
-        relative: impl Into<&'r BStr>,
+        relative: impl ToNormalPathComponents,
         mode: Option<gix_index::entry::Mode>,
     ) -> std::io::Result<gix_worktree::stack::Platform<'_>> {
-        self.inner.at_entry(relative, mode, &self.repo.objects)
+        self.inner.at_path(relative, mode, &self.repo.objects)
     }
 }

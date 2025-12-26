@@ -7,13 +7,24 @@
 //!   depth
 //! - [`LocatingSlice`] for looking up the absolute position of a token
 //!
-//! But that won't always cut it for your parser. For example, you might lex `&str` into
-//! a series of tokens and then want to parse a `TokenStream`.
+//! ## Implementing a custom token
+//!
+//! The first level of customization is parsing [`&[MyItem]`][Stream#impl-Stream-for-%26%5BT%5D]
+//! or [`TokenSlice<MyItem>`].
+//!
+//! The basic traits you may want for a custom token type are:
+//!
+//! | trait | usage |
+//! |---|---|
+//! | [`AsChar`] |Transforms common types to a char for basic token parsing|
+//! | [`ContainsToken`] |Look for the token in the given set|
+//!
+//! See also [`TokenSlice<MyItem>`], [lexing].
 //!
 //! ## Implementing a custom stream
 //!
 //! Let's assume we have an input type we'll call `MyStream`.
-//! `MyStream` is a sequence of `MyItem` type.
+//! `MyStream` is a sequence of `MyItem` tokens.
 //!
 //! The goal is to define parsers with this signature: `&mut MyStream -> ModalResult<Output>`.
 //! ```rust
@@ -25,7 +36,9 @@
 //! }
 //! ```
 //!
-//! Here are the traits you may have to implement for `MyStream`:
+//! Like above, you'll need to implement the related token traits for `MyItem`.
+//!
+//! The traits you may want to implement for `MyStream` include:
 //!
 //! | trait | usage |
 //! |---|---|
@@ -38,28 +51,13 @@
 //! | [`Location`] |Calculate location within initial input|
 //! | [`Offset`] |Calculate the offset between slices|
 //!
-//! And for `MyItem`:
-//!
-//! | trait | usage |
-//! |---|---|
-//! | [`AsChar`] |Transforms common types to a char for basic token parsing|
-//! | [`ContainsToken`] |Look for the token in the given set|
-//!
-//! And traits for `&[MyItem]`:
+//! And for `&[MyItem]` (slices returned by [`Stream`]):
 //!
 //! | trait | usage |
 //! |---|---|
 //! | [`SliceLen`] |Calculate the input length|
 //! | [`ParseSlice`] |Used to integrate `&str`'s `parse()` method|
-//!
-//! ## Implementing a custom token
-//!
-//! If you are parsing `&[Myitem]`, leaving just the `MyItem` traits.
-//!
-//! For example:
-//! ```rust
-#![doc = include_str!("../../examples/arithmetic/parser_lexer.rs")]
-//! ```
 
-#[allow(unused_imports)] // Here for intra-dock links
+#![allow(unused_imports)] // Here for intra-dock links
+use super::lexing;
 use crate::stream::*;

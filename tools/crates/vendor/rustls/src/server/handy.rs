@@ -166,39 +166,6 @@ impl server::ProducesTickets for NeverProducesTickets {
     }
 }
 
-/// Something which always resolves to the same cert chain.
-#[derive(Debug)]
-pub(super) struct AlwaysResolvesChain(Arc<sign::CertifiedKey>);
-
-impl AlwaysResolvesChain {
-    /// Creates an `AlwaysResolvesChain`, using the supplied `CertifiedKey`.
-    pub(super) fn new(certified_key: sign::CertifiedKey) -> Self {
-        Self(Arc::new(certified_key))
-    }
-
-    /// Creates an `AlwaysResolvesChain`, using the supplied `CertifiedKey` and OCSP response.
-    ///
-    /// If non-empty, the given OCSP response is attached.
-    pub(super) fn new_with_extras(certified_key: sign::CertifiedKey, ocsp: Vec<u8>) -> Self {
-        let mut r = Self::new(certified_key);
-
-        {
-            let cert = Arc::make_mut(&mut r.0);
-            if !ocsp.is_empty() {
-                cert.ocsp = Some(ocsp);
-            }
-        }
-
-        r
-    }
-}
-
-impl server::ResolvesServerCert for AlwaysResolvesChain {
-    fn resolve(&self, _client_hello: ClientHello<'_>) -> Option<Arc<sign::CertifiedKey>> {
-        Some(Arc::clone(&self.0))
-    }
-}
-
 /// An exemplar `ResolvesServerCert` implementation that always resolves to a single
 /// [RFC 7250] raw public key.
 ///
@@ -215,7 +182,7 @@ impl AlwaysResolvesServerRawPublicKeys {
 
 impl server::ResolvesServerCert for AlwaysResolvesServerRawPublicKeys {
     fn resolve(&self, _client_hello: ClientHello<'_>) -> Option<Arc<sign::CertifiedKey>> {
-        Some(Arc::clone(&self.0))
+        Some(self.0.clone())
     }
 
     fn only_raw_public_keys(&self) -> bool {
@@ -234,7 +201,7 @@ mod sni_resolver {
     use crate::hash_map::HashMap;
     use crate::server::ClientHello;
     use crate::sync::Arc;
-    use crate::webpki::{verify_server_name, ParsedCertificate};
+    use crate::webpki::{ParsedCertificate, verify_server_name};
     use crate::{server, sign};
 
     /// Something that resolves do different cert chains/keys based
@@ -305,17 +272,20 @@ mod sni_resolver {
         #[test]
         fn test_resolvesservercertusingsni_requires_sni() {
             let rscsni = ResolvesServerCertUsingSni::new();
-            assert!(rscsni
-                .resolve(ClientHello {
-                    server_name: &None,
-                    signature_schemes: &[],
-                    alpn: None,
-                    server_cert_types: None,
-                    client_cert_types: None,
-                    cipher_suites: &[],
-                    certificate_authorities: None,
-                })
-                .is_none());
+            assert!(
+                rscsni
+                    .resolve(ClientHello {
+                        server_name: &None,
+                        signature_schemes: &[],
+                        alpn: None,
+                        server_cert_types: None,
+                        client_cert_types: None,
+                        cipher_suites: &[],
+                        certificate_authorities: None,
+                        named_groups: None,
+                    })
+                    .is_none()
+            );
         }
 
         #[test]
@@ -324,17 +294,20 @@ mod sni_resolver {
             let name = DnsName::try_from("hello.com")
                 .unwrap()
                 .to_owned();
-            assert!(rscsni
-                .resolve(ClientHello {
-                    server_name: &Some(name),
-                    signature_schemes: &[],
-                    alpn: None,
-                    server_cert_types: None,
-                    client_cert_types: None,
-                    cipher_suites: &[],
-                    certificate_authorities: None,
-                })
-                .is_none());
+            assert!(
+                rscsni
+                    .resolve(ClientHello {
+                        server_name: &Some(name),
+                        signature_schemes: &[],
+                        alpn: None,
+                        server_cert_types: None,
+                        client_cert_types: None,
+                        cipher_suites: &[],
+                        certificate_authorities: None,
+                        named_groups: None,
+                    })
+                    .is_none()
+            );
         }
     }
 }

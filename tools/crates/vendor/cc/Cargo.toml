@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.63"
 name = "cc"
-version = "1.2.13"
+version = "1.2.50"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
 exclude = [
@@ -39,9 +39,19 @@ categories = ["development-tools::build-utils"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-lang/cc-rs"
 
+[features]
+jobserver = []
+parallel = [
+    "dep:libc",
+    "dep:jobserver",
+]
+
 [lib]
 name = "cc"
 path = "src/lib.rs"
+
+[dependencies.find-msvc-tools]
+version = "0.1.5"
 
 [dependencies.jobserver]
 version = "0.1.30"
@@ -54,14 +64,16 @@ version = "1.3.0"
 [dev-dependencies.tempfile]
 version = "3"
 
-[features]
-jobserver = []
-parallel = [
-    "dep:libc",
-    "dep:jobserver",
-]
-
 [target."cfg(unix)".dependencies.libc]
 version = "0.2.62"
 optional = true
 default-features = false
+
+[lints.rust.unexpected_cfgs]
+level = "allow"
+priority = 0
+check-cfg = ["cfg(disable_clang_cl_tests)"]
+
+[profile.release]
+opt-level = 3
+lto = true

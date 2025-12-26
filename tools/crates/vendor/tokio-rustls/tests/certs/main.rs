@@ -4,7 +4,7 @@
 
 use rcgen::{
     BasicConstraints, CertificateParams, DistinguishedName, DnType, ExtendedKeyUsagePurpose, IsCa,
-    KeyPair, KeyUsagePurpose,
+    Issuer, KeyPair, KeyUsagePurpose,
 };
 use std::fs::File;
 use std::io::Write;
@@ -12,18 +12,22 @@ use std::io::Write;
 #[test]
 #[ignore]
 fn regenerate_certs() {
-    let root_key = KeyPair::generate().unwrap();
-    let root_ca = issuer_params("Rustls Robust Root")
-        .self_signed(&root_key)
-        .unwrap();
+    let root = {
+        let key = KeyPair::generate().unwrap();
+        let params = issuer_params("Rustls Robust Root");
+        let cert = params.self_signed(&key).unwrap();
+        (Issuer::new(params, key), cert)
+    };
 
     let mut root_file = File::create("tests/certs/root.pem").unwrap();
-    root_file.write_all(root_ca.pem().as_bytes()).unwrap();
+    root_file.write_all(root.1.pem().as_bytes()).unwrap();
 
-    let intermediate_key = KeyPair::generate().unwrap();
-    let intermediate_ca = issuer_params("Rustls Robust Root - Rung 2")
-        .signed_by(&intermediate_key, &root_ca, &root_key)
-        .unwrap();
+    let intermediate = {
+        let key = KeyPair::generate().unwrap();
+        let params = issuer_params("Rustls Robust Root - Rung 2");
+        let cert = params.signed_by(&key, &root.0).unwrap();
+        (Issuer::new(params, key), cert)
+    };
 
     let end_entity_key = KeyPair::generate().unwrap();
     let mut end_entity_params =
@@ -33,14 +37,15 @@ fn regenerate_certs() {
         ExtendedKeyUsagePurpose::ServerAuth,
         ExtendedKeyUsagePurpose::ClientAuth,
     ];
+
     let end_entity = end_entity_params
-        .signed_by(&end_entity_key, &intermediate_ca, &intermediate_key)
+        .signed_by(&end_entity_key, &intermediate.0)
         .unwrap();
 
     let mut chain_file = File::create("tests/certs/chain.pem").unwrap();
     chain_file.write_all(end_entity.pem().as_bytes()).unwrap();
     chain_file
-        .write_all(intermediate_ca.pem().as_bytes())
+        .write_all(intermediate.1.pem().as_bytes())
         .unwrap();
 
     let mut key_file = File::create("tests/certs/end.key").unwrap();

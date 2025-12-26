@@ -1,0 +1,32 @@
+lints.workspace = true
+
+[package]
+name = "gix-prompt"
+version = "0.11.2"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project for handling prompts in the terminal"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*", "README.md"]
+rust-version = "1.82"
+
+[lib]
+doctest = false
+
+[dependencies]
+gix-command = { version = "^0.6.3", path = "../gix-command" }
+gix-config-value = { version = "^0.15.2", path = "../gix-config-value" }
+
+thiserror = "2.0.17"
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "1.1.2", features = ["termios"] }
+parking_lot = "0.12.4"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }
+serial_test = { version = "3.1.0", default-features = false }
+
+[target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "macos"))'.dev-dependencies]
+expectrl = "0.7.0"

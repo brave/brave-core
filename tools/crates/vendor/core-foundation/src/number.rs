@@ -9,9 +9,9 @@
 
 //! Immutable numbers.
 
+use core::ffi::c_void;
 use core_foundation_sys::base::kCFAllocatorDefault;
 pub use core_foundation_sys::number::*;
-use std::os::raw::c_void;
 
 use crate::base::TCFType;
 

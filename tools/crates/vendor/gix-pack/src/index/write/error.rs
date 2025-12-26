@@ -1,11 +1,9 @@
-use std::io;
-
 /// Returned by [`crate::index::File::write_data_iter_to_stream()`]
 #[derive(thiserror::Error, Debug)]
 #[allow(missing_docs)]
 pub enum Error {
-    #[error("An IO error occurred when reading the pack or creating a temporary file")]
-    Io(#[from] io::Error),
+    #[error("An error occurred when writing the pack index file")]
+    Io(#[from] gix_hash::io::Error),
     #[error("A pack entry could not be extracted")]
     PackEntryDecode(#[from] crate::data::input::Error),
     #[error("Indices of type {} cannot be written, only {} are supported", *.0 as usize, crate::index::Version::default() as usize)]

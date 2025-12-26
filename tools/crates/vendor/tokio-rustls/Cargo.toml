@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.71"
 name = "tokio-rustls"
-version = "0.26.1"
+version = "0.26.4"
 build = false
 exclude = [
     "/.github",
@@ -36,6 +36,22 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rustls/tokio-rustls"
+
+[features]
+aws-lc-rs = ["aws_lc_rs"]
+aws_lc_rs = ["rustls/aws_lc_rs"]
+brotli = ["rustls/brotli"]
+default = [
+    "logging",
+    "tls12",
+    "aws_lc_rs",
+]
+early-data = []
+fips = ["rustls/fips"]
+logging = ["rustls/logging"]
+ring = ["rustls/ring"]
+tls12 = ["rustls/tls12"]
+zlib = ["rustls/zlib"]
 
 [lib]
 name = "tokio_rustls"
@@ -62,7 +78,7 @@ name = "utils"
 path = "tests/utils.rs"
 
 [dependencies.rustls]
-version = "0.23.15"
+version = "0.23.27"
 features = ["std"]
 default-features = false
 
@@ -79,7 +95,7 @@ version = "0.3.1"
 version = "1.1"
 
 [dev-dependencies.rcgen]
-version = "0.13"
+version = "0.14"
 features = ["pem"]
 
 [dev-dependencies.tokio]
@@ -87,18 +103,4 @@ version = "1.0"
 features = ["full"]
 
 [dev-dependencies.webpki-roots]
-version = "0.26"
-
-[features]
-aws-lc-rs = ["aws_lc_rs"]
-aws_lc_rs = ["rustls/aws_lc_rs"]
-default = [
-    "logging",
-    "tls12",
-    "aws_lc_rs",
-]
-early-data = []
-fips = ["rustls/fips"]
-logging = ["rustls/logging"]
-ring = ["rustls/ring"]
-tls12 = ["rustls/tls12"]
+version = "1"

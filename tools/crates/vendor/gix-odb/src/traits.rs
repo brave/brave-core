@@ -1,31 +1,4 @@
-use std::io;
-
-use gix_object::WriteTo;
-
 use crate::find;
-
-/// Describe the capability to write git objects into an object store.
-pub trait Write {
-    /// Write objects using the intrinsic kind of [`hash`][gix_hash::Kind] into the database,
-    /// returning id to reference it in subsequent reads.
-    fn write(&self, object: &dyn WriteTo) -> Result<gix_hash::ObjectId, crate::write::Error> {
-        let mut buf = Vec::with_capacity(2048);
-        object.write_to(&mut buf)?;
-        self.write_stream(object.kind(), buf.len() as u64, &mut buf.as_slice())
-    }
-    /// As [`write`][Write::write], but takes an [`object` kind][gix_object::Kind] along with its encoded bytes.
-    fn write_buf(&self, object: gix_object::Kind, mut from: &[u8]) -> Result<gix_hash::ObjectId, crate::write::Error> {
-        self.write_stream(object, from.len() as u64, &mut from)
-    }
-    /// As [`write`][Write::write], but takes an input stream.
-    /// This is commonly used for writing blobs directly without reading them to memory first.
-    fn write_stream(
-        &self,
-        kind: gix_object::Kind,
-        size: u64,
-        from: &mut dyn io::Read,
-    ) -> Result<gix_hash::ObjectId, crate::write::Error>;
-}
 
 /// A way to obtain object properties without fully decoding it.
 pub trait Header {
@@ -34,63 +7,11 @@ pub trait Header {
 }
 
 mod _impls {
-    use std::{io::Read, ops::Deref, rc::Rc, sync::Arc};
+    use std::{ops::Deref, rc::Rc, sync::Arc};
 
-    use gix_hash::{oid, ObjectId};
-    use gix_object::{Kind, WriteTo};
+    use gix_hash::oid;
 
     use crate::find::Header;
-
-    impl<T> crate::Write for &T
-    where
-        T: crate::Write,
-    {
-        fn write(&self, object: &dyn WriteTo) -> Result<ObjectId, crate::write::Error> {
-            (*self).write(object)
-        }
-
-        fn write_buf(&self, object: Kind, from: &[u8]) -> Result<ObjectId, crate::write::Error> {
-            (*self).write_buf(object, from)
-        }
-
-        fn write_stream(&self, kind: Kind, size: u64, from: &mut dyn Read) -> Result<ObjectId, crate::write::Error> {
-            (*self).write_stream(kind, size, from)
-        }
-    }
-
-    impl<T> crate::Write for Arc<T>
-    where
-        T: crate::Write,
-    {
-        fn write(&self, object: &dyn WriteTo) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write(object)
-        }
-
-        fn write_buf(&self, object: Kind, from: &[u8]) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write_buf(object, from)
-        }
-
-        fn write_stream(&self, kind: Kind, size: u64, from: &mut dyn Read) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write_stream(kind, size, from)
-        }
-    }
-
-    impl<T> crate::Write for Rc<T>
-    where
-        T: crate::Write,
-    {
-        fn write(&self, object: &dyn WriteTo) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write(object)
-        }
-
-        fn write_buf(&self, object: Kind, from: &[u8]) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write_buf(object, from)
-        }
-
-        fn write_stream(&self, kind: Kind, size: u64, from: &mut dyn Read) -> Result<ObjectId, crate::write::Error> {
-            self.deref().write_stream(kind, size, from)
-        }
-    }
 
     impl<T> crate::Header for &T
     where

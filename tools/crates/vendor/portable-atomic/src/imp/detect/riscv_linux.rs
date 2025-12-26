@@ -6,20 +6,20 @@ Run-time CPU feature detection on RISC-V Linux/Android by using riscv_hwprobe.
 On RISC-V, detection using auxv only supports single-letter extensions.
 So, we use riscv_hwprobe that supports multi-letter extensions.
 
-Refs: https://github.com/torvalds/linux/blob/v6.11/Documentation/arch/riscv/hwprobe.rst
+Refs: https://github.com/torvalds/linux/blob/v6.16/Documentation/arch/riscv/hwprobe.rst
 */
 
 include!("common.rs");
 
 use core::ptr;
 
-// core::ffi::c_* (except c_void) requires Rust 1.64, libc requires Rust 1.63
+// libc requires Rust 1.63
 #[allow(non_camel_case_types, non_upper_case_globals)]
 mod ffi {
-    pub(crate) use super::c_types::{c_long, c_size_t, c_uint, c_ulong};
+    pub(crate) use crate::utils::ffi::{c_long, c_size_t, c_uint, c_ulong};
 
     sys_struct!({
-        // https://github.com/torvalds/linux/blob/v6.11/arch/riscv/include/uapi/asm/hwprobe.h
+        // https://github.com/torvalds/linux/blob/v6.16/arch/riscv/include/uapi/asm/hwprobe.h
         pub(crate) struct riscv_hwprobe {
             pub(crate) key: i64,
             pub(crate) value: u64,
@@ -29,22 +29,35 @@ mod ffi {
     sys_const!({
         pub(crate) const __NR_riscv_hwprobe: c_long = 258;
 
-        // https://github.com/torvalds/linux/blob/v6.11/arch/riscv/include/uapi/asm/hwprobe.h
+        // https://github.com/torvalds/linux/blob/v6.16/arch/riscv/include/uapi/asm/hwprobe.h
+        // Linux 6.4+
+        // https://github.com/torvalds/linux/commit/00e76e2c6a2bd3976d44d4a1fdd0b7a3c2566607
+        pub(crate) const RISCV_HWPROBE_KEY_BASE_BEHAVIOR: i64 = 3;
+        pub(crate) const RISCV_HWPROBE_BASE_BEHAVIOR_IMA: u64 = 1 << 0;
         pub(crate) const RISCV_HWPROBE_KEY_IMA_EXT_0: i64 = 4;
         // Linux 6.8+
         // https://github.com/torvalds/linux/commit/154a3706122978eeb34d8223d49285ed4f3c61fa
         pub(crate) const RISCV_HWPROBE_EXT_ZACAS: u64 = 1 << 34;
+        // Linux 6.16+
+        // https://github.com/torvalds/linux/commit/415a8c81da3dab0a585bd4f8d505a11ad5a171a7
+        #[cfg(test)]
+        pub(crate) const RISCV_HWPROBE_EXT_ZABHA: u64 = 1 << 58;
+        // Linux 6.19+
+        // https://github.com/torvalds/linux/commit/f4922b69165735e81752ee47d174f873e989a449
+        #[cfg(test)]
+        pub(crate) const RISCV_HWPROBE_EXT_ZALASR: u64 = 1 << 59;
     });
 
-    // TODO: use sys_fn!
     #[cfg(not(all(
         target_os = "linux",
         any(target_arch = "riscv32", all(target_arch = "riscv64", target_pointer_width = "64")),
     )))]
-    extern "C" {
-        // https://man7.org/linux/man-pages/man2/syscall.2.html
-        pub(crate) fn syscall(number: c_long, ...) -> c_long;
-    }
+    sys_fn!({
+        extern "C" {
+            // https://man7.org/linux/man-pages/man2/syscall.2.html
+            pub(crate) fn syscall(number: c_long, ...) -> c_long;
+        }
+    });
     // Use asm-based syscall for compatibility with non-libc targets if possible.
     #[cfg(all(
         target_os = "linux", // https://github.com/bytecodealliance/rustix/issues/1095
@@ -59,6 +72,8 @@ mod ffi {
         a3: *mut c_ulong,
         a4: c_uint,
     ) -> c_long {
+        #[cfg(not(portable_atomic_no_asm))]
+        use core::arch::asm;
         // arguments must be extended to 64-bit if RV64
         let a4 = a4 as usize;
         let r;
@@ -67,7 +82,7 @@ mod ffi {
         // - https://github.com/bminor/musl/blob/v1.2.5/arch/riscv32/syscall_arch.h
         // - https://github.com/bminor/musl/blob/v1.2.5/arch/riscv64/syscall_arch.h
         unsafe {
-            core::arch::asm!(
+            asm!(
                 "ecall",
                 in("a7") number,
                 inout("a0") a0 => r,
@@ -81,7 +96,7 @@ mod ffi {
         r
     }
 
-    // https://github.com/torvalds/linux/blob/v6.11/Documentation/arch/riscv/hwprobe.rst
+    // https://github.com/torvalds/linux/blob/v6.16/Documentation/arch/riscv/hwprobe.rst
     pub(crate) unsafe fn __riscv_hwprobe(
         pairs: *mut riscv_hwprobe,
         pair_count: c_size_t,
@@ -96,20 +111,37 @@ mod ffi {
 
 // syscall returns an unsupported error if riscv_hwprobe is not supported,
 // so we can safely use this function on older versions of Linux.
-fn riscv_hwprobe(out: &mut ffi::riscv_hwprobe) -> bool {
+fn riscv_hwprobe(out: &mut [ffi::riscv_hwprobe]) -> bool {
+    let len = out.len();
     // SAFETY: We've passed the valid pointer and length,
     // passing null ptr for cpus is safe because cpu_set_size is zero.
-    unsafe { ffi::__riscv_hwprobe(out, 1, 0, ptr::null_mut(), 0) == 0 }
+    unsafe { ffi::__riscv_hwprobe(out.as_mut_ptr(), len, 0, ptr::null_mut(), 0) == 0 }
 }
 
 #[cold]
 fn _detect(info: &mut CpuInfo) {
-    let mut out = ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 };
-    if riscv_hwprobe(&mut out) && out.key != -1 {
-        let value = out.value;
-        if value & ffi::RISCV_HWPROBE_EXT_ZACAS != 0 {
-            info.set(CpuInfo::HAS_ZACAS);
+    let mut out = [
+        ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_BASE_BEHAVIOR, value: 0 },
+        ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 },
+    ];
+    if riscv_hwprobe(&mut out)
+        && out[0].key != -1
+        && out[0].value & ffi::RISCV_HWPROBE_BASE_BEHAVIOR_IMA != 0
+        && out[1].key != -1
+    {
+        let value = out[1].value;
+        macro_rules! check {
+            ($flag:ident, $bit:ident) => {
+                if value & ffi::$bit != 0 {
+                    info.set(CpuInfoFlag::$flag);
+                }
+            };
         }
+        check!(zacas, RISCV_HWPROBE_EXT_ZACAS);
+        #[cfg(test)]
+        check!(zabha, RISCV_HWPROBE_EXT_ZABHA);
+        #[cfg(test)]
+        check!(zalasr, RISCV_HWPROBE_EXT_ZALASR);
     }
 }
 
@@ -140,40 +172,16 @@ mod tests {
                 libc::syscall(ffi::__NR_riscv_hwprobe, pairs, pair_count, cpu_set_size, cpus, flags)
             }
         }
-        fn riscv_hwprobe_libc(out: &mut ffi::riscv_hwprobe) -> bool {
-            unsafe { __riscv_hwprobe_libc(out, 1, 0, ptr::null_mut(), 0) == 0 }
+        fn riscv_hwprobe_libc(out: &mut [ffi::riscv_hwprobe]) -> bool {
+            let len = out.len();
+            unsafe { __riscv_hwprobe_libc(out.as_mut_ptr(), len, 0, ptr::null_mut(), 0) == 0 }
         }
-        let mut out = ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 };
-        let mut libc_out = ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 };
+        let mut out = [
+            ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_BASE_BEHAVIOR, value: 0 },
+            ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 },
+        ];
+        let mut libc_out = out;
         assert_eq!(riscv_hwprobe(&mut out), riscv_hwprobe_libc(&mut libc_out));
         assert_eq!(out, libc_out);
     }
-
-    // Static assertions for FFI bindings.
-    // This checks that FFI bindings defined in this crate, FFI bindings defined
-    // in libc, and FFI bindings generated for the platform's latest header file
-    // using bindgen have compatible signatures.
-    // Since this is static assertion, we can detect problems with
-    // `cargo check --tests --target <target>` run in CI (via TESTS=1 build.sh)
-    // without actually running tests on these platforms.
-    // As for constants, they are checked by static assertions generated by sys_const!.
-    // As for structs, they are checked by static assertions generated by sys_struct!.
-    // See also https://github.com/taiki-e/test-helper/blob/HEAD/tools/codegen/src/ffi.rs.
-    // TODO(codegen): auto-generate this test
-    const _: fn() = || {
-        #[cfg(not(all(
-            target_os = "linux",
-            any(
-                target_arch = "riscv32",
-                all(target_arch = "riscv64", target_pointer_width = "64"),
-            ),
-        )))]
-        {
-            use test_helper::sys;
-            let mut _syscall: unsafe extern "C" fn(num: ffi::c_long, ...) -> ffi::c_long =
-                ffi::syscall;
-            _syscall = libc::syscall;
-            _syscall = sys::syscall;
-        }
-    };
 }

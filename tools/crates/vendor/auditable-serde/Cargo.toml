@@ -12,9 +12,10 @@
 [package]
 edition = "2018"
 name = "auditable-serde"
-version = "0.7.0"
+version = "0.9.0"
 authors = ['Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>']
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -28,18 +29,13 @@ repository = "https://github.com/rust-secure-code/cargo-auditable"
 [package.metadata.docs.rs]
 all-features = true
 
+[features]
+default = []
+schema = ["schemars"]
+
 [lib]
 name = "auditable_serde"
 path = "src/lib.rs"
-
-[[example]]
-name = "from-metadata"
-path = "examples/from-metadata.rs"
-required-features = ["from_metadata"]
-
-[dependencies.cargo_metadata]
-version = "0.15"
-optional = true
 
 [dependencies.schemars]
 version = "0.8.10"
@@ -58,8 +54,3 @@ version = "1.0.57"
 
 [dependencies.topological-sort]
 version = "0.2.2"
-
-[features]
-default = []
-from_metadata = ["cargo_metadata"]
-schema = ["schemars"]

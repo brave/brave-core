@@ -6,10 +6,8 @@ use std::{
 #[cfg(feature = "lock_tracking")]
 mod tracking {
     use super::*;
-    use std::{
-        collections::VecDeque,
-        time::{Duration, Instant},
-    };
+    use crate::{Duration, Instant};
+    use std::collections::VecDeque;
     use tracing::warn;
 
     #[derive(Debug)]
@@ -43,7 +41,7 @@ mod tracking {
         /// Acquires the lock for a certain purpose
         ///
         /// The purpose will be recorded in the list of last lock owners
-        pub(crate) fn lock(&self, purpose: &'static str) -> MutexGuard<T> {
+        pub(crate) fn lock(&self, purpose: &'static str) -> MutexGuard<'_, T> {
             // We don't bother dispatching through Runtime::now because they're pure performance
             // diagnostics.
             let now = Instant::now();
@@ -73,7 +71,7 @@ mod tracking {
         purpose: &'static str,
     }
 
-    impl<'a, T> Drop for MutexGuard<'a, T> {
+    impl<T> Drop for MutexGuard<'_, T> {
         fn drop(&mut self) {
             if self.guard.last_lock_owner.len() == MAX_LOCK_OWNERS {
                 self.guard.last_lock_owner.pop_back();
@@ -94,7 +92,7 @@ mod tracking {
         }
     }
 
-    impl<'a, T> Deref for MutexGuard<'a, T> {
+    impl<T> Deref for MutexGuard<'_, T> {
         type Target = T;
 
         fn deref(&self) -> &Self::Target {
@@ -102,7 +100,7 @@ mod tracking {
         }
     }
 
-    impl<'a, T> DerefMut for MutexGuard<'a, T> {
+    impl<T> DerefMut for MutexGuard<'_, T> {
         fn deref_mut(&mut self) -> &mut Self::Target {
             &mut self.guard.value
         }
@@ -135,7 +133,7 @@ mod non_tracking {
         /// Acquires the lock for a certain purpose
         ///
         /// The purpose will be recorded in the list of last lock owners
-        pub(crate) fn lock(&self, _purpose: &'static str) -> MutexGuard<T> {
+        pub(crate) fn lock(&self, _purpose: &'static str) -> MutexGuard<'_, T> {
             MutexGuard {
                 guard: self.inner.lock().unwrap(),
             }

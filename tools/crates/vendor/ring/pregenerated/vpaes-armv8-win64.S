@@ -4,8 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(_WIN32)
-#include <ring-core/arm_arch.h>
-
 .section	.rodata
 
 
@@ -182,27 +180,6 @@ Lenc_entry:
 	eor	v4.16b, v4.16b, v16.16b		// vpxor	%xmm5,	%xmm4,	%xmm4	# 4 = sb1u + k
 	eor	v0.16b, v0.16b, v4.16b		// vpxor	%xmm4,	%xmm0,	%xmm0	# 0 = A
 	tbl	v0.16b, {v0.16b}, v1.16b	// vpshufb	%xmm1,	%xmm0,	%xmm0
-	ret
-
-
-.globl	vpaes_encrypt
-
-.def vpaes_encrypt
-   .type 32
-.endef
-.align	4
-vpaes_encrypt:
-	AARCH64_SIGN_LINK_REGISTER
-	stp	x29,x30,[sp,#-16]!
-	add	x29,sp,#0
-
-	ld1	{v7.16b}, [x0]
-	bl	_vpaes_encrypt_preheat
-	bl	_vpaes_encrypt_core
-	st1	{v0.16b}, [x1]
-
-	ldp	x29,x30,[sp],#16
-	AARCH64_VALIDATE_LINK_REGISTER
 	ret
 
 

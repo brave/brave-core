@@ -3,15 +3,14 @@
 //! It implements the parts of the [OSV schema](https://ossf.github.io/osv-schema) required for
 //! RustSec.
 
-use tame_index::external::gix;
-
 use super::ranges_for_advisory;
 use crate::advisory::Versions;
 use crate::{
-    advisory::{affected::FunctionPath, Affected, Category, Id, Informational},
-    repository::git::{self, GitModificationTimes, GitPath},
     Advisory,
+    advisory::{Affected, Category, Id, Informational, affected::FunctionPath},
+    repository::git::{GitModificationTimes, GitPath},
 };
+use cvss::Cvss;
 use serde::{Deserialize, Deserializer, Serialize};
 use std::str::FromStr;
 use url::Url;
@@ -71,11 +70,19 @@ impl From<&cargo_lock::Name> for OsvPackage {
 #[serde(tag = "type", content = "score")]
 pub enum OsvSeverity {
     CVSS_V3(cvss::v3::Base),
+    CVSS_V4(cvss::v4::Vector),
 }
 
-impl From<cvss::v3::Base> for OsvSeverity {
-    fn from(cvss: cvss::v3::Base) -> Self {
-        OsvSeverity::CVSS_V3(cvss)
+impl TryFrom<Cvss> for OsvSeverity {
+    type Error = &'static str;
+
+    fn try_from(cvss: Cvss) -> Result<Self, Self::Error> {
+        match cvss {
+            Cvss::CvssV30(base) => Ok(OsvSeverity::CVSS_V3(base)),
+            Cvss::CvssV31(base) => Ok(OsvSeverity::CVSS_V3(base)),
+            Cvss::CvssV40(vector) => Ok(OsvSeverity::CVSS_V4(vector)),
+            _ => unreachable!(),
+        }
     }
 }
 
@@ -96,6 +103,34 @@ pub struct OsvJsonRange {
     kind: String,
     events: Vec<OsvTimelineEvent>,
     // 'repo' field is not used because we don't track or export git commit data
+}
+
+impl OsvJsonRange {
+    /// Generates the timeline of the bug being introduced and fixed for the
+    /// [`affected[].ranges[].events`](https://github.com/ossf/osv-schema/blob/main/schema.md#affectedrangesevents-fields) field.
+    fn new(versions: &Versions) -> Self {
+        let ranges = ranges_for_advisory(versions);
+        assert!(!ranges.is_empty()); // zero ranges means nothing is affected, so why even have an advisory?
+        let mut timeline = Vec::new();
+        for range in ranges {
+            match range.introduced {
+                Some(ver) => timeline.push(OsvTimelineEvent::Introduced(ver)),
+                None => timeline.push(OsvTimelineEvent::Introduced(
+                    semver::Version::parse("0.0.0-0").unwrap(),
+                )),
+            }
+            #[allow(clippy::single_match)]
+            match range.fixed {
+                Some(ver) => timeline.push(OsvTimelineEvent::Fixed(ver)),
+                None => (), // "everything after 'introduced' is affected" is implicit in OSV
+            }
+        }
+
+        Self {
+            kind: "SEMVER".to_string(),
+            events: timeline,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -183,7 +218,7 @@ impl From<Affected> for OsvEcosystemSpecificAffected {
 pub struct OsvDatabaseSpecific {
     #[serde(default)]
     categories: Vec<Category>,
-    cvss: Option<cvss::v3::Base>,
+    cvss: Option<Cvss>,
     informational: Option<Informational>,
 }
 
@@ -234,11 +269,14 @@ impl OsvAdvisory {
         OsvAdvisory {
             schema_version: None,
             id: metadata.id,
-            modified: git_time_to_rfc3339(mod_times.for_path(path)),
+            modified: mod_times
+                .for_path(path)
+                .format(&time::format_description::well_known::Rfc3339)
+                .expect("well-known format to heap never fails"),
             published: rustsec_date_to_rfc3339(&metadata.date),
             affected: vec![OsvAffected {
                 package: (&metadata.package).into(),
-                ranges: Some(vec![timeline_for_advisory(&advisory.versions)]),
+                ranges: Some(vec![OsvJsonRange::new(&advisory.versions)]),
                 versions: Some(vec![]),
                 ecosystem_specific: Some(OsvEcosystemSpecific {
                     affects: Some(advisory.affected.unwrap_or_default().into()),
@@ -254,7 +292,13 @@ impl OsvAdvisory {
             aliases: metadata.aliases,
             related: metadata.related,
             summary: metadata.title,
-            severity: metadata.cvss.into_iter().map(|s| s.into()).collect(),
+            severity: match metadata.cvss {
+                Some(cvss) => match cvss.try_into() {
+                    Ok(sev) => vec![sev],
+                    Err(_) => vec![],
+                },
+                None => vec![],
+            },
             details: metadata.description,
             references: osv_references(reference_urls),
             database_specific: MainOsvDatabaseSpecific {
@@ -325,38 +369,6 @@ fn guess_url_kind(url: &Url) -> OsvReferenceKind {
     } else {
         OsvReferenceKind::WEB
     }
-}
-
-/// Generates the timeline of the bug being introduced and fixed for the
-/// [`affected[].ranges[].events`](https://github.com/ossf/osv-schema/blob/main/schema.md#affectedrangesevents-fields) field.
-fn timeline_for_advisory(versions: &Versions) -> OsvJsonRange {
-    let ranges = ranges_for_advisory(versions);
-    assert!(!ranges.is_empty()); // zero ranges means nothing is affected, so why even have an advisory?
-    let mut timeline = Vec::new();
-    for range in ranges {
-        match range.introduced {
-            Some(ver) => timeline.push(OsvTimelineEvent::Introduced(ver)),
-            None => timeline.push(OsvTimelineEvent::Introduced(
-                semver::Version::parse("0.0.0-0").unwrap(),
-            )),
-        }
-        #[allow(clippy::single_match)]
-        match range.fixed {
-            Some(ver) => timeline.push(OsvTimelineEvent::Fixed(ver)),
-            None => (), // "everything after 'introduced' is affected" is implicit in OSV
-        }
-    }
-    OsvJsonRange {
-        kind: "SEMVER".to_string(),
-        events: timeline,
-    }
-}
-
-fn git_time_to_rfc3339(time: gix::date::Time) -> String {
-    git::gix_time_to_time(time)
-        .to_offset(time::UtcOffset::UTC)
-        .format(&time::format_description::well_known::Rfc3339)
-        .expect("well-known format to heap never fails")
 }
 
 fn rustsec_date_to_rfc3339(d: &crate::advisory::Date) -> String {

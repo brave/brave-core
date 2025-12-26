@@ -126,6 +126,9 @@ use core::ops::{self, Range, RangeBounds};
 use core::ptr::{self, NonNull};
 use core::slice::{self, SliceIndex};
 
+#[cfg(feature = "malloc_size_of")]
+use malloc_size_of::{MallocShallowSizeOf, MallocSizeOf, MallocSizeOfOps};
+
 #[cfg(feature = "serde")]
 use serde::{
     de::{Deserialize, Deserializer, SeqAccess, Visitor},
@@ -177,23 +180,24 @@ use core::mem::ManuallyDrop;
 /// example, `smallvec![Rc::new(1); 5]` will create a vector of five references
 /// to the same boxed integer value, not five references pointing to independently
 /// boxed integers.
-
 #[macro_export]
 macro_rules! smallvec {
     // count helper: transform any expression into 1
     (@one $x:expr) => (1usize);
+    () => (
+        $crate::SmallVec::new()
+    );
     ($elem:expr; $n:expr) => ({
         $crate::SmallVec::from_elem($elem, $n)
     });
-    ($($x:expr),*$(,)*) => ({
-        let count = 0usize $(+ $crate::smallvec!(@one $x))*;
-        #[allow(unused_mut)]
+    ($($x:expr),+$(,)?) => ({
+        let count = 0usize $(+ $crate::smallvec!(@one $x))+;
         let mut vec = $crate::SmallVec::new();
         if count <= vec.inline_size() {
             $(vec.push($x);)*
             vec
         } else {
-            $crate::SmallVec::from_vec($crate::alloc::vec![$($x,)*])
+            $crate::SmallVec::from_vec($crate::alloc::vec![$($x,)+])
         }
     });
 }
@@ -1533,7 +1537,7 @@ impl<A: Array> SmallVec<A> {
     /// Retains only the elements specified by the predicate.
     ///
     /// This method is identical in behaviour to [`retain`]; it is included only
-    /// to maintain api-compatability with `std::Vec`, where the methods are
+    /// to maintain api-compatibility with `std::Vec`, where the methods are
     /// separate for historical reasons.
     pub fn retain_mut<F: FnMut(&mut A::Item) -> bool>(&mut self, f: F) {
         self.retain(f)
@@ -1968,6 +1972,32 @@ where
         }
 
         Ok(values)
+    }
+}
+
+#[cfg(feature = "malloc_size_of")]
+impl<A: Array> MallocShallowSizeOf for SmallVec<A> {
+    fn shallow_size_of(&self, ops: &mut MallocSizeOfOps) -> usize {
+        if self.spilled() {
+            unsafe { ops.malloc_size_of(self.as_ptr()) }
+        } else {
+            0
+        }
+    }
+}
+
+#[cfg(feature = "malloc_size_of")]
+impl<A> MallocSizeOf for SmallVec<A>
+where
+    A: Array,
+    A::Item: MallocSizeOf,
+{
+    fn size_of(&self, ops: &mut MallocSizeOfOps) -> usize {
+        let mut n = self.shallow_size_of(ops);
+        for elem in self.iter() {
+            n += elem.size_of(ops);
+        }
+        n
     }
 }
 
@@ -2470,3 +2500,106 @@ impl<T> Clone for ConstNonNull<T> {
 }
 
 impl<T> Copy for ConstNonNull<T> {}
+
+#[cfg(feature = "impl_bincode")]
+use bincode::{
+    de::{BorrowDecoder, Decode, Decoder, read::Reader},
+    enc::{Encode, Encoder, write::Writer},
+    error::{DecodeError, EncodeError},
+    BorrowDecode,
+};
+
+#[cfg(feature = "impl_bincode")]
+impl<A, Context> Decode<Context> for SmallVec<A>
+where
+    A: Array,
+    A::Item: Decode<Context>,
+{
+    fn decode<D: Decoder<Context = Context>>(decoder: &mut D) -> Result<Self, DecodeError> {
+        use core::convert::TryInto;
+        let len = u64::decode(decoder)?;
+        let len = len.try_into().map_err(|_| DecodeError::OutsideUsizeRange(len))?;
+        decoder.claim_container_read::<A::Item>(len)?;
+
+        let mut vec = SmallVec::with_capacity(len);
+        if unty::type_equal::<A::Item, u8>() {
+            // Initialize the smallvec's buffer.  Note that we need to do this through
+            // the raw pointer as we cannot name the type [u8; N] even though A::Item is u8.
+            let ptr = vec.as_mut_ptr();
+            // SAFETY: A::Item is u8 and the smallvec has been allocated with enough capacity
+            unsafe {
+                core::ptr::write_bytes(ptr, 0, len);
+                vec.set_len(len);
+            }
+            // Read the data into the smallvec's buffer.
+            let slice = vec.as_mut_slice();
+            // SAFETY: A::Item is u8
+            let slice = unsafe { core::mem::transmute::<&mut [A::Item], &mut [u8]>(slice) };
+            decoder.reader().read(slice)?;
+        } else {
+            for _ in 0..len {
+                decoder.unclaim_bytes_read(core::mem::size_of::<A::Item>());
+                vec.push(A::Item::decode(decoder)?);
+            }
+        }
+        Ok(vec)
+    }
+}
+
+#[cfg(feature = "impl_bincode")]
+impl<'de, A, Context> BorrowDecode<'de, Context> for SmallVec<A>
+where
+    A: Array,
+    A::Item: BorrowDecode<'de, Context>,
+{
+    fn borrow_decode<D: BorrowDecoder<'de, Context = Context>>(decoder: &mut D) -> Result<Self, DecodeError> {
+        use core::convert::TryInto;
+        let len = u64::decode(decoder)?;
+        let len = len.try_into().map_err(|_| DecodeError::OutsideUsizeRange(len))?;
+        decoder.claim_container_read::<A::Item>(len)?;
+
+        let mut vec = SmallVec::with_capacity(len);
+        if unty::type_equal::<A::Item, u8>() {
+            // Initialize the smallvec's buffer.  Note that we need to do this through
+            // the raw pointer as we cannot name the type [u8; N] even though A::Item is u8.
+            let ptr = vec.as_mut_ptr();
+            // SAFETY: A::Item is u8 and the smallvec has been allocated with enough capacity
+            unsafe {
+                core::ptr::write_bytes(ptr, 0, len);
+                vec.set_len(len);
+            }
+            // Read the data into the smallvec's buffer.
+            let slice = vec.as_mut_slice();
+            // SAFETY: A::Item is u8
+            let slice = unsafe { core::mem::transmute::<&mut [A::Item], &mut [u8]>(slice) };
+            decoder.reader().read(slice)?;
+        } else {
+            for _ in 0..len {
+                decoder.unclaim_bytes_read(core::mem::size_of::<A::Item>());
+                vec.push(A::Item::borrow_decode(decoder)?);
+            }
+        }
+        Ok(vec)
+    }
+}
+
+#[cfg(feature = "impl_bincode")]
+impl<A> Encode for SmallVec<A>
+where
+    A: Array,
+    A::Item: Encode,
+{
+    fn encode<E: Encoder>(&self, encoder: &mut E) -> Result<(), EncodeError> {
+        (self.len() as u64).encode(encoder)?;
+        if unty::type_equal::<A::Item, u8>() {
+            // Safety: A::Item is u8
+            let slice: &[u8] = unsafe { core::mem::transmute(self.as_slice()) };
+            encoder.writer().write(slice)?;
+        } else {
+            for item in self.iter() {
+                item.encode(encoder)?;
+            }
+        }
+        Ok(())
+    }
+}

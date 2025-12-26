@@ -89,7 +89,7 @@ impl<'a, R: BufRead> Decoder<'a, R> {
     /// The prefix must be the same as the one used during compression.
     pub fn with_ref_prefix<'b>(
         reader: R,
-        ref_prefix: &'b [u8]
+        ref_prefix: &'b [u8],
     ) -> io::Result<Self>
     where
         'b: 'a,

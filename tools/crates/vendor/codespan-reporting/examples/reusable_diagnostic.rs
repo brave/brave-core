@@ -1,23 +1,30 @@
 use codespan_reporting::diagnostic::{Diagnostic, Label};
 use codespan_reporting::files::SimpleFile;
-use codespan_reporting::term::termcolor::StandardStream;
-use codespan_reporting::term::{self, ColorArg};
-use std::ops::Range;
-use structopt::StructOpt;
+use codespan_reporting::term::{self, Config};
+use core::ops::Range;
 
-#[derive(Debug, StructOpt)]
-#[structopt(name = "emit")]
-pub struct Opts {
-    #[structopt(long = "color",
-        parse(try_from_str),
-        default_value = "auto",
-        possible_values = ColorArg::VARIANTS,
-        case_insensitive = true
-    )]
-    color: ColorArg,
+#[cfg(not(feature = "termcolor"))]
+fn main() {
+    panic!("this example requires termcolor feature");
 }
 
+#[cfg(feature = "termcolor")]
 fn main() -> anyhow::Result<()> {
+    use codespan_reporting::term::termcolor::{ColorChoice, StandardStream};
+
+    #[derive(Debug)]
+    pub struct Opts {
+        color: ColorChoice,
+    }
+
+    fn parse_args() -> Result<Opts, pico_args::Error> {
+        let mut pargs = pico_args::Arguments::from_env();
+        let color = pargs
+            .opt_value_from_str("--color")?
+            .unwrap_or(ColorChoice::Auto);
+        Ok(Opts { color })
+    }
+
     let file = SimpleFile::new(
         "main.rs",
         unindent::unindent(
@@ -38,11 +45,13 @@ fn main() -> anyhow::Result<()> {
         Error::MutatingImmutable(Item::new(20..23, "foo"), Item::new(51..59, "foo += 1")),
     ];
 
-    let opts = Opts::from_args();
-    let writer = StandardStream::stderr(opts.color.into());
-    let config = codespan_reporting::term::Config::default();
+    let Opts { color } = parse_args()?;
+
+    let writer = StandardStream::stderr(color);
+    let config = Config::default();
+
     for diagnostic in errors.iter().map(Error::report) {
-        term::emit(&mut writer.lock(), &config, &file, &diagnostic)?;
+        term::emit_to_write_style(&mut writer.lock(), &config, &file, &diagnostic)?;
     }
 
     Ok(())

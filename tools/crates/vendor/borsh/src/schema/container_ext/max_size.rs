@@ -94,7 +94,7 @@ fn max_serialized_size_impl<'a>(
         mul(count, sum)
     }
 
-    if stack.iter().any(|dec| *dec == declaration) {
+    if stack.contains(&declaration) {
         return Err(Error::Recursive);
     }
     stack.push(declaration);
@@ -205,7 +205,7 @@ fn is_zero_size_impl<'a>(
         Ok(true)
     }
 
-    if stack.iter().any(|dec| *dec == declaration) {
+    if stack.contains(&declaration) {
         return Err(ZeroSizeError::Recursive);
     }
     stack.push(declaration);

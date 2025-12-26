@@ -227,6 +227,21 @@ impl WrappedCommand {
     }
 }
 
+/// Quote an argument that has spaces in it.
+/// When our `WrappedCommand` is printed to the terminal, arguments that contain spaces needed to be quoted.
+/// Otherwise, we will have output such as:
+/// `pkg-config --libs --cflags foo foo < 3.11`
+/// which cannot be used in a terminal - it will attempt to read a file named 3.11 and provide it as stdin for pkg-config.
+/// Using this function, we instead get the correct output:
+/// `pkg-config --libs --cflags foo 'foo < 3.11'`
+fn quote_if_needed(arg: String) -> String {
+    if arg.contains(' ') {
+        format!("'{}'", arg)
+    } else {
+        arg
+    }
+}
+
 /// Output a command invocation that can be copy-pasted into the terminal.
 /// `Command`'s existing debug implementation is not used for that reason,
 /// as it can sometimes lead to output such as:
@@ -248,7 +263,7 @@ impl Display for WrappedCommand {
         let args = self
             .args
             .iter()
-            .map(|arg| arg.to_string_lossy().to_string())
+            .map(|arg| quote_if_needed(arg.to_string_lossy().to_string()))
             .collect::<Vec<String>>()
             .join(" ");
 
@@ -285,10 +300,12 @@ impl fmt::Display for Error {
                     io::ErrorKind::NotFound => {
                         let crate_name =
                             std::env::var("CARGO_PKG_NAME").unwrap_or_else(|_| "sys".to_owned());
-                        let instructions = if cfg!(target_os = "macos") || cfg!(target_os = "ios") {
-                            "Try `brew install pkg-config` if you have Homebrew.\n"
+                        let instructions = if cfg!(target_os = "macos") {
+                            "Try `brew install pkgconf` if you have Homebrew.\n"
+                        } else if cfg!(target_os = "ios") {
+                            "" // iOS cross-compilation requires a custom setup, no easy fix
                         } else if cfg!(unix) {
-                            "Try `apt install pkg-config`, or `yum install pkg-config`,\n\
+                            "Try `apt install pkg-config`, or `yum install pkg-config`, or `brew install pkgconf`\n\
                             or `pkg install pkg-config`, or `apk add pkgconfig` \
                             depending on your distribution.\n"
                         } else {

@@ -19,9 +19,10 @@ pub fn kill_process(pid: Pid, sig: Signal) -> io::Result<()> {
 
 /// `kill(-pid, sig)`—Sends a signal to all processes in a process group.
 ///
-/// If `pid` is 1, this sends a signal to all processes the current process has
-/// permission to send signals to, except process `1`, possibly other
-/// system-specific processes, and on some systems, the current process.
+/// If `pid` is [`Pid::INIT`], this sends a signal to all processes the current
+/// process has permission to send signals to, except process `Pid::INIT`,
+/// possibly other system-specific processes, and on some systems, the current
+/// process.
 ///
 /// # References
 ///  - [POSIX]

@@ -5,37 +5,53 @@ use alloc::{
 };
 
 use std::{
+    ffi::OsStr,
     fs::File,
     io::Read,
     path::{Path, PathBuf},
-    sync::{Arc, RwLock},
+    sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc, RwLock,
+    },
     time::Duration,
 };
 
 use crate::{
     error::{err, Error},
     timestamp::Timestamp,
-    tz::{tzif::is_possibly_tzif, TimeZone},
+    tz::{
+        db::special_time_zone, tzif::is_possibly_tzif, TimeZone,
+        TimeZoneNameIter,
+    },
     util::{self, cache::Expiration, parse, utf8},
 };
 
 const DEFAULT_TTL: Duration = Duration::new(5 * 60, 0);
 
+#[cfg(unix)]
 static ZONEINFO_DIRECTORIES: &[&str] =
-    &["/usr/share/zoneinfo", "/etc/zoneinfo"];
+    &["/usr/share/zoneinfo", "/usr/share/lib/zoneinfo", "/etc/zoneinfo"];
 
-pub(crate) struct ZoneInfo {
+// In non-Unix environments, there is (as of 2025-05-17) no standard location
+// for the zoneinfo database. And we specifically do not search the Unix-style
+// directories because this can have weird and undesirable effects on Windows.
+//
+// Ref https://github.com/BurntSushi/jiff/issues/376
+#[cfg(not(unix))]
+static ZONEINFO_DIRECTORIES: &[&str] = &[];
+
+pub(crate) struct Database {
     dir: Option<PathBuf>,
     names: Option<ZoneInfoNames>,
     zones: RwLock<CachedZones>,
 }
 
-impl ZoneInfo {
-    pub(crate) fn from_env() -> ZoneInfo {
+impl Database {
+    pub(crate) fn from_env() -> Database {
         if let Some(tzdir) = std::env::var_os("TZDIR") {
             let tzdir = PathBuf::from(tzdir);
             trace!("opening zoneinfo database at TZDIR={}", tzdir.display());
-            match ZoneInfo::from_dir(&tzdir) {
+            match Database::from_dir(&tzdir) {
                 Ok(db) => return db,
                 Err(_err) => {
                     // This is a WARN because it represents a failure to
@@ -49,7 +65,7 @@ impl ZoneInfo {
         for dir in ZONEINFO_DIRECTORIES {
             let tzdir = Path::new(dir);
             trace!("opening zoneinfo database at {}", tzdir.display());
-            match ZoneInfo::from_dir(&tzdir) {
+            match Database::from_dir(&tzdir) {
                 Ok(db) => return db,
                 Err(_err) => {
                     trace!("failed opening {}: {_err}", tzdir.display());
@@ -61,21 +77,21 @@ impl ZoneInfo {
              paths: {}",
             ZONEINFO_DIRECTORIES.join(", "),
         );
-        ZoneInfo::none()
+        Database::none()
     }
 
-    pub(crate) fn from_dir(dir: &Path) -> Result<ZoneInfo, Error> {
+    pub(crate) fn from_dir(dir: &Path) -> Result<Database, Error> {
         let names = Some(ZoneInfoNames::new(dir)?);
         let zones = RwLock::new(CachedZones::new());
-        Ok(ZoneInfo { dir: Some(dir.to_path_buf()), names, zones })
+        Ok(Database { dir: Some(dir.to_path_buf()), names, zones })
     }
 
     /// Creates a "dummy" zoneinfo database in which all lookups fail.
-    pub(crate) fn none() -> ZoneInfo {
+    pub(crate) fn none() -> Database {
         let dir = None;
         let names = None;
         let zones = RwLock::new(CachedZones::new());
-        ZoneInfo { dir, names, zones }
+        Database { dir, names, zones }
     }
 
     pub(crate) fn reset(&self) {
@@ -87,10 +103,8 @@ impl ZoneInfo {
     }
 
     pub(crate) fn get(&self, query: &str) -> Option<TimeZone> {
-        // We just always assume UTC exists and map it to our special const
-        // TimeZone::UTC value.
-        if query == "UTC" {
-            return Some(TimeZone::UTC);
+        if let Some(tz) = special_time_zone(query) {
+            return Some(tz);
         }
         // If we couldn't build any time zone names, then every lookup will
         // fail. So just bail now.
@@ -176,9 +190,11 @@ impl ZoneInfo {
         }
     }
 
-    pub(crate) fn available(&self) -> Vec<String> {
-        let Some(names) = self.names.as_ref() else { return vec![] };
-        names.available()
+    pub(crate) fn available<'d>(&'d self) -> TimeZoneNameIter<'d> {
+        let Some(names) = self.names.as_ref() else {
+            return TimeZoneNameIter::empty();
+        };
+        TimeZoneNameIter::from_iter(names.available().into_iter())
     }
 
     pub(crate) fn is_definitively_empty(&self) -> bool {
@@ -186,7 +202,7 @@ impl ZoneInfo {
     }
 }
 
-impl core::fmt::Debug for ZoneInfo {
+impl core::fmt::Debug for Database {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "ZoneInfo(")?;
         if let Some(ref dir) = self.dir {
@@ -216,6 +232,15 @@ impl CachedZones {
     }
 
     fn get_zone_index(&self, query: &str) -> Result<usize, usize> {
+        // The common case is that our query matches the time zone name case
+        // sensitively, so check for that first. It's a bit cheaper than doing
+        // a case insensitive search.
+        if let Ok(i) = self
+            .zones
+            .binary_search_by(|zone| zone.name.original().cmp(&query))
+        {
+            return Ok(i);
+        }
         self.zones.binary_search_by(|zone| {
             utf8::cmp_ignore_ascii_case(zone.name.lower(), query)
         })
@@ -244,17 +269,27 @@ impl CachedTimeZone {
         info: &ZoneInfoName,
         ttl: Duration,
     ) -> Result<CachedTimeZone, Error> {
-        let path = &info.inner.full;
-        let mut file =
-            File::open(path).map_err(|e| Error::io(e).path(path))?;
-        let mut data = vec![];
-        file.read_to_end(&mut data).map_err(|e| Error::io(e).path(path))?;
-        let tz = TimeZone::tzif(&info.inner.original, &data)
-            .map_err(|e| e.path(path))?;
-        let name = info.clone();
-        let last_modified = util::fs::last_modified_from_file(path, &file);
-        let expiration = Expiration::after(ttl);
-        Ok(CachedTimeZone { tz, name, expiration, last_modified })
+        fn imp(
+            info: &ZoneInfoName,
+            ttl: Duration,
+        ) -> Result<CachedTimeZone, Error> {
+            let path = info.path();
+            let mut file =
+                File::open(path).map_err(|e| Error::io(e).path(path))?;
+            let mut data = vec![];
+            file.read_to_end(&mut data)
+                .map_err(|e| Error::io(e).path(path))?;
+            let tz = TimeZone::tzif(&info.inner.original, &data)
+                .map_err(|e| e.path(path))?;
+            let name = info.clone();
+            let last_modified = util::fs::last_modified_from_file(path, &file);
+            let expiration = Expiration::after(ttl);
+            Ok(CachedTimeZone { tz, name, expiration, last_modified })
+        }
+
+        let result = imp(info, ttl);
+        info.set_validity(result.is_ok());
+        result
     }
 
     /// Returns true if this time zone has gone stale and should, at minimum,
@@ -287,7 +322,7 @@ impl CachedTimeZone {
             return false;
         };
         let Some(new_last_modified) =
-            util::fs::last_modified_from_path(&info.inner.full)
+            util::fs::last_modified_from_path(info.path())
         else {
             trace!(
                 "revalidation for {} failed because new last modified time \
@@ -436,7 +471,11 @@ impl ZoneInfoNamesInner {
 
     /// Returns all available time zone names.
     fn available(&self) -> Vec<String> {
-        self.names.iter().map(|n| n.inner.original.clone()).collect()
+        self.names
+            .iter()
+            .filter(|n| n.is_valid())
+            .map(|n| n.inner.original.clone())
+            .collect()
     }
 
     /// Attempts a refresh, but only follows through if the TTL has been
@@ -490,7 +529,7 @@ struct ZoneInfoName {
     inner: Arc<ZoneInfoNameInner>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 struct ZoneInfoNameInner {
     /// A file path resolvable to the corresponding file relative to the
     /// working directory of this program.
@@ -504,6 +543,13 @@ struct ZoneInfoNameInner {
     /// The lowercase version of `original`. This is how we determine name
     /// equality.
     lower: String,
+    /// The known validity state of this time zone name. `0` means unknown (and
+    /// thus we need to check), `1` means "presumably valid" and `2` means
+    /// "known invalid." The "presumably valid" means that the file has a
+    /// 4-byte TZif header and the odds of a false positive a low enough that
+    /// we can and should behave as if that file is actually TZif and thus a
+    /// valid IANA time zone identifier.
+    validity: AtomicUsize,
 }
 
 impl ZoneInfoName {
@@ -516,14 +562,100 @@ impl ZoneInfoName {
         let original = parse::os_str_utf8(time_zone_name.as_os_str())
             .map_err(|err| err.path(base))?;
         let lower = original.to_ascii_lowercase();
-        let inner =
-            ZoneInfoNameInner { full, original: original.to_string(), lower };
+        let inner = ZoneInfoNameInner {
+            full,
+            original: original.to_string(),
+            lower,
+            validity: AtomicUsize::new(ZONE_INFO_NAME_UNKNOWN),
+        };
         Ok(ZoneInfoName { inner: Arc::new(inner) })
+    }
+
+    /// Returns the path to the corresponding (presumed) TZif file.
+    fn path(&self) -> &Path {
+        &self.inner.full
+    }
+
+    /// Returns the original name of this time zone.
+    fn original(&self) -> &str {
+        &self.inner.original
     }
 
     /// Returns the lowercase name of this time zone.
     fn lower(&self) -> &str {
         &self.inner.lower
+    }
+
+    /// Returns true if it is presumed that this points to a valid TZif file.
+    ///
+    /// The result of this function may use a cached value.
+    fn is_valid(&self) -> bool {
+        let validity = self.inner.validity.load(Ordering::Relaxed);
+        if validity == ZONE_INFO_NAME_VALID {
+            return true;
+        } else if validity == ZONE_INFO_NAME_INVALID {
+            return false;
+        }
+        if self.is_valid_impl() {
+            self.inner.validity.store(ZONE_INFO_NAME_VALID, Ordering::Relaxed);
+            true
+        } else {
+            self.inner
+                .validity
+                .store(ZONE_INFO_NAME_INVALID, Ordering::Relaxed);
+            false
+        }
+    }
+
+    /// Marks this zone info name as known to be valid or invalid.
+    ///
+    /// e.g., After doing a successful time zone lookup.
+    fn set_validity(&self, is_valid: bool) {
+        let validity = if is_valid {
+            ZONE_INFO_NAME_VALID
+        } else {
+            ZONE_INFO_NAME_INVALID
+        };
+        self.inner.validity.store(validity, Ordering::Relaxed);
+    }
+
+    /// Performs the actual validity check.
+    ///
+    /// This is generally only needed for APIs like
+    /// `TimeZoneDatabase::available()`, where we don't want to load every time
+    /// zone into memory but we also don't want to return IANA time zone ids
+    /// like `zone.tab`. (Because a `/usr/share/zoneinfo` directory might have
+    /// random junk in it.)
+    fn is_valid_impl(&self) -> bool {
+        let path = self.path();
+        let mut f = match File::open(path) {
+            Ok(f) => f,
+            Err(_err) => {
+                trace!("failed to open {}: {_err}", path.display());
+                return false;
+            }
+        };
+        let mut buf = [0; 4];
+        if let Err(_err) = f.read_exact(&mut buf) {
+            trace!(
+                "failed to read first 4 bytes of {}: {_err}",
+                path.display()
+            );
+            return false;
+        }
+        if !is_possibly_tzif(&buf) {
+            // This is a trace because it's perfectly normal for a
+            // non-TZif file to be in a zoneinfo directory. But it could
+            // still be potentially useful debugging info.
+            trace!(
+                "found file {} that isn't TZif since its first \
+                 four bytes are {:?}",
+                path.display(),
+                crate::util::escape::Bytes(&buf),
+            );
+            return false;
+        }
+        true
     }
 }
 
@@ -553,6 +685,10 @@ impl core::hash::Hash for ZoneInfoName {
     }
 }
 
+static ZONE_INFO_NAME_UNKNOWN: usize = 0;
+static ZONE_INFO_NAME_VALID: usize = 1;
+static ZONE_INFO_NAME_INVALID: usize = 2;
+
 /// Recursively walks the given directory and returns the names of all time
 /// zones found.
 ///
@@ -564,7 +700,22 @@ impl core::hash::Hash for ZoneInfoName {
 ///
 /// The names returned are sorted in lexicographic order according to the
 /// lowercase form of each name.
+///
+/// # Performance
+///
+/// Note that this routine is written in a way that, at least on Unix, we
+/// should not be doing a syscall for every file. We need to do one for every
+/// directory, but that should be comparatively rare. It's done this way to
+/// avoid long initialization times when `/usr/share/zoneinfo` is on a slow
+/// file system.
+///
+/// See: https://github.com/BurntSushi/jiff/issues/366
 fn walk(start: &Path) -> Result<Vec<ZoneInfoName>, Error> {
+    struct StackEntry {
+        dir: PathBuf,
+        depth: usize,
+    }
+
     let mut first_err: Option<Error> = None;
     let mut seterr = |path: &Path, err: Error| {
         if first_err.is_none() {
@@ -573,12 +724,12 @@ fn walk(start: &Path) -> Result<Vec<ZoneInfoName>, Error> {
     };
 
     let mut names = vec![];
-    let mut stack = vec![start.to_path_buf()];
-    while let Some(dir) = stack.pop() {
+    let mut stack = vec![StackEntry { dir: start.to_path_buf(), depth: 0 }];
+    while let Some(StackEntry { dir, depth }) = stack.pop() {
         let readdir = match dir.read_dir() {
             Ok(readdir) => readdir,
             Err(err) => {
-                trace!(
+                info!(
                     "error when reading {} as a directory: {err}",
                     dir.display()
                 );
@@ -590,7 +741,7 @@ fn walk(start: &Path) -> Result<Vec<ZoneInfoName>, Error> {
             let dent = match result {
                 Ok(dent) => dent,
                 Err(err) => {
-                    trace!(
+                    info!(
                         "error when reading directory entry from {}: {err}",
                         dir.display()
                     );
@@ -602,7 +753,7 @@ fn walk(start: &Path) -> Result<Vec<ZoneInfoName>, Error> {
                 Ok(file_type) => file_type,
                 Err(err) => {
                     let path = dent.path();
-                    trace!(
+                    info!(
                         "error when reading file type from {}: {err}",
                         path.display()
                     );
@@ -612,46 +763,33 @@ fn walk(start: &Path) -> Result<Vec<ZoneInfoName>, Error> {
             };
             let path = dent.path();
             if file_type.is_dir() {
-                stack.push(path);
+                // We ignore the `posix` and `right` directories because Jiff
+                // doesn't care about them. They tend to bloat the output of
+                // `TimeZoneDatabase::available()` for no appreciable reason.
+                // If callers want to use them, they can do, e.g.,
+                // `TZDIR=/usr/share/zoneinfo/posix`. Moreover, they slow down
+                // initialization time in environments with very slow file
+                // systems.
+                if depth == 0
+                    && (dent.file_name() == OsStr::new("posix")
+                        || dent.file_name() == OsStr::new("right"))
+                {
+                    continue;
+                }
+                stack.push(StackEntry {
+                    dir: path,
+                    depth: depth.saturating_add(1),
+                });
                 continue;
             }
+            trace!(
+                "zoneinfo database initialization visiting {path}",
+                path = path.display(),
+            );
             // We assume symlinks are files, although this may not be
             // appropriate. If we need to also handle the case when they're
             // directories, then we'll need to add symlink loop detection.
-            //
-            // Otherwise, at this point, we peek at the first few bytes of a
-            // file to do a low false positive and never false negative check
-            // for a TZif file.
 
-            let mut f = match File::open(&path) {
-                Ok(f) => f,
-                Err(err) => {
-                    trace!("failed to open {}: {err}", path.display());
-                    seterr(&path, Error::io(err));
-                    continue;
-                }
-            };
-            let mut buf = [0; 4];
-            if let Err(err) = f.read_exact(&mut buf) {
-                trace!(
-                    "failed to read first 4 bytes of {}: {err}",
-                    path.display()
-                );
-                seterr(&path, Error::io(err));
-                continue;
-            }
-            if !is_possibly_tzif(&buf) {
-                // This is a trace because it's perfectly normal for a
-                // non-TZif file to be in a zoneinfo directory. But it could
-                // still be potentially useful debugging info.
-                trace!(
-                    "found file {} that isn't TZif since its first \
-                     four bytes are {:?}",
-                    path.display(),
-                    crate::util::escape::Bytes(&buf),
-                );
-                continue;
-            }
             let time_zone_name = match path.strip_prefix(start) {
                 Ok(time_zone_name) => time_zone_name,
                 Err(err) => {

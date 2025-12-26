@@ -4,7 +4,7 @@ use core::fmt;
 use core::marker::PhantomData;
 
 use crate::pod::{from_bytes, slice_from_bytes, Pod};
-use crate::ReadRef;
+use crate::read::ReadRef;
 
 /// A newtype for byte slices.
 ///

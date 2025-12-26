@@ -43,6 +43,17 @@ impl LocationListTable {
         LocationListId::new(self.base_id, index)
     }
 
+    /// Get a reference to a location list.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `id` is invalid.
+    #[inline]
+    pub fn get(&self, id: LocationListId) -> &LocationList {
+        debug_assert_eq!(self.base_id, id.base_id);
+        &self.locations[id.index]
+    }
+
     /// Write the location list table to the appropriate section for the given DWARF version.
     pub(crate) fn write<W: Writer>(
         &self,
@@ -284,7 +295,7 @@ fn write_expression<W: Writer>(
     unit_offsets: Option<&UnitOffsets>,
     val: &Expression,
 ) -> Result<()> {
-    let size = val.size(encoding, unit_offsets) as u64;
+    let size = val.size(encoding, unit_offsets)? as u64;
     if encoding.version <= 4 {
         w.write_udata(size, 2)?;
     } else {
@@ -305,7 +316,7 @@ mod convert {
         /// Create a location list by reading the data from the give location list iter.
         pub(crate) fn from<R: Reader<Offset = usize>>(
             mut from: read::RawLocListIter<R>,
-            context: &ConvertUnitContext<R>,
+            context: &ConvertUnitContext<'_, R>,
         ) -> ConvertResult<Self> {
             let mut have_base_address = context.base_address != Address::Constant(0);
             let convert_address =
@@ -410,7 +421,7 @@ mod convert {
                 // In some cases, existing data may contain begin == end, filtering
                 // these out.
                 match loc {
-                    Location::StartLength { length, .. } if length == 0 => continue,
+                    Location::StartLength { length: 0, .. } => continue,
                     Location::StartEnd { begin, end, .. } if begin == end => continue,
                     Location::OffsetPair { begin, end, .. } if begin == end => continue,
                     _ => (),

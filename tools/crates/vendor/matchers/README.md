@@ -10,7 +10,7 @@ Regular expression matching on Rust streams.
 [crates-badge]: https://img.shields.io/crates/v/matchers.svg
 [crates-url]: https://crates.io/crates/matchers
 [docs-badge]: https://docs.rs/matchers/badge.svg
-[docs-url]: https://docs.rs/matchers/0.1.0
+[docs-url]: https://docs.rs/matchers/0.2.0
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: LICENSE
 [ci-badge]: https://github.com/hawkw/matchers/actions/workflows/ci.yml/badge.svg

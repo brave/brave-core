@@ -1,2 +1,0 @@
-openssl s_client -showcerts -connect self-signed.badssl.com:443 -servername self-signed.badssl.com <NUL|openssl x509 -outform der -out .\test\self-signed.badssl.com.cer
-openssl x509 -noout -fingerprint -sha1 -inform der -in .\test\self-signed.badssl.com.cer 2>&1|powershell.exe -command "Set-Content .\test\self-signed.badssl.com.cer.sha1 -Encoding Byte -Value ([byte[]] -split ($Input.split('=', 2)[1].replace(':', '') -replace '..', '0x$& '))" 

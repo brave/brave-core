@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 22
-  |
-1 | invalid-hex-1 = 0xaafz
-  |                      ^
-expected newline, `#`

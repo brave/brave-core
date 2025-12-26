@@ -307,6 +307,7 @@ impl Authorization {
     /// macOS 10.4 and later, you can also pass a user name and password in
     /// order to authorize a user without user interaction.
     #[allow(clippy::unnecessary_cast)]
+    #[allow(clippy::needless_pass_by_value)]
     pub fn new(
         // FIXME: this should have been by reference
         rights: Option<AuthorizationItemSetStorage>,
@@ -314,11 +315,11 @@ impl Authorization {
         flags: Flags,
     ) -> Result<Self> {
         let rights_ptr = rights.as_ref().map_or(std::ptr::null(), |r| {
-            addr_of!(r.set) as *const sys::AuthorizationItemSet
+            addr_of!(r.set).cast::<sys::AuthorizationItemSet>()
         });
 
         let env_ptr = environment.as_ref().map_or(std::ptr::null(), |e| {
-            addr_of!(e.set) as *const sys::AuthorizationItemSet
+            addr_of!(e.set).cast::<sys::AuthorizationItemSet>()
         });
 
         let mut handle = MaybeUninit::<sys::AuthorizationRef>::uninit();
@@ -602,7 +603,7 @@ impl Authorization {
 
         let c_cmd = cstring_or_err!(command)?;
 
-        let mut c_args = arguments.iter().map(|a| a.as_ptr() as _).collect::<Vec<_>>();
+        let mut c_args = arguments.iter().map(|a| a.as_ptr().cast_mut()).collect::<Vec<_>>();
         c_args.push(std::ptr::null_mut());
 
         let mut pipe: *mut libc::FILE = std::ptr::null_mut();

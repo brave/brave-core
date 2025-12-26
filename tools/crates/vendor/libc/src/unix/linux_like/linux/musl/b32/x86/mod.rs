@@ -1,7 +1,6 @@
 use crate::off_t;
 use crate::prelude::*;
 
-pub type c_char = i8;
 pub type wchar_t = i32;
 
 s! {
@@ -60,6 +59,14 @@ s! {
     }
 
     pub struct ipc_perm {
+        #[cfg(musl_v1_2_3)]
+        pub __key: crate::key_t,
+        #[cfg(not(musl_v1_2_3))]
+        #[deprecated(
+            since = "0.2.173",
+            note = "This field is incorrectly named and will be changed
+                to __key in a future release."
+        )]
         pub __ipc_perm_key: crate::key_t,
         pub uid: crate::uid_t,
         pub gid: crate::gid_t,
@@ -67,45 +74,43 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
         pub __seq: c_int,
-        __unused1: c_long,
-        __unused2: c_long,
+        __unused1: Padding<c_long>,
+        __unused2: Padding<c_long>,
     }
 
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
         pub shm_segsz: size_t,
         pub shm_atime: crate::time_t,
-        __unused1: c_int,
+        __unused1: Padding<c_int>,
         pub shm_dtime: crate::time_t,
-        __unused2: c_int,
+        __unused2: Padding<c_int>,
         pub shm_ctime: crate::time_t,
-        __unused3: c_int,
+        __unused3: Padding<c_int>,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: c_ulong,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
 
     pub struct msqid_ds {
         pub msg_perm: crate::ipc_perm,
         pub msg_stime: crate::time_t,
-        __unused1: c_int,
+        __unused1: Padding<c_int>,
         pub msg_rtime: crate::time_t,
-        __unused2: c_int,
+        __unused2: Padding<c_int>,
         pub msg_ctime: crate::time_t,
-        __unused3: c_int,
-        __msg_cbytes: c_ulong,
+        __unused3: Padding<c_int>,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
         pub msg_lrpid: crate::pid_t,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
-}
 
-s_no_extra_traits! {
     pub struct user_fpxregs_struct {
         pub cwd: c_ushort,
         pub swd: c_ushort,
@@ -116,7 +121,7 @@ s_no_extra_traits! {
         pub foo: c_long,
         pub fos: c_long,
         pub mxcsr: c_long,
-        __reserved: c_long,
+        __reserved: Padding<c_long>,
         pub st_space: [c_long; 32],
         pub xmm_space: [c_long; 32],
         padding: [c_long; 56],
@@ -130,114 +135,12 @@ s_no_extra_traits! {
         pub uc_sigmask: crate::sigset_t,
         __private: [u8; 112],
     }
+}
 
-    #[allow(missing_debug_implementations)]
+s_no_extra_traits! {
     #[repr(align(8))]
     pub struct max_align_t {
         priv_: [f64; 3],
-    }
-}
-
-cfg_if! {
-    if #[cfg(feature = "extra_traits")] {
-        impl PartialEq for user_fpxregs_struct {
-            fn eq(&self, other: &user_fpxregs_struct) -> bool {
-                self.cwd == other.cwd
-                    && self.swd == other.swd
-                    && self.twd == other.twd
-                    && self.fop == other.fop
-                    && self.fip == other.fip
-                    && self.fcs == other.fcs
-                    && self.foo == other.foo
-                    && self.fos == other.fos
-                    && self.mxcsr == other.mxcsr
-                // Ignore __reserved field
-                    && self.st_space == other.st_space
-                    && self.xmm_space == other.xmm_space
-                // Ignore padding field
-            }
-        }
-
-        impl Eq for user_fpxregs_struct {}
-
-        impl fmt::Debug for user_fpxregs_struct {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("user_fpxregs_struct")
-                    .field("cwd", &self.cwd)
-                    .field("swd", &self.swd)
-                    .field("twd", &self.twd)
-                    .field("fop", &self.fop)
-                    .field("fip", &self.fip)
-                    .field("fcs", &self.fcs)
-                    .field("foo", &self.foo)
-                    .field("fos", &self.fos)
-                    .field("mxcsr", &self.mxcsr)
-                    // Ignore __reserved field
-                    .field("st_space", &self.st_space)
-                    .field("xmm_space", &self.xmm_space)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-
-        impl hash::Hash for user_fpxregs_struct {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.cwd.hash(state);
-                self.swd.hash(state);
-                self.twd.hash(state);
-                self.fop.hash(state);
-                self.fip.hash(state);
-                self.fcs.hash(state);
-                self.foo.hash(state);
-                self.fos.hash(state);
-                self.mxcsr.hash(state);
-                // Ignore __reserved field
-                self.st_space.hash(state);
-                self.xmm_space.hash(state);
-                // Ignore padding field
-            }
-        }
-
-        impl PartialEq for ucontext_t {
-            fn eq(&self, other: &ucontext_t) -> bool {
-                self.uc_flags == other.uc_flags
-                    && self.uc_link == other.uc_link
-                    && self.uc_stack == other.uc_stack
-                    && self.uc_mcontext == other.uc_mcontext
-                    && self.uc_sigmask == other.uc_sigmask
-                    && self
-                        .__private
-                        .iter()
-                        .zip(other.__private.iter())
-                        .all(|(a, b)| a == b)
-            }
-        }
-
-        impl Eq for ucontext_t {}
-
-        impl fmt::Debug for ucontext_t {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("ucontext_t")
-                    .field("uc_flags", &self.uc_flags)
-                    .field("uc_link", &self.uc_link)
-                    .field("uc_stack", &self.uc_stack)
-                    .field("uc_mcontext", &self.uc_mcontext)
-                    .field("uc_sigmask", &self.uc_sigmask)
-                    // Ignore __private field
-                    .finish()
-            }
-        }
-
-        impl hash::Hash for ucontext_t {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.uc_flags.hash(state);
-                self.uc_link.hash(state);
-                self.uc_stack.hash(state);
-                self.uc_mcontext.hash(state);
-                self.uc_sigmask.hash(state);
-                self.__private.hash(state);
-            }
-        }
     }
 }
 
@@ -340,9 +243,6 @@ pub const MAP_POPULATE: c_int = 0x08000;
 pub const MAP_NONBLOCK: c_int = 0x010000;
 pub const MAP_STACK: c_int = 0x020000;
 pub const MAP_SYNC: c_int = 0x080000;
-
-pub const SOCK_STREAM: c_int = 1;
-pub const SOCK_DGRAM: c_int = 2;
 
 pub const EDEADLK: c_int = 35;
 pub const ENAMETOOLONG: c_int = 36;
@@ -611,9 +511,11 @@ pub const SYS_modify_ldt: c_long = 123;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 127;
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 130;
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
@@ -651,6 +553,7 @@ pub const SYS_mremap: c_long = 163;
 pub const SYS_setresuid: c_long = 164;
 pub const SYS_getresuid: c_long = 165;
 pub const SYS_vm86: c_long = 166;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 167;
 pub const SYS_poll: c_long = 168;
 pub const SYS_nfsservctl: c_long = 169;
@@ -911,7 +814,3 @@ pub const CS: c_int = 13;
 pub const EFL: c_int = 14;
 pub const UESP: c_int = 15;
 pub const SS: c_int = 16;
-
-extern "C" {
-    pub fn getrandom(buf: *mut c_void, buflen: size_t, flags: c_uint) -> ssize_t;
-}

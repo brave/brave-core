@@ -22,8 +22,7 @@ The system cannot find the file specified. (os error 2)
 ...but if we use fs-err instead, our error contains more actionable information:
 
 ```txt
-failed to open file `does not exist.txt`
-    caused by: The system cannot find the file specified. (os error 2)
+failed to open file `does not exist.txt`: The system cannot find the file specified. (os error 2)
 ```
 
 # Usage
@@ -60,13 +59,53 @@ println!("Program config: {:?}", decoded);
 # Ok::<(), Box<dyn std::error::Error>>(())
 ```
 
+# Feature flags
+
+* `expose_original_error`: when enabled, the [`Error::source()`](https://doc.rust-lang.org/stable/std/error/trait.Error.html#method.source) method of errors returned by this crate return the original `io::Error`. To avoid duplication in error messages,
+  this also suppresses printing its message in their `Display` implementation, so make sure that you are printing the full error chain.
+* `debug`: Debug filesystem errors faster by exposing more information. When a filesystem command
+  fails, the error message might say "file does not exist." But it won't say **why** it doesn't exist.
+  Perhaps the programmer misspelled the filename, perhaps that directory doesn't exist, or if it does,
+  but the current user doesn't have permissions to see the contents. This feature analyzes the filesystem
+  to output various "facts" that will help a developer debug the root of the current error.
+  * Warning: Exposes filesystem metadata. This feature exposes additional metadata about your filesystem
+    such as directory contents and permissions, which may be sensitive. Only enable `debug` when
+    error messages won't be displayed to the end user, or they have access to filesystem metadata some
+    other way.
+  * Warning: This may slow down your program. This feature will trigger additional filesystem calls when
+    errors occur, which may cause performance issues. Do not use if filesystem errors are common on a
+    performance-sensitive "hotpath." Use in scenarios where developer hours are more expensive than
+    compute time.
+  * To mitigate performance and security concerns, consider only enabling this feature in `dev-dependencies`:
+  * Requires Rust 1.79 or later
+
+```toml
+[dev-dependencies]
+fs-err = { features = ["debug"] }
+```
+
+To use with the `tokio` feature, use `debug_tokio`:
+
+```toml
+[dependencies]
+fs-err = { features = ["debug_tokio", "tokio"] }
+```
+
+# Minimum Supported Rust Version
+
+The oldest rust version this crate is tested on is **1.40**.
+
+This crate will generally be conservative with rust version updates. It uses the [`autocfg`](https://crates.io/crates/autocfg) crate to allow wrapping new APIs without incrementing the MSRV.
+
+If the `tokio` feature is enabled, this crate will inherit the MSRV of the selected [`tokio`](https://crates.io/crates/tokio) version.
+
 [std::fs]: https://doc.rust-lang.org/stable/std/fs/
 [std::io::Error]: https://doc.rust-lang.org/stable/std/io/struct.Error.html
 [std::io::Read]: https://doc.rust-lang.org/stable/std/io/trait.Read.html
 [serde_json]: https://crates.io/crates/serde_json
 */
 
-#![doc(html_root_url = "https://docs.rs/fs-err/2.11.0")]
+#![doc(html_root_url = "https://docs.rs/fs-err/3.2.2")]
 #![deny(missing_debug_implementations, missing_docs)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
@@ -204,6 +243,15 @@ pub fn metadata<P: AsRef<Path>>(path: P) -> io::Result<fs::Metadata> {
     fs::metadata(path).map_err(|source| Error::build(source, ErrorKind::Metadata, path))
 }
 
+/// Returns `Ok(true)` if the path points at an existing entity.
+///
+/// Wrapper for [`fs::exists`](https://doc.rust-lang.org/stable/std/fs/fn.exists.html).
+#[cfg(rustc_1_81)]
+pub fn exists<P: AsRef<Path>>(path: P) -> io::Result<bool> {
+    let path = path.as_ref();
+    fs::exists(path).map_err(|source| Error::build(source, ErrorKind::FileExists, path))
+}
+
 /// Returns the canonical, absolute form of a path with all intermediate components
 /// normalized and symbolic links resolved.
 ///
@@ -215,12 +263,17 @@ pub fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 
 /// Creates a new hard link on the filesystem.
 ///
+/// The `link` path will be a link pointing to the `original` path. Note that
+/// systems often require these two paths to both be located on the same
+/// filesystem.
+///
 /// Wrapper for [`fs::hard_link`](https://doc.rust-lang.org/stable/std/fs/fn.hard_link.html).
-pub fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> {
-    let src = src.as_ref();
-    let dst = dst.as_ref();
-    fs::hard_link(src, dst)
-        .map_err(|source| SourceDestError::build(source, SourceDestErrorKind::HardLink, src, dst))
+pub fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
+    let original = original.as_ref();
+    let link = link.as_ref();
+    fs::hard_link(original, link).map_err(|source| {
+        SourceDestError::build(source, SourceDestErrorKind::HardLink, link, original)
+    })
 }
 
 /// Reads a symbolic link, returning the file that the link points to.
@@ -241,15 +294,20 @@ pub fn rename<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()> 
         .map_err(|source| SourceDestError::build(source, SourceDestErrorKind::Rename, from, to))
 }
 
+/// Creates a new symbolic link on the filesystem.
+///
+/// The `link` path will be a symbolic link pointing to the `original` path.
+///
 /// Wrapper for [`fs::soft_link`](https://doc.rust-lang.org/stable/std/fs/fn.soft_link.html).
 #[deprecated = "replaced with std::os::unix::fs::symlink and \
 std::os::windows::fs::{symlink_file, symlink_dir}"]
-pub fn soft_link<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> {
-    let src = src.as_ref();
-    let dst = dst.as_ref();
+pub fn soft_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
+    let original = original.as_ref();
+    let link = link.as_ref();
     #[allow(deprecated)]
-    fs::soft_link(src, dst)
-        .map_err(|source| SourceDestError::build(source, SourceDestErrorKind::SoftLink, src, dst))
+    fs::soft_link(original, link).map_err(|source| {
+        SourceDestError::build(source, SourceDestErrorKind::SoftLink, link, original)
+    })
 }
 
 /// Query the metadata about a file without following symlinks.

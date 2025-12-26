@@ -10,9 +10,10 @@ use crate::{
         self,
         temporal::{self, DEFAULT_DATETIME_PARSER},
     },
+    shared::util::itime::IDateTime,
     tz::TimeZone,
     util::{
-        rangeint::{RFrom, RInto},
+        rangeint::{Composite, RFrom, RInto},
         round::increment,
         t::{self, C},
     },
@@ -673,7 +674,7 @@ impl DateTime {
     /// manifests from a specific timestamp.
     ///
     /// ```
-    /// use jiff::{civil, Timestamp};
+    /// use jiff::Timestamp;
     ///
     /// // 1,234 nanoseconds after the Unix epoch.
     /// let zdt = Timestamp::new(0, 1_234)?.in_tz("UTC")?;
@@ -1513,7 +1514,62 @@ impl DateTime {
     /// ```
     #[inline]
     pub fn to_zoned(self, tz: TimeZone) -> Result<Zoned, Error> {
-        tz.into_ambiguous_zoned(self).compatible()
+        use crate::tz::AmbiguousOffset;
+
+        // It's pretty disappointing that we do this instead of the
+        // simpler:
+        //
+        //     tz.into_ambiguous_zoned(self).compatible()
+        //
+        // Below, in the common case of an unambiguous datetime,
+        // we avoid doing the work to re-derive the datetime *and*
+        // offset from the timestamp we find from tzdb. In particular,
+        // `Zoned::new` does this work given a timestamp and a time
+        // zone. But we circumvent `Zoned::new` and use a special
+        // `Zoned::from_parts` crate-internal constructor to handle
+        // this case.
+        //
+        // Ideally we could do this in `AmbiguousZoned::compatible`
+        // itself, but it turns out that it doesn't always work.
+        // Namely, that API supports providing an unambiguous
+        // offset even when the civil datetime is within a
+        // DST transition. In that case, once the timestamp
+        // is resolved, the offset given might actually
+        // change. See `2024-03-11T02:02[America/New_York]`
+        // example for `AlwaysOffset` conflict resolution on
+        // `ZonedWith::disambiguation`.
+        //
+        // But the optimization works here because if we get an
+        // unambiguous offset from tzdb, then we know it isn't in a DST
+        // transition and that it won't change with the timestamp.
+        //
+        // This ends up saving a fair bit of cycles re-computing
+        // the offset (which requires another tzdb lookup) and
+        // re-generating the civil datetime from the timestamp for the
+        // re-computed offset. This helps the
+        // `civil_datetime_to_timestamp_tzdb_lookup/zoneinfo/jiff`
+        // micro-benchmark quite a bit.
+        let dt = self;
+        let amb_ts = tz.to_ambiguous_timestamp(dt);
+        let (offset, ts, dt) = match amb_ts.offset() {
+            AmbiguousOffset::Unambiguous { offset } => {
+                let ts = offset.to_timestamp(dt)?;
+                (offset, ts, dt)
+            }
+            AmbiguousOffset::Gap { before, .. } => {
+                let ts = before.to_timestamp(dt)?;
+                let offset = tz.to_offset(ts);
+                let dt = offset.to_datetime(ts);
+                (offset, ts, dt)
+            }
+            AmbiguousOffset::Fold { before, .. } => {
+                let ts = before.to_timestamp(dt)?;
+                let offset = tz.to_offset(ts);
+                let dt = offset.to_datetime(ts);
+                (offset, ts, dt)
+            }
+        };
+        Ok(Zoned::from_parts(ts, tz, offset, dt))
     }
 
     /// Add the given span of time to this datetime. If the sum would overflow
@@ -1633,21 +1689,56 @@ impl DateTime {
 
     #[inline]
     fn checked_add_span(self, span: Span) -> Result<DateTime, Error> {
-        let (date, time) = (self.date(), self.time());
+        let (old_date, old_time) = (self.date(), self.time());
+        let units = span.units();
+        match (units.only_calendar().is_empty(), units.only_time().is_empty())
+        {
+            (true, true) => Ok(self),
+            (false, true) => {
+                let new_date =
+                    old_date.checked_add(span).with_context(|| {
+                        err!("failed to add {span} to {old_date}")
+                    })?;
+                Ok(DateTime::from_parts(new_date, old_time))
+            }
+            (true, false) => {
+                let (new_time, leftovers) =
+                    old_time.overflowing_add(span).with_context(|| {
+                        err!("failed to add {span} to {old_time}")
+                    })?;
+                let new_date =
+                    old_date.checked_add(leftovers).with_context(|| {
+                        err!(
+                            "failed to add overflowing span, {leftovers}, \
+                             from adding {span} to {old_time}, \
+                             to {old_date}",
+                        )
+                    })?;
+                Ok(DateTime::from_parts(new_date, new_time))
+            }
+            (false, false) => self.checked_add_span_general(&span),
+        }
+    }
+
+    #[inline(never)]
+    #[cold]
+    fn checked_add_span_general(self, span: &Span) -> Result<DateTime, Error> {
+        let (old_date, old_time) = (self.date(), self.time());
         let span_date = span.without_lower(Unit::Day);
         let span_time = span.only_lower(Unit::Day);
 
-        let (new_time, leftovers) = time
-            .overflowing_add(span_time)
-            .with_context(|| err!("failed to add {span_time} to {time}"))?;
-        let new_date = date
-            .checked_add(span_date)
-            .with_context(|| err!("failed to add {span_date} to {date}"))?;
+        let (new_time, leftovers) =
+            old_time.overflowing_add(span_time).with_context(|| {
+                err!("failed to add {span_time} to {old_time}")
+            })?;
+        let new_date = old_date.checked_add(span_date).with_context(|| {
+            err!("failed to add {span_date} to {old_date}")
+        })?;
         let new_date = new_date.checked_add(leftovers).with_context(|| {
             err!(
                 "failed to add overflowing span, {leftovers}, \
-                 from adding {span_time} to {time}, \
-                 to {new_date}",
+                             from adding {span_time} to {old_time}, \
+                             to {new_date}",
             )
         })?;
         Ok(DateTime::from_parts(new_date, new_time))
@@ -1777,6 +1868,9 @@ impl DateTime {
     /// Depending on the input provided, the span returned is rounded. It may
     /// also be balanced up to bigger units than the default. By default, the
     /// span returned is balanced such that the biggest possible unit is days.
+    /// This default is an API guarantee. Users can rely on the default not
+    /// returning any calendar units bigger than days in the default
+    /// configuration.
     ///
     /// This operation is configured by providing a [`DateTimeDifference`]
     /// value. Since this routine accepts anything that implements
@@ -2241,7 +2335,7 @@ impl DateTime {
         options: R,
     ) -> Result<DateTime, Error> {
         let options: DateTimeRound = options.into();
-        options.round(t::NANOS_PER_CIVIL_DAY, self)
+        options.round(self)
     }
 
     /// Return an iterator of periodic datetimes determined by the given span.
@@ -2291,9 +2385,30 @@ impl DateTime {
     /// zone offset and where all days are exactly 24 hours long.
     #[inline]
     fn to_nanosecond(self) -> t::NoUnits128 {
-        let day_nano = self.date().to_unix_epoch_days();
+        let day_nano = self.date().to_unix_epoch_day();
         let time_nano = self.time().to_nanosecond();
         (t::NoUnits128::rfrom(day_nano) * t::NANOS_PER_CIVIL_DAY) + time_nano
+    }
+
+    #[inline]
+    pub(crate) fn to_idatetime(&self) -> Composite<IDateTime> {
+        let idate = self.date().to_idate();
+        let itime = self.time().to_itime();
+        idate.zip2(itime).map(|(date, time)| IDateTime { date, time })
+    }
+
+    #[inline]
+    pub(crate) fn from_idatetime(idt: Composite<IDateTime>) -> DateTime {
+        let (idate, itime) = idt.map(|idt| (idt.date, idt.time)).unzip2();
+        DateTime::from_parts(Date::from_idate(idate), Time::from_itime(itime))
+    }
+
+    #[inline]
+    pub(crate) const fn to_idatetime_const(&self) -> IDateTime {
+        IDateTime {
+            date: self.date.to_idate_const(),
+            time: self.time.to_itime_const(),
+        }
     }
 }
 
@@ -2371,20 +2486,6 @@ impl DateTime {
     }
 }
 
-/// Deprecated APIs.
-impl DateTime {
-    /// A deprecated equivalent to [`DateTime::in_tz`].
-    ///
-    /// This will be removed in `jiff 0.2`. The method was renamed to make
-    /// it clearer that the name stood for "in time zone."
-    #[deprecated(since = "0.1.25", note = "use DateTime::in_tz instead")]
-    #[inline]
-    pub fn intz(self, time_zone_name: &str) -> Result<Zoned, Error> {
-        let tz = crate::tz::db().get(time_zone_name)?;
-        self.to_zoned(tz)
-    }
-}
-
 impl Default for DateTime {
     #[inline]
     fn default() -> DateTime {
@@ -2426,12 +2527,31 @@ impl core::fmt::Debug for DateTime {
 
 /// Converts a `DateTime` into an ISO 8601 compliant string.
 ///
-/// Options currently supported:
+/// # Formatting options supported
 ///
 /// * [`std::fmt::Formatter::precision`] can be set to control the precision
-/// of the fractional second component.
+/// of the fractional second component. When not set, the minimum precision
+/// required to losslessly render the value is used.
 ///
 /// # Example
+///
+/// This shows the default rendering:
+///
+/// ```
+/// use jiff::civil::date;
+///
+/// // No fractional seconds:
+/// let dt = date(2024, 6, 15).at(7, 0, 0, 0);
+/// assert_eq!(format!("{dt}"), "2024-06-15T07:00:00");
+///
+/// // With fractional seconds:
+/// let dt = date(2024, 6, 15).at(7, 0, 0, 123_000_000);
+/// assert_eq!(format!("{dt}"), "2024-06-15T07:00:00.123");
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// # Example: setting the precision
 ///
 /// ```
 /// use jiff::civil::date;
@@ -2549,7 +2669,8 @@ impl core::ops::SubAssign<Span> for DateTime {
 ///
 /// Since this uses the default configuration for calculating a span between
 /// two datetimes (no rounding and largest units is days), this will never
-/// panic or fail in any way.
+/// panic or fail in any way. It is guaranteed that the largest non-zero
+/// unit in the `Span` returned will be days.
 ///
 /// To configure the largest unit or enable rounding, use [`DateTime::since`].
 ///
@@ -2665,9 +2786,9 @@ impl core::ops::SubAssign<UnsignedDuration> for DateTime {
 }
 
 #[cfg(feature = "serde")]
-impl serde::Serialize for DateTime {
+impl serde_core::Serialize for DateTime {
     #[inline]
-    fn serialize<S: serde::Serializer>(
+    fn serialize<S: serde_core::Serializer>(
         &self,
         serializer: S,
     ) -> Result<S::Ok, S::Error> {
@@ -2676,12 +2797,12 @@ impl serde::Serialize for DateTime {
 }
 
 #[cfg(feature = "serde")]
-impl<'de> serde::Deserialize<'de> for DateTime {
+impl<'de> serde_core::Deserialize<'de> for DateTime {
     #[inline]
-    fn deserialize<D: serde::Deserializer<'de>>(
+    fn deserialize<D: serde_core::Deserializer<'de>>(
         deserializer: D,
     ) -> Result<DateTime, D::Error> {
-        use serde::de;
+        use serde_core::de;
 
         struct DateTimeVisitor;
 
@@ -2737,8 +2858,10 @@ impl quickcheck::Arbitrary for DateTime {
 
 /// An iterator over periodic datetimes, created by [`DateTime::series`].
 ///
-/// It is exhausted when the next value would exceed a [`Span`] or [`DateTime`]
-/// value.
+/// It is exhausted when the next value would exceed the limits of a [`Span`]
+/// or [`DateTime`] value.
+///
+/// This iterator is created by [`DateTime::series`].
 #[derive(Clone, Debug)]
 pub struct DateTimeSeries {
     start: DateTime,
@@ -2757,6 +2880,8 @@ impl Iterator for DateTimeSeries {
         Some(date)
     }
 }
+
+impl core::iter::FusedIterator for DateTimeSeries {}
 
 /// Options for [`DateTime::checked_add`] and [`DateTime::checked_sub`].
 ///
@@ -3150,16 +3275,16 @@ impl DateTimeDifference {
             // then it's impossible for `sign < 0` since the max date is at
             // least as big as every other date. And thus, d2.tomorrow() is
             // never reached in cases where it would fail.
-            if sign > 0 {
+            if sign > C(0) {
                 d2 = d2.yesterday().unwrap();
-            } else if sign < 0 {
+            } else if sign < C(0) {
                 d2 = d2.tomorrow().unwrap();
             }
             time_diff +=
                 t::SpanNanoseconds::rfrom(t::NANOS_PER_CIVIL_DAY) * sign;
         }
         let date_span = d1.until((largest, d2))?;
-        Ok(Span::from_invariant_nanoseconds(largest, time_diff)
+        Ok(Span::from_invariant_nanoseconds(largest, time_diff.rinto())
             // Unlike in the <=Unit::Day case, this always succeeds because
             // every unit except for nanoseconds (which is not used here) can
             // represent all possible spans of time between any two civil
@@ -3416,14 +3541,9 @@ impl DateTimeRound {
     /// datetimes, this should always be `NANOS_PER_CIVIL_DAY`. But this
     /// rounding routine is also used for `Zoned` rounding, and in that
     /// context, the length of a day can vary based on the time zone.
-    pub(crate) fn round(
-        &self,
-        day_length: impl RInto<t::ZonedDayNanoseconds>,
-        dt: DateTime,
-    ) -> Result<DateTime, Error> {
+    pub(crate) fn round(&self, dt: DateTime) -> Result<DateTime, Error> {
         // ref: https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.round
 
-        let day_length = t::NoUnits128::rfrom(day_length.rinto());
         let increment =
             increment::for_datetime(self.smallest, self.increment)?;
         // We permit rounding to any time unit and days, but nothing else.
@@ -3438,7 +3558,7 @@ impl DateTimeRound {
                 ));
             }
             // We don't do any rounding in this case, so just bail now.
-            Unit::Nanosecond if increment == 1 => {
+            Unit::Nanosecond if increment == C(1) => {
                 return Ok(dt);
             }
             _ => {}
@@ -3451,9 +3571,9 @@ impl DateTimeRound {
             self.smallest,
             increment,
         );
-        let days = sign * time_rounded.div_ceil(day_length);
-        let time_nanos = time_rounded.rem_ceil(day_length);
-        let time = Time::from_nanosecond(time_nanos);
+        let days = sign * time_rounded.div_ceil(t::NANOS_PER_CIVIL_DAY);
+        let time_nanos = time_rounded.rem_ceil(t::NANOS_PER_CIVIL_DAY);
+        let time = Time::from_nanosecond(time_nanos.rinto());
 
         let date_days = t::SpanDays::rfrom(dt.date().day_ranged());
         // OK because days is limited by the fact that the length of a day
@@ -3476,6 +3596,18 @@ impl DateTimeRound {
                 err!("adding {days_len} days to {start} failed")
             })?;
         Ok(DateTime::from_parts(end, time))
+    }
+
+    pub(crate) fn get_smallest(&self) -> Unit {
+        self.smallest
+    }
+
+    pub(crate) fn get_mode(&self) -> RoundMode {
+        self.mode
+    }
+
+    pub(crate) fn get_increment(&self) -> i64 {
+        self.increment
     }
 }
 
@@ -4107,6 +4239,11 @@ impl DateTimeWith {
     ///
     /// This overrides any previous millisecond settings.
     ///
+    /// Note that this only sets the millisecond component. It does
+    /// not change the microsecond or nanosecond components. To set
+    /// the fractional second component to nanosecond precision, use
+    /// [`DateTimeWith::subsec_nanosecond`].
+    ///
     /// # Errors
     ///
     /// This returns an error when [`DateTimeWith::build`] is called if the
@@ -4140,6 +4277,11 @@ impl DateTimeWith {
     /// One can access this value via [`DateTime::microsecond`].
     ///
     /// This overrides any previous microsecond settings.
+    ///
+    /// Note that this only sets the microsecond component. It does
+    /// not change the millisecond or nanosecond components. To set
+    /// the fractional second component to nanosecond precision, use
+    /// [`DateTimeWith::subsec_nanosecond`].
     ///
     /// # Errors
     ///
@@ -4175,6 +4317,11 @@ impl DateTimeWith {
     ///
     /// This overrides any previous nanosecond settings.
     ///
+    /// Note that this only sets the nanosecond component. It does
+    /// not change the millisecond or microsecond components. To set
+    /// the fractional second component to nanosecond precision, use
+    /// [`DateTimeWith::subsec_nanosecond`].
+    ///
     /// # Errors
     ///
     /// This returns an error when [`DateTimeWith::build`] is called if the
@@ -4209,6 +4356,12 @@ impl DateTimeWith {
     /// [`DateTime::subsec_nanosecond`].
     ///
     /// This overrides any previous subsecond nanosecond settings.
+    ///
+    /// Note that this sets the entire fractional second component to
+    /// nanosecond precision, and overrides any individual millisecond,
+    /// microsecond or nanosecond settings. To set individual components,
+    /// use [`DateTimeWith::millisecond`], [`DateTimeWith::microsecond`] or
+    /// [`DateTimeWith::nanosecond`].
     ///
     /// # Errors
     ///

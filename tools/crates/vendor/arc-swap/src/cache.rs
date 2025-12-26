@@ -27,7 +27,7 @@ pub trait Access<T> {
     fn load(&mut self) -> &T;
 }
 
-/// Caching handle for [`ArcSwapAny`][ArcSwapAny].
+/// Caching handle for [`ArcSwapAny`].
 ///
 /// Instead of loading the [`Arc`][Arc] on every request from the shared storage, this keeps
 /// another copy inside itself. Upon request it only cheaply revalidates it is up to

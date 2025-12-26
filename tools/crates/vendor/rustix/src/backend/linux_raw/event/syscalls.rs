@@ -5,50 +5,102 @@
 //! See the `rustix::backend` module documentation for details.
 #![allow(unsafe_code, clippy::undocumented_unsafe_blocks)]
 
-use crate::backend::c;
 use crate::backend::conv::{
-    by_ref, c_int, c_uint, ret, ret_c_int, ret_error, ret_owned_fd, ret_usize, slice_mut, zero,
+    by_ref, c_int, c_uint, opt_mut, opt_ref, pass_usize, ret, ret_c_int, ret_error, ret_owned_fd,
+    ret_usize, size_of, slice_mut, zero,
 };
-use crate::event::{epoll, EventfdFlags, FdSetElement, PollFd};
+use crate::event::{epoll, EventfdFlags, FdSetElement, PollFd, Timespec};
 use crate::fd::{BorrowedFd, OwnedFd};
 use crate::io;
-use crate::utils::as_mut_ptr;
-#[cfg(feature = "alloc")]
-use core::mem::MaybeUninit;
 use core::ptr::null_mut;
-use linux_raw_sys::general::{EPOLL_CTL_ADD, EPOLL_CTL_DEL, EPOLL_CTL_MOD};
-#[cfg(any(target_arch = "aarch64", target_arch = "riscv64"))]
-use {
-    crate::backend::conv::{opt_ref, size_of},
-    linux_raw_sys::general::{__kernel_timespec, kernel_sigset_t},
-};
+use linux_raw_sys::general::{kernel_sigset_t, EPOLL_CTL_ADD, EPOLL_CTL_DEL, EPOLL_CTL_MOD};
 
 #[inline]
-pub(crate) fn poll(fds: &mut [PollFd<'_>], timeout: c::c_int) -> io::Result<usize> {
+pub(crate) fn poll(fds: &mut [PollFd<'_>], timeout: Option<&Timespec>) -> io::Result<usize> {
     let (fds_addr_mut, fds_len) = slice_mut(fds);
 
-    #[cfg(any(target_arch = "aarch64", target_arch = "riscv64"))]
+    #[cfg(target_pointer_width = "32")]
     unsafe {
-        let timeout = if timeout >= 0 {
-            Some(__kernel_timespec {
-                tv_sec: (timeout as i64) / 1000,
-                tv_nsec: (timeout as i64) % 1000 * 1_000_000,
-            })
-        } else {
-            None
-        };
+        // If we don't have Linux 5.1, and the timeout fits in a
+        // `__kernel_old_timespec`, use plain `ppoll`.
+        //
+        // We do this unconditionally, rather than trying `ppoll_time64` and
+        // falling back on `Errno::NOSYS`, because seccomp configurations will
+        // sometimes abort the process on syscalls they don't recognize.
+        #[cfg(not(feature = "linux_5_1"))]
+        {
+            use linux_raw_sys::general::__kernel_old_timespec;
+
+            // If we don't have a timeout, or if we can convert the timeout to
+            // a `__kernel_old_timespec`, the use `__NR_ppoll`.
+            fn convert(timeout: &Timespec) -> Option<__kernel_old_timespec> {
+                Some(__kernel_old_timespec {
+                    tv_sec: timeout.tv_sec.try_into().ok()?,
+                    tv_nsec: timeout.tv_nsec.try_into().ok()?,
+                })
+            }
+            let old_timeout = if let Some(timeout) = timeout {
+                match convert(timeout) {
+                    // Could not convert timeout.
+                    None => None,
+                    // Could convert timeout. Ok!
+                    Some(old_timeout) => Some(Some(old_timeout)),
+                }
+            } else {
+                // No timeout. Ok!
+                Some(None)
+            };
+            if let Some(mut old_timeout) = old_timeout {
+                // Call `ppoll`.
+                //
+                // Linux's `ppoll` mutates the timeout argument. Our public
+                // interface does not do this, because it's not portable to other
+                // platforms, so we create a temporary value to hide this behavior.
+                return ret_usize(syscall!(
+                    __NR_ppoll,
+                    fds_addr_mut,
+                    fds_len,
+                    opt_mut(old_timeout.as_mut()),
+                    zero(),
+                    size_of::<kernel_sigset_t, _>()
+                ));
+            }
+        }
+
+        // We either have Linux 5.1 or the timeout didn't fit in
+        // `__kernel_old_timespec` so `__NR_ppoll_time64` will either
+        // succeed or fail due to our having no other options.
+
+        // Call `ppoll_time64`.
+        //
+        // Linux's `ppoll_time64` mutates the timeout argument. Our public
+        // interface does not do this, because it's not portable to other
+        // platforms, so we create a temporary value to hide this behavior.
         ret_usize(syscall!(
-            __NR_ppoll,
+            __NR_ppoll_time64,
             fds_addr_mut,
             fds_len,
-            opt_ref(timeout.as_ref()),
+            opt_mut(timeout.copied().as_mut()),
             zero(),
             size_of::<kernel_sigset_t, _>()
         ))
     }
-    #[cfg(not(any(target_arch = "aarch64", target_arch = "riscv64")))]
+
+    #[cfg(target_pointer_width = "64")]
     unsafe {
-        ret_usize(syscall!(__NR_poll, fds_addr_mut, fds_len, c_int(timeout)))
+        // Call `ppoll`.
+        //
+        // Linux's `ppoll` mutates the timeout argument. Our public interface
+        // does not do this, because it's not portable to other platforms, so
+        // we create a temporary value to hide this behavior.
+        ret_usize(syscall!(
+            __NR_ppoll,
+            fds_addr_mut,
+            fds_len,
+            opt_mut(timeout.copied().as_mut()),
+            zero(),
+            size_of::<kernel_sigset_t, _>()
+        ))
     }
 }
 
@@ -83,49 +135,89 @@ pub(crate) unsafe fn select(
         None => null_mut(),
     };
 
-    // Linux's `pselect6` mutates the timeout argument. Our public interface
-    // does not do this, because it's not portable to other platforms, so we
-    // create a temporary value to hide this behavior.
-    let mut timeout_data;
-    let timeout_ptr = match timeout {
-        Some(timeout) => {
-            timeout_data = *timeout;
-            as_mut_ptr(&mut timeout_data)
-        }
-        None => null_mut(),
-    };
-
-    #[cfg(any(
-        target_arch = "arm",
-        target_arch = "powerpc",
-        target_arch = "sparc",
-        target_arch = "csky",
-        target_arch = "x86",
-        target_arch = "mips32r6",
-        target_arch = "riscv32",
-        target_arch = "mips"
-    ))]
+    #[cfg(target_pointer_width = "32")]
     {
+        // If we don't have Linux 5.1, and the timeout fits in a
+        // `__kernel_old_timespec`, use plain `pselect6`.
+        //
+        // We do this unconditionally, rather than trying `pselect6_time64` and
+        // falling back on `Errno::NOSYS`, because seccomp configurations will
+        // sometimes abort the process on syscalls they don't recognize.
+        #[cfg(not(feature = "linux_5_1"))]
+        {
+            use linux_raw_sys::general::__kernel_old_timespec;
+
+            // If we don't have a timeout, or if we can convert the timeout to
+            // a `__kernel_old_timespec`, the use `__NR_pselect6`.
+            fn convert(timeout: &Timespec) -> Option<__kernel_old_timespec> {
+                Some(__kernel_old_timespec {
+                    tv_sec: timeout.tv_sec.try_into().ok()?,
+                    tv_nsec: timeout.tv_nsec.try_into().ok()?,
+                })
+            }
+            let old_timeout = if let Some(timeout) = timeout {
+                match convert(timeout) {
+                    // Could not convert timeout.
+                    None => None,
+                    // Could convert timeout. Ok!
+                    Some(old_timeout) => Some(Some(old_timeout)),
+                }
+            } else {
+                // No timeout. Ok!
+                Some(None)
+            };
+            if let Some(mut old_timeout) = old_timeout {
+                // Call `pselect6`.
+                //
+                // Linux's `pselect6` mutates the timeout argument. Our public
+                // interface does not do this, because it's not portable to other
+                // platforms, so we create a temporary value to hide this behavior.
+                return ret_c_int(syscall!(
+                    __NR_pselect6,
+                    c_int(nfds),
+                    readfds,
+                    writefds,
+                    exceptfds,
+                    opt_mut(old_timeout.as_mut()),
+                    zero()
+                ));
+            }
+        }
+
+        // We either have Linux 5.1 or the timeout didn't fit in
+        // `__kernel_old_timespec` so `__NR_pselect6_time64` will either
+        // succeed or fail due to our having no other options.
+
+        // Call `pselect6_time64`.
+        //
+        // Linux's `pselect6_time64` mutates the timeout argument. Our public
+        // interface does not do this, because it's not portable to other
+        // platforms, so we create a temporary value to hide this behavior.
         ret_c_int(syscall!(
             __NR_pselect6_time64,
             c_int(nfds),
             readfds,
             writefds,
             exceptfds,
-            timeout_ptr,
+            opt_mut(timeout.copied().as_mut()),
             zero()
         ))
     }
 
     #[cfg(target_pointer_width = "64")]
     {
+        // Call `pselect6`.
+        //
+        // Linux's `pselect6` mutates the timeout argument. Our public interface
+        // does not do this, because it's not portable to other platforms, so we
+        // create a temporary value to hide this behavior.
         ret_c_int(syscall!(
             __NR_pselect6,
             c_int(nfds),
             readfds,
             writefds,
             exceptfds,
-            timeout_ptr,
+            opt_mut(timeout.copied().as_mut()),
             zero()
         ))
     }
@@ -190,39 +282,55 @@ pub(crate) fn epoll_del(epfd: BorrowedFd<'_>, fd: BorrowedFd<'_>) -> io::Result<
     }
 }
 
-#[cfg(feature = "alloc")]
 #[inline]
-pub(crate) fn epoll_wait(
+pub(crate) unsafe fn epoll_wait(
     epfd: BorrowedFd<'_>,
-    events: &mut [MaybeUninit<crate::event::epoll::Event>],
-    timeout: c::c_int,
+    events: (*mut crate::event::epoll::Event, usize),
+    timeout: Option<&Timespec>,
 ) -> io::Result<usize> {
-    let (buf_addr_mut, buf_len) = slice_mut(events);
-    // SAFETY: `__NR_epoll_wait` doesn't access any user memory outside of
-    // the `events` array.
-    #[cfg(not(any(target_arch = "aarch64", target_arch = "riscv64")))]
-    unsafe {
-        ret_usize(syscall!(
-            __NR_epoll_wait,
-            epfd,
-            buf_addr_mut,
-            buf_len,
-            c_int(timeout)
-        ))
+    // If we don't have Linux 5.1, and the timeout fits in an `i32`, use plain
+    // `epoll_pwait`.
+    //
+    // We do this unconditionally, rather than trying `epoll_pwait2` and
+    // falling back on `Errno::NOSYS`, because seccomp configurations will
+    // sometimes abort the process on syscalls they don't recognize.
+    #[cfg(not(feature = "linux_5_11"))]
+    {
+        // If we don't have a timeout, or if we can convert the timeout to an
+        // `i32`, the use `__NR_epoll_pwait`.
+        let old_timeout = if let Some(timeout) = timeout {
+            // Try to convert the timeout; if this is `Some`, we're ok!
+            timeout.as_c_int_millis()
+        } else {
+            // No timeout. Ok!
+            Some(-1)
+        };
+        if let Some(old_timeout) = old_timeout {
+            // Call `epoll_pwait`.
+            return ret_usize(syscall!(
+                __NR_epoll_pwait,
+                epfd,
+                events.0,
+                pass_usize(events.1),
+                c_int(old_timeout),
+                zero()
+            ));
+        }
     }
-    // SAFETY: `__NR_epoll_pwait` doesn't access any user memory outside of
-    // the `events` array, as we don't pass it a `sigmask`.
-    #[cfg(any(target_arch = "aarch64", target_arch = "riscv64"))]
-    unsafe {
-        ret_usize(syscall!(
-            __NR_epoll_pwait,
-            epfd,
-            buf_addr_mut,
-            buf_len,
-            c_int(timeout),
-            zero()
-        ))
-    }
+
+    // Call `epoll_pwait2`.
+    //
+    // We either have Linux 5.1 or the timeout didn't fit in an `i32`, so
+    // `__NR_epoll_pwait2` will either succeed or fail due to our having no
+    // other options.
+    ret_usize(syscall!(
+        __NR_epoll_pwait2,
+        epfd,
+        events.0,
+        pass_usize(events.1),
+        opt_ref(timeout),
+        zero()
+    ))
 }
 
 #[inline]

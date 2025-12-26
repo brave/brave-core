@@ -52,6 +52,8 @@ mod sealed {
 /// When called on floating point values, any remainder of the floating point value will be
 /// truncated. Keep in mind that floating point numbers are inherently imprecise and have
 /// limited capacity.
+#[diagnostic::on_unimplemented(note = "this extension trait is intended to be used with numeric \
+                                       literals, such as `5.seconds()`")]
 pub trait NumericalDuration: sealed::Sealed {
     /// Create a [`Duration`] from the number of nanoseconds.
     fn nanoseconds(self) -> Duration;
@@ -72,69 +74,93 @@ pub trait NumericalDuration: sealed::Sealed {
 }
 
 impl NumericalDuration for i64 {
+    #[inline]
     fn nanoseconds(self) -> Duration {
         Duration::nanoseconds(self)
     }
 
+    #[inline]
     fn microseconds(self) -> Duration {
         Duration::microseconds(self)
     }
 
+    #[inline]
     fn milliseconds(self) -> Duration {
         Duration::milliseconds(self)
     }
 
+    #[inline]
     fn seconds(self) -> Duration {
         Duration::seconds(self)
     }
 
+    #[inline]
+    #[track_caller]
     fn minutes(self) -> Duration {
         Duration::minutes(self)
     }
 
+    #[inline]
+    #[track_caller]
     fn hours(self) -> Duration {
         Duration::hours(self)
     }
 
+    #[inline]
+    #[track_caller]
     fn days(self) -> Duration {
         Duration::days(self)
     }
 
+    #[inline]
+    #[track_caller]
     fn weeks(self) -> Duration {
         Duration::weeks(self)
     }
 }
 
 impl NumericalDuration for f64 {
+    #[inline]
     fn nanoseconds(self) -> Duration {
-        Duration::nanoseconds(self as _)
+        Duration::nanoseconds(self as i64)
     }
 
+    #[inline]
     fn microseconds(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Microsecond) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Microsecond)) as i64)
     }
 
+    #[inline]
     fn milliseconds(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Millisecond) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Millisecond)) as i64)
     }
 
+    #[inline]
     fn seconds(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Second) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Second)) as i64)
     }
 
+    #[inline]
+    #[track_caller]
     fn minutes(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Minute) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Minute)) as i64)
     }
 
+    #[inline]
+    #[track_caller]
     fn hours(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Hour) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Hour)) as i64)
     }
 
+    #[inline]
+    #[track_caller]
     fn days(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Day) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Day)) as i64)
     }
 
+    #[inline]
+    #[track_caller]
     fn weeks(self) -> Duration {
-        Duration::nanoseconds((self * Nanosecond::per(Week) as Self) as _)
+        Duration::nanoseconds((self * Nanosecond::per_t::<Self>(Week)) as i64)
     }
 }

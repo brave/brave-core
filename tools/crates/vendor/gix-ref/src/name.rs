@@ -7,7 +7,7 @@ use crate::{Category, FullName, FullNameRef, PartialName, PartialNameRef};
 /// The error used in the [`PartialNameRef`]`::try_from`(…) implementations.
 pub type Error = gix_validate::reference::name::Error;
 
-impl<'a> Category<'a> {
+impl Category<'_> {
     /// Return the prefix that would contain all references of our kind, or an empty string if the reference would
     /// be directly inside of the [`git_dir()`][crate::file::Store::git_dir()].
     pub fn prefix(&self) -> &BStr {
@@ -62,16 +62,21 @@ impl PartialNameRef {
 }
 
 impl PartialNameRef {
-    pub(crate) fn looks_like_full_name(&self) -> bool {
+    pub(crate) fn looks_like_full_name(&self, consider_pseudo_ref: bool) -> bool {
         let name = self.0.as_bstr();
         name.starts_with_str("refs/")
             || name.starts_with(Category::MainPseudoRef.prefix())
             || name.starts_with(Category::LinkedPseudoRef { name: "".into() }.prefix())
-            || is_pseudo_ref(name)
+            || (consider_pseudo_ref && is_pseudo_ref(name))
     }
-    pub(crate) fn construct_full_name_ref<'buf>(&self, inbetween: &str, buf: &'buf mut BString) -> &'buf FullNameRef {
+    pub(crate) fn construct_full_name_ref<'buf>(
+        &self,
+        inbetween: &str,
+        buf: &'buf mut BString,
+        consider_pseudo_ref: bool,
+    ) -> &'buf FullNameRef {
         buf.clear();
-        if !self.looks_like_full_name() {
+        if !self.looks_like_full_name(consider_pseudo_ref) {
             buf.push_str("refs/");
         }
         if !inbetween.is_empty() {
@@ -216,6 +221,7 @@ impl<'a> convert::TryFrom<&'a str> for PartialName {
     }
 }
 
+#[allow(clippy::infallible_try_from)]
 impl<'a> convert::TryFrom<&'a FullName> for &'a PartialNameRef {
     type Error = Infallible;
 
@@ -257,6 +263,18 @@ impl convert::TryFrom<BString> for PartialName {
     fn try_from(v: BString) -> Result<Self, Self::Error> {
         gix_validate::reference::name_partial(v.as_ref())?;
         Ok(PartialName(v))
+    }
+}
+
+impl std::fmt::Display for PartialName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&self.0, f)
+    }
+}
+
+impl std::fmt::Display for PartialNameRef {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&self.0, f)
     }
 }
 

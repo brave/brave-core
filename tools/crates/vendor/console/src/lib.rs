@@ -33,7 +33,7 @@
 //!
 //! # Colors and Styles
 //!
-//! `console` automaticaly detects when to use colors based on the tty flag.  It also
+//! `console` automatically detects when to use colors based on the tty flag.  It also
 //! provides higher level wrappers for styling text and other things that can be
 //! displayed with the `style` function and utility types.
 //!
@@ -56,7 +56,7 @@
 //!
 //! # Working with ANSI Codes
 //!
-//! The crate provids the function `strip_ansi_codes` to remove ANSI codes
+//! The crate provides the function `strip_ansi_codes` to remove ANSI codes
 //! from a string as well as `measure_text_width` to calculate the width of a
 //! string as it would be displayed by the terminal.  Both of those together
 //! are useful for more complex formatting.
@@ -75,6 +75,8 @@
 //! * `ansi-parsing`: adds support for parsing ansi codes (this adds support
 //!   for stripping and taking ansi escape codes into account for length
 //!   calculations).
+
+#![warn(unreachable_pub)]
 
 pub use crate::kb::Key;
 pub use crate::term::{

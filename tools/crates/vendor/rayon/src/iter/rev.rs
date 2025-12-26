@@ -5,18 +5,14 @@ use std::iter;
 /// `Rev` is an iterator that produces elements in reverse order. This struct
 /// is created by the [`rev()`] method on [`IndexedParallelIterator`]
 ///
-/// [`rev()`]: trait.IndexedParallelIterator.html#method.rev
-/// [`IndexedParallelIterator`]: trait.IndexedParallelIterator.html
+/// [`rev()`]: IndexedParallelIterator::rev()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Debug, Clone)]
-pub struct Rev<I: IndexedParallelIterator> {
+pub struct Rev<I> {
     base: I,
 }
 
-impl<I> Rev<I>
-where
-    I: IndexedParallelIterator,
-{
+impl<I> Rev<I> {
     /// Creates a new `Rev` iterator.
     pub(super) fn new(base: I) -> Self {
         Rev { base }

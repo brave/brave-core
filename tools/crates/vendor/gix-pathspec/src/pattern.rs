@@ -54,7 +54,11 @@ impl Pattern {
                     _ => 0,
                 })
                 .sum::<isize>();
-            (count > 0).then_some(count as usize).unwrap_or_default()
+            if count > 0 {
+                count as usize
+            } else {
+                Default::default()
+            }
         }
 
         let mut path = gix_path::from_bstr(self.path.as_bstr());
@@ -178,7 +182,7 @@ impl Pattern {
             } else {
                 buf.push_str("attr:");
                 for attr in &self.attributes {
-                    let attr = attr.as_ref().to_string().replace(',', "\\,");
+                    let attr = attr.as_ref().to_string().replace(',', r"\,");
                     buf.push_str(&attr);
                     buf.push(b' ');
                 }

@@ -593,25 +593,6 @@ _CET_ENDBR
 	ret
 
 
-
-.globl	_vpaes_encrypt
-.private_extern _vpaes_encrypt
-
-.p2align	4
-_vpaes_encrypt:
-
-_CET_ENDBR
-#ifdef BORINGSSL_DISPATCH_TEST
-
-	movb	$1,_BORINGSSL_function_hit+4(%rip)
-#endif
-	movdqu	(%rdi),%xmm0
-	call	_vpaes_preheat
-	call	_vpaes_encrypt_core
-	movdqu	%xmm0,(%rsi)
-	ret
-
-
 .globl	_vpaes_ctr32_encrypt_blocks
 .private_extern _vpaes_ctr32_encrypt_blocks
 

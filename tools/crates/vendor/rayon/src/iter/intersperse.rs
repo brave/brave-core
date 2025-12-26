@@ -7,14 +7,12 @@ use std::iter::{self, Fuse};
 /// item of the adapted iterator.  This struct is created by the
 /// [`intersperse()`] method on [`ParallelIterator`]
 ///
-/// [`intersperse()`]: trait.ParallelIterator.html#method.intersperse
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`intersperse()`]: ParallelIterator::intersperse()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone, Debug)]
 pub struct Intersperse<I>
 where
     I: ParallelIterator,
-    I::Item: Clone,
 {
     base: I,
     item: I::Item,
@@ -22,8 +20,7 @@ where
 
 impl<I> Intersperse<I>
 where
-    I: ParallelIterator,
-    I::Item: Clone,
+    I: ParallelIterator<Item: Clone>,
 {
     /// Creates a new `Intersperse` iterator
     pub(super) fn new(base: I, item: I::Item) -> Self {
@@ -33,8 +30,7 @@ where
 
 impl<I> ParallelIterator for Intersperse<I>
 where
-    I: ParallelIterator,
-    I::Item: Clone + Send,
+    I: ParallelIterator<Item: Clone>,
 {
     type Item = I::Item;
 
@@ -56,8 +52,7 @@ where
 
 impl<I> IndexedParallelIterator for Intersperse<I>
 where
-    I: IndexedParallelIterator,
-    I::Item: Clone + Send,
+    I: IndexedParallelIterator<Item: Clone>,
 {
     fn drive<C>(self, consumer: C) -> C::Result
     where
@@ -137,8 +132,7 @@ where
 
 impl<P> Producer for IntersperseProducer<P>
 where
-    P: Producer,
-    P::Item: Clone + Send,
+    P: Producer<Item: Clone + Send>,
 {
     type Item = P::Item;
     type IntoIter = IntersperseIter<P::IntoIter>;
@@ -216,8 +210,7 @@ where
 
 impl<I> Iterator for IntersperseIter<I>
 where
-    I: DoubleEndedIterator + ExactSizeIterator,
-    I::Item: Clone,
+    I: DoubleEndedIterator<Item: Clone> + ExactSizeIterator,
 {
     type Item = I::Item;
 
@@ -245,8 +238,7 @@ where
 
 impl<I> DoubleEndedIterator for IntersperseIter<I>
 where
-    I: DoubleEndedIterator + ExactSizeIterator,
-    I::Item: Clone,
+    I: DoubleEndedIterator<Item: Clone> + ExactSizeIterator,
 {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.clone_last {
@@ -267,8 +259,7 @@ where
 
 impl<I> ExactSizeIterator for IntersperseIter<I>
 where
-    I: DoubleEndedIterator + ExactSizeIterator,
-    I::Item: Clone,
+    I: DoubleEndedIterator<Item: Clone> + ExactSizeIterator,
 {
     fn len(&self) -> usize {
         let len = self.base.len();

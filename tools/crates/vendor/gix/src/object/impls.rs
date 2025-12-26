@@ -61,7 +61,7 @@ impl<'repo> From<Commit<'repo>> for Object<'repo> {
     }
 }
 
-impl<'repo> AsRef<[u8]> for Object<'repo> {
+impl AsRef<[u8]> for Object<'_> {
     fn as_ref(&self) -> &[u8] {
         &self.data
     }
@@ -137,7 +137,7 @@ impl<'repo> TryFrom<Object<'repo>> for Blob<'repo> {
     }
 }
 
-impl<'r> std::fmt::Debug for Object<'r> {
+impl std::fmt::Debug for Object<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use gix_object::Kind::*;
         let type_name = match self.kind {
@@ -147,6 +147,23 @@ impl<'r> std::fmt::Debug for Object<'r> {
             Tag => "Tag",
         };
         write!(f, "{}({})", type_name, self.id)
+    }
+}
+
+/// Note that the `data` written here might not correspond to the `id` of the `Blob` anymore if it was modified.
+/// Also, this is merely for convenience when writing empty blobs to the ODB. For writing any blob, use
+/// [`Repository::write_blob()`](crate::Repository::write_blob()).
+impl gix_object::WriteTo for Blob<'_> {
+    fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        out.write_all(&self.data)
+    }
+
+    fn kind(&self) -> gix_object::Kind {
+        gix_object::Kind::Blob
+    }
+
+    fn size(&self) -> u64 {
+        self.data.len() as u64
     }
 }
 

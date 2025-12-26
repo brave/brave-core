@@ -4,10 +4,11 @@
 //! (e.g. [`TimeZone`](../offset/trait.TimeZone.html)),
 //! but can be also used for the simpler date and time handling.
 
+use core::hash::{Hash, Hasher};
 use core::ops::RangeInclusive;
 
-use crate::expect;
 use crate::Weekday;
+use crate::expect;
 
 pub(crate) mod date;
 pub(crate) mod datetime;
@@ -15,11 +16,11 @@ mod internals;
 pub(crate) mod isoweek;
 pub(crate) mod time;
 
-pub use self::date::{NaiveDate, NaiveDateDaysIterator, NaiveDateWeeksIterator};
 #[allow(deprecated)]
 pub use self::date::{MAX_DATE, MIN_DATE};
+pub use self::date::{NaiveDate, NaiveDateDaysIterator, NaiveDateWeeksIterator};
 #[allow(deprecated)]
-pub use self::datetime::{NaiveDateTime, MAX_DATETIME, MIN_DATETIME};
+pub use self::datetime::{MAX_DATETIME, MIN_DATETIME, NaiveDateTime};
 pub use self::isoweek::IsoWeek;
 pub use self::time::NaiveTime;
 
@@ -29,7 +30,7 @@ pub use self::internals::YearFlags as __BenchYearFlags;
 
 /// A week represented by a [`NaiveDate`] and a [`Weekday`] which is the first
 /// day of the week.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq)]
 pub struct NaiveWeek {
     date: NaiveDate,
     start: Weekday,
@@ -206,6 +207,18 @@ impl NaiveWeek {
     }
 }
 
+impl PartialEq for NaiveWeek {
+    fn eq(&self, other: &Self) -> bool {
+        self.first_day() == other.first_day()
+    }
+}
+
+impl Hash for NaiveWeek {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.first_day().hash(state);
+    }
+}
+
 /// A duration in calendar days.
 ///
 /// This is useful because when using `TimeDelta` it is possible that adding `TimeDelta::days(1)`
@@ -235,7 +248,8 @@ pub mod serde {
 
 #[cfg(test)]
 mod test {
-    use crate::{NaiveDate, Weekday};
+    use crate::{NaiveDate, NaiveWeek, Weekday};
+    use std::hash::{DefaultHasher, Hash, Hasher};
     #[test]
     fn test_naiveweek() {
         let date = NaiveDate::from_ymd_opt(2022, 5, 18).unwrap();
@@ -277,5 +291,45 @@ mod test {
         }
         let _ = date_min.week(Weekday::Mon).checked_days();
         let _ = date_max.week(Weekday::Mon).checked_days();
+    }
+
+    #[test]
+    fn test_naiveweek_eq() {
+        let a =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 3).unwrap(), start: Weekday::Mon };
+        let b =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 4).unwrap(), start: Weekday::Mon };
+        assert_eq!(a, b);
+
+        let c =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 3).unwrap(), start: Weekday::Sun };
+        assert_ne!(a, c);
+        assert_ne!(b, c);
+    }
+
+    #[test]
+    fn test_naiveweek_hash() {
+        let a =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 3).unwrap(), start: Weekday::Mon };
+        let b =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 4).unwrap(), start: Weekday::Mon };
+        let c =
+            NaiveWeek { date: NaiveDate::from_ymd_opt(2025, 4, 3).unwrap(), start: Weekday::Sun };
+
+        let mut hasher = DefaultHasher::default();
+        a.hash(&mut hasher);
+        let a_hash = hasher.finish();
+
+        hasher = DefaultHasher::default();
+        b.hash(&mut hasher);
+        let b_hash = hasher.finish();
+
+        hasher = DefaultHasher::default();
+        c.hash(&mut hasher);
+        let c_hash = hasher.finish();
+
+        assert_eq!(a_hash, b_hash);
+        assert_ne!(b_hash, c_hash);
+        assert_ne!(a_hash, c_hash);
     }
 }

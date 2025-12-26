@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 21
-  |
-1 | exp-double-e-2 = 1e2e3
-  |                     ^
-expected newline, `#`

@@ -1,8 +1,9 @@
-use crate::status::{index_worktree, OwnedOrStaticAtomicBool, Platform, Submodule, UntrackedFiles};
 use std::sync::atomic::AtomicBool;
 
+use crate::status::{index_worktree, tree_index, OwnedOrStaticAtomicBool, Platform, Submodule, UntrackedFiles};
+
 /// Builder
-impl<'repo, Progress> Platform<'repo, Progress>
+impl<Progress> Platform<'_, Progress>
 where
     Progress: gix_features::progress::Progress,
 {
@@ -105,6 +106,22 @@ where
     /// the respective option.
     pub fn index_worktree_options_mut(mut self, cb: impl FnOnce(&mut index_worktree::Options)) -> Self {
         cb(&mut self.index_worktree_options);
+        self
+    }
+
+    /// Set the tree at which the `HEAD` ref ought to reside.
+    /// Setting this explicitly allows to compare the index to a tree that it possibly didn't originate from.
+    ///
+    /// If not set explicitly, it will be read via `HEAD^{tree}`.
+    pub fn head_tree(mut self, tree: impl Into<gix_hash::ObjectId>) -> Self {
+        self.head_tree = Some(Some(tree.into()));
+        self
+    }
+
+    /// Configure how rename tracking should be performed when looking at changes between the [head tree](Self::head_tree())
+    /// and the index.
+    pub fn tree_index_track_renames(mut self, renames: tree_index::TrackRenames) -> Self {
+        self.tree_index_renames = renames;
         self
     }
 }

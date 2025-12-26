@@ -7,7 +7,6 @@
 
 use super::raw::*;
 use crate::backend::c;
-use crate::backend::fd::LibcFd as LibcSocket;
 use core::fmt;
 use core::marker::PhantomData;
 use core::mem::forget;
@@ -70,7 +69,7 @@ pub struct OwnedSocket {
 }
 
 impl BorrowedSocket<'_> {
-    /// Return a `BorrowedSocket` holding the given raw socket.
+    /// Returns a `BorrowedSocket` holding the given raw socket.
     ///
     /// # Safety
     ///
@@ -132,7 +131,7 @@ impl Drop for OwnedSocket {
     #[inline]
     fn drop(&mut self) {
         unsafe {
-            let _ = c::closesocket(self.socket as LibcSocket);
+            let _ = c::closesocket(self.socket as c::SOCKET);
         }
     }
 }

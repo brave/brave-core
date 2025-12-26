@@ -4,7 +4,6 @@ pub use gix_pathspec::*;
 use crate::{bstr::BStr, AttributeStack, Pathspec, PathspecDetached, Repository};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod init {
     /// The error returned by [`Pathspec::new()`](super::Pathspec::new()).
     #[derive(Debug, thiserror::Error)]
@@ -61,7 +60,7 @@ impl<'repo> Pathspec<'repo> {
             patterns,
             prefix,
             &gix_path::realpath_opts(
-                repo.work_dir().unwrap_or_else(|| repo.git_dir()),
+                repo.workdir().unwrap_or_else(|| repo.git_dir()),
                 repo.options.current_dir_or_empty(),
                 gix_path::realpath::MAX_SYMLINKS,
             )?,
@@ -136,7 +135,7 @@ impl<'repo> Pathspec<'repo> {
                 stack
                     .set_case(case)
                     .at_entry(relative_path, Some(is_dir_to_mode(is_dir)), &self.repo.objects)
-                    .map_or(false, |platform| platform.matching_attributes(out))
+                    .is_ok_and(|platform| platform.matching_attributes(out))
             },
         )
     }
@@ -145,7 +144,7 @@ impl<'repo> Pathspec<'repo> {
     /// `true` if `relative_path` is included in the set of positive pathspecs, while not being excluded.
     pub fn is_included<'a>(&mut self, relative_path: impl Into<&'a BStr>, is_dir: Option<bool>) -> bool {
         self.pattern_matching_relative_path(relative_path, is_dir)
-            .map_or(false, |m| !m.is_excluded())
+            .is_some_and(|m| !m.is_excluded())
     }
 
     /// Return an iterator over all entries along with their path if the path matches the pathspec, or `None` if the pathspec is
@@ -190,7 +189,7 @@ impl PathspecDetached {
                 stack
                     .set_case(case)
                     .at_entry(relative_path, Some(is_dir_to_mode(is_dir)), &self.odb)
-                    .map_or(false, |platform| platform.matching_attributes(out))
+                    .is_ok_and(|platform| platform.matching_attributes(out))
             },
         )
     }
@@ -199,11 +198,11 @@ impl PathspecDetached {
     /// `true` if `relative_path` is included in the set of positive pathspecs, while not being excluded.
     pub fn is_included<'a>(&mut self, relative_path: impl Into<&'a BStr>, is_dir: Option<bool>) -> bool {
         self.pattern_matching_relative_path(relative_path, is_dir)
-            .map_or(false, |m| !m.is_excluded())
+            .is_some_and(|m| !m.is_excluded())
     }
 }
 
-fn is_dir_to_mode(is_dir: bool) -> gix_index::entry::Mode {
+pub(crate) fn is_dir_to_mode(is_dir: bool) -> gix_index::entry::Mode {
     if is_dir {
         gix_index::entry::Mode::DIR
     } else {

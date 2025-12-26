@@ -553,6 +553,11 @@ where
         self.connection.take_user_pings().map(PingPong::new)
     }
 
+    /// Checks if there are any streams
+    pub fn has_streams(&self) -> bool {
+        self.connection.has_streams()
+    }
+
     /// Returns the maximum number of concurrent streams that may be initiated
     /// by the server on this connection.
     ///
@@ -863,7 +868,7 @@ impl Builder {
     /// received for that stream will result in a connection level protocol
     /// error, forcing the connection to terminate.
     ///
-    /// The default value is 10.
+    /// The default value is currently 50.
     ///
     /// # Examples
     ///
@@ -988,7 +993,7 @@ impl Builder {
     /// received for that stream will result in a connection level protocol
     /// error, forcing the connection to terminate.
     ///
-    /// The default value is 30 seconds.
+    /// The default value is currently 1 second.
     ///
     /// # Examples
     ///

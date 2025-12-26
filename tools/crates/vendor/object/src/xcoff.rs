@@ -396,7 +396,7 @@ pub const N_ABS: i16 = -1;
 /// An undefined external symbol.
 pub const N_UNDEF: i16 = 0;
 
-// Vlaues for `n_type`.
+// Values for `n_type`.
 //
 /// Values for visibility as they would appear when encoded in the high 4 bits
 /// of the 16-bit unsigned n_type field of symbol table entries. Valid for

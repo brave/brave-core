@@ -34,6 +34,12 @@ where
     pub fn into_inner(self) -> S {
         self.raw
     }
+
+    /// Get the wrapped [`std::io::Write`]
+    #[inline]
+    pub fn as_inner(&self) -> &S {
+        &self.raw
+    }
 }
 
 impl<S> WinconStream<S>
@@ -41,6 +47,7 @@ where
     S: anstyle_wincon::WinconStream,
     S: IsTerminal,
 {
+    /// Returns `true` if the descriptor/handle refers to a terminal/tty.
     #[inline]
     pub fn is_terminal(&self) -> bool {
         self.raw.is_terminal()

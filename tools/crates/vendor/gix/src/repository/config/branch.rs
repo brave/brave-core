@@ -2,11 +2,17 @@ use std::{borrow::Cow, collections::BTreeSet};
 
 use gix_ref::{FullName, FullNameRef};
 
-use crate::bstr::BStr;
-use crate::config::cache::util::ApplyLeniencyDefault;
-use crate::config::tree::{Branch, Push};
-use crate::repository::{branch_remote_ref_name, branch_remote_tracking_ref_name};
-use crate::{push, remote};
+use crate::{
+    bstr::BStr,
+    config::{
+        cache::util::ApplyLeniencyDefault,
+        tree::{Branch, Push},
+    },
+    push, remote,
+    repository::{
+        branch_remote_ref_name, branch_remote_tracking_ref_name, upstream_branch_and_remote_name_for_tracking_branch,
+    },
+};
 
 /// Query configuration related to branches.
 impl crate::Repository {
@@ -20,19 +26,18 @@ impl crate::Repository {
         self.subsection_str_names_of("branch")
     }
 
-    /// Returns the validated reference on the remote associated with the given `name`,
+    /// Returns the validated reference name of the upstream branch on the remote associated with the given `name`,
     /// which will be used when *merging*.
-    /// The returned value corresponds to the `branch.<short_branch_name>.merge` configuration key.
+    /// The returned value corresponds to the `branch.<short_branch_name>.merge` configuration key for [`remote::Direction::Fetch`].
+    /// For the [push direction](`remote::Direction::Push`) the Git configuration is used for a variety of different outcomes,
+    /// similar to what would happen when running `git push <name>`.
     ///
-    /// Returns `None` if there is no value at the given key, or if no remote or remote ref is configured.
-    /// May return an error if the reference name to be returned is invalid.
+    /// Returns `None` if there is nothing configured, or if no remote or remote ref is configured.
     ///
     /// ### Note
     ///
-    /// This name refers to what Git calls upstream branch (as opposed to upstream *tracking* branch).
+    /// The returned name refers to what Git calls upstream branch (as opposed to upstream *tracking* branch).
     /// The value is also fast to retrieve compared to its tracking branch.
-    /// Also note that a [remote::Direction] isn't used here as Git only supports (and requires) configuring
-    /// the remote to fetch from, not the one to push to.
     ///
     /// See also [`Reference::remote_ref_name()`](crate::Reference::remote_ref_name()).
     #[doc(alias = "branch_upstream_name", alias = "git2")]
@@ -47,7 +52,16 @@ impl crate::Repository {
                 self.config
                     .resolved
                     .string_by("branch", Some(short_name), Branch::MERGE.name)
-                    .map(|name| crate::config::tree::branch::Merge::try_into_fullrefname(name).map_err(Into::into))
+                    .map(|name| {
+                        if name.starts_with(b"refs/") {
+                            crate::config::tree::branch::Merge::try_into_fullrefname(name)
+                        } else {
+                            gix_ref::Category::LocalBranch
+                                .to_full_name(name.as_ref())
+                                .map(Cow::Owned)
+                        }
+                        .map_err(Into::into)
+                    })
             }
             remote::Direction::Push => {
                 let remote = match self.branch_remote(name.shorten(), direction)? {
@@ -125,6 +139,73 @@ impl crate::Repository {
             .map(|res| res.map_err(Into::into))
     }
 
+    /// Given a local `tracking_branch` name, find the remote that maps to it along with the name of the branch on
+    /// the side of the remote, also called upstream branch.
+    ///
+    /// Return `Ok(None)` if there is no remote with fetch-refspecs that would match `tracking_branch` on the right-hand side,
+    /// or `Err` if the matches were ambiguous.
+    ///
+    /// ### Limitations
+    ///
+    /// A single valid mapping is required as fine-grained matching isn't implemented yet. This means that
+    pub fn upstream_branch_and_remote_for_tracking_branch(
+        &self,
+        tracking_branch: &FullNameRef,
+    ) -> Result<Option<(FullName, crate::Remote<'_>)>, upstream_branch_and_remote_name_for_tracking_branch::Error> {
+        use upstream_branch_and_remote_name_for_tracking_branch::Error;
+        if tracking_branch.category() != Some(gix_ref::Category::RemoteBranch) {
+            return Err(Error::BranchCategory {
+                full_name: tracking_branch.to_owned(),
+            });
+        }
+
+        let null = self.object_hash().null();
+        let item_to_search = gix_refspec::match_group::Item {
+            full_ref_name: tracking_branch.as_bstr(),
+            target: &null,
+            object: None,
+        };
+        let mut candidates = Vec::new();
+        let mut ambiguous_remotes = Vec::new();
+        for remote_name in self.remote_names() {
+            let remote = self.find_remote(remote_name.as_ref())?;
+            let match_group = gix_refspec::MatchGroup::from_fetch_specs(
+                remote
+                    .refspecs(remote::Direction::Fetch)
+                    .iter()
+                    .map(|spec| spec.to_ref()),
+            );
+            let out = match_group.match_rhs(Some(item_to_search).into_iter());
+            match &out.mappings[..] {
+                [] => {}
+                [one] => candidates.push((remote.clone(), one.lhs.clone().into_owned())),
+                [..] => ambiguous_remotes.push(remote),
+            }
+        }
+
+        if candidates.len() == 1 {
+            let (remote, candidate) = candidates.pop().expect("just checked for one entry");
+            let upstream_branch = match candidate {
+                gix_refspec::match_group::SourceRef::FullName(name) => gix_ref::FullName::try_from(name.into_owned())?,
+                gix_refspec::match_group::SourceRef::ObjectId(_) => {
+                    unreachable!("Such a reverse mapping isn't ever produced")
+                }
+            };
+            return Ok(Some((upstream_branch, remote)));
+        }
+        if ambiguous_remotes.len() + candidates.len() > 1 {
+            return Err(Error::AmbiguousRemotes {
+                remotes: ambiguous_remotes
+                    .into_iter()
+                    .map(|r| r.name)
+                    .chain(candidates.into_iter().map(|(r, _)| r.name))
+                    .flatten()
+                    .collect(),
+            });
+        }
+        Ok(None)
+    }
+
     /// Returns the unvalidated name of the remote associated with the given `short_branch_name`,
     /// typically `main` instead of `refs/heads/main`.
     /// In some cases, the returned name will be an URL.
@@ -196,7 +277,7 @@ fn matching_remote<'a>(
             .collect(),
     };
     let null_id = object_hash.null();
-    let out = search.match_remotes(
+    let out = search.match_lhs(
         Some(gix_refspec::match_group::Item {
             full_ref_name: lhs.as_bstr(),
             target: &null_id,
@@ -204,11 +285,8 @@ fn matching_remote<'a>(
         })
         .into_iter(),
     );
-    out.mappings.into_iter().next().and_then(|m| {
-        m.rhs.map(|name| {
-            FullName::try_from(name.into_owned())
-                .map(Cow::Owned)
-                .map_err(Into::into)
-        })
-    })
+    out.mappings
+        .into_iter()
+        .next()
+        .and_then(|m| m.rhs.map(|name| FullName::try_from(name.into_owned()).map(Cow::Owned)))
 }

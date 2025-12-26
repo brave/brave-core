@@ -3,12 +3,7 @@
 use std::io;
 use std::io::prelude::*;
 
-#[cfg(feature = "tokio")]
-use futures::Poll;
-#[cfg(feature = "tokio")]
-use tokio_io::{AsyncRead, AsyncWrite};
-
-use {Action, Compress, Compression, Decompress, Status};
+use crate::{Action, Compress, Compression, Decompress, Status};
 
 /// A compression stream which will have uncompressed data written to it and
 /// will write compressed data to an output stream.
@@ -17,6 +12,7 @@ pub struct BzEncoder<W: Write> {
     obj: Option<W>,
     buf: Vec<u8>,
     done: bool,
+    panicked: bool,
 }
 
 /// A compression stream which will have compressed data written to it and
@@ -26,6 +22,7 @@ pub struct BzDecoder<W: Write> {
     obj: Option<W>,
     buf: Vec<u8>,
     done: bool,
+    panicked: bool,
 }
 
 impl<W: Write> BzEncoder<W> {
@@ -37,17 +34,21 @@ impl<W: Write> BzEncoder<W> {
             obj: Some(obj),
             buf: Vec::with_capacity(32 * 1024),
             done: false,
+            panicked: false,
         }
     }
 
     fn dump(&mut self) -> io::Result<()> {
-        while self.buf.len() > 0 {
-            let n = match self.obj.as_mut().unwrap().write(&self.buf) {
-                Ok(n) => n,
+        while !self.buf.is_empty() {
+            self.panicked = true;
+            let r = self.obj.as_mut().unwrap().write(&self.buf);
+            self.panicked = false;
+
+            match r {
+                Ok(n) => self.buf.drain(..n),
                 Err(ref err) if err.kind() == io::ErrorKind::Interrupted => continue,
                 Err(err) => return Err(err),
             };
-            self.buf.drain(..n);
         }
         Ok(())
     }
@@ -69,12 +70,14 @@ impl<W: Write> BzEncoder<W> {
     ///
     /// Note that this function can only be used once data has finished being
     /// written to the output stream. After this function is called then further
-    /// calls to `write` may result in a panic.
+    /// calls to [`write`] may result in a panic.
     ///
     /// # Panics
     ///
     /// Attempts to write data to this stream may result in a panic after this
     /// function is called.
+    ///
+    /// [`write`]: Self::write
     pub fn try_finish(&mut self) -> io::Result<()> {
         while !self.done {
             self.dump()?;
@@ -94,9 +97,11 @@ impl<W: Write> BzEncoder<W> {
     ///
     /// Note that this function may not be suitable to call in a situation where
     /// the underlying stream is an asynchronous I/O stream. To finish a stream
-    /// the `try_finish` (or `shutdown`) method should be used instead. To
+    /// the [`try_finish`] (or `shutdown`) method should be used instead. To
     /// re-acquire ownership of a stream it is safe to call this method after
-    /// `try_finish` or `shutdown` has returned `Ok`.
+    /// [`try_finish`] or `shutdown` has returned `Ok`.
+    ///
+    /// [`try_finish`]: Self::try_finish
     pub fn finish(mut self) -> io::Result<W> {
         self.try_finish()?;
         Ok(self.obj.take().unwrap())
@@ -105,8 +110,11 @@ impl<W: Write> BzEncoder<W> {
     /// Returns the number of bytes produced by the compressor
     ///
     /// Note that, due to buffering, this only bears any relation to
-    /// `total_in()` after a call to `flush()`.  At that point,
+    /// [`total_in`] after a call to [`flush`].  At that point,
     /// `total_out() / total_in()` is the compression ratio.
+    ///
+    /// [`flush`]: Self::flush
+    /// [`total_in`]: Self::total_in
     pub fn total_out(&self) -> u64 {
         self.data.total_out()
     }
@@ -129,7 +137,7 @@ impl<W: Write> Write for BzEncoder<W> {
                 .unwrap();
             let written = (self.total_in() - total_in) as usize;
 
-            if written > 0 || data.len() == 0 {
+            if written > 0 || data.is_empty() {
                 return Ok(written);
             }
         }
@@ -151,31 +159,6 @@ impl<W: Write> Write for BzEncoder<W> {
     }
 }
 
-#[cfg(feature = "tokio")]
-impl<W: AsyncWrite> AsyncWrite for BzEncoder<W> {
-    fn shutdown(&mut self) -> Poll<(), io::Error> {
-        try_nb!(self.try_finish());
-        self.get_mut().shutdown()
-    }
-}
-
-impl<W: Read + Write> Read for BzEncoder<W> {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.get_mut().read(buf)
-    }
-}
-
-#[cfg(feature = "tokio")]
-impl<W: AsyncRead + AsyncWrite> AsyncRead for BzEncoder<W> {}
-
-impl<W: Write> Drop for BzEncoder<W> {
-    fn drop(&mut self) {
-        if self.obj.is_some() {
-            let _ = self.try_finish();
-        }
-    }
-}
-
 impl<W: Write> BzDecoder<W> {
     /// Create a new decoding stream which will decompress all data written
     /// to it into `obj`.
@@ -185,6 +168,7 @@ impl<W: Write> BzDecoder<W> {
             obj: Some(obj),
             buf: Vec::with_capacity(32 * 1024),
             done: false,
+            panicked: false,
         }
     }
 
@@ -202,13 +186,16 @@ impl<W: Write> BzDecoder<W> {
     }
 
     fn dump(&mut self) -> io::Result<()> {
-        while self.buf.len() > 0 {
-            let n = match self.obj.as_mut().unwrap().write(&self.buf) {
-                Ok(n) => n,
+        while !self.buf.is_empty() {
+            self.panicked = true;
+            let r = self.obj.as_mut().unwrap().write(&self.buf);
+            self.panicked = false;
+
+            match r {
+                Ok(n) => self.buf.drain(..n),
                 Err(ref err) if err.kind() == io::ErrorKind::Interrupted => continue,
                 Err(err) => return Err(err),
             };
-            self.buf.drain(..n);
         }
         Ok(())
     }
@@ -217,15 +204,23 @@ impl<W: Write> BzDecoder<W> {
     ///
     /// Note that this function can only be used once data has finished being
     /// written to the output stream. After this function is called then further
-    /// calls to `write` may result in a panic.
+    /// calls to [`write`] may result in a panic.
     ///
     /// # Panics
     ///
     /// Attempts to write data to this stream may result in a panic after this
     /// function is called.
+    ///
+    /// [`write`]: Self::write
     pub fn try_finish(&mut self) -> io::Result<()> {
         while !self.done {
-            self.write(&[])?;
+            // The write is effectively a `self.flush()`, but we want to know how many
+            // bytes were written. exit if no input was read and no output was written
+            if self.write(&[])? == 0 {
+                // finishing the output stream is effectively EOF of the input
+                let msg = "Input EOF reached before logical stream end";
+                return Err(io::Error::new(io::ErrorKind::UnexpectedEof, msg));
+            }
         }
         self.dump()
     }
@@ -234,9 +229,11 @@ impl<W: Write> BzDecoder<W> {
     ///
     /// Note that this function may not be suitable to call in a situation where
     /// the underlying stream is an asynchronous I/O stream. To finish a stream
-    /// the `try_finish` (or `shutdown`) method should be used instead. To
+    /// the [`try_finish`] (or `shutdown`) method should be used instead. To
     /// re-acquire ownership of a stream it is safe to call this method after
-    /// `try_finish` or `shutdown` has returned `Ok`.
+    /// [`try_finish`] or `shutdown` has returned `Ok`.
+    ///
+    /// [`try_finish`]: Self::try_finish
     pub fn finish(&mut self) -> io::Result<W> {
         self.try_finish()?;
         Ok(self.obj.take().unwrap())
@@ -245,8 +242,11 @@ impl<W: Write> BzDecoder<W> {
     /// Returns the number of bytes produced by the decompressor
     ///
     /// Note that, due to buffering, this only bears any relation to
-    /// `total_in()` after a call to `flush()`.  At that point,
+    /// [`total_in`] after a call to [`flush`].  At that point,
     /// `total_in() / total_out()` is the compression ratio.
+    ///
+    /// [`flush`]: Self::flush
+    /// [`total_in`]: Self::total_in
     pub fn total_out(&self) -> u64 {
         self.data.total_out()
     }
@@ -270,12 +270,14 @@ impl<W: Write> Write for BzDecoder<W> {
             let res = self.data.decompress_vec(data, &mut self.buf);
             let written = (self.total_in() - before) as usize;
 
-            let res = res.map_err(|e| io::Error::new(io::ErrorKind::InvalidInput, e))?;
+            // make sure that a subsequent call exits early when there is nothing useful left to do
+            self.done |= matches!(res, Err(_) | Ok(Status::StreamEnd));
 
-            if res == Status::StreamEnd {
-                self.done = true;
+            if let Err(e) = res {
+                return Err(io::Error::new(io::ErrorKind::InvalidInput, e));
             }
-            if written > 0 || data.len() == 0 || self.done {
+
+            if written > 0 || data.is_empty() || self.done {
                 return Ok(written);
             }
         }
@@ -287,23 +289,6 @@ impl<W: Write> Write for BzDecoder<W> {
     }
 }
 
-#[cfg(feature = "tokio")]
-impl<W: AsyncWrite> AsyncWrite for BzDecoder<W> {
-    fn shutdown(&mut self) -> Poll<(), io::Error> {
-        try_nb!(self.try_finish());
-        self.get_mut().shutdown()
-    }
-}
-
-impl<W: Read + Write> Read for BzDecoder<W> {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.get_mut().read(buf)
-    }
-}
-
-#[cfg(feature = "tokio")]
-impl<W: AsyncRead + AsyncWrite> AsyncRead for BzDecoder<W> {}
-
 impl<W: Write> Drop for BzDecoder<W> {
     fn drop(&mut self) {
         if self.obj.is_some() {
@@ -312,19 +297,28 @@ impl<W: Write> Drop for BzDecoder<W> {
     }
 }
 
+impl<W: Write> Drop for BzEncoder<W> {
+    fn drop(&mut self) {
+        if self.obj.is_some() && !self.panicked {
+            let _ = self.try_finish();
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{BzDecoder, BzEncoder};
-    use partial_io::{GenInterrupted, PartialWithErrors, PartialWrite};
+    use crate::Compression;
+    use partial_io::quickcheck_types::{GenInterrupted, PartialWithErrors};
+    use partial_io::PartialWrite;
     use std::io::prelude::*;
-    use std::iter::repeat;
 
     #[test]
     fn smoke() {
         let d = BzDecoder::new(Vec::new());
-        let mut c = BzEncoder::new(d, ::Compression::default());
+        let mut c = BzEncoder::new(d, Compression::default());
         c.write_all(b"12834").unwrap();
-        let s = repeat("12345").take(100000).collect::<String>();
+        let s = "12345".repeat(100000);
         c.write_all(s.as_bytes()).unwrap();
         let data = c.finish().unwrap().finish().unwrap();
         assert_eq!(&data[0..5], b"12834");
@@ -333,12 +327,45 @@ mod tests {
     }
 
     #[test]
-    fn write_empty() {
+    fn roundtrip_empty() {
+        // this encodes and then decodes an empty input file
         let d = BzDecoder::new(Vec::new());
-        let mut c = BzEncoder::new(d, ::Compression::default());
-        c.write(b"").unwrap();
+        let mut c = BzEncoder::new(d, Compression::default());
+        let _ = c.write(b"").unwrap();
         let data = c.finish().unwrap().finish().unwrap();
         assert_eq!(&data[..], b"");
+    }
+
+    #[test]
+    fn finish_empty_explicit() {
+        // The empty sequence is not a valid .bzip2 file!
+        // A valid file at least includes the magic bytes, the checksum, etc.
+        //
+        // This used to loop infinitely, see
+        //
+        // - https://github.com/trifectatechfoundation/bzip2-rs/issues/96
+        // - https://github.com/trifectatechfoundation/bzip2-rs/pull/97
+        let mut d = BzDecoder::new(Vec::new());
+        d.write(b"").unwrap();
+        let e = d.finish().unwrap_err();
+        assert_eq!(e.kind(), std::io::ErrorKind::UnexpectedEof);
+    }
+
+    #[test]
+    fn finish_empty_drop() {
+        // the drop implementation used to loop infinitely for empty input
+        //
+        // see https://github.com/trifectatechfoundation/bzip2-rs/pull/118
+        let d = BzDecoder::new(Vec::new());
+        drop(d);
+    }
+
+    #[test]
+    fn write_invalid() {
+        // see https://github.com/trifectatechfoundation/bzip2-rs/issues/98
+        let mut d = BzDecoder::new(Vec::new());
+        let e = d.write(b"BZh\xfb").unwrap_err();
+        assert_eq!(e.kind(), std::io::ErrorKind::InvalidInput);
     }
 
     #[test]
@@ -347,7 +374,7 @@ mod tests {
 
         fn test(v: Vec<u8>) -> bool {
             let w = BzDecoder::new(Vec::new());
-            let mut w = BzEncoder::new(w, ::Compression::default());
+            let mut w = BzEncoder::new(w, Compression::default());
             w.write_all(&v).unwrap();
             v == w.finish().unwrap().finish().unwrap()
         }
@@ -355,7 +382,7 @@ mod tests {
 
     #[test]
     fn qc_partial() {
-        quickcheck6::quickcheck(test as fn(_, _, _) -> _);
+        quickcheck::quickcheck(test as fn(_, _, _) -> _);
 
         fn test(
             v: Vec<u8>,
@@ -363,7 +390,7 @@ mod tests {
             decode_ops: PartialWithErrors<GenInterrupted>,
         ) -> bool {
             let w = BzDecoder::new(PartialWrite::new(Vec::new(), decode_ops));
-            let mut w = BzEncoder::new(PartialWrite::new(w, encode_ops), ::Compression::default());
+            let mut w = BzEncoder::new(PartialWrite::new(w, encode_ops), Compression::default());
             w.write_all(&v).unwrap();
             v == w
                 .finish()
@@ -373,5 +400,33 @@ mod tests {
                 .unwrap()
                 .into_inner()
         }
+    }
+
+    #[test]
+    fn terminate_on_drop() {
+        // Test that dropping the BzEncoder flushes bytes to the output, so that
+        // we get a valid, decompressable datastream
+        //
+        // see https://github.com/trifectatechfoundation/bzip2-rs/pull/121
+        let s = "12345".repeat(100);
+
+        let mut compressed = Vec::new();
+        {
+            let mut c: Box<dyn std::io::Write> =
+                Box::new(BzEncoder::new(&mut compressed, Compression::default()));
+            c.write_all(b"12834").unwrap();
+            c.write_all(s.as_bytes()).unwrap();
+            c.flush().unwrap();
+        }
+        assert!(!compressed.is_empty());
+
+        let uncompressed = {
+            let mut d = BzDecoder::new(Vec::new());
+            d.write_all(&compressed).unwrap();
+            d.finish().unwrap()
+        };
+        assert_eq!(&uncompressed[0..5], b"12834");
+        assert_eq!(uncompressed.len(), s.len() + "12834".len());
+        assert!(format!("12834{}", s).as_bytes() == &*uncompressed);
     }
 }

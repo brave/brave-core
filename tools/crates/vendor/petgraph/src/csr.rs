@@ -1,18 +1,21 @@
 //! Compressed Sparse Row (CSR) is a sparse adjacency matrix graph.
 
-use std::cmp::{max, Ordering};
-use std::iter::{Enumerate, Zip};
-use std::marker::PhantomData;
-use std::ops::{Index, IndexMut, Range};
-use std::slice::Windows;
+use alloc::{vec, vec::Vec};
+use core::{
+    cmp::{max, Ordering},
+    fmt,
+    iter::zip,
+    iter::{Enumerate, Zip},
+    marker::PhantomData,
+    ops::{Index, IndexMut, Range},
+    slice::Windows,
+};
 
 use crate::visit::{
     Data, EdgeCount, EdgeRef, GetAdjacencyMatrix, GraphBase, GraphProp, IntoEdgeReferences,
     IntoEdges, IntoNeighbors, IntoNodeIdentifiers, IntoNodeReferences, NodeCompactIndexable,
     NodeCount, NodeIndexable, Visitable,
 };
-
-use crate::util::zip;
 
 #[doc(no_inline)]
 pub use crate::graph::{DefaultIx, IndexType};
@@ -26,6 +29,29 @@ pub type EdgeIndex = usize;
 
 const BINARY_SEARCH_CUTOFF: usize = 32;
 
+/// The error type for fallible operations with `Csr`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CsrError {
+    /// Both vertex indexes go outside the graph.
+    IndicesOutBounds(usize, usize),
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for CsrError {}
+
+#[cfg(not(feature = "std"))]
+impl core::error::Error for CsrError {}
+
+impl fmt::Display for CsrError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CsrError::IndicesOutBounds(a, b) => {
+                write!(f, "Both node indices {a} and {b} is out of Csr bounds")
+            }
+        }
+    }
+}
+
 /// Compressed Sparse Row ([`CSR`]) is a sparse adjacency matrix graph.
 ///
 /// `CSR` is parameterized over:
@@ -36,11 +62,11 @@ const BINARY_SEARCH_CUTOFF: usize = 32;
 /// - Index type `Ix`, which determines the maximum size of the graph.
 ///
 ///
-/// Using **O(|E| + |V|)** space.
+/// Using **O(|V| + |E|)** space where V is the set of nodes and E is the set of edges.
 ///
 /// Self loops are allowed, no parallel edges.
 ///
-/// Fast iteration of the outgoing edges of a vertex.
+/// Fast iteration of the outgoing edges of a node.
 ///
 /// [`CSR`]: https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_(CSR,_CRS_or_Yale_format)
 #[derive(Debug)]
@@ -131,11 +157,13 @@ where
 /// Csr creation error: edges were not in sorted order.
 #[derive(Clone, Debug)]
 pub struct EdgesNotSorted {
+    #[allow(unused)]
     first_error: (usize, usize),
 }
 
-impl<N, E, Ix> Csr<N, E, Directed, Ix>
+impl<N, E, Ty, Ix> Csr<N, E, Ty, Ix>
 where
+    Ty: EdgeType,
     Ix: IndexType,
 {
     /// Create a new `Csr` from a sorted sequence of edges
@@ -143,7 +171,12 @@ where
     /// Edges **must** be sorted and unique, where the sort order is the default
     /// order for the pair *(u, v)* in Rust (*u* has priority).
     ///
-    /// Computes in **O(|E| + |V|)** time.
+    /// Computes in **O(|V| + |E|)** time where V is the set of nodes and E is the set of edges.
+    ///
+    /// # Note
+    /// When constructing an **undirected** graph, edges have to be present in both directions,
+    /// i.e. `(u, v)` requires the sequence to also contain `(v, u)`.
+    ///
     /// # Example
     /// ```rust
     /// use petgraph::csr::Csr;
@@ -216,6 +249,7 @@ where
                         self_.column.push(m);
                         self_.edges.push(weight);
                         rstart += 1;
+                        self_.edge_count += 1;
                     } else {
                         break 'outer;
                     }
@@ -229,13 +263,7 @@ where
 
         Ok(self_)
     }
-}
 
-impl<N, E, Ty, Ix> Csr<N, E, Ty, Ix>
-where
-    Ty: EdgeType,
-    Ix: IndexType,
-{
     pub fn node_count(&self) -> usize {
         self.row.len() - 1
     }
@@ -272,35 +300,68 @@ where
         Ix::new(i)
     }
 
+    /// Add an edge from `a` to `b` to the `Csr`, with its associated
+    /// data weight.
+    ///
     /// Return `true` if the edge was added
     ///
     /// If you add all edges in row-major order, the time complexity
     /// is **O(|V|·|E|)** for the whole operation.
     ///
     /// **Panics** if `a` or `b` are out of bounds.
+    #[track_caller]
     pub fn add_edge(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> bool
     where
         E: Clone,
     {
-        let ret = self.add_edge_(a, b, weight.clone());
+        self.try_add_edge(a, b, weight).unwrap()
+    }
+
+    /// Try to add an edge from `a` to `b` to the `Csr`, with its associated
+    /// data weight.
+    ///
+    /// Return `true` if the edge was added
+    ///
+    /// If you add all edges in row-major order, the time complexity
+    /// is **O(|V|·|E|)** for the whole operation.
+    ///
+    /// Possible errors:
+    /// - [`CsrError::IndicesOutBounds`] - when both idxs `a` & `b` is out of bounds.
+    pub fn try_add_edge(
+        &mut self,
+        a: NodeIndex<Ix>,
+        b: NodeIndex<Ix>,
+        weight: E,
+    ) -> Result<bool, CsrError>
+    where
+        E: Clone,
+    {
+        let ret = self.add_edge_(a, b, weight.clone())?;
         if ret && !self.is_directed() {
             self.edge_count += 1;
         }
         if ret && !self.is_directed() && a != b {
-            let _ret2 = self.add_edge_(b, a, weight);
+            let _ret2 = self.add_edge_(b, a, weight)?;
             debug_assert_eq!(ret, _ret2);
         }
-        ret
+        Ok(ret)
     }
 
     // Return false if the edge already exists
-    fn add_edge_(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> bool {
-        assert!(a.index() < self.node_count() && b.index() < self.node_count());
+    fn add_edge_(
+        &mut self,
+        a: NodeIndex<Ix>,
+        b: NodeIndex<Ix>,
+        weight: E,
+    ) -> Result<bool, CsrError> {
+        if !(a.index() < self.node_count() && b.index() < self.node_count()) {
+            return Err(CsrError::IndicesOutBounds(a.index(), b.index()));
+        }
         // a x b is at (a, b) in the matrix
 
         // find current range of edges from a
         let pos = match self.find_edge_pos(a, b) {
-            Ok(_) => return false, /* already exists */
+            Ok(_) => return Ok(false), /* already exists */
             Err(i) => i,
         };
         self.column.insert(pos, b);
@@ -309,7 +370,7 @@ where
         for r in &mut self.row[a.index() + 1..] {
             *r += 1;
         }
-        true
+        Ok(true)
     }
 
     fn find_edge_pos(&self, a: NodeIndex<Ix>, b: NodeIndex<Ix>) -> Result<usize, usize> {
@@ -331,9 +392,10 @@ where
         }
     }
 
-    /// Computes in **O(log |V|)** time.
+    /// Computes in **O(log |V|)** time where V is the set of nodes.
     ///
     /// **Panics** if the node `a` does not exist.
+    #[track_caller]
     pub fn contains_edge(&self, a: NodeIndex<Ix>, b: NodeIndex<Ix>) -> bool {
         self.find_edge_pos(a, b).is_ok()
     }
@@ -356,6 +418,7 @@ where
     /// Computes in **O(1)** time.
     ///
     /// **Panics** if the node `a` does not exist.
+    #[track_caller]
     pub fn out_degree(&self, a: NodeIndex<Ix>) -> usize {
         let r = self.neighbors_range(a);
         r.end - r.start
@@ -364,6 +427,7 @@ where
     /// Computes in **O(1)** time.
     ///
     /// **Panics** if the node `a` does not exist.
+    #[track_caller]
     pub fn neighbors_slice(&self, a: NodeIndex<Ix>) -> &[NodeIndex<Ix>] {
         self.neighbors_of(a).1
     }
@@ -371,6 +435,7 @@ where
     /// Computes in **O(1)** time.
     ///
     /// **Panics** if the node `a` does not exist.
+    #[track_caller]
     pub fn edges_slice(&self, a: NodeIndex<Ix>) -> &[E] {
         &self.edges[self.neighbors_range(a)]
     }
@@ -382,7 +447,8 @@ where
     ///
     /// **Panics** if the node `a` does not exist.<br>
     /// Iterator element type is `EdgeReference<E, Ty, Ix>`.
-    pub fn edges(&self, a: NodeIndex<Ix>) -> Edges<E, Ty, Ix> {
+    #[track_caller]
+    pub fn edges(&self, a: NodeIndex<Ix>) -> Edges<'_, E, Ty, Ix> {
         let r = self.neighbors_range(a);
         Edges {
             index: r.start,
@@ -410,13 +476,13 @@ pub struct EdgeReference<'a, E: 'a, Ty, Ix: 'a = DefaultIx> {
     ty: PhantomData<Ty>,
 }
 
-impl<'a, E, Ty, Ix: Copy> Clone for EdgeReference<'a, E, Ty, Ix> {
+impl<E, Ty, Ix: Copy> Clone for EdgeReference<'_, E, Ty, Ix> {
     fn clone(&self) -> Self {
         *self
     }
 }
 
-impl<'a, E, Ty, Ix: Copy> Copy for EdgeReference<'a, E, Ty, Ix> {}
+impl<E, Ty, Ix: Copy> Copy for EdgeReference<'_, E, Ty, Ix> {}
 
 impl<'a, Ty, E, Ix> EdgeReference<'a, E, Ty, Ix>
 where
@@ -431,7 +497,7 @@ where
     }
 }
 
-impl<'a, E, Ty, Ix> EdgeRef for EdgeReference<'a, E, Ty, Ix>
+impl<E, Ty, Ix> EdgeRef for EdgeReference<'_, E, Ty, Ix>
 where
     Ty: EdgeType,
     Ix: IndexType,
@@ -586,14 +652,14 @@ where
     }
 }
 
-use std::slice::Iter as SliceIter;
+use core::slice::Iter as SliceIter;
 
 #[derive(Clone, Debug)]
 pub struct Neighbors<'a, Ix: 'a = DefaultIx> {
     iter: SliceIter<'a, NodeIndex<Ix>>,
 }
 
-impl<'a, Ix> Iterator for Neighbors<'a, Ix>
+impl<Ix> Iterator for Neighbors<'_, Ix>
 where
     Ix: IndexType,
 {
@@ -622,6 +688,7 @@ where
     ///
     /// **Panics** if the node `a` does not exist.<br>
     /// Iterator element type is `NodeIndex<Ix>`.
+    #[track_caller]
     fn neighbors(self, a: Self::NodeId) -> Self::Neighbors {
         Neighbors {
             iter: self.neighbors_slice(a).iter(),
@@ -695,7 +762,7 @@ where
     }
 }
 
-impl<'a, N, E, Ty, Ix> IntoNodeIdentifiers for &'a Csr<N, E, Ty, Ix>
+impl<N, E, Ty, Ix> IntoNodeIdentifiers for &Csr<N, E, Ty, Ix>
 where
     Ty: EdgeType,
     Ix: IndexType,
@@ -775,7 +842,7 @@ where
     }
 }
 
-impl<'a, N, Ix> DoubleEndedIterator for NodeReferences<'a, N, Ix>
+impl<N, Ix> DoubleEndedIterator for NodeReferences<'_, N, Ix>
 where
     Ix: IndexType,
 {
@@ -786,11 +853,11 @@ where
     }
 }
 
-impl<'a, N, Ix> ExactSizeIterator for NodeReferences<'a, N, Ix> where Ix: IndexType {}
+impl<N, Ix> ExactSizeIterator for NodeReferences<'_, N, Ix> where Ix: IndexType {}
 
 /// The adjacency matrix for **Csr** is a bitmap that's computed by
 /// `.adjacency_matrix()`.
-impl<'a, N, E, Ty, Ix> GetAdjacencyMatrix for &'a Csr<N, E, Ty, Ix>
+impl<N, E, Ty, Ix> GetAdjacencyMatrix for &Csr<N, E, Ty, Ix>
 where
     Ix: IndexType,
     Ty: EdgeType,
@@ -801,17 +868,19 @@ where
         let n = self.node_count();
         let mut matrix = FixedBitSet::with_capacity(n * n);
         for edge in self.edge_references() {
-            let i = edge.source().index() * n + edge.target().index();
+            let i = n * edge.source().index() + edge.target().index();
             matrix.put(i);
 
-            let j = edge.source().index() + n * edge.target().index();
-            matrix.put(j);
+            if !self.is_directed() {
+                let j = edge.source().index() + n * edge.target().index();
+                matrix.put(j);
+            }
         }
         matrix
     }
 
     fn is_adjacent(&self, matrix: &FixedBitSet, a: NodeIndex<Ix>, b: NodeIndex<Ix>) -> bool {
-        let n = self.edge_count();
+        let n = self.node_count();
         let index = n * a.index() + b.index();
         matrix.contains(index)
     }
@@ -833,6 +902,9 @@ Row   : [0, 2, 5]   <- value index of row start
 
 #[cfg(test)]
 mod tests {
+    use alloc::vec::Vec;
+    use std::println;
+
     use super::Csr;
     use crate::algo::bellman_ford;
     use crate::algo::find_negative_cycle;
@@ -850,7 +922,7 @@ mod tests {
         m.add_edge(0, 2, ());
         m.add_edge(1, 0, ());
         m.add_edge(1, 1, ());
-        println!("{:?}", m);
+        println!("{m:?}");
         assert_eq!(&m.column, &[0, 2, 0, 1, 2, 2]);
         assert_eq!(&m.row, &[0, 2, 5, 6]);
 
@@ -877,7 +949,7 @@ mod tests {
         m.add_edge(0, 2, ());
         m.add_edge(1, 2, ());
         m.add_edge(2, 2, ());
-        println!("{:?}", m);
+        println!("{m:?}");
         assert_eq!(&m.column, &[0, 2, 2, 0, 1, 2]);
         assert_eq!(&m.row, &[0, 2, 3, 6]);
         assert_eq!(m.node_count(), 3);
@@ -889,7 +961,7 @@ mod tests {
     fn csr_from_error_1() {
         // not sorted in source
         let m: Csr = Csr::from_sorted_edges(&[(0, 1), (1, 0), (0, 2)]).unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
     }
 
     #[should_panic]
@@ -897,19 +969,40 @@ mod tests {
     fn csr_from_error_2() {
         // not sorted in target
         let m: Csr = Csr::from_sorted_edges(&[(0, 1), (1, 0), (1, 2), (1, 1)]).unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
     }
 
     #[test]
     fn csr_from() {
         let m: Csr =
             Csr::from_sorted_edges(&[(0, 1), (0, 2), (1, 0), (1, 1), (2, 2), (2, 4)]).unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
         assert_eq!(m.neighbors_slice(0), &[1, 2]);
         assert_eq!(m.neighbors_slice(1), &[0, 1]);
         assert_eq!(m.neighbors_slice(2), &[2, 4]);
         assert_eq!(m.node_count(), 5);
         assert_eq!(m.edge_count(), 6);
+    }
+
+    #[test]
+    fn csr_from_undirected() {
+        let m: Csr<(), u8, Undirected> = Csr::from_sorted_edges(&[
+            (0, 1),
+            (0, 2),
+            (1, 0),
+            (1, 1),
+            (2, 0),
+            (2, 2),
+            (2, 4),
+            (4, 2),
+        ])
+        .unwrap();
+        println!("{m:?}");
+        assert_eq!(m.neighbors_slice(0), &[1, 2]);
+        assert_eq!(m.neighbors_slice(1), &[0, 1]);
+        assert_eq!(m.neighbors_slice(2), &[0, 2, 4]);
+        assert_eq!(m.node_count(), 5);
+        assert_eq!(m.edge_count(), 8);
     }
 
     #[test]
@@ -926,24 +1019,24 @@ mod tests {
             (4, 5),
         ])
         .unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
         let mut dfs = Dfs::new(&m, 0);
-        while let Some(_) = dfs.next(&m) {}
+        while dfs.next(&m).is_some() {}
         for i in 0..m.node_count() - 2 {
-            assert!(dfs.discovered.is_visited(&i), "visited {}", i)
+            assert!(dfs.discovered.is_visited(&i), "visited {i}")
         }
         assert!(!dfs.discovered[4]);
         assert!(!dfs.discovered[5]);
 
         m.add_edge(1, 4, ());
-        println!("{:?}", m);
+        println!("{m:?}");
 
         dfs.reset(&m);
         dfs.move_to(0);
-        while let Some(_) = dfs.next(&m) {}
+        while dfs.next(&m).is_some() {}
 
         for i in 0..m.node_count() {
-            assert!(dfs.discovered[i], "visited {}", i)
+            assert!(dfs.discovered[i], "visited {i}")
         }
     }
 
@@ -962,7 +1055,7 @@ mod tests {
             (5, 2),
         ])
         .unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
         println!("{:?}", tarjan_scc(&m));
     }
 
@@ -982,9 +1075,9 @@ mod tests {
             (7, 8, 3.),
         ])
         .unwrap();
-        println!("{:?}", m);
+        println!("{m:?}");
         let result = bellman_ford(&m, 0).unwrap();
-        println!("{:?}", result);
+        println!("{result:?}");
         let answer = [0., 0.5, 1.5, 1.5];
         assert_eq!(&answer, &result.distances[..4]);
         assert!(result.distances[4..].iter().all(|&x| f64::is_infinite(x)));
@@ -1080,7 +1173,7 @@ mod tests {
         let mut copy = Vec::new();
         for e in m.edge_references() {
             copy.push((e.source(), e.target(), *e.weight()));
-            println!("{:?}", e);
+            println!("{e:?}");
         }
         let m2: Csr<(), _> = Csr::from_sorted_edges(&copy).unwrap();
         assert_eq!(&m.row, &m2.row);
@@ -1099,7 +1192,7 @@ mod tests {
         assert!(g.add_edge(b, c, ()));
         assert!(g.add_edge(c, a, ()));
 
-        println!("{:?}", g);
+        println!("{g:?}");
 
         assert_eq!(g.node_count(), 3);
 
@@ -1120,7 +1213,7 @@ mod tests {
 
         let c = g.add_node(());
 
-        println!("{:?}", g);
+        println!("{g:?}");
 
         assert_eq!(g.node_count(), 3);
 

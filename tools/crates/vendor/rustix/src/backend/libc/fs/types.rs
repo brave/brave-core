@@ -1,14 +1,15 @@
 use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
 
-#[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 bitflags! {
     /// `*_OK` constants for use with [`accessat`].
     ///
     /// [`accessat`]: fn.accessat.html
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct Access: c::c_int {
+    pub struct Access: ffi::c_int {
         /// `R_OK`
         const READ_OK = c::R_OK;
 
@@ -26,7 +27,7 @@ bitflags! {
     }
 }
 
-#[cfg(not(any(target_os = "espidf", target_os = "redox")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "redox")))]
 bitflags! {
     /// `AT_*` constants for use with [`openat`], [`statat`], and other `*at`
     /// functions.
@@ -82,6 +83,22 @@ bitflags! {
     }
 }
 
+#[cfg(target_os = "horizon")]
+bitflags! {
+    /// `AT_*` constants for use with [`openat`], [`statat`], and other `*at`
+    /// functions.
+    ///
+    /// [`openat`]: crate::fs::openat
+    /// [`statat`]: crate::fs::statat
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct AtFlags: u32 {
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+#[cfg(not(target_os = "horizon"))]
 bitflags! {
     /// `S_I*` constants for use with [`openat`], [`chmodat`], and [`fchmod`].
     ///
@@ -151,6 +168,21 @@ bitflags! {
         #[cfg(not(any(target_os = "espidf", target_os = "vita")))]
         const SVTX = c::S_ISVTX as RawMode;
 
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+#[cfg(target_os = "horizon")]
+bitflags! {
+    /// `S_I*` constants for use with [`openat`], [`chmodat`], and [`fchmod`].
+    ///
+    /// [`openat`]: crate::fs::openat
+    /// [`chmodat`]: crate::fs::chmodat
+    /// [`fchmod`]: crate::fs::fchmod
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct Mode: RawMode {
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;
     }
@@ -227,11 +259,11 @@ bitflags! {
         const CREATE = bitcast!(c::O_CREAT);
 
         /// `O_DIRECTORY`
-        #[cfg(not(target_os = "espidf"))]
+        #[cfg(not(any(target_os = "espidf", target_os = "horizon")))]
         const DIRECTORY = bitcast!(c::O_DIRECTORY);
 
         /// `O_DSYNC`
-        #[cfg(not(any(target_os = "dragonfly", target_os = "espidf", target_os = "l4re", target_os = "redox", target_os = "vita")))]
+        #[cfg(not(any(target_os = "dragonfly", target_os = "espidf", target_os = "horizon", target_os = "l4re", target_os = "redox", target_os = "vita")))]
         const DSYNC = bitcast!(c::O_DSYNC);
 
         /// `O_EXCL`
@@ -245,7 +277,7 @@ bitflags! {
         const FSYNC = bitcast!(c::O_FSYNC);
 
         /// `O_NOFOLLOW`
-        #[cfg(not(target_os = "espidf"))]
+        #[cfg(not(any(target_os = "espidf", target_os = "horizon")))]
         const NOFOLLOW = bitcast!(c::O_NOFOLLOW);
 
         /// `O_NONBLOCK`
@@ -263,7 +295,7 @@ bitflags! {
         const RDWR = bitcast!(c::O_RDWR);
 
         /// `O_NOCTTY`
-        #[cfg(not(any(target_os = "espidf", target_os = "l4re", target_os = "redox", target_os = "vita")))]
+        #[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "l4re", target_os = "redox", target_os = "vita")))]
         const NOCTTY = bitcast!(c::O_NOCTTY);
 
         /// `O_RSYNC`
@@ -331,11 +363,28 @@ bitflags! {
 
         /// `O_LARGEFILE`
         ///
-        /// Note that rustix and/or libc will automatically set this flag when appropriate on
-        /// `open(2)` and friends, thus typical users do not need to care about it.
-        /// It will may be reported in return of `fcntl_getfl`, though.
+        /// Rustix and/or libc will automatically set this flag when
+        /// appropriate in the [`rustix::fs::open`] family of functions, so
+        /// typical users do not need to care about it. It may be reported in
+        /// the return of `fcntl_getfl`, though.
         #[cfg(any(linux_kernel, solarish))]
         const LARGEFILE = bitcast!(c::O_LARGEFILE);
+
+        /// `O_ASYNC`, `FASYNC`
+        ///
+        /// This flag can't be used with the [`rustix::fs::open`] family of
+        /// functions, use [`rustix::fs::fcntl_setfl`] instead.
+        #[cfg(not(any(
+            target_os = "aix",
+            target_os = "cygwin",
+            target_os = "espidf",
+            target_os = "haiku",
+            target_os = "horizon",
+            target_os = "wasi",
+            target_os = "vita",
+            solarish
+        )))]
+        const ASYNC = bitcast!(c::O_ASYNC);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;
@@ -379,7 +428,7 @@ bitflags! {
     /// [`fcopyfile`]: crate::fs::fcopyfile
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct CopyfileFlags: c::c_uint {
+    pub struct CopyfileFlags: ffi::c_uint {
         /// `COPYFILE_ACL`
         const ACL = copyfile::ACL;
 
@@ -444,7 +493,7 @@ bitflags! {
     /// [`renameat_with`]: crate::fs::renameat_with
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct RenameFlags: c::c_uint {
+    pub struct RenameFlags: ffi::c_uint {
         /// `RENAME_EXCHANGE`
         const EXCHANGE = bitcast!(c::RENAME_EXCHANGE);
 
@@ -453,6 +502,25 @@ bitflags! {
 
         /// `RENAME_WHITEOUT`
         const WHITEOUT = bitcast!(c::RENAME_WHITEOUT);
+
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+#[cfg(apple)]
+bitflags! {
+    /// `RENAME_*` constants for use with [`renameat_with`].
+    ///
+    /// [`renameat_with`]: crate::fs::renameat_with
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct RenameFlags: ffi::c_uint {
+        /// `RENAME_SWAP`
+        const EXCHANGE = bitcast!(c::RENAME_SWAP);
+
+        /// `RENAME_EXCL`
+        const NOREPLACE = bitcast!(c::RENAME_EXCL);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;
@@ -563,11 +631,12 @@ impl FileType {
 #[cfg(not(any(
     apple,
     netbsdlike,
-    target_os = "solaris",
     target_os = "dragonfly",
     target_os = "espidf",
+    target_os = "horizon",
     target_os = "haiku",
     target_os = "redox",
+    target_os = "solaris",
     target_os = "vita",
 )))]
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
@@ -599,7 +668,7 @@ bitflags! {
     /// [`memfd_create`]: crate::fs::memfd_create
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct MemfdFlags: c::c_uint {
+    pub struct MemfdFlags: ffi::c_uint {
         /// `MFD_CLOEXEC`
         const CLOEXEC = c::MFD_CLOEXEC;
 
@@ -667,128 +736,9 @@ bitflags! {
         /// `F_SEAL_FUTURE_WRITE` (since Linux 5.1)
         #[cfg(linux_kernel)]
         const FUTURE_WRITE = bitcast!(c::F_SEAL_FUTURE_WRITE);
-
-        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
-        const _ = !0;
-    }
-}
-
-#[cfg(all(target_os = "linux", target_env = "gnu"))]
-bitflags! {
-    /// `STATX_*` constants for use with [`statx`].
-    ///
-    /// [`statx`]: crate::fs::statx
-    #[repr(transparent)]
-    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct StatxFlags: u32 {
-        /// `STATX_TYPE`
-        const TYPE = c::STATX_TYPE;
-
-        /// `STATX_MODE`
-        const MODE = c::STATX_MODE;
-
-        /// `STATX_NLINK`
-        const NLINK = c::STATX_NLINK;
-
-        /// `STATX_UID`
-        const UID = c::STATX_UID;
-
-        /// `STATX_GID`
-        const GID = c::STATX_GID;
-
-        /// `STATX_ATIME`
-        const ATIME = c::STATX_ATIME;
-
-        /// `STATX_MTIME`
-        const MTIME = c::STATX_MTIME;
-
-        /// `STATX_CTIME`
-        const CTIME = c::STATX_CTIME;
-
-        /// `STATX_INO`
-        const INO = c::STATX_INO;
-
-        /// `STATX_SIZE`
-        const SIZE = c::STATX_SIZE;
-
-        /// `STATX_BLOCKS`
-        const BLOCKS = c::STATX_BLOCKS;
-
-        /// `STATX_BASIC_STATS`
-        const BASIC_STATS = c::STATX_BASIC_STATS;
-
-        /// `STATX_BTIME`
-        const BTIME = c::STATX_BTIME;
-
-        /// `STATX_MNT_ID` (since Linux 5.8)
-        const MNT_ID = c::STATX_MNT_ID;
-
-        /// `STATX_DIOALIGN` (since Linux 6.1)
-        const DIOALIGN = c::STATX_DIOALIGN;
-
-        /// `STATX_ALL`
-        const ALL = c::STATX_ALL;
-
-        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
-        const _ = !0;
-    }
-}
-
-#[cfg(any(
-    target_os = "android",
-    all(target_os = "linux", not(target_env = "gnu")),
-))]
-bitflags! {
-    /// `STATX_*` constants for use with [`statx`].
-    ///
-    /// [`statx`]: crate::fs::statx
-    #[repr(transparent)]
-    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct StatxFlags: u32 {
-        /// `STATX_TYPE`
-        const TYPE = 0x0001;
-
-        /// `STATX_MODE`
-        const MODE = 0x0002;
-
-        /// `STATX_NLINK`
-        const NLINK = 0x0004;
-
-        /// `STATX_UID`
-        const UID = 0x0008;
-
-        /// `STATX_GID`
-        const GID = 0x0010;
-
-        /// `STATX_ATIME`
-        const ATIME = 0x0020;
-
-        /// `STATX_MTIME`
-        const MTIME = 0x0040;
-
-        /// `STATX_CTIME`
-        const CTIME = 0x0080;
-
-        /// `STATX_INO`
-        const INO = 0x0100;
-
-        /// `STATX_SIZE`
-        const SIZE = 0x0200;
-
-        /// `STATX_BLOCKS`
-        const BLOCKS = 0x0400;
-
-        /// `STATX_BASIC_STATS`
-        const BASIC_STATS = 0x07ff;
-
-        /// `STATX_BTIME`
-        const BTIME = 0x800;
-
-        /// `STATX_MNT_ID` (since Linux 5.8)
-        const MNT_ID = 0x1000;
-
-        /// `STATX_ALL`
-        const ALL = 0xfff;
+        /// `F_SEAL_EXEC` (since Linux 6.3)
+        #[cfg(linux_kernel)]
+        const EXEC = bitcast!(c::F_SEAL_EXEC);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;
@@ -798,6 +748,7 @@ bitflags! {
 #[cfg(not(any(
     netbsdlike,
     target_os = "espidf",
+    target_os = "horizon",
     target_os = "nto",
     target_os = "redox",
     target_os = "vita"
@@ -834,6 +785,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -893,7 +845,7 @@ bitflags! {
     }
 }
 
-#[cfg(not(any(target_os = "haiku", target_os = "redox", target_os = "wasi")))]
+#[cfg(not(target_os = "wasi"))]
 bitflags! {
     /// `ST_*` constants for use with [`StatVfs`].
     #[repr(transparent)]
@@ -925,11 +877,11 @@ bitflags! {
         const NOEXEC = c::ST_NOEXEC as u64;
 
         /// `ST_NOSUID`
-        #[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+        #[cfg(not(any(target_os = "espidf", target_os = "haiku", target_os = "horizon", target_os = "redox", target_os = "vita")))]
         const NOSUID = c::ST_NOSUID as u64;
 
         /// `ST_RDONLY`
-        #[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+        #[cfg(not(any(target_os = "espidf", target_os = "haiku", target_os = "horizon", target_os = "redox", target_os = "vita")))]
         const RDONLY = c::ST_RDONLY as u64;
 
         /// `ST_RELATIME`
@@ -952,7 +904,12 @@ bitflags! {
 // Solaris doesn't support `flock` and doesn't define `LOCK_SH` etc., but we
 // reuse this `FlockOperation` enum for `fcntl_lock`, so on Solaris we use
 // our own made-up integer values.
-#[cfg(not(any(target_os = "espidf", target_os = "vita", target_os = "wasi")))]
+#[cfg(not(any(
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u32)]
 pub enum FlockOperation {
@@ -998,7 +955,7 @@ pub enum FlockOperation {
 ///
 /// [`statat`]: crate::fs::statat
 /// [`fstat`]: crate::fs::fstat
-#[cfg(not(any(linux_like, target_os = "hurd")))]
+#[cfg(not(any(linux_like, target_os = "hurd", target_os = "netbsd")))]
 pub type Stat = c::stat;
 
 /// `struct stat` for use with [`statat`] and [`fstat`].
@@ -1021,29 +978,59 @@ pub type Stat = c::stat64;
 // we use our own struct, populated from `statx` where possible, to avoid the
 // y2038 bug.
 #[cfg(all(linux_kernel, target_pointer_width = "32"))]
-#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 #[allow(missing_docs)]
 pub struct Stat {
     pub st_dev: u64,
     pub st_mode: u32,
-    pub st_nlink: u32,
+    pub st_nlink: u64,
     pub st_uid: u32,
     pub st_gid: u32,
     pub st_rdev: u64,
     pub st_size: i64,
     pub st_blksize: u32,
     pub st_blocks: u64,
-    #[deprecated(note = "Use `rustix::fs::StatExt::atime` instead.")]
-    pub st_atime: u64,
+    pub st_atime: i64,
     pub st_atime_nsec: u32,
-    #[deprecated(note = "Use `rustix::fs::StatExt::mtime` instead.")]
-    pub st_mtime: u64,
+    pub st_mtime: i64,
     pub st_mtime_nsec: u32,
-    #[deprecated(note = "Use `rustix::fs::StatExt::ctime` instead.")]
-    pub st_ctime: u64,
+    pub st_ctime: i64,
     pub st_ctime_nsec: u32,
     pub st_ino: u64,
+}
+
+/// `struct stat` for use with [`statat`] and [`fstat`].
+///
+/// [`statat`]: crate::fs::statat
+/// [`fstat`]: crate::fs::fstat
+// NetBSD's `st_mtime_nsec` is named `st_mtimensec` so we declare our own
+// `Stat` so that we can be consistent with other platforms.
+#[cfg(target_os = "netbsd")]
+#[derive(Debug, Copy, Clone)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct Stat {
+    pub st_dev: c::dev_t,
+    pub st_mode: c::mode_t,
+    pub st_ino: c::ino_t,
+    pub st_nlink: c::nlink_t,
+    pub st_uid: c::uid_t,
+    pub st_gid: c::gid_t,
+    pub st_rdev: c::dev_t,
+    pub st_atime: c::time_t,
+    pub st_atime_nsec: c::c_long,
+    pub st_mtime: c::time_t,
+    pub st_mtime_nsec: c::c_long,
+    pub st_ctime: c::time_t,
+    pub st_ctime_nsec: c::c_long,
+    pub st_birthtime: c::time_t,
+    pub st_birthtime_nsec: c::c_long,
+    pub st_size: c::off_t,
+    pub st_blocks: c::blkcnt_t,
+    pub st_blksize: c::blksize_t,
+    pub st_flags: u32,
+    pub st_gen: u32,
+    pub st_spare: [u32; 2],
 }
 
 /// `struct statfs` for use with [`statfs`] and [`fstatfs`].
@@ -1055,6 +1042,7 @@ pub struct Stat {
     solarish,
     target_os = "espidf",
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "netbsd",
     target_os = "nto",
     target_os = "redox",
@@ -1071,11 +1059,25 @@ pub type StatFs = c::statfs;
 #[cfg(linux_like)]
 pub type StatFs = c::statfs64;
 
+/// `fsid_t` for use with [`StatFs`].
+#[cfg(not(any(
+    solarish,
+    target_os = "cygwin",
+    target_os = "espidf",
+    target_os = "haiku",
+    target_os = "horizon",
+    target_os = "nto",
+    target_os = "redox",
+    target_os = "vita",
+    target_os = "wasi",
+)))]
+pub type Fsid = c::fsid_t;
+
 /// `struct statvfs` for use with [`statvfs`] and [`fstatvfs`].
 ///
 /// [`statvfs`]: crate::fs::statvfs
 /// [`fstatvfs`]: crate::fs::fstatvfs
-#[cfg(not(any(target_os = "haiku", target_os = "redox", target_os = "wasi")))]
+#[cfg(not(target_os = "wasi"))]
 #[allow(missing_docs)]
 pub struct StatVfs {
     pub f_bsize: u64,
@@ -1091,77 +1093,13 @@ pub struct StatVfs {
     pub f_namemax: u64,
 }
 
-/// `struct statx` for use with [`statx`].
-///
-/// [`statx`]: crate::fs::statx
-#[cfg(all(target_os = "linux", target_env = "gnu"))]
-// Use the glibc `struct statx`.
-pub type Statx = c::statx;
-
-/// `struct statx_timestamp` for use with [`Statx`].
-#[cfg(all(target_os = "linux", target_env = "gnu"))]
-// Use the glibc `struct statx_timestamp`.
-pub type StatxTimestamp = c::statx;
-
-/// `struct statx` for use with [`statx`].
-///
-/// [`statx`]: crate::fs::statx
-// Non-glibc ABIs don't currently declare a `struct statx`, so we declare it
-// ourselves.
-#[cfg(any(
-    target_os = "android",
-    all(target_os = "linux", not(target_env = "gnu")),
-))]
-#[repr(C)]
-#[allow(missing_docs)]
-pub struct Statx {
-    pub stx_mask: u32,
-    pub stx_blksize: u32,
-    pub stx_attributes: u64,
-    pub stx_nlink: u32,
-    pub stx_uid: u32,
-    pub stx_gid: u32,
-    pub stx_mode: u16,
-    __statx_pad1: [u16; 1],
-    pub stx_ino: u64,
-    pub stx_size: u64,
-    pub stx_blocks: u64,
-    pub stx_attributes_mask: u64,
-    pub stx_atime: StatxTimestamp,
-    pub stx_btime: StatxTimestamp,
-    pub stx_ctime: StatxTimestamp,
-    pub stx_mtime: StatxTimestamp,
-    pub stx_rdev_major: u32,
-    pub stx_rdev_minor: u32,
-    pub stx_dev_major: u32,
-    pub stx_dev_minor: u32,
-    pub stx_mnt_id: u64,
-    __statx_pad2: u64,
-    __statx_pad3: [u64; 12],
-}
-
-/// `struct statx_timestamp` for use with [`Statx`].
-// Non-glibc ABIs don't currently declare a `struct statx_timestamp`, so we
-// declare it ourselves.
-#[cfg(any(
-    target_os = "android",
-    all(target_os = "linux", not(target_env = "gnu")),
-))]
-#[repr(C)]
-#[allow(missing_docs)]
-pub struct StatxTimestamp {
-    pub tv_sec: i64,
-    pub tv_nsec: u32,
-    pub __statx_timestamp_pad1: [i32; 1],
-}
-
 /// `mode_t`
 #[cfg(not(all(target_os = "android", target_pointer_width = "32")))]
 pub type RawMode = c::mode_t;
 
 /// `mode_t`
 #[cfg(all(target_os = "android", target_pointer_width = "32"))]
-pub type RawMode = c::c_uint;
+pub type RawMode = ffi::c_uint;
 
 /// `dev_t`
 #[cfg(not(all(target_os = "android", target_pointer_width = "32")))]
@@ -1169,7 +1107,7 @@ pub type Dev = c::dev_t;
 
 /// `dev_t`
 #[cfg(all(target_os = "android", target_pointer_width = "32"))]
-pub type Dev = c::c_ulonglong;
+pub type Dev = ffi::c_ulonglong;
 
 /// `__fsword_t`
 #[cfg(all(

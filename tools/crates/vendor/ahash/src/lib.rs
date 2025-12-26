@@ -34,7 +34,7 @@ map.insert(12, 34);
 The above requires a source of randomness to generate keys for the hashmap. By default this obtained from the OS.
 It is also possible to have randomness supplied via the `compile-time-rng` flag, or manually.
 
-### If randomess is not available
+### If randomness is not available
 
 [AHasher::default()] can be used to hash using fixed keys. This works with
 [BuildHasherDefault](std::hash::BuildHasherDefault). For example:
@@ -97,7 +97,7 @@ Note the import of [HashMapExt]. This is needed for the constructor.
 #![deny(clippy::correctness, clippy::complexity, clippy::perf)]
 #![allow(clippy::pedantic, clippy::cast_lossless, clippy::unreadable_literal)]
 #![cfg_attr(all(not(test), not(feature = "std")), no_std)]
-#![cfg_attr(feature = "specialize", feature(min_specialization))]
+#![cfg_attr(specialize, feature(min_specialization))]
 #![cfg_attr(feature = "nightly-arm-aes", feature(stdarch_arm_neon_intrinsics))]
 
 #[macro_use]
@@ -146,8 +146,6 @@ mod specialize;
 pub use crate::random_state::RandomState;
 
 use core::hash::BuildHasher;
-use core::hash::Hash;
-use core::hash::Hasher;
 
 #[cfg(feature = "std")]
 /// A convenience trait that can be used together with the type aliases defined to
@@ -248,63 +246,6 @@ impl Default for AHasher {
     }
 }
 
-/// Used for specialization. (Sealed)
-pub(crate) trait BuildHasherExt: BuildHasher {
-    #[doc(hidden)]
-    fn hash_as_u64<T: Hash + ?Sized>(&self, value: &T) -> u64;
-
-    #[doc(hidden)]
-    fn hash_as_fixed_length<T: Hash + ?Sized>(&self, value: &T) -> u64;
-
-    #[doc(hidden)]
-    fn hash_as_str<T: Hash + ?Sized>(&self, value: &T) -> u64;
-}
-
-impl<B: BuildHasher> BuildHasherExt for B {
-    #[inline]
-    #[cfg(feature = "specialize")]
-    default fn hash_as_u64<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-    #[inline]
-    #[cfg(not(feature = "specialize"))]
-    fn hash_as_u64<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-    #[inline]
-    #[cfg(feature = "specialize")]
-    default fn hash_as_fixed_length<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-    #[inline]
-    #[cfg(not(feature = "specialize"))]
-    fn hash_as_fixed_length<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-    #[inline]
-    #[cfg(feature = "specialize")]
-    default fn hash_as_str<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-    #[inline]
-    #[cfg(not(feature = "specialize"))]
-    fn hash_as_str<T: Hash + ?Sized>(&self, value: &T) -> u64 {
-        let mut hasher = self.build_hasher();
-        value.hash(&mut hasher);
-        hasher.finish()
-    }
-}
-
 // #[inline(never)]
 // #[doc(hidden)]
 // pub fn hash_test(input: &[u8]) -> u64 {
@@ -318,6 +259,8 @@ mod test {
     use crate::convert::Convert;
     use crate::specialize::CallHasher;
     use crate::*;
+    use core::hash::Hash;
+    use core::hash::Hasher;
     use std::collections::HashMap;
 
     #[test]
@@ -392,5 +335,24 @@ mod test {
     #[test]
     fn test_ahasher_construction() {
         let _ = AHasher::new_with_keys(1234, 5678);
+    }
+
+    #[test]
+    fn test_specialize_reference_hash() {
+        let hasher_build = RandomState::with_seeds(0, 0, 0, 0);
+        let h1 = hasher_build.hash_one(1u64);
+        let h2 = hasher_build.hash_one(&1u64);
+
+        assert_eq!(h1, h2);
+
+        let h1 = u64::get_hash(&1_u64, &hasher_build);
+        let h2 = <&u64>::get_hash(&&1_u64, &hasher_build);
+
+        assert_eq!(h1, h2);
+
+        let h1 = hasher_build.hash_one(1u128);
+        let h2 = hasher_build.hash_one(&1u128);
+
+        assert_eq!(h1, h2);
     }
 }

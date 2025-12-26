@@ -47,11 +47,7 @@ impl SeqLock {
         // critical section of (`state_hi`, `state_lo`) happens before now.
         let state_hi = self.state_hi.load(Ordering::Acquire);
         let state_lo = self.state_lo.load(Ordering::Acquire);
-        if state_lo == 1 {
-            None
-        } else {
-            Some((state_hi, state_lo))
-        }
+        if state_lo == 1 { None } else { Some((state_hi, state_lo)) }
     }
 
     /// Returns `true` if the current stamp is equal to `stamp`.

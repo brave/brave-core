@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 20
-  |
-1 | trailing-point = 1.
-  |                    ^
-invalid floating-point number
-expected digit

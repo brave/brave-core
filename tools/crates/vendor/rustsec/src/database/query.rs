@@ -1,10 +1,10 @@
 //! Queries against the RustSec database
 //!
 use crate::{
+    SourceId,
     advisory::{Advisory, Severity},
     collection::Collection,
     package::{self, Package},
-    SourceId,
 };
 use platforms::target::{Arch, OS};
 use semver::Version;

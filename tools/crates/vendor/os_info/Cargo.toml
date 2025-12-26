@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.60"
 name = "os_info"
-version = "3.10.0"
+version = "3.14.0"
 authors = [
     "Jan Schulte <hello@unexpected-co.de>",
     "Stanislav Tkach <stanislav.tkach@gmail.com>",
@@ -44,12 +44,19 @@ categories = ["os"]
 license = "MIT"
 repository = "https://github.com/stanislav-tkach/os_info"
 
+[features]
+default = ["serde"]
+
 [lib]
 name = "os_info"
 path = "src/lib.rs"
 
 [dependencies.log]
 version = "0.4"
+
+[dependencies.schemars]
+version = "1.0.3"
+optional = true
 
 [dependencies.serde]
 version = "1"
@@ -62,11 +69,34 @@ version = "0.3"
 [dev-dependencies.pretty_assertions]
 version = "1"
 
-[features]
-default = ["serde"]
+[target.'cfg(any(target_os = "aix", target_os = "dragonfly", target_os = "freebsd", target_os = "illumos", target_os = "linux", target_os = "macos", target_os = "netbsd", target_os = "openbsd", target_os = "cygwin"))'.dependencies.nix]
+version = "0.30"
+features = ["feature"]
+
+[target.'cfg(target_os = "android")'.dependencies.android_system_properties]
+version = "0.1"
+
+[target.'cfg(target_os = "ios")'.dependencies.objc2]
+version = "0.6"
+
+[target.'cfg(target_os = "ios")'.dependencies.objc2-foundation]
+version = "0.3"
+features = ["NSString"]
+
+[target.'cfg(target_os = "ios")'.dependencies.objc2-ui-kit]
+version = "0.3"
+
+[target.'cfg(target_os = "macos")'.dependencies.objc2-foundation]
+version = "0.3"
+features = [
+    "NSData",
+    "NSError",
+    "NSEnumerator",
+    "NSString",
+]
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = "0.52"
+version = "0.61"
 features = [
     "Win32_Foundation",
     "Win32_System_LibraryLoader",

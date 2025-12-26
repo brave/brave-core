@@ -29,6 +29,17 @@ impl<'data, E: Endian> LoadCommandIterator<'data, E> {
         if self.ncmds == 0 {
             return Ok(None);
         }
+
+        let result = self.parse().map(Some);
+        if result.is_err() {
+            self.ncmds = 0;
+        } else {
+            self.ncmds -= 1;
+        }
+        result
+    }
+
+    fn parse(&mut self) -> Result<LoadCommandData<'data, E>> {
         let header = self
             .data
             .read_at::<macho::LoadCommand<E>>(0)
@@ -42,12 +53,19 @@ impl<'data, E: Endian> LoadCommandIterator<'data, E> {
             .data
             .read_bytes(cmdsize)
             .read_error("Invalid Mach-O load command size")?;
-        self.ncmds -= 1;
-        Ok(Some(LoadCommandData {
+        Ok(LoadCommandData {
             cmd,
             data,
             marker: Default::default(),
-        }))
+        })
+    }
+}
+
+impl<'data, E: Endian> Iterator for LoadCommandIterator<'data, E> {
+    type Item = Result<LoadCommandData<'data, E>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next().transpose()
     }
 }
 
@@ -177,8 +195,6 @@ impl<'data, E: Endian> LoadCommandData<'data, E> {
     }
 
     /// Try to parse this command as a [`macho::SymtabCommand`].
-    ///
-    /// Returns the segment command and the data containing the sections.
     pub fn symtab(self) -> Result<Option<&'data macho::SymtabCommand<E>>> {
         if self.cmd == macho::LC_SYMTAB {
             Some(self.data()).transpose()
@@ -372,11 +388,15 @@ mod tests {
 
     #[test]
     fn cmd_size_invalid() {
-        let mut commands = LoadCommandIterator::new(LittleEndian, &[0; 8], 10);
+        #[repr(align(16))]
+        struct Align<const N: usize>([u8; N]);
+        let mut commands = LoadCommandIterator::new(LittleEndian, &Align([0; 8]).0, 10);
         assert!(commands.next().is_err());
-        let mut commands = LoadCommandIterator::new(LittleEndian, &[0, 0, 0, 0, 7, 0, 0, 0, 0], 10);
+        let mut commands =
+            LoadCommandIterator::new(LittleEndian, &Align([0, 0, 0, 0, 7, 0, 0, 0, 0]).0, 10);
         assert!(commands.next().is_err());
-        let mut commands = LoadCommandIterator::new(LittleEndian, &[0, 0, 0, 0, 8, 0, 0, 0, 0], 10);
+        let mut commands =
+            LoadCommandIterator::new(LittleEndian, &Align([0, 0, 0, 0, 8, 0, 0, 0, 0]).0, 10);
         assert!(commands.next().is_ok());
     }
 }

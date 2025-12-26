@@ -292,7 +292,7 @@ impl<T, S: Semaphore> Rx<T, S> {
         ready!(crate::trace::trace_leaf(cx));
 
         // Keep track of task budget
-        let coop = ready!(crate::runtime::coop::poll_proceed(cx));
+        let coop = ready!(crate::task::coop::poll_proceed(cx));
 
         self.inner.rx_fields.with_mut(|rx_fields_ptr| {
             let rx_fields = unsafe { &mut *rx_fields_ptr };
@@ -354,7 +354,7 @@ impl<T, S: Semaphore> Rx<T, S> {
         ready!(crate::trace::trace_leaf(cx));
 
         // Keep track of task budget
-        let coop = ready!(crate::runtime::coop::poll_proceed(cx));
+        let coop = ready!(crate::task::coop::poll_proceed(cx));
 
         if limit == 0 {
             coop.made_progress();
@@ -490,10 +490,34 @@ impl<T, S: Semaphore> Drop for Rx<T, S> {
 
         self.inner.rx_fields.with_mut(|rx_fields_ptr| {
             let rx_fields = unsafe { &mut *rx_fields_ptr };
-
-            while let Some(Value(_)) = rx_fields.list.pop(&self.inner.tx) {
-                self.inner.semaphore.add_permit();
+            struct Guard<'a, T, S: Semaphore> {
+                list: &'a mut list::Rx<T>,
+                tx: &'a list::Tx<T>,
+                sem: &'a S,
             }
+
+            impl<'a, T, S: Semaphore> Guard<'a, T, S> {
+                fn drain(&mut self) {
+                    // call T's destructor.
+                    while let Some(Value(_)) = self.list.pop(self.tx) {
+                        self.sem.add_permit();
+                    }
+                }
+            }
+
+            impl<'a, T, S: Semaphore> Drop for Guard<'a, T, S> {
+                fn drop(&mut self) {
+                    self.drain();
+                }
+            }
+
+            let mut guard = Guard {
+                list: &mut rx_fields.list,
+                tx: &self.inner.tx,
+                sem: &self.inner.semaphore,
+            };
+
+            guard.drain();
         });
     }
 }

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.73"
 name = "bstr"
-version = "1.11.3"
+version = "1.12.1"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 build = false
 exclude = [
@@ -52,8 +52,22 @@ rustdoc-args = [
     "docsrs",
 ]
 
-[profile.release]
-debug = 2
+[features]
+alloc = [
+    "memchr/alloc",
+    "serde?/alloc",
+]
+default = [
+    "std",
+    "unicode",
+]
+serde = ["dep:serde"]
+std = [
+    "alloc",
+    "memchr/std",
+    "serde?/std",
+]
+unicode = ["dep:regex-automata"]
 
 [lib]
 name = "bstr"
@@ -130,19 +144,5 @@ version = "0.1.3"
 [dev-dependencies.unicode-segmentation]
 version = "1.2.1"
 
-[features]
-alloc = [
-    "memchr/alloc",
-    "serde?/alloc",
-]
-default = [
-    "std",
-    "unicode",
-]
-serde = ["dep:serde"]
-std = [
-    "alloc",
-    "memchr/std",
-    "serde?/std",
-]
-unicode = ["dep:regex-automata"]
+[profile.release]
+debug = 2

@@ -83,6 +83,18 @@ fn test_x() {
 }
 
 #[test]
+fn test_corrupt_input_large_distance_code() {
+  const BUFFER_SIZE: usize = 128;
+  let mut input: [u8; 46] = [17, 139, 32, 255, 8, 0, 136, 255, 32, 46, 146, 32, 255, 255, 255, 255, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32];
+  let mut output = [0u8; BUFFER_SIZE];
+  let (result, _, _) = oneshot(&mut input[..], &mut output[..]);
+  match result {
+    BrotliResult::ResultFailure => {}
+    _ => assert!(false),
+  }
+}
+
+#[test]
 fn test_empty() {
   const BUFFER_SIZE: usize = 128;
   let mut input: [u8; 1] = [0x06];

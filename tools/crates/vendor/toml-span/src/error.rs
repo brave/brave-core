@@ -129,6 +129,8 @@ pub enum ErrorKind {
     UnexpectedValue {
         /// The list of values that could have been used, eg. typically enum variants
         expected: &'static [&'static str],
+        /// The actual value that was found.
+        value: Option<String>,
     },
 }
 
@@ -225,23 +227,8 @@ impl Display for Error {
             ErrorKind::Deprecated { old, new } => {
                 write!(f, "field '{old}' is deprecated, '{new}' has replaced it")?;
             }
-            ErrorKind::UnexpectedValue { expected } => write!(f, "expected '{expected:?}'")?,
+            ErrorKind::UnexpectedValue { expected, .. } => write!(f, "expected '{expected:?}'")?,
         }
-
-        // if !self.key.is_empty() {
-        //     write!(f, " for key `")?;
-        //     for (i, k) in self.key.iter().enumerate() {
-        //         if i > 0 {
-        //             write!(f, ".")?;
-        //         }
-        //         write!(f, "{}", k)?;
-        //     }
-        //     write!(f, "`")?;
-        // }
-
-        // if let Some(line) = self.line {
-        //     write!(f, " at line {} column {}", line + 1, self.col + 1)?;
-        // }
 
         Ok(())
     }
@@ -260,51 +247,53 @@ impl Error {
 
         use codespan_reporting::diagnostic::Label;
 
-        let diag = match &self.kind {
+        match &self.kind {
             ErrorKind::DuplicateKey { first, .. } => diag.with_labels(vec![
                 Label::secondary(fid, *first).with_message("first key instance"),
                 Label::primary(fid, self.span).with_message("duplicate key"),
             ]),
-            ErrorKind::Unexpected(c) => diag.with_labels(vec![Label::primary(fid, self.span)
-                .with_message(format!("unexpected character '{}'", Escape(*c)))]),
-            ErrorKind::InvalidCharInString(c) => {
-                diag.with_labels(vec![Label::primary(fid, self.span)
-                    .with_message(format!("invalid character '{}' in string", Escape(*c)))])
-            }
-            ErrorKind::InvalidEscape(c) => diag.with_labels(vec![Label::primary(fid, self.span)
-                .with_message(format!(
+            ErrorKind::Unexpected(c) => diag.with_labels(vec![
+                Label::primary(fid, self.span)
+                    .with_message(format!("unexpected character '{}'", Escape(*c))),
+            ]),
+            ErrorKind::InvalidCharInString(c) => diag.with_labels(vec![
+                Label::primary(fid, self.span)
+                    .with_message(format!("invalid character '{}' in string", Escape(*c))),
+            ]),
+            ErrorKind::InvalidEscape(c) => {
+                diag.with_labels(vec![Label::primary(fid, self.span).with_message(format!(
                     "invalid escape character '{}' in string",
                     Escape(*c)
-                ))]),
-            ErrorKind::InvalidEscapeValue(_) => diag
-                .with_labels(vec![
-                    Label::primary(fid, self.span).with_message("invalid escape value")
-                ]),
+                ))])
+            }
+            ErrorKind::InvalidEscapeValue(_) => diag.with_labels(vec![
+                Label::primary(fid, self.span).with_message("invalid escape value"),
+            ]),
             ErrorKind::InvalidNumber => diag.with_labels(vec![
-                Label::primary(fid, self.span).with_message("unable to parse number")
+                Label::primary(fid, self.span).with_message("unable to parse number"),
             ]),
             ErrorKind::OutOfRange(kind) => diag
                 .with_message(format!("number is out of range of '{kind}'"))
                 .with_labels(vec![Label::primary(fid, self.span)]),
-            ErrorKind::Wanted { expected, .. } => diag
-                .with_labels(vec![
-                    Label::primary(fid, self.span).with_message(format!("expected {expected}"))
-                ]),
-            ErrorKind::MultilineStringKey => diag.with_labels(vec![
-                Label::primary(fid, self.span).with_message("multiline keys are not allowed")
+            ErrorKind::Wanted { expected, .. } => diag.with_labels(vec![
+                Label::primary(fid, self.span).with_message(format!("expected {expected}")),
             ]),
-            ErrorKind::UnterminatedString => diag
-                .with_labels(vec![Label::primary(fid, self.span)
-                    .with_message("eof reached before string terminator")]),
+            ErrorKind::MultilineStringKey => diag.with_labels(vec![
+                Label::primary(fid, self.span).with_message("multiline keys are not allowed"),
+            ]),
+            ErrorKind::UnterminatedString => diag.with_labels(vec![
+                Label::primary(fid, self.span).with_message("eof reached before string terminator"),
+            ]),
             ErrorKind::DuplicateTable { first, .. } => diag.with_labels(vec![
                 Label::secondary(fid, *first).with_message("first table instance"),
                 Label::primary(fid, self.span).with_message("duplicate table"),
             ]),
-            ErrorKind::InvalidHexEscape(c) => diag
-                .with_labels(vec![Label::primary(fid, self.span)
-                    .with_message(format!("invalid hex escape '{}'", Escape(*c)))]),
+            ErrorKind::InvalidHexEscape(c) => diag.with_labels(vec![
+                Label::primary(fid, self.span)
+                    .with_message(format!("invalid hex escape '{}'", Escape(*c))),
+            ]),
             ErrorKind::UnquotedString => diag.with_labels(vec![
-                Label::primary(fid, self.span).with_message("string is not quoted")
+                Label::primary(fid, self.span).with_message("string is not quoted"),
             ]),
             ErrorKind::UnexpectedKeys { keys, expected } => diag
                 .with_message(format!(
@@ -319,19 +308,19 @@ impl Error {
             ErrorKind::MissingField(field) => diag
                 .with_message(format!("missing field '{field}'"))
                 .with_labels(vec![
-                    Label::primary(fid, self.span).with_message("table with missing field")
+                    Label::primary(fid, self.span).with_message("table with missing field"),
                 ]),
             ErrorKind::Deprecated { new, .. } => diag
                 .with_message(format!(
                     "deprecated field enountered, '{new}' should be used instead"
                 ))
                 .with_labels(vec![
-                    Label::primary(fid, self.span).with_message("deprecated field")
+                    Label::primary(fid, self.span).with_message("deprecated field"),
                 ]),
-            ErrorKind::UnexpectedValue { expected } => diag
+            ErrorKind::UnexpectedValue { expected, .. } => diag
                 .with_message(format!("expected '{expected:?}'"))
                 .with_labels(vec![
-                    Label::primary(fid, self.span).with_message("unexpected value")
+                    Label::primary(fid, self.span).with_message("unexpected value"),
                 ]),
             ErrorKind::UnexpectedEof => diag
                 .with_message("unexpected end of file")
@@ -348,9 +337,7 @@ impl Error {
             ErrorKind::Custom(msg) => diag
                 .with_message(msg.to_string())
                 .with_labels(vec![Label::primary(fid, self.span)]),
-        };
-
-        diag
+        }
     }
 }
 

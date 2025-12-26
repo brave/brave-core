@@ -4,7 +4,8 @@ use super::{
     category::Category, date::Date, id::Id, informational::Informational, keyword::Keyword,
 };
 use crate::advisory::license::License;
-use crate::{collection::Collection, package, SourceId};
+use crate::{SourceId, collection::Collection, package};
+use cvss::Cvss;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -58,7 +59,7 @@ pub struct Metadata {
     /// ```text
     /// CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N
     /// ```
-    pub cvss: Option<cvss::v3::Base>,
+    pub cvss: Option<Cvss>,
 
     /// Informational advisories can be used to warn users about issues
     /// affecting a particular crate without failing the build.

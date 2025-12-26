@@ -9,8 +9,6 @@
 //! This crate provides the [`quote!`] macro for turning Rust syntax tree data
 //! structures into tokens of source code.
 //!
-//! [`quote!`]: macro.quote.html
-//!
 //! Procedural macros in Rust receive a stream of tokens as input, execute
 //! arbitrary Rust code to determine how to manipulate those tokens, and produce
 //! a stream of tokens to hand back to the compiler to compile into the caller's
@@ -46,7 +44,6 @@
 //! implementing hygienic procedural macros.
 //!
 //! [a]: https://serde.rs/
-//! [`quote_spanned!`]: macro.quote_spanned.html
 //!
 //! ```
 //! # use quote::quote;
@@ -92,9 +89,11 @@
 //! [prettyplease]: https://github.com/dtolnay/prettyplease
 
 // Quote types in rustdoc of other crates get linked to here.
-#![doc(html_root_url = "https://docs.rs/quote/1.0.38")]
+#![doc(html_root_url = "https://docs.rs/quote/1.0.42")]
 #![allow(
     clippy::doc_markdown,
+    clippy::elidable_lifetime_names,
+    clippy::items_after_statements,
     clippy::missing_errors_doc,
     clippy::missing_panics_doc,
     clippy::module_name_repetitions,
@@ -136,8 +135,6 @@ macro_rules! __quote {
         /// Note: for returning tokens to the compiler in a procedural macro, use
         /// `.into()` on the result to convert to [`proc_macro::TokenStream`].
         ///
-        /// [`TokenStream`]: https://docs.rs/proc-macro2/1.0/proc_macro2/struct.TokenStream.html
-        ///
         /// <br>
         ///
         /// # Interpolation
@@ -149,7 +146,6 @@ macro_rules! __quote {
         /// Rust primitive types as well as most of the syntax tree types from the [Syn]
         /// crate.
         ///
-        /// [`ToTokens`]: trait.ToTokens.html
         /// [Syn]: https://github.com/dtolnay/syn
         ///
         /// Repetition is done using `#(...)*` or `#(...),*` again similar to
@@ -171,11 +167,9 @@ macro_rules! __quote {
         /// `ToTokens` implementation. Tokens that originate within the `quote!`
         /// invocation are spanned with [`Span::call_site()`].
         ///
-        /// [`Span::call_site()`]: https://docs.rs/proc-macro2/1.0/proc_macro2/struct.Span.html#method.call_site
+        /// [`Span::call_site()`]: proc_macro2::Span::call_site
         ///
         /// A different span can be provided through the [`quote_spanned!`] macro.
-        ///
-        /// [`quote_spanned!`]: macro.quote_spanned.html
         ///
         /// <br>
         ///
@@ -196,8 +190,6 @@ macro_rules! __quote {
         /// There is a [`From`]-conversion in both directions so returning the output of
         /// `quote!` from a procedural macro usually looks like `tokens.into()` or
         /// `proc_macro::TokenStream::from(tokens)`.
-        ///
-        /// [`From`]: https://doc.rust-lang.org/std/convert/trait.From.html
         ///
         /// <br>
         ///
@@ -546,7 +538,7 @@ macro_rules! __quote_spanned {
         /// anything more than a few characters. There should be no space before the
         /// `=>` token.
         ///
-        /// [`Span`]: https://docs.rs/proc-macro2/1.0/proc_macro2/struct.Span.html
+        /// [`Span`]: proc_macro2::Span
         ///
         /// ```
         /// # use proc_macro2::Span;
@@ -588,8 +580,6 @@ macro_rules! __quote_spanned {
         /// The following procedural macro code uses `quote_spanned!` to assert that a
         /// particular Rust type implements the [`Sync`] trait so that references can be
         /// safely shared between threads.
-        ///
-        /// [`Sync`]: https://doc.rust-lang.org/std/marker/trait.Sync.html
         ///
         /// ```
         /// # use quote::{quote_spanned, TokenStreamExt, ToTokens};
@@ -899,9 +889,9 @@ macro_rules! quote_token_with_context {
     // A repetition with no separator.
     ($tokens:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) * $a3:tt) => {{
         use $crate::__private::ext::*;
-        let has_iter = $crate::__private::ThereIsNoIteratorInRepetition;
+        let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
-        let _: $crate::__private::HasIterator = has_iter;
+        <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         // This is `while true` instead of `loop` because if there are no
         // iterators used inside of this repetition then the body would not
         // contain any `break`, so the compiler would emit unreachable code
@@ -922,9 +912,9 @@ macro_rules! quote_token_with_context {
     ($tokens:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) $sep:tt *) => {{
         use $crate::__private::ext::*;
         let mut _i = 0usize;
-        let has_iter = $crate::__private::ThereIsNoIteratorInRepetition;
+        let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
-        let _: $crate::__private::HasIterator = has_iter;
+        <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         while true {
             $crate::pounded_var_names!{quote_bind_next_or_break!() () $($inner)*}
             if _i > 0 {
@@ -969,9 +959,9 @@ macro_rules! quote_token_with_context_spanned {
 
     ($tokens:ident $span:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) * $a3:tt) => {{
         use $crate::__private::ext::*;
-        let has_iter = $crate::__private::ThereIsNoIteratorInRepetition;
+        let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
-        let _: $crate::__private::HasIterator = has_iter;
+        <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         while true {
             $crate::pounded_var_names!{quote_bind_next_or_break!() () $($inner)*}
             $crate::quote_each_token_spanned!{$tokens $span $($inner)*}
@@ -983,9 +973,9 @@ macro_rules! quote_token_with_context_spanned {
     ($tokens:ident $span:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) $sep:tt *) => {{
         use $crate::__private::ext::*;
         let mut _i = 0usize;
-        let has_iter = $crate::__private::ThereIsNoIteratorInRepetition;
+        let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
-        let _: $crate::__private::HasIterator = has_iter;
+        <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         while true {
             $crate::pounded_var_names!{quote_bind_next_or_break!() () $($inner)*}
             if _i > 0 {

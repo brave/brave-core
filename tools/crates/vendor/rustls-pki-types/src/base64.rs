@@ -203,7 +203,7 @@ impl CodePoint {
         )
     }
 
-    fn decode_public(a: u8) -> Self {
+    const fn decode_public(a: u8) -> Self {
         const TABLE: [CodePoint; 256] = [
             // 0x00..0x0f
             CodePoint::INVALID,
@@ -502,13 +502,13 @@ fn u8_less_than(a: u8, b: u8) -> u8 {
 }
 
 /// Returns 0xff if a == b, 0 otherwise.
-fn u8_equals(a: u8, b: u8) -> u8 {
+const fn u8_equals(a: u8, b: u8) -> u8 {
     let diff = a ^ b;
     u8_nonzero(diff)
 }
 
 /// Returns 0xff if a != 0, 0 otherwise.
-fn u8_nonzero(x: u8) -> u8 {
+const fn u8_nonzero(x: u8) -> u8 {
     u8_broadcast8(!x & x.wrapping_sub(1))
 }
 
@@ -516,7 +516,7 @@ fn u8_nonzero(x: u8) -> u8 {
 ///
 /// In other words, if the top bit of `x` is set,
 /// returns 0xff else 0x00.
-fn u8_broadcast8(x: u8) -> u8 {
+const fn u8_broadcast8(x: u8) -> u8 {
     let msb = x >> 7;
     0u8.wrapping_sub(msb)
 }
@@ -525,7 +525,7 @@ fn u8_broadcast8(x: u8) -> u8 {
 ///
 /// In other words, if the top bit of `x` is set,
 /// returns 0xff else 0x00.
-fn u8_broadcast16(x: u16) -> u8 {
+const fn u8_broadcast16(x: u16) -> u8 {
     let msb = x >> 15;
     0u8.wrapping_sub(msb as u8)
 }

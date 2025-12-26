@@ -1,0 +1,15 @@
+[package]
+name = "quitters"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["Sergey \"Shnatsel\" Davidoff"]
+description = "List dependencies of a Rust binary by parsing panic messages"
+repository = "https://github.com/rustsec/rustsec"
+categories = ["parsing"]
+
+[dependencies]
+once_cell = "1.15.0"
+# we don't need unicode support in regex, so drop it to reduce binary size and attack surface
+regex = { version = "1.6.0", default-features = false, features = ["std", "perf"] }
+semver = "1.0.14"

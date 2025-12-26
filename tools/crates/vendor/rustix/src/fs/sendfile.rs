@@ -1,7 +1,8 @@
 use crate::{backend, io};
 use backend::fd::AsFd;
 
-/// `sendfile(out_fd, in_fd, offset, count)`
+/// `sendfile(out_fd, in_fd, offset, count)`—Transfer data between file
+/// descriptors.
 ///
 /// # References
 ///  - [Linux]

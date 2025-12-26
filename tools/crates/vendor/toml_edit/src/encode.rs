@@ -2,6 +2,8 @@ use std::borrow::Cow;
 use std::fmt::{Display, Formatter, Result, Write};
 
 use toml_datetime::Datetime;
+use toml_write::ToTomlValue as _;
+use toml_write::TomlWrite as _;
 
 use crate::inline_table::DEFAULT_INLINE_KEY_DECOR;
 use crate::key::Key;
@@ -32,7 +34,7 @@ pub(crate) fn encode_key(this: &Key, buf: &mut dyn Write, input: Option<&str>) -
 
 fn encode_key_path(
     this: &[Key],
-    buf: &mut dyn Write,
+    mut buf: &mut dyn Write,
     input: Option<&str>,
     default_decor: (&str, &str),
 ) -> Result {
@@ -46,7 +48,7 @@ fn encode_key_path(
         if first {
             leaf_decor.prefix_encode(buf, input, default_decor.0)?;
         } else {
-            write!(buf, ".")?;
+            buf.key_sep()?;
             dotted_decor.prefix_encode(buf, input, DEFAULT_KEY_PATH_DECOR.0)?;
         }
 
@@ -63,7 +65,7 @@ fn encode_key_path(
 
 pub(crate) fn encode_key_path_ref(
     this: &[&Key],
-    buf: &mut dyn Write,
+    mut buf: &mut dyn Write,
     input: Option<&str>,
     default_decor: (&str, &str),
 ) -> Result {
@@ -77,7 +79,7 @@ pub(crate) fn encode_key_path_ref(
         if first {
             leaf_decor.prefix_encode(buf, input, default_decor.0)?;
         } else {
-            write!(buf, ".")?;
+            buf.key_sep()?;
             dotted_decor.prefix_encode(buf, input, DEFAULT_KEY_PATH_DECOR.0)?;
         }
 
@@ -118,13 +120,13 @@ pub(crate) fn encode_formatted<T: ValueRepr>(
 
 pub(crate) fn encode_array(
     this: &Array,
-    buf: &mut dyn Write,
+    mut buf: &mut dyn Write,
     input: Option<&str>,
     default_decor: (&str, &str),
 ) -> Result {
     let decor = this.decor();
     decor.prefix_encode(buf, input, default_decor.0)?;
-    write!(buf, "[")?;
+    buf.open_array()?;
 
     for (i, elem) in this.iter().enumerate() {
         let inner_decor;
@@ -132,16 +134,16 @@ pub(crate) fn encode_array(
             inner_decor = DEFAULT_LEADING_VALUE_DECOR;
         } else {
             inner_decor = DEFAULT_VALUE_DECOR;
-            write!(buf, ",")?;
+            buf.val_sep()?;
         }
         encode_value(elem, buf, input, inner_decor)?;
     }
     if this.trailing_comma() && !this.is_empty() {
-        write!(buf, ",")?;
+        buf.val_sep()?;
     }
 
     this.trailing().encode_with_default(buf, input, "")?;
-    write!(buf, "]")?;
+    buf.close_array()?;
     decor.suffix_encode(buf, input, default_decor.1)?;
 
     Ok(())
@@ -149,20 +151,20 @@ pub(crate) fn encode_array(
 
 pub(crate) fn encode_table(
     this: &InlineTable,
-    buf: &mut dyn Write,
+    mut buf: &mut dyn Write,
     input: Option<&str>,
     default_decor: (&str, &str),
 ) -> Result {
     let decor = this.decor();
     decor.prefix_encode(buf, input, default_decor.0)?;
-    write!(buf, "{{")?;
+    buf.open_inline_table()?;
     this.preamble().encode_with_default(buf, input, "")?;
 
     let children = this.get_values();
     let len = children.len();
     for (i, (key_path, value)) in children.into_iter().enumerate() {
         if i != 0 {
-            write!(buf, ",")?;
+            buf.val_sep()?;
         }
         let inner_decor = if i == len - 1 {
             DEFAULT_TRAILING_VALUE_DECOR
@@ -170,11 +172,11 @@ pub(crate) fn encode_table(
             DEFAULT_VALUE_DECOR
         };
         encode_key_path_ref(&key_path, buf, input, DEFAULT_INLINE_KEY_DECOR)?;
-        write!(buf, "=")?;
+        buf.keyval_sep()?;
         encode_value(value, buf, input, inner_decor)?;
     }
 
-    write!(buf, "}}")?;
+    buf.close_inline_table()?;
     decor.suffix_encode(buf, input, default_decor.1)?;
 
     Ok(())
@@ -260,7 +262,7 @@ where
 }
 
 fn visit_table(
-    buf: &mut dyn Write,
+    mut buf: &mut dyn Write,
     input: Option<&str>,
     table: &Table,
     path: &[Key],
@@ -292,9 +294,9 @@ fn visit_table(
             DEFAULT_TABLE_DECOR
         };
         table.decor.prefix_encode(buf, input, default_decor.0)?;
-        write!(buf, "[[")?;
+        buf.open_array_of_tables_header()?;
         encode_key_path(path, buf, input, DEFAULT_KEY_PATH_DECOR)?;
-        write!(buf, "]]")?;
+        buf.close_array_of_tables_header()?;
         table.decor.suffix_encode(buf, input, default_decor.1)?;
         writeln!(buf)?;
     } else if is_visible_std_table {
@@ -305,16 +307,16 @@ fn visit_table(
             DEFAULT_TABLE_DECOR
         };
         table.decor.prefix_encode(buf, input, default_decor.0)?;
-        write!(buf, "[")?;
+        buf.open_table_header()?;
         encode_key_path(path, buf, input, DEFAULT_KEY_PATH_DECOR)?;
-        write!(buf, "]")?;
+        buf.close_table_header()?;
         table.decor.suffix_encode(buf, input, default_decor.1)?;
         writeln!(buf)?;
     }
     // print table body
     for (key_path, value) in children {
         encode_key_path_ref(&key_path, buf, input, DEFAULT_KEY_DECOR)?;
-        write!(buf, "=")?;
+        buf.keyval_sep()?;
         encode_value(value, buf, input, DEFAULT_VALUE_DECOR)?;
         writeln!(buf)?;
     }
@@ -323,228 +325,31 @@ fn visit_table(
 
 impl ValueRepr for String {
     fn to_repr(&self) -> Repr {
-        to_string_repr(self, None, None)
+        let output = toml_write::TomlStringBuilder::new(self.as_str())
+            .as_default()
+            .to_toml_value();
+        Repr::new_unchecked(output)
     }
-}
-
-pub(crate) fn to_string_repr(
-    value: &str,
-    style: Option<StringStyle>,
-    literal: Option<bool>,
-) -> Repr {
-    let (style, literal) = infer_style(value, style, literal);
-
-    let mut output = String::with_capacity(value.len() * 2);
-    if literal {
-        output.push_str(style.literal_start());
-        output.push_str(value);
-        output.push_str(style.literal_end());
-    } else {
-        output.push_str(style.standard_start());
-        for ch in value.chars() {
-            match ch {
-                '\u{8}' => output.push_str("\\b"),
-                '\u{9}' => output.push_str("\\t"),
-                '\u{a}' => match style {
-                    StringStyle::NewlineTriple => output.push('\n'),
-                    StringStyle::OnelineSingle => output.push_str("\\n"),
-                    StringStyle::OnelineTriple => unreachable!(),
-                },
-                '\u{c}' => output.push_str("\\f"),
-                '\u{d}' => output.push_str("\\r"),
-                '\u{22}' => output.push_str("\\\""),
-                '\u{5c}' => output.push_str("\\\\"),
-                c if c <= '\u{1f}' || c == '\u{7f}' => {
-                    write!(output, "\\u{:04X}", ch as u32).unwrap();
-                }
-                ch => output.push(ch),
-            }
-        }
-        output.push_str(style.standard_end());
-    }
-
-    Repr::new_unchecked(output)
-}
-
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-pub(crate) enum StringStyle {
-    NewlineTriple,
-    OnelineTriple,
-    OnelineSingle,
-}
-
-impl StringStyle {
-    fn literal_start(self) -> &'static str {
-        match self {
-            Self::NewlineTriple => "'''\n",
-            Self::OnelineTriple => "'''",
-            Self::OnelineSingle => "'",
-        }
-    }
-    fn literal_end(self) -> &'static str {
-        match self {
-            Self::NewlineTriple => "'''",
-            Self::OnelineTriple => "'''",
-            Self::OnelineSingle => "'",
-        }
-    }
-
-    fn standard_start(self) -> &'static str {
-        match self {
-            Self::NewlineTriple => "\"\"\"\n",
-            // note: OnelineTriple can happen if do_pretty wants to do
-            // '''it's one line'''
-            // but literal == false
-            Self::OnelineTriple | Self::OnelineSingle => "\"",
-        }
-    }
-
-    fn standard_end(self) -> &'static str {
-        match self {
-            Self::NewlineTriple => "\"\"\"",
-            // note: OnelineTriple can happen if do_pretty wants to do
-            // '''it's one line'''
-            // but literal == false
-            Self::OnelineTriple | Self::OnelineSingle => "\"",
-        }
-    }
-}
-
-fn infer_style(
-    value: &str,
-    style: Option<StringStyle>,
-    literal: Option<bool>,
-) -> (StringStyle, bool) {
-    match (style, literal) {
-        (Some(style), Some(literal)) => (style, literal),
-        (None, Some(literal)) => (infer_all_style(value).0, literal),
-        (Some(style), None) => {
-            let literal = infer_literal(value);
-            (style, literal)
-        }
-        (None, None) => infer_all_style(value),
-    }
-}
-
-fn infer_literal(value: &str) -> bool {
-    #[cfg(feature = "parse")]
-    {
-        use winnow::stream::ContainsToken as _;
-        (value.contains('"') | value.contains('\\'))
-            && value
-                .chars()
-                .all(|c| crate::parser::strings::LITERAL_CHAR.contains_token(c))
-    }
-    #[cfg(not(feature = "parse"))]
-    {
-        false
-    }
-}
-
-fn infer_all_style(value: &str) -> (StringStyle, bool) {
-    // We need to determine:
-    // - if we are a "multi-line" pretty (if there are \n)
-    // - if ['''] appears if multi or ['] if single
-    // - if there are any invalid control characters
-    //
-    // Doing it any other way would require multiple passes
-    // to determine if a pretty string works or not.
-    let mut ty = StringStyle::OnelineSingle;
-    // found consecutive single quotes
-    let mut max_found_singles = 0;
-    let mut found_singles = 0;
-    let mut prefer_literal = false;
-    let mut can_be_pretty = true;
-
-    for ch in value.chars() {
-        if can_be_pretty {
-            if ch == '\'' {
-                found_singles += 1;
-                if found_singles >= 3 {
-                    can_be_pretty = false;
-                }
-            } else {
-                if found_singles > max_found_singles {
-                    max_found_singles = found_singles;
-                }
-                found_singles = 0;
-            }
-            match ch {
-                '\t' => {}
-                '"' => {
-                    prefer_literal = true;
-                }
-                '\\' => {
-                    prefer_literal = true;
-                }
-                '\n' => ty = StringStyle::NewlineTriple,
-                // Escape codes are needed if any ascii control
-                // characters are present, including \b \f \r.
-                c if c <= '\u{1f}' || c == '\u{7f}' => can_be_pretty = false,
-                _ => {}
-            }
-        } else {
-            // the string cannot be represented as pretty,
-            // still check if it should be multiline
-            if ch == '\n' {
-                ty = StringStyle::NewlineTriple;
-            }
-        }
-    }
-    if found_singles > 0 && value.ends_with('\'') {
-        // We cannot escape the ending quote so we must use """
-        can_be_pretty = false;
-    }
-    if !prefer_literal {
-        can_be_pretty = false;
-    }
-    if !can_be_pretty {
-        debug_assert!(ty != StringStyle::OnelineTriple);
-        return (ty, false);
-    }
-    if found_singles > max_found_singles {
-        max_found_singles = found_singles;
-    }
-    debug_assert!(max_found_singles < 3);
-    if ty == StringStyle::OnelineSingle && max_found_singles >= 1 {
-        // no newlines, but must use ''' because it has ' in it
-        ty = StringStyle::OnelineTriple;
-    }
-    (ty, true)
 }
 
 impl ValueRepr for i64 {
     fn to_repr(&self) -> Repr {
-        Repr::new_unchecked(self.to_string())
+        let repr = self.to_toml_value();
+        Repr::new_unchecked(repr)
     }
 }
 
 impl ValueRepr for f64 {
     fn to_repr(&self) -> Repr {
-        to_f64_repr(*self)
+        let repr = self.to_toml_value();
+        Repr::new_unchecked(repr)
     }
-}
-
-fn to_f64_repr(f: f64) -> Repr {
-    let repr = match (f.is_sign_negative(), f.is_nan(), f == 0.0) {
-        (true, true, _) => "-nan".to_owned(),
-        (false, true, _) => "nan".to_owned(),
-        (true, false, true) => "-0.0".to_owned(),
-        (false, false, true) => "0.0".to_owned(),
-        (_, false, false) => {
-            if f % 1.0 == 0.0 {
-                format!("{f}.0")
-            } else {
-                format!("{f}")
-            }
-        }
-    };
-    Repr::new_unchecked(repr)
 }
 
 impl ValueRepr for bool {
     fn to_repr(&self) -> Repr {
-        Repr::new_unchecked(self.to_string())
+        let repr = self.to_toml_value();
+        Repr::new_unchecked(repr)
     }
 }
 
@@ -563,14 +368,18 @@ mod test {
         #[test]
         #[cfg(feature = "parse")]
         fn parseable_string(string in "\\PC*") {
-            let string = Value::from(string);
-            let encoded = string.to_string();
+            let value = Value::from(string.clone());
+            let encoded = value.to_string();
             let _: Value = encoded.parse().unwrap_or_else(|err| {
                 panic!("error: {err}
 
 string:
 ```
 {string}
+```
+value:
+```
+{value}
 ```
 ")
             });
@@ -581,14 +390,18 @@ string:
         #[test]
         #[cfg(feature = "parse")]
         fn parseable_key(string in "\\PC*") {
-            let string = Key::new(string);
-            let encoded = string.to_string();
+            let key = Key::new(string.clone());
+            let encoded = key.to_string();
             let _: Key = encoded.parse().unwrap_or_else(|err| {
                 panic!("error: {err}
 
 string:
 ```
 {string}
+```
+key:
+```
+{key}
 ```
 ")
             });

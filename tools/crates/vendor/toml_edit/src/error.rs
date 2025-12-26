@@ -1,7 +1,7 @@
 use std::error::Error as StdError;
 use std::fmt::{Display, Formatter, Result};
 
-/// Type representing a TOML parse error
+/// A TOML parse error
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct TomlError {
     message: String,
@@ -25,20 +25,7 @@ impl TomlError {
         let raw = raw.finish();
         let raw = String::from_utf8(raw.to_owned()).expect("original document was utf8");
 
-        let offset = error.offset();
-        let offset = (0..=offset)
-            .rev()
-            .find(|index| raw.is_char_boundary(*index))
-            .unwrap_or(0);
-
-        let mut indices = raw[offset..].char_indices();
-        indices.next();
-        let len = if let Some((index, _)) = indices.next() {
-            index
-        } else {
-            raw.len() - offset
-        };
-        let span = offset..(offset + len);
+        let span = error.char_span();
 
         Self {
             message,

@@ -5,11 +5,9 @@ use crate::TagRef;
 mod decode;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod write;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod ref_iter;
 
 impl<'a> TagRef<'a> {
@@ -24,5 +22,10 @@ impl<'a> TagRef<'a> {
     /// The object this tag points to as `Id`.
     pub fn target(&self) -> gix_hash::ObjectId {
         gix_hash::ObjectId::from_hex(self.target).expect("prior validation")
+    }
+
+    /// Copy all data into a fully-owned instance.
+    pub fn into_owned(self) -> crate::Tag {
+        self.into()
     }
 }

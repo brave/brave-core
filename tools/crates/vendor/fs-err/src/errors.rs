@@ -1,3 +1,5 @@
+#[cfg(feature = "debug")]
+use path_facts::PathFacts;
 use std::error::Error as StdError;
 use std::fmt;
 use std::io;
@@ -13,6 +15,8 @@ pub(crate) enum ErrorKind {
     Metadata,
     Clone,
     SetPermissions,
+    SetTimes,
+    SetModified,
     Read,
     Seek,
     Write,
@@ -25,6 +29,8 @@ pub(crate) enum ErrorKind {
     SymlinkMetadata,
     #[allow(dead_code)]
     FileExists,
+    Lock,
+    Unlock,
 
     #[cfg(windows)]
     SeekRead,
@@ -63,41 +69,58 @@ impl Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        use ErrorKind::*;
+        use ErrorKind as E;
 
         let path = self.path.display();
 
         match self.kind {
-            OpenFile => write!(formatter, "failed to open file `{}`", path),
-            CreateFile => write!(formatter, "failed to create file `{}`", path),
-            CreateDir => write!(formatter, "failed to create directory `{}`", path),
-            SyncFile => write!(formatter, "failed to sync file `{}`", path),
-            SetLen => write!(formatter, "failed to set length of file `{}`", path),
-            Metadata => write!(formatter, "failed to query metadata of file `{}`", path),
-            Clone => write!(formatter, "failed to clone handle for file `{}`", path),
-            SetPermissions => write!(formatter, "failed to set permissions for file `{}`", path),
-            Read => write!(formatter, "failed to read from file `{}`", path),
-            Seek => write!(formatter, "failed to seek in file `{}`", path),
-            Write => write!(formatter, "failed to write to file `{}`", path),
-            Flush => write!(formatter, "failed to flush file `{}`", path),
-            ReadDir => write!(formatter, "failed to read directory `{}`", path),
-            RemoveFile => write!(formatter, "failed to remove file `{}`", path),
-            RemoveDir => write!(formatter, "failed to remove directory `{}`", path),
-            Canonicalize => write!(formatter, "failed to canonicalize path `{}`", path),
-            ReadLink => write!(formatter, "failed to read symbolic link `{}`", path),
-            SymlinkMetadata => write!(formatter, "failed to query metadata of symlink `{}`", path),
-            FileExists => write!(formatter, "failed to check file existance `{}`", path),
+            E::OpenFile => write!(formatter, "failed to open file `{}`", path),
+            E::CreateFile => write!(formatter, "failed to create file `{}`", path),
+            E::CreateDir => write!(formatter, "failed to create directory `{}`", path),
+            E::SyncFile => write!(formatter, "failed to sync file `{}`", path),
+            E::SetLen => write!(formatter, "failed to set length of file `{}`", path),
+            E::Metadata => write!(formatter, "failed to query metadata of file `{}`", path),
+            E::Clone => write!(formatter, "failed to clone handle for file `{}`", path),
+            E::SetPermissions => write!(formatter, "failed to set permissions for file `{}`", path),
+            E::SetTimes => write!(formatter, "failed to set times for file `{}`", path),
+            E::SetModified => write!(formatter, "failed to set modified time for file `{}`", path),
+            E::Read => write!(formatter, "failed to read from file `{}`", path),
+            E::Seek => write!(formatter, "failed to seek in file `{}`", path),
+            E::Write => write!(formatter, "failed to write to file `{}`", path),
+            E::Flush => write!(formatter, "failed to flush file `{}`", path),
+            E::ReadDir => write!(formatter, "failed to read directory `{}`", path),
+            E::RemoveFile => write!(formatter, "failed to remove file `{}`", path),
+            E::RemoveDir => write!(formatter, "failed to remove directory `{}`", path),
+            E::Canonicalize => write!(formatter, "failed to canonicalize path `{}`", path),
+            E::ReadLink => write!(formatter, "failed to read symbolic link `{}`", path),
+            E::SymlinkMetadata => {
+                write!(formatter, "failed to query metadata of symlink `{}`", path)
+            }
+            E::FileExists => write!(formatter, "failed to check file existence `{}`", path),
+            E::Lock => write!(formatter, "failed to lock `{}`", path),
+            E::Unlock => write!(formatter, "failed to unlock `{}`", path),
 
             #[cfg(windows)]
-            SeekRead => write!(formatter, "failed to seek and read from `{}`", path),
+            E::SeekRead => write!(formatter, "failed to seek and read from `{}`", path),
             #[cfg(windows)]
-            SeekWrite => write!(formatter, "failed to seek and write to `{}`", path),
+            E::SeekWrite => write!(formatter, "failed to seek and write to `{}`", path),
 
             #[cfg(unix)]
-            ReadAt => write!(formatter, "failed to read with offset from `{}`", path),
+            E::ReadAt => write!(formatter, "failed to read with offset from `{}`", path),
             #[cfg(unix)]
-            WriteAt => write!(formatter, "failed to write with offset to `{}`", path),
-        }
+            E::WriteAt => write!(formatter, "failed to write with offset to `{}`", path),
+        }?;
+
+        // The `expose_original_error` feature indicates the caller should display the original error
+        #[cfg(not(feature = "expose_original_error"))]
+        write!(formatter, ": {}", self.source)?;
+
+        #[cfg(all(feature = "debug", not(feature = "tokio")))]
+        writeln!(formatter, "{}", path_facts(&self.path))?;
+
+        #[cfg(all(feature = "debug", feature = "tokio"))]
+        writeln!(formatter, "{}", async_path_facts(&self.path))?;
+        Ok(())
     }
 }
 
@@ -106,6 +129,12 @@ impl StdError for Error {
         self.source()
     }
 
+    #[cfg(not(feature = "expose_original_error"))]
+    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+        None
+    }
+
+    #[cfg(feature = "expose_original_error")]
     fn source(&self) -> Option<&(dyn StdError + 'static)> {
         Some(&self.source)
     }
@@ -186,8 +215,60 @@ impl fmt::Display for SourceDestError {
             SourceDestErrorKind::SymlinkDir => {
                 write!(formatter, "failed to symlink dir from {} to {}", from, to)
             }
-        }
+        }?;
+
+        // The `expose_original_error` feature indicates the caller should display the original error
+        #[cfg(not(feature = "expose_original_error"))]
+        write!(formatter, ": {}", self.source)?;
+
+        #[cfg(all(feature = "debug", not(feature = "tokio")))]
+        writeln!(
+            formatter,
+            "{}",
+            path_facts_source_dest(&self.from_path, &self.to_path)
+        )?;
+
+        #[cfg(all(feature = "debug", feature = "tokio"))]
+        writeln!(
+            formatter,
+            "{}",
+            async_path_facts_source_dest(&self.from_path, &self.to_path)
+        )?;
+
+        Ok(())
     }
+}
+
+#[cfg(feature = "debug")]
+pub(crate) fn path_facts_source_dest(from: &std::path::Path, to: &std::path::Path) -> String {
+    format!(
+        "
+
+From path {}
+To path {}",
+        PathFacts::new(from),
+        PathFacts::new(to)
+    )
+}
+
+#[cfg(all(feature = "debug", feature = "tokio"))]
+pub(crate) fn async_path_facts(path: &std::path::Path) -> String {
+    tokio::task::block_in_place(|| path_facts(path))
+}
+
+#[cfg(all(feature = "debug", feature = "tokio"))]
+pub(crate) fn async_path_facts_source_dest(from: &std::path::Path, to: &std::path::Path) -> String {
+    tokio::task::block_in_place(|| path_facts_source_dest(from, to))
+}
+
+#[cfg(feature = "debug")]
+pub(crate) fn path_facts(path: &std::path::Path) -> String {
+    format!(
+        "
+
+Path {}",
+        PathFacts::new(path)
+    )
 }
 
 impl StdError for SourceDestError {
@@ -195,6 +276,12 @@ impl StdError for SourceDestError {
         self.source()
     }
 
+    #[cfg(not(feature = "expose_original_error"))]
+    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+        None
+    }
+
+    #[cfg(feature = "expose_original_error")]
     fn source(&self) -> Option<&(dyn StdError + 'static)> {
         Some(&self.source)
     }

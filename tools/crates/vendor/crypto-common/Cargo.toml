@@ -12,8 +12,14 @@
 [package]
 edition = "2018"
 name = "crypto-common"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["RustCrypto Developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Common cryptographic traits"
 documentation = "https://docs.rs/crypto-common"
 readme = "README.md"
@@ -27,6 +33,7 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RustCrypto/traits"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -35,8 +42,16 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+getrandom = ["rand_core/getrandom"]
+std = []
+
+[lib]
+name = "crypto_common"
+path = "src/lib.rs"
+
 [dependencies.generic-array]
-version = "0.14.4"
+version = "=0.14.7"
 features = ["more_lengths"]
 
 [dependencies.rand_core]
@@ -45,7 +60,3 @@ optional = true
 
 [dependencies.typenum]
 version = "1.14"
-
-[features]
-getrandom = ["rand_core/getrandom"]
-std = []

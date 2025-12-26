@@ -117,17 +117,17 @@ mod intercept {
         }
     }
 
-    impl<'a, T> Delegate for InterceptRev<'a, T>
+    impl<T> Delegate for InterceptRev<'_, T>
     where
         T: Delegate,
     {
         fn done(&mut self) {
             self.done = true;
-            self.inner.done()
+            self.inner.done();
         }
     }
 
-    impl<'a, T> delegate::Revision for InterceptRev<'a, T>
+    impl<T> delegate::Revision for InterceptRev<'_, T>
     where
         T: Delegate,
     {
@@ -158,7 +158,7 @@ mod intercept {
         }
     }
 
-    impl<'a, T> delegate::Navigate for InterceptRev<'a, T>
+    impl<T> delegate::Navigate for InterceptRev<'_, T>
     where
         T: Delegate,
     {
@@ -179,7 +179,7 @@ mod intercept {
         }
     }
 
-    impl<'a, T> delegate::Kind for InterceptRev<'a, T>
+    impl<T> delegate::Kind for InterceptRev<'_, T>
     where
         T: Delegate,
     {
@@ -201,7 +201,7 @@ fn long_describe_prefix(name: &BStr) -> Option<(&BStr, delegate::PrefixHint<'_>)
     let candidate = iter.by_ref().find_map(|substr| {
         if substr.first()? != &b'g' {
             return None;
-        };
+        }
         let rest = substr.get(1..)?;
         rest.iter().all(u8::is_ascii_hexdigit).then(|| rest.as_bstr())
     })?;
@@ -213,7 +213,7 @@ fn long_describe_prefix(name: &BStr) -> Option<(&BStr, delegate::PrefixHint<'_>)
         .and_then(|generation| {
             iter.next().map(|token| {
                 let last_token_len = token.len();
-                let first_token_ptr = iter.last().map_or(token.as_ptr(), <[_]>::as_ptr);
+                let first_token_ptr = iter.next_back().map_or(token.as_ptr(), <[_]>::as_ptr);
                 // SAFETY: both pointers are definitely part of the same object
                 #[allow(unsafe_code)]
                 let prior_tokens_len: usize = unsafe { token.as_ptr().offset_from(first_token_ptr) }
@@ -252,14 +252,14 @@ fn parens(input: &[u8]) -> Result<Option<InsideParensRestConsumed<'_>>, Error> {
                 if ignore_next {
                     ignore_next = false;
                 } else {
-                    open_braces += 1
+                    open_braces += 1;
                 }
             }
             b'}' => {
                 if ignore_next {
                     ignore_next = false;
                 } else {
-                    open_braces -= 1
+                    open_braces -= 1;
                 }
             }
             b'\\' => {
@@ -274,8 +274,8 @@ fn parens(input: &[u8]) -> Result<Option<InsideParensRestConsumed<'_>>, Error> {
             _ => {
                 if ignore_next {
                     skip_list.pop();
-                };
-                ignore_next = false
+                }
+                ignore_next = false;
             }
         }
         if open_braces == 0 {
@@ -307,7 +307,7 @@ fn try_parse<T: FromStr + PartialEq + Default>(input: &BStr) -> Result<Option<T>
             n.parse().ok().map(|n| {
                 if n == T::default() && input[0] == b'-' {
                     return Err(Error::NegativeZero { input: input.into() });
-                };
+                }
                 Ok(n)
             })
         })
@@ -337,7 +337,7 @@ where
         [b':', b'2', b':', path @ ..] => return consume_all(delegate.index_lookup(path.as_bstr(), 2)),
         [b':', path @ ..] => return consume_all(delegate.index_lookup(path.as_bstr(), 0)),
         _ => {}
-    };
+    }
 
     let mut sep_pos = None;
     let mut consecutive_hex_chars = Some(0);
@@ -355,7 +355,7 @@ where
                 if *pos != 0 && (next, next_next) == (Some(&b'.'), Some(&b'.')) {
                     return false;
                 }
-                next == Some(&b'{') || next.map_or(false, |b| SEPARATORS.contains(b))
+                next == Some(&b'{') || next.is_some_and(|b| SEPARATORS.contains(b))
             } else if SEPARATORS.contains(b) {
                 true
             } else {
@@ -429,9 +429,23 @@ where
                     }
                 } else if has_ref_or_implied_name {
                     delegate
-                        .reflog(delegate::ReflogLookup::Entry(
-                            n.try_into().expect("non-negative isize fits usize"),
-                        ))
+                        .reflog(if n >= 100000000 {
+                            let time = nav
+                                .to_str()
+                                .map_err(|_| Error::Time {
+                                    input: nav.into(),
+                                    source: None,
+                                })
+                                .and_then(|date| {
+                                    gix_date::parse(date, None).map_err(|err| Error::Time {
+                                        input: nav.into(),
+                                        source: err.into(),
+                                    })
+                                })?;
+                            delegate::ReflogLookup::Date(time)
+                        } else {
+                            delegate::ReflogLookup::Entry(n.try_into().expect("non-negative isize fits usize"))
+                        })
                         .ok_or(Error::Delegate)?;
                 } else {
                     return Err(Error::ReflogLookupNeedsRefName { name: (*name).into() });
@@ -441,7 +455,7 @@ where
                     delegate.sibling_branch(kind).ok_or(Error::Delegate)
                 } else {
                     Err(Error::SiblingBranchNeedsBranchName { name: (*name).into() })
-                }?
+                }?;
             } else if has_ref_or_implied_name {
                 let time = nav
                     .to_str()

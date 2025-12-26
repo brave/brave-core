@@ -1,19 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
-#
-# Permission to use under GPL terms is granted.
+# project.
 # ====================================================================
 
 # SHA256 block procedure for ARMv4. May 2007.
@@ -86,7 +89,7 @@ sub BODY_00_15 {
 my ($i,$a,$b,$c,$d,$e,$f,$g,$h) = @_;
 
 $code.=<<___ if ($i<16);
-#if __ARM_ARCH__>=7
+#if __ARM_ARCH>=7
 	@ ldr	$t1,[$inp],#4			@ $i
 # if $i==15
 	str	$inp,[sp,#17*4]			@ make room for $t4
@@ -129,7 +132,7 @@ $code.=<<___;
 	cmp	$t2,#0xf2			@ done?
 #endif
 #if $i<15
-# if __ARM_ARCH__>=7
+# if __ARM_ARCH>=7
 	ldr	$t1,[$inp],#4			@ prefetch
 # else
 	ldrb	$t1,[$inp,#3]
@@ -176,10 +179,8 @@ ___
 }
 
 $code=<<___;
-#ifndef __KERNEL__
-# include <ring-core/arm_arch.h>
-#else
-# define __ARM_ARCH__ __LINUX_ARM_ARCH__
+#ifdef __KERNEL__
+# define __ARM_ARCH __LINUX_ARM_ARCH__
 # define __ARM_MAX_ARCH__ 7
 #endif
 
@@ -217,41 +218,18 @@ K256:
 .word	0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 .size	K256,.-K256
 .word	0				@ terminator
-#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
-.extern OPENSSL_armcap_P
-.hidden OPENSSL_armcap_P
-.LOPENSSL_armcap:
-.word	OPENSSL_armcap_P-.Lsha256_block_data_order
-#endif
 .align	5
 
-.global	sha256_block_data_order
-.type	sha256_block_data_order,%function
-sha256_block_data_order:
-.Lsha256_block_data_order:
-#if __ARM_ARCH__<7 && !defined(__thumb2__)
-	sub	r3,pc,#8		@ sha256_block_data_order
-#else
-	adr	r3,.Lsha256_block_data_order
-#endif
-#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
-	ldr	r12,.LOPENSSL_armcap
-	ldr	r12,[r3,r12]		@ OPENSSL_armcap_P
-#ifdef	__APPLE__
-	ldr	r12,[r12]
-#endif
-	tst	r12,#ARMV8_SHA256
-	bne	.LARMv8
-	tst	r12,#ARMV7_NEON
-	bne	.LNEON
-#endif
+.global	sha256_block_data_order_nohw
+.type	sha256_block_data_order_nohw,%function
+sha256_block_data_order_nohw:
 	add	$len,$inp,$len,lsl#6	@ len to point at the end of inp
 	stmdb	sp!,{$ctx,$inp,$len,r4-r11,lr}
 	ldmia	$ctx,{$A,$B,$C,$D,$E,$F,$G,$H}
-	sub	$Ktbl,r3,#256+32	@ K256
+	adr	$Ktbl,K256
 	sub	sp,sp,#16*4		@ alloca(X[16])
 .Loop:
-# if __ARM_ARCH__>=7
+# if __ARM_ARCH>=7
 	ldr	$t1,[$inp],#4
 # else
 	ldrb	$t1,[$inp,#3]
@@ -263,7 +241,7 @@ for($i=0;$i<16;$i++)	{ &BODY_00_15($i,@V); unshift(@V,pop(@V)); }
 $code.=".Lrounds_16_xx:\n";
 for (;$i<32;$i++)	{ &BODY_16_XX($i,@V); unshift(@V,pop(@V)); }
 $code.=<<___;
-#if __ARM_ARCH__>=7
+#if __ARM_ARCH>=7
 	ite	eq			@ Thumb2 thing, sanity check in ARM
 #endif
 	ldreq	$t3,[sp,#16*4]		@ pull ctx
@@ -294,7 +272,7 @@ $code.=<<___;
 	bne	.Loop
 
 	add	sp,sp,#`16+3`*4	@ destroy frame
-#if __ARM_ARCH__>=5
+#if __ARM_ARCH>=5
 	ldmia	sp!,{r4-r11,pc}
 #else
 	ldmia	sp!,{r4-r11,lr}
@@ -302,7 +280,7 @@ $code.=<<___;
 	moveq	pc,lr			@ be binary compatible with V4, yet
 	bx	lr			@ interoperable with Thumb ISA:-)
 #endif
-.size	sha256_block_data_order,.-sha256_block_data_order
+.size	sha256_block_data_order_nohw,.-sha256_block_data_order_nohw
 ___
 ######################################################################
 # NEON stuff
@@ -482,15 +460,37 @@ $code.=<<___;
 .arch	armv7-a
 .fpu	neon
 
+.LK256_shortcut_neon:
+@ PC is 8 bytes ahead in Arm mode and 4 bytes ahead in Thumb mode.
+#if defined(__thumb2__)
+.word	K256-(.LK256_add_neon+4)
+#else
+.word	K256-(.LK256_add_neon+8)
+#endif
+
+.global	sha256_block_data_order_neon
 .type	sha256_block_data_order_neon,%function
 .align	5
 .skip	16
 sha256_block_data_order_neon:
-.LNEON:
 	stmdb	sp!,{r4-r12,lr}
 
 	sub	$H,sp,#16*4+16
-	adr	$Ktbl,K256
+
+	@ K256 is just at the boundary of being easily referenced by an ADR from
+	@ this function. In Arm mode, when building with __ARM_ARCH=6, it does
+	@ not fit. By moving code around, we could make it fit, but this is too
+	@ fragile. For simplicity, just load the offset from
+	@ .LK256_shortcut_neon.
+	@
+	@ TODO(davidben): adrl would avoid a load, but clang-assembler does not
+	@ support it. We might be able to emulate it with a macro, but Android's
+	@ did not work when I tried it.
+	@ https://android.googlesource.com/platform/ndk/+/refs/heads/main/docs/ClangMigration.md#arm
+	ldr	$Ktbl,.LK256_shortcut_neon
+.LK256_add_neon:
+	add	$Ktbl,pc,$Ktbl
+
 	bic	$H,$H,#15		@ align for 128-bit stores
 	mov	$t2,sp
 	mov	sp,$H			@ alloca
@@ -598,97 +598,10 @@ $code.=<<___;
 #endif
 ___
 }}}
-######################################################################
-# ARMv8 stuff
-#
-{{{
-my ($ABCD,$EFGH,$abcd)=map("q$_",(0..2));
-my @MSG=map("q$_",(8..11));
-my ($W0,$W1,$ABCD_SAVE,$EFGH_SAVE)=map("q$_",(12..15));
-my $Ktbl="r3";
 
-$code.=<<___;
-#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
-
-# if defined(__thumb2__)
-#  define INST(a,b,c,d)	.byte	c,d|0xc,a,b
-# else
-#  define INST(a,b,c,d)	.byte	a,b,c,d
-# endif
-
-.type	sha256_block_data_order_armv8,%function
-.align	5
-sha256_block_data_order_armv8:
-.LARMv8:
-	vld1.32	{$ABCD,$EFGH},[$ctx]
-	sub	$Ktbl,$Ktbl,#256+32
-	add	$len,$inp,$len,lsl#6	@ len to point at the end of inp
-	b	.Loop_v8
-
-.align	4
-.Loop_v8:
-	vld1.8		{@MSG[0]-@MSG[1]},[$inp]!
-	vld1.8		{@MSG[2]-@MSG[3]},[$inp]!
-	vld1.32		{$W0},[$Ktbl]!
-	vrev32.8	@MSG[0],@MSG[0]
-	vrev32.8	@MSG[1],@MSG[1]
-	vrev32.8	@MSG[2],@MSG[2]
-	vrev32.8	@MSG[3],@MSG[3]
-	vmov		$ABCD_SAVE,$ABCD	@ offload
-	vmov		$EFGH_SAVE,$EFGH
-	teq		$inp,$len
-___
-for($i=0;$i<12;$i++) {
-$code.=<<___;
-	vld1.32		{$W1},[$Ktbl]!
-	vadd.i32	$W0,$W0,@MSG[0]
-	sha256su0	@MSG[0],@MSG[1]
-	vmov		$abcd,$ABCD
-	sha256h		$ABCD,$EFGH,$W0
-	sha256h2	$EFGH,$abcd,$W0
-	sha256su1	@MSG[0],@MSG[2],@MSG[3]
-___
-	($W0,$W1)=($W1,$W0);	push(@MSG,shift(@MSG));
-}
-$code.=<<___;
-	vld1.32		{$W1},[$Ktbl]!
-	vadd.i32	$W0,$W0,@MSG[0]
-	vmov		$abcd,$ABCD
-	sha256h		$ABCD,$EFGH,$W0
-	sha256h2	$EFGH,$abcd,$W0
-
-	vld1.32		{$W0},[$Ktbl]!
-	vadd.i32	$W1,$W1,@MSG[1]
-	vmov		$abcd,$ABCD
-	sha256h		$ABCD,$EFGH,$W1
-	sha256h2	$EFGH,$abcd,$W1
-
-	vld1.32		{$W1},[$Ktbl]
-	vadd.i32	$W0,$W0,@MSG[2]
-	sub		$Ktbl,$Ktbl,#256-16	@ rewind
-	vmov		$abcd,$ABCD
-	sha256h		$ABCD,$EFGH,$W0
-	sha256h2	$EFGH,$abcd,$W0
-
-	vadd.i32	$W1,$W1,@MSG[3]
-	vmov		$abcd,$ABCD
-	sha256h		$ABCD,$EFGH,$W1
-	sha256h2	$EFGH,$abcd,$W1
-
-	vadd.i32	$ABCD,$ABCD,$ABCD_SAVE
-	vadd.i32	$EFGH,$EFGH,$EFGH_SAVE
-	it		ne
-	bne		.Loop_v8
-
-	vst1.32		{$ABCD,$EFGH},[$ctx]
-
-	ret		@ bx lr
-.size	sha256_block_data_order_armv8,.-sha256_block_data_order_armv8
-#endif
-___
-}}}
 $code.=<<___;
 .asciz  "SHA256 block transform for ARMv4/NEON/ARMv8, CRYPTOGAMS by <appro\@openssl.org>"
+.align	2
 ___
 
 open SELF,$0;
@@ -699,33 +612,9 @@ while(<SELF>) {
 }
 close SELF;
 
-{   my  %opcode = (
-	"sha256h"	=> 0xf3000c40,	"sha256h2"	=> 0xf3100c40,
-	"sha256su0"	=> 0xf3ba03c0,	"sha256su1"	=> 0xf3200c40	);
-
-    sub unsha256 {
-	my ($mnemonic,$arg)=@_;
-
-	if ($arg =~ m/q([0-9]+)(?:,\s*q([0-9]+))?,\s*q([0-9]+)/o) {
-	    my $word = $opcode{$mnemonic}|(($1&7)<<13)|(($1&8)<<19)
-					 |(($2&7)<<17)|(($2&8)<<4)
-					 |(($3&7)<<1) |(($3&8)<<2);
-	    # since ARMv7 instructions are always encoded little-endian.
-	    # correct solution is to use .inst directive, but older
-	    # assemblers don't implement it:-(
-	    sprintf "INST(0x%02x,0x%02x,0x%02x,0x%02x)\t@ %s %s",
-			$word&0xff,($word>>8)&0xff,
-			($word>>16)&0xff,($word>>24)&0xff,
-			$mnemonic,$arg;
-	}
-    }
-}
-
 foreach (split($/,$code)) {
 
 	s/\`([^\`]*)\`/eval $1/geo;
-
-	s/\b(sha256\w+)\s+(q.*)/unsha256($1,$2)/geo;
 
 	s/\bret\b/bx	lr/go		or
 	s/\bbx\s+lr\b/.word\t0xe12fff1e/go;	# make it possible to compile with -march=armv4

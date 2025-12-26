@@ -196,7 +196,7 @@ where
     /// as a [`File`], you will want to apply your own buffering because serde_json
     /// will not buffer the input. See [`std::io::BufReader`].
     ///
-    /// [`File`]: https://doc.rust-lang.org/std/fs/struct.File.html
+    /// [`File`]: std::fs::File
     pub fn new(reader: R) -> Self {
         IoRead {
             iter: LineColIterator::new(reader.bytes()),
@@ -984,7 +984,7 @@ fn push_wtf8_codepoint(n: u32, scratch: &mut Vec<u8>) {
     scratch.reserve(4);
 
     // SAFETY: After the `reserve` call, `scratch` has at least 4 bytes of
-    // allocated but unintialized memory after its last initialized byte, which
+    // allocated but uninitialized memory after its last initialized byte, which
     // is where `ptr` points. All reachable match arms write `encoded_len` bytes
     // to that region and update the length accordingly, and `encoded_len` is
     // always <= 4.

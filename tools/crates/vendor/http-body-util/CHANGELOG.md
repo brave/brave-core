@@ -1,3 +1,8 @@
+# v0.1.3
+
+- Add `Channel`, a body type backed by an async channel.
+- Make `Empty::new()` to be `const fn`.
+
 # v0.1.2
 
 - Add `BodyDataStream` type to convert a body to a stream of its data.

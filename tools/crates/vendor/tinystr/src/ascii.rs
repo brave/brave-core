@@ -4,7 +4,8 @@
 
 use crate::asciibyte::AsciiByte;
 use crate::int_ops::{Aligned4, Aligned8};
-use crate::TinyStrError;
+use crate::ParseError;
+use core::borrow::Borrow;
 use core::fmt;
 use core::ops::Deref;
 use core::str::{self, FromStr};
@@ -16,33 +17,85 @@ pub struct TinyAsciiStr<const N: usize> {
 }
 
 impl<const N: usize> TinyAsciiStr<N> {
-    /// Creates a `TinyAsciiStr<N>` from the given byte slice.
-    /// `bytes` may contain at most `N` non-null ASCII bytes.
-    pub const fn from_bytes(bytes: &[u8]) -> Result<Self, TinyStrError> {
-        Self::from_bytes_inner(bytes, 0, bytes.len(), false)
+    #[inline]
+    pub const fn try_from_str(s: &str) -> Result<Self, ParseError> {
+        Self::try_from_utf8(s.as_bytes())
     }
 
-    /// Creates a `TinyAsciiStr<N>` from a byte slice, replacing invalid bytes.
+    /// Creates a `TinyAsciiStr<N>` from the given UTF-8 slice.
+    /// `code_units` may contain at most `N` non-null ASCII code points.
+    #[inline]
+    pub const fn try_from_utf8(code_units: &[u8]) -> Result<Self, ParseError> {
+        Self::try_from_utf8_inner(code_units, false)
+    }
+
+    /// Creates a `TinyAsciiStr<N>` from the given UTF-16 slice.
+    /// `code_units` may contain at most `N` non-null ASCII code points.
+    #[inline]
+    pub const fn try_from_utf16(code_units: &[u16]) -> Result<Self, ParseError> {
+        Self::try_from_utf16_inner(code_units, 0, code_units.len(), false)
+    }
+
+    /// Creates a `TinyAsciiStr<N>` from a UTF-8 slice, replacing invalid code units.
     ///
-    /// Null and non-ASCII bytes (i.e. those outside the range `0x01..=0x7F`)
-    /// will be replaced with the '?' character.
+    /// Invalid code units, as well as null or non-ASCII code points
+    /// (i.e. those outside the range U+0001..=U+007F`)
+    /// will be replaced with the replacement byte.
     ///
     /// The input slice will be truncated if its length exceeds `N`.
-    pub const fn from_bytes_lossy(bytes: &[u8]) -> Self {
-        const QUESTION: u8 = b'?';
+    pub const fn from_utf8_lossy(code_units: &[u8], replacement: u8) -> Self {
         let mut out = [0; N];
         let mut i = 0;
         // Ord is not available in const, so no `.min(N)`
-        let len = if bytes.len() > N { N } else { bytes.len() };
+        let len = if code_units.len() > N {
+            N
+        } else {
+            code_units.len()
+        };
 
         // Indexing is protected by the len check above
-        #[allow(clippy::indexing_slicing)]
+        #[expect(clippy::indexing_slicing)]
         while i < len {
-            let b = bytes[i];
+            let b = code_units[i];
             if b > 0 && b < 0x80 {
                 out[i] = b;
             } else {
-                out[i] = QUESTION;
+                out[i] = replacement;
+            }
+            i += 1;
+        }
+
+        Self {
+            // SAFETY: `out` only contains ASCII bytes and has same size as `self.bytes`
+            bytes: unsafe { AsciiByte::to_ascii_byte_array(&out) },
+        }
+    }
+
+    /// Creates a `TinyAsciiStr<N>` from a UTF-16 slice, replacing invalid code units.
+    ///
+    /// Invalid code units, as well as null or non-ASCII code points
+    /// (i.e. those outside the range U+0001..=U+007F`)
+    /// will be replaced with the replacement byte.
+    ///
+    /// The input slice will be truncated if its length exceeds `N`.
+    pub const fn from_utf16_lossy(code_units: &[u16], replacement: u8) -> Self {
+        let mut out = [0; N];
+        let mut i = 0;
+        // Ord is not available in const, so no `.min(N)`
+        let len = if code_units.len() > N {
+            N
+        } else {
+            code_units.len()
+        };
+
+        // Indexing is protected by the len check above
+        #[expect(clippy::indexing_slicing)]
+        while i < len {
+            let b = code_units[i];
+            if b > 0 && b < 0x80 {
+                out[i] = b as u8;
+            } else {
+                out[i] = replacement;
             }
             i += 1;
         }
@@ -71,49 +124,38 @@ impl<const N: usize> TinyAsciiStr<N> {
     ///     TinyAsciiStr::<3>::try_from_raw(*b"USD"),
     ///     Ok(tinystr!(3, "USD"))
     /// );
-    /// assert!(matches!(TinyAsciiStr::<3>::try_from_raw(*b"\0A\0"), Err(_)));
+    /// assert!(TinyAsciiStr::<3>::try_from_raw(*b"\0A\0").is_err());
     /// ```
-    pub const fn try_from_raw(raw: [u8; N]) -> Result<Self, TinyStrError> {
-        Self::from_bytes_inner(&raw, 0, N, true)
+    pub const fn try_from_raw(raw: [u8; N]) -> Result<Self, ParseError> {
+        Self::try_from_utf8_inner(&raw, true)
     }
 
-    /// Equivalent to [`from_bytes(bytes[start..end])`](Self::from_bytes),
-    /// but callable in a `const` context (which range indexing is not).
-    pub const fn from_bytes_manual_slice(
-        bytes: &[u8],
-        start: usize,
-        end: usize,
-    ) -> Result<Self, TinyStrError> {
-        Self::from_bytes_inner(bytes, start, end, false)
-    }
-
-    #[inline]
-    pub(crate) const fn from_bytes_inner(
-        bytes: &[u8],
-        start: usize,
-        end: usize,
+    pub(crate) const fn try_from_utf8_inner(
+        code_units: &[u8],
         allow_trailing_null: bool,
-    ) -> Result<Self, TinyStrError> {
-        let len = end - start;
-        if len > N {
-            return Err(TinyStrError::TooLarge { max: N, len });
+    ) -> Result<Self, ParseError> {
+        if code_units.len() > N {
+            return Err(ParseError::TooLong {
+                max: N,
+                len: code_units.len(),
+            });
         }
 
         let mut out = [0; N];
         let mut i = 0;
         let mut found_null = false;
         // Indexing is protected by TinyStrError::TooLarge
-        #[allow(clippy::indexing_slicing)]
-        while i < len {
-            let b = bytes[start + i];
+        #[expect(clippy::indexing_slicing)]
+        while i < code_units.len() {
+            let b = code_units[i];
 
             if b == 0 {
                 found_null = true;
             } else if b >= 0x80 {
-                return Err(TinyStrError::NonAscii);
+                return Err(ParseError::NonAscii);
             } else if found_null {
                 // Error if there are contentful bytes after null
-                return Err(TinyStrError::ContainsNull);
+                return Err(ParseError::ContainsNull);
             }
             out[i] = b;
 
@@ -122,7 +164,7 @@ impl<const N: usize> TinyAsciiStr<N> {
 
         if !allow_trailing_null && found_null {
             // We found some trailing nulls, error
-            return Err(TinyStrError::ContainsNull);
+            return Err(ParseError::ContainsNull);
         }
 
         Ok(Self {
@@ -131,16 +173,116 @@ impl<const N: usize> TinyAsciiStr<N> {
         })
     }
 
-    // TODO: This function shadows the FromStr trait. Rename?
-    #[inline]
-    pub const fn from_str(s: &str) -> Result<Self, TinyStrError> {
-        Self::from_bytes_inner(s.as_bytes(), 0, s.len(), false)
+    pub(crate) const fn try_from_utf16_inner(
+        code_units: &[u16],
+        start: usize,
+        end: usize,
+        allow_trailing_null: bool,
+    ) -> Result<Self, ParseError> {
+        let len = end - start;
+        if len > N {
+            return Err(ParseError::TooLong { max: N, len });
+        }
+
+        let mut out = [0; N];
+        let mut i = 0;
+        let mut found_null = false;
+        // Indexing is protected by TinyStrError::TooLarge
+        #[expect(clippy::indexing_slicing)]
+        while i < len {
+            let b = code_units[start + i];
+
+            if b == 0 {
+                found_null = true;
+            } else if b >= 0x80 {
+                return Err(ParseError::NonAscii);
+            } else if found_null {
+                // Error if there are contentful bytes after null
+                return Err(ParseError::ContainsNull);
+            }
+            out[i] = b as u8;
+
+            i += 1;
+        }
+
+        if !allow_trailing_null && found_null {
+            // We found some trailing nulls, error
+            return Err(ParseError::ContainsNull);
+        }
+
+        Ok(Self {
+            // SAFETY: `out` only contains ASCII bytes and has same size as `self.bytes`
+            bytes: unsafe { AsciiByte::to_ascii_byte_array(&out) },
+        })
+    }
+
+    /// Creates a `TinyAsciiStr<N>` containing the decimal representation of
+    /// the given unsigned integer.
+    ///
+    /// If the number of decimal digits exceeds `N`, the highest-magnitude
+    /// digits are truncated, and the lowest-magnitude digits are returned
+    /// as the error.
+    ///
+    /// Note: this function takes a u32. Larger integer types should probably
+    /// not be stored in a `TinyAsciiStr`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tinystr::tinystr;
+    /// use tinystr::TinyAsciiStr;
+    ///
+    /// let s0_4 = TinyAsciiStr::<4>::new_unsigned_decimal(0).unwrap();
+    /// let s456_4 = TinyAsciiStr::<4>::new_unsigned_decimal(456).unwrap();
+    /// let s456_3 = TinyAsciiStr::<3>::new_unsigned_decimal(456).unwrap();
+    /// let s456_2 = TinyAsciiStr::<2>::new_unsigned_decimal(456).unwrap_err();
+    ///
+    /// assert_eq!(s0_4, tinystr!(4, "0"));
+    /// assert_eq!(s456_4, tinystr!(4, "456"));
+    /// assert_eq!(s456_3, tinystr!(3, "456"));
+    /// assert_eq!(s456_2, tinystr!(2, "56"));
+    /// ```
+    ///
+    /// Example with saturating the value:
+    ///
+    /// ```
+    /// use tinystr::tinystr;
+    /// use tinystr::TinyAsciiStr;
+    ///
+    /// let str_truncated =
+    ///     TinyAsciiStr::<2>::new_unsigned_decimal(456).unwrap_or_else(|s| s);
+    /// let str_saturated = TinyAsciiStr::<2>::new_unsigned_decimal(456)
+    ///     .unwrap_or(tinystr!(2, "99"));
+    ///
+    /// assert_eq!(str_truncated, tinystr!(2, "56"));
+    /// assert_eq!(str_saturated, tinystr!(2, "99"));
+    /// ```
+    pub fn new_unsigned_decimal(number: u32) -> Result<Self, Self> {
+        let mut bytes = [AsciiByte::B0; N];
+        let mut x = number;
+        let mut i = 0usize;
+        #[expect(clippy::indexing_slicing)] // in-range: i < N
+        while i < N && (x != 0 || i == 0) {
+            bytes[N - i - 1] = AsciiByte::from_decimal_digit((x % 10) as u8);
+            x /= 10;
+            i += 1;
+        }
+        if i < N {
+            bytes.copy_within((N - i)..N, 0);
+            bytes[i..N].fill(AsciiByte::B0);
+        }
+        let s = Self { bytes };
+        if x != 0 {
+            Err(s)
+        } else {
+            Ok(s)
+        }
     }
 
     #[inline]
     pub const fn as_str(&self) -> &str {
-        // as_bytes is valid utf8
-        unsafe { str::from_utf8_unchecked(self.as_bytes()) }
+        // as_utf8 is valid utf8
+        unsafe { str::from_utf8_unchecked(self.as_utf8()) }
     }
 
     #[inline]
@@ -152,7 +294,7 @@ impl<const N: usize> TinyAsciiStr<N> {
             Aligned8::from_ascii_bytes(&self.bytes).len()
         } else {
             let mut i = 0;
-            #[allow(clippy::indexing_slicing)] // < N is safe
+            #[expect(clippy::indexing_slicing)] // < N is safe
             while i < N && self.bytes[i] as u8 != AsciiByte::B0 as u8 {
                 i += 1
             }
@@ -168,7 +310,7 @@ impl<const N: usize> TinyAsciiStr<N> {
 
     #[inline]
     #[must_use]
-    pub const fn as_bytes(&self) -> &[u8] {
+    pub const fn as_utf8(&self) -> &[u8] {
         // Safe because `self.bytes.as_slice()` pointer-casts to `&[u8]`,
         // and changing the length of that slice to self.len() < N is safe.
         unsafe {
@@ -193,23 +335,66 @@ impl<const N: usize> TinyAsciiStr<N> {
         let mut bytes = [0; M];
         let mut i = 0;
         // Indexing is protected by the loop guard
-        #[allow(clippy::indexing_slicing)]
+        #[expect(clippy::indexing_slicing)]
         while i < M && i < N {
             bytes[i] = self.bytes[i] as u8;
             i += 1;
         }
         // `self.bytes` only contains ASCII bytes, with no null bytes between
         // ASCII characters, so this also holds for `bytes`.
-        unsafe { TinyAsciiStr::from_bytes_unchecked(bytes) }
+        unsafe { TinyAsciiStr::from_utf8_unchecked(bytes) }
+    }
+
+    #[inline]
+    #[must_use]
+    /// Returns a `TinyAsciiStr<Q>` with the concatenation of this string,
+    /// `TinyAsciiStr<N>`, and another string, `TinyAsciiStr<M>`.
+    ///
+    /// If `Q < N + M`, the string gets truncated.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tinystr::tinystr;
+    /// use tinystr::TinyAsciiStr;
+    ///
+    /// let abc = tinystr!(6, "abc");
+    /// let defg = tinystr!(6, "defg");
+    ///
+    /// // The concatenation is successful if Q is large enough...
+    /// assert_eq!(abc.concat(defg), tinystr!(16, "abcdefg"));
+    /// assert_eq!(abc.concat(defg), tinystr!(12, "abcdefg"));
+    /// assert_eq!(abc.concat(defg), tinystr!(8, "abcdefg"));
+    /// assert_eq!(abc.concat(defg), tinystr!(7, "abcdefg"));
+    ///
+    /// /// ...but it truncates of Q is too small.
+    /// assert_eq!(abc.concat(defg), tinystr!(6, "abcdef"));
+    /// assert_eq!(abc.concat(defg), tinystr!(2, "ab"));
+    /// ```
+    pub const fn concat<const M: usize, const Q: usize>(
+        self,
+        other: TinyAsciiStr<M>,
+    ) -> TinyAsciiStr<Q> {
+        let mut result = self.resize::<Q>();
+        let mut i = self.len();
+        let mut j = 0;
+        // Indexing is protected by the loop guard
+        #[expect(clippy::indexing_slicing)]
+        while i < Q && j < M {
+            result.bytes[i] = other.bytes[j];
+            i += 1;
+            j += 1;
+        }
+        result
     }
 
     /// # Safety
     /// Must be called with a bytes array made of valid ASCII bytes, with no null bytes
     /// between ASCII characters
     #[must_use]
-    pub const unsafe fn from_bytes_unchecked(bytes: [u8; N]) -> Self {
+    pub const unsafe fn from_utf8_unchecked(code_units: [u8; N]) -> Self {
         Self {
-            bytes: AsciiByte::to_ascii_byte_array(&bytes),
+            bytes: AsciiByte::to_ascii_byte_array(&code_units),
         }
     }
 }
@@ -222,8 +407,6 @@ macro_rules! check_is {
             Aligned8::from_ascii_bytes(&$self.bytes).$check_int()
         } else {
             let mut i = 0;
-            // Won't panic because self.bytes has length N
-            #[allow(clippy::indexing_slicing)]
             while i < N && $self.bytes[i] as u8 != AsciiByte::B0 as u8 {
                 if !($self.bytes[i] as u8).$check_u8() {
                     return false;
@@ -244,8 +427,6 @@ macro_rules! check_is {
                 return false;
             }
             let mut i = 1;
-            // Won't panic because self.bytes has length N
-            #[allow(clippy::indexing_slicing)]
             while i < N && $self.bytes[i] as u8 != AsciiByte::B0 as u8 {
                 if ($self.bytes[i] as u8).$check_u8_1_inv() {
                     return false;
@@ -266,8 +447,6 @@ macro_rules! check_is {
                 return false;
             }
             let mut i = 1;
-            // Won't panic because self.bytes has length N
-            #[allow(clippy::indexing_slicing)]
             while i < N && $self.bytes[i] as u8 != AsciiByte::B0 as u8 {
                 if !($self.bytes[i] as u8).$check_u8_1_inv() {
                     return false;
@@ -532,7 +711,7 @@ macro_rules! to {
         if N <= 4 {
             let aligned = Aligned4::from_ascii_bytes(&$self.bytes).$to().to_ascii_bytes();
             // Won't panic because self.bytes has length N and aligned has length >= N
-            #[allow(clippy::indexing_slicing)]
+            #[expect(clippy::indexing_slicing)]
             while i < N {
                 $self.bytes[i] = aligned[i];
                 i += 1;
@@ -540,14 +719,12 @@ macro_rules! to {
         } else if N <= 8 {
             let aligned = Aligned8::from_ascii_bytes(&$self.bytes).$to().to_ascii_bytes();
             // Won't panic because self.bytes has length N and aligned has length >= N
-            #[allow(clippy::indexing_slicing)]
+            #[expect(clippy::indexing_slicing)]
             while i < N {
                 $self.bytes[i] = aligned[i];
                 i += 1;
             }
         } else {
-            // Won't panic because self.bytes has length N
-            #[allow(clippy::indexing_slicing)]
             while i < N && $self.bytes[i] as u8 != AsciiByte::B0 as u8 {
                 // SAFETY: AsciiByte is repr(u8) and has same size as u8
                 unsafe {
@@ -653,11 +830,18 @@ impl<const N: usize> Deref for TinyAsciiStr<N> {
     }
 }
 
+impl<const N: usize> Borrow<str> for TinyAsciiStr<N> {
+    #[inline]
+    fn borrow(&self) -> &str {
+        self.as_str()
+    }
+}
+
 impl<const N: usize> FromStr for TinyAsciiStr<N> {
-    type Err = TinyStrError;
+    type Err = ParseError;
     #[inline]
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Self::from_str(s)
+        Self::try_from_str(s)
     }
 }
 
@@ -690,10 +874,9 @@ impl<const N: usize> PartialEq<TinyAsciiStr<N>> for alloc::string::String {
 #[cfg(test)]
 mod test {
     use super::*;
-    use rand::distributions::Distribution;
-    use rand::distributions::Standard;
+    use rand::distr::Distribution;
+    use rand::distr::StandardUniform;
     use rand::rngs::SmallRng;
-    use rand::seq::SliceRandom;
     use rand::SeedableRng;
 
     const STRINGS: [&str; 26] = [
@@ -726,6 +909,7 @@ mod test {
     ];
 
     fn gen_strings(num_strings: usize, allowed_lengths: &[usize]) -> Vec<String> {
+        use rand::seq::IndexedRandom;
         let mut rng = SmallRng::seed_from_u64(2022);
         // Need to do this in 2 steps since the RNG is needed twice
         let string_lengths = core::iter::repeat_with(|| *allowed_lengths.choose(&mut rng).unwrap())
@@ -734,7 +918,7 @@ mod test {
         string_lengths
             .iter()
             .map(|len| {
-                Standard
+                StandardUniform
                     .sample_iter(&mut rng)
                     .filter(|b: &u8| *b > 0 && *b < 0x80)
                     .take(*len)
@@ -757,7 +941,17 @@ mod test {
         {
             let t = match TinyAsciiStr::<N>::from_str(&s) {
                 Ok(t) => t,
-                Err(TinyStrError::TooLarge { .. }) => continue,
+                Err(ParseError::TooLong { .. }) => continue,
+                Err(e) => panic!("{}", e),
+            };
+            let expected = reference_f(&s);
+            let actual = tinystr_f(t);
+            assert_eq!(expected, actual, "TinyAsciiStr<{N}>: {s:?}");
+
+            let s_utf16: Vec<u16> = s.encode_utf16().collect();
+            let t = match TinyAsciiStr::<N>::try_from_utf16(&s_utf16) {
+                Ok(t) => t,
+                Err(ParseError::TooLong { .. }) => continue,
                 Err(e) => panic!("{}", e),
             };
             let expected = reference_f(&s);
@@ -819,7 +1013,7 @@ mod test {
         fn check<const N: usize>() {
             check_operation(
                 |s| {
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_lowercase()
                         .as_str()
@@ -840,7 +1034,7 @@ mod test {
         fn check<const N: usize>() {
             check_operation(
                 |s| {
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_titlecase()
                         .as_str()
@@ -861,7 +1055,7 @@ mod test {
         fn check<const N: usize>() {
             check_operation(
                 |s| {
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_uppercase()
                         .as_str()
@@ -885,7 +1079,7 @@ mod test {
                     // Check alphabetic
                     s.chars().all(|c| c.is_ascii_alphabetic()) &&
                     // Check lowercase
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_lowercase()
                         .as_str()
@@ -909,7 +1103,7 @@ mod test {
                     // Check alphabetic
                     s.chars().all(|c| c.is_ascii_alphabetic()) &&
                     // Check titlecase
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_titlecase()
                         .as_str()
@@ -933,7 +1127,7 @@ mod test {
                     // Check alphabetic
                     s.chars().all(|c| c.is_ascii_alphabetic()) &&
                     // Check uppercase
-                    s == TinyAsciiStr::<16>::from_str(s)
+                    s == TinyAsciiStr::<16>::try_from_str(s)
                         .unwrap()
                         .to_ascii_uppercase()
                         .as_str()
@@ -1015,18 +1209,21 @@ mod test {
 
     #[test]
     fn lossy_constructor() {
-        assert_eq!(TinyAsciiStr::<4>::from_bytes_lossy(b"").as_str(), "");
+        assert_eq!(TinyAsciiStr::<4>::from_utf8_lossy(b"", b'?').as_str(), "");
         assert_eq!(
-            TinyAsciiStr::<4>::from_bytes_lossy(b"oh\0o").as_str(),
+            TinyAsciiStr::<4>::from_utf8_lossy(b"oh\0o", b'?').as_str(),
             "oh?o"
         );
-        assert_eq!(TinyAsciiStr::<4>::from_bytes_lossy(b"\0").as_str(), "?");
         assert_eq!(
-            TinyAsciiStr::<4>::from_bytes_lossy(b"toolong").as_str(),
+            TinyAsciiStr::<4>::from_utf8_lossy(b"\0", b'?').as_str(),
+            "?"
+        );
+        assert_eq!(
+            TinyAsciiStr::<4>::from_utf8_lossy(b"toolong", b'?').as_str(),
             "tool"
         );
         assert_eq!(
-            TinyAsciiStr::<4>::from_bytes_lossy(&[b'a', 0x80, 0xFF, b'1']).as_str(),
+            TinyAsciiStr::<4>::from_utf8_lossy(&[b'a', 0x80, 0xFF, b'1'], b'?').as_str(),
             "a??1"
         );
     }

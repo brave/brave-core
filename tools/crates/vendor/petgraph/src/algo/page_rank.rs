@@ -1,22 +1,31 @@
+use alloc::{vec, vec::Vec};
+
+use super::UnitMeasure;
 use crate::visit::{EdgeRef, IntoEdges, NodeCount, NodeIndexable};
 
 #[cfg(feature = "rayon")]
 use rayon::prelude::*;
 
-use super::UnitMeasure;
-/// \[Generic\] Page Rank algorithm.
+/// Page Rank algorithm.
 ///
 /// Computes the ranks of every node in a graph using the [Page Rank algorithm][pr].
 ///
-/// Returns a `Vec` container mapping each node index to its rank.
+/// # Arguments
+/// * `graph`: a directed graph.
+/// * `damping_factor`: a value in range `0.0 <= damping_factor <= 1.0`.
+/// * `nb_iter`: number of iterations of the main loop.
+///
+/// # Returns
+/// * A `Vec` mapping each node index to its rank.
 ///
 /// # Panics
-/// The damping factor should be a number of type `f32` or `f64` between 0 and 1 (0 and 1 included). Otherwise, it panics.
+/// The damping factor should be a measure (like `f32` or `f64`) between 0 and 1 (0 and 1 included). Otherwise, it panics.
 ///
 /// # Complexity
-/// Time complexity is **O(N|V|²|E|)**.
-/// Space complexity is **O(|V| + |E|)**
-/// where **N** is the number of iterations, **|V|** the number of vertices (i.e nodes) and **|E|** the number of edges.
+/// * Time complexity: **O(n|V|²|E|)**.
+/// * Auxiliary space: **O(|V| + |E|)**.
+///
+/// where **n** is the number of iterations, **|V|** the number of vertices (i.e nodes) and **|E|** the number of edges.
 ///
 /// [pr]: https://en.wikipedia.org/wiki/PageRank
 ///
@@ -50,6 +59,7 @@ use super::UnitMeasure;
 /// let expected_ranks = vec![0.14685437, 0.20267677, 0.22389607, 0.27971846, 0.14685437];
 /// assert_eq!(expected_ranks, output_ranks);
 /// ```
+#[track_caller]
 pub fn page_rank<G, D>(graph: G, damping_factor: D, nb_iter: usize) -> Vec<D>
 where
     G: NodeCount + IntoEdges + NodeIndexable,
@@ -99,8 +109,8 @@ where
 #[allow(dead_code)]
 fn out_edges_info<G, D>(graph: G, index_w: usize, index_v: usize) -> (D, bool)
 where
-    G: NodeCount + IntoEdges + NodeIndexable + std::marker::Sync,
-    D: UnitMeasure + Copy + std::marker::Send + std::marker::Sync,
+    G: NodeCount + IntoEdges + NodeIndexable + core::marker::Sync,
+    D: UnitMeasure + Copy + core::marker::Send + core::marker::Sync,
 {
     let node_w = graph.from_index(index_w);
     let node_v = graph.from_index(index_v);
@@ -117,7 +127,7 @@ where
     }
     (out_degree, flag_points_to)
 }
-/// \[Generic\] Parallel Page Rank algorithm.
+/// Parallel Page Rank algorithm.
 ///
 /// See [`page_rank`].
 #[cfg(feature = "rayon")]
@@ -128,8 +138,8 @@ pub fn parallel_page_rank<G, D>(
     tol: Option<D>,
 ) -> Vec<D>
 where
-    G: NodeCount + IntoEdges + NodeIndexable + std::marker::Sync,
-    D: UnitMeasure + Copy + std::marker::Send + std::marker::Sync,
+    G: NodeCount + IntoEdges + NodeIndexable + core::marker::Sync,
+    D: UnitMeasure + Copy + core::marker::Send + core::marker::Sync,
 {
     let node_count = graph.node_count();
     if node_count == 0 {
@@ -146,7 +156,7 @@ where
     let nb = D::from_usize(node_count);
     let mut ranks: Vec<D> = (0..node_count)
         .into_par_iter()
-        .map(|i| D::one() / nb)
+        .map(|_| D::one() / nb)
         .collect();
     for _ in 0..nb_iter {
         let pi = (0..node_count)

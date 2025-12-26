@@ -11,12 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.71"
 name = "windows-sys"
-version = "0.59.0"
-authors = ["Microsoft"]
+version = "0.61.2"
 build = false
-exclude = ["features.json"]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -28,18 +27,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/microsoft/windows-rs"
 
 [package.metadata.docs.rs]
-all-features = true
 default-target = "x86_64-pc-windows-msvc"
 targets = []
-
-[lib]
-name = "windows_sys"
-path = "src/lib.rs"
-test = false
-doctest = false
-
-[dependencies.windows-targets]
-version = "0.52.6"
+all-features = true
 
 [features]
 Wdk = ["Win32_Foundation"]
@@ -69,16 +59,21 @@ Win32_Data_HtmlHelp = ["Win32_Data"]
 Win32_Data_RightsManagement = ["Win32_Data"]
 Win32_Devices = ["Win32"]
 Win32_Devices_AllJoyn = ["Win32_Devices"]
+Win32_Devices_Beep = ["Win32_Devices"]
 Win32_Devices_BiometricFramework = ["Win32_Devices"]
 Win32_Devices_Bluetooth = ["Win32_Devices"]
+Win32_Devices_Cdrom = ["Win32_Devices"]
 Win32_Devices_Communication = ["Win32_Devices"]
 Win32_Devices_DeviceAndDriverInstallation = ["Win32_Devices"]
 Win32_Devices_DeviceQuery = ["Win32_Devices"]
 Win32_Devices_Display = ["Win32_Devices"]
+Win32_Devices_Dvd = ["Win32_Devices"]
 Win32_Devices_Enumeration = ["Win32_Devices"]
 Win32_Devices_Enumeration_Pnp = ["Win32_Devices_Enumeration"]
 Win32_Devices_Fax = ["Win32_Devices"]
 Win32_Devices_HumanInterfaceDevice = ["Win32_Devices"]
+Win32_Devices_Nfc = ["Win32_Devices"]
+Win32_Devices_Nfp = ["Win32_Devices"]
 Win32_Devices_PortableDevices = ["Win32_Devices"]
 Win32_Devices_Properties = ["Win32_Devices"]
 Win32_Devices_Pwm = ["Win32_Devices"]
@@ -285,14 +280,20 @@ Win32_Web_InternetExplorer = ["Win32_Web"]
 default = []
 docs = []
 
-[lints.rust]
-missing_docs = "warn"
+[lib]
+name = "windows_sys"
+path = "src/lib.rs"
+test = false
+doctest = false
 
-[lints.rust.rust_2018_idioms]
-level = "warn"
-priority = -1
+[dependencies.windows-link]
+version = "0.2.1"
+default-features = false
+
+[lints.rust]
+missing_unsafe_on_extern = "warn"
 
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
-check-cfg = ["cfg(windows_raw_dylib, windows_debugger_visualizer, windows_slim_errors)"]
+check-cfg = ["cfg(windows_raw_dylib, windows_slim_errors)"]

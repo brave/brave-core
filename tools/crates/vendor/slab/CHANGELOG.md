@@ -1,3 +1,15 @@
+# 0.4.11 (August 8, 2025)
+
+* Fix `Slab::get_disjoint_mut` out of bounds (#152)
+
+# 0.4.10 (June 15, 2025)
+
+* Add `Slab::get_disjoint_mut` (#149)
+* Drop build script and `autocfg` dependency (#150)
+* Fix redundant import warning in no_std builds (#143)
+* Fix `clippy::needless_lifetimes` warning (#147)
+* Internal CI improvements (#141, #146)
+
 # 0.4.9 (August 22, 2023)
 
 * Avoid reallocations in `Slab::clone_from` (#137)

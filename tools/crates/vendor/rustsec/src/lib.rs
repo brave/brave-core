@@ -27,11 +27,11 @@ mod cached_index;
 #[cfg_attr(docsrs, doc(cfg(feature = "git")))]
 pub mod registry {
     //! Support for interacting with the local crates.io registry index
-    pub use super::cached_index::{CachedIndex, ClientBuilder};
+    pub use super::cached_index::CachedIndex;
 }
 
-pub use cargo_lock::{self, package, Lockfile, SourceId};
-pub use fs_err as fs;
+pub use cargo_lock::{self, Lockfile, SourceId, package};
+use fs_err as fs;
 pub use platforms;
 pub use semver::{self, Version, VersionReq};
 
@@ -51,7 +51,7 @@ pub use crate::fixer::Fixer;
 pub use crate::repository::git::Repository;
 
 // Use BTreeMap and BTreeSet as our map and set types
-use std::collections::{btree_map as map, btree_set as set, BTreeMap as Map, BTreeSet as Set};
+use std::collections::{BTreeMap as Map, BTreeSet as Set, btree_map as map, btree_set as set};
 
 /// Current version of the RustSec crate
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

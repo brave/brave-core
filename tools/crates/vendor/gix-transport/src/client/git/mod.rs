@@ -104,17 +104,17 @@ mod message {
             assert_eq!(
                 git::message::connect(Service::UploadPack, Protocol::V1, b"hello/world", None, &[]),
                 "git-upload-pack hello/world\0"
-            )
+            );
         }
         #[test]
         fn version_2_without_host_and_version() {
             assert_eq!(
-                git::message::connect(Service::UploadPack, Protocol::V2, b"hello\\world", None, &[]),
+                git::message::connect(Service::UploadPack, Protocol::V2, br"hello\world", None, &[]),
                 "git-upload-pack hello\\world\0\0version=2\0"
-            )
+            );
         }
         #[test]
-        fn version_2_without_host_and_version_and_exta_parameters() {
+        fn version_2_without_host_and_version_and_extra_parameters() {
             assert_eq!(
                 git::message::connect(
                     Service::UploadPack,
@@ -124,7 +124,7 @@ mod message {
                     &[("key", Some("value")), ("value-only", None)]
                 ),
                 "git-upload-pack /path/project.git\0\0version=2\0key=value\0value-only\0"
-            )
+            );
         }
         #[test]
         fn with_host_without_port() {
@@ -132,12 +132,12 @@ mod message {
                 git::message::connect(
                     Service::UploadPack,
                     Protocol::V1,
-                    b"hello\\world",
+                    br"hello\world",
                     Some(&("host".into(), None)),
                     &[]
                 ),
                 "git-upload-pack hello\\world\0host=host\0"
-            )
+            );
         }
         #[test]
         fn with_host_without_port_and_extra_parameters() {
@@ -145,12 +145,12 @@ mod message {
                 git::message::connect(
                     Service::UploadPack,
                     Protocol::V1,
-                    b"hello\\world",
+                    br"hello\world",
                     Some(&("host".into(), None)),
                     &[("key", Some("value")), ("value-only", None)]
                 ),
                 "git-upload-pack hello\\world\0host=host\0\0key=value\0value-only\0"
-            )
+            );
         }
         #[test]
         fn with_host_with_port() {
@@ -158,12 +158,12 @@ mod message {
                 git::message::connect(
                     Service::UploadPack,
                     Protocol::V1,
-                    b"hello\\world",
+                    br"hello\world",
                     Some(&("host".into(), Some(404))),
                     &[]
                 ),
                 "git-upload-pack hello\\world\0host=host:404\0"
-            )
+            );
         }
 
         #[test]
@@ -178,7 +178,7 @@ mod message {
                 ),
                 "git-upload-pack --upload-pack=attack\0host=--proxy=other-attack:404\0",
                 "we explicitly allow possible `-arg` arguments to be passed to the git daemon - the remote must protect against exploitation, we don't want to prevent legitimate cases"
-            )
+            );
         }
     }
 }

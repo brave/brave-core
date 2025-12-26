@@ -31,9 +31,21 @@ to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-unicode-normalization = "0.1.23"
+unicode-normalization = "0.1.25"
 ```
 
 ## `no_std` + `alloc` support
 
 This crate is completely `no_std` + `alloc` compatible. This can be enabled by disabling the `std` feature, i.e. specifying `default-features = false` for this crate on your `Cargo.toml`.
+
+## Note about MSRV
+
+Dependencies' MSRVs evolve independently of this crate's MSRV.
+Old versions of cargo will always try to get the most recent versions of the dependencies.
+Therefore, if you are having troubles compiling on an old Rust version, try to install an older version of the incompatible dependency.
+
+For instance, to compile on Rust 1.36, `tinyvec` must be `<=1.6.0`
+
+```sh
+cargo update -p tinyvec --precise 1.6.0
+```

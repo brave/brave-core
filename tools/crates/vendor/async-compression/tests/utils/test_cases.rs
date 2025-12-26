@@ -231,6 +231,26 @@ macro_rules! io_test_cases {
 
                         assert_eq!(output, &[1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1][..]);
                     }
+
+                    #[test]
+                    #[ntest::timeout(1000)]
+                    fn truncated() {
+                        let compressed = sync::compress(&[1, 2, 3, 4, 5, 6]);
+
+                        // Truncate the compressed data (remove last 20 bytes or half, whichever is less)
+                        let truncate_amount = std::cmp::min(20, compressed.len() / 2);
+                        let truncated = &compressed[..compressed.len() - truncate_amount];
+
+                        let input = InputStream::new(vec![truncated.to_vec()]);
+
+                        // Try to decompress - should get an error for incomplete stream
+                        // The error manifests as a panic when read::to_vec calls unwrap()
+                        let result =
+                            std::panic::catch_unwind(|| bufread::decompress(bufread::from(&input)));
+
+                        // Should fail for truncated stream
+                        assert!(result.is_err(), "Expected error for truncated stream");
+                    }
                 }
             }
 

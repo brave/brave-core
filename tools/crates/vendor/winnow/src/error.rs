@@ -20,8 +20,8 @@
 //! - [Custom errors][crate::_topic::error]
 
 #[cfg(feature = "alloc")]
-use crate::lib::std::borrow::ToOwned;
-use crate::lib::std::fmt;
+use alloc::borrow::ToOwned;
+use core::fmt;
 use core::num::NonZeroUsize;
 
 use crate::stream::AsBStr;
@@ -97,9 +97,9 @@ impl Needed {
 ///
 /// Needed for
 /// - [`Partial`][crate::stream::Partial] to track whether the [`Stream`] is [`ErrMode::Incomplete`].
-///   See also [`_topic/partial`]
+///   See also [`crate::_topic::partial`]
 /// - Marking errors as unrecoverable ([`ErrMode::Cut`]) and not retrying alternative parsers.
-///   See also [`_tutorial/chapter_7#error-cuts`]
+///   See also [`crate::_tutorial::chapter_7#error-cuts`]
 #[derive(Debug, Clone, PartialEq)]
 pub enum ErrMode<E> {
     /// There was not enough data to determine the appropriate action
@@ -194,7 +194,7 @@ impl<I: Stream, E: ParserError<I>> ParserError<I> for ErrMode<E> {
     #[inline(always)]
     fn assert(input: &I, message: &'static str) -> Self
     where
-        I: crate::lib::std::fmt::Debug,
+        I: core::fmt::Debug,
     {
         ErrMode::Cut(E::assert(input, message))
     }
@@ -349,7 +349,7 @@ pub trait ParserError<I: Stream>: Sized {
     #[inline(always)]
     fn assert(input: &I, _message: &'static str) -> Self
     where
-        I: crate::lib::std::fmt::Debug,
+        I: core::fmt::Debug,
     {
         #[cfg(debug_assertions)]
         panic!("assert `{_message}` failed at {input:#?}");
@@ -630,8 +630,8 @@ impl ErrorConvert<EmptyError> for EmptyError {
     }
 }
 
-impl crate::lib::std::fmt::Display for EmptyError {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl core::fmt::Display for EmptyError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         "failed to parse".fmt(f)
     }
 }
@@ -674,10 +674,13 @@ impl ErrorConvert<()> for () {
 }
 
 /// Accumulate context while backtracking errors
+///
+/// See the [tutorial][crate::_tutorial::chapter_7#error-adaptation-and-rendering]
+/// for an example of how to adapt this to an application error with custom rendering.
 #[derive(Debug)]
 pub struct ContextError<C = StrContext> {
     #[cfg(feature = "alloc")]
-    context: crate::lib::std::vec::Vec<C>,
+    context: alloc::vec::Vec<C>,
     #[cfg(not(feature = "alloc"))]
     context: core::marker::PhantomData<C>,
     #[cfg(feature = "std")]
@@ -693,6 +696,20 @@ impl<C> ContextError<C> {
             #[cfg(feature = "std")]
             cause: None,
         }
+    }
+
+    /// Add more context
+    #[inline]
+    pub fn push(&mut self, context: C) {
+        #[cfg(feature = "alloc")]
+        self.context.push(context);
+    }
+
+    /// Add more context
+    #[inline]
+    pub fn extend<I: IntoIterator<Item = C>>(&mut self, context: I) {
+        #[cfg(feature = "alloc")]
+        self.context.extend(context);
     }
 
     /// Access context from [`Parser::context`]
@@ -749,8 +766,7 @@ impl<C, I: Stream> AddContext<I, C> for ContextError<C> {
         _token_start: &<I as Stream>::Checkpoint,
         context: C,
     ) -> Self {
-        #[cfg(feature = "alloc")]
-        self.context.push(context);
+        self.push(context);
         self
     }
 }
@@ -815,8 +831,8 @@ impl<C: core::cmp::PartialEq> core::cmp::PartialEq for ContextError<C> {
     }
 }
 
-impl crate::lib::std::fmt::Display for ContextError<StrContext> {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl core::fmt::Display for ContextError<StrContext> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         #[cfg(feature = "alloc")]
         {
             let expression = self.context().find_map(|c| match c {
@@ -829,7 +845,7 @@ impl crate::lib::std::fmt::Display for ContextError<StrContext> {
                     StrContext::Expected(c) => Some(c),
                     _ => None,
                 })
-                .collect::<crate::lib::std::vec::Vec<_>>();
+                .collect::<alloc::vec::Vec<_>>();
 
             let mut newline = false;
 
@@ -885,8 +901,8 @@ pub enum StrContext {
     Expected(StrContextValue),
 }
 
-impl crate::lib::std::fmt::Display for StrContext {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl core::fmt::Display for StrContext {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Label(name) => write!(f, "invalid {name}"),
             Self::Expected(value) => write!(f, "expected {value}"),
@@ -920,8 +936,8 @@ impl From<&'static str> for StrContextValue {
     }
 }
 
-impl crate::lib::std::fmt::Display for StrContextValue {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl core::fmt::Display for StrContextValue {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::CharLiteral('\n') => "newline".fmt(f),
             Self::CharLiteral('`') => "'`'".fmt(f),
@@ -1142,7 +1158,7 @@ impl<I, C> ErrorConvert<TreeError<I, C>> for TreeError<(I, usize), C> {
 #[cfg(feature = "std")]
 impl<I, C> TreeError<I, C>
 where
-    I: crate::lib::std::fmt::Display,
+    I: core::fmt::Display,
     C: fmt::Display,
 {
     fn write(&self, f: &mut fmt::Formatter<'_>, indent: usize) -> fmt::Result {
@@ -1263,6 +1279,8 @@ impl<I, E> ParseError<I, E> {
 
     /// The location in [`ParseError::input`] where parsing failed
     ///
+    /// To get the span for the `char` this points to, see [`ParseError::char_span`].
+    ///
     /// <div class="warning">
     ///
     /// **Note:** This is an offset, not an index, and may point to the end of input
@@ -1285,6 +1303,48 @@ impl<I, E> ParseError<I, E> {
     pub fn into_inner(self) -> E {
         self.inner
     }
+}
+
+impl<I: AsBStr, E> ParseError<I, E> {
+    /// The byte indices for the `char` at [`ParseError::offset`]
+    #[inline]
+    pub fn char_span(&self) -> core::ops::Range<usize> {
+        char_boundary(self.input.as_bstr(), self.offset())
+    }
+}
+
+fn char_boundary(input: &[u8], offset: usize) -> core::ops::Range<usize> {
+    let len = input.len();
+    if offset == len {
+        return offset..offset;
+    }
+
+    let start = (0..(offset + 1).min(len))
+        .rev()
+        .find(|i| {
+            input
+                .get(*i)
+                .copied()
+                .map(is_utf8_char_boundary)
+                .unwrap_or(false)
+        })
+        .unwrap_or(0);
+    let end = (offset + 1..len)
+        .find(|i| {
+            input
+                .get(*i)
+                .copied()
+                .map(is_utf8_char_boundary)
+                .unwrap_or(false)
+        })
+        .unwrap_or(len);
+    start..end
+}
+
+/// Taken from `core::num`
+const fn is_utf8_char_boundary(b: u8) -> bool {
+    // This is bit magic equivalent to: b < 128 || b >= 192
+    (b as i8) >= -0x40
 }
 
 impl<I, E> core::fmt::Display for ParseError<I, E>
@@ -1376,12 +1436,58 @@ fn translate_position(input: &[u8], index: usize) -> (usize, usize) {
     let line = input[0..line_start].iter().filter(|b| **b == b'\n').count();
 
     // HACK: This treats byte offset and column offsets the same
-    let column = crate::lib::std::str::from_utf8(&input[line_start..=index])
+    let column = core::str::from_utf8(&input[line_start..=index])
         .map(|s| s.chars().count() - 1)
         .unwrap_or_else(|_| index - line_start);
     let column = column + column_offset;
 
     (line, column)
+}
+
+#[cfg(test)]
+mod test_char_boundary {
+    use super::*;
+
+    #[test]
+    fn ascii() {
+        let input = "hi";
+        let cases = [(0, 0..1), (1, 1..2), (2, 2..2)];
+        for (offset, expected) in cases {
+            assert_eq!(
+                char_boundary(input.as_bytes(), offset),
+                expected,
+                "input={input:?}, offset={offset:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn utf8() {
+        let input = "βèƒôřè";
+        assert_eq!(input.len(), 12);
+        let cases = [
+            (0, 0..2),
+            (1, 0..2),
+            (2, 2..4),
+            (3, 2..4),
+            (4, 4..6),
+            (5, 4..6),
+            (6, 6..8),
+            (7, 6..8),
+            (8, 8..10),
+            (9, 8..10),
+            (10, 10..12),
+            (11, 10..12),
+            (12, 12..12),
+        ];
+        for (offset, expected) in cases {
+            assert_eq!(
+                char_boundary(input.as_bytes(), offset),
+                expected,
+                "input={input:?}, offset={offset:?}"
+            );
+        }
+    }
 }
 
 #[cfg(test)]

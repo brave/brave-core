@@ -8,13 +8,14 @@
 #[cfg(feature = "alloc")]
 use alloc::{vec, vec::Vec};
 use core::mem::MaybeUninit;
+use core::num::NonZeroI32;
 use core::ptr;
 
 use bitflags::bitflags;
 
-use crate::backend::c::{c_int, c_uint, c_void};
 use crate::backend::process::syscalls;
 use crate::backend::process::types::RawId;
+use crate::ffi::{c_int, c_uint, c_void};
 use crate::io;
 use crate::process::{Pid, RawPid};
 use crate::signal::Signal;
@@ -92,7 +93,18 @@ const PROC_PDEATHSIG_STATUS: c_int = 12;
 /// [FreeBSD: `procctl(PROC_PDEATHSIG_STATUS,…)`]: https://man.freebsd.org/cgi/man.cgi?query=procctl&sektion=2
 #[inline]
 pub fn parent_process_death_signal() -> io::Result<Option<Signal>> {
-    unsafe { procctl_get_optional::<c_int>(PROC_PDEATHSIG_STATUS, None) }.map(Signal::from_raw)
+    let raw = unsafe { procctl_get_optional::<c_int>(PROC_PDEATHSIG_STATUS, None) }?;
+    if let Some(non_zero) = NonZeroI32::new(raw) {
+        // SAFETY: The only way to get a libc-reserved signal number in
+        // here would be to do something equivalent to
+        // `set_parent_process_death_signal`, but that would have required
+        // using a `Signal` with a libc-reserved value.
+        Ok(Some(unsafe {
+            Signal::from_raw_nonzero_unchecked(non_zero)
+        }))
+    } else {
+        Ok(None)
+    }
 }
 
 const PROC_PDEATHSIG_CTL: c_int = 11;
@@ -107,7 +119,7 @@ const PROC_PDEATHSIG_CTL: c_int = 11;
 /// [FreeBSD: `procctl(PROC_PDEATHSIG_CTL,…)`]: https://man.freebsd.org/cgi/man.cgi?query=procctl&sektion=2
 #[inline]
 pub fn set_parent_process_death_signal(signal: Option<Signal>) -> io::Result<()> {
-    let signal = signal.map_or(0, |signal| signal as c_int);
+    let signal = signal.map_or(0, |signal| signal.as_raw());
     unsafe { procctl_set::<c_int>(PROC_PDEATHSIG_CTL, None, &signal) }
 }
 
@@ -121,7 +133,7 @@ const PROC_TRACE_CTL_ENABLE: i32 = 1;
 const PROC_TRACE_CTL_DISABLE: i32 = 2;
 const PROC_TRACE_CTL_DISABLE_EXEC: i32 = 3;
 
-/// `PROC_TRACE_CTL_*`.
+/// `PROC_TRACE_CTL_*`
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(i32)]
 pub enum DumpableBehavior {
@@ -223,13 +235,13 @@ pub fn set_reaper_status(reaper: bool) -> io::Result<()> {
 const PROC_REAP_STATUS: c_int = 4;
 
 bitflags! {
-    /// `REAPER_STATUS_*`.
+    /// `REAPER_STATUS_*`
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     pub struct ReaperStatusFlags: c_uint {
         /// The process has acquired reaper status.
         const OWNED = 1;
-        /// The process is the root of the reaper tree (pid 1).
+        /// The process is the root of the reaper tree ([`Pid::INIT`]).
         const REALINIT = 2;
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
@@ -290,7 +302,7 @@ pub fn get_reaper_status(process: ProcSelector) -> io::Result<ReaperStatus> {
 const PROC_REAP_GETPIDS: c_int = 5;
 
 bitflags! {
-    /// `REAPER_PIDINFO_*`.
+    /// `REAPER_PIDINFO_*`
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     pub struct PidInfoFlags: c_uint {
@@ -346,6 +358,7 @@ pub struct PidInfo {
 ///
 /// [FreeBSD: `procctl(PROC_REAP_GETPIDS,…)`]: https://man.freebsd.org/cgi/man.cgi?query=procctl&sektion=2
 #[cfg(feature = "alloc")]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 pub fn get_reaper_pids(process: ProcSelector) -> io::Result<Vec<PidInfo>> {
     // Sadly no better way to guarantee that we get all the results than to
     // allocate ≈8MB of memory…
@@ -375,7 +388,7 @@ pub fn get_reaper_pids(process: ProcSelector) -> io::Result<Vec<PidInfo>> {
 const PROC_REAP_KILL: c_int = 6;
 
 bitflags! {
-    /// `REAPER_KILL_*`.
+    /// `REAPER_KILL_*`
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     struct KillFlags: c_uint {
@@ -419,7 +432,7 @@ pub fn reaper_kill(
     flags.set(KillFlags::CHILDREN, direct_children);
     flags.set(KillFlags::SUBTREE, subtree.is_some());
     let mut req = procctl_reaper_kill {
-        rk_sig: signal as c_int,
+        rk_sig: signal.as_raw(),
         rk_flags: flags.bits(),
         rk_subtree: subtree.map(|p| p.as_raw_nonzero().into()).unwrap_or(0),
         rk_killed: 0,
@@ -442,7 +455,7 @@ const PROC_TRAPCAP_CTL: c_int = 9;
 const PROC_TRAPCAP_CTL_ENABLE: i32 = 1;
 const PROC_TRAPCAP_CTL_DISABLE: i32 = 2;
 
-/// `PROC_TRAPCAP_CTL_*`.
+/// `PROC_TRAPCAP_CTL_*`
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(i32)]
 pub enum TrapCapBehavior {

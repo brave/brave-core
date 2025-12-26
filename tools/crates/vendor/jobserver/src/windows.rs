@@ -36,6 +36,7 @@ const WAIT_FAILED: DWORD = 4294967295u32;
 const WAIT_OBJECT_0: DWORD = 0u32;
 const WAIT_TIMEOUT: DWORD = 258u32;
 
+#[link(name = "kernel32")]
 extern "system" {
     fn CloseHandle(handle: HANDLE) -> BOOL;
     fn SetEvent(hEvent: HANDLE) -> BOOL;
@@ -64,27 +65,6 @@ extern "system" {
     ) -> HANDLE;
     fn OpenSemaphoreA(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: *const i8) -> HANDLE;
     fn WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD) -> DWORD;
-    #[link_name = "SystemFunction036"]
-    fn RtlGenRandom(RandomBuffer: *mut u8, RandomBufferLength: u32) -> u8;
-}
-
-// Note that we ideally would use the `getrandom` crate, but unfortunately
-// that causes build issues when this crate is used in rust-lang/rust (see
-// rust-lang/rust#65014 for more information). As a result we just inline
-// the pretty simple Windows-specific implementation of generating
-// randomness.
-fn getrandom(dest: &mut [u8]) -> io::Result<()> {
-    // Prevent overflow of u32
-    for chunk in dest.chunks_mut(u32::MAX as usize) {
-        let ret = unsafe { RtlGenRandom(chunk.as_mut_ptr(), chunk.len() as u32) };
-        if ret == 0 {
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
-                "failed to generate random bytes",
-            ));
-        }
-    }
-    Ok(())
 }
 
 impl Client {
@@ -98,9 +78,8 @@ impl Client {
         // slot and then immediately acquire it (without ever releaseing it
         // back).
         for _ in 0..100 {
-            let mut bytes = [0; 4];
-            getrandom(&mut bytes)?;
-            let mut name = format!("__rust_jobserver_semaphore_{}\0", u32::from_ne_bytes(bytes));
+            let bytes = getrandom::u32()?;
+            let mut name = format!("__rust_jobserver_semaphore_{}\0", bytes);
             unsafe {
                 let create_limit = if limit == 0 { 1 } else { limit };
                 let r = CreateSemaphoreA(

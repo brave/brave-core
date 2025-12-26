@@ -1,21 +1,38 @@
-use std::io;
-
-use gix_transport::client;
-
-use crate::{fetch::response, handshake, ls_refs};
-
-/// The error used in [`fetch()`][crate::fetch()].
+/// The error returned by [`fetch()`](crate::fetch()).
 #[derive(Debug, thiserror::Error)]
 #[allow(missing_docs)]
 pub enum Error {
+    #[error("Could not decode server reply")]
+    FetchResponse(#[from] crate::fetch::response::Error),
     #[error(transparent)]
-    Handshake(#[from] handshake::Error),
-    #[error("Could not access repository or failed to read streaming pack file")]
-    Io(#[from] io::Error),
+    Negotiate(#[from] crate::fetch::negotiate::Error),
     #[error(transparent)]
-    Transport(#[from] client::Error),
-    #[error(transparent)]
-    LsRefs(#[from] ls_refs::Error),
-    #[error(transparent)]
-    Response(#[from] response::Error),
+    Client(#[from] crate::transport::client::Error),
+    #[error("Server lack feature {feature:?}: {description}")]
+    MissingServerFeature {
+        feature: &'static str,
+        description: &'static str,
+    },
+    #[error("Could not write 'shallow' file to incorporate remote updates after fetching")]
+    WriteShallowFile(#[from] gix_shallow::write::Error),
+    #[error("Could not read 'shallow' file to send current shallow boundary")]
+    ReadShallowFile(#[from] gix_shallow::read::Error),
+    #[error("'shallow' file could not be locked in preparation for writing changes")]
+    LockShallowFile(#[from] gix_lock::acquire::Error),
+    #[error("Receiving objects from shallow remotes is prohibited due to the value of `clone.rejectShallow`")]
+    RejectShallowRemote,
+    #[error("Failed to consume the pack sent by the remote")]
+    ConsumePack(#[source] Box<dyn std::error::Error + Send + Sync + 'static>),
+    #[error("Failed to read remaining bytes in stream")]
+    ReadRemainingBytes(#[source] std::io::Error),
+}
+
+impl crate::transport::IsSpuriousError for Error {
+    fn is_spurious(&self) -> bool {
+        match self {
+            Error::FetchResponse(err) => err.is_spurious(),
+            Error::Client(err) => err.is_spurious(),
+            _ => false,
+        }
+    }
 }

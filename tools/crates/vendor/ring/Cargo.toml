@@ -11,14 +11,17 @@
 
 [package]
 edition = "2021"
-rust-version = "1.61.0"
+rust-version = "1.66.0"
 name = "ring"
-version = "0.17.8"
-authors = ["Brian Smith <brian@briansmith.org>"]
+version = "0.17.14"
 build = "build.rs"
-links = "ring_core_0_17_8"
+links = "ring_core_0_17_14_"
 include = [
     "LICENSE",
+    "LICENSE-other-bits",
+    "LICENSE-BoringSSL",
+    "src/polyfill/once_cell/LICENSE-APACHE",
+    "src/polyfill/once_cell/LICENSE-MIT",
     "Cargo.toml",
     "pregenerated/*",
     "benches/*.rs",
@@ -27,8 +30,6 @@ include = [
     "crypto/chacha/asm/chacha-armv8.pl",
     "crypto/chacha/asm/chacha-x86.pl",
     "crypto/chacha/asm/chacha-x86_64.pl",
-    "crypto/cipher_extra/test/aes_128_gcm_siv_tests.txt",
-    "crypto/cipher_extra/test/aes_256_gcm_siv_tests.txt",
     "crypto/constant_time_test.c",
     "crypto/cpu_intel.c",
     "crypto/crypto.c",
@@ -38,12 +39,22 @@ include = [
     "crypto/curve25519/curve25519_tables.h",
     "crypto/curve25519/internal.h",
     "crypto/fipsmodule/aes/aes_nohw.c",
+    "crypto/fipsmodule/aes/asm/aes-gcm-avx2-x86_64.pl",
     "crypto/fipsmodule/aes/asm/aesni-x86.pl",
+    "crypto/fipsmodule/aes/asm/aesni-gcm-x86_64.pl",
     "crypto/fipsmodule/aes/asm/aesni-x86_64.pl",
     "crypto/fipsmodule/aes/asm/aesv8-armx.pl",
+    "crypto/fipsmodule/aes/asm/aesv8-gcm-armv8.pl",
+    "crypto/fipsmodule/aes/asm/ghash-armv4.pl",
+    "crypto/fipsmodule/aes/asm/ghash-neon-armv8.pl",
+    "crypto/fipsmodule/aes/asm/ghash-x86.pl",
+    "crypto/fipsmodule/aes/asm/ghash-x86_64.pl",
+    "crypto/fipsmodule/aes/asm/ghashv8-armx.pl",
     "crypto/fipsmodule/aes/asm/bsaes-armv7.pl",
     "crypto/fipsmodule/aes/asm/bsaes-x86_64.pl",
     "crypto/fipsmodule/aes/asm/vsaes-armv7.pl",
+    "crypto/fipsmodule/aes/asm/vpaes-armv7.pl",
+    "crypto/fipsmodule/aes/asm/vpaes-armv8.pl",
     "crypto/fipsmodule/aes/asm/vpaes-x86.pl",
     "crypto/fipsmodule/aes/asm/vpaes-x86_64.pl",
     "crypto/fipsmodule/bn/asm/armv4-mont.pl",
@@ -70,12 +81,6 @@ include = [
     "crypto/fipsmodule/ec/p256_table.h",
     "crypto/fipsmodule/ec/util.h",
     "crypto/fipsmodule/ecdsa/ecdsa_verify_tests.txt",
-    "crypto/fipsmodule/modes/asm/aesni-gcm-x86_64.pl",
-    "crypto/fipsmodule/modes/asm/ghash-armv4.pl",
-    "crypto/fipsmodule/modes/asm/ghash-x86.pl",
-    "crypto/fipsmodule/modes/asm/ghash-x86_64.pl",
-    "crypto/fipsmodule/modes/asm/ghashv8-armx.pl",
-    "crypto/fipsmodule/modes/asm/aesv8-gcm-armv8.pl",
     "crypto/fipsmodule/sha/asm/sha256-armv4.pl",
     "crypto/fipsmodule/sha/asm/sha512-armv4.pl",
     "crypto/fipsmodule/sha/asm/sha512-armv8.pl",
@@ -90,21 +95,17 @@ include = [
     "crypto/perlasm/x86gas.pl",
     "crypto/perlasm/x86nasm.pl",
     "crypto/perlasm/x86_64-xlate.pl",
-    "crypto/poly1305/internal.h",
     "crypto/poly1305/poly1305.c",
     "crypto/poly1305/poly1305_arm.c",
     "crypto/poly1305/poly1305_arm_asm.S",
-    "crypto/poly1305/poly1305_vec.c",
-    "crypto/cipher_extra/asm/chacha20_poly1305_armv8.pl",
-    "crypto/cipher_extra/asm/chacha20_poly1305_x86_64.pl",
+    "crypto/cipher/asm/chacha20_poly1305_armv8.pl",
+    "crypto/cipher/asm/chacha20_poly1305_x86_64.pl",
     "examples/**/*.rs",
     "include/ring-core/aes.h",
-    "include/ring-core/arm_arch.h",
     "include/ring-core/asm_base.h",
     "include/ring-core/base.h",
     "include/ring-core/check.h",
     "include/ring-core/mem.h",
-    "include/ring-core/poly1305.h",
     "include/ring-core/target.h",
     "include/ring-core/type_check.h",
     "src/**/*.rs",
@@ -137,23 +138,13 @@ include = [
     "third_party/fiat/p256_64.h",
     "third_party/fiat/p256_64_msvc.h",
     "third_party/fiat/LICENSE",
-    "third_party/NIST/SHAVS/SHA1LongMsg.rsp",
-    "third_party/NIST/SHAVS/SHA1Monte.rsp",
-    "third_party/NIST/SHAVS/SHA1ShortMsg.rsp",
-    "third_party/NIST/SHAVS/SHA224LongMsg.rsp",
-    "third_party/NIST/SHAVS/SHA224Monte.rsp",
-    "third_party/NIST/SHAVS/SHA224ShortMsg.rsp",
-    "third_party/NIST/SHAVS/SHA256LongMsg.rsp",
-    "third_party/NIST/SHAVS/SHA256Monte.rsp",
-    "third_party/NIST/SHAVS/SHA256ShortMsg.rsp",
-    "third_party/NIST/SHAVS/SHA384LongMsg.rsp",
-    "third_party/NIST/SHAVS/SHA384Monte.rsp",
-    "third_party/NIST/SHAVS/SHA384ShortMsg.rsp",
-    "third_party/NIST/SHAVS/SHA512LongMsg.rsp",
-    "third_party/NIST/SHAVS/SHA512Monte.rsp",
-    "third_party/NIST/SHAVS/SHA512ShortMsg.rsp",
 ]
-description = "Safe, fast, small crypto using Rust."
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+description = "An experiment."
 readme = "README.md"
 keywords = [
     "crypto",
@@ -166,11 +157,125 @@ categories = [
     "cryptography",
     "no-std",
 ]
-license-file = "LICENSE"
+license = "Apache-2.0 AND ISC"
 repository = "https://github.com/briansmith/ring"
 
 [package.metadata.docs.rs]
 all-features = true
+
+[features]
+alloc = []
+default = [
+    "alloc",
+    "dev_urandom_fallback",
+]
+dev_urandom_fallback = []
+less-safe-getrandom-custom-or-rdrand = []
+less-safe-getrandom-espidf = []
+slow_tests = []
+std = ["alloc"]
+test_logging = []
+unstable-testing-arm-no-hw = []
+unstable-testing-arm-no-neon = []
+wasm32_unknown_unknown_js = ["getrandom/js"]
+
+[lib]
+name = "ring"
+path = "src/lib.rs"
+
+[[test]]
+name = "aead_tests"
+path = "tests/aead_tests.rs"
+
+[[test]]
+name = "agreement_tests"
+path = "tests/agreement_tests.rs"
+
+[[test]]
+name = "constant_time_tests"
+path = "tests/constant_time_tests.rs"
+
+[[test]]
+name = "digest_tests"
+path = "tests/digest_tests.rs"
+
+[[test]]
+name = "ecdsa_tests"
+path = "tests/ecdsa_tests.rs"
+
+[[test]]
+name = "ed25519_tests"
+path = "tests/ed25519_tests.rs"
+
+[[test]]
+name = "error_tests"
+path = "tests/error_tests.rs"
+
+[[test]]
+name = "hkdf_tests"
+path = "tests/hkdf_tests.rs"
+
+[[test]]
+name = "hmac_tests"
+path = "tests/hmac_tests.rs"
+
+[[test]]
+name = "pbkdf2_tests"
+path = "tests/pbkdf2_tests.rs"
+
+[[test]]
+name = "quic_tests"
+path = "tests/quic_tests.rs"
+
+[[test]]
+name = "rand_tests"
+path = "tests/rand_tests.rs"
+
+[[test]]
+name = "rsa_tests"
+path = "tests/rsa_tests.rs"
+
+[[test]]
+name = "signature_tests"
+path = "tests/signature_tests.rs"
+
+[dependencies.cfg-if]
+version = "1.0.0"
+default-features = false
+
+[dependencies.getrandom]
+version = "0.2.10"
+
+[dependencies.untrusted]
+version = "0.9"
+
+[build-dependencies.cc]
+version = "1.2.8"
+default-features = false
+
+[target.'cfg(all(all(target_arch = "aarch64", target_endian = "little"), target_os = "windows"))'.dependencies.windows-sys]
+version = "0.52"
+features = [
+    "Win32_Foundation",
+    "Win32_System_Threading",
+]
+
+[target.'cfg(all(all(target_arch = "aarch64", target_endian = "little"), target_vendor = "apple", any(target_os = "ios", target_os = "macos", target_os = "tvos", target_os = "visionos", target_os = "watchos")))'.dependencies.libc]
+version = "0.2.155"
+default-features = false
+
+[target.'cfg(all(any(all(target_arch = "aarch64", target_endian = "little"), all(target_arch = "arm", target_endian = "little")), any(target_os = "android", target_os = "linux")))'.dependencies.libc]
+version = "0.2.148"
+default-features = false
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dev-dependencies.wasm-bindgen-test]
+version = "0.3.37"
+features = ["std"]
+default-features = false
+
+[target.'cfg(any(unix, windows, target_os = "wasi"))'.dev-dependencies.libc]
+version = "0.2.148"
+default-features = false
 
 [profile.bench]
 opt-level = 3
@@ -187,59 +292,3 @@ codegen-units = 1
 debug = 0
 debug-assertions = false
 rpath = false
-
-[lib]
-name = "ring"
-
-[dependencies.cfg-if]
-version = "1.0.0"
-default-features = false
-
-[dependencies.getrandom]
-version = "0.2.10"
-
-[dependencies.untrusted]
-version = "0.9"
-
-[build-dependencies.cc]
-version = "1.0.83"
-default-features = false
-
-[features]
-alloc = []
-default = [
-    "alloc",
-    "dev_urandom_fallback",
-]
-dev_urandom_fallback = []
-less-safe-getrandom-custom-or-rdrand = []
-slow_tests = []
-std = ["alloc"]
-test_logging = []
-unstable-testing-arm-no-hw = []
-unstable-testing-arm-no-neon = []
-wasm32_unknown_unknown_js = ["getrandom/js"]
-
-[target."cfg(all(any(target_os = \"android\", target_os = \"linux\"), any(target_arch = \"aarch64\", target_arch = \"arm\")))".dependencies.libc]
-version = "0.2.148"
-default-features = false
-
-[target."cfg(all(target_arch = \"aarch64\", target_os = \"windows\"))".dependencies.windows-sys]
-version = "0.52"
-features = [
-    "Win32_Foundation",
-    "Win32_System_Threading",
-]
-
-[target."cfg(all(target_arch = \"wasm32\", target_os = \"unknown\"))".dev-dependencies.wasm-bindgen-test]
-version = "0.3.37"
-default-features = false
-
-[target."cfg(any(target_arch = \"aarch64\", target_arch = \"arm\", target_arch = \"x86\",target_arch = \"x86_64\"))".dependencies.spin]
-version = "0.9.8"
-features = ["once"]
-default-features = false
-
-[target."cfg(any(unix, windows, target_os = \"wasi\"))".dev-dependencies.libc]
-version = "0.2.148"
-default-features = false

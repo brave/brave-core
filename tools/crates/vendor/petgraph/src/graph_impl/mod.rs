@@ -1,11 +1,13 @@
-use std::cmp;
-use std::fmt;
-use std::hash::Hash;
-use std::iter;
-use std::marker::PhantomData;
-use std::mem::size_of;
-use std::ops::{Index, IndexMut, Range};
-use std::slice;
+use alloc::{vec, vec::Vec};
+use core::{
+    cmp, fmt,
+    hash::Hash,
+    iter,
+    marker::PhantomData,
+    mem::size_of,
+    ops::{Index, IndexMut, Range},
+    slice,
+};
 
 use fixedbitset::FixedBitSet;
 
@@ -13,7 +15,6 @@ use crate::{Directed, Direction, EdgeType, Incoming, IntoWeightedEdge, Outgoing,
 
 use crate::iter_format::{DebugMap, IterFormatExt, NoPretty};
 
-use crate::util::enumerate;
 use crate::visit;
 
 #[cfg(feature = "serde-1")]
@@ -50,7 +51,7 @@ unsafe impl IndexType for usize {
     }
     #[inline(always)]
     fn max() -> Self {
-        ::std::usize::MAX
+        usize::MAX
     }
 }
 
@@ -65,7 +66,7 @@ unsafe impl IndexType for u32 {
     }
     #[inline(always)]
     fn max() -> Self {
-        ::std::u32::MAX
+        u32::MAX
     }
 }
 
@@ -80,7 +81,7 @@ unsafe impl IndexType for u16 {
     }
     #[inline(always)]
     fn max() -> Self {
-        ::std::u16::MAX
+        u16::MAX
     }
 }
 
@@ -95,7 +96,7 @@ unsafe impl IndexType for u8 {
     }
     #[inline(always)]
     fn max() -> Self {
-        ::std::u8::MAX
+        u8::MAX
     }
 }
 
@@ -274,6 +275,47 @@ impl<E, Ix: IndexType> Edge<E, Ix> {
     }
 }
 
+/// The error type for fallible `Graph` & `StableGraph` operations.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum GraphError {
+    /// The Graph is at the maximum number of nodes for its index.
+    NodeIxLimit,
+
+    /// The Graph is at the maximum number of edges for its index.
+    EdgeIxLimit,
+
+    /// The node with the specified index is missing from the graph.
+    NodeMissed(usize),
+
+    /// Node indices out of bounds.
+    NodeOutBounds,
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for GraphError {}
+
+#[cfg(not(feature = "std"))]
+impl core::error::Error for GraphError {}
+
+impl fmt::Display for GraphError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            GraphError::NodeIxLimit => write!(
+                f,
+                "The Graph is at the maximum number of nodes for its index"
+            ),
+            GraphError::EdgeIxLimit => write!(
+                f,
+                "The Graph is at the maximum number of edges for its index."
+            ),
+            GraphError::NodeMissed(i) => {
+                write!(f, "The node with index {i} is missing from the graph.")
+            }
+            GraphError::NodeOutBounds => write!(f, "Node indices out of bounds."),
+        }
+    }
+}
+
 /// `Graph<N, E, Ty, Ix>` is a graph datastructure using an adjacency list representation.
 ///
 /// `Graph` is parameterized over:
@@ -286,7 +328,8 @@ impl<E, Ix: IndexType> Edge<E, Ix> {
 /// The `Graph` is a regular Rust collection and is `Send` and `Sync` (as long
 /// as associated data `N` and `E` are).
 ///
-/// The graph uses **O(|V| + |E|)** space, and allows fast node and edge insert,
+/// The graph uses **O(|V| + |E|)** space where V is the set of nodes and E is the number
+/// of edges, and allows fast node and edge insert,
 /// efficient graph search and graph algorithms.
 /// It implements **O(e')** edge lookup and edge and node removals, where **e'**
 /// is some local measure of edge count.
@@ -323,24 +366,24 @@ impl<E, Ix: IndexType> Edge<E, Ix> {
 /// but these are only stable across certain operations:
 ///
 /// * **Removing nodes or edges may shift other indices.** Removing a node will
-/// force the last node to shift its index to take its place. Similarly,
-/// removing an edge shifts the index of the last edge.
+///   force the last node to shift its index to take its place. Similarly,
+///   removing an edge shifts the index of the last edge.
 /// * Adding nodes or edges keeps indices stable.
 ///
 /// The `Ix` parameter is `u32` by default. The goal is that you can ignore this parameter
 /// completely unless you need a very big graph -- then you can use `usize`.
 ///
 /// * The fact that the node and edge indices in the graph each are numbered in compact
-/// intervals (from 0 to *n* - 1 for *n* nodes) simplifies some graph algorithms.
+///   intervals (from 0 to *n* - 1 for *n* nodes) simplifies some graph algorithms.
 ///
 /// * You can select graph index integer type after the size of the graph. A smaller
-/// size may have better performance.
+///   size may have better performance.
 ///
 /// * Using indices allows mutation while traversing the graph, see `Dfs`,
-/// and `.neighbors(a).detach()`.
+///   and `.neighbors(a).detach()`.
 ///
 /// * You can create several graphs using the equal node indices but with
-/// differing weights or differing edges.
+///   differing weights or differing edges.
 ///
 /// * Indices don't allow as much compile time checking as references.
 ///
@@ -363,10 +406,11 @@ pub type DiGraph<N, E, Ix = DefaultIx> = Graph<N, E, Directed, Ix>;
 pub type UnGraph<N, E, Ix = DefaultIx> = Graph<N, E, Undirected, Ix>;
 
 /// The resulting cloned graph has the same graph indices as `self`.
-impl<N, E, Ty, Ix: IndexType> Clone for Graph<N, E, Ty, Ix>
+impl<N, E, Ty, Ix> Clone for Graph<N, E, Ty, Ix>
 where
     N: Clone,
     E: Clone,
+    Ix: Copy,
 {
     fn clone(&self) -> Self {
         Graph {
@@ -433,7 +477,7 @@ enum Pair<T> {
     None,
 }
 
-use std::cmp::max;
+use core::cmp::max;
 
 /// Get mutable references at index `a` and `b`.
 fn index_twice<T>(slc: &mut [T], a: usize, b: usize) -> Pair<&mut T> {
@@ -480,11 +524,7 @@ impl<N, E> Graph<N, E, Undirected> {
     }
 }
 
-impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix>
-where
-    Ty: EdgeType,
-    Ix: IndexType,
-{
+impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix> {
     /// Create a new `Graph` with estimated capacity.
     pub fn with_capacity(nodes: usize, edges: usize) -> Self {
         Graph {
@@ -493,8 +533,14 @@ where
             ty: PhantomData,
         }
     }
+}
 
-    /// Return the number of nodes (vertices) in the graph.
+impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix>
+where
+    Ty: EdgeType,
+    Ix: IndexType,
+{
+    /// Return the number of nodes (also called vertices) in the graph.
     ///
     /// Computes in **O(1)** time.
     pub fn node_count(&self) -> usize {
@@ -520,18 +566,33 @@ where
     ///
     /// Return the index of the new node.
     ///
-    /// **Panics** if the Graph is at the maximum number of nodes for its index
+    /// **Panics** if the `Graph` is at the maximum number of nodes for its index
     /// type (N/A if usize).
+    #[track_caller]
     pub fn add_node(&mut self, weight: N) -> NodeIndex<Ix> {
+        self.try_add_node(weight).unwrap()
+    }
+
+    /// Try to add a node (also called vertex) with associated data `weight` to the graph.
+    ///
+    /// Computes in **O(1)** time.
+    ///
+    /// Return the index of the new node.
+    ///
+    /// Return [`GraphError::NodeIxLimit`] if the `Graph` is at the maximum number of nodes for its index.
+    pub fn try_add_node(&mut self, weight: N) -> Result<NodeIndex<Ix>, GraphError> {
         let node = Node {
             weight,
             next: [EdgeIndex::end(), EdgeIndex::end()],
         };
         let node_idx = NodeIndex::new(self.nodes.len());
         // check for max capacity, except if we use usize
-        assert!(<Ix as IndexType>::max().index() == !0 || NodeIndex::end() != node_idx);
-        self.nodes.push(node);
-        node_idx
+        if <Ix as IndexType>::max().index() == !0 || NodeIndex::end() != node_idx {
+            self.nodes.push(node);
+            Ok(node_idx)
+        } else {
+            Err(GraphError::NodeIxLimit)
+        }
     }
 
     /// Access the weight for node `a`.
@@ -558,21 +619,52 @@ where
     /// Computes in **O(1)** time.
     ///
     /// **Panics** if any of the nodes don't exist.<br>
-    /// **Panics** if the Graph is at the maximum number of edges for its index
+    /// **Panics** if the `Graph` is at the maximum number of edges for its index
     /// type (N/A if usize).
     ///
     /// **Note:** `Graph` allows adding parallel (“duplicate”) edges. If you want
     /// to avoid this, use [`.update_edge(a, b, weight)`](#method.update_edge) instead.
+    #[track_caller]
     pub fn add_edge(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> EdgeIndex<Ix> {
+        let res = self.try_add_edge(a, b, weight);
+        if res == Err(GraphError::NodeOutBounds) {
+            panic!("Graph::add_edge: node indices out of bounds");
+        }
+        res.unwrap()
+    }
+
+    /// Try to add an edge from a to b to the graph, with its associated
+    /// data weight.
+    ///
+    /// Return the index of the new edge.
+    ///
+    /// Computes in O(1) time.
+    ///
+    /// Possible errors:
+    /// - [`GraphError::NodeOutBounds`] - if any of the nodes don't exist.<br>
+    /// - [`GraphError::EdgeIxLimit`] if the `Graph` is at the maximum number of edges for its index
+    ///   type (N/A if usize).
+    ///
+    /// Note: Graph allows adding parallel (“duplicate”) edges. If you want
+    /// to avoid this, use [.update_edge(a, b, weight)](#method.update_edge) instead.
+    pub fn try_add_edge(
+        &mut self,
+        a: NodeIndex<Ix>,
+        b: NodeIndex<Ix>,
+        weight: E,
+    ) -> Result<EdgeIndex<Ix>, GraphError> {
         let edge_idx = EdgeIndex::new(self.edges.len());
-        assert!(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx);
+        if !(<Ix as IndexType>::max().index() == !0 || EdgeIndex::end() != edge_idx) {
+            return Err(GraphError::EdgeIxLimit);
+        }
+
         let mut edge = Edge {
             weight,
             node: [a, b],
             next: [EdgeIndex::end(); 2],
         };
         match index_twice(&mut self.nodes, a.index(), b.index()) {
-            Pair::None => panic!("Graph::add_edge: node indices out of bounds"),
+            Pair::None => return Err(GraphError::NodeOutBounds),
             Pair::One(an) => {
                 edge.next = an.next;
                 an.next[0] = edge_idx;
@@ -586,7 +678,7 @@ where
             }
         }
         self.edges.push(edge);
-        edge_idx
+        Ok(edge_idx)
     }
 
     /// Add or update an edge from `a` to `b`.
@@ -598,14 +690,37 @@ where
     /// connected to `a` (and `b`, if the graph edges are undirected).
     ///
     /// **Panics** if any of the nodes doesn't exist.
+    /// or the graph is at the maximum number of edges for its index (when adding new edge)
+    #[track_caller]
     pub fn update_edge(&mut self, a: NodeIndex<Ix>, b: NodeIndex<Ix>, weight: E) -> EdgeIndex<Ix> {
+        self.try_update_edge(a, b, weight).unwrap()
+    }
+
+    /// Try to add or update an edge from `a` to `b`.
+    /// If the edge already exists, its weight is updated.
+    ///
+    /// Return the index of the affected edge.
+    ///
+    /// Computes in **O(e')** time, where **e'** is the number of edges
+    /// connected to `a` (and `b`, if the graph edges are undirected).
+    ///
+    /// Possible errors:
+    /// - [`GraphError::NodeOutBounds`] - if any of the nodes don't exist.<br>
+    /// - [`GraphError::EdgeIxLimit`] if the `Graph` is at the maximum number of edges for its index
+    ///   type (N/A if usize).
+    pub fn try_update_edge(
+        &mut self,
+        a: NodeIndex<Ix>,
+        b: NodeIndex<Ix>,
+        weight: E,
+    ) -> Result<EdgeIndex<Ix>, GraphError> {
         if let Some(ix) = self.find_edge(a, b) {
             if let Some(ed) = self.edge_weight_mut(ix) {
                 *ed = weight;
-                return ix;
+                return Ok(ix);
             }
         }
-        self.add_edge(a, b, weight)
+        self.try_add_edge(a, b, weight)
     }
 
     /// Access the weight for edge `e`.
@@ -733,7 +848,7 @@ where
     /// (that edge will adopt the removed edge index).
     ///
     /// Computes in **O(e')** time, where **e'** is the size of four particular edge lists, for
-    /// the vertices of `e` and the vertices of another affected edge.
+    /// the nodes of `e` and the nodes of another affected edge.
     pub fn remove_edge(&mut self, e: EdgeIndex<Ix>) -> Option<E> {
         // every edge is part of two lists,
         // outgoing and incoming edges.
@@ -768,23 +883,31 @@ where
 
     /// Return an iterator of all nodes with an edge starting from `a`.
     ///
+    /// Depending on whether the graph is directed or undirected, this means:
+    ///
     /// - `Directed`: Outgoing edges from `a`.
     /// - `Undirected`: All edges from or to `a`.
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `NodeIndex<Ix>`.
     ///
+    /// For the iteration order for `Directed` and `Undirected` graphs respectively,
+    /// please refer to the documentation of [`Graph::neighbors_directed`].
+    ///
     /// Use [`.neighbors(a).detach()`][1] to get a neighbor walker that does
     /// not borrow from the graph.
     ///
     /// [1]: struct.Neighbors.html#method.detach
-    pub fn neighbors(&self, a: NodeIndex<Ix>) -> Neighbors<E, Ix> {
+    pub fn neighbors(&self, a: NodeIndex<Ix>) -> Neighbors<'_, E, Ix> {
         self.neighbors_directed(a, Outgoing)
     }
 
     /// Return an iterator of all neighbors that have an edge between them and
     /// `a`, in the specified direction.
     /// If the graph's edges are undirected, this is equivalent to *.neighbors(a)*.
+    ///
+    /// That is, depending on the graphs' edge type and the provided direction,
+    /// the iterator will iterate over the following:
     ///
     /// - `Directed`, `Outgoing`: All edges from `a`.
     /// - `Directed`, `Incoming`: All edges to `a`.
@@ -795,13 +918,16 @@ where
     ///
     /// For a `Directed` graph, neighbors are listed in reverse order of their
     /// addition to the graph, so the most recently added edge's neighbor is
-    /// listed first. The order in an `Undirected` graph is arbitrary.
+    /// listed first.
+    ///
+    /// For the ordering in case of an `Undirected` graph, please refer to
+    /// the documentation of [`Graph::neighbors_undirected`].
     ///
     /// Use [`.neighbors_directed(a, dir).detach()`][1] to get a neighbor walker that does
     /// not borrow from the graph.
     ///
     /// [1]: struct.Neighbors.html#method.detach
-    pub fn neighbors_directed(&self, a: NodeIndex<Ix>, dir: Direction) -> Neighbors<E, Ix> {
+    pub fn neighbors_directed(&self, a: NodeIndex<Ix>, dir: Direction) -> Neighbors<'_, E, Ix> {
         let mut iter = self.neighbors_undirected(a);
         if self.is_directed() {
             let k = dir.index();
@@ -820,12 +946,18 @@ where
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `NodeIndex<Ix>`.
     ///
+    /// All outgoing neighbors are listed first followed by all incoming neighbors.
+    /// The ordering among the outgoing and incoming neighbors respectively is the
+    /// reverse order of their addition to the graph. That is, the most recently
+    /// added edge's neighbor is listed first. Outgoing and incoming in this case
+    /// refer to the ordering in which the endpoints were listed when adding the
+    /// edge (`g.add_edge(a, b, w)` or `g.add_edge(b, a, w)`).
+    ///
     /// Use [`.neighbors_undirected(a).detach()`][1] to get a neighbor walker that does
     /// not borrow from the graph.
     ///
     /// [1]: struct.Neighbors.html#method.detach
-    ///
-    pub fn neighbors_undirected(&self, a: NodeIndex<Ix>) -> Neighbors<E, Ix> {
+    pub fn neighbors_undirected(&self, a: NodeIndex<Ix>) -> Neighbors<'_, E, Ix> {
         Neighbors {
             skip_start: a,
             edges: &self.edges,
@@ -838,16 +970,27 @@ where
 
     /// Return an iterator of all edges of `a`.
     ///
+    /// Depending on whether the graph is directed or undirected, this means:
+    ///
     /// - `Directed`: Outgoing edges from `a`.
     /// - `Undirected`: All edges connected to `a`.
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `EdgeReference<E, Ix>`.
-    pub fn edges(&self, a: NodeIndex<Ix>) -> Edges<E, Ty, Ix> {
+    ///
+    /// For a `Directed` graph, edges are listed in reverse order of their
+    /// addition to the graph, so the most recently added edge is listed first.
+    ///
+    /// For the ordering in case of an `Undirected` graph, please refer to
+    /// the `Undirected` case in the documentation of [`Graph::edges_directed`].
+    pub fn edges(&self, a: NodeIndex<Ix>) -> Edges<'_, E, Ty, Ix> {
         self.edges_directed(a, Outgoing)
     }
 
     /// Return an iterator of all edges of `a`, in the specified direction.
+    ///
+    /// That is, depending on the graphs' edge type and the provided direction,
+    /// the iterator will iterate over the following:
     ///
     /// - `Directed`, `Outgoing`: All edges from `a`.
     /// - `Directed`, `Incoming`: All edges to `a`.
@@ -858,7 +1001,17 @@ where
     ///
     /// Produces an empty iterator if the node `a` doesn't exist.<br>
     /// Iterator element type is `EdgeReference<E, Ix>`.
-    pub fn edges_directed(&self, a: NodeIndex<Ix>, dir: Direction) -> Edges<E, Ty, Ix> {
+    ///
+    /// For a `Directed` graph, edges are listed in reverse order of their
+    /// addition to the graph, so the most recently added edge is listed first.
+    ///
+    /// For an `Undirected` graph, the outgoing edges are listed first, then
+    /// all incoming edges. The ordering among the outgoing and incoming edges
+    /// respectively is the reverse order of their addition to the graph,
+    /// similar to the `Directed` case. Outgoing and incoming in this case
+    /// refer to the ordering in which the endpoints were listed when adding the
+    /// edge (`g.add_edge(a, b, w)` or `g.add_edge(b, a, w)`).
+    pub fn edges_directed(&self, a: NodeIndex<Ix>, dir: Direction) -> Edges<'_, E, Ty, Ix> {
         Edges {
             skip_start: a,
             edges: &self.edges,
@@ -877,11 +1030,16 @@ where
     /// - `Undirected`: All edges connected to `a`.
     ///
     /// Iterator element type is `EdgeReference<E, Ix>`.
+    ///
+    /// The edges from a to b are listed first, then all edges from
+    /// b to a. The ordering among the edges from a to b and b to a
+    /// respectively is the reverse order of their addition to the graph.
+    /// That is, the most recently added edge is listed first.
     pub fn edges_connecting(
         &self,
         a: NodeIndex<Ix>,
         b: NodeIndex<Ix>,
-    ) -> EdgesConnecting<E, Ty, Ix> {
+    ) -> EdgesConnecting<'_, E, Ty, Ix> {
         EdgesConnecting {
             target_node: b,
             edges: self.edges_directed(a, Direction::Outgoing),
@@ -973,8 +1131,8 @@ where
     /// For a graph with undirected edges, both the sinks and the sources are
     /// just the nodes without edges.
     ///
-    /// The whole iteration computes in **O(|V|)** time.
-    pub fn externals(&self, dir: Direction) -> Externals<N, Ty, Ix> {
+    /// The whole iteration computes in **O(|V|)** time where V is the set of nodes.
+    pub fn externals(&self, dir: Direction) -> Externals<'_, N, Ty, Ix> {
         Externals {
             iter: self.nodes.iter().enumerate(),
             dir,
@@ -1005,7 +1163,7 @@ where
     ///
     /// The order in which weights are yielded matches the order of their
     /// node indices.
-    pub fn node_weights_mut(&mut self) -> NodeWeightsMut<N, Ix> {
+    pub fn node_weights_mut(&mut self) -> NodeWeightsMut<'_, N, Ix> {
         NodeWeightsMut {
             nodes: self.nodes.iter_mut(),
         }
@@ -1015,7 +1173,7 @@ where
     ///
     /// The order in which weights are yielded matches the order of their
     /// node indices.
-    pub fn node_weights(&self) -> NodeWeights<N, Ix> {
+    pub fn node_weights(&self) -> NodeWeights<'_, N, Ix> {
         NodeWeights {
             nodes: self.nodes.iter(),
         }
@@ -1032,7 +1190,7 @@ where
     /// Create an iterator over all edges, in indexed order.
     ///
     /// Iterator element type is `EdgeReference<E, Ix>`.
-    pub fn edge_references(&self) -> EdgeReferences<E, Ix> {
+    pub fn edge_references(&self) -> EdgeReferences<'_, E, Ix> {
         EdgeReferences {
             iter: self.edges.iter().enumerate(),
         }
@@ -1042,7 +1200,7 @@ where
     ///
     /// The order in which weights are yielded matches the order of their
     /// edge indices.
-    pub fn edge_weights(&self) -> EdgeWeights<E, Ix> {
+    pub fn edge_weights(&self) -> EdgeWeights<'_, E, Ix> {
         EdgeWeights {
             edges: self.edges.iter(),
         }
@@ -1051,7 +1209,7 @@ where
     ///
     /// The order in which weights are yielded matches the order of their
     /// edge indices.
-    pub fn edge_weights_mut(&mut self) -> EdgeWeightsMut<E, Ix> {
+    pub fn edge_weights_mut(&mut self) -> EdgeWeightsMut<'_, E, Ix> {
         EdgeWeightsMut {
             edges: self.edges.iter_mut(),
         }
@@ -1139,6 +1297,7 @@ where
     /// assert_eq!(gr[b], 4.);
     /// assert_eq!(gr[c], 2.);
     /// ```
+    #[track_caller]
     pub fn index_twice_mut<T, U>(
         &mut self,
         i: T,
@@ -1201,6 +1360,7 @@ where
     /// the graph. Graph may reserve more space to avoid frequent reallocations.
     ///
     /// **Panics** if the new capacity overflows `usize`.
+    #[track_caller]
     pub fn reserve_nodes(&mut self, additional: usize) {
         self.nodes.reserve(additional);
     }
@@ -1209,6 +1369,7 @@ where
     /// the graph. Graph may reserve more space to avoid frequent reallocations.
     ///
     /// **Panics** if the new capacity overflows `usize`.
+    #[track_caller]
     pub fn reserve_edges(&mut self, additional: usize) {
         self.edges.reserve(additional);
     }
@@ -1220,6 +1381,7 @@ where
     /// Prefer `reserve_nodes` if future insertions are expected.
     ///
     /// **Panics** if the new capacity overflows `usize`.
+    #[track_caller]
     pub fn reserve_exact_nodes(&mut self, additional: usize) {
         self.nodes.reserve_exact(additional);
     }
@@ -1231,6 +1393,7 @@ where
     /// Prefer `reserve_edges` if future insertions are expected.
     ///
     /// **Panics** if the new capacity overflows `usize`.
+    #[track_caller]
     pub fn reserve_exact_edges(&mut self, additional: usize) {
         self.edges.reserve_exact(additional);
     }
@@ -1327,6 +1490,23 @@ where
     /// or they are filled with default values.
     ///
     /// Nodes are inserted automatically to match the edges.
+    ///
+    /// ```
+    /// use petgraph::Graph;
+    ///
+    /// let mut g = Graph::<(), i32>::new();
+    /// let a = g.add_node(());
+    /// let b = g.add_node(());
+    /// let c = g.add_node(());
+    /// let d = g.add_node(());
+    ///
+    /// g.extend_with_edges(&[
+    ///   (a, b, 7),
+    ///   (a, c, 8),
+    ///   (a, d, 9),
+    ///  (b, c, 10),
+    /// ]);
+    /// ```
     pub fn extend_with_edges<I>(&mut self, iterable: I)
     where
         I: IntoIterator,
@@ -1354,6 +1534,42 @@ where
     ///
     /// The resulting graph has the same structure and the same
     /// graph indices as `self`.
+    ///
+    /// If you want a consuming version of this function, see [`map_owned`](struct.Graph.html#method.map_owned).
+    ///
+    /// ```
+    /// use petgraph::graph::UnGraph;
+    ///
+    /// // Create an undirected graph with city names as node data and their distances as edge data.
+    /// let mut g = UnGraph::<String, u32>::new_undirected();
+    ///
+    /// let bie = g.add_node("Bielefeld".to_owned());
+    /// let del = g.add_node("New Delhi".to_owned());
+    /// let mex = g.add_node("Mexico City".to_owned());
+    /// let syd = g.add_node("Sydney".to_owned());
+    ///
+    /// // Add distances in kilometers as edge data.
+    /// g.extend_with_edges(&[
+    ///     (bie, del, 6_000),
+    ///     (bie, mex, 10_000),
+    ///     (bie, syd, 16_000),
+    ///     (del, mex, 14_000),
+    ///     (del, syd, 12_000),
+    ///     (mex, syd, 15_000),
+    /// ]);
+    ///
+    /// // We might now want to change up the distances to be in miles instead and to be strings.
+    /// // We can do this using the `map` method, which takes two closures for the node and edge data,
+    /// // respectively, and returns a new graph with the transformed data.
+    /// let g_miles: UnGraph<String, i32> = g.map(
+    ///     |_, city| city.to_owned(),
+    ///     |_, &distance| (distance as f64 * 0.621371).round() as i32,
+    /// );
+    ///
+    /// for &edge_weight in g_miles.edge_weights() {
+    ///     assert!(edge_weight < 10_000);
+    /// }
+    /// ```
     pub fn map<'a, F, G, N2, E2>(
         &'a self,
         mut node_map: F,
@@ -1364,15 +1580,77 @@ where
         G: FnMut(EdgeIndex<Ix>, &'a E) -> E2,
     {
         let mut g = Graph::with_capacity(self.node_count(), self.edge_count());
-        g.nodes.extend(enumerate(&self.nodes).map(|(i, node)| Node {
-            weight: node_map(NodeIndex::new(i), &node.weight),
-            next: node.next,
-        }));
-        g.edges.extend(enumerate(&self.edges).map(|(i, edge)| Edge {
-            weight: edge_map(EdgeIndex::new(i), &edge.weight),
-            next: edge.next,
-            node: edge.node,
-        }));
+        g.nodes
+            .extend(self.nodes.iter().enumerate().map(|(i, node)| Node {
+                weight: node_map(NodeIndex::new(i), &node.weight),
+                next: node.next,
+            }));
+        g.edges
+            .extend(self.edges.iter().enumerate().map(|(i, edge)| Edge {
+                weight: edge_map(EdgeIndex::new(i), &edge.weight),
+                next: edge.next,
+                node: edge.node,
+            }));
+        g
+    }
+
+    /// Create a new `Graph` by mapping node and edge weights to new values,
+    /// consuming the current graph.
+    ///
+    /// The resulting graph has the same structure and the same graph indices
+    /// as `self`.
+    ///
+    /// If you want a non-consuming version of this function, see [`map`](struct.Graph.html#method.map).
+    /// ```
+    /// use petgraph::graph::UnGraph;
+    ///
+    /// // Create an undirected graph with city names as node data and their distances as edge data.
+    /// let mut g = UnGraph::<String, u32>::new_undirected();
+    ///
+    /// let bie = g.add_node("Bielefeld".to_owned());
+    /// let del = g.add_node("New Delhi".to_owned());
+    /// let mex = g.add_node("Mexico City".to_owned());
+    /// let syd = g.add_node("Sydney".to_owned());
+    ///
+    /// // Add distances in kilometers as edge data.
+    /// g.extend_with_edges(&[
+    ///     (bie, del, 6_000),
+    ///     (bie, mex, 10_000),
+    ///     (bie, syd, 16_000),
+    ///     (del, mex, 14_000),
+    ///     (del, syd, 12_000),
+    ///     (mex, syd, 15_000),
+    /// ]);
+    ///
+    /// // We might now want to change up the distances to be in miles instead and to be strings.
+    /// // We can do this using the `map` method, which takes two closures for the node and edge data,
+    /// // respectively, and returns a new graph with the transformed data.
+    /// let g_miles: UnGraph<String, i32> = g.map_owned(
+    ///     |_, city| city,
+    ///     |_, distance| (distance as f64 * 0.621371).round() as i32,
+    /// );
+    ///
+    /// for &edge_weight in g_miles.edge_weights() {
+    ///     assert!(edge_weight < 10_000);
+    /// }
+    /// ```
+    pub fn map_owned<F, G, N2, E2>(self, mut node_map: F, mut edge_map: G) -> Graph<N2, E2, Ty, Ix>
+    where
+        F: FnMut(NodeIndex<Ix>, N) -> N2,
+        G: FnMut(EdgeIndex<Ix>, E) -> E2,
+    {
+        let mut g = Graph::with_capacity(self.node_count(), self.edge_count());
+        g.nodes
+            .extend(self.nodes.into_iter().enumerate().map(|(i, node)| Node {
+                weight: node_map(NodeIndex::new(i), node.weight),
+                next: node.next,
+            }));
+        g.edges
+            .extend(self.edges.into_iter().enumerate().map(|(i, edge)| Edge {
+                weight: edge_map(EdgeIndex::new(i), edge.weight),
+                next: edge.next,
+                node: edge.node,
+            }));
         g
     }
 
@@ -1388,6 +1666,29 @@ where
     /// If no nodes are removed, the resulting graph has compatible node
     /// indices; if neither nodes nor edges are removed, the result has
     /// the same graph indices as `self`.
+    ///
+    /// If you want a consuming version of this function, see [`filter_map_owned`](struct.Graph.html#method.filter_map_owned).
+    ///
+    /// ```
+    /// use petgraph::Graph;
+    ///
+    /// // Create a graph with integer node weights
+    /// let mut g = Graph::<u32, ()>::new();
+    /// let a = g.add_node(0);
+    /// let b = g.add_node(2);
+    /// let c = g.add_node(5);
+    /// let d = g.add_node(7);
+    /// let e = g.add_node(4);
+    /// g.extend_with_edges(&[(a, b, ()), (a, c, ()), (b, d, ()), (c, d, ()), (d, e, ())]);
+    ///
+    /// // Filter the graph such that only nodes with weight greater than 2 are kept.
+    /// let g_filtered = g.filter_map(
+    ///     |_, &node_weight| if node_weight > 2 { Some(node_weight) } else { None },
+    ///     |_, &edge_weight| Some(edge_weight),
+    /// );
+    ///
+    /// assert_eq!(g_filtered.node_count(), 3);
+    /// ```
     pub fn filter_map<'a, F, G, N2, E2>(
         &'a self,
         mut node_map: F,
@@ -1400,17 +1701,83 @@ where
         let mut g = Graph::with_capacity(0, 0);
         // mapping from old node index to new node index, end represents removed.
         let mut node_index_map = vec![NodeIndex::end(); self.node_count()];
-        for (i, node) in enumerate(&self.nodes) {
+        for (i, node) in self.nodes.iter().enumerate() {
             if let Some(nw) = node_map(NodeIndex::new(i), &node.weight) {
                 node_index_map[i] = g.add_node(nw);
             }
         }
-        for (i, edge) in enumerate(&self.edges) {
+        for (i, edge) in self.edges.iter().enumerate() {
             // skip edge if any endpoint was removed
             let source = node_index_map[edge.source().index()];
             let target = node_index_map[edge.target().index()];
             if source != NodeIndex::end() && target != NodeIndex::end() {
                 if let Some(ew) = edge_map(EdgeIndex::new(i), &edge.weight) {
+                    g.add_edge(source, target, ew);
+                }
+            }
+        }
+        g
+    }
+
+    /// Create a new `Graph` by mapping nodes and edges,
+    /// consuming the current graph.
+    /// A node or edge may be mapped to `None` to exclude it from
+    /// the resulting graph.
+    ///
+    /// Nodes are mapped first with the `node_map` closure, then
+    /// `edge_map` is called for the edges that have not had any endpoint
+    /// removed.
+    ///
+    /// The resulting graph has the structure of a subgraph of the original graph.
+    /// If no nodes are removed, the resulting graph has compatible node
+    /// indices; if neither nodes nor edges are removed, the result has
+    /// the same graph indices as `self`.
+    ///
+    /// If you want a non-consuming version of this function, see [`filter_map`](struct.Graph.html#method.filter_map).
+    ///
+    /// ```
+    /// use petgraph::Graph;
+    ///
+    /// // Create a graph with integer node weights
+    /// let mut g = Graph::<u32, ()>::new();
+    /// let a = g.add_node(0);
+    /// let b = g.add_node(2);
+    /// let c = g.add_node(5);
+    /// let d = g.add_node(7);
+    /// let e = g.add_node(4);
+    /// g.extend_with_edges(&[(a, b, ()), (a, c, ()), (b, d, ()), (c, d, ()), (d, e, ())]);
+    ///
+    /// // Filter the graph such that only nodes with weight greater than 2 are kept.
+    /// let g_filtered = g.filter_map_owned(
+    ///     |_, node_weight| if node_weight > 2 { Some(node_weight) } else { None },
+    ///     |_, edge_weight| Some(edge_weight),
+    /// );
+    ///
+    /// assert_eq!(g_filtered.node_count(), 3);
+    /// ```
+    pub fn filter_map_owned<F, G, N2, E2>(
+        self,
+        mut node_map: F,
+        mut edge_map: G,
+    ) -> Graph<N2, E2, Ty, Ix>
+    where
+        F: FnMut(NodeIndex<Ix>, N) -> Option<N2>,
+        G: FnMut(EdgeIndex<Ix>, E) -> Option<E2>,
+    {
+        let mut g = Graph::with_capacity(0, 0);
+        // mapping from old node index to new node index, end represents removed.
+        let mut node_index_map = vec![NodeIndex::end(); self.node_count()];
+        for (i, node) in self.nodes.into_iter().enumerate() {
+            if let Some(nw) = node_map(NodeIndex::new(i), node.weight) {
+                node_index_map[i] = g.add_node(nw);
+            }
+        }
+        for (i, edge) in self.edges.into_iter().enumerate() {
+            // skip edge if any endpoint was removed
+            let source = node_index_map[edge.source().index()];
+            let target = node_index_map[edge.target().index()];
+            if source != NodeIndex::end() && target != NodeIndex::end() {
+                if let Some(ew) = edge_map(EdgeIndex::new(i), edge.weight) {
                     g.add_edge(source, target, ew);
                 }
             }
@@ -1439,7 +1806,7 @@ where
     #[cfg(feature = "serde-1")]
     /// Fix up node and edge links after deserialization
     fn link_edges(&mut self) -> Result<(), NodeIndex<Ix>> {
-        for (edge_index, edge) in enumerate(&mut self.edges) {
+        for (edge_index, edge) in self.edges.iter_mut().enumerate() {
             let a = edge.source();
             let b = edge.target();
             let edge_idx = EdgeIndex::new(edge_index);
@@ -1517,7 +1884,7 @@ pub struct Neighbors<'a, E: 'a, Ix: 'a = DefaultIx> {
     next: [EdgeIndex<Ix>; 2],
 }
 
-impl<'a, E, Ix> Iterator for Neighbors<'a, E, Ix>
+impl<E, Ix> Iterator for Neighbors<'_, E, Ix>
 where
     Ix: IndexType,
 {
@@ -1546,14 +1913,14 @@ where
     }
 }
 
-impl<'a, E, Ix> Clone for Neighbors<'a, E, Ix>
+impl<E, Ix> Clone for Neighbors<'_, E, Ix>
 where
     Ix: IndexType,
 {
     clone_fields!(Neighbors, skip_start, edges, next,);
 }
 
-impl<'a, E, Ix> Neighbors<'a, E, Ix>
+impl<E, Ix> Neighbors<'_, E, Ix>
 where
     Ix: IndexType,
 {
@@ -1580,14 +1947,14 @@ fn edges_walker_mut<E, Ix>(
     edges: &mut [Edge<E, Ix>],
     next: EdgeIndex<Ix>,
     dir: Direction,
-) -> EdgesWalkerMut<E, Ix>
+) -> EdgesWalkerMut<'_, E, Ix>
 where
     Ix: IndexType,
 {
     EdgesWalkerMut { edges, next, dir }
 }
 
-impl<'a, E, Ix> EdgesWalkerMut<'a, E, Ix>
+impl<E, Ix> EdgesWalkerMut<'_, E, Ix>
 where
     Ix: IndexType,
 {
@@ -1751,7 +2118,7 @@ fn swap_pair<T>(mut x: [T; 2]) -> [T; 2] {
     x
 }
 
-impl<'a, E, Ty, Ix> Clone for Edges<'a, E, Ty, Ix>
+impl<E, Ty, Ix> Clone for Edges<'_, E, Ty, Ix>
 where
     Ix: IndexType,
     Ty: EdgeType,
@@ -1769,7 +2136,7 @@ where
 
 /// Iterator yielding immutable access to all node weights.
 pub struct NodeWeights<'a, N: 'a, Ix: IndexType = DefaultIx> {
-    nodes: ::std::slice::Iter<'a, Node<N, Ix>>,
+    nodes: ::core::slice::Iter<'a, Node<N, Ix>>,
 }
 impl<'a, N, Ix> Iterator for NodeWeights<'a, N, Ix>
 where
@@ -1788,7 +2155,7 @@ where
 /// Iterator yielding mutable access to all node weights.
 #[derive(Debug)]
 pub struct NodeWeightsMut<'a, N: 'a, Ix: IndexType = DefaultIx> {
-    nodes: ::std::slice::IterMut<'a, Node<N, Ix>>, // TODO: change type to something that implements Clone?
+    nodes: ::core::slice::IterMut<'a, Node<N, Ix>>, // TODO: change type to something that implements Clone?
 }
 
 impl<'a, N, Ix> Iterator for NodeWeightsMut<'a, N, Ix>
@@ -1808,7 +2175,7 @@ where
 
 /// Iterator yielding immutable access to all edge weights.
 pub struct EdgeWeights<'a, E: 'a, Ix: IndexType = DefaultIx> {
-    edges: ::std::slice::Iter<'a, Edge<E, Ix>>,
+    edges: ::core::slice::Iter<'a, Edge<E, Ix>>,
 }
 
 impl<'a, E, Ix> Iterator for EdgeWeights<'a, E, Ix>
@@ -1829,7 +2196,7 @@ where
 /// Iterator yielding mutable access to all edge weights.
 #[derive(Debug)]
 pub struct EdgeWeightsMut<'a, E: 'a, Ix: IndexType = DefaultIx> {
-    edges: ::std::slice::IterMut<'a, Edge<E, Ix>>, // TODO: change type to something that implements Clone?
+    edges: ::core::slice::IterMut<'a, Edge<E, Ix>>, // TODO: change type to something that implements Clone?
 }
 
 impl<'a, E, Ix> Iterator for EdgeWeightsMut<'a, E, Ix>
@@ -1902,11 +2269,7 @@ where
 }
 
 /// Create a new empty `Graph`.
-impl<N, E, Ty, Ix> Default for Graph<N, E, Ty, Ix>
-where
-    Ty: EdgeType,
-    Ix: IndexType,
-{
+impl<N, E, Ty, Ix> Default for Graph<N, E, Ty, Ix> {
     fn default() -> Self {
         Self::with_capacity(0, 0)
     }
@@ -2109,15 +2472,15 @@ pub struct EdgeReference<'a, E: 'a, Ix = DefaultIx> {
     weight: &'a E,
 }
 
-impl<'a, E, Ix: IndexType> Clone for EdgeReference<'a, E, Ix> {
+impl<E, Ix: IndexType> Clone for EdgeReference<'_, E, Ix> {
     fn clone(&self) -> Self {
         *self
     }
 }
 
-impl<'a, E, Ix: IndexType> Copy for EdgeReference<'a, E, Ix> {}
+impl<E, Ix: IndexType> Copy for EdgeReference<'_, E, Ix> {}
 
-impl<'a, E, Ix: IndexType> PartialEq for EdgeReference<'a, E, Ix>
+impl<E, Ix: IndexType> PartialEq for EdgeReference<'_, E, Ix>
 where
     E: PartialEq,
 {
@@ -2287,7 +2650,7 @@ where
     }
 }
 
-impl<'a, N, Ix> DoubleEndedIterator for NodeReferences<'a, N, Ix>
+impl<N, Ix> DoubleEndedIterator for NodeReferences<'_, N, Ix>
 where
     Ix: IndexType,
 {
@@ -2298,7 +2661,7 @@ where
     }
 }
 
-impl<'a, N, Ix> ExactSizeIterator for NodeReferences<'a, N, Ix> where Ix: IndexType {}
+impl<N, Ix> ExactSizeIterator for NodeReferences<'_, N, Ix> where Ix: IndexType {}
 
 impl<'a, Ix, E> EdgeReference<'a, E, Ix>
 where
@@ -2313,7 +2676,7 @@ where
     }
 }
 
-impl<'a, Ix, E> visit::EdgeRef for EdgeReference<'a, E, Ix>
+impl<Ix, E> visit::EdgeRef for EdgeReference<'_, E, Ix>
 where
     Ix: IndexType,
 {
@@ -2360,7 +2723,7 @@ where
     }
 }
 
-impl<'a, E, Ix> DoubleEndedIterator for EdgeReferences<'a, E, Ix>
+impl<E, Ix> DoubleEndedIterator for EdgeReferences<'_, E, Ix>
 where
     Ix: IndexType,
 {
@@ -2373,7 +2736,7 @@ where
     }
 }
 
-impl<'a, E, Ix> ExactSizeIterator for EdgeReferences<'a, E, Ix> where Ix: IndexType {}
+impl<E, Ix> ExactSizeIterator for EdgeReferences<'_, E, Ix> where Ix: IndexType {}
 
 impl<N, E, Ty, Ix> visit::EdgeIndexable for Graph<N, E, Ty, Ix>
 where

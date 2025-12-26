@@ -1,9 +1,11 @@
 //! RISC-V-specific definitions for 64-bit linux-like values
 
 use crate::prelude::*;
-use crate::{off64_t, off_t};
+use crate::{
+    off64_t,
+    off_t,
+};
 
-pub type c_char = u8;
 pub type wchar_t = c_int;
 
 pub type nlink_t = c_uint;
@@ -31,7 +33,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_int; 2usize],
+        __unused: Padding<[c_int; 2usize]>,
     }
 
     pub struct stat64 {
@@ -53,7 +55,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_int; 2],
+        __unused: Padding<[c_int; 2]>,
     }
 
     pub struct ipc_perm {
@@ -63,11 +65,11 @@ s! {
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
         pub mode: c_ushort,
-        __pad1: c_ushort,
+        __pad1: Padding<c_ushort>,
         pub __seq: c_ushort,
-        __pad2: c_ushort,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __pad2: Padding<c_ushort>,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     #[repr(align(8))]
@@ -87,7 +89,6 @@ s! {
 }
 
 s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
     pub struct ucontext_t {
         pub __uc_flags: c_ulong,
         pub uc_link: *mut ucontext_t,
@@ -96,7 +97,6 @@ s_no_extra_traits! {
         pub uc_mcontext: mcontext_t,
     }
 
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct mcontext_t {
         pub __gregs: [c_ulong; 32],
@@ -109,19 +109,16 @@ s_no_extra_traits! {
         pub __q: __riscv_mc_q_ext_state,
     }
 
-    #[allow(missing_debug_implementations)]
     pub struct __riscv_mc_f_ext_state {
         pub __f: [c_uint; 32],
         pub __fcsr: c_uint,
     }
 
-    #[allow(missing_debug_implementations)]
     pub struct __riscv_mc_d_ext_state {
         pub __f: [c_ulonglong; 32],
         pub __fcsr: c_uint,
     }
 
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct __riscv_mc_q_ext_state {
         pub __f: [c_ulonglong; 64],
@@ -433,7 +430,7 @@ pub const SYS_landlock_restrict_self: c_long = 446;
 pub const O_APPEND: c_int = 1024;
 pub const O_DIRECT: c_int = 0x4000;
 pub const O_DIRECTORY: c_int = 0x10000;
-pub const O_LARGEFILE: c_int = 0;
+pub const O_LARGEFILE: c_int = 0o100000;
 pub const O_NOFOLLOW: c_int = 0x20000;
 pub const O_CREAT: c_int = 64;
 pub const O_EXCL: c_int = 128;
@@ -570,9 +567,7 @@ pub const VEOF: usize = 4;
 pub const POLLWRNORM: c_short = 0x100;
 pub const POLLWRBAND: c_short = 0x200;
 
-pub const SOCK_STREAM: c_int = 1;
-pub const SOCK_DGRAM: c_int = 2;
-
+pub const MADV_SOFT_OFFLINE: c_int = 101;
 pub const MAP_ANON: c_int = 0x0020;
 pub const MAP_GROWSDOWN: c_int = 0x0100;
 pub const MAP_DENYWRITE: c_int = 0x0800;

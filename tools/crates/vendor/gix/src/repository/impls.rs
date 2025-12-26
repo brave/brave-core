@@ -1,6 +1,11 @@
+use std::ops::DerefMut;
+
+use gix_hash::ObjectId;
+use gix_object::Exists;
+
 impl Clone for crate::Repository {
     fn clone(&self) -> Self {
-        crate::Repository::from_refs_and_objects(
+        let mut new = crate::Repository::from_refs_and_objects(
             self.refs.clone(),
             self.objects.clone(),
             self.work_tree.clone(),
@@ -12,7 +17,13 @@ impl Clone for crate::Repository {
             self.shallow_commits.clone(),
             #[cfg(feature = "attributes")]
             self.modules.clone(),
-        )
+        );
+
+        if self.bufs.is_none() {
+            new.bufs.take();
+        }
+
+        new
     }
 }
 
@@ -21,7 +32,7 @@ impl std::fmt::Debug for crate::Repository {
         f.debug_struct("Repository")
             .field("kind", &self.kind())
             .field("git_dir", &self.git_dir())
-            .field("work_dir", &self.work_dir())
+            .field("workdir", &self.workdir())
             .finish()
     }
 }
@@ -38,7 +49,7 @@ impl From<&crate::ThreadSafeRepository> for crate::Repository {
     fn from(repo: &crate::ThreadSafeRepository) -> Self {
         crate::Repository::from_refs_and_objects(
             repo.refs.clone(),
-            repo.objects.to_handle().into(),
+            gix_odb::memory::Proxy::from(gix_odb::Cache::from(repo.objects.to_handle())).with_write_passthrough(),
             repo.work_tree.clone(),
             repo.common_dir.clone(),
             repo.config.clone(),
@@ -56,7 +67,7 @@ impl From<crate::ThreadSafeRepository> for crate::Repository {
     fn from(repo: crate::ThreadSafeRepository) -> Self {
         crate::Repository::from_refs_and_objects(
             repo.refs,
-            repo.objects.to_handle().into(),
+            gix_odb::memory::Proxy::from(gix_odb::Cache::from(repo.objects.to_handle())).with_write_passthrough(),
             repo.work_tree,
             repo.common_dir,
             repo.config,
@@ -85,5 +96,73 @@ impl From<crate::Repository> for crate::ThreadSafeRepository {
             modules: r.modules,
             shallow_commits: r.shallow_commits,
         }
+    }
+}
+
+impl gix_object::Write for crate::Repository {
+    fn write(&self, object: &dyn gix_object::WriteTo) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
+        let mut buf = self.empty_reusable_buffer();
+        object.write_to(buf.deref_mut())?;
+        self.write_buf(object.kind(), &buf)
+    }
+
+    fn write_buf(&self, object: gix_object::Kind, from: &[u8]) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
+        let oid = gix_object::compute_hash(self.object_hash(), object, from)?;
+        if self.objects.exists(&oid) {
+            return Ok(oid);
+        }
+        self.objects.write_buf(object, from)
+    }
+
+    fn write_stream(
+        &self,
+        kind: gix_object::Kind,
+        size: u64,
+        from: &mut dyn std::io::Read,
+    ) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
+        let mut buf = self.empty_reusable_buffer();
+        let bytes = std::io::copy(from, buf.deref_mut())?;
+        if size != bytes {
+            return Err(format!("Found {bytes} bytes in stream, but had {size} bytes declared").into());
+        }
+        self.write_buf(kind, &buf)
+    }
+}
+
+impl gix_object::FindHeader for crate::Repository {
+    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<gix_object::Header>, gix_object::find::Error> {
+        if id == ObjectId::empty_tree(self.object_hash()) {
+            return Ok(Some(gix_object::Header {
+                kind: gix_object::Kind::Tree,
+                size: 0,
+            }));
+        }
+        self.objects.try_header(id)
+    }
+}
+
+impl gix_object::Find for crate::Repository {
+    fn try_find<'a>(
+        &self,
+        id: &gix_hash::oid,
+        buffer: &'a mut Vec<u8>,
+    ) -> Result<Option<gix_object::Data<'a>>, gix_object::find::Error> {
+        if id == ObjectId::empty_tree(self.object_hash()) {
+            buffer.clear();
+            return Ok(Some(gix_object::Data {
+                kind: gix_object::Kind::Tree,
+                data: &[],
+            }));
+        }
+        self.objects.try_find(id, buffer)
+    }
+}
+
+impl gix_object::Exists for crate::Repository {
+    fn exists(&self, id: &gix_hash::oid) -> bool {
+        if id == ObjectId::empty_tree(self.object_hash()) {
+            return true;
+        }
+        self.objects.exists(id)
     }
 }

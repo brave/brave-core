@@ -41,6 +41,8 @@ pub enum Error {
     },
     #[error("Failed to spawn thread when switching to work-stealing mode")]
     SpawnThread(#[from] std::io::Error),
+    #[error(transparent)]
+    Delta(#[from] crate::data::delta::apply::Error),
 }
 
 /// Additional context passed to the `inspect_object(…)` function of the [`Tree::traverse()`] method.
@@ -51,8 +53,8 @@ pub struct Context<'a> {
     pub entry_end: u64,
     /// The decompressed object itself, ready to be decoded.
     pub decompressed: &'a [u8],
-    /// The depth at which this object resides in the delta-tree. It represents the amount of base objects, with 0 indicating
-    /// an 'undeltified' object, and higher values indicating delta objects with the given amount of bases.
+    /// The depth at which this object resides in the delta-tree. It represents the number of base objects, with 0 indicating
+    /// an 'undeltified' object, and higher values indicating delta objects with the given number of bases.
     pub level: u16,
 }
 
@@ -62,8 +64,8 @@ pub struct Options<'a, 's> {
     pub object_progress: Box<dyn DynNestedProgress>,
     /// is a progress instance to track the overall progress.
     pub size_progress: &'s mut dyn Progress,
-    /// If `Some`, only use the given amount of threads. Otherwise, the amount of threads to use will be selected based on
-    /// the amount of available logical cores.
+    /// If `Some`, only use the given number of threads. Otherwise, the number of threads to use will be selected based on
+    /// the number of available logical cores.
     pub thread_limit: Option<usize>,
     /// Abort the operation if the value is `true`.
     pub should_interrupt: &'a AtomicBool,

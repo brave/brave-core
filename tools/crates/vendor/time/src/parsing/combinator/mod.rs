@@ -9,6 +9,7 @@ use crate::parsing::shim::{Integer, IntegerParseBytes};
 use crate::parsing::ParsedItem;
 
 /// Parse a "+" or "-" sign. Returns the ASCII byte representing the sign, if present.
+#[inline]
 pub(crate) const fn sign(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
     match input {
         [sign @ (b'-' | b'+'), remaining @ ..] => Some(ParsedItem(remaining, *sign)),
@@ -17,6 +18,7 @@ pub(crate) const fn sign(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
 }
 
 /// Consume the first matching item, returning its associated value.
+#[inline]
 pub(crate) fn first_match<'a, T>(
     options: impl IntoIterator<Item = (&'a [u8], T)>,
     case_sensitive: bool,
@@ -41,6 +43,7 @@ pub(crate) fn first_match<'a, T>(
 }
 
 /// Consume zero or more instances of the provided parser. The parser must return the unit value.
+#[inline]
 pub(crate) fn zero_or_more<'a, P: Fn(&'a [u8]) -> Option<ParsedItem<'a, ()>>>(
     parser: P,
 ) -> impl FnMut(&'a [u8]) -> ParsedItem<'a, ()> {
@@ -53,6 +56,7 @@ pub(crate) fn zero_or_more<'a, P: Fn(&'a [u8]) -> Option<ParsedItem<'a, ()>>>(
 }
 
 /// Consume one of or more instances of the provided parser. The parser must produce the unit value.
+#[inline]
 pub(crate) fn one_or_more<'a, P: Fn(&'a [u8]) -> Option<ParsedItem<'a, ()>>>(
     parser: P,
 ) -> impl Fn(&'a [u8]) -> Option<ParsedItem<'a, ()>> {
@@ -66,6 +70,7 @@ pub(crate) fn one_or_more<'a, P: Fn(&'a [u8]) -> Option<ParsedItem<'a, ()>>>(
 }
 
 /// Consume between `n` and `m` instances of the provided parser.
+#[inline]
 pub(crate) fn n_to_m<
     'a,
     const N: u8,
@@ -101,6 +106,7 @@ pub(crate) fn n_to_m<
 }
 
 /// Consume between `n` and `m` digits, returning the numerical value.
+#[inline]
 pub(crate) fn n_to_m_digits<const N: u8, const M: u8, T: Integer>(
     input: &[u8],
 ) -> Option<ParsedItem<'_, T>> {
@@ -109,11 +115,13 @@ pub(crate) fn n_to_m_digits<const N: u8, const M: u8, T: Integer>(
 }
 
 /// Consume exactly `n` digits, returning the numerical value.
+#[inline]
 pub(crate) fn exactly_n_digits<const N: u8, T: Integer>(input: &[u8]) -> Option<ParsedItem<'_, T>> {
     n_to_m_digits::<N, N, _>(input)
 }
 
 /// Consume exactly `n` digits, returning the numerical value.
+#[inline]
 pub(crate) fn exactly_n_digits_padded<'a, const N: u8, T: Integer>(
     padding: Padding,
 ) -> impl Fn(&'a [u8]) -> Option<ParsedItem<'a, T>> {
@@ -121,6 +129,7 @@ pub(crate) fn exactly_n_digits_padded<'a, const N: u8, T: Integer>(
 }
 
 /// Consume between `n` and `m` digits, returning the numerical value.
+#[inline]
 pub(crate) fn n_to_m_digits_padded<'a, const N: u8, const M: u8, T: Integer>(
     padding: Padding,
 ) -> impl Fn(&'a [u8]) -> Option<ParsedItem<'a, T>> {
@@ -158,6 +167,7 @@ pub(crate) fn n_to_m_digits_padded<'a, const N: u8, const M: u8, T: Integer>(
 }
 
 /// Consume exactly one digit.
+#[inline]
 pub(crate) const fn any_digit(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
     match input {
         [c, remaining @ ..] if c.is_ascii_digit() => Some(ParsedItem(remaining, *c)),
@@ -166,6 +176,7 @@ pub(crate) const fn any_digit(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
 }
 
 /// Consume exactly one of the provided ASCII characters.
+#[inline]
 pub(crate) fn ascii_char<const CHAR: u8>(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
     debug_assert!(CHAR.is_ascii_graphic() || CHAR.is_ascii_whitespace());
     match input {
@@ -175,6 +186,7 @@ pub(crate) fn ascii_char<const CHAR: u8>(input: &[u8]) -> Option<ParsedItem<'_, 
 }
 
 /// Consume exactly one of the provided ASCII characters, case-insensitive.
+#[inline]
 pub(crate) fn ascii_char_ignore_case<const CHAR: u8>(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
     debug_assert!(CHAR.is_ascii_graphic() || CHAR.is_ascii_whitespace());
     match input {
@@ -184,6 +196,7 @@ pub(crate) fn ascii_char_ignore_case<const CHAR: u8>(input: &[u8]) -> Option<Par
 }
 
 /// Optionally consume an input with a given parser.
+#[inline]
 pub(crate) fn opt<'a, T>(
     parser: impl Fn(&'a [u8]) -> Option<ParsedItem<'a, T>>,
 ) -> impl Fn(&'a [u8]) -> ParsedItem<'a, Option<T>> {

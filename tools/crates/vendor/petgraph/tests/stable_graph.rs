@@ -8,6 +8,7 @@ extern crate defmac;
 use std::collections::HashSet;
 
 use itertools::assert_equal;
+use petgraph::adj::IndexType;
 use petgraph::algo::{kosaraju_scc, min_spanning_tree, tarjan_scc};
 use petgraph::dot::Dot;
 use petgraph::prelude::*;
@@ -15,6 +16,23 @@ use petgraph::stable_graph::edge_index as e;
 use petgraph::stable_graph::node_index as n;
 use petgraph::visit::{EdgeIndexable, IntoEdgeReferences, IntoNodeReferences, NodeIndexable};
 use petgraph::EdgeType;
+
+fn assert_graph_consistent<N, E, Ty, Ix>(g: &StableGraph<N, E, Ty, Ix>)
+where
+    Ty: EdgeType,
+    Ix: IndexType,
+{
+    assert_eq!(g.node_count(), g.node_indices().count());
+    assert_eq!(g.edge_count(), g.edge_indices().count());
+    for edge in g.edge_references() {
+        assert!(
+            g.find_edge(edge.source(), edge.target()).is_some(),
+            "Edge not in graph! {:?} to {:?}",
+            edge.source(),
+            edge.target()
+        );
+    }
+}
 
 #[test]
 fn node_indices() {
@@ -87,7 +105,7 @@ fn assert_sccs_eq(mut res: Vec<Vec<NodeIndex>>, normalized: Vec<Vec<NodeIndex>>)
 }
 
 fn scc_graph() -> StableGraph<(), ()> {
-    let mut gr: StableGraph<(), ()> = StableGraph::from_edges(&[
+    let mut gr: StableGraph<(), ()> = StableGraph::from_edges([
         (6, 0),
         (0, 3),
         (3, 6),
@@ -111,7 +129,7 @@ fn scc_graph() -> StableGraph<(), ()> {
 #[test]
 fn test_scc() {
     let gr = scc_graph();
-    println!("{:?}", gr);
+    println!("{gr:?}");
 
     let x = n(gr.node_bound() - 1);
     assert_sccs_eq(
@@ -146,7 +164,7 @@ where
     let mut gr = StableGraph::default();
     let mut c = 0..;
     let mut e = || -> i32 { c.next().unwrap() };
-    gr.extend_with_edges(&[
+    gr.extend_with_edges([
         (6, 0, e()),
         (0, 3, e()),
         (3, 6, e()),
@@ -223,7 +241,7 @@ fn test_edge_iterators_directed() {
         }
     }
 
-    println!("{:#?}", gr);
+    println!("{gr:#?}");
     for i in gr.node_indices() {
         itertools::assert_equal(
             gr.edges_directed(i, Incoming).map(|e| e.source()),
@@ -299,7 +317,7 @@ fn iterators_undir() {
     let b = g.add_node(1);
     let c = g.add_node(2);
     let d = g.add_node(3);
-    g.extend_with_edges(&[(a, b, 1), (a, c, 2), (b, c, 3), (c, c, 4), (a, d, 5)]);
+    g.extend_with_edges([(a, b, 1), (a, c, 2), (b, c, 3), (c, c, 4), (a, d, 5)]);
     g.remove_node(b);
 
     itertools::assert_equal(g.neighbors(a), vec![d, c]);
@@ -456,8 +474,8 @@ fn from_min_spanning_tree() {
     for &(a, b) in es.iter() {
         g.add_edge(NodeIndex::new(a), NodeIndex::new(b), ());
     }
-    for i in 0..3 {
-        let _ = g.remove_node(nodes[i]);
+    for &node in nodes.iter().take(3) {
+        let _ = g.remove_node(node);
     }
     let _ = StableGraph::<(), (), Undirected, usize>::from_elements(min_spanning_tree(&g));
 }
@@ -492,4 +510,797 @@ fn weights_mut_iterator() {
     gr.remove_node(b);
     assert_eq!(gr.node_weights_mut().count(), gr.node_count());
     assert_eq!(gr.edge_weights_mut().count(), gr.edge_count());
+}
+
+#[test]
+fn test_map() {
+    let mut g: StableGraph<_, _, Undirected> = StableGraph::with_capacity(0, 0);
+    let a = g.add_node("A");
+    let b = g.add_node("B");
+    let c = g.add_node("C");
+    let ab = g.add_edge(a, b, 7);
+    let bc = g.add_edge(b, c, 14);
+    let ca = g.add_edge(c, a, 9);
+
+    let g2 = g.map(|_, name| format!("map-{name}"), |_, weight| weight * 2);
+    assert_eq!(g2.node_count(), 3);
+    assert_eq!(g2.node_weight(a).map(|s| &**s), Some("map-A"));
+    assert_eq!(g2.node_weight(b).map(|s| &**s), Some("map-B"));
+    assert_eq!(g2.node_weight(c).map(|s| &**s), Some("map-C"));
+    assert_eq!(g2.edge_count(), 3);
+    assert_eq!(g2.edge_weight(ab), Some(&14));
+    assert_eq!(g2.edge_weight(bc), Some(&28));
+    assert_eq!(g2.edge_weight(ca), Some(&18));
+}
+
+#[test]
+fn test_map_owned() {
+    let mut g: StableGraph<_, _, Undirected> = StableGraph::with_capacity(0, 0);
+    let a = g.add_node("A");
+    let b = g.add_node("B");
+    let c = g.add_node("C");
+    let ab = g.add_edge(a, b, 7);
+    let bc = g.add_edge(b, c, 14);
+    let ca = g.add_edge(c, a, 9);
+
+    let g2 = g.map_owned(|_, name| format!("map-{name}"), |_, weight| weight * 2);
+    assert_eq!(g2.node_count(), 3);
+    assert_eq!(g2.node_weight(a).map(|s| &**s), Some("map-A"));
+    assert_eq!(g2.node_weight(b).map(|s| &**s), Some("map-B"));
+    assert_eq!(g2.node_weight(c).map(|s| &**s), Some("map-C"));
+    assert_eq!(g2.edge_count(), 3);
+    assert_eq!(g2.edge_weight(ab), Some(&14));
+    assert_eq!(g2.edge_weight(bc), Some(&28));
+    assert_eq!(g2.edge_weight(ca), Some(&18));
+}
+
+#[test]
+fn test_filter_map() {
+    let mut g: StableGraph<_, _, Undirected> = StableGraph::with_capacity(0, 0);
+    let a = g.add_node("A");
+    let b = g.add_node("B");
+    let c = g.add_node("C");
+    let d = g.add_node("D");
+    let e = g.add_node("E");
+    let f = g.add_node("F");
+    g.add_edge(a, b, 7);
+    g.add_edge(c, a, 9);
+    g.add_edge(a, d, 14);
+    g.add_edge(b, c, 10);
+    g.add_edge(d, c, 2);
+    g.add_edge(d, e, 9);
+    g.add_edge(b, f, 15);
+    g.add_edge(c, f, 11);
+    g.add_edge(e, f, 6);
+    println!("{g:?}");
+
+    let g2 = g.filter_map(
+        |_, name| Some(*name),
+        |_, &weight| if weight >= 10 { Some(weight) } else { None },
+    );
+    assert_eq!(g2.edge_count(), 4);
+    for weight in g2.edge_weights() {
+        assert!(*weight >= 10);
+    }
+    assert_eq!(g2.node_count(), g.node_count());
+    // Check if node indices are compatible
+    for i in g.node_indices() {
+        assert_eq!(g2.node_weight(i), g.node_weight(i));
+    }
+
+    let g3 = g.filter_map(
+        |i, &name| if i == a || i == e { None } else { Some(name) },
+        |i, &weight| {
+            let (source, target) = g.edge_endpoints(i).unwrap();
+            // don't map edges from a removed node
+            assert!(source != a);
+            assert!(target != a);
+            assert!(source != e);
+            assert!(target != e);
+            Some(weight)
+        },
+    );
+    assert_eq!(g3.node_count(), g.node_count() - 2);
+    assert_eq!(g3.edge_count(), g.edge_count() - 5);
+    assert_graph_consistent(&g3);
+    // Check if node indices are compatible
+    for i in g3.node_indices() {
+        assert_eq!(g3.node_weight(i), g.node_weight(i));
+    }
+
+    let mut g4 = g.clone();
+    g4.retain_edges(|gr, i| {
+        let (s, t) = gr.edge_endpoints(i).unwrap();
+        !(s == a || s == e || t == a || t == e)
+    });
+    assert_eq!(g4.edge_count(), g.edge_count() - 5);
+    assert_graph_consistent(&g4);
+}
+
+#[test]
+fn test_filter_map_owned() {
+    let mut g: StableGraph<_, _, Undirected> = StableGraph::with_capacity(0, 0);
+    let a = g.add_node("A".to_owned());
+    let b = g.add_node("B".to_owned());
+    let c = g.add_node("C".to_owned());
+    let d = g.add_node("D".to_owned());
+    let e = g.add_node("E".to_owned());
+    let f = g.add_node("F".to_owned());
+    g.add_edge(a, b, 7);
+    g.add_edge(c, a, 9);
+    g.add_edge(a, d, 14);
+    g.add_edge(b, c, 10);
+    g.add_edge(d, c, 2);
+    g.add_edge(d, e, 9);
+    g.add_edge(b, f, 15);
+    g.add_edge(c, f, 11);
+    g.add_edge(e, f, 6);
+    println!("{g:?}");
+
+    let g2 = g.clone().filter_map_owned(
+        |_, name| Some(name),
+        |_, weight| if weight >= 10 { Some(weight) } else { None },
+    );
+    assert_eq!(g2.edge_count(), 4);
+    for weight in g2.edge_weights() {
+        assert!(*weight >= 10);
+    }
+    assert_eq!(g2.node_count(), g.node_count());
+    // Check if node indices are compatible
+    for i in g.node_indices() {
+        assert_eq!(g2.node_weight(i), g.node_weight(i));
+    }
+
+    let g3 = g.clone().filter_map_owned(
+        |i, name| if i == a || i == e { None } else { Some(name) },
+        |i, weight| {
+            let (source, target) = g.edge_endpoints(i).unwrap();
+            // don't map edges from a removed node
+            assert_ne!(source, a);
+            assert_ne!(target, a);
+            assert_ne!(source, e);
+            assert_ne!(target, e);
+            Some(weight)
+        },
+    );
+    assert_eq!(g3.node_count(), g.node_count() - 2);
+    assert_eq!(g3.edge_count(), g.edge_count() - 5);
+    assert_graph_consistent(&g3);
+    // Check if node indices are compatible
+    for i in g3.node_indices() {
+        assert_eq!(g3.node_weight(i), g.node_weight(i));
+    }
+
+    let mut g4 = g.clone();
+    g4.retain_edges(|gr, i| {
+        let (s, t) = gr.edge_endpoints(i).unwrap();
+        !(s == a || s == e || t == a || t == e)
+    });
+    assert_eq!(g4.edge_count(), g.edge_count() - 5);
+    assert_graph_consistent(&g4);
+}
+
+/// Test that the order of neighbors returned by `neighbors` is correct.
+/// See `neighbors` docs for more details.
+#[test]
+fn test_neighbors_iteration_order() {
+    // The test graph looks like this:
+    //      5
+    //      |
+    //      v
+    // 0 -> 1 -> 3
+    // |    |
+    // v    v
+    // 2    4
+    let g = StableGraph::<(), (), Directed>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_dir: Vec<_> = g.neighbors(NodeIndexable::from_index(&g, 0)).collect();
+    let neighbors_1_dir: Vec<_> = g.neighbors(NodeIndexable::from_index(&g, 1)).collect();
+
+    assert_eq!(
+        neighbors_0_dir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_dir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4)
+        ]
+    );
+
+    let g = StableGraph::<(), (), Undirected>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_undir: Vec<_> = g.neighbors(NodeIndexable::from_index(&g, 0)).collect();
+    let neighbors_1_undir: Vec<_> = g.neighbors(NodeIndexable::from_index(&g, 1)).collect();
+
+    assert_eq!(
+        neighbors_0_undir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_undir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+}
+
+/// Test that the order of neighbors returned by `neighbors_directed` is correct.
+/// See `neighbors_directed` docs for more details.
+#[test]
+fn test_neighbors_directed_iteration_order() {
+    // The test graph looks like this:
+    //      5
+    //      |
+    //      v
+    // 0 -> 1 -> 3
+    // |    |
+    // v    v
+    // 2    4
+    let g = StableGraph::<(), (), Directed>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_outgoing_dir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 0), Outgoing)
+        .collect();
+    let neighbors_0_incoming_dir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 0), Incoming)
+        .collect();
+    let neighbors_1_outgoing_dir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 1), Outgoing)
+        .collect();
+    let neighbors_1_incoming_dir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 1), Incoming)
+        .collect();
+
+    assert_eq!(
+        neighbors_0_outgoing_dir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(neighbors_0_incoming_dir, vec![]);
+    assert_eq!(
+        neighbors_1_outgoing_dir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_incoming_dir,
+        vec![
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+
+    let g = StableGraph::<(), (), Undirected>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_outgoing_undir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 0), Outgoing)
+        .collect();
+    let neighbors_0_incoming_undir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 0), Incoming)
+        .collect();
+    let neighbors_1_outgoing_undir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 1), Outgoing)
+        .collect();
+    let neighbors_1_incoming_undir: Vec<_> = g
+        .neighbors_directed(NodeIndexable::from_index(&g, 1), Incoming)
+        .collect();
+
+    assert_eq!(
+        neighbors_0_outgoing_undir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_0_incoming_undir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_outgoing_undir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_incoming_undir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+}
+
+/// Test that the order of neighbors returned by `neighbors_undirected` is correct.
+/// See `neighbors_undirected` docs for more details.
+#[test]
+fn test_neighbors_undirected_iteration_order() {
+    // The test graph looks like this:
+    //      5
+    //      |
+    //      v
+    // 0 -> 1 -> 3
+    // |    |
+    // v    v
+    // 2    4
+    let g = StableGraph::<(), (), Directed>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_outgoing_dir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 0))
+        .collect();
+    let neighbors_0_incoming_dir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 0))
+        .collect();
+    let neighbors_1_outgoing_dir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 1))
+        .collect();
+    let neighbors_1_incoming_dir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 1))
+        .collect();
+
+    assert_eq!(
+        neighbors_0_outgoing_dir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_0_incoming_dir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_outgoing_dir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_incoming_dir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+
+    let g = StableGraph::<(), (), Undirected>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let neighbors_0_outgoing_undir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 0))
+        .collect();
+    let neighbors_0_incoming_undir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 0))
+        .collect();
+    let neighbors_1_outgoing_undir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 1))
+        .collect();
+    let neighbors_1_incoming_undir: Vec<_> = g
+        .neighbors_undirected(NodeIndexable::from_index(&g, 1))
+        .collect();
+
+    assert_eq!(
+        neighbors_0_outgoing_undir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_0_incoming_undir,
+        vec![
+            NodeIndexable::from_index(&g, 2),
+            NodeIndexable::from_index(&g, 1)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_outgoing_undir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+    assert_eq!(
+        neighbors_1_incoming_undir,
+        vec![
+            NodeIndexable::from_index(&g, 3),
+            NodeIndexable::from_index(&g, 4),
+            NodeIndexable::from_index(&g, 5),
+            NodeIndexable::from_index(&g, 0)
+        ]
+    );
+}
+
+/// Test that the order of neighbors returned by `edges` is correct.
+/// See `edges` docs for more details.
+#[test]
+fn test_edges_iteration_order() {
+    // The test graph looks like this:
+    //      5
+    //      |
+    //      v
+    // 0 -> 1 -> 3
+    // |    |
+    // v    v
+    // 2    4
+    let g = StableGraph::<(), (), Directed>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let edges_0_dir: Vec<_> = g
+        .edges(NodeIndexable::from_index(&g, 0))
+        .map(|r| r.id())
+        .collect();
+    let edges_1_dir: Vec<_> = g
+        .edges(NodeIndexable::from_index(&g, 1))
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_0_dir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 2)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(
+        edges_1_dir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 3)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 4)
+            )
+            .unwrap(),
+        ]
+    );
+
+    let g = StableGraph::<(), (), Undirected>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let edges_0_undir: Vec<_> = g
+        .edges(NodeIndexable::from_index(&g, 0))
+        .map(|r| r.id())
+        .collect();
+    let edges_1_undir: Vec<_> = g
+        .edges(NodeIndexable::from_index(&g, 1))
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_0_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 2)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap(),
+        ]
+    );
+
+    assert_eq!(
+        edges_1_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 3)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 4)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 5)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 0)
+            )
+            .unwrap()
+        ]
+    );
+}
+
+/// Test that the order of neighbors returned by `edges_directed` is correct.
+/// See `edges_directed` docs for more details.
+#[test]
+fn test_edges_directed_iteration_order() {
+    // The test graph looks like this:
+    //      5
+    //      |
+    //      v
+    // 0 -> 1 -> 3
+    // |    |
+    // v    v
+    // 2    4
+    let g = StableGraph::<(), (), Directed>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let edges_directed_0_outgoing_dir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 0), Outgoing)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_0_incoming_dir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 0), Incoming)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_1_outgoing_dir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 1), Outgoing)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_1_incoming_dir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 1), Incoming)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_directed_0_outgoing_dir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 2)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(edges_directed_0_incoming_dir, vec![]);
+    assert_eq!(
+        edges_directed_1_outgoing_dir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 3)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 4)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(
+        edges_directed_1_incoming_dir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 5),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap()
+        ]
+    );
+
+    let g = StableGraph::<(), (), Undirected>::from_edges([(0, 1), (0, 2), (1, 4), (1, 3), (5, 1)]);
+
+    let edges_directed_0_outgoing_undir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 0), Outgoing)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_0_incoming_undir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 0), Incoming)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_1_outgoing_undir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 1), Outgoing)
+        .map(|r| r.id())
+        .collect();
+    let edges_directed_1_incoming_undir: Vec<_> = g
+        .edges_directed(NodeIndexable::from_index(&g, 1), Incoming)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_directed_0_outgoing_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 2)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(
+        edges_directed_0_incoming_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 2)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 0),
+                NodeIndexable::from_index(&g, 1)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(
+        edges_directed_1_outgoing_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 3)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 4)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 5)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 0)
+            )
+            .unwrap()
+        ]
+    );
+    assert_eq!(
+        edges_directed_1_incoming_undir,
+        vec![
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 3)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 4)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 5)
+            )
+            .unwrap(),
+            g.find_edge(
+                NodeIndexable::from_index(&g, 1),
+                NodeIndexable::from_index(&g, 0)
+            )
+            .unwrap()
+        ]
+    );
+}
+
+/// Test that the order of neighbors returned by `edges_connecting` is correct.
+/// See `edges_connecting` docs for more details.
+#[test]
+fn test_edges_connecting_iteration_order() {
+    let mut g = StableGraph::<(), u8, Directed>::new();
+
+    let node_zero = g.add_node(());
+    let node_one = g.add_node(());
+
+    // Edges from node_zero to node_one
+    let edge_zero = g.add_edge(node_zero, node_one, 1);
+    let edge_one = g.add_edge(node_zero, node_one, 2);
+    let edge_two = g.add_edge(node_zero, node_one, 3);
+
+    // Edges from node_one to node_zero
+    let edge_three = g.add_edge(node_one, node_zero, 4);
+    let edge_four = g.add_edge(node_one, node_zero, 5);
+    let edge_five = g.add_edge(node_one, node_zero, 6);
+
+    let edges_connecting_one_to_two: Vec<_> = g
+        .edges_connecting(node_zero, node_one)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_connecting_one_to_two,
+        vec![edge_two, edge_one, edge_zero]
+    );
+
+    let edges_connecting_two_to_one: Vec<_> = g
+        .edges_connecting(node_one, node_zero)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_connecting_two_to_one,
+        vec![edge_five, edge_four, edge_three]
+    );
+
+    let mut g = StableGraph::<(), u8, Undirected>::default();
+
+    let node_zero = g.add_node(());
+    let node_one = g.add_node(());
+
+    // Edges from node_zero to node_one
+    let edge_zero = g.add_edge(node_zero, node_one, 1);
+    let edge_one = g.add_edge(node_zero, node_one, 2);
+    let edge_two = g.add_edge(node_zero, node_one, 3);
+
+    // Edges from node_one to node_zero
+    let edge_three = g.add_edge(node_one, node_zero, 4);
+    let edge_four = g.add_edge(node_one, node_zero, 5);
+    let edge_five = g.add_edge(node_one, node_zero, 6);
+
+    let edges_connecting_one_to_two: Vec<_> = g
+        .edges_connecting(node_zero, node_one)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_connecting_one_to_two,
+        vec![edge_two, edge_one, edge_zero, edge_five, edge_four, edge_three]
+    );
+
+    let edges_connecting_two_to_one: Vec<_> = g
+        .edges_connecting(node_one, node_zero)
+        .map(|r| r.id())
+        .collect();
+
+    assert_eq!(
+        edges_connecting_two_to_one,
+        vec![edge_five, edge_four, edge_three, edge_two, edge_one, edge_zero]
+    );
 }

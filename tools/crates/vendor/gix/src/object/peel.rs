@@ -3,11 +3,10 @@
 use crate::{
     object,
     object::{peel, Kind},
-    Object, Tree,
+    Commit, Object, Tree,
 };
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod to_kind {
     mod error {
 
@@ -70,8 +69,17 @@ impl<'repo> Object<'repo> {
     }
 
     /// Peel this object into a tree and return it, if this is possible.
+    ///
+    /// This will follow tag objects and commits until their tree is reached.
     pub fn peel_to_tree(self) -> Result<Tree<'repo>, peel::to_kind::Error> {
         Ok(self.peel_to_kind(gix_object::Kind::Tree)?.into_tree())
+    }
+
+    /// Peel this object into a commit and return it, if this is possible.
+    ///
+    /// This will follow tag objects until a commit is reached.
+    pub fn peel_to_commit(self) -> Result<Commit<'repo>, peel::to_kind::Error> {
+        Ok(self.peel_to_kind(gix_object::Kind::Commit)?.into_commit())
     }
 
     // TODO: tests

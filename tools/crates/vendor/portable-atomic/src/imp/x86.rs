@@ -21,8 +21,8 @@ use core::arch::asm;
 use core::sync::atomic::Ordering;
 
 use super::core_atomic::{
-    AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32, AtomicU64,
-    AtomicU8, AtomicUsize,
+    AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize, AtomicU8, AtomicU16, AtomicU32,
+    AtomicU64, AtomicUsize,
 };
 
 #[cfg(target_pointer_width = "32")]

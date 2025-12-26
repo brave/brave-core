@@ -286,7 +286,7 @@ impl Uuid {
     /// ```
     pub fn from_slice(b: &[u8]) -> Result<Uuid, Error> {
         if b.len() != 16 {
-            return Err(Error(ErrorKind::ByteLength { len: b.len() }));
+            return Err(Error(ErrorKind::ParseByteLength { len: b.len() }));
         }
 
         let mut bytes: Bytes = [0; 16];
@@ -327,7 +327,7 @@ impl Uuid {
     /// ```
     pub fn from_slice_le(b: &[u8]) -> Result<Uuid, Error> {
         if b.len() != 16 {
-            return Err(Error(ErrorKind::ByteLength { len: b.len() }));
+            return Err(Error(ErrorKind::ParseByteLength { len: b.len() }));
         }
 
         let mut bytes: Bytes = [0; 16];
@@ -431,8 +431,7 @@ impl Uuid {
     /// ```
     #[inline]
     pub fn from_bytes_ref(bytes: &Bytes) -> &Uuid {
-        // SAFETY: `Bytes` and `Uuid` have the same ABI
-        unsafe { &*(bytes as *const Bytes as *const Uuid) }
+        unsafe_transmute_ref!(bytes)
     }
 
     // NOTE: There is no `from_u128_ref` because in little-endian
@@ -571,7 +570,6 @@ impl Builder {
     /// Creating a UUID using the current system timestamp:
     ///
     /// ```
-    /// # use std::convert::TryInto;
     /// use std::time::{Duration, SystemTime};
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # use uuid::{Builder, Uuid, Variant, Version, Timestamp, NoContext};

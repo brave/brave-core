@@ -27,6 +27,7 @@ pub(crate) const SERDE_CONFIG: EncodedConfig =
 
 /// Serialize an [`OffsetDateTime`] using the well-known ISO 8601 format.
 #[cfg(feature = "formatting")]
+#[inline]
 pub fn serialize<S: Serializer>(
     datetime: &OffsetDateTime,
     serializer: S,
@@ -39,6 +40,7 @@ pub fn serialize<S: Serializer>(
 
 /// Deserialize an [`OffsetDateTime`] from its ISO 8601 representation.
 #[cfg(feature = "parsing")]
+#[inline]
 pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDateTime, D::Error> {
     deserializer.deserialize_str(Visitor::<Iso8601<SERDE_CONFIG>>(PhantomData))
 }
@@ -51,11 +53,11 @@ pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDat
 /// [ISO 8601 format]: https://www.iso.org/iso-8601-date-and-time-format.html
 /// [with]: https://serde.rs/field-attrs.html#with
 pub mod option {
-    #[allow(clippy::wildcard_imports)]
     use super::*;
 
     /// Serialize an [`Option<OffsetDateTime>`] using the well-known ISO 8601 format.
     #[cfg(feature = "formatting")]
+    #[inline]
     pub fn serialize<S: Serializer>(
         option: &Option<OffsetDateTime>,
         serializer: S,
@@ -69,6 +71,7 @@ pub mod option {
 
     /// Deserialize an [`Option<OffsetDateTime>`] from its ISO 8601 representation.
     #[cfg(feature = "parsing")]
+    #[inline]
     pub fn deserialize<'a, D: Deserializer<'a>>(
         deserializer: D,
     ) -> Result<Option<OffsetDateTime>, D::Error> {

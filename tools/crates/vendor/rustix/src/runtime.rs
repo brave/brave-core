@@ -5,7 +5,10 @@
 //!
 //!  - Some of the functions in this module cannot be used in a process which
 //!    also has a libc present. This can be true even for functions that have
-//!    the same name as a libc function that Rust code can use.
+//!    the same name as a libc function that Rust code can use. Such functions
+//!    are not marked `unsafe` (unless they are unsafe for other reasons), even
+//!    though they invoke Undefined Behavior if called in a process which has a
+//!    libc present.
 //!
 //!  - Some of the functions in this module don't behave exactly the same way
 //!    as functions in libc with similar names. Sometimes information about the
@@ -26,7 +29,14 @@
 //! program or what they're doing, but the features in this module generally
 //! can only be used by one entity within a process.
 //!
+//! All that said, there are some functions in this module would could
+//! potentially be stabilized and moved to other modules. See also the
+//! documentation for specific functions in the [`not_implemented`] module, and
+//! the discussion in [#1314].
+//!
 //! [Origin]: https://github.com/sunfishcode/origin#readme
+//! [`not_implemented`]: crate::not_implemented
+//! [#1314]: https://github.com/bytecodealliance/rustix/issues/1314
 //!
 //! # Safety
 //!
@@ -35,45 +45,145 @@
 //! serious problems.
 #![allow(unsafe_code)]
 
-use crate::backend;
-#[cfg(linux_raw)]
 use crate::ffi::CStr;
-#[cfg(linux_raw)]
 #[cfg(feature = "fs")]
 use crate::fs::AtFlags;
-#[cfg(linux_raw)]
-use crate::io;
-#[cfg(linux_raw)]
 use crate::pid::Pid;
-#[cfg(linux_raw)]
+use crate::{backend, io};
 #[cfg(feature = "fs")]
 use backend::fd::AsFd;
-#[cfg(linux_raw)]
 use core::ffi::c_void;
 
-#[cfg(linux_raw)]
+pub use crate::kernel_sigset::KernelSigSet;
 pub use crate::signal::Signal;
 
-/// `sigaction`
-#[cfg(linux_raw)]
-pub type Sigaction = linux_raw_sys::general::kernel_sigaction;
+/// `kernel_sigaction`
+///
+/// On some architectures, the `sa_restorer` field is omitted.
+///
+/// This type does not have the same layout as `libc::sigaction`.
+#[allow(missing_docs)]
+#[derive(Debug, Default, Clone)]
+#[repr(C)]
+pub struct KernelSigaction {
+    pub sa_handler_kernel: KernelSighandler,
+    pub sa_flags: KernelSigactionFlags,
+    #[cfg(not(any(
+        target_arch = "csky",
+        target_arch = "loongarch64",
+        target_arch = "mips",
+        target_arch = "mips32r6",
+        target_arch = "mips64",
+        target_arch = "mips64r6",
+        target_arch = "riscv32",
+        target_arch = "riscv64"
+    )))]
+    pub sa_restorer: KernelSigrestore,
+    pub sa_mask: KernelSigSet,
+}
+
+bitflags::bitflags! {
+    /// Flags for use with [`KernelSigaction`].
+    ///
+    /// This type does not have the same layout as `sa_flags` field in
+    /// `libc::sigaction`, however the flags have the same values as their
+    /// libc counterparts.
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug, Default)]
+    pub struct KernelSigactionFlags: crate::ffi::c_ulong {
+        /// `SA_NOCLDSTOP`
+        const NOCLDSTOP = linux_raw_sys::general::SA_NOCLDSTOP as _;
+
+        /// `SA_NOCLDWAIT` (since Linux 2.6)
+        const NOCLDWAIT = linux_raw_sys::general::SA_NOCLDWAIT as _;
+
+        /// `SA_NODEFER`
+        const NODEFER = linux_raw_sys::general::SA_NODEFER as _;
+
+        /// `SA_ONSTACK`
+        const ONSTACK = linux_raw_sys::general::SA_ONSTACK as _;
+
+        /// `SA_RESETHAND`
+        const RESETHAND = linux_raw_sys::general::SA_RESETHAND as _;
+
+        /// `SA_RESTART`
+        const RESTART = linux_raw_sys::general::SA_RESTART as _;
+
+        /// `SA_RESTORER`
+        #[cfg(not(any(
+            target_arch = "csky",
+            target_arch = "loongarch64",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "mips64",
+            target_arch = "mips64r6",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        )))]
+        const RESTORER = linux_raw_sys::general::SA_RESTORER as _;
+
+        /// `SA_SIGINFO` (since Linux 2.2)
+        const SIGINFO = linux_raw_sys::general::SA_SIGINFO as _;
+
+        /// `SA_UNSUPPORTED` (since Linux 5.11)
+        const UNSUPPORTED = linux_raw_sys::general::SA_UNSUPPORTED as _;
+
+        /// `SA_EXPOSE_TAGBITS` (since Linux 5.11)
+        const EXPOSE_TAGBITS = linux_raw_sys::general::SA_EXPOSE_TAGBITS as _;
+
+        /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
+        const _ = !0;
+    }
+}
+
+/// `__sigrestore_t`
+///
+/// This type differs from `libc::sigrestore_t`, but can be transmuted to it.
+pub type KernelSigrestore = Option<unsafe extern "C" fn()>;
+
+/// `__kernel_sighandler_t`
+///
+/// This type differs from `libc::sighandler_t`, but can be transmuted to it.
+pub type KernelSighandler = Option<unsafe extern "C" fn(arg1: crate::ffi::c_int)>;
+
+/// Return a special “ignore” signal handler for ignoring signals.
+///
+/// This isn't the `SIG_IGN` value itself; it's a function that returns the
+/// `SIG_IGN` value.
+///
+/// If you're looking for `kernel_sig_dfl`; use [`KERNEL_SIG_DFL`].
+#[doc(alias = "SIG_IGN")]
+#[must_use]
+pub const fn kernel_sig_ign() -> KernelSighandler {
+    linux_raw_sys::signal_macros::sig_ign()
+}
+
+/// A special “default” signal handler representing the default behavior
+/// for handling a signal.
+///
+/// If you're looking for `KERNEL_SIG_IGN`; use [`kernel_sig_ign`].
+#[doc(alias = "SIG_DFL")]
+pub const KERNEL_SIG_DFL: KernelSighandler = linux_raw_sys::signal_macros::SIG_DFL;
 
 /// `stack_t`
-#[cfg(linux_raw)]
-pub type Stack = linux_raw_sys::general::stack_t;
-
-/// `sigset_t`
-#[cfg(linux_raw)]
-pub type Sigset = linux_raw_sys::general::kernel_sigset_t;
+///
+/// This type is guaranteed to have the same layout as `libc::stack_t`.
+///
+/// If we want to expose this in public APIs, we should encapsulate the
+/// `linux_raw_sys` type.
+pub use linux_raw_sys::general::stack_t as Stack;
 
 /// `siginfo_t`
-#[cfg(linux_raw)]
-pub type Siginfo = linux_raw_sys::general::siginfo_t;
+///
+/// This type is guaranteed to have the same layout as `libc::siginfo_t`.
+///
+/// If we want to expose this in public APIs, we should encapsulate the
+/// `linux_raw_sys` type.
+pub use linux_raw_sys::general::siginfo_t as Siginfo;
 
 pub use crate::timespec::{Nsecs, Secs, Timespec};
 
-/// `SIG_*` constants for use with [`sigprocmask`].
-#[cfg(linux_raw)]
+/// `SIG_*` constants for use with [`kernel_sigprocmask`].
 #[repr(u32)]
 pub enum How {
     /// `SIG_BLOCK`
@@ -121,7 +231,6 @@ pub unsafe fn set_tid_address(data: *mut c_void) -> Pid {
     backend::runtime::syscalls::tls::set_tid_address(data)
 }
 
-#[cfg(linux_raw)]
 #[cfg(target_arch = "x86")]
 pub use backend::runtime::tls::UserDesc;
 
@@ -151,8 +260,7 @@ pub unsafe fn exit_thread(status: i32) -> ! {
 /// [POSIX `_Exit`]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/_Exit.html
 /// [Linux `exit_group`]: https://man7.org/linux/man-pages/man2/exit_group.2.html
 /// [Linux `_Exit`]: https://man7.org/linux/man-pages/man2/_Exit.2.html
-#[doc(alias = "_exit")]
-#[doc(alias = "_Exit")]
+#[doc(alias = "_exit", alias = "_Exit")]
 #[inline]
 pub fn exit_group(status: i32) -> ! {
     backend::runtime::syscalls::exit_group(status)
@@ -177,17 +285,6 @@ pub const EXIT_SUCCESS: i32 = backend::c::EXIT_SUCCESS;
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/stdlib.h.html
 /// [Linux]: https://man7.org/linux/man-pages/man3/exit.3.html
 pub const EXIT_FAILURE: i32 = backend::c::EXIT_FAILURE;
-
-/// Return fields from the main executable segment headers ("phdrs") relevant
-/// to initializing TLS provided to the program at startup.
-///
-/// `addr` will always be non-null, even when the TLS data is absent, so that
-/// the `addr` and `file_size` parameters are suitable for creating a slice
-/// with `slice::from_raw_parts`.
-#[inline]
-pub fn startup_tls_info() -> StartupTlsInfo {
-    backend::runtime::tls::startup_tls_info()
-}
 
 /// `(getauxval(AT_PHDR), getauxval(AT_PHENT), getauxval(AT_PHNUM))`—Returns
 /// the address, ELF segment header size, and number of ELF segment headers for
@@ -235,13 +332,11 @@ pub fn random() -> *const [u8; 16] {
     backend::param::auxv::random()
 }
 
-#[cfg(linux_raw)]
-pub use backend::runtime::tls::StartupTlsInfo;
-
 /// `fork()`—Creates a new process by duplicating the calling process.
 ///
-/// On success, the pid of the child process is returned in the parent, and
-/// `None` is returned in the child.
+/// On success, `Fork::ParentOf` containing the pid of the child process is
+/// returned in the parent, and `Fork::Child` containing the pid of the child
+/// process is returned in the child.
 ///
 /// Unlike its POSIX and libc counterparts, this `fork` does not invoke any
 /// handlers (such as those registered with `pthread_atfork`).
@@ -321,8 +416,8 @@ pub use backend::runtime::tls::StartupTlsInfo;
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/fork.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/fork.2.html
 /// [async-signal-safe]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/V2_chap02.html#tag_15_04_03
-pub unsafe fn fork() -> io::Result<Fork> {
-    backend::runtime::syscalls::fork()
+pub unsafe fn kernel_fork() -> io::Result<Fork> {
+    backend::runtime::syscalls::kernel_fork()
 }
 
 /// Regular Unix `fork` doesn't tell the child its own PID because it assumes
@@ -335,11 +430,15 @@ pub enum Fork {
 
     /// This is returned in the parent process after a `fork`. It holds the PID
     /// of the child.
-    Parent(Pid),
+    ParentOf(Pid),
 }
 
 /// `execveat(dirfd, path.as_c_str(), argv, envp, flags)`—Execute a new
 /// command using the current process.
+///
+/// Taking raw-pointers-to-raw-pointers is convenient for c-scape, but we
+/// should think about potentially a more Rust-idiomatic API if this is ever
+/// made public.
 ///
 /// # Safety
 ///
@@ -353,6 +452,7 @@ pub enum Fork {
 #[inline]
 #[cfg(feature = "fs")]
 #[cfg_attr(docsrs, doc(cfg(feature = "fs")))]
+#[must_use]
 pub unsafe fn execveat<Fd: AsFd>(
     dirfd: Fd,
     path: &CStr,
@@ -366,6 +466,10 @@ pub unsafe fn execveat<Fd: AsFd>(
 /// `execve(path.as_c_str(), argv, envp)`—Execute a new command using the
 /// current process.
 ///
+/// Taking raw-pointers-to-raw-pointers is convenient for c-scape, but we
+/// should think about potentially a more Rust-idiomatic API if this is ever
+/// made public.
+///
 /// # Safety
 ///
 /// The `argv` and `envp` pointers must point to NUL-terminated arrays, and
@@ -376,11 +480,12 @@ pub unsafe fn execveat<Fd: AsFd>(
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/execve.2.html
 #[inline]
+#[must_use]
 pub unsafe fn execve(path: &CStr, argv: *const *const u8, envp: *const *const u8) -> io::Errno {
     backend::runtime::syscalls::execve(path, argv, envp)
 }
 
-/// `sigaction(signal, &new, &old)`—Modify or query a signal handler.
+/// `sigaction(signal, &new, &old)`—Modify and/or query a signal handler.
 ///
 /// # Safety
 ///
@@ -395,16 +500,38 @@ pub unsafe fn execve(path: &CStr, argv: *const *const u8, envp: *const *const u8
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/sigaction.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/sigaction.2.html
 #[inline]
-pub unsafe fn sigaction(signal: Signal, new: Option<Sigaction>) -> io::Result<Sigaction> {
-    backend::runtime::syscalls::sigaction(signal, new)
+pub unsafe fn kernel_sigaction(
+    signal: Signal,
+    new: Option<KernelSigaction>,
+) -> io::Result<KernelSigaction> {
+    backend::runtime::syscalls::kernel_sigaction(signal, new)
 }
 
-/// `sigaltstack(new, old)`—Modify or query a signal stack.
+/// `sigaltstack(new, old)`—Modify and/or query a signal stack.
 ///
 /// # Safety
 ///
-/// You're on your own. And on top of all the troubles with signal handlers,
-/// this implementation is highly experimental.
+/// The memory region described by `new` must readable and writable and larger
+/// than the platform minimum signal stack size, and must have a guard region
+/// that conforms to the platform conventions for stack guard regions. The
+/// flags in `new` must be valid. This function does not diagnose all the
+/// errors that libc `sigaltstack` functions are documented as diagnosing.
+///
+/// While the memory region pointed to by `new` is registered as a signal
+/// stack, it must remain readable and writable, and must not be mutated in
+/// any way other than by having a signal handler run in it, and must not be
+/// the referent of a Rust reference from outside the signal handler.
+///
+/// If code elsewhere in the program is depending on signal handlers being run
+/// on a particular stack, this could break that code's assumptions. And if the
+/// caller is depending on signal handlers being run on the stack specified in
+/// the call, its assumptions could be broken by code elsewhere in the program
+/// calling this function.
+///
+/// There are probably things out there that assume that all alternate signal
+/// stack registration goes through libc, and this does not go through libc.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [POSIX]
@@ -413,17 +540,22 @@ pub unsafe fn sigaction(signal: Signal, new: Option<Sigaction>) -> io::Result<Si
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/sigaltstack.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/sigaltstack.2.html
 #[inline]
-pub unsafe fn sigaltstack(new: Option<Stack>) -> io::Result<Stack> {
-    backend::runtime::syscalls::sigaltstack(new)
+pub unsafe fn kernel_sigaltstack(new: Option<Stack>) -> io::Result<Stack> {
+    backend::runtime::syscalls::kernel_sigaltstack(new)
 }
 
 /// `tkill(tid, sig)`—Send a signal to a thread.
 ///
 /// # Safety
 ///
-/// You're on your own. And on top of all the troubles with signal handlers,
-/// this implementation is highly experimental. Also, this is not `tgkill`, so
-/// the warning about the hazard of recycled thread ID's applies.
+/// Causing an individual thread to abruptly terminate without involving the
+/// process' thread runtime (such as the libpthread or the libc) evokes
+/// undefined behavior.
+///
+/// Also, this is not `tgkill`, so the warning about the hazard of recycled
+/// thread IDs applies.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [Linux]
@@ -436,11 +568,21 @@ pub unsafe fn tkill(tid: Pid, sig: Signal) -> io::Result<()> {
 
 /// `rt_sigprocmask(how, set, oldset)`—Adjust the process signal mask.
 ///
+/// If this is ever exposed publicly, we should think about whether it should
+/// mask out signals reserved by libc.
+///
 /// # Safety
 ///
-/// You're on your own. And on top of all the troubles with signal handlers,
-/// this implementation is highly experimental. Even further, it differs from
-/// the libc `sigprocmask` in several non-obvious and unsafe ways.
+/// If there is a libc in the process, the `set` must not contain any signal
+/// reserved by the libc.
+///
+/// If code elsewhere in the program is depending on delivery of a signal for
+/// any reason, for example to prevent it from executing some code, this could
+/// cause it to miss that signal, and for example execute that code. And if the
+/// caller is depending on delivery of a signal for any reason, its assumptions
+/// could be broken by code elsewhere in the program calling this function.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [Linux `rt_sigprocmask`]
@@ -451,81 +593,120 @@ pub unsafe fn tkill(tid: Pid, sig: Signal) -> io::Result<()> {
 #[inline]
 #[doc(alias = "pthread_sigmask")]
 #[doc(alias = "rt_sigprocmask")]
-pub unsafe fn sigprocmask(how: How, set: Option<&Sigset>) -> io::Result<Sigset> {
-    backend::runtime::syscalls::sigprocmask(how, set)
+pub unsafe fn kernel_sigprocmask(how: How, set: Option<&KernelSigSet>) -> io::Result<KernelSigSet> {
+    backend::runtime::syscalls::kernel_sigprocmask(how, set)
 }
 
 /// `sigpending()`—Query the pending signals.
+///
+/// If this is ever exposed publicly, we should think about whether it should
+/// mask out signals reserved by libc.
 ///
 /// # References
 ///  - [Linux `sigpending`]
 ///
 /// [Linux `sigpending`]: https://man7.org/linux/man-pages/man2/sigpending.2.html
 #[inline]
-pub fn sigpending() -> Sigset {
-    backend::runtime::syscalls::sigpending()
+pub fn kernel_sigpending() -> KernelSigSet {
+    backend::runtime::syscalls::kernel_sigpending()
 }
 
 /// `sigsuspend(set)`—Suspend the calling thread and wait for signals.
+///
+/// If this is ever exposed publicly, we should think about whether it should
+/// be made to fail if given signals reserved by libc.
 ///
 /// # References
 ///  - [Linux `sigsuspend`]
 ///
 /// [Linux `sigsuspend`]: https://man7.org/linux/man-pages/man2/sigsuspend.2.html
 #[inline]
-pub fn sigsuspend(set: &Sigset) -> io::Result<()> {
-    backend::runtime::syscalls::sigsuspend(set)
+pub fn kernel_sigsuspend(set: &KernelSigSet) -> io::Result<()> {
+    backend::runtime::syscalls::kernel_sigsuspend(set)
 }
 
 /// `sigwait(set)`—Wait for signals.
 ///
+/// If this is ever exposed publicly, we should think about whether it should
+/// mask out signals reserved by libc.
+///
 /// # Safety
 ///
-/// If code elsewhere in the process is depending on delivery of a signal to
-/// prevent it from executing some code, this could cause it to miss that
-/// signal and execute that code.
+/// If there is a libc in the process, the `set` must not contain any signal
+/// reserved by the libc.
+///
+/// If code elsewhere in the program is depending on delivery of a signal for
+/// any reason, for example to prevent it from executing some code, this could
+/// cause it to miss that signal, and for example execute that code. And if the
+/// caller is depending on delivery of a signal for any reason, its assumptions
+/// could be broken by code elsewhere in the program calling this function.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man3/sigwait.3.html
 #[inline]
-pub unsafe fn sigwait(set: &Sigset) -> io::Result<Signal> {
-    backend::runtime::syscalls::sigwait(set)
+pub unsafe fn kernel_sigwait(set: &KernelSigSet) -> io::Result<Signal> {
+    backend::runtime::syscalls::kernel_sigwait(set)
 }
 
 /// `sigwaitinfo(set)`—Wait for signals, returning a [`Siginfo`].
 ///
+/// If this is ever exposed publicly, we should think about whether it should
+/// mask out signals reserved by libc.
+///
 /// # Safety
 ///
-/// If code elsewhere in the process is depending on delivery of a signal to
-/// prevent it from executing some code, this could cause it to miss that
-/// signal and execute that code.
+/// If there is a libc in the process, the `set` must not contain any signal
+/// reserved by the libc.
+///
+/// If code elsewhere in the program is depending on delivery of a signal for
+/// any reason, for example to prevent it from executing some code, this could
+/// cause it to miss that signal, and for example execute that code. And if the
+/// caller is depending on delivery of a signal for any reason, its assumptions
+/// could be broken by code elsewhere in the program calling this function.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/sigwaitinfo.2.html
 #[inline]
-pub unsafe fn sigwaitinfo(set: &Sigset) -> io::Result<Siginfo> {
-    backend::runtime::syscalls::sigwaitinfo(set)
+pub unsafe fn kernel_sigwaitinfo(set: &KernelSigSet) -> io::Result<Siginfo> {
+    backend::runtime::syscalls::kernel_sigwaitinfo(set)
 }
 
 /// `sigtimedwait(set)`—Wait for signals, optionally with a timeout.
 ///
+/// If this is ever exposed publicly, we should think about whether it should
+/// mask out signals reserved by libc.
+///
 /// # Safety
 ///
-/// If code elsewhere in the process is depending on delivery of a signal to
-/// prevent it from executing some code, this could cause it to miss that
-/// signal and execute that code.
+/// If there is a libc in the process, the `set` must not contain any signal
+/// reserved by the libc.
+///
+/// If code elsewhere in the program is depending on delivery of a signal for
+/// any reason, for example to prevent it from executing some code, this could
+/// cause it to miss that signal, and for example execute that code. And if the
+/// caller is depending on delivery of a signal for any reason, its assumptions
+/// could be broken by code elsewhere in the program calling this function.
+///
+/// There may be further safety hazards not yet documented here.
 ///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/sigtimedwait.2.html
 #[inline]
-pub unsafe fn sigtimedwait(set: &Sigset, timeout: Option<Timespec>) -> io::Result<Siginfo> {
-    backend::runtime::syscalls::sigtimedwait(set, timeout)
+pub unsafe fn kernel_sigtimedwait(
+    set: &KernelSigSet,
+    timeout: Option<&Timespec>,
+) -> io::Result<Siginfo> {
+    backend::runtime::syscalls::kernel_sigtimedwait(set, timeout)
 }
 
 /// `getauxval(AT_SECURE)`—Returns the Linux “secure execution” mode.
@@ -542,13 +723,6 @@ pub unsafe fn sigtimedwait(set: &Sigset, timeout: Option<Timespec>) -> io::Resul
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man3/getauxval.3.html
-#[cfg(any(
-    linux_raw,
-    any(
-        all(target_os = "android", target_pointer_width = "64"),
-        target_os = "linux",
-    )
-))]
 #[inline]
 pub fn linux_secure() -> bool {
     backend::param::auxv::linux_secure()
@@ -560,28 +734,28 @@ pub fn linux_secure() -> bool {
 ///
 /// This is not identical to `brk` in libc. libc `brk` may have bookkeeping
 /// that needs to be kept up to date that this doesn't keep up to date, so
-/// don't use it unless you are implementing libc.
-#[cfg(linux_raw)]
+/// don't use it unless you know your code won't share a process with a libc
+/// (perhaps because you yourself are implementing a libc).
 #[inline]
-pub unsafe fn brk(addr: *mut c_void) -> io::Result<*mut c_void> {
-    backend::runtime::syscalls::brk(addr)
+pub unsafe fn kernel_brk(addr: *mut c_void) -> io::Result<*mut c_void> {
+    backend::runtime::syscalls::kernel_brk(addr)
 }
 
-/// `__SIGRTMIN`—The start of the realtime signal range.
+/// `SIGRTMIN`—The start of the raw OS “real-time” signal range.
 ///
 /// This is the raw `SIGRTMIN` value from the OS, which is not the same as the
-/// `SIGRTMIN` macro provided by libc. Don't use this unless you are
-/// implementing libc.
-#[cfg(linux_raw)]
-pub const SIGRTMIN: u32 = linux_raw_sys::general::SIGRTMIN;
+/// `SIGRTMIN` macro provided by libc. Don't use this unless you know your code
+/// won't share a process with a libc (perhaps because you yourself are
+/// implementing a libc).
+pub const KERNEL_SIGRTMIN: i32 = linux_raw_sys::general::SIGRTMIN as i32;
 
-/// `__SIGRTMAX`—The last of the realtime signal range.
+/// `SIGRTMAX`—The last of the raw OS “real-time” signal range.
 ///
 /// This is the raw `SIGRTMAX` value from the OS, which is not the same as the
-/// `SIGRTMAX` macro provided by libc. Don't use this unless you are
-/// implementing libc.
-#[cfg(linux_raw)]
-pub const SIGRTMAX: u32 = {
+/// `SIGRTMAX` macro provided by libc. Don't use this unless you know your code
+/// won't share a process with a libc (perhaps because you yourself are
+/// implementing a libc).
+pub const KERNEL_SIGRTMAX: i32 = {
     // Use the actual `SIGRTMAX` value on platforms which define it.
     #[cfg(not(any(
         target_arch = "arm",
@@ -590,10 +764,23 @@ pub const SIGRTMAX: u32 = {
         target_arch = "x86_64",
     )))]
     {
-        linux_raw_sys::general::SIGRTMAX
+        linux_raw_sys::general::SIGRTMAX as i32
     }
 
     // On platforms that don't, derive it from `_NSIG`.
+    //
+    // In the Linux kernel headers, `_NSIG` refers to the number of signals
+    // known to the kernel. It's 64 on most architectures.
+    //
+    // In libc headers, `_NSIG` refers to the exclusive upper bound of the
+    // signals known to the kernel. It's 65 on most architectures.
+    //
+    // This discrepancy arises because a signal value of 0 is used as a
+    // sentinel, and the first `sigset_t` bit is signal 1 instead of 0. The
+    // Linux kernel headers and libc headers disagree on the interpretation of
+    // `_NSIG` as a result.
+    //
+    // Here, we use the Linux kernel header value.
     #[cfg(any(
         target_arch = "arm",
         target_arch = "s390x",
@@ -601,6 +788,138 @@ pub const SIGRTMAX: u32 = {
         target_arch = "x86_64",
     ))]
     {
-        linux_raw_sys::general::_NSIG - 1
+        linux_raw_sys::general::_NSIG as i32
     }
 };
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_assumptions() {
+        assert!(libc::SIGSYS < KERNEL_SIGRTMIN);
+        assert!(KERNEL_SIGRTMIN <= libc::SIGRTMIN());
+
+        // POSIX guarantees at least 8 RT signals.
+        assert!(libc::SIGRTMIN() + 8 <= KERNEL_SIGRTMAX);
+
+        // POSIX guarantees at least 8 RT signals, and it's not uncommon for
+        // libc implementations to reserve up to 3 for their own purposes.
+        assert!(KERNEL_SIGRTMIN + 8 + 3 <= KERNEL_SIGRTMAX);
+
+        assert!(KERNEL_SIGRTMAX <= libc::SIGRTMAX());
+        assert!(libc::SIGRTMAX() as u32 <= linux_raw_sys::general::_NSIG);
+
+        assert!(KERNEL_SIGRTMAX as usize - 1 < core::mem::size_of::<KernelSigSet>() * 8);
+    }
+
+    #[test]
+    fn test_layouts_matching_libc() {
+        use linux_raw_sys::general::siginfo__bindgen_ty_1__bindgen_ty_1;
+
+        // c-scape assumes rustix's `Siginfo` matches libc's. We don't use
+        // check_types macros because we want to test compatibility with actual
+        // libc, not the `crate::backend::c` which might be our own
+        // implementation.
+        assert_eq_size!(Siginfo, libc::siginfo_t);
+        assert_eq_align!(Siginfo, libc::siginfo_t);
+        assert_eq!(
+            memoffset::span_of!(Siginfo, ..),
+            memoffset::span_of!(Siginfo, __bindgen_anon_1)
+        );
+        assert_eq!(
+            memoffset::span_of!(siginfo__bindgen_ty_1__bindgen_ty_1, si_signo),
+            memoffset::span_of!(libc::siginfo_t, si_signo)
+        );
+        assert_eq!(
+            memoffset::span_of!(siginfo__bindgen_ty_1__bindgen_ty_1, si_errno),
+            memoffset::span_of!(libc::siginfo_t, si_errno)
+        );
+        assert_eq!(
+            memoffset::span_of!(siginfo__bindgen_ty_1__bindgen_ty_1, si_code),
+            memoffset::span_of!(libc::siginfo_t, si_code)
+        );
+
+        // c-scape assumes rustix's `Stack` matches libc's. Similar to above.
+        assert_eq_size!(Stack, libc::stack_t);
+        assert_eq_align!(Stack, libc::stack_t);
+        assert_eq!(
+            memoffset::span_of!(Stack, ss_sp),
+            memoffset::span_of!(libc::stack_t, ss_sp)
+        );
+        assert_eq!(
+            memoffset::span_of!(Stack, ss_flags),
+            memoffset::span_of!(libc::stack_t, ss_flags)
+        );
+        assert_eq!(
+            memoffset::span_of!(Stack, ss_size),
+            memoffset::span_of!(libc::stack_t, ss_size)
+        );
+    }
+
+    #[test]
+    fn test_layouts_matching_kernel() {
+        use linux_raw_sys::general as c;
+
+        // Rustix's versions of these must match the kernel's versions.
+        // Some architectures have `sa_restorer`.
+        #[cfg(not(any(
+            target_arch = "csky",
+            target_arch = "loongarch64",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "mips64",
+            target_arch = "mips64r6",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        )))]
+        check_renamed_struct!(
+            KernelSigaction,
+            kernel_sigaction,
+            sa_handler_kernel,
+            sa_flags,
+            sa_restorer,
+            sa_mask
+        );
+        // Some architectures omit `sa_restorer`.
+        #[cfg(any(
+            target_arch = "csky",
+            target_arch = "loongarch64",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "mips64",
+            target_arch = "mips64r6",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        ))]
+        check_renamed_struct!(
+            KernelSigaction,
+            kernel_sigaction,
+            sa_handler_kernel,
+            sa_flags,
+            sa_mask
+        );
+        assert_eq_size!(KernelSigactionFlags, crate::ffi::c_ulong);
+        assert_eq_align!(KernelSigactionFlags, crate::ffi::c_ulong);
+        check_renamed_type!(KernelSigrestore, __sigrestore_t);
+        check_renamed_type!(KernelSighandler, __kernel_sighandler_t);
+
+        assert_eq!(
+            libc::SA_NOCLDSTOP,
+            KernelSigactionFlags::NOCLDSTOP.bits() as _
+        );
+        assert_eq!(
+            libc::SA_NOCLDWAIT,
+            KernelSigactionFlags::NOCLDWAIT.bits() as _
+        );
+        assert_eq!(libc::SA_NODEFER, KernelSigactionFlags::NODEFER.bits() as _);
+        assert_eq!(libc::SA_ONSTACK, KernelSigactionFlags::ONSTACK.bits() as _);
+        assert_eq!(
+            libc::SA_RESETHAND,
+            KernelSigactionFlags::RESETHAND.bits() as _
+        );
+        assert_eq!(libc::SA_RESTART, KernelSigactionFlags::RESTART.bits() as _);
+        assert_eq!(libc::SA_SIGINFO, KernelSigactionFlags::SIGINFO.bits() as _);
+    }
+}

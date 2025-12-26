@@ -66,11 +66,15 @@ mod test {
 
     const BINCODE_BYTES: &[u8] = &[
         24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-        0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0,
-        3, 0, 0, 0, 0, 0, 1, 0, 2, 0, 98, 99, 97,
+        0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0,
+        3, 0, 1, 0, 2, 0, 98, 99, 97,
     ];
 
     #[derive(Serialize, Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTestZeroHashMap<'data> {
         #[serde(borrow)]
         _data: ZeroHashMap<'data, str, [u8]>,
@@ -119,6 +123,8 @@ mod test {
         );
     }
 
+    // TODO(#6588): Fix sensitivity to host endianness.
+    #[cfg(target_endian = "little")]
     #[test]
     fn test_serde_valid_deser_zhm() {
         let hm = make_zerohashmap();
@@ -132,6 +138,8 @@ mod test {
         );
     }
 
+    // TODO(#6588): Fix sensitivity to host endianness.
+    #[cfg(target_endian = "little")]
     #[test]
     fn test_bincode_zhm() {
         let hm = make_zerohashmap();

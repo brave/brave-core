@@ -40,6 +40,17 @@ impl RangeListTable {
         RangeListId::new(self.base_id, index)
     }
 
+    /// Get a reference to a location list.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `id` is invalid.
+    #[inline]
+    pub fn get(&self, id: RangeListId) -> &RangeList {
+        debug_assert_eq!(self.base_id, id.base_id);
+        &self.ranges[id.index]
+    }
+
     /// Write the range list table to the appropriate section for the given DWARF version.
     pub(crate) fn write<W: Writer>(
         &self,
@@ -221,7 +232,7 @@ mod convert {
         /// Create a range list by reading the data from the give range list iter.
         pub(crate) fn from<R: Reader<Offset = usize>>(
             mut from: read::RawRngListIter<R>,
-            context: &ConvertUnitContext<R>,
+            context: &ConvertUnitContext<'_, R>,
         ) -> ConvertResult<Self> {
             let mut have_base_address = context.base_address != Address::Constant(0);
             let convert_address =
@@ -288,7 +299,7 @@ mod convert {
                 };
                 // Filtering empty ranges out.
                 match range {
-                    Range::StartLength { length, .. } if length == 0 => continue,
+                    Range::StartLength { length: 0, .. } => continue,
                     Range::StartEnd { begin, end, .. } if begin == end => continue,
                     Range::OffsetPair { begin, end, .. } if begin == end => continue,
                     _ => (),

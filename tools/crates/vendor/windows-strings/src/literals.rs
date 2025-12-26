@@ -41,26 +41,34 @@ macro_rules! h {
     ($s:literal) => {{
         const INPUT: &[u8] = $s.as_bytes();
         const OUTPUT_LEN: usize = $crate::utf16_len(INPUT) + 1;
-        #[allow(clippy::declare_interior_mutable_const)]
-        const RESULT: $crate::HSTRING = {
+        static RESULT: $crate::HSTRING = {
             if OUTPUT_LEN == 1 {
-                unsafe { ::std::mem::transmute(::std::ptr::null::<u16>()) }
+                unsafe { ::core::mem::transmute(::core::ptr::null::<u16>()) }
             } else {
+                #[repr(C)]
+                struct HSTRING_HEADER {
+                    flags: u32,
+                    len: u32,
+                    padding1: u32,
+                    padding2: u32,
+                    ptr: *const u16,
+                    padding3: i32,
+                    padding4: u16,
+                }
                 const OUTPUT: $crate::PCWSTR = $crate::w!($s);
-                const HEADER: $crate::HSTRING_HEADER = $crate::HSTRING_HEADER {
+                const HEADER: HSTRING_HEADER = HSTRING_HEADER {
                     flags: 0x11,
                     len: (OUTPUT_LEN - 1) as u32,
                     padding1: 0,
                     padding2: 0,
                     ptr: OUTPUT.as_ptr(),
+                    padding3: 0,
+                    padding4: 0,
                 };
                 // SAFETY: an `HSTRING` is exactly equivalent to a pointer to an `HSTRING_HEADER`
-                unsafe {
-                    ::std::mem::transmute::<&$crate::HSTRING_HEADER, $crate::HSTRING>(&HEADER)
-                }
+                unsafe { ::core::mem::transmute::<&HSTRING_HEADER, $crate::HSTRING>(&HEADER) }
             }
         };
-        #[allow(clippy::borrow_interior_mutable_const)]
         &RESULT
     }};
 }
@@ -128,16 +136,6 @@ pub const fn decode_utf8_char(bytes: &[u8], mut pos: usize) -> Option<(u32, usiz
         return Some((result, pos));
     }
     None
-}
-
-#[doc(hidden)]
-#[repr(C)]
-pub struct HSTRING_HEADER {
-    pub flags: u32,
-    pub len: u32,
-    pub padding1: u32,
-    pub padding2: u32,
-    pub ptr: *const u16,
 }
 
 #[doc(hidden)]

@@ -5,7 +5,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms)]
 #![forbid(unsafe_code)]
 
@@ -21,15 +21,12 @@ pub struct Program {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod helper;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod program;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod protocol;
 
 /// Call the `git credential` helper program performing the given `action`, which reads all context from the git configuration

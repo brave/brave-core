@@ -143,3 +143,20 @@ fn once_box_default() {
     let cell: OnceBox<Foo> = Default::default();
     assert!(cell.get().is_none());
 }
+
+#[test]
+fn onece_box_with_value() {
+    let cell = OnceBox::with_value(Box::new(92));
+    assert_eq!(cell.get(), Some(&92));
+}
+
+#[test]
+fn onece_box_clone() {
+    let cell1 = OnceBox::new();
+    let cell2 = cell1.clone();
+    cell1.set(Box::new(92)).unwrap();
+    let cell3 = cell1.clone();
+    assert_eq!(cell1.get(), Some(&92));
+    assert_eq!(cell2.get(), None);
+    assert_eq!(cell3.get(), Some(&92));
+}

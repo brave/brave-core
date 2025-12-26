@@ -12,10 +12,8 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use pki_types::{AlgorithmIdentifier, InvalidSignature, SignatureVerificationAlgorithm};
+use pki_types::{AlgorithmIdentifier, InvalidSignature, SignatureVerificationAlgorithm, alg_id};
 use ring::signature;
-
-use crate::signed_data::alg_id;
 
 /// A `SignatureVerificationAlgorithm` implemented using *ring*.
 #[derive(Debug)]
@@ -98,6 +96,69 @@ pub static RSA_PKCS1_2048_8192_SHA512: &dyn SignatureVerificationAlgorithm = &Ri
     verification_alg: &signature::RSA_PKCS1_2048_8192_SHA512,
 };
 
+/// RSA PKCS#1 1.5 signatures using SHA-256 for keys of 2048-8192 bits,
+/// with illegally absent AlgorithmIdentifier parameters.
+///
+/// RFC4055 says on sha256WithRSAEncryption and company:
+///
+/// >   When any of these four object identifiers appears within an
+/// >   AlgorithmIdentifier, the parameters MUST be NULL.  Implementations
+/// >   MUST accept the parameters being absent as well as present.
+///
+/// This algorithm covers the absent case, [`RSA_PKCS1_2048_8192_SHA256`] covers
+/// the present case.
+#[cfg(feature = "alloc")]
+pub static RSA_PKCS1_2048_8192_SHA256_ABSENT_PARAMS: &dyn SignatureVerificationAlgorithm =
+    &RingAlgorithm {
+        public_key_alg_id: alg_id::RSA_ENCRYPTION,
+        signature_alg_id: alg_id::AlgorithmIdentifier::from_slice(include_bytes!(
+            "data/alg-rsa-pkcs1-sha256-absent-params.der"
+        )),
+        verification_alg: &signature::RSA_PKCS1_2048_8192_SHA256,
+    };
+
+/// RSA PKCS#1 1.5 signatures using SHA-384 for keys of 2048-8192 bits,
+/// with illegally absent AlgorithmIdentifier parameters.
+///
+/// RFC4055 says on sha256WithRSAEncryption and company:
+///
+/// >   When any of these four object identifiers appears within an
+/// >   AlgorithmIdentifier, the parameters MUST be NULL.  Implementations
+/// >   MUST accept the parameters being absent as well as present.
+///
+/// This algorithm covers the absent case, [`RSA_PKCS1_2048_8192_SHA384`] covers
+/// the present case.
+#[cfg(feature = "alloc")]
+pub static RSA_PKCS1_2048_8192_SHA384_ABSENT_PARAMS: &dyn SignatureVerificationAlgorithm =
+    &RingAlgorithm {
+        public_key_alg_id: alg_id::RSA_ENCRYPTION,
+        signature_alg_id: alg_id::AlgorithmIdentifier::from_slice(include_bytes!(
+            "data/alg-rsa-pkcs1-sha384-absent-params.der"
+        )),
+        verification_alg: &signature::RSA_PKCS1_2048_8192_SHA384,
+    };
+
+/// RSA PKCS#1 1.5 signatures using SHA-512 for keys of 2048-8192 bits,
+/// with illegally absent AlgorithmIdentifier parameters.
+///
+/// RFC4055 says on sha256WithRSAEncryption and company:
+///
+/// >   When any of these four object identifiers appears within an
+/// >   AlgorithmIdentifier, the parameters MUST be NULL.  Implementations
+/// >   MUST accept the parameters being absent as well as present.
+///
+/// This algorithm covers the absent case, [`RSA_PKCS1_2048_8192_SHA512`] covers
+/// the present case.
+#[cfg(feature = "alloc")]
+pub static RSA_PKCS1_2048_8192_SHA512_ABSENT_PARAMS: &dyn SignatureVerificationAlgorithm =
+    &RingAlgorithm {
+        public_key_alg_id: alg_id::RSA_ENCRYPTION,
+        signature_alg_id: alg_id::AlgorithmIdentifier::from_slice(include_bytes!(
+            "data/alg-rsa-pkcs1-sha512-absent-params.der"
+        )),
+        verification_alg: &signature::RSA_PKCS1_2048_8192_SHA512,
+    };
+
 /// RSA PKCS#1 1.5 signatures using SHA-384 for keys of 3072-8192 bits.
 #[cfg(feature = "alloc")]
 pub static RSA_PKCS1_3072_8192_SHA384: &dyn SignatureVerificationAlgorithm = &RingAlgorithm {
@@ -152,7 +213,9 @@ pub static ED25519: &dyn SignatureVerificationAlgorithm = &RingAlgorithm {
 #[cfg(test)]
 #[path = "."]
 mod tests {
-    use crate::Error;
+    #[cfg(feature = "alloc")]
+    use crate::error::UnsupportedSignatureAlgorithmForPublicKeyContext;
+    use crate::error::{Error, UnsupportedSignatureAlgorithmContext};
 
     static SUPPORTED_ALGORITHMS_IN_TESTS: &[&dyn super::SignatureVerificationAlgorithm] = &[
         // Reasonable algorithms.
@@ -178,29 +241,63 @@ mod tests {
         super::ECDSA_P384_SHA256, // Digest is unnecessarily short.
     ];
 
-    const UNSUPPORTED_SIGNATURE_ALGORITHM_FOR_RSA_KEY: Error = if cfg!(feature = "alloc") {
-        Error::UnsupportedSignatureAlgorithmForPublicKey
-    } else {
-        Error::UnsupportedSignatureAlgorithm
-    };
-
-    const UNSUPPORTED_ECDSA_SHA512_SIGNATURE: Error = Error::UnsupportedSignatureAlgorithm;
-
-    const INVALID_SIGNATURE_FOR_RSA_KEY: Error = if cfg!(feature = "alloc") {
-        Error::InvalidSignatureForPublicKey
-    } else {
-        Error::UnsupportedSignatureAlgorithm
-    };
-
-    const OK_IF_RSA_AVAILABLE: Result<(), Error> = if cfg!(feature = "alloc") {
-        Ok(())
-    } else {
-        Err(Error::UnsupportedSignatureAlgorithm)
-    };
-
     const OK_IF_POINT_COMPRESSION_SUPPORTED: Result<(), Error> =
         Err(Error::InvalidSignatureForPublicKey);
 
     #[path = "alg_tests.rs"]
     mod alg_tests;
+
+    fn maybe_rsa() -> Result<(), Error> {
+        #[cfg(feature = "alloc")]
+        {
+            Ok(())
+        }
+        #[cfg(not(feature = "alloc"))]
+        {
+            Err(unsupported(&[]))
+        }
+    }
+
+    fn unsupported_for_rsa(sig_alg_id: &[u8], _public_key_alg_id: &[u8]) -> Error {
+        #[cfg(feature = "alloc")]
+        {
+            Error::UnsupportedSignatureAlgorithmForPublicKeyContext(
+                UnsupportedSignatureAlgorithmForPublicKeyContext {
+                    signature_algorithm_id: sig_alg_id.to_vec(),
+                    public_key_algorithm_id: _public_key_alg_id.to_vec(),
+                },
+            )
+        }
+        #[cfg(not(feature = "alloc"))]
+        {
+            unsupported(sig_alg_id)
+        }
+    }
+
+    fn invalid_rsa_signature() -> Error {
+        #[cfg(feature = "alloc")]
+        {
+            Error::InvalidSignatureForPublicKey
+        }
+        #[cfg(not(feature = "alloc"))]
+        {
+            unsupported(&[])
+        }
+    }
+
+    fn unsupported_for_ecdsa(sig_alg_id: &[u8], _public_key_alg_id: &[u8]) -> Error {
+        unsupported(sig_alg_id)
+    }
+
+    fn unsupported(_sig_alg_id: &[u8]) -> Error {
+        Error::UnsupportedSignatureAlgorithmContext(UnsupportedSignatureAlgorithmContext {
+            #[cfg(feature = "alloc")]
+            signature_algorithm_id: _sig_alg_id.to_vec(),
+            #[cfg(feature = "alloc")]
+            supported_algorithms: SUPPORTED_ALGORITHMS_IN_TESTS
+                .iter()
+                .map(|&alg| alg.signature_alg_id())
+                .collect(),
+        })
+    }
 }

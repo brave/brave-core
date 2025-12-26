@@ -258,7 +258,7 @@ mod tests {
         let config_builder = rustls::ClientConfig::builder();
         cfg_if::cfg_if! {
             if #[cfg(feature = "rustls-platform-verifier")] {
-                let config_builder = config_builder.with_platform_verifier();
+                let config_builder = config_builder.try_with_platform_verifier()?;
             } else if #[cfg(feature = "rustls-native-certs")] {
                 let config_builder = config_builder.with_native_roots().unwrap();
             } else if #[cfg(feature = "webpki-roots")] {

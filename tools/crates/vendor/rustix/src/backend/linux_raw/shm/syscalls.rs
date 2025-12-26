@@ -3,8 +3,7 @@ use crate::ffi::CStr;
 use crate::backend::fs::syscalls::{open, unlink};
 use crate::backend::fs::types::{Mode, OFlags};
 use crate::fd::OwnedFd;
-use crate::io;
-use crate::shm::ShmOFlags;
+use crate::{io, shm};
 
 const NAME_MAX: usize = 255;
 const SHM_DIR: &[u8] = b"/dev/shm/";
@@ -32,7 +31,7 @@ fn get_shm_name(name: &CStr) -> io::Result<([u8; NAME_MAX + SHM_DIR.len() + 1], 
     Ok((path, SHM_DIR.len() + name.len() + 1))
 }
 
-pub(crate) fn shm_open(name: &CStr, oflags: ShmOFlags, mode: Mode) -> io::Result<OwnedFd> {
+pub(crate) fn shm_open(name: &CStr, oflags: shm::OFlags, mode: Mode) -> io::Result<OwnedFd> {
     let (path, len) = get_shm_name(name)?;
     open(
         CStr::from_bytes_with_nul(&path[..len]).unwrap(),

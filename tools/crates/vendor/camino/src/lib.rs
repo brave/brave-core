@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 #![warn(missing_docs)]
-#![cfg_attr(doc_cfg, feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 
 //! UTF-8 encoded paths.
 //!
-//! `camino` is an extension of the `std::path` module that adds new [`Utf8PathBuf`] and [`Utf8Path`]
+//! `camino` is an extension of the [`std::path`] module that adds new [`Utf8PathBuf`] and [`Utf8Path`]
 //! types. These are like the standard library's [`PathBuf`] and [`Path`] types, except they are
 //! guaranteed to only contain UTF-8 encoded data. Therefore, they expose the ability to get their
-//! contents as strings, they implement `Display`, etc.
+//! contents as strings, they implement [`Display`], etc.
 //!
-//! The `std::path` types are not guaranteed to be valid UTF-8. This is the right decision for the standard library,
+//! The [`std::path`] types are not guaranteed to be valid UTF-8. This is the right decision for the standard library,
 //! since it must be as general as possible. However, on all platforms, non-Unicode paths are vanishingly uncommon for a
 //! number of reasons:
 //! * Unicode won. There are still some legacy codebases that store paths in encodings like Shift-JIS, but most
@@ -26,8 +26,8 @@
 //!   cross-platform solution* in systems that support non-UTF-8 paths. However, restricting paths to UTF-8 eliminates
 //!   this problem.
 //!
-//! Therefore, many programs that want to manipulate paths *do* assume they contain UTF-8 data, and convert them to `str`s
-//! as  necessary. However, because this invariant is not encoded in the `Path` type, conversions such as
+//! Therefore, many programs that want to manipulate paths *do* assume they contain UTF-8 data, and convert them to [`str`]s
+//! as  necessary. However, because this invariant is not encoded in the [`Path`] type, conversions such as
 //! `path.to_str().unwrap()` need to be repeated again and again, creating a frustrating experience.
 //!
 //! Instead, `camino` allows you to check that your paths are UTF-8 *once*, and then manipulate them
@@ -65,14 +65,14 @@ mod tests;
 ///
 /// This type provides methods like [`push`] and [`set_extension`] that mutate
 /// the path in place. It also implements [`Deref`] to [`Utf8Path`], meaning that
-/// all methods on [`Utf8Path`] slices are available on `Utf8PathBuf` values as well.
+/// all methods on [`Utf8Path`] slices are available on [`Utf8PathBuf`] values as well.
 ///
 /// [`push`]: Utf8PathBuf::push
 /// [`set_extension`]: Utf8PathBuf::set_extension
 ///
 /// # Examples
 ///
-/// You can use [`push`] to build up a `Utf8PathBuf` from
+/// You can use [`push`] to build up a [`Utf8PathBuf`] from
 /// components:
 ///
 /// ```
@@ -97,7 +97,7 @@ mod tests;
 /// ```
 ///
 /// We can still do better than this! Since these are all strings, we can use
-/// `From::from`:
+/// [`From::from`]:
 ///
 /// ```
 /// use camino::Utf8PathBuf;
@@ -108,13 +108,13 @@ mod tests;
 /// Which method works best depends on what kind of situation you're in.
 // NB: Internal PathBuf must only contain utf8 data
 #[derive(Clone, Default)]
-#[cfg_attr(feature = "serde1", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "serde1", serde(transparent))]
 #[repr(transparent)]
 pub struct Utf8PathBuf(PathBuf);
 
 impl Utf8PathBuf {
-    /// Allocates an empty `Utf8PathBuf`.
+    /// Allocates an empty [`Utf8PathBuf`].
+    ///
+    /// *On Rust 1.91 or newer, this is a `const fn`.*
     ///
     /// # Examples
     ///
@@ -124,16 +124,35 @@ impl Utf8PathBuf {
     /// let path = Utf8PathBuf::new();
     /// ```
     #[must_use]
+    #[cfg(pathbuf_const_new)]
+    #[expect(clippy::incompatible_msrv)]
+    pub const fn new() -> Utf8PathBuf {
+        Utf8PathBuf(PathBuf::new())
+    }
+
+    /// Allocates an empty [`Utf8PathBuf`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::Utf8PathBuf;
+    ///
+    /// let path = Utf8PathBuf::new();
+    /// ```
+    #[must_use]
+    #[cfg(not(pathbuf_const_new))]
     pub fn new() -> Utf8PathBuf {
         Utf8PathBuf(PathBuf::new())
     }
 
-    /// Creates a new `Utf8PathBuf` from a `PathBuf` containing valid UTF-8 characters.
+    /// Creates a new [`Utf8PathBuf`] from a [`PathBuf`] containing valid UTF-8 characters.
     ///
-    /// Errors with the original `PathBuf` if it is not valid UTF-8.
+    /// Errors with the original [`PathBuf`] if it is not valid UTF-8.
     ///
-    /// For a version that returns a type that implements [`std::error::Error`], use the
-    /// `TryFrom<PathBuf>` impl.
+    /// For a version that returns a type that implements [`std::error::Error`],
+    /// see [`TryFrom<&PathBuf>`][tryfrom].
+    ///
+    /// [tryfrom]: #impl-TryFrom<PathBuf>-for-Utf8PathBuf
     ///
     /// # Examples
     ///
@@ -162,10 +181,50 @@ impl Utf8PathBuf {
         }
     }
 
-    /// Converts a `Utf8PathBuf` to a [`PathBuf`].
+    /// Creates a new [`Utf8PathBuf`] from an [`OsString`] containing valid UTF-8 characters.
     ///
-    /// This is equivalent to the `From<Utf8PathBuf> for PathBuf` impl, but may aid in type
-    /// inference.
+    /// Errors with the original [`OsString`] if it is not valid UTF-8.
+    ///
+    /// For a version that returns a type that implements [`std::error::Error`], use the
+    /// [`TryFrom<OsString>`] impl.
+    ///
+    /// [`TryFrom<OsString>`]: #impl-TryFrom<OsString>-for-Utf8PathBuf
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # #[cfg(osstring_from_str)] {
+    /// use camino::Utf8PathBuf;
+    /// use std::ffi::OsStr;
+    /// use std::ffi::OsString;
+    /// use std::convert::TryFrom;
+    /// use std::str::FromStr;
+    /// # #[cfg(unix)]
+    /// use std::os::unix::ffi::OsStrExt;
+    ///
+    /// let unicode_string = OsString::from_str("/valid/unicode").unwrap();
+    /// Utf8PathBuf::from_os_string(unicode_string).expect("valid Unicode path succeeded");
+    ///
+    /// // Paths on Unix can be non-UTF-8.
+    /// # #[cfg(unix)]
+    /// let non_unicode_string = OsStr::from_bytes(b"\xFF\xFF\xFF").into();
+    /// # #[cfg(unix)]
+    /// Utf8PathBuf::from_os_string(non_unicode_string).expect_err("non-Unicode path failed");
+    /// # }
+    /// ```
+    pub fn from_os_string(os_string: OsString) -> Result<Utf8PathBuf, OsString> {
+        match os_string.into_string() {
+            Ok(string) => Ok(Utf8PathBuf::from(string)),
+            Err(os_string) => Err(os_string),
+        }
+    }
+
+    /// Converts a [`Utf8PathBuf`] to a [`PathBuf`].
+    ///
+    /// This is equivalent to the [`From<Utf8PathBuf> for PathBuf`][from] implementation,
+    /// but may aid in type inference.
+    ///
+    /// [from]: #impl-From<Utf8PathBuf>-for-PathBuf
     ///
     /// # Examples
     ///
@@ -186,10 +245,8 @@ impl Utf8PathBuf {
         self.into()
     }
 
-    /// Creates a new `Utf8PathBuf` with a given capacity used to create the internal [`PathBuf`].
+    /// Creates a new [`Utf8PathBuf`] with a given capacity used to create the internal [`PathBuf`].
     /// See [`with_capacity`] defined on [`PathBuf`].
-    ///
-    /// *Requires Rust 1.44 or newer.*
     ///
     /// # Examples
     ///
@@ -206,7 +263,6 @@ impl Utf8PathBuf {
     /// ```
     ///
     /// [`with_capacity`]: PathBuf::with_capacity
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     #[must_use]
     pub fn with_capacity(capacity: usize) -> Utf8PathBuf {
@@ -227,6 +283,29 @@ impl Utf8PathBuf {
     pub fn as_path(&self) -> &Utf8Path {
         // SAFETY: every Utf8PathBuf constructor ensures that self is valid UTF-8
         unsafe { Utf8Path::assume_utf8(&self.0) }
+    }
+
+    /// Consumes and leaks the [`Utf8PathBuf`], returning a mutable reference to the contents,
+    /// `&'a mut Utf8Path`.
+    ///
+    /// The caller has free choice over the returned lifetime, including 'static.
+    /// Indeed, this function is ideally used for data that lives for the remainder of
+    /// the program’s life, as dropping the returned reference will cause a memory leak.
+    ///
+    /// It does not reallocate or shrink the [`Utf8PathBuf`], so the leaked allocation may include
+    /// unused capacity that is not part of the returned slice. If you want to discard excess
+    /// capacity, call [`into_boxed_path`], and then [`Box::leak`] instead.
+    /// However, keep in mind that trimming the capacity may result in a reallocation and copy.
+    ///
+    /// *Requires Rust 1.89 or newer.*
+    ///
+    /// [`into_boxed_path`]: Self::into_boxed_path
+    #[cfg(os_string_pathbuf_leak)]
+    #[allow(clippy::incompatible_msrv)]
+    #[inline]
+    pub fn leak<'a>(self) -> &'a mut Utf8Path {
+        // SAFETY: every Utf8PathBuf constructor ensures that self is valid UTF-8
+        unsafe { Utf8Path::assume_utf8_mut(self.0.leak()) }
     }
 
     /// Extends `self` with `path`.
@@ -344,7 +423,46 @@ impl Utf8PathBuf {
         self.0.set_extension(extension.as_ref())
     }
 
-    /// Consumes the `Utf8PathBuf`, yielding its internal [`String`] storage.
+    /// Appends to [`self.extension`] with `extension`.
+    ///
+    /// Returns `false` and does nothing if [`self.file_name`] is [`None`],
+    /// returns `true` and updates the extension otherwise.
+    ///
+    /// *Requires Rust 1.91 or newer.*
+    ///
+    /// # Panics
+    ///
+    /// Panics if the passed extension contains a path separator (see
+    /// [`is_separator`]).
+    ///
+    /// # Caveats
+    ///
+    /// The appended `extension` may contain dots and will be used in its entirety,
+    /// but only the part after the final dot will be reflected in [`self.extension`].
+    ///
+    /// [`self.file_name`]: Utf8Path::file_name
+    /// [`self.extension`]: Utf8Path::extension
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::{Utf8Path, Utf8PathBuf};
+    ///
+    /// let mut p = Utf8PathBuf::from("/feel/the");
+    ///
+    /// p.add_extension("formatted");
+    /// assert_eq!(Utf8Path::new("/feel/the.formatted"), p.as_path());
+    ///
+    /// p.add_extension("dark.side");
+    /// assert_eq!(Utf8Path::new("/feel/the.formatted.dark.side"), p.as_path());
+    /// ```
+    #[cfg(path_add_extension)]
+    #[expect(clippy::incompatible_msrv)]
+    pub fn add_extension<S: AsRef<str>>(&mut self, extension: S) -> bool {
+        self.0.add_extension(extension.as_ref())
+    }
+
+    /// Consumes the [`Utf8PathBuf`], yielding its internal [`String`] storage.
     ///
     /// # Examples
     ///
@@ -360,7 +478,7 @@ impl Utf8PathBuf {
         self.into_os_string().into_string().unwrap()
     }
 
-    /// Consumes the `Utf8PathBuf`, yielding its internal [`OsString`] storage.
+    /// Consumes the [`Utf8PathBuf`], yielding its internal [`OsString`] storage.
     ///
     /// # Examples
     ///
@@ -377,7 +495,7 @@ impl Utf8PathBuf {
         self.0.into_os_string()
     }
 
-    /// Converts this `Utf8PathBuf` into a [boxed](Box) [`Utf8Path`].
+    /// Converts this [`Utf8PathBuf`] into a [boxed](Box) [`Utf8Path`].
     #[must_use = "`self` will be dropped if the result is not used"]
     pub fn into_boxed_path(self) -> Box<Utf8Path> {
         let ptr = Box::into_raw(self.0.into_boxed_path()) as *mut Utf8Path;
@@ -391,10 +509,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`capacity`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.44 or newer.*
-    ///
     /// [`capacity`]: PathBuf::capacity
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     #[must_use]
     pub fn capacity(&self) -> usize {
@@ -403,10 +518,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`clear`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.44 or newer.*
-    ///
     /// [`clear`]: PathBuf::clear
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     pub fn clear(&mut self) {
         self.0.clear()
@@ -414,10 +526,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`reserve`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.44 or newer.*
-    ///
     /// [`reserve`]: PathBuf::reserve
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     pub fn reserve(&mut self, additional: usize) {
         self.0.reserve(additional)
@@ -440,10 +549,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`reserve_exact`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.44 or newer.*
-    ///
     /// [`reserve_exact`]: PathBuf::reserve_exact
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     pub fn reserve_exact(&mut self, additional: usize) {
         self.0.reserve_exact(additional)
@@ -466,10 +572,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`shrink_to_fit`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.44 or newer.*
-    ///
     /// [`shrink_to_fit`]: PathBuf::shrink_to_fit
-    #[cfg(path_buf_capacity)]
     #[allow(clippy::incompatible_msrv)]
     pub fn shrink_to_fit(&mut self) {
         self.0.shrink_to_fit()
@@ -477,10 +580,7 @@ impl Utf8PathBuf {
 
     /// Invokes [`shrink_to`] on the underlying instance of [`PathBuf`].
     ///
-    /// *Requires Rust 1.56 or newer.*
-    ///
     /// [`shrink_to`]: PathBuf::shrink_to
-    #[cfg(shrink_to)]
     #[allow(clippy::incompatible_msrv)]
     #[inline]
     pub fn shrink_to(&mut self, min_capacity: usize) {
@@ -558,7 +658,7 @@ impl<P: AsRef<Utf8Path>> Extend<P> for Utf8PathBuf {
 pub struct Utf8Path(Path);
 
 impl Utf8Path {
-    /// Directly wraps a string slice as a `Utf8Path` slice.
+    /// Directly wraps a string slice as a [`Utf8Path`] slice.
     ///
     /// This is a cost-free conversion.
     ///
@@ -570,7 +670,7 @@ impl Utf8Path {
     /// Utf8Path::new("foo.txt");
     /// ```
     ///
-    /// You can create `Utf8Path`s from `String`s, or even other `Utf8Path`s:
+    /// You can create [`Utf8Path`]s from [`String`]s, or even other [`Utf8Path`]s:
     ///
     /// ```
     /// use camino::Utf8Path;
@@ -586,14 +686,14 @@ impl Utf8Path {
         unsafe { Utf8Path::assume_utf8(path) }
     }
 
-    /// Converts a [`Path`] to a `Utf8Path`.
+    /// Converts a [`Path`] to a [`Utf8Path`].
     ///
-    /// Returns `None` if the path is not valid UTF-8.
+    /// Returns [`None`] if the path is not valid UTF-8.
     ///
-    /// For a version that returns a type that implements [`std::error::Error`], use the
-    /// [`TryFrom<&Path>`][tryfrom] impl.
+    /// For a version that returns a type that implements [`std::error::Error`],
+    /// see [`TryFrom<&Path>`][tryfrom].
     ///
-    /// [tryfrom]: #impl-TryFrom<%26'a+Path>-for-%26'a+Utf8Path
+    /// [tryfrom]: #impl-TryFrom<%26Path>-for-%26Utf8Path
     ///
     /// # Examples
     ///
@@ -619,9 +719,43 @@ impl Utf8Path {
         path.as_os_str().to_str().map(Utf8Path::new)
     }
 
-    /// Converts a `Utf8Path` to a [`Path`].
+    /// Converts an [`OsStr`] to a [`Utf8Path`].
     ///
-    /// This is equivalent to the `AsRef<&Path> for &Utf8Path` impl, but may aid in type inference.
+    /// Returns [`None`] if the path is not valid UTF-8.
+    ///
+    /// For a version that returns a type that implements [`std::error::Error`], use the
+    /// [`TryFrom<&OsStr>`][tryfrom] impl.
+    ///
+    /// [tryfrom]: #impl-TryFrom<%26OsStr>-for-%26Utf8Path
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::Utf8Path;
+    /// use std::ffi::OsStr;
+    /// # #[cfg(unix)]
+    /// use std::os::unix::ffi::OsStrExt;
+    /// use std::path::Path;
+    ///
+    /// let unicode_string = OsStr::new("/valid/unicode");
+    /// Utf8Path::from_os_str(unicode_string).expect("valid Unicode string succeeded");
+    ///
+    /// // Paths on Unix can be non-UTF-8.
+    /// # #[cfg(unix)]
+    /// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+    /// # #[cfg(unix)]
+    /// assert!(Utf8Path::from_os_str(non_unicode_str).is_none(), "non-Unicode string failed");
+    /// ```
+    pub fn from_os_str(path: &OsStr) -> Option<&Utf8Path> {
+        path.to_str().map(Utf8Path::new)
+    }
+
+    /// Converts a [`Utf8Path`] to a [`Path`].
+    ///
+    /// This is equivalent to the [`AsRef<Path> for Utf8PathBuf`][asref] implementation,
+    /// but may aid in type inference.
+    ///
+    /// [asref]: Utf8PathBuf#impl-AsRef<Path>-for-Utf8PathBuf
     ///
     /// # Examples
     ///
@@ -644,8 +778,8 @@ impl Utf8Path {
 
     /// Yields the underlying [`str`] slice.
     ///
-    /// Unlike [`Path::to_str`], this always returns a slice because the contents of a `Utf8Path`
-    /// are guaranteed to be valid UTF-8.
+    /// Unlike [`Path::to_str`], this always returns a slice because the contents
+    /// of a [`Utf8Path`] are guaranteed to be valid UTF-8.
     ///
     /// # Examples
     ///
@@ -680,7 +814,7 @@ impl Utf8Path {
         self.0.as_os_str()
     }
 
-    /// Converts a `Utf8Path` to an owned [`Utf8PathBuf`].
+    /// Converts a [`Utf8Path`] to an owned [`Utf8PathBuf`].
     ///
     /// # Examples
     ///
@@ -697,14 +831,14 @@ impl Utf8Path {
         Utf8PathBuf(self.0.to_path_buf())
     }
 
-    /// Returns `true` if the `Utf8Path` is absolute, i.e., if it is independent of
+    /// Returns `true` if the [`Utf8Path`] is absolute, i.e., if it is independent of
     /// the current directory.
     ///
     /// * On Unix, a path is absolute if it starts with the root, so
     ///   `is_absolute` and [`has_root`] are equivalent.
     ///
     /// * On Windows, a path is absolute if it has a prefix and starts with the
-    ///   root: `c:\windows` is absolute, while `c:temp` and `\temp` are not.
+    ///   root: `C:\windows` is absolute, while `C:temp` and `\temp` are not.
     ///
     /// # Examples
     ///
@@ -721,7 +855,7 @@ impl Utf8Path {
         self.0.is_absolute()
     }
 
-    /// Returns `true` if the `Utf8Path` is relative, i.e., not absolute.
+    /// Returns `true` if the [`Utf8Path`] is relative, i.e., not absolute.
     ///
     /// See [`is_absolute`]'s documentation for more details.
     ///
@@ -740,13 +874,13 @@ impl Utf8Path {
         self.0.is_relative()
     }
 
-    /// Returns `true` if the `Utf8Path` has a root.
+    /// Returns `true` if the [`Utf8Path`] has a root.
     ///
     /// * On Unix, a path has a root if it begins with `/`.
     ///
     /// * On Windows, a path has a root if it:
     ///     * has no prefix and begins with a separator, e.g., `\windows`
-    ///     * has a prefix followed by a separator, e.g., `c:\windows` but not `c:windows`
+    ///     * has a prefix followed by a separator, e.g., `C:\windows` but not `C:windows`
     ///     * has any non-disk prefix, e.g., `\\server\share`
     ///
     /// # Examples
@@ -762,7 +896,7 @@ impl Utf8Path {
         self.0.has_root()
     }
 
-    /// Returns the `Path` without its final component, if there is one.
+    /// Returns the [`Path`] without its final component, if there is one.
     ///
     /// Returns [`None`] if the path terminates in a root or prefix.
     ///
@@ -788,9 +922,9 @@ impl Utf8Path {
         })
     }
 
-    /// Produces an iterator over `Utf8Path` and its ancestors.
+    /// Produces an iterator over [`Utf8Path`] and its ancestors.
     ///
-    /// The iterator will yield the `Utf8Path` that is returned if the [`parent`] method is used zero
+    /// The iterator will yield the [`Utf8Path`] that is returned if the [`parent`] method is used zero
     /// or more times. That means, the iterator will yield `&self`, `&self.parent().unwrap()`,
     /// `&self.parent().unwrap().parent().unwrap()` and so on. If the [`parent`] method returns
     /// [`None`], the iterator will do likewise. The iterator will always yield at least one value,
@@ -821,7 +955,7 @@ impl Utf8Path {
         Utf8Ancestors(self.0.ancestors())
     }
 
-    /// Returns the final component of the `Utf8Path`, if there is one.
+    /// Returns the final component of the [`Utf8Path`], if there is one.
     ///
     /// If the path is a normal file, this is the file name. If it's the path of a directory, this
     /// is the directory name.
@@ -966,6 +1100,39 @@ impl Utf8Path {
         })
     }
 
+    /// Extracts the prefix of [`self.file_name`].
+    ///
+    /// The prefix is:
+    ///
+    /// * [`None`], if there is no file name;
+    /// * The entire file name if there is no embedded `.`;
+    /// * The portion of the file name before the first non-beginning `.`;
+    /// * The entire file name if the file name begins with `.` and has no other `.`s within;
+    /// * The portion of the file name before the second `.` if the file name begins with `.`
+    ///
+    /// *Requires Rust 1.91 or newer.*
+    ///
+    /// [`self.file_name`]: Utf8Path::file_name
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::Utf8Path;
+    ///
+    /// assert_eq!("foo", Utf8Path::new("foo.rs").file_prefix().unwrap());
+    /// assert_eq!("foo", Utf8Path::new("foo.tar.gz").file_prefix().unwrap());
+    /// ```
+    #[cfg(path_add_extension)]
+    #[expect(clippy::incompatible_msrv)]
+    #[inline]
+    #[must_use]
+    pub fn file_prefix(&self) -> Option<&str> {
+        self.0.file_prefix().map(|s| {
+            // SAFETY: self is valid UTF-8, so file_prefix is valid UTF-8 as well
+            unsafe { str_assume_utf8(s) }
+        })
+    }
+
     /// Extracts the extension of [`self.file_name`], if possible.
     ///
     /// The extension is:
@@ -1072,6 +1239,31 @@ impl Utf8Path {
         Utf8PathBuf(self.0.with_extension(extension.as_ref()))
     }
 
+    /// Creates an owned [`Utf8PathBuf`] like `self` but with the extension added.
+    ///
+    /// See [`Utf8PathBuf::add_extension`] for more details.
+    ///
+    /// *Requires Rust 1.91 or newer.*
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::{Utf8Path, Utf8PathBuf};
+    ///
+    /// let path = Utf8Path::new("foo.rs");
+    /// assert_eq!(path.with_added_extension("txt"), Utf8PathBuf::from("foo.rs.txt"));
+    ///
+    /// let path = Utf8Path::new("foo.tar.gz");
+    /// assert_eq!(path.with_added_extension(""), Utf8PathBuf::from("foo.tar.gz"));
+    /// assert_eq!(path.with_added_extension("xz"), Utf8PathBuf::from("foo.tar.gz.xz"));
+    /// ```
+    #[cfg(path_add_extension)]
+    #[expect(clippy::incompatible_msrv)]
+    #[inline]
+    pub fn with_added_extension<S: AsRef<str>>(&self, extension: S) -> Utf8PathBuf {
+        Utf8PathBuf(self.0.with_added_extension(extension.as_ref()))
+    }
+
     /// Produces an iterator over the [`Utf8Component`]s of the path.
     ///
     /// When parsing the path, there is a small amount of normalization:
@@ -1105,7 +1297,7 @@ impl Utf8Path {
     ///
     /// [`CurDir`]: Utf8Component::CurDir
     #[inline]
-    pub fn components(&self) -> Utf8Components {
+    pub fn components(&self) -> Utf8Components<'_> {
         Utf8Components(self.0.components())
     }
 
@@ -1210,8 +1402,8 @@ impl Utf8Path {
     /// documentation for more.
     ///
     /// If the resulting path is not UTF-8, an [`io::Error`] is returned with the
-    /// [`ErrorKind`](io::ErrorKind) set to `InvalidData` and the payload set to a
-    /// [`FromPathBufError`].
+    /// [`ErrorKind`](io::ErrorKind) set to [`InvalidData`](io::ErrorKind::InvalidData)
+    /// and the payload set to a [`FromPathBufError`].
     ///
     /// # Examples
     ///
@@ -1258,8 +1450,8 @@ impl Utf8Path {
     /// documentation for more.
     ///
     /// If the resulting path is not UTF-8, an [`io::Error`] is returned with the
-    /// [`ErrorKind`](io::ErrorKind) set to `InvalidData` and the payload set to a
-    /// [`FromPathBufError`].
+    /// [`ErrorKind`](io::ErrorKind) set to [`InvalidData`](io::ErrorKind::InvalidData)
+    /// and the payload set to a [`FromPathBufError`].
     ///
     /// # Examples
     ///
@@ -1309,8 +1501,8 @@ impl Utf8Path {
     /// documentation for more.
     ///
     /// If a directory entry is not UTF-8, an [`io::Error`] is returned with the
-    /// [`ErrorKind`](io::ErrorKind) set to `InvalidData` and the payload set to a
-    /// [`FromPathBufError`].
+    /// [`ErrorKind`](io::ErrorKind) set to [`InvalidData`](io::ErrorKind::InvalidData)
+    /// and the payload set to a [`FromPathBufError`].
     ///
     /// # Examples
     ///
@@ -1365,7 +1557,7 @@ impl Utf8Path {
     /// destination file. In case of broken symbolic links this will return `Ok(false)`.
     ///
     /// As opposed to the [`exists()`] method, this one doesn't silently ignore errors
-    /// unrelated to the path not existing. (E.g. it will return `Err(_)` in case of permission
+    /// unrelated to the path not existing. (E.g. it will return [`Err`] in case of permission
     /// denied on some of the parent directories.)
     ///
     /// Note that while this avoids some pitfalls of the `exists()` method, it still can not
@@ -1376,24 +1568,21 @@ impl Utf8Path {
     ///
     /// ```no_run
     /// use camino::Utf8Path;
-    /// assert!(!Utf8Path::new("does_not_exist.txt").try_exists().expect("Can't check existence of file does_not_exist.txt"));
+    /// assert!(
+    ///     !Utf8Path::new("does_not_exist.txt")
+    ///         .try_exists()
+    ///         .expect("Can't check existence of file does_not_exist.txt")
+    /// );
     /// assert!(Utf8Path::new("/root/secret_file.txt").try_exists().is_err());
     /// ```
     ///
     /// [`exists()`]: Self::exists
     #[inline]
     pub fn try_exists(&self) -> io::Result<bool> {
-        // Note: this block is written this way rather than with a pattern guard to appease Rust
-        // 1.34.
         match fs::metadata(self) {
             Ok(_) => Ok(true),
-            Err(error) => {
-                if error.kind() == io::ErrorKind::NotFound {
-                    Ok(false)
-                } else {
-                    Err(error)
-                }
-            }
+            Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(false),
+            Err(error) => Err(error),
         }
     }
 
@@ -1490,7 +1679,7 @@ impl Utf8Path {
             .unwrap_or(false)
     }
 
-    /// Converts a `Box<Utf8Path>` into a [`Utf8PathBuf`] without copying or allocating.
+    /// Converts a [`Box<Utf8Path>`] into a [`Utf8PathBuf`] without copying or allocating.
     #[must_use = "`self` will be dropped if the result is not used"]
     #[inline]
     pub fn into_path_buf(self: Box<Utf8Path>) -> Utf8PathBuf {
@@ -1567,7 +1756,7 @@ impl fmt::Debug for Utf8Path {
 #[repr(transparent)]
 pub struct Utf8Ancestors<'a>(Ancestors<'a>);
 
-impl<'a> fmt::Debug for Utf8Ancestors<'a> {
+impl fmt::Debug for Utf8Ancestors<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(&self.0, f)
     }
@@ -1586,7 +1775,7 @@ impl<'a> Iterator for Utf8Ancestors<'a> {
     }
 }
 
-impl<'a> FusedIterator for Utf8Ancestors<'a> {}
+impl FusedIterator for Utf8Ancestors<'_> {}
 
 /// An iterator over the [`Utf8Component`]s of a [`Utf8Path`].
 ///
@@ -1646,9 +1835,9 @@ impl<'a> Iterator for Utf8Components<'a> {
     }
 }
 
-impl<'a> FusedIterator for Utf8Components<'a> {}
+impl FusedIterator for Utf8Components<'_> {}
 
-impl<'a> DoubleEndedIterator for Utf8Components<'a> {
+impl DoubleEndedIterator for Utf8Components<'_> {
     #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         self.0.next_back().map(|component| {
@@ -1659,7 +1848,7 @@ impl<'a> DoubleEndedIterator for Utf8Components<'a> {
     }
 }
 
-impl<'a> fmt::Debug for Utf8Components<'a> {
+impl fmt::Debug for Utf8Components<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(&self.0, f)
     }
@@ -1790,7 +1979,7 @@ impl FusedIterator for Iter<'_> {}
 
 /// A single component of a path.
 ///
-/// A `Utf8Component` roughly corresponds to a substring between path separators
+/// A [`Utf8Component`] roughly corresponds to a substring between path separators
 /// (`/` or `\`).
 ///
 /// This `enum` is created by iterating over [`Utf8Components`], which in turn is
@@ -1891,13 +2080,13 @@ impl<'a> Utf8Component<'a> {
     }
 }
 
-impl<'a> fmt::Debug for Utf8Component<'a> {
+impl fmt::Debug for Utf8Component<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(self.as_os_str(), f)
     }
 }
 
-impl<'a> fmt::Display for Utf8Component<'a> {
+impl fmt::Display for Utf8Component<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Display::fmt(self.as_str(), f)
     }
@@ -1956,7 +2145,7 @@ impl AsRef<OsStr> for Utf8Component<'_> {
 /// # if cfg!(windows) {
 /// assert_eq!(Verbatim("pictures"), get_path_prefix(r"\\?\pictures\kittens"));
 /// assert_eq!(VerbatimUNC("server", "share"), get_path_prefix(r"\\?\UNC\server\share"));
-/// assert_eq!(VerbatimDisk(b'C'), get_path_prefix(r"\\?\c:\"));
+/// assert_eq!(VerbatimDisk(b'C'), get_path_prefix(r"\\?\C:\"));
 /// assert_eq!(DeviceNS("BrainInterface"), get_path_prefix(r"\\.\BrainInterface"));
 /// assert_eq!(UNC("server", "share"), get_path_prefix(r"\\server\share"));
 /// assert_eq!(Disk(b'C'), get_path_prefix(r"C:\Users\Rust\Pictures\Ferris"));
@@ -1999,7 +2188,7 @@ pub enum Utf8Prefix<'a> {
     Disk(u8),
 }
 
-impl<'a> Utf8Prefix<'a> {
+impl Utf8Prefix<'_> {
     /// Determines if the prefix is verbatim, i.e., begins with `\\?\`.
     ///
     /// # Examples
@@ -2017,10 +2206,7 @@ impl<'a> Utf8Prefix<'a> {
     #[must_use]
     pub fn is_verbatim(&self) -> bool {
         use Utf8Prefix::*;
-        match self {
-            Verbatim(_) | VerbatimDisk(_) | VerbatimUNC(..) => true,
-            _ => false,
-        }
+        matches!(self, Verbatim(_) | VerbatimDisk(_) | VerbatimUNC(..))
     }
 }
 
@@ -2028,7 +2214,7 @@ impl<'a> Utf8Prefix<'a> {
 /// representation.
 ///
 /// In addition to the parsed [`Utf8Prefix`] information returned by [`kind`],
-/// `Utf8PrefixComponent` also holds the raw and unparsed [`str`] slice,
+/// [`Utf8PrefixComponent`] also holds the raw and unparsed [`str`] slice,
 /// returned by [`as_str`].
 ///
 /// Instances of this `struct` can be obtained by matching against the
@@ -2043,11 +2229,11 @@ impl<'a> Utf8Prefix<'a> {
 /// use camino::{Utf8Component, Utf8Path, Utf8Prefix};
 /// use std::ffi::OsStr;
 ///
-/// let path = Utf8Path::new(r"c:\you\later\");
+/// let path = Utf8Path::new(r"C:\you\later\");
 /// match path.components().next().unwrap() {
 ///     Utf8Component::Prefix(prefix_component) => {
 ///         assert_eq!(Utf8Prefix::Disk(b'C'), prefix_component.kind());
-///         assert_eq!("c:", prefix_component.as_str());
+///         assert_eq!("C:", prefix_component.as_str());
 ///     }
 ///     _ => unreachable!(),
 /// }
@@ -2105,13 +2291,13 @@ impl<'a> Utf8PrefixComponent<'a> {
     }
 }
 
-impl<'a> fmt::Debug for Utf8PrefixComponent<'a> {
+impl fmt::Debug for Utf8PrefixComponent<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(&self.0, f)
     }
 }
 
-impl<'a> fmt::Display for Utf8PrefixComponent<'a> {
+impl fmt::Display for Utf8PrefixComponent<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Display::fmt(self.as_str(), f)
     }
@@ -2136,7 +2322,8 @@ impl<'a> fmt::Display for Utf8PrefixComponent<'a> {
 /// IO error during iteration.
 ///
 /// If a directory entry is not UTF-8, an [`io::Error`] is returned with the
-/// [`ErrorKind`](io::ErrorKind) set to `InvalidData` and the payload set to a [`FromPathBufError`].
+/// [`ErrorKind`](io::ErrorKind) set to [`InvalidData`][io::ErrorKind::InvalidData]
+/// and the payload set to a [`FromPathBufError`].
 #[derive(Debug)]
 pub struct ReadDirUtf8 {
     inner: fs::ReadDir,
@@ -2154,7 +2341,7 @@ impl Iterator for ReadDirUtf8 {
 
 /// Entries returned by the [`ReadDirUtf8`] iterator.
 ///
-/// An instance of `Utf8DirEntry` represents an entry inside of a directory on the filesystem. Each
+/// An instance of [`Utf8DirEntry`] represents an entry inside of a directory on the filesystem. Each
 /// entry can be inspected via methods to learn about the full path or possibly other metadata.
 #[derive(Debug)]
 pub struct Utf8DirEntry {
@@ -2522,6 +2709,17 @@ impl TryFrom<PathBuf> for Utf8PathBuf {
     }
 }
 
+impl TryFrom<OsString> for Utf8PathBuf {
+    type Error = FromOsStringError;
+
+    fn try_from(os_string: OsString) -> Result<Utf8PathBuf, Self::Error> {
+        Utf8PathBuf::from_os_string(os_string).map_err(|os_string| FromOsStringError {
+            os_string,
+            error: FromOsStrError(()),
+        })
+    }
+}
+
 /// Converts a [`Path`] to a [`Utf8Path`].
 ///
 /// Returns [`FromPathError`] if the path is not valid UTF-8.
@@ -2555,9 +2753,38 @@ impl<'a> TryFrom<&'a Path> for &'a Utf8Path {
     }
 }
 
+/// Converts an [`OsStr`] to a [`Utf8Path`].
+///
+/// Returns the original [`OsStr`] if it is not valid UTF-8.
+///
+/// # Examples
+///
+/// ```
+/// use camino::Utf8Path;
+/// use std::convert::TryFrom;
+/// use std::ffi::OsStr;
+/// # #[cfg(unix)]
+/// use std::os::unix::ffi::OsStrExt;
+/// use std::path::Path;
+///
+/// # #[cfg(unix)]
+/// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+/// # #[cfg(unix)]
+/// assert!(<&Utf8Path>::try_from(non_unicode_str).is_err(), "non-Unicode string path failed");
+/// ```
+impl<'a> TryFrom<&'a OsStr> for &'a Utf8Path {
+    type Error = FromOsStrError;
+
+    fn try_from(os_str: &'a OsStr) -> Result<&'a Utf8Path, Self::Error> {
+        Utf8Path::from_os_str(os_str).ok_or(FromOsStrError(()))
+    }
+}
+
 /// A possible error value while converting a [`PathBuf`] to a [`Utf8PathBuf`].
 ///
-/// Produced by the `TryFrom<PathBuf>` implementation for [`Utf8PathBuf`].
+/// Produced by the [`TryFrom<&PathBuf>`][tryfrom] implementation for [`Utf8PathBuf`].
+///
+/// [tryfrom]: Utf8PathBuf#impl-TryFrom<PathBuf>-for-Utf8PathBuf
 ///
 /// # Examples
 ///
@@ -2616,7 +2843,7 @@ impl FromPathBufError {
     /// Converts self into a [`std::io::Error`] with kind
     /// [`InvalidData`](io::ErrorKind::InvalidData).
     ///
-    /// Many users of `FromPathBufError` will want to convert it into an `io::Error`. This is a
+    /// Many users of [`FromPathBufError`] will want to convert it into an [`io::Error`]. This is a
     /// convenience method to do that.
     pub fn into_io_error(self) -> io::Error {
         // NOTE: we don't currently implement `From<FromPathBufError> for io::Error` because we want
@@ -2639,7 +2866,9 @@ impl error::Error for FromPathBufError {
 
 /// A possible error value while converting a [`Path`] to a [`Utf8Path`].
 ///
-/// Produced by the `TryFrom<&Path>` implementation for [`&Utf8Path`](Utf8Path).
+/// Produced by the [`TryFrom<&Path>`][tryfrom] implementation for [`&Utf8Path`](Utf8Path).
+///
+/// [tryfrom]: Utf8Path#impl-TryFrom<%26Path>-for-%26Utf8Path
 ///
 ///
 /// # Examples
@@ -2671,10 +2900,10 @@ impl FromPathError {
     /// Converts self into a [`std::io::Error`] with kind
     /// [`InvalidData`](io::ErrorKind::InvalidData).
     ///
-    /// Many users of `FromPathError` will want to convert it into an `io::Error`. This is a
+    /// Many users of [`FromPathError`] will want to convert it into an [`io::Error`]. This is a
     /// convenience method to do that.
     pub fn into_io_error(self) -> io::Error {
-        // NOTE: we don't currently implement `From<FromPathBufError> for io::Error` because we want
+        // NOTE: we don't currently implement `From<FromPathError> for io::Error` because we want
         // to ensure the user actually desires that conversion.
         io::Error::new(io::ErrorKind::InvalidData, self)
     }
@@ -2687,6 +2916,147 @@ impl fmt::Display for FromPathError {
 }
 
 impl error::Error for FromPathError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        None
+    }
+}
+
+/// A possible error value while converting a [`OsString`] to a [`Utf8PathBuf`].
+///
+/// Produced by the `TryFrom<OsString>` implementation for [`Utf8PathBuf`].
+///
+/// # Examples
+///
+/// ```
+/// # #[cfg(osstring_from_str)] {
+/// use camino::{Utf8PathBuf, FromOsStringError};
+/// use std::convert::{TryFrom, TryInto};
+/// use std::ffi::OsStr;
+/// use std::str::FromStr;
+/// use std::ffi::OsString;
+/// # #[cfg(unix)]
+/// use std::os::unix::ffi::OsStrExt;
+///
+/// let unicode_string = OsString::from_str("/valid/unicode").unwrap();
+/// let utf8_path_buf: Utf8PathBuf = unicode_string.try_into()
+///     .expect("valid Unicode path succeeded");
+///
+/// // Paths on Unix can be non-UTF-8.
+/// # #[cfg(unix)]
+/// let non_unicode_string = OsStr::from_bytes(b"\xFF\xFF\xFF").to_owned();
+/// # #[cfg(unix)]
+/// let err: FromOsStringError = Utf8PathBuf::try_from(non_unicode_string.clone())
+///     .expect_err("non-Unicode path failed");
+/// # #[cfg(unix)]
+/// assert_eq!(err.as_os_str(), &non_unicode_string);
+/// # #[cfg(unix)]
+/// assert_eq!(err.into_os_string(), non_unicode_string);
+/// # }
+/// ```
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FromOsStringError {
+    os_string: OsString,
+    error: FromOsStrError,
+}
+
+impl FromOsStringError {
+    /// Returns the [`OsStr`] slice that was attempted to be converted to [`Utf8PathBuf`].
+    #[inline]
+    pub fn as_os_str(&self) -> &OsStr {
+        &self.os_string
+    }
+
+    /// Returns the [`OsString`] that was attempted to be converted to [`Utf8PathBuf`].
+    #[inline]
+    pub fn into_os_string(self) -> OsString {
+        self.os_string
+    }
+
+    /// Fetches a [`FromOsStrError`] for more about the conversion failure.
+    ///
+    /// At the moment this struct does not contain any additional information, but is provided for
+    /// completeness.
+    #[inline]
+    pub fn from_os_str_error(&self) -> FromOsStrError {
+        self.error
+    }
+
+    /// Converts self into a [`std::io::Error`] with kind
+    /// [`InvalidData`](io::ErrorKind::InvalidData).
+    ///
+    /// Many users of [`FromOsStringError`] will want to convert it into an [`io::Error`].
+    /// This is a convenience method to do that.
+    pub fn into_io_error(self) -> io::Error {
+        // NOTE: we don't currently implement `From<FromOsStringError> for io::Error`
+        // because we want to ensure the user actually desires that conversion.
+        io::Error::new(io::ErrorKind::InvalidData, self)
+    }
+}
+
+impl fmt::Display for FromOsStringError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "OsString contains invalid UTF-8: {}",
+            // self.os_string.display() // this item is stable since `1.87.0`
+            PathBuf::from(&self.os_string).display() // msrv hack
+        )
+    }
+}
+
+impl error::Error for FromOsStringError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        Some(&self.error)
+    }
+}
+
+/// A possible error value while converting a [`OsStr`] to a [`Utf8Path`].
+///
+/// Produced by the `TryFrom<&OsStr>` implementation for [`&Utf8Path`](Utf8Path).
+///
+///
+/// # Examples
+///
+/// ```
+/// use camino::{Utf8Path, FromOsStrError};
+/// use std::convert::{TryFrom, TryInto};
+/// use std::ffi::OsStr;
+/// # #[cfg(unix)]
+/// use std::os::unix::ffi::OsStrExt;
+///
+/// let unicode_str = OsStr::new("/valid/unicode");
+/// let utf8_path: &Utf8Path = unicode_str.try_into().expect("valid Unicode path succeeded");
+///
+/// // Paths on Unix can be non-UTF-8.
+/// # #[cfg(unix)]
+/// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+/// # #[cfg(unix)]
+/// let err: FromOsStrError = <&Utf8Path>::try_from(non_unicode_str)
+///     .expect_err("non-Unicode path failed");
+/// ```
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+pub struct FromOsStrError(());
+
+impl FromOsStrError {
+    /// Converts self into a [`std::io::Error`] with kind
+    /// [`InvalidData`](io::ErrorKind::InvalidData).
+    ///
+    /// Many users of [`FromOsStrError`] will want to convert it into an [`io::Error`]. This is a
+    /// convenience method to do that.
+    pub fn into_io_error(self) -> io::Error {
+        // NOTE: we don't currently implement `From<FromOsStrError> for io::Error`
+        // because we want to ensure the user actually desires that conversion.
+        io::Error::new(io::ErrorKind::InvalidData, self)
+    }
+}
+
+impl fmt::Display for FromOsStrError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "OsStr contains invalid UTF-8")
+    }
+}
+
+impl error::Error for FromOsStrError {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         None
     }
@@ -3139,11 +3509,12 @@ impl_cmp_os_str!(&'a Utf8Path, OsString);
 ///     https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfullpathnamew
 #[cfg(absolute_path)]
 pub fn absolute_utf8<P: AsRef<Path>>(path: P) -> io::Result<Utf8PathBuf> {
-    // Note that even if the passed in path is valid UTF-8, it is not guaranteed that the absolute
-    // path will be valid UTF-8. For example, the current directory may not be valid UTF-8.
+    // Note that even if the passed in path is valid UTF-8, it is not guaranteed
+    // that the absolute path will be valid UTF-8. For example, the current
+    // directory may not be valid UTF-8.
     //
-    // That's why we take `AsRef<Path>` instead of `AsRef<Utf8Path>` here -- we have to pay the cost
-    // of checking for valid UTF-8 anyway.
+    // That's why we take `AsRef<Path>` instead of `AsRef<Utf8Path>` here -- we
+    // have to pay the cost of checking for valid UTF-8 anyway.
     let path = path.as_ref();
     #[allow(clippy::incompatible_msrv)]
     Utf8PathBuf::try_from(std::path::absolute(path)?).map_err(|error| error.into_io_error())

@@ -111,27 +111,25 @@ pub(crate) fn fcntl_getpipe_size(fd: BorrowedFd<'_>) -> io::Result<usize> {
 }
 
 #[inline]
-pub(crate) fn fcntl_setpipe_size(fd: BorrowedFd<'_>, size: usize) -> io::Result<()> {
+pub(crate) fn fcntl_setpipe_size(fd: BorrowedFd<'_>, size: usize) -> io::Result<usize> {
     let size: c::c_int = size.try_into().map_err(|_| io::Errno::PERM)?;
 
     #[cfg(target_pointer_width = "32")]
     unsafe {
-        let _ = ret_usize(syscall_readonly!(
+        ret_usize(syscall_readonly!(
             __NR_fcntl64,
             fd,
             c_uint(F_SETPIPE_SZ),
             c_int(size)
-        ))?;
+        ))
     }
     #[cfg(target_pointer_width = "64")]
     unsafe {
-        let _ = ret_usize(syscall_readonly!(
+        ret_usize(syscall_readonly!(
             __NR_fcntl,
             fd,
             c_uint(F_SETPIPE_SZ),
             c_int(size)
-        ))?;
+        ))
     }
-
-    Ok(())
 }

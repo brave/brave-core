@@ -6,16 +6,21 @@
 
 use crate::prelude::*;
 
-/// [`DataMarker`] for raw buffers. Returned by [`BufferProvider`].
+#[cfg(feature = "serde")]
+mod serde;
+#[cfg(feature = "serde")]
+pub use self::serde::*;
+
+/// [`DynamicDataMarker`] for raw buffers. Returned by [`BufferProvider`].
 ///
 /// The data is expected to be deserialized before it can be used; see
 /// [`DataPayload::into_deserialized`].
-#[allow(clippy::exhaustive_structs)] // marker type
+#[non_exhaustive]
 #[derive(Debug)]
 pub struct BufferMarker;
 
-impl DataMarker for BufferMarker {
-    type Yokeable = &'static [u8];
+impl DynamicDataMarker for BufferMarker {
+    type DataStruct = &'static [u8];
 }
 
 /// A data provider that returns opaque bytes.
@@ -37,46 +42,50 @@ impl DataMarker for BufferMarker {
 ///
 /// ```
 /// # #[cfg(feature = "deserialize_json")] {
-/// use icu_locid::langid;
+/// use icu_locale_core::langid;
 /// use icu_provider::hello_world::*;
 /// use icu_provider::prelude::*;
 /// use std::borrow::Cow;
 ///
 /// let buffer_provider = HelloWorldProvider.into_json_provider();
 ///
-/// let req = DataRequest {
-///     locale: &langid!("de").into(),
-///     metadata: Default::default(),
-/// };
-///
 /// // Deserializing manually
 /// assert_eq!(
-///     serde_json::from_slice::<HelloWorldV1>(
+///     serde_json::from_slice::<HelloWorld>(
 ///         buffer_provider
-///             .load_buffer(HelloWorldV1Marker::KEY, req)
+///             .load_data(
+///                 HelloWorldV1::INFO,
+///                 DataRequest {
+///                     id: DataIdentifierBorrowed::for_locale(
+///                         &langid!("de").into()
+///                     ),
+///                     ..Default::default()
+///                 }
+///             )
 ///             .expect("load should succeed")
-///             .take_payload()
-///             .unwrap()
+///             .payload
 ///             .get()
 ///     )
 ///     .expect("should deserialize"),
-///     HelloWorldV1 {
+///     HelloWorld {
 ///         message: Cow::Borrowed("Hallo Welt"),
 ///     },
 /// );
 ///
 /// // Deserialize automatically
-/// let deserializing_provider: &dyn DataProvider<HelloWorldV1Marker> =
+/// let deserializing_provider: &dyn DataProvider<HelloWorldV1> =
 ///     &buffer_provider.as_deserializing();
 ///
 /// assert_eq!(
 ///     deserializing_provider
-///         .load(req)
+///         .load(DataRequest {
+///             id: DataIdentifierBorrowed::for_locale(&langid!("de").into()),
+///             ..Default::default()
+///         })
 ///         .expect("load should succeed")
-///         .take_payload()
-///         .unwrap()
+///         .payload
 ///         .get(),
-///     &HelloWorldV1 {
+///     &HelloWorld {
 ///         message: Cow::Borrowed("Hallo Welt"),
 ///     },
 /// );
@@ -84,70 +93,20 @@ impl DataMarker for BufferMarker {
 /// ```
 ///
 /// [`as_deserializing()`]: AsDeserializingBufferProvider::as_deserializing
-pub trait BufferProvider {
-    /// Loads a [`DataPayload`]`<`[`BufferMarker`]`>` according to the key and request.
-    fn load_buffer(
-        &self,
-        key: DataKey,
-        req: DataRequest,
-    ) -> Result<DataResponse<BufferMarker>, DataError>;
-}
+pub trait BufferProvider: DynamicDataProvider<BufferMarker> {}
 
-impl<'a, T: BufferProvider + ?Sized> BufferProvider for &'a T {
-    #[inline]
-    fn load_buffer(
-        &self,
-        key: DataKey,
-        req: DataRequest,
-    ) -> Result<DataResponse<BufferMarker>, DataError> {
-        (**self).load_buffer(key, req)
-    }
-}
-
-impl<T: BufferProvider + ?Sized> BufferProvider for alloc::boxed::Box<T> {
-    #[inline]
-    fn load_buffer(
-        &self,
-        key: DataKey,
-        req: DataRequest,
-    ) -> Result<DataResponse<BufferMarker>, DataError> {
-        (**self).load_buffer(key, req)
-    }
-}
-
-impl<T: BufferProvider + ?Sized> BufferProvider for alloc::rc::Rc<T> {
-    #[inline]
-    fn load_buffer(
-        &self,
-        key: DataKey,
-        req: DataRequest,
-    ) -> Result<DataResponse<BufferMarker>, DataError> {
-        (**self).load_buffer(key, req)
-    }
-}
-
-#[cfg(target_has_atomic = "ptr")]
-impl<T: BufferProvider + ?Sized> BufferProvider for alloc::sync::Arc<T> {
-    #[inline]
-    fn load_buffer(
-        &self,
-        key: DataKey,
-        req: DataRequest,
-    ) -> Result<DataResponse<BufferMarker>, DataError> {
-        (**self).load_buffer(key, req)
-    }
-}
+impl<P: DynamicDataProvider<BufferMarker> + ?Sized> BufferProvider for P {}
 
 /// An enum expressing all Serde formats known to ICU4X.
 #[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(::serde::Serialize, ::serde::Deserialize))]
 #[non_exhaustive]
 pub enum BufferFormat {
-    /// Serialize using JavaScript Object Notation (JSON).
+    /// Serialize using JavaScript Object Notation (JSON), using the [`serde_json`] crate.
     Json,
-    /// Serialize using Bincode version 1.
+    /// Serialize using the [`bincode`] crate, version 1.
     Bincode1,
-    /// Serialize using Postcard version 1.
+    /// Serialize using the [`postcard`] crate, version 1.
     Postcard1,
 }
 
@@ -157,16 +116,18 @@ impl BufferFormat {
         match self {
             #[cfg(feature = "deserialize_json")]
             BufferFormat::Json => Ok(()),
+            #[cfg(not(feature = "deserialize_json"))]
+            BufferFormat::Json => Err(DataErrorKind::Deserialize.with_str_context("deserializing `BufferFormat::Json` requires the `deserialize_json` Cargo feature")),
 
             #[cfg(feature = "deserialize_bincode_1")]
             BufferFormat::Bincode1 => Ok(()),
+            #[cfg(not(feature = "deserialize_bincode_1"))]
+            BufferFormat::Bincode1 => Err(DataErrorKind::Deserialize.with_str_context("deserializing `BufferFormat::Bincode1` requires the `deserialize_bincode_1` Cargo feature")),
 
             #[cfg(feature = "deserialize_postcard_1")]
             BufferFormat::Postcard1 => Ok(()),
-
-            // Allowed for cases in which all features are enabled
-            #[allow(unreachable_patterns)]
-            _ => Err(DataErrorKind::UnavailableBufferFormat(*self).into_error()),
+            #[cfg(not(feature = "deserialize_postcard_1"))]
+            BufferFormat::Postcard1 => Err(DataErrorKind::Deserialize.with_str_context("deserializing `BufferFormat::Postcard1` requires the `deserialize_postcard_1` Cargo feature")),
         }
     }
 }

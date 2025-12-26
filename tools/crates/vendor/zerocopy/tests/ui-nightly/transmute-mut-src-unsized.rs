@@ -12,5 +12,6 @@ use zerocopy::transmute_mut;
 
 fn main() {}
 
-// `transmute_mut!` does not support transmuting from an unsized source type.
+// `transmute_mut!` does not support transmuting from an unsized source type to
+// a sized destination type.
 const SRC_UNSIZED: &mut [u8; 1] = transmute_mut!(&mut [0u8][..]);

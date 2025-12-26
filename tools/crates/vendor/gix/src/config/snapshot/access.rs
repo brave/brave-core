@@ -1,12 +1,10 @@
 #![allow(clippy::result_large_err)]
-use std::borrow::Cow;
-use std::ffi::OsStr;
+use std::{borrow::Cow, ffi::OsStr};
 
 use gix_features::threading::OwnShared;
 
-use crate::bstr::ByteSlice;
 use crate::{
-    bstr::{BStr, BString},
+    bstr::{BStr, BString, ByteSlice},
     config::{CommitAutoRollback, Snapshot, SnapshotMut},
 };
 
@@ -22,13 +20,13 @@ impl<'repo> Snapshot<'repo> {
     /// For a non-degenerating version, use [`try_boolean(…)`][Self::try_boolean()].
     ///
     /// Note that this method takes the most recent value at `key` even if it is from a file with reduced trust.
-    pub fn boolean<'a>(&self, key: impl Into<&'a BStr>) -> Option<bool> {
+    pub fn boolean(&self, key: impl gix_config::AsKey) -> Option<bool> {
         self.try_boolean(key).and_then(Result::ok)
     }
 
     /// Like [`boolean()`][Self::boolean()], but it will report an error if the value couldn't be interpreted as boolean.
-    pub fn try_boolean<'a>(&self, key: impl Into<&'a BStr>) -> Option<Result<bool, gix_config::value::Error>> {
-        self.repo.config.resolved.boolean(key.into())
+    pub fn try_boolean(&self, key: impl gix_config::AsKey) -> Option<Result<bool, gix_config::value::Error>> {
+        self.repo.config.resolved.boolean(key)
     }
 
     /// Return the resolved integer at `key`, or `None` if there is no such value or if the value can't be interpreted as
@@ -37,40 +35,40 @@ impl<'repo> Snapshot<'repo> {
     /// For a non-degenerating version, use [`try_integer(…)`][Self::try_integer()].
     ///
     /// Note that this method takes the most recent value at `key` even if it is from a file with reduced trust.
-    pub fn integer<'a>(&self, key: impl Into<&'a BStr>) -> Option<i64> {
+    pub fn integer(&self, key: impl gix_config::AsKey) -> Option<i64> {
         self.try_integer(key).and_then(Result::ok)
     }
 
     /// Like [`integer()`][Self::integer()], but it will report an error if the value couldn't be interpreted as boolean.
-    pub fn try_integer<'a>(&self, key: impl Into<&'a BStr>) -> Option<Result<i64, gix_config::value::Error>> {
-        self.repo.config.resolved.integer(key.into())
+    pub fn try_integer(&self, key: impl gix_config::AsKey) -> Option<Result<i64, gix_config::value::Error>> {
+        self.repo.config.resolved.integer(key)
     }
 
     /// Return the string at `key`, or `None` if there is no such value.
     ///
     /// Note that this method takes the most recent value at `key` even if it is from a file with reduced trust.
-    pub fn string<'a>(&self, key: impl Into<&'a BStr>) -> Option<Cow<'repo, BStr>> {
-        self.repo.config.resolved.string(key.into())
+    pub fn string(&self, key: impl gix_config::AsKey) -> Option<Cow<'repo, BStr>> {
+        self.repo.config.resolved.string(key)
     }
 
     /// Return the trusted and fully interpolated path at `key`, or `None` if there is no such value
     /// or if no value was found in a trusted file.
     /// An error occurs if the path could not be interpolated to its final value.
-    pub fn trusted_path<'a>(
+    pub fn trusted_path(
         &self,
-        key: impl Into<&'a BStr>,
+        key: impl gix_config::AsKey,
     ) -> Option<Result<Cow<'repo, std::path::Path>, gix_config::path::interpolate::Error>> {
-        self.repo.config.trusted_file_path(key.into())
+        self.repo.config.trusted_file_path(key)
     }
 
     /// Return the trusted string at `key` for launching using [command::prepare()](gix_command::prepare()),
     /// or `None` if there is no such value or if no value was found in a trusted file.
-    pub fn trusted_program<'a>(&self, key: impl Into<&'a BStr>) -> Option<Cow<'repo, OsStr>> {
+    pub fn trusted_program(&self, key: impl gix_config::AsKey) -> Option<Cow<'repo, OsStr>> {
         let value = self
             .repo
             .config
             .resolved
-            .string_filter(key.into(), &mut self.repo.config.filter_config_section.clone())?;
+            .string_filter(key, &mut self.repo.config.filter_config_section.clone())?;
         Some(match gix_path::from_bstr(value) {
             Cow::Borrowed(v) => Cow::Borrowed(v.as_os_str()),
             Cow::Owned(v) => Cow::Owned(v.into_os_string()),
@@ -79,7 +77,7 @@ impl<'repo> Snapshot<'repo> {
 }
 
 /// Utilities and additional access
-impl<'repo> Snapshot<'repo> {
+impl Snapshot<'_> {
     /// Returns the underlying configuration implementation for a complete API, despite being a little less convenient.
     ///
     /// It's expected that more functionality will move up depending on demand.

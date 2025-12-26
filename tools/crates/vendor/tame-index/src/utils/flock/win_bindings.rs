@@ -6,7 +6,7 @@
     clippy::upper_case_acronyms
 )]
 #[link(name = "kernel32")]
-extern "system" {
+unsafe extern "system" {
     #[link_name = "CloseHandle"]
     pub fn close_handle(object: Handle) -> Bool;
     #[link_name = "CreateEventA"]

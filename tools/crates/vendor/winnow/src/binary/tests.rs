@@ -1163,14 +1163,14 @@ Ok(
 mod partial {
     use super::*;
 
-    #[cfg(feature = "alloc")]
-    use crate::lib::std::vec::Vec;
     use crate::Partial;
     use crate::{
         ascii::digit1 as digit,
         binary::{be_u16, be_u8},
-        lib::std::str::{self, FromStr},
     };
+    #[cfg(feature = "alloc")]
+    use alloc::vec::Vec;
+    use core::str::{self, FromStr};
 
     #[test]
     fn i8_tests() {

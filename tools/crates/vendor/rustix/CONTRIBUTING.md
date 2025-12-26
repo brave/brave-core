@@ -14,8 +14,8 @@ cargo test --features=all-apis
 ```
 
 And, rustix has two backends, linux_raw and libc, and only one is used in
-any given build. To test with the libc backend explicitly, additionally
-enable the `use-libc` feature:
+any given build. To test on Linux with the libc backend explicitly,
+additionally enable the `use-libc` feature:
 
 ```console
 cargo test --features=all-apis,use-libc

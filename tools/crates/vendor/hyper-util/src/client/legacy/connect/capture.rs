@@ -19,6 +19,8 @@ pub struct CaptureConnection {
 /// [`capture_connection`] allows a caller to capture the returned [`Connected`] structure as soon
 /// as the connection is established.
 ///
+/// [`Connection`]: crate::client::legacy::connect::Connection
+///
 /// *Note*: If establishing a connection fails, [`CaptureConnection::connection_metadata`] will always return none.
 ///
 /// # Examples
@@ -117,7 +119,7 @@ impl CaptureConnection {
     }
 }
 
-#[cfg(all(test, not(miri)))]
+#[cfg(test)]
 mod test {
     use super::*;
 
@@ -129,22 +131,18 @@ mod test {
             "connection has not been set"
         );
         tx.set(&Connected::new().proxy(true));
-        assert_eq!(
-            rx.connection_metadata()
-                .as_ref()
-                .expect("connected should be set")
-                .is_proxied(),
-            true
-        );
+        assert!(rx
+            .connection_metadata()
+            .as_ref()
+            .expect("connected should be set")
+            .is_proxied());
 
         // ensure it can be called multiple times
-        assert_eq!(
-            rx.connection_metadata()
-                .as_ref()
-                .expect("connected should be set")
-                .is_proxied(),
-            true
-        );
+        assert!(rx
+            .connection_metadata()
+            .as_ref()
+            .expect("connected should be set")
+            .is_proxied());
     }
 
     #[tokio::test]
@@ -155,24 +153,22 @@ mod test {
             "connection has not been set"
         );
         let test_task = tokio::spawn(async move {
-            assert_eq!(
-                rx.wait_for_connection_metadata()
-                    .await
-                    .as_ref()
-                    .expect("connection should be set")
-                    .is_proxied(),
-                true
-            );
+            assert!(rx
+                .wait_for_connection_metadata()
+                .await
+                .as_ref()
+                .expect("connection should be set")
+                .is_proxied());
             // can be awaited multiple times
             assert!(
                 rx.wait_for_connection_metadata().await.is_some(),
                 "should be awaitable multiple times"
             );
 
-            assert_eq!(rx.connection_metadata().is_some(), true);
+            assert!(rx.connection_metadata().is_some());
         });
         // can't be finished, we haven't set the connection yet
-        assert_eq!(test_task.is_finished(), false);
+        assert!(!test_task.is_finished());
         tx.set(&Connected::new().proxy(true));
 
         assert!(test_task.await.is_ok());

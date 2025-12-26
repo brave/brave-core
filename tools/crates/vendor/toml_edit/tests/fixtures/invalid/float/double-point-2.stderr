@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 21
-  |
-1 | double-point-2 = 0.1.2
-  |                     ^
-expected newline, `#`

@@ -1,4 +1,5 @@
 use super::{traverse, Error};
+use crate::exact_vec;
 /// An item stored within the [`Tree`] whose data is stored in a pack file, identified by
 /// the offset of its first (`offset`) and last (`next_offset`) bytes.
 ///
@@ -61,8 +62,8 @@ impl<T> Tree<T> {
     /// Instantiate a empty tree capable of storing `num_objects` amounts of items.
     pub fn with_capacity(num_objects: usize) -> Result<Self, Error> {
         Ok(Tree {
-            root_items: Vec::with_capacity(num_objects / 2),
-            child_items: Vec::with_capacity(num_objects / 2),
+            root_items: exact_vec(num_objects / 2),
+            child_items: exact_vec(num_objects / 2),
             last_seen: None,
             future_child_offsets: Vec::new(),
         })
@@ -226,25 +227,39 @@ mod tests {
         }
     }
 
-    #[test]
-    fn size_of_pack_tree_item() {
-        use super::Item;
-        assert_eq!(std::mem::size_of::<[Item<()>; 7_500_000]>(), 300_000_000);
-    }
+    mod size {
+        use gix_testtools::size_ok;
 
-    #[test]
-    fn size_of_pack_verify_data_structure() {
-        use super::Item;
-        pub struct EntryWithDefault {
-            _index_entry: crate::index::Entry,
-            _kind: gix_object::Kind,
-            _object_size: u64,
-            _decompressed_size: u64,
-            _compressed_size: u64,
-            _header_size: u16,
-            _level: u16,
+        use super::super::Item;
+
+        #[test]
+        fn size_of_pack_tree_item() {
+            let actual = std::mem::size_of::<[Item<()>; 7_500_000]>();
+            let expected = 300_000_000;
+            assert!(
+                size_ok(actual, expected),
+                "we don't want these to grow unnoticed: {actual} <~ {expected}"
+            );
         }
 
-        assert_eq!(std::mem::size_of::<[Item<EntryWithDefault>; 7_500_000]>(), 840_000_000);
+        #[test]
+        fn size_of_pack_verify_data_structure() {
+            pub struct EntryWithDefault {
+                _index_entry: crate::index::Entry,
+                _kind: gix_object::Kind,
+                _object_size: u64,
+                _decompressed_size: u64,
+                _compressed_size: u64,
+                _header_size: u16,
+                _level: u16,
+            }
+
+            let actual = std::mem::size_of::<[Item<EntryWithDefault>; 7_500_000]>();
+            let expected = 840_000_000;
+            assert!(
+                size_ok(actual, expected),
+                "we don't want these to grow unnoticed: {actual} <~ {expected}"
+            );
+        }
     }
 }

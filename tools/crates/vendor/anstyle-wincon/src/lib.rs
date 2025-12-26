@@ -8,7 +8,7 @@
 //! - Uses [`anstyle`](https://crates.io/crates/termcolor) rather than defining its own types
 //! - More focused, smaller
 
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_docs)]
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
@@ -19,3 +19,7 @@ mod stream;
 pub mod windows;
 
 pub use stream::WinconStream;
+
+#[doc = include_str!("../README.md")]
+#[cfg(doctest)]
+pub struct ReadmeDoctests;

@@ -4,20 +4,27 @@ use bstr::ByteSlice;
 pub struct Lines<'a> {
     lines: bstr::Lines<'a>,
     line_no: usize,
+    /// Only if `true` we will be able to parse precious files.
+    support_precious: bool,
 }
 
 impl<'a> Lines<'a> {
     /// Create a new instance from `buf` to parse ignore patterns from.
-    pub fn new(buf: &'a [u8]) -> Self {
+    ///
+    /// If `support_precious` is `true`, we will parse `$` prefixed entries as precious.
+    /// This is backward-incompatible as files that actually start with `$` like `$houdini`
+    /// will then not be ignored anymore, instead it ignores `houdini`.
+    pub fn new(buf: &'a [u8], support_precious: bool) -> Self {
         let bom = unicode_bom::Bom::from(buf);
         Lines {
             lines: buf[bom.len()..].lines(),
             line_no: 0,
+            support_precious,
         }
     }
 }
 
-impl<'a> Iterator for Lines<'a> {
+impl Iterator for Lines<'_> {
     type Item = (gix_glob::Pattern, usize, crate::Kind);
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -27,7 +34,7 @@ impl<'a> Iterator for Lines<'a> {
                 Some(b'#') | None => continue,
                 Some(c) => c,
             };
-            let (kind, can_negate) = if first == b'$' {
+            let (kind, can_negate) = if self.support_precious && first == b'$' {
                 line = &line[1..];
                 (crate::Kind::Precious, false)
             } else {

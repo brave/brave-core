@@ -923,7 +923,7 @@ impl Builder {
     /// received for that stream will result in a connection level protocol
     /// error, forcing the connection to terminate.
     ///
-    /// The default value is 10.
+    /// The default value is currently 50.
     ///
     /// # Examples
     ///
@@ -968,7 +968,7 @@ impl Builder {
     /// received for that stream will result in a connection level protocol
     /// error, forcing the connection to terminate.
     ///
-    /// The default value is 30 seconds.
+    /// The default value is currently 1 second.
     ///
     /// # Examples
     ///
@@ -1437,8 +1437,14 @@ where
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         self.inner.maybe_close_connection_if_no_streams();
+        let had_streams_or_refs = self.inner.has_streams_or_other_references();
         let result = self.inner.poll(cx).map_err(Into::into);
-        if result.is_pending() && !self.inner.has_streams_or_other_references() {
+        // if we had streams/refs, and don't anymore, wake up one more time to
+        // ensure proper shutdown
+        if result.is_pending()
+            && had_streams_or_refs
+            && !self.inner.has_streams_or_other_references()
+        {
             tracing::trace!("last stream closed during poll, wake again");
             cx.waker().wake_by_ref();
         }

@@ -11,12 +11,10 @@ from [Temporal's hybrid grammar].
 
 // Here's the specific part of Temporal's grammar that is implemented below:
 //
-// # Parser::new().zulu(true).subminute(true).parse(b"...")
 // DateTimeUTCOffset :::
 //   UTCDesignator
 //   UTCOffsetSubMinutePrecision
 //
-// # Parser::new().zulu(false).subminute(false).parse(b"...")
 // TimeZoneUTCOffsetName :::
 //   UTCOffsetMinutePrecision
 //
@@ -167,7 +165,7 @@ impl ParsedOffset {
             ParsedOffsetKind::Zulu => Ok(PiecesOffset::Zulu),
             ParsedOffsetKind::Numeric(ref numeric) => {
                 let mut off = PiecesNumericOffset::from(numeric.to_offset()?);
-                if numeric.sign < 0 {
+                if numeric.sign < C(0) {
                     off = off.with_negative_zero();
                 }
                 Ok(PiecesOffset::from(off))
@@ -182,6 +180,14 @@ impl ParsedOffset {
     /// is almost always the wrong thing to do.
     pub(crate) fn is_zulu(&self) -> bool {
         matches!(self.kind, ParsedOffsetKind::Zulu)
+    }
+
+    /// Whether the parsed offset had an explicit sub-minute component or not.
+    pub(crate) fn has_subminute(&self) -> bool {
+        let ParsedOffsetKind::Numeric(ref numeric) = self.kind else {
+            return false;
+        };
+        numeric.seconds.is_some()
     }
 }
 
@@ -228,7 +234,7 @@ impl Numeric {
             seconds += part_seconds;
         }
         if let Some(part_nanoseconds) = self.nanoseconds {
-            if part_nanoseconds >= 500_000_000 {
+            if part_nanoseconds >= C(500_000_000) {
                 seconds = seconds
                     .try_checked_add("offset-seconds", C(1))
                     .with_context(|| {
@@ -248,7 +254,7 @@ impl Numeric {
 // `Offset` fails.
 impl core::fmt::Display for Numeric {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        if self.sign == -1 {
+        if self.sign == C(-1) {
             write!(f, "-")?;
         } else {
             write!(f, "+")?;
@@ -262,7 +268,11 @@ impl core::fmt::Display for Numeric {
         }
         if let Some(nanos) = self.nanoseconds {
             static FMT: FractionalFormatter = FractionalFormatter::new();
-            write!(f, ".{}", FMT.format(i64::from(nanos)).as_str())?;
+            write!(
+                f,
+                ".{}",
+                FMT.format(i32::from(nanos).unsigned_abs()).as_str()
+            )?;
         }
         Ok(())
     }
@@ -291,14 +301,24 @@ impl core::fmt::Debug for Numeric {
 #[derive(Debug)]
 pub(crate) struct Parser {
     zulu: bool,
+    require_minute: bool,
+    require_second: bool,
     subminute: bool,
     subsecond: bool,
+    colon: Colon,
 }
 
 impl Parser {
     /// Create a new UTC offset parser with the default configuration.
     pub(crate) const fn new() -> Parser {
-        Parser { zulu: true, subminute: true, subsecond: true }
+        Parser {
+            zulu: true,
+            require_minute: false,
+            require_second: false,
+            subminute: true,
+            subsecond: true,
+            colon: Colon::Optional,
+        }
     }
 
     /// When enabled, the `z` and `Z` designators are recognized as a "zulu"
@@ -310,6 +330,24 @@ impl Parser {
     /// This is enabled by default.
     pub(crate) const fn zulu(self, yes: bool) -> Parser {
         Parser { zulu: yes, ..self }
+    }
+
+    /// When enabled, the minute component of a time zone offset is required.
+    /// If no minutes are found, then an error is returned.
+    ///
+    /// This is disabled by default.
+    pub(crate) const fn require_minute(self, yes: bool) -> Parser {
+        Parser { require_minute: yes, ..self }
+    }
+
+    /// When enabled, the second component of a time zone offset is required.
+    /// If no seconds (or minutes) are found, then an error is returned.
+    ///
+    /// When `subminute` is disabled, this setting has no effect.
+    ///
+    /// This is disabled by default.
+    pub(crate) const fn require_second(self, yes: bool) -> Parser {
+        Parser { require_second: yes, ..self }
     }
 
     /// When enabled, offsets with precision greater than integral minutes
@@ -334,6 +372,13 @@ impl Parser {
     /// This is ignored if `subminute` is disabled.
     pub(crate) const fn subsecond(self, yes: bool) -> Parser {
         Parser { subsecond: yes, ..self }
+    }
+
+    /// Sets how to handle parsing of colons in a time zone offset.
+    ///
+    /// This is set to `Colon::Optional` by default.
+    pub(crate) const fn colon(self, colon: Colon) -> Parser {
+        Parser { colon, ..self }
     }
 
     /// Parse an offset from the beginning of `input`.
@@ -395,7 +440,7 @@ impl Parser {
     ///
     /// Basically, if `input` is empty, or is not one of `z`, `Z`, `+` or `-`
     /// then this returns `None`.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(crate) fn parse_optional<'i>(
         &self,
         input: &'i [u8],
@@ -414,7 +459,7 @@ impl Parser {
     ///
     /// The beginning of the input is expected to start with a `+` or a `-`.
     /// Any other case (including an empty string) will result in an error.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_numeric<'i>(
         &self,
         input: &'i [u8],
@@ -434,7 +479,29 @@ impl Parser {
                     "failed to parse hours in UTC numeric offset {original:?}"
                 )
             })?;
-        let extended = input.starts_with(b":");
+        let extended = match self.colon {
+            Colon::Optional => input.starts_with(b":"),
+            Colon::Required => {
+                if !input.is_empty() && !input.starts_with(b":") {
+                    return Err(err!(
+                        "parsed hour component of time zone offset from \
+                         {original:?}, but could not find required colon \
+                         separator",
+                    ));
+                }
+                true
+            }
+            Colon::Absent => {
+                if !input.is_empty() && input.starts_with(b":") {
+                    return Err(err!(
+                        "parsed hour component of time zone offset from \
+                         {original:?}, but found colon after hours which \
+                         is not allowed",
+                    ));
+                }
+                false
+            }
+        };
 
         // Start building up our numeric offset value.
         let mut numeric = Numeric {
@@ -454,6 +521,13 @@ impl Parser {
                 )
             })?;
         if !has_minutes {
+            if self.require_minute || (self.subminute && self.require_second) {
+                return Err(err!(
+                    "parsed hour component of time zone offset from \
+                     {original:?}, but could not find required minute \
+                     component",
+                ));
+            }
             return Ok(Parsed { value: numeric, input });
         }
 
@@ -474,7 +548,7 @@ impl Parser {
             // almost certainly indicates that someone has tried to provide
             // more precision than is supported. So we return an error here.
             // If this winds up being problematic, we can make this error
-            // configuration or remove it altogether (unfortunate).
+            // configurable or remove it altogether (unfortunate).
             if input.get(0).map_or(false, |&b| b == b':') {
                 return Err(err!(
                     "subminute precision for UTC numeric offset {original:?} \
@@ -494,6 +568,13 @@ impl Parser {
                 )
             })?;
         if !has_seconds {
+            if self.require_second {
+                return Err(err!(
+                    "parsed hour and minute components of time zone offset \
+                     from {original:?}, but could not find required second \
+                     component",
+                ));
+            }
             return Ok(Parsed { value: numeric, input });
         }
 
@@ -527,11 +608,13 @@ impl Parser {
                      UTC numeric offset {original:?}",
                 )
             })?;
-        numeric.nanoseconds = nanoseconds;
+        // OK because `parse_temporal_fraction` guarantees `0..=999_999_999`.
+        numeric.nanoseconds =
+            nanoseconds.map(|n| t::SubsecNanosecond::new(n).unwrap());
         Ok(Parsed { value: numeric, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_sign<'i>(
         &self,
         input: &'i [u8],
@@ -553,7 +636,7 @@ impl Parser {
         Ok(Parsed { value: sign, input: &input[1..] })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_hours<'i>(
         &self,
         input: &'i [u8],
@@ -577,7 +660,7 @@ impl Parser {
         Ok(Parsed { value: hours, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_minutes<'i>(
         &self,
         input: &'i [u8],
@@ -599,7 +682,7 @@ impl Parser {
         Ok(Parsed { value: minutes, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_seconds<'i>(
         &self,
         input: &'i [u8],
@@ -631,7 +714,7 @@ impl Parser {
     ///
     /// When in basic mode (not extended), then a subsequent component is only
     /// expected when `input` begins with two ASCII digits.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_separator<'i>(
         &self,
         mut input: &'i [u8],
@@ -648,6 +731,18 @@ impl Parser {
         }
         Ok(Parsed { value: is_separator, input })
     }
+}
+
+/// How to handle parsing of colons in a time zone offset.
+#[derive(Debug)]
+pub(crate) enum Colon {
+    /// Colons may be present or not. When present, colons must be used
+    /// consistently. For example, `+05:3015` and `-0530:15` are not allowed.
+    Optional,
+    /// Colons must be present.
+    Required,
+    /// Colons must be absent.
+    Absent,
 }
 
 #[cfg(test)]

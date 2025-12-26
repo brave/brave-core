@@ -28,11 +28,8 @@ pub enum Error<E: std::error::Error + 'static> {
     Filename(String),
     #[error("commit {id} has invalid generation {generation}")]
     Generation { generation: u32, id: gix_hash::ObjectId },
-    #[error("checksum mismatch: expected {expected}, got {actual}")]
-    Mismatch {
-        actual: gix_hash::ObjectId,
-        expected: gix_hash::ObjectId,
-    },
+    #[error(transparent)]
+    Checksum(#[from] checksum::Error),
     #[error("{0}")]
     Processor(#[source] E),
     #[error("commit {id} has invalid root tree ID {root_tree_id}")]
@@ -40,6 +37,19 @@ pub enum Error<E: std::error::Error + 'static> {
         id: gix_hash::ObjectId,
         root_tree_id: gix_hash::ObjectId,
     },
+}
+
+///
+pub mod checksum {
+    /// The error used in [`super::File::verify_checksum()`].
+    #[derive(thiserror::Error, Debug)]
+    #[allow(missing_docs)]
+    pub enum Error {
+        #[error("failed to hash commit graph file")]
+        Hasher(#[from] gix_hash::hasher::Error),
+        #[error(transparent)]
+        Verify(#[from] gix_hash::verify::Error),
+    }
 }
 
 /// The positive result of [`File::traverse()`] providing some statistical information.
@@ -73,8 +83,7 @@ impl File {
         E: std::error::Error + 'static,
         Processor: FnMut(&file::Commit<'a>) -> Result<(), E>,
     {
-        self.verify_checksum()
-            .map_err(|(actual, expected)| Error::Mismatch { actual, expected })?;
+        self.verify_checksum()?;
         verify_split_chain_filename_hash(&self.path, self.checksum()).map_err(Error::Filename)?;
 
         let null_id = self.object_hash().null_ref();
@@ -138,23 +147,18 @@ impl File {
     /// Assure the [`checksum`][File::checksum()] matches the actual checksum over all content of this file, excluding the trailing
     /// checksum itself.
     ///
-    /// Return the actual checksum on success or `(actual checksum, expected checksum)` if there is a mismatch.
-    pub fn verify_checksum(&self) -> Result<gix_hash::ObjectId, (gix_hash::ObjectId, gix_hash::ObjectId)> {
-        // Even though we could use gix_features::hash::bytes_of_file(…), this would require using our own
-        // Error type to support io::Error and Mismatch. As we only gain progress, there probably isn't much value
+    /// Return the actual checksum on success or [`checksum::Error`] if there is a mismatch.
+    pub fn verify_checksum(&self) -> Result<gix_hash::ObjectId, checksum::Error> {
+        // Even though we could use gix_hash::bytes_of_file(…), this would require extending our
+        // Error type to support io::Error. As we only gain progress, there probably isn't much value
         // as these files are usually small enough to process them in less than a second, even for the large ones.
         // But it's possible, once a progress instance is passed.
         let data_len_without_trailer = self.data.len() - self.hash_len;
-        let mut hasher = gix_features::hash::hasher(self.object_hash());
+        let mut hasher = gix_hash::hasher(self.object_hash());
         hasher.update(&self.data[..data_len_without_trailer]);
-        let actual = gix_hash::ObjectId::from_bytes_or_panic(hasher.digest().as_ref());
-
-        let expected = self.checksum();
-        if actual == expected {
-            Ok(actual)
-        } else {
-            Err((actual, expected.into()))
-        }
+        let actual = hasher.try_finalize()?;
+        actual.verify(self.checksum())?;
+        Ok(actual)
     }
 }
 

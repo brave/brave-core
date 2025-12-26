@@ -41,7 +41,7 @@ impl CFData {
     /// Creates a [`CFData`] referencing `buffer` without creating a copy
     pub fn from_arc<T: AsRef<[u8]> + Sync + Send>(buffer: Arc<T>) -> Self {
         use crate::base::{CFAllocator, CFAllocatorContext};
-        use std::os::raw::c_void;
+        use core::ffi::c_void;
 
         unsafe {
             let ptr = (*buffer).as_ref().as_ptr() as *const _;

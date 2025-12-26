@@ -386,6 +386,51 @@ impl Command {
         self
     }
 
+    /// Allows one to mutate all [`Command`]s after they've been added as subcommands.
+    ///
+    /// This does not affect the built-in `--help` or `--version` arguments.
+    ///
+    /// # Examples
+    ///
+    #[cfg_attr(feature = "string", doc = "```")]
+    #[cfg_attr(not(feature = "string"), doc = "```ignore")]
+    /// # use clap_builder as clap;
+    /// # use clap::{Command, Arg, ArgAction};
+    ///
+    /// let mut cmd = Command::new("foo")
+    ///     .subcommands([
+    ///         Command::new("fetch"),
+    ///         Command::new("push"),
+    ///     ])
+    ///     // Allow title-case subcommands
+    ///     .mut_subcommands(|sub| {
+    ///         let name = sub.get_name();
+    ///         let alias = name.chars().enumerate().map(|(i, c)| {
+    ///             if i == 0 {
+    ///                 c.to_ascii_uppercase()
+    ///             } else {
+    ///                 c
+    ///             }
+    ///         }).collect::<String>();
+    ///         sub.alias(alias)
+    ///     });
+    ///
+    /// let res = cmd.try_get_matches_from_mut(vec!["foo", "fetch"]);
+    /// assert!(res.is_ok());
+    ///
+    /// let res = cmd.try_get_matches_from_mut(vec!["foo", "Fetch"]);
+    /// assert!(res.is_ok());
+    /// ```
+    #[must_use]
+    #[cfg_attr(debug_assertions, track_caller)]
+    pub fn mut_subcommands<F>(mut self, f: F) -> Self
+    where
+        F: FnMut(Command) -> Command,
+    {
+        self.subcommands = self.subcommands.into_iter().map(f).collect();
+        self
+    }
+
     /// Adds an [`ArgGroup`] to the application.
     ///
     /// [`ArgGroup`]s are a family of related arguments.
@@ -578,6 +623,13 @@ impl Command {
     }
 
     /// Custom error message for post-parsing validation
+    ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build] for any
+    /// relevant context, including usage.
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
     ///
     /// # Examples
     ///
@@ -861,6 +913,12 @@ impl Command {
     ///
     /// See also [`Command::print_long_help`].
     ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build].
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
+    ///
     /// # Examples
     ///
     /// ```rust
@@ -885,6 +943,12 @@ impl Command {
     /// Prints the long help message (`--help`) to [`io::stdout()`].
     ///
     /// See also [`Command::print_help`].
+    ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build].
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
     ///
     /// # Examples
     ///
@@ -914,6 +978,12 @@ impl Command {
     ///
     /// See also [`Command::render_long_help`].
     ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build].
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
+    ///
     /// # Examples
     ///
     /// ```rust
@@ -940,6 +1010,12 @@ impl Command {
     /// Render the long help message (`--help`) to a [`StyledStr`].
     ///
     /// See also [`Command::render_help`].
+    ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build].
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
     ///
     /// # Examples
     ///
@@ -1045,6 +1121,12 @@ impl Command {
     }
 
     /// Usage statement
+    ///
+    /// **Note:** this will ensure the `Command` has been sufficiently [built][Command::build].
+    ///
+    /// # Panics
+    ///
+    /// If contradictory arguments or settings exist (debug builds).
     ///
     /// ### Examples
     ///
@@ -1169,7 +1251,7 @@ impl Command {
         }
     }
 
-    /// Disables the automatic delimiting of values after `--` or when [`Arg::trailing_var_arg`]
+    /// Disables the automatic [delimiting of values][Arg::value_delimiter] after `--` or when [`Arg::trailing_var_arg`]
     /// was used.
     ///
     /// <div class="warning">
@@ -2113,8 +2195,6 @@ impl Command {
     ///     )
     /// # ;
     /// ```
-    ///
-    /// [`ArgMatches::usage`]: ArgMatches::usage()
     #[must_use]
     pub fn override_usage(mut self, usage: impl IntoResettable<StyledStr>) -> Self {
         self.usage_str = usage.into_resettable().into_option();
@@ -2176,13 +2256,13 @@ impl Command {
     ///   * `{author-with-newline}` - Author followed by `\n`.
     ///   * `{author-section}`      - Author preceded and followed by `\n`.
     ///   * `{about}`               - General description (from [`Command::about`] or
-    ///                               [`Command::long_about`]).
+    ///     [`Command::long_about`]).
     ///   * `{about-with-newline}`  - About followed by `\n`.
     ///   * `{about-section}`       - About preceded and followed by '\n'.
     ///   * `{usage-heading}`       - Automatically generated usage heading.
     ///   * `{usage}`               - Automatically generated or given usage string.
     ///   * `{all-args}`            - Help for all arguments (options, flags, positional
-    ///                               arguments, and subcommands) including titles.
+    ///     arguments, and subcommands) including titles.
     ///   * `{options}`             - Help for options.
     ///   * `{positionals}`         - Help for positional arguments.
     ///   * `{subcommands}`         - Help for subcommands.
@@ -3746,8 +3826,6 @@ impl Command {
     }
 
     /// Get the custom section heading specified via [`Command::next_help_heading`].
-    ///
-    /// [`Command::help_heading`]: Command::help_heading()
     #[inline]
     pub fn get_next_help_heading(&self) -> Option<&str> {
         self.current_help_heading.as_deref()
@@ -4629,6 +4707,9 @@ impl Command {
         }
     }
 
+    /// Returns the first two arguments that match the condition.
+    ///
+    /// If fewer than two arguments that match the condition, `None` is returned.
     #[cfg(debug_assertions)]
     pub(crate) fn two_args_of<F>(&self, condition: F) -> Option<(&Arg, &Arg)>
     where
@@ -4637,7 +4718,9 @@ impl Command {
         two_elements_of(self.args.args().filter(|a: &&Arg| condition(a)))
     }
 
-    // just in case
+    /// Returns the first two groups that match the condition.
+    ///
+    /// If fewer than two groups that match the condition, `None` is returned.
     #[allow(unused)]
     fn two_groups_of<F>(&self, condition: F) -> Option<(&ArgGroup, &ArgGroup)>
     where
@@ -4917,6 +5000,7 @@ impl Command {
         }
     }
 
+    /// Checks if there is an argument or group with the given id.
     #[cfg(debug_assertions)]
     pub(crate) fn id_exists(&self, id: &Id) -> bool {
         self.args.args().any(|x| x.get_id() == id) || self.groups.iter().any(|x| x.id == *id)
@@ -5183,6 +5267,9 @@ struct MaxTermWidth(usize);
 
 impl AppExt for MaxTermWidth {}
 
+/// Returns the first two elements of an iterator as an `Option<(T, T)>`.
+///
+/// If the iterator has fewer than two elements, it returns `None`.
 fn two_elements_of<I, T>(mut iter: I) -> Option<(T, T)>
 where
     I: Iterator<Item = T>,

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.73.0"
 name = "zopfli"
-version = "0.8.1"
+version = "0.8.3"
 build = false
 exclude = [
     ".github/*",
@@ -23,6 +23,7 @@ exclude = [
     "rustfmt.toml",
     "test/*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -41,8 +42,20 @@ repository = "https://github.com/zopfli-rs/zopfli"
 [package.metadata.docs.rs]
 cargo-args = ["--all-features"]
 
-[profile.release]
-debug = 2
+[features]
+default = [
+    "gzip",
+    "std",
+    "zlib",
+]
+gzip = ["dep:crc32fast"]
+nightly = ["crc32fast?/nightly"]
+std = [
+    "crc32fast?/std",
+    "dep:log",
+    "simd-adler32?/std",
+]
+zlib = ["dep:simd-adler32"]
 
 [lib]
 name = "zopfli"
@@ -52,29 +65,21 @@ path = "src/lib.rs"
 name = "zopfli"
 path = "src/main.rs"
 required-features = [
-    "std",
     "gzip",
+    "std",
     "zlib",
 ]
 
 [dependencies.bumpalo]
-version = "3.16.0"
+version = "3.19.0"
 
 [dependencies.crc32fast]
-version = "1.4.0"
+version = "1.5.0"
 optional = true
 default-features = false
 
-[dependencies.lockfree-object-pool]
-version = "0.1.5"
-optional = true
-
 [dependencies.log]
-version = "0.4.21"
-optional = true
-
-[dependencies.once_cell]
-version = "1.19.0"
+version = "0.4.28"
 optional = true
 
 [dependencies.simd-adler32]
@@ -83,27 +88,13 @@ optional = true
 default-features = false
 
 [dev-dependencies.miniz_oxide]
-version = "0.7.3"
+version = "0.8.9"
 
 [dev-dependencies.proptest]
-version = "1.4.0"
+version = "1.7.0"
 
 [dev-dependencies.proptest-derive]
-version = "0.4.0"
+version = "0.6.0"
 
-[features]
-default = [
-    "std",
-    "gzip",
-    "zlib",
-]
-gzip = ["dep:crc32fast"]
-nightly = ["crc32fast?/nightly"]
-std = [
-    "dep:log",
-    "dep:lockfree-object-pool",
-    "dep:once_cell",
-    "crc32fast?/std",
-    "simd-adler32?/std",
-]
-zlib = ["dep:simd-adler32"]
+[profile.release]
+debug = 2

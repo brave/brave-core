@@ -12,7 +12,7 @@ use crate::{
 /// integer. (We use `i64` because everything in this crate uses signed
 /// integers, and because a higher level routine might want to parse the sign
 /// and then apply it to the result of this routine.)
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 pub(crate) fn i64(bytes: &[u8]) -> Result<i64, Error> {
     if bytes.is_empty() {
         return Err(err!("invalid number, no digits found"));
@@ -49,33 +49,74 @@ pub(crate) fn i64(bytes: &[u8]) -> Result<i64, Error> {
     Ok(n)
 }
 
-/// Parses an `i64` fractional number from the beginning to the end of the
-/// given slice of ASCII digit characters.
+/// Parsed an optional `u64` that is a prefix of `bytes`.
 ///
-/// The fraction's maximum precision must be provided. The returned integer
-/// will always be in units of `10^{max_precision}`. For example, to parse a
-/// fractional amount of seconds with a maximum precision of nanoseconds, then
-/// use `max_precision=9`.
+/// If no digits (`[0-9]`) were found at the beginning of `bytes`, then `None`
+/// is returned.
+///
+/// Note that this is safe to call on untrusted input. It will not attempt
+/// to consume more input than could possibly fit into a parsed integer.
+///
+/// Since this returns a `u64`, it is possible that an integer that cannot
+/// fit into an `i64` is returned. Callers should handle this. (Indeed,
+/// `DurationUnits` handles this case.)
+///
+/// # Errors
+///
+/// When the parsed integer cannot fit into a `u64`.
+#[cfg_attr(feature = "perf-inline", inline(always))]
+pub(crate) fn u64_prefix(bytes: &[u8]) -> Result<(Option<u64>, &[u8]), Error> {
+    // Discovered via `u64::MAX.to_string().len()`.
+    const MAX_U64_DIGITS: usize = 20;
+
+    let mut digit_count = 0;
+    let mut n: u64 = 0;
+    while digit_count <= MAX_U64_DIGITS {
+        let Some(&byte) = bytes.get(digit_count) else { break };
+        if !byte.is_ascii_digit() {
+            break;
+        }
+        digit_count += 1;
+        // OK because we confirmed `byte` is an ASCII digit.
+        let digit = u64::from(byte - b'0');
+        n = n.checked_mul(10).and_then(|n| n.checked_add(digit)).ok_or_else(
+            #[inline(never)]
+            || {
+                err!(
+                    "number `{}` too big to parse into 64-bit integer",
+                    Bytes(&bytes[..digit_count]),
+                )
+            },
+        )?;
+    }
+    if digit_count == 0 {
+        return Ok((None, bytes));
+    }
+    Ok((Some(n), &bytes[digit_count..]))
+}
+
+/// Parses a `u32` fractional number from the beginning to the end of the given
+/// slice of ASCII digit characters.
+///
+/// The fraction's maximum precision is always 9 digits. The returned integer
+/// will always be in units of `10^{max_precision}`. For example, this
+/// will parse a fractional amount of seconds with a maximum precision of
+/// nanoseconds.
 ///
 /// If any byte in the given slice is not `[0-9]`, then this returns an error.
-/// Similarly, if the fraction parsed does not fit into a `i64`, then this
-/// returns an error. Notably, this routine does not permit parsing a negative
-/// integer. (We use `i64` because everything in this crate uses signed
-/// integers, and because a higher level routine might want to parse the sign
-/// and then apply it to the result of this routine.)
-pub(crate) fn fraction(
-    bytes: &[u8],
-    max_precision: usize,
-) -> Result<i64, Error> {
+/// Notably, this routine does not permit parsing a negative integer.
+pub(crate) fn fraction(bytes: &[u8]) -> Result<u32, Error> {
+    const MAX_PRECISION: usize = 9;
+
     if bytes.is_empty() {
         return Err(err!("invalid fraction, no digits found"));
-    } else if bytes.len() > max_precision {
+    } else if bytes.len() > MAX_PRECISION {
         return Err(err!(
             "invalid fraction, too many digits \
-             (at most {max_precision} are allowed"
+             (at most {MAX_PRECISION} are allowed"
         ));
     }
-    let mut n: i64 = 0;
+    let mut n: u32 = 0;
     for &byte in bytes {
         let digit = match byte.checked_sub(b'0') {
             None => {
@@ -92,7 +133,7 @@ pub(crate) fn fraction(
             }
             Some(digit) => {
                 debug_assert!((0..=9).contains(&digit));
-                i64::from(digit)
+                u32::from(digit)
             }
         };
         n = n.checked_mul(10).and_then(|n| n.checked_add(digit)).ok_or_else(
@@ -104,7 +145,7 @@ pub(crate) fn fraction(
             },
         )?;
     }
-    for _ in bytes.len()..max_precision {
+    for _ in bytes.len()..MAX_PRECISION {
         n = n.checked_mul(10).ok_or_else(|| {
             err!(
                 "fractional '{}' too big to parse into 64-bit integer \
@@ -166,6 +207,7 @@ where
 ///
 /// If the position is greater than the length of the slice given, then this
 /// returns `None`.
+#[cfg_attr(feature = "perf-inline", inline(always))]
 pub(crate) fn split(input: &[u8], at: usize) -> Option<(&[u8], &[u8])> {
     if at > input.len() {
         None

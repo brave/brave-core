@@ -27,18 +27,18 @@ use rkyv::{Archive, Deserialize, Serialize};
 #[cfg(all(feature = "unstable-locales", feature = "alloc"))]
 use pure_rust_locales::Locale;
 
+use super::internals::{Mdf, YearFlags};
+use crate::datetime::UNIX_EPOCH_DAY;
 #[cfg(feature = "alloc")]
 use crate::format::DelayedFormat;
 use crate::format::{
-    parse, parse_and_remainder, write_hundreds, Item, Numeric, Pad, ParseError, ParseResult,
-    Parsed, StrftimeItems,
+    Item, Numeric, Pad, ParseError, ParseResult, Parsed, StrftimeItems, parse, parse_and_remainder,
+    write_hundreds,
 };
 use crate::month::Months;
 use crate::naive::{Days, IsoWeek, NaiveDateTime, NaiveTime, NaiveWeek};
-use crate::{expect, try_opt};
 use crate::{Datelike, TimeDelta, Weekday};
-
-use super::internals::{Mdf, YearFlags};
+use crate::{expect, try_opt};
 
 #[cfg(test)]
 mod tests;
@@ -60,7 +60,7 @@ mod tests;
 ///   on the same calendar date---April 23, 1616---but in the different calendar.
 ///   Britain used the Julian calendar at that time, so Shakespeare's death is later.)
 ///
-/// * ISO 8601 calendars has the year 0, which is 1 BCE (a year before 1 CE).
+/// * ISO 8601 calendars have the year 0, which is 1 BCE (a year before 1 CE).
 ///   If you need a typical BCE/BC and CE/AD notation for year numbers,
 ///   use the [`Datelike::year_ce`] method.
 ///
@@ -382,6 +382,35 @@ impl NaiveDate {
         let (year_mod_400, ordinal) = cycle_to_yo(cycle as u32);
         let flags = YearFlags::from_year_mod_400(year_mod_400 as i32);
         NaiveDate::from_ordinal_and_flags(year_div_400 * 400 + year_mod_400 as i32, ordinal, flags)
+    }
+
+    /// Makes a new `NaiveDate` from a day's number in the proleptic Gregorian calendar, with
+    /// January 1, 1970 being day 0.
+    ///
+    /// # Errors
+    ///
+    /// Returns `None` if the date is out of range.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use chrono::NaiveDate;
+    ///
+    /// let from_ndays_opt = NaiveDate::from_epoch_days;
+    /// let from_ymd = |y, m, d| NaiveDate::from_ymd_opt(y, m, d).unwrap();
+    ///
+    /// assert_eq!(from_ndays_opt(-719_162), Some(from_ymd(1, 1, 1)));
+    /// assert_eq!(from_ndays_opt(1), Some(from_ymd(1970, 1, 2)));
+    /// assert_eq!(from_ndays_opt(0), Some(from_ymd(1970, 1, 1)));
+    /// assert_eq!(from_ndays_opt(-1), Some(from_ymd(1969, 12, 31)));
+    /// assert_eq!(from_ndays_opt(13036), Some(from_ymd(2005, 9, 10)));
+    /// assert_eq!(from_ndays_opt(100_000_000), None);
+    /// assert_eq!(from_ndays_opt(-100_000_000), None);
+    /// ```
+    #[must_use]
+    pub const fn from_epoch_days(days: i32) -> Option<NaiveDate> {
+        let ce_days = try_opt!(days.checked_add(UNIX_EPOCH_DAY as i32));
+        NaiveDate::from_num_days_from_ce_opt(ce_days)
     }
 
     /// Makes a new `NaiveDate` by counting the number of occurrences of a particular day-of-week
@@ -755,7 +784,7 @@ impl NaiveDate {
 
     /// Makes a new `NaiveDateTime` from the current date, hour, minute, second and millisecond.
     ///
-    /// The millisecond part is allowed to exceed 1,000,000,000 in order to represent a [leap second](
+    /// The millisecond part is allowed to exceed 1,000 in order to represent a [leap second](
     /// ./struct.NaiveTime.html#leap-second-handling), but only when `sec == 59`.
     ///
     /// # Panics
@@ -770,7 +799,7 @@ impl NaiveDate {
 
     /// Makes a new `NaiveDateTime` from the current date, hour, minute, second and millisecond.
     ///
-    /// The millisecond part is allowed to exceed 1,000,000,000 in order to represent a [leap second](
+    /// The millisecond part is allowed to exceed 1,000 in order to represent a [leap second](
     /// ./struct.NaiveTime.html#leap-second-handling), but only when `sec == 59`.
     ///
     /// # Errors
@@ -805,7 +834,7 @@ impl NaiveDate {
 
     /// Makes a new `NaiveDateTime` from the current date, hour, minute, second and microsecond.
     ///
-    /// The microsecond part is allowed to exceed 1,000,000,000 in order to represent a [leap second](
+    /// The microsecond part is allowed to exceed 1,000,000 in order to represent a [leap second](
     /// ./struct.NaiveTime.html#leap-second-handling), but only when `sec == 59`.
     ///
     /// # Panics
@@ -1142,7 +1171,7 @@ impl NaiveDate {
         let mut years = self.year() - base.year();
         // Comparing tuples is not (yet) possible in const context. Instead we combine month and
         // day into one `u32` for easy comparison.
-        if (self.month() << 5 | self.day()) < (base.month() << 5 | base.day()) {
+        if ((self.month() << 5) | self.day()) < ((base.month() << 5) | base.day()) {
             years -= 1;
         }
 
@@ -1405,6 +1434,23 @@ impl NaiveDate {
         let div_100 = year / 100;
         ndays += ((year * 1461) >> 2) - div_100 + (div_100 >> 2);
         ndays + self.ordinal() as i32
+    }
+
+    /// Counts the days in the proleptic Gregorian calendar, with January 1, Year 1970 as day 0.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use chrono::NaiveDate;
+    ///
+    /// let from_ymd = |y, m, d| NaiveDate::from_ymd_opt(y, m, d).unwrap();
+    ///
+    /// assert_eq!(from_ymd(1, 1, 1).to_epoch_days(), -719162);
+    /// assert_eq!(from_ymd(1970, 1, 1).to_epoch_days(), 0);
+    /// assert_eq!(from_ymd(2005, 9, 10).to_epoch_days(), 13036);
+    /// ```
+    pub const fn to_epoch_days(&self) -> i32 {
+        self.num_days_from_ce() - UNIX_EPOCH_DAY as i32
     }
 
     /// Create a new `NaiveDate` from a raw year-ordinal-flags `i32`.
@@ -2228,7 +2274,7 @@ impl fmt::Debug for NaiveDate {
             write_hundreds(f, (year % 100) as u8)?;
         } else {
             // ISO 8601 requires the explicit sign for out-of-range years
-            write!(f, "{:+05}", year)?;
+            write!(f, "{year:+05}")?;
         }
 
         f.write_char('-')?;

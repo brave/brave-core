@@ -6,12 +6,15 @@ use core::arch::x86_64::*;
 #[cfg(feature = "alloc")]
 use alloc::{string::String, vec};
 
+#[cfg(not(feature = "alloc"))]
+use heapless::{String, Vec};
+
 use crate::error::Error;
 
 static TABLE_LOWER: &[u8] = b"0123456789abcdef";
 static TABLE_UPPER: &[u8] = b"0123456789ABCDEF";
 
-#[cfg(any(feature = "alloc", test))]
+#[cfg(feature = "alloc")]
 fn hex_string_custom_case(src: &[u8], upper_case: bool) -> String {
     let mut buffer = vec![0; src.len() * 2];
     if upper_case {
@@ -28,13 +31,43 @@ fn hex_string_custom_case(src: &[u8], upper_case: bool) -> String {
     }
 }
 
-#[cfg(any(feature = "alloc", test))]
+#[cfg(not(feature = "alloc"))]
+fn hex_string_custom_case<const N: usize>(src: &[u8], upper_case: bool) -> String<N> {
+    let mut buffer = Vec::<_, N>::new();
+    buffer
+        .resize(src.len() * 2, 0)
+        .expect("String<N> capacity too short");
+    if upper_case {
+        hex_encode_upper(src, &mut buffer).expect("hex_string");
+    } else {
+        hex_encode(src, &mut buffer).expect("hex_string");
+    }
+
+    if cfg!(debug_assertions) {
+        String::from_utf8(buffer).unwrap()
+    } else {
+        // Saftey: We just wrote valid utf8 hex string into the dst
+        unsafe { String::from_utf8_unchecked(buffer) }
+    }
+}
+
+#[cfg(feature = "alloc")]
 pub fn hex_string(src: &[u8]) -> String {
     hex_string_custom_case(src, false)
 }
 
-#[cfg(any(feature = "alloc", test))]
+#[cfg(not(feature = "alloc"))]
+pub fn hex_string<const N: usize>(src: &[u8]) -> String<N> {
+    hex_string_custom_case(src, false)
+}
+
+#[cfg(feature = "alloc")]
 pub fn hex_string_upper(src: &[u8]) -> String {
+    hex_string_custom_case(src, true)
+}
+
+#[cfg(not(feature = "alloc"))]
+pub fn hex_string_upper<const N: usize>(src: &[u8]) -> String<N> {
     hex_string_custom_case(src, true)
 }
 

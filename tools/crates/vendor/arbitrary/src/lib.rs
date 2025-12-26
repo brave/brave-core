@@ -425,6 +425,25 @@ pub trait Arbitrary<'a>: Sized {
     }
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn exhausted_entropy() {
+        let mut u = Unstructured::new(&[]);
+        assert_eq!(u.arbitrary::<bool>().unwrap(), false);
+        assert_eq!(u.arbitrary::<u8>().unwrap(), 0);
+        assert_eq!(u.arbitrary::<usize>().unwrap(), 0);
+        assert_eq!(u.arbitrary::<f32>().unwrap(), 0.0);
+        assert_eq!(u.arbitrary::<f64>().unwrap(), 0.0);
+        assert_eq!(u.arbitrary::<Option<u32>>().unwrap(), None);
+        assert_eq!(u.int_in_range(4..=100).unwrap(), 4);
+        assert_eq!(u.choose_index(10).unwrap(), 0);
+        assert_eq!(u.ratio(5, 7).unwrap(), true);
+    }
+}
+
 /// Multiple conflicting arbitrary attributes are used on the same field:
 /// ```compile_fail
 /// #[derive(::arbitrary::Arbitrary)]
@@ -532,3 +551,58 @@ pub trait Arbitrary<'a>: Sized {
 /// ```
 #[cfg(all(doctest, feature = "derive"))]
 pub struct CompileFailTests;
+
+// Support for `#[derive(Arbitrary)]`.
+#[doc(hidden)]
+#[cfg(feature = "derive")]
+pub mod details {
+    use super::*;
+
+    // Hidden trait that papers over the difference between `&mut Unstructured` and
+    // `Unstructured` arguments so that `with_recursive_count` can be used for both
+    // `arbitrary` and `arbitrary_take_rest`.
+    pub trait IsEmpty {
+        fn is_empty(&self) -> bool;
+    }
+
+    impl IsEmpty for Unstructured<'_> {
+        fn is_empty(&self) -> bool {
+            Unstructured::is_empty(self)
+        }
+    }
+
+    impl IsEmpty for &mut Unstructured<'_> {
+        fn is_empty(&self) -> bool {
+            Unstructured::is_empty(self)
+        }
+    }
+
+    // Calls `f` with a recursive count guard.
+    #[inline]
+    pub fn with_recursive_count<U: IsEmpty, R>(
+        u: U,
+        recursive_count: &'static std::thread::LocalKey<std::cell::Cell<u32>>,
+        f: impl FnOnce(U) -> Result<R>,
+    ) -> Result<R> {
+        let guard_against_recursion = u.is_empty();
+        if guard_against_recursion {
+            recursive_count.with(|count| {
+                if count.get() > 0 {
+                    return Err(Error::NotEnoughData);
+                }
+                count.set(count.get() + 1);
+                Ok(())
+            })?;
+        }
+
+        let result = f(u);
+
+        if guard_against_recursion {
+            recursive_count.with(|count| {
+                count.set(count.get() - 1);
+            });
+        }
+
+        result
+    }
+}

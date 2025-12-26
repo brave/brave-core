@@ -3,8 +3,7 @@
 //! Use [`Simple`] for fast walks that maintain minimal state, or [`Topo`] for a more elaborate traversal.
 use gix_hash::ObjectId;
 use gix_object::FindExt;
-use gix_revwalk::graph::IdMap;
-use gix_revwalk::PriorityQueue;
+use gix_revwalk::{graph::IdMap, PriorityQueue};
 use smallvec::SmallVec;
 
 /// A fast iterator over the ancestors of one or more starting commits.
@@ -67,12 +66,39 @@ pub struct Info {
     pub commit_time: Option<gix_date::SecondsSinceUnixEpoch>,
 }
 
-enum Either<'buf, 'cache> {
+/// Information about a commit that can be obtained either from a [`gix_object::CommitRefIter`] or
+/// a [`gix_commitgraph::file::Commit`].
+#[derive(Clone, Copy)]
+pub enum Either<'buf, 'cache> {
+    /// See [`gix_object::CommitRefIter`].
     CommitRefIter(gix_object::CommitRefIter<'buf>),
+    /// See [`gix_commitgraph::file::Commit`].
     CachedCommit(gix_commitgraph::file::Commit<'cache>),
 }
 
-fn find<'cache, 'buf, Find>(
+impl Either<'_, '_> {
+    /// Get a commit’s `tree_id` by either getting it from a [`gix_commitgraph::Graph`], if
+    /// present, or a [`gix_object::CommitRefIter`] otherwise.
+    pub fn tree_id(self) -> Result<ObjectId, gix_object::decode::Error> {
+        match self {
+            Self::CommitRefIter(mut commit_ref_iter) => commit_ref_iter.tree_id(),
+            Self::CachedCommit(commit) => Ok(commit.root_tree_id().into()),
+        }
+    }
+
+    /// Get a committer timestamp by either getting it from a [`gix_commitgraph::Graph`], if
+    /// present, or a [`gix_object::CommitRefIter`] otherwise.
+    pub fn commit_time(self) -> Result<gix_date::SecondsSinceUnixEpoch, gix_object::decode::Error> {
+        match self {
+            Self::CommitRefIter(commit_ref_iter) => commit_ref_iter.committer().map(|c| c.seconds()),
+            Self::CachedCommit(commit) => Ok(commit.committer_timestamp() as gix_date::SecondsSinceUnixEpoch),
+        }
+    }
+}
+
+/// Find information about a commit by either getting it from a [`gix_commitgraph::Graph`], if
+/// present, or a [`gix_object::CommitRefIter`] otherwise.
+pub fn find<'cache, 'buf, Find>(
     cache: Option<&'cache gix_commitgraph::Graph>,
     objects: Find,
     id: &gix_hash::oid,

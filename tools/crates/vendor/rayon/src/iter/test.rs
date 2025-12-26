@@ -4,16 +4,14 @@ use super::*;
 use crate::prelude::*;
 use rayon_core::*;
 
-use rand::distributions::Standard;
+use rand::distr::StandardUniform;
 use rand::{Rng, SeedableRng};
 use rand_xorshift::XorShiftRng;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::collections::{BinaryHeap, VecDeque};
-use std::f64;
 use std::ffi::OsStr;
 use std::fmt::Debug;
 use std::sync::mpsc;
-use std::usize;
 
 fn is_indexed<T: IndexedParallelIterator>(_: T) {}
 
@@ -421,8 +419,8 @@ fn check_cmp_to_seq() {
 fn check_cmp_rng_to_seq() {
     let mut rng = seeded_rng();
     let rng = &mut rng;
-    let a: Vec<i32> = rng.sample_iter(&Standard).take(1024).collect();
-    let b: Vec<i32> = rng.sample_iter(&Standard).take(1024).collect();
+    let a: Vec<i32> = rng.sample_iter(&StandardUniform).take(1024).collect();
+    let b: Vec<i32> = rng.sample_iter(&StandardUniform).take(1024).collect();
     for i in 0..a.len() {
         let par_result = a[i..].par_iter().cmp(b[i..].par_iter());
         let seq_result = a[i..].iter().cmp(b[i..].iter());
@@ -578,8 +576,8 @@ fn check_partial_cmp_to_seq() {
 fn check_partial_cmp_rng_to_seq() {
     let mut rng = seeded_rng();
     let rng = &mut rng;
-    let a: Vec<i32> = rng.sample_iter(&Standard).take(1024).collect();
-    let b: Vec<i32> = rng.sample_iter(&Standard).take(1024).collect();
+    let a: Vec<i32> = rng.sample_iter(&StandardUniform).take(1024).collect();
+    let b: Vec<i32> = rng.sample_iter(&StandardUniform).take(1024).collect();
     for i in 0..a.len() {
         let par_result = a[i..].par_iter().partial_cmp(b[i..].par_iter());
         let seq_result = a[i..].iter().partial_cmp(b[i..].iter());
@@ -1502,7 +1500,7 @@ fn par_iter_collect_binaryheap() {
 #[test]
 fn par_iter_collect_hashmap() {
     let a: Vec<i32> = (0..1024).collect();
-    let b: HashMap<i32, String> = a.par_iter().map(|&i| (i, format!("{}", i))).collect();
+    let b: HashMap<i32, String> = a.par_iter().map(|&i| (i, format!("{i}"))).collect();
     assert_eq!(&b[&3], "3");
     assert_eq!(b.len(), 1024);
 }
@@ -1517,7 +1515,7 @@ fn par_iter_collect_hashset() {
 #[test]
 fn par_iter_collect_btreemap() {
     let a: Vec<i32> = (0..1024).collect();
-    let b: BTreeMap<i32, String> = a.par_iter().map(|&i| (i, format!("{}", i))).collect();
+    let b: BTreeMap<i32, String> = a.par_iter().map(|&i| (i, format!("{i}"))).collect();
     assert_eq!(&b[&3], "3");
     assert_eq!(b.len(), 1024);
 }
@@ -1532,8 +1530,8 @@ fn par_iter_collect_btreeset() {
 #[test]
 fn par_iter_collect_linked_list() {
     let a: Vec<i32> = (0..1024).collect();
-    let b: LinkedList<_> = a.par_iter().map(|&i| (i, format!("{}", i))).collect();
-    let c: LinkedList<_> = a.iter().map(|&i| (i, format!("{}", i))).collect();
+    let b: LinkedList<_> = a.par_iter().map(|&i| (i, format!("{i}"))).collect();
+    let c: LinkedList<_> = a.iter().map(|&i| (i, format!("{i}"))).collect();
     assert_eq!(b, c);
 }
 
@@ -1541,11 +1539,11 @@ fn par_iter_collect_linked_list() {
 fn par_iter_collect_linked_list_flat_map_filter() {
     let b: LinkedList<i32> = (0_i32..1024)
         .into_par_iter()
-        .flat_map(|i| (0..i))
+        .flat_map(|i| 0..i)
         .filter(|&i| i % 2 == 0)
         .collect();
     let c: LinkedList<i32> = (0_i32..1024)
-        .flat_map(|i| (0..i))
+        .flat_map(|i| 0..i)
         .filter(|&i| i % 2 == 0)
         .collect();
     assert_eq!(b, c);
@@ -1602,7 +1600,7 @@ fn par_iter_unindexed_flat_map() {
 #[test]
 fn min_max() {
     let rng = seeded_rng();
-    let a: Vec<i32> = rng.sample_iter(&Standard).take(1024).collect();
+    let a: Vec<i32> = rng.sample_iter(&StandardUniform).take(1024).collect();
     for i in 0..=a.len() {
         let slice = &a[..i];
         assert_eq!(slice.par_iter().min(), slice.iter().min());
@@ -1614,7 +1612,7 @@ fn min_max() {
 fn min_max_by() {
     let rng = seeded_rng();
     // Make sure there are duplicate keys, for testing sort stability
-    let r: Vec<i32> = rng.sample_iter(&Standard).take(512).collect();
+    let r: Vec<i32> = rng.sample_iter(&StandardUniform).take(512).collect();
     let a: Vec<(i32, u16)> = r.iter().chain(&r).cloned().zip(0..).collect();
     for i in 0..=a.len() {
         let slice = &a[..i];
@@ -1633,7 +1631,7 @@ fn min_max_by() {
 fn min_max_by_key() {
     let rng = seeded_rng();
     // Make sure there are duplicate keys, for testing sort stability
-    let r: Vec<i32> = rng.sample_iter(&Standard).take(512).collect();
+    let r: Vec<i32> = rng.sample_iter(&StandardUniform).take(512).collect();
     let a: Vec<(i32, u16)> = r.iter().chain(&r).cloned().zip(0..).collect();
     for i in 0..=a.len() {
         let slice = &a[..i];
@@ -2022,7 +2020,7 @@ fn check_interleave_uneven() {
             .interleave(&ys)
             .map(|&i| i)
             .collect_into_vec(&mut res);
-        assert_eq!(expected, res, "Case {} failed", i);
+        assert_eq!(expected, res, "Case {i} failed");
 
         res.truncate(0);
         xs.par_iter()
@@ -2033,8 +2031,7 @@ fn check_interleave_uneven() {
         assert_eq!(
             expected.into_iter().rev().collect::<Vec<usize>>(),
             res,
-            "Case {} reversed failed",
-            i
+            "Case {i} reversed failed"
         );
     }
 }
@@ -2070,7 +2067,7 @@ fn check_interleave_shortest() {
             .interleave_shortest(&ys)
             .map(|&i| i)
             .collect_into_vec(&mut res);
-        assert_eq!(expected, res, "Case {} failed", i);
+        assert_eq!(expected, res, "Case {i} failed");
 
         res.truncate(0);
         xs.par_iter()
@@ -2081,8 +2078,7 @@ fn check_interleave_shortest() {
         assert_eq!(
             expected.into_iter().rev().collect::<Vec<usize>>(),
             res,
-            "Case {} reversed failed",
-            i
+            "Case {i} reversed failed"
         );
     }
 }
@@ -2134,15 +2130,14 @@ fn check_chunks_uneven() {
             .chunks(n)
             .map(|v| v.into_iter().cloned().collect())
             .collect_into_vec(&mut res);
-        assert_eq!(expected, res, "Case {} failed", i);
+        assert_eq!(expected, res, "Case {i} failed");
 
         res.truncate(0);
         v.into_par_iter().chunks(n).rev().collect_into_vec(&mut res);
         assert_eq!(
             expected.into_iter().rev().collect::<Vec<Vec<u32>>>(),
             res,
-            "Case {} reversed failed",
-            i
+            "Case {i} reversed failed"
         );
     }
 }
@@ -2183,9 +2178,9 @@ fn check_repeat_zip() {
 }
 
 #[test]
-fn check_repeatn_zip_left() {
+fn check_repeat_n_zip_left() {
     let v = vec![4, 4, 4, 4];
-    let mut fours: Vec<_> = repeatn(4, usize::MAX).zip(v).collect();
+    let mut fours: Vec<_> = repeat_n(4, usize::MAX).zip(v).collect();
     assert_eq!(fours.len(), 4);
     while let Some(item) = fours.pop() {
         assert_eq!(item, (4, 4));
@@ -2193,13 +2188,77 @@ fn check_repeatn_zip_left() {
 }
 
 #[test]
-fn check_repeatn_zip_right() {
+fn check_repeat_n_zip_right() {
     let v = vec![4, 4, 4, 4];
-    let mut fours: Vec<_> = v.into_par_iter().zip(repeatn(4, usize::MAX)).collect();
+    let mut fours: Vec<_> = v.into_par_iter().zip(repeat_n(4, usize::MAX)).collect();
     assert_eq!(fours.len(), 4);
     while let Some(item) = fours.pop() {
         assert_eq!(item, (4, 4));
     }
+}
+
+#[test]
+fn count_repeat_n_clones() {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    static CLONES: AtomicUsize = AtomicUsize::new(0);
+    static DROPS: AtomicUsize = AtomicUsize::new(0);
+
+    struct Counter;
+
+    impl Clone for Counter {
+        fn clone(&self) -> Self {
+            CLONES.fetch_add(1, Ordering::Relaxed);
+            Counter
+        }
+    }
+
+    impl Drop for Counter {
+        fn drop(&mut self) {
+            DROPS.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    #[track_caller]
+    fn check(clones: usize, drops: usize) {
+        assert_eq!(CLONES.swap(0, Ordering::Relaxed), clones, "clones");
+        assert_eq!(DROPS.swap(0, Ordering::Relaxed), drops, "drops");
+    }
+
+    drop(repeat_n(Counter, 100));
+    check(0, 1);
+
+    let empty = repeat_n(Counter, 0);
+    check(0, 1);
+    let empty2 = empty.clone();
+    check(0, 0);
+    assert_eq!(empty.count(), 0);
+    assert_eq!(empty2.count(), 0);
+    check(0, 0);
+
+    let par_iter = repeat_n(Counter, 100);
+    let par_iter2 = par_iter.clone();
+    check(1, 0);
+    assert_eq!(par_iter.count(), 100);
+    check(99, 100);
+    assert_eq!(par_iter2.map(std::mem::forget).count(), 100);
+    check(99, 0);
+
+    // Clone once in `split_at` and again for the first item, leaving its unused tail.
+    // The other split doesn't have a tail, so it can avoid a clone.
+    let step99 = repeat_n(Counter, 100).step_by(99);
+    assert_eq!(step99.count(), 2);
+    check(2, 3);
+
+    // Same without any parallel splitting
+    let step99 = repeat_n(Counter, 100).step_by(99).with_min_len(2);
+    assert_eq!(step99.count(), 2);
+    check(1, 2);
+
+    // Clone once in `split_at` and again for both items, leaving both unused tails.
+    let step50 = repeat_n(Counter, 100).step_by(50);
+    assert_eq!(step50.count(), 2);
+    check(3, 4);
 }
 
 #[test]

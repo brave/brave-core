@@ -4,21 +4,14 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(__ELF__)
-#include <ring-core/arm_arch.h>
-
 .text
 
-.globl	bn_mul_mont
-.hidden	bn_mul_mont
-.type	bn_mul_mont,%function
+.globl	bn_mul_mont_nohw
+.hidden	bn_mul_mont_nohw
+.type	bn_mul_mont_nohw,%function
 .align	5
-bn_mul_mont:
+bn_mul_mont_nohw:
 	AARCH64_SIGN_LINK_REGISTER
-	tst	x5,#7
-	b.eq	__bn_sqr8x_mont
-	tst	x5,#3
-	b.eq	__bn_mul4x_mont
-.Lmul_mont:
 	stp	x29,x30,[sp,#-64]!
 	add	x29,sp,#0
 	stp	x19,x20,[sp,#16]
@@ -213,15 +206,13 @@ bn_mul_mont:
 	ldr	x29,[sp],#64
 	AARCH64_VALIDATE_LINK_REGISTER
 	ret
-.size	bn_mul_mont,.-bn_mul_mont
-.type	__bn_sqr8x_mont,%function
+.size	bn_mul_mont_nohw,.-bn_mul_mont_nohw
+.globl	bn_sqr8x_mont
+.hidden	bn_sqr8x_mont
+.type	bn_sqr8x_mont,%function
 .align	5
-__bn_sqr8x_mont:
-	// Not adding AARCH64_SIGN_LINK_REGISTER here because __bn_sqr8x_mont is jumped to
-	// only from bn_mul_mont which has already signed the return address.
-	cmp	x1,x2
-	b.ne	__bn_mul4x_mont
-.Lsqr8x_mont:
+bn_sqr8x_mont:
+	AARCH64_SIGN_LINK_REGISTER
 	stp	x29,x30,[sp,#-128]!
 	add	x29,sp,#0
 	stp	x19,x20,[sp,#16]
@@ -975,13 +966,13 @@ __bn_sqr8x_mont:
 	// x30 is popped earlier
 	AARCH64_VALIDATE_LINK_REGISTER
 	ret
-.size	__bn_sqr8x_mont,.-__bn_sqr8x_mont
-.type	__bn_mul4x_mont,%function
+.size	bn_sqr8x_mont,.-bn_sqr8x_mont
+.globl	bn_mul4x_mont
+.hidden	bn_mul4x_mont
+.type	bn_mul4x_mont,%function
 .align	5
-__bn_mul4x_mont:
-	// Not adding AARCH64_SIGN_LINK_REGISTER here because __bn_mul4x_mont is jumped to
-	// only from bn_mul_mont or __bn_mul8x_mont which have already signed the
-	// return address.
+bn_mul4x_mont:
+	AARCH64_SIGN_LINK_REGISTER
 	stp	x29,x30,[sp,#-128]!
 	add	x29,sp,#0
 	stp	x19,x20,[sp,#16]
@@ -1418,7 +1409,7 @@ __bn_mul4x_mont:
 	// x30 is popped earlier
 	AARCH64_VALIDATE_LINK_REGISTER
 	ret
-.size	__bn_mul4x_mont,.-__bn_mul4x_mont
+.size	bn_mul4x_mont,.-bn_mul4x_mont
 .byte	77,111,110,116,103,111,109,101,114,121,32,77,117,108,116,105,112,108,105,99,97,116,105,111,110,32,102,111,114,32,65,82,77,118,56,44,32,67,82,89,80,84,79,71,65,77,83,32,98,121,32,60,97,112,112,114,111,64,111,112,101,110,115,115,108,46,111,114,103,62,0
 .align	2
 .align	4

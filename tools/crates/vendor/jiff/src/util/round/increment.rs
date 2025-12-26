@@ -118,7 +118,7 @@ fn get_with_limit(
 ) -> Result<t::NoUnits128, Error> {
     // OK because `NoUnits` specifically allows any `i64` value.
     let increment = t::NoUnits::new_unchecked(increment);
-    if increment <= 0 {
+    if increment <= C(0) {
         return Err(err!(
             "rounding increment {increment} for {unit} must be \
              greater than zero",
@@ -152,7 +152,7 @@ fn get_with_max(
 ) -> Result<t::NoUnits128, Error> {
     // OK because `NoUnits` specifically allows any `i64` value.
     let increment = t::NoUnits::new_unchecked(increment);
-    if increment <= 0 {
+    if increment <= C(0) {
         return Err(err!(
             "rounding increment {increment} for {unit} must be \
              greater than zero",

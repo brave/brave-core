@@ -1,5 +1,6 @@
 use std::convert::TryFrom;
 use std::fmt;
+use std::time::Duration;
 
 use bytes::Bytes;
 use http::{request::Parts, Method, Request as HttpRequest};
@@ -7,7 +8,7 @@ use serde::Serialize;
 #[cfg(feature = "json")]
 use serde_json;
 use url::Url;
-use web_sys::RequestCredentials;
+use web_sys::{RequestCache, RequestCredentials};
 
 use super::{Body, Client, Response};
 use crate::header::{HeaderMap, HeaderName, HeaderValue, CONTENT_TYPE};
@@ -18,8 +19,10 @@ pub struct Request {
     url: Url,
     headers: HeaderMap,
     body: Option<Body>,
+    timeout: Option<Duration>,
     pub(super) cors: bool,
     pub(super) credentials: Option<RequestCredentials>,
+    pub(super) cache: Option<RequestCache>,
 }
 
 /// A builder to construct the properties of a `Request`.
@@ -37,8 +40,10 @@ impl Request {
             url,
             headers: HeaderMap::new(),
             body: None,
+            timeout: None,
             cors: true,
             credentials: None,
+            cache: None,
         }
     }
 
@@ -90,6 +95,18 @@ impl Request {
         &mut self.body
     }
 
+    /// Get the timeout.
+    #[inline]
+    pub fn timeout(&self) -> Option<&Duration> {
+        self.timeout.as_ref()
+    }
+
+    /// Get a mutable reference to the timeout.
+    #[inline]
+    pub fn timeout_mut(&mut self) -> &mut Option<Duration> {
+        &mut self.timeout
+    }
+
     /// Attempts to clone the `Request`.
     ///
     /// None is returned if a body is which can not be cloned.
@@ -104,8 +121,10 @@ impl Request {
             url: self.url.clone(),
             headers: self.headers.clone(),
             body,
+            timeout: self.timeout,
             cors: self.cors,
             credentials: self.credentials,
+            cache: self.cache,
         })
     }
 }
@@ -241,6 +260,14 @@ impl RequestBuilder {
         self
     }
 
+    /// Enables a request timeout.
+    pub fn timeout(mut self, timeout: Duration) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            *req.timeout_mut() = Some(timeout);
+        }
+        self
+    }
+
     /// TODO
     #[cfg(feature = "multipart")]
     #[cfg_attr(docsrs, doc(cfg(feature = "multipart")))]
@@ -347,6 +374,102 @@ impl RequestBuilder {
     pub fn fetch_credentials_omit(mut self) -> RequestBuilder {
         if let Ok(ref mut req) = self.request {
             req.credentials = Some(RequestCredentials::Omit);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'default'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'default'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_default(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::Default);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'no-store'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'no-store'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_no_store(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::NoStore);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'reload'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'reload'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_reload(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::Reload);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'no-cache'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'no-cache'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_no_cache(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::NoCache);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'force-cache'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'force-cache'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_force_cache(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::ForceCache);
+        }
+        self
+    }
+
+    /// Set fetch cache mode to 'only-if-cached'.
+    ///
+    /// # WASM
+    ///
+    /// This option is only effective with WebAssembly target.
+    ///
+    /// The [request cache][mdn] will be set to 'only-if-cached'.
+    ///
+    /// [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
+    pub fn fetch_cache_only_if_cached(mut self) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.cache = Some(RequestCache::OnlyIfCached);
         }
         self
     }
@@ -466,8 +589,10 @@ where
             url,
             headers,
             body: Some(body.into()),
+            timeout: None,
             cors: true,
             credentials: None,
+            cache: None,
         })
     }
 }

@@ -3,8 +3,6 @@ Parses and serializes the JSON dependency tree embedded in executables by the
 
 This crate defines the data structures that a serialized to/from JSON
 and implements the serialization/deserialization routines via `serde`.
-It also provides optional conversions from [`cargo metadata`](https://docs.rs/cargo_metadata/)
-and to [`Cargo.lock`](https://docs.rs/cargo-lock) formats.
 
 The [`VersionInfo`] struct is where all the magic happens, see the docs on it for more info.
 

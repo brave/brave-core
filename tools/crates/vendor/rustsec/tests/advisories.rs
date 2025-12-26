@@ -2,6 +2,7 @@
 
 #![warn(rust_2018_idioms, unused_qualifications)]
 
+use cvss::Cvss;
 use rustsec::advisory::{Category, License};
 use std::path::Path;
 
@@ -83,7 +84,10 @@ fn parse_cvss_vector_string() {
         rustsec::advisory::Severity::Critical
     );
 
-    let cvss = advisory.metadata.cvss.unwrap();
+    let Cvss::CvssV31(cvss) = advisory.metadata.cvss.unwrap() else {
+        panic!("expected CVSS v3.1");
+    };
+
     assert_eq!(cvss.av.unwrap(), cvss::v3::base::AttackVector::Network);
     assert_eq!(cvss.ac.unwrap(), cvss::v3::base::AttackComplexity::Low);
     assert_eq!(cvss.pr.unwrap(), cvss::v3::base::PrivilegesRequired::None);

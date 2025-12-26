@@ -66,7 +66,6 @@ bitflags! {
         const WAKEUP = bitcast!(c::EPOLLWAKEUP);
 
         /// `EPOLLEXCLUSIVE`
-        #[cfg(not(target_os = "android"))]
         const EXCLUSIVE = bitcast!(c::EPOLLEXCLUSIVE);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>

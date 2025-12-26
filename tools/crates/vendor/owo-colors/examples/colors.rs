@@ -1,4 +1,4 @@
-use owo_colors::{colors::*, OwoColorize};
+use owo_colors::{OwoColorize, colors::*};
 
 fn main() {
     // normal usage

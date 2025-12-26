@@ -1,9 +1,64 @@
+use crate::table::crc16_table;
 use crate::util::crc16;
+use crate::*;
 use crc_catalog::Algorithm;
 
-mod bytewise;
-mod nolookup;
-mod slice16;
+impl<const L: usize> Crc<u16, Table<L>>
+where
+    Table<L>: private::Sealed,
+{
+    pub const fn new(algorithm: &'static Algorithm<u16>) -> Self {
+        Self {
+            algorithm,
+            data: crc16_table(algorithm.width, algorithm.poly, algorithm.refin),
+        }
+    }
+
+    pub const fn checksum(&self, bytes: &[u8]) -> u16 {
+        let mut crc = init(self.algorithm, self.algorithm.init);
+        crc = self.update(crc, bytes);
+        finalize(self.algorithm, crc)
+    }
+
+    const fn update(&self, crc: u16, bytes: &[u8]) -> u16 {
+        update_table(crc, self.algorithm, &self.data, bytes)
+    }
+
+    pub const fn digest(&self) -> Digest<'_, u16, Table<L>> {
+        self.digest_with_initial(self.algorithm.init)
+    }
+
+    /// Construct a `Digest` with a given initial value.
+    ///
+    /// This overrides the initial value specified by the algorithm.
+    /// The effects of the algorithm's properties `refin` and `width`
+    /// are applied to the custom initial value.
+    pub const fn digest_with_initial(&self, initial: u16) -> Digest<'_, u16, Table<L>> {
+        let value = init(self.algorithm, initial);
+        Digest::new(self, value)
+    }
+
+    pub const fn table(&self) -> &<Table<L> as Implementation>::Data<u16> {
+        &self.data
+    }
+}
+
+impl<'a, const L: usize> Digest<'a, u16, Table<L>>
+where
+    Table<L>: private::Sealed,
+{
+    const fn new(crc: &'a Crc<u16, Table<L>>, value: u16) -> Self {
+        Digest { crc, value }
+    }
+
+    pub const fn update(&mut self, bytes: &[u8]) {
+        self.value = self.crc.update(self.value, bytes);
+    }
+
+    pub const fn finalize(self) -> u16 {
+        finalize(self.crc.algorithm, self.value)
+    }
+}
 
 const fn init(algorithm: &Algorithm<u16>, initial: u16) -> u16 {
     if algorithm.refin {
@@ -23,118 +78,103 @@ const fn finalize(algorithm: &Algorithm<u16>, mut crc: u16) -> u16 {
     crc ^ algorithm.xorout
 }
 
-const fn update_nolookup(mut crc: u16, algorithm: &Algorithm<u16>, bytes: &[u8]) -> u16 {
-    let poly = if algorithm.refin {
-        let poly = algorithm.poly.reverse_bits();
-        poly >> (16u8 - algorithm.width)
-    } else {
-        algorithm.poly << (16u8 - algorithm.width)
-    };
-
-    let mut i = 0;
-    if algorithm.refin {
-        while i < bytes.len() {
-            let to_crc = (crc ^ bytes[i] as u16) & 0xFF;
-            crc = crc16(poly, algorithm.refin, to_crc) ^ (crc >> 8);
-            i += 1;
-        }
-    } else {
-        while i < bytes.len() {
-            let to_crc = ((crc >> 8) ^ bytes[i] as u16) & 0xFF;
-            crc = crc16(poly, algorithm.refin, to_crc) ^ (crc << 8);
-            i += 1;
-        }
-    }
-    crc
-}
-
-const fn update_bytewise(mut crc: u16, reflect: bool, table: &[u16; 256], bytes: &[u8]) -> u16 {
-    let mut i = 0;
-    if reflect {
-        while i < bytes.len() {
-            let table_index = ((crc ^ bytes[i] as u16) & 0xFF) as usize;
-            crc = table[table_index] ^ (crc >> 8);
-            i += 1;
-        }
-    } else {
-        while i < bytes.len() {
-            let table_index = (((crc >> 8) ^ bytes[i] as u16) & 0xFF) as usize;
-            crc = table[table_index] ^ (crc << 8);
-            i += 1;
-        }
-    }
-    crc
-}
-
-const fn update_slice16(
+const fn update_table<const L: usize>(
     mut crc: u16,
-    reflect: bool,
-    table: &[[u16; 256]; 16],
+    algorithm: &Algorithm<u16>,
+    table: &[[u16; 256]; L],
     bytes: &[u8],
 ) -> u16 {
     let len = bytes.len();
     let mut i = 0;
-    if reflect {
+    let reflect = algorithm.refin;
+
+    // Process 16 bytes at a time when L=16
+    if L == 16 {
         while i + 16 <= len {
-            let current0 = bytes[i] ^ (crc as u8);
-            let current1 = bytes[i + 1] ^ ((crc >> 8) as u8);
+            if reflect {
+                let current0 = bytes[i] ^ (crc as u8);
+                let current1 = bytes[i + 1] ^ ((crc >> 8) as u8);
 
-            crc = table[0][bytes[i + 15] as usize]
-                ^ table[1][bytes[i + 14] as usize]
-                ^ table[2][bytes[i + 13] as usize]
-                ^ table[3][bytes[i + 12] as usize]
-                ^ table[4][bytes[i + 11] as usize]
-                ^ table[5][bytes[i + 10] as usize]
-                ^ table[6][bytes[i + 9] as usize]
-                ^ table[7][bytes[i + 8] as usize]
-                ^ table[8][bytes[i + 7] as usize]
-                ^ table[9][bytes[i + 6] as usize]
-                ^ table[10][bytes[i + 5] as usize]
-                ^ table[11][bytes[i + 4] as usize]
-                ^ table[12][bytes[i + 3] as usize]
-                ^ table[13][bytes[i + 2] as usize]
-                ^ table[14][current1 as usize]
-                ^ table[15][current0 as usize];
+                crc = table[0][bytes[i + 15] as usize]
+                    ^ table[1][bytes[i + 14] as usize]
+                    ^ table[2][bytes[i + 13] as usize]
+                    ^ table[3][bytes[i + 12] as usize]
+                    ^ table[4][bytes[i + 11] as usize]
+                    ^ table[5][bytes[i + 10] as usize]
+                    ^ table[6][bytes[i + 9] as usize]
+                    ^ table[7][bytes[i + 8] as usize]
+                    ^ table[8][bytes[i + 7] as usize]
+                    ^ table[9][bytes[i + 6] as usize]
+                    ^ table[10][bytes[i + 5] as usize]
+                    ^ table[11][bytes[i + 4] as usize]
+                    ^ table[12][bytes[i + 3] as usize]
+                    ^ table[13][bytes[i + 2] as usize]
+                    ^ table[14][current1 as usize]
+                    ^ table[15][current0 as usize];
+            } else {
+                let current0 = bytes[i] ^ ((crc >> 8) as u8);
+                let current1 = bytes[i + 1] ^ (crc as u8);
 
+                crc = table[0][bytes[i + 15] as usize]
+                    ^ table[1][bytes[i + 14] as usize]
+                    ^ table[2][bytes[i + 13] as usize]
+                    ^ table[3][bytes[i + 12] as usize]
+                    ^ table[4][bytes[i + 11] as usize]
+                    ^ table[5][bytes[i + 10] as usize]
+                    ^ table[6][bytes[i + 9] as usize]
+                    ^ table[7][bytes[i + 8] as usize]
+                    ^ table[8][bytes[i + 7] as usize]
+                    ^ table[9][bytes[i + 6] as usize]
+                    ^ table[10][bytes[i + 5] as usize]
+                    ^ table[11][bytes[i + 4] as usize]
+                    ^ table[12][bytes[i + 3] as usize]
+                    ^ table[13][bytes[i + 2] as usize]
+                    ^ table[14][current1 as usize]
+                    ^ table[15][current0 as usize];
+            }
             i += 16;
-        }
-
-        while i < len {
-            let table_index = ((crc ^ bytes[i] as u16) & 0xFF) as usize;
-            crc = table[0][table_index] ^ (crc >> 8);
-            i += 1;
-        }
-    } else {
-        while i + 16 <= len {
-            let current0 = bytes[i] ^ ((crc >> 8) as u8);
-            let current1 = bytes[i + 1] ^ (crc as u8);
-
-            crc = table[0][bytes[i + 15] as usize]
-                ^ table[1][bytes[i + 14] as usize]
-                ^ table[2][bytes[i + 13] as usize]
-                ^ table[3][bytes[i + 12] as usize]
-                ^ table[4][bytes[i + 11] as usize]
-                ^ table[5][bytes[i + 10] as usize]
-                ^ table[6][bytes[i + 9] as usize]
-                ^ table[7][bytes[i + 8] as usize]
-                ^ table[8][bytes[i + 7] as usize]
-                ^ table[9][bytes[i + 6] as usize]
-                ^ table[10][bytes[i + 5] as usize]
-                ^ table[11][bytes[i + 4] as usize]
-                ^ table[12][bytes[i + 3] as usize]
-                ^ table[13][bytes[i + 2] as usize]
-                ^ table[14][current1 as usize]
-                ^ table[15][current0 as usize];
-
-            i += 16;
-        }
-
-        while i < len {
-            let table_index = (((crc >> 8) ^ bytes[i] as u16) & 0xFF) as usize;
-            crc = table[0][table_index] ^ (crc << 8);
-            i += 1;
         }
     }
+
+    // Process remaining bytes one at a time using the table (for L=1 and L=16)
+    if L > 0 {
+        if reflect {
+            while i < len {
+                let table_index = ((crc ^ bytes[i] as u16) & 0xFF) as usize;
+                crc = table[0][table_index] ^ (crc >> 8);
+                i += 1;
+            }
+        } else {
+            while i < len {
+                let table_index = (((crc >> 8) ^ bytes[i] as u16) & 0xFF) as usize;
+                crc = table[0][table_index] ^ (crc << 8);
+                i += 1;
+            }
+        }
+    } else {
+        // This section is for NoTable case (L=0)
+        let poly = if reflect {
+            let poly = algorithm.poly.reverse_bits();
+            poly >> (16u8 - algorithm.width)
+        } else {
+            algorithm.poly << (16u8 - algorithm.width)
+        };
+
+        if reflect {
+            while i < len {
+                let to_crc = (crc ^ bytes[i] as u16) & 0xFF;
+                crc = crc16(poly, reflect, to_crc) ^ (crc >> 8);
+                i += 1;
+            }
+        } else {
+            while i < len {
+                let to_crc = ((crc >> 8) ^ bytes[i] as u16) & 0xFF;
+                crc = crc16(poly, reflect, to_crc) ^ (crc << 8);
+                i += 1;
+            }
+        }
+    }
+
     crc
 }
 

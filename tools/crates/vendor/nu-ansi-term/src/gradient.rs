@@ -1,4 +1,5 @@
 use crate::{rgb::Rgb, Color};
+use alloc::{format, string::String};
 
 /// Linear color gradient between two color stops
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -16,6 +17,7 @@ impl Gradient {
     pub const fn new(start: Rgb, end: Rgb) -> Self {
         Self { start, end }
     }
+
     pub const fn from_color_rgb(start: Color, end: Color) -> Self {
         let start_grad = match start {
             Color::Rgb(r, g, b) => Rgb { r, g, b },
@@ -43,7 +45,6 @@ impl Gradient {
         Self::new(self.end, self.start)
     }
 
-    #[allow(dead_code)]
     pub fn build(&self, text: &str, target: TargetGround) -> String {
         let delta = 1.0 / text.len() as f32;
         let mut result = text.char_indices().fold(String::new(), |mut acc, (i, c)| {
@@ -61,7 +62,6 @@ impl Gradient {
     }
 }
 
-#[allow(dead_code)]
 pub fn build_all_gradient_text(text: &str, foreground: Gradient, background: Gradient) -> String {
     let delta = 1.0 / text.len() as f32;
     let mut result = text.char_indices().fold(String::new(), |mut acc, (i, c)| {

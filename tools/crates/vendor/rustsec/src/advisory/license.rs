@@ -55,10 +55,10 @@ impl Display for License {
 impl License {
     /// Get license as an `&str` containing the SPDX identifier
     pub fn spdx(&self) -> &str {
-        match self {
+        match &self {
             License::CcBy40 => "CC-BY-4.0",
             License::CcZero10 => "CC0-1.0",
-            License::Other(ref l) => l,
+            License::Other(l) => l,
         }
     }
 }

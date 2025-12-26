@@ -38,7 +38,7 @@ term.clear_line()?;
 
 ## Colors and Styles
 
-`console` automaticaly detects when to use colors based on the tty flag.  It also
+`console` automatically detects when to use colors based on the tty flag.  It also
 provides higher level wrappers for styling text and other things that can be
 displayed with the `style` function and utility types.
 

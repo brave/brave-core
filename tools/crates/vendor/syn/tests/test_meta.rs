@@ -1,4 +1,5 @@
 #![allow(
+    clippy::elidable_lifetime_names,
     clippy::needless_lifetimes,
     clippy::shadow_unrelated,
     clippy::too_many_lines,
@@ -6,9 +7,13 @@
 )]
 
 #[macro_use]
-mod macros;
+mod snapshot;
 
-use syn::{Meta, MetaList, MetaNameValue};
+mod debug;
+
+use quote::quote;
+use syn::parse::{ParseStream, Parser as _, Result};
+use syn::{Meta, MetaList, MetaNameValue, Token};
 
 #[test]
 fn test_parse_meta_item_word() {
@@ -152,4 +157,24 @@ fn test_parse_path() {
         ],
     }
     "#);
+}
+
+#[test]
+fn test_fat_arrow_after_meta() {
+    fn parse(input: ParseStream) -> Result<()> {
+        while !input.is_empty() {
+            let _: Meta = input.parse()?;
+            let _: Token![=>] = input.parse()?;
+            let brace;
+            syn::braced!(brace in input);
+        }
+        Ok(())
+    }
+
+    let input = quote! {
+        target_os = "linux" => {}
+        windows => {}
+    };
+
+    parse.parse2(input).unwrap();
 }

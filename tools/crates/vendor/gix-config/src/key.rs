@@ -1,5 +1,4 @@
-use bstr::BStr;
-use bstr::ByteSlice;
+use bstr::{BStr, ByteSlice};
 
 /// Parse parts of a Git configuration key, like `remote.origin.url` or `core.bare`.
 pub trait AsKey {

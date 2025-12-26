@@ -765,6 +765,14 @@ mod bstr {
         }
     }
 
+    #[cfg(feature = "alloc")]
+    impl Default for Box<BStr> {
+        #[inline]
+        fn default() -> Self {
+            BStr::from_boxed_bytes(Box::default())
+        }
+    }
+
     impl<'a, const N: usize> From<&'a [u8; N]> for &'a BStr {
         #[inline]
         fn from(s: &'a [u8; N]) -> &'a BStr {

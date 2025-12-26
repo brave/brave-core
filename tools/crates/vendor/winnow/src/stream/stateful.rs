@@ -69,7 +69,7 @@ impl<I, S> AsRef<I> for Stateful<I, S> {
     }
 }
 
-impl<I, S> crate::lib::std::ops::Deref for Stateful<I, S> {
+impl<I, S> core::ops::Deref for Stateful<I, S> {
     type Target = I;
 
     #[inline(always)]
@@ -78,8 +78,8 @@ impl<I, S> crate::lib::std::ops::Deref for Stateful<I, S> {
     }
 }
 
-impl<I: crate::lib::std::fmt::Display, S> crate::lib::std::fmt::Display for Stateful<I, S> {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl<I: core::fmt::Display, S> core::fmt::Display for Stateful<I, S> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.input.fmt(f)
     }
 }
@@ -94,7 +94,7 @@ where
     }
 }
 
-impl<I: Stream, S: crate::lib::std::fmt::Debug> Stream for Stateful<I, S> {
+impl<I: Stream, S: core::fmt::Debug> Stream for Stateful<I, S> {
     type Token = <I as Stream>::Token;
     type Slice = <I as Stream>::Slice;
 
@@ -137,8 +137,18 @@ impl<I: Stream, S: crate::lib::std::fmt::Debug> Stream for Stateful<I, S> {
         self.input.next_slice(offset)
     }
     #[inline(always)]
+    unsafe fn next_slice_unchecked(&mut self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.next_slice_unchecked(offset) }
+    }
+    #[inline(always)]
     fn peek_slice(&self, offset: usize) -> Self::Slice {
         self.input.peek_slice(offset)
+    }
+    #[inline(always)]
+    unsafe fn peek_slice_unchecked(&self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.peek_slice_unchecked(offset) }
     }
 
     #[inline(always)]
@@ -151,8 +161,13 @@ impl<I: Stream, S: crate::lib::std::fmt::Debug> Stream for Stateful<I, S> {
     }
 
     #[inline(always)]
-    fn raw(&self) -> &dyn crate::lib::std::fmt::Debug {
-        &self.input
+    fn raw(&self) -> &dyn core::fmt::Debug {
+        #![allow(deprecated)]
+        self.input.raw()
+    }
+
+    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        self.input.trace(f)
     }
 }
 
@@ -176,7 +191,7 @@ impl<I, E, S> Recover<E> for Stateful<I, S>
 where
     I: Recover<E>,
     I: Stream,
-    S: Clone + crate::lib::std::fmt::Debug,
+    S: Clone + core::fmt::Debug,
 {
     #[inline(always)]
     fn record_err(
@@ -225,7 +240,7 @@ where
 impl<I, S> Offset for Stateful<I, S>
 where
     I: Stream,
-    S: Clone + crate::lib::std::fmt::Debug,
+    S: Clone + core::fmt::Debug,
 {
     #[inline(always)]
     fn offset_from(&self, start: &Self) -> usize {
@@ -236,7 +251,7 @@ where
 impl<I, S> Offset<<Stateful<I, S> as Stream>::Checkpoint> for Stateful<I, S>
 where
     I: Stream,
-    S: crate::lib::std::fmt::Debug,
+    S: core::fmt::Debug,
 {
     #[inline(always)]
     fn offset_from(&self, other: &<Stateful<I, S> as Stream>::Checkpoint) -> usize {
@@ -279,7 +294,7 @@ where
     I: FindSlice<T>,
 {
     #[inline(always)]
-    fn find_slice(&self, substr: T) -> Option<crate::lib::std::ops::Range<usize>> {
+    fn find_slice(&self, substr: T) -> Option<core::ops::Range<usize>> {
         self.input.find_slice(substr)
     }
 }
@@ -287,7 +302,7 @@ where
 impl<I, S> UpdateSlice for Stateful<I, S>
 where
     I: UpdateSlice,
-    S: Clone + crate::lib::std::fmt::Debug,
+    S: Clone + core::fmt::Debug,
 {
     #[inline(always)]
     fn update_slice(mut self, inner: Self::Slice) -> Self {

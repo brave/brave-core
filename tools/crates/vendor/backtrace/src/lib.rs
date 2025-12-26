@@ -18,26 +18,24 @@
 //! Next:
 //!
 //! ```
-//! fn main() {
 //! # // Unsafe here so test passes on no_std.
 //! # #[cfg(feature = "std")] {
-//!     backtrace::trace(|frame| {
-//!         let ip = frame.ip();
-//!         let symbol_address = frame.symbol_address();
+//! backtrace::trace(|frame| {
+//!     let ip = frame.ip();
+//!     let symbol_address = frame.symbol_address();
 //!
-//!         // Resolve this instruction pointer to a symbol name
-//!         backtrace::resolve_frame(frame, |symbol| {
-//!             if let Some(name) = symbol.name() {
-//!                 // ...
-//!             }
-//!             if let Some(filename) = symbol.filename() {
-//!                 // ...
-//!             }
-//!         });
-//!
-//!         true // keep going to the next frame
+//!     // Resolve this instruction pointer to a symbol name
+//!     backtrace::resolve_frame(frame, |symbol| {
+//!         if let Some(name) = symbol.name() {
+//!             // ...
+//!         }
+//!         if let Some(filename) = symbol.filename() {
+//!             // ...
+//!         }
 //!     });
-//! }
+//!
+//!     true // keep going to the next frame
+//! });
 //! # }
 //! ```
 //!
@@ -97,8 +95,6 @@
 // irrelevant as this crate is developed out-of-tree.
 #![cfg_attr(backtrace_in_libstd, allow(warnings))]
 #![cfg_attr(not(feature = "std"), allow(dead_code))]
-// We know this is deprecated, it's only here for back-compat reasons.
-#![cfg_attr(feature = "rustc-serialize", allow(deprecated))]
 
 #[cfg(feature = "std")]
 #[macro_use]
@@ -140,56 +136,95 @@ cfg_if::cfg_if! {
     }
 }
 
-#[allow(dead_code)]
-struct Bomb {
-    enabled: bool,
-}
-
-#[allow(dead_code)]
-impl Drop for Bomb {
-    fn drop(&mut self) {
-        if self.enabled {
-            panic!("cannot panic during the backtrace function");
-        }
-    }
-}
-
-#[allow(dead_code)]
 #[cfg(feature = "std")]
 mod lock {
-    use std::boxed::Box;
     use std::cell::Cell;
-    use std::ptr;
-    use std::sync::{Mutex, MutexGuard, Once};
+    use std::sync::{Mutex, MutexGuard};
 
+    /// A "Maybe" LockGuard
     pub struct LockGuard(Option<MutexGuard<'static, ()>>);
 
-    static mut LOCK: *mut Mutex<()> = ptr::null_mut();
-    static INIT: Once = Once::new();
-    thread_local!(static LOCK_HELD: Cell<bool> = Cell::new(false));
+    /// The global lock
+    static LOCK: Mutex<()> = Mutex::new(());
+    // Whether this thread is the one that holds the lock
+    thread_local!(static LOCK_HELD: Cell<bool> = const { Cell::new(false) });
 
     impl Drop for LockGuard {
         fn drop(&mut self) {
+            // Don't do anything if we're a LockGuard(None)
             if self.0.is_some() {
                 LOCK_HELD.with(|slot| {
+                    // Immediately crash if we somehow aren't the thread holding this lock
                     assert!(slot.get());
+                    // We are no longer the thread holding this lock
                     slot.set(false);
                 });
             }
+            // lock implicitly released here, if we're a LockGuard(Some(..))
         }
     }
 
+    /// Acquire a partially unsound(!!!) global re-entrant lock over
+    /// backtrace's internals.
+    ///
+    /// That is, this lock can be acquired as many times as you want
+    /// on a single thread without deadlocking, allowing one thread
+    /// to acquire exclusive access to the ability to make backtraces.
+    /// Calls to this locking function are freely sprinkled in every place
+    /// where that needs to be enforced.
+    ///
+    ///
+    /// # Why
+    ///
+    /// This was first introduced to guard uses of Windows' dbghelp API,
+    /// which isn't threadsafe. It's unclear if other things now rely on
+    /// this locking.
+    ///
+    ///
+    /// # How
+    ///
+    /// The basic idea is to have a single global mutex, and a thread_local
+    /// boolean saying "yep this is the thread that acquired the mutex".
+    ///
+    /// The first time a thread acquires the lock, it is handed a
+    /// `LockGuard(Some(..))` that will actually release the lock on Drop.
+    /// All subsequence attempts to lock on the same thread will see
+    /// that their thread acquired the lock, and get `LockGuard(None)`
+    /// which will do nothing when dropped.
+    ///
+    ///
+    /// # Safety
+    ///
+    /// As long as you only ever assign the returned LockGuard to a freshly
+    /// declared local variable, it will do its job correctly, as the "first"
+    /// LockGuard will strictly outlive all subsequent LockGuards and
+    /// properly release the lock when the thread is done with backtracing.
+    ///
+    /// However if you ever attempt to store a LockGuard beyond the scope
+    /// it was acquired in, it might actually be a `LockGuard(None)` that
+    /// doesn't actually hold the lock! In this case another thread might
+    /// acquire the lock and you'll get races this system was intended to
+    /// avoid!
+    ///
+    /// This is why this is "partially unsound". As a public API this would
+    /// be unacceptable, but this is crate-private, and if you use this in
+    /// the most obvious and simplistic way it Just Works™.
+    ///
+    /// Note however that std specifically bypasses this lock, and uses
+    /// the `*_unsynchronized` backtrace APIs. This is "fine" because
+    /// it wraps its own calls to backtrace in a non-reentrant Mutex
+    /// that prevents two backtraces from getting interleaved during printing.
     pub fn lock() -> LockGuard {
+        // If we're the thread holding this lock, pretend to acquire the lock
+        // again by returning a LockGuard(None)
         if LOCK_HELD.with(|l| l.get()) {
             return LockGuard(None);
         }
+        // Insist that we totally are the thread holding the lock
+        // (our thread will block until we are)
         LOCK_HELD.with(|s| s.set(true));
-        unsafe {
-            INIT.call_once(|| {
-                LOCK = Box::into_raw(Box::new(Mutex::new(())));
-            });
-            LockGuard(Some((*LOCK).lock().unwrap()))
-        }
+        // ok *actually* try to acquire the lock, blocking as necessary
+        LockGuard(Some(LOCK.lock().unwrap()))
     }
 }
 
@@ -202,5 +237,6 @@ mod lock {
     not(target_vendor = "uwp")
 ))]
 mod dbghelp;
-#[cfg(windows)]
-mod windows;
+// Auto-generated by windows-bindgen/riddle
+#[cfg(any(windows, target_os = "cygwin"))]
+mod windows_sys;

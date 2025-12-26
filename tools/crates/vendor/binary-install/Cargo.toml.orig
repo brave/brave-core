@@ -1,0 +1,25 @@
+[package]
+name = "binary-install"
+description = "Install a binary from a path to a global cache"
+authors = ["Rust and WebAssembly Working Group"]
+repository = "https://github.com/rustwasm/binary-install"
+license = "MIT/Apache-2.0"
+version = "0.4.1"
+documentation = "https://docs.rs/binary-install"
+readme = "./README.md"
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0"
+ureq = "2.6"
+dirs-next = "2.0.0"
+flate2 = "1.0"
+fs4 = "0.6.6"
+hex = "0.4"
+is_executable = "0.1"
+siphasher = "0.3"
+tar = "0.4"
+zip = "2.1.3"
+
+[dev-dependencies]
+tempfile = "3.1"

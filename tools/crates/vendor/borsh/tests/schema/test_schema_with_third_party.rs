@@ -102,12 +102,12 @@ pub fn enum_overriden() {
             "C<u64, String>" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                    (0, "C3".to_string(), "CC3".to_string()),
-                    (1, "C4".to_string(), "CC4<u64, String>".to_string())
+                    (0, "C3".to_string(), "C__C3".to_string()),
+                    (1, "C4".to_string(), "C__C4<u64, String>".to_string())
                 ]
             },
-            "CC3" => Definition::Struct { fields: Fields::UnnamedFields(vec!["u64".to_string(), "u64".to_string()]) },
-            "CC4<u64, String>" => Definition::Struct { fields: Fields::UnnamedFields(vec![
+            "C__C3" => Definition::Struct { fields: Fields::UnnamedFields(vec!["u64".to_string(), "u64".to_string()]) },
+            "C__C4<u64, String>" => Definition::Struct { fields: Fields::UnnamedFields(vec![
                 "u64".to_string(), "ThirdParty<u64, String>".to_string()
             ]) },
             "ThirdParty<u64, String>" => Definition::Struct { fields: Fields::UnnamedFields(vec![

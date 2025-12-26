@@ -14,7 +14,7 @@
 #![allow(unsafe_code)]
 
 use super::c;
-use super::fd::{AsRawFd, BorrowedFd, FromRawFd, RawFd};
+use super::fd::{AsRawFd as _, BorrowedFd, FromRawFd as _, RawFd};
 #[cfg(any(feature = "event", feature = "runtime", feature = "system"))]
 use super::io::errno::try_decode_error;
 #[cfg(target_pointer_width = "64")]
@@ -30,7 +30,7 @@ use super::io::errno::{
 use super::reg::{raw_arg, ArgNumber, ArgReg, RetReg, R0};
 #[cfg(feature = "time")]
 use super::time::types::TimerfdClockId;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 use crate::clockid::ClockId;
 use crate::fd::OwnedFd;
 use crate::ffi::CStr;
@@ -44,7 +44,7 @@ use crate::signal::Signal;
 use crate::utils::{as_mut_ptr, as_ptr};
 use core::mem::MaybeUninit;
 use core::ptr::null_mut;
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 use linux_raw_sys::general::__kernel_clockid_t;
 #[cfg(target_pointer_width = "64")]
 use linux_raw_sys::general::__kernel_loff_t;
@@ -164,12 +164,9 @@ pub(super) unsafe fn raw_fd<'a, Num: ArgNumber>(fd: RawFd) -> ArgReg<'a, Num> {
     #[cfg(feature = "fs")]
     debug_assert!(fd == crate::fs::CWD.as_raw_fd() || fd == crate::fs::ABS.as_raw_fd() || fd >= 0);
 
-    // Don't pass the `io_uring_register_files_skip` sentry value this way.
+    // Don't pass the `IORING_REGISTER_FILES_SKIP` sentry value this way.
     #[cfg(feature = "io_uring")]
-    debug_assert_ne!(
-        fd,
-        crate::io_uring::io_uring_register_files_skip().as_raw_fd()
-    );
+    debug_assert_ne!(fd, crate::io_uring::IORING_REGISTER_FILES_SKIP.as_raw_fd());
 
     // Linux doesn't look at the high bits beyond the `c_int`, so use
     // zero-extension rather than sign-extension because it's a smaller
@@ -235,7 +232,6 @@ pub(super) fn opt_mut<T: Sized, Num: ArgNumber>(t: Option<&mut T>) -> ArgReg<'_,
 
 /// Convert an optional immutable reference into a `usize` for passing to a
 /// syscall.
-#[cfg(any(target_arch = "aarch64", target_arch = "riscv64"))]
 #[inline]
 pub(super) fn opt_ref<T: Sized, Num: ArgNumber>(t: Option<&T>) -> ArgReg<'_, Num> {
     // This optimizes into the equivalent of `transmute(t)`, and has the
@@ -274,7 +270,7 @@ pub(super) fn loff_t_from_u64<'a, Num: ArgNumber>(i: u64) -> ArgReg<'a, Num> {
     pass_usize(i as usize)
 }
 
-#[cfg(any(feature = "thread", feature = "time", target_arch = "x86"))]
+#[cfg(any(feature = "thread", feature = "time"))]
 impl<'a, Num: ArgNumber> From<ClockId> for ArgReg<'a, Num> {
     #[inline]
     fn from(i: ClockId) -> Self {
@@ -303,8 +299,8 @@ pub(super) fn socklen_t<'a, Num: ArgNumber>(i: socklen_t) -> ArgReg<'a, Num> {
         not(feature = "use-explicitly-provided-auxv"),
         any(
             feature = "param",
-            feature = "process",
             feature = "runtime",
+            feature = "thread",
             feature = "time",
             target_arch = "x86",
         )
@@ -439,7 +435,7 @@ pub(crate) mod fs {
     }
 }
 
-#[cfg(any(feature = "fs", feature = "mount"))]
+#[cfg(feature = "mount")]
 impl<'a, Num: ArgNumber> From<crate::backend::mount::types::MountFlagsArg> for ArgReg<'a, Num> {
     #[inline]
     fn from(flags: crate::backend::mount::types::MountFlagsArg) -> Self {
@@ -447,9 +443,7 @@ impl<'a, Num: ArgNumber> From<crate::backend::mount::types::MountFlagsArg> for A
     }
 }
 
-// When the deprecated "fs" aliases are removed, we can remove the "fs"
-// here too.
-#[cfg(any(feature = "fs", feature = "mount"))]
+#[cfg(feature = "mount")]
 impl<'a, Num: ArgNumber> From<crate::backend::mount::types::UnmountFlags> for ArgReg<'a, Num> {
     #[inline]
     fn from(flags: crate::backend::mount::types::UnmountFlags) -> Self {
@@ -654,20 +648,20 @@ impl<'a, Num: ArgNumber> From<crate::backend::mm::types::UserfaultfdFlags> for A
     }
 }
 
-#[cfg(feature = "process")]
-impl<'a, Num: ArgNumber> From<crate::backend::process::types::MembarrierCommand>
+#[cfg(feature = "thread")]
+impl<'a, Num: ArgNumber> From<crate::backend::thread::types::MembarrierCommand>
     for ArgReg<'a, Num>
 {
     #[inline]
-    fn from(cmd: crate::backend::process::types::MembarrierCommand) -> Self {
+    fn from(cmd: crate::backend::thread::types::MembarrierCommand) -> Self {
         c_uint(cmd as u32)
     }
 }
 
-#[cfg(feature = "process")]
-impl<'a, Num: ArgNumber> From<crate::process::Cpuid> for ArgReg<'a, Num> {
+#[cfg(feature = "thread")]
+impl<'a, Num: ArgNumber> From<crate::thread::Cpuid> for ArgReg<'a, Num> {
     #[inline]
-    fn from(cpuid: crate::process::Cpuid) -> Self {
+    fn from(cpuid: crate::thread::Cpuid) -> Self {
         c_uint(cpuid.as_raw())
     }
 }
@@ -711,7 +705,7 @@ pub(super) fn negative_pid<'a, Num: ArgNumber>(pid: Pid) -> ArgReg<'a, Num> {
 impl<'a, Num: ArgNumber> From<Signal> for ArgReg<'a, Num> {
     #[inline]
     fn from(sig: Signal) -> Self {
-        pass_usize(sig as usize)
+        pass_usize(sig.as_raw() as usize)
     }
 }
 
@@ -848,11 +842,27 @@ impl<'a, Num: ArgNumber> From<crate::ugid::Uid> for ArgReg<'a, Num> {
     }
 }
 
+#[cfg(feature = "thread")]
+impl<'a, Num: ArgNumber> From<Option<crate::ugid::Uid>> for ArgReg<'a, Num> {
+    #[inline]
+    fn from(t: Option<crate::ugid::Uid>) -> Self {
+        c_uint(t.map_or(-1_i32 as u32, |x| x.as_raw()))
+    }
+}
+
 #[cfg(any(feature = "process", feature = "thread"))]
 impl<'a, Num: ArgNumber> From<crate::ugid::Gid> for ArgReg<'a, Num> {
     #[inline]
     fn from(t: crate::ugid::Gid) -> Self {
         c_uint(t.as_raw())
+    }
+}
+
+#[cfg(feature = "thread")]
+impl<'a, Num: ArgNumber> From<Option<crate::ugid::Gid>> for ArgReg<'a, Num> {
+    #[inline]
+    fn from(t: Option<crate::ugid::Gid>) -> Self {
+        c_uint(t.map_or(-1_i32 as u32, |x| x.as_raw()))
     }
 }
 

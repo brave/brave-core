@@ -20,8 +20,7 @@ The `std::path` types are not guaranteed to be valid UTF-8. This is the right de
 since it must be as general as possible. However, on all platforms, non-Unicode paths are vanishingly uncommon for a
 number of reasons:
 
-- Unicode won. There are still some legacy codebases that store paths in encodings like [Shift JIS], but most
-  have been converted to Unicode at this point.
+- Unicode is now the dominant encoding for file names. There are still some legacy codebases that store paths in encodings like [Shift JIS], but most have been converted to Unicode at this point.
 - Unicode is the common subset of supported paths across Windows and Unix platforms. (On Windows, Rust stores paths
   as [an extension to UTF-8](https://simonsapin.github.io/wtf-8/), and converts them to UTF-16 at Win32
   API boundaries.)
@@ -101,11 +100,9 @@ dependencies:
 - `proptest1` adds [proptest](https://altsysrq.github.io/proptest-book/) [`Arbitrary`]
   implementations for [`Utf8PathBuf`] and `Box<Utf8Path>`.
 
-> NOTE: Enabling the `serde` or `proptest` features will not do anything. You must enable the `serde1` and `proptest1` features, respectively.
-
 ## Rust version support
 
-The minimum supported Rust version (MSRV) for `camino` with default features is **1.34**. This project is tested in CI
+The minimum supported Rust version (MSRV) for `camino` with default features is **1.61**. This project is tested in CI
 against the latest stable version of Rust and the MSRV.
 
 - _Stable APIs_ added in later Rust versions are supported either through conditional compilation in `build.rs`, or through backfills that also work on older versions.

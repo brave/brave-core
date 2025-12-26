@@ -45,9 +45,9 @@ fn parent() {
 fn child() {
     let done = Arc::new(AtomicBool::new(false));
     let done2 = done.clone();
-    let a = thread::spawn(move || {
-        while !done2.load(SeqCst) {
-            format!("{:?}", backtrace::Backtrace::new());
+    let a = thread::spawn(move || loop {
+        if done2.load(SeqCst) {
+            break format!("{:?}", backtrace::Backtrace::new());
         }
     });
 

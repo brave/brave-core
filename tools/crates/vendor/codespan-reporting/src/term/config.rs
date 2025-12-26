@@ -1,6 +1,4 @@
-use termcolor::{Color, ColorSpec};
-
-use crate::diagnostic::{LabelStyle, Severity};
+use alloc::string::String;
 
 /// Configures how a diagnostic is rendered.
 #[derive(Clone, Debug)]
@@ -13,8 +11,7 @@ pub struct Config {
     /// Column width of tabs.
     /// Defaults to: `4`.
     pub tab_width: usize,
-    /// Styles to use when rendering the diagnostic.
-    pub styles: Styles,
+
     /// Characters to use when rendering the diagnostic.
     pub chars: Chars,
     /// The minimum number of lines to be shown after the line on which a multiline [`Label`] begins.
@@ -29,6 +26,14 @@ pub struct Config {
     ///
     /// [`Label`]: crate::diagnostic::Label
     pub end_context_lines: usize,
+    /// The minimum number of lines before a label that should be included for context.
+    ///
+    /// Defaults to: `0`.
+    pub before_label_lines: usize,
+    /// The minimum number of lines after a label that should be included for context.
+    ///
+    /// Defaults to: `0`.
+    pub after_label_lines: usize,
 }
 
 impl Default for Config {
@@ -36,10 +41,11 @@ impl Default for Config {
         Config {
             display_style: DisplayStyle::Rich,
             tab_width: 4,
-            styles: Styles::default(),
             chars: Chars::default(),
             start_context_lines: 3,
             end_context_lines: 1,
+            before_label_lines: 0,
+            after_label_lines: 0,
         }
     }
 }
@@ -82,117 +88,270 @@ pub enum DisplayStyle {
     Short,
 }
 
-/// Styles to use when rendering the diagnostic.
-#[derive(Clone, Debug)]
-pub struct Styles {
-    /// The style to use when rendering bug headers.
-    /// Defaults to `fg:red bold intense`.
-    pub header_bug: ColorSpec,
-    /// The style to use when rendering error headers.
-    /// Defaults to `fg:red bold intense`.
-    pub header_error: ColorSpec,
-    /// The style to use when rendering warning headers.
-    /// Defaults to `fg:yellow bold intense`.
-    pub header_warning: ColorSpec,
-    /// The style to use when rendering note headers.
-    /// Defaults to `fg:green bold intense`.
-    pub header_note: ColorSpec,
-    /// The style to use when rendering help headers.
-    /// Defaults to `fg:cyan bold intense`.
-    pub header_help: ColorSpec,
-    /// The style to use when the main diagnostic message.
-    /// Defaults to `bold intense`.
-    pub header_message: ColorSpec,
+#[cfg(feature = "termcolor")]
+pub mod styles {
+    use super::super::renderer::{self, WriteStyle};
 
-    /// The style to use when rendering bug labels.
-    /// Defaults to `fg:red`.
-    pub primary_label_bug: ColorSpec,
-    /// The style to use when rendering error labels.
-    /// Defaults to `fg:red`.
-    pub primary_label_error: ColorSpec,
-    /// The style to use when rendering warning labels.
-    /// Defaults to `fg:yellow`.
-    pub primary_label_warning: ColorSpec,
-    /// The style to use when rendering note labels.
-    /// Defaults to `fg:green`.
-    pub primary_label_note: ColorSpec,
-    /// The style to use when rendering help labels.
-    /// Defaults to `fg:cyan`.
-    pub primary_label_help: ColorSpec,
-    /// The style to use when rendering secondary labels.
-    /// Defaults `fg:blue` (or `fg:cyan` on windows).
-    pub secondary_label: ColorSpec,
+    use crate::diagnostic::{LabelStyle, Severity};
+    use termcolor::{Color, ColorSpec, WriteColor};
 
-    /// The style to use when rendering the line numbers.
-    /// Defaults `fg:blue` (or `fg:cyan` on windows).
-    pub line_number: ColorSpec,
-    /// The style to use when rendering the source code borders.
-    /// Defaults `fg:blue` (or `fg:cyan` on windows).
-    pub source_border: ColorSpec,
-    /// The style to use when rendering the note bullets.
-    /// Defaults `fg:blue` (or `fg:cyan` on windows).
-    pub note_bullet: ColorSpec,
+    // re-export
+    pub use termcolor;
+
+    /// Styles to use when rendering the diagnostic.
+    #[derive(Clone, Debug)]
+    pub struct Styles {
+        /// The style to use when rendering bug headers.
+        /// Defaults to `fg:red bold intense`.
+        pub header_bug: ColorSpec,
+        /// The style to use when rendering error headers.
+        /// Defaults to `fg:red bold intense`.
+        pub header_error: ColorSpec,
+        /// The style to use when rendering warning headers.
+        /// Defaults to `fg:yellow bold intense`.
+        pub header_warning: ColorSpec,
+        /// The style to use when rendering note headers.
+        /// Defaults to `fg:green bold intense`.
+        pub header_note: ColorSpec,
+        /// The style to use when rendering help headers.
+        /// Defaults to `fg:cyan bold intense`.
+        pub header_help: ColorSpec,
+        /// The style to use when the main diagnostic message.
+        /// Defaults to `bold intense`.
+        pub header_message: ColorSpec,
+
+        /// The style to use when rendering bug labels.
+        /// Defaults to `fg:red`.
+        pub primary_label_bug: ColorSpec,
+        /// The style to use when rendering error labels.
+        /// Defaults to `fg:red`.
+        pub primary_label_error: ColorSpec,
+        /// The style to use when rendering warning labels.
+        /// Defaults to `fg:yellow`.
+        pub primary_label_warning: ColorSpec,
+        /// The style to use when rendering note labels.
+        /// Defaults to `fg:green`.
+        pub primary_label_note: ColorSpec,
+        /// The style to use when rendering help labels.
+        /// Defaults to `fg:cyan`.
+        pub primary_label_help: ColorSpec,
+        /// The style to use when rendering secondary labels.
+        /// Defaults `fg:blue` (or `fg:cyan` on windows).
+        pub secondary_label: ColorSpec,
+
+        /// The style to use when rendering the line numbers.
+        /// Defaults `fg:blue` (or `fg:cyan` on windows).
+        pub line_number: ColorSpec,
+        /// The style to use when rendering the source code borders.
+        /// Defaults `fg:blue` (or `fg:cyan` on windows).
+        pub source_border: ColorSpec,
+        /// The style to use when rendering the note bullets.
+        /// Defaults `fg:blue` (or `fg:cyan` on windows).
+        pub note_bullet: ColorSpec,
+    }
+
+    impl Styles {
+        /// The style used to mark a header at a given severity.
+        #[must_use]
+        pub fn header(&self, severity: Severity) -> &ColorSpec {
+            match severity {
+                Severity::Bug => &self.header_bug,
+                Severity::Error => &self.header_error,
+                Severity::Warning => &self.header_warning,
+                Severity::Note => &self.header_note,
+                Severity::Help => &self.header_help,
+            }
+        }
+
+        #[must_use]
+        pub fn header_message(&self) -> &ColorSpec {
+            &self.header_message
+        }
+
+        #[must_use]
+        pub fn line_number(&self) -> &ColorSpec {
+            &self.line_number
+        }
+
+        #[must_use]
+        pub fn note_bullet(&self) -> &ColorSpec {
+            &self.note_bullet
+        }
+
+        #[must_use]
+        pub fn source_border(&self) -> &ColorSpec {
+            &self.source_border
+        }
+
+        /// The style used to mark a primary or secondary label at a given severity.
+        #[must_use]
+        pub fn label(&self, severity: Severity, label_style: LabelStyle) -> &ColorSpec {
+            match (label_style, severity) {
+                (LabelStyle::Primary, Severity::Bug) => &self.primary_label_bug,
+                (LabelStyle::Primary, Severity::Error) => &self.primary_label_error,
+                (LabelStyle::Primary, Severity::Warning) => &self.primary_label_warning,
+                (LabelStyle::Primary, Severity::Note) => &self.primary_label_note,
+                (LabelStyle::Primary, Severity::Help) => &self.primary_label_help,
+                (LabelStyle::Secondary, _) => &self.secondary_label,
+            }
+        }
+    }
+
+    impl Styles {
+        #[must_use]
+        pub fn no_color() -> Styles {
+            Styles {
+                header_bug: ColorSpec::new(),
+                header_error: ColorSpec::new(),
+                header_warning: ColorSpec::new(),
+                header_note: ColorSpec::new(),
+                header_help: ColorSpec::new(),
+                header_message: ColorSpec::new(),
+
+                primary_label_bug: ColorSpec::new(),
+                primary_label_error: ColorSpec::new(),
+                primary_label_warning: ColorSpec::new(),
+                primary_label_note: ColorSpec::new(),
+                primary_label_help: ColorSpec::new(),
+                secondary_label: ColorSpec::new(),
+
+                line_number: ColorSpec::new(),
+                source_border: ColorSpec::new(),
+                note_bullet: ColorSpec::new(),
+            }
+        }
+    }
+
+    impl Default for Styles {
+        fn default() -> Styles {
+            // Default style
+            let header = ColorSpec::new().set_bold(true).set_intense(true).clone();
+
+            Styles {
+                header_bug: header.clone().set_fg(Some(Color::Red)).clone(),
+                header_error: header.clone().set_fg(Some(Color::Red)).clone(),
+                header_warning: header.clone().set_fg(Some(Color::Yellow)).clone(),
+                header_note: header.clone().set_fg(Some(Color::Green)).clone(),
+                header_help: header.clone().set_fg(Some(Color::Cyan)).clone(),
+                header_message: header,
+
+                primary_label_bug: ColorSpec::new().set_fg(Some(Color::Red)).clone(),
+                primary_label_error: ColorSpec::new().set_fg(Some(Color::Red)).clone(),
+                primary_label_warning: ColorSpec::new().set_fg(Some(Color::Yellow)).clone(),
+                primary_label_note: ColorSpec::new().set_fg(Some(Color::Green)).clone(),
+                primary_label_help: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
+                secondary_label: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
+
+                line_number: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
+                source_border: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
+                note_bullet: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
+            }
+        }
+    }
+
+    /// A [`WriteStyle`](crate::term::renderer::WriteStyle) implementation that applies custom [`Styles`]
+    /// using termcolor.
+    ///
+    /// Use this to render diagnostics with custom colors
+    pub struct StylesWriter<'a, W> {
+        writer: W,
+        style: &'a Styles,
+    }
+
+    impl<'a, W> StylesWriter<'a, W> {
+        /// Creates a new `StylesWriter` with the given writer and styles.
+        pub fn new(writer: W, style: &'a Styles) -> Self {
+            Self { writer, style }
+        }
+    }
+
+    // Always true here #[cfg(feature = "std")]
+    impl<'a, W: WriteColor> std::io::Write for StylesWriter<'a, W> {
+        fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+            self.writer.write(buf)
+        }
+
+        fn flush(&mut self) -> std::io::Result<()> {
+            self.writer.flush()
+        }
+    }
+
+    impl<W: WriteColor> WriteStyle for StylesWriter<'_, W> {
+        fn set_header(&mut self, severity: Severity) -> renderer::GeneralWriteResult {
+            self.writer.set_color(self.style.header(severity))
+        }
+
+        fn set_header_message(&mut self) -> renderer::GeneralWriteResult {
+            self.writer.set_color(&self.style.header_message)
+        }
+
+        fn set_line_number(&mut self) -> renderer::GeneralWriteResult {
+            self.writer.set_color(&self.style.line_number)
+        }
+
+        fn set_note_bullet(&mut self) -> renderer::GeneralWriteResult {
+            self.writer.set_color(&self.style.note_bullet)
+        }
+
+        fn set_source_border(&mut self) -> renderer::GeneralWriteResult {
+            self.writer.set_color(&self.style.source_border)
+        }
+
+        fn set_label(
+            &mut self,
+            severity: Severity,
+            label_style: LabelStyle,
+        ) -> renderer::GeneralWriteResult {
+            let spec = self.style.label(severity, label_style);
+            self.writer.set_color(spec)
+        }
+
+        fn reset(&mut self) -> renderer::GeneralWriteResult {
+            self.writer.reset()
+        }
+    }
 }
 
-impl Styles {
-    /// The style used to mark a header at a given severity.
-    pub fn header(&self, severity: Severity) -> &ColorSpec {
-        match severity {
-            Severity::Bug => &self.header_bug,
-            Severity::Error => &self.header_error,
-            Severity::Warning => &self.header_warning,
-            Severity::Note => &self.header_note,
-            Severity::Help => &self.header_help,
-        }
+#[cfg(feature = "termcolor")]
+impl<T> super::renderer::WriteStyle for T
+where
+    T: termcolor::WriteColor + ?Sized,
+{
+    fn set_header(
+        &mut self,
+        severity: crate::diagnostic::Severity,
+    ) -> super::renderer::GeneralWriteResult {
+        self.set_color(styles::Styles::default().header(severity))
     }
 
-    /// The style used to mark a primary or secondary label at a given severity.
-    pub fn label(&self, severity: Severity, label_style: LabelStyle) -> &ColorSpec {
-        match (label_style, severity) {
-            (LabelStyle::Primary, Severity::Bug) => &self.primary_label_bug,
-            (LabelStyle::Primary, Severity::Error) => &self.primary_label_error,
-            (LabelStyle::Primary, Severity::Warning) => &self.primary_label_warning,
-            (LabelStyle::Primary, Severity::Note) => &self.primary_label_note,
-            (LabelStyle::Primary, Severity::Help) => &self.primary_label_help,
-            (LabelStyle::Secondary, _) => &self.secondary_label,
-        }
+    fn set_header_message(&mut self) -> super::renderer::GeneralWriteResult {
+        self.set_color(&styles::Styles::default().header_message)
     }
 
-    #[doc(hidden)]
-    pub fn with_blue(blue: Color) -> Styles {
-        let header = ColorSpec::new().set_bold(true).set_intense(true).clone();
-
-        Styles {
-            header_bug: header.clone().set_fg(Some(Color::Red)).clone(),
-            header_error: header.clone().set_fg(Some(Color::Red)).clone(),
-            header_warning: header.clone().set_fg(Some(Color::Yellow)).clone(),
-            header_note: header.clone().set_fg(Some(Color::Green)).clone(),
-            header_help: header.clone().set_fg(Some(Color::Cyan)).clone(),
-            header_message: header,
-
-            primary_label_bug: ColorSpec::new().set_fg(Some(Color::Red)).clone(),
-            primary_label_error: ColorSpec::new().set_fg(Some(Color::Red)).clone(),
-            primary_label_warning: ColorSpec::new().set_fg(Some(Color::Yellow)).clone(),
-            primary_label_note: ColorSpec::new().set_fg(Some(Color::Green)).clone(),
-            primary_label_help: ColorSpec::new().set_fg(Some(Color::Cyan)).clone(),
-            secondary_label: ColorSpec::new().set_fg(Some(blue)).clone(),
-
-            line_number: ColorSpec::new().set_fg(Some(blue)).clone(),
-            source_border: ColorSpec::new().set_fg(Some(blue)).clone(),
-            note_bullet: ColorSpec::new().set_fg(Some(blue)).clone(),
-        }
+    fn set_line_number(&mut self) -> super::renderer::GeneralWriteResult {
+        self.set_color(&styles::Styles::default().line_number)
     }
-}
 
-impl Default for Styles {
-    fn default() -> Styles {
-        // Blue is really difficult to see on the standard windows command line
-        #[cfg(windows)]
-        const BLUE: Color = Color::Cyan;
-        #[cfg(not(windows))]
-        const BLUE: Color = Color::Blue;
+    fn set_note_bullet(&mut self) -> super::renderer::GeneralWriteResult {
+        self.set_color(&styles::Styles::default().note_bullet)
+    }
 
-        Self::with_blue(BLUE)
+    fn set_source_border(&mut self) -> super::renderer::GeneralWriteResult {
+        self.set_color(&styles::Styles::default().source_border)
+    }
+
+    fn set_label(
+        &mut self,
+        severity: crate::diagnostic::Severity,
+        label_style: crate::diagnostic::LabelStyle,
+    ) -> super::renderer::GeneralWriteResult {
+        let styles = styles::Styles::default();
+        let spec = styles.label(severity, label_style);
+        self.set_color(spec)
+    }
+
+    fn reset(&mut self) -> super::renderer::GeneralWriteResult {
+        self.reset()
     }
 }
 
@@ -264,6 +423,7 @@ impl Default for Chars {
 
 impl Chars {
     /// A character set that uses Unicode box drawing characters.
+    #[must_use]
     pub fn box_drawing() -> Chars {
         Chars {
             snippet_start: "┌─".into(),
@@ -294,6 +454,7 @@ impl Chars {
     /// This is useful if your terminal's font does not support box drawing
     /// characters well and results in output that looks similar to rustc's
     /// diagnostic output.
+    #[must_use]
     pub fn ascii() -> Chars {
         Chars {
             snippet_start: "-->".into(),

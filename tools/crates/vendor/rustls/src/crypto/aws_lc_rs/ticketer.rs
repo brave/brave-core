@@ -5,8 +5,8 @@ use core::fmt::{Debug, Formatter};
 use core::sync::atomic::{AtomicUsize, Ordering};
 
 use aws_lc_rs::cipher::{
-    DecryptionContext, PaddedBlockDecryptingKey, PaddedBlockEncryptingKey, UnboundCipherKey,
-    AES_256, AES_256_KEY_LEN, AES_CBC_IV_LEN,
+    AES_256, AES_256_KEY_LEN, AES_CBC_IV_LEN, DecryptionContext, PaddedBlockDecryptingKey,
+    PaddedBlockEncryptingKey, UnboundCipherKey,
 };
 use aws_lc_rs::{hmac, iv};
 
@@ -36,24 +36,6 @@ impl Ticketer {
         Ok(Arc::new(crate::ticketer::TicketRotator::new(
             6 * 60 * 60,
             make_ticket_generator,
-        )?))
-    }
-
-    /// Make the recommended `Ticketer`.  This produces tickets
-    /// with a 12 hour life and randomly generated keys.
-    ///
-    /// The `Ticketer` uses the [RFC 5077 §4] "Recommended Ticket Construction",
-    /// using AES 256 for encryption and HMAC-SHA256 for ciphertext authentication.
-    ///
-    /// [RFC 5077 §4]: https://www.rfc-editor.org/rfc/rfc5077#section-4
-    #[cfg(not(feature = "std"))]
-    pub fn new<M: crate::lock::MakeMutex>(
-        time_provider: &'static dyn TimeProvider,
-    ) -> Result<Arc<dyn ProducesTickets>, Error> {
-        Ok(Arc::new(crate::ticketer::TicketSwitcher::new::<M>(
-            6 * 60 * 60,
-            make_ticket_generator,
-            time_provider,
         )?))
     }
 }
@@ -404,7 +386,7 @@ mod tests {
 
         let t = make_ticket_generator().unwrap();
 
-        assert_eq!(format!("{:?}", t), "Rfc5077Ticketer { lifetime: 43200 }");
+        assert_eq!(format!("{t:?}"), "Rfc5077Ticketer { lifetime: 43200 }");
         assert!(t.enabled());
         assert_eq!(t.lifetime(), 43200);
     }

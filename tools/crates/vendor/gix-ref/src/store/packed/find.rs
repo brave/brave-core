@@ -17,7 +17,7 @@ impl packed::Buffer {
         let name = name.try_into()?;
         let mut buf = BString::default();
         for inbetween in &["", "tags", "heads", "remotes"] {
-            let (name, was_absolute) = if name.looks_like_full_name() {
+            let (name, was_absolute) = if name.looks_like_full_name(false) {
                 let name = FullNameRef::new_unchecked(name.as_bstr());
                 let name = match transform_full_name_for_lookup(name) {
                     None => return Ok(None),
@@ -25,7 +25,7 @@ impl packed::Buffer {
                 };
                 (name, true)
             } else {
-                let full_name = name.construct_full_name_ref(inbetween, &mut buf);
+                let full_name = name.construct_full_name_ref(inbetween, &mut buf, false);
                 (full_name, false)
             };
             match self.try_find_full_name(name)? {
@@ -91,14 +91,13 @@ impl packed::Buffer {
         };
         let mut encountered_parse_failure = false;
         a.binary_search_by_key(&full_name.as_ref(), |b: &u8| {
-            let ofs = b as *const u8 as usize - a.as_ptr() as usize;
+            let ofs = std::ptr::from_ref::<u8>(b) as usize - a.as_ptr() as usize;
             let mut line = &a[search_start_of_record(ofs)..];
             packed::decode::reference::<()>
                 .parse_next(&mut line)
                 .map(|r| r.name.as_bstr().as_bytes())
-                .map_err(|err| {
+                .inspect_err(|_err| {
                     encountered_parse_failure = true;
-                    err
                 })
                 .unwrap_or(&[])
         })
@@ -129,7 +128,6 @@ mod error {
 pub use error::Error;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod existing {
 
     /// The error returned by [`find_existing()`][super::packed::Buffer::find()]

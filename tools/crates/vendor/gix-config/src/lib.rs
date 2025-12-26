@@ -34,17 +34,15 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 
 pub mod file;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod lookup;
 pub mod parse;
 ///
-#[allow(clippy::empty_docs)]
 pub mod value;
 pub use gix_config_value::{color, integer, path, Boolean, Color, Integer, Path};
 
@@ -53,5 +51,4 @@ pub use key::{AsKey, KeyRef};
 mod types;
 pub use types::{File, Source};
 ///
-#[allow(clippy::empty_docs)]
 pub mod source;

@@ -11,19 +11,20 @@
 
 [package]
 edition = "2021"
-rust-version = "1.63"
+rust-version = "1.71"
 name = "rustls-webpki"
-version = "0.102.8"
+version = "0.103.8"
 build = false
 include = [
     "Cargo.toml",
     "/LICENSE",
-    "README.md",
+    "/README.md",
     "src/aws_lc_rs_algs.rs",
     "src/calendar.rs",
     "src/cert.rs",
     "src/crl/mod.rs",
     "src/crl/types.rs",
+    "src/data/",
     "src/der.rs",
     "src/end_entity.rs",
     "src/error.rs",
@@ -43,9 +44,8 @@ include = [
     "src/x509.rs",
     "src/verify_cert.rs",
     "src/lib.rs",
-    "src/data/**/*",
-    "tests/**",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -59,6 +59,9 @@ categories = [
 license = "ISC"
 repository = "https://github.com/rustls/webpki"
 
+[package.metadata.cargo-semver-checks.lints]
+enum_variant_marked_deprecated = "warn"
+
 [package.metadata.cargo_check_external_types]
 allowed_external_types = [
     "rustls_pki_types::*",
@@ -69,77 +72,45 @@ allowed_external_types = [
 all-features = true
 rustdoc-args = [
     "--cfg",
-    "docsrs",
+    "webpki_docsrs",
 ]
 
-[profile.bench]
-opt-level = 3
-lto = true
-codegen-units = 1
-debug = 0
-debug-assertions = false
-rpath = false
-
-[profile.release]
-opt-level = 3
-lto = true
-codegen-units = 1
-debug = 0
-debug-assertions = false
-rpath = false
+[features]
+alloc = [
+    "ring?/alloc",
+    "pki-types/alloc",
+]
+aws-lc-rs = [
+    "dep:aws-lc-rs",
+    "aws-lc-rs/aws-lc-sys",
+    "aws-lc-rs/prebuilt-nasm",
+]
+aws-lc-rs-fips = [
+    "dep:aws-lc-rs",
+    "aws-lc-rs/fips",
+]
+aws-lc-rs-unstable = [
+    "aws-lc-rs",
+    "aws-lc-rs/unstable",
+]
+default = ["std"]
+ring = ["dep:ring"]
+std = [
+    "alloc",
+    "pki-types/std",
+]
 
 [lib]
 name = "webpki"
 path = "src/lib.rs"
 
-[[test]]
-name = "better_tls"
-path = "tests/better_tls.rs"
-
-[[test]]
-name = "cert_v1_unsupported"
-path = "tests/cert_v1_unsupported.rs"
-
-[[test]]
-name = "cert_without_extensions"
-path = "tests/cert_without_extensions.rs"
-
-[[test]]
-name = "client_auth"
-path = "tests/client_auth.rs"
-
-[[test]]
-name = "client_auth_revocation"
-path = "tests/client_auth_revocation.rs"
-
-[[test]]
-name = "crl_tests"
-path = "tests/crl_tests.rs"
-
-[[test]]
-name = "custom_ekus"
-path = "tests/custom_ekus.rs"
-
-[[test]]
-name = "integration"
-path = "tests/integration.rs"
-
-[[test]]
-name = "signatures"
-path = "tests/signatures.rs"
-
-[[test]]
-name = "tls_server_certs"
-path = "tests/tls_server_certs.rs"
-
 [dependencies.aws-lc-rs]
-version = "1.9"
-features = ["aws-lc-sys"]
+version = "1.14"
 optional = true
 default-features = false
 
 [dependencies.pki-types]
-version = "1.7"
+version = "1.12"
 default-features = false
 package = "rustls-pki-types"
 
@@ -158,13 +129,13 @@ version = "0.22"
 version = "0.1.5"
 
 [dev-dependencies.bzip2]
-version = "0.4.4"
+version = "0.6"
 
 [dev-dependencies.once_cell]
 version = "1.17.2"
 
 [dev-dependencies.rcgen]
-version = "0.13"
+version = "0.14.2"
 features = ["aws_lc_rs"]
 default-features = false
 
@@ -175,18 +146,23 @@ features = ["derive"]
 [dev-dependencies.serde_json]
 version = "1.0"
 
-[features]
-alloc = [
-    "ring?/alloc",
-    "pki-types/alloc",
-]
-aws_lc_rs = ["dep:aws-lc-rs"]
-default = [
-    "std",
-    "ring",
-]
-ring = ["dep:ring"]
-std = [
-    "alloc",
-    "pki-types/std",
-]
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(webpki_docsrs)"]
+
+[profile.bench]
+opt-level = 3
+lto = true
+codegen-units = 1
+debug = 0
+debug-assertions = false
+rpath = false
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+debug = 0
+debug-assertions = false
+rpath = false

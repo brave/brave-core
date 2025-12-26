@@ -12,14 +12,23 @@
 
 use std::fs;
 use std::path::Path;
-use std::sync::mpsc::channel;
-use std::thread;
 
 use tempfile::{Builder, TempDir};
 
+/// For the wasi platforms, `std::env::temp_dir` will panic. For those targets, configure the /tmp
+/// directory instead as the base directory for temp files.
+fn configure_wasi_temp_dir() {
+    if cfg!(target_os = "wasi") {
+        let _ = tempfile::env::override_temp_dir(std::path::Path::new("/tmp"));
+    }
+}
+
+#[test]
 fn test_tempdir() {
+    configure_wasi_temp_dir();
+
     let path = {
-        let p = Builder::new().prefix("foobar").tempdir_in(".").unwrap();
+        let p = Builder::new().prefix("foobar").tempdir().unwrap();
         let p = p.path();
         assert!(p.to_str().unwrap().contains("foobar"));
         p.to_path_buf()
@@ -27,19 +36,28 @@ fn test_tempdir() {
     assert!(!path.exists());
 }
 
+#[test]
 fn test_prefix() {
-    let tmpfile = TempDir::with_prefix_in("prefix", ".").unwrap();
+    configure_wasi_temp_dir();
+
+    let tmpfile = TempDir::with_prefix("prefix").unwrap();
     let name = tmpfile.path().file_name().unwrap().to_str().unwrap();
     assert!(name.starts_with("prefix"));
 }
 
+#[test]
 fn test_suffix() {
-    let tmpfile = TempDir::with_suffix_in("suffix", ".").unwrap();
+    configure_wasi_temp_dir();
+
+    let tmpfile = TempDir::with_suffix("suffix").unwrap();
     let name = tmpfile.path().file_name().unwrap().to_str().unwrap();
     assert!(name.ends_with("suffix"));
 }
 
+#[test]
 fn test_customnamed() {
+    configure_wasi_temp_dir();
+
     let tmpfile = Builder::new()
         .prefix("prefix")
         .suffix("suffix")
@@ -52,7 +70,14 @@ fn test_customnamed() {
     assert_eq!(name.len(), 24);
 }
 
-fn test_rm_tempdir() {
+#[test]
+#[cfg_attr(target_os = "wasi", ignore = "thread::spawn is not supported")]
+fn test_rm_tempdir_threading() {
+    configure_wasi_temp_dir();
+
+    use std::sync::mpsc::channel;
+    use std::thread;
+
     let (tx, rx) = channel();
     let f = move || {
         let tmp = TempDir::new().unwrap();
@@ -81,61 +106,38 @@ fn test_rm_tempdir() {
         assert!(path.exists());
     }
     assert!(!path.exists());
+}
 
-    let path;
-    {
+#[test]
+fn test_tempdir_keep() {
+    configure_wasi_temp_dir();
+
+    let path = {
         let tmp = TempDir::new().unwrap();
-        path = tmp.into_path();
-    }
+        tmp.keep()
+    };
     assert!(path.exists());
     fs::remove_dir_all(&path).unwrap();
     assert!(!path.exists());
 }
 
-fn test_rm_tempdir_close() {
-    let (tx, rx) = channel();
-    let f = move || {
-        let tmp = TempDir::new().unwrap();
-        tx.send(tmp.path().to_path_buf()).unwrap();
-        tmp.close().unwrap();
-        panic!("panic when unwinding past `tmp`");
-    };
-    let _ = thread::spawn(f).join();
-    let path = rx.recv().unwrap();
-    assert!(!path.exists());
+#[test]
+fn test_tmpdir_close() {
+    configure_wasi_temp_dir();
 
     let tmp = TempDir::new().unwrap();
     let path = tmp.path().to_path_buf();
-    let f = move || {
-        let tmp = tmp;
-        tmp.close().unwrap();
-        panic!("panic when unwinding past `tmp`");
-    };
-    let _ = thread::spawn(f).join();
-    assert!(!path.exists());
-
-    let path;
-    {
-        let f = move || TempDir::new().unwrap();
-
-        let tmp = thread::spawn(f).join().unwrap();
-        path = tmp.path().to_path_buf();
-        assert!(path.exists());
-        tmp.close().unwrap();
-    }
-    assert!(!path.exists());
-
-    let path;
-    {
-        let tmp = TempDir::new().unwrap();
-        path = tmp.into_path();
-    }
     assert!(path.exists());
-    fs::remove_dir_all(&path).unwrap();
+    tmp.close().unwrap();
     assert!(!path.exists());
 }
 
+#[test]
+#[cfg_attr(target_os = "wasi", ignore = "unwinding is not supported")]
 fn dont_double_panic() {
+    configure_wasi_temp_dir();
+
+    use std::thread;
     let r: Result<(), _> = thread::spawn(move || {
         let tmpdir = TempDir::new().unwrap();
         // Remove the temporary directory so that TempDir sees
@@ -149,17 +151,10 @@ fn dont_double_panic() {
     assert!(r.is_err());
 }
 
-fn in_tmpdir<F>(f: F)
-where
-    F: FnOnce(),
-{
-    let tmpdir = TempDir::new().unwrap();
-    assert!(std::env::set_current_dir(tmpdir.path()).is_ok());
-
-    f();
-}
-
+#[test]
 fn pass_as_asref_path() {
+    configure_wasi_temp_dir();
+
     let tempdir = TempDir::new().unwrap();
     takes_asref_path(&tempdir);
 
@@ -169,23 +164,33 @@ fn pass_as_asref_path() {
     }
 }
 
-fn test_keep() {
-    let tmpdir = Builder::new().keep(true).tempdir().unwrap();
-    let path = tmpdir.path().to_owned();
-    drop(tmpdir);
-    assert!(path.exists());
-    fs::remove_dir(path).unwrap();
-}
-
 #[test]
-fn main() {
-    in_tmpdir(test_tempdir);
-    in_tmpdir(test_prefix);
-    in_tmpdir(test_suffix);
-    in_tmpdir(test_customnamed);
-    in_tmpdir(test_rm_tempdir);
-    in_tmpdir(test_rm_tempdir_close);
-    in_tmpdir(dont_double_panic);
-    in_tmpdir(pass_as_asref_path);
-    in_tmpdir(test_keep);
+fn test_disable_cleanup() {
+    configure_wasi_temp_dir();
+
+    // Case 0: never mark as "disable cleanup"
+    // Case 1: enable "disable cleanup" in the builder, don't touch it after.
+    // Case 2: enable "disable cleanup" in the builder, turn it off after.
+    // Case 3: don't enable disable cleanup in the builder, turn it on after.
+    for case in 0..4 {
+        let in_builder = case & 1 > 0;
+        let toggle = case & 2 > 0;
+        let mut tmpdir = Builder::new()
+            .disable_cleanup(in_builder)
+            .tempdir()
+            .unwrap();
+        if toggle {
+            tmpdir.disable_cleanup(!in_builder);
+        }
+
+        let path = tmpdir.path().to_owned();
+        drop(tmpdir);
+
+        if in_builder ^ toggle {
+            assert!(path.exists());
+            fs::remove_dir(path).unwrap();
+        } else {
+            assert!(!path.exists(), "tempdir wasn't deleted");
+        }
+    }
 }

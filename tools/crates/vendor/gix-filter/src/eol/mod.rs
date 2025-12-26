@@ -1,9 +1,9 @@
 ///
-#[allow(clippy::empty_docs)]
 pub mod convert_to_git;
 pub use convert_to_git::function::convert_to_git;
 
-mod convert_to_worktree;
+///
+pub mod convert_to_worktree;
 pub use convert_to_worktree::convert_to_worktree;
 
 mod utils;

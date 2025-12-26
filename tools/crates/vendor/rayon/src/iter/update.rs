@@ -8,25 +8,21 @@ use std::fmt::{self, Debug};
 ///
 /// This struct is created by the [`update()`] method on [`ParallelIterator`]
 ///
-/// [`update()`]: trait.ParallelIterator.html#method.update
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`update()`]: ParallelIterator::update()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
-pub struct Update<I: ParallelIterator, F> {
+pub struct Update<I, F> {
     base: I,
     update_op: F,
 }
 
-impl<I: ParallelIterator + Debug, F> Debug for Update<I, F> {
+impl<I: Debug, F> Debug for Update<I, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Update").field("base", &self.base).finish()
     }
 }
 
-impl<I, F> Update<I, F>
-where
-    I: ParallelIterator,
-{
+impl<I, F> Update<I, F> {
     /// Creates a new `Update` iterator.
     pub(super) fn new(base: I, update_op: F) -> Self {
         Update { base, update_op }
@@ -105,7 +101,7 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 struct UpdateProducer<'f, P, F> {
     base: P,
@@ -160,8 +156,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Consumer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Consumer implementation
 
 struct UpdateConsumer<'f, C, F> {
     base: C,

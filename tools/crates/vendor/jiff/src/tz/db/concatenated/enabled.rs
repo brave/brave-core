@@ -15,7 +15,10 @@ use std::{
 use crate::{
     error::{err, Error},
     timestamp::Timestamp,
-    tz::{concatenated::ConcatenatedTzif, TimeZone},
+    tz::{
+        concatenated::ConcatenatedTzif, db::special_time_zone, TimeZone,
+        TimeZoneNameIter,
+    },
     util::{self, array_str::ArrayStr, cache::Expiration, utf8},
 };
 
@@ -35,14 +38,14 @@ static TZDATA_LOCATIONS: &[TzdataLocation] = &[
     },
 ];
 
-pub(crate) struct Concatenated {
+pub(crate) struct Database {
     path: Option<PathBuf>,
     names: Option<Names>,
     zones: RwLock<CachedZones>,
 }
 
-impl Concatenated {
-    pub(crate) fn from_env() -> Concatenated {
+impl Database {
+    pub(crate) fn from_env() -> Database {
         let mut attempted = vec![];
         for loc in TZDATA_LOCATIONS {
             let path = loc.to_path_buf();
@@ -50,7 +53,7 @@ impl Concatenated {
                 "opening concatenated tzdata database at {}",
                 path.display()
             );
-            match Concatenated::from_path(&path) {
+            match Database::from_path(&path) {
                 Ok(db) => return db,
                 Err(_err) => {
                     trace!("failed opening {}: {_err}", path.display());
@@ -63,21 +66,21 @@ impl Concatenated {
              following paths: {}",
             attempted.join(", "),
         );
-        Concatenated::none()
+        Database::none()
     }
 
-    pub(crate) fn from_path(path: &Path) -> Result<Concatenated, Error> {
+    pub(crate) fn from_path(path: &Path) -> Result<Database, Error> {
         let names = Some(Names::new(path)?);
         let zones = RwLock::new(CachedZones::new());
-        Ok(Concatenated { path: Some(path.to_path_buf()), names, zones })
+        Ok(Database { path: Some(path.to_path_buf()), names, zones })
     }
 
     /// Creates a "dummy" zoneinfo database in which all lookups fail.
-    pub(crate) fn none() -> Concatenated {
+    pub(crate) fn none() -> Database {
         let path = None;
         let names = None;
         let zones = RwLock::new(CachedZones::new());
-        Concatenated { path, names, zones }
+        Database { path, names, zones }
     }
 
     pub(crate) fn reset(&self) {
@@ -89,10 +92,8 @@ impl Concatenated {
     }
 
     pub(crate) fn get(&self, query: &str) -> Option<TimeZone> {
-        // We just always assume UTC exists and map it to our special const
-        // TimeZone::UTC value.
-        if query == "UTC" {
-            return Some(TimeZone::UTC);
+        if let Some(tz) = special_time_zone(query) {
+            return Some(tz);
         }
         let path = self.path.as_ref()?;
         // The fast path is when the query matches a pre-existing unexpired
@@ -185,10 +186,14 @@ impl Concatenated {
         }
     }
 
-    pub(crate) fn available(&self) -> Vec<String> {
-        let Some(path) = self.path.as_ref() else { return vec![] };
-        let Some(names) = self.names.as_ref() else { return vec![] };
-        names.available(path)
+    pub(crate) fn available<'d>(&'d self) -> TimeZoneNameIter<'d> {
+        let Some(path) = self.path.as_ref() else {
+            return TimeZoneNameIter::empty();
+        };
+        let Some(names) = self.names.as_ref() else {
+            return TimeZoneNameIter::empty();
+        };
+        TimeZoneNameIter::from_iter(names.available(path).into_iter())
     }
 
     pub(crate) fn is_definitively_empty(&self) -> bool {
@@ -196,7 +201,7 @@ impl Concatenated {
     }
 }
 
-impl core::fmt::Debug for Concatenated {
+impl core::fmt::Debug for Database {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "Concatenated(")?;
         if let Some(ref path) = self.path {
@@ -396,7 +401,7 @@ struct NamesInner {
 }
 
 impl Names {
-    /// See commnents in `tz/db/zoneinfo/enabled.rs` about this. We just copied
+    /// See comments in `tz/db/zoneinfo/enabled.rs` about this. We just copied
     /// it from there.
     const DEFAULT_TTL: Duration = DEFAULT_TTL;
 
@@ -561,7 +566,7 @@ mod tests {
         const ENV: &str = "JIFF_DEBUG_CONCATENATED_TZDATA";
         let Some(val) = std::env::var_os(ENV) else { return Ok(()) };
         let path = PathBuf::from(val);
-        let db = Concatenated::from_path(&path)?;
+        let db = Database::from_path(&path)?;
         for name in db.available() {
             std::eprintln!("{name}");
         }

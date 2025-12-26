@@ -54,11 +54,11 @@ async fn new_generated_code_is_fresh() {
 
         // Write comment
         code.push_str("  /*\n");
-        code.push_str(&format!("   * Issuer: {}\n", issuer));
-        code.push_str(&format!("   * Subject: {}\n", subject_str));
-        code.push_str(&format!("   * Label: {:?}\n", label));
-        code.push_str(&format!("   * Serial: {}\n", serial));
-        code.push_str(&format!("   * SHA256 Fingerprint: {}\n", sha256_fp));
+        code.push_str(&format!("   * Issuer: {issuer}\n"));
+        code.push_str(&format!("   * Subject: {subject_str}\n"));
+        code.push_str(&format!("   * Label: {label:?}\n"));
+        code.push_str(&format!("   * Serial: {serial}\n"));
+        code.push_str(&format!("   * SHA256 Fingerprint: {sha256_fp}\n"));
         for ln in root.pem().lines() {
             code.push_str("   * ");
             code.push_str(ln.trim());
@@ -109,23 +109,20 @@ fn name_to_string(name: &X509Name) -> String {
         .next()
         .and_then(|cn| cn.as_str().ok())
     {
-        write!(ret, "CN={}", cn).unwrap();
+        write!(ret, "CN={cn}").unwrap();
     }
 
     let mut append_attrs = |attrs: Vec<&AttributeTypeAndValue>, label| {
         let str_parts = attrs
             .iter()
-            .filter_map(|attr| match attr.as_str() {
-                Ok(s) => Some(s),
-                Err(_) => None,
-            })
+            .filter_map(|attr| attr.as_str().ok())
             .collect::<Vec<_>>()
             .join("/");
         if !str_parts.is_empty() {
             if !ret.is_empty() {
                 ret.push(' ');
             }
-            write!(ret, "{}={}", label, str_parts).unwrap();
+            write!(ret, "{label}={str_parts}").unwrap();
         }
     };
 

@@ -4,20 +4,20 @@
 
 use super::LiteMap;
 use crate::store::*;
+use alloc::vec::Vec;
 use core::fmt;
 use core::marker::PhantomData;
-use serde::de::{MapAccess, SeqAccess, Visitor};
-use serde::{Deserialize, Deserializer};
+use serde_core::{
+    de::{MapAccess, SeqAccess, Visitor},
+    ser::{SerializeMap, SerializeSeq},
+    Deserialize, Deserializer, Serialize, Serializer,
+};
 
-#[cfg(feature = "serde")]
-use serde::{ser::SerializeMap, Serialize, Serializer};
-
-#[cfg(feature = "serde")]
 impl<K, V, R> Serialize for LiteMap<K, V, R>
 where
     K: Serialize,
     V: Serialize,
-    R: Store<K, V> + Serialize,
+    R: Store<K, V>,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -25,29 +25,42 @@ where
     {
         // Many human-readable formats don't support values other
         // than numbers and strings as map keys. For them, we can serialize
-        // as a vec of tuples instead
+        // as a sequence of tuples instead
         if serializer.is_human_readable() {
-            if let Some((ref k, _)) = self.values.lm_get(0) {
-                if !super::serde_helpers::is_num_or_string(k) {
-                    return self.values.serialize(serializer);
+            let k_is_num_or_string = self
+                .values
+                .lm_get(0)
+                .is_some_and(|(k, _)| super::serde_helpers::is_num_or_string(k));
+            if !k_is_num_or_string {
+                let mut seq = serializer.serialize_seq(Some(self.len()))?;
+                // Note that we can't require StoreIterable for R, see below.
+                for index in 0..self.len() {
+                    #[expect(clippy::unwrap_used)] // looping over 0..len
+                    seq.serialize_element(&self.get_indexed(index).unwrap())?;
                 }
-                // continue to regular serialization
+                return seq.end();
             }
+            // continue to regular serialization
         }
+
+        // Note that we can't require StoreIterable for R, because the Higher-Rank Trait Bounds (HRTBs)
+        // `R: for<'a> StoreIterable<'a, K, V>` would end up being too strict for some use cases
+        // as it would require Self, K and V to be 'static. See https://github.com/rust-lang/types-team/blob/master/minutes/2022-07-08-implied-bounds-and-wf-checking.md#problem-fora-shouldnt-really-mean-for-all-a
+        // Instead, we require only R: Store and manually iterate over the items.
+        // For some R types this is equivalent to StoreIterable after compiler optimizations but retains
+        // flexibility for other types.
         let mut map = serializer.serialize_map(Some(self.len()))?;
-        let mut i = 0;
-        while i < self.values.lm_len() {
-            #[allow(clippy::unwrap_used)] // i is in range
-            let (k, v) = self.values.lm_get(i).unwrap();
+        for index in 0..self.len() {
+            #[expect(clippy::unwrap_used)] // looping over 0..len
+            let (k, v) = self.get_indexed(index).unwrap();
             map.serialize_entry(k, v)?;
-            i += 1;
         }
         map.end()
     }
 }
 
 /// Modified example from https://serde.rs/deserialize-map.html
-#[allow(clippy::type_complexity)]
+#[expect(clippy::type_complexity)]
 struct LiteMapVisitor<K, V, R> {
     marker: PhantomData<fn() -> LiteMap<K, V, R>>,
 }
@@ -64,7 +77,7 @@ impl<'de, K, V, R> Visitor<'de> for LiteMapVisitor<K, V, R>
 where
     K: Deserialize<'de> + Ord,
     V: Deserialize<'de>,
-    R: StoreMut<K, V> + StoreFromIterable<K, V>,
+    R: StoreBulkMut<K, V>,
 {
     type Value = LiteMap<K, V, R>;
 
@@ -76,22 +89,18 @@ where
     where
         S: SeqAccess<'de>,
     {
+        // See visit_map for an explanation of the fast-path and out-of-order handling
         let mut map = LiteMap::with_capacity(access.size_hint().unwrap_or(0));
+        let mut out_of_order = Vec::new();
 
-        // While there are entries remaining in the input, add them
-        // into our map.
         while let Some((key, value)) = access.next_element()? {
-            // Try to append it at the end, hoping for a sorted map.
-            // If not sorted, insert as usual.
-            // This allows for arbitrary maps (e.g. from user JSON)
-            // to be deserialized into LiteMap
-            // without impacting performance in the case of deserializing
-            // a serialized map that came from another LiteMap
             if let Some((key, value)) = map.try_append(key, value) {
-                // Note: this effectively selection sorts the map,
-                // which isn't efficient for large maps
-                map.insert(key, value);
+                out_of_order.push((key, value));
             }
+        }
+
+        if !out_of_order.is_empty() {
+            map.extend(out_of_order);
         }
 
         Ok(map)
@@ -102,21 +111,25 @@ where
         M: MapAccess<'de>,
     {
         let mut map = LiteMap::with_capacity(access.size_hint().unwrap_or(0));
+        let mut out_of_order = Vec::new();
 
         // While there are entries remaining in the input, add them
         // into our map.
         while let Some((key, value)) = access.next_entry()? {
-            // Try to append it at the end, hoping for a sorted map.
-            // If not sorted, insert as usual.
-            // This allows for arbitrary maps (e.g. from user JSON)
-            // to be deserialized into LiteMap
-            // without impacting performance in the case of deserializing
-            // a serialized map that came from another LiteMap
+            // Try to append it at the end, hoping for a sorted map. Otherwise, collect
+            // out of order items and extend the map with them later. This way, we give
+            // the implementation an opportunity to avoid quadratic costs from calling
+            // insert() with out of order items.
+            // Handling ordered inputs first allows for arbitrary maps (e.g. from user JSON)
+            // to be deserialized into LiteMap without impacting performance in the case of
+            // deserializing a serialized map that came from another LiteMap.
             if let Some((key, value)) = map.try_append(key, value) {
-                // Note: this effectively selection sorts the map,
-                // which isn't efficient for large maps
-                map.insert(key, value);
+                out_of_order.push((key, value));
             }
+        }
+
+        if !out_of_order.is_empty() {
+            map.extend(out_of_order);
         }
 
         Ok(map)
@@ -127,7 +140,7 @@ impl<'de, K, V, R> Deserialize<'de> for LiteMap<K, V, R>
 where
     K: Ord + Deserialize<'de>,
     V: Deserialize<'de>,
-    R: StoreMut<K, V> + StoreFromIterable<K, V>,
+    R: StoreBulkMut<K, V>,
 {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
@@ -209,5 +222,24 @@ mod test {
         let postcard = postcard::to_stdvec(&map).unwrap();
         let deserialized: LiteMap<(u32, String), String> = postcard::from_bytes(&postcard).unwrap();
         assert_eq!(map, deserialized);
+    }
+
+    /// Test that a LiteMap<_, _, Vec> is deserialized with an exact capacity
+    /// if the deserializer provides a size hint information, like postcard here.
+    #[test]
+    fn test_deserialize_capacity() {
+        for len in 0..50 {
+            let mut map = (0..len).map(|i| (i, i.to_string())).collect::<Vec<_>>();
+            let postcard = postcard::to_stdvec(&map).unwrap();
+            let deserialized: LiteMap<u32, String> = postcard::from_bytes(&postcard).unwrap();
+            assert_eq!(deserialized.values.capacity(), len);
+            assert_eq!(deserialized.values.len(), len);
+            // again, but with a shuffled map
+            rand::seq::SliceRandom::shuffle(&mut map[..], &mut rand::rng());
+            let postcard = postcard::to_stdvec(&map).unwrap();
+            let deserialized: LiteMap<u32, String> = postcard::from_bytes(&postcard).unwrap();
+            assert_eq!(deserialized.values.capacity(), len);
+            assert_eq!(deserialized.values.len(), len);
+        }
     }
 }

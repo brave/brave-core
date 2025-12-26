@@ -1,10 +1,7 @@
 use bstr::BString;
 use gix_hash::ObjectId;
 
-use crate::{
-    extension::Signature,
-    util::{split_at_byte_exclusive, split_at_pos},
-};
+use crate::{extension::Signature, util::split_at_byte_exclusive};
 
 pub type Paths = Vec<ResolvePath>;
 
@@ -47,7 +44,7 @@ pub fn decode(mut data: &[u8], object_hash: gix_hash::Kind) -> Option<Paths> {
             if *mode == 0 {
                 continue;
             }
-            let (hash, rest) = split_at_pos(data, hash_len)?;
+            let (hash, rest) = data.split_at_checked(hash_len)?;
             data = rest;
             *stage = Some(Stage {
                 mode: *mode,

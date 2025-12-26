@@ -75,20 +75,19 @@ impl File {
                     let _span = gix_features::trace::detail!("gix::open_index::hash_index", path = ?path);
                     let meta = file.metadata()?;
                     let num_bytes_to_hash = meta.len() - object_hash.len_in_bytes() as u64;
-                    let actual_hash = gix_features::hash::bytes(
+                    gix_hash::bytes(
                         &mut file,
                         num_bytes_to_hash,
                         object_hash,
                         &mut gix_features::progress::Discard,
                         &Default::default(),
-                    )?;
-
-                    if actual_hash != expected {
-                        return Err(Error::Decode(decode::Error::ChecksumMismatch {
-                            actual_checksum: actual_hash,
-                            expected_checksum: expected,
-                        }));
-                    }
+                    )
+                    .map_err(|err| match err {
+                        gix_hash::io::Error::Io(err) => Error::Io(err),
+                        gix_hash::io::Error::Hasher(err) => Error::Decode(err.into()),
+                    })?
+                    .verify(&expected)
+                    .map_err(decode::Error::from)?;
                 }
             }
 

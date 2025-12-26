@@ -5,6 +5,8 @@
 //! want unrecognized values to create undefined behavior.
 
 use crate::backend;
+#[cfg(all(not(feature = "std"), error_in_core))]
+use core::error;
 use core::{fmt, result};
 #[cfg(feature = "std")]
 use std::error;
@@ -49,7 +51,7 @@ impl fmt::Debug for Errno {
     }
 }
 
-#[cfg(feature = "std")]
+#[cfg(any(feature = "std", error_in_core))]
 impl error::Error for Errno {}
 
 #[cfg(feature = "std")]

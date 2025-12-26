@@ -20,8 +20,8 @@
 ))]
 fn main() {
     unimplemented!(
-        "Add --cfg=criterion to RUSTFLAGS and enable the \"fs\", \"time\", \"process\", and \"stdio\" cargo \
-         features."
+        "Add --cfg=criterion to RUSTFLAGS and enable the \"fs\", \"time\", \"process\", and \
+         \"stdio\" cargo features."
     )
 }
 

@@ -1,4 +1,4 @@
-use futures_util::ready;
+use futures_core::ready;
 use pin_project_lite::pin_project;
 use std::future::Future;
 use std::pin::Pin;
@@ -47,7 +47,7 @@ where
             let this = self.as_mut().project();
             match this {
                 OneshotProj::NotReady { svc, req } => {
-                    let _ = ready!(svc.poll_ready(cx))?;
+                    ready!(svc.poll_ready(cx))?;
                     let fut = svc.call(req.take().expect("already called"));
                     self.set(Oneshot::Called { fut });
                 }

@@ -80,7 +80,7 @@ mod inherited_jobserver {
 
     pub(super) struct JobServer {
         /// Implicit token for this process which is obtained and will be
-        /// released in parent. Since JobTokens only give back what they got,
+        /// released in parent. Since `JobTokens` only give back what they got,
         /// there should be at most one global implicit token in the wild.
         ///
         /// Since Rust does not execute any `Drop` for global variables,
@@ -164,7 +164,7 @@ mod inherited_jobserver {
         helper_thread: Option<HelperThread>,
     }
 
-    impl<'a> ActiveJobServer<'a> {
+    impl ActiveJobServer<'_> {
         pub(super) async fn acquire(&mut self) -> Result<JobToken, Error> {
             let mut has_requested_token = false;
 
@@ -231,21 +231,17 @@ mod inprocess_jobserver {
     pub(crate) struct JobServer(AtomicU32);
 
     impl JobServer {
+        #[allow(clippy::disallowed_methods)]
         pub(super) fn new() -> Self {
             // Use `NUM_JOBS` if set (it's configured by Cargo) and otherwise
-            // just fall back to a semi-reasonable number.
-            //
-            // Note that we could use `num_cpus` here but it's an extra
-            // dependency that will almost never be used, so
-            // it's generally not too worth it.
-            let mut parallelism = 4;
-            // TODO: Use std::thread::available_parallelism as an upper bound
-            // when MSRV is bumped.
-            if let Ok(amt) = var("NUM_JOBS") {
-                if let Ok(amt) = amt.parse() {
-                    parallelism = amt;
-                }
-            }
+            // just fall back to the number of cores on the local machine, or a reasonable
+            // default if that cannot be determined.
+
+            let parallelism = var("NUM_JOBS")
+                .ok()
+                .and_then(|j| j.parse::<u32>().ok())
+                .or_else(|| Some(std::thread::available_parallelism().ok()?.get() as u32))
+                .unwrap_or(4);
 
             Self(AtomicU32::new(parallelism))
         }

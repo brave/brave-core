@@ -4,6 +4,7 @@ use core::{ffi::c_void, mem::MaybeUninit};
 
 pub use crate::util::{inner_u32, inner_u64};
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     let dst_ptr = dest.as_mut_ptr().cast::<c_void>();
     let ret = unsafe { libc::CCRandomGenerateBytes(dst_ptr, dest.len()) };

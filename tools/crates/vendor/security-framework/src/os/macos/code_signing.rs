@@ -1,15 +1,12 @@
 //! Code signing services.
 
-use core_foundation::{declare_TCFType, impl_TCFType};
-use std::fmt::Debug;
-use std::mem::MaybeUninit;
-use std::str::FromStr;
 use core_foundation::base::{TCFType, TCFTypeRef, ToVoid};
 use core_foundation::data::CFDataRef;
 use core_foundation::dictionary::CFMutableDictionary;
 use core_foundation::number::CFNumber;
 use core_foundation::string::{CFString, CFStringRef};
 use core_foundation::url::CFURL;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use libc::pid_t;
 use security_framework_sys::code_signing::{
     kSecCSBasicValidateOnly, kSecCSCheckAllArchitectures, kSecCSCheckGatekeeperArchitectures,
@@ -24,6 +21,9 @@ use security_framework_sys::code_signing::{
     SecStaticCodeCheckValidity, SecStaticCodeCreateWithPath, SecStaticCodeGetTypeID,
     SecStaticCodeRef,
 };
+use std::fmt::Debug;
+use std::mem::MaybeUninit;
+use std::str::FromStr;
 
 use crate::{cvt, Result};
 

@@ -6,6 +6,7 @@ use crate::error;
 
 /// An error that occurred when converting a [`Parsed`](crate::parsing::Parsed) to another type.
 #[non_exhaustive]
+#[allow(variant_size_differences, reason = "only triggers on some platforms")]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TryFromParsed {
     /// The [`Parsed`](crate::parsing::Parsed) did not include enough information to construct the
@@ -16,6 +17,7 @@ pub enum TryFromParsed {
 }
 
 impl fmt::Display for TryFromParsed {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::InsufficientInformation => f.write_str(
@@ -27,6 +29,7 @@ impl fmt::Display for TryFromParsed {
 }
 
 impl From<error::ComponentRange> for TryFromParsed {
+    #[inline]
     fn from(v: error::ComponentRange) -> Self {
         Self::ComponentRange(v)
     }
@@ -35,6 +38,7 @@ impl From<error::ComponentRange> for TryFromParsed {
 impl TryFrom<TryFromParsed> for error::ComponentRange {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: TryFromParsed) -> Result<Self, Self::Error> {
         match err {
             TryFromParsed::ComponentRange(err) => Ok(err),
@@ -43,10 +47,9 @@ impl TryFrom<TryFromParsed> for error::ComponentRange {
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for TryFromParsed {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+impl core::error::Error for TryFromParsed {
+    #[inline]
+    fn source(&self) -> Option<&(dyn core::error::Error + 'static)> {
         match self {
             Self::InsufficientInformation => None,
             Self::ComponentRange(err) => Some(err),
@@ -55,6 +58,7 @@ impl std::error::Error for TryFromParsed {
 }
 
 impl From<TryFromParsed> for crate::Error {
+    #[inline]
     fn from(original: TryFromParsed) -> Self {
         Self::TryFromParsed(original)
     }
@@ -63,6 +67,7 @@ impl From<TryFromParsed> for crate::Error {
 impl TryFrom<crate::Error> for TryFromParsed {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: crate::Error) -> Result<Self, Self::Error> {
         match err {
             crate::Error::TryFromParsed(err) => Ok(err),

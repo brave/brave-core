@@ -591,7 +591,7 @@ impl DisplayBuffer {
         let c2: u8 = (code / 10) % 10;
         let c3: u8 = code % 10;
 
-        let mut printed = true;
+        let mut printed = false;
         if c1 != 0 {
             printed = true;
             self.buffer[self.len] = b'0' + c1;
@@ -656,7 +656,7 @@ mod test {
 
     #[test]
     fn print_size_of() {
-        use std::mem::size_of;
+        use core::mem::size_of;
         dbg!(size_of::<Color>());
         dbg!(size_of::<AnsiColor>());
         dbg!(size_of::<Ansi256Color>());

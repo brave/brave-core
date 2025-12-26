@@ -1,5 +1,7 @@
-use super::{gimli, Context, Endian, EndianSlice, Mapping, Path, Stash, Vec};
+use super::mystd::path::Path;
+use super::{gimli, Context, Endian, EndianSlice, Mapping, Stash};
 use alloc::sync::Arc;
+use alloc::vec::Vec;
 use core::convert::TryFrom;
 use object::pe::{ImageDosHeader, ImageSymbol};
 use object::read::coff::ImageSymbol as _;
@@ -51,19 +53,15 @@ impl<'a> Object<'a> {
         // note that the sections are 1-indexed because the zero section
         // is special (apparently).
         let mut symbols = Vec::new();
-        let mut i = 0;
-        let len = symtab.len();
-        while i < len {
-            let sym = symtab.symbol(i).ok()?;
-            i += 1 + sym.number_of_aux_symbols as usize;
-            let section_number = sym.section_number.get(LE);
-            if sym.derived_type() != object::pe::IMAGE_SYM_DTYPE_FUNCTION || section_number == 0 {
+        for (_, sym) in symtab.iter() {
+            if sym.derived_type() != object::pe::IMAGE_SYM_DTYPE_FUNCTION {
                 continue;
             }
+            let Some(section_index) = sym.section() else {
+                continue;
+            };
             let addr = usize::try_from(sym.value.get(LE)).ok()?;
-            let section = sections
-                .section(usize::try_from(section_number).ok()?)
-                .ok()?;
+            let section = sections.section(section_index).ok()?;
             let va = usize::try_from(section.virtual_address.get(LE)).ok()?;
             symbols.push((addr + va + image_base, sym));
         }

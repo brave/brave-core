@@ -1,6 +1,6 @@
 use std::{
     fmt::{self, Write},
-    io, mem,
+    mem,
     ops::{Range, RangeInclusive},
 };
 
@@ -8,11 +8,11 @@ use bytes::{Buf, BufMut, Bytes};
 use tinyvec::TinyVec;
 
 use crate::{
+    Dir, MAX_CID_SIZE, RESET_TOKEN_SIZE, ResetToken, StreamId, TransportError, TransportErrorCode,
+    VarInt,
     coding::{self, BufExt, BufMutExt, UnexpectedEnd},
     range_set::ArrayRangeSet,
     shared::{ConnectionId, EcnCodepoint},
-    Dir, ResetToken, StreamId, TransportError, TransportErrorCode, VarInt, MAX_CID_SIZE,
-    RESET_TOKEN_SIZE,
 };
 
 #[cfg(feature = "arbitrary")]
@@ -147,7 +147,7 @@ pub(crate) enum Frame {
     ResetStream(ResetStream),
     StopSending(StopSending),
     Crypto(Crypto),
-    NewToken { token: Bytes },
+    NewToken(NewToken),
     Stream(Stream),
     MaxData(VarInt),
     MaxStreamData { id: StreamId, offset: u64 },
@@ -168,7 +168,7 @@ pub(crate) enum Frame {
 
 impl Frame {
     pub(crate) fn ty(&self) -> FrameType {
-        use self::Frame::*;
+        use Frame::*;
         match *self {
             Padding => FrameType::PADDING,
             ResetStream(_) => FrameType::RESET_STREAM,
@@ -200,7 +200,7 @@ impl Frame {
             PathResponse(_) => FrameType::PATH_RESPONSE,
             NewConnectionId { .. } => FrameType::NEW_CONNECTION_ID,
             Crypto(_) => FrameType::CRYPTO,
-            NewToken { .. } => FrameType::NEW_TOKEN,
+            NewToken(_) => FrameType::NEW_TOKEN,
             Datagram(_) => FrameType(*DATAGRAM_TYS.start()),
             AckFrequency(_) => FrameType::ACK_FREQUENCY,
             ImmediateAck => FrameType::IMMEDIATE_ACK,
@@ -525,9 +525,25 @@ impl Crypto {
     }
 }
 
+#[derive(Debug, Clone)]
+pub(crate) struct NewToken {
+    pub(crate) token: Bytes,
+}
+
+impl NewToken {
+    pub(crate) fn encode<W: BufMut>(&self, out: &mut W) {
+        out.write(FrameType::NEW_TOKEN);
+        out.write_var(self.token.len() as u64);
+        out.put_slice(&self.token);
+    }
+
+    pub(crate) fn size(&self) -> usize {
+        1 + VarInt::from_u64(self.token.len() as u64).unwrap().size() + self.token.len()
+    }
+}
+
 pub(crate) struct Iter {
-    // TODO: ditch io::Cursor after bytes 0.5
-    bytes: io::Cursor<Bytes>,
+    bytes: Bytes,
     last_ty: Option<FrameType>,
 }
 
@@ -543,7 +559,7 @@ impl Iter {
         }
 
         Ok(Self {
-            bytes: io::Cursor::new(payload),
+            bytes: payload,
             last_ty: None,
         })
     }
@@ -553,9 +569,7 @@ impl Iter {
         if len > self.bytes.remaining() as u64 {
             return Err(UnexpectedEnd);
         }
-        let start = self.bytes.position() as usize;
-        self.bytes.advance(len as usize);
-        Ok(self.bytes.get_ref().slice(start..(start + len as usize)))
+        Ok(self.bytes.split_to(len as usize))
     }
 
     fn try_next(&mut self) -> Result<Frame, IterErr> {
@@ -572,11 +586,7 @@ impl Iter {
                 error_code: self.bytes.get()?,
                 frame_type: {
                     let x = self.bytes.get_var()?;
-                    if x == 0 {
-                        None
-                    } else {
-                        Some(FrameType(x))
-                    }
+                    if x == 0 { None } else { Some(FrameType(x)) }
                 },
                 reason: self.take_len()?,
             })),
@@ -624,13 +634,11 @@ impl Iter {
                 let largest = self.bytes.get_var()?;
                 let delay = self.bytes.get_var()?;
                 let extra_blocks = self.bytes.get_var()? as usize;
-                let start = self.bytes.position() as usize;
-                scan_ack_blocks(&mut self.bytes, largest, extra_blocks)?;
-                let end = self.bytes.position() as usize;
+                let n = scan_ack_blocks(&self.bytes, largest, extra_blocks)?;
                 Frame::Ack(Ack {
                     delay,
                     largest,
-                    additional: self.bytes.get_ref().slice(start..end),
+                    additional: self.bytes.split_to(n),
                     ecn: if ty != FrameType::ACK_ECN {
                         None
                     } else {
@@ -676,9 +684,9 @@ impl Iter {
                 offset: self.bytes.get_var()?,
                 data: self.take_len()?,
             }),
-            FrameType::NEW_TOKEN => Frame::NewToken {
+            FrameType::NEW_TOKEN => Frame::NewToken(NewToken {
                 token: self.take_len()?,
-            },
+            }),
             FrameType::HANDSHAKE_DONE => Frame::HandshakeDone,
             FrameType::ACK_FREQUENCY => Frame::AckFrequency(AckFrequency {
                 sequence: self.bytes.get()?,
@@ -715,10 +723,7 @@ impl Iter {
     }
 
     fn take_remaining(&mut self) -> Bytes {
-        let mut x = mem::replace(self.bytes.get_mut(), Bytes::new());
-        x.advance(self.bytes.position() as usize);
-        self.bytes.set_position(0);
-        x
+        mem::take(&mut self.bytes)
     }
 }
 
@@ -732,7 +737,7 @@ impl Iterator for Iter {
             Ok(x) => Some(Ok(x)),
             Err(e) => {
                 // Corrupt frame, skip it and everything that follows
-                self.bytes = io::Cursor::new(Bytes::new());
+                self.bytes.clear();
                 Some(Err(InvalidFrame {
                     ty: self.last_ty,
                     reason: e.reason(),
@@ -756,7 +761,9 @@ impl From<InvalidFrame> for TransportError {
     }
 }
 
-fn scan_ack_blocks(buf: &mut io::Cursor<Bytes>, largest: u64, n: usize) -> Result<(), IterErr> {
+/// Validate exactly `n` ACK ranges in `buf` and return the number of bytes they cover
+fn scan_ack_blocks(mut buf: &[u8], largest: u64, n: usize) -> Result<usize, IterErr> {
+    let total_len = buf.remaining();
     let first_block = buf.get_var()?;
     let mut smallest = largest.checked_sub(first_block).ok_or(IterErr::Malformed)?;
     for _ in 0..n {
@@ -765,7 +772,7 @@ fn scan_ack_blocks(buf: &mut io::Cursor<Bytes>, largest: u64, n: usize) -> Resul
         let block = buf.get_var()?;
         smallest = smallest.checked_sub(block).ok_or(IterErr::Malformed)?;
     }
-    Ok(())
+    Ok(total_len - buf.remaining())
 }
 
 enum IterErr {
@@ -776,7 +783,7 @@ enum IterErr {
 
 impl IterErr {
     fn reason(&self) -> &'static str {
-        use self::IterErr::*;
+        use IterErr::*;
         match *self {
             UnexpectedEnd => "unexpected end",
             InvalidFrameId => "invalid frame ID",
@@ -794,12 +801,11 @@ impl From<UnexpectedEnd> for IterErr {
 #[derive(Debug, Clone)]
 pub struct AckIter<'a> {
     largest: u64,
-    data: io::Cursor<&'a [u8]>,
+    data: &'a [u8],
 }
 
 impl<'a> AckIter<'a> {
-    fn new(largest: u64, payload: &'a [u8]) -> Self {
-        let data = io::Cursor::new(payload);
+    fn new(largest: u64, data: &'a [u8]) -> Self {
         Self { largest, data }
     }
 }
@@ -878,6 +884,10 @@ impl NewConnectionId {
     }
 }
 
+impl FrameStruct for NewConnectionId {
+    const SIZE_BOUND: usize = 1 + 8 + 8 + 1 + MAX_CID_SIZE + RESET_TOKEN_SIZE;
+}
+
 /// Smallest number of bytes this type of frame is guaranteed to fit within.
 pub(crate) const RETIRE_CONNECTION_ID_SIZE_BOUND: usize = 9;
 
@@ -943,7 +953,6 @@ mod test {
     }
 
     #[test]
-    #[allow(clippy::range_plus_one)]
     fn ack_coding() {
         const PACKETS: &[u64] = &[1, 2, 3, 5, 10, 11, 14];
         let mut ranges = ArrayRangeSet::new();

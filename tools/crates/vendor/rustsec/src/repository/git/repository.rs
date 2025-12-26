@@ -101,9 +101,9 @@ impl Repository {
         // with no way to recover. They don't even write the PID to the lockfile.
         let lock_path = tame_index::Path::from_path(&path)
             .ok_or_else(|| {
-                format_err!(
+                Error::new(
                     ErrorKind::BadParam,
-                    "Path to the advisory DB directory is not valid UTF-8!"
+                    "Path to the advisory DB directory is not valid UTF-8!",
                 )
             })?
             .with_extension(".lock");
@@ -141,10 +141,10 @@ impl Repository {
             .ok()
             .map(|repo| repo.to_thread_local())
             .filter(|repo| {
-                repo.find_remote("origin").map_or(false, |remote| {
+                repo.find_remote("origin").is_ok_and(|remote| {
                     remote
                         .url(DIR)
-                        .map_or(false, |remote_url| remote_url.to_bstring() == url)
+                        .is_some_and(|remote_url| remote_url.to_bstring() == url)
                 })
             })
             .or_else(|| gix::open_opts(&path, open_with_complete_config).ok());
@@ -157,18 +157,28 @@ impl Repository {
 
                 let (mut prep_checkout, out) = gix::prepare_clone(url, path)
                     .map_err(|err| {
-                        format_err!(ErrorKind::Repo, "failed to prepare clone: {}", err)
+                        Error::with_source(
+                            ErrorKind::Repo,
+                            "failed to prepare clone".to_owned(),
+                            err,
+                        )
                     })?
                     .with_remote_name("origin")
-                    .map_err(|err| format_err!(ErrorKind::Repo, "invalid remote name: {}", err))?
+                    .map_err(|err| {
+                        Error::with_source(ErrorKind::Repo, "invalid remote name".to_owned(), err)
+                    })?
                     .configure_remote(|remote| Ok(remote.with_refspecs([REF_SPEC], DIR)?))
                     .fetch_then_checkout(&mut progress, should_interrupt)
-                    .map_err(|err| format_err!(ErrorKind::Repo, "failed to fetch repo: {}", err))?;
+                    .map_err(|err| Error::with_source(ErrorKind::Repo, err.to_string(), err))?;
 
                 let repo = prep_checkout
                     .main_worktree(&mut progress, should_interrupt)
                     .map_err(|err| {
-                        format_err!(ErrorKind::Repo, "failed to checkout fresh clone: {}", err)
+                        Error::with_source(
+                            ErrorKind::Repo,
+                            "failed to checkout fresh clone".to_owned(),
+                            err,
+                        )
                     })?
                     .0;
 
@@ -194,7 +204,7 @@ impl Repository {
             Self::perform_fetch(&mut repo)?;
         }
 
-        repo.object_cache_size_if_unset(4 * 1024 * 1024);
+        repo.object_cache_size_if_unset(OBJECT_CACHE_SIZE);
         let repo = Self { repo };
 
         let latest_commit = Commit::from_repo_head(&repo)?;
@@ -215,14 +225,15 @@ impl Repository {
     /// Open a repository at the given path
     pub fn open<P: Into<PathBuf>>(into_path: P) -> Result<Self, Error> {
         let path = into_path.into();
-        let repo = gix::open(&path).map_err(|err| {
-            format_err!(
+        let mut repo = gix::open(&path).map_err(|err| {
+            Error::with_source(
                 ErrorKind::Repo,
-                "failed to open repository at '{}': {}",
-                path.display(),
-                err
+                format!("failed to open repository at '{}'", path.display()),
+                err,
             )
         })?;
+
+        repo.object_cache_size_if_unset(OBJECT_CACHE_SIZE);
 
         // TODO: Figure out how to detect if the worktree has modifications
         // as gix currently doesn't have a status/state summary like git2 has
@@ -237,7 +248,7 @@ impl Repository {
     /// Path to the local checkout of a git repository
     pub fn path(&self) -> &Path {
         // Safety: Would fail if this is a bare repo, which we aren't
-        self.repo.work_dir().unwrap()
+        self.repo.workdir().unwrap()
     }
 
     /// Determines if the tree pointed to by `HEAD` contains the specified path
@@ -248,7 +259,7 @@ impl Repository {
                 .ok()?
                 .tree()
                 .ok()?
-                .lookup_entry_by_path(path, &mut Vec::new())
+                .lookup_entry_by_path(path)
                 .ok()
                 .map(|_e| true)
         };
@@ -261,22 +272,34 @@ impl Repository {
         config
             .set_raw_value_by("committer", None, "name", "rustsec")
             .map_err(|err| {
-                format_err!(ErrorKind::Repo, "failed to set `committer.name`: {}", err)
+                Error::with_source(
+                    ErrorKind::Repo,
+                    "failed to set `committer.name`".to_owned(),
+                    err,
+                )
             })?;
         // Note we _have_ to set the email as well, but luckily gix does not actually
         // validate if it's a proper email or not :)
         config
             .set_raw_value_by("committer", None, "email", "")
             .map_err(|err| {
-                format_err!(ErrorKind::Repo, "failed to set `committer.email`: {}", err)
+                Error::with_source(
+                    ErrorKind::Repo,
+                    "failed to set `committer.email`".to_owned(),
+                    err,
+                )
             })?;
 
-        let repo = config
-            .commit_auto_rollback()
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to set `committer`: {}", err))?;
+        let repo = config.commit_auto_rollback().map_err(|err| {
+            Error::with_source(ErrorKind::Repo, "failed to set `committer`".to_owned(), err)
+        })?;
 
         let mut remote = repo.find_remote("origin").map_err(|err| {
-            format_err!(ErrorKind::Repo, "failed to find `origin` remote: {}", err)
+            Error::with_source(
+                ErrorKind::Repo,
+                "failed to find `origin` remote".to_owned(),
+                err,
+            )
         })?;
 
         remote
@@ -286,16 +309,26 @@ impl Repository {
         // Perform the actual fetch
         let outcome = remote
             .connect(DIR)
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to connect to remote: {}", err))?
+            .map_err(|err| {
+                Error::with_source(
+                    ErrorKind::Repo,
+                    "failed to connect to remote".to_owned(),
+                    err,
+                )
+            })?
             .prepare_fetch(&mut gix::progress::Discard, Default::default())
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to prepare fetch: {}", err))?
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "failed to prepare fetch".to_owned(), err)
+            })?
             .receive(&mut gix::progress::Discard, &gix::interrupt::IS_INTERRUPTED)
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to fetch: {}", err))?;
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "failed to fetch".to_owned(), err)
+            })?;
 
         let remote_head_id = tame_index::utils::git::write_fetch_head(&repo, &outcome, &remote)
             .map_err(Error::from_tame)?;
 
-        use gix::refs::{transaction as tx, Target};
+        use gix::refs::{Target, transaction as tx};
 
         // In all (hopefully?) cases HEAD is a symbolic reference to
         // refs/heads/<branch> which is a peeled commit id, if that's the case
@@ -304,7 +337,9 @@ impl Repository {
         use gix::head::Kind;
         let edit = match repo
             .head()
-            .map_err(|err| format_err!(ErrorKind::Repo, "unable to locate HEAD: {}", err))?
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "unable to locate HEAD".to_owned(), err)
+            })?
             .kind
         {
             Kind::Symbolic(sref) => {
@@ -344,9 +379,16 @@ impl Repository {
             deref: true,
         });
 
-        repo.edit_reference(edit)
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to set update reflog: {}", err))?;
+        repo.edit_reference(edit).map_err(|err| {
+            Error::with_source(
+                ErrorKind::Repo,
+                "failed to set update reflog".to_owned(),
+                err,
+            )
+        })?;
 
         Ok(())
     }
 }
+
+const OBJECT_CACHE_SIZE: usize = 4 * 1024 * 1024;

@@ -4,7 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(_WIN32)
-#include <ring-core/arm_arch.h>
 #if __ARM_MAX_ARCH__ >= 8
 
 .arch	armv8-a+crypto

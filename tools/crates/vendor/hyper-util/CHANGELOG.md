@@ -1,3 +1,65 @@
+# 0.1.19 (2025-12-03)
+
+- Add `client::pool` module for composable pools. Enable with the `client-pool` feature.
+- Add `pool::singleton` for sharing a single cloneable connection.
+- Add `pool::cache` for caching a list of connections.
+- Add `pool::negotiate` for combining two pools with upgrade and fallback negotiation.
+- Add `pool::map` for customizable mapping of keys and connections.
+
+# 0.1.18 (2025-11-13)
+
+- Fix `rt::TokioTimer` to support Tokio's paused time.
+- Fix `client::proxy::match::Matcher` to parse auth without passwords.
+
+# 0.1.17 (2025-09-15)
+
+- Fix `legacy::Client` to allow absolute-form URIs when `Connected::proxy(true)` is passed and the scheme is `https`.
+
+# 0.1.16 (2025-07-22)
+
+- Add `impl Clone` for `proxy::Tunnel` service.
+- Fix `proxy::Matcher` to detect SOCKS4 schemes.
+- Fix `legacy::Client` pool idle checker to trigger less aggresively, saving CPU.
+
+# 0.1.15 (2025-07-07)
+
+- Add header casing options to `auto::Builder`.
+- Fix `proxy::Socksv5` to check for enough bytes before parsing ipv6 responses.
+- Fix including `client-proxy` in the `full` feature set.
+
+# 0.1.14 (2025-06-04)
+
+- Fix `HttpConnector` to defer address family order to resolver sort order.
+- Fix `proxy::Matcher` to find HTTPS system proxies on Windows.
+
+# 0.1.13 (2025-05-27)
+
+- Fix `HttpConnector` to always prefer IPv6 addresses first, if happy eyeballs is enabled.
+- Fix `legacy::Client` to return better errors if available on the connection.
+
+# 0.1.12 (2025-05-19)
+
+- Add `client::legacy::proxy::Tunnel` connector that wraps another connector with HTTP tunneling.
+- Add `client::legacy::proxy::{SocksV4, SocksV5}` connectors that wraps another connector with SOCKS.
+- Add `client::proxy::matcher::Matcher` type that can use environment variables to match proxy rules.
+- Add `server::graceful::Watcher` type that can be sent to watch a connection in another task.
+- Add `GracefulShutdown::count()` method to get number of currently watched connections.
+- Fix missing `must_use` attributes on `Connection` futures.
+- Fix tracing span in GAI resolver that can cause panics.
+
+
+# 0.1.11 (2025-03-31)
+
+- Add `tracing` crate feature with support in `TokioExecutor`.
+- Add `HttpConnector::interface()` support for macOS and Solarish systems.
+- Add `rt::WithHyperIo` and `rt::WithTokioIo` combinators.
+- Add `auto_date_header()` for auto server builder.
+- Add `max_local_error_reset_streams()` for auto server builder.
+- Add `ignore_invalid_headers()` for auto server builder.
+- Add methods to determine if auto server is configured for HTTP/1 or HTTP/2.
+- Implement `Connection` for `UnixStream` and `NamedPipeClient`.
+- Fix HTTP/2 websocket requests sent through `legacy::Client`.
+
 # 0.1.10 (2024-10-28)
 
 - Add `http2_max_header_list_size(num)` option to legacy client builder.

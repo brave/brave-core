@@ -6,8 +6,8 @@ use std::{
     net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6},
     os::unix::io::AsRawFd,
     sync::{
-        atomic::{AtomicBool, AtomicUsize, Ordering},
         Mutex,
+        atomic::{AtomicBool, AtomicUsize, Ordering},
     },
     time::Instant,
 };
@@ -15,7 +15,7 @@ use std::{
 use socket2::SockRef;
 
 use super::{
-    cmsg, log_sendmsg_error, EcnCodepoint, RecvMeta, Transmit, UdpSockRef, IO_ERROR_LOG_INTERVAL,
+    EcnCodepoint, IO_ERROR_LOG_INTERVAL, RecvMeta, Transmit, UdpSockRef, cmsg, log_sendmsg_error,
 };
 
 // Adapted from https://github.com/apple-oss-distributions/xnu/blob/8d741a5de7ff4191bf97d57b9f54c2f6d4a15585/bsd/sys/socket_private.h
@@ -208,6 +208,9 @@ impl UdpSocketState {
         match send(self, socket.0, transmit) {
             Ok(()) => Ok(()),
             Err(e) if e.kind() == io::ErrorKind::WouldBlock => Err(e),
+            // - EMSGSIZE is expected for MTU probes. Future work might be able to avoid
+            //   these by automatically clamping the MTUD upper bound to the interface MTU.
+            Err(e) if e.raw_os_error() == Some(libc::EMSGSIZE) => Ok(()),
             Err(e) => {
                 log_sendmsg_error(&self.last_send_error, e, transmit);
 
@@ -247,6 +250,30 @@ impl UdpSocketState {
     #[inline]
     pub fn gro_segments(&self) -> usize {
         self.gro_segments
+    }
+
+    /// Resize the send buffer of `socket` to `bytes`
+    #[inline]
+    pub fn set_send_buffer_size(&self, socket: UdpSockRef<'_>, bytes: usize) -> io::Result<()> {
+        socket.0.set_send_buffer_size(bytes)
+    }
+
+    /// Resize the receive buffer of `socket` to `bytes`
+    #[inline]
+    pub fn set_recv_buffer_size(&self, socket: UdpSockRef<'_>, bytes: usize) -> io::Result<()> {
+        socket.0.set_recv_buffer_size(bytes)
+    }
+
+    /// Get the size of the `socket` send buffer
+    #[inline]
+    pub fn send_buffer_size(&self, socket: UdpSockRef<'_>) -> io::Result<usize> {
+        socket.0.send_buffer_size()
+    }
+
+    /// Get the size of the `socket` receive buffer
+    #[inline]
+    pub fn recv_buffer_size(&self, socket: UdpSockRef<'_>) -> io::Result<usize> {
+        socket.0.recv_buffer_size()
     }
 
     /// Whether transmitted datagrams might get fragmented by the IP layer
@@ -304,57 +331,53 @@ fn send(
 
     loop {
         let n = unsafe { libc::sendmsg(io.as_raw_fd(), &msg_hdr, 0) };
-        if n == -1 {
-            let e = io::Error::last_os_error();
-            match e.kind() {
-                io::ErrorKind::Interrupted => {
-                    // Retry the transmission
+
+        if n >= 0 {
+            return Ok(());
+        }
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry the transmission
+            io::ErrorKind::Interrupted => continue,
+            io::ErrorKind::WouldBlock => return Err(e),
+            _ => {
+                // Some network adapters and drivers do not support GSO. Unfortunately, Linux
+                // offers no easy way for us to detect this short of an EIO or sometimes EINVAL
+                // when we try to actually send datagrams using it.
+                #[cfg(any(target_os = "linux", target_os = "android"))]
+                if let Some(libc::EIO) | Some(libc::EINVAL) = e.raw_os_error() {
+                    // Prevent new transmits from being scheduled using GSO. Existing GSO transmits
+                    // may already be in the pipeline, so we need to tolerate additional failures.
+                    if state.max_gso_segments() > 1 {
+                        crate::log::info!(
+                            "`libc::sendmsg` failed with {e}; halting segmentation offload"
+                        );
+                        state
+                            .max_gso_segments
+                            .store(1, std::sync::atomic::Ordering::Relaxed);
+                    }
+                }
+
+                // Some arguments to `sendmsg` are not supported. Switch to
+                // fallback mode and retry if we haven't already.
+                if e.raw_os_error() == Some(libc::EINVAL) && !state.sendmsg_einval() {
+                    state.set_sendmsg_einval();
+                    prepare_msg(
+                        transmit,
+                        &dst_addr,
+                        &mut msg_hdr,
+                        &mut iovec,
+                        &mut cmsgs,
+                        encode_src_ip,
+                        state.sendmsg_einval(),
+                    );
                     continue;
                 }
-                io::ErrorKind::WouldBlock => return Err(e),
-                _ => {
-                    // Some network adapters and drivers do not support GSO. Unfortunately, Linux
-                    // offers no easy way for us to detect this short of an EIO or sometimes EINVAL
-                    // when we try to actually send datagrams using it.
-                    #[cfg(any(target_os = "linux", target_os = "android"))]
-                    if let Some(libc::EIO) | Some(libc::EINVAL) = e.raw_os_error() {
-                        // Prevent new transmits from being scheduled using GSO. Existing GSO transmits
-                        // may already be in the pipeline, so we need to tolerate additional failures.
-                        if state.max_gso_segments() > 1 {
-                            crate::log::info!(
-                                "`libc::sendmsg` failed with {e}; halting segmentation offload"
-                            );
-                            state
-                                .max_gso_segments
-                                .store(1, std::sync::atomic::Ordering::Relaxed);
-                        }
-                    }
 
-                    // Some arguments to `sendmsg` are not supported. Switch to
-                    // fallback mode and retry if we haven't already.
-                    if e.raw_os_error() == Some(libc::EINVAL) && !state.sendmsg_einval() {
-                        state.set_sendmsg_einval();
-                        prepare_msg(
-                            transmit,
-                            &dst_addr,
-                            &mut msg_hdr,
-                            &mut iovec,
-                            &mut cmsgs,
-                            encode_src_ip,
-                            state.sendmsg_einval(),
-                        );
-                        continue;
-                    }
-
-                    // - EMSGSIZE is expected for MTU probes. Future work might be able to avoid
-                    //   these by automatically clamping the MTUD upper bound to the interface MTU.
-                    if e.raw_os_error() != Some(libc::EMSGSIZE) {
-                        return Err(e);
-                    }
-                }
+                return Err(e);
             }
         }
-        return Ok(());
     }
 }
 
@@ -393,24 +416,17 @@ fn send(state: &UdpSocketState, io: SockRef<'_>, transmit: &Transmit<'_>) -> io:
     }
     loop {
         let n = unsafe { sendmsg_x(io.as_raw_fd(), hdrs.as_ptr(), cnt as u32, 0) };
-        if n == -1 {
-            let e = io::Error::last_os_error();
-            match e.kind() {
-                io::ErrorKind::Interrupted => {
-                    // Retry the transmission
-                    continue;
-                }
-                io::ErrorKind::WouldBlock => return Err(e),
-                _ => {
-                    // - EMSGSIZE is expected for MTU probes. Future work might be able to avoid
-                    //   these by automatically clamping the MTUD upper bound to the interface MTU.
-                    if e.raw_os_error() != Some(libc::EMSGSIZE) {
-                        return Err(e);
-                    }
-                }
-            }
+
+        if n >= 0 {
+            return Ok(());
         }
-        return Ok(());
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry the transmission
+            io::ErrorKind::Interrupted => continue,
+            _ => return Err(e),
+        }
     }
 }
 
@@ -431,24 +447,17 @@ fn send(state: &UdpSocketState, io: SockRef<'_>, transmit: &Transmit<'_>) -> io:
     );
     loop {
         let n = unsafe { libc::sendmsg(io.as_raw_fd(), &hdr, 0) };
-        if n == -1 {
-            let e = io::Error::last_os_error();
-            match e.kind() {
-                io::ErrorKind::Interrupted => {
-                    // Retry the transmission
-                    continue;
-                }
-                io::ErrorKind::WouldBlock => return Err(e),
-                _ => {
-                    // - EMSGSIZE is expected for MTU probes. Future work might be able to avoid
-                    //   these by automatically clamping the MTUD upper bound to the interface MTU.
-                    if e.raw_os_error() != Some(libc::EMSGSIZE) {
-                        return Err(e);
-                    }
-                }
-            }
+
+        if n >= 0 {
+            return Ok(());
         }
-        return Ok(());
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry the transmission
+            io::ErrorKind::Interrupted => continue,
+            _ => return Err(e),
+        }
     }
 }
 
@@ -476,14 +485,17 @@ fn recv(io: SockRef<'_>, bufs: &mut [IoSliceMut<'_>], meta: &mut [RecvMeta]) -> 
                 ptr::null_mut::<libc::timespec>(),
             )
         };
-        if n == -1 {
-            let e = io::Error::last_os_error();
-            if e.kind() == io::ErrorKind::Interrupted {
-                continue;
-            }
-            return Err(e);
+
+        if n >= 0 {
+            break n;
         }
-        break n;
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry receiving
+            io::ErrorKind::Interrupted => continue,
+            _ => return Err(e),
+        }
     };
     for i in 0..(msg_count as usize) {
         meta[i] = decode_recv(&names[i], &hdrs[i].msg_hdr, hdrs[i].msg_len as usize);
@@ -494,7 +506,13 @@ fn recv(io: SockRef<'_>, bufs: &mut [IoSliceMut<'_>], meta: &mut [RecvMeta]) -> 
 #[cfg(apple_fast)]
 fn recv(io: SockRef<'_>, bufs: &mut [IoSliceMut<'_>], meta: &mut [RecvMeta]) -> io::Result<usize> {
     let mut names = [MaybeUninit::<libc::sockaddr_storage>::uninit(); BATCH_SIZE];
-    let mut ctrls = [cmsg::Aligned(MaybeUninit::<[u8; CMSG_LEN]>::uninit()); BATCH_SIZE];
+    // MacOS 10.15 `recvmsg_x` does not override the `msghdr_x`
+    // `msg_controllen`. Thus, after the call to `recvmsg_x`, one does not know
+    // which control messages have been written to. To prevent reading
+    // uninitialized memory, do not use `MaybeUninit` for `ctrls`, instead
+    // initialize `ctrls` with `0`s. A control message of all `0`s is
+    // automatically skipped by `libc::CMSG_NXTHDR`.
+    let mut ctrls = [cmsg::Aligned([0u8; CMSG_LEN]); BATCH_SIZE];
     let mut hdrs = unsafe { mem::zeroed::<[msghdr_x; BATCH_SIZE]>() };
     let max_msg_count = bufs.len().min(BATCH_SIZE);
     for i in 0..max_msg_count {
@@ -502,15 +520,16 @@ fn recv(io: SockRef<'_>, bufs: &mut [IoSliceMut<'_>], meta: &mut [RecvMeta]) -> 
     }
     let msg_count = loop {
         let n = unsafe { recvmsg_x(io.as_raw_fd(), hdrs.as_mut_ptr(), max_msg_count as _, 0) };
-        match n {
-            -1 => {
-                let e = io::Error::last_os_error();
-                if e.kind() == io::ErrorKind::Interrupted {
-                    continue;
-                }
-                return Err(e);
-            }
-            n => break n,
+
+        if n >= 0 {
+            break n;
+        }
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry receiving
+            io::ErrorKind::Interrupted => continue,
+            _ => return Err(e),
         }
     };
     for i in 0..(msg_count as usize) {
@@ -527,17 +546,21 @@ fn recv(io: SockRef<'_>, bufs: &mut [IoSliceMut<'_>], meta: &mut [RecvMeta]) -> 
     prepare_recv(&mut bufs[0], &mut name, &mut ctrl, &mut hdr);
     let n = loop {
         let n = unsafe { libc::recvmsg(io.as_raw_fd(), &mut hdr, 0) };
-        if n == -1 {
-            let e = io::Error::last_os_error();
-            if e.kind() == io::ErrorKind::Interrupted {
-                continue;
-            }
-            return Err(e);
-        }
+
         if hdr.msg_flags & libc::MSG_TRUNC != 0 {
             continue;
         }
-        break n;
+
+        if n >= 0 {
+            break n;
+        }
+
+        let e = io::Error::last_os_error();
+        match e.kind() {
+            // Retry receiving
+            io::ErrorKind::Interrupted => continue,
+            _ => return Err(e),
+        }
     };
     meta[0] = decode_recv(&name, &hdr, n as usize);
     Ok(1)
@@ -589,11 +612,13 @@ fn prepare_msg(
         encoder.push(libc::IPPROTO_IPV6, libc::IPV6_TCLASS, ecn);
     }
 
-    // Only set the segment size if it is different from the size of the contents.
-    // Some network drivers don't like being told to do GSO even if there is effectively only a single segment.
+    // Only set the segment size if it is less than the size of the contents.
+    // Some network drivers don't like being told to do GSO even if there is effectively only a single segment (i.e. `segment_size == transmit.contents.len()`)
+    // Additionally, a `segment_size` that is greater than the content also means there is effectively only a single segment.
+    // This case is actually quite common when splitting up a prepared GSO batch again after GSO has been disabled because the last datagram in a GSO batch is allowed to be smaller than the segment size.
     if let Some(segment_size) = transmit
         .segment_size
-        .filter(|segment_size| *segment_size != transmit.contents.len())
+        .filter(|segment_size| *segment_size < transmit.contents.len())
     {
         gso::set_segment_size(&mut encoder, segment_size as u16);
     }
@@ -657,7 +682,7 @@ fn prepare_recv(
 fn prepare_recv(
     buf: &mut IoSliceMut,
     name: &mut MaybeUninit<libc::sockaddr_storage>,
-    ctrl: &mut cmsg::Aligned<MaybeUninit<[u8; CMSG_LEN]>>,
+    ctrl: &mut cmsg::Aligned<[u8; CMSG_LEN]>,
     hdr: &mut msghdr_x,
 ) {
     hdr.msg_name = name.as_mut_ptr() as _;
@@ -772,6 +797,7 @@ pub(crate) const BATCH_SIZE: usize = 1;
 #[cfg(any(target_os = "linux", target_os = "android"))]
 mod gso {
     use super::*;
+    use std::{ffi::CStr, mem, str::FromStr, sync::OnceLock};
 
     #[cfg(not(target_os = "android"))]
     const UDP_SEGMENT: libc::c_int = libc::UDP_SEGMENT;
@@ -779,10 +805,21 @@ mod gso {
     // TODO: Add this to libc
     const UDP_SEGMENT: libc::c_int = 103;
 
-    /// Checks whether GSO support is available by setting the UDP_SEGMENT
-    /// option on a socket
+    // Support for UDP GSO has been added to linux kernel in version 4.18
+    // https://github.com/torvalds/linux/commit/cb586c63e3fc5b227c51fd8c4cb40b34d3750645
+    const SUPPORTED_SINCE: KernelVersion = KernelVersion {
+        version: 4,
+        major_revision: 18,
+    };
+
+    /// Checks whether GSO support is available by checking the kernel version followed by setting
+    /// the UDP_SEGMENT option on a socket
     pub(crate) fn max_gso_segments() -> usize {
         const GSO_SIZE: libc::c_int = 1500;
+
+        if !SUPPORTED_BY_CURRENT_KERNEL.get_or_init(supported_by_current_kernel) {
+            return 1;
+        }
 
         let socket = match std::net::UdpSocket::bind("[::]:0")
             .or_else(|_| std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0)))
@@ -807,6 +844,116 @@ mod gso {
 
     pub(crate) fn set_segment_size(encoder: &mut cmsg::Encoder<libc::msghdr>, segment_size: u16) {
         encoder.push(libc::SOL_UDP, UDP_SEGMENT, segment_size);
+    }
+
+    // Avoid calling `supported_by_current_kernel` for each socket by using `OnceLock`.
+    static SUPPORTED_BY_CURRENT_KERNEL: OnceLock<bool> = OnceLock::new();
+
+    fn supported_by_current_kernel() -> bool {
+        let kernel_version_string = match kernel_version_string() {
+            Ok(kernel_version_string) => kernel_version_string,
+            Err(_e) => {
+                crate::log::warn!("GSO disabled: uname returned {_e}");
+                return false;
+            }
+        };
+
+        let Some(kernel_version) = KernelVersion::from_str(&kernel_version_string) else {
+            crate::log::warn!(
+                "GSO disabled: failed to parse kernel version ({kernel_version_string})"
+            );
+            return false;
+        };
+
+        if kernel_version < SUPPORTED_SINCE {
+            crate::log::info!("GSO disabled: kernel too old ({kernel_version_string}); need 4.18+",);
+            return false;
+        }
+
+        true
+    }
+
+    fn kernel_version_string() -> io::Result<String> {
+        let mut n = unsafe { mem::zeroed() };
+        let r = unsafe { libc::uname(&mut n) };
+        if r != 0 {
+            return Err(io::Error::last_os_error());
+        }
+        Ok(unsafe {
+            CStr::from_ptr(n.release[..].as_ptr())
+                .to_string_lossy()
+                .into_owned()
+        })
+    }
+
+    // https://www.linfo.org/kernel_version_numbering.html
+    #[derive(Eq, PartialEq, Ord, PartialOrd, Debug)]
+    struct KernelVersion {
+        version: u8,
+        major_revision: u8,
+    }
+
+    impl KernelVersion {
+        fn from_str(release: &str) -> Option<Self> {
+            let mut split = release
+                .split_once('-')
+                .map(|pair| pair.0)
+                .unwrap_or(release)
+                .split('.');
+
+            let version = u8::from_str(split.next()?).ok()?;
+            let major_revision = u8::from_str(split.next()?).ok()?;
+
+            Some(Self {
+                version,
+                major_revision,
+            })
+        }
+    }
+
+    #[cfg(test)]
+    mod test {
+        use super::*;
+
+        #[test]
+        fn parse_current_kernel_version_release_string() {
+            let release = kernel_version_string().unwrap();
+            KernelVersion::from_str(&release).unwrap();
+        }
+
+        #[test]
+        fn parse_kernel_version_release_string() {
+            // These are made up for the test
+            assert_eq!(
+                KernelVersion::from_str("4.14"),
+                Some(KernelVersion {
+                    version: 4,
+                    major_revision: 14
+                })
+            );
+            assert_eq!(
+                KernelVersion::from_str("4.18"),
+                Some(KernelVersion {
+                    version: 4,
+                    major_revision: 18
+                })
+            );
+            // These were seen in the wild
+            assert_eq!(
+                KernelVersion::from_str("4.14.186-27095505"),
+                Some(KernelVersion {
+                    version: 4,
+                    major_revision: 14
+                })
+            );
+            assert_eq!(
+                KernelVersion::from_str("6.8.0-59-generic"),
+                Some(KernelVersion {
+                    version: 6,
+                    major_revision: 8
+                })
+            );
+        }
     }
 }
 
@@ -871,7 +1018,7 @@ mod gro {
 /// Returns whether the given socket option is supported on the current platform
 ///
 /// Yields `Ok(true)` if the option was set successfully, `Ok(false)` if setting
-/// the option raised an `ENOPROTOOPT` error, and `Err` for any other error.
+/// the option raised an `ENOPROTOOPT` or `EOPNOTSUPP` error, and `Err` for any other error.
 fn set_socket_option_supported(
     socket: &impl AsRawFd,
     level: libc::c_int,
@@ -881,6 +1028,7 @@ fn set_socket_option_supported(
     match set_socket_option(socket, level, name, value) {
         Ok(()) => Ok(true),
         Err(err) if err.raw_os_error() == Some(libc::ENOPROTOOPT) => Ok(false),
+        Err(err) if err.raw_os_error() == Some(libc::EOPNOTSUPP) => Ok(false),
         Err(err) => Err(err),
     }
 }

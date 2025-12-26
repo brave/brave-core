@@ -1,47 +1,57 @@
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 use crate::backend::c;
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
+use crate::time::Itimerspec;
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[cfg(fix_y2038)]
 use crate::timespec::LibcTimespec;
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
-#[cfg(fix_y2038)]
-use crate::timespec::Timespec;
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 use bitflags::bitflags;
 
-/// `struct itimerspec` for use with [`timerfd_gettime`] and
-/// [`timerfd_settime`].
-///
-/// [`timerfd_gettime`]: crate::time::timerfd_gettime
-/// [`timerfd_settime`]: crate::time::timerfd_settime
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
-#[cfg(not(fix_y2038))]
-pub type Itimerspec = c::itimerspec;
-
-/// `struct itimerspec` for use with [`timerfd_gettime`] and
-/// [`timerfd_settime`].
-///
-/// [`timerfd_gettime`]: crate::time::timerfd_gettime
-/// [`timerfd_settime`]: crate::time::timerfd_settime
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
-#[cfg(fix_y2038)]
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct Itimerspec {
-    /// The interval of an interval timer.
-    pub it_interval: Timespec,
-    /// Time remaining in the current interval.
-    pub it_value: Timespec,
-}
-
 /// On most platforms, `LibcItimerspec` is just `Itimerspec`.
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[cfg(not(fix_y2038))]
 pub(crate) type LibcItimerspec = Itimerspec;
 
 /// On 32-bit glibc platforms, `LibcTimespec` differs from `Timespec`, so we
 /// define our own struct, with bidirectional `From` impls.
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[cfg(fix_y2038)]
 #[repr(C)]
 #[derive(Debug, Clone)]
@@ -50,7 +60,13 @@ pub(crate) struct LibcItimerspec {
     pub it_value: LibcTimespec,
 }
 
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[cfg(fix_y2038)]
 impl From<LibcItimerspec> for Itimerspec {
     #[inline]
@@ -62,7 +78,13 @@ impl From<LibcItimerspec> for Itimerspec {
     }
 }
 
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[cfg(fix_y2038)]
 impl From<Itimerspec> for LibcItimerspec {
     #[inline]
@@ -74,7 +96,47 @@ impl From<Itimerspec> for LibcItimerspec {
     }
 }
 
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
+#[cfg(not(fix_y2038))]
+pub(crate) fn as_libc_itimerspec_ptr(itimerspec: &Itimerspec) -> *const c::itimerspec {
+    #[cfg(test)]
+    {
+        assert_eq_size!(Itimerspec, c::itimerspec);
+    }
+    crate::utils::as_ptr(itimerspec).cast::<c::itimerspec>()
+}
+
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
+#[cfg(not(fix_y2038))]
+pub(crate) fn as_libc_itimerspec_mut_ptr(
+    itimerspec: &mut core::mem::MaybeUninit<Itimerspec>,
+) -> *mut c::itimerspec {
+    #[cfg(test)]
+    {
+        assert_eq_size!(Itimerspec, c::itimerspec);
+    }
+    itimerspec.as_mut_ptr().cast::<c::itimerspec>()
+}
+
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 bitflags! {
     /// `TFD_*` flags for use with [`timerfd_create`].
     ///
@@ -95,7 +157,13 @@ bitflags! {
     }
 }
 
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 bitflags! {
     /// `TFD_TIMER_*` flags for use with [`timerfd_settime`].
     ///
@@ -108,7 +176,7 @@ bitflags! {
         const ABSTIME = bitcast!(c::TFD_TIMER_ABSTIME);
 
         /// `TFD_TIMER_CANCEL_ON_SET`
-        #[cfg(linux_kernel)]
+        #[cfg(not(target_os = "fuchsia"))]
         #[doc(alias = "TFD_TIMER_CANCEL_ON_SET")]
         const CANCEL_ON_SET = bitcast!(c::TFD_TIMER_CANCEL_ON_SET);
 
@@ -120,7 +188,13 @@ bitflags! {
 /// `CLOCK_*` constants for use with [`timerfd_create`].
 ///
 /// [`timerfd_create`]: crate::time::timerfd_create
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
+#[cfg(any(
+    linux_kernel,
+    target_os = "freebsd",
+    target_os = "fuchsia",
+    target_os = "illumos",
+    target_os = "netbsd"
+))]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[repr(u32)]
 #[non_exhaustive]
@@ -150,6 +224,7 @@ pub enum TimerfdClockId {
     /// This clock is similar to `Monotonic`, but does advance while the system
     /// is suspended.
     #[doc(alias = "CLOCK_BOOTTIME")]
+    #[cfg(any(linux_kernel, target_os = "fuchsia", target_os = "openbsd"))]
     Boottime = bitcast!(c::CLOCK_BOOTTIME),
 
     /// `CLOCK_REALTIME_ALARM`—Like `Realtime`, but wakes a suspended system.
@@ -157,6 +232,7 @@ pub enum TimerfdClockId {
     /// This clock is like `Realtime`, but can wake up a suspended system.
     ///
     /// Use of this clock requires the `CAP_WAKE_ALARM` Linux capability.
+    #[cfg(linux_kernel)]
     #[doc(alias = "CLOCK_REALTIME_ALARM")]
     RealtimeAlarm = bitcast!(c::CLOCK_REALTIME_ALARM),
 
@@ -165,13 +241,26 @@ pub enum TimerfdClockId {
     /// This clock is like `Boottime`, but can wake up a suspended system.
     ///
     /// Use of this clock requires the `CAP_WAKE_ALARM` Linux capability.
+    #[cfg(any(linux_kernel, target_os = "cygwin", target_os = "fuchsia"))]
     #[doc(alias = "CLOCK_BOOTTIME_ALARM")]
     BoottimeAlarm = bitcast!(c::CLOCK_BOOTTIME_ALARM),
 }
 
-#[cfg(any(linux_kernel, target_os = "fuchsia"))]
-#[test]
-fn test_types() {
-    assert_eq_size!(TimerfdFlags, c::c_int);
-    assert_eq_size!(TimerfdTimerFlags, c::c_int);
+#[cfg(test)]
+mod tests {
+    #[allow(unused_imports)]
+    use super::*;
+
+    #[cfg(any(
+        linux_kernel,
+        target_os = "freebsd",
+        target_os = "fuchsia",
+        target_os = "illumos",
+        target_os = "netbsd"
+    ))]
+    #[test]
+    fn test_types() {
+        assert_eq_size!(TimerfdFlags, c::c_int);
+        assert_eq_size!(TimerfdTimerFlags, c::c_int);
+    }
 }

@@ -1,9 +1,7 @@
 //! libc syscalls supporting `rustix::process`.
 
-#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
-use super::types::RawCpuSet;
 use crate::backend::c;
-#[cfg(not(any(target_os = "wasi", target_os = "fuchsia")))]
+#[cfg(not(any(target_os = "fuchsia", target_os = "wasi")))]
 use crate::backend::conv::borrowed_fd;
 #[cfg(any(target_os = "linux", feature = "fs"))]
 use crate::backend::conv::c_str;
@@ -19,20 +17,28 @@ use crate::backend::conv::ret_discarded_char_ptr;
 use crate::backend::conv::ret_infallible;
 #[cfg(not(target_os = "wasi"))]
 use crate::backend::conv::ret_pid_t;
-#[cfg(linux_kernel)]
-use crate::backend::conv::ret_u32;
 #[cfg(all(feature = "alloc", not(target_os = "wasi")))]
 use crate::backend::conv::ret_usize;
 use crate::backend::conv::{ret, ret_c_int};
-#[cfg(not(any(target_os = "wasi", target_os = "fuchsia")))]
+#[cfg(not(any(target_os = "fuchsia", target_os = "wasi")))]
 use crate::fd::BorrowedFd;
 #[cfg(target_os = "linux")]
-use crate::fd::{AsRawFd, OwnedFd, RawFd};
+use crate::fd::{AsRawFd as _, OwnedFd, RawFd};
 #[cfg(any(target_os = "linux", feature = "fs"))]
 use crate::ffi::CStr;
 #[cfg(feature = "fs")]
 use crate::fs::Mode;
 use crate::io;
+#[cfg(not(any(
+    target_os = "emscripten",
+    target_os = "espidf",
+    target_os = "fuchsia",
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
+use crate::process::Flock;
 #[cfg(all(feature = "alloc", not(target_os = "wasi")))]
 use crate::process::Gid;
 #[cfg(not(target_os = "wasi"))]
@@ -46,39 +52,32 @@ use crate::process::Signal;
     target_os = "wasi"
 )))]
 use crate::process::Uid;
-#[cfg(linux_kernel)]
-use crate::process::{Cpuid, MembarrierCommand, MembarrierQuery};
 #[cfg(not(any(target_os = "espidf", target_os = "vita", target_os = "wasi")))]
 use crate::process::{RawPid, WaitOptions, WaitStatus};
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
 )))]
 use crate::process::{Resource, Rlimit};
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
-    target_os = "redox",
+    target_os = "horizon",
     target_os = "openbsd",
+    target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
-use crate::process::{WaitId, WaitidOptions, WaitidStatus};
+use crate::process::{WaitId, WaitIdOptions, WaitIdStatus};
 use core::mem::MaybeUninit;
 #[cfg(target_os = "linux")]
 use {
     super::super::conv::ret_owned_fd, crate::process::PidfdFlags, crate::process::PidfdGetfdFlags,
 };
-
-#[cfg(any(linux_kernel, target_os = "dragonfly"))]
-#[inline]
-pub(crate) fn sched_getcpu() -> usize {
-    let r = unsafe { libc::sched_getcpu() };
-    debug_assert!(r >= 0);
-    r as usize
-}
 
 #[cfg(feature = "fs")]
 #[cfg(not(target_os = "wasi"))]
@@ -101,57 +100,6 @@ pub(crate) fn chroot(path: &CStr) -> io::Result<()> {
 #[cfg(not(target_os = "wasi"))]
 pub(crate) fn getcwd(buf: &mut [MaybeUninit<u8>]) -> io::Result<()> {
     unsafe { ret_discarded_char_ptr(c::getcwd(buf.as_mut_ptr().cast(), buf.len())) }
-}
-
-// The `membarrier` syscall has a third argument, but it's only used when
-// the `flags` argument is `MEMBARRIER_CMD_FLAG_CPU`.
-#[cfg(linux_kernel)]
-syscall! {
-    fn membarrier_all(
-        cmd: c::c_int,
-        flags: c::c_uint
-    ) via SYS_membarrier -> c::c_int
-}
-
-#[cfg(linux_kernel)]
-pub(crate) fn membarrier_query() -> MembarrierQuery {
-    // glibc does not have a wrapper for `membarrier`; [the documentation]
-    // says to use `syscall`.
-    //
-    // [the documentation]: https://man7.org/linux/man-pages/man2/membarrier.2.html#NOTES
-    const MEMBARRIER_CMD_QUERY: u32 = 0;
-    unsafe {
-        match ret_u32(membarrier_all(MEMBARRIER_CMD_QUERY as i32, 0)) {
-            Ok(query) => MembarrierQuery::from_bits_retain(query),
-            Err(_) => MembarrierQuery::empty(),
-        }
-    }
-}
-
-#[cfg(linux_kernel)]
-pub(crate) fn membarrier(cmd: MembarrierCommand) -> io::Result<()> {
-    unsafe { ret(membarrier_all(cmd as i32, 0)) }
-}
-
-#[cfg(linux_kernel)]
-pub(crate) fn membarrier_cpu(cmd: MembarrierCommand, cpu: Cpuid) -> io::Result<()> {
-    const MEMBARRIER_CMD_FLAG_CPU: u32 = 1;
-
-    syscall! {
-        fn membarrier_cpu(
-            cmd: c::c_int,
-            flags: c::c_uint,
-            cpu_id: c::c_int
-        ) via SYS_membarrier -> c::c_int
-    }
-
-    unsafe {
-        ret(membarrier_cpu(
-            cmd as i32,
-            MEMBARRIER_CMD_FLAG_CPU,
-            bitcast!(cpu.as_raw()),
-        ))
-    }
 }
 
 #[cfg(not(target_os = "wasi"))]
@@ -189,37 +137,6 @@ pub(crate) fn getpgrp() -> Pid {
     }
 }
 
-#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
-#[inline]
-pub(crate) fn sched_getaffinity(pid: Option<Pid>, cpuset: &mut RawCpuSet) -> io::Result<()> {
-    unsafe {
-        ret(c::sched_getaffinity(
-            Pid::as_raw(pid) as _,
-            core::mem::size_of::<RawCpuSet>(),
-            cpuset,
-        ))
-    }
-}
-
-#[cfg(any(freebsdlike, linux_kernel, target_os = "fuchsia"))]
-#[inline]
-pub(crate) fn sched_setaffinity(pid: Option<Pid>, cpuset: &RawCpuSet) -> io::Result<()> {
-    unsafe {
-        ret(c::sched_setaffinity(
-            Pid::as_raw(pid) as _,
-            core::mem::size_of::<RawCpuSet>(),
-            cpuset,
-        ))
-    }
-}
-
-#[inline]
-pub(crate) fn sched_yield() {
-    unsafe {
-        let _ = c::sched_yield();
-    }
-}
-
 #[cfg(not(target_os = "wasi"))]
 #[cfg(feature = "fs")]
 #[inline]
@@ -242,6 +159,7 @@ pub(crate) fn nice(inc: i32) -> io::Result<i32> {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -259,6 +177,7 @@ pub(crate) fn getpriority_user(uid: Uid) -> io::Result<i32> {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -276,6 +195,7 @@ pub(crate) fn getpriority_pgrp(pgid: Option<Pid>) -> io::Result<i32> {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -293,6 +213,7 @@ pub(crate) fn getpriority_process(pid: Option<Pid>) -> io::Result<i32> {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -304,6 +225,7 @@ pub(crate) fn setpriority_user(uid: Uid, priority: i32) -> io::Result<()> {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -321,6 +243,7 @@ pub(crate) fn setpriority_pgrp(pgid: Option<Pid>, priority: i32) -> io::Result<(
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "vita",
     target_os = "wasi"
 )))]
@@ -338,6 +261,7 @@ pub(crate) fn setpriority_process(pid: Option<Pid>, priority: i32) -> io::Result
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -354,6 +278,7 @@ pub(crate) fn getrlimit(limit: Resource) -> Rlimit {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -384,6 +309,7 @@ pub(crate) fn prlimit(pid: Option<Pid>, limit: Resource, new: Rlimit) -> io::Res
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -406,6 +332,7 @@ fn rlimit_from_libc(lim: c::rlimit) -> Rlimit {
 #[cfg(not(any(
     target_os = "espidf",
     target_os = "fuchsia",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -458,14 +385,16 @@ pub(crate) fn _waitpid(
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
-    target_os = "redox",
+    target_os = "horizon",
     target_os = "openbsd",
+    target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
-pub(crate) fn waitid(id: WaitId<'_>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+pub(crate) fn waitid(id: WaitId<'_>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // Get the id to wait on.
     match id {
         WaitId::All => _waitid_all(options),
@@ -479,14 +408,16 @@ pub(crate) fn waitid(id: WaitId<'_>, options: WaitidOptions) -> io::Result<Optio
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
-    target_os = "redox",
+    target_os = "horizon",
     target_os = "openbsd",
+    target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
-fn _waitid_all(options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_all(options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -503,14 +434,16 @@ fn _waitid_all(options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
-    target_os = "redox",
+    target_os = "horizon",
     target_os = "openbsd",
+    target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
-fn _waitid_pid(pid: Pid, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pid(pid: Pid, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -527,14 +460,16 @@ fn _waitid_pid(pid: Pid, options: WaitidOptions) -> io::Result<Option<WaitidStat
 }
 
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
-    target_os = "redox",
+    target_os = "horizon",
     target_os = "openbsd",
+    target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
-fn _waitid_pgid(pgid: Option<Pid>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pgid(pgid: Option<Pid>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -552,7 +487,7 @@ fn _waitid_pgid(pgid: Option<Pid>, options: WaitidOptions) -> io::Result<Option<
 
 #[cfg(target_os = "linux")]
 #[inline]
-fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitidOptions) -> io::Result<Option<WaitidStatus>> {
+fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitIdOptions) -> io::Result<Option<WaitIdStatus>> {
     // `waitid` can return successfully without initializing the struct (no
     // children found when using `WNOHANG`)
     let mut status = MaybeUninit::<c::siginfo_t>::zeroed();
@@ -568,21 +503,23 @@ fn _waitid_pidfd(fd: BorrowedFd<'_>, options: WaitidOptions) -> io::Result<Optio
     Ok(unsafe { cvt_waitid_status(status) })
 }
 
-/// Convert a `siginfo_t` to a `WaitidStatus`.
+/// Convert a `siginfo_t` to a `WaitIdStatus`.
 ///
 /// # Safety
 ///
 /// The caller must ensure that `status` is initialized and that `waitid`
 /// returned successfully.
 #[cfg(not(any(
+    target_os = "cygwin",
     target_os = "espidf",
+    target_os = "horizon",
     target_os = "openbsd",
     target_os = "redox",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 #[inline]
-unsafe fn cvt_waitid_status(status: MaybeUninit<c::siginfo_t>) -> Option<WaitidStatus> {
+unsafe fn cvt_waitid_status(status: MaybeUninit<c::siginfo_t>) -> Option<WaitIdStatus> {
     let status = status.assume_init();
     // `si_pid` is supposedly the better way to check that the struct has been
     // filled, e.g. the Linux manual page says about the `WNOHANG` case “zero
@@ -594,7 +531,7 @@ unsafe fn cvt_waitid_status(status: MaybeUninit<c::siginfo_t>) -> Option<WaitidS
     if status.si_signo == 0 {
         None
     } else {
-        Some(WaitidStatus(status))
+        Some(WaitIdStatus(status))
     }
 }
 
@@ -619,7 +556,7 @@ pub(crate) fn setsid() -> io::Result<Pid> {
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
 #[inline]
 pub(crate) fn kill_process(pid: Pid, sig: Signal) -> io::Result<()> {
-    unsafe { ret(c::kill(pid.as_raw_nonzero().get(), sig as i32)) }
+    unsafe { ret(c::kill(pid.as_raw_nonzero().get(), sig.as_raw())) }
 }
 
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
@@ -628,7 +565,7 @@ pub(crate) fn kill_process_group(pid: Pid, sig: Signal) -> io::Result<()> {
     unsafe {
         ret(c::kill(
             pid.as_raw_nonzero().get().wrapping_neg(),
-            sig as i32,
+            sig.as_raw(),
         ))
     }
 }
@@ -636,7 +573,7 @@ pub(crate) fn kill_process_group(pid: Pid, sig: Signal) -> io::Result<()> {
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
 #[inline]
 pub(crate) fn kill_current_process_group(sig: Signal) -> io::Result<()> {
-    unsafe { ret(c::kill(0, sig as i32)) }
+    unsafe { ret(c::kill(0, sig.as_raw())) }
 }
 
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
@@ -696,7 +633,7 @@ pub(crate) fn pidfd_send_signal(pidfd: BorrowedFd<'_>, sig: Signal) -> io::Resul
     unsafe {
         ret(pidfd_send_signal(
             borrowed_fd(pidfd),
-            sig as c::c_int,
+            sig.as_raw(),
             core::ptr::null(),
             0,
         ))
@@ -741,4 +678,27 @@ pub(crate) fn getgroups(buf: &mut [Gid]) -> io::Result<usize> {
     let len = buf.len().try_into().map_err(|_| io::Errno::NOMEM)?;
 
     unsafe { ret_usize(c::getgroups(len, buf.as_mut_ptr().cast()) as isize) }
+}
+
+#[cfg(not(any(
+    target_os = "emscripten",
+    target_os = "espidf",
+    target_os = "fuchsia",
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
+#[inline]
+pub(crate) fn fcntl_getlk(fd: BorrowedFd<'_>, lock: &Flock) -> io::Result<Option<Flock>> {
+    let mut curr_lock: c::flock = lock.as_raw();
+    unsafe { ret(c::fcntl(borrowed_fd(fd), c::F_GETLK, &mut curr_lock))? };
+
+    // If no blocking lock is found, `fcntl(GETLK, ..)` sets `l_type` to
+    // `F_UNLCK`.
+    if curr_lock.l_type == c::F_UNLCK as _ {
+        Ok(None)
+    } else {
+        Ok(Some(unsafe { Flock::from_raw_unchecked(curr_lock) }))
+    }
 }

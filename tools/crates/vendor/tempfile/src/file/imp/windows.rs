@@ -46,13 +46,17 @@ pub fn create(dir: &Path) -> io::Result<File> {
         OsStr::new(""),
         crate::NUM_RAND_CHARS,
         |path| {
-            OpenOptions::new()
+            let f = OpenOptions::new()
                 .create_new(true)
                 .read(true)
                 .write(true)
                 .share_mode(0)
                 .custom_flags(FILE_ATTRIBUTE_TEMPORARY | FILE_FLAG_DELETE_ON_CLOSE)
-                .open(path)
+                .open(path)?;
+            // NOTE: in theory, we could delete the file immediately (we open the file in "unix
+            // semantics" mode) but this seemed to corrupt something in Windows at scale (see #339).
+            // So we just rely on `FILE_FLAG_DELETE_ON_CLOSE`.
+            Ok(f)
         },
     )
 }

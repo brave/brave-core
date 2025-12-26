@@ -52,7 +52,7 @@ pub use error::Error;
 impl<'repo> Remote<'repo> {
     /// Create a new connection using `transport` to communicate, with `progress` to indicate changes.
     ///
-    /// Note that this method expects the `transport` to be created by the user, which would involve the [`url()`][Self::url()].
+    /// Note that this method expects the `transport` to be created by the user, which would involve the [`url()`](Self::url()).
     /// It's meant to be used when async operation is needed with runtimes of the user's choice.
     pub fn to_connection_with_transport<T>(&self, transport: T) -> Connection<'_, 'repo, T>
     where
@@ -63,7 +63,8 @@ impl<'repo> Remote<'repo> {
             remote: self,
             authenticate: None,
             transport_options: None,
-            transport,
+            handshake: None,
+            transport: gix_protocol::SendFlushOnDrop::new(transport, trace),
             trace,
         }
     }

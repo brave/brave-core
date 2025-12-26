@@ -1,41 +1,35 @@
-// Copyright 2015-2023 Brian Smith.
+// Copyright 2015-2024 Brian Smith.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use super::{BoxedLimbs, Elem, PublicModulus, Unencoded, N0};
+use super::{
+    super::montgomery::Unencoded, unwrap_impossible_len_mismatch_error, BoxedLimbs, Elem,
+    OwnedModulusValue, PublicModulus, Storage, N0,
+};
 use crate::{
     bits::BitLength,
     cpu, error,
-    limb::{self, Limb, LimbMask, LIMB_BITS},
+    limb::{self, Limb, LIMB_BITS},
     polyfill::LeadingZerosStripped,
 };
 use core::marker::PhantomData;
-
-/// The x86 implementation of `bn_mul_mont`, at least, requires at least 4
-/// limbs. For a long time we have required 4 limbs for all targets, though
-/// this may be unnecessary. TODO: Replace this with
-/// `n.len() < 256 / LIMB_BITS` so that 32-bit and 64-bit platforms behave the
-/// same.
-pub const MODULUS_MIN_LIMBS: usize = 4;
-
-pub const MODULUS_MAX_LIMBS: usize = super::super::BIGINT_MODULUS_MAX_LIMBS;
 
 /// The modulus *m* for a ring ℤ/mℤ, along with the precomputed values needed
 /// for efficient Montgomery multiplication modulo *m*. The value must be odd
 /// and larger than 2. The larger-than-1 requirement is imposed, at least, by
 /// the modular inversion code.
 pub struct OwnedModulus<M> {
-    limbs: BoxedLimbs<M>, // Also `value >= 3`.
+    inner: OwnedModulusValue<M>,
 
     // n0 * N == -1 (mod r).
     //
@@ -73,36 +67,19 @@ pub struct OwnedModulus<M> {
     // ones that don't, we could use a shorter `R` value and use faster `Limb`
     // calculations instead of double-precision `u64` calculations.
     n0: N0,
-
-    len_bits: BitLength,
 }
 
 impl<M: PublicModulus> Clone for OwnedModulus<M> {
     fn clone(&self) -> Self {
         Self {
-            limbs: self.limbs.clone(),
+            inner: self.inner.clone(),
             n0: self.n0,
-            len_bits: self.len_bits,
         }
     }
 }
 
 impl<M> OwnedModulus<M> {
-    pub(crate) fn from_be_bytes(input: untrusted::Input) -> Result<Self, error::KeyRejected> {
-        let n = BoxedLimbs::positive_minimal_width_from_be_bytes(input)?;
-        if n.len() > MODULUS_MAX_LIMBS {
-            return Err(error::KeyRejected::too_large());
-        }
-        if n.len() < MODULUS_MIN_LIMBS {
-            return Err(error::KeyRejected::unexpected_error());
-        }
-        if limb::limbs_are_even_constant_time(&n) != LimbMask::False {
-            return Err(error::KeyRejected::invalid_component());
-        }
-        if limb::limbs_less_than_limb_constant_time(&n, 3) != LimbMask::False {
-            return Err(error::KeyRejected::unexpected_error());
-        }
-
+    pub(crate) fn from(n: OwnedModulusValue<M>) -> Self {
         // n_mod_r = n % r. As explained in the documentation for `n0`, this is
         // done by taking the lowest `N0::LIMBS_USED` limbs of `n`.
         #[allow(clippy::useless_conversion)]
@@ -112,63 +89,48 @@ impl<M> OwnedModulus<M> {
             }
 
             // XXX: u64::from isn't guaranteed to be constant time.
-            let mut n_mod_r: u64 = u64::from(n[0]);
+            let mut n_mod_r: u64 = u64::from(n.limbs()[0]);
 
             if N0::LIMBS_USED == 2 {
                 // XXX: If we use `<< LIMB_BITS` here then 64-bit builds
                 // fail to compile because of `deny(exceeding_bitshifts)`.
                 debug_assert_eq!(LIMB_BITS, 32);
-                n_mod_r |= u64::from(n[1]) << 32;
+                n_mod_r |= u64::from(n.limbs()[1]) << 32;
             }
             N0::precalculated(unsafe { bn_neg_inv_mod_r_u64(n_mod_r) })
         };
 
-        let len_bits = limb::limbs_minimal_bits(&n);
-
-        Ok(Self {
-            limbs: n,
-            n0,
-            len_bits,
-        })
-    }
-
-    pub fn verify_less_than<L>(&self, l: &Modulus<L>) -> Result<(), error::Unspecified> {
-        if self.len_bits() > l.len_bits()
-            || (self.limbs.len() == l.limbs().len()
-                && limb::limbs_less_than_limbs_consttime(&self.limbs, l.limbs()) != LimbMask::True)
-        {
-            return Err(error::Unspecified);
-        }
-        Ok(())
+        Self { inner: n, n0 }
     }
 
     pub fn to_elem<L>(&self, l: &Modulus<L>) -> Result<Elem<L, Unencoded>, error::Unspecified> {
-        self.verify_less_than(l)?;
-        let mut limbs = BoxedLimbs::zero(l.limbs.len());
-        limbs[..self.limbs.len()].copy_from_slice(&self.limbs);
+        self.inner.verify_less_than(l)?;
+        let mut limbs = BoxedLimbs::zero(l.limbs().len());
+        limbs[..self.inner.limbs().len()].copy_from_slice(self.inner.limbs());
         Ok(Elem {
             limbs,
             encoding: PhantomData,
         })
     }
+
     pub(crate) fn modulus(&self, cpu_features: cpu::Features) -> Modulus<M> {
         Modulus {
-            limbs: &self.limbs,
+            limbs: self.inner.limbs(),
             n0: self.n0,
-            len_bits: self.len_bits,
+            len_bits: self.len_bits(),
             m: PhantomData,
             cpu_features,
         }
     }
 
     pub fn len_bits(&self) -> BitLength {
-        self.len_bits
+        self.inner.len_bits()
     }
 }
 
 impl<M: PublicModulus> OwnedModulus<M> {
     pub fn be_bytes(&self) -> LeadingZerosStripped<impl ExactSizeIterator<Item = u8> + Clone + '_> {
-        LeadingZerosStripped::new(limb::unstripped_be_bytes(&self.limbs))
+        LeadingZerosStripped::new(limb::unstripped_be_bytes(self.inner.limbs()))
     }
 }
 
@@ -205,6 +167,7 @@ impl<M> Modulus<'_, M> {
             // to 2**r (mod m).
             for _ in 0..leading_zero_bits_in_m {
                 limb::limbs_double_mod(out, self.limbs)
+                    .unwrap_or_else(unwrap_impossible_len_mismatch_error);
             }
         }
 
@@ -212,10 +175,9 @@ impl<M> Modulus<'_, M> {
     }
 
     // TODO: XXX Avoid duplication with `Modulus`.
-    pub(super) fn zero<E>(&self) -> Elem<M, E> {
-        Elem {
+    pub fn alloc_zero(&self) -> Storage<M> {
+        Storage {
             limbs: BoxedLimbs::zero(self.limbs.len()),
-            encoding: PhantomData,
         }
     }
 

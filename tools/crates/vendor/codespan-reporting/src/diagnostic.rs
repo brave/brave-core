@@ -1,8 +1,13 @@
 //! Diagnostic data structures.
 
+use alloc::string::{String, ToString};
+use alloc::vec::Vec;
+
+use core::fmt::Display;
+use core::ops::Range;
+
 #[cfg(feature = "serialization")]
 use serde::{Deserialize, Serialize};
-use std::ops::Range;
 
 /// A severity level for diagnostic messages.
 ///
@@ -16,38 +21,19 @@ use std::ops::Range;
 /// assert!(Severity::Warning > Severity::Note);
 /// assert!(Severity::Note > Severity::Help);
 /// ```
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[derive(Copy, Clone, Hash, Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serialization", derive(Serialize, Deserialize))]
 pub enum Severity {
-    /// An unexpected bug.
-    Bug,
-    /// An error.
-    Error,
-    /// A warning.
-    Warning,
-    /// A note.
-    Note,
     /// A help message.
     Help,
-}
-
-impl Severity {
-    /// We want bugs to be the maximum severity, errors next, etc...
-    fn to_cmp_int(self) -> u8 {
-        match self {
-            Severity::Bug => 5,
-            Severity::Error => 4,
-            Severity::Warning => 3,
-            Severity::Note => 2,
-            Severity::Help => 1,
-        }
-    }
-}
-
-impl PartialOrd for Severity {
-    fn partial_cmp(&self, other: &Severity) -> Option<std::cmp::Ordering> {
-        u8::partial_cmp(&self.to_cmp_int(), &other.to_cmp_int())
-    }
+    /// A note.
+    Note,
+    /// A warning.
+    Warning,
+    /// An error.
+    Error,
+    /// An unexpected bug.
+    Bug,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd)]
@@ -104,8 +90,9 @@ impl<FileId> Label<FileId> {
     }
 
     /// Add a message to the diagnostic.
-    pub fn with_message(mut self, message: impl Into<String>) -> Label<FileId> {
-        self.message = message.into();
+    #[must_use]
+    pub fn with_message(mut self, message: impl Display) -> Label<FileId> {
+        self.message = message.to_string();
         self
     }
 }
@@ -151,6 +138,7 @@ impl<FileId> Diagnostic<FileId> {
     /// Create a new diagnostic with a severity of [`Severity::Bug`].
     ///
     /// [`Severity::Bug`]: Severity::Bug
+    #[must_use]
     pub fn bug() -> Diagnostic<FileId> {
         Diagnostic::new(Severity::Bug)
     }
@@ -158,6 +146,7 @@ impl<FileId> Diagnostic<FileId> {
     /// Create a new diagnostic with a severity of [`Severity::Error`].
     ///
     /// [`Severity::Error`]: Severity::Error
+    #[must_use]
     pub fn error() -> Diagnostic<FileId> {
         Diagnostic::new(Severity::Error)
     }
@@ -165,6 +154,7 @@ impl<FileId> Diagnostic<FileId> {
     /// Create a new diagnostic with a severity of [`Severity::Warning`].
     ///
     /// [`Severity::Warning`]: Severity::Warning
+    #[must_use]
     pub fn warning() -> Diagnostic<FileId> {
         Diagnostic::new(Severity::Warning)
     }
@@ -172,6 +162,7 @@ impl<FileId> Diagnostic<FileId> {
     /// Create a new diagnostic with a severity of [`Severity::Note`].
     ///
     /// [`Severity::Note`]: Severity::Note
+    #[must_use]
     pub fn note() -> Diagnostic<FileId> {
         Diagnostic::new(Severity::Note)
     }
@@ -179,31 +170,71 @@ impl<FileId> Diagnostic<FileId> {
     /// Create a new diagnostic with a severity of [`Severity::Help`].
     ///
     /// [`Severity::Help`]: Severity::Help
+    #[must_use]
     pub fn help() -> Diagnostic<FileId> {
         Diagnostic::new(Severity::Help)
     }
 
     /// Set the error code of the diagnostic.
-    pub fn with_code(mut self, code: impl Into<String>) -> Diagnostic<FileId> {
-        self.code = Some(code.into());
+    #[must_use]
+    pub fn with_code(mut self, code: impl Display) -> Diagnostic<FileId> {
+        self.code = Some(code.to_string());
         self
     }
 
     /// Set the message of the diagnostic.
-    pub fn with_message(mut self, message: impl Into<String>) -> Diagnostic<FileId> {
-        self.message = message.into();
+    #[must_use]
+    pub fn with_message(mut self, message: impl Display) -> Diagnostic<FileId> {
+        self.message = message.to_string();
+        self
+    }
+
+    /// Add a label to the diagnostic.
+    #[must_use]
+    pub fn with_label(mut self, label: Label<FileId>) -> Diagnostic<FileId> {
+        self.labels.push(label);
         self
     }
 
     /// Add some labels to the diagnostic.
+    #[must_use]
     pub fn with_labels(mut self, mut labels: Vec<Label<FileId>>) -> Diagnostic<FileId> {
         self.labels.append(&mut labels);
         self
     }
 
+    /// Add some labels to the diagnostic.
+    #[must_use]
+    pub fn with_labels_iter(
+        mut self,
+        labels: impl IntoIterator<Item = Label<FileId>>,
+    ) -> Diagnostic<FileId> {
+        self.labels.extend(labels);
+        self
+    }
+
+    /// Add a note to the diagnostic.
+    #[allow(clippy::needless_pass_by_value)]
+    #[must_use]
+    pub fn with_note(mut self, note: impl ToString) -> Diagnostic<FileId> {
+        self.notes.push(note.to_string());
+        self
+    }
+
     /// Add some notes to the diagnostic.
+    #[must_use]
     pub fn with_notes(mut self, mut notes: Vec<String>) -> Diagnostic<FileId> {
         self.notes.append(&mut notes);
+        self
+    }
+
+    /// Add some notes to the diagnostic.
+    #[must_use]
+    pub fn with_notes_iter(
+        mut self,
+        notes: impl IntoIterator<Item = String>,
+    ) -> Diagnostic<FileId> {
+        self.notes.extend(notes);
         self
     }
 }

@@ -1,7 +1,7 @@
 //! RustSec Vulnerability Categories
 
 use crate::error::Error;
-use serde::{de, ser, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de, ser};
 use std::{fmt, str::FromStr};
 
 /// RustSec Vulnerability Categories

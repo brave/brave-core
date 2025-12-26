@@ -38,7 +38,7 @@ use crate::Parser;
 #[cfg_attr(not(feature = "debug"), allow(unused_mut))]
 #[cfg_attr(not(feature = "debug"), inline(always))]
 pub fn trace<I: Stream, O, E: ParserError<I>>(
-    name: impl crate::lib::std::fmt::Display,
+    name: impl core::fmt::Display,
     parser: impl Parser<I, O, E>,
 ) -> impl Parser<I, O, E> {
     #[cfg(feature = "debug")]
@@ -53,7 +53,7 @@ pub fn trace<I: Stream, O, E: ParserError<I>>(
 
 #[cfg_attr(not(feature = "debug"), allow(unused_variables))]
 pub(crate) fn trace_result<T, I: Stream, E: ParserError<I>>(
-    name: impl crate::lib::std::fmt::Display,
+    name: impl core::fmt::Display,
     res: &Result<T, E>,
 ) {
     #[cfg(feature = "debug")]
@@ -66,8 +66,8 @@ pub(crate) fn trace_result<T, I: Stream, E: ParserError<I>>(
 
 pub(crate) struct DisplayDebug<D>(pub(crate) D);
 
-impl<D: crate::lib::std::fmt::Debug> crate::lib::std::fmt::Display for DisplayDebug<D> {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl<D: core::fmt::Debug> core::fmt::Display for DisplayDebug<D> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{:?}", self.0)
     }
 }

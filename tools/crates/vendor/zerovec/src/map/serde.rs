@@ -72,7 +72,7 @@ where
     K: ZeroMapKV<'a> + ?Sized + Ord,
     V: ZeroMapKV<'a> + ?Sized,
 {
-    #[allow(clippy::type_complexity)] // it's a marker type, complexity doesn't matter
+    #[expect(clippy::type_complexity)] // it's a marker type, complexity doesn't matter
     marker: PhantomData<fn() -> (&'a K::OwnedType, &'a V::OwnedType)>,
 }
 
@@ -236,12 +236,20 @@ mod test {
     use crate::{map::ZeroMapBorrowed, ZeroMap};
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[expect(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_ZeroMap<'data> {
         #[serde(borrow)]
         _data: ZeroMap<'data, str, [u8]>,
     }
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[expect(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_ZeroMapBorrowed<'data> {
         #[serde(borrow)]
         _data: ZeroMapBorrowed<'data, str, [u8]>,
@@ -249,8 +257,8 @@ mod test {
 
     const JSON_STR: &str = "{\"1\":\"uno\",\"2\":\"dos\",\"3\":\"tres\"}";
     const BINCODE_BYTES: &[u8] = &[
-        12, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 3, 0,
-        0, 0, 0, 0, 3, 0, 6, 0, 117, 110, 111, 100, 111, 115, 116, 114, 101, 115,
+        12, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 3, 0,
+        3, 0, 6, 0, 117, 110, 111, 100, 111, 115, 116, 114, 101, 115,
     ];
 
     fn make_map() -> ZeroMap<'static, u32, str> {

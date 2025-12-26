@@ -1,7 +1,7 @@
 use crate::backend;
 use crate::fs::Dev;
 
-/// `makedev(maj, min)`
+/// `makedev(maj, min)`—Compute a device ID from a given major and minor ID.
 ///
 /// # References
 ///  - [Linux]
@@ -12,7 +12,7 @@ pub fn makedev(maj: u32, min: u32) -> Dev {
     backend::fs::makedev::makedev(maj, min)
 }
 
-/// `minor(dev)`
+/// `minor(dev)`—Compute the minor ID of a given device ID.
 ///
 /// # References
 ///  - [Linux]
@@ -23,7 +23,7 @@ pub fn minor(dev: Dev) -> u32 {
     backend::fs::makedev::minor(dev)
 }
 
-/// `major(dev)`
+/// `major(dev)`—Compute the major ID of a given device ID.
 ///
 /// # References
 ///  - [Linux]

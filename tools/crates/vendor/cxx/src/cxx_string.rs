@@ -163,7 +163,7 @@ impl CxxString {
     /// sequences with the U+FFFD [replacement character] and returns a
     /// Cow::Owned String.
     ///
-    /// [replacement character]: https://doc.rust-lang.org/std/char/constant.REPLACEMENT_CHARACTER.html
+    /// [replacement character]: char::REPLACEMENT_CHARACTER
     #[cfg(feature = "alloc")]
     #[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
     pub fn to_string_lossy(&self) -> Cow<str> {
@@ -188,8 +188,8 @@ impl CxxString {
     /// Ensures that this string's capacity is at least `additional` bytes
     /// larger than its length.
     ///
-    /// The capacity may be increased by more than `additional` bytes if it
-    /// chooses, to amortize the cost of frequent reallocations.
+    /// The capacity may be increased by more than `additional` bytes if the
+    /// implementation chooses, to amortize the cost of frequent reallocations.
     ///
     /// **The meaning of the argument is not the same as
     /// [std::string::reserve][reserve] in C++.** The C++ standard library and
@@ -301,7 +301,6 @@ pub struct StackString {
     space: MaybeUninit<[usize; 8]>,
 }
 
-#[allow(missing_docs)]
 impl StackString {
     pub fn new() -> Self {
         StackString {

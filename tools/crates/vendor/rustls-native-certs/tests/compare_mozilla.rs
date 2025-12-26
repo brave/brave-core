@@ -26,7 +26,7 @@ fn stringify_x500name(subject: &Der<'_>) -> String {
 
         let mut pair = untrusted::Reader::new(pair);
         let oid = der::expect_tag_and_get_value(&mut pair, der::Tag::OID).unwrap();
-        let (valuety, value) = der::read_tag_and_get_value(&mut pair).unwrap();
+        let (value_ty, value) = der::read_tag_and_get_value(&mut pair).unwrap();
 
         let name = match oid.as_slice_less_safe() {
             [0x55, 0x04, 0x03] => "CN",
@@ -41,16 +41,16 @@ fn stringify_x500name(subject: &Der<'_>) -> String {
             [0x55, 0x04, 0x61] => "organizationIdentifier",
             [0x09, 0x92, 0x26, 0x89, 0x93, 0xf2, 0x2c, 0x64, 0x01, 0x19] => "domainComponent",
             [0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x09, 0x01] => "emailAddress",
-            _ => panic!("unhandled x500 attr {:?}", oid),
+            _ => panic!("unhandled x500 attr {oid:?}"),
         };
 
-        let str_value = match valuety {
+        let str_value = match value_ty {
             // PrintableString, UTF8String, TeletexString or IA5String
             0x0c | 0x13 | 0x14 | 0x16 => std::str::from_utf8(value.as_slice_less_safe()).unwrap(),
-            _ => panic!("unhandled x500 value type {:?}", valuety),
+            _ => panic!("unhandled x500 value type {value_ty:?}"),
         };
 
-        parts.push(format!("{}={}", name, str_value));
+        parts.push(format!("{name}={str_value}"));
     }
 
     parts.join(", ")
@@ -90,8 +90,7 @@ fn test_does_not_have_many_roots_unknown_by_mozilla() {
     println!("mozilla: {:?}", mozilla.len());
     println!("native: {:?}", native.certs.len());
     println!(
-        "{:?} anchors present in native set but not mozilla ({}%)",
-        missing_in_moz_roots,
+        "{missing_in_moz_roots:?} anchors present in native set but not mozilla ({}%)",
         diff * 100.
     );
     assert!(diff < threshold, "too many unknown roots");
@@ -131,8 +130,7 @@ fn test_contains_most_roots_known_by_mozilla() {
     println!("mozilla: {:?}", mozilla.len());
     println!("native: {:?}", native.certs.len());
     println!(
-        "{:?} anchors present in mozilla set but not native ({}%)",
-        missing_in_native_roots,
+        "{missing_in_native_roots:?} anchors present in mozilla set but not native ({}%)",
         diff * 100.
     );
     assert!(diff < threshold, "too many missing roots");

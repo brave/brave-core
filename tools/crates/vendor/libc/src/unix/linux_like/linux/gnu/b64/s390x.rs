@@ -1,12 +1,13 @@
 //! s390x
 
 use crate::prelude::*;
-use crate::{off64_t, off_t, pthread_mutex_t};
+use crate::{
+    off64_t,
+    off_t,
+    pthread_mutex_t,
+};
 
 pub type blksize_t = i64;
-pub type c_char = u8;
-pub type c_long = i64;
-pub type c_ulong = u64;
 pub type nlink_t = u64;
 pub type suseconds_t = i64;
 pub type wchar_t = i32;
@@ -15,6 +16,8 @@ pub type __u64 = u64;
 pub type __s64 = i64;
 
 s! {
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         __glibc_reserved0: c_int,
@@ -58,8 +61,8 @@ s! {
         pub si_signo: c_int,
         pub si_errno: c_int,
         pub si_code: c_int,
-        _pad: c_int,
-        _pad2: [c_long; 14],
+        _pad: Padding<c_int>,
+        _pad2: Padding<[c_long; 14]>,
     }
 
     pub struct stack_t {
@@ -75,7 +78,7 @@ s! {
         pub st_mode: crate::mode_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        st_pad0: c_int,
+        st_pad0: Padding<c_int>,
         pub st_rdev: crate::dev_t,
         pub st_size: off_t,
         pub st_atime: crate::time_t,
@@ -96,7 +99,7 @@ s! {
         pub st_mode: crate::mode_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        st_pad0: c_int,
+        st_pad0: Padding<c_int>,
         pub st_rdev: crate::dev_t,
         pub st_size: off_t,
         pub st_atime: crate::time_t,
@@ -122,9 +125,9 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
         pub __seq: c_ushort,
-        __pad1: c_ushort,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __pad1: Padding<c_ushort>,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     pub struct shmid_ds {
@@ -136,8 +139,8 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __unused4: c_ulong,
-        __unused5: c_ulong,
+        __unused4: Padding<c_ulong>,
+        __unused5: Padding<c_ulong>,
     }
 
     pub struct statvfs {
@@ -162,7 +165,7 @@ s! {
 
     pub struct fpregset_t {
         pub fpc: u32,
-        __pad: u32,
+        __pad: Padding<u32>,
         pub fprs: [fpreg_t; 16],
     }
 
@@ -213,7 +216,7 @@ s! {
 }
 
 s_no_extra_traits! {
-    // FIXME: This is actually a union.
+    // FIXME(union): This is actually a union.
     pub struct fpreg_t {
         pub d: c_double,
         // f: c_float,
@@ -230,15 +233,9 @@ cfg_if! {
 
         impl Eq for fpreg_t {}
 
-        impl fmt::Debug for fpreg_t {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("fpreg_t").field("d", &self.d).finish()
-            }
-        }
-
         impl hash::Hash for fpreg_t {
             fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                let d: u64 = unsafe { mem::transmute(self.d) };
+                let d: u64 = self.d.to_bits();
                 d.hash(state);
             }
         }
@@ -680,9 +677,11 @@ pub const SYS_uname: c_long = 122;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 127;
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 130;
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
@@ -713,6 +712,7 @@ pub const SYS_sched_get_priority_min: c_long = 160;
 pub const SYS_sched_rr_get_interval: c_long = 161;
 pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 167;
 pub const SYS_poll: c_long = 168;
 pub const SYS_nfsservctl: c_long = 169;

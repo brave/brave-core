@@ -40,3 +40,7 @@ By default, `idna` uses [ICU4X](https://github.com/unicode-org/icu4x/) as its Un
 * The `Idna::to_ascii_inner` method has been removed. It didn't make sense as a public method, since callers were unable to figure out if there were errors. (A GitHub search found no callers for this method.)
 * Punycode labels whose decoding does not yield any non-ASCII characters are now treated as being in error.
 * When turning off default cargo features, the cargo feature `compiled_data` needs to be explicitly enabled.
+
+## License
+
+MIT OR Apache-2.0 for the code. Additionally, there is a test data file, IdnaTestV2.txt, under Unicode-3.0.

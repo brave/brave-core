@@ -1,11 +1,7 @@
 use crate::prelude::*;
 
 pub type clock_t = c_ulong;
-pub type c_char = u8;
 pub type wchar_t = u32;
-
-pub type c_long = i32;
-pub type c_ulong = u32;
 
 s! {
     pub struct cmsghdr {
@@ -121,4 +117,8 @@ extern "C" {
     pub fn eventfd(initval: c_uint, flags: c_int) -> c_int;
 }
 
-pub use crate::unix::newlib::generic::{dirent, sigset_t, stat};
+pub use crate::unix::newlib::generic::{
+    dirent,
+    sigset_t,
+    stat,
+};

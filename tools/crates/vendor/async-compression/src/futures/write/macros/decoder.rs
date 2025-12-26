@@ -4,12 +4,32 @@ macro_rules! decoder {
             $(#[$attr])*
             ///
             /// This structure implements an [`AsyncWrite`](futures_io::AsyncWrite) interface and will
-            /// take in compressed data and write it uncompressed to an underlying stream.
+            /// take in compressed data and write it, uncompressed, to an underlying stream.
             #[derive(Debug)]
             pub struct $name<$inner> {
                 #[pin]
-                inner: crate::futures::write::Decoder<$inner, crate::codec::$name>,
+                inner: crate::futures::write::Decoder<$inner, crate::codecs::$name>,
             }
+        }
+
+        impl<$inner: futures_io::AsyncWrite> $name<$inner> {
+            /// Creates a new decoder which will take in compressed data and write it, uncompressed,
+            /// to the given stream.
+            pub fn new(read: $inner) -> $name<$inner> {
+                $name {
+                    inner: crate::futures::write::Decoder::new(read, crate::codecs::$name::new()),
+                }
+            }
+
+            /// Creates a new decoder with the given codec, which will take in compressed data and write it, uncompressed,
+            /// to the given stream.
+            pub fn with_codec(read: $inner, codec: crate::codecs::$name) -> $name<$inner> {
+                $name {
+                   inner: crate::futures::write::Decoder::new(read, codec)
+                }
+            }
+
+            $($($inherent_methods)*)*
         }
 
         impl<$inner> $name<$inner> {
@@ -43,18 +63,6 @@ macro_rules! decoder {
             pub fn into_inner(self) -> $inner {
                 self.inner.into_inner()
             }
-        }
-
-        impl<$inner: futures_io::AsyncWrite> $name<$inner> {
-            /// Creates a new decoder which will take in compressed data and write it uncompressed
-            /// to the given stream.
-            pub fn new(read: $inner) -> $name<$inner> {
-                $name {
-                    inner: crate::futures::write::Decoder::new(read, crate::codec::$name::new()),
-                }
-            }
-
-            $($($inherent_methods)*)*
         }
 
         impl<$inner: futures_io::AsyncWrite> futures_io::AsyncWrite for $name<$inner> {
@@ -113,14 +121,12 @@ macro_rules! decoder {
         }
 
         const _: () = {
-            fn _assert() {
-                use crate::util::{_assert_send, _assert_sync};
-                use core::pin::Pin;
-                use futures_io::AsyncWrite;
+            use crate::core::util::{_assert_send, _assert_sync};
+            use core::pin::Pin;
+            use futures_io::AsyncWrite;
 
-                _assert_send::<$name<Pin<Box<dyn AsyncWrite + Send>>>>();
-                _assert_sync::<$name<Pin<Box<dyn AsyncWrite + Sync>>>>();
-            }
+            _assert_send::<$name<Pin<Box<dyn AsyncWrite + Send>>>>();
+            _assert_sync::<$name<Pin<Box<dyn AsyncWrite + Sync>>>>();
         };
     }
 }

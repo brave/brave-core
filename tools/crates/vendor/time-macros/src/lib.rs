@@ -1,13 +1,20 @@
 #![allow(
-    clippy::missing_const_for_fn, // irrelevant for proc macros
-    clippy::missing_docs_in_private_items, // TODO remove
-    clippy::std_instead_of_core, // irrelevant for proc macros
-    clippy::std_instead_of_alloc, // irrelevant for proc macros
-    clippy::alloc_instead_of_core, // irrelevant for proc macros
-    missing_docs, // TODO remove
+    clippy::missing_const_for_fn,
+    clippy::std_instead_of_core,
+    clippy::std_instead_of_alloc,
+    clippy::alloc_instead_of_core,
+    reason = "irrelevant for proc macros"
+)]
+#![allow(
+    clippy::missing_docs_in_private_items,
+    missing_docs,
+    reason = "may be removed eventually"
 )]
 
-#[allow(unused_macros)]
+#[allow(
+    unused_macros,
+    reason = "may not be used for all feature flag combinations"
+)]
 macro_rules! bug {
     () => { compile_error!("provide an error message to help fix a possible bug") };
     ($descr:literal $($rest:tt)?) => {
@@ -29,13 +36,16 @@ mod offset;
 mod serde_format_description;
 mod time;
 mod to_tokens;
+mod utc_datetime;
 
 #[cfg(any(feature = "formatting", feature = "parsing"))]
 use std::iter::Peekable;
 
+#[cfg(all(feature = "serde", any(feature = "formatting", feature = "parsing")))]
+use proc_macro::Delimiter;
 use proc_macro::TokenStream;
 #[cfg(any(feature = "formatting", feature = "parsing"))]
-use proc_macro::{Ident, TokenTree};
+use proc_macro::TokenTree;
 
 use self::error::Error;
 
@@ -43,13 +53,13 @@ macro_rules! impl_macros {
     ($($name:ident)*) => {$(
         #[proc_macro]
         pub fn $name(input: TokenStream) -> TokenStream {
-            use crate::to_tokens::ToTokenTree;
+            use crate::to_tokens::ToTokenStream;
 
             let mut iter = input.into_iter().peekable();
             match $name::parse(&mut iter) {
                 Ok(value) => match iter.peek() {
                     Some(tree) => Error::UnexpectedToken { tree: tree.clone() }.to_compile_error(),
-                    None => TokenStream::from(value.into_token_tree()),
+                    None => quote_! { const { #S(value.into_token_stream()) } },
                 },
                 Err(err) => err.to_compile_error(),
             }
@@ -57,7 +67,10 @@ macro_rules! impl_macros {
     )*};
 }
 
-impl_macros![date datetime offset time];
+impl_macros![date datetime utc_datetime offset time];
+
+#[cfg(any(feature = "formatting", feature = "parsing"))]
+type PeekableTokenStreamIter = Peekable<proc_macro::token_stream::IntoIter>;
 
 #[cfg(any(feature = "formatting", feature = "parsing"))]
 enum FormatDescriptionVersion {
@@ -66,27 +79,38 @@ enum FormatDescriptionVersion {
 }
 
 #[cfg(any(feature = "formatting", feature = "parsing"))]
-enum VersionOrModuleName {
-    Version(FormatDescriptionVersion),
-    #[cfg_attr(not(feature = "serde"), allow(dead_code))]
-    ModuleName(Ident),
-}
-
-#[cfg(any(feature = "formatting", feature = "parsing"))]
 fn parse_format_description_version<const NO_EQUALS_IS_MOD_NAME: bool>(
-    iter: &mut Peekable<proc_macro::token_stream::IntoIter>,
-) -> Result<Option<VersionOrModuleName>, Error> {
-    let version_ident = match iter.peek() {
-        Some(TokenTree::Ident(ident)) if ident.to_string() == "version" => match iter.next() {
-            Some(TokenTree::Ident(ident)) => ident,
-            _ => unreachable!(),
-        },
+    iter: &mut PeekableTokenStreamIter,
+) -> Result<Option<FormatDescriptionVersion>, Error> {
+    let end_of_input_err = || {
+        if NO_EQUALS_IS_MOD_NAME {
+            Error::UnexpectedEndOfInput
+        } else {
+            Error::ExpectedString {
+                span_start: None,
+                span_end: None,
+            }
+        }
+    };
+    let version_ident = match iter.peek().ok_or_else(end_of_input_err)? {
+        version @ TokenTree::Ident(ident) if ident.to_string() == "version" => {
+            let version_ident = version.clone();
+            iter.next(); // consume `version`
+            version_ident
+        }
         _ => return Ok(None),
     };
+
     match iter.peek() {
         Some(TokenTree::Punct(punct)) if punct.as_char() == '=' => iter.next(),
         _ if NO_EQUALS_IS_MOD_NAME => {
-            return Ok(Some(VersionOrModuleName::ModuleName(version_ident)));
+            // Push the `version` ident to the front of the iterator.
+            *iter = std::iter::once(version_ident)
+                .chain(iter.clone())
+                .collect::<TokenStream>()
+                .into_iter()
+                .peekable();
+            return Ok(None);
         }
         Some(token) => {
             return Err(Error::Custom {
@@ -133,7 +157,29 @@ fn parse_format_description_version<const NO_EQUALS_IS_MOD_NAME: bool>(
     };
     helpers::consume_punct(',', iter)?;
 
-    Ok(Some(VersionOrModuleName::Version(version)))
+    Ok(Some(version))
+}
+
+#[cfg(all(feature = "serde", any(feature = "formatting", feature = "parsing")))]
+fn parse_visibility(iter: &mut PeekableTokenStreamIter) -> Result<TokenStream, Error> {
+    let mut visibility = match iter.peek().ok_or(Error::UnexpectedEndOfInput)? {
+        pub_ident @ TokenTree::Ident(ident) if ident.to_string() == "pub" => {
+            let visibility = quote_! { #(pub_ident.clone()) };
+            iter.next(); // consume `pub`
+            visibility
+        }
+        _ => return Ok(quote_! {}),
+    };
+
+    match iter.peek().ok_or(Error::UnexpectedEndOfInput)? {
+        group @ TokenTree::Group(path) if path.delimiter() == Delimiter::Parenthesis => {
+            visibility.extend(std::iter::once(group.clone()));
+            iter.next(); // consume parentheses and path
+        }
+        _ => {}
+    }
+
+    Ok(visibility)
 }
 
 #[cfg(any(feature = "formatting", feature = "parsing"))]
@@ -141,24 +187,21 @@ fn parse_format_description_version<const NO_EQUALS_IS_MOD_NAME: bool>(
 pub fn format_description(input: TokenStream) -> TokenStream {
     (|| {
         let mut input = input.into_iter().peekable();
-        let version = match parse_format_description_version::<false>(&mut input)? {
-            Some(VersionOrModuleName::Version(version)) => Some(version),
-            None => None,
-            // This branch should never occur here, as `false` is the provided as a const parameter.
-            Some(VersionOrModuleName::ModuleName(_)) => bug!("branch should never occur"),
-        };
+        let version = parse_format_description_version::<false>(&mut input)?;
         let (span, string) = helpers::get_string_literal(input)?;
         let items = format_description::parse_with_version(version, &string, span)?;
 
-        Ok(quote! {{
-            const DESCRIPTION: &[::time::format_description::BorrowedFormatItem<'_>] = &[#S(
-                items
-                    .into_iter()
-                    .map(|item| quote! { #S(item), })
-                    .collect::<TokenStream>()
-            )];
-            DESCRIPTION
-        }})
+        Ok(quote_! {
+            const {
+                use ::time::format_description::{*, modifier::*};
+                &[#S(
+                    items
+                        .into_iter()
+                        .map(|item| quote_! { #S(item), })
+                        .collect::<TokenStream>()
+                )] as &[BorrowedFormatItem]
+            }
+        })
     })()
     .unwrap_or_else(|err: Error| err.to_compile_error())
 }
@@ -171,22 +214,16 @@ pub fn serde_format_description(input: TokenStream) -> TokenStream {
 
         // First, the optional format description version.
         let version = parse_format_description_version::<true>(&mut tokens)?;
-        let (version, mod_name) = match version {
-            Some(VersionOrModuleName::ModuleName(module_name)) => (None, Some(module_name)),
-            Some(VersionOrModuleName::Version(version)) => (Some(version), None),
-            None => (None, None),
-        };
+
+        // Then, the visibility of the module.
+        let visibility = parse_visibility(&mut tokens)?;
 
         // Next, an identifier (the desired module name)
-        // Only parse this if it wasn't parsed when attempting to get the version.
-        let mod_name = match mod_name {
-            Some(mod_name) => mod_name,
-            None => match tokens.next() {
-                Some(TokenTree::Ident(ident)) => Ok(ident),
-                Some(tree) => Err(Error::UnexpectedToken { tree }),
-                None => Err(Error::UnexpectedEndOfInput),
-            }?,
-        };
+        let mod_name = match tokens.next() {
+            Some(TokenTree::Ident(ident)) => Ok(ident),
+            Some(tree) => Err(Error::UnexpectedToken { tree }),
+            None => Err(Error::UnexpectedEndOfInput),
+        }?;
 
         // Followed by a comma
         helpers::consume_punct(',', &mut tokens)?;
@@ -209,12 +246,15 @@ pub fn serde_format_description(input: TokenStream) -> TokenStream {
             Some(TokenTree::Literal(_)) => {
                 let (span, format_string) = helpers::get_string_literal(tokens)?;
                 let items = format_description::parse_with_version(version, &format_string, span)?;
-                let items: TokenStream =
-                    items.into_iter().map(|item| quote! { #S(item), }).collect();
-                let items = quote! {
-                    const ITEMS: &[::time::format_description::BorrowedFormatItem<'_>]
-                        = &[#S(items)];
-                    ITEMS
+                let items: TokenStream = items
+                    .into_iter()
+                    .map(|item| quote_! { #S(item), })
+                    .collect();
+                let items = quote_! {
+                    const {
+                        use ::time::format_description::{*, modifier::*};
+                        &[#S(items)] as &[BorrowedFormatItem]
+                    }
                 };
 
                 (items, String::from_utf8_lossy(&format_string).into_owned())
@@ -229,6 +269,7 @@ pub fn serde_format_description(input: TokenStream) -> TokenStream {
         };
 
         Ok(serde_format_description::build(
+            visibility,
             mod_name,
             formattable,
             format,

@@ -68,8 +68,12 @@ pub const STV_DEFAULT: u8 = 0;
 pub const EM_CURRENT: u16 = 40; // EM_ARM
 #[cfg(target_arch = "x86")]
 pub const EM_CURRENT: u16 = 3; // EM_386
+#[cfg(target_arch = "powerpc")]
+pub const EM_CURRENT: u16 = 20; // EM_PPC
 #[cfg(target_arch = "powerpc64")]
 pub const EM_CURRENT: u16 = 21; // EM_PPC64
+#[cfg(target_arch = "s390x")]
+pub const EM_CURRENT: u16 = 22; // EM_S390
 #[cfg(any(
     target_arch = "mips",
     target_arch = "mips32r6",

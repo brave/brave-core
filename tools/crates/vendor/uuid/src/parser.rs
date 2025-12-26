@@ -19,6 +19,9 @@ use crate::{
     Uuid,
 };
 
+#[cfg(feature = "std")]
+use crate::std::string::String;
+
 impl str::FromStr for Uuid {
     type Err = Error;
 
@@ -32,6 +35,15 @@ impl TryFrom<&'_ str> for Uuid {
 
     fn try_from(uuid_str: &'_ str) -> Result<Self, Self::Error> {
         Uuid::parse_str(uuid_str)
+    }
+}
+
+#[cfg(feature = "std")]
+impl TryFrom<String> for Uuid {
+    type Error = Error;
+
+    fn try_from(uuid_str: String) -> Result<Self, Self::Error> {
+        Uuid::try_from(uuid_str.as_ref())
     }
 }
 
@@ -127,12 +139,12 @@ impl Uuid {
             Ok(bytes) => Ok(Uuid::from_bytes(bytes)),
             // If parsing fails then we don't know exactly what went wrong
             // In this case, we just return a generic error
-            Err(_) => Err(Error(ErrorKind::Other)),
+            Err(_) => Err(Error(ErrorKind::ParseOther)),
         }
     }
 }
 
-const fn try_parse(input: &[u8]) -> Result<[u8; 16], InvalidUuid> {
+const fn try_parse(input: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     match (input.len(), input) {
         // Inputs of 32 bytes must be a non-hyphenated UUID
         (32, s) => parse_simple(s),
@@ -152,7 +164,7 @@ const fn try_parse(input: &[u8]) -> Result<[u8; 16], InvalidUuid> {
 
 #[inline]
 #[allow(dead_code)]
-pub(crate) const fn parse_braced(input: &[u8]) -> Result<[u8; 16], InvalidUuid> {
+pub(crate) const fn parse_braced(input: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     if let (38, [b'{', s @ .., b'}']) = (input.len(), input) {
         parse_hyphenated(s)
     } else {
@@ -162,7 +174,7 @@ pub(crate) const fn parse_braced(input: &[u8]) -> Result<[u8; 16], InvalidUuid> 
 
 #[inline]
 #[allow(dead_code)]
-pub(crate) const fn parse_urn(input: &[u8]) -> Result<[u8; 16], InvalidUuid> {
+pub(crate) const fn parse_urn(input: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     if let (45, [b'u', b'r', b'n', b':', b'u', b'u', b'i', b'd', b':', s @ ..]) =
         (input.len(), input)
     {
@@ -173,7 +185,7 @@ pub(crate) const fn parse_urn(input: &[u8]) -> Result<[u8; 16], InvalidUuid> {
 }
 
 #[inline]
-pub(crate) const fn parse_simple(s: &[u8]) -> Result<[u8; 16], InvalidUuid> {
+pub(crate) const fn parse_simple(s: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     // This length check here removes all other bounds
     // checks in this function
     if s.len() != 32 {
@@ -205,7 +217,7 @@ pub(crate) const fn parse_simple(s: &[u8]) -> Result<[u8; 16], InvalidUuid> {
 }
 
 #[inline]
-const fn parse_hyphenated(s: &[u8]) -> Result<[u8; 16], InvalidUuid> {
+pub(crate) const fn parse_hyphenated(s: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     // This length check here removes all other bounds
     // checks in this function
     if s.len() != 36 {
@@ -329,12 +341,12 @@ mod tests {
         // Invalid
         assert_eq!(
             Uuid::parse_str(""),
-            Err(Error(ErrorKind::SimpleLength { len: 0 }))
+            Err(Error(ErrorKind::ParseSimpleLength { len: 0 }))
         );
 
         assert_eq!(
             Uuid::parse_str("!"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: '!',
                 index: 1,
             }))
@@ -342,7 +354,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa-B6BF-329BF39FA1E45"),
-            Err(Error(ErrorKind::GroupLength {
+            Err(Error(ErrorKind::ParseGroupLength {
                 group: 4,
                 len: 13,
                 index: 25,
@@ -351,7 +363,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa-BBF-329BF39FA1E4"),
-            Err(Error(ErrorKind::GroupLength {
+            Err(Error(ErrorKind::ParseGroupLength {
                 group: 3,
                 len: 3,
                 index: 20,
@@ -360,7 +372,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa-BGBF-329BF39FA1E4"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: 'G',
                 index: 21,
             }))
@@ -368,27 +380,27 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2F4faaFB6BFF329BF39FA1E4"),
-            Err(Error(ErrorKind::GroupCount { count: 2 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 2 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faaFB6BFF329BF39FA1E4"),
-            Err(Error(ErrorKind::GroupCount { count: 3 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 3 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa-B6BFF329BF39FA1E4"),
-            Err(Error(ErrorKind::GroupCount { count: 4 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 4 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa"),
-            Err(Error(ErrorKind::GroupCount { count: 3 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 3 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faaXB6BFF329BF39FA1E4"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: 'X',
                 index: 19,
             }))
@@ -396,7 +408,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("{F9168C5E-CEB2-4faa9B6BFF329BF39FA1E41"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: '{',
                 index: 1,
             }))
@@ -404,12 +416,12 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("{F9168C5E-CEB2-4faa9B6BFF329BF39FA1E41}"),
-            Err(Error(ErrorKind::GroupCount { count: 3 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 3 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB-24fa-eB6BFF32-BF39FA1E4"),
-            Err(Error(ErrorKind::GroupLength {
+            Err(Error(ErrorKind::ParseGroupLength {
                 group: 1,
                 len: 3,
                 index: 10,
@@ -420,7 +432,7 @@ mod tests {
         // //
         assert_eq!(
             Uuid::parse_str("01020304-1112-2122-3132-41424344"),
-            Err(Error(ErrorKind::GroupLength {
+            Err(Error(ErrorKind::ParseGroupLength {
                 group: 4,
                 len: 8,
                 index: 25,
@@ -429,17 +441,17 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c"),
-            Err(Error(ErrorKind::SimpleLength { len: 31 }))
+            Err(Error(ErrorKind::ParseSimpleLength { len: 31 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c88"),
-            Err(Error(ErrorKind::SimpleLength { len: 33 }))
+            Err(Error(ErrorKind::ParseSimpleLength { len: 33 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0cg8"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: 'g',
                 index: 32,
             }))
@@ -447,7 +459,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426%9247bb680e5fe0c8"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: '%',
                 index: 16,
             }))
@@ -455,22 +467,22 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("231231212212423424324323477343246663"),
-            Err(Error(ErrorKind::SimpleLength { len: 36 }))
+            Err(Error(ErrorKind::ParseSimpleLength { len: 36 }))
         );
 
         assert_eq!(
             Uuid::parse_str("{00000000000000000000000000000000}"),
-            Err(Error(ErrorKind::GroupCount { count: 1 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 1 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c"),
-            Err(Error(ErrorKind::SimpleLength { len: 31 }))
+            Err(Error(ErrorKind::ParseSimpleLength { len: 31 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e550X410b1426f9247bb680e5fe0cd"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: 'X',
                 index: 7,
             }))
@@ -478,12 +490,12 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("67e550-4105b1426f9247bb680e5fe0c"),
-            Err(Error(ErrorKind::GroupCount { count: 2 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 2 }))
         );
 
         assert_eq!(
             Uuid::parse_str("F9168C5E-CEB2-4faa-B6BF1-02BF39FA1E4"),
-            Err(Error(ErrorKind::GroupLength {
+            Err(Error(ErrorKind::ParseGroupLength {
                 group: 3,
                 len: 5,
                 index: 20,
@@ -492,7 +504,7 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("\u{bcf3c}"),
-            Err(Error(ErrorKind::Char {
+            Err(Error(ErrorKind::ParseChar {
                 character: '\u{bcf3c}',
                 index: 1
             }))

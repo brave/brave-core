@@ -171,7 +171,7 @@ fn main() {
         if should_skip(&name, filter.as_deref()) {
             continue;
         }
-        print!("{} ... ", name);
+        print!("{name} ... ");
 
         let res = run_url_test(url_test);
         report(name, res, &mut errors, &mut expected_failures);
@@ -189,7 +189,7 @@ fn main() {
                 continue;
             }
 
-            print!("{} ... ", name);
+            print!("{name} ... ");
 
             let res = run_setter_test(&kind, test);
             report(name, res, &mut errors, &mut expected_failures);
@@ -205,8 +205,8 @@ fn main() {
         println!();
 
         for (name, err) in errors {
-            println!("  name: {}", name);
-            println!("  err:  {}", err);
+            println!("  name: {name}");
+            println!("  err:  {err}");
             println!();
         }
 
@@ -223,7 +223,7 @@ fn main() {
         println!();
 
         for name in expected_failures {
-            println!("  {}", name);
+            println!("  {name}");
         }
 
         println!();
@@ -278,8 +278,7 @@ fn run_url_test(
 ) -> Result<(), String> {
     let base = match base {
         Some(base) => {
-            let base =
-                Url::parse(&base).map_err(|e| format!("errored while parsing base: {}", e))?;
+            let base = Url::parse(&base).map_err(|e| format!("errored while parsing base: {e}"))?;
             Some(base)
         }
         None => None,
@@ -288,7 +287,7 @@ fn run_url_test(
     let res = Url::options()
         .base_url(base.as_ref())
         .parse(&input)
-        .map_err(|e| format!("errored while parsing input: {}", e));
+        .map_err(|e| format!("errored while parsing input: {e}"));
 
     match result {
         UrlTestResult::Ok(ok) => check_url_ok(res, ok),
@@ -307,7 +306,7 @@ fn check_url_ok(res: Result<Url, String>, ok: UrlTestOk) -> Result<(), String> {
     let url = match res {
         Ok(url) => url,
         Err(err) => {
-            return Err(format!("expected success, but errored: {:?}", err));
+            return Err(format!("expected success, but errored: {err:?}"));
         }
     };
 
@@ -390,7 +389,7 @@ fn run_setter_test(
         expected,
     }: SetterTest,
 ) -> Result<(), String> {
-    let mut url = Url::parse(&href).map_err(|e| format!("errored while parsing href: {}", e))?;
+    let mut url = Url::parse(&href).map_err(|e| format!("errored while parsing href: {e}"))?;
 
     match kind {
         "protocol" => {
@@ -415,17 +414,14 @@ fn run_setter_test(
         "search" => url::quirks::set_search(&mut url, &new_value),
         "hash" => url::quirks::set_hash(&mut url, &new_value),
         _ => {
-            return Err(format!("unknown setter kind: {:?}", kind));
+            return Err(format!("unknown setter kind: {kind:?}"));
         }
     }
 
     if let Some(expected_href) = expected.href {
         let href = url::quirks::href(&url);
         if href != expected_href {
-            return Err(format!(
-                "expected href {:?}, but got {:?}",
-                expected_href, href
-            ));
+            return Err(format!("expected href {expected_href:?}, but got {href:?}"));
         }
     }
 
@@ -433,8 +429,7 @@ fn run_setter_test(
         let protocol = url::quirks::protocol(&url);
         if protocol != expected_protocol {
             return Err(format!(
-                "expected protocol {:?}, but got {:?}",
-                expected_protocol, protocol
+                "expected protocol {expected_protocol:?}, but got {protocol:?}"
             ));
         }
     }
@@ -443,8 +438,7 @@ fn run_setter_test(
         let username = url::quirks::username(&url);
         if username != expected_username {
             return Err(format!(
-                "expected username {:?}, but got {:?}",
-                expected_username, username
+                "expected username {expected_username:?}, but got {username:?}"
             ));
         }
     }
@@ -453,8 +447,7 @@ fn run_setter_test(
         let password = url::quirks::password(&url);
         if password != expected_password {
             return Err(format!(
-                "expected password {:?}, but got {:?}",
-                expected_password, password
+                "expected password {expected_password:?}, but got {password:?}"
             ));
         }
     }
@@ -462,10 +455,7 @@ fn run_setter_test(
     if let Some(expected_host) = expected.host {
         let host = url::quirks::host(&url);
         if host != expected_host {
-            return Err(format!(
-                "expected host {:?}, but got {:?}",
-                expected_host, host
-            ));
+            return Err(format!("expected host {expected_host:?}, but got {host:?}"));
         }
     }
 
@@ -473,8 +463,7 @@ fn run_setter_test(
         let hostname = url::quirks::hostname(&url);
         if hostname != expected_hostname {
             return Err(format!(
-                "expected hostname {:?}, but got {:?}",
-                expected_hostname, hostname
+                "expected hostname {expected_hostname:?}, but got {hostname:?}"
             ));
         }
     }
@@ -482,10 +471,7 @@ fn run_setter_test(
     if let Some(expected_port) = expected.port {
         let port = url::quirks::port(&url);
         if port != expected_port {
-            return Err(format!(
-                "expected port {:?}, but got {:?}",
-                expected_port, port
-            ));
+            return Err(format!("expected port {expected_port:?}, but got {port:?}"));
         }
     }
 
@@ -493,8 +479,7 @@ fn run_setter_test(
         let pathname = url::quirks::pathname(&url);
         if pathname != expected_pathname {
             return Err(format!(
-                "expected pathname {:?}, but got {:?}",
-                expected_pathname, pathname
+                "expected pathname {expected_pathname:?}, but got {pathname:?}"
             ));
         }
     }
@@ -503,8 +488,7 @@ fn run_setter_test(
         let search = url::quirks::search(&url);
         if search != expected_search {
             return Err(format!(
-                "expected search {:?}, but got {:?}",
-                expected_search, search
+                "expected search {expected_search:?}, but got {search:?}"
             ));
         }
     }
@@ -512,10 +496,7 @@ fn run_setter_test(
     if let Some(expected_hash) = expected.hash {
         let hash = url::quirks::hash(&url);
         if hash != expected_hash {
-            return Err(format!(
-                "expected hash {:?}, but got {:?}",
-                expected_hash, hash
-            ));
+            return Err(format!("expected hash {expected_hash:?}, but got {hash:?}"));
         }
     }
 

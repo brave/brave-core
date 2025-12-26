@@ -48,7 +48,7 @@ pub fn generate() -> rustsec::Result<()> {
             _ => "no exit status running `cargo update --workspace`!".to_string(),
         };
 
-        return Err(Error::new(ErrorKind::Io, &msg));
+        return Err(Error::new(ErrorKind::Io, msg));
     }
     Ok(())
 }

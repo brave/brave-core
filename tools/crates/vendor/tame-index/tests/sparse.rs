@@ -1,3 +1,5 @@
+#![allow(missing_docs)]
+
 mod utils;
 
 use http::header;
@@ -380,7 +382,7 @@ mod remote {
 
         for (name, res) in results {
             match res {
-                Ok(Some(_)) => continue,
+                Ok(Some(_)) => {}
                 Ok(None) => writeln!(&mut errors, "{name}:\tfailed to locate").unwrap(),
                 Err(err) => writeln!(&mut errors, "{name}:\t{err}").unwrap(),
             }

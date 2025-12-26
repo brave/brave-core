@@ -31,18 +31,18 @@
 //!
 //! ```toml
 //! [dependencies]
-//! link-cplusplus = "1.0"
+//! link-cplusplus = "1"
 //! ```
 //!
 //! An application that wants a particular one or the other linked should use:
 //!
 //! ```toml
 //! [dependencies]
-//! link-cplusplus = { version = "1.0", features = ["libstdc++"] }
+//! link-cplusplus = { version = "1", features = ["libstdc++"] }
 //!
 //! # or
 //!
-//! link-cplusplus = { version = "1.0", features = ["libc++"] }
+//! link-cplusplus = { version = "1", features = ["libc++"] }
 //! ```
 //!
 //! An application that wants to handle its own more complicated logic for link
@@ -50,7 +50,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! link-cplusplus = { version = "1.0", features = ["nothing"] }
+//! link-cplusplus = { version = "1", features = ["nothing"] }
 //! ```
 //!
 //! Lastly, make sure to add an explicit `extern crate` dependency to your crate

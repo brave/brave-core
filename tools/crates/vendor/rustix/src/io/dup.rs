@@ -81,9 +81,9 @@ pub fn dup<Fd: AsFd>(fd: Fd) -> io::Result<OwnedFd> {
 /// [DragonFly BSD]: https://man.dragonflybsd.org/?command=dup2&section=2
 /// [illumos]: https://illumos.org/man/2/dup
 /// [glibc]: https://sourceware.org/glibc/manual/latest/html_node/Duplicating-Descriptors.html
-/// [`stdio::dup2_stdin`]: https://docs.rs/rustix/*/rustix/stdio/fn.dup2_stdin.html
-/// [`stdio::dup2_stdout`]: https://docs.rs/rustix/*/rustix/stdio/fn.dup2_stdout.html
-/// [`stdio::dup2_stderr`]: https://docs.rs/rustix/*/rustix/stdio/fn.dup2_stderr.html
+/// [`stdio::dup2_stdin`]: crate::stdio::dup2_stdin
+/// [`stdio::dup2_stdout`]: crate::stdio::dup2_stdout
+/// [`stdio::dup2_stderr`]: crate::stdio::dup2_stderr
 #[cfg(not(target_os = "wasi"))]
 #[inline]
 pub fn dup2<Fd: AsFd>(fd: Fd, new: &mut OwnedFd) -> io::Result<()> {

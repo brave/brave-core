@@ -53,6 +53,7 @@ pub fn fchdir<Fd: AsFd>(fd: Fd) -> io::Result<()> {
 #[cfg(all(feature = "alloc", feature = "fs"))]
 #[cfg(not(target_os = "wasi"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "fs")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 #[inline]
 pub fn getcwd<B: Into<Vec<u8>>>(reuse: B) -> io::Result<CString> {
     _getcwd(reuse.into())

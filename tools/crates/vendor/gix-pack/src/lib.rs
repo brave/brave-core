@@ -15,11 +15,10 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod bundle;
 /// A bundle of pack data and the corresponding pack index
 pub struct Bundle {
@@ -30,28 +29,22 @@ pub struct Bundle {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod find;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod cache;
 ///
-#[allow(clippy::empty_docs)]
 pub mod data;
 
 mod find_traits;
 pub use find_traits::{Find, FindExt};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod index;
 ///
-#[allow(clippy::empty_docs)]
 pub mod multi_index;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod verify;
 
 mod mmap {
@@ -75,4 +68,10 @@ fn read_u32(b: &[u8]) -> u32 {
 #[inline]
 fn read_u64(b: &[u8]) -> u64 {
     u64::from_be_bytes(b.try_into().unwrap())
+}
+
+fn exact_vec<T>(capacity: usize) -> Vec<T> {
+    let mut v = Vec::new();
+    v.reserve_exact(capacity);
+    v
 }

@@ -14,6 +14,15 @@ pub(crate) enum DumbCow<'a, T> {
     Borrowed(&'a T),
 }
 
+impl<'a, T> DumbCow<'a, T> {
+    pub(crate) fn borrowed(&self) -> DumbCow<'_, T> {
+        match *self {
+            DumbCow::Owned(ref this) => DumbCow::Borrowed(this),
+            DumbCow::Borrowed(ref this) => DumbCow::Borrowed(this),
+        }
+    }
+}
+
 impl<'a, T> core::ops::Deref for DumbCow<'a, T> {
     type Target = T;
     fn deref(&self) -> &T {

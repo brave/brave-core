@@ -1,133 +1,76 @@
 use super::*;
+use core::mem::transmute_copy;
+use core::mem::zeroed;
 
-#[doc(hidden)]
-pub enum Param<T: Type<T>> {
-    Owned(T),
-    Borrowed(T::Abi),
+/// Provides automatic parameter conversion in cases where the Windows API expects implicit conversion support.
+///
+/// There is no need to implement this trait. Blanket implementations are provided for all applicable Windows types.
+pub trait Param<T: TypeKind, C = <T as TypeKind>::TypeKind>: Sized
+where
+    T: Type<T>,
+{
+    #[doc(hidden)]
+    unsafe fn param(self) -> ParamValue<T>;
 }
 
-impl<T: Type<T>> Param<T> {
-    pub fn abi(&self) -> T::Abi {
+impl<T> Param<T> for Option<&T>
+where
+    T: Type<T>,
+{
+    unsafe fn param(self) -> ParamValue<T> {
         unsafe {
-            match self {
-                Self::Owned(item) => std::mem::transmute_copy(item),
-                Self::Borrowed(borrowed) => std::mem::transmute_copy(borrowed),
+            ParamValue::Borrowed(match self {
+                Some(item) => transmute_copy(item),
+                None => zeroed(),
+            })
+        }
+    }
+}
+
+impl<T> Param<T> for InterfaceRef<'_, T>
+where
+    T: Type<T>,
+{
+    unsafe fn param(self) -> ParamValue<T> {
+        unsafe { ParamValue::Borrowed(transmute_copy(&self)) }
+    }
+}
+
+impl<T, U> Param<T, InterfaceType> for &U
+where
+    T: TypeKind<TypeKind = InterfaceType> + Clone,
+    T: Interface,
+    U: Interface,
+    U: imp::CanInto<T>,
+{
+    unsafe fn param(self) -> ParamValue<T> {
+        unsafe {
+            if U::QUERY {
+                self.cast()
+                    .map_or(ParamValue::Borrowed(zeroed()), |ok| ParamValue::Owned(ok))
+            } else {
+                ParamValue::Borrowed(transmute_copy(self))
             }
         }
     }
 }
 
-#[doc(hidden)]
-pub trait TryIntoParam<T: Type<T>> {
-    fn try_into_param(self) -> Result<Param<T>>;
-}
-
-impl<T> TryIntoParam<T> for Option<&T>
+impl<T> Param<T, CloneType> for &T
 where
-    T: ComInterface,
+    T: TypeKind<TypeKind = CloneType> + Clone,
 {
-    fn try_into_param(self) -> Result<Param<T>> {
-        match self {
-            Some(from) => Ok(Param::Borrowed(from.abi())),
-            None => Ok(Param::Borrowed(unsafe { std::mem::zeroed() })),
-        }
+    unsafe fn param(self) -> ParamValue<T> {
+        unsafe { ParamValue::Borrowed(transmute_copy(self)) }
     }
 }
 
-impl<T, U> TryIntoParam<T> for &U
-where
-    T: ComInterface,
-    U: ComInterface,
-    U: CanTryInto<T>,
-{
-    fn try_into_param(self) -> Result<Param<T>> {
-        if U::CAN_INTO {
-            Ok(Param::Borrowed(self.abi()))
-        } else {
-            Ok(Param::Owned(self.cast()?))
-        }
-    }
-}
-
-#[doc(hidden)]
-pub trait CanTryInto<T>: ComInterface
-where
-    T: ComInterface,
-{
-    const CAN_INTO: bool = false;
-}
-
-impl<T, U> CanTryInto<T> for U
-where
-    T: ComInterface,
-    U: ComInterface,
-    U: CanInto<T>,
-{
-    const CAN_INTO: bool = true;
-}
-
-#[doc(hidden)]
-pub trait CanInto<T>: Sized
-where
-    T: Clone,
-{
-    fn can_into(&self) -> &T {
-        unsafe { std::mem::transmute(self) }
-    }
-
-    fn can_clone_into(&self) -> T {
-        self.can_into().clone()
-    }
-}
-impl<T> CanInto<T> for T where T: Clone {}
-
-#[doc(hidden)]
-pub trait IntoParam<T: TypeKind, C = <T as TypeKind>::TypeKind>: Sized
-where
-    T: Type<T>,
-{
-    fn into_param(self) -> Param<T>;
-}
-
-impl<T> IntoParam<T> for Option<&T>
-where
-    T: Type<T>,
-{
-    fn into_param(self) -> Param<T> {
-        match self {
-            Some(item) => Param::Borrowed(item.abi()),
-            None => Param::Borrowed(unsafe { std::mem::zeroed() }),
-        }
-    }
-}
-
-impl<T, U> IntoParam<T, ReferenceType> for &U
-where
-    T: TypeKind<TypeKind = ReferenceType> + Clone,
-    U: TypeKind<TypeKind = ReferenceType> + Clone,
-    U: CanInto<T>,
-{
-    fn into_param(self) -> Param<T> {
-        Param::Borrowed(self.abi())
-    }
-}
-
-impl<T> IntoParam<T, ValueType> for &T
-where
-    T: TypeKind<TypeKind = ValueType> + Clone,
-{
-    fn into_param(self) -> Param<T> {
-        Param::Borrowed(self.abi())
-    }
-}
-
-impl<T, U> IntoParam<T, CopyType> for U
+impl<T, U> Param<T, CopyType> for U
 where
     T: TypeKind<TypeKind = CopyType> + Clone,
     U: TypeKind<TypeKind = CopyType> + Clone,
-    U: CanInto<T>,
+    U: imp::CanInto<T>,
 {
-    fn into_param(self) -> Param<T> {
-        unsafe { Param::Owned(std::mem::transmute_copy(&self)) }
+    unsafe fn param(self) -> ParamValue<T> {
+        unsafe { ParamValue::Owned(transmute_copy(&self)) }
     }
 }

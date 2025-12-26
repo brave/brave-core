@@ -11,10 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.67"
+rust-version = "1.82"
 name = "zerovec"
-version = "0.10.4"
+version = "0.11.5"
 authors = ["The ICU4X Project Developers"]
+build = false
 include = [
     "data/**/*",
     "src/**/*",
@@ -24,7 +25,13 @@ include = [
     "Cargo.toml",
     "LICENSE",
     "README.md",
+    "build.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Zero-copy vector backed by a byte array"
 readme = "README.md"
 keywords = [
@@ -43,42 +50,45 @@ categories = [
 license = "Unicode-3.0"
 repository = "https://github.com/unicode-org/icu4x"
 
-[package.metadata.cargo-all-features]
-denylist = ["bench"]
-max_combination_size = 3
+[package.metadata.workspaces]
+independent = true
 
 [package.metadata.docs.rs]
 all-features = true
 
-[package.metadata.workspaces]
-independent = true
+[package.metadata.cargo-all-features]
+max_combination_size = 3
+
+[features]
+alloc = ["serde?/alloc"]
+databake = ["dep:databake"]
+derive = ["dep:zerovec-derive"]
+hashmap = [
+    "dep:twox-hash",
+    "alloc",
+]
+serde = ["dep:serde"]
+std = []
+yoke = ["dep:yoke"]
 
 [lib]
+name = "zerovec"
+path = "src/lib.rs"
 bench = false
 
 [[example]]
 name = "zv_serde"
-required-features = ["serde"]
-
-[[bench]]
-name = "zerovec"
-harness = false
-
-[[bench]]
-name = "zerovec_serde"
-harness = false
+path = "examples/zv_serde.rs"
 required-features = ["serde"]
 
 [[bench]]
 name = "vzv"
-harness = false
-
-[[bench]]
-name = "zerovec_iai"
+path = "benches/vzv.rs"
 harness = false
 
 [[bench]]
 name = "zeromap"
+path = "benches/zeromap.rs"
 harness = false
 required-features = [
     "serde",
@@ -86,82 +96,50 @@ required-features = [
     "derive",
 ]
 
+[[bench]]
+name = "zerovec"
+path = "benches/zerovec.rs"
+harness = false
+
+[[bench]]
+name = "zerovec_iai"
+path = "benches/zerovec_iai.rs"
+harness = false
+
+[[bench]]
+name = "zerovec_serde"
+path = "benches/zerovec_serde.rs"
+harness = false
+required-features = ["serde"]
+
 [dependencies.databake]
-version = "0.1.8"
+version = "0.2.0"
 features = ["derive"]
 optional = true
 default-features = false
 
 [dependencies.serde]
-version = "1.0.110"
-features = ["alloc"]
+version = "1.0.220"
+features = ["derive"]
 optional = true
 default-features = false
 
 [dependencies.twox-hash]
-version = "1.4.2"
+version = "2.0.0"
+features = ["xxhash64"]
 optional = true
 default-features = false
 
 [dependencies.yoke]
-version = ">=0.6.0, <0.8.0"
+version = "0.8.0"
 optional = true
+default-features = false
 
 [dependencies.zerofrom]
 version = "0.1.3"
 default-features = false
 
 [dependencies.zerovec-derive]
-version = "0.10.2"
+version = "0.11.1"
 optional = true
 default-features = false
-
-[dev-dependencies.bincode]
-version = "1.3.1"
-
-[dev-dependencies.getrandom]
-version = "0.2"
-features = ["js"]
-
-[dev-dependencies.iai]
-version = "0.1.1"
-
-[dev-dependencies.postcard]
-version = "1.0.1"
-features = ["use-std"]
-default-features = false
-
-[dev-dependencies.rand]
-version = "0.8"
-
-[dev-dependencies.rand_distr]
-version = "0.4"
-
-[dev-dependencies.rand_pcg]
-version = "0.3"
-
-[dev-dependencies.rmp-serde]
-version = "1.2.0"
-
-[dev-dependencies.serde]
-version = "1.0.110"
-features = ["derive"]
-default-features = false
-
-[dev-dependencies.serde_json]
-version = "1.0.45"
-
-[features]
-bench = [
-    "serde",
-    "databake",
-]
-databake = ["dep:databake"]
-derive = ["dep:zerovec-derive"]
-hashmap = ["dep:twox-hash"]
-serde = ["dep:serde"]
-std = []
-yoke = ["dep:yoke"]
-
-[target."cfg(not(target_arch = \"wasm32\"))".dev-dependencies.criterion]
-version = "0.5.0"

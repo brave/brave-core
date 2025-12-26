@@ -29,7 +29,7 @@
 //!
 //! By default, the [`Repository`] isn't `Sync` and thus can't be used in certain contexts which require the `Sync` trait.
 //!
-//! To help with this, convert it with [`.into_sync()`][Repository::into_sync()] into a [`ThreadSafeRepository`].
+//! To help with this, convert it with [`Repository::into_sync()`] into a [`ThreadSafeRepository`].
 //!
 //! ### Object-Access Performance
 //!
@@ -37,11 +37,11 @@
 //! to understand which cache levels exist and how to leverage them.
 //!
 //! When accessing an object, the first cache that's queried is a  memory-capped LRU object cache, mapping their id to data and kind.
-//! It has to be specifically enabled a [`Repository`].
+//! It has to be specifically enabled on a [`Repository`].
 //! On miss, the object is looked up and if a pack is hit, there is a small fixed-size cache for delta-base objects.
 //!
 //! In scenarios where the same objects are accessed multiple times, the object cache can be useful and is to be configured specifically
-//! using the [`object_cache_size(…)`][crate::Repository::object_cache_size()] method.
+//! using the [`Repository::object_cache_size()`] method.
 //!
 //! Use the `cache-efficiency-debug` cargo feature to learn how efficient the cache actually is - it's easy to end up with lowered
 //! performance if the cache is not hit in 50% of the time.
@@ -85,8 +85,8 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
+#![deny(missing_docs, unsafe_code)]
 #![allow(clippy::result_large_err)]
 
 // Re-exports to make this a potential one-stop shop crate avoiding people from having to reference various crates themselves.
@@ -95,6 +95,8 @@
 pub use gix_actor as actor;
 #[cfg(feature = "attributes")]
 pub use gix_attributes as attrs;
+#[cfg(feature = "blame")]
+pub use gix_blame as blame;
 #[cfg(feature = "command")]
 pub use gix_command as command;
 pub use gix_commitgraph as commitgraph;
@@ -127,7 +129,6 @@ pub use gix_object::bstr;
 pub use gix_odb as odb;
 #[cfg(feature = "credentials")]
 pub use gix_prompt as prompt;
-#[cfg(feature = "gix-protocol")]
 pub use gix_protocol as protocol;
 pub use gix_ref as refs;
 pub use gix_refspec as refspec;
@@ -147,20 +148,21 @@ pub mod interrupt;
 
 mod ext;
 ///
-#[allow(clippy::empty_docs)]
 pub mod prelude;
 
 #[cfg(feature = "excludes")]
 mod attribute_stack;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod path;
 
 /// The standard type for a store to handle git references.
 pub type RefStore = gix_ref::file::Store;
 /// A handle for finding objects in an object database, abstracting away caches for thread-local use.
-pub type OdbHandle = gix_odb::Handle;
+pub type OdbHandle = gix_odb::memory::Proxy<gix_odb::Handle>;
+/// A handle for finding objects in an object database, abstracting away caches for moving across threads.
+pub type OdbHandleArc = gix_odb::memory::Proxy<gix_odb::HandleArc>;
+
 /// A way to access git configuration
 pub(crate) type Config = OwnShared<gix_config::File<'static>>;
 
@@ -175,12 +177,10 @@ pub use types::{
 pub use types::{Pathspec, PathspecDetached, Submodule};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod clone;
 pub mod commit;
 ///
 #[cfg(feature = "dirwalk")]
-#[allow(clippy::empty_docs)]
 pub mod dirwalk;
 pub mod head;
 pub mod id;
@@ -196,29 +196,51 @@ pub mod tag;
 pub(crate) mod util;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod progress;
 ///
-#[allow(clippy::empty_docs)]
 pub mod push;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod diff;
 
-/// See [`ThreadSafeRepository::discover()`], but returns a [`Repository`] instead.
+///
+#[cfg(feature = "merge")]
+pub mod merge;
+
+/// Try to open a git repository in `directory` and search upwards through its parents until one is found,
+/// using default trust options which matters in case the found repository isn't owned by the current user.
+///
+/// For details, see [`ThreadSafeRepository::discover()`].
 ///
 /// # Note
 ///
 /// **The discovered repository might not be suitable for any operation that requires authentication with remotes**
 /// as it doesn't see the relevant git configuration.
 ///
-/// To achieve that, one has to [enable `git_binary` configuration](https://github.com/Byron/gitoxide/blob/9723e1addf52cc336d59322de039ea0537cdca36/src/plumbing/main.rs#L86)
+/// To achieve that, one has to [enable `git_binary` configuration](https://github.com/GitoxideLabs/gitoxide/blob/9723e1addf52cc336d59322de039ea0537cdca36/src/plumbing/main.rs#L86)
 /// in the open-options and use [`ThreadSafeRepository::discover_opts()`] instead. Alternatively, it might be well-known
 /// that the tool is going to run in a neatly configured environment without relying on bundled configuration.
 #[allow(clippy::result_large_err)]
 pub fn discover(directory: impl AsRef<std::path::Path>) -> Result<Repository, discover::Error> {
     ThreadSafeRepository::discover(directory).map(Into::into)
+}
+
+/// Try to discover a git repository directly from the environment.
+///
+/// For details, see [`ThreadSafeRepository::discover_with_environment_overrides_opts()`].
+#[allow(clippy::result_large_err)]
+pub fn discover_with_environment_overrides(
+    directory: impl AsRef<std::path::Path>,
+) -> Result<Repository, discover::Error> {
+    ThreadSafeRepository::discover_with_environment_overrides(directory).map(Into::into)
+}
+
+/// Try to open a git repository directly from the environment.
+///
+/// See [`ThreadSafeRepository::open_with_environment_overrides()`].
+#[allow(clippy::result_large_err)]
+pub fn open_with_environment_overrides(directory: impl Into<std::path::PathBuf>) -> Result<Repository, open::Error> {
+    ThreadSafeRepository::open_with_environment_overrides(directory, Default::default()).map(Into::into)
 }
 
 /// See [`ThreadSafeRepository::init()`], but returns a [`Repository`] instead.
@@ -296,24 +318,19 @@ pub fn open_opts(directory: impl Into<std::path::PathBuf>, options: open::Option
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod create;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod open;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod config;
 
 ///
-#[allow(clippy::empty_docs)]
 #[cfg(feature = "mailmap")]
 pub mod mailmap;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod worktree;
 
 pub mod revision;
@@ -322,27 +339,22 @@ pub mod revision;
 pub mod filter;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod remote;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod init;
 
 /// Not to be confused with 'status'.
 pub mod state;
 
 ///
-#[allow(clippy::empty_docs)]
 #[cfg(feature = "status")]
 pub mod status;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod shallow;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod discover;
 
 pub mod env;

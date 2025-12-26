@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.70"
 name = "jiff"
-version = "0.1.29"
+version = "0.2.16"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 build = false
 include = [
@@ -54,32 +54,41 @@ repository = "https://github.com/BurntSushi/jiff"
 all-features = true
 rustdoc-args = [
     "--cfg",
-    "docsrs",
+    "docsrs_jiff",
 ]
 
 [features]
 alloc = [
-    "serde?/alloc",
+    "serde_core?/alloc",
     "portable-atomic-util/alloc",
 ]
 default = [
     "std",
     "tz-system",
+    "tz-fat",
     "tzdb-bundle-platform",
     "tzdb-zoneinfo",
     "tzdb-concatenated",
+    "perf-inline",
 ]
 js = [
     "dep:wasm-bindgen",
     "dep:js-sys",
 ]
 logging = ["dep:log"]
-serde = ["dep:serde"]
+perf-inline = []
+serde = ["dep:serde_core"]
+static = [
+    "static-tz",
+    "jiff-static?/tzdb",
+]
+static-tz = ["dep:jiff-static"]
 std = [
     "alloc",
     "log?/std",
-    "serde?/std",
+    "serde_core?/std",
 ]
+tz-fat = ["jiff-static?/tz-fat"]
 tz-system = [
     "std",
     "dep:windows-sys",
@@ -103,8 +112,12 @@ path = "src/lib.rs"
 name = "integration"
 path = "tests/lib.rs"
 
+[dependencies.jiff-static]
+version = "0.2"
+optional = true
+
 [dependencies.jiff-tzdb]
-version = "0.1.2"
+version = "0.1.4"
 optional = true
 
 [dependencies.log]
@@ -112,8 +125,8 @@ version = "0.4.21"
 optional = true
 default-features = false
 
-[dependencies.serde]
-version = "1.0.203"
+[dependencies.serde_core]
+version = "1.0.221"
 optional = true
 default-features = false
 
@@ -127,19 +140,14 @@ features = ["serde"]
 [dev-dependencies.chrono-tz]
 version = "0.10.0"
 
-[dev-dependencies.clap]
-version = "4.5.23"
-features = ["derive"]
-
 [dev-dependencies.humantime]
 version = "2.1.0"
 
-[dev-dependencies.icu]
-version = "1.5.0"
-features = ["std"]
-
 [dev-dependencies.insta]
 version = "1.39.0"
+
+[dev-dependencies.log]
+version = "0.4.21"
 
 [dev-dependencies.quickcheck]
 version = "1.0.3"
@@ -180,8 +188,11 @@ optional = true
 version = "0.2.70"
 optional = true
 
+[target."cfg(any())".dependencies.jiff-static]
+version = "=0.2.16"
+
 [target.'cfg(any(windows, target_family = "wasm"))'.dependencies.jiff-tzdb-platform]
-version = "0.1.2"
+version = "0.1.3"
 optional = true
 
 [target.'cfg(not(target_family = "wasm"))'.dev-dependencies.hifitime]
@@ -196,13 +207,18 @@ version = "0.2.4"
 default-features = false
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = ">=0.52.0, <=0.59.*"
+version = ">=0.52.0, <=0.61.*"
 features = [
     "Win32_Foundation",
     "Win32_System_Time",
 ]
 optional = true
 default-features = false
+
+[lints.rust.unexpected_cfgs]
+level = "allow"
+priority = 0
+check-cfg = ["cfg(docsrs_jiff)"]
 
 [profile.testrelease]
 debug-assertions = false

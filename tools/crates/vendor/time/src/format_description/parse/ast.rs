@@ -95,6 +95,7 @@ pub(super) struct Modifier<'a> {
 }
 
 /// Parse the provided tokens into an AST.
+#[inline]
 pub(super) fn parse<
     'item: 'iter,
     'iter,
@@ -109,6 +110,7 @@ pub(super) fn parse<
 
 /// Parse the provided tokens into an AST. The const generic indicates whether the resulting
 /// [`Item`] will be used directly or as part of a [`NestedFormatDescription`].
+#[inline]
 fn parse_inner<
     'item,
     I: Iterator<Item = Result<lexer::Token<'item>, Error>>,
@@ -193,7 +195,7 @@ fn parse_component<
         return Err(Error {
             _inner: unused(span.error("expected component name")),
             public: crate::error::InvalidFormatDescription::MissingComponentName {
-                index: span.start.byte as _,
+                index: span.start.byte as usize,
             },
         });
     };
@@ -204,7 +206,7 @@ fn parse_component<
                 _inner: unused(name.span.error("expected whitespace after `optional`")),
                 public: crate::error::InvalidFormatDescription::Expected {
                     what: "whitespace after `optional`",
-                    index: name.span.end.byte as _,
+                    index: name.span.end.byte as usize,
                 },
             });
         };
@@ -215,7 +217,7 @@ fn parse_component<
             return Err(Error {
                 _inner: unused(opening_bracket.error("unclosed bracket")),
                 public: crate::error::InvalidFormatDescription::UnclosedOpeningBracket {
-                    index: opening_bracket.byte as _,
+                    index: opening_bracket.byte as usize,
                 },
             });
         };
@@ -236,7 +238,7 @@ fn parse_component<
                 _inner: unused(name.span.error("expected whitespace after `first`")),
                 public: crate::error::InvalidFormatDescription::Expected {
                     what: "whitespace after `first`",
-                    index: name.span.end.byte as _,
+                    index: name.span.end.byte as usize,
                 },
             });
         };
@@ -250,7 +252,7 @@ fn parse_component<
             return Err(Error {
                 _inner: unused(opening_bracket.error("unclosed bracket")),
                 public: crate::error::InvalidFormatDescription::UnclosedOpeningBracket {
-                    index: opening_bracket.byte as _,
+                    index: opening_bracket.byte as usize,
                 },
             });
         };
@@ -282,7 +284,7 @@ fn parse_component<
                 ),
                 public: crate::error::InvalidFormatDescription::InvalidModifier {
                     value: String::from("["),
-                    index: location.byte as _,
+                    index: location.byte as usize,
                 },
             });
         }
@@ -296,7 +298,7 @@ fn parse_component<
                 _inner: unused(span.error("modifier must be of the form `key:value`")),
                 public: crate::error::InvalidFormatDescription::InvalidModifier {
                     value: String::from_utf8_lossy(value).into_owned(),
-                    index: span.start.byte as _,
+                    index: span.start.byte as usize,
                 },
             });
         };
@@ -308,7 +310,7 @@ fn parse_component<
                 _inner: unused(span.shrink_to_start().error("expected modifier key")),
                 public: crate::error::InvalidFormatDescription::InvalidModifier {
                     value: String::new(),
-                    index: span.start.byte as _,
+                    index: span.start.byte as usize,
                 },
             });
         }
@@ -317,16 +319,16 @@ fn parse_component<
                 _inner: unused(span.shrink_to_end().error("expected modifier value")),
                 public: crate::error::InvalidFormatDescription::InvalidModifier {
                     value: String::new(),
-                    index: span.shrink_to_end().start.byte as _,
+                    index: span.shrink_to_end().start.byte as usize,
                 },
             });
         }
 
         modifiers.push(Modifier {
             _leading_whitespace: unused(whitespace),
-            key: key.spanned(span.shrink_to_before(colon_index as _)),
-            _colon: unused(span.start.offset(colon_index as _)),
-            value: value.spanned(span.shrink_to_after(colon_index as _)),
+            key: key.spanned(span.shrink_to_before(colon_index as u32)),
+            _colon: unused(span.start.offset(colon_index as u32)),
+            value: value.spanned(span.shrink_to_after(colon_index as u32)),
         });
     };
 
@@ -334,7 +336,7 @@ fn parse_component<
         return Err(Error {
             _inner: unused(opening_bracket.error("unclosed bracket")),
             public: crate::error::InvalidFormatDescription::UnclosedOpeningBracket {
-                index: opening_bracket.byte as _,
+                index: opening_bracket.byte as usize,
             },
         });
     };
@@ -349,7 +351,8 @@ fn parse_component<
     })
 }
 
-/// Parse a nested format description. The location provided is the the most recent one consumed.
+/// Parse a nested format description. The location provided is the most recent one consumed.
+#[inline]
 fn parse_nested<'a, I: Iterator<Item = Result<lexer::Token<'a>, Error>>, const VERSION: usize>(
     last_location: Location,
     tokens: &mut lexer::Lexed<I>,
@@ -360,7 +363,7 @@ fn parse_nested<'a, I: Iterator<Item = Result<lexer::Token<'a>, Error>>, const V
             _inner: unused(last_location.error("expected opening bracket")),
             public: crate::error::InvalidFormatDescription::Expected {
                 what: "opening bracket",
-                index: last_location.byte as _,
+                index: last_location.byte as usize,
             },
         });
     };
@@ -369,7 +372,7 @@ fn parse_nested<'a, I: Iterator<Item = Result<lexer::Token<'a>, Error>>, const V
         return Err(Error {
             _inner: unused(opening_bracket.error("unclosed bracket")),
             public: crate::error::InvalidFormatDescription::UnclosedOpeningBracket {
-                index: opening_bracket.byte as _,
+                index: opening_bracket.byte as usize,
             },
         });
     };

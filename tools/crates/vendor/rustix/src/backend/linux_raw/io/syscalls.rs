@@ -10,7 +10,12 @@
 use crate::backend::conv::loff_t_from_u64;
 #[cfg(all(
     target_pointer_width = "32",
-    any(target_arch = "arm", target_arch = "mips", target_arch = "mips32r6"),
+    any(
+        target_arch = "arm",
+        target_arch = "mips",
+        target_arch = "mips32r6",
+        target_arch = "powerpc"
+    ),
 ))]
 use crate::backend::conv::zero;
 use crate::backend::conv::{
@@ -20,64 +25,83 @@ use crate::backend::conv::{
 #[cfg(target_pointer_width = "32")]
 use crate::backend::conv::{hi, lo};
 use crate::backend::{c, MAX_IOV};
-use crate::fd::{AsFd, BorrowedFd, OwnedFd, RawFd};
+use crate::fd::{AsFd as _, BorrowedFd, OwnedFd, RawFd};
 use crate::io::{self, DupFlags, FdFlags, IoSlice, IoSliceMut, ReadWriteFlags};
-use crate::ioctl::{IoctlOutput, RawOpcode};
-#[cfg(all(feature = "fs", feature = "net"))]
-use crate::net::{RecvFlags, SendFlags};
+use crate::ioctl::{IoctlOutput, Opcode};
 use core::cmp;
 use linux_raw_sys::general::{F_DUPFD_CLOEXEC, F_GETFD, F_SETFD};
 
 #[inline]
-pub(crate) unsafe fn read(fd: BorrowedFd<'_>, buf: *mut u8, len: usize) -> io::Result<usize> {
-    ret_usize(syscall!(__NR_read, fd, buf, pass_usize(len)))
+pub(crate) unsafe fn read(fd: BorrowedFd<'_>, buf: (*mut u8, usize)) -> io::Result<usize> {
+    let r = ret_usize(syscall!(__NR_read, fd, buf.0, pass_usize(buf.1)));
+
+    #[cfg(sanitize_memory)]
+    if let Ok(len) = r {
+        crate::msan::unpoison(buf.0, len);
+    }
+
+    r
 }
 
 #[inline]
 pub(crate) unsafe fn pread(
     fd: BorrowedFd<'_>,
-    buf: *mut u8,
-    len: usize,
+    buf: (*mut u8, usize),
     pos: u64,
 ) -> io::Result<usize> {
-    // <https://github.com/torvalds/linux/blob/fcadab740480e0e0e9fa9bd272acd409884d431a/arch/arm64/kernel/sys32.c#L75>
+    // <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/kernel/sys32.c?h=v6.13#n70>
     #[cfg(all(
         target_pointer_width = "32",
-        any(target_arch = "arm", target_arch = "mips", target_arch = "mips32r6"),
+        any(
+            target_arch = "arm",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "powerpc"
+        ),
     ))]
-    {
-        ret_usize(syscall!(
-            __NR_pread64,
-            fd,
-            buf,
-            pass_usize(len),
-            zero(),
-            hi(pos),
-            lo(pos)
-        ))
-    }
-    #[cfg(all(
-        target_pointer_width = "32",
-        not(any(target_arch = "arm", target_arch = "mips", target_arch = "mips32r6")),
-    ))]
-    {
-        ret_usize(syscall!(
-            __NR_pread64,
-            fd,
-            buf,
-            pass_usize(len),
-            hi(pos),
-            lo(pos)
-        ))
-    }
-    #[cfg(target_pointer_width = "64")]
-    ret_usize(syscall!(
+    let r = ret_usize(syscall!(
         __NR_pread64,
         fd,
-        buf,
-        pass_usize(len),
+        buf.0,
+        pass_usize(buf.1),
+        zero(),
+        hi(pos),
+        lo(pos)
+    ));
+
+    #[cfg(all(
+        target_pointer_width = "32",
+        not(any(
+            target_arch = "arm",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "powerpc"
+        )),
+    ))]
+    let r = ret_usize(syscall!(
+        __NR_pread64,
+        fd,
+        buf.0,
+        pass_usize(buf.1),
+        hi(pos),
+        lo(pos)
+    ));
+
+    #[cfg(target_pointer_width = "64")]
+    let r = ret_usize(syscall!(
+        __NR_pread64,
+        fd,
+        buf.0,
+        pass_usize(buf.1),
         loff_t_from_u64(pos)
-    ))
+    ));
+
+    #[cfg(sanitize_memory)]
+    if let Ok(len) = r {
+        crate::msan::unpoison(buf.0, len);
+    }
+
+    r
 }
 
 #[inline]
@@ -144,10 +168,15 @@ pub(crate) fn write(fd: BorrowedFd<'_>, buf: &[u8]) -> io::Result<usize> {
 pub(crate) fn pwrite(fd: BorrowedFd<'_>, buf: &[u8], pos: u64) -> io::Result<usize> {
     let (buf_addr, buf_len) = slice(buf);
 
-    // <https://github.com/torvalds/linux/blob/fcadab740480e0e0e9fa9bd272acd409884d431a/arch/arm64/kernel/sys32.c#L81-L83>
+    // <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/kernel/sys32.c?h=v6.13#n76>
     #[cfg(all(
         target_pointer_width = "32",
-        any(target_arch = "arm", target_arch = "mips", target_arch = "mips32r6"),
+        any(
+            target_arch = "arm",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "powerpc"
+        ),
     ))]
     unsafe {
         ret_usize(syscall_readonly!(
@@ -162,7 +191,12 @@ pub(crate) fn pwrite(fd: BorrowedFd<'_>, buf: &[u8], pos: u64) -> io::Result<usi
     }
     #[cfg(all(
         target_pointer_width = "32",
-        not(any(target_arch = "arm", target_arch = "mips", target_arch = "mips32r6")),
+        not(any(
+            target_arch = "arm",
+            target_arch = "mips",
+            target_arch = "mips32r6",
+            target_arch = "powerpc"
+        )),
     ))]
     unsafe {
         ret_usize(syscall_readonly!(
@@ -250,7 +284,7 @@ pub(crate) unsafe fn try_close(fd: RawFd) -> io::Result<()> {
 #[inline]
 pub(crate) unsafe fn ioctl(
     fd: BorrowedFd<'_>,
-    request: RawOpcode,
+    request: Opcode,
     arg: *mut c::c_void,
 ) -> io::Result<IoctlOutput> {
     ret_c_int(syscall!(__NR_ioctl, fd, c_uint(request), arg))
@@ -259,53 +293,10 @@ pub(crate) unsafe fn ioctl(
 #[inline]
 pub(crate) unsafe fn ioctl_readonly(
     fd: BorrowedFd<'_>,
-    request: RawOpcode,
+    request: Opcode,
     arg: *mut c::c_void,
 ) -> io::Result<IoctlOutput> {
     ret_c_int(syscall_readonly!(__NR_ioctl, fd, c_uint(request), arg))
-}
-
-#[cfg(all(feature = "fs", feature = "net"))]
-pub(crate) fn is_read_write(fd: BorrowedFd<'_>) -> io::Result<(bool, bool)> {
-    let (mut read, mut write) = crate::fs::fd::_is_file_read_write(fd)?;
-    let mut not_socket = false;
-    if read {
-        // Do a `recv` with `PEEK` and `DONTWAIT` for 1 byte. A 0 indicates
-        // the read side is shut down; an `EWOULDBLOCK` indicates the read
-        // side is still open.
-        let mut buf = [core::mem::MaybeUninit::<u8>::uninit()];
-        match unsafe {
-            crate::backend::net::syscalls::recv(
-                fd,
-                buf.as_mut_ptr().cast::<u8>(),
-                1,
-                RecvFlags::PEEK | RecvFlags::DONTWAIT,
-            )
-        } {
-            Ok(0) => read = false,
-            Err(err) => {
-                #[allow(unreachable_patterns)] // `EAGAIN` may equal `EWOULDBLOCK`
-                match err {
-                    io::Errno::AGAIN | io::Errno::WOULDBLOCK => (),
-                    io::Errno::NOTSOCK => not_socket = true,
-                    _ => return Err(err),
-                }
-            }
-            Ok(_) => (),
-        }
-    }
-    if write && !not_socket {
-        // Do a `send` with `DONTWAIT` for 0 bytes. An `EPIPE` indicates
-        // the write side is shut down.
-        #[allow(unreachable_patterns)] // `EAGAIN` equals `EWOULDBLOCK`
-        match crate::backend::net::syscalls::send(fd, &[], SendFlags::DONTWAIT) {
-            Err(io::Errno::AGAIN | io::Errno::WOULDBLOCK | io::Errno::NOTSOCK) => (),
-            Err(io::Errno::PIPE) => write = false,
-            Err(err) => return Err(err),
-            Ok(_) => (),
-        }
-    }
-    Ok((read, write))
 }
 
 #[inline]

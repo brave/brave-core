@@ -3,8 +3,8 @@
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
 use super::vecs::{MutableZeroVecLike, ZeroVecLike};
+use crate::ule::vartuple::VarTupleULE;
 use crate::ule::*;
-use crate::vecs::{FlexZeroSlice, FlexZeroVec};
 use crate::vecs::{VarZeroSlice, VarZeroVec};
 use crate::zerovec::{ZeroSlice, ZeroVec};
 use alloc::boxed::Box;
@@ -15,7 +15,6 @@ use alloc::boxed::Box;
 /// implementing your own [`AsULE`] or [`VarULE`] type you may wish to implement
 /// this trait.
 // this lifetime should be a GAT on Container once that is possible
-#[allow(clippy::upper_case_acronyms)] // KV is not an acronym
 pub trait ZeroMapKV<'a> {
     /// The container that can be used with this type: [`ZeroVec`] or [`VarZeroVec`].
     type Container: MutableZeroVecLike<
@@ -42,7 +41,7 @@ pub trait ZeroMapKV<'a> {
 }
 
 macro_rules! impl_sized_kv {
-    ($ty:ident) => {
+    ($ty:path) => {
         impl<'a> ZeroMapKV<'a> for $ty {
             type Container = ZeroVec<'a, $ty>;
             type Slice = ZeroSlice<$ty>;
@@ -66,12 +65,8 @@ impl_sized_kv!(char);
 impl_sized_kv!(f32);
 impl_sized_kv!(f64);
 
-impl<'a> ZeroMapKV<'a> for usize {
-    type Container = FlexZeroVec<'a>;
-    type Slice = FlexZeroSlice;
-    type GetType = [u8];
-    type OwnedType = usize;
-}
+impl_sized_kv!(core::num::NonZeroU8);
+impl_sized_kv!(core::num::NonZeroI8);
 
 impl<'a, T> ZeroMapKV<'a> for Option<T>
 where
@@ -91,6 +86,17 @@ where
     type Slice = VarZeroSlice<OptionVarULE<T>>;
     type GetType = OptionVarULE<T>;
     type OwnedType = Box<OptionVarULE<T>>;
+}
+
+impl<'a, A, B> ZeroMapKV<'a> for VarTupleULE<A, B>
+where
+    A: AsULE + 'static,
+    B: VarULE + ?Sized,
+{
+    type Container = VarZeroVec<'a, VarTupleULE<A, B>>;
+    type Slice = VarZeroSlice<VarTupleULE<A, B>>;
+    type GetType = VarTupleULE<A, B>;
+    type OwnedType = Box<VarTupleULE<A, B>>;
 }
 
 impl<'a> ZeroMapKV<'a> for str {

@@ -145,19 +145,8 @@ unsafe impl<R: RawMutex + Sync, T: ?Sized + Send> Sync for Mutex<R, T> {}
 
 impl<R: RawMutex, T> Mutex<R, T> {
     /// Creates a new mutex in an unlocked state ready for use.
-    #[cfg(has_const_fn_trait_bound)]
     #[inline]
     pub const fn new(val: T) -> Mutex<R, T> {
-        Mutex {
-            raw: R::INIT,
-            data: UnsafeCell::new(val),
-        }
-    }
-
-    /// Creates a new mutex in an unlocked state ready for use.
-    #[cfg(not(has_const_fn_trait_bound))]
-    #[inline]
-    pub fn new(val: T) -> Mutex<R, T> {
         Mutex {
             raw: R::INIT,
             data: UnsafeCell::new(val),
@@ -219,6 +208,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
     /// Attempts to lock a mutex in the thread which already holds the lock will
     /// result in a deadlock.
     #[inline]
+    #[track_caller]
     pub fn lock(&self) -> MutexGuard<'_, R, T> {
         self.raw.lock();
         // SAFETY: The lock is held, as required.
@@ -233,6 +223,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
     ///
     /// This function does not block.
     #[inline]
+    #[track_caller]
     pub fn try_lock(&self) -> Option<MutexGuard<'_, R, T>> {
         if self.raw.try_lock() {
             // SAFETY: The lock is held, as required.
@@ -253,6 +244,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
 
     /// Checks whether the mutex is currently locked.
     #[inline]
+    #[track_caller]
     pub fn is_locked(&self) -> bool {
         self.raw.is_locked()
     }
@@ -269,6 +261,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
     /// `MutexGuard` but that guard has been discarded using `mem::forget`.
     /// Behavior is undefined if a mutex is unlocked when not locked.
     #[inline]
+    #[track_caller]
     pub unsafe fn force_unlock(&self) {
         self.raw.unlock();
     }
@@ -326,6 +319,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
     /// and the resulting mutex guard has no lifetime requirements.
     #[cfg(feature = "arc_lock")]
     #[inline]
+    #[track_caller]
     pub fn lock_arc(self: &Arc<Self>) -> ArcMutexGuard<R, T> {
         self.raw.lock();
         // SAFETY: the locking guarantee is upheld
@@ -338,6 +332,7 @@ impl<R: RawMutex, T: ?Sized> Mutex<R, T> {
     /// `Arc` and the resulting mutex guard has no lifetime requirements.
     #[cfg(feature = "arc_lock")]
     #[inline]
+    #[track_caller]
     pub fn try_lock_arc(self: &Arc<Self>) -> Option<ArcMutexGuard<R, T>> {
         if self.raw.try_lock() {
             // SAFETY: locking guarantee is upheld
@@ -361,6 +356,7 @@ impl<R: RawMutexFair, T: ?Sized> Mutex<R, T> {
     /// `MutexGuard` but that guard has been discarded using `mem::forget`.
     /// Behavior is undefined if a mutex is unlocked when not locked.
     #[inline]
+    #[track_caller]
     pub unsafe fn force_unlock_fair(&self) {
         self.raw.unlock_fair();
     }
@@ -373,6 +369,7 @@ impl<R: RawMutexTimed, T: ?Sized> Mutex<R, T> {
     /// `None` is returned. Otherwise, an RAII guard is returned. The lock will
     /// be unlocked when the guard is dropped.
     #[inline]
+    #[track_caller]
     pub fn try_lock_for(&self, timeout: R::Duration) -> Option<MutexGuard<'_, R, T>> {
         if self.raw.try_lock_for(timeout) {
             // SAFETY: The lock is held, as required.
@@ -388,6 +385,7 @@ impl<R: RawMutexTimed, T: ?Sized> Mutex<R, T> {
     /// `None` is returned. Otherwise, an RAII guard is returned. The lock will
     /// be unlocked when the guard is dropped.
     #[inline]
+    #[track_caller]
     pub fn try_lock_until(&self, timeout: R::Instant) -> Option<MutexGuard<'_, R, T>> {
         if self.raw.try_lock_until(timeout) {
             // SAFETY: The lock is held, as required.
@@ -403,6 +401,7 @@ impl<R: RawMutexTimed, T: ?Sized> Mutex<R, T> {
     /// `Arc` and the resulting mutex guard has no lifetime requirements.
     #[cfg(feature = "arc_lock")]
     #[inline]
+    #[track_caller]
     pub fn try_lock_arc_for(self: &Arc<Self>, timeout: R::Duration) -> Option<ArcMutexGuard<R, T>> {
         if self.raw.try_lock_for(timeout) {
             // SAFETY: locking guarantee is upheld
@@ -418,6 +417,7 @@ impl<R: RawMutexTimed, T: ?Sized> Mutex<R, T> {
     /// an `Arc` and the resulting mutex guard has no lifetime requirements.
     #[cfg(feature = "arc_lock")]
     #[inline]
+    #[track_caller]
     pub fn try_lock_arc_until(
         self: &Arc<Self>,
         timeout: R::Instant,
@@ -564,11 +564,43 @@ impl<'a, R: RawMutex + 'a, T: ?Sized + 'a> MutexGuard<'a, R, T> {
         })
     }
 
+    /// Attempts to make a new `MappedMutexGuard` for a component of the
+    /// locked data. The original guard is returned alongside arbitrary user data
+    /// if the closure returns `Err`.
+    ///
+    /// This operation cannot fail as the `MutexGuard` passed
+    /// in already locked the mutex.
+    ///
+    /// This is an associated function that needs to be
+    /// used as `MutexGuard::try_map_or_err(...)`. A method would interfere with methods of
+    /// the same name on the contents of the locked data.
+    #[inline]
+    pub fn try_map_or_err<U: ?Sized, F, E>(
+        s: Self,
+        f: F,
+    ) -> Result<MappedMutexGuard<'a, R, U>, (Self, E)>
+    where
+        F: FnOnce(&mut T) -> Result<&mut U, E>,
+    {
+        let raw = &s.mutex.raw;
+        let data = match f(unsafe { &mut *s.mutex.data.get() }) {
+            Ok(data) => data,
+            Err(e) => return Err((s, e)),
+        };
+        mem::forget(s);
+        Ok(MappedMutexGuard {
+            raw,
+            data,
+            marker: PhantomData,
+        })
+    }
+
     /// Temporarily unlocks the mutex to execute the given function.
     ///
     /// This is safe because `&mut` guarantees that there exist no other
     /// references to the data protected by the mutex.
     #[inline]
+    #[track_caller]
     pub fn unlocked<F, U>(s: &mut Self, f: F) -> U
     where
         F: FnOnce() -> U,
@@ -607,6 +639,7 @@ impl<'a, R: RawMutexFair + 'a, T: ?Sized + 'a> MutexGuard<'a, R, T> {
     /// the lock to pass on to a waiting thread if there is one. This is done by
     /// using this method instead of dropping the `MutexGuard` normally.
     #[inline]
+    #[track_caller]
     pub fn unlock_fair(s: Self) {
         // Safety: A MutexGuard always holds the lock.
         unsafe {
@@ -622,6 +655,7 @@ impl<'a, R: RawMutexFair + 'a, T: ?Sized + 'a> MutexGuard<'a, R, T> {
     /// This is safe because `&mut` guarantees that there exist no other
     /// references to the data protected by the mutex.
     #[inline]
+    #[track_caller]
     pub fn unlocked_fair<F, U>(s: &mut Self, f: F) -> U
     where
         F: FnOnce() -> U,
@@ -640,6 +674,7 @@ impl<'a, R: RawMutexFair + 'a, T: ?Sized + 'a> MutexGuard<'a, R, T> {
     /// by `lock`, however it can be much more efficient in the case where there
     /// are no waiting threads.
     #[inline]
+    #[track_caller]
     pub fn bump(s: &mut Self) {
         // Safety: A MutexGuard always holds the lock.
         unsafe {
@@ -721,14 +756,14 @@ impl<R: RawMutex, T: ?Sized> ArcMutexGuard<R, T> {
 
     /// Unlocks the mutex and returns the `Arc` that was held by the [`ArcMutexGuard`].
     #[inline]
+    #[track_caller]
     pub fn into_arc(s: Self) -> Arc<Mutex<R, T>> {
-        // Safety: Skip our Drop impl and manually unlock the mutex.
-        let arc = unsafe { ptr::read(&s.mutex) };
-        mem::forget(s);
+        // SAFETY: Skip our Drop impl and manually unlock the mutex.
+        let s = ManuallyDrop::new(s);
         unsafe {
-            arc.raw.unlock();
+            s.mutex.raw.unlock();
+            ptr::read(&s.mutex)
         }
-        arc
     }
 
     /// Temporarily unlocks the mutex to execute the given function.
@@ -736,6 +771,7 @@ impl<R: RawMutex, T: ?Sized> ArcMutexGuard<R, T> {
     /// This is safe because `&mut` guarantees that there exist no other
     /// references to the data protected by the mutex.
     #[inline]
+    #[track_caller]
     pub fn unlocked<F, U>(s: &mut Self, f: F) -> U
     where
         F: FnOnce() -> U,
@@ -755,21 +791,27 @@ impl<R: RawMutexFair, T: ?Sized> ArcMutexGuard<R, T> {
     ///
     /// This is functionally identical to the `unlock_fair` method on [`MutexGuard`].
     #[inline]
+    #[track_caller]
     pub fn unlock_fair(s: Self) {
-        // Safety: A MutexGuard always holds the lock.
+        drop(Self::into_arc_fair(s));
+    }
+
+    /// Unlocks the mutex using a fair unlock protocol and returns the `Arc` that was held by the [`ArcMutexGuard`].
+    #[inline]
+    pub fn into_arc_fair(s: Self) -> Arc<Mutex<R, T>> {
+        // SAFETY: Skip our Drop impl and manually unlock the mutex.
+        let s = ManuallyDrop::new(s);
         unsafe {
             s.mutex.raw.unlock_fair();
+            ptr::read(&s.mutex)
         }
-
-        // SAFETY: make sure the Arc gets it reference decremented
-        let mut s = ManuallyDrop::new(s);
-        unsafe { ptr::drop_in_place(&mut s.mutex) };
     }
 
     /// Temporarily unlocks the mutex to execute the given function.
     ///
     /// This is functionally identical to the `unlocked_fair` method on [`MutexGuard`].
     #[inline]
+    #[track_caller]
     pub fn unlocked_fair<F, U>(s: &mut Self, f: F) -> U
     where
         F: FnOnce() -> U,
@@ -786,6 +828,7 @@ impl<R: RawMutexFair, T: ?Sized> ArcMutexGuard<R, T> {
     ///
     /// This is functionally identical to the `bump` method on [`MutexGuard`].
     #[inline]
+    #[track_caller]
     pub fn bump(s: &mut Self) {
         // Safety: A MutexGuard always holds the lock.
         unsafe {
@@ -896,6 +939,37 @@ impl<'a, R: RawMutex + 'a, T: ?Sized + 'a> MappedMutexGuard<'a, R, T> {
             marker: PhantomData,
         })
     }
+
+    /// Attempts to make a new `MappedMutexGuard` for a component of the
+    /// locked data. The original guard is returned alongside arbitrary user data
+    /// if the closure returns `Err`.
+    ///
+    /// This operation cannot fail as the `MappedMutexGuard` passed
+    /// in already locked the mutex.
+    ///
+    /// This is an associated function that needs to be
+    /// used as `MappedMutexGuard::try_map_or_err(...)`. A method would interfere with methods of
+    /// the same name on the contents of the locked data.
+    #[inline]
+    pub fn try_map_or_err<U: ?Sized, F, E>(
+        s: Self,
+        f: F,
+    ) -> Result<MappedMutexGuard<'a, R, U>, (Self, E)>
+    where
+        F: FnOnce(&mut T) -> Result<&mut U, E>,
+    {
+        let raw = s.raw;
+        let data = match f(unsafe { &mut *s.data }) {
+            Ok(data) => data,
+            Err(e) => return Err((s, e)),
+        };
+        mem::forget(s);
+        Ok(MappedMutexGuard {
+            raw,
+            data,
+            marker: PhantomData,
+        })
+    }
 }
 
 impl<'a, R: RawMutexFair + 'a, T: ?Sized + 'a> MappedMutexGuard<'a, R, T> {
@@ -912,6 +986,7 @@ impl<'a, R: RawMutexFair + 'a, T: ?Sized + 'a> MappedMutexGuard<'a, R, T> {
     /// the lock to pass on to a waiting thread if there is one. This is done by
     /// using this method instead of dropping the `MutexGuard` normally.
     #[inline]
+    #[track_caller]
     pub fn unlock_fair(s: Self) {
         // Safety: A MutexGuard always holds the lock.
         unsafe {

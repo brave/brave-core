@@ -10,6 +10,8 @@ mod error {
         FindExistingObject(#[from] object::find::existing::Error),
         #[error("The commit could not be decoded fully or partially")]
         Decode(#[from] gix_object::decode::Error),
+        #[error("The commit date could not be parsed")]
+        ParseDate(#[from] gix_date::parse::Error),
         #[error("Expected object of type {}, but got {}", .expected, .actual)]
         ObjectKind {
             expected: gix_object::Kind,
@@ -21,7 +23,7 @@ mod error {
 pub use error::Error;
 
 /// Remove Lifetime
-impl<'repo> Commit<'repo> {
+impl Commit<'_> {
     /// Create an owned instance of this object, copying our data in the process.
     pub fn detached(&self) -> ObjectDetached {
         ObjectDetached {
@@ -74,7 +76,7 @@ impl<'repo> Commit<'repo> {
     ///
     /// For the time at which it was authored, refer to `.decode()?.author.time`.
     pub fn time(&self) -> Result<gix_date::Time, Error> {
-        Ok(self.committer()?.time)
+        Ok(self.committer()?.time()?)
     }
 
     /// Decode the entire commit object and return it for accessing all commit information.
@@ -167,7 +169,7 @@ impl<'repo> Commit<'repo> {
     }
 }
 
-impl<'r> std::fmt::Debug for Commit<'r> {
+impl std::fmt::Debug for Commit<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Commit({})", self.id)
     }

@@ -9,19 +9,16 @@ use crate::{
 };
 use crossbeam_deque::{Injector, Steal, Stealer, Worker};
 use std::cell::Cell;
-use std::collections::hash_map::DefaultHasher;
 use std::fmt;
-use std::hash::Hasher;
+use std::hash::{DefaultHasher, Hasher};
 use std::io;
 use std::mem;
 use std::ptr;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Once};
 use std::thread;
-use std::usize;
 
-/// Thread builder used for customization via
-/// [`ThreadPoolBuilder::spawn_handler`](struct.ThreadPoolBuilder.html#method.spawn_handler).
+/// Thread builder used for customization via [`ThreadPoolBuilder::spawn_handler()`].
 pub struct ThreadBuilder {
     name: Option<String>,
     stack_size: Option<usize>,
@@ -142,7 +139,7 @@ pub(super) struct Registry {
     //
     // - if this is the global registry, there is a ref-count that never
     //   gets released.
-    // - if this is a user-created thread-pool, then so long as the thread-pool
+    // - if this is a user-created thread pool, then so long as the thread pool
     //   exists, it holds a reference.
     // - when we inject a "blocking job" into the registry with `ThreadPool::install()`,
     //   no adjustment is needed; the `ThreadPool` holds the reference, and since we won't
@@ -153,8 +150,8 @@ pub(super) struct Registry {
     terminate_count: AtomicUsize,
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Initialization
+// ////////////////////////////////////////////////////////////////////////
+// Initialization
 
 static mut THE_REGISTRY: Option<Arc<Registry>> = None;
 static THE_REGISTRY_SET: Once = Once::new();
@@ -164,7 +161,13 @@ static THE_REGISTRY_SET: Once = Once::new();
 /// configuration.
 pub(super) fn global_registry() -> &'static Arc<Registry> {
     set_global_registry(default_global_registry)
-        .or_else(|err| unsafe { THE_REGISTRY.as_ref().ok_or(err) })
+        .or_else(|err| {
+            // SAFETY: we only create a shared reference to `THE_REGISTRY` after the `call_once`
+            // that initializes it, and there will be no more mutable accesses at all.
+            debug_assert!(THE_REGISTRY_SET.is_completed());
+            let the_registry = unsafe { &*ptr::addr_of!(THE_REGISTRY) };
+            the_registry.as_ref().ok_or(err)
+        })
         .expect("The global thread pool has not been initialized.")
 }
 
@@ -190,8 +193,14 @@ where
     ));
 
     THE_REGISTRY_SET.call_once(|| {
-        result = registry()
-            .map(|registry: Arc<Registry>| unsafe { &*THE_REGISTRY.get_or_insert(registry) })
+        result = registry().map(|registry: Arc<Registry>| {
+            // SAFETY: this is the only mutable access to `THE_REGISTRY`, thanks to `Once`, and
+            // `global_registry()` only takes a shared reference **after** this `call_once`.
+            unsafe {
+                ptr::addr_of_mut!(THE_REGISTRY).write(Some(registry));
+                (*ptr::addr_of!(THE_REGISTRY)).as_ref().unwrap_unchecked()
+            }
+        })
     });
 
     result
@@ -393,11 +402,11 @@ impl Registry {
         }
     }
 
-    /// ////////////////////////////////////////////////////////////////////////
-    /// MAIN LOOP
-    ///
-    /// So long as all of the worker threads are hanging out in their
-    /// top-level loop, there is no work to be done.
+    // ////////////////////////////////////////////////////////////////////////
+    // MAIN LOOP
+    //
+    // So long as all of the worker threads are hanging out in their
+    // top-level loop, there is no work to be done.
 
     /// Push a job into the given `registry`. If we are running on a
     /// worker thread for the registry, this will push onto the
@@ -480,7 +489,7 @@ impl Registry {
     }
 
     /// If already in a worker-thread of this registry, just execute `op`.
-    /// Otherwise, inject `op` in this thread-pool. Either way, block until `op`
+    /// Otherwise, inject `op` in this thread pool. Either way, block until `op`
     /// completes and return its return value. If `op` panics, that panic will
     /// be propagated as well.  The second argument indicates `true` if injection
     /// was performed, `false` if executed directly.
@@ -510,7 +519,7 @@ impl Registry {
         OP: FnOnce(&WorkerThread, bool) -> R + Send,
         R: Send,
     {
-        thread_local!(static LOCK_LATCH: LockLatch = LockLatch::new());
+        thread_local!(static LOCK_LATCH: LockLatch = const { LockLatch::new() });
 
         LOCK_LATCH.with(|l| {
             // This thread isn't a member of *any* thread pool, so just block.
@@ -560,13 +569,13 @@ impl Registry {
     ///
     /// Note that blocking functions such as `join` and `scope` do not
     /// need to concern themselves with this fn; their context is
-    /// responsible for ensuring the current thread-pool will not
+    /// responsible for ensuring the current thread pool will not
     /// terminate until they return.
     ///
-    /// The global thread-pool always has an outstanding reference
-    /// (the initial one). Custom thread-pools have one outstanding
+    /// The global thread pool always has an outstanding reference
+    /// (the initial one). Custom thread pools have one outstanding
     /// reference that is dropped when the `ThreadPool` is dropped:
-    /// since installing the thread-pool blocks until any joins/scopes
+    /// since installing the thread pool blocks until any joins/scopes
     /// complete, this ensures that joins/scopes are covered.
     ///
     /// The exception is `::spawn()`, which can create a job outside
@@ -576,13 +585,10 @@ impl Registry {
     pub(super) fn increment_terminate_count(&self) {
         let previous = self.terminate_count.fetch_add(1, Ordering::AcqRel);
         debug_assert!(previous != 0, "registry ref count incremented from zero");
-        assert!(
-            previous != std::usize::MAX,
-            "overflow in registry ref count"
-        );
+        assert!(previous != usize::MAX, "overflow in registry ref count");
     }
 
-    /// Signals that the thread-pool which owns this registry has been
+    /// Signals that the thread pool which owns this registry has been
     /// dropped. The worker threads will gradually terminate, once any
     /// extant work is completed.
     pub(super) fn terminate(&self) {
@@ -635,8 +641,8 @@ impl ThreadInfo {
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// WorkerThread identifiers
+// ////////////////////////////////////////////////////////////////////////
+// WorkerThread identifiers
 
 pub(super) struct WorkerThread {
     /// the "worker" half of our local deque
@@ -658,7 +664,7 @@ pub(super) struct WorkerThread {
 
 // This is a bit sketchy, but basically: the WorkerThread is
 // allocated on the stack of the worker on entry and stored into this
-// thread local variable. So it will remain valid at least until the
+// thread-local variable. So it will remain valid at least until the
 // worker is fully unwound. Using an unsafe pointer avoids the need
 // for a RefCell<T> etc.
 thread_local! {
@@ -694,11 +700,11 @@ impl WorkerThread {
     /// anywhere on the current thread.
     #[inline]
     pub(super) fn current() -> *const WorkerThread {
-        WORKER_THREAD_STATE.with(Cell::get)
+        WORKER_THREAD_STATE.get()
     }
 
-    /// Sets `self` as the worker thread index for the current thread.
-    /// This is done during worker thread startup.
+    /// Sets `self` as the worker-thread index for the current thread.
+    /// This is done during worker-thread startup.
     unsafe fn set_current(thread: *const WorkerThread) {
         WORKER_THREAD_STATE.with(|t| {
             assert!(t.get().is_null());
@@ -899,7 +905,7 @@ impl WorkerThread {
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 unsafe fn main_loop(thread: ThreadBuilder) {
     let worker_thread = &WorkerThread::from(thread);
@@ -911,7 +917,7 @@ unsafe fn main_loop(thread: ThreadBuilder) {
     Latch::set(&registry.thread_infos[index].primed);
 
     // Worker threads should not panic. If they do, just abort, as the
-    // internal state of the threadpool is corrupted. Note that if
+    // internal state of the thread pool is corrupted. Note that if
     // **user code** panics, we should catch that and redirect.
     let abort_guard = unwind::AbortIfPanic;
 
@@ -933,7 +939,7 @@ unsafe fn main_loop(thread: ThreadBuilder) {
 }
 
 /// If already in a worker-thread, just execute `op`.  Otherwise,
-/// execute `op` in the default thread-pool. Either way, block until
+/// execute `op` in the default thread pool. Either way, block until
 /// `op` completes and return its return value. If `op` panics, that
 /// panic will be propagated as well.  The second argument indicates
 /// `true` if injection was performed, `false` if executed directly.

@@ -11,9 +11,9 @@
 
 [package]
 edition = "2018"
-rust-version = "1.60.0"
+rust-version = "1.71.0"
 name = "schannel"
-version = "0.1.27"
+version = "0.1.28"
 authors = [
     "Steven Fackler <sfackler@gmail.com>",
     "Steffen Butzer <steffen.butzer@outlook.com>",
@@ -44,7 +44,7 @@ name = "schannel"
 path = "src/lib.rs"
 
 [dependencies.windows-sys]
-version = "0.59"
+version = "0.61"
 features = [
     "Win32_Foundation",
     "Win32_Security_Cryptography",
@@ -56,7 +56,7 @@ features = [
 ]
 
 [dev-dependencies.windows-sys]
-version = "0.59"
+version = "0.61"
 features = [
     "Win32_System_SystemInformation",
     "Win32_System_Time",

@@ -31,35 +31,35 @@ fn construct_from_str(c: &mut Criterion) {
     bench_block!(c, "construct_from_str", cfs);
 }
 
-fn construct_from_bytes(c: &mut Criterion) {
+fn construct_from_utf8(c: &mut Criterion) {
     macro_rules! cfu {
         ($r:ty, $inputs:expr) => {
             |b| {
                 let raw: Vec<&[u8]> = $inputs.iter().map(|s| s.as_bytes()).collect();
                 b.iter(move || {
                     for u in &raw {
-                        let _ = black_box(<$r>::from_bytes(*u).unwrap());
+                        let _ = black_box(<$r>::try_from_utf8(*u).unwrap());
                     }
                 })
             }
         };
     }
 
-    let mut group4 = c.benchmark_group("construct_from_bytes/4");
+    let mut group4 = c.benchmark_group("construct_from_utf8/4");
     group4.bench_function("TinyAsciiStr<4>", cfu!(TinyAsciiStr<4>, STRINGS_4));
     group4.bench_function("TinyAsciiStr<8>", cfu!(TinyAsciiStr<8>, STRINGS_4));
     group4.bench_function("TinyAsciiStr<16>", cfu!(TinyAsciiStr<16>, STRINGS_4));
     group4.finish();
 
-    let mut group8 = c.benchmark_group("construct_from_bytes/8");
+    let mut group8 = c.benchmark_group("construct_from_utf8/8");
     group8.bench_function("TinyAsciiStr<8>", cfu!(TinyAsciiStr<8>, STRINGS_8));
     group8.bench_function("TinyAsciiStr<16>", cfu!(TinyAsciiStr<16>, STRINGS_8));
     group8.finish();
 
-    let mut group16 = c.benchmark_group("construct_from_bytes/16");
+    let mut group16 = c.benchmark_group("construct_from_utf8/16");
     group16.bench_function("TinyAsciiStr<16>", cfu!(TinyAsciiStr<16>, STRINGS_16));
     group16.finish();
 }
 
-criterion_group!(benches, construct_from_str, construct_from_bytes,);
+criterion_group!(benches, construct_from_str, construct_from_utf8,);
 criterion_main!(benches);

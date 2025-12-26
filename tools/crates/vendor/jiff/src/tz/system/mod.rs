@@ -4,7 +4,7 @@ use alloc::string::ToString;
 
 use crate::{
     error::{err, Error, ErrorContext},
-    tz::{posix::PosixTz, TimeZone, TimeZoneDatabase},
+    tz::{posix::PosixTzEnv, TimeZone, TimeZoneDatabase},
     util::cache::Expiration,
 };
 
@@ -52,7 +52,7 @@ mod sys {
         match super::read_unnamed_tzif_file(path) {
             Ok(tz) => Some(tz),
             Err(_err) => {
-                trace!("failed to read {path} as unnamed time zone: {_err}");
+                debug!("failed to read {path} as unnamed time zone: {_err}");
                 None
             }
         }
@@ -145,10 +145,12 @@ pub(crate) fn get_force(db: &TimeZoneDatabase) -> Result<TimeZone, Error> {
             return Ok(tz);
         }
         Ok(None) => {
-            trace!("checked TZ environment variable but found nothing");
+            debug!("TZ environment variable is not set");
         }
-        Err(_err) => {
-            trace!("checked TZ environment variable but got error: {_err}");
+        Err(err) => {
+            return Err(err.context(
+                "TZ environment variable set, but failed to read value",
+            ));
         }
     }
     if let Some(tz) = sys::get(db) {
@@ -161,12 +163,15 @@ pub(crate) fn get_force(db: &TimeZoneDatabase) -> Result<TimeZone, Error> {
 ///
 /// Basically, `TZ` is usually just an IANA Time Zone Database name like
 /// `TZ=America/New_York` or `TZ=UTC`. But it can also be a POSIX time zone
-/// transition string like `TZ=EST5EDT` or it can be a file path (absolute
-/// or relative) to a TZif file.
+/// transition string like `TZ=EST5EDTM3.2.0,M11.1.0` or it can be a file path
+/// (absolute or relative) to a TZif file.
 ///
 /// We try very hard to extract a time zone name from `TZ` and use that to look
 /// it up via `TimeZoneDatabase`. But we will fall back to unnamed TZif
 /// `TimeZone` if necessary.
+///
+/// This routine only returns `Ok(None)` when `TZ` is not set. If it is set
+/// but a `TimeZone` could not be extracted, then an error is returned.
 fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
     // This routine is pretty Unix-y, but there's no reason it can't
     // partially work on Windows. For example, setting TZ=America/New_York
@@ -174,12 +179,20 @@ fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
     // support it anyway.
 
     let Some(tzenv) = std::env::var_os("TZ") else { return Ok(None) };
+    // It is commonly agreed (across GNU and BSD tooling at least), but
+    // not standard, that setting an empty `TZ=` is indistinguishable from
+    // `TZ=UTC`.
     if tzenv.is_empty() {
-        return Ok(None);
+        debug!(
+            "TZ environment variable set to empty value, \
+             assuming TZ=UTC in order to conform to \
+             widespread convention among Unix tooling",
+        );
+        return Ok(Some(TimeZone::UTC));
     }
-    let tz_name_or_path = match PosixTz::parse_os_str(&tzenv) {
+    let tz_name_or_path = match PosixTzEnv::parse_os_str(&tzenv) {
         Err(_err) => {
-            trace!(
+            debug!(
                 "failed to parse {tzenv:?} as POSIX TZ rule \
                  (attempting to treat it as an IANA time zone): {_err}",
             );
@@ -188,35 +201,23 @@ fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
                 .ok_or_else(|| {
                     err!(
                         "failed to parse {tzenv:?} as a POSIX TZ transition \
-                         string, or as valid UTF-8 \
-                         (therefore ignoring TZ environment variable)",
+                         string, or as valid UTF-8",
                     )
                 })?
                 .to_string()
         }
-        Ok(PosixTz::Implementation(string)) => string.to_string(),
-        Ok(PosixTz::Rule(tz)) => match tz.reasonable() {
-            Ok(reasonable_posix_tz) => {
-                return Ok(Some(TimeZone::from_reasonable_posix_tz(
-                    reasonable_posix_tz,
-                )));
-            }
-            Err(_) => {
-                warn!(
-                    "parsed {tzenv:?} as POSIX TZ transition string, \
-                     but Jiff considers it unreasonable since \
-                     it specifies DST but without a rule \
-                     (therefore ignoring TZ environment variable)",
-                );
-                return Ok(None);
-            }
-        },
+        Ok(PosixTzEnv::Implementation(string)) => string.to_string(),
+        Ok(PosixTzEnv::Rule(tz)) => {
+            return Ok(Some(TimeZone::from_posix_tz(tz)))
+        }
     };
     // At this point, TZ is set to something that is definitively not a
     // POSIX TZ transition string. Some possible values at this point are:
     //
     //   TZ=America/New_York
     //   TZ=:America/New_York
+    //   TZ=EST5EDT
+    //   TZ=:EST5EDT
     //   TZ=/usr/share/zoneinfo/America/New_York
     //   TZ=:/usr/share/zoneinfo/America/New_York
     //   TZ=../zoneinfo/America/New_York
@@ -229,19 +230,28 @@ fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
     let Some(rpos) = tz_name_or_path.rfind(needle) else {
         // No zoneinfo means this is probably a IANA Time Zone name. But...
         // it could just be a file path.
-        trace!(
+        debug!(
             "could not find {needle:?} in TZ={tz_name_or_path:?}, \
              therefore attempting lookup in {db:?}",
         );
         return match db.get(&tz_name_or_path) {
             Ok(tz) => Ok(Some(tz)),
             Err(_err) => {
-                trace!(
+                debug!(
                     "using TZ={tz_name_or_path:?} as time zone name failed, \
                      could not find time zone in zoneinfo database {db:?} \
-                     (continuing to try and use {tz_name_or_path:?}",
+                     (continuing to try and read `{tz_name_or_path}` as \
+                      a TZif file)",
                 );
-                Ok(sys::read(db, &tz_name_or_path))
+                sys::read(db, &tz_name_or_path)
+                    .ok_or_else(|| {
+                        err!(
+                            "failed to read TZ={tz_name_or_path:?} \
+                             as a TZif file after attempting a tzdb \
+                             lookup for `{tz_name_or_path}`",
+                        )
+                    })
+                    .map(Some)
             }
         };
     };
@@ -249,14 +259,14 @@ fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
     // from what we now believe is a file path by taking everything after
     // `zoneinfo/`. Once we have that, we try to look it up in our tzdb.
     let name = &tz_name_or_path[rpos + needle.len()..];
-    trace!(
+    debug!(
         "extracted {name:?} from TZ={tz_name_or_path:?} \
          and assuming it is an IANA time zone name",
     );
     match db.get(&name) {
         Ok(tz) => return Ok(Some(tz)),
         Err(_err) => {
-            trace!(
+            debug!(
                 "using {name:?} from TZ={tz_name_or_path:?}, \
                  could not find time zone in zoneinfo database {db:?} \
                  (continuing to try and use {tz_name_or_path:?})",
@@ -268,7 +278,15 @@ fn get_env_tz(db: &TimeZoneDatabase) -> Result<Option<TimeZone>, Error> {
     // The only thing left for us to do is treat the value as a file path
     // and read the data as TZif. This will give us time zone data if it works,
     // but without a name.
-    Ok(sys::read(db, &tz_name_or_path))
+    sys::read(db, &tz_name_or_path)
+        .ok_or_else(|| {
+            err!(
+                "failed to read TZ={tz_name_or_path:?} \
+                 as a TZif file after attempting a tzdb \
+                 lookup for `{name}`",
+            )
+        })
+        .map(Some)
 }
 
 /// Returns the given file path as TZif data without a time zone name.

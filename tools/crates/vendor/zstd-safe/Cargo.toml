@@ -13,10 +13,15 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd-safe"
-version = "7.2.1"
+version = "7.2.4"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 build = "build.rs"
 exclude = ["update_consts.sh"]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Safe low-level bindings for the zstd compression library."
 readme = "Readme.md"
 keywords = [
@@ -28,7 +33,7 @@ categories = [
     "api-bindings",
     "compression",
 ]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/gyscos/zstd-rs"
 
 [package.metadata.docs.rs]
@@ -39,10 +44,6 @@ features = [
     "zdict_builder",
     "doc-cfg",
 ]
-
-[dependencies.zstd-sys]
-version = "2.0.10"
-default-features = false
 
 [features]
 arrays = []
@@ -59,8 +60,20 @@ fat-lto = ["zstd-sys/fat-lto"]
 legacy = ["zstd-sys/legacy"]
 no_asm = ["zstd-sys/no_asm"]
 pkg-config = ["zstd-sys/pkg-config"]
+seekable = ["zstd-sys/seekable"]
 std = ["zstd-sys/std"]
 thin = ["zstd-sys/thin"]
 thin-lto = ["zstd-sys/thin-lto"]
 zdict_builder = ["zstd-sys/zdict_builder"]
 zstdmt = ["zstd-sys/zstdmt"]
+
+[lib]
+name = "zstd_safe"
+path = "src/lib.rs"
+
+[dependencies.zstd-sys]
+version = "2.0.15"
+default-features = false
+
+[lints.rust]
+non_upper_case_globals = "allow"

@@ -1,8 +1,10 @@
-use crate::bstr::BStr;
 use std::borrow::Cow;
 
-use crate::config::tree::{Remote, Section};
-use crate::remote;
+use crate::{
+    bstr::BStr,
+    config::tree::{Remote, Section},
+    remote,
+};
 
 /// Query configuration related to remotes.
 impl crate::Repository {

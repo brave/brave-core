@@ -39,10 +39,7 @@ impl Marker {
     pub fn commit(mut self) -> Result<PathBuf, Error<Self>> {
         if !self.created_from_file {
             return Err(Error {
-                error: std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "refusing to commit marker that was never opened",
-                ),
+                error: std::io::Error::other("refusing to commit marker that was never opened"),
                 instance: self,
             });
         }

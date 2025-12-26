@@ -1,9 +1,6 @@
 use gix_hash::ObjectId;
 
-use crate::{
-    extension::Tree,
-    util::{split_at_byte_exclusive, split_at_pos},
-};
+use crate::{extension::Tree, util::split_at_byte_exclusive};
 
 /// A recursive data structure
 pub fn decode(data: &[u8], object_hash: gix_hash::Kind) -> Option<Tree> {
@@ -26,7 +23,7 @@ fn one_recursive(data: &[u8], hash_len: usize) -> Option<(Tree, &[u8])> {
     let subtree_count: usize = gix_utils::btoi::to_unsigned(subtree_count).ok()?;
 
     let (id, mut data) = if num_entries >= 0 {
-        let (hash, data) = split_at_pos(data, hash_len)?;
+        let (hash, data) = data.split_at_checked(hash_len)?;
         (ObjectId::from_bytes_or_panic(hash), data)
     } else {
         (

@@ -87,8 +87,8 @@ Fourth, run it with `cargo run`:
 
 ```text
 $ cargo run
-   Compiling jiff v0.1.0 (/home/andrew/rust/jiff)
-   Compiling jiff-play v0.1.0 (/home/andrew/tmp/scratch/rust/jiff-play)
+   Compiling jiff v0.2.0 (/home/andrew/rust/jiff)
+   Compiling jiff-play v0.2.0 (/home/andrew/tmp/scratch/rust/jiff-play)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.37s
      Running `target/debug/jiff-play`
 2024-07-10T19:54:20-04:00[America/New_York]
@@ -108,10 +108,11 @@ documentation lists the full set of supported features.
 
 ### Future plans
 
-My plan is to iterate on the Jiff API and make occasional breaking change
-releases over the next ~year. Assuming API breaking changes have settled down
-after about one year's time, my plan will be to release Jiff 1.0 and commit to
-the API for a long period of time. (Measured, at least, in years.)
+With `jiff 0.2` out about 6 months after the `jiff 0.1` initial release, my
+plan remains roughly the same as it started. That is, I'd still like to get a
+`jiff 1.0` release out this summer 2025 (in about 6 months) and then commit to
+it indefinitely. This plan may change if something critically wrong is found
+with the current API.
 
 The purpose of this plan is to get Jiff to a 1.0 stable state as quickly as
 possible. The reason is so that others feel comfortable relying on Jiff as
@@ -123,6 +124,11 @@ The most important design goal of Jiff is to be a high level datetime library
 that makes it hard to do the wrong thing. Second to that is performance. Jiff
 should have reasonable performance, but there are likely areas in which it
 could improve. See the `bench` directory for benchmarks.
+
+Note that performance is still an important goal. Some aspects of Jiff have
+had optimization attention paid to them, but many still have not. It is a goal
+to improve where we can, but performance will generally come second to API
+comprehension and correctness.
 
 ### Platform support
 

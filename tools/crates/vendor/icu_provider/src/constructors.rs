@@ -18,12 +18,11 @@
 //! However, as manual data management can be tedious, ICU4X also has a `compiled_data`
 //! default Cargo feature that includes data and makes ICU4X work out-of-the box.
 //!
-//! Subsequently, there are 4 versions of all Rust ICU4X functions that use data:
+//! Subsequently, there are 3 versions of all Rust ICU4X functions that use data:
 //!
 //! 1. `*`
 //! 2. `*_unstable`
-//! 3. `*_with_any_provider`
-//! 4. `*_with_buffer_provider`
+//! 3. `*_with_buffer_provider`
 //!
 //! # Which constructor should I use?
 //!
@@ -47,16 +46,6 @@
 //! Since the exact set of bounds may change at any time, including in minor SemVer releases,
 //! it is the client's responsibility to guarantee that the requirement is upheld.
 //!
-//! ## When to use `*_with_any_provider`
-//!
-//! Use this constructor if you need to use a provider that implements [`AnyProvider`] but not
-//! [`DataProvider`]. Examples:
-//!
-//! 1. [`AnyPayloadProvider`]
-//! 2. [`ForkByKeyProvider`] between two providers implementing [`AnyProvider`]
-//! 3. Providers that cache or override certain keys but not others and therefore
-//!    can't implement [`DataProvider`]
-//!
 //! ## When to use `*_with_buffer_provider`
 //!
 //! Use this constructor if your data originates as byte buffers that need to be deserialized.
@@ -64,19 +53,19 @@
 //!
 //! 1. [`BlobDataProvider`]
 //! 2. [`FsDataProvider`]
-//! 3. [`ForkByKeyProvider`] between two providers implementing [`BufferProvider`]
+//! 3. [`ForkByMarkerProvider`] between two providers implementing [`BufferProvider`]
 //!
 //! Please note that you must enable the `serde` Cargo feature on each crate in which you use the
 //! `*_with_buffer_provider` constructor.
 //!
 //! # Data Versioning Policy
 //!
-//! The `*_with_any_provider` and `*_with_buffer_provider` functions will succeed to compile and
-//! run if given a data provider supporting all of the keys required for the object being
+//! The `*_with_buffer_provider` functions will succeed to compile and
+//! run if given a data provider supporting all of the markers required for the object being
 //! constructed, either the current or any previous version within the same SemVer major release.
 //! For example, if a data file is built to support FooFormatter version 1.1, then FooFormatter
-//! version 1.2 will be able to read the same data file. Likewise, backwards-compatible keys can
-//! always be included by `icu_datagen` to support older library versions.
+//! version 1.2 will be able to read the same data file. Likewise, backwards-compatible markers can
+//! always be included by `icu_provider_export` to support older library versions.
 //!
 //! The `*_unstable` functions are only guaranteed to work on data built for the exact same minor version
 //! of ICU4X. The advantage of the `*_unstable` functions is that they result in the smallest code
@@ -102,29 +91,21 @@
 //!    benefit is limited.
 //!
 //! [`DataProvider`]: crate::DataProvider
-//! [`BufferProvider`]: crate::BufferProvider
-//! [`AnyProvider`]: crate::AnyProvider
-//! [`AnyPayloadProvider`]: ../../icu_provider_adapters/any_payload/struct.AnyPayloadProvider.html
-//! [`ForkByKeyProvider`]: ../../icu_provider_adapters/fork/struct.ForkByKeyProvider.html
+//! [`BufferProvider`]: crate::buf::BufferProvider
+//! [`FixedProvider`]: ../../icu_provider_adapters/fixed/struct.FixedProvider.html
+//! [`ForkByMarkerProvider`]: ../../icu_provider_adapters/fork/struct.ForkByMarkerProvider.html
 //! [`BlobDataProvider`]: ../../icu_provider_blob/struct.BlobDataProvider.html
 //! [`StaticDataProvider`]: ../../icu_provider_blob/struct.StaticDataProvider.html
 //! [`FsDataProvider`]: ../../icu_provider_blob/struct.FsDataProvider.html
 //! [`ICU4XDataProvider`]: ../../icu_capi/provider/ffi/struct.ICU4XDataProvider.html
 
-#[doc(hidden)]
+#[doc(hidden)] // macro
 #[macro_export]
-macro_rules! gen_any_buffer_unstable_docs {
-    (ANY, $data:path) => {
-        concat!(
-            "A version of [`", stringify!($data), "`] that uses custom data ",
-            "provided by an [`AnyProvider`](icu_provider::AnyProvider).\n\n",
-            "[📚 Help choosing a constructor](icu_provider::constructors)",
-        )
-    };
+macro_rules! gen_buffer_unstable_docs {
     (BUFFER, $data:path) => {
         concat!(
             "A version of [`", stringify!($data), "`] that uses custom data ",
-            "provided by a [`BufferProvider`](icu_provider::BufferProvider).\n\n",
+            "provided by a [`BufferProvider`].\n\n",
             "✨ *Enabled with the `serde` feature.*\n\n",
             "[📚 Help choosing a constructor](icu_provider::constructors)",
         )
@@ -132,242 +113,114 @@ macro_rules! gen_any_buffer_unstable_docs {
     (UNSTABLE, $data:path) => {
         concat!(
             "A version of [`", stringify!($data), "`] that uses custom data ",
-            "provided by a [`DataProvider`](icu_provider::DataProvider).\n\n",
+            "provided by a [`DataProvider`].\n\n",
             "[📚 Help choosing a constructor](icu_provider::constructors)\n\n",
             "<div class=\"stab unstable\">⚠️ The bounds on <tt>provider</tt> may change over time, including in SemVer minor releases.</div>"
         )
     };
 }
 
-#[allow(clippy::crate_in_macro_def)] // by convention each crate's data provider is `crate::provider::Baked`
-#[doc(hidden)]
+/// Usage:
+///
+/// ```rust,ignore
+/// gen_buffer_data_constructors!((locale, options: FooOptions) -> error: DataError,
+///    /// Some docs
+///   functions: [try_new, try_new_with_buffer_provider, try_new_unstable]
+/// );
+/// ```
+///
+/// `functions` can be omitted if using standard names. If `locale` is omitted, the method will not take a locale. You can specify any number
+/// of options arguments, including zero.
+///
+/// By default the macro will generate a `try_new`. If you wish to skip it, write `try_new: skip`
+///
+/// Errors can be specified as `error: SomeError` or `result: SomeType`, where `error` will get it wrapped in `Result<Self, SomeError>`.
+#[expect(clippy::crate_in_macro_def)] // by convention each crate's data provider is `crate::provider::Baked`
+#[doc(hidden)] // macro
 #[macro_export]
-macro_rules! gen_any_buffer_data_constructors {
-    (locale: skip, options: skip, error: $error_ty:path, $(#[$doc:meta])+) => {
-        $crate::gen_any_buffer_data_constructors!(
-            locale: skip,
-            options: skip,
-            error: $error_ty,
-            $(#[$doc])+
+macro_rules! gen_buffer_data_constructors {
+    // Allow people to omit the functions
+    (($($args:tt)*) -> $error_kind:ident: $error_ty:ty, $(#[$doc:meta])*) => {
+        $crate::gen_buffer_data_constructors!(
+            ($($args)*) -> $error_kind: $error_ty,
+            $(#[$doc])*
             functions: [
                 try_new,
-                try_new_with_any_provider,
                 try_new_with_buffer_provider,
                 try_new_unstable,
                 Self,
             ]
         );
     };
-    (locale: skip, options: skip, error: $error_ty:path, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        pub fn $baked() -> Result<Self, $error_ty> {
-            $($struct :: )? $unstable(&crate::provider::Baked)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized)) -> Result<Self, $error_ty> {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting())
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized)) -> Result<Self, $error_ty> {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing())
-        }
-    };
-
-
-    (locale: skip, options: skip, result: $result_ty:path, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        pub fn $baked() -> $result_ty {
-            $($struct :: )? $unstable(&crate::provider::Baked)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized)) -> $result_ty {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting())
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized)) -> $result_ty {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing())
-        }
-    };
-
-    (locale: skip, $options_arg:ident: $options_ty:ty, error: $error_ty:path, $(#[$doc:meta])+) => {
-        $crate::gen_any_buffer_data_constructors!(
-            locale: skip,
-            $options_arg: $options_ty,
-            error: $error_ty,
-            $(#[$doc])+
+    // Allow people to specify errors instead of results
+    (($($args:tt)*) -> error: $error_ty:path, $(#[$doc:meta])* functions: [$baked:ident$(: $baked_cmd:ident)?, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
+        $crate::gen_buffer_data_constructors!(
+            ($($args)*) -> result: Result<Self, $error_ty>,
+            $(#[$doc])*
             functions: [
-                try_new,
-                try_new_with_any_provider,
-                try_new_with_buffer_provider,
-                try_new_unstable,
-                Self,
+                $baked$(: $baked_cmd)?,
+                $buffer,
+                $unstable
+                $(, $struct)?
             ]
         );
     };
-    (locale: skip, $options_arg:ident: $options_ty:ty, result: $result_ty:ty, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        ///
-        /// ✨ *Enabled with the `compiled_data` Cargo feature.*
-        ///
-        /// [📚 Help choosing a constructor](icu_provider::constructors)
-        pub fn $baked($options_arg: $options_ty) -> $result_ty {
-            $($struct :: )? $unstable(&crate::provider::Baked, $options_arg)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized), $options_arg: $options_ty) -> $result_ty {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting(), $options_arg)
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized), $options_arg: $options_ty) -> $result_ty {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing(), $options_arg)
-        }
-    };
-    (locale: skip, $options_arg:ident: $options_ty:ty, error: $error_ty:ty, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        ///
-        /// ✨ *Enabled with the `compiled_data` Cargo feature.*
-        ///
-        /// [📚 Help choosing a constructor](icu_provider::constructors)
-        pub fn $baked($options_arg: $options_ty) -> Result<Self, $error_ty> {
-            $($struct :: )? $unstable(&crate::provider::Baked, $options_arg)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized), $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting(), $options_arg)
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized), $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing(), $options_arg)
-        }
-    };
-    (locale: include, options: skip, error: $error_ty:path, $(#[$doc:meta])+) => {
-        $crate::gen_any_buffer_data_constructors!(
-            locale: include,
-            options: skip,
-            error: $error_ty,
-            $(#[$doc])+
+
+    // locale shorthand
+    ((locale, $($args:tt)*) -> result: $result_ty:ty, $(#[$doc:meta])* functions: [$baked:ident$(: $baked_cmd:ident)?, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
+        $crate::gen_buffer_data_constructors!(
+            (locale: &$crate::DataLocale, $($args)*) -> result: $result_ty,
+            $(#[$doc])*
             functions: [
-                try_new,
-                try_new_with_any_provider,
-                try_new_with_buffer_provider,
-                try_new_unstable,
-                Self,
+                $baked$(: $baked_cmd)?,
+                $buffer,
+                $unstable
+                $(, $struct)?
             ]
         );
     };
-    (locale: include, options: skip, error: $error_ty:path, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        ///
-        /// ✨ *Enabled with the `compiled_data` Cargo feature.*
-        ///
-        /// [📚 Help choosing a constructor](icu_provider::constructors)
-        pub fn $baked(locale: &$crate::DataLocale) -> Result<Self, $error_ty> {
-            $($struct :: )? $unstable(&crate::provider::Baked, locale)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized), locale: &$crate::DataLocale) -> Result<Self, $error_ty> {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting(), locale)
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized), locale: &$crate::DataLocale) -> Result<Self, $error_ty> {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing(), locale)
-        }
+    ((locale) -> result: $result_ty:ty, $(#[$doc:meta])* functions: [$baked:ident$(: $baked_cmd:ident)?, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
+        $crate::gen_buffer_data_constructors!(
+            (locale: &$crate::DataLocale) -> result: $result_ty,
+            $(#[$doc])*
+            functions: [
+                $baked$(: $baked_cmd)?,
+                $buffer,
+                $unstable
+                $(, $struct)?
+            ]
+        );
     };
 
-    (locale: include, $config_arg:ident: $config_ty:path, $options_arg:ident: $options_ty:path, error: $error_ty:path, $(#[$doc:meta])+) => {
-        $crate::gen_any_buffer_data_constructors!(
-            locale: include,
-            $config_arg: $config_ty,
-            $options_arg: $options_ty,
-            error: $error_ty,
-            $(#[$doc])+
-            functions: [
-                try_new,
-                try_new_with_any_provider,
-                try_new_with_buffer_provider,
-                try_new_unstable,
-                Self,
-            ]
-        );
-    };
-    (locale: include, $config_arg:ident: $config_ty:path, $options_arg:ident: $options_ty:path, error: $error_ty:path, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
-        #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
-        ///
-        /// ✨ *Enabled with the `compiled_data` Cargo feature.*
-        ///
-        /// [📚 Help choosing a constructor](icu_provider::constructors)
-        pub fn $baked(locale: &$crate::DataLocale, $config_arg: $config_ty, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            $($struct :: )? $unstable(&crate::provider::Baked, locale, $config_arg, $options_arg)
-        }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized), locale: &$crate::DataLocale, $config_arg: $config_ty, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting(), locale, $config_arg, $options_arg)
-        }
-        #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized), locale: &$crate::DataLocale, $config_arg: $config_ty, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing(), locale, $config_arg, $options_arg)
-        }
-    };
 
-    (locale: include, $options_arg:ident: $options_ty:path, error: $error_ty:path, $(#[$doc:meta])+) => {
-        $crate::gen_any_buffer_data_constructors!(
-            locale: include,
-            $options_arg: $options_ty,
-            error: $error_ty,
-            $(#[$doc])+
-            functions: [
-                try_new,
-                try_new_with_any_provider,
-                try_new_with_buffer_provider,
-                try_new_unstable,
-                Self,
-            ]
-        );
-    };
-    (locale: include, $options_arg:ident: $options_ty:path, error: $error_ty:path, $(#[$doc:meta])+ functions: [$baked:ident, $any:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
+    (($($options_arg:ident: $options_ty:ty),*) -> result: $result_ty:ty, $(#[$doc:meta])* functions: [$baked:ident, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
         #[cfg(feature = "compiled_data")]
-        $(#[$doc])+
+        $(#[$doc])*
         ///
         /// ✨ *Enabled with the `compiled_data` Cargo feature.*
         ///
         /// [📚 Help choosing a constructor](icu_provider::constructors)
-        pub fn $baked(locale: &$crate::DataLocale, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            $($struct :: )? $unstable(&crate::provider::Baked, locale, $options_arg)
+        pub fn $baked($($options_arg: $options_ty),* ) -> $result_ty {
+            $($struct :: )? $unstable(&crate::provider::Baked $(, $options_arg)* )
         }
-        #[doc = $crate::gen_any_buffer_unstable_docs!(ANY, $($struct ::)? $baked)]
-        pub fn $any(provider: &(impl $crate::AnyProvider + ?Sized), locale: &$crate::DataLocale, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDowncastingAnyProvider;
-            $($struct :: )? $unstable(&provider.as_downcasting(), locale, $options_arg)
-        }
+
+        $crate::gen_buffer_data_constructors!(
+            ($($options_arg: $options_ty),*) -> result: $result_ty,
+            $(#[$doc])*
+            functions: [
+                $baked: skip,
+                $buffer,
+                $unstable
+                $(, $struct)?
+            ]
+        );
+    };
+    (($($options_arg:ident: $options_ty:ty),*) -> result: $result_ty:ty, $(#[$doc:meta])* functions: [$baked:ident: skip, $buffer:ident, $unstable:ident $(, $struct:ident)? $(,)?]) => {
         #[cfg(feature = "serde")]
-        #[doc = $crate::gen_any_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
-        pub fn $buffer(provider: &(impl $crate::BufferProvider + ?Sized), locale: &$crate::DataLocale, $options_arg: $options_ty) -> Result<Self, $error_ty> {
-            use $crate::AsDeserializingBufferProvider;
-            $($struct :: )? $unstable(&provider.as_deserializing(), locale, $options_arg)
+        #[doc = $crate::gen_buffer_unstable_docs!(BUFFER, $($struct ::)? $baked)]
+        pub fn $buffer(provider: &(impl $crate::buf::BufferProvider + ?Sized) $(, $options_arg: $options_ty)* ) -> $result_ty {
+            use $crate::buf::AsDeserializingBufferProvider;
+            $($struct :: )? $unstable(&provider.as_deserializing()  $(, $options_arg)* )
         }
     };
 }

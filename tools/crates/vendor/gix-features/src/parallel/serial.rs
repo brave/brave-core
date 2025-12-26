@@ -42,7 +42,7 @@ mod not_parallel {
         }
     }
 
-    impl<'scope, 'env> Scope<'scope, 'env> {
+    impl<'scope> Scope<'scope, '_> {
         /// Provided with this scope, let `f` start new threads that live within it.
         pub fn spawn<F, T>(&'scope self, f: F) -> ScopedJoinHandle<'scope, T>
         where
@@ -116,12 +116,12 @@ mod not_parallel {
 pub use not_parallel::{build_thread, in_parallel_with_slice, join, threads, Scope};
 
 /// Read items from `input` and `consume` them in a single thread, producing an output to be collected by a `reducer`,
-/// whose task is to aggregate these outputs into the final result returned by this function.
+/// whose task it is to aggregate these outputs into the final result returned by this function.
 ///
-/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be based to `consume`
+/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be passed to `consume`
 /// * `consume(Item, &mut State) -> Output` produces an output given an input along with mutable state.
 /// * For `reducer`, see the [`Reduce`] trait
-/// * if `thread_limit` has no effect as everything is run on the main thread, but is present to keep the signature
+/// * `thread_limit` has no effect as everything is run on the main thread, but is present to keep the signature
 ///   similar to the parallel version.
 ///
 /// **This serial version performing all calculations on the current thread.**
@@ -143,12 +143,12 @@ where
 }
 
 /// Read items from `input` and `consume` them in multiple threads,
-/// whose output output is collected by a `reducer`. Its task is to
+/// whose output is collected by a `reducer`. Its task is to
 /// aggregate these outputs into the final result returned by this function with the benefit of not having to be thread-safe.
-/// Caall `finalize` to finish the computation, once per thread, if there was no error sending results earlier.
+/// Call `finalize` to finish the computation, once per thread, if there was no error sending results earlier.
 ///
-/// * if `thread_limit` is `Some`, the given amount of threads will be used. If `None`, all logical cores will be used.
-/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be based to `consume`
+/// * if `thread_limit` is `Some`, the given number of threads will be used. If `None`, all logical cores will be used.
+/// * `new_thread_state(thread_number) -> State` produces thread-local state once per thread to be passed to `consume`
 /// * `consume(Item, &mut State) -> Output` produces an output given an input obtained by `input` along with mutable state initially
 ///   created by `new_thread_state(…)`.
 /// * `finalize(State) -> Output` is called to potentially process remaining work that was placed in `State`.

@@ -1,9 +1,6 @@
 use core::num::NonZeroUsize;
 
 use crate::error::Needed;
-use crate::lib::std::iter::{Cloned, Enumerate};
-use crate::lib::std::slice::Iter;
-use crate::lib::std::{cmp::Ordering, fmt, ops};
 use crate::stream::AsBytes;
 use crate::stream::Checkpoint;
 use crate::stream::Compare;
@@ -17,6 +14,9 @@ use crate::stream::SliceLen;
 use crate::stream::Stream;
 use crate::stream::StreamIsPartial;
 use crate::stream::UpdateSlice;
+use core::iter::{Cloned, Enumerate};
+use core::slice::Iter;
+use core::{cmp::Ordering, fmt, ops};
 
 /// Improved `Debug` experience for `&[u8]` byte streams
 #[allow(clippy::derived_hash_with_manual_eq)]
@@ -33,7 +33,7 @@ impl Bytes {
 
     #[inline]
     fn from_bytes(slice: &[u8]) -> &Self {
-        unsafe { crate::lib::std::mem::transmute(slice) }
+        unsafe { core::mem::transmute(slice) }
     }
 
     #[inline]
@@ -108,8 +108,28 @@ impl<'i> Stream for &'i Bytes {
         slice
     }
     #[inline(always)]
+    unsafe fn next_slice_unchecked(&mut self, offset: usize) -> Self::Slice {
+        #[cfg(debug_assertions)]
+        self.peek_slice(offset);
+
+        // SAFETY: `Stream::next_slice_unchecked` requires `offset` to be in bounds
+        let slice = unsafe { self.0.get_unchecked(..offset) };
+        // SAFETY: `Stream::next_slice_unchecked` requires `offset` to be in bounds
+        let next = unsafe { self.0.get_unchecked(offset..) };
+        *self = Bytes::from_bytes(next);
+        slice
+    }
+    #[inline(always)]
     fn peek_slice(&self, offset: usize) -> Self::Slice {
-        let (slice, _next) = self.split_at(offset);
+        &self[..offset]
+    }
+    #[inline(always)]
+    unsafe fn peek_slice_unchecked(&self, offset: usize) -> Self::Slice {
+        #[cfg(debug_assertions)]
+        self.peek_slice(offset);
+
+        // SAFETY: `Stream::next_slice_unchecked` requires `offset` to be in bounds
+        let slice = unsafe { self.0.get_unchecked(..offset) };
         slice
     }
 
@@ -123,7 +143,7 @@ impl<'i> Stream for &'i Bytes {
     }
 
     #[inline(always)]
-    fn raw(&self) -> &dyn crate::lib::std::fmt::Debug {
+    fn raw(&self) -> &dyn core::fmt::Debug {
         self
     }
 }
@@ -202,7 +222,7 @@ where
     &'i [u8]: FindSlice<S>,
 {
     #[inline(always)]
-    fn find_slice(&self, substr: S) -> Option<crate::lib::std::ops::Range<usize>> {
+    fn find_slice(&self, substr: S) -> Option<core::ops::Range<usize>> {
         let bytes = (*self).as_bytes();
         let offset = bytes.find_slice(substr);
         offset
@@ -350,17 +370,17 @@ impl AsRef<Bytes> for str {
 }
 
 #[cfg(feature = "alloc")]
-impl crate::lib::std::borrow::ToOwned for Bytes {
-    type Owned = crate::lib::std::vec::Vec<u8>;
+impl alloc::borrow::ToOwned for Bytes {
+    type Owned = alloc::vec::Vec<u8>;
 
     #[inline]
     fn to_owned(&self) -> Self::Owned {
-        crate::lib::std::vec::Vec::from(self.as_bytes())
+        alloc::vec::Vec::from(self.as_bytes())
     }
 }
 
 #[cfg(feature = "alloc")]
-impl crate::lib::std::borrow::Borrow<Bytes> for crate::lib::std::vec::Vec<u8> {
+impl core::borrow::Borrow<Bytes> for alloc::vec::Vec<u8> {
     #[inline]
     fn borrow(&self) -> &Bytes {
         Bytes::from_bytes(self.as_slice())
@@ -427,6 +447,67 @@ impl_partial_ord!(Bytes, &'a [u8]);
 impl_partial_ord!(Bytes, str);
 impl_partial_ord!(Bytes, &'a str);
 
+#[cfg(test)]
+mod test {
+    use crate::stream::Bytes;
+
+    #[test]
+    fn partial_eq_bytes_byte_slice() {
+        let input = b"foo".as_slice();
+        let actual = Bytes::new(input);
+        assert!(actual == input);
+    }
+
+    #[test]
+    fn partial_eq_byte_slice_bytes() {
+        let input = b"foo".as_slice();
+        let actual = Bytes::new(input);
+        assert!(input == actual);
+    }
+
+    #[test]
+    fn partial_eq_bytes_str() {
+        let input = "foo";
+        let actual = Bytes::new(input);
+        assert!(actual == input);
+    }
+
+    #[test]
+    fn partial_eq_str_bytes() {
+        let input = "foo";
+        let actual = Bytes::new(input);
+        assert!(input == actual);
+    }
+
+    #[test]
+    fn partial_ord_bytes_byte_slice() {
+        let input = b"foo".as_slice();
+        let actual = Bytes::new(input);
+        assert!(actual.partial_cmp(input) == Some(core::cmp::Ordering::Equal));
+    }
+
+    #[test]
+    fn partial_ord_byte_slice_bytes() {
+        let input = b"foo".as_slice();
+        let actual = Bytes::new(input);
+        assert!(input.partial_cmp(actual) == Some(core::cmp::Ordering::Equal));
+    }
+
+    #[test]
+    fn partial_ord_bytes_str() {
+        let input = "foo";
+        let actual = Bytes::new(input);
+        assert!(actual.partial_cmp(input) == Some(core::cmp::Ordering::Equal));
+    }
+
+    #[test]
+    fn partial_ord_str_bytes() {
+        let input = "foo";
+        let actual = Bytes::new(input);
+        assert!(input.partial_cmp(actual) == Some(core::cmp::Ordering::Equal));
+    }
+}
+
 #[cfg(all(test, feature = "std"))]
 mod display {
     use crate::stream::Bytes;
@@ -441,24 +522,33 @@ mod display {
 #[cfg(all(test, feature = "std"))]
 mod debug {
     use crate::stream::Bytes;
+    use crate::stream::Stream as _;
+    use snapbox::assert_data_eq;
+    use snapbox::str;
 
     #[test]
     fn test_debug() {
-        assert_eq!(
-            "000000206674797069736F6D0000020069736F6D69736F32617663316D70",
-            format!(
-                "{:?}",
-                Bytes::new(b"\0\0\0 ftypisom\0\0\x02\0isomiso2avc1mp")
-            ),
-        );
+        let input = Bytes::new(b"\0\0\0 ftypisom\0\0\x02\0isomiso2avc1mp");
+        let expected = str!["000000206674797069736F6D0000020069736F6D69736F32617663316D70"];
+        assert_data_eq!(&format!("{input:?}"), expected);
     }
 
     #[test]
     fn test_pretty_debug() {
-        // Output can change from run-to-run
-        let _ = format!(
-            "{:#?}",
-            Bytes::new(b"\0\0\0 ftypisom\0\0\x02\0isomiso2avc1mp")
+        let input = Bytes::new(b"\0\0\0 ftypisom\0\0\x02\0isomiso2avc1mp");
+        let expected = str!["000000206674797069736F6D0000020069736F6D69736F32617663316D70"];
+        assert_data_eq!(&format!("{input:#?}").replace('_', ""), expected);
+    }
+
+    #[test]
+    fn test_trace() {
+        let input = Bytes::new(b"\0\0\0 ftypisom\0\0\x02\0isomiso2avc1mp");
+        let expected = str!["000000206674797069736F6D0000020069736F6D69736F32617663316D70"];
+        assert_data_eq!(
+            crate::util::from_fn(|f| input.trace(f))
+                .to_string()
+                .replace('_', ""),
+            expected
         );
     }
 

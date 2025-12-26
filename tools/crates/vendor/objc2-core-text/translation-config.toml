@@ -1,0 +1,28 @@
+framework = "CoreText"
+crate = "objc2-core-text"
+required-crates = ["objc2-core-foundation"]
+custom-lib-rs = true
+macos = "10.8"
+maccatalyst = "13.0"
+ios = "3.2"
+tvos = "9.0"
+watchos = "2.0"
+visionos = "1.0"
+
+# Unknown calling convention / ABI
+fn.CTRubyAnnotationCreate.skipped = true
+typedef.BslnBaselineRecord.skipped = true
+
+# Needs ATSFontRef from ATS framework
+fn.CTFontGetPlatformFont.skipped = true
+fn.CTFontCreateWithPlatformFont.skipped = true
+
+# Emits -1 on an unsigned type
+const.kCTFontUIFontNone.use-value = true
+const.kCTRubyAlignmentInvalid.use-value = true
+const.kCTRubyOverhangInvalid.use-value = true
+
+# Emits 0x80000000 on an int
+const.kMORTLigLastAction.use-value = true
+const.kMORXCoverVertical.use-value = true
+const.kKERXVertical.use-value = true

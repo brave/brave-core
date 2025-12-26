@@ -28,7 +28,7 @@ const FG_WHITE: WORD = FG_BLUE | FG_GREEN | FG_RED;
 /// This corresponds to calling [`GetConsoleScreenBufferInfo`].
 ///
 /// [`GetConsoleScreenBufferInfo`]: https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo
-pub fn screen_buffer_info(h: HANDLE) -> io::Result<ScreenBufferInfo> {
+pub(crate) fn screen_buffer_info(h: HANDLE) -> io::Result<ScreenBufferInfo> {
     unsafe {
         let mut info: CONSOLE_SCREEN_BUFFER_INFO = mem::zeroed();
         let rc = GetConsoleScreenBufferInfo(h, &mut info);
@@ -44,7 +44,7 @@ pub fn screen_buffer_info(h: HANDLE) -> io::Result<ScreenBufferInfo> {
 /// This corresponds to calling [`SetConsoleTextAttribute`].
 ///
 /// [`SetConsoleTextAttribute`]: https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute
-pub fn set_text_attributes(h: HANDLE, attributes: u16) -> io::Result<()> {
+pub(crate) fn set_text_attributes(h: HANDLE, attributes: u16) -> io::Result<()> {
     if unsafe { SetConsoleTextAttribute(h, attributes) } == 0 {
         Err(io::Error::last_os_error())
     } else {
@@ -59,7 +59,7 @@ pub fn set_text_attributes(h: HANDLE, attributes: u16) -> io::Result<()> {
 ///
 /// [`CONSOLE_SCREEN_BUFFER_INFO`]: https://docs.microsoft.com/en-us/windows/console/console-screen-buffer-info-str
 #[derive(Clone)]
-pub struct ScreenBufferInfo(CONSOLE_SCREEN_BUFFER_INFO);
+pub(crate) struct ScreenBufferInfo(CONSOLE_SCREEN_BUFFER_INFO);
 
 impl ScreenBufferInfo {
     /// Returns the character attributes associated with this console.
@@ -69,7 +69,7 @@ impl ScreenBufferInfo {
     /// See [`char info`] for more details.
     ///
     /// [`char info`]: https://docs.microsoft.com/en-us/windows/console/char-info-str
-    pub fn attributes(&self) -> u16 {
+    pub(crate) fn attributes(&self) -> u16 {
         self.0.wAttributes
     }
 }
@@ -88,7 +88,7 @@ impl ScreenBufferInfo {
 /// A common pitfall when using a console is to forget to flush writes to
 /// stdout before setting new text attributes.
 #[derive(Debug)]
-pub struct Console {
+pub(crate) struct Console {
     kind: HandleKind,
     start_attr: TextAttributes,
     cur_attr: TextAttributes,
@@ -125,14 +125,14 @@ impl Console {
     /// Create a new Console to stdout.
     ///
     /// If there was a problem creating the console, then an error is returned.
-    pub fn stdout() -> io::Result<Console> {
+    pub(crate) fn stdout() -> io::Result<Console> {
         Self::create_for_stream(HandleKind::Stdout)
     }
 
     /// Create a new Console to stderr.
     ///
     /// If there was a problem creating the console, then an error is returned.
-    pub fn stderr() -> io::Result<Console> {
+    pub(crate) fn stderr() -> io::Result<Console> {
         Self::create_for_stream(HandleKind::Stderr)
     }
 
@@ -146,7 +146,7 @@ impl Console {
     ///
     /// If there was a problem setting attributes on the console, then an error
     /// is returned.
-    pub fn fg(&mut self, intense: Intense, color: Color) -> io::Result<()> {
+    pub(crate) fn fg(&mut self, intense: Intense, color: Color) -> io::Result<()> {
         self.cur_attr.fg_color = color;
         self.cur_attr.fg_intense = intense;
         self.set()
@@ -157,7 +157,7 @@ impl Console {
     ///
     /// If there was a problem setting attributes on the console, then an error
     /// is returned.
-    pub fn bg(&mut self, intense: Intense, color: Color) -> io::Result<()> {
+    pub(crate) fn bg(&mut self, intense: Intense, color: Color) -> io::Result<()> {
         self.cur_attr.bg_color = color;
         self.cur_attr.bg_intense = intense;
         self.set()
@@ -170,7 +170,7 @@ impl Console {
     ///
     /// If there was a problem setting attributes on the console, then an error
     /// is returned.
-    pub fn reset(&mut self) -> io::Result<()> {
+    pub(crate) fn reset(&mut self) -> io::Result<()> {
         self.cur_attr = self.start_attr;
         self.set()
     }
@@ -208,7 +208,7 @@ impl TextAttributes {
 /// Whether to use intense colors or not.
 #[allow(missing_docs)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Intense {
+pub(crate) enum Intense {
     Yes,
     No,
 }
@@ -241,7 +241,7 @@ impl Intense {
 /// The set of available colors for use with a Windows console.
 #[allow(missing_docs)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Color {
+pub(crate) enum Color {
     Black,
     Blue,
     Green,
@@ -288,7 +288,7 @@ impl Color {
     }
 }
 
-pub fn console_colors(out: &Term, mut con: Console, bytes: &[u8]) -> io::Result<()> {
+pub(crate) fn console_colors(out: &Term, mut con: Console, bytes: &[u8]) -> io::Result<()> {
     use crate::ansi::AnsiCodeIterator;
     use std::str::from_utf8;
 

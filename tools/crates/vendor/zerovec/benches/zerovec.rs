@@ -54,31 +54,31 @@ where
     buffer
         .0
         .extend(ZeroVec::from_slice_or_alloc(vec.as_slice()).as_bytes());
-    ZeroVec::<T>::parse_byte_slice(&buffer.0[1..]).unwrap()
+    ZeroVec::<T>::parse_bytes(&buffer.0[1..]).unwrap()
 }
 
 fn overview_bench(c: &mut Criterion) {
     c.bench_function("zerovec/overview", |b| {
         b.iter(|| {
-            ZeroVec::<u32>::parse_byte_slice(black_box(TEST_BUFFER_LE))
+            ZeroVec::<u32>::parse_bytes(black_box(TEST_BUFFER_LE))
                 .unwrap()
                 .iter()
                 .sum::<u32>()
         });
     });
 
-    #[cfg(feature = "bench")]
     {
         sum_benches(c);
         binary_search_benches(c);
     }
 }
 
-#[cfg(feature = "bench")]
 fn sum_benches(c: &mut Criterion) {
     let normal_slice = &TEST_SLICE[0..19];
-    let aligned_ule_slice = <u32 as AsULE>::ULE::parse_byte_slice(&TEST_BUFFER_LE[0..76]).unwrap();
-    let unalign_ule_slice = <u32 as AsULE>::ULE::parse_byte_slice(&TEST_BUFFER_LE[1..77]).unwrap();
+    let aligned_ule_slice =
+        <u32 as AsULE>::ULE::parse_bytes_to_slice(&TEST_BUFFER_LE[0..76]).unwrap();
+    let unalign_ule_slice =
+        <u32 as AsULE>::ULE::parse_bytes_to_slice(&TEST_BUFFER_LE[1..77]).unwrap();
 
     assert_eq!(normal_slice.len(), aligned_ule_slice.len());
     assert_eq!(normal_slice.len(), unalign_ule_slice.len());
@@ -109,14 +109,13 @@ fn sum_benches(c: &mut Criterion) {
     });
 }
 
-#[cfg(feature = "bench")]
 fn binary_search_benches(c: &mut Criterion) {
     c.bench_function("zerovec/binary_search/sample/slice", |b| {
         b.iter(|| black_box(&TEST_SLICE).binary_search(&0x0c0d0c));
     });
 
     c.bench_function("zerovec/binary_search/sample/zerovec", |b| {
-        let zerovec = ZeroVec::<u32>::parse_byte_slice(black_box(TEST_BUFFER_LE)).unwrap();
+        let zerovec = ZeroVec::<u32>::parse_bytes(black_box(TEST_BUFFER_LE)).unwrap();
         b.iter(|| zerovec.binary_search(&0x0c0d0c));
     });
 

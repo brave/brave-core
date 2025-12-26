@@ -1,8 +1,7 @@
 #![doc(html_root_url = "https://docs.rs/bzip2-sys/0.1")]
+#![no_std]
 
-extern crate libc;
-
-use libc::{c_char, c_int, c_uint, c_void};
+use core::ffi::{c_char, c_int, c_uint, c_void};
 
 pub const BZ_RUN: c_int = 0;
 pub const BZ_FLUSH: c_int = 1;
@@ -70,6 +69,6 @@ abi_compat! {
 }
 
 #[no_mangle]
-pub fn bz_internal_error(errcode: c_int) {
+pub extern "C" fn bz_internal_error(errcode: c_int) {
     panic!("bz internal error: {}", errcode);
 }

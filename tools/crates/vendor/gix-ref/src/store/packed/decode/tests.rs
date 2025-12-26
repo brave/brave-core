@@ -17,11 +17,11 @@ mod reference {
     #[test]
     fn invalid() {
         assert!(decode::reference::<()>
-            .parse_peek(b"# what looks like a comment",)
+            .parse_peek(b"# what looks like a comment")
             .is_err());
         assert!(
             decode::reference::<()>
-                .parse_peek(b"^e9cdc958e7ce2290e2d7958cdb5aa9323ef35d37\n",)
+                .parse_peek(b"^e9cdc958e7ce2290e2d7958cdb5aa9323ef35d37\n")
                 .is_err(),
             "lonely peel"
         );

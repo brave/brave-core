@@ -7,17 +7,15 @@
 
 #[cfg(any(linux_like, target_os = "wasi"))]
 use crate::backend::c;
+use crate::event::Timespec;
 use crate::fd::RawFd;
 use crate::{backend, io};
 #[cfg(any(windows, target_os = "wasi"))]
-use core::mem::{align_of, size_of};
-#[cfg(any(windows, target_os = "wasi"))]
-use core::slice;
+use core::mem::align_of;
+use core::mem::size_of;
 
-pub use crate::timespec::{Nsecs, Secs, Timespec};
-
-/// wasi-libc's `fd_set` type. The libc bindings for it have private fields,
-/// so we redeclare it for ourselves so that we can access the fields. They're
+/// wasi-libc's `fd_set` type. The libc bindings for it have private fields, so
+/// we redeclare it for ourselves so that we can access the fields. They're
 /// publicly exposed in wasi-libc.
 #[cfg(target_os = "wasi")]
 #[repr(C)]
@@ -32,12 +30,9 @@ struct FD_SET {
 use windows_sys::Win32::Networking::WinSock::FD_SET;
 
 /// Storage element type for use with [`select`].
-#[cfg(any(
-    windows,
-    all(
-        target_pointer_width = "64",
-        any(target_os = "freebsd", target_os = "dragonfly")
-    )
+#[cfg(all(
+    target_pointer_width = "64",
+    any(windows, target_os = "freebsd", target_os = "dragonfly")
 ))]
 #[repr(transparent)]
 #[derive(Copy, Clone, Default)]
@@ -52,11 +47,10 @@ pub struct FdSetElement(pub(crate) c::c_ulong);
 /// Storage element type for use with [`select`].
 #[cfg(not(any(
     linux_like,
-    windows,
     target_os = "wasi",
     all(
         target_pointer_width = "64",
-        any(target_os = "freebsd", target_os = "dragonfly")
+        any(windows, target_os = "freebsd", target_os = "dragonfly")
     )
 )))]
 #[repr(transparent)]
@@ -74,6 +68,9 @@ pub struct FdSetElement(pub(crate) usize);
 ///
 /// `readfds`, `writefds`, `exceptfds` must point to arrays of `FdSetElement`
 /// containing at least `nfds.div_ceil(size_of::<FdSetElement>())` elements.
+///
+/// If an unsupported timeout is passed, this function fails with
+/// [`io::Errno::INVAL`].
 ///
 /// This `select` wrapper differs from POSIX in that `nfds` is not limited to
 /// `FD_SETSIZE`. Instead of using the fixed-sized `fd_set` type, this function
@@ -96,7 +93,7 @@ pub struct FdSetElement(pub(crate) usize);
 ///
 /// # Safety
 ///
-/// All fds in in all the sets must correspond to open file descriptors.
+/// All fds in all the sets must correspond to open file descriptors.
 ///
 /// # References
 ///  - [POSIX]
@@ -109,15 +106,15 @@ pub struct FdSetElement(pub(crate) usize);
 ///  - [Winsock]
 ///  - [glibc]
 ///
-///  [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/select.html
-///  [Linux]: https://man7.org/linux/man-pages/man2/select.2.html
-///  [Apple]: https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/select.2.html
-///  [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=select&sektion=2
-///  [NetBSD]: https://man.netbsd.org/select.2
-///  [OpenBSD]: https://man.openbsd.org/select.2
-///  [DragonFly BSD]: https://man.dragonflybsd.org/?command=select&section=2
-///  [Winsock]: https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select
-///  [glibc]: https://sourceware.org/glibc/manual/latest/html_node/Waiting-for-I_002fO.html#index-select
+/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/select.html
+/// [Linux]: https://man7.org/linux/man-pages/man2/select.2.html
+/// [Apple]: https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/select.2.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=select&sektion=2
+/// [NetBSD]: https://man.netbsd.org/select.2
+/// [OpenBSD]: https://man.openbsd.org/select.2
+/// [DragonFly BSD]: https://man.dragonflybsd.org/?command=select&section=2
+/// [Winsock]: https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select
+/// [glibc]: https://sourceware.org/glibc/manual/latest/html_node/Waiting-for-I_002fO.html#index-select
 pub unsafe fn select(
     nfds: i32,
     readfds: Option<&mut [FdSetElement]>,
@@ -129,7 +126,7 @@ pub unsafe fn select(
 }
 
 #[cfg(not(any(windows, target_os = "wasi")))]
-const BITS: usize = core::mem::size_of::<FdSetElement>() * 8;
+const BITS: usize = size_of::<FdSetElement>() * 8;
 
 /// Set `fd` in the set pointed to by `fds`.
 #[doc(alias = "FD_SET")]
@@ -145,12 +142,10 @@ pub fn fd_set_insert(fds: &mut [FdSetElement], fd: RawFd) {
     {
         let set = unsafe { &mut *fds.as_mut_ptr().cast::<FD_SET>() };
         let fd_count = set.fd_count;
-        let fd_array = unsafe { slice::from_raw_parts(set.fd_array.as_ptr(), fd_count as usize) };
+        let fd_array = &set.fd_array[..fd_count as usize];
 
-        if !fd_array.iter().any(|p| *p as RawFd == fd) {
-            let fd_array = unsafe {
-                slice::from_raw_parts_mut(set.fd_array.as_mut_ptr(), fd_count as usize + 1)
-            };
+        if !fd_array.contains(&(fd as _)) {
+            let fd_array = &mut set.fd_array[..fd_count as usize + 1];
             set.fd_count = fd_count + 1;
             fd_array[fd_count as usize] = fd as _;
         }
@@ -171,7 +166,7 @@ pub fn fd_set_remove(fds: &mut [FdSetElement], fd: RawFd) {
     {
         let set = unsafe { &mut *fds.as_mut_ptr().cast::<FD_SET>() };
         let fd_count = set.fd_count;
-        let fd_array = unsafe { slice::from_raw_parts(set.fd_array.as_ptr(), fd_count as usize) };
+        let fd_array = &set.fd_array[..fd_count as usize];
 
         if let Some(pos) = fd_array.iter().position(|p| *p as RawFd == fd) {
             set.fd_count = fd_count - 1;
@@ -180,8 +175,7 @@ pub fn fd_set_remove(fds: &mut [FdSetElement], fd: RawFd) {
     }
 }
 
-/// Compute the minimum `nfds` value needed for the set pointed to by
-/// `fds`.
+/// Compute the minimum `nfds` value needed for the set pointed to by `fds`.
 #[inline]
 pub fn fd_set_bound(fds: &[FdSetElement]) -> RawFd {
     #[cfg(not(any(windows, target_os = "wasi")))]
@@ -198,7 +192,7 @@ pub fn fd_set_bound(fds: &[FdSetElement]) -> RawFd {
     {
         let set = unsafe { &*fds.as_ptr().cast::<FD_SET>() };
         let fd_count = set.fd_count;
-        let fd_array = unsafe { slice::from_raw_parts(set.fd_array.as_ptr(), fd_count as usize) };
+        let fd_array = &set.fd_array[..fd_count as usize];
         let mut max = 0;
         for fd in fd_array {
             if *fd >= max {
@@ -233,10 +227,22 @@ pub fn fd_set_num_elements(set_count: usize, nfds: RawFd) -> usize {
 #[cfg(any(windows, target_os = "wasi"))]
 #[inline]
 pub(crate) fn fd_set_num_elements_for_fd_array(set_count: usize) -> usize {
+    // Ensure that we always have a big enough set to dereference an `FD_SET`.
+    core::cmp::max(
+        fd_set_num_elements_for_fd_array_raw(set_count),
+        div_ceil(size_of::<FD_SET>(), size_of::<FdSetElement>()),
+    )
+}
+
+/// Compute the raw `fd_set_num_elements` value, before ensuring the value is
+/// big enough to dereference an `FD_SET`.
+#[cfg(any(windows, target_os = "wasi"))]
+#[inline]
+fn fd_set_num_elements_for_fd_array_raw(set_count: usize) -> usize {
     // Allocate space for an `fd_count` field, plus `set_count` elements
     // for the `fd_array` field.
     div_ceil(
-        align_of::<FD_SET>() + set_count * size_of::<RawFd>(),
+        core::cmp::max(align_of::<FD_SET>(), align_of::<RawFd>()) + set_count * size_of::<RawFd>(),
         size_of::<FdSetElement>(),
     )
 }
@@ -323,7 +329,7 @@ impl<'a> Iterator for FdSetIter<'a> {
 
         let set = unsafe { &*self.fds.as_ptr().cast::<FD_SET>() };
         let fd_count = set.fd_count;
-        let fd_array = unsafe { slice::from_raw_parts(set.fd_array.as_ptr(), fd_count as usize) };
+        let fd_array = &set.fd_array[..fd_count as usize];
 
         if current == fd_count as usize {
             return None;
@@ -335,7 +341,7 @@ impl<'a> Iterator for FdSetIter<'a> {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     use core::mem::{align_of, size_of};
 
@@ -348,9 +354,21 @@ mod test {
         // The layout of `FD_SET` should match our layout of a set of the same
         // size.
         assert_eq!(
+            fd_set_num_elements_for_fd_array_raw(
+                memoffset::span_of!(FD_SET, fd_array).len() / size_of::<RawFd>()
+            ) * size_of::<FdSetElement>(),
+            size_of::<FD_SET>()
+        );
+        assert_eq!(
             fd_set_num_elements_for_fd_array(
                 memoffset::span_of!(FD_SET, fd_array).len() / size_of::<RawFd>()
             ) * size_of::<FdSetElement>(),
+            size_of::<FD_SET>()
+        );
+
+        // Don't create fd sets smaller than `FD_SET`.
+        assert_eq!(
+            fd_set_num_elements_for_fd_array(0) * size_of::<FdSetElement>(),
             size_of::<FD_SET>()
         );
     }

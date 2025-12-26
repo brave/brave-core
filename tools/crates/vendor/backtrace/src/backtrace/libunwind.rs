@@ -15,7 +15,6 @@
 //!
 //! This is the default unwinding API for all non-Windows platforms currently.
 
-use super::super::Bomb;
 use core::ffi::c_void;
 use core::ptr::addr_of_mut;
 
@@ -100,9 +99,23 @@ impl Clone for Frame {
     }
 }
 
+struct Bomb {
+    enabled: bool,
+}
+
+impl Drop for Bomb {
+    fn drop(&mut self) {
+        if self.enabled {
+            panic!("cannot panic during the backtrace function");
+        }
+    }
+}
+
 #[inline(always)]
 pub unsafe fn trace(mut cb: &mut dyn FnMut(&super::Frame) -> bool) {
-    uw::_Unwind_Backtrace(trace_fn, addr_of_mut!(cb).cast());
+    unsafe {
+        uw::_Unwind_Backtrace(trace_fn, addr_of_mut!(cb).cast());
+    }
 
     extern "C" fn trace_fn(
         ctx: *mut uw::_Unwind_Context,
@@ -157,7 +170,7 @@ mod uw {
     pub type _Unwind_Trace_Fn =
         extern "C" fn(ctx: *mut _Unwind_Context, arg: *mut c_void) -> _Unwind_Reason_Code;
 
-    extern "C" {
+    unsafe extern "C" {
         pub fn _Unwind_Backtrace(
             trace: _Unwind_Trace_Fn,
             trace_argument: *mut c_void,
@@ -171,9 +184,11 @@ mod uw {
             not(all(target_os = "freebsd", target_arch = "arm")),
             not(all(target_os = "linux", target_arch = "arm")),
             not(all(target_os = "horizon", target_arch = "arm")),
+            not(all(target_os = "rtems", target_arch = "arm")),
             not(all(target_os = "vita", target_arch = "arm")),
+            not(all(target_os = "nuttx", target_arch = "arm")),
         ))] {
-            extern "C" {
+            unsafe extern "C" {
                 pub fn _Unwind_GetIP(ctx: *mut _Unwind_Context) -> libc::uintptr_t;
                 pub fn _Unwind_FindEnclosingFunction(pc: *mut c_void) -> *mut c_void;
 
@@ -193,10 +208,10 @@ mod uw {
             // instead of relying on _Unwind_GetCFA.
             #[cfg(all(target_os = "linux", target_arch = "s390x"))]
             pub unsafe fn get_sp(ctx: *mut _Unwind_Context) -> libc::uintptr_t {
-                extern "C" {
+                unsafe extern "C" {
                     pub fn _Unwind_GetGR(ctx: *mut _Unwind_Context, index: libc::c_int) -> libc::uintptr_t;
                 }
-                _Unwind_GetGR(ctx, 15)
+                unsafe { _Unwind_GetGR(ctx, 15) }
             }
         } else {
             use core::ptr::addr_of_mut;
@@ -233,7 +248,7 @@ mod uw {
             }
 
             type _Unwind_Word = libc::c_uint;
-            extern "C" {
+            unsafe extern "C" {
                 fn _Unwind_VRS_Get(
                     ctx: *mut _Unwind_Context,
                     klass: _Unwind_VRS_RegClass,
@@ -246,13 +261,15 @@ mod uw {
             pub unsafe fn _Unwind_GetIP(ctx: *mut _Unwind_Context) -> libc::uintptr_t {
                 let mut val: _Unwind_Word = 0;
                 let ptr = addr_of_mut!(val);
-                let _ = _Unwind_VRS_Get(
-                    ctx,
-                    _Unwind_VRS_RegClass::_UVRSC_CORE,
-                    15,
-                    _Unwind_VRS_DataRepresentation::_UVRSD_UINT32,
-                    ptr.cast::<c_void>(),
-                );
+                unsafe {
+                    let _ = _Unwind_VRS_Get(
+                        ctx,
+                        _Unwind_VRS_RegClass::_UVRSC_CORE,
+                        15,
+                        _Unwind_VRS_DataRepresentation::_UVRSD_UINT32,
+                        ptr.cast::<c_void>(),
+                    );
+                }
                 (val & !1) as libc::uintptr_t
             }
 
@@ -262,13 +279,15 @@ mod uw {
             pub unsafe fn get_sp(ctx: *mut _Unwind_Context) -> libc::uintptr_t {
                 let mut val: _Unwind_Word = 0;
                 let ptr = addr_of_mut!(val);
-                let _ = _Unwind_VRS_Get(
-                    ctx,
-                    _Unwind_VRS_RegClass::_UVRSC_CORE,
-                    SP,
-                    _Unwind_VRS_DataRepresentation::_UVRSD_UINT32,
-                    ptr.cast::<c_void>(),
-                );
+                unsafe {
+                    let _ = _Unwind_VRS_Get(
+                        ctx,
+                        _Unwind_VRS_RegClass::_UVRSC_CORE,
+                        SP,
+                        _Unwind_VRS_DataRepresentation::_UVRSD_UINT32,
+                        ptr.cast::<c_void>(),
+                    );
+                }
                 val as libc::uintptr_t
             }
 

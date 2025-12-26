@@ -9,13 +9,14 @@ use crate::async_impl::h3_client::pool::{Key, Pool, PoolClient};
 use crate::error::{BoxError, Error, Kind};
 use crate::{error, Body};
 use connect::H3Connector;
-use futures_util::future;
 use http::{Request, Response};
 use log::trace;
-use std::future::Future;
+use std::future::{self, Future};
 use std::pin::Pin;
 use std::task::{Context, Poll};
 use std::time::Duration;
+use sync_wrapper::SyncWrapper;
+use tower::Service;
 
 #[derive(Clone)]
 pub(crate) struct H3Client {
@@ -40,9 +41,22 @@ impl H3Client {
         trace!("did not find connection {key:?} in pool so connecting...");
 
         let dest = pool::domain_as_uri(key.clone());
-        self.pool.connecting(key.clone())?;
+
+        let lock = match self.pool.connecting(&key) {
+            pool::Connecting::InProgress(waiter) => {
+                trace!("connecting to {key:?} is already in progress, subscribing...");
+
+                match waiter.receive().await {
+                    Some(client) => return Ok(client),
+                    None => return Err("failed to establish connection for HTTP/3 request".into()),
+                }
+            }
+            pool::Connecting::Acquired(lock) => lock,
+        };
+        trace!("connecting to {key:?}...");
         let (driver, tx) = self.connector.connect(dest).await?;
-        Ok(self.pool.new_connection(key, driver, tx))
+        trace!("saving new pooled connection to {key:?}");
+        Ok(self.pool.new_connection(lock, driver, tx))
     }
 
     async fn send_request(
@@ -65,24 +79,38 @@ impl H3Client {
             Ok(s) => s,
             Err(e) => {
                 return H3ResponseFuture {
-                    inner: Box::pin(future::err(e)),
+                    inner: SyncWrapper::new(Box::pin(future::ready(Err(e)))),
                 }
             }
         };
         H3ResponseFuture {
-            inner: Box::pin(self.clone().send_request(pool_key, req)),
+            inner: SyncWrapper::new(Box::pin(self.clone().send_request(pool_key, req))),
         }
     }
 }
 
+impl Service<Request<Body>> for H3Client {
+    type Response = Response<ResponseBody>;
+    type Error = Error;
+    type Future = H3ResponseFuture;
+
+    fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+        Poll::Ready(Ok(()))
+    }
+
+    fn call(&mut self, req: Request<Body>) -> Self::Future {
+        self.request(req)
+    }
+}
+
 pub(crate) struct H3ResponseFuture {
-    inner: Pin<Box<dyn Future<Output = Result<Response<ResponseBody>, Error>> + Send>>,
+    inner: SyncWrapper<Pin<Box<dyn Future<Output = Result<Response<ResponseBody>, Error>> + Send>>>,
 }
 
 impl Future for H3ResponseFuture {
     type Output = Result<Response<ResponseBody>, Error>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.inner.as_mut().poll(cx)
+        self.inner.get_mut().as_mut().poll(cx)
     }
 }

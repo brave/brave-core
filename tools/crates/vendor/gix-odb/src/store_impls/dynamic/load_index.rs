@@ -64,7 +64,7 @@ impl super::Store {
     pub(crate) fn load_all_indices(&self) -> Result<Snapshot, Error> {
         let mut snapshot = self.collect_snapshot();
         while let Some(new_snapshot) = self.load_one_index(RefreshMode::Never, snapshot.marker)? {
-            snapshot = new_snapshot
+            snapshot = new_snapshot;
         }
         Ok(snapshot)
     }
@@ -157,7 +157,7 @@ impl super::Store {
                         // or its effects.
                         std::thread::yield_now();
                         while index.num_indices_currently_being_loaded.load(Ordering::SeqCst) != 0 {
-                            std::thread::yield_now()
+                            std::thread::yield_now();
                         }
                         break 'retry_with_next_slot_index;
                     }
@@ -165,7 +165,7 @@ impl super::Store {
             }
             if previous_state_id == index.state_id() {
                 let potentially_new_index = self.index.load();
-                if Arc::as_ptr(&potentially_new_index) == Arc::as_ptr(&index) {
+                if std::ptr::eq(Arc::as_ptr(&potentially_new_index), Arc::as_ptr(&index)) {
                     // There isn't a new index with which to retry the whole ordeal, so nothing could be done here.
                     return false;
                 } else {
@@ -251,9 +251,11 @@ impl super::Store {
             .collect();
 
         let mut new_slot_map_indices = Vec::new(); // these indices into the slot map still exist there/didn't change
-        let mut index_paths_to_add = was_uninitialized
-            .then(|| VecDeque::with_capacity(indices_by_modification_time.len()))
-            .unwrap_or_default();
+        let mut index_paths_to_add = if was_uninitialized {
+            VecDeque::with_capacity(indices_by_modification_time.len())
+        } else {
+            Default::default()
+        };
 
         // Figure out this number based on what we see while handling the existing indices
         let mut num_loaded_indices = 0;
@@ -266,7 +268,7 @@ impl super::Store {
                         Option::as_ref(&files_guard).expect("slot is set or we wouldn't know it points to this file");
                     if index_info.is_multi_index() && files.mtime() != mtime {
                         // we have a changed multi-pack index. We can't just change the existing slot as it may alter slot indices
-                        // that are currently available. Instead we have to move what's there into a new slot, along with the changes,
+                        // that are currently available. Instead, we have to move what's there into a new slot, along with the changes,
                         // and later free the slot or dispose of the index in the slot (like we do for removed/missing files).
                         index_paths_to_add.push_back((index_info, mtime, Some(slot_idx)));
                         // If the current slot is loaded, the soon-to-be copied multi-index path will be loaded as well.
@@ -303,6 +305,12 @@ impl super::Store {
                         current: self.files.len(),
                         needed: index_paths_to_add.len() + 1, /*the one currently popped off*/
                     });
+                }
+                // Don't allow duplicate indicates, we need a 1:1 mapping.
+                if new_slot_map_indices.contains(&next_possibly_free_index) {
+                    next_possibly_free_index = (next_possibly_free_index + 1) % self.files.len();
+                    num_indices_checked += 1;
+                    continue 'increment_slot_index;
                 }
                 let slot_index = next_possibly_free_index;
                 let slot = &self.files[slot_index];
@@ -383,12 +391,16 @@ impl super::Store {
                 generation,
                 // if there was a prior generation, some indices might already be loaded. But we deal with it by trying to load the next index then,
                 // until we find one.
-                next_index_to_load: index_unchanged
-                    .then(|| Arc::clone(&index.next_index_to_load))
-                    .unwrap_or_default(),
-                loaded_indices: index_unchanged
-                    .then(|| Arc::clone(&index.loaded_indices))
-                    .unwrap_or_else(|| Arc::new(num_loaded_indices.into())),
+                next_index_to_load: if index_unchanged {
+                    Arc::clone(&index.next_index_to_load)
+                } else {
+                    Default::default()
+                },
+                loaded_indices: if index_unchanged {
+                    Arc::clone(&index.loaded_indices)
+                } else {
+                    Arc::new(num_loaded_indices.into())
+                },
                 num_indices_currently_being_loaded: Default::default(),
             });
             self.index.store(new_index);
@@ -412,7 +424,7 @@ impl super::Store {
                 // Safety: can't race as we hold the lock, have to set the generation beforehand to help avoid others to observe the value.
                 slot.generation.store(generation, Ordering::SeqCst);
                 *files_mut = None;
-            };
+            }
             slot.files.store(files);
         }
 
@@ -497,12 +509,12 @@ impl super::Store {
                     indices
                         .into_iter()
                         .filter_map(|(p, a, b)| (!is_multipack_index(&p)).then_some((Either::IndexPath(p), a, b))),
-                )
+                );
             }
         }
         // Unlike libgit2, do not sort by modification date, but by size and put the biggest indices first. That way
         // the chance to hit an object should be higher. We leave it to the handle to sort by LRU.
-        // Git itself doesn't change the order which may safe time, but we want it to be stable which also helps some tests.
+        // Git itself doesn't change the order which may save time, but we want it to be stable which also helps some tests.
         // NOTE: this will work well for well-packed repos or those using geometric repacking, but force us to open a lot
         //       of files when dealing with new objects, as there is no notion of recency here as would be with unmaintained
         //       repositories. Different algorithms should be provided, like newest packs first, and possibly a mix of both
@@ -512,7 +524,7 @@ impl super::Store {
         Ok(indices_by_modification_time)
     }
 
-    /// returns Ok<dest slot was empty> if the copy could happen because dest-slot was actually free or disposable , and Some(true) if it was empty
+    /// returns `Ok(dest_slot_was_empty)` if the copy could happen because dest-slot was actually free or disposable.
     #[allow(clippy::too_many_arguments)]
     fn try_set_index_slot(
         lock: &parking_lot::MutexGuard<'_, ()>,
@@ -683,7 +695,7 @@ impl<'a> IncOnNewAndDecOnDrop<'a> {
         Self(v)
     }
 }
-impl<'a> Drop for IncOnNewAndDecOnDrop<'a> {
+impl Drop for IncOnNewAndDecOnDrop<'_> {
     fn drop(&mut self) {
         self.0.fetch_sub(1, Ordering::SeqCst);
     }
@@ -722,6 +734,7 @@ impl PartialEq<Self> for Either {
     }
 }
 
+#[allow(clippy::non_canonical_partial_ord_impl)]
 impl PartialOrd<Self> for Either {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.path().cmp(other.path()))

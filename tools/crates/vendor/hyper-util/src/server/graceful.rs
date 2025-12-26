@@ -17,8 +17,18 @@ use pin_project_lite::pin_project;
 use tokio::sync::watch;
 
 /// A graceful shutdown utility
+// Purposefully not `Clone`, see `watcher()` method for why.
 pub struct GracefulShutdown {
     tx: watch::Sender<()>,
+}
+
+/// A watcher side of the graceful shutdown.
+///
+/// This type can only watch a connection, it cannot trigger a shutdown.
+///
+/// Call [`GracefulShutdown::watcher()`] to construct one of these.
+pub struct Watcher {
+    rx: watch::Receiver<()>,
 }
 
 impl GracefulShutdown {
@@ -30,12 +40,20 @@ impl GracefulShutdown {
 
     /// Wrap a future for graceful shutdown watching.
     pub fn watch<C: GracefulConnection>(&self, conn: C) -> impl Future<Output = C::Output> {
-        let mut rx = self.tx.subscribe();
-        GracefulConnectionFuture::new(conn, async move {
-            let _ = rx.changed().await;
-            // hold onto the rx until the watched future is completed
-            rx
-        })
+        self.watcher().watch(conn)
+    }
+
+    /// Create an owned type that can watch a connection.
+    ///
+    /// This method allows created an owned type that can be sent onto another
+    /// task before calling [`Watcher::watch()`].
+    // Internal: this function exists because `Clone` allows footguns.
+    // If the `tx` were cloned (or the `rx`), race conditions can happens where
+    // one task starting a shutdown is scheduled and interwined with a task
+    // starting to watch a connection, and the "watch version" is one behind.
+    pub fn watcher(&self) -> Watcher {
+        let rx = self.tx.subscribe();
+        Watcher { rx }
     }
 
     /// Signal shutdown for all watched connections.
@@ -50,6 +68,11 @@ impl GracefulShutdown {
         // and then wait for all of them to complete
         tx.closed().await;
     }
+
+    /// Returns the number of the watching connections.
+    pub fn count(&self) -> usize {
+        self.tx.receiver_count()
+    }
 }
 
 impl Debug for GracefulShutdown {
@@ -61,6 +84,24 @@ impl Debug for GracefulShutdown {
 impl Default for GracefulShutdown {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl Watcher {
+    /// Wrap a future for graceful shutdown watching.
+    pub fn watch<C: GracefulConnection>(self, conn: C) -> impl Future<Output = C::Output> {
+        let Watcher { mut rx } = self;
+        GracefulConnectionFuture::new(conn, async move {
+            let _ = rx.changed().await;
+            // hold onto the rx until the watched future is completed
+            rx
+        })
+    }
+}
+
+impl Debug for Watcher {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("GracefulWatcher").finish()
     }
 }
 
@@ -155,7 +196,7 @@ where
 }
 
 #[cfg(feature = "server-auto")]
-impl<'a, I, B, S, E> GracefulConnection for crate::server::conn::auto::Connection<'a, I, S, E>
+impl<I, B, S, E> GracefulConnection for crate::server::conn::auto::Connection<'_, I, S, E>
 where
     S: hyper::service::Service<http::Request<hyper::body::Incoming>, Response = http::Response<B>>,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
@@ -173,8 +214,8 @@ where
 }
 
 #[cfg(feature = "server-auto")]
-impl<'a, I, B, S, E> GracefulConnection
-    for crate::server::conn::auto::UpgradeableConnection<'a, I, S, E>
+impl<I, B, S, E> GracefulConnection
+    for crate::server::conn::auto::UpgradeableConnection<'_, I, S, E>
 where
     S: hyper::service::Service<http::Request<hyper::body::Incoming>, Response = http::Response<B>>,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
@@ -229,7 +270,7 @@ mod private {
     }
 
     #[cfg(feature = "server-auto")]
-    impl<'a, I, B, S, E> Sealed for crate::server::conn::auto::Connection<'a, I, S, E>
+    impl<I, B, S, E> Sealed for crate::server::conn::auto::Connection<'_, I, S, E>
     where
         S: hyper::service::Service<
             http::Request<hyper::body::Incoming>,
@@ -245,7 +286,7 @@ mod private {
     }
 
     #[cfg(feature = "server-auto")]
-    impl<'a, I, B, S, E> Sealed for crate::server::conn::auto::UpgradeableConnection<'a, I, S, E>
+    impl<I, B, S, E> Sealed for crate::server::conn::auto::UpgradeableConnection<'_, I, S, E>
     where
         S: hyper::service::Service<
             http::Request<hyper::body::Incoming>,

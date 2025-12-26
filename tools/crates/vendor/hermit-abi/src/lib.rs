@@ -3,15 +3,16 @@
 
 #![no_std]
 #![allow(nonstandard_style)]
+#![allow(dead_code)]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::result_unit_err)]
 
 pub mod errno;
-pub mod tcplistener;
-pub mod tcpstream;
+
+use core::ffi::c_char;
+pub use core::ffi::{c_int, c_short, c_void};
 
 pub use self::errno::*;
-pub use core::ffi::{c_int, c_short, c_void};
 
 /// A thread handle type
 pub type Tid = u32;
@@ -37,14 +38,9 @@ pub const HIGH_PRIO: Priority = Priority::from(3);
 pub const NORMAL_PRIO: Priority = Priority::from(2);
 pub const LOW_PRIO: Priority = Priority::from(1);
 
-/// A handle, identifying a socket
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Hash)]
-pub struct Handle(usize);
-
-pub const NSEC_PER_SEC: u64 = 1_000_000_000;
 pub const FUTEX_RELATIVE_TIMEOUT: u32 = 1;
-pub const CLOCK_REALTIME: u64 = 1;
-pub const CLOCK_MONOTONIC: u64 = 4;
+pub const CLOCK_REALTIME: clockid_t = 1;
+pub const CLOCK_MONOTONIC: clockid_t = 4;
 pub const STDIN_FILENO: c_int = 0;
 pub const STDOUT_FILENO: c_int = 1;
 pub const STDERR_FILENO: c_int = 2;
@@ -56,6 +52,7 @@ pub const O_EXCL: i32 = 0o200;
 pub const O_TRUNC: i32 = 0o1000;
 pub const O_APPEND: i32 = 0o2000;
 pub const O_NONBLOCK: i32 = 0o4000;
+pub const O_DIRECTORY: i32 = 0o200000;
 pub const F_DUPFD: i32 = 0;
 pub const F_GETFD: i32 = 1;
 pub const F_SETFD: i32 = 2;
@@ -70,48 +67,32 @@ pub fn isatty(_fd: c_int) -> bool {
 
 /// `timespec` is used by `clock_gettime` to retrieve the
 /// current time
-#[derive(Copy, Clone, Debug)]
+#[derive(Default, Copy, Clone, Debug)]
 #[repr(C)]
 pub struct timespec {
 	/// seconds
-	pub tv_sec: i64,
+	pub tv_sec: time_t,
 	/// nanoseconds
-	pub tv_nsec: i64,
+	pub tv_nsec: i32,
 }
 
-/// Internet protocol version.
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
-pub enum Version {
-	Unspecified,
-	Ipv4,
-	Ipv6,
-}
-
-/// A four-octet IPv4 address.
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Default)]
-pub struct Ipv4Address(pub [u8; 4]);
-
-/// A sixteen-octet IPv6 address.
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Default)]
-pub struct Ipv6Address(pub [u8; 16]);
-
-/// An internetworking address.
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
-pub enum IpAddress {
-	/// An unspecified address.
-	/// May be used as a placeholder for storage where the address is not assigned yet.
-	Unspecified,
-	/// An IPv4 address.
-	Ipv4(Ipv4Address),
-	/// An IPv6 address.
-	Ipv6(Ipv6Address),
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct timeval {
+	pub tv_sec: time_t,
+	pub tv_usec: suseconds_t,
 }
 
 /// The largest number `rand` will return
-pub const RAND_MAX: u64 = 2_147_483_647;
+pub const RAND_MAX: i32 = 2_147_483_647;
 
-pub const AF_INET: i32 = 0;
+pub const AF_UNSPEC: i32 = 0;
+/// Socket address family: IPv4
+pub const AF_INET: i32 = 3;
+/// Socket address family: IPv6
 pub const AF_INET6: i32 = 1;
+/// Socket address family: VSOCK protocol for hypervisor-guest communication
+pub const AF_VSOCK: i32 = 2;
 pub const IPPROTO_IP: i32 = 0;
 pub const IPPROTO_IPV6: i32 = 41;
 pub const IPPROTO_UDP: i32 = 17;
@@ -129,9 +110,13 @@ pub const IP_DROP_MEMBERSHIP: i32 = 4;
 pub const SHUT_RD: i32 = 0;
 pub const SHUT_WR: i32 = 1;
 pub const SHUT_RDWR: i32 = 2;
+/// Socket supports datagrams (connectionless,  unreliable  messages of a fixed maximum length)
 pub const SOCK_DGRAM: i32 = 2;
+/// Socket provides sequenced, reliable,  two-way,  connection-based byte streams.
 pub const SOCK_STREAM: i32 = 1;
+/// Set the O_NONBLOCK file status flag on the open socket
 pub const SOCK_NONBLOCK: i32 = 0o4000;
+/// Set  the  close-on-exec flag on the new socket
 pub const SOCK_CLOEXEC: i32 = 0o40000;
 pub const SOL_SOCKET: i32 = 4095;
 pub const SO_REUSEADDR: i32 = 0x0004;
@@ -146,11 +131,17 @@ pub const SO_ERROR: i32 = 0x1007;
 pub const TCP_NODELAY: i32 = 1;
 pub const MSG_PEEK: i32 = 1;
 pub const FIONBIO: i32 = 0x8008667eu32 as i32;
-pub const EAI_NONAME: i32 = -2200;
-pub const EAI_SERVICE: i32 = -2201;
-pub const EAI_FAIL: i32 = -2202;
-pub const EAI_MEMORY: i32 = -2203;
-pub const EAI_FAMILY: i32 = -2204;
+pub const EAI_AGAIN: i32 = 2;
+pub const EAI_BADFLAGS: i32 = 3;
+pub const EAI_FAIL: i32 = 4;
+pub const EAI_FAMILY: i32 = 5;
+pub const EAI_MEMORY: i32 = 6;
+pub const EAI_NODATA: i32 = 7;
+pub const EAI_NONAME: i32 = 8;
+pub const EAI_SERVICE: i32 = 9;
+pub const EAI_SOCKTYPE: i32 = 10;
+pub const EAI_SYSTEM: i32 = 11;
+pub const EAI_OVERFLOW: i32 = 14;
 pub const POLLIN: i16 = 0x1;
 pub const POLLPRI: i16 = 0x2;
 pub const POLLOUT: i16 = 0x4;
@@ -165,51 +156,73 @@ pub const POLLRDHUP: i16 = 0x2000;
 pub const EFD_SEMAPHORE: i16 = 0o1;
 pub const EFD_NONBLOCK: i16 = 0o4000;
 pub const EFD_CLOEXEC: i16 = 0o40000;
+pub const IOV_MAX: usize = 1024;
+/// VMADDR_CID_ANY means that any address is possible for binding
+pub const VMADDR_CID_ANY: u32 = u32::MAX;
+pub const VMADDR_CID_HYPERVISOR: u32 = 0;
+pub const VMADDR_CID_LOCAL: u32 = 1;
+pub const VMADDR_CID_HOST: u32 = 2;
 pub type sa_family_t = u8;
 pub type socklen_t = u32;
 pub type in_addr_t = u32;
 pub type in_port_t = u16;
 pub type time_t = i64;
-pub type suseconds_t = i64;
+pub type useconds_t = u32;
+pub type suseconds_t = i32;
 pub type nfds_t = usize;
+pub type sem_t = *const c_void;
+pub type pid_t = i32;
+pub type clockid_t = i32;
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct in_addr {
-	pub s_addr: u32,
+	pub s_addr: in_addr_t,
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[repr(C, align(4))]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct in6_addr {
 	pub s6_addr: [u8; 16],
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct sockaddr {
 	pub sa_len: u8,
 	pub sa_family: sa_family_t,
-	pub sa_data: [u8; 14],
+	pub sa_data: [c_char; 14],
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
+pub struct sockaddr_vm {
+	pub svm_len: u8,
+	pub svm_family: sa_family_t,
+	pub svm_reserved1: u16,
+	pub svm_port: u32,
+	pub svm_cid: u32,
+	pub svm_zero: [u8; 4],
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct sockaddr_in {
 	pub sin_len: u8,
 	pub sin_family: sa_family_t,
-	pub sin_port: u16,
+	pub sin_port: in_port_t,
 	pub sin_addr: in_addr,
-	pub sin_zero: [u8; 8],
+	pub sin_zero: [c_char; 8],
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct sockaddr_in6 {
+	pub sin6_len: u8,
 	pub sin6_family: sa_family_t,
-	pub sin6_port: u16,
-	pub sin6_addr: in6_addr,
+	pub sin6_port: in_port_t,
 	pub sin6_flowinfo: u32,
+	pub sin6_addr: in6_addr,
 	pub sin6_scope_id: u32,
 }
 
@@ -221,8 +234,8 @@ pub struct addrinfo {
 	pub ai_socktype: i32,
 	pub ai_protocol: i32,
 	pub ai_addrlen: socklen_t,
+	pub ai_canonname: *mut c_char,
 	pub ai_addr: *mut sockaddr,
-	pub ai_canonname: *mut u8,
 	pub ai_next: *mut addrinfo,
 }
 
@@ -231,40 +244,34 @@ pub struct addrinfo {
 pub struct sockaddr_storage {
 	pub s2_len: u8,
 	pub ss_family: sa_family_t,
-	pub s2_data1: [i8; 2usize],
-	pub s2_data2: [u32; 3usize],
+	__ss_pad1: [u8; 6],
+	__ss_align: i64,
+	__ss_pad2: [u8; 112],
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct ip_mreq {
 	pub imr_multiaddr: in_addr,
 	pub imr_interface: in_addr,
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct ipv6_mreq {
 	pub ipv6mr_multiaddr: in6_addr,
 	pub ipv6mr_interface: u32,
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct linger {
 	pub l_onoff: i32,
 	pub l_linger: i32,
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct timeval {
-	pub tv_sec: time_t,
-	pub tv_usec: suseconds_t,
-}
-
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct pollfd {
 	/// file descriptor
 	pub fd: i32,
@@ -289,20 +296,17 @@ pub struct stat {
 	/// device id
 	pub st_rdev: u64,
 	/// size in bytes
-	pub st_size: u64,
+	pub st_size: i64,
 	/// block size
 	pub st_blksize: i64,
 	/// size in blocks
 	pub st_blocks: i64,
 	/// time of last access
-	pub st_atime: u64,
-	pub st_atime_nsec: u64,
+	pub st_atim: timespec,
 	/// time of last modification
-	pub st_mtime: u64,
-	pub st_mtime_nsec: u64,
+	pub st_mtim: timespec,
 	/// time of last status change
-	pub st_ctime: u64,
-	pub st_ctime_nsec: u64,
+	pub st_ctim: timespec,
 }
 
 #[repr(C)]
@@ -317,29 +321,83 @@ pub struct dirent64 {
 	/// File type
 	pub d_type: u8,
 	/// Filename (null-terminated)
-	pub d_name: core::marker::PhantomData<u8>,
+	pub d_name: [c_char; 256],
 }
 
-pub const DT_UNKNOWN: u32 = 0;
-pub const DT_FIFO: u32 = 1;
-pub const DT_CHR: u32 = 2;
-pub const DT_DIR: u32 = 4;
-pub const DT_BLK: u32 = 6;
-pub const DT_REG: u32 = 8;
-pub const DT_LNK: u32 = 10;
-pub const DT_SOCK: u32 = 12;
-pub const DT_WHT: u32 = 14;
+#[repr(C)]
+#[derive(Debug, Clone, Copy)]
+/// Describes  a  region  of  memory, beginning at `iov_base` address and with the size of `iov_len` bytes.
+pub struct iovec {
+	/// Starting address
+	pub iov_base: *mut c_void,
+	/// Size of the memory pointed to by iov_base.
+	pub iov_len: usize,
+}
 
-pub const S_IFDIR: u32 = 0x4000;
-pub const S_IFREG: u32 = 0x8000;
-pub const S_IFLNK: u32 = 0xA000;
-pub const S_IFMT: u32 = 0xF000;
+pub const DT_UNKNOWN: u8 = 0;
+pub const DT_FIFO: u8 = 1;
+pub const DT_CHR: u8 = 2;
+pub const DT_DIR: u8 = 4;
+pub const DT_BLK: u8 = 6;
+pub const DT_REG: u8 = 8;
+pub const DT_LNK: u8 = 10;
+pub const DT_SOCK: u8 = 12;
+pub const DT_WHT: u8 = 14;
 
-// sysmbols, which are part of the library operating system
+pub const S_IFIFO: u32 = 0o1_0000;
+pub const S_IFCHR: u32 = 0o2_0000;
+pub const S_IFBLK: u32 = 0o6_0000;
+pub const S_IFDIR: u32 = 0o4_0000;
+pub const S_IFREG: u32 = 0o10_0000;
+pub const S_IFLNK: u32 = 0o12_0000;
+pub const S_IFSOCK: u32 = 0o14_0000;
+pub const S_IFMT: u32 = 0o17_0000;
+
+/// Pages may not be accessed.
+pub const PROT_NONE: u32 = 0;
+/// Indicates that the memory region should be readable.
+pub const PROT_READ: u32 = 1 << 0;
+/// Indicates that the memory region should be writable.
+pub const PROT_WRITE: u32 = 1 << 1;
+/// Indicates that the memory region should be executable.
+pub const PROT_EXEC: u32 = 1 << 2;
+
+/// The file offset is set to offset bytes.
+pub const SEEK_SET: i32 = 0;
+/// The file offset is set to its current location plus offset bytes.
+pub const SEEK_CUR: i32 = 1;
+/// The file offset is set to the size of the file plus offset bytes.
+pub const SEEK_END: i32 = 2;
+
+// symbols, which are part of the library operating system
 extern "C" {
 	/// Get the last error number from the thread local storage
 	#[link_name = "sys_get_errno"]
 	pub fn get_errno() -> i32;
+
+	/// Get the last error number from the thread local storage
+	#[link_name = "sys_errno"]
+	pub fn errno() -> i32;
+
+	/// Get memory page size
+	#[link_name = "sys_getpagesize"]
+	pub fn getpagesize() -> i32;
+
+	/// Creates a new virtual memory mapping of the `size` specified with
+	/// protection bits specified in `prot_flags`.
+	#[link_name = "sys_mmap"]
+	pub fn mmap(size: usize, prot_flags: u32, ret: &mut *mut u8) -> i32;
+
+	/// Unmaps memory at the specified `ptr` for `size` bytes.
+	#[link_name = "sys_munmap"]
+	pub fn munmap(ptr: *mut u8, size: usize) -> i32;
+
+	/// Configures the protections associated with a region of virtual memory
+	/// starting at `ptr` and going to `size`.
+	///
+	/// Returns 0 on success and an error code on failure.
+	#[link_name = "sys_mprotect"]
+	pub fn mprotect(ptr: *mut u8, size: usize, prot_flags: u32) -> i32;
 
 	/// If the value at address matches the expected value, park the current thread until it is either
 	/// woken up with [`futex_wake`] (returns 0) or an optional timeout elapses (returns -ETIMEDOUT).
@@ -366,21 +424,23 @@ extern "C" {
 
 	/// sem_init() initializes the unnamed semaphore at the address
 	/// pointed to by `sem`.  The `value` argument specifies the
-	/// initial value for the semaphore.
+	/// initial value for the semaphore. If `pshared` is nonzero,
+	/// then the semaphore is shared between processes (currently
+	/// not supported).
 	#[link_name = "sys_sem_init"]
-	pub fn sem_init(sem: *mut *const c_void, value: u32) -> i32;
+	pub fn sem_init(sem: *mut sem_t, pshared: i32, value: u32) -> i32;
 
 	/// sem_destroy() frees the unnamed semaphore at the address
 	/// pointed to by `sem`.
 	#[link_name = "sys_sem_destroy"]
-	pub fn sem_destroy(sem: *const c_void) -> i32;
+	pub fn sem_destroy(sem: *mut sem_t) -> i32;
 
 	/// sem_post() increments the semaphore pointed to by `sem`.
 	/// If the semaphore's value consequently becomes greater
 	/// than zero, then another thread blocked in a sem_wait call
 	/// will be woken up and proceed to lock the semaphore.
 	#[link_name = "sys_sem_post"]
-	pub fn sem_post(sem: *const c_void) -> i32;
+	pub fn sem_post(sem: *mut sem_t) -> i32;
 
 	/// try to decrement a semaphore
 	///
@@ -388,7 +448,7 @@ extern "C" {
 	/// if the  decrement cannot be immediately performed, then  call
 	/// returns a negative value instead of blocking.
 	#[link_name = "sys_sem_trywait"]
-	pub fn sem_trywait(sem: *const c_void) -> i32;
+	pub fn sem_trywait(sem: *mut sem_t) -> i32;
 
 	/// decrement a semaphore
 	///
@@ -399,17 +459,17 @@ extern "C" {
 	/// it becomes possible to perform the decrement of the time limit
 	/// to wait for the semaphore is expired. A time limit `ms` of
 	/// means infinity waiting time.
-	#[link_name = "sys_timedwait"]
-	pub fn sem_timedwait(sem: *const c_void, ms: u32) -> i32;
+	#[link_name = "sys_sem_timedwait"]
+	pub fn sem_timedwait(sem: *mut sem_t, abs_timeout: *const timespec) -> i32;
 
 	/// Determines the id of the current thread
 	#[link_name = "sys_getpid"]
-	pub fn getpid() -> u32;
+	pub fn getpid() -> pid_t;
 
-	/// cause normal termination and return `arg`
+	/// cause normal termination and return `status`
 	/// to the host system
 	#[link_name = "sys_exit"]
-	pub fn exit(arg: i32) -> !;
+	pub fn exit(status: i32) -> !;
 
 	/// cause abnormal termination
 	#[link_name = "sys_abort"]
@@ -421,6 +481,10 @@ extern "C" {
 	/// thread for (at least) `usecs` microseconds.
 	#[link_name = "sys_usleep"]
 	pub fn usleep(usecs: u64);
+
+	/// suspend thread execution for an interval measured in nanoseconds
+	#[link_name = "sys_nanosleep"]
+	pub fn nanosleep(req: *const timespec) -> i32;
 
 	/// spawn a new thread
 	///
@@ -478,7 +542,7 @@ extern "C" {
 	///
 	/// The clock_gettime() functions allow the calling thread
 	/// to retrieve the value used by a clock which is specified
-	/// by `clock_id`.
+	/// by `clockid`.
 	///
 	/// `CLOCK_REALTIME`: the system's real time clock,
 	/// expressed as the amount of time since the Epoch.
@@ -486,7 +550,7 @@ extern "C" {
 	/// `CLOCK_MONOTONIC`: clock that increments monotonically,
 	/// tracking the time since an arbitrary point
 	#[link_name = "sys_clock_gettime"]
-	pub fn clock_gettime(clock_id: u64, tp: *mut timespec) -> i32;
+	pub fn clock_gettime(clockid: clockid_t, tp: *mut timespec) -> i32;
 
 	/// open and possibly create a file
 	///
@@ -494,48 +558,64 @@ extern "C" {
 	/// If the specified file does not exist, it may optionally
 	/// be created by open().
 	#[link_name = "sys_open"]
-	pub fn open(name: *const i8, flags: i32, mode: i32) -> i32;
+	pub fn open(name: *const c_char, flags: i32, mode: i32) -> i32;
 
 	/// open a directory
 	///
 	/// The opendir() system call opens the directory specified by `name`.
+	#[deprecated(since = "0.4.0", note = "please use `open`")]
 	#[link_name = "sys_opendir"]
-	pub fn opendir(name: *const i8) -> i32;
+	pub fn opendir(name: *const c_char) -> i32;
 
 	/// delete the file it refers to `name`
 	#[link_name = "sys_unlink"]
-	pub fn unlink(name: *const i8) -> i32;
+	pub fn unlink(name: *const c_char) -> i32;
 
 	/// remove directory it refers to `name`
 	#[link_name = "sys_rmdir"]
-	pub fn rmdir(name: *const i8) -> i32;
+	pub fn rmdir(name: *const c_char) -> i32;
 
 	/// stat
 	#[link_name = "sys_stat"]
-	pub fn stat(name: *const i8, stat: *mut stat) -> i32;
+	pub fn stat(name: *const c_char, stat: *mut stat) -> i32;
 
 	/// lstat
 	#[link_name = "sys_lstat"]
-	pub fn lstat(name: *const i8, stat: *mut stat) -> i32;
+	pub fn lstat(name: *const c_char, stat: *mut stat) -> i32;
 
 	/// fstat
 	#[link_name = "sys_fstat"]
 	pub fn fstat(fd: i32, stat: *mut stat) -> i32;
 
+	/// Returns an estimate of the default amount of parallelism
+	/// a program should use. This number often corresponds to the
+	/// amount of CPUs a computer has, but it may diverge in
+	/// various cases.
+	#[link_name = "sys_available_parallelism"]
+	pub fn available_parallelism() -> usize;
+
 	/// determines the number of activated processors
+	#[deprecated(since = "0.4.0", note = "please use `available_parallelism`")]
 	#[link_name = "sys_get_processor_count"]
 	pub fn get_processor_count() -> usize;
 
 	#[link_name = "sys_malloc"]
 	pub fn malloc(size: usize, align: usize) -> *mut u8;
 
-	#[doc(hidden)]
+	#[link_name = "sys_alloc"]
+	pub fn alloc(size: usize, align: usize) -> *mut u8;
+
+	#[link_name = "sys_alloc_zeroed"]
+	pub fn alloc_zeroed(size: usize, align: usize) -> *mut u8;
+
 	#[link_name = "sys_realloc"]
 	pub fn realloc(ptr: *mut u8, size: usize, align: usize, new_size: usize) -> *mut u8;
 
-	#[doc(hidden)]
 	#[link_name = "sys_free"]
 	pub fn free(ptr: *mut u8, size: usize, align: usize);
+
+	#[link_name = "sys_dealloc"]
+	pub fn dealloc(ptr: *mut u8, size: usize, align: usize);
 
 	#[link_name = "sys_notify"]
 	pub fn notify(id: usize, count: i32) -> i32;
@@ -576,6 +656,31 @@ extern "C" {
 	#[link_name = "sys_wakeup_taskt"]
 	pub fn wakeup_task(tid: Tid);
 
+	/// The system call `getaddrbyname` determine the network host entry.
+	/// It expects an array of u8 with a size of in_addr or of in6_addr.
+	/// The result of the DNS request will be stored in this array.
+	///
+	/// # Example
+	///
+	/// ```
+	/// use hermit_abi::in_addr;
+	/// let c_string = std::ffi::CString::new("rust-lang.org").expect("CString::new failed");
+	/// let name = c_string.into_raw();
+	/// let mut inaddr: in_addr = Default::default();
+	/// let _ = unsafe {
+	///         hermit_abi::getaddrbyname(
+	///                 name,
+	///                 &mut inaddr as *mut _ as *mut u8,
+	///                 std::mem::size_of::<in_addr>(),
+	///         )
+	/// };
+	///
+	/// // retake pointer to free memory
+	/// let _ = CString::from_raw(name);
+	/// ```
+	#[link_name = "sys_getaddrbyname"]
+	pub fn getaddrbyname(name: *const c_char, inaddr: *mut u8, len: usize) -> i32;
+
 	#[link_name = "sys_accept"]
 	pub fn accept(s: i32, addr: *mut sockaddr, addrlen: *mut socklen_t) -> i32;
 
@@ -593,6 +698,24 @@ extern "C" {
 	/// to by `buf`.
 	#[link_name = "sys_read"]
 	pub fn read(fd: i32, buf: *mut u8, len: usize) -> isize;
+
+	/// `read()` attempts to read `nbyte` of data to the object referenced by the
+	/// descriptor `fd` from a buffer. `read()` performs the same
+	/// action, but scatters the input data from the `iovcnt` buffers specified by the
+	/// members of the iov array: `iov[0], iov[1], ..., iov[iovcnt-1]`.
+	///
+	/// ```
+	/// struct iovec {
+	///     char   *iov_base;  /* Base address. */
+	///     size_t iov_len;    /* Length. */
+	/// };
+	/// ```
+	///
+	/// Each `iovec` entry specifies the base address and length of an area in memory from
+	/// which data should be written.  `readv()` will always fill an completely
+	/// before proceeding to the next.
+	#[link_name = "sys_readv"]
+	pub fn readv(fd: i32, iov: *const iovec, iovcnt: usize) -> isize;
 
 	/// `getdents64` reads directory entries from the directory referenced
 	/// by the file descriptor `fd` into the buffer pointed to by `buf`.
@@ -627,6 +750,14 @@ extern "C" {
 		addrlen: *mut socklen_t,
 	) -> isize;
 
+	/// The fseek() function sets the file position indicator for the stream pointed to by stream.
+	/// The new position, measured in bytes, is obtained by adding offset bytes to the position
+	/// specified by whence.  If whence is set to SEEK_SET, SEEK_CUR, or SEEK_END, the offset is
+	/// relative to the start of the file, the current position indicator, or end-of-file,
+	/// respectively.
+	#[link_name = "sys_lseek"]
+	pub fn lseek(fd: i32, offset: isize, whence: i32) -> isize;
+
 	/// write to a file descriptor
 	///
 	/// write() attempts to write `len` of data to the object
@@ -634,6 +765,24 @@ extern "C" {
 	/// buffer pointed to by `buf`.
 	#[link_name = "sys_write"]
 	pub fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+
+	/// `write()` attempts to write `nbyte` of data to the object referenced by the
+	/// descriptor `fd` from a buffer. `writev()` performs the same
+	/// action, but gathers the output data from the `iovcnt` buffers specified by the
+	/// members of the iov array: `iov[0], iov[1], ..., iov[iovcnt-1]`.
+	///
+	/// ```
+	/// struct iovec {
+	///     char   *iov_base;  /* Base address. */
+	///     size_t iov_len;    /* Length. */
+	/// };
+	/// ```
+	///
+	/// Each `iovec` entry specifies the base address and length of an area in memory from
+	/// which data should be written.  `writev()` will always write a
+	/// complete area before proceeding to the next.
+	#[link_name = "sys_writev"]
+	pub fn writev(fd: i32, iov: *const iovec, iovcnt: usize) -> isize;
 
 	/// close a file descriptor
 	///
@@ -723,6 +872,10 @@ extern "C" {
 	) -> isize;
 
 	/// shut down part of a full-duplex connection
+	#[link_name = "sys_shutdown"]
+	pub fn shutdown(sockfd: i32, how: i32) -> i32;
+
+	#[deprecated(since = "0.4.0", note = "use `shutdown` instead")]
 	#[link_name = "sys_shutdown_socket"]
 	pub fn shutdown_socket(s: i32, how: i32) -> i32;
 
@@ -734,8 +887,8 @@ extern "C" {
 
 	#[link_name = "sys_getaddrinfo"]
 	pub fn getaddrinfo(
-		nodename: *const i8,
-		servname: *const u8,
+		nodename: *const c_char,
+		servname: *const c_char,
 		hints: *const addrinfo,
 		res: *mut *mut addrinfo,
 	) -> i32;

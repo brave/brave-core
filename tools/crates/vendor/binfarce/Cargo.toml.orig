@@ -1,0 +1,10 @@
+[package]
+name = "binfarce"
+version = "0.2.1"
+authors = ["Evgeniy Reizner <razrfalcon@gmail.com>", "Sergey \"Shnatsel\" Davidoff <shnatsel@gmail.com>"]
+description = "Extremely minimal parser for ELF, Mach-O, PE and ar."
+repository = "https://github.com/Shnatsel/binfarce"
+categories = ["parser-implementations"]
+readme = "README.md"
+license = "MIT"
+edition = "2018"

@@ -15,19 +15,57 @@ use tinystr::TinyAsciiStr;
 fn overview(c: &mut Criterion) {
     let mut g = c.benchmark_group("overview");
 
-    g.bench_function("construct/TinyAsciiStr", |b| {
+    g.bench_function("construct/utf8/TinyAsciiStr", |b| {
         b.iter(|| {
             for s in STRINGS_4 {
-                let _: TinyAsciiStr<4> = black_box(s).parse().unwrap();
-                let _: TinyAsciiStr<8> = black_box(s).parse().unwrap();
-                let _: TinyAsciiStr<16> = black_box(s).parse().unwrap();
+                let _: TinyAsciiStr<4> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
+                let _: TinyAsciiStr<8> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
+                let _: TinyAsciiStr<16> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
             }
             for s in STRINGS_8 {
-                let _: TinyAsciiStr<8> = black_box(s).parse().unwrap();
-                let _: TinyAsciiStr<16> = black_box(s).parse().unwrap();
+                let _: TinyAsciiStr<8> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
+                let _: TinyAsciiStr<16> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
             }
             for s in STRINGS_16 {
-                let _: TinyAsciiStr<16> = black_box(s).parse().unwrap();
+                let _: TinyAsciiStr<16> =
+                    TinyAsciiStr::try_from_utf8(black_box(s.as_bytes())).unwrap();
+            }
+        });
+    });
+
+    let strings_4_utf16: Vec<Vec<u16>> = STRINGS_4
+        .iter()
+        .map(|s| s.encode_utf16().collect())
+        .collect();
+
+    let strings_8_utf16: Vec<Vec<u16>> = STRINGS_8
+        .iter()
+        .map(|s| s.encode_utf16().collect())
+        .collect();
+
+    let strings_16_utf16: Vec<Vec<u16>> = STRINGS_16
+        .iter()
+        .map(|s| s.encode_utf16().collect())
+        .collect();
+
+    g.bench_function("construct/utf16/TinyAsciiStr", |b| {
+        b.iter(|| {
+            for s in strings_4_utf16.iter() {
+                let _: TinyAsciiStr<4> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
+                let _: TinyAsciiStr<8> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
+                let _: TinyAsciiStr<16> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
+            }
+            for s in strings_8_utf16.iter() {
+                let _: TinyAsciiStr<8> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
+                let _: TinyAsciiStr<16> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
+            }
+            for s in strings_16_utf16.iter() {
+                let _: TinyAsciiStr<16> = TinyAsciiStr::try_from_utf16(black_box(s)).unwrap();
             }
         });
     });

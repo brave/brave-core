@@ -71,12 +71,13 @@
 //!     });
 //! }
 //! ```
+#![allow(clippy::result_large_err)]
 #[allow(unused_imports)]
 use core_foundation::array::{CFArray, CFArrayRef};
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::base::{Boolean, TCFType};
 #[cfg(feature = "alpn")]
 use core_foundation::string::CFString;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation_sys::base::{kCFAllocatorDefault, OSStatus};
 use std::os::raw::c_void;
 
@@ -101,11 +102,11 @@ use std::slice;
 use crate::base::{Error, Result};
 use crate::certificate::SecCertificate;
 use crate::cipher_suite::CipherSuite;
+use crate::cvt;
 use crate::identity::SecIdentity;
 use crate::import_export::Pkcs12ImportOptions;
 use crate::policy::SecPolicy;
 use crate::trust::SecTrust;
-use crate::{cvt, AsInner};
 use security_framework_sys::base::errSecParam;
 
 /// Specifies a side of a TLS session.
@@ -299,7 +300,7 @@ impl<S> MidHandshakeClientBuilder<S> {
                     result = stream.handshake();
                     continue;
                 }
-                let mut trust = if let Some(trust) = stream.context().peer_trust2()? { trust } else {
+                let Some(mut trust) = stream.context().peer_trust2()? else {
                     result = stream.handshake();
                     continue;
                 };
@@ -309,7 +310,7 @@ impl<S> MidHandshakeClientBuilder<S> {
                 trust.set_policy(&policy)?;
                 trust.evaluate_with_error().map_err(|error| {
                     #[cfg(feature = "log")]
-                    log::warn!("SecTrustEvaluateWithError: {}", error.to_string());
+                    log::warn!("SecTrustEvaluateWithError: {error}");
                     Error::from_code(error.code() as _)
                 })?;
                 result = stream.handshake();
@@ -327,20 +328,16 @@ impl<S> MidHandshakeClientBuilder<S> {
 pub struct SessionState(SSLSessionState);
 
 impl SessionState {
-    /// The session has not yet started.
-    pub const IDLE: Self = Self(kSSLIdle);
-
-    /// The session is in the handshake process.
-    pub const HANDSHAKE: Self = Self(kSSLHandshake);
-
-    /// The session is connected.
-    pub const CONNECTED: Self = Self(kSSLConnected);
-
-    /// The session has been terminated.
-    pub const CLOSED: Self = Self(kSSLClosed);
-
     /// The session has been aborted due to an error.
     pub const ABORTED: Self = Self(kSSLAborted);
+    /// The session has been terminated.
+    pub const CLOSED: Self = Self(kSSLClosed);
+    /// The session is connected.
+    pub const CONNECTED: Self = Self(kSSLConnected);
+    /// The session is in the handshake process.
+    pub const HANDSHAKE: Self = Self(kSSLHandshake);
+    /// The session has not yet started.
+    pub const IDLE: Self = Self(kSSLIdle);
 }
 
 /// Specifies a server's requirement for client certificates.
@@ -348,12 +345,10 @@ impl SessionState {
 pub struct SslAuthenticate(SSLAuthenticate);
 
 impl SslAuthenticate {
-    /// Do not request a client certificate.
-    pub const NEVER: Self = Self(kNeverAuthenticate);
-
     /// Require a client certificate.
     pub const ALWAYS: Self = Self(kAlwaysAuthenticate);
-
+    /// Do not request a client certificate.
+    pub const NEVER: Self = Self(kNeverAuthenticate);
     /// Request but do not require a client certificate.
     pub const TRY: Self = Self(kTryAuthenticate);
 }
@@ -365,14 +360,12 @@ pub struct SslClientCertificateState(SSLClientCertificateState);
 impl SslClientCertificateState {
     /// A client certificate has not been requested or sent.
     pub const NONE: Self = Self(kSSLClientCertNone);
-
+    /// A client certificate has been received but has failed to validate.
+    pub const REJECTED: Self = Self(kSSLClientCertRejected);
     /// A client certificate has been requested but not recieved.
     pub const REQUESTED: Self = Self(kSSLClientCertRequested);
     /// A client certificate has been received and successfully validated.
     pub const SENT: Self = Self(kSSLClientCertSent);
-
-    /// A client certificate has been received but has failed to validate.
-    pub const REJECTED: Self = Self(kSSLClientCertRejected);
 }
 
 /// Specifies protocol versions.
@@ -380,43 +373,33 @@ impl SslClientCertificateState {
 pub struct SslProtocol(SSLProtocol);
 
 impl SslProtocol {
-    /// No protocol has been or should be negotiated or specified; use the default.
-    pub const UNKNOWN: Self = Self(kSSLProtocolUnknown);
-
+    /// All supported TLS/SSL versions are accepted.
+    pub const ALL: Self = Self(kSSLProtocolAll);
+    /// The `DTLSv1` protocol is preferred.
+    pub const DTLS1: Self = Self(kDTLSProtocol1);
+    /// Only the SSL 2.0 protocol is accepted.
+    pub const SSL2: Self = Self(kSSLProtocol2);
     /// The SSL 3.0 protocol is preferred, though SSL 2.0 may be used if the peer does not support
     /// SSL 3.0.
     pub const SSL3: Self = Self(kSSLProtocol3);
-
+    /// Only the SSL 3.0 protocol is accepted.
+    pub const SSL3_ONLY: Self = Self(kSSLProtocol3Only);
     /// The TLS 1.0 protocol is preferred, though lower versions may be used
     /// if the peer does not support TLS 1.0.
     pub const TLS1: Self = Self(kTLSProtocol1);
-
     /// The TLS 1.1 protocol is preferred, though lower versions may be used
     /// if the peer does not support TLS 1.1.
     pub const TLS11: Self = Self(kTLSProtocol11);
-
     /// The TLS 1.2 protocol is preferred, though lower versions may be used
     /// if the peer does not support TLS 1.2.
     pub const TLS12: Self = Self(kTLSProtocol12);
-
     /// The TLS 1.3 protocol is preferred, though lower versions may be used
     /// if the peer does not support TLS 1.3.
     pub const TLS13: Self = Self(kTLSProtocol13);
-
-    /// Only the SSL 2.0 protocol is accepted.
-    pub const SSL2: Self = Self(kSSLProtocol2);
-
-    /// The `DTLSv1` protocol is preferred.
-    pub const DTLS1: Self = Self(kDTLSProtocol1);
-
-    /// Only the SSL 3.0 protocol is accepted.
-    pub const SSL3_ONLY: Self = Self(kSSLProtocol3Only);
-
     /// Only the TLS 1.0 protocol is accepted.
     pub const TLS1_ONLY: Self = Self(kTLSProtocol1Only);
-
-    /// All supported TLS/SSL versions are accepted.
-    pub const ALL: Self = Self(kSSLProtocolAll);
+    /// No protocol has been or should be negotiated or specified; use the default.
+    pub const UNKNOWN: Self = Self(kSSLProtocolUnknown);
 }
 
 declare_TCFType! {
@@ -440,11 +423,8 @@ impl fmt::Debug for SslContext {
 unsafe impl Sync for SslContext {}
 unsafe impl Send for SslContext {}
 
-impl AsInner for SslContext {
-    type Inner = SSLContextRef;
-
-    #[inline(always)]
-    fn as_inner(&self) -> SSLContextRef {
+impl SslContext {
+    pub(crate) fn as_inner(&self) -> SSLContextRef {
         self.0
     }
 }
@@ -456,7 +436,7 @@ macro_rules! impl_options {
             $(#[$a])*
             #[inline(always)]
             pub fn $set(&mut self, value: bool) -> Result<()> {
-                unsafe { cvt(SSLSetSessionOption(self.0, $opt, value as Boolean)) }
+                unsafe { cvt(SSLSetSessionOption(self.0, $opt, Boolean::from(value))) }
             }
 
             #[allow(deprecated)]
@@ -505,7 +485,7 @@ impl SslContext {
             cvt(SSLGetPeerDomainNameLength(self.0, &mut len))?;
             let mut buf = vec![0; len];
             cvt(SSLGetPeerDomainName(self.0, buf.as_mut_ptr().cast(), &mut len))?;
-            Ok(String::from_utf8(buf).unwrap())
+            String::from_utf8(buf).map_err(|_| Error::from_code(-1))
         }
     }
 
@@ -775,7 +755,7 @@ impl SslContext {
         {
             dlsym! { fn SSLSetSessionTicketsEnabled(SSLContextRef, Boolean) -> OSStatus }
             if let Some(f) = SSLSetSessionTicketsEnabled.get() {
-                unsafe { cvt(f(self.0, enabled as Boolean)) }
+                unsafe { cvt(f(self.0, Boolean::from(enabled))) }
             } else {
                 Err(Error::from_code(errSecUnimplemented))
             }
@@ -814,20 +794,14 @@ impl SslContext {
     }
 
     fn into_stream<S>(self, stream: S) -> Result<SslStream<S>>
-    where
-        S: Read + Write,
-    {
+    where S: Read + Write {
         unsafe {
             let ret = SSLSetIOFuncs(self.0, read_func::<S>, write_func::<S>);
             if ret != errSecSuccess {
                 return Err(Error::from_code(ret));
             }
 
-            let stream = Connection {
-                stream,
-                err: None,
-                panic: None,
-            };
+            let stream = Connection { stream, err: None, panic: None };
             let stream = Box::into_raw(Box::new(stream));
             let ret = SSLSetConnection(self.0, stream.cast());
             if ret != errSecSuccess {
@@ -835,10 +809,7 @@ impl SslContext {
                 return Err(Error::from_code(ret));
             }
 
-            Ok(SslStream {
-                ctx: self,
-                _m: PhantomData,
-            })
+            Ok(SslStream { ctx: self, _m: PhantomData })
         }
     }
 
@@ -876,35 +847,37 @@ unsafe extern "C" fn read_func<S>(
     data: *mut c_void,
     data_length: *mut usize,
 ) -> OSStatus
-where
-    S: Read,
-{
+where S: Read {
     let conn: &mut Connection<S> = &mut *(connection as *mut _);
-    let data = slice::from_raw_parts_mut(data.cast::<u8>(), *data_length);
-    let mut start = 0;
-    let mut ret = errSecSuccess;
+    let mut read = 0;
 
-    while start < data.len() {
-        match panic::catch_unwind(AssertUnwindSafe(|| conn.stream.read(&mut data[start..]))) {
-            Ok(Ok(0)) => {
-                ret = errSSLClosedNoNotify;
-                break;
-            },
-            Ok(Ok(len)) => start += len,
-            Ok(Err(e)) => {
-                ret = translate_err(&e);
-                conn.err = Some(e);
-                break;
-            },
-            Err(e) => {
-                ret = errSecIO;
-                conn.panic = Some(e);
-                break;
-            },
+    let ret = panic::catch_unwind(AssertUnwindSafe(|| {
+        let mut data = slice::from_raw_parts_mut(data.cast::<u8>(), *data_length);
+        while !data.is_empty() {
+            match conn.stream.read(data) {
+                Ok(0) => return errSSLClosedNoNotify,
+                Ok(len) => {
+                    let Some(rest) = data.get_mut(len..) else {
+                        return errSecIO;
+                    };
+                    data = rest;
+                    read += len;
+                },
+                Err(e) => {
+                    let ret = translate_err(&e);
+                    conn.err = Some(e);
+                    return ret;
+                },
+            }
         }
-    }
+        errSecSuccess
+    }))
+    .unwrap_or_else(|e| {
+        conn.panic = Some(e);
+        errSecIO
+    });
 
-    *data_length = start;
+    *data_length = read;
     ret
 }
 
@@ -913,35 +886,45 @@ unsafe extern "C" fn write_func<S>(
     data: *const c_void,
     data_length: *mut usize,
 ) -> OSStatus
-where
-    S: Write,
-{
+where S: Write {
     let conn: &mut Connection<S> = &mut *(connection as *mut _);
-    let data = slice::from_raw_parts(data as *mut u8, *data_length);
-    let mut start = 0;
-    let mut ret = errSecSuccess;
+    let mut written = 0;
 
-    while start < data.len() {
-        match panic::catch_unwind(AssertUnwindSafe(|| conn.stream.write(&data[start..]))) {
-            Ok(Ok(0)) => {
-                ret = errSSLClosedNoNotify;
-                break;
-            },
-            Ok(Ok(len)) => start += len,
-            Ok(Err(e)) => {
-                ret = translate_err(&e);
-                conn.err = Some(e);
-                break;
-            },
-            Err(e) => {
-                ret = errSecIO;
-                conn.panic = Some(e);
-                break;
-            },
+    let ret = panic::catch_unwind(AssertUnwindSafe(|| {
+        let mut data = slice::from_raw_parts(data.cast::<u8>(), *data_length);
+        while !data.is_empty() {
+            match conn.stream.write(data) {
+                Ok(0) => return errSSLClosedNoNotify,
+                Ok(len) => {
+                    let Some(rest) = data.get(len..) else {
+                        return errSecIO;
+                    };
+                    data = rest;
+                    written += len;
+                },
+                Err(e) => {
+                    let ret = translate_err(&e);
+                    conn.err = Some(e);
+                    return ret;
+                },
+            }
         }
-    }
+        // Need to flush during the handshake so that the handshake doesn't stall on buffered
+        // write streams. It would be better if we only flushed automatically during the
+        // handshake, and not for the remainder of the stream.
+        if let Err(e) = conn.stream.flush() {
+            let ret = translate_err(&e);
+            conn.err = Some(e);
+            return ret;
+        }
+        errSecSuccess
+    }))
+    .unwrap_or_else(|e| {
+        conn.panic = Some(e);
+        errSecIO
+    });
 
-    *data_length = start;
+    *data_length = written;
     ret
 }
 
@@ -1194,7 +1177,7 @@ impl ClientBuilder {
     /// verifying the server's certificate.
     #[inline]
     pub fn anchor_certificates(&mut self, certs: &[SecCertificate]) -> &mut Self {
-        self.certs = certs.to_owned();
+        certs.clone_into(&mut self.certs);
         self
     }
 
@@ -1253,20 +1236,20 @@ impl ClientBuilder {
 
     /// Set a whitelist of enabled ciphers. Any ciphers not whitelisted will be disabled.
     pub fn whitelist_ciphers(&mut self, whitelisted_ciphers: &[CipherSuite]) -> &mut Self {
-        self.whitelisted_ciphers = whitelisted_ciphers.to_owned();
+        whitelisted_ciphers.clone_into(&mut self.whitelisted_ciphers);
         self
     }
 
     /// Set a blacklist of disabled ciphers. Blacklisted ciphers will be disabled.
     pub fn blacklist_ciphers(&mut self, blacklisted_ciphers: &[CipherSuite]) -> &mut Self {
-        self.blacklisted_ciphers = blacklisted_ciphers.to_owned();
+        blacklisted_ciphers.clone_into(&mut self.blacklisted_ciphers);
         self
     }
 
     /// Use the specified identity as a SSL/TLS client certificate.
     pub fn identity(&mut self, identity: &SecIdentity, chain: &[SecCertificate]) -> &mut Self {
         self.identity = Some(identity.clone());
-        self.chain = chain.to_owned();
+        chain.clone_into(&mut self.chain);
         self
     }
 
@@ -1422,13 +1405,13 @@ impl ServerBuilder {
             .import(pkcs12_der)?
             .into_iter()
             .filter_map(|idendity| {
-                let certs = idendity.cert_chain.unwrap_or_default();
-                idendity.identity.map(|identity| (identity, certs))
+                Some((idendity.identity?, idendity.cert_chain.unwrap_or_default()))
             })
+            .take(2)
             .collect();
         if identities.len() == 1 {
             let (identity, certs) = identities.pop().unwrap();
-            Ok(Self::new(&identity, &certs))
+            Ok(Self { identity, certs })
         } else {
             // This error code is not really helpful
             Err(Error::from_code(errSecParam))
@@ -1479,10 +1462,50 @@ mod test {
         let mut ctx = p!(SslContext::new(SslProtocolSide::CLIENT, SslConnectionType::STREAM));
         p!(ctx.set_peer_domain_name("foobar.com"));
         let stream = p!(TcpStream::connect("google.com:443"));
-        match ctx.handshake(stream) {
-            Ok(_) => panic!("expected failure"),
-            Err(_) => {},
+        ctx.handshake(stream).expect_err("expected failure");
+    }
+
+    #[test]
+    fn connect_buffered_stream() {
+        use std::io::BufWriter;
+
+        /// Small wrapper around a `TcpStream` to provide buffered writes.
+        #[derive(Debug)]
+        struct BufferedTcpStream {
+            reader: TcpStream,
+            writer: BufWriter<TcpStream>,
         }
+
+        impl BufferedTcpStream {
+            fn new(tcp: TcpStream) -> std::io::Result<Self> {
+                Ok(Self {
+                    writer: BufWriter::with_capacity(500, tcp.try_clone()?),
+                    reader: tcp,
+                })
+            }
+        }
+
+        impl Read for BufferedTcpStream {
+            fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+                self.reader.read(buf)
+            }
+        }
+
+        impl Write for BufferedTcpStream {
+            fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+                self.writer.write(buf)
+            }
+
+            fn flush(&mut self) -> std::io::Result<()> {
+                self.writer.flush()
+            }
+        }
+
+        let mut ctx = p!(SslContext::new(SslProtocolSide::CLIENT, SslConnectionType::STREAM));
+        p!(ctx.set_peer_domain_name("google.com"));
+        let stream = p!(TcpStream::connect("google.com:443"));
+        let stream = p!(BufferedTcpStream::new(stream));
+        p!(ctx.handshake(stream));
     }
 
     #[test]

@@ -21,10 +21,12 @@ See the [API documentation] for more.
 
 # Branches
 
-Currently Socket2 supports two versions: v0.5 and v0.4. Version 0.5 is being
-developed in the master branch. Version 0.4 is developed in the [v0.4.x branch]
-branch.
+Currently Socket2 supports the following versions:
+ * v0.6 developed in the master branch
+ * v0.5 developed in the [v0.5.x branch]
+ * v0.4 developed in the [v0.4.x branch]
 
+[v0.5.x branch]: https://github.com/rust-lang/socket2/tree/v0.5.x
 [v0.4.x branch]: https://github.com/rust-lang/socket2/tree/v0.4.x
 
 # OS support
@@ -33,10 +35,7 @@ Socket2 attempts to support the same OS/architectures as Rust does, see
 https://doc.rust-lang.org/nightly/rustc/platform-support.html. However this is
 not always possible, below is current list of support OSs.
 
-*If your favorite OS is not on the list consider contributing it! See [issue
-#78].*
-
-[issue #78]: https://github.com/rust-lang/socket2/issues/78
+*If your favorite OS is not on the list consider contributing it!*
 
 ### Tier 1
 
@@ -62,10 +61,11 @@ feature flag.
 * NetBSD
 * Redox
 * Solaris
+* OpenHarmony
 
 # Minimum Supported Rust Version (MSRV)
 
-Socket2 uses 1.63.0 as MSRV.
+Socket2 uses 1.70.0 as MSRV.
 
 # License
 

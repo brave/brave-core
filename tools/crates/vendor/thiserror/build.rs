@@ -3,9 +3,17 @@ use std::ffi::OsString;
 use std::fs;
 use std::io::ErrorKind;
 use std::iter;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::{self, Command, Stdio};
 use std::str;
+
+const PRIVATE: &str = "\
+#[doc(hidden)]
+pub mod __private$$ {
+    #[doc(hidden)]
+    pub use crate::private::*;
+}
+";
 
 fn main() {
     println!("cargo:rerun-if-changed=build/probe.rs");
@@ -13,6 +21,11 @@ fn main() {
     println!("cargo:rustc-check-cfg=cfg(error_generic_member_access)");
     println!("cargo:rustc-check-cfg=cfg(thiserror_nightly_testing)");
     println!("cargo:rustc-check-cfg=cfg(thiserror_no_backtrace_type)");
+
+    let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    let patch_version = env::var("CARGO_PKG_VERSION_PATCH").unwrap();
+    let module = PRIVATE.replace("$$", &patch_version);
+    fs::write(out_dir.join("private.rs"), module).unwrap();
 
     let error_generic_member_access;
     let consider_rustc_bootstrap;
@@ -146,7 +159,16 @@ fn compile_probe(rustc_bootstrap: bool) -> bool {
     // file in OUT_DIR, which causes nonreproducible builds in build systems
     // that treat the entire OUT_DIR as an artifact.
     if let Err(err) = fs::remove_dir_all(&out_subdir) {
-        if err.kind() != ErrorKind::NotFound {
+        // libc::ENOTEMPTY
+        // Some filesystems (NFSv3) have timing issues under load where '.nfs*'
+        // dummy files can continue to get created for a short period after the
+        // probe command completes, breaking remove_dir_all.
+        // To be replaced with ErrorKind::DirectoryNotEmpty (Rust 1.83+).
+        const ENOTEMPTY: i32 = 39;
+
+        if !(err.kind() == ErrorKind::NotFound
+            || (cfg!(target_os = "linux") && err.raw_os_error() == Some(ENOTEMPTY)))
+        {
             eprintln!("Failed to clean up {}: {}", out_subdir.display(), err);
             process::exit(1);
         }

@@ -6,10 +6,11 @@ use std::sync::Arc;
 
 use crate::{commands::CargoAuditCommand, config::AuditConfig};
 use abscissa_core::{
+    Application, FrameworkError, StandardPaths,
     application::{self, AppCell},
     config::CfgCell,
     terminal::ColorChoice,
-    trace, Application, FrameworkError, StandardPaths,
+    trace,
 };
 
 /// Application state

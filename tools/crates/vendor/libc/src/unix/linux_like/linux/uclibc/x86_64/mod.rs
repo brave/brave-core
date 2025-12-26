@@ -6,9 +6,6 @@ use crate::prelude::*;
 pub type blkcnt_t = i64;
 pub type blksize_t = i64;
 pub type clock_t = i64;
-pub type c_char = i8;
-pub type c_long = i64;
-pub type c_ulong = u64;
 pub type fsblkcnt_t = c_ulong;
 pub type fsfilcnt_t = c_ulong;
 pub type fsword_t = c_long;
@@ -34,11 +31,11 @@ s! {
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
         pub mode: c_ushort, // read / write
-        __pad1: c_ushort,
+        __pad1: Padding<c_ushort>,
         pub __seq: c_ushort,
-        __pad2: c_ushort,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __pad2: Padding<c_ushort>,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     #[cfg(not(target_os = "l4re"))]
@@ -75,8 +72,8 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     pub struct msqid_ds {
@@ -84,7 +81,7 @@ s! {
         pub msg_stime: crate::time_t,
         pub msg_rtime: crate::time_t,
         pub msg_ctime: crate::time_t,
-        __msg_cbytes: c_ulong,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
@@ -144,9 +141,11 @@ s! {
         pub st_mtime_nsec: c_ulong,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_ulong,
-        st_pad4: [c_long; 3],
+        st_pad4: Padding<[c_long; 3]>,
     }
 
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_handler: crate::sighandler_t,
         pub sa_flags: c_ulong,
@@ -155,14 +154,14 @@ s! {
     }
 
     pub struct stack_t {
-        // FIXME
+        // FIXME(ulibc)
         pub ss_sp: *mut c_void,
         pub ss_flags: c_int,
         pub ss_size: size_t,
     }
 
     pub struct statfs {
-        // FIXME
+        // FIXME(ulibc)
         pub f_type: fsword_t,
         pub f_bsize: fsword_t,
         pub f_blocks: crate::fsblkcnt_t,
@@ -208,7 +207,7 @@ s! {
     }
 
     pub struct msghdr {
-        // FIXME
+        // FIXME(ulibc)
         pub msg_name: *mut c_void,
         pub msg_namelen: crate::socklen_t,
         pub msg_iov: *mut crate::iovec,
@@ -219,7 +218,7 @@ s! {
     }
 
     pub struct termios {
-        // FIXME
+        // FIXME(ulibc)
         pub c_iflag: crate::tcflag_t,
         pub c_oflag: crate::tcflag_t,
         pub c_cflag: crate::tcflag_t,
@@ -229,12 +228,12 @@ s! {
     }
 
     pub struct sigset_t {
-        // FIXME
+        // FIXME(ulibc)
         __val: [c_ulong; 16],
     }
 
     pub struct sysinfo {
-        // FIXME
+        // FIXME(ulibc)
         pub uptime: c_long,
         pub loads: [c_ulong; 3],
         pub totalram: c_ulong,
@@ -252,20 +251,20 @@ s! {
     }
 
     pub struct glob_t {
-        // FIXME
+        // FIXME(ulibc)
         pub gl_pathc: size_t,
         pub gl_pathv: *mut *mut c_char,
         pub gl_offs: size_t,
         pub gl_flags: c_int,
-        __unused1: *mut c_void,
-        __unused2: *mut c_void,
-        __unused3: *mut c_void,
-        __unused4: *mut c_void,
-        __unused5: *mut c_void,
+        __unused1: Padding<*mut c_void>,
+        __unused2: Padding<*mut c_void>,
+        __unused3: Padding<*mut c_void>,
+        __unused4: Padding<*mut c_void>,
+        __unused5: Padding<*mut c_void>,
     }
 
     pub struct cpu_set_t {
-        // FIXME
+        // FIXME(ulibc)
         #[cfg(target_pointer_width = "32")]
         bits: [u32; 32],
         #[cfg(target_pointer_width = "64")]
@@ -273,7 +272,7 @@ s! {
     }
 
     pub struct fsid_t {
-        // FIXME
+        // FIXME(ulibc)
         __val: [c_int; 2],
     }
 
@@ -294,7 +293,6 @@ s! {
 }
 
 s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
     pub struct dirent {
         pub d_ino: crate::ino64_t,
         pub d_off: off64_t,
@@ -345,7 +343,6 @@ pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 56;
 pub const __SIZEOF_PTHREAD_RWLOCKATTR_T: usize = 8;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 32;
 pub const __SIZEOF_PTHREAD_BARRIERATTR_T: usize = 4;
-pub const PIDFD_NONBLOCK: c_int = 0o4000;
 
 cfg_if! {
     if #[cfg(target_os = "l4re")] {

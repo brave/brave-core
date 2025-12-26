@@ -13,13 +13,13 @@ macro_rules! bitcast {
             0
         } else if false {
             // Ensure that the source and destinations are the same size.
-            // SAFETY: This code is under an `if false`.
             #[allow(
                 unsafe_code,
                 unused_unsafe,
                 clippy::useless_transmute,
                 clippy::missing_transmute_annotations
             )]
+            // SAFETY: This code is under an `if false`.
             unsafe {
                 ::core::mem::transmute($x)
             }

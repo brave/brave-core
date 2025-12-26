@@ -11,8 +11,8 @@ use crate::{
 /// Traversal options for [`traverse_with_index()`][index::File::traverse_with_index()]
 #[derive(Default)]
 pub struct Options {
-    /// If `Some`, only use the given amount of threads. Otherwise, the amount of threads to use will be selected based on
-    /// the amount of available logical cores.
+    /// If `Some`, only use the given number of threads. Otherwise, the number of threads to use will be selected based on
+    /// the number of available logical cores.
     pub thread_limit: Option<usize>,
     /// The kinds of safety checks to perform.
     pub check: crate::index::traverse::SafetyCheck,
@@ -206,19 +206,21 @@ fn digest_statistics(traverse::Outcome { roots, children }: traverse::Outcome<En
         res.total_compressed_entries_size += item.data.compressed_size;
         res.total_decompressed_entries_size += item.data.decompressed_size;
         res.total_object_size += item.data.object_size;
-        *res.objects_per_chain_length.entry(item.data.level as u32).or_insert(0) += 1;
+        *res.objects_per_chain_length
+            .entry(u32::from(item.data.level))
+            .or_insert(0) += 1;
 
         average.decompressed_size += item.data.decompressed_size;
         average.compressed_size += item.data.compressed_size as usize;
         average.object_size += item.data.object_size;
-        average.num_deltas += item.data.level as u32;
+        average.num_deltas += u32::from(item.data.level);
         use gix_object::Kind::*;
         match item.data.object_kind {
             Blob => res.num_blobs += 1,
             Tree => res.num_trees += 1,
             Tag => res.num_tags += 1,
             Commit => res.num_commits += 1,
-        };
+        }
     }
 
     let num_nodes = roots.len() + children.len();

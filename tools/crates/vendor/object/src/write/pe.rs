@@ -47,6 +47,8 @@ pub struct Writer<'a> {
 
 impl<'a> Writer<'a> {
     /// Create a new `Writer`.
+    ///
+    /// The alignment values must be powers of two.
     pub fn new(
         is_64: bool,
         section_alignment: u32,

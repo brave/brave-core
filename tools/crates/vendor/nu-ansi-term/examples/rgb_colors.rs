@@ -1,4 +1,3 @@
-extern crate nu_ansi_term;
 use nu_ansi_term::{Color, Style};
 
 // This example prints out a color gradient in a grid by calculating each
@@ -9,6 +8,9 @@ const WIDTH: i32 = 80;
 const HEIGHT: i32 = 24;
 
 fn main() {
+    #[cfg(all(windows, feature = "std"))]
+    nu_ansi_term::enable_ansi_support().unwrap();
+
     for row in 0..HEIGHT {
         for col in 0..WIDTH {
             let r = (row * 255 / HEIGHT) as u8;

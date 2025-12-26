@@ -4,7 +4,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms)]
 #![forbid(unsafe_code)]
 
@@ -25,13 +25,11 @@ pub struct Pattern {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod pattern;
 
 pub mod search;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod wildmatch;
 pub use wildmatch::function::wildmatch;
 

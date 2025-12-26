@@ -55,7 +55,7 @@ pub enum Error {
     Context(#[from] crate::protocol::context::decode::Error),
     #[error("Credentials for {url:?} could not be obtained")]
     CredentialsMissing { url: BString },
-    #[error("The url wasn't provided in input - the git credentials protocol mandates this")]
+    #[error("Either 'url' field or both 'protocol' and 'host' fields must be provided")]
     UrlMissing,
 }
 
@@ -89,15 +89,19 @@ pub(crate) mod function {
         let mut buf = Vec::<u8>::with_capacity(512);
         stdin.read_to_end(&mut buf)?;
         let ctx = Context::from_bytes(&buf)?;
-        if ctx.url.is_none() {
+        if ctx.url.is_none() && (ctx.protocol.is_none() || ctx.host.is_none()) {
             return Err(Error::UrlMissing);
         }
-        let res = credentials(action, ctx).map_err(|err| Error::Helper { source: Box::new(err) })?;
+        let res = credentials(action, ctx.clone()).map_err(|err| Error::Helper { source: Box::new(err) })?;
         match (action, res) {
             (Action::Get, None) => {
-                return Err(Error::CredentialsMissing {
-                    url: Context::from_bytes(&buf)?.url.expect("present and checked above"),
-                })
+                let ctx_for_error = ctx;
+                let url = ctx_for_error
+                    .url
+                    .clone()
+                    .or_else(|| ctx_for_error.to_url())
+                    .expect("URL is available either directly or via protocol+host which we checked for");
+                return Err(Error::CredentialsMissing { url });
             }
             (Action::Get, Some(ctx)) => ctx.write_to(stdout)?,
             (Action::Erase | Action::Store, None) => {}

@@ -12,7 +12,7 @@ Rust implementation of CRC.
 Add `crc` to `Cargo.toml`
 ```toml
 [dependencies]
-crc = "3.2.1"
+crc = "3.4.0"
 ```
 
 ### Examples
@@ -43,7 +43,7 @@ assert_eq!(digest.finalize(), 0xaee7);
 
 ### Minimum supported Rust version (MSRV)
 
-This crate's MSRV is 1.65.
+This crate's MSRV is 1.83.
 
 At a minimum, the MSRV will be <= the oldest stable release in the last 12 months. MSRV may be bumped in minor version releases.
 

@@ -103,7 +103,7 @@ pub fn collect_tests<F: FnMut(String, TestFn)>(add_test: &mut F) {
                     &source,
                     (&to_ascii_n, &to_ascii_n_status),
                     to_ascii_n_result,
-                    |e| e == "V2",
+                    |e| e == "V2" || e == "A4_2",
                 );
 
                 let to_ascii_t_result = config.transitional_processing(true).to_ascii(&source);
@@ -111,7 +111,7 @@ pub fn collect_tests<F: FnMut(String, TestFn)>(add_test: &mut F) {
                     &source,
                     (&to_ascii_t, &to_ascii_t_status),
                     to_ascii_t_result,
-                    |e| e == "V2",
+                    |e| e == "V2" || e == "A4_2",
                 );
             })),
         )

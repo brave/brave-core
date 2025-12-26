@@ -6,6 +6,7 @@ macro_rules! __impl_assign {
         #[allow(unused_qualifications)]
         $(#[$attr])*
         impl core::ops::$op<$t> for $target {
+            #[inline]
             fn $fn(&mut self, rhs: $t) {
                 *self = *self $sym rhs;
             }
@@ -51,18 +52,93 @@ macro_rules! impl_div_assign {
 
 /// Division of integers, rounding the resulting value towards negative infinity.
 macro_rules! div_floor {
-    ($a:expr, $b:expr) => {{
-        let _a = $a;
-        let _b = $b;
+    ($self:expr, $rhs:expr) => {
+        match ($self, $rhs) {
+            (this, rhs) => {
+                let d = this / rhs;
+                let r = this % rhs;
 
-        let (_quotient, _remainder) = (_a / _b, _a % _b);
-
-        if (_remainder > 0 && _b < 0) || (_remainder < 0 && _b > 0) {
-            _quotient - 1
-        } else {
-            _quotient
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (this ^ rhs) >> ($crate::size_of_val(&this) * 8 - 1);
+                if r != 0 {
+                    d + correction
+                } else {
+                    d
+                }
+            }
         }
-    }};
+    };
+}
+
+/// Similar to `overflowing_add`, but returning the number of times that it overflowed. Contained to
+/// a certain range and only overflows a maximum number of times.
+macro_rules! carry {
+    (@most_once $value:expr, $min:literal.. $max:expr) => {
+        match ($value, $min, $max) {
+            (value, min, max) => {
+                if crate::hint::likely(value >= min) {
+                    if crate::hint::likely(value < max) {
+                        (value, 0)
+                    } else {
+                        (value - (max - min), 1)
+                    }
+                } else {
+                    (value + (max - min), -1)
+                }
+            }
+        }
+    };
+    (@most_twice $value:expr, $min:literal.. $max:expr) => {
+        match ($value, $min, $max) {
+            (value, min, max) => {
+                if crate::hint::likely(value >= min) {
+                    if crate::hint::likely(value < max) {
+                        (value, 0)
+                    } else if value < 2 * max - min {
+                        (value - (max - min), 1)
+                    } else {
+                        (value - 2 * (max - min), 2)
+                    }
+                } else {
+                    if value >= min - max {
+                        (value + (max - min), -1)
+                    } else {
+                        (value + 2 * (max - min), -2)
+                    }
+                }
+            }
+        }
+    };
+    (@most_thrice $value:expr, $min:literal.. $max:expr) => {
+        match ($value, $min, $max) {
+            (value, min, max) => {
+                if crate::hint::likely(value >= min) {
+                    if crate::hint::likely(value < max) {
+                        (value, 0)
+                    } else if value < 2 * max - min {
+                        (value - (max - min), 1)
+                    } else if value < 3 * max - 2 * min {
+                        (value - 2 * (max - min), 2)
+                    } else {
+                        (value - 3 * (max - min), 3)
+                    }
+                } else {
+                    if value >= min - max {
+                        (value + (max - min), -1)
+                    } else if value >= 2 * (min - max) {
+                        (value + 2 * (max - min), -2)
+                    } else {
+                        (value + 3 * (max - min), -3)
+                    }
+                }
+            }
+        }
+    };
 }
 
 /// Cascade an out-of-bounds value.
@@ -75,10 +151,10 @@ macro_rules! cascade {
         #[allow(unused_comparisons, unused_assignments)]
         let min = $min;
         let max = $max;
-        if $from >= max {
+        if crate::hint::unlikely($from >= max) {
             $from -= max - min;
             $to += 1;
-        } else if $from < min {
+        } else if crate::hint::unlikely($from < min) {
             $from += max - min;
             $to -= 1;
         }
@@ -89,11 +165,13 @@ macro_rules! cascade {
         // We need to actually capture the idents. Without this, macro hygiene causes errors.
         cascade!(@ordinal $ordinal);
         cascade!(@year $year);
+
+        let days_in_year = crate::util::days_in_year($year) as i16;
         #[allow(unused_assignments)]
-        if $ordinal > crate::util::days_in_year($year) as i16 {
-            $ordinal -= crate::util::days_in_year($year) as i16;
+        if crate::hint::unlikely($ordinal > days_in_year) {
+            $ordinal -= days_in_year;
             $year += 1;
-        } else if $ordinal < 1 {
+        } else if crate::hint::unlikely($ordinal < 1) {
             $year -= 1;
             $ordinal += crate::util::days_in_year($year) as i16;
         }
@@ -102,44 +180,47 @@ macro_rules! cascade {
 
 /// Constructs a ranged integer, returning a `ComponentRange` error if the value is out of range.
 macro_rules! ensure_ranged {
-    ($type:ident : $value:ident) => {
-        match $type::new($value) {
+    ($type:ty : $value:ident) => {
+        match <$type>::new($value) {
             Some(val) => val,
             None => {
+                $crate::hint::cold_path();
                 #[allow(trivial_numeric_casts)]
                 return Err(crate::error::ComponentRange {
                     name: stringify!($value),
-                    minimum: $type::MIN.get() as _,
-                    maximum: $type::MAX.get() as _,
-                    value: $value as _,
-                    conditional_range: false,
+                    minimum: <$type>::MIN.get() as i64,
+                    maximum: <$type>::MAX.get() as i64,
+                    value: $value as i64,
+                    conditional_message: None,
                 });
             }
         }
     };
 
-    ($type:ident : $value:ident $(as $as_type:ident)? * $factor:expr) => {
+    ($type:ty : $value:ident $(as $as_type:ident)? * $factor:expr) => {
         match ($value $(as $as_type)?).checked_mul($factor) {
-            Some(val) => match $type::new(val) {
+            Some(val) => match <$type>::new(val) {
                 Some(val) => val,
                 None => {
+                    $crate::hint::cold_path();
                     #[allow(trivial_numeric_casts)]
                     return Err(crate::error::ComponentRange {
                         name: stringify!($value),
-                        minimum: $type::MIN.get() as i64 / $factor as i64,
-                        maximum: $type::MAX.get() as i64 / $factor as i64,
-                        value: $value as _,
-                        conditional_range: false,
+                        minimum: <$type>::MIN.get() as i64 / $factor as i64,
+                        maximum: <$type>::MAX.get() as i64 / $factor as i64,
+                        value: $value as i64,
+                        conditional_message: None,
                     });
                 }
             },
             None => {
+                $crate::hint::cold_path();
                 return Err(crate::error::ComponentRange {
                     name: stringify!($value),
-                    minimum: $type::MIN.get() as i64 / $factor as i64,
-                    maximum: $type::MAX.get() as i64 / $factor as i64,
-                    value: $value as _,
-                    conditional_range: false,
+                    minimum: <$type>::MIN.get() as i64 / $factor as i64,
+                    maximum: <$type>::MAX.get() as i64 / $factor as i64,
+                    value: $value as i64,
+                    conditional_message: None,
                 });
             }
         }
@@ -195,6 +276,6 @@ macro_rules! bug {
 #[cfg(any(feature = "formatting", feature = "parsing"))]
 pub(crate) use bug;
 pub(crate) use {
-    __impl_assign, cascade, const_try, const_try_opt, div_floor, ensure_ranged, expect_opt,
+    __impl_assign, carry, cascade, const_try, const_try_opt, div_floor, ensure_ranged, expect_opt,
     impl_add_assign, impl_div_assign, impl_mul_assign, impl_sub_assign,
 };

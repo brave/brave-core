@@ -19,13 +19,13 @@ fn test_exhaustive() {
         let finished = finished.clone();
         workers.push(thread::spawn(move || loop {
             let batch = counter.fetch_add(1, Ordering::Relaxed) as u32;
-            if batch > u32::max_value() / BATCH_SIZE {
+            if batch > u32::MAX / BATCH_SIZE {
                 return;
             }
 
             let min = batch * BATCH_SIZE;
-            let max = if batch == u32::max_value() / BATCH_SIZE {
-                u32::max_value()
+            let max = if batch == u32::MAX / BATCH_SIZE {
+                u32::MAX
             } else {
                 min + BATCH_SIZE - 1
             };

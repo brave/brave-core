@@ -1,4 +1,5 @@
 use super::*;
+use core::ops::Deref;
 
 /// A BSTR string ([BSTR](https://learn.microsoft.com/en-us/previous-versions/windows/desktop/automat/string-manipulation-functions))
 /// is a length-prefixed wide string.
@@ -13,53 +14,24 @@ impl BSTR {
         Self(core::ptr::null_mut())
     }
 
-    /// Returns `true` if the string is empty.
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-
-    /// Returns the length of the string.
-    pub fn len(&self) -> usize {
-        if self.0.is_null() {
-            0
-        } else {
-            unsafe { bindings::SysStringLen(self.0) as usize }
-        }
-    }
-
-    /// Get the string as 16-bit wide characters (wchars).
-    pub fn as_wide(&self) -> &[u16] {
-        unsafe { core::slice::from_raw_parts(self.as_ptr(), self.len()) }
-    }
-
-    /// Returns a raw pointer to the `BSTR` buffer.
-    pub fn as_ptr(&self) -> *const u16 {
-        if !self.is_empty() {
-            self.0
-        } else {
-            const EMPTY: [u16; 1] = [0];
-            EMPTY.as_ptr()
-        }
-    }
-
     /// Create a `BSTR` from a slice of 16 bit characters (wchars).
-    pub fn from_wide(value: &[u16]) -> Result<Self> {
+    pub fn from_wide(value: &[u16]) -> Self {
         if value.is_empty() {
-            return Ok(Self::new());
+            return Self::new();
         }
 
         let result = unsafe {
             Self(bindings::SysAllocStringLen(
                 value.as_ptr(),
-                value.len().try_into()?,
+                value.len().try_into().unwrap(),
             ))
         };
 
         if result.is_empty() {
-            Err(Error::from_hresult(HRESULT(bindings::E_OUTOFMEMORY)))
-        } else {
-            Ok(result)
+            panic!("allocation failed");
         }
+
+        result
     }
 
     /// # Safety
@@ -75,16 +47,37 @@ impl BSTR {
     }
 }
 
+impl Deref for BSTR {
+    type Target = [u16];
+
+    fn deref(&self) -> &[u16] {
+        let len = if self.0.is_null() {
+            0
+        } else {
+            unsafe { bindings::SysStringLen(self.0) as usize }
+        };
+
+        if len > 0 {
+            unsafe { core::slice::from_raw_parts(self.0, len) }
+        } else {
+            // This ensures that if `as_ptr` is called on the slice that the resulting pointer
+            // will still refer to a null-terminated string.
+            const EMPTY: [u16; 1] = [0];
+            &EMPTY[..0]
+        }
+    }
+}
+
 impl Clone for BSTR {
     fn clone(&self) -> Self {
-        Self::from_wide(self.as_wide()).unwrap()
+        Self::from_wide(self)
     }
 }
 
 impl From<&str> for BSTR {
     fn from(value: &str) -> Self {
         let value: alloc::vec::Vec<u16> = value.encode_utf16().collect();
-        Self::from_wide(&value).unwrap()
+        Self::from_wide(&value)
     }
 }
 
@@ -100,11 +93,11 @@ impl From<&String> for BSTR {
     }
 }
 
-impl<'a> TryFrom<&'a BSTR> for String {
+impl TryFrom<&BSTR> for String {
     type Error = alloc::string::FromUtf16Error;
 
     fn try_from(value: &BSTR) -> core::result::Result<Self, Self::Error> {
-        String::from_utf16(value.as_wide())
+        Self::from_utf16(value)
     }
 }
 
@@ -112,7 +105,7 @@ impl TryFrom<BSTR> for String {
     type Error = alloc::string::FromUtf16Error;
 
     fn try_from(value: BSTR) -> core::result::Result<Self, Self::Error> {
-        String::try_from(&value)
+        Self::try_from(&value)
     }
 }
 
@@ -123,24 +116,24 @@ impl Default for BSTR {
 }
 
 impl core::fmt::Display for BSTR {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         core::write!(
             f,
             "{}",
-            Decode(|| core::char::decode_utf16(self.as_wide().iter().cloned()))
+            Decode(|| core::char::decode_utf16(self.iter().cloned()))
         )
     }
 }
 
 impl core::fmt::Debug for BSTR {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        core::write!(f, "{}", self)
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        core::write!(f, "{self}")
     }
 }
 
 impl PartialEq for BSTR {
     fn eq(&self, other: &Self) -> bool {
-        self.as_wide() == other.as_wide()
+        self.deref() == other.deref()
     }
 }
 
@@ -160,10 +153,7 @@ impl PartialEq<BSTR> for String {
 
 impl<T: AsRef<str> + ?Sized> PartialEq<T> for BSTR {
     fn eq(&self, other: &T) -> bool {
-        self.as_wide()
-            .iter()
-            .copied()
-            .eq(other.as_ref().encode_utf16())
+        self.iter().copied().eq(other.as_ref().encode_utf16())
     }
 }
 

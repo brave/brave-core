@@ -1,23 +1,7 @@
-use std::process::Command;
-
-use log::error;
+use crate::uname::{uname, UnameField};
 
 pub fn get() -> Option<String> {
-    Command::new("uname")
-        .arg("-m")
-        .output()
-        .map_err(|e| {
-            error!("Cannot invoke 'uname` to get architecture type: {:?}", e);
-        })
-        .ok()
-        .and_then(|out| {
-            if out.status.success() {
-                Some(String::from_utf8_lossy(&out.stdout).trim_end().to_owned())
-            } else {
-                log::error!("'uname' invocation error: {:?}", out);
-                None
-            }
-        })
+    uname(UnameField::Machine)
 }
 
 #[cfg(test)]

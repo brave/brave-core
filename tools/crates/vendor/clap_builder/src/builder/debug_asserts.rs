@@ -631,7 +631,6 @@ fn _verify_positionals(cmd: &Command) -> bool {
                     continue;
                 }
                 found = true;
-                continue;
             } else {
                 found = false;
             }
@@ -656,7 +655,6 @@ fn _verify_positionals(cmd: &Command) -> bool {
                 //      $ prog r1 -- r2
                 //      $ prog r1 o1 -- r2
                 found = true;
-                continue;
             }
         }
     }
@@ -690,14 +688,14 @@ fn assert_arg(arg: &Arg) {
         arg.get_id(),
     );
 
-    if arg.is_takes_value_set() {
-        assert!(
-            arg.get_action().takes_values(),
-            "Argument `{}`'s selected action {:?} contradicts `takes_value`",
-            arg.get_id(),
-            arg.get_action()
-        );
-    }
+    assert!(
+        arg.get_num_args().unwrap_or(1.into()).max_values()
+            <= arg.get_action().max_num_args().max_values(),
+        "Argument `{}`'s action {:?} is incompatible with `num_args({:?})`",
+        arg.get_id(),
+        arg.get_action(),
+        arg.get_num_args().unwrap_or(1.into())
+    );
     if let Some(action_type_id) = arg.get_action().value_type_id() {
         assert_eq!(
             action_type_id,
@@ -733,7 +731,7 @@ fn assert_arg(arg: &Arg) {
         );
         assert!(
             arg.is_takes_value_set(),
-            "Argument '{}` is positional and it must take a value but action is {:?}{}",
+            "Argument '{}' is positional and it must take a value but action is {:?}{}",
             arg.get_id(),
             arg.get_action(),
             if arg.get_id() == Id::HELP {

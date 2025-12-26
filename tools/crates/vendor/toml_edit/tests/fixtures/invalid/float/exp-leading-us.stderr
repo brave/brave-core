@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 20
-  |
-1 | exp-leading-us = 1e_23
-  |                    ^
-invalid floating-point number

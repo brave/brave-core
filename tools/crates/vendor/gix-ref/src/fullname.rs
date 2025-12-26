@@ -1,6 +1,5 @@
-use std::{borrow::Borrow, path::Path};
-
 use gix_object::bstr::{BStr, BString, ByteSlice};
+use std::{borrow::Borrow, path::Path};
 
 use crate::{bstr::ByteVec, name::is_pseudo_ref, Category, FullName, FullNameRef, Namespace, PartialNameRef};
 
@@ -68,6 +67,12 @@ impl<'a> From<&'a FullNameRef> for FullName {
 }
 
 impl std::fmt::Display for FullName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&self.0, f)
+    }
+}
+
+impl std::fmt::Display for FullNameRef {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.0, f)
     }
@@ -153,6 +158,35 @@ impl FullNameRef {
         } else {
             None
         }
+    }
+}
+
+/// Conversion
+impl Category<'_> {
+    /// As the inverse of [`FullNameRef::category_and_short_name()`], use the prefix of this category alongside
+    /// the `short_name` to create a valid fully qualified [reference name](FullName).
+    pub fn to_full_name<'a>(&self, short_name: impl Into<&'a BStr>) -> Result<FullName, crate::name::Error> {
+        let mut out: BString = self.prefix().into();
+        let short_name = short_name.into();
+        let partial_name = match self {
+            Category::Note => short_name.strip_prefix("notes/".as_bytes()).unwrap_or(short_name),
+            Category::MainRef => short_name.strip_prefix("refs/".as_bytes()).unwrap_or(short_name),
+            Category::LinkedPseudoRef { name } | Category::LinkedRef { name } => {
+                out.extend_from_slice(name);
+                out.push(b'/');
+                short_name
+            }
+            Category::Bisect => short_name.strip_prefix("bisect/".as_bytes()).unwrap_or(short_name),
+            Category::Rewritten => short_name.strip_prefix("rewritten/".as_bytes()).unwrap_or(short_name),
+            Category::WorktreePrivate => short_name.strip_prefix("worktree/".as_bytes()).unwrap_or(short_name),
+            Category::Tag
+            | Category::LocalBranch
+            | Category::RemoteBranch
+            | Category::PseudoRef
+            | Category::MainPseudoRef => short_name,
+        };
+        out.extend_from_slice(partial_name);
+        FullName::try_from(out)
     }
 }
 

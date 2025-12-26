@@ -32,6 +32,10 @@
       "CheckPatchFormatted",
       // We don't use Chromium LSC process for Brave repository.
       "CheckLargeScaleChange",
+      // This checks ensures DEPS and .gitmodules are in sync when git modules
+      // are used. We currently don't use this setup, but even then it is broken
+      // for sub repositories when the number of files changed is >1000.
+      "CheckForCommitObjects",
     ],
   },
 

@@ -40,7 +40,7 @@ mod write {
         }
     }
 
-    impl<'a> IdentityRef<'a> {
+    impl IdentityRef<'_> {
         /// Serialize this instance to `out` in the git serialization format for signatures (but without timestamp).
         pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
             out.write_all(validated_token(self.name)?)?;
@@ -53,7 +53,7 @@ mod write {
 }
 
 mod impls {
-    use crate::{Identity, IdentityRef};
+    use crate::{Identity, IdentityRef, Signature, SignatureRef};
 
     impl Identity {
         /// Borrow this instance as immutable
@@ -78,6 +78,18 @@ mod impls {
     impl<'a> From<&'a Identity> for IdentityRef<'a> {
         fn from(other: &'a Identity) -> IdentityRef<'a> {
             other.to_ref()
+        }
+    }
+
+    impl From<Signature> for Identity {
+        fn from(Signature { name, email, time: _ }: Signature) -> Self {
+            Identity { name, email }
+        }
+    }
+
+    impl<'a> From<SignatureRef<'a>> for IdentityRef<'a> {
+        fn from(SignatureRef { name, email, time: _ }: SignatureRef<'a>) -> Self {
+            IdentityRef { name, email }
         }
     }
 }

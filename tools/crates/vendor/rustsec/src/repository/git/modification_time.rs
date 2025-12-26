@@ -1,12 +1,14 @@
 use crate::advisory::Date;
 use crate::error::{Error, ErrorKind};
 use gix::date::Time;
+use gix::traverse::commit::simple::CommitTimeOrder;
 use std::{
     cmp::{max, min},
     collections::HashMap,
     path::PathBuf,
 };
 use tame_index::external::gix;
+use time::OffsetDateTime;
 
 use super::GitPath;
 
@@ -37,11 +39,15 @@ impl GitModificationTimes {
 
         let walk = repo
             .rev_walk(Some(repo.head_id().map_err(|err| {
-                format_err!(ErrorKind::Repo, "unable to find head id: {}", err)
+                Error::with_source(ErrorKind::Repo, "unable to find head id".to_owned(), err)
             })?))
-            .sorting(gix::traverse::commit::simple::Sorting::ByCommitTimeNewestFirst)
+            .sorting(gix::revision::walk::Sorting::ByCommitTime(
+                CommitTimeOrder::NewestFirst,
+            ))
             .all()
-            .map_err(|err| format_err!(ErrorKind::Repo, "unable to walk commits: {}", err))?;
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "unable to walk commits".to_owned(), err)
+            })?;
 
         let db = &repo.objects;
 
@@ -49,7 +55,11 @@ impl GitModificationTimes {
         let mut buf2 = Vec::new();
         for info in walk {
             let info = info.map_err(|err| {
-                format_err!(ErrorKind::Repo, "failed to retrieve commit info: {}", err)
+                Error::with_source(
+                    ErrorKind::Repo,
+                    "failed to retrieve commit info".to_owned(),
+                    err,
+                )
             })?;
 
             let parent_commit_id = match info.parent_ids.len() {
@@ -64,23 +74,20 @@ impl GitModificationTimes {
                 let commit = db
                     .try_find(&info.id, &mut buf)
                     .map_err(|err| {
-                        format_err!(
+                        Error::new(
                             ErrorKind::Repo,
-                            "failed to find commit '{}': {}",
-                            info.id,
-                            err
+                            format!("failed to find commit '{}': {err}", info.id),
                         )
                     })?
                     .ok_or_else(|| {
-                        format_err!(ErrorKind::Repo, "commit '{}' not present", info.id)
+                        Error::new(ErrorKind::Repo, format!("commit '{}' not present", info.id))
                     })?
                     .decode()
                     .map_err(|err| {
-                        format_err!(
+                        Error::with_source(
                             ErrorKind::Repo,
-                            "unable to decode commit '{}': {}",
-                            info.id,
-                            err
+                            format!("unable to decode commit '{}'", info.id),
+                            err,
                         )
                     })?
                     .into_commit()
@@ -91,43 +98,42 @@ impl GitModificationTimes {
             let current_tree = db
                 .try_find(&main_tree_id, &mut buf)
                 .map_err(|err| {
-                    format_err!(
+                    Error::new(
                         ErrorKind::Repo,
-                        "failed to find tree for commit '{}': {}",
-                        info.id,
-                        err
+                        format!("failed to find tree for commit '{}': {err}", info.id),
                     )
                 })?
                 .expect("main tree present")
                 .try_into_tree_iter()
                 .expect("id to be a tree");
-            let previous_tree: Option<_> = {
-                parent_commit_id
-                    .and_then(|id| db.try_find(&id, &mut buf2).ok().flatten())
-                    .and_then(|c| c.decode().ok())
-                    .and_then(gix::objs::ObjectRef::into_commit)
-                    .map(|c| c.tree())
-                    .and_then(|tree| db.try_find(&tree, &mut buf2).ok().flatten())
-                    .and_then(|tree| tree.try_into_tree_iter())
-            };
+            let previous_tree = parent_commit_id
+                .and_then(|id| db.try_find(&id, &mut buf2).ok().flatten())
+                .and_then(|c| c.decode().ok())
+                .and_then(gix::objs::ObjectRef::into_commit)
+                .map(|c| c.tree())
+                .and_then(|tree| db.try_find(&tree, &mut buf2).ok().flatten())
+                .and_then(|tree| tree.try_into_tree_iter())
+                .unwrap_or_default();
 
             let mut recorder = gix::diff::tree::Recorder::default();
-            gix::diff::tree::Changes::from(previous_tree)
-                .needed_to_obtain(
-                    current_tree,
-                    &mut gix::diff::tree::State::default(),
-                    db,
-                    &mut recorder,
+
+            gix::diff::tree(
+                previous_tree,
+                current_tree,
+                &mut gix::diff::tree::State::default(),
+                db,
+                &mut recorder,
+            )
+            .map_err(|err| {
+                Error::with_source(
+                    ErrorKind::Repo,
+                    format!(
+                        "failed to diff commit {} to its parent {:?}",
+                        info.id, parent_commit_id
+                    ),
+                    err,
                 )
-                .map_err(|err| {
-                    format_err!(
-                        ErrorKind::Repo,
-                        "failed to diff commit {} to its parent {:?}: {}",
-                        info.id,
-                        parent_commit_id,
-                        err
-                    )
-                })?;
+            })?;
 
             for diff in recorder.records {
                 // AFAIK files should never be deleted from an advisory db,
@@ -156,8 +162,9 @@ impl GitModificationTimes {
 
     /// Looks up the Git modification time for a given file path.
     /// The path must be relative to the root of the repository.
-    pub fn for_path(&self, path: GitPath<'_>) -> Time {
-        *self.mtimes.get(path.path()).unwrap()
+    pub fn for_path(&self, path: GitPath<'_>) -> OffsetDateTime {
+        crate::repository::git::gix_time_to_time(*self.mtimes.get(path.path()).unwrap())
+            .to_offset(time::UtcOffset::UTC)
     }
 
     /// Looks up the Git creation time for a given file path.

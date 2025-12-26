@@ -50,6 +50,7 @@ pub(crate) fn sysinfo() -> Sysinfo {
 #[cfg(not(any(
     target_os = "emscripten",
     target_os = "espidf",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "vita",
     target_os = "wasi"
@@ -65,14 +66,16 @@ pub(crate) fn sethostname(name: &[u8]) -> io::Result<()> {
 
 #[cfg(not(any(
     target_os = "android",
+    target_os = "cygwin",
     target_os = "emscripten",
     target_os = "espidf",
     target_os = "illumos",
     target_os = "haiku",
+    target_os = "horizon",
     target_os = "redox",
     target_os = "solaris",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
 )))]
 pub(crate) fn setdomainname(name: &[u8]) -> io::Result<()> {
     unsafe {
@@ -83,7 +86,7 @@ pub(crate) fn setdomainname(name: &[u8]) -> io::Result<()> {
     }
 }
 
-// https://github.com/rust-lang/libc/pull/4212
+// <https://github.com/rust-lang/libc/pull/4212>
 #[cfg(target_os = "android")]
 pub(crate) fn setdomainname(name: &[u8]) -> io::Result<()> {
     syscall! {
@@ -133,7 +136,7 @@ pub(crate) fn finit_module(
     param_values: &CStr,
     flags: c::c_int,
 ) -> io::Result<()> {
-    use crate::fd::AsRawFd;
+    use crate::fd::AsRawFd as _;
 
     syscall! {
         fn finit_module(

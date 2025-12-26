@@ -88,7 +88,7 @@ where
     /// assert_eq!(map.get0("one").unwrap().key0(), "one");
     /// ```
     pub fn key0(&self) -> &'l K0::GetType {
-        #[allow(clippy::unwrap_used)] // safe by invariant on `self.key0_index`
+        #[expect(clippy::unwrap_used)] // safe by invariant on `self.key0_index`
         self.keys0.zvl_get(self.key0_index).unwrap()
     }
 
@@ -99,14 +99,15 @@ where
     /// For an example, see [`ZeroMap2d::iter0()`].
     pub fn iter1(
         &self,
-    ) -> impl Iterator<
+    ) -> impl DoubleEndedIterator<
         Item = (
             &'l <K1 as ZeroMapKV<'a>>::GetType,
             &'l <V as ZeroMapKV<'a>>::GetType,
         ),
-    > + '_ {
+    > + ExactSizeIterator
+           + '_ {
         let range = self.get_range();
-        #[allow(clippy::unwrap_used)] // `self.get_range()` returns a valid range
+        #[expect(clippy::unwrap_used)] // `self.get_range()` returns a valid range
         range.map(move |idx| {
             (
                 self.keys1.zvl_get(idx).unwrap(),
@@ -118,14 +119,14 @@ where
     /// Transform this cursor into an ordered iterator over keys1 for a particular key0.
     pub fn into_iter1(
         self,
-    ) -> impl Iterator<
+    ) -> impl DoubleEndedIterator<
         Item = (
             &'l <K1 as ZeroMapKV<'a>>::GetType,
             &'l <V as ZeroMapKV<'a>>::GetType,
         ),
-    > {
+    > + ExactSizeIterator {
         let range = self.get_range();
-        #[allow(clippy::unwrap_used)] // `self.get_range()` returns a valid range
+        #[expect(clippy::unwrap_used)] // `self.get_range()` returns a valid range
         range.map(move |idx| {
             (
                 self.keys1.zvl_get(idx).unwrap(),
@@ -140,10 +141,10 @@ where
         let start = if self.key0_index == 0 {
             0
         } else {
-            #[allow(clippy::unwrap_used)] // protected by the debug_assert above
+            #[expect(clippy::unwrap_used)] // protected by the debug_assert above
             self.joiner.get(self.key0_index - 1).unwrap()
         };
-        #[allow(clippy::unwrap_used)] // protected by the debug_assert above
+        #[expect(clippy::unwrap_used)] // protected by the debug_assert above
         let limit = self.joiner.get(self.key0_index).unwrap();
         // These two assertions are true based on the invariants of ZeroMap2d
         debug_assert!(start < limit);
@@ -170,13 +171,10 @@ where
     /// ```
     /// use zerovec::ZeroMap2d;
     ///
-    /// let zm2d: ZeroMap2d<str, u8, usize> = [
-    ///     ("a", 0u8, 1usize),
-    ///     ("b", 1u8, 1000usize),
-    ///     ("b", 2u8, 2000usize),
-    /// ]
-    /// .into_iter()
-    /// .collect();
+    /// let zm2d: ZeroMap2d<str, u8, u16> =
+    ///     [("a", 0u8, 1u16), ("b", 1u8, 1000u16), ("b", 2u8, 2000u16)]
+    ///         .into_iter()
+    ///         .collect();
     ///
     /// let mut total_value = 0;
     ///
@@ -190,9 +188,47 @@ where
     /// ```
     pub fn iter1_copied(
         &self,
-    ) -> impl Iterator<Item = (&'l <K1 as ZeroMapKV<'a>>::GetType, V)> + '_ {
+    ) -> impl DoubleEndedIterator<Item = (&'l <K1 as ZeroMapKV<'a>>::GetType, V)> + ExactSizeIterator + '_
+    {
         let range = self.get_range();
-        #[allow(clippy::unwrap_used)] // `self.get_range()` returns a valid range
+        #[expect(clippy::unwrap_used)] // `self.get_range()` returns a valid range
+        range.map(move |idx| {
+            (
+                self.keys1.zvl_get(idx).unwrap(),
+                self.get1_copied_at(idx).unwrap(),
+            )
+        })
+    }
+    /// Transform this cursor into an ordered iterator over keys1 for a particular key0.
+    ///
+    /// The values are returned as copy types.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerovec::ZeroMap2d;
+    ///
+    /// let zm2d: ZeroMap2d<str, u8, u16> =
+    ///     [("a", 0u8, 1u16), ("b", 1u8, 1000u16), ("b", 2u8, 2000u16)]
+    ///         .into_iter()
+    ///         .collect();
+    ///
+    /// let mut total_value = 0;
+    ///
+    /// for cursor in zm2d.iter0() {
+    ///     for (_, value) in cursor.into_iter1_copied() {
+    ///         total_value += value;
+    ///     }
+    /// }
+    ///
+    /// assert_eq!(total_value, 3001);
+    /// ```
+    pub fn into_iter1_copied(
+        self,
+    ) -> impl DoubleEndedIterator<Item = (&'l <K1 as ZeroMapKV<'a>>::GetType, V)> + ExactSizeIterator
+    {
+        let range = self.get_range();
+        #[expect(clippy::unwrap_used)] // `self.get_range()` returns a valid range
         range.map(move |idx| {
             (
                 self.keys1.zvl_get(idx).unwrap(),
@@ -205,7 +241,7 @@ where
         let ule = self.values.zvl_get(index)?;
         let mut result = Option::<V>::None;
         V::Container::zvl_get_as_t(ule, |v| result.replace(*v));
-        #[allow(clippy::unwrap_used)] // `zvl_get_as_t` guarantees that the callback is invoked
+        #[expect(clippy::unwrap_used)] // `zvl_get_as_t` guarantees that the callback is invoked
         Some(result.unwrap())
     }
 }
@@ -231,7 +267,7 @@ where
     /// ```
     pub fn get1(&self, key1: &K1) -> Option<&'l V::GetType> {
         let key1_index = self.get_key1_index(key1)?;
-        #[allow(clippy::unwrap_used)] // key1_index is valid
+        #[expect(clippy::unwrap_used)] // key1_index is valid
         Some(self.values.zvl_get(key1_index).unwrap())
     }
 
@@ -247,7 +283,7 @@ where
     /// ```
     pub fn get1_by(&self, predicate: impl FnMut(&K1) -> Ordering) -> Option<&'l V::GetType> {
         let key1_index = self.get_key1_index_by(predicate)?;
-        #[allow(clippy::unwrap_used)] // key1_index is valid
+        #[expect(clippy::unwrap_used)] // key1_index is valid
         Some(self.values.zvl_get(key1_index).unwrap())
     }
 
@@ -257,7 +293,7 @@ where
         debug_assert!(range.start < range.end); // '<' because every key0 should have a key1
         debug_assert!(range.end <= self.keys1.zvl_len());
         let start = range.start;
-        #[allow(clippy::expect_used)] // protected by the debug_assert above
+        #[expect(clippy::expect_used)] // protected by the debug_assert above
         let binary_search_result = self
             .keys1
             .zvl_binary_search_in_range_by(predicate, range)
@@ -271,7 +307,7 @@ where
         debug_assert!(range.start < range.end); // '<' because every key0 should have a key1
         debug_assert!(range.end <= self.keys1.zvl_len());
         let start = range.start;
-        #[allow(clippy::expect_used)] // protected by the debug_assert above
+        #[expect(clippy::expect_used)] // protected by the debug_assert above
         let binary_search_result = self
             .keys1
             .zvl_binary_search_in_range(key1, range)

@@ -68,7 +68,7 @@ specifically want Jiff to prefer using a non-system copy of the database.
 need to use `TimeZoneDatabase::from_dir` and use the resulting handle
 explicitly.)
 
-If a IANA Time Zone Database could not be found a `TZDIR`, then Jiff will
+If a IANA Time Zone Database could not be found at `TZDIR`, then Jiff will
 still attempt to look for a database at the standard locations (like
 `/usr/share/zoneinfo`).
 
@@ -90,7 +90,7 @@ Summarizing POSIX (and common extensions supported by GNU libc and musl), the
 to a TZif formatted file.
 * `EST5EDT,M3.2.0,M11.1.0` sets the time zone using a POSIX daylight saving
 time rule. The rule shown here is for `US/Eastern` at time of writing (2024).
-This is useful for specifying a custom time zone with generating TZif data,
+This is useful for specifying a custom time zone without generating TZif data,
 but is rarely used in practice.
 
 When `TZ` isn't set, then Jiff uses heuristics to detect the system's
@@ -108,12 +108,12 @@ defined, then Jiff uses `/data/misc` as its default value.
 
 Note that these environment variables are not necessarily only read on
 Android, although they likely only make sense in the context of an Android
-environment. This is because Jiff's supported for the Concatenated Time
+environment. This is because Jiff's support for the Concatenated Time
 Zone Database is platform independent. For example, Jiff will let users
 create a database from a Concatenated Time Zone Database file via the
 `TimeZoneDatabase::from_concatenated_path` API on _any_ platform. This is
-intended to enable maximum flexibility, and because there is no specific
-reason to make the Concatenated Time Zone Database format Android-specific.
+intended to enable maximum flexibility, and because there is no specific reason
+to make the Concatenated Time Zone Database format Android-specific.
 
 ## Platforms
 
@@ -235,19 +235,21 @@ API to create a `TimeZoneDatabase` from a concatenated `tzdata` file on any
 platform.
 
 If users of Jiff are uncomfortable relying on Android's "unstable" time zone
-database format, then there are three options available to them after disabling
+database format, then there are a few options available to them after disabling
 the `tzdb-concatenated` crate feature:
 
 * They can own the responsibility of putting a standard `zoneinfo` database
 installation into their environment. Then set the `TZDIR` environment variable
 to point at it, and Jiff will automatically use it.
-* Enable the `tzdb-bundle-always` crate feature. This will cause all time zone
-database to be compiled into your binary. Nothing else needs to be done. Jiff
-will automatically use the bundled copy.
+* Enable the `tzdb-bundle-always` crate feature. This will cause the entire
+time zone database to be compiled into your binary. Nothing else needs to be
+done. Jiff will automatically use the bundled copy.
 * Manually create `TimeZone` values via `TimeZone::tzif` from TZif formatted
 data. With this approach, you may need to change how you use Jiff in some
 cases. For example, any `in_tz` method will need to be changed to use the
 `to_zoned` equivalent.
+* Embed specific time zones into your binary with `jiff::tz::get` or
+`jiff::tz::include`. This requires enabling Jiff's `static` feature.
 
 #### System time zone
 
@@ -259,15 +261,15 @@ Database] format as unstable, they also discourage the discovery of the system
 time zone through properties as well. (See [chrono#1018] and [chrono#1148]
 for some discussion on this topic.) For Jiff at least, there is no feasible
 alternative. Apparently, the blessed API is to use their Java libraries, but
-that doesn't seem feasible to Jiff since I (Jiff's author) is unaware of a
-mechanism for easily calling Java code from Rust. The only option left is to
-use their `libc` APIs, which they did at least improve to make them thread
-safe, but this isn't enough for Jiff. For Jiff, we really want the actual IANA
-time zone identifier, and it isn't clear how to discover this from their `libc`
-APIs. Moreover, Jiff supports far more sophisticated operations on a time zone
-(like dealing with discontinuities in civil time) that cannot be implemented on
-top of `libc`-style APIs. Using Android's `libc` APIs for time handling would
-be a huge regression compared to all other platforms.
+that doesn't seem feasible to me inside of Jiff since I (Jiff's author) is
+unaware of a mechanism for easily calling Java code from Rust. The only option
+left is to use their `libc` APIs, which they did at least improve to make them
+thread safe, but this isn't enough for Jiff. For Jiff, we really want the
+actual IANA time zone identifier, and it isn't clear how to discover this from
+their `libc` APIs. Moreover, Jiff supports far more sophisticated operations on
+a time zone (like dealing with discontinuities in civil time) that cannot be
+implemented on top of `libc`-style APIs. Using Android's `libc` APIs for time
+handling would be a huge regression compared to all other platforms.
 
 It's worth noting that all other popular Unix systems provide at least some
 reliable means of both querying the time zone database _and_ discovering the
@@ -276,8 +278,8 @@ the existing conventions for Unix systems is unclear.
 
 If users of Jiff are uncomfortable relying on Android's `persist.sys.timezone`
 property, then they should avoid APIs like `Zoned::now` and `TimeZone::system`.
-Instead, they can use `TimeZone::UTC`, which is what the fallback time zone
-would be when the system time zone cannot be discovered.
+Instead, they can use `TimeZone::unknown()`, which is what the fallback time
+zone would be when the system time zone cannot be discovered.
 
 ### Windows
 
@@ -361,7 +363,7 @@ feature will cause Jiff to assume a web context and use JavaScript's
 #### IANA Time Zone Database
 
 None of the WASM targets have a canonical installation of the IANA Time Zone
-Database. Because of this, and because of the important of time zone support
+Database. Because of this, and because of the importance of time zone support
 to Jiff's design, Jiff will automatically embed an entire copy of the IANA
 Time Zone Database into your binary on all WASM targets.
 
@@ -407,7 +409,7 @@ the time zone in Jiff's configured IANA Time Zone Database.
 [RFC 9557]: https://www.rfc-editor.org/rfc/rfc9557.html
 [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
 [Temporal]: https://tc39.es/proposal-temporal
-[issue-platform]: https://github.com/BurntSushi/jiff/labels/platform
+[issue-platform]: https://github.com/BurntSushi/jiff/issues?q=label%3Aplatform
 [issue-new]: https://github.com/BurntSushi/jiff/issues/new
 [`GetDynamicTimeZoneInformation`]: https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-getdynamictimezoneinformation
 [`DYNAMIC_TIME_ZONE_INFORMATION`]: https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/ns-timezoneapi-dynamic_time_zone_information

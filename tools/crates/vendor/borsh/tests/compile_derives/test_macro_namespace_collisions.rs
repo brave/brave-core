@@ -3,9 +3,11 @@
 mod std {}
 mod core {}
 
+#[allow(unused)]
 #[derive(borsh::BorshSerialize, borsh::BorshDeserialize)]
 struct A;
 
+#[allow(unused)]
 #[derive(borsh::BorshSerialize, borsh::BorshDeserialize)]
 enum B {
     C,

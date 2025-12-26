@@ -124,6 +124,8 @@ fn check_description() {
         "Argument list too long"
     } else if cfg!(target_os = "haiku") {
         "Operation not allowed"
+    } else if cfg!(target_os = "vxworks") {
+        "operation not permitted"
     } else {
         "Operation not permitted"
     };

@@ -84,7 +84,7 @@ pub struct Rgba {
     #[arbitrary(with = arbitrary_b)]
     pub b: u8,
 
-    // Generate `a` with a custom closure (shortuct to avoid a custom function)
+    // Generate `a` with a custom closure (shortcut to avoid a custom function)
     #[arbitrary(with = |u: &mut Unstructured| u.int_in_range(0..=64))]
     pub a: u8,
 }
@@ -119,6 +119,16 @@ impl<'a> Arbitrary<'a> for Rgb {
     }
 }
 ```
+
+## Minimum Supported Rust Version (MSRV)
+
+<!-- NB: Keep this number in sync with the `rust-version` in `Cargo.toml`. -->
+
+This crate is guaranteed to compile on stable Rust **1.63.0** and up. It might
+compile with older versions but that may change in any new patch release.
+
+We reserve the right to increment the MSRV on minor releases, however we will
+strive to only do it deliberately and for good reasons.
 
 ## License
 

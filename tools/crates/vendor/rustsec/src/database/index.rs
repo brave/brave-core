@@ -3,7 +3,7 @@
 pub use crate::set::Iter;
 
 use super::entries::Slot;
-use crate::{map, package, Map, Set};
+use crate::{Map, Set, map, package};
 
 /// Database index which maps package names to a set of advisory IDs
 #[derive(Debug, Default)]

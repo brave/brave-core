@@ -1,10 +1,10 @@
 use core::fmt::Debug;
-use core::{mem, slice, str};
+use core::{slice, str};
 
 use crate::elf;
 use crate::endian::{self, Endianness};
-use crate::pod::Pod;
-use crate::read::{self, Bytes, ObjectSegment, ReadError, ReadRef, SegmentFlags};
+use crate::pod::{self, Pod};
+use crate::read::{self, ObjectSegment, ReadError, ReadRef, SegmentFlags};
 
 use super::{ElfFile, FileHeader, NoteIterator};
 
@@ -67,6 +67,16 @@ where
 }
 
 impl<'data, 'file, Elf: FileHeader, R: ReadRef<'data>> ElfSegment<'data, 'file, Elf, R> {
+    /// Get the ELF file containing this segment.
+    pub fn elf_file(&self) -> &'file ElfFile<'data, Elf, R> {
+        self.file
+    }
+
+    /// Get the raw ELF program header for the segment.
+    pub fn elf_program_header(&self) -> &'data Elf::ProgramHeader {
+        self.segment
+    }
+
     fn bytes(&self) -> read::Result<&'data [u8]> {
         self.segment
             .data(self.file.endian, self.file.data)
@@ -180,8 +190,7 @@ pub trait ProgramHeader: Debug + Pod {
         endian: Self::Endian,
         data: R,
     ) -> Result<&'data [T], ()> {
-        let mut data = self.data(endian, data).map(Bytes)?;
-        data.read_slice(data.len() / mem::size_of::<T>())
+        pod::slice_from_all_bytes(self.data(endian, data)?)
     }
 
     /// Return the segment data in the given virtual address range
@@ -219,6 +228,28 @@ pub trait ProgramHeader: Debug + Pod {
             .data_as_array(endian, data)
             .read_error("Invalid ELF dynamic segment offset or size")?;
         Ok(Some(dynamic))
+    }
+
+    /// Return the data in an interpreter segment.
+    ///
+    /// Returns `Ok(None)` if the segment is not `PT_INTERP`.
+    /// Returns `Err` for invalid values.
+    fn interpreter<'data, R: ReadRef<'data>>(
+        &self,
+        endian: Self::Endian,
+        data: R,
+    ) -> read::Result<Option<&'data [u8]>> {
+        if self.p_type(endian) != elf::PT_INTERP {
+            return Ok(None);
+        }
+        let data = self
+            .data(endian, data)
+            .read_error("Invalid ELF interpreter segment offset or size")?;
+        let len = data
+            .iter()
+            .position(|&b| b == 0)
+            .read_error("Invalid ELF interpreter segment data")?;
+        Ok(Some(&data[..len]))
     }
 
     /// Return a note iterator for the segment data.

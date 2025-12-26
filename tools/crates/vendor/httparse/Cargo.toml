@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "httparse"
-version = "1.10.0"
+version = "1.10.1"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 build = "build.rs"
 autolib = false

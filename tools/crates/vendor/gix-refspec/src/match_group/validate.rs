@@ -3,9 +3,38 @@ use std::collections::BTreeMap;
 use bstr::BString;
 
 use crate::{
-    match_group::{Outcome, Source},
+    match_group::{match_lhs, Source},
     RefSpec,
 };
+
+/// The error returned [outcome validation](match_lhs::Outcome::validated()).
+#[derive(Debug)]
+pub struct Error {
+    /// All issues discovered during validation.
+    pub issues: Vec<Issue>,
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Found {} {} the refspec mapping to be used: \n\t{}",
+            self.issues.len(),
+            if self.issues.len() == 1 {
+                "issue that prevents"
+            } else {
+                "issues that prevent"
+            },
+            self.issues
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<_>>()
+                .join("\n\t")
+        )
+    }
+}
+
+impl std::error::Error for Error {}
 
 /// All possible issues found while validating matched mappings.
 #[derive(Debug, PartialEq, Eq)]
@@ -59,36 +88,7 @@ pub enum Fix {
     },
 }
 
-/// The error returned [outcome validation][Outcome::validated()].
-#[derive(Debug)]
-pub struct Error {
-    /// All issues discovered during validation.
-    pub issues: Vec<Issue>,
-}
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Found {} {} the refspec mapping to be used: \n\t{}",
-            self.issues.len(),
-            if self.issues.len() == 1 {
-                "issue that prevents"
-            } else {
-                "issues that prevent"
-            },
-            self.issues
-                .iter()
-                .map(ToString::to_string)
-                .collect::<Vec<_>>()
-                .join("\n\t")
-        )
-    }
-}
-
-impl std::error::Error for Error {}
-
-impl<'spec, 'item> Outcome<'spec, 'item> {
+impl match_lhs::Outcome<'_, '_> {
     /// Validate all mappings or dissolve them into an error stating the discovered issues.
     /// Return `(modified self, issues)` providing a fixed-up set of mappings in `self` with the fixed `issues`
     /// provided as part of it.
@@ -102,7 +102,7 @@ impl<'spec, 'item> Outcome<'spec, 'item> {
         {
             let sources = sources_by_destinations.entry(dst).or_insert_with(Vec::new);
             if !sources.iter().any(|(_, lhs)| lhs == &src) {
-                sources.push((spec_index, src))
+                sources.push((spec_index, src));
             }
         }
         let mut issues = Vec::new();
@@ -113,8 +113,11 @@ impl<'spec, 'item> Outcome<'spec, 'item> {
                     .iter()
                     .map(|(spec_idx, _)| self.group.specs[*spec_idx].to_bstring())
                     .collect(),
-                sources: conflicting_sources.into_iter().map(|(_, src)| src.to_owned()).collect(),
-            })
+                sources: conflicting_sources
+                    .into_iter()
+                    .map(|(_, src)| src.clone().into_owned())
+                    .collect(),
+            });
         }
         if !issues.is_empty() {
             Err(Error { issues })

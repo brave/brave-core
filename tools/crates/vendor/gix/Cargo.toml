@@ -11,15 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.65"
+rust-version = "1.82"
 name = "gix"
-version = "0.66.0"
+version = "0.74.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
     "src/**/*",
     "LICENSE-*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -27,7 +28,7 @@ autobenches = false
 description = "Interact with git repositories just like git would"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Byron/gitoxide"
+repository = "https://github.com/GitoxideLabs/gitoxide"
 
 [package.metadata.docs.rs]
 features = [
@@ -35,252 +36,15 @@ features = [
     "max-performance",
     "blocking-network-client",
     "blocking-http-transport-curl",
+    "need-more-recent-msrv",
     "serde",
 ]
-
-[lib]
-name = "gix"
-path = "src/lib.rs"
-test = true
-doctest = false
-
-[dependencies.async-std]
-version = "1.12.0"
-optional = true
-
-[dependencies.document-features]
-version = "0.2.0"
-optional = true
-
-[dependencies.gix-actor]
-version = "^0.32.0"
-
-[dependencies.gix-archive]
-version = "^0.15.0"
-optional = true
-default-features = false
-
-[dependencies.gix-attributes]
-version = "^0.22.5"
-optional = true
-
-[dependencies.gix-command]
-version = "^0.3.9"
-optional = true
-
-[dependencies.gix-commitgraph]
-version = "^0.24.3"
-
-[dependencies.gix-config]
-version = "^0.40.0"
-
-[dependencies.gix-credentials]
-version = "^0.24.5"
-optional = true
-
-[dependencies.gix-date]
-version = "^0.9.0"
-
-[dependencies.gix-diff]
-version = "^0.46.0"
-default-features = false
-
-[dependencies.gix-dir]
-version = "^0.8.0"
-optional = true
-
-[dependencies.gix-discover]
-version = "^0.35.0"
-
-[dependencies.gix-features]
-version = "^0.38.2"
-features = [
-    "progress",
-    "once_cell",
-]
-
-[dependencies.gix-filter]
-version = "^0.13.0"
-optional = true
-
-[dependencies.gix-fs]
-version = "^0.11.3"
-
-[dependencies.gix-glob]
-version = "^0.16.5"
-
-[dependencies.gix-hash]
-version = "^0.14.2"
-
-[dependencies.gix-hashtable]
-version = "^0.5.2"
-
-[dependencies.gix-ignore]
-version = "^0.11.4"
-optional = true
-
-[dependencies.gix-index]
-version = "^0.35.0"
-optional = true
-
-[dependencies.gix-lock]
-version = "^14.0.0"
-
-[dependencies.gix-mailmap]
-version = "^0.24.0"
-optional = true
-
-[dependencies.gix-negotiate]
-version = "^0.15.0"
-optional = true
-
-[dependencies.gix-object]
-version = "^0.44.0"
-
-[dependencies.gix-odb]
-version = "^0.63.0"
-
-[dependencies.gix-pack]
-version = "^0.53.0"
-features = ["object-cache-dynamic"]
-default-features = false
-
-[dependencies.gix-path]
-version = "^0.10.10"
-
-[dependencies.gix-pathspec]
-version = "^0.7.7"
-optional = true
-
-[dependencies.gix-prompt]
-version = "^0.8.7"
-optional = true
-
-[dependencies.gix-protocol]
-version = "^0.45.3"
-optional = true
-
-[dependencies.gix-ref]
-version = "^0.47.0"
-
-[dependencies.gix-refspec]
-version = "^0.25.0"
-
-[dependencies.gix-revision]
-version = "^0.29.0"
-default-features = false
-
-[dependencies.gix-revwalk]
-version = "^0.15.0"
-
-[dependencies.gix-sec]
-version = "^0.10.8"
-
-[dependencies.gix-status]
-version = "^0.13.0"
-features = ["worktree-rewrites"]
-optional = true
-
-[dependencies.gix-submodule]
-version = "^0.14.0"
-optional = true
-
-[dependencies.gix-tempfile]
-version = "^14.0.0"
-default-features = false
-
-[dependencies.gix-trace]
-version = "^0.1.9"
-
-[dependencies.gix-transport]
-version = "^0.42.3"
-optional = true
-
-[dependencies.gix-traverse]
-version = "^0.41.0"
-
-[dependencies.gix-url]
-version = "^0.27.5"
-
-[dependencies.gix-utils]
-version = "^0.1.12"
-
-[dependencies.gix-validate]
-version = "^0.9.0"
-
-[dependencies.gix-worktree]
-version = "^0.36.0"
-optional = true
-default-features = false
-
-[dependencies.gix-worktree-state]
-version = "^0.13.0"
-optional = true
-
-[dependencies.gix-worktree-stream]
-version = "^0.15.0"
-optional = true
-
-[dependencies.once_cell]
-version = "1.14.0"
-
-[dependencies.parking_lot]
-version = "0.12.1"
-optional = true
-
-[dependencies.prodash]
-version = "29.0.0"
-features = ["progress-tree"]
-optional = true
-default-features = false
-
-[dependencies.regex]
-version = "1.6.0"
-features = ["std"]
-optional = true
-default-features = false
-
-[dependencies.serde]
-version = "1.0.114"
-features = ["derive"]
-optional = true
-default-features = false
-
-[dependencies.signal-hook]
-version = "0.3.9"
-optional = true
-default-features = false
-
-[dependencies.smallvec]
-version = "1.9.0"
-
-[dependencies.thiserror]
-version = "1.0.26"
-
-[dev-dependencies.anyhow]
-version = "1"
-
-[dev-dependencies.async-std]
-version = "1.12.0"
-features = ["attributes"]
-
-[dev-dependencies.is_ci]
-version = "1.1.1"
-
-[dev-dependencies.pretty_assertions]
-version = "1.4.0"
-
-[dev-dependencies.serial_test]
-version = "3.1.0"
-default-features = false
-
-[dev-dependencies.walkdir]
-version = "2.3.2"
 
 [features]
 async-network-client = [
     "gix-protocol/async-client",
     "gix-pack/streaming-input",
+    "dep:gix-transport",
     "attributes",
     "credentials",
 ]
@@ -303,6 +67,7 @@ basic = [
     "revision",
     "index",
 ]
+blame = ["dep:gix-blame"]
 blob-diff = [
     "gix-diff/blob",
     "attributes",
@@ -334,6 +99,7 @@ blocking-http-transport-reqwest-rust-tls-trust-dns = [
 blocking-network-client = [
     "gix-protocol/blocking-client",
     "gix-pack/streaming-input",
+    "dep:gix-transport",
     "attributes",
     "credentials",
 ]
@@ -376,8 +142,8 @@ extras = [
     "interrupt",
     "status",
     "dirwalk",
+    "blame",
 ]
-fast-sha1 = ["gix-features/fast-sha1"]
 hp-tempfile-registry = ["gix-tempfile/hp-hashmap"]
 index = ["dep:gix-index"]
 interrupt = [
@@ -394,19 +160,25 @@ max-control = [
     "pack-cache-lru-static",
     "pack-cache-lru-dynamic",
 ]
-max-performance = [
-    "max-performance-safe",
-    "zlib-ng",
-    "fast-sha1",
-]
+max-performance = ["max-performance-safe"]
 max-performance-safe = ["max-control"]
+merge = [
+    "tree-editor",
+    "blob-diff",
+    "dep:gix-merge",
+    "attributes",
+]
+need-more-recent-msrv = [
+    "merge",
+    "tree-editor",
+]
 pack-cache-lru-dynamic = ["gix-pack/pack-cache-lru-dynamic"]
 pack-cache-lru-static = ["gix-pack/pack-cache-lru-static"]
 parallel = ["gix-features/parallel"]
-parallel-walkdir = ["gix-features/fs-walkdir-parallel"]
 progress-tree = ["prodash/progress-tree"]
 revision = [
     "gix-revision/describe",
+    "gix-revision/merge_base",
     "index",
 ]
 revparse-regex = [
@@ -417,7 +189,7 @@ serde = [
     "dep:serde",
     "gix-pack/serde",
     "gix-object/serde",
-    "gix-protocol?/serde",
+    "gix-protocol/serde",
     "gix-transport?/serde",
     "gix-ref/serde",
     "gix-odb/serde",
@@ -436,12 +208,14 @@ status = [
     "dirwalk",
     "index",
     "blob-diff",
+    "gix-diff/index",
 ]
 tracing = ["gix-features/tracing"]
 tracing-detail = [
     "gix-features/tracing-detail",
     "tracing",
 ]
+tree-editor = []
 verbose-object-parsing-errors = ["gix-object/verbose-object-parsing-errors"]
 worktree-archive = [
     "gix-archive",
@@ -456,6 +230,338 @@ worktree-stream = [
     "gix-worktree-stream",
     "attributes",
 ]
-zlib-ng = ["gix-features/zlib-ng"]
-zlib-ng-compat = ["gix-features/zlib-ng-compat"]
-zlib-stock = ["gix-features/zlib-stock"]
+zlib-ng = ["gix-features/zlib"]
+zlib-ng-compat = ["gix-features/zlib"]
+zlib-rs = ["gix-features/zlib"]
+zlib-stock = ["gix-features/zlib"]
+
+[lib]
+name = "gix"
+path = "src/lib.rs"
+test = true
+doctest = false
+
+[dependencies.async-std]
+version = "1.12.0"
+optional = true
+
+[dependencies.document-features]
+version = "0.2.0"
+optional = true
+
+[dependencies.gix-actor]
+version = "^0.35.6"
+
+[dependencies.gix-archive]
+version = "^0.23.1"
+optional = true
+default-features = false
+
+[dependencies.gix-attributes]
+version = "^0.28.1"
+optional = true
+
+[dependencies.gix-blame]
+version = "^0.4.0"
+optional = true
+
+[dependencies.gix-command]
+version = "^0.6.3"
+optional = true
+
+[dependencies.gix-commitgraph]
+version = "^0.30.1"
+
+[dependencies.gix-config]
+version = "^0.47.1"
+
+[dependencies.gix-credentials]
+version = "^0.31.1"
+optional = true
+
+[dependencies.gix-date]
+version = "^0.10.7"
+
+[dependencies.gix-diff]
+version = "^0.54.1"
+default-features = false
+
+[dependencies.gix-dir]
+version = "^0.16.0"
+optional = true
+
+[dependencies.gix-discover]
+version = "^0.42.0"
+
+[dependencies.gix-features]
+version = "^0.44.1"
+features = [
+    "progress",
+    "once_cell",
+]
+
+[dependencies.gix-filter]
+version = "^0.21.0"
+optional = true
+
+[dependencies.gix-fs]
+version = "^0.17.0"
+
+[dependencies.gix-glob]
+version = "^0.22.1"
+
+[dependencies.gix-hash]
+version = "^0.20.1"
+
+[dependencies.gix-hashtable]
+version = "^0.10.0"
+
+[dependencies.gix-ignore]
+version = "^0.17.1"
+optional = true
+
+[dependencies.gix-index]
+version = "^0.42.1"
+optional = true
+
+[dependencies.gix-lock]
+version = "^19.0.0"
+
+[dependencies.gix-mailmap]
+version = "^0.27.4"
+optional = true
+
+[dependencies.gix-merge]
+version = "^0.7.0"
+optional = true
+default-features = false
+
+[dependencies.gix-negotiate]
+version = "^0.22.0"
+optional = true
+
+[dependencies.gix-object]
+version = "^0.51.1"
+
+[dependencies.gix-odb]
+version = "^0.71.1"
+
+[dependencies.gix-pack]
+version = "^0.61.1"
+features = ["object-cache-dynamic"]
+default-features = false
+
+[dependencies.gix-path]
+version = "^0.10.21"
+
+[dependencies.gix-pathspec]
+version = "^0.13.0"
+optional = true
+
+[dependencies.gix-prompt]
+version = "^0.11.2"
+optional = true
+
+[dependencies.gix-protocol]
+version = "^0.52.1"
+
+[dependencies.gix-ref]
+version = "^0.54.1"
+
+[dependencies.gix-refspec]
+version = "^0.32.0"
+
+[dependencies.gix-revision]
+version = "^0.36.1"
+default-features = false
+
+[dependencies.gix-revwalk]
+version = "^0.22.0"
+
+[dependencies.gix-sec]
+version = "^0.12.2"
+
+[dependencies.gix-shallow]
+version = "^0.6.0"
+
+[dependencies.gix-status]
+version = "^0.21.1"
+features = ["worktree-rewrites"]
+optional = true
+
+[dependencies.gix-submodule]
+version = "^0.21.0"
+optional = true
+
+[dependencies.gix-tempfile]
+version = "^19.0.0"
+default-features = false
+
+[dependencies.gix-trace]
+version = "^0.1.15"
+
+[dependencies.gix-transport]
+version = "^0.49.1"
+optional = true
+
+[dependencies.gix-traverse]
+version = "^0.48.0"
+
+[dependencies.gix-url]
+version = "^0.33.1"
+
+[dependencies.gix-utils]
+version = "^0.3.1"
+
+[dependencies.gix-validate]
+version = "^0.10.1"
+
+[dependencies.gix-worktree]
+version = "^0.43.1"
+optional = true
+default-features = false
+
+[dependencies.gix-worktree-state]
+version = "^0.21.0"
+optional = true
+
+[dependencies.gix-worktree-stream]
+version = "^0.23.0"
+optional = true
+
+[dependencies.parking_lot]
+version = "0.12.4"
+optional = true
+
+[dependencies.prodash]
+version = "30.0.1"
+features = ["progress-tree"]
+optional = true
+
+[dependencies.regex]
+version = "1.11.3"
+features = ["std"]
+optional = true
+default-features = false
+
+[dependencies.serde]
+version = "1.0.114"
+features = ["derive"]
+optional = true
+default-features = false
+
+[dependencies.signal-hook]
+version = "0.3.18"
+optional = true
+default-features = false
+
+[dependencies.smallvec]
+version = "1.15.1"
+
+[dependencies.thiserror]
+version = "2.0.17"
+
+[dev-dependencies.anyhow]
+version = "1"
+
+[dev-dependencies.async-std]
+version = "1.12.0"
+features = ["attributes"]
+
+[dev-dependencies.insta]
+version = "1.43.2"
+
+[dev-dependencies.is_ci]
+version = "1.1.1"
+
+[dev-dependencies.pretty_assertions]
+version = "1.4.0"
+
+[dev-dependencies.serial_test]
+version = "3.1.0"
+default-features = false
+
+[dev-dependencies.termtree]
+version = "0.5.1"
+
+[dev-dependencies.walkdir]
+version = "2.3.2"
+
+[lints.clippy]
+bool_to_int_with_if = "allow"
+borrow_as_ptr = "allow"
+cast_lossless = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+checked_conversions = "allow"
+copy_iterator = "allow"
+default_trait_access = "allow"
+doc_markdown = "allow"
+empty_docs = "allow"
+enum_glob_use = "allow"
+explicit_deref_methods = "allow"
+explicit_into_iter_loop = "allow"
+explicit_iter_loop = "allow"
+filter_map_next = "allow"
+fn_params_excessive_bools = "allow"
+from_iter_instead_of_collect = "allow"
+if_not_else = "allow"
+ignored_unit_patterns = "allow"
+implicit_clone = "allow"
+inconsistent_struct_constructor = "allow"
+inefficient_to_string = "allow"
+inline_always = "allow"
+items_after_statements = "allow"
+iter_not_returning_iterator = "allow"
+iter_without_into_iter = "allow"
+large_enum_variant = "allow"
+large_stack_arrays = "allow"
+manual_assert = "allow"
+manual_is_variant_and = "allow"
+manual_let_else = "allow"
+manual_string_new = "allow"
+many_single_char_names = "allow"
+match_bool = "allow"
+match_same_arms = "allow"
+match_wild_err_arm = "allow"
+match_wildcard_for_single_variants = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+mut_mut = "allow"
+naive_bytecount = "allow"
+needless_continue = "allow"
+needless_for_each = "allow"
+needless_pass_by_value = "allow"
+needless_raw_string_hashes = "allow"
+no_effect_underscore_binding = "allow"
+option_option = "allow"
+range_plus_one = "allow"
+redundant_else = "allow"
+result_large_err = "allow"
+return_self_not_must_use = "allow"
+should_panic_without_expect = "allow"
+similar_names = "allow"
+single_match_else = "allow"
+stable_sort_primitive = "allow"
+struct_excessive_bools = "allow"
+struct_field_names = "allow"
+too_long_first_doc_paragraph = "allow"
+too_many_lines = "allow"
+transmute_ptr_to_ptr = "allow"
+trivially_copy_pass_by_ref = "allow"
+unnecessary_join = "allow"
+unnecessary_wraps = "allow"
+unreadable_literal = "allow"
+unused_self = "allow"
+used_underscore_binding = "allow"
+wildcard_imports = "allow"
+
+[lints.clippy.pedantic]
+level = "warn"
+priority = -1
+
+[lints.rust]

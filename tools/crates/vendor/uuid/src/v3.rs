@@ -43,16 +43,12 @@ impl Uuid {
 mod tests {
     use super::*;
 
-    #[cfg(all(
-        target_arch = "wasm32",
-        target_vendor = "unknown",
-        target_os = "unknown"
-    ))]
+    #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))]
     use wasm_bindgen_test::*;
 
     use crate::{std::string::ToString, Variant, Version};
 
-    static FIXTURE: &'static [(&'static Uuid, &'static str, &'static str)] = &[
+    static FIXTURE: &[(&Uuid, &str, &str)] = &[
         (
             &Uuid::NAMESPACE_DNS,
             "example.org",
@@ -137,16 +133,12 @@ mod tests {
 
     #[test]
     #[cfg_attr(
-        all(
-            target_arch = "wasm32",
-            target_vendor = "unknown",
-            target_os = "unknown"
-        ),
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
         wasm_bindgen_test
     )]
     fn test_new() {
-        for &(ref ns, ref name, _) in FIXTURE {
-            let uuid = Uuid::new_v3(*ns, name.as_bytes());
+        for &(ns, name, _) in FIXTURE {
+            let uuid = Uuid::new_v3(ns, name.as_bytes());
             assert_eq!(uuid.get_version(), Some(Version::Md5));
             assert_eq!(uuid.get_variant(), Variant::RFC4122);
         }
@@ -154,17 +146,13 @@ mod tests {
 
     #[test]
     #[cfg_attr(
-        all(
-            target_arch = "wasm32",
-            target_vendor = "unknown",
-            target_os = "unknown"
-        ),
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
         wasm_bindgen_test
     )]
     fn test_hyphenated_string() {
-        for &(ref ns, ref name, ref expected) in FIXTURE {
-            let uuid = Uuid::new_v3(*ns, name.as_bytes());
-            assert_eq!(uuid.hyphenated().to_string(), *expected);
+        for &(ns, name, expected) in FIXTURE {
+            let uuid = Uuid::new_v3(ns, name.as_bytes());
+            assert_eq!(uuid.hyphenated().to_string(), expected);
         }
     }
 }

@@ -51,31 +51,24 @@ impl<'a> Data<'a> {
 
 /// Types supporting object hash verification
 pub mod verify {
-
     /// Returned by [`crate::Data::verify_checksum()`]
     #[derive(Debug, thiserror::Error)]
     #[allow(missing_docs)]
     pub enum Error {
-        #[error("Object expected to have id {desired}, but actual id was {actual}")]
-        ChecksumMismatch {
-            desired: gix_hash::ObjectId,
-            actual: gix_hash::ObjectId,
-        },
+        #[error("Failed to hash object")]
+        Hasher(#[from] gix_hash::hasher::Error),
+        #[error(transparent)]
+        Verify(#[from] gix_hash::verify::Error),
     }
 
     impl crate::Data<'_> {
-        /// Compute the checksum of `self` and compare it with the `desired` hash.
+        /// Compute the checksum of `self` and compare it with the `expected` hash.
         /// If the hashes do not match, an [`Error`] is returned, containing the actual
         /// hash of `self`.
-        pub fn verify_checksum(&self, desired: &gix_hash::oid) -> Result<(), Error> {
-            let actual_id = crate::compute_hash(desired.kind(), self.kind, self.data);
-            if desired != actual_id {
-                return Err(Error::ChecksumMismatch {
-                    desired: desired.into(),
-                    actual: actual_id,
-                });
-            }
-            Ok(())
+        pub fn verify_checksum(&self, expected: &gix_hash::oid) -> Result<gix_hash::ObjectId, Error> {
+            let actual = crate::compute_hash(expected.kind(), self.kind, self.data)?;
+            actual.verify(expected)?;
+            Ok(actual)
         }
     }
 }

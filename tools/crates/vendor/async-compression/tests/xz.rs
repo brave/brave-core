@@ -6,6 +6,9 @@ mod utils;
 
 test_cases!(xz);
 
+#[cfg(feature = "xz-parallel")]
+test_cases!(xz_parallel);
+
 #[allow(unused)]
 use utils::{algos::xz::sync, InputStream};
 

@@ -43,7 +43,7 @@ fn get_random_u128() -> Result<u128, getrandom::Error> {
 | Target             | Target Triple      | Implementation
 | ------------------ | ------------------ | --------------
 | Linux, Android     | `*‑linux‑*`        | [`getrandom`][1] system call if available, otherwise [`/dev/urandom`][2] after successfully polling `/dev/random`
-| Windows 10+        | `*‑windows‑*`      | [`ProcessPrng`]
+| Windows 10+        | `*‑windows‑*`      | [`ProcessPrng`] on Rust 1.78+, [`RtlGenRandom`] otherwise
 | Windows 7, 8       | `*-win7‑windows‑*` | [`RtlGenRandom`]
 | macOS              | `*‑apple‑darwin`   | [`getentropy`][3]
 | iOS, tvOS, watchOS | `*‑apple‑{ios,tvos,watchos}` | [`CCRandomGenerateBytes`]
@@ -69,6 +69,7 @@ fn get_random_u128() -> Result<u128, getrandom::Error> {
 | PS Vita            | `*-vita-*`         | [`getentropy`][19]
 | QNX Neutrino       | `*‑nto-qnx*`       | [`/dev/urandom`][14] (identical to `/dev/random`)
 | AIX                | `*-ibm-aix`        | [`/dev/urandom`][15]
+| Cygwin             | `*-cygwin`         | [`getrandom`][20] (based on [`RtlGenRandom`])
 
 Pull Requests that add support for new targets to `getrandom` are always welcome.
 
@@ -80,15 +81,24 @@ of randomness based on their specific needs:
 | Backend name      | Target               | Target Triple            | Implementation
 | ----------------- | -------------------- | ------------------------ | --------------
 | `linux_getrandom` | Linux, Android       | `*‑linux‑*`              | [`getrandom`][1] system call (without `/dev/urandom` fallback). Bumps minimum supported Linux kernel version to 3.17 and Android API level to 23 (Marshmallow).
+| `linux_raw`       | Linux, Android       | `*‑linux‑*`              | Same as `linux_getrandom`, but uses raw `asm!`-based syscalls instead of `libc`.
 | `rdrand`          | x86, x86-64          | `x86_64-*`, `i686-*`     | [`RDRAND`] instruction
 | `rndr`            | AArch64              | `aarch64-*`              | [`RNDR`] register
-| `wasm_js`         | Web Browser, Node.js | `wasm32‑unknown‑unknown`, `wasm32v1-none` | [`Crypto.getRandomValues`]. Requires feature `wasm_js` ([see below](#webassembly-support)).
+| `wasm_js`         | Web Browser, Node.js | `wasm32‑unknown‑unknown`, `wasm32v1-none` | [`Crypto.getRandomValues`]. Enabled by the `wasm_js` feature ([see below](#webassembly-support)).
+| `efi_rng`         | UEFI                 | `*-unknown‑uefi`         | [`EFI_RNG_PROTOCOL`] with `EFI_RNG_ALGORITHM_RAW` (requires `std` and Nightly compiler)
+| `windows_legacy`  | Windows              | `*-windows-*`            | [`RtlGenRandom`]
 | `custom`          | All targets          | `*`                      | User-provided custom implementation (see [custom backend])
+| `unsupported`     | All targets          | `*`                      | Always returns `Err(Error::UNSUPPORTED)` (see [unsupported backend])
 
 Opt-in backends can be enabled using the `getrandom_backend` configuration flag.
-The flag can be set either by specifying the `rustflags` field in
-[`.cargo/config.toml`] (note that it can be done on a per-target basis), or by using
-the `RUSTFLAGS` environment variable:
+The flag can be set either by specifying the `rustflags` field in [`.cargo/config.toml`]:
+```toml
+# It's recommended to set the flag on a per-target basis:
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+```
+
+Or by using the `RUSTFLAGS` environment variable:
 
 ```sh
 RUSTFLAGS='--cfg getrandom_backend="linux_getrandom"' cargo build
@@ -105,6 +115,15 @@ WILL NOT have any effect on its downstream users.
 
 [`.cargo/config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
+### Raw Linux syscall support
+
+Currently the `linux_raw` backend supports only targets with stabilized `asm!` macro,
+i.e. `arm`, `aarch64`, `loongarch64`, `riscv32`, `riscv64`, `s390x`, `x86`, and `x86_64`.
+
+Note that the raw syscall backend may be slower than backends based on `libc::getrandom`,
+e.g. it does not implement vDSO optimizations and on `x86` it uses the infamously slow
+`int 0x80` instruction to perform syscall.
+
 ### WebAssembly support
 
 This crate fully supports the [WASI] and [Emscripten] targets. However,
@@ -112,27 +131,30 @@ the `wasm32-unknown-unknown` target (i.e. the target used by `wasm-pack`)
 is not automatically supported since, from the target name alone, we cannot deduce
 which JavaScript interface should be used (or if JavaScript is available at all).
 
+We do not include support for this target in the default configuration because
+our JS backend (supporting web browsers, web workers and Node.js v19 or later)
+requires [`wasm-bindgen`], **bloating `Cargo.lock`** and
+**potentially breaking builds** on non-web WASM platforms.
+
 To enable `getrandom`'s functionality on `wasm32-unknown-unknown` using the Web
-Crypto methods [described above](#opt-in-backends) via [`wasm-bindgen`], do
-*both* of the following:
+Crypto methods [described above][opt-in] via [`wasm-bindgen`], enable the
+`wasm_js` feature flag. Setting `RUSTFLAGS='--cfg getrandom_backend="wasm_js"'`
+is allowed but is no longer required and does nothing (it was required in a
+prior version of this crate).
 
--   Use the `wasm_js` feature flag, i.e.
-    `getrandom = { version = "0.3", features = ["wasm_js"] }`.
-    On its own, this only makes the backend available. (As a side effect this
-    will make your `Cargo.lock` significantly larger if you are not already
-    using [`wasm-bindgen`], but otherwise enabling this feature is harmless.)
--   Set `RUSTFLAGS='--cfg getrandom_backend="wasm_js"'` ([see above](#opt-in-backends)).
-
-This backend supports both web browsers (main window and Web Workers)
-and Node.js (v19 or later) environments.
+WARNING: enabling the `wasm_js` feature will bloat `Cargo.lock` on all platforms
+(where [`wasm-bindgen`] is not an existing dependency) and is known to cause
+build issues on some non-web WASM platforms, even when a different backend is
+selected via `getrandom_backend`.
 
 ### Custom backend
 
 If this crate does not support your target out of the box or you have to use
 a non-default entropy source, then you can provide a custom implementation.
-You need to enable the custom backend as described in the [configuration flags]
-section. Next, you need to define an `extern` function with the following
-signature:
+You need to enable the custom backend as described in the
+[opt-in backends][opt-in] section.
+
+Next, you need to define an `extern` function with the following signature:
 
 ```rust
 use getrandom::Error;
@@ -182,20 +204,14 @@ unsafe extern "Rust" fn __getrandom_v03_custom(
 }
 ```
 
-If you are confident that `getrandom` is not used in your project, but
-it gets pulled nevertheless by one of your dependencies, then you can
-use the following custom backend, which always returns the "unsupported" error:
-```rust
-use getrandom::Error;
+### Unsupported backend
 
-#[no_mangle]
-unsafe extern "Rust" fn __getrandom_v03_custom(
-    dest: *mut u8,
-    len: usize,
-) -> Result<(), Error> {
-    Err(Error::UNSUPPORTED)
-}
-```
+In some rare scenarios, you might be compiling this crate for an unsupported
+target (e.g. `wasm32-unknown-unknown`), but this crate's functionality
+is not actually used by your code. If you are confident that `getrandom` is
+not used in your project, but it gets pulled nevertheless by one of your
+dependencies, then you can enable the `unsupported` backend, which always
+returns `Err(Error::UNSUPPORTED)`.
 
 ### Platform Support
 
@@ -305,7 +321,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
-[GitHub Actions]: https://github.com/rust-random/getrandom/actions?query=workflow:Tests+branch:master
+[GitHub Actions]: https://github.com/rust-random/getrandom/actions?query=branch:master
 [Build Status]: https://github.com/rust-random/getrandom/actions/workflows/tests.yml/badge.svg?branch=master
 [crates.io]: https://crates.io/crates/getrandom
 [Crate]: https://img.shields.io/crates/v/getrandom
@@ -335,6 +351,7 @@ dual licensed as above, without any additional terms or conditions.
 [17]: https://www.gnu.org/software/libc/manual/html_mono/libc.html#index-getrandom
 [18]: https://github.com/rust3ds/shim-3ds/commit/b01d2568836dea2a65d05d662f8e5f805c64389d
 [19]: https://github.com/vitasdk/newlib/blob/2d869fe47aaf02b8e52d04e9a2b79d5b210fd016/newlib/libc/sys/vita/getentropy.c
+[20]: https://github.com/cygwin/cygwin/blob/main/winsup/cygwin/libc/getentropy.cc
 
 [`ProcessPrng`]: https://learn.microsoft.com/en-us/windows/win32/seccng/processprng
 [`RtlGenRandom`]: https://learn.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom
@@ -346,16 +363,19 @@ dual licensed as above, without any additional terms or conditions.
 [`esp_fill_random`]: https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/random.html#functions
 [esp-idf-rng]: https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/random.html
 [esp-trng-docs]: https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf#rng
+[`EFI_RNG_PROTOCOL`]: https://uefi.org/specs/UEFI/2.10/37_Secure_Technologies.html#efi-rng-protocol
 [`random_get`]: https://github.com/WebAssembly/WASI/blob/snapshot-01/phases/snapshot/docs.md#-random_getbuf-pointeru8-buf_len-size---errno
 [`get-random-u64`]: https://github.com/WebAssembly/WASI/blob/v0.2.1/wasip2/random/random.wit#L23-L28
 [configuration flags]: #configuration-flags
 [custom backend]: #custom-backend
+[unsupported backend]: #unsupported-backend
 [`wasm-bindgen`]: https://github.com/rustwasm/wasm-bindgen
 [`module`]: https://rustwasm.github.io/wasm-bindgen/reference/attributes/on-js-imports/module.html
 [`sys_read_entropy`]: https://github.com/hermit-os/kernel/blob/315f58ff5efc81d9bf0618af85a59963ff55f8b1/src/syscalls/entropy.rs#L47-L55
 [platform-support]: https://doc.rust-lang.org/stable/rustc/platform-support.html
-[WASI]: https://github.com/CraneStation/wasi
-[Emscripten]: https://www.hellorust.com/setup/emscripten/
+[WASI]: https://github.com/WebAssembly/WASI
+[Emscripten]: https://emscripten.org
+[opt-in]: #opt-in-backends
 
 [//]: # (licenses)
 

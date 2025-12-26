@@ -4,9 +4,9 @@ use alloc::vec::Vec;
 use super::ResolvesClientCert;
 use crate::log::{debug, trace};
 use crate::msgs::enums::ExtensionType;
-use crate::msgs::handshake::{CertificateChain, DistinguishedName, ServerExtension};
+use crate::msgs::handshake::{CertificateChain, DistinguishedName, ProtocolName, ServerExtensions};
 use crate::sync::Arc;
-use crate::{compress, sign, SignatureScheme};
+use crate::{SignatureScheme, compress, sign};
 
 #[derive(Debug)]
 pub(super) struct ServerCertDetails<'a> {
@@ -35,14 +35,16 @@ impl<'a> ServerCertDetails<'a> {
 }
 
 pub(super) struct ClientHelloDetails {
+    pub(super) alpn_protocols: Vec<ProtocolName>,
     pub(super) sent_extensions: Vec<ExtensionType>,
     pub(super) extension_order_seed: u16,
     pub(super) offered_cert_compression: bool,
 }
 
 impl ClientHelloDetails {
-    pub(super) fn new(extension_order_seed: u16) -> Self {
+    pub(super) fn new(alpn_protocols: Vec<ProtocolName>, extension_order_seed: u16) -> Self {
         Self {
+            alpn_protocols,
             sent_extensions: Vec::new(),
             extension_order_seed,
             offered_cert_compression: false,
@@ -51,14 +53,20 @@ impl ClientHelloDetails {
 
     pub(super) fn server_sent_unsolicited_extensions(
         &self,
-        received_exts: &[ServerExtension],
+        received_exts: &ServerExtensions<'_>,
         allowed_unsolicited: &[ExtensionType],
     ) -> bool {
-        for ext in received_exts {
-            let ext_type = ext.ext_type();
+        let mut extensions = received_exts.collect_used();
+        extensions.extend(
+            received_exts
+                .unknown_extensions
+                .iter()
+                .map(|ext| ExtensionType::from(*ext)),
+        );
+        for ext_type in extensions {
             if !self.sent_extensions.contains(&ext_type) && !allowed_unsolicited.contains(&ext_type)
             {
-                trace!("Unsolicited extension {:?}", ext_type);
+                trace!("Unsolicited extension {ext_type:?}");
                 return true;
             }
         }

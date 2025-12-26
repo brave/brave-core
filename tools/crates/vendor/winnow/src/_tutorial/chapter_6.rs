@@ -16,12 +16,12 @@
 //! ```
 //! 1. We have to decide what to do about the "remainder" of the `input`.
 //! 2. The [`Result`] may not be compatible with the rest of the Rust ecosystem.
-//!     Normally, Rust applications want errors that are `std::error::Error + Send + Sync + 'static`
-//!     meaning:
-//!     - They implement the [`std::error::Error`] trait
-//!     - They can be sent across threads
-//!     - They are safe to be referenced across threads
-//!     - They do not borrow
+//!    Normally, Rust applications want errors that are `std::error::Error + Send + Sync + 'static`
+//!    meaning:
+//!    - They implement the [`std::error::Error`] trait
+//!    - They can be sent across threads
+//!    - They are safe to be referenced across threads
+//!    - They do not borrow
 //!
 //! winnow provides [`Parser::parse`] to help with this:
 //! - Ensures we hit [`eof`]

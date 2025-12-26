@@ -232,7 +232,7 @@ pub trait Reduce {
     ///
     /// If an `Error` is returned, the entire operation will be stopped.
     fn feed(&mut self, item: Self::Input) -> Result<Self::FeedProduce, Self::Error>;
-    /// Called once once all items where passed to `feed()`, producing the final `Output` of the operation or an `Error`.
+    /// Called once for all items that were passed to `feed()`, producing the final `Output` of the operation or an `Error`.
     fn finalize(self) -> Result<Self::Output, Self::Error>;
 }
 

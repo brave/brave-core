@@ -1,290 +1,305 @@
-windows_targets::link!("iphlpapi.dll" "system" fn AddIPAddress(address : u32, ipmask : u32, ifindex : u32, ntecontext : *mut u32, nteinstance : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn AddIPAddress(address : u32, ipmask : u32, ifindex : u32, ntecontext : *mut u32, nteinstance : *mut u32) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn CancelIPChangeNotify(notifyoverlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-windows_targets::link!("iphlpapi.dll" "system" fn CancelIfTimestampConfigChange(notificationhandle : HIFTIMESTAMPCHANGE));
-windows_targets::link!("iphlpapi.dll" "system" fn CancelMibChangeNotify2(notificationhandle : super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CancelIPChangeNotify(notifyoverlapped : *const super::super::System::IO:: OVERLAPPED) -> windows_sys::core::BOOL);
+windows_link::link!("iphlpapi.dll" "system" fn CancelIfTimestampConfigChange(notificationhandle : HIFTIMESTAMPCHANGE));
+windows_link::link!("iphlpapi.dll" "system" fn CancelMibChangeNotify2(notificationhandle : super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn CaptureInterfaceHardwareCrossTimestamp(interfaceluid : *const super::Ndis:: NET_LUID_LH, crosstimestamp : *mut INTERFACE_HARDWARE_CROSSTIMESTAMP) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertCompartmentGuidToId(compartmentguid : *const windows_sys::core::GUID, compartmentid : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertCompartmentIdToGuid(compartmentid : u32, compartmentguid : *mut windows_sys::core::GUID) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CaptureInterfaceHardwareCrossTimestamp(interfaceluid : *const super::Ndis:: NET_LUID_LH, crosstimestamp : *mut INTERFACE_HARDWARE_CROSSTIMESTAMP) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertCompartmentGuidToId(compartmentguid : *const windows_sys::core::GUID, compartmentid : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceAliasToLuid(interfacealias : windows_sys::core::PCWSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertCompartmentIdToGuid(compartmentid : super::Ndis:: NET_IF_COMPARTMENT_ID, compartmentguid : *mut windows_sys::core::GUID) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceGuidToLuid(interfaceguid : *const windows_sys::core::GUID, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceAliasToLuid(interfacealias : windows_sys::core::PCWSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceIndexToLuid(interfaceindex : u32, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceGuidToLuid(interfaceguid : *const windows_sys::core::GUID, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToAlias(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacealias : windows_sys::core::PWSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceIndexToLuid(interfaceindex : u32, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToGuid(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceguid : *mut windows_sys::core::GUID) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToAlias(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacealias : windows_sys::core::PWSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToIndex(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceindex : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToGuid(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceguid : *mut windows_sys::core::GUID) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToNameA(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacename : windows_sys::core::PSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToIndex(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceindex : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToNameW(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacename : windows_sys::core::PWSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToNameA(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacename : windows_sys::core::PSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceNameToLuidA(interfacename : windows_sys::core::PCSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceLuidToNameW(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfacename : windows_sys::core::PWSTR, length : usize) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertInterfaceNameToLuidW(interfacename : windows_sys::core::PCWSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertIpv4MaskToLength(mask : u32, masklength : *mut u8) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn ConvertLengthToIpv4Mask(masklength : u32, mask : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceNameToLuidA(interfacename : windows_sys::core::PCSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn ConvertInterfaceNameToLuidW(interfacename : windows_sys::core::PCWSTR, interfaceluid : *mut super::Ndis:: NET_LUID_LH) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertIpv4MaskToLength(mask : u32, masklength : *mut u8) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ConvertLengthToIpv4Mask(masklength : u32, mask : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateAnycastIpAddressEntry(row : *const MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CreateAnycastIpAddressEntry(row : *const MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn CreateIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateIpForwardEntry2(row : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn CreateIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn CreateIpForwardEntry2(row : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CreateIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn CreatePersistentTcpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn CreatePersistentUdpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn CreateProxyArpEntry(dwaddress : u32, dwmask : u32, dwifindex : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn CreateIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CreatePersistentTcpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn CreatePersistentUdpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn CreateProxyArpEntry(dwaddress : u32, dwmask : u32, dwifindex : u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateSortedAddressPairs(sourceaddresslist : *const super::super::Networking::WinSock:: SOCKADDR_IN6, sourceaddresscount : u32, destinationaddresslist : *const super::super::Networking::WinSock:: SOCKADDR_IN6, destinationaddresscount : u32, addresssortoptions : u32, sortedaddresspairlist : *mut *mut super::super::Networking::WinSock:: SOCKADDR_IN6_PAIR, sortedaddresspaircount : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CreateSortedAddressPairs(sourceaddresslist : *const super::super::Networking::WinSock:: SOCKADDR_IN6, sourceaddresscount : u32, destinationaddresslist : *const super::super::Networking::WinSock:: SOCKADDR_IN6, destinationaddresscount : u32, addresssortoptions : u32, sortedaddresspairlist : *mut *mut super::super::Networking::WinSock:: SOCKADDR_IN6_PAIR, sortedaddresspaircount : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn CreateUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn CreateUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteAnycastIpAddressEntry(row : *const MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteIPAddress(ntecontext : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteAnycastIpAddressEntry(row : *const MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteIPAddress(ntecontext : u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteIpForwardEntry2(row : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteIpForwardEntry2(row : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn DeletePersistentTcpPortReservation(startport : u16, numberofports : u16) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn DeletePersistentUdpPortReservation(startport : u16, numberofports : u16) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteProxyArpEntry(dwaddress : u32, dwmask : u32, dwifindex : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn DeletePersistentTcpPortReservation(startport : u16, numberofports : u16) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeletePersistentUdpPortReservation(startport : u16, numberofports : u16) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteProxyArpEntry(dwaddress : u32, dwmask : u32, dwifindex : u32) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn DeleteUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn DeleteUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn DisableMediaSense(phandle : *mut super::super::Foundation:: HANDLE, poverlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn DisableMediaSense(phandle : *mut super::super::Foundation:: HANDLE, poverlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn EnableRouter(phandle : *mut super::super::Foundation:: HANDLE, poverlapped : *mut super::super::System::IO:: OVERLAPPED) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn FlushIpNetTable(dwifindex : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn EnableRouter(phandle : *mut super::super::Foundation:: HANDLE, poverlapped : *mut super::super::System::IO:: OVERLAPPED) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn FlushIpNetTable(dwifindex : u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn FlushIpNetTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, interfaceindex : u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn FlushIpNetTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, interfaceindex : u32) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn FlushIpPathTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn FreeDnsSettings(settings : *mut DNS_SETTINGS));
-windows_targets::link!("iphlpapi.dll" "system" fn FreeInterfaceDnsSettings(settings : *mut DNS_INTERFACE_SETTINGS));
-windows_targets::link!("iphlpapi.dll" "system" fn FreeMibTable(memory : *const core::ffi::c_void));
-windows_targets::link!("iphlpapi.dll" "system" fn GetAdapterIndex(adaptername : windows_sys::core::PCWSTR, ifindex : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetAdapterOrderMap() -> *mut IP_ADAPTER_ORDER_MAP);
+windows_link::link!("iphlpapi.dll" "system" fn FlushIpPathTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn FreeDnsSettings(settings : *mut DNS_SETTINGS));
+windows_link::link!("iphlpapi.dll" "system" fn FreeInterfaceDnsSettings(settings : *mut DNS_INTERFACE_SETTINGS));
+windows_link::link!("iphlpapi.dll" "system" fn FreeMibTable(memory : *const core::ffi::c_void));
+windows_link::link!("iphlpapi.dll" "system" fn GetAdapterIndex(adaptername : windows_sys::core::PCWSTR, ifindex : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetAdapterOrderMap() -> *mut IP_ADAPTER_ORDER_MAP);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetAdaptersAddresses(family : u32, flags : GET_ADAPTERS_ADDRESSES_FLAGS, reserved : *const core::ffi::c_void, adapteraddresses : *mut IP_ADAPTER_ADDRESSES_LH, sizepointer : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetAdaptersInfo(adapterinfo : *mut IP_ADAPTER_INFO, sizepointer : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetAdaptersAddresses(family : u32, flags : GET_ADAPTERS_ADDRESSES_FLAGS, reserved : *const core::ffi::c_void, adapteraddresses : *mut IP_ADAPTER_ADDRESSES_LH, sizepointer : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetAdaptersInfo(adapterinfo : *mut IP_ADAPTER_INFO, sizepointer : *mut u32) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetAnycastIpAddressEntry(row : *mut MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetAnycastIpAddressEntry(row : *mut MIB_ANYCASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetAnycastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_ANYCASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetBestInterface(dwdestaddr : u32, pdwbestifindex : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetAnycastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_ANYCASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetBestInterface(dwdestaddr : u32, pdwbestifindex : *mut u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetBestInterfaceEx(pdestaddr : *const super::super::Networking::WinSock:: SOCKADDR, pdwbestifindex : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetBestInterfaceEx(pdestaddr : *const super::super::Networking::WinSock:: SOCKADDR, pdwbestifindex : *mut u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetBestRoute(dwdestaddr : u32, dwsourceaddr : u32, pbestroute : *mut MIB_IPFORWARDROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetBestRoute(dwdestaddr : u32, dwsourceaddr : u32, pbestroute : *mut MIB_IPFORWARDROW) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetBestRoute2(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceindex : u32, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET, destinationaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET, addresssortoptions : u32, bestroute : *mut MIB_IPFORWARD_ROW2, bestsourceaddress : *mut super::super::Networking::WinSock:: SOCKADDR_INET) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetCurrentThreadCompartmentId() -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetCurrentThreadCompartmentScope(compartmentscope : *mut u32, compartmentid : *mut u32));
-windows_targets::link!("iphlpapi.dll" "system" fn GetDefaultCompartmentId() -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetDnsSettings(settings : *mut DNS_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetExtendedTcpTable(ptcptable : *mut core::ffi::c_void, pdwsize : *mut u32, border : super::super::Foundation:: BOOL, ulaf : u32, tableclass : TCP_TABLE_CLASS, reserved : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetExtendedUdpTable(pudptable : *mut core::ffi::c_void, pdwsize : *mut u32, border : super::super::Foundation:: BOOL, ulaf : u32, tableclass : UDP_TABLE_CLASS, reserved : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetFriendlyIfIndex(ifindex : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIcmpStatistics(statistics : *mut MIB_ICMP) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIcmpStatisticsEx(statistics : *mut MIB_ICMP_EX_XPSP1, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfEntry(pifrow : *mut MIB_IFROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetBestRoute2(interfaceluid : *const super::Ndis:: NET_LUID_LH, interfaceindex : u32, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET, destinationaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET, addresssortoptions : u32, bestroute : *mut MIB_IPFORWARD_ROW2, bestsourceaddress : *mut super::super::Networking::WinSock:: SOCKADDR_INET) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfEntry2(row : *mut MIB_IF_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetCurrentThreadCompartmentId() -> super::Ndis:: NET_IF_COMPARTMENT_ID);
+windows_link::link!("iphlpapi.dll" "system" fn GetCurrentThreadCompartmentScope(compartmentscope : *mut u32, compartmentid : *mut u32));
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfEntry2Ex(level : MIB_IF_ENTRY_LEVEL, row : *mut MIB_IF_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfStackTable(table : *mut *mut MIB_IFSTACK_TABLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfTable(piftable : *mut MIB_IFTABLE, pdwsize : *mut u32, border : super::super::Foundation:: BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetDefaultCompartmentId() -> super::Ndis:: NET_IF_COMPARTMENT_ID);
+windows_link::link!("iphlpapi.dll" "system" fn GetDnsSettings(settings : *mut DNS_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetExtendedTcpTable(ptcptable : *mut core::ffi::c_void, pdwsize : *mut u32, border : windows_sys::core::BOOL, ulaf : u32, tableclass : TCP_TABLE_CLASS, reserved : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetExtendedUdpTable(pudptable : *mut core::ffi::c_void, pdwsize : *mut u32, border : windows_sys::core::BOOL, ulaf : u32, tableclass : UDP_TABLE_CLASS, reserved : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetFriendlyIfIndex(ifindex : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIcmpStatistics(statistics : *mut MIB_ICMP) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIcmpStatisticsEx(statistics : *mut MIB_ICMP_EX_XPSP1, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfEntry(pifrow : *mut MIB_IFROW) -> u32);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfTable2(table : *mut *mut MIB_IF_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfEntry2(row : *mut MIB_IF_ROW2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIfTable2Ex(level : MIB_IF_TABLE_LEVEL, table : *mut *mut MIB_IF_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfEntry2Ex(level : MIB_IF_ENTRY_LEVEL, row : *mut MIB_IF_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfStackTable(table : *mut *mut MIB_IFSTACK_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfTable(piftable : *mut MIB_IFTABLE, pdwsize : *mut u32, border : windows_sys::core::BOOL) -> u32);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceActiveTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfTable2(table : *mut *mut MIB_IF_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceCurrentTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceDnsSettings(interface : windows_sys::core::GUID, settings : *mut DNS_INTERFACE_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIfTable2Ex(level : MIB_IF_TABLE_LEVEL, table : *mut *mut MIB_IF_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceHardwareTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceInfo(piftable : *mut IP_INTERFACE_INFO, dwoutbuflen : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceActiveTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetInterfaceSupportedTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetInvertedIfStackTable(table : *mut *mut MIB_INVERTEDIFSTACK_TABLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpAddrTable(pipaddrtable : *mut MIB_IPADDRTABLE, pdwsize : *mut u32, border : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpErrorString(errorcode : u32, buffer : windows_sys::core::PWSTR, size : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceCurrentTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceDnsSettings(interface : windows_sys::core::GUID, settings : *mut DNS_INTERFACE_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceHardwareTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceInfo(piftable : *mut IP_INTERFACE_INFO, dwoutbuflen : *mut u32) -> u32);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn GetInterfaceSupportedTimestampCapabilities(interfaceluid : *const super::Ndis:: NET_LUID_LH, timestampcapabilites : *mut INTERFACE_TIMESTAMP_CAPABILITIES) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetInvertedIfStackTable(table : *mut *mut MIB_INVERTEDIFSTACK_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpAddrTable(pipaddrtable : *mut MIB_IPADDRTABLE, pdwsize : *mut u32, border : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpErrorString(errorcode : u32, buffer : windows_sys::core::PWSTR, size : *mut u32) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpForwardEntry2(row : *mut MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpForwardEntry2(row : *mut MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpForwardTable(pipforwardtable : *mut MIB_IPFORWARDTABLE, pdwsize : *mut u32, border : super::super::Foundation:: BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpForwardTable(pipforwardtable : *mut MIB_IPFORWARDTABLE, pdwsize : *mut u32, border : windows_sys::core::BOOL) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpForwardTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPFORWARD_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpForwardTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPFORWARD_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpInterfaceTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPINTERFACE_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpInterfaceTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPINTERFACE_TABLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpNetEntry2(row : *mut MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpNetTable(ipnettable : *mut MIB_IPNETTABLE, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpNetEntry2(row : *mut MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpNetTable(ipnettable : *mut MIB_IPNETTABLE, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpNetTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPNET_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpNetTable2(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPNET_TABLE2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpNetworkConnectionBandwidthEstimates(interfaceindex : u32, addressfamily : super::super::Networking::WinSock:: ADDRESS_FAMILY, bandwidthestimates : *mut MIB_IP_NETWORK_CONNECTION_BANDWIDTH_ESTIMATES) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpNetworkConnectionBandwidthEstimates(interfaceindex : u32, addressfamily : super::super::Networking::WinSock:: ADDRESS_FAMILY, bandwidthestimates : *mut MIB_IP_NETWORK_CONNECTION_BANDWIDTH_ESTIMATES) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpPathEntry(row : *mut MIB_IPPATH_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpPathEntry(row : *mut MIB_IPPATH_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpPathTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPPATH_TABLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpStatistics(statistics : *mut MIB_IPSTATS_LH) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetIpStatisticsEx(statistics : *mut MIB_IPSTATS_LH, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetJobCompartmentId(jobhandle : super::super::Foundation:: HANDLE) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpPathTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_IPPATH_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpStatistics(statistics : *mut MIB_IPSTATS_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetIpStatisticsEx(statistics : *mut MIB_IPSTATS_LH, family : u32) -> u32);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn GetJobCompartmentId(jobhandle : super::super::Foundation:: HANDLE) -> super::Ndis:: NET_IF_COMPARTMENT_ID);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetMulticastIpAddressEntry(row : *mut MIB_MULTICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetMulticastIpAddressEntry(row : *mut MIB_MULTICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetMulticastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_MULTICASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetMulticastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_MULTICASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetNetworkConnectivityHint(connectivityhint : *mut super::super::Networking::WinSock:: NL_NETWORK_CONNECTIVITY_HINT) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetNetworkConnectivityHint(connectivityhint : *mut super::super::Networking::WinSock:: NL_NETWORK_CONNECTIVITY_HINT) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetNetworkConnectivityHintForInterface(interfaceindex : u32, connectivityhint : *mut super::super::Networking::WinSock:: NL_NETWORK_CONNECTIVITY_HINT) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetNetworkInformation(networkguid : *const windows_sys::core::GUID, compartmentid : *mut u32, siteid : *mut u32, networkname : windows_sys::core::PWSTR, length : u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetNetworkParams(pfixedinfo : *mut FIXED_INFO_W2KSP1, poutbuflen : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn GetNumberOfInterfaces(pdwnumif : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromPidAndInfo(ulpid : u32, pinfo : *const u64, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromTcp6Entry(ptcpentry : *const MIB_TCP6ROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromTcpEntry(ptcpentry : *const MIB_TCPROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromUdp6Entry(pudpentry : *const MIB_UDP6ROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromUdpEntry(pudpentry : *const MIB_UDPROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetPerAdapterInfo(ifindex : u32, pperadapterinfo : *mut IP_PER_ADAPTER_INFO_W2KSP1, poutbuflen : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetNetworkConnectivityHintForInterface(interfaceindex : u32, connectivityhint : *mut super::super::Networking::WinSock:: NL_NETWORK_CONNECTIVITY_HINT) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetNetworkInformation(networkguid : *const windows_sys::core::GUID, compartmentid : *mut u32, siteid : *mut u32, networkname : windows_sys::core::PWSTR, length : u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetNetworkParams(pfixedinfo : *mut FIXED_INFO_W2KSP1, poutbuflen : *mut u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetNumberOfInterfaces(pdwnumif : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromPidAndInfo(ulpid : u32, pinfo : *const u64, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromTcp6Entry(ptcpentry : *const MIB_TCP6ROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromTcpEntry(ptcpentry : *const MIB_TCPROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromUdp6Entry(pudpentry : *const MIB_UDP6ROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetOwnerModuleFromUdpEntry(pudpentry : *const MIB_UDPROW_OWNER_MODULE, class : TCPIP_OWNER_MODULE_INFO_CLASS, pbuffer : *mut core::ffi::c_void, pdwsize : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetPerAdapterInfo(ifindex : u32, pperadapterinfo : *mut IP_PER_ADAPTER_INFO_W2KSP1, poutbuflen : *mut u32) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetPerTcp6ConnectionEStats(row : *const MIB_TCP6ROW, estatstype : TCP_ESTATS_TYPE, rw : *mut u8, rwversion : u32, rwsize : u32, ros : *mut u8, rosversion : u32, rossize : u32, rod : *mut u8, rodversion : u32, rodsize : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetPerTcpConnectionEStats(row : *const MIB_TCPROW_LH, estatstype : TCP_ESTATS_TYPE, rw : *mut u8, rwversion : u32, rwsize : u32, ros : *mut u8, rosversion : u32, rossize : u32, rod : *mut u8, rodversion : u32, rodsize : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetRTTAndHopCount(destipaddress : u32, hopcount : *mut u32, maxhops : u32, rtt : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("iphlpapi.dll" "system" fn GetSessionCompartmentId(sessionid : u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetPerTcp6ConnectionEStats(row : *const MIB_TCP6ROW, estatstype : TCP_ESTATS_TYPE, rw : *mut u8, rwversion : u32, rwsize : u32, ros : *mut u8, rosversion : u32, rossize : u32, rod : *mut u8, rodversion : u32, rodsize : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetPerTcpConnectionEStats(row : *const MIB_TCPROW_LH, estatstype : TCP_ESTATS_TYPE, rw : *mut u8, rwversion : u32, rwsize : u32, ros : *mut u8, rosversion : u32, rossize : u32, rod : *mut u8, rodversion : u32, rodsize : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetRTTAndHopCount(destipaddress : u32, hopcount : *mut u32, maxhops : u32, rtt : *mut u32) -> windows_sys::core::BOOL);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn GetSessionCompartmentId(sessionid : u32) -> super::Ndis:: NET_IF_COMPARTMENT_ID);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcp6Table(tcptable : *mut MIB_TCP6TABLE, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcp6Table(tcptable : *mut MIB_TCP6TABLE, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcp6Table2(tcptable : *mut MIB_TCP6TABLE2, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcpStatistics(statistics : *mut MIB_TCPSTATS_LH) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcpStatisticsEx(statistics : *mut MIB_TCPSTATS_LH, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcpStatisticsEx2(statistics : *mut MIB_TCPSTATS2, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcpTable(tcptable : *mut MIB_TCPTABLE, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTcpTable2(tcptable : *mut MIB_TCPTABLE2, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetTeredoPort(port : *mut u16) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcp6Table2(tcptable : *mut MIB_TCP6TABLE2, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcpStatistics(statistics : *mut MIB_TCPSTATS_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcpStatisticsEx(statistics : *mut MIB_TCPSTATS_LH, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcpStatisticsEx2(statistics : *mut MIB_TCPSTATS2, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcpTable(tcptable : *mut MIB_TCPTABLE, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTcpTable2(tcptable : *mut MIB_TCPTABLE2, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetTeredoPort(port : *mut u16) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn GetUdp6Table(udp6table : *mut MIB_UDP6TABLE, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetUdpStatistics(stats : *mut MIB_UDPSTATS) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetUdpStatisticsEx(statistics : *mut MIB_UDPSTATS, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetUdpStatisticsEx2(statistics : *mut MIB_UDPSTATS2, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetUdpTable(udptable : *mut MIB_UDPTABLE, sizepointer : *mut u32, order : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn GetUniDirectionalAdapterInfo(pipifinfo : *mut IP_UNIDIRECTIONAL_ADAPTER_ADDRESS, dwoutbuflen : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUdp6Table(udp6table : *mut MIB_UDP6TABLE, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUdpStatistics(stats : *mut MIB_UDPSTATS) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUdpStatisticsEx(statistics : *mut MIB_UDPSTATS, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUdpStatisticsEx2(statistics : *mut MIB_UDPSTATS2, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUdpTable(udptable : *mut MIB_UDPTABLE, sizepointer : *mut u32, order : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUniDirectionalAdapterInfo(pipifinfo : *mut IP_UNIDIRECTIONAL_ADAPTER_ADDRESS, dwoutbuflen : *mut u32) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetUnicastIpAddressEntry(row : *mut MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn GetUnicastIpAddressEntry(row : *mut MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn GetUnicastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_UNICASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn Icmp6CreateFile() -> super::super::Foundation:: HANDLE);
-windows_targets::link!("iphlpapi.dll" "system" fn Icmp6ParseReplies(replybuffer : *mut core::ffi::c_void, replysize : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn GetUnicastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_UNICASTIPADDRESS_TABLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn Icmp6CreateFile() -> super::super::Foundation:: HANDLE);
+windows_link::link!("iphlpapi.dll" "system" fn Icmp6ParseReplies(replybuffer : *mut core::ffi::c_void, replysize : u32) -> u32);
 #[cfg(all(feature = "Win32_Networking_WinSock", feature = "Win32_System_IO"))]
-windows_targets::link!("iphlpapi.dll" "system" fn Icmp6SendEcho2(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_IN6, destinationaddress : *const super::super::Networking::WinSock:: SOCKADDR_IN6, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpCloseHandle(icmphandle : super::super::Foundation:: HANDLE) -> super::super::Foundation:: BOOL);
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpCreateFile() -> super::super::Foundation:: HANDLE);
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpParseReplies(replybuffer : *mut core::ffi::c_void, replysize : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpSendEcho(icmphandle : super::super::Foundation:: HANDLE, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn Icmp6SendEcho2(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_IN6, destinationaddress : *const super::super::Networking::WinSock:: SOCKADDR_IN6, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpCloseHandle(icmphandle : super::super::Foundation:: HANDLE) -> windows_sys::core::BOOL);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpCreateFile() -> super::super::Foundation:: HANDLE);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpParseReplies(replybuffer : *mut core::ffi::c_void, replysize : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpSendEcho(icmphandle : super::super::Foundation:: HANDLE, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpSendEcho2(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpSendEcho2(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn IcmpSendEcho2Ex(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, sourceaddress : u32, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn IcmpSendEcho2Ex(icmphandle : super::super::Foundation:: HANDLE, event : super::super::Foundation:: HANDLE, apcroutine : super::super::System::IO:: PIO_APC_ROUTINE, apccontext : *const core::ffi::c_void, sourceaddress : u32, destinationaddress : u32, requestdata : *const core::ffi::c_void, requestsize : u16, requestoptions : *const IP_OPTION_INFORMATION, replybuffer : *mut core::ffi::c_void, replysize : u32, timeout : u32) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn InitializeIpForwardEntry(row : *mut MIB_IPFORWARD_ROW2));
+windows_link::link!("iphlpapi.dll" "system" fn InitializeIpForwardEntry(row : *mut MIB_IPFORWARD_ROW2));
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn InitializeIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW));
+windows_link::link!("iphlpapi.dll" "system" fn InitializeIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW));
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn InitializeUnicastIpAddressEntry(row : *mut MIB_UNICASTIPADDRESS_ROW));
-windows_targets::link!("iphlpapi.dll" "system" fn IpReleaseAddress(adapterinfo : *const IP_ADAPTER_INDEX_MAP) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn IpRenewAddress(adapterinfo : *const IP_ADAPTER_INDEX_MAP) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn LookupPersistentTcpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn LookupPersistentUdpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn NhpAllocateAndGetInterfaceInfoFromStack(pptable : *mut *mut IP_INTERFACE_NAME_INFO_W2KSP1, pdwcount : *mut u32, border : super::super::Foundation:: BOOL, hheap : super::super::Foundation:: HANDLE, dwflags : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn InitializeUnicastIpAddressEntry(row : *mut MIB_UNICASTIPADDRESS_ROW));
+windows_link::link!("iphlpapi.dll" "system" fn IpReleaseAddress(adapterinfo : *const IP_ADAPTER_INDEX_MAP) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn IpRenewAddress(adapterinfo : *const IP_ADAPTER_INDEX_MAP) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn LookupPersistentTcpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn LookupPersistentUdpPortReservation(startport : u16, numberofports : u16, token : *mut u64) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn NhpAllocateAndGetInterfaceInfoFromStack(pptable : *mut *mut IP_INTERFACE_NAME_INFO_W2KSP1, pdwcount : *mut u32, border : windows_sys::core::BOOL, hheap : super::super::Foundation:: HANDLE, dwflags : u32) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyAddrChange(handle : *mut super::super::Foundation:: HANDLE, overlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyIfTimestampConfigChange(callercontext : *const core::ffi::c_void, callback : PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK, notificationhandle : *mut HIFTIMESTAMPCHANGE) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyAddrChange(handle : *mut super::super::Foundation:: HANDLE, overlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyIfTimestampConfigChange(callercontext : *const core::ffi::c_void, callback : PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK, notificationhandle : *mut HIFTIMESTAMPCHANGE) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyIpInterfaceChange(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PIPINTERFACE_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : super::super::Foundation:: BOOLEAN, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyIpInterfaceChange(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PIPINTERFACE_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : bool, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyNetworkConnectivityHintChange(callback : PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : super::super::Foundation:: BOOLEAN, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyNetworkConnectivityHintChange(callback : PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : bool, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyRouteChange(handle : *mut super::super::Foundation:: HANDLE, overlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyRouteChange(handle : *mut super::super::Foundation:: HANDLE, overlapped : *const super::super::System::IO:: OVERLAPPED) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyRouteChange2(addressfamily : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PIPFORWARD_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : super::super::Foundation:: BOOLEAN, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyRouteChange2(addressfamily : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PIPFORWARD_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : bool, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyStableUnicastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_UNICASTIPADDRESS_TABLE, callercallback : PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK, callercontext : *const core::ffi::c_void, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyTeredoPortChange(callback : PTEREDO_PORT_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : super::super::Foundation:: BOOLEAN, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyStableUnicastIpAddressTable(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, table : *mut *mut MIB_UNICASTIPADDRESS_TABLE, callercallback : PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK, callercontext : *const core::ffi::c_void, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyTeredoPortChange(callback : PTEREDO_PORT_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : bool, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn NotifyUnicastIpAddressChange(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PUNICAST_IPADDRESS_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : super::super::Foundation:: BOOLEAN, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn NotifyUnicastIpAddressChange(family : super::super::Networking::WinSock:: ADDRESS_FAMILY, callback : PUNICAST_IPADDRESS_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, initialnotification : bool, notificationhandle : *mut super::super::Foundation:: HANDLE) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn ParseNetworkString(networkstring : windows_sys::core::PCWSTR, types : u32, addressinfo : *mut NET_ADDRESS_INFO, portnumber : *mut u16, prefixlength : *mut u8) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfAddFiltersToInterface(ih : *mut core::ffi::c_void, cinfilters : u32, pfiltin : *mut PF_FILTER_DESCRIPTOR, coutfilters : u32, pfiltout : *mut PF_FILTER_DESCRIPTOR, pfhandle : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfAddGlobalFilterToInterface(pinterface : *mut core::ffi::c_void, gffilter : GLOBAL_FILTER) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfBindInterfaceToIPAddress(pinterface : *mut core::ffi::c_void, pfattype : PFADDRESSTYPE, ipaddress : *mut u8) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfBindInterfaceToIndex(pinterface : *mut core::ffi::c_void, dwindex : u32, pfatlinktype : PFADDRESSTYPE, linkipaddress : *mut u8) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfCreateInterface(dwname : u32, inaction : PFFORWARD_ACTION, outaction : PFFORWARD_ACTION, buselog : super::super::Foundation:: BOOL, bmustbeunique : super::super::Foundation:: BOOL, ppinterface : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfDeleteInterface(pinterface : *mut core::ffi::c_void) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfDeleteLog() -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfGetInterfaceStatistics(pinterface : *mut core::ffi::c_void, ppfstats : *mut PF_INTERFACE_STATS, pdwbuffersize : *mut u32, fresetcounters : super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfMakeLog(hevent : super::super::Foundation:: HANDLE) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfRebindFilters(pinterface : *mut core::ffi::c_void, platebindinfo : *mut PF_LATEBIND_INFO) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfRemoveFilterHandles(pinterface : *mut core::ffi::c_void, cfilters : u32, pvhandles : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfRemoveFiltersFromInterface(ih : *mut core::ffi::c_void, cinfilters : u32, pfiltin : *mut PF_FILTER_DESCRIPTOR, coutfilters : u32, pfiltout : *mut PF_FILTER_DESCRIPTOR) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfRemoveGlobalFilterFromInterface(pinterface : *mut core::ffi::c_void, gffilter : GLOBAL_FILTER) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfSetLogBuffer(pbbuffer : *mut u8, dwsize : u32, dwthreshold : u32, dwentries : u32, pdwloggedentries : *mut u32, pdwlostentries : *mut u32, pdwsizeused : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfTestPacket(pininterface : *mut core::ffi::c_void, poutinterface : *mut core::ffi::c_void, cbytes : u32, pbpacket : *mut u8, ppaction : *mut PFFORWARD_ACTION) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn PfUnBindInterface(pinterface : *mut core::ffi::c_void) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn RegisterInterfaceTimestampConfigChange(callback : PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, notificationhandle : *mut HIFTIMESTAMPCHANGE) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn ParseNetworkString(networkstring : windows_sys::core::PCWSTR, types : u32, addressinfo : *mut NET_ADDRESS_INFO, portnumber : *mut u16, prefixlength : *mut u8) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfAddFiltersToInterface(ih : *mut core::ffi::c_void, cinfilters : u32, pfiltin : *mut PF_FILTER_DESCRIPTOR, coutfilters : u32, pfiltout : *mut PF_FILTER_DESCRIPTOR, pfhandle : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfAddGlobalFilterToInterface(pinterface : *mut core::ffi::c_void, gffilter : GLOBAL_FILTER) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfBindInterfaceToIPAddress(pinterface : *mut core::ffi::c_void, pfattype : PFADDRESSTYPE, ipaddress : *mut u8) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfBindInterfaceToIndex(pinterface : *mut core::ffi::c_void, dwindex : u32, pfatlinktype : PFADDRESSTYPE, linkipaddress : *mut u8) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfCreateInterface(dwname : u32, inaction : PFFORWARD_ACTION, outaction : PFFORWARD_ACTION, buselog : windows_sys::core::BOOL, bmustbeunique : windows_sys::core::BOOL, ppinterface : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfDeleteInterface(pinterface : *mut core::ffi::c_void) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfDeleteLog() -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfGetInterfaceStatistics(pinterface : *mut core::ffi::c_void, ppfstats : *mut PF_INTERFACE_STATS, pdwbuffersize : *mut u32, fresetcounters : windows_sys::core::BOOL) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfMakeLog(hevent : super::super::Foundation:: HANDLE) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfRebindFilters(pinterface : *mut core::ffi::c_void, platebindinfo : *mut PF_LATEBIND_INFO) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfRemoveFilterHandles(pinterface : *mut core::ffi::c_void, cfilters : u32, pvhandles : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfRemoveFiltersFromInterface(ih : *mut core::ffi::c_void, cinfilters : u32, pfiltin : *mut PF_FILTER_DESCRIPTOR, coutfilters : u32, pfiltout : *mut PF_FILTER_DESCRIPTOR) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfRemoveGlobalFilterFromInterface(pinterface : *mut core::ffi::c_void, gffilter : GLOBAL_FILTER) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfSetLogBuffer(pbbuffer : *mut u8, dwsize : u32, dwthreshold : u32, dwentries : u32, pdwloggedentries : *mut u32, pdwlostentries : *mut u32, pdwsizeused : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfTestPacket(pininterface : *mut core::ffi::c_void, poutinterface : *mut core::ffi::c_void, cbytes : u32, pbpacket : *mut u8, ppaction : *mut PFFORWARD_ACTION) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn PfUnBindInterface(pinterface : *mut core::ffi::c_void) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn RegisterInterfaceTimestampConfigChange(callback : PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK, callercontext : *const core::ffi::c_void, notificationhandle : *mut HIFTIMESTAMPCHANGE) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn ResolveIpNetEntry2(row : *mut MIB_IPNET_ROW2, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn ResolveIpNetEntry2(row : *mut MIB_IPNET_ROW2, sourceaddress : *const super::super::Networking::WinSock:: SOCKADDR_INET) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn ResolveNeighbor(networkaddress : *const super::super::Networking::WinSock:: SOCKADDR, physicaladdress : *mut core::ffi::c_void, physicaladdresslength : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn ResolveNeighbor(networkaddress : *const super::super::Networking::WinSock:: SOCKADDR, physicaladdress : *mut core::ffi::c_void, physicaladdresslength : *mut u32) -> u32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn RestoreMediaSense(poverlapped : *const super::super::System::IO:: OVERLAPPED, lpdwenablecount : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SendARP(destip : u32, srcip : u32, pmacaddr : *mut core::ffi::c_void, phyaddrlen : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetCurrentThreadCompartmentId(compartmentid : u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetCurrentThreadCompartmentScope(compartmentscope : u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetDnsSettings(settings : *const DNS_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetIfEntry(pifrow : *const MIB_IFROW) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetInterfaceDnsSettings(interface : windows_sys::core::GUID, settings : *const DNS_INTERFACE_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn RestoreMediaSense(poverlapped : *const super::super::System::IO:: OVERLAPPED, lpdwenablecount : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SendARP(destip : u32, srcip : u32, pmacaddr : *mut core::ffi::c_void, phyaddrlen : *mut u32) -> u32);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn SetCurrentThreadCompartmentId(compartmentid : super::Ndis:: NET_IF_COMPARTMENT_ID) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetCurrentThreadCompartmentScope(compartmentscope : u32) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetDnsSettings(settings : *const DNS_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetIfEntry(pifrow : *const MIB_IFROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetInterfaceDnsSettings(interface : windows_sys::core::GUID, settings : *const DNS_INTERFACE_SETTINGS) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpForwardEntry(proute : *const MIB_IPFORWARDROW) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpForwardEntry2(route : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpForwardEntry2(route : *const MIB_IPFORWARD_ROW2) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpInterfaceEntry(row : *mut MIB_IPINTERFACE_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpNetEntry(parpentry : *const MIB_IPNETROW_LH) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpStatistics(pipstats : *const MIB_IPSTATS_LH) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpStatisticsEx(statistics : *const MIB_IPSTATS_LH, family : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetIpTTL(nttl : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetJobCompartmentId(jobhandle : super::super::Foundation:: HANDLE, compartmentid : u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetNetworkInformation(networkguid : *const windows_sys::core::GUID, compartmentid : u32, networkname : windows_sys::core::PCWSTR) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpNetEntry2(row : *const MIB_IPNET_ROW2) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpStatistics(pipstats : *const MIB_IPSTATS_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpStatisticsEx(statistics : *const MIB_IPSTATS_LH, family : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetIpTTL(nttl : u32) -> u32);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn SetJobCompartmentId(jobhandle : super::super::Foundation:: HANDLE, compartmentid : super::Ndis:: NET_IF_COMPARTMENT_ID) -> super::super::Foundation:: WIN32_ERROR);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn SetNetworkInformation(networkguid : *const windows_sys::core::GUID, compartmentid : super::Ndis:: NET_IF_COMPARTMENT_ID, networkname : windows_sys::core::PCWSTR) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_Networking_WinSock")]
-windows_targets::link!("iphlpapi.dll" "system" fn SetPerTcp6ConnectionEStats(row : *const MIB_TCP6ROW, estatstype : TCP_ESTATS_TYPE, rw : *const u8, rwversion : u32, rwsize : u32, offset : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetPerTcpConnectionEStats(row : *const MIB_TCPROW_LH, estatstype : TCP_ESTATS_TYPE, rw : *const u8, rwversion : u32, rwsize : u32, offset : u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn SetSessionCompartmentId(sessionid : u32, compartmentid : u32) -> super::super::Foundation:: WIN32_ERROR);
-windows_targets::link!("iphlpapi.dll" "system" fn SetTcpEntry(ptcprow : *const MIB_TCPROW_LH) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetPerTcp6ConnectionEStats(row : *const MIB_TCP6ROW, estatstype : TCP_ESTATS_TYPE, rw : *const u8, rwversion : u32, rwsize : u32, offset : u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn SetPerTcpConnectionEStats(row : *const MIB_TCPROW_LH, estatstype : TCP_ESTATS_TYPE, rw : *const u8, rwversion : u32, rwsize : u32, offset : u32) -> u32);
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+windows_link::link!("iphlpapi.dll" "system" fn SetSessionCompartmentId(sessionid : u32, compartmentid : super::Ndis:: NET_IF_COMPARTMENT_ID) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetTcpEntry(ptcprow : *const MIB_TCPROW_LH) -> u32);
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-windows_targets::link!("iphlpapi.dll" "system" fn SetUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
+windows_link::link!("iphlpapi.dll" "system" fn SetUnicastIpAddressEntry(row : *const MIB_UNICASTIPADDRESS_ROW) -> super::super::Foundation:: WIN32_ERROR);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("iphlpapi.dll" "system" fn UnenableRouter(poverlapped : *const super::super::System::IO:: OVERLAPPED, lpdwenablecount : *mut u32) -> u32);
-windows_targets::link!("iphlpapi.dll" "system" fn UnregisterInterfaceTimestampConfigChange(notificationhandle : HIFTIMESTAMPCHANGE));
-windows_targets::link!("iphlpapi.dll" "system" fn if_indextoname(interfaceindex : u32, interfacename : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
-windows_targets::link!("iphlpapi.dll" "system" fn if_nametoindex(interfacename : windows_sys::core::PCSTR) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn UnenableRouter(poverlapped : *const super::super::System::IO:: OVERLAPPED, lpdwenablecount : *mut u32) -> u32);
+windows_link::link!("iphlpapi.dll" "system" fn UnregisterInterfaceTimestampConfigChange(notificationhandle : HIFTIMESTAMPCHANGE));
+windows_link::link!("iphlpapi.dll" "system" fn if_indextoname(interfaceindex : u32, interfacename : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
+windows_link::link!("iphlpapi.dll" "system" fn if_nametoindex(interfacename : windows_sys::core::PCSTR) -> u32);
 pub const ANY_SIZE: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ARP_SEND_REPLY {
+    pub DestAddress: u32,
+    pub SrcAddress: u32,
+}
 pub const BEST_IF: u32 = 20u32;
 pub const BEST_ROUTE: u32 = 21u32;
 pub const BROADCAST_NODETYPE: u32 = 1u32;
@@ -299,17 +314,163 @@ pub const DNS_DOH_POLICY_AUTO: u32 = 16u32;
 pub const DNS_DOH_POLICY_DISABLE: u32 = 8u32;
 pub const DNS_DOH_POLICY_NOT_CONFIGURED: u32 = 4u32;
 pub const DNS_DOH_POLICY_REQUIRED: u32 = 32u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_DOH_SERVER_SETTINGS {
+    pub Template: windows_sys::core::PWSTR,
+    pub Flags: u64,
+}
+impl Default for DNS_DOH_SERVER_SETTINGS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DNS_DOH_SERVER_SETTINGS_ENABLE: u32 = 2u32;
 pub const DNS_DOH_SERVER_SETTINGS_ENABLE_AUTO: u32 = 1u32;
 pub const DNS_DOH_SERVER_SETTINGS_ENABLE_DDR: u32 = 16u32;
 pub const DNS_DOH_SERVER_SETTINGS_FALLBACK_TO_UDP: u32 = 4u32;
 pub const DNS_ENABLE_DDR: u32 = 64u32;
 pub const DNS_ENABLE_DOH: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_INTERFACE_SETTINGS {
+    pub Version: u32,
+    pub Flags: u64,
+    pub Domain: windows_sys::core::PWSTR,
+    pub NameServer: windows_sys::core::PWSTR,
+    pub SearchList: windows_sys::core::PWSTR,
+    pub RegistrationEnabled: u32,
+    pub RegisterAdapterName: u32,
+    pub EnableLLMNR: u32,
+    pub QueryAdapterName: u32,
+    pub ProfileNameServer: windows_sys::core::PWSTR,
+}
+impl Default for DNS_INTERFACE_SETTINGS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_INTERFACE_SETTINGS3 {
+    pub Version: u32,
+    pub Flags: u64,
+    pub Domain: windows_sys::core::PWSTR,
+    pub NameServer: windows_sys::core::PWSTR,
+    pub SearchList: windows_sys::core::PWSTR,
+    pub RegistrationEnabled: u32,
+    pub RegisterAdapterName: u32,
+    pub EnableLLMNR: u32,
+    pub QueryAdapterName: u32,
+    pub ProfileNameServer: windows_sys::core::PWSTR,
+    pub DisableUnconstrainedQueries: u32,
+    pub SupplementalSearchList: windows_sys::core::PWSTR,
+    pub cServerProperties: u32,
+    pub ServerProperties: *mut DNS_SERVER_PROPERTY,
+    pub cProfileServerProperties: u32,
+    pub ProfileServerProperties: *mut DNS_SERVER_PROPERTY,
+}
+impl Default for DNS_INTERFACE_SETTINGS3 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_INTERFACE_SETTINGS4 {
+    pub Version: u32,
+    pub Flags: u64,
+    pub Domain: windows_sys::core::PWSTR,
+    pub NameServer: windows_sys::core::PWSTR,
+    pub SearchList: windows_sys::core::PWSTR,
+    pub RegistrationEnabled: u32,
+    pub RegisterAdapterName: u32,
+    pub EnableLLMNR: u32,
+    pub QueryAdapterName: u32,
+    pub ProfileNameServer: windows_sys::core::PWSTR,
+    pub DisableUnconstrainedQueries: u32,
+    pub SupplementalSearchList: windows_sys::core::PWSTR,
+    pub cServerProperties: u32,
+    pub ServerProperties: *mut DNS_SERVER_PROPERTY,
+    pub cProfileServerProperties: u32,
+    pub ProfileServerProperties: *mut DNS_SERVER_PROPERTY,
+    pub EncryptedDnsAdapterFlags: u32,
+}
+impl Default for DNS_INTERFACE_SETTINGS4 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_INTERFACE_SETTINGS_EX {
+    pub SettingsV1: DNS_INTERFACE_SETTINGS,
+    pub DisableUnconstrainedQueries: u32,
+    pub SupplementalSearchList: windows_sys::core::PWSTR,
+}
+impl Default for DNS_INTERFACE_SETTINGS_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DNS_INTERFACE_SETTINGS_VERSION1: u32 = 1u32;
 pub const DNS_INTERFACE_SETTINGS_VERSION2: u32 = 2u32;
 pub const DNS_INTERFACE_SETTINGS_VERSION3: u32 = 3u32;
 pub const DNS_INTERFACE_SETTINGS_VERSION4: u32 = 4u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_SERVER_PROPERTY {
+    pub Version: u32,
+    pub ServerIndex: u32,
+    pub Type: DNS_SERVER_PROPERTY_TYPE,
+    pub Property: DNS_SERVER_PROPERTY_TYPES,
+}
+impl Default for DNS_SERVER_PROPERTY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type DNS_SERVER_PROPERTY_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DNS_SERVER_PROPERTY_TYPES {
+    pub DohSettings: *mut DNS_DOH_SERVER_SETTINGS,
+}
+impl Default for DNS_SERVER_PROPERTY_TYPES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DNS_SERVER_PROPERTY_VERSION1: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_SETTINGS {
+    pub Version: u32,
+    pub Flags: u64,
+    pub Hostname: windows_sys::core::PWSTR,
+    pub Domain: windows_sys::core::PWSTR,
+    pub SearchList: windows_sys::core::PWSTR,
+}
+impl Default for DNS_SETTINGS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DNS_SETTINGS2 {
+    pub Version: u32,
+    pub Flags: u64,
+    pub Hostname: windows_sys::core::PWSTR,
+    pub Domain: windows_sys::core::PWSTR,
+    pub SearchList: windows_sys::core::PWSTR,
+    pub SettingFlags: u64,
+}
+impl Default for DNS_SETTINGS2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DNS_SETTINGS_ENABLE_LLMNR: u32 = 128u32;
 pub const DNS_SETTINGS_QUERY_ADAPTER_NAME: u32 = 256u32;
 pub const DNS_SETTINGS_VERSION1: u32 = 1u32;
@@ -336,6 +497,24 @@ pub const FD_FLAGS_ALLFLAGS: u32 = 1u32;
 pub const FD_FLAGS_NOSYN: u32 = 1u32;
 pub const FILTER_ICMP_CODE_ANY: u8 = 255u8;
 pub const FILTER_ICMP_TYPE_ANY: u8 = 255u8;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct FIXED_INFO_W2KSP1 {
+    pub HostName: [i8; 132],
+    pub DomainName: [i8; 132],
+    pub CurrentDnsServer: *mut IP_ADDR_STRING,
+    pub DnsServerList: IP_ADDR_STRING,
+    pub NodeType: u32,
+    pub ScopeId: [i8; 260],
+    pub EnableRouting: u32,
+    pub EnableProxy: u32,
+    pub EnableDns: u32,
+}
+impl Default for FIXED_INFO_W2KSP1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const GAA_FLAG_INCLUDE_ALL_COMPARTMENTS: GET_ADAPTERS_ADDRESSES_FLAGS = 512u32;
 pub const GAA_FLAG_INCLUDE_ALL_INTERFACES: GET_ADAPTERS_ADDRESSES_FLAGS = 256u32;
 pub const GAA_FLAG_INCLUDE_GATEWAYS: GET_ADAPTERS_ADDRESSES_FLAGS = 128u32;
@@ -348,9 +527,12 @@ pub const GAA_FLAG_SKIP_DNS_SERVER: GET_ADAPTERS_ADDRESSES_FLAGS = 8u32;
 pub const GAA_FLAG_SKIP_FRIENDLY_NAME: GET_ADAPTERS_ADDRESSES_FLAGS = 32u32;
 pub const GAA_FLAG_SKIP_MULTICAST: GET_ADAPTERS_ADDRESSES_FLAGS = 4u32;
 pub const GAA_FLAG_SKIP_UNICAST: GET_ADAPTERS_ADDRESSES_FLAGS = 1u32;
+pub type GET_ADAPTERS_ADDRESSES_FLAGS = u32;
 pub const GF_FRAGCACHE: GLOBAL_FILTER = 9i32;
 pub const GF_FRAGMENTS: GLOBAL_FILTER = 2i32;
 pub const GF_STRONGHOST: GLOBAL_FILTER = 8i32;
+pub type GLOBAL_FILTER = i32;
+pub type HIFTIMESTAMPCHANGE = *mut core::ffi::c_void;
 pub const HYBRID_NODETYPE: u32 = 8u32;
 pub const ICMP4_DST_UNREACH: ICMP4_TYPE = 3i32;
 pub const ICMP4_ECHO_REPLY: ICMP4_TYPE = 0i32;
@@ -365,6 +547,7 @@ pub const ICMP4_SOURCE_QUENCH: ICMP4_TYPE = 4i32;
 pub const ICMP4_TIMESTAMP_REPLY: ICMP4_TYPE = 14i32;
 pub const ICMP4_TIMESTAMP_REQUEST: ICMP4_TYPE = 13i32;
 pub const ICMP4_TIME_EXCEEDED: ICMP4_TYPE = 11i32;
+pub type ICMP4_TYPE = i32;
 pub const ICMP6_DST_UNREACH: ICMP6_TYPE = 1i32;
 pub const ICMP6_ECHO_REPLY: ICMP6_TYPE = 129i32;
 pub const ICMP6_ECHO_REQUEST: ICMP6_TYPE = 128i32;
@@ -375,7 +558,49 @@ pub const ICMP6_MEMBERSHIP_REPORT: ICMP6_TYPE = 131i32;
 pub const ICMP6_PACKET_TOO_BIG: ICMP6_TYPE = 2i32;
 pub const ICMP6_PARAM_PROB: ICMP6_TYPE = 4i32;
 pub const ICMP6_TIME_EXCEEDED: ICMP6_TYPE = 3i32;
+pub type ICMP6_TYPE = i32;
 pub const ICMP6_V2_MEMBERSHIP_REPORT: ICMP6_TYPE = 143i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ICMPV6_ECHO_REPLY_LH {
+    pub Address: IPV6_ADDRESS_EX,
+    pub Status: u32,
+    pub RoundTripTime: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMP_ECHO_REPLY {
+    pub Address: u32,
+    pub Status: u32,
+    pub RoundTripTime: u32,
+    pub DataSize: u16,
+    pub Reserved: u16,
+    pub Data: *mut core::ffi::c_void,
+    pub Options: IP_OPTION_INFORMATION,
+}
+impl Default for ICMP_ECHO_REPLY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[derive(Clone, Copy)]
+pub struct ICMP_ECHO_REPLY32 {
+    pub Address: u32,
+    pub Status: u32,
+    pub RoundTripTime: u32,
+    pub DataSize: u16,
+    pub Reserved: u16,
+    pub Data: *mut core::ffi::c_void,
+    pub Options: IP_OPTION_INFORMATION32,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for ICMP_ECHO_REPLY32 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ICMP_STATS: u32 = 11u32;
 pub const IF_ACCESS_BROADCAST: IF_ACCESS_TYPE = 2i32;
 pub const IF_ACCESS_LOOPBACK: IF_ACCESS_TYPE = 1i32;
@@ -383,6 +608,7 @@ pub const IF_ACCESS_POINTTOMULTIPOINT: IF_ACCESS_TYPE = 4i32;
 pub const IF_ACCESS_POINTTOPOINT: IF_ACCESS_TYPE = 3i32;
 pub const IF_ACCESS_POINT_TO_MULTI_POINT: IF_ACCESS_TYPE = 4i32;
 pub const IF_ACCESS_POINT_TO_POINT: IF_ACCESS_TYPE = 3i32;
+pub type IF_ACCESS_TYPE = i32;
 pub const IF_ADMIN_STATUS_DOWN: u32 = 2u32;
 pub const IF_ADMIN_STATUS_TESTING: u32 = 3u32;
 pub const IF_ADMIN_STATUS_UP: u32 = 1u32;
@@ -603,8 +829,46 @@ pub const IF_TYPE_X25_HUNTGROUP: u32 = 122u32;
 pub const IF_TYPE_X25_MLP: u32 = 121u32;
 pub const IF_TYPE_X25_PLE: u32 = 40u32;
 pub const IF_TYPE_XBOX_WIRELESS: u32 = 281u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INTERFACE_HARDWARE_CROSSTIMESTAMP {
+    pub SystemTimestamp1: u64,
+    pub HardwareClockTimestamp: u64,
+    pub SystemTimestamp2: u64,
+}
 pub const INTERFACE_HARDWARE_CROSSTIMESTAMP_VERSION_1: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES {
+    pub PtpV2OverUdpIPv4EventMessageReceive: bool,
+    pub PtpV2OverUdpIPv4AllMessageReceive: bool,
+    pub PtpV2OverUdpIPv4EventMessageTransmit: bool,
+    pub PtpV2OverUdpIPv4AllMessageTransmit: bool,
+    pub PtpV2OverUdpIPv6EventMessageReceive: bool,
+    pub PtpV2OverUdpIPv6AllMessageReceive: bool,
+    pub PtpV2OverUdpIPv6EventMessageTransmit: bool,
+    pub PtpV2OverUdpIPv6AllMessageTransmit: bool,
+    pub AllReceive: bool,
+    pub AllTransmit: bool,
+    pub TaggedTransmit: bool,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES {
+    pub AllReceive: bool,
+    pub AllTransmit: bool,
+    pub TaggedTransmit: bool,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INTERFACE_TIMESTAMP_CAPABILITIES {
+    pub HardwareClockFrequencyHz: u64,
+    pub SupportsCrossTimestamp: bool,
+    pub HardwareCapabilities: INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES,
+    pub SoftwareCapabilities: INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES,
+}
 pub const INTERFACE_TIMESTAMP_CAPABILITIES_VERSION_1: u32 = 1u32;
+pub type INTERNAL_IF_OPER_STATUS = i32;
 pub const IOCTL_ARP_SEND_REQUEST: u32 = 103u32;
 pub const IOCTL_IP_ADDCHANGE_NOTIFY_REQUEST: u32 = 102u32;
 pub const IOCTL_IP_GET_BEST_INTERFACE: u32 = 105u32;
@@ -613,24 +877,555 @@ pub const IOCTL_IP_RTCHANGE_NOTIFY_REQUEST: u32 = 101u32;
 pub const IOCTL_IP_UNIDIRECTIONAL_ADAPTER_ADDRESS: u32 = 106u32;
 pub const IP6_STATS: u32 = 36u32;
 pub const IPRTRMGR_PID: u32 = 10000u32;
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct IPV6_ADDRESS_EX {
+    pub sin6_port: u16,
+    pub sin6_flowinfo: u32,
+    pub sin6_addr: [u16; 8],
+    pub sin6_scope_id: u32,
+}
+impl Default for IPV6_ADDRESS_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPV6_GLOBAL_INFO: u32 = 4294901775u32;
 pub const IPV6_ROUTE_INFO: u32 = 4294901776u32;
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_ADDRESSES_LH {
+    pub Anonymous1: IP_ADAPTER_ADDRESSES_LH_0,
+    pub Next: *mut IP_ADAPTER_ADDRESSES_LH,
+    pub AdapterName: windows_sys::core::PSTR,
+    pub FirstUnicastAddress: *mut IP_ADAPTER_UNICAST_ADDRESS_LH,
+    pub FirstAnycastAddress: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
+    pub FirstMulticastAddress: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
+    pub FirstDnsServerAddress: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
+    pub DnsSuffix: windows_sys::core::PWSTR,
+    pub Description: windows_sys::core::PWSTR,
+    pub FriendlyName: windows_sys::core::PWSTR,
+    pub PhysicalAddress: [u8; 8],
+    pub PhysicalAddressLength: u32,
+    pub Anonymous2: IP_ADAPTER_ADDRESSES_LH_1,
+    pub Mtu: u32,
+    pub IfType: u32,
+    pub OperStatus: super::Ndis::IF_OPER_STATUS,
+    pub Ipv6IfIndex: u32,
+    pub ZoneIndices: [u32; 16],
+    pub FirstPrefix: *mut IP_ADAPTER_PREFIX_XP,
+    pub TransmitLinkSpeed: u64,
+    pub ReceiveLinkSpeed: u64,
+    pub FirstWinsServerAddress: *mut IP_ADAPTER_WINS_SERVER_ADDRESS_LH,
+    pub FirstGatewayAddress: *mut IP_ADAPTER_GATEWAY_ADDRESS_LH,
+    pub Ipv4Metric: u32,
+    pub Ipv6Metric: u32,
+    pub Luid: super::Ndis::NET_LUID_LH,
+    pub Dhcpv4Server: super::super::Networking::WinSock::SOCKET_ADDRESS,
+    pub CompartmentId: super::Ndis::NET_IF_COMPARTMENT_ID,
+    pub NetworkGuid: windows_sys::core::GUID,
+    pub ConnectionType: super::Ndis::NET_IF_CONNECTION_TYPE,
+    pub TunnelType: super::Ndis::TUNNEL_TYPE,
+    pub Dhcpv6Server: super::super::Networking::WinSock::SOCKET_ADDRESS,
+    pub Dhcpv6ClientDuid: [u8; 130],
+    pub Dhcpv6ClientDuidLength: u32,
+    pub Dhcpv6Iaid: u32,
+    pub FirstDnsSuffix: *mut IP_ADAPTER_DNS_SUFFIX,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for IP_ADAPTER_ADDRESSES_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_ADDRESSES_LH_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_ADDRESSES_LH_0_0,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for IP_ADAPTER_ADDRESSES_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_ADDRESSES_LH_0_0 {
+    pub Length: u32,
+    pub IfIndex: u32,
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_ADDRESSES_LH_1 {
+    pub Flags: u32,
+    pub Anonymous: IP_ADAPTER_ADDRESSES_LH_1_0,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for IP_ADAPTER_ADDRESSES_LH_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_ADDRESSES_LH_1_0 {
+    pub _bitfield: u32,
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_ADDRESSES_XP {
+    pub Anonymous: IP_ADAPTER_ADDRESSES_XP_0,
+    pub Next: *mut IP_ADAPTER_ADDRESSES_XP,
+    pub AdapterName: windows_sys::core::PSTR,
+    pub FirstUnicastAddress: *mut IP_ADAPTER_UNICAST_ADDRESS_XP,
+    pub FirstAnycastAddress: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
+    pub FirstMulticastAddress: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
+    pub FirstDnsServerAddress: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
+    pub DnsSuffix: windows_sys::core::PWSTR,
+    pub Description: windows_sys::core::PWSTR,
+    pub FriendlyName: windows_sys::core::PWSTR,
+    pub PhysicalAddress: [u8; 8],
+    pub PhysicalAddressLength: u32,
+    pub Flags: u32,
+    pub Mtu: u32,
+    pub IfType: u32,
+    pub OperStatus: super::Ndis::IF_OPER_STATUS,
+    pub Ipv6IfIndex: u32,
+    pub ZoneIndices: [u32; 16],
+    pub FirstPrefix: *mut IP_ADAPTER_PREFIX_XP,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for IP_ADAPTER_ADDRESSES_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_ADDRESSES_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_ADDRESSES_XP_0_0,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for IP_ADAPTER_ADDRESSES_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_ADDRESSES_XP_0_0 {
+    pub Length: u32,
+    pub IfIndex: u32,
+}
 pub const IP_ADAPTER_ADDRESS_DNS_ELIGIBLE: u32 = 1u32;
 pub const IP_ADAPTER_ADDRESS_TRANSIENT: u32 = 2u32;
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_ANYCAST_ADDRESS_XP {
+    pub Anonymous: IP_ADAPTER_ANYCAST_ADDRESS_XP_0,
+    pub Next: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_ANYCAST_ADDRESS_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_ANYCAST_ADDRESS_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_ANYCAST_ADDRESS_XP_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_ANYCAST_ADDRESS_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_ANYCAST_ADDRESS_XP_0_0 {
+    pub Length: u32,
+    pub Flags: u32,
+}
 pub const IP_ADAPTER_DDNS_ENABLED: u32 = 1u32;
 pub const IP_ADAPTER_DHCP_ENABLED: u32 = 4u32;
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_DNS_SERVER_ADDRESS_XP {
+    pub Anonymous: IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0,
+    pub Next: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_DNS_SERVER_ADDRESS_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0_0 {
+    pub Length: u32,
+    pub Reserved: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_DNS_SUFFIX {
+    pub Next: *mut IP_ADAPTER_DNS_SUFFIX,
+    pub String: [u16; 256],
+}
+impl Default for IP_ADAPTER_DNS_SUFFIX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_GATEWAY_ADDRESS_LH {
+    pub Anonymous: IP_ADAPTER_GATEWAY_ADDRESS_LH_0,
+    pub Next: *mut IP_ADAPTER_GATEWAY_ADDRESS_LH,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_GATEWAY_ADDRESS_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_GATEWAY_ADDRESS_LH_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_GATEWAY_ADDRESS_LH_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_GATEWAY_ADDRESS_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_GATEWAY_ADDRESS_LH_0_0 {
+    pub Length: u32,
+    pub Reserved: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_INDEX_MAP {
+    pub Index: u32,
+    pub Name: [u16; 128],
+}
+impl Default for IP_ADAPTER_INDEX_MAP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_INFO {
+    pub Next: *mut IP_ADAPTER_INFO,
+    pub ComboIndex: u32,
+    pub AdapterName: [i8; 260],
+    pub Description: [i8; 132],
+    pub AddressLength: u32,
+    pub Address: [u8; 8],
+    pub Index: u32,
+    pub Type: u32,
+    pub DhcpEnabled: u32,
+    pub CurrentIpAddress: *mut IP_ADDR_STRING,
+    pub IpAddressList: IP_ADDR_STRING,
+    pub GatewayList: IP_ADDR_STRING,
+    pub DhcpServer: IP_ADDR_STRING,
+    pub HaveWins: windows_sys::core::BOOL,
+    pub PrimaryWinsServer: IP_ADDR_STRING,
+    pub SecondaryWinsServer: IP_ADDR_STRING,
+    pub LeaseObtained: i64,
+    pub LeaseExpires: i64,
+}
+impl Default for IP_ADAPTER_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_ADAPTER_IPV4_ENABLED: u32 = 128u32;
 pub const IP_ADAPTER_IPV6_ENABLED: u32 = 256u32;
 pub const IP_ADAPTER_IPV6_MANAGE_ADDRESS_CONFIG: u32 = 512u32;
 pub const IP_ADAPTER_IPV6_OTHER_STATEFUL_CONFIG: u32 = 32u32;
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_MULTICAST_ADDRESS_XP {
+    pub Anonymous: IP_ADAPTER_MULTICAST_ADDRESS_XP_0,
+    pub Next: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_MULTICAST_ADDRESS_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_MULTICAST_ADDRESS_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_MULTICAST_ADDRESS_XP_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_MULTICAST_ADDRESS_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_MULTICAST_ADDRESS_XP_0_0 {
+    pub Length: u32,
+    pub Flags: u32,
+}
 pub const IP_ADAPTER_NETBIOS_OVER_TCPIP_ENABLED: u32 = 64u32;
 pub const IP_ADAPTER_NO_MULTICAST: u32 = 16u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_ORDER_MAP {
+    pub NumAdapters: u32,
+    pub AdapterOrder: [u32; 1],
+}
+impl Default for IP_ADAPTER_ORDER_MAP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_PREFIX_XP {
+    pub Anonymous: IP_ADAPTER_PREFIX_XP_0,
+    pub Next: *mut IP_ADAPTER_PREFIX_XP,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+    pub PrefixLength: u32,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_PREFIX_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_PREFIX_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_PREFIX_XP_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_PREFIX_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_PREFIX_XP_0_0 {
+    pub Length: u32,
+    pub Flags: u32,
+}
 pub const IP_ADAPTER_RECEIVE_ONLY: u32 = 8u32;
 pub const IP_ADAPTER_REGISTER_ADAPTER_SUFFIX: u32 = 2u32;
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_UNICAST_ADDRESS_LH {
+    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_LH_0,
+    pub Next: *mut IP_ADAPTER_UNICAST_ADDRESS_LH,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+    pub PrefixOrigin: super::super::Networking::WinSock::NL_PREFIX_ORIGIN,
+    pub SuffixOrigin: super::super::Networking::WinSock::NL_SUFFIX_ORIGIN,
+    pub DadState: super::super::Networking::WinSock::NL_DAD_STATE,
+    pub ValidLifetime: u32,
+    pub PreferredLifetime: u32,
+    pub LeaseLifetime: u32,
+    pub OnLinkPrefixLength: u8,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_UNICAST_ADDRESS_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_UNICAST_ADDRESS_LH_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_LH_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_UNICAST_ADDRESS_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_UNICAST_ADDRESS_LH_0_0 {
+    pub Length: u32,
+    pub Flags: u32,
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_UNICAST_ADDRESS_XP {
+    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_XP_0,
+    pub Next: *mut IP_ADAPTER_UNICAST_ADDRESS_XP,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+    pub PrefixOrigin: super::super::Networking::WinSock::NL_PREFIX_ORIGIN,
+    pub SuffixOrigin: super::super::Networking::WinSock::NL_SUFFIX_ORIGIN,
+    pub DadState: super::super::Networking::WinSock::NL_DAD_STATE,
+    pub ValidLifetime: u32,
+    pub PreferredLifetime: u32,
+    pub LeaseLifetime: u32,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_UNICAST_ADDRESS_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_UNICAST_ADDRESS_XP_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_XP_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_UNICAST_ADDRESS_XP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_UNICAST_ADDRESS_XP_0_0 {
+    pub Length: u32,
+    pub Flags: u32,
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADAPTER_WINS_SERVER_ADDRESS_LH {
+    pub Anonymous: IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0,
+    pub Next: *mut IP_ADAPTER_WINS_SERVER_ADDRESS_LH,
+    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_WINS_SERVER_ADDRESS_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub union IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0 {
+    pub Alignment: u64,
+    pub Anonymous: IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy, Default)]
+pub struct IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0_0 {
+    pub Length: u32,
+    pub Reserved: u32,
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Networking_WinSock")]
+#[derive(Clone, Copy)]
+pub struct IP_ADDRESS_PREFIX {
+    pub Prefix: super::super::Networking::WinSock::SOCKADDR_INET,
+    pub PrefixLength: u8,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for IP_ADDRESS_PREFIX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADDRESS_STRING {
+    pub String: [i8; 16],
+}
+impl Default for IP_ADDRESS_STRING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_ADDRROW: u32 = 5u32;
 pub const IP_ADDRTABLE: u32 = 4u32;
 pub const IP_ADDR_ADDED: u32 = 11023u32;
 pub const IP_ADDR_DELETED: u32 = 11019u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_ADDR_STRING {
+    pub Next: *mut IP_ADDR_STRING,
+    pub IpAddress: IP_ADDRESS_STRING,
+    pub IpMask: IP_ADDRESS_STRING,
+    pub Context: u32,
+}
+impl Default for IP_ADDR_STRING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_BAD_DESTINATION: u32 = 11018u32;
 pub const IP_BAD_HEADER: u32 = 11042u32;
 pub const IP_BAD_OPTION: u32 = 11007u32;
@@ -668,13 +1463,42 @@ pub const IP_HW_ERROR: u32 = 11008u32;
 pub const IP_ICMP_ERROR: u32 = 11044u32;
 pub const IP_IFFILTER_INFO: u32 = 4294901773u32;
 pub const IP_IFFILTER_INFO_V6: u32 = 4294901780u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_INTERFACE_INFO {
+    pub NumAdapters: i32,
+    pub Adapter: [IP_ADAPTER_INDEX_MAP; 1],
+}
+impl Default for IP_INTERFACE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_INTERFACE_METRIC_CHANGE: u32 = 11030u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IP_INTERFACE_NAME_INFO_W2KSP1 {
+    pub Index: u32,
+    pub MediaType: u32,
+    pub ConnectionType: u8,
+    pub AccessType: u8,
+    pub DeviceGuid: windows_sys::core::GUID,
+    pub InterfaceGuid: windows_sys::core::GUID,
+}
 pub const IP_INTERFACE_STATUS_INFO: u32 = 4294901764u32;
 pub const IP_INTERFACE_WOL_CAPABILITY_CHANGE: u32 = 11033u32;
 pub const IP_IN_FILTER_INFO: u32 = 4294901761u32;
 pub const IP_IN_FILTER_INFO_V6: u32 = 4294901777u32;
 pub const IP_IPINIP_CFG_INFO: u32 = 4294901772u32;
 pub const IP_MCAST_BOUNDARY_INFO: u32 = 4294901771u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IP_MCAST_COUNTER_INFO {
+    pub InMcastOctets: u64,
+    pub OutMcastOctets: u64,
+    pub InMcastPkts: u64,
+    pub OutMcastPkts: u64,
+}
 pub const IP_MCAST_HEARBEAT_INFO: u32 = 4294901770u32;
 pub const IP_MCAST_LIMIT_INFO: u32 = 4294901774u32;
 pub const IP_MEDIA_CONNECT: u32 = 11024u32;
@@ -684,6 +1508,36 @@ pub const IP_NEGOTIATING_IPSEC: u32 = 11032u32;
 pub const IP_NETROW: u32 = 10u32;
 pub const IP_NETTABLE: u32 = 9u32;
 pub const IP_NO_RESOURCES: u32 = 11006u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_OPTION_INFORMATION {
+    pub Ttl: u8,
+    pub Tos: u8,
+    pub Flags: u8,
+    pub OptionsSize: u8,
+    pub OptionsData: *mut u8,
+}
+impl Default for IP_OPTION_INFORMATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[derive(Clone, Copy)]
+pub struct IP_OPTION_INFORMATION32 {
+    pub Ttl: u8,
+    pub Tos: u8,
+    pub Flags: u8,
+    pub OptionsSize: u8,
+    pub OptionsData: *mut u8,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for IP_OPTION_INFORMATION32 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_OPTION_TOO_BIG: u32 = 11017u32;
 pub const IP_OUT_FILTER_INFO: u32 = 4294901762u32;
 pub const IP_OUT_FILTER_INFO_V6: u32 = 4294901778u32;
@@ -691,6 +1545,19 @@ pub const IP_PACKET_TOO_BIG: u32 = 11009u32;
 pub const IP_PARAMETER_PROBLEM: u32 = 11015u32;
 pub const IP_PARAM_PROBLEM: u32 = 11015u32;
 pub const IP_PENDING: u32 = 11255u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_PER_ADAPTER_INFO_W2KSP1 {
+    pub AutoconfigEnabled: u32,
+    pub AutoconfigActive: u32,
+    pub CurrentDnsServer: *mut IP_ADDR_STRING,
+    pub DnsServerList: IP_ADDR_STRING,
+}
+impl Default for IP_PER_ADAPTER_INFO_W2KSP1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_PROT_PRIORITY_INFO: u32 = 4294901766u32;
 pub const IP_PROT_PRIORITY_INFO_EX: u32 = 4294901783u32;
 pub const IP_REASSEMBLY_TIME_EXCEEDED: u32 = 11014u32;
@@ -708,6 +1575,17 @@ pub const IP_TIME_EXCEEDED: u32 = 11041u32;
 pub const IP_TTL_EXPIRED_REASSEM: u32 = 11014u32;
 pub const IP_TTL_EXPIRED_TRANSIT: u32 = 11013u32;
 pub const IP_UNBIND_ADAPTER: u32 = 11027u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_UNIDIRECTIONAL_ADAPTER_ADDRESS {
+    pub NumAdapters: u32,
+    pub Address: [u32; 1],
+}
+impl Default for IP_UNIDIRECTIONAL_ADAPTER_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_UNLOAD: u32 = 11022u32;
 pub const IP_UNRECOGNIZED_NEXT_HEADER: u32 = 11043u32;
 pub const LB_DST_ADDR_USE_DSTADDR_FLAG: u32 = 8u32;
@@ -740,796 +1618,14 @@ pub const MCAST_MFE: u32 = 18u32;
 pub const MCAST_MFE_STATS: u32 = 19u32;
 pub const MCAST_MFE_STATS_EX: u32 = 35u32;
 pub const MCAST_SCOPE: u32 = 27u32;
-pub const MIB_IF_ADMIN_STATUS_DOWN: u32 = 2u32;
-pub const MIB_IF_ADMIN_STATUS_TESTING: u32 = 3u32;
-pub const MIB_IF_ADMIN_STATUS_UP: u32 = 1u32;
-pub const MIB_IF_TYPE_ETHERNET: u32 = 6u32;
-pub const MIB_IF_TYPE_FDDI: u32 = 15u32;
-pub const MIB_IF_TYPE_LOOPBACK: u32 = 24u32;
-pub const MIB_IF_TYPE_OTHER: u32 = 1u32;
-pub const MIB_IF_TYPE_PPP: u32 = 23u32;
-pub const MIB_IF_TYPE_SLIP: u32 = 28u32;
-pub const MIB_IF_TYPE_TOKENRING: u32 = 9u32;
-pub const MIB_INVALID_TEREDO_PORT_NUMBER: u32 = 0u32;
-pub const MIB_IPADDR_DELETED: u32 = 64u32;
-pub const MIB_IPADDR_DISCONNECTED: u32 = 8u32;
-pub const MIB_IPADDR_DNS_ELIGIBLE: u32 = 256u32;
-pub const MIB_IPADDR_DYNAMIC: u32 = 4u32;
-pub const MIB_IPADDR_PRIMARY: u32 = 1u32;
-pub const MIB_IPADDR_TRANSIENT: u32 = 128u32;
-pub const MIB_IPNET_TYPE_DYNAMIC: MIB_IPNET_TYPE = 3i32;
-pub const MIB_IPNET_TYPE_INVALID: MIB_IPNET_TYPE = 2i32;
-pub const MIB_IPNET_TYPE_OTHER: MIB_IPNET_TYPE = 1i32;
-pub const MIB_IPNET_TYPE_STATIC: MIB_IPNET_TYPE = 4i32;
-pub const MIB_IPROUTE_METRIC_UNUSED: u32 = 4294967295u32;
-pub const MIB_IPROUTE_TYPE_DIRECT: MIB_IPFORWARD_TYPE = 3i32;
-pub const MIB_IPROUTE_TYPE_INDIRECT: MIB_IPFORWARD_TYPE = 4i32;
-pub const MIB_IPROUTE_TYPE_INVALID: MIB_IPFORWARD_TYPE = 2i32;
-pub const MIB_IPROUTE_TYPE_OTHER: MIB_IPFORWARD_TYPE = 1i32;
-pub const MIB_IP_FORWARDING: MIB_IPSTATS_FORWARDING = 1i32;
-pub const MIB_IP_NOT_FORWARDING: MIB_IPSTATS_FORWARDING = 2i32;
-pub const MIB_TCP_RTO_CONSTANT: TCP_RTO_ALGORITHM = 2i32;
-pub const MIB_TCP_RTO_OTHER: TCP_RTO_ALGORITHM = 1i32;
-pub const MIB_TCP_RTO_RSRE: TCP_RTO_ALGORITHM = 3i32;
-pub const MIB_TCP_RTO_VANJ: TCP_RTO_ALGORITHM = 4i32;
-pub const MIB_TCP_STATE_CLOSED: MIB_TCP_STATE = 1i32;
-pub const MIB_TCP_STATE_CLOSE_WAIT: MIB_TCP_STATE = 8i32;
-pub const MIB_TCP_STATE_CLOSING: MIB_TCP_STATE = 9i32;
-pub const MIB_TCP_STATE_DELETE_TCB: MIB_TCP_STATE = 12i32;
-pub const MIB_TCP_STATE_ESTAB: MIB_TCP_STATE = 5i32;
-pub const MIB_TCP_STATE_FIN_WAIT1: MIB_TCP_STATE = 6i32;
-pub const MIB_TCP_STATE_FIN_WAIT2: MIB_TCP_STATE = 7i32;
-pub const MIB_TCP_STATE_LAST_ACK: MIB_TCP_STATE = 10i32;
-pub const MIB_TCP_STATE_LISTEN: MIB_TCP_STATE = 2i32;
-pub const MIB_TCP_STATE_RESERVED: MIB_TCP_STATE = 100i32;
-pub const MIB_TCP_STATE_SYN_RCVD: MIB_TCP_STATE = 4i32;
-pub const MIB_TCP_STATE_SYN_SENT: MIB_TCP_STATE = 3i32;
-pub const MIB_TCP_STATE_TIME_WAIT: MIB_TCP_STATE = 11i32;
-pub const MIB_USE_CURRENT_FORWARDING: u32 = 4294967295u32;
-pub const MIB_USE_CURRENT_TTL: u32 = 4294967295u32;
-pub const MIN_IF_TYPE: u32 = 1u32;
-pub const MIXED_NODETYPE: u32 = 4u32;
-pub const MibAddInstance: MIB_NOTIFICATION_TYPE = 1i32;
-pub const MibDeleteInstance: MIB_NOTIFICATION_TYPE = 2i32;
-pub const MibIfEntryNormal: MIB_IF_ENTRY_LEVEL = 0i32;
-pub const MibIfEntryNormalWithoutStatistics: MIB_IF_ENTRY_LEVEL = 2i32;
-pub const MibIfTableNormal: MIB_IF_TABLE_LEVEL = 0i32;
-pub const MibIfTableNormalWithoutStatistics: MIB_IF_TABLE_LEVEL = 2i32;
-pub const MibIfTableRaw: MIB_IF_TABLE_LEVEL = 1i32;
-pub const MibInitialNotification: MIB_NOTIFICATION_TYPE = 3i32;
-pub const MibParameterNotification: MIB_NOTIFICATION_TYPE = 0i32;
-pub const ND_NEIGHBOR_ADVERT: ICMP6_TYPE = 136i32;
-pub const ND_NEIGHBOR_SOLICIT: ICMP6_TYPE = 135i32;
-pub const ND_REDIRECT: ICMP6_TYPE = 137i32;
-pub const ND_ROUTER_ADVERT: ICMP6_TYPE = 134i32;
-pub const ND_ROUTER_SOLICIT: ICMP6_TYPE = 133i32;
-pub const NET_ADDRESS_DNS_NAME: NET_ADDRESS_FORMAT = 1i32;
-pub const NET_ADDRESS_FORMAT_UNSPECIFIED: NET_ADDRESS_FORMAT = 0i32;
-pub const NET_ADDRESS_IPV4: NET_ADDRESS_FORMAT = 2i32;
-pub const NET_ADDRESS_IPV6: NET_ADDRESS_FORMAT = 3i32;
-pub const NET_STRING_IPV4_ADDRESS: u32 = 1u32;
-pub const NET_STRING_IPV4_NETWORK: u32 = 4u32;
-pub const NET_STRING_IPV4_SERVICE: u32 = 2u32;
-pub const NET_STRING_IPV6_ADDRESS: u32 = 8u32;
-pub const NET_STRING_IPV6_ADDRESS_NO_SCOPE: u32 = 16u32;
-pub const NET_STRING_IPV6_NETWORK: u32 = 128u32;
-pub const NET_STRING_IPV6_SERVICE: u32 = 32u32;
-pub const NET_STRING_IPV6_SERVICE_NO_SCOPE: u32 = 64u32;
-pub const NET_STRING_NAMED_ADDRESS: u32 = 256u32;
-pub const NET_STRING_NAMED_SERVICE: u32 = 512u32;
-pub const NUMBER_OF_EXPORTED_VARIABLES: u32 = 39u32;
-pub const PEER_TO_PEER_NODETYPE: u32 = 2u32;
-pub const PFERROR_BUFFER_TOO_SMALL: u32 = 23002u32;
-pub const PFERROR_NO_FILTERS_GIVEN: u32 = 23001u32;
-pub const PFERROR_NO_PF_INTERFACE: u32 = 23000u32;
-pub const PFFT_FILTER: PFFRAMETYPE = 1i32;
-pub const PFFT_FRAG: PFFRAMETYPE = 2i32;
-pub const PFFT_SPOOF: PFFRAMETYPE = 3i32;
-pub const PF_ACTION_DROP: PFFORWARD_ACTION = 1i32;
-pub const PF_ACTION_FORWARD: PFFORWARD_ACTION = 0i32;
-pub const PF_IPV4: PFADDRESSTYPE = 0i32;
-pub const PF_IPV6: PFADDRESSTYPE = 1i32;
-pub const PROXY_ARP: u32 = 22u32;
-pub const ROUTE_LONGER: u32 = 32u32;
-pub const ROUTE_MATCHING: u32 = 31u32;
-pub const ROUTE_SHORTER: u32 = 33u32;
-pub const ROUTE_STATE: u32 = 34u32;
-pub const TCP6_STATS: u32 = 38u32;
-pub const TCPIP_OWNER_MODULE_INFO_BASIC: TCPIP_OWNER_MODULE_INFO_CLASS = 0i32;
-pub const TCPIP_OWNING_MODULE_SIZE: u32 = 16u32;
-pub const TCP_ROW: u32 = 14u32;
-pub const TCP_STATS: u32 = 12u32;
-pub const TCP_TABLE: u32 = 13u32;
-pub const TCP_TABLE_BASIC_ALL: TCP_TABLE_CLASS = 2i32;
-pub const TCP_TABLE_BASIC_CONNECTIONS: TCP_TABLE_CLASS = 1i32;
-pub const TCP_TABLE_BASIC_LISTENER: TCP_TABLE_CLASS = 0i32;
-pub const TCP_TABLE_OWNER_MODULE_ALL: TCP_TABLE_CLASS = 8i32;
-pub const TCP_TABLE_OWNER_MODULE_CONNECTIONS: TCP_TABLE_CLASS = 7i32;
-pub const TCP_TABLE_OWNER_MODULE_LISTENER: TCP_TABLE_CLASS = 6i32;
-pub const TCP_TABLE_OWNER_PID_ALL: TCP_TABLE_CLASS = 5i32;
-pub const TCP_TABLE_OWNER_PID_CONNECTIONS: TCP_TABLE_CLASS = 4i32;
-pub const TCP_TABLE_OWNER_PID_LISTENER: TCP_TABLE_CLASS = 3i32;
-pub const TcpBoolOptDisabled: TCP_BOOLEAN_OPTIONAL = 0i32;
-pub const TcpBoolOptEnabled: TCP_BOOLEAN_OPTIONAL = 1i32;
-pub const TcpBoolOptUnchanged: TCP_BOOLEAN_OPTIONAL = -1i32;
-pub const TcpConnectionEstatsBandwidth: TCP_ESTATS_TYPE = 7i32;
-pub const TcpConnectionEstatsData: TCP_ESTATS_TYPE = 1i32;
-pub const TcpConnectionEstatsFineRtt: TCP_ESTATS_TYPE = 8i32;
-pub const TcpConnectionEstatsMaximum: TCP_ESTATS_TYPE = 9i32;
-pub const TcpConnectionEstatsObsRec: TCP_ESTATS_TYPE = 6i32;
-pub const TcpConnectionEstatsPath: TCP_ESTATS_TYPE = 3i32;
-pub const TcpConnectionEstatsRec: TCP_ESTATS_TYPE = 5i32;
-pub const TcpConnectionEstatsSendBuff: TCP_ESTATS_TYPE = 4i32;
-pub const TcpConnectionEstatsSndCong: TCP_ESTATS_TYPE = 2i32;
-pub const TcpConnectionEstatsSynOpts: TCP_ESTATS_TYPE = 0i32;
-pub const TcpConnectionOffloadStateInHost: TCP_CONNECTION_OFFLOAD_STATE = 0i32;
-pub const TcpConnectionOffloadStateMax: TCP_CONNECTION_OFFLOAD_STATE = 4i32;
-pub const TcpConnectionOffloadStateOffloaded: TCP_CONNECTION_OFFLOAD_STATE = 2i32;
-pub const TcpConnectionOffloadStateOffloading: TCP_CONNECTION_OFFLOAD_STATE = 1i32;
-pub const TcpConnectionOffloadStateUploading: TCP_CONNECTION_OFFLOAD_STATE = 3i32;
-pub const TcpErrorAboveAckWindow: TCP_SOFT_ERROR = 4i32;
-pub const TcpErrorAboveDataWindow: TCP_SOFT_ERROR = 2i32;
-pub const TcpErrorAboveTsWindow: TCP_SOFT_ERROR = 6i32;
-pub const TcpErrorBelowAckWindow: TCP_SOFT_ERROR = 3i32;
-pub const TcpErrorBelowDataWindow: TCP_SOFT_ERROR = 1i32;
-pub const TcpErrorBelowTsWindow: TCP_SOFT_ERROR = 5i32;
-pub const TcpErrorDataChecksumError: TCP_SOFT_ERROR = 7i32;
-pub const TcpErrorDataLengthError: TCP_SOFT_ERROR = 8i32;
-pub const TcpErrorMaxSoftError: TCP_SOFT_ERROR = 9i32;
-pub const TcpErrorNone: TCP_SOFT_ERROR = 0i32;
-pub const TcpRtoAlgorithmConstant: TCP_RTO_ALGORITHM = 2i32;
-pub const TcpRtoAlgorithmOther: TCP_RTO_ALGORITHM = 1i32;
-pub const TcpRtoAlgorithmRsre: TCP_RTO_ALGORITHM = 3i32;
-pub const TcpRtoAlgorithmVanj: TCP_RTO_ALGORITHM = 4i32;
-pub const UDP6_STATS: u32 = 37u32;
-pub const UDP_ROW: u32 = 17u32;
-pub const UDP_STATS: u32 = 15u32;
-pub const UDP_TABLE: u32 = 16u32;
-pub const UDP_TABLE_BASIC: UDP_TABLE_CLASS = 0i32;
-pub const UDP_TABLE_OWNER_MODULE: UDP_TABLE_CLASS = 2i32;
-pub const UDP_TABLE_OWNER_PID: UDP_TABLE_CLASS = 1i32;
-pub type DNS_SERVER_PROPERTY_TYPE = i32;
-pub type GET_ADAPTERS_ADDRESSES_FLAGS = u32;
-pub type GLOBAL_FILTER = i32;
-pub type ICMP4_TYPE = i32;
-pub type ICMP6_TYPE = i32;
-pub type IF_ACCESS_TYPE = i32;
-pub type INTERNAL_IF_OPER_STATUS = i32;
-pub type MIB_IF_ENTRY_LEVEL = i32;
-pub type MIB_IF_TABLE_LEVEL = i32;
-pub type MIB_IPFORWARD_TYPE = i32;
-pub type MIB_IPNET_TYPE = i32;
-pub type MIB_IPSTATS_FORWARDING = i32;
-pub type MIB_NOTIFICATION_TYPE = i32;
-pub type MIB_TCP_STATE = i32;
-pub type NET_ADDRESS_FORMAT = i32;
-pub type PFADDRESSTYPE = i32;
-pub type PFFORWARD_ACTION = i32;
-pub type PFFRAMETYPE = i32;
-pub type TCPIP_OWNER_MODULE_INFO_CLASS = i32;
-pub type TCP_BOOLEAN_OPTIONAL = i32;
-pub type TCP_CONNECTION_OFFLOAD_STATE = i32;
-pub type TCP_ESTATS_TYPE = i32;
-pub type TCP_RTO_ALGORITHM = i32;
-pub type TCP_SOFT_ERROR = i32;
-pub type TCP_TABLE_CLASS = i32;
-pub type UDP_TABLE_CLASS = i32;
 #[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ARP_SEND_REPLY {
-    pub DestAddress: u32,
-    pub SrcAddress: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_DOH_SERVER_SETTINGS {
-    pub Template: windows_sys::core::PWSTR,
-    pub Flags: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_INTERFACE_SETTINGS {
-    pub Version: u32,
-    pub Flags: u64,
-    pub Domain: windows_sys::core::PWSTR,
-    pub NameServer: windows_sys::core::PWSTR,
-    pub SearchList: windows_sys::core::PWSTR,
-    pub RegistrationEnabled: u32,
-    pub RegisterAdapterName: u32,
-    pub EnableLLMNR: u32,
-    pub QueryAdapterName: u32,
-    pub ProfileNameServer: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_INTERFACE_SETTINGS3 {
-    pub Version: u32,
-    pub Flags: u64,
-    pub Domain: windows_sys::core::PWSTR,
-    pub NameServer: windows_sys::core::PWSTR,
-    pub SearchList: windows_sys::core::PWSTR,
-    pub RegistrationEnabled: u32,
-    pub RegisterAdapterName: u32,
-    pub EnableLLMNR: u32,
-    pub QueryAdapterName: u32,
-    pub ProfileNameServer: windows_sys::core::PWSTR,
-    pub DisableUnconstrainedQueries: u32,
-    pub SupplementalSearchList: windows_sys::core::PWSTR,
-    pub cServerProperties: u32,
-    pub ServerProperties: *mut DNS_SERVER_PROPERTY,
-    pub cProfileServerProperties: u32,
-    pub ProfileServerProperties: *mut DNS_SERVER_PROPERTY,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_INTERFACE_SETTINGS4 {
-    pub Version: u32,
-    pub Flags: u64,
-    pub Domain: windows_sys::core::PWSTR,
-    pub NameServer: windows_sys::core::PWSTR,
-    pub SearchList: windows_sys::core::PWSTR,
-    pub RegistrationEnabled: u32,
-    pub RegisterAdapterName: u32,
-    pub EnableLLMNR: u32,
-    pub QueryAdapterName: u32,
-    pub ProfileNameServer: windows_sys::core::PWSTR,
-    pub DisableUnconstrainedQueries: u32,
-    pub SupplementalSearchList: windows_sys::core::PWSTR,
-    pub cServerProperties: u32,
-    pub ServerProperties: *mut DNS_SERVER_PROPERTY,
-    pub cProfileServerProperties: u32,
-    pub ProfileServerProperties: *mut DNS_SERVER_PROPERTY,
-    pub EncryptedDnsAdapterFlags: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_INTERFACE_SETTINGS_EX {
-    pub SettingsV1: DNS_INTERFACE_SETTINGS,
-    pub DisableUnconstrainedQueries: u32,
-    pub SupplementalSearchList: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_SERVER_PROPERTY {
-    pub Version: u32,
-    pub ServerIndex: u32,
-    pub Type: DNS_SERVER_PROPERTY_TYPE,
-    pub Property: DNS_SERVER_PROPERTY_TYPES,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DNS_SERVER_PROPERTY_TYPES {
-    pub DohSettings: *mut DNS_DOH_SERVER_SETTINGS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_SETTINGS {
-    pub Version: u32,
-    pub Flags: u64,
-    pub Hostname: windows_sys::core::PWSTR,
-    pub Domain: windows_sys::core::PWSTR,
-    pub SearchList: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DNS_SETTINGS2 {
-    pub Version: u32,
-    pub Flags: u64,
-    pub Hostname: windows_sys::core::PWSTR,
-    pub Domain: windows_sys::core::PWSTR,
-    pub SearchList: windows_sys::core::PWSTR,
-    pub SettingFlags: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct FIXED_INFO_W2KSP1 {
-    pub HostName: [i8; 132],
-    pub DomainName: [i8; 132],
-    pub CurrentDnsServer: *mut IP_ADDR_STRING,
-    pub DnsServerList: IP_ADDR_STRING,
-    pub NodeType: u32,
-    pub ScopeId: [i8; 260],
-    pub EnableRouting: u32,
-    pub EnableProxy: u32,
-    pub EnableDns: u32,
-}
-pub type HIFTIMESTAMPCHANGE = *mut core::ffi::c_void;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV6_ECHO_REPLY_LH {
-    pub Address: IPV6_ADDRESS_EX,
-    pub Status: u32,
-    pub RoundTripTime: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMP_ECHO_REPLY {
-    pub Address: u32,
-    pub Status: u32,
-    pub RoundTripTime: u32,
-    pub DataSize: u16,
-    pub Reserved: u16,
-    pub Data: *mut core::ffi::c_void,
-    pub Options: IP_OPTION_INFORMATION,
-}
-#[repr(C)]
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy)]
-pub struct ICMP_ECHO_REPLY32 {
-    pub Address: u32,
-    pub Status: u32,
-    pub RoundTripTime: u32,
-    pub DataSize: u16,
-    pub Reserved: u16,
-    pub Data: *mut core::ffi::c_void,
-    pub Options: IP_OPTION_INFORMATION32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_HARDWARE_CROSSTIMESTAMP {
-    pub SystemTimestamp1: u64,
-    pub HardwareClockTimestamp: u64,
-    pub SystemTimestamp2: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES {
-    pub PtpV2OverUdpIPv4EventMessageReceive: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv4AllMessageReceive: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv4EventMessageTransmit: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv4AllMessageTransmit: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv6EventMessageReceive: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv6AllMessageReceive: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv6EventMessageTransmit: super::super::Foundation::BOOLEAN,
-    pub PtpV2OverUdpIPv6AllMessageTransmit: super::super::Foundation::BOOLEAN,
-    pub AllReceive: super::super::Foundation::BOOLEAN,
-    pub AllTransmit: super::super::Foundation::BOOLEAN,
-    pub TaggedTransmit: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES {
-    pub AllReceive: super::super::Foundation::BOOLEAN,
-    pub AllTransmit: super::super::Foundation::BOOLEAN,
-    pub TaggedTransmit: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_TIMESTAMP_CAPABILITIES {
-    pub HardwareClockFrequencyHz: u64,
-    pub SupportsCrossTimestamp: super::super::Foundation::BOOLEAN,
-    pub HardwareCapabilities: INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES,
-    pub SoftwareCapabilities: INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct IPV6_ADDRESS_EX {
-    pub sin6_port: u16,
-    pub sin6_flowinfo: u32,
-    pub sin6_addr: [u16; 8],
-    pub sin6_scope_id: u32,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ADDRESSES_LH {
-    pub Anonymous1: IP_ADAPTER_ADDRESSES_LH_0,
-    pub Next: *mut IP_ADAPTER_ADDRESSES_LH,
-    pub AdapterName: windows_sys::core::PSTR,
-    pub FirstUnicastAddress: *mut IP_ADAPTER_UNICAST_ADDRESS_LH,
-    pub FirstAnycastAddress: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
-    pub FirstMulticastAddress: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
-    pub FirstDnsServerAddress: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
-    pub DnsSuffix: windows_sys::core::PWSTR,
-    pub Description: windows_sys::core::PWSTR,
-    pub FriendlyName: windows_sys::core::PWSTR,
-    pub PhysicalAddress: [u8; 8],
-    pub PhysicalAddressLength: u32,
-    pub Anonymous2: IP_ADAPTER_ADDRESSES_LH_1,
-    pub Mtu: u32,
-    pub IfType: u32,
-    pub OperStatus: super::Ndis::IF_OPER_STATUS,
-    pub Ipv6IfIndex: u32,
-    pub ZoneIndices: [u32; 16],
-    pub FirstPrefix: *mut IP_ADAPTER_PREFIX_XP,
-    pub TransmitLinkSpeed: u64,
-    pub ReceiveLinkSpeed: u64,
-    pub FirstWinsServerAddress: *mut IP_ADAPTER_WINS_SERVER_ADDRESS_LH,
-    pub FirstGatewayAddress: *mut IP_ADAPTER_GATEWAY_ADDRESS_LH,
-    pub Ipv4Metric: u32,
-    pub Ipv6Metric: u32,
-    pub Luid: super::Ndis::NET_LUID_LH,
-    pub Dhcpv4Server: super::super::Networking::WinSock::SOCKET_ADDRESS,
-    pub CompartmentId: u32,
-    pub NetworkGuid: windows_sys::core::GUID,
-    pub ConnectionType: super::Ndis::NET_IF_CONNECTION_TYPE,
-    pub TunnelType: super::Ndis::TUNNEL_TYPE,
-    pub Dhcpv6Server: super::super::Networking::WinSock::SOCKET_ADDRESS,
-    pub Dhcpv6ClientDuid: [u8; 130],
-    pub Dhcpv6ClientDuidLength: u32,
-    pub Dhcpv6Iaid: u32,
-    pub FirstDnsSuffix: *mut IP_ADAPTER_DNS_SUFFIX,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_ADDRESSES_LH_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_ADDRESSES_LH_0_0,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ADDRESSES_LH_0_0 {
-    pub Length: u32,
-    pub IfIndex: u32,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_ADDRESSES_LH_1 {
-    pub Flags: u32,
-    pub Anonymous: IP_ADAPTER_ADDRESSES_LH_1_0,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ADDRESSES_LH_1_0 {
-    pub _bitfield: u32,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ADDRESSES_XP {
-    pub Anonymous: IP_ADAPTER_ADDRESSES_XP_0,
-    pub Next: *mut IP_ADAPTER_ADDRESSES_XP,
-    pub AdapterName: windows_sys::core::PSTR,
-    pub FirstUnicastAddress: *mut IP_ADAPTER_UNICAST_ADDRESS_XP,
-    pub FirstAnycastAddress: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
-    pub FirstMulticastAddress: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
-    pub FirstDnsServerAddress: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
-    pub DnsSuffix: windows_sys::core::PWSTR,
-    pub Description: windows_sys::core::PWSTR,
-    pub FriendlyName: windows_sys::core::PWSTR,
-    pub PhysicalAddress: [u8; 8],
-    pub PhysicalAddressLength: u32,
-    pub Flags: u32,
-    pub Mtu: u32,
-    pub IfType: u32,
-    pub OperStatus: super::Ndis::IF_OPER_STATUS,
-    pub Ipv6IfIndex: u32,
-    pub ZoneIndices: [u32; 16],
-    pub FirstPrefix: *mut IP_ADAPTER_PREFIX_XP,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_ADDRESSES_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_ADDRESSES_XP_0_0,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ADDRESSES_XP_0_0 {
-    pub Length: u32,
-    pub IfIndex: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ANYCAST_ADDRESS_XP {
-    pub Anonymous: IP_ADAPTER_ANYCAST_ADDRESS_XP_0,
-    pub Next: *mut IP_ADAPTER_ANYCAST_ADDRESS_XP,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_ANYCAST_ADDRESS_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_ANYCAST_ADDRESS_XP_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ANYCAST_ADDRESS_XP_0_0 {
-    pub Length: u32,
-    pub Flags: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_DNS_SERVER_ADDRESS_XP {
-    pub Anonymous: IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0,
-    pub Next: *mut IP_ADAPTER_DNS_SERVER_ADDRESS_XP,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_DNS_SERVER_ADDRESS_XP_0_0 {
-    pub Length: u32,
-    pub Reserved: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_DNS_SUFFIX {
-    pub Next: *mut IP_ADAPTER_DNS_SUFFIX,
-    pub String: [u16; 256],
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_GATEWAY_ADDRESS_LH {
-    pub Anonymous: IP_ADAPTER_GATEWAY_ADDRESS_LH_0,
-    pub Next: *mut IP_ADAPTER_GATEWAY_ADDRESS_LH,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_GATEWAY_ADDRESS_LH_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_GATEWAY_ADDRESS_LH_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_GATEWAY_ADDRESS_LH_0_0 {
-    pub Length: u32,
-    pub Reserved: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_INDEX_MAP {
-    pub Index: u32,
-    pub Name: [u16; 128],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_INFO {
-    pub Next: *mut IP_ADAPTER_INFO,
-    pub ComboIndex: u32,
-    pub AdapterName: [i8; 260],
-    pub Description: [i8; 132],
-    pub AddressLength: u32,
-    pub Address: [u8; 8],
-    pub Index: u32,
-    pub Type: u32,
-    pub DhcpEnabled: u32,
-    pub CurrentIpAddress: *mut IP_ADDR_STRING,
-    pub IpAddressList: IP_ADDR_STRING,
-    pub GatewayList: IP_ADDR_STRING,
-    pub DhcpServer: IP_ADDR_STRING,
-    pub HaveWins: super::super::Foundation::BOOL,
-    pub PrimaryWinsServer: IP_ADDR_STRING,
-    pub SecondaryWinsServer: IP_ADDR_STRING,
-    pub LeaseObtained: i64,
-    pub LeaseExpires: i64,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_MULTICAST_ADDRESS_XP {
-    pub Anonymous: IP_ADAPTER_MULTICAST_ADDRESS_XP_0,
-    pub Next: *mut IP_ADAPTER_MULTICAST_ADDRESS_XP,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_MULTICAST_ADDRESS_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_MULTICAST_ADDRESS_XP_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_MULTICAST_ADDRESS_XP_0_0 {
-    pub Length: u32,
-    pub Flags: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_ORDER_MAP {
-    pub NumAdapters: u32,
-    pub AdapterOrder: [u32; 1],
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_PREFIX_XP {
-    pub Anonymous: IP_ADAPTER_PREFIX_XP_0,
-    pub Next: *mut IP_ADAPTER_PREFIX_XP,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-    pub PrefixLength: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_PREFIX_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_PREFIX_XP_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_PREFIX_XP_0_0 {
-    pub Length: u32,
-    pub Flags: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_UNICAST_ADDRESS_LH {
-    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_LH_0,
-    pub Next: *mut IP_ADAPTER_UNICAST_ADDRESS_LH,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-    pub PrefixOrigin: super::super::Networking::WinSock::NL_PREFIX_ORIGIN,
-    pub SuffixOrigin: super::super::Networking::WinSock::NL_SUFFIX_ORIGIN,
-    pub DadState: super::super::Networking::WinSock::NL_DAD_STATE,
-    pub ValidLifetime: u32,
-    pub PreferredLifetime: u32,
-    pub LeaseLifetime: u32,
-    pub OnLinkPrefixLength: u8,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_UNICAST_ADDRESS_LH_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_LH_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_UNICAST_ADDRESS_LH_0_0 {
-    pub Length: u32,
-    pub Flags: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_UNICAST_ADDRESS_XP {
-    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_XP_0,
-    pub Next: *mut IP_ADAPTER_UNICAST_ADDRESS_XP,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-    pub PrefixOrigin: super::super::Networking::WinSock::NL_PREFIX_ORIGIN,
-    pub SuffixOrigin: super::super::Networking::WinSock::NL_SUFFIX_ORIGIN,
-    pub DadState: super::super::Networking::WinSock::NL_DAD_STATE,
-    pub ValidLifetime: u32,
-    pub PreferredLifetime: u32,
-    pub LeaseLifetime: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_UNICAST_ADDRESS_XP_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_UNICAST_ADDRESS_XP_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_UNICAST_ADDRESS_XP_0_0 {
-    pub Length: u32,
-    pub Flags: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_WINS_SERVER_ADDRESS_LH {
-    pub Anonymous: IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0,
-    pub Next: *mut IP_ADAPTER_WINS_SERVER_ADDRESS_LH,
-    pub Address: super::super::Networking::WinSock::SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub union IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0 {
-    pub Alignment: u64,
-    pub Anonymous: IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADAPTER_WINS_SERVER_ADDRESS_LH_0_0 {
-    pub Length: u32,
-    pub Reserved: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
-pub struct IP_ADDRESS_PREFIX {
-    pub Prefix: super::super::Networking::WinSock::SOCKADDR_INET,
-    pub PrefixLength: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADDRESS_STRING {
-    pub String: [i8; 16],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_ADDR_STRING {
-    pub Next: *mut IP_ADDR_STRING,
-    pub IpAddress: IP_ADDRESS_STRING,
-    pub IpMask: IP_ADDRESS_STRING,
-    pub Context: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_INTERFACE_INFO {
-    pub NumAdapters: i32,
-    pub Adapter: [IP_ADAPTER_INDEX_MAP; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_INTERFACE_NAME_INFO_W2KSP1 {
-    pub Index: u32,
-    pub MediaType: u32,
-    pub ConnectionType: u8,
-    pub AccessType: u8,
-    pub DeviceGuid: windows_sys::core::GUID,
-    pub InterfaceGuid: windows_sys::core::GUID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_MCAST_COUNTER_INFO {
-    pub InMcastOctets: u64,
-    pub OutMcastOctets: u64,
-    pub InMcastPkts: u64,
-    pub OutMcastPkts: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_OPTION_INFORMATION {
-    pub Ttl: u8,
-    pub Tos: u8,
-    pub Flags: u8,
-    pub OptionsSize: u8,
-    pub OptionsData: *mut u8,
-}
-#[repr(C)]
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy)]
-pub struct IP_OPTION_INFORMATION32 {
-    pub Ttl: u8,
-    pub Tos: u8,
-    pub Flags: u8,
-    pub OptionsSize: u8,
-    pub OptionsData: *mut u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_PER_ADAPTER_INFO_W2KSP1 {
-    pub AutoconfigEnabled: u32,
-    pub AutoconfigActive: u32,
-    pub CurrentDnsServer: *mut IP_ADDR_STRING,
-    pub DnsServerList: IP_ADDR_STRING,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_UNIDIRECTIONAL_ADAPTER_ADDRESS {
-    pub NumAdapters: u32,
-    pub Address: [u32; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIBICMPINFO {
     pub icmpInStats: MIBICMPSTATS,
     pub icmpOutStats: MIBICMPSTATS,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIBICMPSTATS {
     pub dwMsgs: u32,
     pub dwErrors: u32,
@@ -1552,6 +1648,11 @@ pub struct MIBICMPSTATS_EX_XPSP1 {
     pub dwErrors: u32,
     pub rgdwTypeCount: [u32; 256],
 }
+impl Default for MIBICMPSTATS_EX_XPSP1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -1561,6 +1662,12 @@ pub struct MIB_ANYCASTIPADDRESS_ROW {
     pub InterfaceIndex: u32,
     pub ScopeId: super::super::Networking::WinSock::SCOPE_ID,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_ANYCASTIPADDRESS_ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -1568,31 +1675,37 @@ pub struct MIB_ANYCASTIPADDRESS_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_ANYCASTIPADDRESS_ROW; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_ANYCASTIPADDRESS_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_BEST_IF {
     pub dwDestAddr: u32,
     pub dwIfIndex: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_BOUNDARYROW {
     pub dwGroupAddress: u32,
     pub dwGroupMask: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_ICMP {
     pub stats: MIBICMPINFO,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_ICMP_EX_XPSP1 {
     pub icmpInStats: MIBICMPSTATS_EX_XPSP1,
     pub icmpOutStats: MIBICMPSTATS_EX_XPSP1,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IFNUMBER {
     pub dwValue: u32,
 }
@@ -1624,8 +1737,13 @@ pub struct MIB_IFROW {
     pub dwDescrLen: u32,
     pub bDescr: [u8; 256],
 }
+impl Default for MIB_IFROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IFSTACK_ROW {
     pub HigherLayerInterfaceIndex: u32,
     pub LowerLayerInterfaceIndex: u32,
@@ -1636,14 +1754,19 @@ pub struct MIB_IFSTACK_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_IFSTACK_ROW; 1],
 }
+impl Default for MIB_IFSTACK_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IFSTATUS {
     pub dwIfIndex: u32,
     pub dwAdminStatus: u32,
     pub dwOperationalStatus: u32,
-    pub bMHbeatActive: super::super::Foundation::BOOL,
-    pub bMHbeatAlive: super::super::Foundation::BOOL,
+    pub bMHbeatActive: windows_sys::core::BOOL,
+    pub bMHbeatAlive: windows_sys::core::BOOL,
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -1651,6 +1774,15 @@ pub struct MIB_IFTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IFROW; 1],
 }
+impl Default for MIB_IFTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const MIB_IF_ADMIN_STATUS_DOWN: u32 = 2u32;
+pub const MIB_IF_ADMIN_STATUS_TESTING: u32 = 3u32;
+pub const MIB_IF_ADMIN_STATUS_UP: u32 = 1u32;
+pub type MIB_IF_ENTRY_LEVEL = i32;
 #[repr(C)]
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
 #[derive(Clone, Copy)]
@@ -1697,9 +1829,15 @@ pub struct MIB_IF_ROW2 {
     pub OutBroadcastOctets: u64,
     pub OutQLen: u64,
 }
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+impl Default for MIB_IF_ROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_NetworkManagement_Ndis")]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IF_ROW2_0 {
     pub _bitfield: u8,
 }
@@ -1710,8 +1848,23 @@ pub struct MIB_IF_TABLE2 {
     pub NumEntries: u32,
     pub Table: [MIB_IF_ROW2; 1],
 }
+#[cfg(feature = "Win32_NetworkManagement_Ndis")]
+impl Default for MIB_IF_TABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MIB_IF_TABLE_LEVEL = i32;
+pub const MIB_IF_TYPE_ETHERNET: u32 = 6u32;
+pub const MIB_IF_TYPE_FDDI: u32 = 15u32;
+pub const MIB_IF_TYPE_LOOPBACK: u32 = 24u32;
+pub const MIB_IF_TYPE_OTHER: u32 = 1u32;
+pub const MIB_IF_TYPE_PPP: u32 = 23u32;
+pub const MIB_IF_TYPE_SLIP: u32 = 28u32;
+pub const MIB_IF_TYPE_TOKENRING: u32 = 9u32;
+pub const MIB_INVALID_TEREDO_PORT_NUMBER: u32 = 0u32;
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_INVERTEDIFSTACK_ROW {
     pub LowerLayerInterfaceIndex: u32,
     pub HigherLayerInterfaceIndex: u32,
@@ -1722,8 +1875,13 @@ pub struct MIB_INVERTEDIFSTACK_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_INVERTEDIFSTACK_ROW; 1],
 }
+impl Default for MIB_INVERTEDIFSTACK_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPADDRROW_W2K {
     pub dwAddr: u32,
     pub dwIndex: u32,
@@ -1734,7 +1892,7 @@ pub struct MIB_IPADDRROW_W2K {
     pub unused2: u16,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPADDRROW_XP {
     pub dwAddr: u32,
     pub dwIndex: u32,
@@ -1750,6 +1908,17 @@ pub struct MIB_IPADDRTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPADDRROW_XP; 1],
 }
+impl Default for MIB_IPADDRTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const MIB_IPADDR_DELETED: u32 = 64u32;
+pub const MIB_IPADDR_DISCONNECTED: u32 = 8u32;
+pub const MIB_IPADDR_DNS_ELIGIBLE: u32 = 256u32;
+pub const MIB_IPADDR_DYNAMIC: u32 = 4u32;
+pub const MIB_IPADDR_PRIMARY: u32 = 1u32;
+pub const MIB_IPADDR_TRANSIENT: u32 = 128u32;
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
@@ -1758,6 +1927,12 @@ pub struct MIB_IPDESTROW {
     pub dwForwardPreference: u32,
     pub dwForwardViewSet: u32,
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPDESTROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
@@ -1765,8 +1940,14 @@ pub struct MIB_IPDESTTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPDESTROW; 1],
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPDESTTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPFORWARDNUMBER {
     pub dwValue: u32,
 }
@@ -1789,12 +1970,24 @@ pub struct MIB_IPFORWARDROW {
     pub dwForwardMetric4: u32,
     pub dwForwardMetric5: u32,
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPFORWARDROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
 pub union MIB_IPFORWARDROW_0 {
     pub dwForwardType: u32,
     pub ForwardType: MIB_IPFORWARD_TYPE,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPFORWARDROW_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
@@ -1803,12 +1996,24 @@ pub union MIB_IPFORWARDROW_1 {
     pub dwForwardProto: u32,
     pub ForwardProto: super::super::Networking::WinSock::NL_ROUTE_PROTOCOL,
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPFORWARDROW_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
 pub struct MIB_IPFORWARDTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPFORWARDROW; 1],
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_IPFORWARDTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -1823,12 +2028,18 @@ pub struct MIB_IPFORWARD_ROW2 {
     pub PreferredLifetime: u32,
     pub Metric: u32,
     pub Protocol: super::super::Networking::WinSock::NL_ROUTE_PROTOCOL,
-    pub Loopback: super::super::Foundation::BOOLEAN,
-    pub AutoconfigureAddress: super::super::Foundation::BOOLEAN,
-    pub Publish: super::super::Foundation::BOOLEAN,
-    pub Immortal: super::super::Foundation::BOOLEAN,
+    pub Loopback: bool,
+    pub AutoconfigureAddress: bool,
+    pub Publish: bool,
+    pub Immortal: bool,
     pub Age: u32,
     pub Origin: super::super::Networking::WinSock::NL_ROUTE_ORIGIN,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPFORWARD_ROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -1837,6 +2048,13 @@ pub struct MIB_IPFORWARD_TABLE2 {
     pub NumEntries: u32,
     pub Table: [MIB_IPFORWARD_ROW2; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPFORWARD_TABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MIB_IPFORWARD_TYPE = i32;
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -1848,15 +2066,15 @@ pub struct MIB_IPINTERFACE_ROW {
     pub InterfaceIdentifier: u64,
     pub MinRouterAdvertisementInterval: u32,
     pub MaxRouterAdvertisementInterval: u32,
-    pub AdvertisingEnabled: super::super::Foundation::BOOLEAN,
-    pub ForwardingEnabled: super::super::Foundation::BOOLEAN,
-    pub WeakHostSend: super::super::Foundation::BOOLEAN,
-    pub WeakHostReceive: super::super::Foundation::BOOLEAN,
-    pub UseAutomaticMetric: super::super::Foundation::BOOLEAN,
-    pub UseNeighborUnreachabilityDetection: super::super::Foundation::BOOLEAN,
-    pub ManagedAddressConfigurationSupported: super::super::Foundation::BOOLEAN,
-    pub OtherStatefulConfigurationSupported: super::super::Foundation::BOOLEAN,
-    pub AdvertiseDefaultRoute: super::super::Foundation::BOOLEAN,
+    pub AdvertisingEnabled: bool,
+    pub ForwardingEnabled: bool,
+    pub WeakHostSend: bool,
+    pub WeakHostReceive: bool,
+    pub UseAutomaticMetric: bool,
+    pub UseNeighborUnreachabilityDetection: bool,
+    pub ManagedAddressConfigurationSupported: bool,
+    pub OtherStatefulConfigurationSupported: bool,
+    pub AdvertiseDefaultRoute: bool,
     pub RouterDiscoveryBehavior: super::super::Networking::WinSock::NL_ROUTER_DISCOVERY_BEHAVIOR,
     pub DadTransmits: u32,
     pub BaseReachableTime: u32,
@@ -1868,14 +2086,20 @@ pub struct MIB_IPINTERFACE_ROW {
     pub SitePrefixLength: u32,
     pub Metric: u32,
     pub NlMtu: u32,
-    pub Connected: super::super::Foundation::BOOLEAN,
-    pub SupportsWakeUpPatterns: super::super::Foundation::BOOLEAN,
-    pub SupportsNeighborDiscovery: super::super::Foundation::BOOLEAN,
-    pub SupportsRouterDiscovery: super::super::Foundation::BOOLEAN,
+    pub Connected: bool,
+    pub SupportsWakeUpPatterns: bool,
+    pub SupportsNeighborDiscovery: bool,
+    pub SupportsRouterDiscovery: bool,
     pub ReachableTime: u32,
     pub TransmitOffload: super::super::Networking::WinSock::NL_INTERFACE_OFFLOAD_ROD,
     pub ReceiveOffload: super::super::Networking::WinSock::NL_INTERFACE_OFFLOAD_ROD,
-    pub DisableDefaultRoutes: super::super::Foundation::BOOLEAN,
+    pub DisableDefaultRoutes: bool,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPINTERFACE_ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -1884,8 +2108,14 @@ pub struct MIB_IPINTERFACE_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_IPINTERFACE_ROW; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPINTERFACE_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPMCAST_BOUNDARY {
     pub dwIfIndex: u32,
     pub dwGroupAddress: u32,
@@ -1898,13 +2128,18 @@ pub struct MIB_IPMCAST_BOUNDARY_TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPMCAST_BOUNDARY; 1],
 }
+impl Default for MIB_IPMCAST_BOUNDARY_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPMCAST_GLOBAL {
     pub dwEnable: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPMCAST_IF_ENTRY {
     pub dwIfIndex: u32,
     pub dwTtl: u32,
@@ -1918,6 +2153,11 @@ pub struct MIB_IPMCAST_IF_ENTRY {
 pub struct MIB_IPMCAST_IF_TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPMCAST_IF_ENTRY; 1],
+}
+impl Default for MIB_IPMCAST_IF_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -1939,6 +2179,11 @@ pub struct MIB_IPMCAST_MFE {
     pub dwReserved: u32,
     pub rgmioOutInfo: [MIB_IPMCAST_OIF_XP; 1],
 }
+impl Default for MIB_IPMCAST_MFE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_IPMCAST_MFE_STATS {
@@ -1959,6 +2204,11 @@ pub struct MIB_IPMCAST_MFE_STATS {
     pub ulPktsDifferentIf: u32,
     pub ulQueueOverflow: u32,
     pub rgmiosOutStats: [MIB_IPMCAST_OIF_STATS_LH; 1],
+}
+impl Default for MIB_IPMCAST_MFE_STATS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -1986,8 +2236,13 @@ pub struct MIB_IPMCAST_MFE_STATS_EX_XP {
     pub ulTotalOutPackets: u32,
     pub rgmiosOutStats: [MIB_IPMCAST_OIF_STATS_LH; 1],
 }
+impl Default for MIB_IPMCAST_MFE_STATS_EX_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPMCAST_OIF_STATS_LH {
     pub dwOutIfIndex: u32,
     pub dwNextHopAddr: u32,
@@ -2008,6 +2263,11 @@ pub struct MIB_IPMCAST_OIF_STATS_W2K {
     pub ulOutPackets: u32,
     pub ulOutDiscards: u32,
 }
+impl Default for MIB_IPMCAST_OIF_STATS_W2K {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_IPMCAST_OIF_W2K {
@@ -2016,8 +2276,13 @@ pub struct MIB_IPMCAST_OIF_W2K {
     pub pvReserved: *mut core::ffi::c_void,
     pub dwReserved: u32,
 }
+impl Default for MIB_IPMCAST_OIF_W2K {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPMCAST_OIF_XP {
     pub dwOutIfIndex: u32,
     pub dwNextHopAddr: u32,
@@ -2032,6 +2297,11 @@ pub struct MIB_IPMCAST_SCOPE {
     pub snNameBuffer: [u16; 256],
     pub dwStatus: u32,
 }
+impl Default for MIB_IPMCAST_SCOPE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_IPNETROW_LH {
@@ -2041,11 +2311,21 @@ pub struct MIB_IPNETROW_LH {
     pub dwAddr: u32,
     pub Anonymous: MIB_IPNETROW_LH_0,
 }
+impl Default for MIB_IPNETROW_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_IPNETROW_LH_0 {
     pub dwType: u32,
     pub Type: MIB_IPNET_TYPE,
+}
+impl Default for MIB_IPNETROW_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2056,11 +2336,21 @@ pub struct MIB_IPNETROW_W2K {
     pub dwAddr: u32,
     pub dwType: u32,
 }
+impl Default for MIB_IPNETROW_W2K {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_IPNETTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPNETROW_LH; 1],
+}
+impl Default for MIB_IPNETTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -2075,6 +2365,12 @@ pub struct MIB_IPNET_ROW2 {
     pub Anonymous: MIB_IPNET_ROW2_0,
     pub ReachabilityTime: MIB_IPNET_ROW2_1,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPNET_ROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -2082,9 +2378,15 @@ pub union MIB_IPNET_ROW2_0 {
     pub Anonymous: MIB_IPNET_ROW2_0_0,
     pub Flags: u8,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPNET_ROW2_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPNET_ROW2_0_0 {
     pub _bitfield: u8,
 }
@@ -2095,6 +2397,12 @@ pub union MIB_IPNET_ROW2_1 {
     pub LastReachable: u32,
     pub LastUnreachable: u32,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPNET_ROW2_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -2102,6 +2410,17 @@ pub struct MIB_IPNET_TABLE2 {
     pub NumEntries: u32,
     pub Table: [MIB_IPNET_ROW2; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPNET_TABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MIB_IPNET_TYPE = i32;
+pub const MIB_IPNET_TYPE_DYNAMIC: MIB_IPNET_TYPE = 3i32;
+pub const MIB_IPNET_TYPE_INVALID: MIB_IPNET_TYPE = 2i32;
+pub const MIB_IPNET_TYPE_OTHER: MIB_IPNET_TYPE = 1i32;
+pub const MIB_IPNET_TYPE_STATIC: MIB_IPNET_TYPE = 4i32;
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -2115,9 +2434,15 @@ pub struct MIB_IPPATH_ROW {
     pub RttMean: u32,
     pub RttDeviation: u32,
     pub Anonymous: MIB_IPPATH_ROW_0,
-    pub IsReachable: super::super::Foundation::BOOLEAN,
+    pub IsReachable: bool,
     pub LinkTransmitSpeed: u64,
     pub LinkReceiveSpeed: u64,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPPATH_ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -2126,6 +2451,12 @@ pub union MIB_IPPATH_ROW_0 {
     pub LastReachable: u32,
     pub LastUnreachable: u32,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPPATH_ROW_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -2133,6 +2464,18 @@ pub struct MIB_IPPATH_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_IPPATH_ROW; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_IPPATH_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const MIB_IPROUTE_METRIC_UNUSED: u32 = 4294967295u32;
+pub const MIB_IPROUTE_TYPE_DIRECT: MIB_IPFORWARD_TYPE = 3i32;
+pub const MIB_IPROUTE_TYPE_INDIRECT: MIB_IPFORWARD_TYPE = 4i32;
+pub const MIB_IPROUTE_TYPE_INVALID: MIB_IPFORWARD_TYPE = 2i32;
+pub const MIB_IPROUTE_TYPE_OTHER: MIB_IPFORWARD_TYPE = 1i32;
+pub type MIB_IPSTATS_FORWARDING = i32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_IPSTATS_LH {
@@ -2160,14 +2503,24 @@ pub struct MIB_IPSTATS_LH {
     pub dwNumAddr: u32,
     pub dwNumRoutes: u32,
 }
+impl Default for MIB_IPSTATS_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_IPSTATS_LH_0 {
     pub dwForwarding: u32,
     pub Forwarding: MIB_IPSTATS_FORWARDING,
 }
+impl Default for MIB_IPSTATS_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IPSTATS_W2K {
     pub dwForwarding: u32,
     pub dwDefaultTTL: u32,
@@ -2193,15 +2546,17 @@ pub struct MIB_IPSTATS_W2K {
     pub dwNumAddr: u32,
     pub dwNumRoutes: u32,
 }
+pub const MIB_IP_FORWARDING: MIB_IPSTATS_FORWARDING = 1i32;
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_IP_NETWORK_CONNECTION_BANDWIDTH_ESTIMATES {
     pub InboundBandwidthInformation: super::super::Networking::WinSock::NL_BANDWIDTH_INFORMATION,
     pub OutboundBandwidthInformation: super::super::Networking::WinSock::NL_BANDWIDTH_INFORMATION,
 }
+pub const MIB_IP_NOT_FORWARDING: MIB_IPSTATS_FORWARDING = 2i32;
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_MCAST_LIMIT_ROW {
     pub dwTtl: u32,
     pub dwRateLimit: u32,
@@ -2212,17 +2567,32 @@ pub struct MIB_MFE_STATS_TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPMCAST_MFE_STATS; 1],
 }
+impl Default for MIB_MFE_STATS_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_MFE_STATS_TABLE_EX_XP {
     pub dwNumEntries: u32,
     pub table: [*mut MIB_IPMCAST_MFE_STATS_EX_XP; 1],
 }
+impl Default for MIB_MFE_STATS_TABLE_EX_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_MFE_TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_IPMCAST_MFE; 1],
+}
+impl Default for MIB_MFE_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -2233,6 +2603,12 @@ pub struct MIB_MULTICASTIPADDRESS_ROW {
     pub InterfaceLuid: super::Ndis::NET_LUID_LH,
     pub ScopeId: super::super::Networking::WinSock::SCOPE_ID,
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_MULTICASTIPADDRESS_ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
 #[derive(Clone, Copy)]
@@ -2240,11 +2616,23 @@ pub struct MIB_MULTICASTIPADDRESS_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_MULTICASTIPADDRESS_ROW; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_MULTICASTIPADDRESS_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MIB_NOTIFICATION_TYPE = i32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_OPAQUE_INFO {
     pub dwId: u32,
     pub Anonymous: MIB_OPAQUE_INFO_0,
+}
+impl Default for MIB_OPAQUE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2252,23 +2640,33 @@ pub union MIB_OPAQUE_INFO_0 {
     pub ullAlign: u64,
     pub rgbyData: [u8; 1],
 }
+impl Default for MIB_OPAQUE_INFO_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_OPAQUE_QUERY {
     pub dwVarId: u32,
     pub rgdwVarIndex: [u32; 1],
 }
+impl Default for MIB_OPAQUE_QUERY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_PROXYARP {
     pub dwAddress: u32,
     pub dwMask: u32,
     pub dwIfIndex: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_ROUTESTATE {
-    pub bRoutesSetToStack: super::super::Foundation::BOOL,
+    pub bRoutesSetToStack: windows_sys::core::BOOL,
 }
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
@@ -2281,6 +2679,12 @@ pub struct MIB_TCP6ROW {
     pub RemoteAddr: super::super::Networking::WinSock::IN6_ADDR,
     pub dwRemoteScopeId: u32,
     pub dwRemotePort: u32,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_TCP6ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
@@ -2296,6 +2700,12 @@ pub struct MIB_TCP6ROW2 {
     pub dwOwningPid: u32,
     pub dwOffloadState: TCP_CONNECTION_OFFLOAD_STATE,
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_TCP6ROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_TCP6ROW_OWNER_MODULE {
@@ -2310,6 +2720,11 @@ pub struct MIB_TCP6ROW_OWNER_MODULE {
     pub liCreateTimestamp: i64,
     pub OwningModuleInfo: [u64; 16],
 }
+impl Default for MIB_TCP6ROW_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_TCP6ROW_OWNER_PID {
@@ -2322,12 +2737,23 @@ pub struct MIB_TCP6ROW_OWNER_PID {
     pub dwState: u32,
     pub dwOwningPid: u32,
 }
+impl Default for MIB_TCP6ROW_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
 pub struct MIB_TCP6TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_TCP6ROW; 1],
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_TCP6TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
@@ -2336,11 +2762,22 @@ pub struct MIB_TCP6TABLE2 {
     pub dwNumEntries: u32,
     pub table: [MIB_TCP6ROW2; 1],
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_TCP6TABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_TCP6TABLE_OWNER_MODULE {
     pub dwNumEntries: u32,
     pub table: [MIB_TCP6ROW_OWNER_MODULE; 1],
+}
+impl Default for MIB_TCP6TABLE_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2348,8 +2785,13 @@ pub struct MIB_TCP6TABLE_OWNER_PID {
     pub dwNumEntries: u32,
     pub table: [MIB_TCP6ROW_OWNER_PID; 1],
 }
+impl Default for MIB_TCP6TABLE_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_TCPROW2 {
     pub dwState: u32,
     pub dwLocalAddr: u32,
@@ -2368,11 +2810,21 @@ pub struct MIB_TCPROW_LH {
     pub dwRemoteAddr: u32,
     pub dwRemotePort: u32,
 }
+impl Default for MIB_TCPROW_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_TCPROW_LH_0 {
     pub dwState: u32,
     pub State: MIB_TCP_STATE,
+}
+impl Default for MIB_TCPROW_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2386,8 +2838,13 @@ pub struct MIB_TCPROW_OWNER_MODULE {
     pub liCreateTimestamp: i64,
     pub OwningModuleInfo: [u64; 16],
 }
+impl Default for MIB_TCPROW_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_TCPROW_OWNER_PID {
     pub dwState: u32,
     pub dwLocalAddr: u32,
@@ -2397,7 +2854,7 @@ pub struct MIB_TCPROW_OWNER_PID {
     pub dwOwningPid: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_TCPROW_W2K {
     pub dwState: u32,
     pub dwLocalAddr: u32,
@@ -2406,7 +2863,7 @@ pub struct MIB_TCPROW_W2K {
     pub dwRemotePort: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_TCPSTATS2 {
     pub RtoAlgorithm: TCP_RTO_ALGORITHM,
     pub dwRtoMin: u32,
@@ -2443,14 +2900,24 @@ pub struct MIB_TCPSTATS_LH {
     pub dwOutRsts: u32,
     pub dwNumConns: u32,
 }
+impl Default for MIB_TCPSTATS_LH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_TCPSTATS_LH_0 {
     pub dwRtoAlgorithm: u32,
     pub RtoAlgorithm: TCP_RTO_ALGORITHM,
 }
+impl Default for MIB_TCPSTATS_LH_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_TCPSTATS_W2K {
     pub dwRtoAlgorithm: u32,
     pub dwRtoMin: u32,
@@ -2474,11 +2941,21 @@ pub struct MIB_TCPTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_TCPROW_LH; 1],
 }
+impl Default for MIB_TCPTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_TCPTABLE2 {
     pub dwNumEntries: u32,
     pub table: [MIB_TCPROW2; 1],
+}
+impl Default for MIB_TCPTABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2486,12 +2963,40 @@ pub struct MIB_TCPTABLE_OWNER_MODULE {
     pub dwNumEntries: u32,
     pub table: [MIB_TCPROW_OWNER_MODULE; 1],
 }
+impl Default for MIB_TCPTABLE_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_TCPTABLE_OWNER_PID {
     pub dwNumEntries: u32,
     pub table: [MIB_TCPROW_OWNER_PID; 1],
 }
+impl Default for MIB_TCPTABLE_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const MIB_TCP_RTO_CONSTANT: TCP_RTO_ALGORITHM = 2i32;
+pub const MIB_TCP_RTO_OTHER: TCP_RTO_ALGORITHM = 1i32;
+pub const MIB_TCP_RTO_RSRE: TCP_RTO_ALGORITHM = 3i32;
+pub const MIB_TCP_RTO_VANJ: TCP_RTO_ALGORITHM = 4i32;
+pub type MIB_TCP_STATE = i32;
+pub const MIB_TCP_STATE_CLOSED: MIB_TCP_STATE = 1i32;
+pub const MIB_TCP_STATE_CLOSE_WAIT: MIB_TCP_STATE = 8i32;
+pub const MIB_TCP_STATE_CLOSING: MIB_TCP_STATE = 9i32;
+pub const MIB_TCP_STATE_DELETE_TCB: MIB_TCP_STATE = 12i32;
+pub const MIB_TCP_STATE_ESTAB: MIB_TCP_STATE = 5i32;
+pub const MIB_TCP_STATE_FIN_WAIT1: MIB_TCP_STATE = 6i32;
+pub const MIB_TCP_STATE_FIN_WAIT2: MIB_TCP_STATE = 7i32;
+pub const MIB_TCP_STATE_LAST_ACK: MIB_TCP_STATE = 10i32;
+pub const MIB_TCP_STATE_LISTEN: MIB_TCP_STATE = 2i32;
+pub const MIB_TCP_STATE_RESERVED: MIB_TCP_STATE = 100i32;
+pub const MIB_TCP_STATE_SYN_RCVD: MIB_TCP_STATE = 4i32;
+pub const MIB_TCP_STATE_SYN_SENT: MIB_TCP_STATE = 3i32;
+pub const MIB_TCP_STATE_TIME_WAIT: MIB_TCP_STATE = 11i32;
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
@@ -2499,6 +3004,12 @@ pub struct MIB_UDP6ROW {
     pub dwLocalAddr: super::super::Networking::WinSock::IN6_ADDR,
     pub dwLocalScopeId: u32,
     pub dwLocalPort: u32,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_UDP6ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2514,14 +3025,24 @@ pub struct MIB_UDP6ROW2 {
     pub dwRemoteScopeId: u32,
     pub dwRemotePort: u32,
 }
+impl Default for MIB_UDP6ROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_UDP6ROW2_0 {
     pub Anonymous: MIB_UDP6ROW2_0_0,
     pub dwFlags: i32,
 }
+impl Default for MIB_UDP6ROW2_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDP6ROW2_0_0 {
     pub _bitfield: i32,
 }
@@ -2536,14 +3057,24 @@ pub struct MIB_UDP6ROW_OWNER_MODULE {
     pub Anonymous: MIB_UDP6ROW_OWNER_MODULE_0,
     pub OwningModuleInfo: [u64; 16],
 }
+impl Default for MIB_UDP6ROW_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_UDP6ROW_OWNER_MODULE_0 {
     pub Anonymous: MIB_UDP6ROW_OWNER_MODULE_0_0,
     pub dwFlags: i32,
 }
+impl Default for MIB_UDP6ROW_OWNER_MODULE_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDP6ROW_OWNER_MODULE_0_0 {
     pub _bitfield: i32,
 }
@@ -2555,6 +3086,11 @@ pub struct MIB_UDP6ROW_OWNER_PID {
     pub dwLocalPort: u32,
     pub dwOwningPid: u32,
 }
+impl Default for MIB_UDP6ROW_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
@@ -2562,11 +3098,22 @@ pub struct MIB_UDP6TABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_UDP6ROW; 1],
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for MIB_UDP6TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_UDP6TABLE2 {
     pub dwNumEntries: u32,
     pub table: [MIB_UDP6ROW2; 1],
+}
+impl Default for MIB_UDP6TABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2574,14 +3121,24 @@ pub struct MIB_UDP6TABLE_OWNER_MODULE {
     pub dwNumEntries: u32,
     pub table: [MIB_UDP6ROW_OWNER_MODULE; 1],
 }
+impl Default for MIB_UDP6TABLE_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_UDP6TABLE_OWNER_PID {
     pub dwNumEntries: u32,
     pub table: [MIB_UDP6ROW_OWNER_PID; 1],
 }
+impl Default for MIB_UDP6TABLE_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPROW {
     pub dwLocalAddr: u32,
     pub dwLocalPort: u32,
@@ -2598,14 +3155,24 @@ pub struct MIB_UDPROW2 {
     pub dwRemoteAddr: u32,
     pub dwRemotePort: u32,
 }
+impl Default for MIB_UDPROW2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_UDPROW2_0 {
     pub Anonymous: MIB_UDPROW2_0_0,
     pub dwFlags: i32,
 }
+impl Default for MIB_UDPROW2_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPROW2_0_0 {
     pub _bitfield: i32,
 }
@@ -2619,26 +3186,36 @@ pub struct MIB_UDPROW_OWNER_MODULE {
     pub Anonymous: MIB_UDPROW_OWNER_MODULE_0,
     pub OwningModuleInfo: [u64; 16],
 }
+impl Default for MIB_UDPROW_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union MIB_UDPROW_OWNER_MODULE_0 {
     pub Anonymous: MIB_UDPROW_OWNER_MODULE_0_0,
     pub dwFlags: i32,
 }
+impl Default for MIB_UDPROW_OWNER_MODULE_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPROW_OWNER_MODULE_0_0 {
     pub _bitfield: i32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPROW_OWNER_PID {
     pub dwLocalAddr: u32,
     pub dwLocalPort: u32,
     pub dwOwningPid: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPSTATS {
     pub dwInDatagrams: u32,
     pub dwNoPorts: u32,
@@ -2647,7 +3224,7 @@ pub struct MIB_UDPSTATS {
     pub dwNumAddrs: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct MIB_UDPSTATS2 {
     pub dw64InDatagrams: u64,
     pub dwNoPorts: u32,
@@ -2661,11 +3238,21 @@ pub struct MIB_UDPTABLE {
     pub dwNumEntries: u32,
     pub table: [MIB_UDPROW; 1],
 }
+impl Default for MIB_UDPTABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_UDPTABLE2 {
     pub dwNumEntries: u32,
     pub table: [MIB_UDPROW2; 1],
+}
+impl Default for MIB_UDPTABLE2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -2673,11 +3260,21 @@ pub struct MIB_UDPTABLE_OWNER_MODULE {
     pub dwNumEntries: u32,
     pub table: [MIB_UDPROW_OWNER_MODULE; 1],
 }
+impl Default for MIB_UDPTABLE_OWNER_MODULE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct MIB_UDPTABLE_OWNER_PID {
     pub dwNumEntries: u32,
     pub table: [MIB_UDPROW_OWNER_PID; 1],
+}
+impl Default for MIB_UDPTABLE_OWNER_PID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -2691,10 +3288,16 @@ pub struct MIB_UNICASTIPADDRESS_ROW {
     pub ValidLifetime: u32,
     pub PreferredLifetime: u32,
     pub OnLinkPrefixLength: u8,
-    pub SkipAsSource: super::super::Foundation::BOOLEAN,
+    pub SkipAsSource: bool,
     pub DadState: super::super::Networking::WinSock::NL_DAD_STATE,
     pub ScopeId: super::super::Networking::WinSock::SCOPE_ID,
     pub CreationTimeStamp: i64,
+}
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_UNICASTIPADDRESS_ROW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
@@ -2703,12 +3306,45 @@ pub struct MIB_UNICASTIPADDRESS_TABLE {
     pub NumEntries: u32,
     pub Table: [MIB_UNICASTIPADDRESS_ROW; 1],
 }
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+impl Default for MIB_UNICASTIPADDRESS_TABLE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const MIB_USE_CURRENT_FORWARDING: u32 = 4294967295u32;
+pub const MIB_USE_CURRENT_TTL: u32 = 4294967295u32;
+pub const MIN_IF_TYPE: u32 = 1u32;
+pub const MIXED_NODETYPE: u32 = 4u32;
+pub const MibAddInstance: MIB_NOTIFICATION_TYPE = 1i32;
+pub const MibDeleteInstance: MIB_NOTIFICATION_TYPE = 2i32;
+pub const MibIfEntryNormal: MIB_IF_ENTRY_LEVEL = 0i32;
+pub const MibIfEntryNormalWithoutStatistics: MIB_IF_ENTRY_LEVEL = 2i32;
+pub const MibIfTableNormal: MIB_IF_TABLE_LEVEL = 0i32;
+pub const MibIfTableNormalWithoutStatistics: MIB_IF_TABLE_LEVEL = 2i32;
+pub const MibIfTableRaw: MIB_IF_TABLE_LEVEL = 1i32;
+pub const MibInitialNotification: MIB_NOTIFICATION_TYPE = 3i32;
+pub const MibParameterNotification: MIB_NOTIFICATION_TYPE = 0i32;
+pub const ND_NEIGHBOR_ADVERT: ICMP6_TYPE = 136i32;
+pub const ND_NEIGHBOR_SOLICIT: ICMP6_TYPE = 135i32;
+pub const ND_REDIRECT: ICMP6_TYPE = 137i32;
+pub const ND_ROUTER_ADVERT: ICMP6_TYPE = 134i32;
+pub const ND_ROUTER_SOLICIT: ICMP6_TYPE = 133i32;
+pub const NET_ADDRESS_DNS_NAME: NET_ADDRESS_FORMAT = 1i32;
+pub type NET_ADDRESS_FORMAT = i32;
+pub const NET_ADDRESS_FORMAT_UNSPECIFIED: NET_ADDRESS_FORMAT = 0i32;
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
 pub struct NET_ADDRESS_INFO {
     pub Format: NET_ADDRESS_FORMAT,
     pub Anonymous: NET_ADDRESS_INFO_0,
+}
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for NET_ADDRESS_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
@@ -2719,6 +3355,12 @@ pub union NET_ADDRESS_INFO_0 {
     pub Ipv6Address: super::super::Networking::WinSock::SOCKADDR_IN6,
     pub IpAddress: super::super::Networking::WinSock::SOCKADDR,
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for NET_ADDRESS_INFO_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "Win32_Networking_WinSock")]
 #[derive(Clone, Copy)]
@@ -2726,6 +3368,35 @@ pub struct NET_ADDRESS_INFO_0_0 {
     pub Address: [u16; 256],
     pub Port: [u16; 6],
 }
+#[cfg(feature = "Win32_Networking_WinSock")]
+impl Default for NET_ADDRESS_INFO_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const NET_ADDRESS_IPV4: NET_ADDRESS_FORMAT = 2i32;
+pub const NET_ADDRESS_IPV6: NET_ADDRESS_FORMAT = 3i32;
+pub const NET_STRING_IPV4_ADDRESS: u32 = 1u32;
+pub const NET_STRING_IPV4_NETWORK: u32 = 4u32;
+pub const NET_STRING_IPV4_SERVICE: u32 = 2u32;
+pub const NET_STRING_IPV6_ADDRESS: u32 = 8u32;
+pub const NET_STRING_IPV6_ADDRESS_NO_SCOPE: u32 = 16u32;
+pub const NET_STRING_IPV6_NETWORK: u32 = 128u32;
+pub const NET_STRING_IPV6_SERVICE: u32 = 32u32;
+pub const NET_STRING_IPV6_SERVICE_NO_SCOPE: u32 = 64u32;
+pub const NET_STRING_NAMED_ADDRESS: u32 = 256u32;
+pub const NET_STRING_NAMED_SERVICE: u32 = 512u32;
+pub const NUMBER_OF_EXPORTED_VARIABLES: u32 = 39u32;
+pub const PEER_TO_PEER_NODETYPE: u32 = 2u32;
+pub type PFADDRESSTYPE = i32;
+pub const PFERROR_BUFFER_TOO_SMALL: u32 = 23002u32;
+pub const PFERROR_NO_FILTERS_GIVEN: u32 = 23001u32;
+pub const PFERROR_NO_PF_INTERFACE: u32 = 23000u32;
+pub type PFFORWARD_ACTION = i32;
+pub type PFFRAMETYPE = i32;
+pub const PFFT_FILTER: PFFRAMETYPE = 1i32;
+pub const PFFT_FRAG: PFFRAMETYPE = 2i32;
+pub const PFFT_SPOOF: PFFRAMETYPE = 3i32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct PFLOGFRAME {
@@ -2739,6 +3410,13 @@ pub struct PFLOGFRAME {
     pub dwIPIndex: u32,
     pub bPacketData: [u8; 1],
 }
+impl Default for PFLOGFRAME {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const PF_ACTION_DROP: PFFORWARD_ACTION = 1i32;
+pub const PF_ACTION_FORWARD: PFFORWARD_ACTION = 0i32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct PF_FILTER_DESCRIPTOR {
@@ -2756,8 +3434,13 @@ pub struct PF_FILTER_DESCRIPTOR {
     pub wSrcPortHighRange: u16,
     pub wDstPortHighRange: u16,
 }
+impl Default for PF_FILTER_DESCRIPTOR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct PF_FILTER_STATS {
     pub dwNumPacketsFiltered: u32,
     pub info: PF_FILTER_DESCRIPTOR,
@@ -2782,6 +3465,13 @@ pub struct PF_INTERFACE_STATS {
     pub dwLostLogEntries: u32,
     pub FilterInfo: [PF_FILTER_STATS; 1],
 }
+impl Default for PF_INTERFACE_STATS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const PF_IPV4: PFADDRESSTYPE = 0i32;
+pub const PF_IPV6: PFADDRESSTYPE = 1i32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct PF_LATEBIND_INFO {
@@ -2789,30 +3479,63 @@ pub struct PF_LATEBIND_INFO {
     pub DstAddr: *mut u8,
     pub Mask: *mut u8,
 }
+impl Default for PF_LATEBIND_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void)>;
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+pub type PIPFORWARD_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_IPFORWARD_ROW2, notificationtype: MIB_NOTIFICATION_TYPE)>;
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+pub type PIPINTERFACE_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_IPINTERFACE_ROW, notificationtype: MIB_NOTIFICATION_TYPE)>;
+#[cfg(feature = "Win32_Networking_WinSock")]
+pub type PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, connectivityhint: super::super::Networking::WinSock::NL_NETWORK_CONNECTIVITY_HINT)>;
+pub const PROXY_ARP: u32 = 22u32;
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+pub type PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, addresstable: *const MIB_UNICASTIPADDRESS_TABLE)>;
+pub type PTEREDO_PORT_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, port: u16, notificationtype: MIB_NOTIFICATION_TYPE)>;
+#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
+pub type PUNICAST_IPADDRESS_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_UNICASTIPADDRESS_ROW, notificationtype: MIB_NOTIFICATION_TYPE)>;
+pub const ROUTE_LONGER: u32 = 32u32;
+pub const ROUTE_MATCHING: u32 = 31u32;
+pub const ROUTE_SHORTER: u32 = 33u32;
+pub const ROUTE_STATE: u32 = 34u32;
+pub const TCP6_STATS: u32 = 38u32;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct TCPIP_OWNER_MODULE_BASIC_INFO {
     pub pModuleName: windows_sys::core::PWSTR,
     pub pModulePath: windows_sys::core::PWSTR,
 }
+impl Default for TCPIP_OWNER_MODULE_BASIC_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const TCPIP_OWNER_MODULE_INFO_BASIC: TCPIP_OWNER_MODULE_INFO_CLASS = 0i32;
+pub type TCPIP_OWNER_MODULE_INFO_CLASS = i32;
+pub const TCPIP_OWNING_MODULE_SIZE: u32 = 16u32;
+pub type TCP_BOOLEAN_OPTIONAL = i32;
+pub type TCP_CONNECTION_OFFLOAD_STATE = i32;
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_BANDWIDTH_ROD_v0 {
     pub OutboundBandwidth: u64,
     pub InboundBandwidth: u64,
     pub OutboundInstability: u64,
     pub InboundInstability: u64,
-    pub OutboundBandwidthPeaked: super::super::Foundation::BOOLEAN,
-    pub InboundBandwidthPeaked: super::super::Foundation::BOOLEAN,
+    pub OutboundBandwidthPeaked: bool,
+    pub InboundBandwidthPeaked: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_BANDWIDTH_RW_v0 {
     pub EnableCollectionOutbound: TCP_BOOLEAN_OPTIONAL,
     pub EnableCollectionInbound: TCP_BOOLEAN_OPTIONAL,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_DATA_ROD_v0 {
     pub DataBytesOut: u64,
     pub DataSegsOut: u64,
@@ -2830,12 +3553,12 @@ pub struct TCP_ESTATS_DATA_ROD_v0 {
     pub ThruBytesReceived: u64,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_DATA_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_FINE_RTT_ROD_v0 {
     pub RttVar: u32,
     pub MaxRtt: u32,
@@ -2843,12 +3566,12 @@ pub struct TCP_ESTATS_FINE_RTT_ROD_v0 {
     pub SumRtt: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_FINE_RTT_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_OBS_REC_ROD_v0 {
     pub CurRwinRcvd: u32,
     pub MaxRwinRcvd: u32,
@@ -2856,12 +3579,12 @@ pub struct TCP_ESTATS_OBS_REC_ROD_v0 {
     pub WinScaleRcvd: u8,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_OBS_REC_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_PATH_ROD_v0 {
     pub FastRetran: u32,
     pub Timeouts: u32,
@@ -2905,12 +3628,12 @@ pub struct TCP_ESTATS_PATH_ROD_v0 {
     pub SpuriousRtoDetections: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_PATH_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_REC_ROD_v0 {
     pub CurRwinSent: u32,
     pub MaxRwinSent: u32,
@@ -2928,12 +3651,12 @@ pub struct TCP_ESTATS_REC_ROD_v0 {
     pub WinScaleSent: u8,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_REC_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SEND_BUFF_ROD_v0 {
     pub CurRetxQueue: usize,
     pub MaxRetxQueue: usize,
@@ -2941,12 +3664,12 @@ pub struct TCP_ESTATS_SEND_BUFF_ROD_v0 {
     pub MaxAppWQueue: usize,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SEND_BUFF_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SND_CONG_ROD_v0 {
     pub SndLimTransRwin: u32,
     pub SndLimTimeRwin: u32,
@@ -2968,37 +3691,81 @@ pub struct TCP_ESTATS_SND_CONG_ROD_v0 {
     pub MinSsthresh: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SND_CONG_ROS_v0 {
     pub LimCwnd: u32,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SND_CONG_RW_v0 {
-    pub EnableCollection: super::super::Foundation::BOOLEAN,
+    pub EnableCollection: bool,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_ESTATS_SYN_OPTS_ROS_v0 {
-    pub ActiveOpen: super::super::Foundation::BOOLEAN,
+    pub ActiveOpen: bool,
     pub MssRcvd: u32,
     pub MssSent: u32,
 }
+pub type TCP_ESTATS_TYPE = i32;
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct TCP_RESERVE_PORT_RANGE {
     pub UpperRange: u16,
     pub LowerRange: u16,
 }
-pub type PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void)>;
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-pub type PIPFORWARD_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_IPFORWARD_ROW2, notificationtype: MIB_NOTIFICATION_TYPE)>;
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-pub type PIPINTERFACE_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_IPINTERFACE_ROW, notificationtype: MIB_NOTIFICATION_TYPE)>;
-#[cfg(feature = "Win32_Networking_WinSock")]
-pub type PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, connectivityhint: super::super::Networking::WinSock::NL_NETWORK_CONNECTIVITY_HINT)>;
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-pub type PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, addresstable: *const MIB_UNICASTIPADDRESS_TABLE)>;
-pub type PTEREDO_PORT_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, port: u16, notificationtype: MIB_NOTIFICATION_TYPE)>;
-#[cfg(all(feature = "Win32_NetworkManagement_Ndis", feature = "Win32_Networking_WinSock"))]
-pub type PUNICAST_IPADDRESS_CHANGE_CALLBACK = Option<unsafe extern "system" fn(callercontext: *const core::ffi::c_void, row: *const MIB_UNICASTIPADDRESS_ROW, notificationtype: MIB_NOTIFICATION_TYPE)>;
+pub const TCP_ROW: u32 = 14u32;
+pub type TCP_RTO_ALGORITHM = i32;
+pub type TCP_SOFT_ERROR = i32;
+pub const TCP_STATS: u32 = 12u32;
+pub const TCP_TABLE: u32 = 13u32;
+pub const TCP_TABLE_BASIC_ALL: TCP_TABLE_CLASS = 2i32;
+pub const TCP_TABLE_BASIC_CONNECTIONS: TCP_TABLE_CLASS = 1i32;
+pub const TCP_TABLE_BASIC_LISTENER: TCP_TABLE_CLASS = 0i32;
+pub type TCP_TABLE_CLASS = i32;
+pub const TCP_TABLE_OWNER_MODULE_ALL: TCP_TABLE_CLASS = 8i32;
+pub const TCP_TABLE_OWNER_MODULE_CONNECTIONS: TCP_TABLE_CLASS = 7i32;
+pub const TCP_TABLE_OWNER_MODULE_LISTENER: TCP_TABLE_CLASS = 6i32;
+pub const TCP_TABLE_OWNER_PID_ALL: TCP_TABLE_CLASS = 5i32;
+pub const TCP_TABLE_OWNER_PID_CONNECTIONS: TCP_TABLE_CLASS = 4i32;
+pub const TCP_TABLE_OWNER_PID_LISTENER: TCP_TABLE_CLASS = 3i32;
+pub const TcpBoolOptDisabled: TCP_BOOLEAN_OPTIONAL = 0i32;
+pub const TcpBoolOptEnabled: TCP_BOOLEAN_OPTIONAL = 1i32;
+pub const TcpBoolOptUnchanged: TCP_BOOLEAN_OPTIONAL = -1i32;
+pub const TcpConnectionEstatsBandwidth: TCP_ESTATS_TYPE = 7i32;
+pub const TcpConnectionEstatsData: TCP_ESTATS_TYPE = 1i32;
+pub const TcpConnectionEstatsFineRtt: TCP_ESTATS_TYPE = 8i32;
+pub const TcpConnectionEstatsMaximum: TCP_ESTATS_TYPE = 9i32;
+pub const TcpConnectionEstatsObsRec: TCP_ESTATS_TYPE = 6i32;
+pub const TcpConnectionEstatsPath: TCP_ESTATS_TYPE = 3i32;
+pub const TcpConnectionEstatsRec: TCP_ESTATS_TYPE = 5i32;
+pub const TcpConnectionEstatsSendBuff: TCP_ESTATS_TYPE = 4i32;
+pub const TcpConnectionEstatsSndCong: TCP_ESTATS_TYPE = 2i32;
+pub const TcpConnectionEstatsSynOpts: TCP_ESTATS_TYPE = 0i32;
+pub const TcpConnectionOffloadStateInHost: TCP_CONNECTION_OFFLOAD_STATE = 0i32;
+pub const TcpConnectionOffloadStateMax: TCP_CONNECTION_OFFLOAD_STATE = 4i32;
+pub const TcpConnectionOffloadStateOffloaded: TCP_CONNECTION_OFFLOAD_STATE = 2i32;
+pub const TcpConnectionOffloadStateOffloading: TCP_CONNECTION_OFFLOAD_STATE = 1i32;
+pub const TcpConnectionOffloadStateUploading: TCP_CONNECTION_OFFLOAD_STATE = 3i32;
+pub const TcpErrorAboveAckWindow: TCP_SOFT_ERROR = 4i32;
+pub const TcpErrorAboveDataWindow: TCP_SOFT_ERROR = 2i32;
+pub const TcpErrorAboveTsWindow: TCP_SOFT_ERROR = 6i32;
+pub const TcpErrorBelowAckWindow: TCP_SOFT_ERROR = 3i32;
+pub const TcpErrorBelowDataWindow: TCP_SOFT_ERROR = 1i32;
+pub const TcpErrorBelowTsWindow: TCP_SOFT_ERROR = 5i32;
+pub const TcpErrorDataChecksumError: TCP_SOFT_ERROR = 7i32;
+pub const TcpErrorDataLengthError: TCP_SOFT_ERROR = 8i32;
+pub const TcpErrorMaxSoftError: TCP_SOFT_ERROR = 9i32;
+pub const TcpErrorNone: TCP_SOFT_ERROR = 0i32;
+pub const TcpRtoAlgorithmConstant: TCP_RTO_ALGORITHM = 2i32;
+pub const TcpRtoAlgorithmOther: TCP_RTO_ALGORITHM = 1i32;
+pub const TcpRtoAlgorithmRsre: TCP_RTO_ALGORITHM = 3i32;
+pub const TcpRtoAlgorithmVanj: TCP_RTO_ALGORITHM = 4i32;
+pub const UDP6_STATS: u32 = 37u32;
+pub const UDP_ROW: u32 = 17u32;
+pub const UDP_STATS: u32 = 15u32;
+pub const UDP_TABLE: u32 = 16u32;
+pub const UDP_TABLE_BASIC: UDP_TABLE_CLASS = 0i32;
+pub type UDP_TABLE_CLASS = i32;
+pub const UDP_TABLE_OWNER_MODULE: UDP_TABLE_CLASS = 2i32;
+pub const UDP_TABLE_OWNER_PID: UDP_TABLE_CLASS = 1i32;

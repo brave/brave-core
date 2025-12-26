@@ -1,67 +1,106 @@
-windows_targets::link!("kernel32.dll" "system" fn DnsHostnameToComputerNameExW(hostname : windows_sys::core::PCWSTR, computername : windows_sys::core::PWSTR, nsize : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn EnumSystemFirmwareTables(firmwaretableprovidersignature : FIRMWARE_TABLE_PROVIDER, pfirmwaretableenumbuffer : *mut u8, buffersize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetComputerNameExA(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PSTR, nsize : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetComputerNameExW(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PWSTR, nsize : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-6.dll" "system" fn GetDeveloperDriveEnablementState() -> DEVELOPER_DRIVE_ENABLEMENT_STATE);
-windows_targets::link!("kernel32.dll" "system" fn GetFirmwareType(firmwaretype : *mut FIRMWARE_TYPE) -> super::super::Foundation:: BOOL);
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-3.dll" "system" fn GetIntegratedDisplaySize(sizeininches : *mut f64) -> windows_sys::core::HRESULT);
-windows_targets::link!("kernel32.dll" "system" fn GetLocalTime(lpsystemtime : *mut super::super::Foundation:: SYSTEMTIME));
-windows_targets::link!("kernel32.dll" "system" fn GetLogicalProcessorInformation(buffer : *mut SYSTEM_LOGICAL_PROCESSOR_INFORMATION, returnedlength : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetLogicalProcessorInformationEx(relationshiptype : LOGICAL_PROCESSOR_RELATIONSHIP, buffer : *mut SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, returnedlength : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetNativeSystemInfo(lpsysteminfo : *mut SYSTEM_INFO));
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-3.dll" "system" fn GetOsManufacturingMode(pbenabled : *mut super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-0.dll" "system" fn GetOsSafeBootMode(flags : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetPhysicallyInstalledSystemMemory(totalmemoryinkilobytes : *mut u64) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetProcessorSystemCycleTime(group : u16, buffer : *mut SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION, returnedlength : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetProductInfo(dwosmajorversion : u32, dwosminorversion : u32, dwspmajorversion : u32, dwspminorversion : u32, pdwreturnedproducttype : *mut OS_PRODUCT_TYPE) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemCpuSetInformation(information : *mut SYSTEM_CPU_SET_INFORMATION, bufferlength : u32, returnedlength : *mut u32, process : super::super::Foundation:: HANDLE, flags : u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemDEPPolicy() -> DEP_SYSTEM_POLICY_TYPE);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemFirmwareTable(firmwaretableprovidersignature : FIRMWARE_TABLE_PROVIDER, firmwaretableid : u32, pfirmwaretablebuffer : *mut u8, buffersize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemInfo(lpsysteminfo : *mut SYSTEM_INFO));
-windows_targets::link!("kernel32.dll" "system" fn GetSystemLeapSecondInformation(enabled : *mut super::super::Foundation:: BOOL, flags : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemTime(lpsystemtime : *mut super::super::Foundation:: SYSTEMTIME));
-windows_targets::link!("kernel32.dll" "system" fn GetSystemTimeAdjustment(lptimeadjustment : *mut u32, lptimeincrement : *mut u32, lptimeadjustmentdisabled : *mut super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-4.dll" "system" fn GetSystemTimeAdjustmentPrecise(lptimeadjustment : *mut u64, lptimeincrement : *mut u64, lptimeadjustmentdisabled : *mut super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemTimeAsFileTime(lpsystemtimeasfiletime : *mut super::super::Foundation:: FILETIME));
-windows_targets::link!("kernel32.dll" "system" fn GetSystemTimePreciseAsFileTime(lpsystemtimeasfiletime : *mut super::super::Foundation:: FILETIME));
-windows_targets::link!("kernel32.dll" "system" fn GetSystemWindowsDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemWindowsDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
-windows_targets::link!("api-ms-win-core-wow64-l1-1-1.dll" "system" fn GetSystemWow64Directory2A(lpbuffer : windows_sys::core::PSTR, usize : u32, imagefilemachinetype : IMAGE_FILE_MACHINE) -> u32);
-windows_targets::link!("api-ms-win-core-wow64-l1-1-1.dll" "system" fn GetSystemWow64Directory2W(lpbuffer : windows_sys::core::PWSTR, usize : u32, imagefilemachinetype : IMAGE_FILE_MACHINE) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemWow64DirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetSystemWow64DirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetTickCount() -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetTickCount64() -> u64);
-windows_targets::link!("kernel32.dll" "system" fn GetVersion() -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetVersionExA(lpversioninformation : *mut OSVERSIONINFOA) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetVersionExW(lpversioninformation : *mut OSVERSIONINFOW) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetWindowsDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GetWindowsDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn GlobalMemoryStatus(lpbuffer : *mut MEMORYSTATUS));
-windows_targets::link!("kernel32.dll" "system" fn GlobalMemoryStatusEx(lpbuffer : *mut MEMORYSTATUSEX) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn IsUserCetAvailableInEnvironment(usercetenvironment : USER_CET_ENVIRONMENT) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn IsWow64GuestMachineSupported(wowguestmachine : IMAGE_FILE_MACHINE, machineissupported : *mut super::super::Foundation:: BOOL) -> windows_sys::core::HRESULT);
-windows_targets::link!("ntdll.dll" "system" fn RtlConvertDeviceFamilyInfoToString(puldevicefamilybuffersize : *mut u32, puldeviceformbuffersize : *mut u32, devicefamily : windows_sys::core::PWSTR, deviceform : windows_sys::core::PWSTR) -> u32);
-windows_targets::link!("ntdll.dll" "system" fn RtlGetDeviceFamilyInfoEnum(pulluapinfo : *mut u64, puldevicefamily : *mut DEVICEFAMILYINFOENUM, puldeviceform : *mut DEVICEFAMILYDEVICEFORM));
-windows_targets::link!("ntdll.dll" "system" fn RtlGetProductInfo(osmajorversion : u32, osminorversion : u32, spmajorversion : u32, spminorversion : u32, returnedproducttype : *mut u32) -> super::super::Foundation:: BOOLEAN);
-windows_targets::link!("ntdllk.dll" "system" fn RtlGetSystemGlobalData(dataid : RTL_SYSTEM_GLOBAL_DATA_ID, buffer : *mut core::ffi::c_void, size : u32) -> u32);
-windows_targets::link!("ntdll.dll" "system" fn RtlOsDeploymentState(flags : u32) -> OS_DEPLOYEMENT_STATE_VALUES);
-windows_targets::link!("ntdll.dll" "system" fn RtlSwitchedVVI(versioninfo : *const OSVERSIONINFOEXW, typemask : u32, conditionmask : u64) -> u32);
-windows_targets::link!("kernel32.dll" "system" fn SetComputerNameA(lpcomputername : windows_sys::core::PCSTR) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetComputerNameEx2W(nametype : COMPUTER_NAME_FORMAT, flags : u32, lpbuffer : windows_sys::core::PCWSTR) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetComputerNameExA(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PCSTR) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetComputerNameExW(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PCWSTR) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetComputerNameW(lpcomputername : windows_sys::core::PCWSTR) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetLocalTime(lpsystemtime : *const super::super::Foundation:: SYSTEMTIME) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetSystemTime(lpsystemtime : *const super::super::Foundation:: SYSTEMTIME) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn SetSystemTimeAdjustment(dwtimeadjustment : u32, btimeadjustmentdisabled : super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-windows_targets::link!("api-ms-win-core-sysinfo-l1-2-4.dll" "system" fn SetSystemTimeAdjustmentPrecise(dwtimeadjustment : u64, btimeadjustmentdisabled : super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn VerSetConditionMask(conditionmask : u64, typemask : VER_FLAGS, condition : u8) -> u64);
-windows_targets::link!("kernel32.dll" "system" fn VerifyVersionInfoA(lpversioninformation : *mut OSVERSIONINFOEXA, dwtypemask : VER_FLAGS, dwlconditionmask : u64) -> super::super::Foundation:: BOOL);
-windows_targets::link!("kernel32.dll" "system" fn VerifyVersionInfoW(lpversioninformation : *mut OSVERSIONINFOEXW, dwtypemask : VER_FLAGS, dwlconditionmask : u64) -> super::super::Foundation:: BOOL);
+windows_link::link!("kernel32.dll" "system" fn DnsHostnameToComputerNameExW(hostname : windows_sys::core::PCWSTR, computername : windows_sys::core::PWSTR, nsize : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn EnumSystemFirmwareTables(firmwaretableprovidersignature : FIRMWARE_TABLE_PROVIDER, pfirmwaretableenumbuffer : *mut u8, buffersize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetComputerNameExA(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PSTR, nsize : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetComputerNameExW(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PWSTR, nsize : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-6.dll" "system" fn GetDeveloperDriveEnablementState() -> DEVELOPER_DRIVE_ENABLEMENT_STATE);
+windows_link::link!("kernel32.dll" "system" fn GetFirmwareType(firmwaretype : *mut FIRMWARE_TYPE) -> windows_sys::core::BOOL);
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-3.dll" "system" fn GetIntegratedDisplaySize(sizeininches : *mut f64) -> windows_sys::core::HRESULT);
+windows_link::link!("kernel32.dll" "system" fn GetLocalTime(lpsystemtime : *mut super::super::Foundation:: SYSTEMTIME));
+windows_link::link!("kernel32.dll" "system" fn GetLogicalProcessorInformation(buffer : *mut SYSTEM_LOGICAL_PROCESSOR_INFORMATION, returnedlength : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetLogicalProcessorInformationEx(relationshiptype : LOGICAL_PROCESSOR_RELATIONSHIP, buffer : *mut SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, returnedlength : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetNativeSystemInfo(lpsysteminfo : *mut SYSTEM_INFO));
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-3.dll" "system" fn GetOsManufacturingMode(pbenabled : *mut windows_sys::core::BOOL) -> windows_sys::core::BOOL);
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-0.dll" "system" fn GetOsSafeBootMode(flags : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetPhysicallyInstalledSystemMemory(totalmemoryinkilobytes : *mut u64) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetProcessorSystemCycleTime(group : u16, buffer : *mut SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION, returnedlength : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetProductInfo(dwosmajorversion : u32, dwosminorversion : u32, dwspmajorversion : u32, dwspminorversion : u32, pdwreturnedproducttype : *mut OS_PRODUCT_TYPE) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetSystemCpuSetInformation(information : *mut SYSTEM_CPU_SET_INFORMATION, bufferlength : u32, returnedlength : *mut u32, process : super::super::Foundation:: HANDLE, flags : u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetSystemDEPPolicy() -> DEP_SYSTEM_POLICY_TYPE);
+windows_link::link!("kernel32.dll" "system" fn GetSystemDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemFirmwareTable(firmwaretableprovidersignature : FIRMWARE_TABLE_PROVIDER, firmwaretableid : u32, pfirmwaretablebuffer : *mut u8, buffersize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemInfo(lpsysteminfo : *mut SYSTEM_INFO));
+windows_link::link!("kernel32.dll" "system" fn GetSystemLeapSecondInformation(enabled : *mut windows_sys::core::BOOL, flags : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetSystemTime(lpsystemtime : *mut super::super::Foundation:: SYSTEMTIME));
+windows_link::link!("kernel32.dll" "system" fn GetSystemTimeAdjustment(lptimeadjustment : *mut u32, lptimeincrement : *mut u32, lptimeadjustmentdisabled : *mut windows_sys::core::BOOL) -> windows_sys::core::BOOL);
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-4.dll" "system" fn GetSystemTimeAdjustmentPrecise(lptimeadjustment : *mut u64, lptimeincrement : *mut u64, lptimeadjustmentdisabled : *mut windows_sys::core::BOOL) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetSystemTimeAsFileTime(lpsystemtimeasfiletime : *mut super::super::Foundation:: FILETIME));
+windows_link::link!("kernel32.dll" "system" fn GetSystemTimePreciseAsFileTime(lpsystemtimeasfiletime : *mut super::super::Foundation:: FILETIME));
+windows_link::link!("kernel32.dll" "system" fn GetSystemWindowsDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemWindowsDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
+windows_link::link!("api-ms-win-core-wow64-l1-1-1.dll" "system" fn GetSystemWow64Directory2A(lpbuffer : windows_sys::core::PSTR, usize : u32, imagefilemachinetype : IMAGE_FILE_MACHINE) -> u32);
+windows_link::link!("api-ms-win-core-wow64-l1-1-1.dll" "system" fn GetSystemWow64Directory2W(lpbuffer : windows_sys::core::PWSTR, usize : u32, imagefilemachinetype : IMAGE_FILE_MACHINE) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemWow64DirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetSystemWow64DirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetTickCount() -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetTickCount64() -> u64);
+windows_link::link!("kernel32.dll" "system" fn GetVersion() -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetVersionExA(lpversioninformation : *mut OSVERSIONINFOA) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetVersionExW(lpversioninformation : *mut OSVERSIONINFOW) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetWindowsDirectoryA(lpbuffer : windows_sys::core::PSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GetWindowsDirectoryW(lpbuffer : windows_sys::core::PWSTR, usize : u32) -> u32);
+windows_link::link!("kernel32.dll" "system" fn GlobalMemoryStatus(lpbuffer : *mut MEMORYSTATUS));
+windows_link::link!("kernel32.dll" "system" fn GlobalMemoryStatusEx(lpbuffer : *mut MEMORYSTATUSEX) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn IsUserCetAvailableInEnvironment(usercetenvironment : USER_CET_ENVIRONMENT) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn IsWow64GuestMachineSupported(wowguestmachine : IMAGE_FILE_MACHINE, machineissupported : *mut windows_sys::core::BOOL) -> windows_sys::core::HRESULT);
+windows_link::link!("ntdll.dll" "system" fn RtlConvertDeviceFamilyInfoToString(puldevicefamilybuffersize : *mut u32, puldeviceformbuffersize : *mut u32, devicefamily : windows_sys::core::PWSTR, deviceform : windows_sys::core::PWSTR) -> u32);
+windows_link::link!("ntdll.dll" "system" fn RtlGetDeviceFamilyInfoEnum(pulluapinfo : *mut u64, puldevicefamily : *mut DEVICEFAMILYINFOENUM, puldeviceform : *mut DEVICEFAMILYDEVICEFORM));
+windows_link::link!("ntdll.dll" "system" fn RtlGetProductInfo(osmajorversion : u32, osminorversion : u32, spmajorversion : u32, spminorversion : u32, returnedproducttype : *mut u32) -> bool);
+windows_link::link!("ntdllk.dll" "system" fn RtlGetSystemGlobalData(dataid : RTL_SYSTEM_GLOBAL_DATA_ID, buffer : *mut core::ffi::c_void, size : u32) -> u32);
+windows_link::link!("ntdll.dll" "system" fn RtlOsDeploymentState(flags : u32) -> OS_DEPLOYEMENT_STATE_VALUES);
+windows_link::link!("ntdll.dll" "system" fn RtlSwitchedVVI(versioninfo : *const OSVERSIONINFOEXW, typemask : u32, conditionmask : u64) -> u32);
+windows_link::link!("kernel32.dll" "system" fn SetComputerNameA(lpcomputername : windows_sys::core::PCSTR) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetComputerNameEx2W(nametype : COMPUTER_NAME_FORMAT, flags : u32, lpbuffer : windows_sys::core::PCWSTR) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetComputerNameExA(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PCSTR) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetComputerNameExW(nametype : COMPUTER_NAME_FORMAT, lpbuffer : windows_sys::core::PCWSTR) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetComputerNameW(lpcomputername : windows_sys::core::PCWSTR) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetLocalTime(lpsystemtime : *const super::super::Foundation:: SYSTEMTIME) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetSystemTime(lpsystemtime : *const super::super::Foundation:: SYSTEMTIME) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn SetSystemTimeAdjustment(dwtimeadjustment : u32, btimeadjustmentdisabled : windows_sys::core::BOOL) -> windows_sys::core::BOOL);
+windows_link::link!("api-ms-win-core-sysinfo-l1-2-4.dll" "system" fn SetSystemTimeAdjustmentPrecise(dwtimeadjustment : u64, btimeadjustmentdisabled : windows_sys::core::BOOL) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn VerSetConditionMask(conditionmask : u64, typemask : VER_FLAGS, condition : u8) -> u64);
+windows_link::link!("kernel32.dll" "system" fn VerifyVersionInfoA(lpversioninformation : *mut OSVERSIONINFOEXA, dwtypemask : VER_FLAGS, dwlconditionmask : u64) -> windows_sys::core::BOOL);
+windows_link::link!("kernel32.dll" "system" fn VerifyVersionInfoW(lpversioninformation : *mut OSVERSIONINFOEXW, dwtypemask : VER_FLAGS, dwlconditionmask : u64) -> windows_sys::core::BOOL);
 pub const ACPI: FIRMWARE_TABLE_PROVIDER = 1094930505u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct CACHE_DESCRIPTOR {
+    pub Level: u8,
+    pub Associativity: u8,
+    pub LineSize: u16,
+    pub Size: u32,
+    pub Type: PROCESSOR_CACHE_TYPE,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct CACHE_RELATIONSHIP {
+    pub Level: u8,
+    pub Associativity: u8,
+    pub LineSize: u16,
+    pub CacheSize: u32,
+    pub Type: PROCESSOR_CACHE_TYPE,
+    pub Reserved: [u8; 18],
+    pub GroupCount: u16,
+    pub Anonymous: CACHE_RELATIONSHIP_0,
+}
+impl Default for CACHE_RELATIONSHIP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union CACHE_RELATIONSHIP_0 {
+    pub GroupMask: GROUP_AFFINITY,
+    pub GroupMasks: [GROUP_AFFINITY; 1],
+}
+impl Default for CACHE_RELATIONSHIP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type COMPUTER_NAME_FORMAT = i32;
+pub type CPU_SET_INFORMATION_TYPE = i32;
 pub const CacheData: PROCESSOR_CACHE_TYPE = 2i32;
 pub const CacheInstruction: PROCESSOR_CACHE_TYPE = 1i32;
 pub const CacheTrace: PROCESSOR_CACHE_TYPE = 3i32;
@@ -81,6 +120,9 @@ pub const DEPPolicyAlwaysOn: DEP_SYSTEM_POLICY_TYPE = 1i32;
 pub const DEPPolicyOptIn: DEP_SYSTEM_POLICY_TYPE = 2i32;
 pub const DEPPolicyOptOut: DEP_SYSTEM_POLICY_TYPE = 3i32;
 pub const DEPTotalPolicyCount: DEP_SYSTEM_POLICY_TYPE = 4i32;
+pub type DEP_SYSTEM_POLICY_TYPE = i32;
+pub type DEVELOPER_DRIVE_ENABLEMENT_STATE = i32;
+pub type DEVICEFAMILYDEVICEFORM = u32;
 pub const DEVICEFAMILYDEVICEFORM_ALLINONE: DEVICEFAMILYDEVICEFORM = 7u32;
 pub const DEVICEFAMILYDEVICEFORM_BANKING: DEVICEFAMILYDEVICEFORM = 14u32;
 pub const DEVICEFAMILYDEVICEFORM_BUILDING_AUTOMATION: DEVICEFAMILYDEVICEFORM = 15u32;
@@ -128,6 +170,7 @@ pub const DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09: DEVICEFAMILYDEVICEFORM = 45u3
 pub const DEVICEFAMILYDEVICEFORM_XBOX_SERIES_S: DEVICEFAMILYDEVICEFORM = 36u32;
 pub const DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X: DEVICEFAMILYDEVICEFORM = 34u32;
 pub const DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X_DEVKIT: DEVICEFAMILYDEVICEFORM = 35u32;
+pub type DEVICEFAMILYINFOENUM = u32;
 pub const DEVICEFAMILYINFOENUM_7067329: DEVICEFAMILYINFOENUM = 15u32;
 pub const DEVICEFAMILYINFOENUM_8828080: DEVICEFAMILYINFOENUM = 14u32;
 pub const DEVICEFAMILYINFOENUM_DESKTOP: DEVICEFAMILYINFOENUM = 3u32;
@@ -152,10 +195,37 @@ pub const DeveloperDriveDisabledBySystemPolicy: DEVELOPER_DRIVE_ENABLEMENT_STATE
 pub const DeveloperDriveEnabled: DEVELOPER_DRIVE_ENABLEMENT_STATE = 1i32;
 pub const DeveloperDriveEnablementStateError: DEVELOPER_DRIVE_ENABLEMENT_STATE = 0i32;
 pub const FIRM: FIRMWARE_TABLE_PROVIDER = 1179210317u32;
+pub type FIRMWARE_TABLE_PROVIDER = u32;
+pub type FIRMWARE_TYPE = i32;
 pub const FirmwareTypeBios: FIRMWARE_TYPE = 1i32;
 pub const FirmwareTypeMax: FIRMWARE_TYPE = 3i32;
 pub const FirmwareTypeUefi: FIRMWARE_TYPE = 2i32;
 pub const FirmwareTypeUnknown: FIRMWARE_TYPE = 0i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct GROUP_AFFINITY {
+    pub Mask: usize,
+    pub Group: u16,
+    pub Reserved: [u16; 3],
+}
+impl Default for GROUP_AFFINITY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct GROUP_RELATIONSHIP {
+    pub MaximumGroupCount: u16,
+    pub ActiveGroupCount: u16,
+    pub Reserved: [u8; 20],
+    pub GroupInfo: [PROCESSOR_GROUP_INFO; 1],
+}
+impl Default for GROUP_RELATIONSHIP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const GlobalDataIdConsoleSharedDataFlags: RTL_SYSTEM_GLOBAL_DATA_ID = 14i32;
 pub const GlobalDataIdCyclesPerYield: RTL_SYSTEM_GLOBAL_DATA_ID = 11i32;
 pub const GlobalDataIdImageNumberHigh: RTL_SYSTEM_GLOBAL_DATA_ID = 5i32;
@@ -176,6 +246,7 @@ pub const GlobalDataIdSystemExpirationDate: RTL_SYSTEM_GLOBAL_DATA_ID = 9i32;
 pub const GlobalDataIdTimeZoneBias: RTL_SYSTEM_GLOBAL_DATA_ID = 3i32;
 pub const GlobalDataIdTimeZoneId: RTL_SYSTEM_GLOBAL_DATA_ID = 6i32;
 pub const GlobalDataIdUnknown: RTL_SYSTEM_GLOBAL_DATA_ID = 0i32;
+pub type IMAGE_FILE_MACHINE = u16;
 pub const IMAGE_FILE_MACHINE_ALPHA: IMAGE_FILE_MACHINE = 388u16;
 pub const IMAGE_FILE_MACHINE_ALPHA64: IMAGE_FILE_MACHINE = 644u16;
 pub const IMAGE_FILE_MACHINE_AM33: IMAGE_FILE_MACHINE = 467u16;
@@ -208,6 +279,32 @@ pub const IMAGE_FILE_MACHINE_THUMB: IMAGE_FILE_MACHINE = 450u16;
 pub const IMAGE_FILE_MACHINE_TRICORE: IMAGE_FILE_MACHINE = 1312u16;
 pub const IMAGE_FILE_MACHINE_UNKNOWN: IMAGE_FILE_MACHINE = 0u16;
 pub const IMAGE_FILE_MACHINE_WCEMIPSV2: IMAGE_FILE_MACHINE = 361u16;
+pub type LOGICAL_PROCESSOR_RELATIONSHIP = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MEMORYSTATUS {
+    pub dwLength: u32,
+    pub dwMemoryLoad: u32,
+    pub dwTotalPhys: usize,
+    pub dwAvailPhys: usize,
+    pub dwTotalPageFile: usize,
+    pub dwAvailPageFile: usize,
+    pub dwTotalVirtual: usize,
+    pub dwAvailVirtual: usize,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MEMORYSTATUSEX {
+    pub dwLength: u32,
+    pub dwMemoryLoad: u32,
+    pub ullTotalPhys: u64,
+    pub ullAvailPhys: u64,
+    pub ullTotalPageFile: u64,
+    pub ullAvailPageFile: u64,
+    pub ullTotalVirtual: u64,
+    pub ullAvailVirtual: u64,
+    pub ullAvailExtendedVirtual: u64,
+}
 pub const NTDDI_LONGHORN: u32 = 100663296u32;
 pub const NTDDI_VERSION: u32 = 167772172u32;
 pub const NTDDI_VISTA: u32 = 100663296u32;
@@ -257,9 +354,108 @@ pub const NTDDI_WS08: u32 = 100663552u32;
 pub const NTDDI_WS08SP2: u32 = 100663808u32;
 pub const NTDDI_WS08SP3: u32 = 100664064u32;
 pub const NTDDI_WS08SP4: u32 = 100664320u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NUMA_NODE_RELATIONSHIP {
+    pub NodeNumber: u32,
+    pub Reserved: [u8; 18],
+    pub GroupCount: u16,
+    pub Anonymous: NUMA_NODE_RELATIONSHIP_0,
+}
+impl Default for NUMA_NODE_RELATIONSHIP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union NUMA_NODE_RELATIONSHIP_0 {
+    pub GroupMask: GROUP_AFFINITY,
+    pub GroupMasks: [GROUP_AFFINITY; 1],
+}
+impl Default for NUMA_NODE_RELATIONSHIP_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct OSVERSIONINFOA {
+    pub dwOSVersionInfoSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub dwBuildNumber: u32,
+    pub dwPlatformId: u32,
+    pub szCSDVersion: [i8; 128],
+}
+impl Default for OSVERSIONINFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct OSVERSIONINFOEXA {
+    pub dwOSVersionInfoSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub dwBuildNumber: u32,
+    pub dwPlatformId: u32,
+    pub szCSDVersion: [i8; 128],
+    pub wServicePackMajor: u16,
+    pub wServicePackMinor: u16,
+    pub wSuiteMask: u16,
+    pub wProductType: u8,
+    pub wReserved: u8,
+}
+impl Default for OSVERSIONINFOEXA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct OSVERSIONINFOEXW {
+    pub dwOSVersionInfoSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub dwBuildNumber: u32,
+    pub dwPlatformId: u32,
+    pub szCSDVersion: [u16; 128],
+    pub wServicePackMajor: u16,
+    pub wServicePackMinor: u16,
+    pub wSuiteMask: u16,
+    pub wProductType: u8,
+    pub wReserved: u8,
+}
+impl Default for OSVERSIONINFOEXW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct OSVERSIONINFOW {
+    pub dwOSVersionInfoSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub dwBuildNumber: u32,
+    pub dwPlatformId: u32,
+    pub szCSDVersion: [u16; 128],
+}
+impl Default for OSVERSIONINFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const OSVERSION_MASK: u32 = 4294901760u32;
+pub type OS_DEPLOYEMENT_STATE_VALUES = i32;
 pub const OS_DEPLOYMENT_COMPACT: OS_DEPLOYEMENT_STATE_VALUES = 2i32;
 pub const OS_DEPLOYMENT_STANDARD: OS_DEPLOYEMENT_STATE_VALUES = 1i32;
+pub type OS_PRODUCT_TYPE = u32;
+pub type PGET_SYSTEM_WOW64_DIRECTORY_A = Option<unsafe extern "system" fn(lpbuffer: windows_sys::core::PSTR, usize: u32) -> u32>;
+pub type PGET_SYSTEM_WOW64_DIRECTORY_W = Option<unsafe extern "system" fn(lpbuffer: windows_sys::core::PWSTR, usize: u32) -> u32>;
+pub type PROCESSOR_ARCHITECTURE = u16;
 pub const PROCESSOR_ARCHITECTURE_ALPHA: PROCESSOR_ARCHITECTURE = 2u16;
 pub const PROCESSOR_ARCHITECTURE_ALPHA64: PROCESSOR_ARCHITECTURE = 7u16;
 pub const PROCESSOR_ARCHITECTURE_AMD64: PROCESSOR_ARCHITECTURE = 9u16;
@@ -276,6 +472,34 @@ pub const PROCESSOR_ARCHITECTURE_NEUTRAL: PROCESSOR_ARCHITECTURE = 11u16;
 pub const PROCESSOR_ARCHITECTURE_PPC: PROCESSOR_ARCHITECTURE = 3u16;
 pub const PROCESSOR_ARCHITECTURE_SHX: PROCESSOR_ARCHITECTURE = 4u16;
 pub const PROCESSOR_ARCHITECTURE_UNKNOWN: PROCESSOR_ARCHITECTURE = 65535u16;
+pub type PROCESSOR_CACHE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PROCESSOR_GROUP_INFO {
+    pub MaximumProcessorCount: u8,
+    pub ActiveProcessorCount: u8,
+    pub Reserved: [u8; 38],
+    pub ActiveProcessorMask: usize,
+}
+impl Default for PROCESSOR_GROUP_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PROCESSOR_RELATIONSHIP {
+    pub Flags: u8,
+    pub EfficiencyClass: u8,
+    pub Reserved: [u8; 20],
+    pub GroupCount: u16,
+    pub GroupMask: [GROUP_AFFINITY; 1],
+}
+impl Default for PROCESSOR_RELATIONSHIP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const PRODUCT_BUSINESS: OS_PRODUCT_TYPE = 6u32;
 pub const PRODUCT_BUSINESS_N: OS_PRODUCT_TYPE = 16u32;
 pub const PRODUCT_CLUSTER_SERVER: OS_PRODUCT_TYPE = 18u32;
@@ -373,6 +597,7 @@ pub const PRODUCT_UNDEFINED: OS_PRODUCT_TYPE = 0u32;
 pub const PRODUCT_WEB_SERVER: OS_PRODUCT_TYPE = 17u32;
 pub const PRODUCT_WEB_SERVER_CORE: OS_PRODUCT_TYPE = 29u32;
 pub const RSMB: FIRMWARE_TABLE_PROVIDER = 1381190978u32;
+pub type RTL_SYSTEM_GLOBAL_DATA_ID = i32;
 pub const RelationAll: LOGICAL_PROCESSOR_RELATIONSHIP = 65535i32;
 pub const RelationCache: LOGICAL_PROCESSOR_RELATIONSHIP = 2i32;
 pub const RelationGroup: LOGICAL_PROCESSOR_RELATIONSHIP = 4i32;
@@ -385,15 +610,196 @@ pub const RelationProcessorPackage: LOGICAL_PROCESSOR_RELATIONSHIP = 3i32;
 pub const SCEX2_ALT_NETBIOS_NAME: u32 = 1u32;
 pub const SPVERSION_MASK: u32 = 65280u32;
 pub const SUBVERSION_MASK: u32 = 255u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SYSTEM_CPU_SET_INFORMATION {
+    pub Size: u32,
+    pub Type: CPU_SET_INFORMATION_TYPE,
+    pub Anonymous: SYSTEM_CPU_SET_INFORMATION_0,
+}
+impl Default for SYSTEM_CPU_SET_INFORMATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_CPU_SET_INFORMATION_0 {
+    pub CpuSet: SYSTEM_CPU_SET_INFORMATION_0_0,
+}
+impl Default for SYSTEM_CPU_SET_INFORMATION_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SYSTEM_CPU_SET_INFORMATION_0_0 {
+    pub Id: u32,
+    pub Group: u16,
+    pub LogicalProcessorIndex: u8,
+    pub CoreIndex: u8,
+    pub LastLevelCacheIndex: u8,
+    pub NumaNodeIndex: u8,
+    pub EfficiencyClass: u8,
+    pub Anonymous1: SYSTEM_CPU_SET_INFORMATION_0_0_0,
+    pub Anonymous2: SYSTEM_CPU_SET_INFORMATION_0_0_1,
+    pub AllocationTag: u64,
+}
+impl Default for SYSTEM_CPU_SET_INFORMATION_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_CPU_SET_INFORMATION_0_0_0 {
+    pub AllFlags: u8,
+    pub Anonymous: SYSTEM_CPU_SET_INFORMATION_0_0_0_0,
+}
+impl Default for SYSTEM_CPU_SET_INFORMATION_0_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_CPU_SET_INFORMATION_0_0_0_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_CPU_SET_INFORMATION_0_0_1 {
+    pub Reserved: u32,
+    pub SchedulingClass: u8,
+}
+impl Default for SYSTEM_CPU_SET_INFORMATION_0_0_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SYSTEM_CPU_SET_INFORMATION_ALLOCATED: u32 = 2u32;
 pub const SYSTEM_CPU_SET_INFORMATION_ALLOCATED_TO_TARGET_PROCESS: u32 = 4u32;
 pub const SYSTEM_CPU_SET_INFORMATION_PARKED: u32 = 1u32;
 pub const SYSTEM_CPU_SET_INFORMATION_REALTIME: u32 = 8u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SYSTEM_INFO {
+    pub Anonymous: SYSTEM_INFO_0,
+    pub dwPageSize: u32,
+    pub lpMinimumApplicationAddress: *mut core::ffi::c_void,
+    pub lpMaximumApplicationAddress: *mut core::ffi::c_void,
+    pub dwActiveProcessorMask: usize,
+    pub dwNumberOfProcessors: u32,
+    pub dwProcessorType: u32,
+    pub dwAllocationGranularity: u32,
+    pub wProcessorLevel: u16,
+    pub wProcessorRevision: u16,
+}
+impl Default for SYSTEM_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_INFO_0 {
+    pub dwOemId: u32,
+    pub Anonymous: SYSTEM_INFO_0_0,
+}
+impl Default for SYSTEM_INFO_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_INFO_0_0 {
+    pub wProcessorArchitecture: PROCESSOR_ARCHITECTURE,
+    pub wReserved: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
+    pub ProcessorMask: usize,
+    pub Relationship: LOGICAL_PROCESSOR_RELATIONSHIP,
+    pub Anonymous: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0,
+}
+impl Default for SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0 {
+    pub ProcessorCore: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_0,
+    pub NumaNode: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_1,
+    pub Cache: CACHE_DESCRIPTOR,
+    pub Reserved: [u64; 2],
+}
+impl Default for SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_1 {
+    pub NodeNumber: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_0 {
+    pub Flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX {
+    pub Relationship: LOGICAL_PROCESSOR_RELATIONSHIP,
+    pub Size: u32,
+    pub Anonymous: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_0,
+}
+impl Default for SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_0 {
+    pub Processor: PROCESSOR_RELATIONSHIP,
+    pub NumaNode: NUMA_NODE_RELATIONSHIP,
+    pub Cache: CACHE_RELATIONSHIP,
+    pub Group: GROUP_RELATIONSHIP,
+}
+impl Default for SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_POOL_ZEROING_INFORMATION {
+    pub PoolZeroingSupportPresent: bool,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION {
+    pub CycleTime: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SYSTEM_SUPPORTED_PROCESSOR_ARCHITECTURES_INFORMATION {
+    pub _bitfield: u32,
+}
+pub type USER_CET_ENVIRONMENT = u32;
 pub const USER_CET_ENVIRONMENT_SGX2_ENCLAVE: USER_CET_ENVIRONMENT = 2u32;
 pub const USER_CET_ENVIRONMENT_VBS_BASIC_ENCLAVE: USER_CET_ENVIRONMENT = 17u32;
 pub const USER_CET_ENVIRONMENT_VBS_ENCLAVE: USER_CET_ENVIRONMENT = 16u32;
 pub const USER_CET_ENVIRONMENT_WIN32_PROCESS: USER_CET_ENVIRONMENT = 0u32;
 pub const VER_BUILDNUMBER: VER_FLAGS = 4u32;
+pub type VER_FLAGS = u32;
 pub const VER_MAJORVERSION: VER_FLAGS = 2u32;
 pub const VER_MINORVERSION: VER_FLAGS = 1u32;
 pub const VER_PLATFORMID: VER_FLAGS = 8u32;
@@ -458,294 +864,3 @@ pub const _WIN32_WINNT_WINTHRESHOLD: u32 = 2560u32;
 pub const _WIN32_WINNT_WINXP: u32 = 1281u32;
 pub const _WIN32_WINNT_WS03: u32 = 1282u32;
 pub const _WIN32_WINNT_WS08: u32 = 1536u32;
-pub type COMPUTER_NAME_FORMAT = i32;
-pub type CPU_SET_INFORMATION_TYPE = i32;
-pub type DEP_SYSTEM_POLICY_TYPE = i32;
-pub type DEVELOPER_DRIVE_ENABLEMENT_STATE = i32;
-pub type DEVICEFAMILYDEVICEFORM = u32;
-pub type DEVICEFAMILYINFOENUM = u32;
-pub type FIRMWARE_TABLE_PROVIDER = u32;
-pub type FIRMWARE_TYPE = i32;
-pub type IMAGE_FILE_MACHINE = u16;
-pub type LOGICAL_PROCESSOR_RELATIONSHIP = i32;
-pub type OS_DEPLOYEMENT_STATE_VALUES = i32;
-pub type OS_PRODUCT_TYPE = u32;
-pub type PROCESSOR_ARCHITECTURE = u16;
-pub type PROCESSOR_CACHE_TYPE = i32;
-pub type RTL_SYSTEM_GLOBAL_DATA_ID = i32;
-pub type USER_CET_ENVIRONMENT = u32;
-pub type VER_FLAGS = u32;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct CACHE_DESCRIPTOR {
-    pub Level: u8,
-    pub Associativity: u8,
-    pub LineSize: u16,
-    pub Size: u32,
-    pub Type: PROCESSOR_CACHE_TYPE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct CACHE_RELATIONSHIP {
-    pub Level: u8,
-    pub Associativity: u8,
-    pub LineSize: u16,
-    pub CacheSize: u32,
-    pub Type: PROCESSOR_CACHE_TYPE,
-    pub Reserved: [u8; 18],
-    pub GroupCount: u16,
-    pub Anonymous: CACHE_RELATIONSHIP_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union CACHE_RELATIONSHIP_0 {
-    pub GroupMask: GROUP_AFFINITY,
-    pub GroupMasks: [GROUP_AFFINITY; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct GROUP_AFFINITY {
-    pub Mask: usize,
-    pub Group: u16,
-    pub Reserved: [u16; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct GROUP_RELATIONSHIP {
-    pub MaximumGroupCount: u16,
-    pub ActiveGroupCount: u16,
-    pub Reserved: [u8; 20],
-    pub GroupInfo: [PROCESSOR_GROUP_INFO; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MEMORYSTATUS {
-    pub dwLength: u32,
-    pub dwMemoryLoad: u32,
-    pub dwTotalPhys: usize,
-    pub dwAvailPhys: usize,
-    pub dwTotalPageFile: usize,
-    pub dwAvailPageFile: usize,
-    pub dwTotalVirtual: usize,
-    pub dwAvailVirtual: usize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MEMORYSTATUSEX {
-    pub dwLength: u32,
-    pub dwMemoryLoad: u32,
-    pub ullTotalPhys: u64,
-    pub ullAvailPhys: u64,
-    pub ullTotalPageFile: u64,
-    pub ullAvailPageFile: u64,
-    pub ullTotalVirtual: u64,
-    pub ullAvailVirtual: u64,
-    pub ullAvailExtendedVirtual: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NUMA_NODE_RELATIONSHIP {
-    pub NodeNumber: u32,
-    pub Reserved: [u8; 18],
-    pub GroupCount: u16,
-    pub Anonymous: NUMA_NODE_RELATIONSHIP_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union NUMA_NODE_RELATIONSHIP_0 {
-    pub GroupMask: GROUP_AFFINITY,
-    pub GroupMasks: [GROUP_AFFINITY; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct OSVERSIONINFOA {
-    pub dwOSVersionInfoSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub dwBuildNumber: u32,
-    pub dwPlatformId: u32,
-    pub szCSDVersion: [i8; 128],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct OSVERSIONINFOEXA {
-    pub dwOSVersionInfoSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub dwBuildNumber: u32,
-    pub dwPlatformId: u32,
-    pub szCSDVersion: [i8; 128],
-    pub wServicePackMajor: u16,
-    pub wServicePackMinor: u16,
-    pub wSuiteMask: u16,
-    pub wProductType: u8,
-    pub wReserved: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct OSVERSIONINFOEXW {
-    pub dwOSVersionInfoSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub dwBuildNumber: u32,
-    pub dwPlatformId: u32,
-    pub szCSDVersion: [u16; 128],
-    pub wServicePackMajor: u16,
-    pub wServicePackMinor: u16,
-    pub wSuiteMask: u16,
-    pub wProductType: u8,
-    pub wReserved: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct OSVERSIONINFOW {
-    pub dwOSVersionInfoSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub dwBuildNumber: u32,
-    pub dwPlatformId: u32,
-    pub szCSDVersion: [u16; 128],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PROCESSOR_GROUP_INFO {
-    pub MaximumProcessorCount: u8,
-    pub ActiveProcessorCount: u8,
-    pub Reserved: [u8; 38],
-    pub ActiveProcessorMask: usize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PROCESSOR_RELATIONSHIP {
-    pub Flags: u8,
-    pub EfficiencyClass: u8,
-    pub Reserved: [u8; 20],
-    pub GroupCount: u16,
-    pub GroupMask: [GROUP_AFFINITY; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_CPU_SET_INFORMATION {
-    pub Size: u32,
-    pub Type: CPU_SET_INFORMATION_TYPE,
-    pub Anonymous: SYSTEM_CPU_SET_INFORMATION_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_CPU_SET_INFORMATION_0 {
-    pub CpuSet: SYSTEM_CPU_SET_INFORMATION_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_CPU_SET_INFORMATION_0_0 {
-    pub Id: u32,
-    pub Group: u16,
-    pub LogicalProcessorIndex: u8,
-    pub CoreIndex: u8,
-    pub LastLevelCacheIndex: u8,
-    pub NumaNodeIndex: u8,
-    pub EfficiencyClass: u8,
-    pub Anonymous1: SYSTEM_CPU_SET_INFORMATION_0_0_0,
-    pub Anonymous2: SYSTEM_CPU_SET_INFORMATION_0_0_1,
-    pub AllocationTag: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_CPU_SET_INFORMATION_0_0_0 {
-    pub AllFlags: u8,
-    pub Anonymous: SYSTEM_CPU_SET_INFORMATION_0_0_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_CPU_SET_INFORMATION_0_0_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_CPU_SET_INFORMATION_0_0_1 {
-    pub Reserved: u32,
-    pub SchedulingClass: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_INFO {
-    pub Anonymous: SYSTEM_INFO_0,
-    pub dwPageSize: u32,
-    pub lpMinimumApplicationAddress: *mut core::ffi::c_void,
-    pub lpMaximumApplicationAddress: *mut core::ffi::c_void,
-    pub dwActiveProcessorMask: usize,
-    pub dwNumberOfProcessors: u32,
-    pub dwProcessorType: u32,
-    pub dwAllocationGranularity: u32,
-    pub wProcessorLevel: u16,
-    pub wProcessorRevision: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_INFO_0 {
-    pub dwOemId: u32,
-    pub Anonymous: SYSTEM_INFO_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_INFO_0_0 {
-    pub wProcessorArchitecture: PROCESSOR_ARCHITECTURE,
-    pub wReserved: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
-    pub ProcessorMask: usize,
-    pub Relationship: LOGICAL_PROCESSOR_RELATIONSHIP,
-    pub Anonymous: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0 {
-    pub ProcessorCore: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_1,
-    pub NumaNode: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_0,
-    pub Cache: CACHE_DESCRIPTOR,
-    pub Reserved: [u64; 2],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_0 {
-    pub NodeNumber: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_0_1 {
-    pub Flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX {
-    pub Relationship: LOGICAL_PROCESSOR_RELATIONSHIP,
-    pub Size: u32,
-    pub Anonymous: SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_0 {
-    pub Processor: PROCESSOR_RELATIONSHIP,
-    pub NumaNode: NUMA_NODE_RELATIONSHIP,
-    pub Cache: CACHE_RELATIONSHIP,
-    pub Group: GROUP_RELATIONSHIP,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_POOL_ZEROING_INFORMATION {
-    pub PoolZeroingSupportPresent: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION {
-    pub CycleTime: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SYSTEM_SUPPORTED_PROCESSOR_ARCHITECTURES_INFORMATION {
-    pub _bitfield: u32,
-}
-pub type PGET_SYSTEM_WOW64_DIRECTORY_A = Option<unsafe extern "system" fn(lpbuffer: windows_sys::core::PSTR, usize: u32) -> u32>;
-pub type PGET_SYSTEM_WOW64_DIRECTORY_W = Option<unsafe extern "system" fn(lpbuffer: windows_sys::core::PWSTR, usize: u32) -> u32>;

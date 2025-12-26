@@ -11,10 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.67"
+rust-version = "1.83"
 name = "icu_properties"
-version = "1.5.1"
+version = "2.1.2"
 authors = ["The ICU4X Project Developers"]
+build = false
 include = [
     "data/**/*",
     "src/**/*",
@@ -24,7 +25,13 @@ include = [
     "Cargo.toml",
     "LICENSE",
     "README.md",
+    "build.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Definitions for Unicode properties"
 homepage = "https://icu4x.unicode.org"
 readme = "README.md"
@@ -35,51 +42,71 @@ repository = "https://github.com/unicode-org/icu4x"
 [package.metadata.docs.rs]
 all-features = true
 
+[package.metadata.cargo-semver-checks.lints]
+workspace = true
+
+[features]
+alloc = [
+    "zerovec/alloc",
+    "icu_collections/alloc",
+    "serde?/alloc",
+]
+compiled_data = [
+    "dep:icu_properties_data",
+    "icu_provider/baked",
+]
+datagen = [
+    "serde",
+    "dep:databake",
+    "zerovec/databake",
+    "icu_collections/databake",
+    "icu_locale_core/databake",
+    "zerotrie/databake",
+    "icu_provider/export",
+]
+default = ["compiled_data"]
+serde = [
+    "dep:serde",
+    "icu_locale_core/serde",
+    "zerovec/serde",
+    "icu_collections/serde",
+    "icu_provider/serde",
+    "zerotrie/serde",
+]
+unicode_bidi = ["dep:unicode-bidi"]
+
+[lib]
+name = "icu_properties"
+path = "src/lib.rs"
+
 [dependencies.databake]
-version = "0.1.8"
+version = "0.2.0"
 features = ["derive"]
 optional = true
 default-features = false
 
-[dependencies.displaydoc]
-version = "0.2.3"
-default-features = false
-
 [dependencies.icu_collections]
-version = "~1.5.0"
+version = "~2.1.1"
 default-features = false
 
-[dependencies.icu_locid_transform]
-version = "~1.5.0"
-features = ["compiled_data"]
-optional = true
+[dependencies.icu_locale_core]
+version = "2.1.1"
+features = ["zerovec"]
 default-features = false
 
 [dependencies.icu_properties_data]
-version = "~1.5.0"
+version = "~2.1.2"
 optional = true
 default-features = false
 
 [dependencies.icu_provider]
-version = "~1.5.0"
-features = ["macros"]
+version = "2.1.1"
 default-features = false
 
 [dependencies.serde]
-version = "1.0.110"
-features = [
-    "derive",
-    "alloc",
-]
+version = "1.0.220"
+features = ["derive"]
 optional = true
-default-features = false
-
-[dependencies.tinystr]
-version = "0.7.5"
-features = [
-    "alloc",
-    "zerovec",
-]
 default-features = false
 
 [dependencies.unicode-bidi]
@@ -87,35 +114,20 @@ version = "0.3.11"
 optional = true
 default-features = false
 
+[dependencies.zerotrie]
+version = "0.2.0"
+features = [
+    "yoke",
+    "zerofrom",
+]
+default-features = false
+
 [dependencies.zerovec]
-version = "0.10.2"
-features = ["derive"]
+version = "0.11.3"
+features = [
+    "derive",
+    "yoke",
+]
 default-features = false
 
 [dev-dependencies]
-
-[features]
-bidi = ["dep:unicode-bidi"]
-compiled_data = [
-    "dep:icu_properties_data",
-    "dep:icu_locid_transform",
-]
-datagen = [
-    "serde",
-    "dep:databake",
-    "zerovec/databake",
-    "icu_collections/databake",
-    "tinystr/databake",
-]
-default = ["compiled_data"]
-serde = [
-    "dep:serde",
-    "tinystr/serde",
-    "zerovec/serde",
-    "icu_collections/serde",
-    "icu_provider/serde",
-]
-std = [
-    "icu_collections/std",
-    "icu_provider/std",
-]

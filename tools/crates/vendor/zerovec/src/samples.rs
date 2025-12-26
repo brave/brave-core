@@ -54,7 +54,7 @@ fn validate() {
     use crate::{VarZeroVec, ZeroVec};
 
     assert_eq!(
-        ZeroVec::<u32>::parse_byte_slice(TEST_BUFFER_LE).unwrap(),
+        ZeroVec::<u32>::parse_bytes(TEST_BUFFER_LE).unwrap(),
         ZeroVec::alloc_from_slice(TEST_SLICE)
     );
 
@@ -70,5 +70,5 @@ fn validate() {
         ZeroVec::alloc_from_slice(TEST_SLICE)
     );
 
-    VarZeroVec::<str>::parse_byte_slice(TEST_VARZEROSLICE_BYTES).unwrap();
+    VarZeroVec::<str>::parse_bytes(TEST_VARZEROSLICE_BYTES).unwrap();
 }

@@ -1,20 +1,9 @@
-use crate::Repository;
+use gix_object::TreeRefIter;
 
-///
-#[allow(clippy::empty_docs)]
-pub mod resource_cache {
-    /// The error returned by [Repository::diff_resource_cache()](super::Repository::diff_resource_cache()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Could not obtain resource cache for diffing")]
-        ResourceCache(#[from] crate::diff::resource_cache::Error),
-        #[error(transparent)]
-        Index(#[from] crate::repository::index_or_load_from_head::Error),
-        #[error(transparent)]
-        AttributeStack(#[from] crate::config::attribute_stack::Error),
-    }
-}
+use crate::{
+    repository::{diff_resource_cache, diff_tree_to_tree},
+    Repository, Tree,
+};
 
 /// Diff-utilities
 impl Repository {
@@ -32,17 +21,17 @@ impl Repository {
         &self,
         mode: gix_diff::blob::pipeline::Mode,
         worktree_roots: gix_diff::blob::pipeline::WorktreeRoots,
-    ) -> Result<gix_diff::blob::Platform, resource_cache::Error> {
-        let index = self.index_or_load_from_head()?;
+    ) -> Result<gix_diff::blob::Platform, diff_resource_cache::Error> {
+        let index = self.index_or_load_from_head_or_empty()?;
         Ok(crate::diff::resource_cache(
             self,
             mode,
             self.attributes_only(
                 &index,
-                if worktree_roots.new_root.is_some() || worktree_roots.old_root.is_some() {
-                    gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping
-                } else {
+                if worktree_roots.is_unset() {
                     gix_worktree::stack::state::attributes::Source::IdMapping
+                } else {
+                    gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping
                 },
             )?
             .inner,
@@ -50,10 +39,49 @@ impl Repository {
         )?)
     }
 
+    /// Produce the changes that would need to be applied to `old_tree` to create `new_tree`.
+    /// If `options` are unset, they will be filled in according to the git configuration of this repository, and with
+    /// [full paths being tracked](crate::diff::Options::track_path()) as well, which typically means that
+    /// rewrite tracking might be disabled if done so explicitly by the user.
+    /// If `options` are set, the user can take full control over the settings.
+    ///
+    /// Note that this method exists to evoke similarity to `git2`, and makes it easier to fully control diff settings.
+    /// A more fluent version [may be used as well](Tree::changes()).
+    pub fn diff_tree_to_tree<'a, 'old_repo: 'a, 'new_repo: 'a>(
+        &self,
+        old_tree: impl Into<Option<&'a Tree<'old_repo>>>,
+        new_tree: impl Into<Option<&'a Tree<'new_repo>>>,
+        options: impl Into<Option<crate::diff::Options>>,
+    ) -> Result<Vec<crate::object::tree::diff::ChangeDetached>, diff_tree_to_tree::Error> {
+        let mut cache = self.diff_resource_cache(gix_diff::blob::pipeline::Mode::ToGit, Default::default())?;
+        let opts = options
+            .into()
+            .map_or_else(|| crate::diff::Options::from_configuration(&self.config), Ok)?
+            .into();
+
+        let empty_tree = self.empty_tree();
+        let old_tree = old_tree.into().unwrap_or(&empty_tree);
+        let new_tree = new_tree.into().unwrap_or(&empty_tree);
+        let mut out = Vec::new();
+        gix_diff::tree_with_rewrites(
+            TreeRefIter::from_bytes(&old_tree.data),
+            TreeRefIter::from_bytes(&new_tree.data),
+            &mut cache,
+            &mut Default::default(),
+            &self.objects,
+            |change| -> Result<_, std::convert::Infallible> {
+                out.push(change.into_owned());
+                Ok(gix_diff::tree_with_rewrites::Action::Continue)
+            },
+            opts,
+        )?;
+        Ok(out)
+    }
+
     /// Return a resource cache suitable for diffing blobs from trees directly, where no worktree checkout exists.
     ///
     /// For more control, see [`diff_resource_cache()`](Self::diff_resource_cache).
-    pub fn diff_resource_cache_for_tree_diff(&self) -> Result<gix_diff::blob::Platform, resource_cache::Error> {
+    pub fn diff_resource_cache_for_tree_diff(&self) -> Result<gix_diff::blob::Platform, diff_resource_cache::Error> {
         self.diff_resource_cache(
             gix_diff::blob::pipeline::Mode::ToGit,
             gix_diff::blob::pipeline::WorktreeRoots::default(),

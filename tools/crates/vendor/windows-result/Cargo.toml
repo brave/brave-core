@@ -11,11 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.82"
 name = "windows-result"
-version = "0.2.0"
-authors = ["Microsoft"]
+version = "0.4.1"
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -30,25 +30,22 @@ repository = "https://github.com/microsoft/windows-rs"
 default-target = "x86_64-pc-windows-msvc"
 targets = []
 
-[lib]
-name = "windows_result"
-path = "src/lib.rs"
-
-[dependencies.windows-targets]
-version = "0.52.6"
-
 [features]
 default = ["std"]
 std = []
 
-[lints.rust]
-missing_docs = "warn"
+[lib]
+name = "windows_result"
+path = "src/lib.rs"
 
-[lints.rust.rust_2018_idioms]
-level = "warn"
-priority = -1
+[dependencies.windows-link]
+version = "0.2.1"
+default-features = false
+
+[lints.rust]
+missing_unsafe_on_extern = "warn"
 
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
-check-cfg = ["cfg(windows_raw_dylib, windows_debugger_visualizer, windows_slim_errors)"]
+check-cfg = ["cfg(windows_raw_dylib, windows_slim_errors)"]

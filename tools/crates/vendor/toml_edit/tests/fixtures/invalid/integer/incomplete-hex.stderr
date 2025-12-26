@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 20
-  |
-1 | incomplete-hex = 0x
-  |                    ^
-invalid hexadecimal integer

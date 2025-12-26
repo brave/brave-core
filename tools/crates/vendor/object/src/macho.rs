@@ -282,6 +282,25 @@ pub const VM_PROT_WRITE: u32 = 0x02;
 /// execute permission
 pub const VM_PROT_EXECUTE: u32 = 0x04;
 
+// Definitions from ptrauth.h
+
+/// The key used to sign a pointer for authentication.
+///
+/// The variant values correspond to the values used in the
+/// `ptrauth_key` enum in `ptrauth.h`.
+#[repr(u8)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PtrauthKey {
+    /// Instruction key A.
+    IA = 0,
+    /// Instruction key B.
+    IB = 1,
+    /// Data key A.
+    DA = 2,
+    /// Data key B.
+    DB = 3,
+}
+
 // Definitions from https://opensource.apple.com/source/dyld/dyld-210.2.3/launch-cache/dyld_cache_format.h.auto.html
 
 /// The dyld cache header.
@@ -296,70 +315,173 @@ pub struct DyldCacheHeader<E: Endian> {
     /// e.g. "dyld_v0    i386"
     pub magic: [u8; 16],
     /// file offset to first dyld_cache_mapping_info
-    pub mapping_offset: U32<E>, // offset: 0x10
+    pub mapping_offset: U32<E>,
     /// number of dyld_cache_mapping_info entries
-    pub mapping_count: U32<E>, // offset: 0x14
-    /// file offset to first dyld_cache_image_info
-    pub images_offset: U32<E>, // offset: 0x18
-    /// number of dyld_cache_image_info entries
-    pub images_count: U32<E>, // offset: 0x1c
+    pub mapping_count: U32<E>,
+    /// UNUSED: moved to imagesOffset to prevent older dsc_extarctors from crashing
+    pub images_offset_old: U32<E>,
+    /// UNUSED: moved to imagesCount to prevent older dsc_extarctors from crashing
+    pub images_count_old: U32<E>,
     /// base address of dyld when cache was built
-    pub dyld_base_address: U64<E>, // offset: 0x20
-    ///
-    reserved1: [u8; 32], // offset: 0x28
+    pub dyld_base_address: U64<E>,
+    /// file offset of code signature blob
+    pub code_signature_offset: U64<E>,
+    /// size of code signature blob (zero means to end of file)
+    pub code_signature_size: U64<E>,
+    /// unused.  Used to be file offset of kernel slid info
+    pub slide_info_offset_unused: U64<E>,
+    /// unused.  Used to be size of kernel slid info
+    pub slide_info_size_unused: U64<E>,
     /// file offset of where local symbols are stored
-    pub local_symbols_offset: U64<E>, // offset: 0x48
+    pub local_symbols_offset: U64<E>,
     /// size of local symbols information
-    pub local_symbols_size: U64<E>, // offset: 0x50
+    pub local_symbols_size: U64<E>,
     /// unique value for each shared cache file
-    pub uuid: [u8; 16], // offset: 0x58
-    ///
-    reserved2: [u8; 32], // offset: 0x68
-    ///
-    reserved3: [u8; 32], // offset: 0x88
-    ///
-    reserved4: [u8; 32], // offset: 0xa8
-    ///
-    reserved5: [u8; 32], // offset: 0xc8
-    ///
-    reserved6: [u8; 32], // offset: 0xe8
-    ///
-    reserved7: [u8; 32], // offset: 0x108
-    ///
-    reserved8: [u8; 32], // offset: 0x128
-    ///
-    reserved9: [u8; 32], // offset: 0x148
-    ///
-    reserved10: [u8; 32], // offset: 0x168
-    /// file offset to first dyld_subcache_info
-    pub subcaches_offset: U32<E>, // offset: 0x188
-    /// number of dyld_subcache_info entries
-    pub subcaches_count: U32<E>, // offset: 0x18c
-    /// the UUID of the .symbols subcache
-    pub symbols_subcache_uuid: [u8; 16], // offset: 0x190
-    ///
-    reserved11: [u8; 32], // offset: 0x1a0
+    pub uuid: [u8; 16],
+    /// 0 for development, 1 for production, 2 for multi-cache
+    pub cache_type: U64<E>,
+    /// file offset to table of uint64_t pool addresses
+    pub branch_pools_offset: U32<E>,
+    /// number of uint64_t entries
+    pub branch_pools_count: U32<E>,
+    /// (unslid) address of mach_header of dyld in cache
+    pub dyld_in_cache_mh: U64<E>,
+    /// (unslid) address of entry point (_dyld_start) of dyld in cache
+    pub dyld_in_cache_entry: U64<E>,
+    /// file offset to first dyld_cache_image_text_info
+    pub images_text_offset: U64<E>,
+    /// number of dyld_cache_image_text_info entries
+    pub images_text_count: U64<E>,
+    /// (unslid) address of dyld_cache_patch_info
+    pub patch_info_addr: U64<E>,
+    /// Size of all of the patch information pointed to via the dyld_cache_patch_info
+    pub patch_info_size: U64<E>,
+    /// unused
+    pub other_image_group_addr_unused: U64<E>,
+    /// unused
+    pub other_image_group_size_unused: U64<E>,
+    /// (unslid) address of list of program launch closures
+    pub prog_closures_addr: U64<E>,
+    /// size of list of program launch closures
+    pub prog_closures_size: U64<E>,
+    /// (unslid) address of trie of indexes into program launch closures
+    pub prog_closures_trie_addr: U64<E>,
+    /// size of trie of indexes into program launch closures
+    pub prog_closures_trie_size: U64<E>,
+    /// platform number (macOS=1, etc)
+    pub platform: U32<E>,
+    // bitfield of values
+    pub flags: U32<E>,
+    /// base load address of cache if not slid
+    pub shared_region_start: U64<E>,
+    /// overall size required to map the cache and all subCaches, if any
+    pub shared_region_size: U64<E>,
+    /// runtime slide of cache can be between zero and this value
+    pub max_slide: U64<E>,
+    /// (unslid) address of ImageArray for dylibs in this cache
+    pub dylibs_image_array_addr: U64<E>,
+    /// size of ImageArray for dylibs in this cache
+    pub dylibs_image_array_size: U64<E>,
+    /// (unslid) address of trie of indexes of all cached dylibs
+    pub dylibs_trie_addr: U64<E>,
+    /// size of trie of cached dylib paths
+    pub dylibs_trie_size: U64<E>,
+    /// (unslid) address of ImageArray for dylibs and bundles with dlopen closures
+    pub other_image_array_addr: U64<E>,
+    /// size of ImageArray for dylibs and bundles with dlopen closures
+    pub other_image_array_size: U64<E>,
+    /// (unslid) address of trie of indexes of all dylibs and bundles with dlopen closures
+    pub other_trie_addr: U64<E>,
+    /// size of trie of dylibs and bundles with dlopen closures
+    pub other_trie_size: U64<E>,
+    /// file offset to first dyld_cache_mapping_and_slide_info
+    pub mapping_with_slide_offset: U32<E>,
+    /// number of dyld_cache_mapping_and_slide_info entries
+    pub mapping_with_slide_count: U32<E>,
+    /// unused
+    pub dylibs_pbl_state_array_addr_unused: U64<E>,
+    /// (unslid) address of PrebuiltLoaderSet of all cached dylibs
+    pub dylibs_pbl_set_addr: U64<E>,
+    /// (unslid) address of pool of PrebuiltLoaderSet for each program
+    pub programs_pbl_set_pool_addr: U64<E>,
+    /// size of pool of PrebuiltLoaderSet for each program
+    pub programs_pbl_set_pool_size: U64<E>,
+    /// (unslid) address of trie mapping program path to PrebuiltLoaderSet
+    pub program_trie_addr: U64<E>,
+    /// OS Version of dylibs in this cache for the main platform
+    pub os_version: U32<E>,
+    /// e.g. iOSMac on macOS
+    pub alt_platform: U32<E>,
+    /// e.g. 14.0 for iOSMac
+    pub alt_os_version: U32<E>,
+    reserved1: [u8; 4],
+    /// VM offset from cache_header* to Swift optimizations header
+    pub swift_opts_offset: U64<E>,
+    /// size of Swift optimizations header
+    pub swift_opts_size: U64<E>,
+    /// file offset to first dyld_subcache_entry
+    pub sub_cache_array_offset: U32<E>,
+    /// number of subCache entries
+    pub sub_cache_array_count: U32<E>,
+    /// unique value for the shared cache file containing unmapped local symbols
+    pub symbol_file_uuid: [u8; 16],
+    /// (unslid) address of the start of where Rosetta can add read-only/executable data
+    pub rosetta_read_only_addr: U64<E>,
+    /// maximum size of the Rosetta read-only/executable region
+    pub rosetta_read_only_size: U64<E>,
+    /// (unslid) address of the start of where Rosetta can add read-write data
+    pub rosetta_read_write_addr: U64<E>,
+    /// maximum size of the Rosetta read-write region
+    pub rosetta_read_write_size: U64<E>,
     /// file offset to first dyld_cache_image_info
-    /// Use this  instead of images_offset if mapping_offset is at least 0x1c4.
-    pub images_across_all_subcaches_offset: U32<E>, // offset: 0x1c0
+    pub images_offset: U32<E>,
     /// number of dyld_cache_image_info entries
-    /// Use this  instead of images_count if mapping_offset is at least 0x1c4.
-    pub images_across_all_subcaches_count: U32<E>, // offset: 0x1c4
+    pub images_count: U32<E>,
+    /// 0 for development, 1 for production, when cacheType is multi-cache(2)
+    pub cache_sub_type: U32<E>,
+    /// VM offset from cache_header* to ObjC optimizations header
+    pub objc_opts_offset: U64<E>,
+    /// size of ObjC optimizations header
+    pub objc_opts_size: U64<E>,
+    /// VM offset from cache_header* to embedded cache atlas for process introspection
+    pub cache_atlas_offset: U64<E>,
+    /// size of embedded cache atlas
+    pub cache_atlas_size: U64<E>,
+    /// VM offset from cache_header* to the location of dyld_cache_dynamic_data_header
+    pub dynamic_data_offset: U64<E>,
+    /// maximum size of space reserved from dynamic data
+    pub dynamic_data_max_size: U64<E>,
 }
 
 /// Corresponds to struct dyld_cache_mapping_info from dyld_cache_format.h.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct DyldCacheMappingInfo<E: Endian> {
-    ///
     pub address: U64<E>,
-    ///
     pub size: U64<E>,
-    ///
     pub file_offset: U64<E>,
-    ///
     pub max_prot: U32<E>,
-    ///
+    pub init_prot: U32<E>,
+}
+
+// Contains the flags for the dyld_cache_mapping_and_slide_info flags field
+pub const DYLD_CACHE_MAPPING_AUTH_DATA: u64 = 1 << 0;
+pub const DYLD_CACHE_MAPPING_DIRTY_DATA: u64 = 1 << 1;
+pub const DYLD_CACHE_MAPPING_CONST_DATA: u64 = 1 << 2;
+pub const DYLD_CACHE_MAPPING_TEXT_STUBS: u64 = 1 << 3;
+pub const DYLD_CACHE_DYNAMIC_CONFIG_DATA: u64 = 1 << 4;
+
+/// Corresponds to struct dyld_cache_mapping_and_slide_info from dyld_cache_format.h.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct DyldCacheMappingAndSlideInfo<E: Endian> {
+    pub address: U64<E>,
+    pub size: U64<E>,
+    pub file_offset: U64<E>,
+    pub slide_info_file_offset: U64<E>,
+    pub slide_info_file_size: U64<E>,
+    pub flags: U64<E>,
+    pub max_prot: U32<E>,
     pub init_prot: U32<E>,
 }
 
@@ -367,27 +489,197 @@ pub struct DyldCacheMappingInfo<E: Endian> {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct DyldCacheImageInfo<E: Endian> {
-    ///
     pub address: U64<E>,
-    ///
     pub mod_time: U64<E>,
-    ///
     pub inode: U64<E>,
-    ///
     pub path_file_offset: U32<E>,
-    ///
     pub pad: U32<E>,
 }
 
-/// Corresponds to a struct whose source code has not been published as of Nov 2021.
-/// Added in the dyld cache version which shipped with macOS 12 / iOS 15.
+/// Corresponds to struct dyld_cache_slide_info2 from dyld_cache_format.h.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
-pub struct DyldSubCacheInfo<E: Endian> {
+pub struct DyldCacheSlideInfo2<E: Endian> {
+    pub version: U32<E>,   // currently 2
+    pub page_size: U32<E>, // currently 4096 (may also be 16384)
+    pub page_starts_offset: U32<E>,
+    pub page_starts_count: U32<E>,
+    pub page_extras_offset: U32<E>,
+    pub page_extras_count: U32<E>,
+    pub delta_mask: U64<E>, // which (contiguous) set of bits contains the delta to the next rebase location
+    pub value_add: U64<E>,
+}
+
+pub const DYLD_CACHE_SLIDE_PAGE_ATTRS: u16 = 0xC000;
+// Index is into extras array (not starts array).
+pub const DYLD_CACHE_SLIDE_PAGE_ATTR_EXTRA: u16 = 0x8000;
+// Page has no rebasing.
+pub const DYLD_CACHE_SLIDE_PAGE_ATTR_NO_REBASE: u16 = 0x4000;
+// Last chain entry for page.
+pub const DYLD_CACHE_SLIDE_PAGE_ATTR_END: u16 = 0x8000;
+
+/// Corresponds to struct dyld_cache_slide_info3 from dyld_cache_format.h.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct DyldCacheSlideInfo3<E: Endian> {
+    pub version: U32<E>,   // currently 3
+    pub page_size: U32<E>, // currently 4096 (may also be 16384)
+    pub page_starts_count: U32<E>,
+    reserved1: [u8; 4],
+    pub auth_value_add: U64<E>,
+}
+
+/// Page has no rebasing.
+pub const DYLD_CACHE_SLIDE_V3_PAGE_ATTR_NO_REBASE: u16 = 0xFFFF;
+
+/// Corresponds to union dyld_cache_slide_pointer3 from dyld_cache_format.h.
+#[derive(Debug, Clone, Copy)]
+pub struct DyldCacheSlidePointer3(pub u64);
+
+impl DyldCacheSlidePointer3 {
+    /// Whether the pointer is authenticated.
+    pub fn is_auth(&self) -> bool {
+        ((self.0 >> 63) & 1) != 0
+    }
+
+    /// The target of the pointer.
+    ///
+    /// Only valid if `is_auth` is false.
+    pub fn target(&self) -> u64 {
+        self.0 & ((1 << 43) - 1)
+    }
+
+    /// The high 8 bits of the pointer.
+    ///
+    /// Only valid if `is_auth` is false.
+    pub fn high8(&self) -> u64 {
+        (self.0 >> 43) & 0xff
+    }
+
+    /// The target of the pointer as an offset from the start of the shared cache.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn runtime_offset(&self) -> u64 {
+        self.0 & ((1 << 32) - 1)
+    }
+
+    /// The diversity value for authentication.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn diversity(&self) -> u16 {
+        ((self.0 >> 32) & 0xffff) as u16
+    }
+
+    /// Whether to use address diversity for authentication.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn addr_div(&self) -> bool {
+        ((self.0 >> 48) & 1) != 0
+    }
+
+    /// The key for authentication.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn key(&self) -> u8 {
+        ((self.0 >> 49) & 3) as u8
+    }
+
+    /// The offset to the next slide pointer in 8-byte units.
+    ///
+    /// 0 if no next slide pointer.
+    pub fn next(&self) -> u64 {
+        (self.0 >> 51) & ((1 << 11) - 1)
+    }
+}
+
+/// Corresponds to struct dyld_cache_slide_info5 from dyld_cache_format.h.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct DyldCacheSlideInfo5<E: Endian> {
+    pub version: U32<E>,   // currently 5
+    pub page_size: U32<E>, // currently 4096 (may also be 16384)
+    pub page_starts_count: U32<E>,
+    reserved1: [u8; 4],
+    pub value_add: U64<E>,
+}
+
+/// Page has no rebasing.
+pub const DYLD_CACHE_SLIDE_V5_PAGE_ATTR_NO_REBASE: u16 = 0xFFFF;
+
+/// Corresponds to struct dyld_cache_slide_pointer5 from dyld_cache_format.h.
+#[derive(Debug, Clone, Copy)]
+pub struct DyldCacheSlidePointer5(pub u64);
+
+impl DyldCacheSlidePointer5 {
+    /// Whether the pointer is authenticated.
+    pub fn is_auth(&self) -> bool {
+        ((self.0 >> 63) & 1) != 0
+    }
+
+    /// The target of the pointer as an offset from the start of the shared cache.
+    pub fn runtime_offset(&self) -> u64 {
+        self.0 & 0x3_ffff_ffff
+    }
+
+    /// The high 8 bits of the pointer.
+    ///
+    /// Only valid if `is_auth` is false.
+    pub fn high8(&self) -> u64 {
+        (self.0 >> 34) & 0xff
+    }
+
+    /// The diversity value for authentication.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn diversity(&self) -> u16 {
+        ((self.0 >> 34) & 0xffff) as u16
+    }
+
+    /// Whether to use address diversity for authentication.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn addr_div(&self) -> bool {
+        ((self.0 >> 50) & 1) != 0
+    }
+
+    /// Whether the key is IA or DA.
+    ///
+    /// Only valid if `is_auth` is true.
+    pub fn key_is_data(&self) -> bool {
+        ((self.0 >> 51) & 1) != 0
+    }
+
+    /// The offset to the next slide pointer in 8-byte units.
+    ///
+    /// 0 if no next slide pointer.
+    pub fn next(&self) -> u64 {
+        (self.0 >> 52) & 0x7ff
+    }
+}
+
+/// Added in dyld-940, which shipped with macOS 12 / iOS 15.
+/// Originally called `dyld_subcache_entry`, renamed to `dyld_subcache_entry_v1`
+/// in dyld-1042.1.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct DyldSubCacheEntryV1<E: Endian> {
     /// The UUID of this subcache.
     pub uuid: [u8; 16],
-    /// The size of this subcache plus all previous subcaches.
-    pub cumulative_size: U64<E>,
+    /// The offset of this subcache from the main cache base address.
+    pub cache_vm_offset: U64<E>,
+}
+
+/// Added in dyld-1042.1, which shipped with macOS 13 / iOS 16.
+/// Called `dyld_subcache_entry` as of dyld-1042.1.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct DyldSubCacheEntryV2<E: Endian> {
+    /// The UUID of this subcache.
+    pub uuid: [u8; 16],
+    /// The offset of this subcache from the main cache base address.
+    pub cache_vm_offset: U64<E>,
+    /// The file name suffix of the subCache file, e.g. ".25.data" or ".03.development".
+    pub file_suffix: [u8; 32],
 }
 
 // Definitions from "/usr/include/mach-o/loader.h".
@@ -1978,6 +2270,8 @@ pub const PLATFORM_IOSSIMULATOR: u32 = 7;
 pub const PLATFORM_TVOSSIMULATOR: u32 = 8;
 pub const PLATFORM_WATCHOSSIMULATOR: u32 = 9;
 pub const PLATFORM_DRIVERKIT: u32 = 10;
+pub const PLATFORM_XROS: u32 = 11;
+pub const PLATFORM_XROSSIMULATOR: u32 = 12;
 
 /* Known values for the tool field above. */
 pub const TOOL_CLANG: u32 = 1;
@@ -3250,8 +3544,13 @@ unsafe_impl_pod!(FatHeader, FatArch32, FatArch64,);
 unsafe_impl_endian_pod!(
     DyldCacheHeader,
     DyldCacheMappingInfo,
+    DyldCacheMappingAndSlideInfo,
     DyldCacheImageInfo,
-    DyldSubCacheInfo,
+    DyldCacheSlideInfo2,
+    DyldCacheSlideInfo3,
+    DyldCacheSlideInfo5,
+    DyldSubCacheEntryV1,
+    DyldSubCacheEntryV2,
     MachHeader32,
     MachHeader64,
     LoadCommand,

@@ -1,6 +1,6 @@
 use crate::error::Error;
 use crate::signed_data::SubjectPublicKeyInfo;
-use crate::{der, signed_data, DerTypeId};
+use crate::{DerTypeId, der, signed_data};
 use pki_types::{SignatureVerificationAlgorithm, SubjectPublicKeyInfoDer};
 
 /// A Raw Public Key, used for connections using raw public keys as specified
@@ -29,7 +29,7 @@ impl<'a> TryFrom<&'a SubjectPublicKeyInfoDer<'a>> for RawPublicKeyEntity<'a> {
     }
 }
 
-impl<'a> RawPublicKeyEntity<'a> {
+impl RawPublicKeyEntity<'_> {
     /// Verifies the signature `signature` of message `msg` using a raw public key,
     /// supporting RFC 7250.
     ///

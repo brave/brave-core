@@ -3,8 +3,11 @@ use core::fmt::Write;
 use crate::{
     civil::Weekday,
     error::{err, ErrorContext},
-    fmt::strtime::{BrokenDownTime, Extension, Flag, Meridiem},
-    tz::Offset,
+    fmt::{
+        offset,
+        strtime::{BrokenDownTime, Extension, Flag, Meridiem},
+        Parsed,
+    },
     util::{
         escape, parse,
         rangeint::{ri8, RFrom},
@@ -12,13 +15,6 @@ use crate::{
     },
     Error, Timestamp,
 };
-
-// Custom offset value ranges. They're the same as what we use for `Offset`,
-// but always positive since parsing proceeds by getting the absolute value
-// and then applying the sign.
-type ParsedOffsetHours = ri8<0, { t::SpanZoneOffsetHours::MAX }>;
-type ParsedOffsetMinutes = ri8<0, { t::SpanZoneOffsetMinutes::MAX }>;
-type ParsedOffsetSeconds = ri8<0, { t::SpanZoneOffsetSeconds::MAX }>;
 
 pub(super) struct Parser<'f, 'i, 't> {
     pub(super) fmt: &'f [u8],
@@ -72,10 +68,19 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
                 b'l' => self.parse_hour12(ext).context("%l failed")?,
                 b'M' => self.parse_minute(ext).context("%M failed")?,
                 b'm' => self.parse_month(ext).context("%m failed")?,
+                b'N' => self.parse_fractional(ext).context("%N failed")?,
                 b'n' => self.parse_whitespace().context("%n failed")?,
                 b'P' => self.parse_ampm().context("%P failed")?,
                 b'p' => self.parse_ampm().context("%p failed")?,
-                b'Q' => self.parse_iana_nocolon(b'Q').context("%Q failed")?,
+                b'Q' => match ext.colons {
+                    0 => self.parse_iana_nocolon().context("%Q failed")?,
+                    1 => self.parse_iana_colon().context("%:Q failed")?,
+                    _ => {
+                        return Err(err!(
+                            "invalid number of `:` in `%Q` directive"
+                        ))
+                    }
+                },
                 b'R' => self.parse_clock_nosecs().context("%R failed")?,
                 b'S' => self.parse_second(ext).context("%S failed")?,
                 b's' => self.parse_timestamp(ext).context("%s failed")?,
@@ -83,37 +88,35 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
                 b't' => self.parse_whitespace().context("%t failed")?,
                 b'U' => self.parse_week_sun(ext).context("%U failed")?,
                 b'u' => self.parse_weekday_mon(ext).context("%u failed")?,
-                b'V' => self.parse_iana_nocolon(b'V').context("%V failed")?,
+                b'V' => self.parse_week_iso(ext).context("%V failed")?,
                 b'W' => self.parse_week_mon(ext).context("%W failed")?,
                 b'w' => self.parse_weekday_sun(ext).context("%w failed")?,
                 b'Y' => self.parse_year(ext).context("%Y failed")?,
                 b'y' => self.parse_year2(ext).context("%y failed")?,
-                b'z' => self.parse_offset_nocolon().context("%z failed")?,
-                b':' => {
-                    if !self.bump_fmt() {
+                b'z' => match ext.colons {
+                    0 => self.parse_offset_nocolon().context("%z failed")?,
+                    1 => self.parse_offset_colon().context("%:z failed")?,
+                    2 => self.parse_offset_colon2().context("%::z failed")?,
+                    3 => self.parse_offset_colon3().context("%:::z failed")?,
+                    _ => {
                         return Err(err!(
-                            "invalid format string, expected directive \
-                             after '%:'",
-                        ));
+                            "invalid number of `:` in `%z` directive"
+                        ))
                     }
-                    match self.f() {
-                        b'Q' => self
-                            .parse_iana_colon(b'Q')
-                            .context("%:Q failed")?,
-                        b'V' => self
-                            .parse_iana_colon(b'V')
-                            .context("%:V failed")?,
-                        b'z' => {
-                            self.parse_offset_colon().context("%:z failed")?
-                        }
-                        unk => {
-                            return Err(err!(
-                                "found unrecognized directive %{unk} \
-                                 following %:",
-                                unk = escape::Byte(unk),
-                            ));
-                        }
-                    }
+                },
+                b'c' => {
+                    return Err(err!("cannot parse locale date and time"));
+                }
+                b'r' => {
+                    return Err(err!(
+                        "cannot parse locale 12-hour clock time"
+                    ));
+                }
+                b'X' => {
+                    return Err(err!("cannot parse locale clock time"));
+                }
+                b'x' => {
+                    return Err(err!("cannot parse locale date"));
                 }
                 b'Z' => {
                     return Err(err!("cannot parse time zone abbreviations"));
@@ -196,8 +199,9 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_extension(&mut self) -> Result<Extension, Error> {
         let (flag, fmt) = Extension::parse_flag(self.fmt)?;
         let (width, fmt) = Extension::parse_width(fmt)?;
+        let (colons, fmt) = Extension::parse_colons(fmt)?;
         self.fmt = fmt;
-        Ok(Extension { flag, width })
+        Ok(Extension { flag, width, colons })
     }
 
     // We write out a parsing routine for each directive below. Each parsing
@@ -394,7 +398,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
 
     /// Parse `%Q`, which is the IANA time zone identifier or an offset without
     /// colons.
-    fn parse_iana_nocolon(&mut self, which: u8) -> Result<(), Error> {
+    fn parse_iana_nocolon(&mut self) -> Result<(), Error> {
         #[cfg(not(feature = "alloc"))]
         {
             Err(err!(
@@ -405,12 +409,6 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         {
             use alloc::string::ToString;
 
-            if which == b'V' {
-                warn!(
-                    "`%V` is DEPRECATED and will parse an ISO 8601 week \
-                     number in `jiff 0.2`, use `%Q` instead",
-                );
-            }
             if !self.inp.is_empty() && matches!(self.inp[0], b'+' | b'-') {
                 return self.parse_offset_nocolon();
             }
@@ -424,7 +422,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
 
     /// Parse `%:Q`, which is the IANA time zone identifier or an offset with
     /// colons.
-    fn parse_iana_colon(&mut self, which: u8) -> Result<(), Error> {
+    fn parse_iana_colon(&mut self) -> Result<(), Error> {
         #[cfg(not(feature = "alloc"))]
         {
             Err(err!(
@@ -435,12 +433,6 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         {
             use alloc::string::ToString;
 
-            if which == b'V' {
-                warn!(
-                    "`%:V` is DEPRECATED and will result in an error \
-                     in `jiff 0.2`, use `%:Q` instead",
-                );
-            }
             if !self.inp.is_empty() && matches!(self.inp[0], b'+' | b'-') {
                 return self.parse_offset_colon();
             }
@@ -452,145 +444,76 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         }
     }
 
-    /// Parse `%z`, which is a time zone offset without colons.
+    /// Parse `%z`, which is a time zone offset without colons that requires
+    /// a minutes component but will parse a second component if it's there.
     fn parse_offset_nocolon(&mut self) -> Result<(), Error> {
-        let (sign, inp) = parse_required_sign(self.inp)
-            .context("sign is required for time zone offset")?;
-        let (hhmm, inp) = parse::split(inp, 4).ok_or_else(|| {
-            err!(
-                "expected at least 4 digits for time zone offset \
-                 after sign, but found only {len} bytes remaining",
-                len = inp.len(),
-            )
-        })?;
+        static PARSER: offset::Parser = offset::Parser::new()
+            .zulu(false)
+            .require_minute(true)
+            .subminute(true)
+            .subsecond(false)
+            .colon(offset::Colon::Absent);
 
-        let hh = parse::i64(&hhmm[0..2]).with_context(|| {
-            err!(
-                "failed to parse hours from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let hh = ParsedOffsetHours::try_new("zone-offset-hours", hh)
-            .context("time zone offset hours are not valid")?;
-        let hh = t::SpanZoneOffset::rfrom(hh);
-
-        let mm = parse::i64(&hhmm[2..4]).with_context(|| {
-            err!(
-                "failed to parse minutes from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let mm = ParsedOffsetMinutes::try_new("zone-offset-minutes", mm)
-            .context("time zone offset minutes are not valid")?;
-        let mm = t::SpanZoneOffset::rfrom(mm);
-
-        let (ss, inp) = if inp.len() < 2
-            || !inp[..2].iter().all(u8::is_ascii_digit)
-        {
-            (t::SpanZoneOffset::N::<0>(), inp)
-        } else {
-            let (ss, inp) = parse::split(inp, 2).unwrap();
-            let ss = parse::i64(ss).with_context(|| {
-                err!(
-                    "failed to parse seconds from time zone offset {ss}",
-                    ss = escape::Bytes(ss)
-                )
-            })?;
-            let ss = ParsedOffsetSeconds::try_new("zone-offset-seconds", ss)
-                .context("time zone offset seconds are not valid")?;
-            if inp.starts_with(b".") {
-                // I suppose we could parse them and then round, but meh...
-                // (At time of writing, the precision of tz::Offset is
-                // seconds. If that improves to nanoseconds, then yes, let's
-                // parse fractional seconds here.)
-                return Err(err!(
-                    "parsing fractional seconds in time zone offset \
-                     is not supported",
-                ));
-            }
-            (t::SpanZoneOffset::rfrom(ss), inp)
-        };
-
-        let seconds = hh * C(3_600) + mm * C(60) + ss;
-        let offset = Offset::from_seconds_ranged(seconds * sign);
-        self.tm.offset = Some(offset);
-        self.inp = inp;
+        let Parsed { value, input } = PARSER.parse(self.inp)?;
+        self.tm.offset = Some(value.to_offset()?);
+        self.inp = input;
         self.bump_fmt();
 
         Ok(())
     }
 
-    /// Parse `%:z`, which is a time zone offset with colons.
+    /// Parse `%:z`, which is a time zone offset with colons that requires
+    /// a minutes component but will parse a second component if it's there.
     fn parse_offset_colon(&mut self) -> Result<(), Error> {
-        let (sign, inp) = parse_required_sign(self.inp)
-            .context("sign is required for time zone offset")?;
-        let (hhmm, inp) = parse::split(inp, 5).ok_or_else(|| {
-            err!(
-                "expected at least HH:MM digits for time zone offset \
-                 after sign, but found only {len} bytes remaining",
-                len = inp.len(),
-            )
-        })?;
-        if hhmm[2] != b':' {
-            return Err(err!(
-                "expected colon after between HH and MM in time zone \
-                 offset, but found {found:?} instead",
-                found = escape::Byte(hhmm[2]),
-            ));
-        }
+        static PARSER: offset::Parser = offset::Parser::new()
+            .zulu(false)
+            .require_minute(true)
+            .subminute(true)
+            .subsecond(false)
+            .colon(offset::Colon::Required);
 
-        let hh = parse::i64(&hhmm[0..2]).with_context(|| {
-            err!(
-                "failed to parse hours from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let hh = ParsedOffsetHours::try_new("zone-offset-hours", hh)
-            .context("time zone offset hours are not valid")?;
-        let hh = t::SpanZoneOffset::rfrom(hh);
+        let Parsed { value, input } = PARSER.parse(self.inp)?;
+        self.tm.offset = Some(value.to_offset()?);
+        self.inp = input;
+        self.bump_fmt();
 
-        let mm = parse::i64(&hhmm[3..5]).with_context(|| {
-            err!(
-                "failed to parse minutes from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let mm = ParsedOffsetMinutes::try_new("zone-offset-minutes", mm)
-            .context("time zone offset minutes are not valid")?;
-        let mm = t::SpanZoneOffset::rfrom(mm);
+        Ok(())
+    }
 
-        let (ss, inp) = if inp.len() < 3
-            || inp[0] != b':'
-            || !inp[1..3].iter().all(u8::is_ascii_digit)
-        {
-            (t::SpanZoneOffset::N::<0>(), inp)
-        } else {
-            let (ss, inp) = parse::split(&inp[1..], 2).unwrap();
-            let ss = parse::i64(ss).with_context(|| {
-                err!(
-                    "failed to parse seconds from time zone offset {ss}",
-                    ss = escape::Bytes(ss)
-                )
-            })?;
-            let ss = ParsedOffsetSeconds::try_new("zone-offset-seconds", ss)
-                .context("time zone offset seconds are not valid")?;
-            if inp.starts_with(b".") {
-                // I suppose we could parse them and then round, but meh...
-                // (At time of writing, the precision of tz::Offset is
-                // seconds. If that improves to nanoseconds, then yes, let's
-                // parse fractional seconds here.)
-                return Err(err!(
-                    "parsing fractional seconds in time zone offset \
-                     is not supported",
-                ));
-            }
-            (t::SpanZoneOffset::rfrom(ss), inp)
-        };
+    /// Parse `%::z`, which is a time zone offset with colons that requires
+    /// a seconds component.
+    fn parse_offset_colon2(&mut self) -> Result<(), Error> {
+        static PARSER: offset::Parser = offset::Parser::new()
+            .zulu(false)
+            .require_minute(true)
+            .require_second(true)
+            .subminute(true)
+            .subsecond(false)
+            .colon(offset::Colon::Required);
 
-        let seconds = hh * C(3_600) + mm * C(60) + ss;
-        let offset = Offset::from_seconds_ranged(seconds * sign);
-        self.tm.offset = Some(offset);
-        self.inp = inp;
+        let Parsed { value, input } = PARSER.parse(self.inp)?;
+        self.tm.offset = Some(value.to_offset()?);
+        self.inp = input;
+        self.bump_fmt();
+
+        Ok(())
+    }
+
+    /// Parse `%:::z`, which is a time zone offset with colons that only
+    /// requires an hour component, but will parse minute/second components
+    /// if they are there.
+    fn parse_offset_colon3(&mut self) -> Result<(), Error> {
+        static PARSER: offset::Parser = offset::Parser::new()
+            .zulu(false)
+            .require_minute(false)
+            .require_second(false)
+            .subminute(true)
+            .subsecond(false)
+            .colon(offset::Colon::Required);
+
+        let Parsed { value, input } = PARSER.parse(self.inp)?;
+        self.tm.offset = Some(value.to_offset()?);
+        self.inp = input;
         self.bump_fmt();
 
         Ok(())
@@ -640,29 +563,15 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
                 )
             })?;
         self.inp = inp;
-
-        // This is basically just repeating the
-        // `From<Timestamp> for BrokenDownTime`
-        // trait implementation.
-        let dt = Offset::UTC.to_datetime(timestamp);
-        let (d, t) = (dt.date(), dt.time());
-        self.tm.offset = Some(Offset::UTC);
-        self.tm.year = Some(d.year_ranged());
-        self.tm.month = Some(d.month_ranged());
-        self.tm.day = Some(d.day_ranged());
-        self.tm.hour = Some(t.hour_ranged());
-        self.tm.minute = Some(t.minute_ranged());
-        self.tm.second = Some(t.second_ranged());
-        self.tm.subsec = Some(t.subsec_nanosecond_ranged());
-        self.tm.meridiem = Some(Meridiem::from(t));
+        self.tm.timestamp = Some(timestamp);
 
         self.bump_fmt();
         Ok(())
     }
 
-    /// Parses `%f`, which is equivalent to a fractional second up to
-    /// nanosecond precision. This must always parse at least one decimal digit
-    /// and does not parse any leading dot.
+    /// Parses `%f` (or `%N`, which is an alias for `%9f`), which is equivalent
+    /// to a fractional second up to nanosecond precision. This must always
+    /// parse at least one decimal digit and does not parse any leading dot.
     ///
     /// At present, we don't use any flags/width/precision settings to
     /// influence parsing. That is, `%3f` will parse the fractional component
@@ -684,7 +593,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         // I believe this error can never happen, since we know we have no more
         // than 9 ASCII digits. Any sequence of 9 ASCII digits can be parsed
         // into an `i64`.
-        let nanoseconds = parse::fraction(digits, 9).map_err(|err| {
+        let nanoseconds = parse::fraction(digits).map_err(|err| {
             err!(
                 "failed to parse {digits:?} as fractional second component \
                  (up to 9 digits, nanosecond precision): {err}",
@@ -788,7 +697,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         static CHOICES: &'static [&'static [u8]] = &[
             b"Sunday",
             b"Monday",
-            b"Tueday",
+            b"Tuesday",
             b"Wednesday",
             b"Thursday",
             b"Friday",
@@ -857,6 +766,20 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         Ok(())
     }
 
+    /// Parse `%V`, which is an ISO 8601 week number.
+    fn parse_week_iso(&mut self, ext: Extension) -> Result<(), Error> {
+        let (week, inp) = ext
+            .parse_number(2, Flag::PadZero, self.inp)
+            .context("failed to parse ISO 8601 week number")?;
+        self.inp = inp;
+
+        let week = t::ISOWeek::try_new("week", week)
+            .context("ISO 8601 week number is invalid")?;
+        self.tm.iso_week = Some(week);
+        self.bump_fmt();
+        Ok(())
+    }
+
     /// Parse `%W`, which is a week number with Monday being the first day
     /// in the first week numbered `01`.
     fn parse_week_mon(&mut self, ext: Extension) -> Result<(), Error> {
@@ -904,7 +827,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         let year = Year2Digit::try_new("year (2 digits)", year)
             .context("year number is invalid")?;
         let mut year = t::Year::rfrom(year);
-        if year <= 68 {
+        if year <= C(68) {
             year += C(2000);
         } else {
             year += C(1900);
@@ -922,6 +845,12 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
             .parse_number(2, Flag::NoPad, inp)
             .context("failed to parse century")?;
         self.inp = inp;
+
+        if !(0 <= century && century <= 99) {
+            return Err(err!(
+                "century `{century}` is too big, must be in range 0-99",
+            ));
+        }
 
         // OK because sign=={1,-1} and century can't be bigger than 2 digits
         // so overflow isn't possible.
@@ -969,7 +898,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         let year = Year2Digit::try_new("year (2 digits)", year)
             .context("ISO 8601 week-based year number is invalid")?;
         let mut year = t::ISOYear::rfrom(year);
-        if year <= 68 {
+        if year <= C(68) {
             year += C(2000);
         } else {
             year += C(1900);
@@ -996,9 +925,9 @@ impl Extension {
     ///
     /// The remaining input is returned. This returns an error if the given
     /// input is empty.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_number<'i>(
-        self,
+        &self,
         default_pad_width: usize,
         default_flag: Flag,
         mut inp: &'i [u8],
@@ -1053,7 +982,7 @@ impl Extension {
 /// found, then the sign returned is positive.
 ///
 /// This also returns the remaining unparsed input.
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_optional_sign<'i>(input: &'i [u8]) -> (i64, &'i [u8]) {
     if input.is_empty() {
         (1, input)
@@ -1063,28 +992,6 @@ fn parse_optional_sign<'i>(input: &'i [u8]) -> (i64, &'i [u8]) {
         (1, &input[1..])
     } else {
         (1, input)
-    }
-}
-
-/// Parses an optional sign from the beginning of the input. If one isn't
-/// found, then the sign returned is positive.
-///
-/// This also returns the remaining unparsed input.
-#[inline(always)]
-fn parse_required_sign<'i>(
-    input: &'i [u8],
-) -> Result<(t::Sign, &'i [u8]), Error> {
-    if input.is_empty() {
-        Err(err!("expected +/- sign, but found end of input"))
-    } else if input[0] == b'-' {
-        Ok((t::Sign::N::<-1>(), &input[1..]))
-    } else if input[0] == b'+' {
-        Ok((t::Sign::N::<1>(), &input[1..]))
-    } else {
-        Err(err!(
-            "expected +/- sign, but found {found:?} instead",
-            found = escape::Byte(input[0])
-        ))
     }
 }
 
@@ -1134,7 +1041,7 @@ fn parse_choice<'i>(
 ///
 /// This exists because AM/PM is common and we can take advantage of the fact
 /// that they are both exactly two bytes.
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_ampm<'i>(input: &'i [u8]) -> Result<(usize, &'i [u8]), Error> {
     if input.len() < 2 {
         return Err(err!(
@@ -1164,7 +1071,7 @@ fn parse_ampm<'i>(input: &'i [u8]) -> Result<(usize, &'i [u8]), Error> {
 ///
 /// This exists because weekday abbreviations are common and we can take
 /// advantage of the fact that they are all exactly three bytes.
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_weekday_abbrev<'i>(
     input: &'i [u8],
 ) -> Result<(usize, &'i [u8]), Error> {
@@ -1205,7 +1112,7 @@ fn parse_weekday_abbrev<'i>(
 ///
 /// This exists because month name abbreviations are common and we can take
 /// advantage of the fact that they are all exactly three bytes.
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_month_name_abbrev<'i>(
     input: &'i [u8],
 ) -> Result<(usize, &'i [u8]), Error> {
@@ -1247,7 +1154,7 @@ fn parse_month_name_abbrev<'i>(
     Ok((index, input))
 }
 
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_iana<'i>(input: &'i [u8]) -> Result<(&'i str, &'i [u8]), Error> {
     let mkiana = parse::slicer(input);
     let (_, mut input) = parse_iana_component(input)?;
@@ -1267,7 +1174,7 @@ fn parse_iana<'i>(input: &'i [u8]) -> Result<(&'i str, &'i [u8]), Error> {
 /// Parses a single IANA name component. That is, the thing that leads all IANA
 /// time zone identifiers and the thing that must always come after a `/`. This
 /// returns an error if no component could be found.
-#[inline(always)]
+#[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_iana_component<'i>(
     mut input: &'i [u8],
 ) -> Result<(&'i [u8], &'i [u8]), Error> {
@@ -1299,6 +1206,7 @@ fn parse_iana_component<'i>(
     Ok((mkname(input), input))
 }
 
+#[cfg(feature = "alloc")]
 #[cfg(test)]
 mod tests {
     use alloc::string::ToString;
@@ -1686,6 +1594,19 @@ mod tests {
         );
 
         insta::assert_debug_snapshot!(
+            p("%H:%M:%S.%N", "15:48:01.1"),
+            @"15:48:01.1",
+        );
+        insta::assert_debug_snapshot!(
+            p("%H:%M:%S.%3N", "15:48:01.123"),
+            @"15:48:01.123",
+        );
+        insta::assert_debug_snapshot!(
+            p("%H:%M:%S.%3N", "15:48:01.123456"),
+            @"15:48:01.123456",
+        );
+
+        insta::assert_debug_snapshot!(
             p("%H", "09"),
             @"09:00:00",
         );
@@ -1776,6 +1697,116 @@ mod tests {
     }
 
     #[test]
+    fn ok_parse_offset() {
+        let p = |fmt: &str, input: &str| {
+            BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
+                .unwrap()
+                .to_offset()
+                .unwrap()
+        };
+
+        insta::assert_debug_snapshot!(
+            p("%z", "+0530"),
+            @"05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%z", "-0530"),
+            @"-05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%z", "-0500"),
+            @"-05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%z", "+053015"),
+            @"05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%z", "+050015"),
+            @"05:00:15",
+        );
+
+        insta::assert_debug_snapshot!(
+            p("%:z", "+05:30"),
+            @"05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:z", "-05:30"),
+            @"-05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:z", "-05:00"),
+            @"-05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:z", "+05:30:15"),
+            @"05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:z", "-05:00:15"),
+            @"-05:00:15",
+        );
+
+        insta::assert_debug_snapshot!(
+            p("%::z", "+05:30:15"),
+            @"05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%::z", "-05:30:15"),
+            @"-05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%::z", "-05:00:00"),
+            @"-05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%::z", "-05:00:15"),
+            @"-05:00:15",
+        );
+
+        insta::assert_debug_snapshot!(
+            p("%:::z", "+05"),
+            @"05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-05"),
+            @"-05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "+00"),
+            @"00:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-00"),
+            @"00:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "+05:30"),
+            @"05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-05:30"),
+            @"-05:30:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "+05:30:15"),
+            @"05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-05:30:15"),
+            @"-05:30:15",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-05:00:00"),
+            @"-05:00:00",
+        );
+        insta::assert_debug_snapshot!(
+            p("%:::z", "-05:00:15"),
+            @"-05:00:15",
+        );
+    }
+
+    #[test]
     fn err_parse() {
         let p = |fmt: &str, input: &str| {
             BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
@@ -1814,7 +1845,7 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("%A %m/%d/%y", "Mon 7/14/24"),
-            @r###"strptime parsing failed: %A failed: unrecognized weekday abbreviation: failed to find expected choice at beginning of "Mon 7/14/24", available choices are: Sunday, Monday, Tueday, Wednesday, Thursday, Friday, Saturday"###,
+            @r#"strptime parsing failed: %A failed: unrecognized weekday abbreviation: failed to find expected choice at beginning of "Mon 7/14/24", available choices are: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"#,
         );
         insta::assert_snapshot!(
             p("%b", "Bad"),
@@ -1883,6 +1914,21 @@ mod tests {
         );
 
         insta::assert_snapshot!(
+            p("%:", " "),
+            @"strptime parsing failed: expected to find specifier directive after 1 colons, but found end of format string",
+        );
+
+        insta::assert_snapshot!(
+            p("%::", " "),
+            @"strptime parsing failed: expected to find specifier directive after 2 colons, but found end of format string",
+        );
+
+        insta::assert_snapshot!(
+            p("%:::", " "),
+            @"strptime parsing failed: expected to find specifier directive after 3 colons, but found end of format string",
+        );
+
+        insta::assert_snapshot!(
             p("%H:%M:%S%.f", "15:59:01."),
             @"strptime parsing failed: %.f failed: expected at least one fractional decimal digit, but did not find any",
         );
@@ -1906,22 +1952,34 @@ mod tests {
             p("%H:%M:%S.%f", "15:59:01.a"),
             @"strptime parsing failed: %f failed: expected at least one fractional decimal digit, but did not find any",
         );
+        insta::assert_snapshot!(
+            p("%H:%M:%S.%N", "15:59:01."),
+            @"strptime parsing failed: expected non-empty input for directive %N, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("%H:%M:%S.%N", "15:59:01"),
+            @r###"strptime parsing failed: expected to match literal byte "." from format string, but found end of input"###,
+        );
+        insta::assert_snapshot!(
+            p("%H:%M:%S.%N", "15:59:01.a"),
+            @"strptime parsing failed: %N failed: expected at least one fractional decimal digit, but did not find any",
+        );
 
         insta::assert_snapshot!(
             p("%Q", "+America/New_York"),
-            @"strptime parsing failed: %Q failed: failed to parse hours from time zone offset Amer: invalid digit, expected 0-9 but got A",
+            @r#"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset "+America/New_York": failed to parse "Am" as hours (a two digit integer): invalid digit, expected 0-9 but got A"#,
         );
         insta::assert_snapshot!(
             p("%Q", "-America/New_York"),
-            @"strptime parsing failed: %Q failed: failed to parse hours from time zone offset Amer: invalid digit, expected 0-9 but got A",
+            @r#"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset "-America/New_York": failed to parse "Am" as hours (a two digit integer): invalid digit, expected 0-9 but got A"#,
         );
         insta::assert_snapshot!(
             p("%:Q", "+0400"),
-            @"strptime parsing failed: %:Q failed: expected at least HH:MM digits for time zone offset after sign, but found only 4 bytes remaining",
+            @r#"strptime parsing failed: %:Q failed: parsed hour component of time zone offset from "+0400", but could not find required colon separator"#,
         );
         insta::assert_snapshot!(
             p("%Q", "+04:00"),
-            @"strptime parsing failed: %Q failed: failed to parse minutes from time zone offset 04:0: invalid digit, expected 0-9 but got :",
+            @r#"strptime parsing failed: %Q failed: parsed hour component of time zone offset from "+04:00", but found colon after hours which is not allowed"#,
         );
         insta::assert_snapshot!(
             p("%Q", "America/"),
@@ -2054,6 +2112,87 @@ mod tests {
         insta::assert_snapshot!(
             p("%H:%S", "15:59"),
             @"parsing format did not include minute directive, but did include second directive (cannot have smaller time units with bigger time units missing)",
+        );
+    }
+
+    #[test]
+    fn err_parse_offset() {
+        let p = |fmt: &str, input: &str| {
+            BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
+                .unwrap_err()
+                .to_string()
+        };
+
+        insta::assert_snapshot!(
+            p("%z", "+05:30"),
+            @r#"strptime parsing failed: %z failed: parsed hour component of time zone offset from "+05:30", but found colon after hours which is not allowed"#,
+        );
+        insta::assert_snapshot!(
+            p("%:z", "+0530"),
+            @r#"strptime parsing failed: %:z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+        );
+        insta::assert_snapshot!(
+            p("%::z", "+0530"),
+            @r#"strptime parsing failed: %::z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+        );
+        insta::assert_snapshot!(
+            p("%:::z", "+0530"),
+            @r#"strptime parsing failed: %:::z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+        );
+
+        insta::assert_snapshot!(
+            p("%z", "+05"),
+            @r#"strptime parsing failed: %z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+        );
+        insta::assert_snapshot!(
+            p("%:z", "+05"),
+            @r#"strptime parsing failed: %:z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+        );
+        insta::assert_snapshot!(
+            p("%::z", "+05"),
+            @r#"strptime parsing failed: %::z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+        );
+        insta::assert_snapshot!(
+            p("%::z", "+05:30"),
+            @r#"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset from "+05:30", but could not find required second component"#,
+        );
+        insta::assert_snapshot!(
+            p("%:::z", "+5"),
+            @r#"strptime parsing failed: %:::z failed: failed to parse hours in UTC numeric offset "+5": expected two digit hour after sign, but found end of input"#,
+        );
+
+        insta::assert_snapshot!(
+            p("%z", "+0530:15"),
+            @r#"strptime expects to consume the entire input, but ":15" remains unparsed"#,
+        );
+        insta::assert_snapshot!(
+            p("%:z", "+05:3015"),
+            @r#"strptime expects to consume the entire input, but "15" remains unparsed"#,
+        );
+        insta::assert_snapshot!(
+            p("%::z", "+05:3015"),
+            @r#"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset from "+05:3015", but could not find required second component"#,
+        );
+        insta::assert_snapshot!(
+            p("%:::z", "+05:3015"),
+            @r#"strptime expects to consume the entire input, but "15" remains unparsed"#,
+        );
+    }
+
+    /// Regression test for checked arithmetic panicking.
+    ///
+    /// Ref https://github.com/BurntSushi/jiff/issues/426
+    #[test]
+    fn err_parse_large_century() {
+        let p = |fmt: &str, input: &str| {
+            BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
+                .unwrap_err()
+                .to_string()
+        };
+
+        insta::assert_snapshot!(
+            p("%^50C%", "2000000000000000000#0077)()"),
+            @"strptime parsing failed: %C failed: century `2000000000000000000` is too big, must be in range 0-99",
         );
     }
 }

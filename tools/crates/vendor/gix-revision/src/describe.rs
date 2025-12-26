@@ -59,7 +59,7 @@ pub struct Format<'a> {
     pub dirty_suffix: Option<String>,
 }
 
-impl<'a> Format<'a> {
+impl Format<'_> {
     /// Return true if the `name` is directly associated with `id`, i.e. there are no commits between them.
     pub fn is_exact_match(&self) -> bool {
         self.depth == 0
@@ -75,7 +75,7 @@ impl<'a> Format<'a> {
     }
 }
 
-impl<'a> Display for Format<'a> {
+impl Display for Format<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         if let Some(name) = self.name.as_deref() {
             if !self.long && self.is_exact_match() {
@@ -116,7 +116,7 @@ pub struct Options<'name> {
     pub first_parent: bool,
 }
 
-impl<'name> Default for Options<'name> {
+impl Default for Options<'_> {
     fn default() -> Self {
         Options {
             max_candidates: 10, // the same number as git uses, otherwise we perform worse by default on big repos
@@ -160,7 +160,7 @@ pub(crate) mod function {
     /// candidate by setting `fallback_to_oid` to true.
     pub fn describe<'name>(
         commit: &oid,
-        graph: &mut Graph<'_, Flags>,
+        graph: &mut Graph<'_, '_, Flags>,
         Options {
             name_by_oid,
             mut max_candidates,
@@ -304,7 +304,7 @@ pub(crate) mod function {
     }
 
     fn parents_by_date_onto_queue_and_track_names(
-        graph: &mut Graph<'_, Flags>,
+        graph: &mut Graph<'_, '_, Flags>,
         queue: &mut PriorityQueue<CommitTime, gix_hash::ObjectId>,
         commit: gix_hash::ObjectId,
         commit_flags: Flags,
@@ -326,7 +326,7 @@ pub(crate) mod function {
 
     fn finish_depth_computation(
         mut queue: PriorityQueue<CommitTime, gix_hash::ObjectId>,
-        graph: &mut Graph<'_, Flags>,
+        graph: &mut Graph<'_, '_, Flags>,
         best_candidate: &mut Candidate<'_>,
         first_parent: bool,
     ) -> Result<u32, Error> {

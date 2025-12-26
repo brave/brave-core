@@ -56,8 +56,6 @@ impl Display for Comparator {
             Op::Tilde => "~",
             Op::Caret => "^",
             Op::Wildcard => "",
-            #[cfg(no_non_exhaustive)]
-            Op::__NonExhaustive => unreachable!(),
         };
         formatter.write_str(op)?;
         write!(formatter, "{}", self.major)?;

@@ -1,7 +1,10 @@
-use super::{GraphRef, IntoNodeIdentifiers, Reversed};
-use super::{IntoNeighbors, IntoNeighborsDirected, VisitMap, Visitable};
+use alloc::{collections::VecDeque, vec::Vec};
+
+use super::{
+    GraphRef, IntoNeighbors, IntoNeighborsDirected, IntoNodeIdentifiers, Reversed, VisitMap,
+    Visitable,
+};
 use crate::Incoming;
-use std::collections::VecDeque;
 
 /// Visit nodes of a graph in a depth-first-search (DFS) emitting nodes in
 /// preorder (when they are first discovered).
@@ -308,8 +311,9 @@ where
 /// A topological order traversal for a graph.
 ///
 /// **Note** that `Topo` only visits nodes that are not part of cycles,
-/// i.e. nodes in a true DAG. Use other visitors like `DfsPostOrder` or
-/// algorithms like kosaraju_scc to handle graphs with possible cycles.
+/// i.e. nodes in a true DAG. Use other visitors like [`DfsPostOrder`] or
+/// algorithms like [`kosaraju_scc`][crate::algo::kosaraju_scc()] to handle
+/// graphs with possible cycles.
 #[derive(Clone)]
 pub struct Topo<N, VM> {
     tovisit: Vec<N>,
@@ -485,7 +489,7 @@ where
     }
 }
 
-impl<'a, C, W: ?Sized> Walker<C> for &'a mut W
+impl<C, W: ?Sized> Walker<C> for &mut W
 where
     W: Walker<C>,
 {

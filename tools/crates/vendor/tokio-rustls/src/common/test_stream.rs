@@ -154,15 +154,20 @@ impl AsyncWrite for Eof {
 
 #[tokio::test]
 async fn stream_good() -> io::Result<()> {
-    stream_good_impl(false).await
+    stream_good_impl(false, false).await
 }
 
 #[tokio::test]
 async fn stream_good_vectored() -> io::Result<()> {
-    stream_good_impl(true).await
+    stream_good_impl(true, false).await
 }
 
-async fn stream_good_impl(vectored: bool) -> io::Result<()> {
+#[tokio::test]
+async fn stream_good_bufread() -> io::Result<()> {
+    stream_good_impl(false, true).await
+}
+
+async fn stream_good_impl(vectored: bool, bufread: bool) -> io::Result<()> {
     const FILE: &[u8] = include_bytes!("../../README.md");
 
     let (server, mut client) = make_pair();
@@ -177,7 +182,11 @@ async fn stream_good_impl(vectored: bool) -> io::Result<()> {
         let mut stream = Stream::new(&mut good, &mut client);
 
         let mut buf = Vec::new();
-        dbg!(stream.read_to_end(&mut buf).await)?;
+        if bufread {
+            dbg!(tokio::io::copy_buf(&mut stream, &mut buf).await)?;
+        } else {
+            dbg!(stream.read_to_end(&mut buf).await)?;
+        }
         assert_eq!(buf, FILE);
 
         dbg!(utils::write(&mut stream, b"Hello World!", vectored).await)?;
@@ -347,7 +356,7 @@ async fn stream_write_zero() -> io::Result<()> {
     let mut io = Eof;
     let mut stream = Stream::new(&mut io, &mut client);
 
-    stream.write(b"1").await.unwrap();
+    stream.write_all(b"1").await.unwrap();
     let result = stream.flush().await;
     assert_eq!(
         result.err().map(|e| e.kind()),

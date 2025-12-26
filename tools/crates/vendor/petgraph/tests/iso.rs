@@ -445,7 +445,7 @@ fn iso2() {
 
 #[test]
 fn iso_matching() {
-    let g0 = Graph::<(), _>::from_edges(&[(0, 0, 1), (0, 1, 2), (0, 2, 3), (1, 2, 4)]);
+    let g0 = Graph::<(), _>::from_edges([(0, 0, 1), (0, 1, 2), (0, 2, 3), (1, 2, 4)]);
 
     let mut g1 = g0.clone();
     g1[edge_index(0)] = 0;
@@ -485,26 +485,41 @@ fn iso_large() {
 #[should_panic]
 #[test]
 fn iso_multigraph_failure() {
-    let g0 = Graph::<(), ()>::from_edges(&[(0, 0), (0, 0), (0, 1), (1, 1), (1, 1), (1, 0)]);
+    let g0 = Graph::<(), ()>::from_edges([(0, 0), (0, 0), (0, 1), (1, 1), (1, 1), (1, 0)]);
 
-    let g1 = Graph::<(), ()>::from_edges(&[(0, 0), (0, 1), (0, 1), (1, 1), (1, 0), (1, 0)]);
+    let g1 = Graph::<(), ()>::from_edges([(0, 0), (0, 1), (0, 1), (1, 1), (1, 0), (1, 0)]);
     assert!(!is_isomorphic(&g0, &g1));
 }
 
 #[test]
 #[cfg_attr(miri, ignore = "Takes too long to run in Miri")]
 fn iso_subgraph() {
-    let g0 = Graph::<(), ()>::from_edges(&[(0, 1), (1, 2), (2, 0)]);
-    let g1 = Graph::<(), ()>::from_edges(&[(0, 1), (1, 2), (2, 0), (2, 3), (0, 4)]);
+    let g0 = Graph::<(), ()>::from_edges([(0, 1), (1, 2), (2, 0)]);
+    let g1 = Graph::<(), ()>::from_edges([(0, 1), (1, 2), (2, 0), (2, 3), (0, 4)]);
     assert!(!is_isomorphic(&g0, &g1));
     assert!(is_isomorphic_subgraph(&g0, &g1));
 }
 
 #[test]
+fn iter_subgraph_empty() {
+    let a = Graph::<(), ()>::new();
+    let b = Graph::<(), ()>::from_edges([(0, 1), (1, 2), (2, 0)]);
+
+    let a_ref = &a;
+    let b_ref = &b;
+    let mut node_match = { |x: &(), y: &()| x == y };
+    let mut edge_match = { |x: &(), y: &()| x == y };
+    let mut mappings =
+        subgraph_isomorphisms_iter(&a_ref, &b_ref, &mut node_match, &mut edge_match).unwrap();
+    assert_eq!(mappings.next(), Some(vec![]));
+    assert_eq!(mappings.next(), None);
+}
+
+#[test]
 #[cfg_attr(miri, ignore = "Takes too long to run in Miri")]
 fn iter_subgraph() {
-    let a = Graph::<(), ()>::from_edges(&[(0, 1), (1, 2), (2, 0)]);
-    let b = Graph::<(), ()>::from_edges(&[(0, 1), (1, 2), (2, 0), (2, 3), (0, 4)]);
+    let a = Graph::<(), ()>::from_edges([(0, 1), (1, 2), (2, 0)]);
+    let b = Graph::<(), ()>::from_edges([(0, 1), (1, 2), (2, 0), (2, 3), (0, 4)]);
     let a_ref = &a;
     let b_ref = &b;
     let mut node_match = { |x: &(), y: &()| x == y };

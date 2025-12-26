@@ -1,5 +1,5 @@
 use super::{FileLock, GitIndex};
-use crate::{Error, IndexKrate, KrateName};
+use crate::{Error, IndexKrate, KrateName, utils};
 use std::sync::atomic::AtomicBool;
 
 /// Uses a "bare" git index that fetches files directly from the repo instead of
@@ -81,7 +81,7 @@ impl RemoteGitIndex {
                 repo.find_remote("origin").map_or(true, |remote| {
                     remote
                         .url(DIR)
-                        .map_or(false, |remote_url| remote_url.to_bstring() == index.url)
+                        .is_some_and(|remote_url| remote_url.to_bstring() == index.url)
                 })
             })
             .or_else(|| gix::open_opts(&index.cache.path, open_with_complete_config).ok());
@@ -121,7 +121,7 @@ impl RemoteGitIndex {
         let (mut repo, fetch_outcome) = open_or_clone_repo()?;
 
         if let Some(fetch_outcome) = fetch_outcome {
-            crate::utils::git::write_fetch_head(
+            utils::git::write_fetch_head(
                 &repo,
                 &fetch_outcome,
                 &repo.find_remote("origin").unwrap(),
@@ -209,7 +209,7 @@ impl RemoteGitIndex {
                 .1)
         };
 
-        let gix::ObjectId::Sha1(sha1) = find_remote_head()?;
+        let sha1 = utils::git::unwrap_sha1(find_remote_head()?);
         index.set_head_commit(Some(sha1));
 
         Ok(gix::ObjectId::Sha1(sha1))
@@ -240,8 +240,8 @@ impl RemoteGitIndex {
             // It's unfortunate if fail to write to the cache, but we still were
             // able to retrieve the contents from git
             let mut hex_id = [0u8; 40];
-            let gix::ObjectId::Sha1(sha1) = blob.id;
-            let blob_id = crate::utils::encode_hex(&sha1, &mut hex_id);
+            let sha1 = utils::git::unwrap_sha1(blob.id);
+            let blob_id = utils::encode_hex(&sha1, &mut hex_id);
 
             let _ = self.index.write_to_cache(&krate, Some(blob_id), lock);
         }
@@ -257,9 +257,8 @@ impl RemoteGitIndex {
             .try_into_commit()?
             .tree()?;
 
-        let mut buf = Vec::new();
         let Some(entry) = tree
-            .lookup_entry_by_path(path, &mut buf)
+            .lookup_entry_by_path(path)
             .map_err(|err| GitError::BlobLookup(Box::new(err)))?
         else {
             return Ok(None);
@@ -309,8 +308,8 @@ impl RemoteGitIndex {
             };
 
             let mut hex_id = [0u8; 40];
-            let gix::ObjectId::Sha1(sha1) = blob.id;
-            let blob_id = crate::utils::encode_hex(&sha1, &mut hex_id);
+            let sha1 = utils::git::unwrap_sha1(blob.id);
+            let blob_id = utils::encode_hex(&sha1, &mut hex_id);
 
             if valid.revision != blob_id {
                 return Ok(None);
@@ -382,7 +381,7 @@ impl RemoteGitIndex {
             .receive(&mut progress, should_interrupt)
             .map_err(|err| GitError::from(Box::new(err)))?;
 
-        crate::utils::git::write_fetch_head(&repo, &outcome, &remote)?;
+        utils::git::write_fetch_head(&repo, &outcome, &remote)?;
         self.head_commit = Self::set_head(&mut self.index, &repo)?;
 
         Ok(())
@@ -471,7 +470,7 @@ impl GitError {
                 }
             }
             Self::Lock(le) => {
-                return !matches!(le, gix::lock::acquire::Error::PermanentlyLocked { .. })
+                return !matches!(le, gix::lock::acquire::Error::PermanentlyLocked { .. });
             }
             _ => return false,
         };

@@ -7,47 +7,39 @@ Normalizing text into Unicode Normalization Forms.
 This module is published as its own crate ([`icu_normalizer`](https://docs.rs/icu_normalizer/latest/icu_normalizer/))
 and as part of the [`icu`](https://docs.rs/icu/latest/icu/) crate. See the latter for more details on the ICU4X project.
 
-## Implementation notes
+## Functionality
 
-The normalizer operates on a lazy iterator over Unicode scalar values (Rust `char`) internally
-and iterating over guaranteed-valid UTF-8, potentially-invalid UTF-8, and potentially-invalid
-UTF-16 is a step that doesn’t leak into the normalizer internals. Ill-formed byte sequences are
-treated as U+FFFD.
+The top level of the crate provides normalization of input into the four normalization forms defined in [UAX #15: Unicode
+Normalization Forms](https://www.unicode.org/reports/tr15/): NFC, NFD, NFKC, and NFKD.
 
-The normalizer data layout is not based on the ICU4C design at all. Instead, the normalization
-data layout is a clean-slate design optimized for the concept of fusing the NFD decomposition
-into the collator. That is, the decomposing normalizer is a by-product of the collator-motivated
-data layout.
+Three kinds of contiguous inputs are supported: known-well-formed UTF-8 (`&str`), potentially-not-well-formed UTF-8,
+and potentially-not-well-formed UTF-16. Additionally, an iterator over `char` can be wrapped in a normalizing iterator.
 
-Notably, the decomposition data structure is optimized for a starter decomposing to itself,
-which is the most common case, and for a starter decomposing to a starter and a non-starter
-on the Basic Multilingual Plane. Notably, in this case, the collator makes use of the
-knowledge that the second character of such a decomposition is a non-starter. Therefore,
-decomposition into two starters is handled by generic fallback path that looks the
-decomposition from an array by offset and length instead of baking a BMP starter pair directly
-into a trie value.
+The `uts46` module provides the combination of mapping and normalization operations for [UTS #46: Unicode IDNA
+Compatibility Processing](https://www.unicode.org/reports/tr46/). This functionality is not meant to be used by
+applications directly. Instead, it is meant as a building block for a full implementation of UTS #46, such as the
+[`idna`](https://docs.rs/idna/latest/idna/) crate.
 
-The decompositions into non-starters are hard-coded. At present in Unicode, these appear
-to be special cases falling into three categories:
+The `properties` module provides the non-recursive canonical decomposition operation on a per `char` basis and
+the canonical compositon operation given two `char`s. It also provides access to the Canonical Combining Class
+property. These operations are primarily meant for [HarfBuzz](https://harfbuzz.github.io/) via the
+[`icu_harfbuzz`](https://docs.rs/icu_harfbuzz/latest/icu_harfbuzz/) crate.
 
-1. Deprecated combining marks.
-2. Particular Tibetan vowel sings.
-3. NFKD only: half-width kana voicing marks.
+Notably, this normalizer does _not_ provide the normalization “quick check” that can result in “maybe” in
+addition to “yes” and “no”. The normalization checks provided by this crate always give a definitive
+non-“maybe” answer.
 
-Hopefully Unicode never adds more decompositions into non-starters (other than a character
-decomposing to itself), but if it does, a code update is needed instead of a mere data update.
+## Examples
 
-The composing normalizer builds on the decomposing normalizer by performing the canonical
-composition post-processing per spec. As an optimization, though, the composing normalizer
-attempts to pass through already-normalized text consisting of starters that never combine
-backwards and that map to themselves if followed by a character whose decomposition starts
-with a starter that never combines backwards.
+```rust
+let nfc = icu_normalizer::ComposingNormalizerBorrowed::new_nfc();
+assert_eq!(nfc.normalize("a\u{0308}"), "ä");
+assert!(nfc.is_normalized("ä"));
 
-As a difference with ICU4C, the composing normalizer has only the simplest possible
-passthrough (only one inversion list lookup per character in the best case) and the full
-decompose-then-canonically-compose behavior, whereas ICU4C has other paths between these
-extremes. The ICU4X collator doesn't make use of the FCD concept at all in order to avoid
-doing the work of checking whether the FCD condition holds.
+let nfd = icu_normalizer::DecomposingNormalizerBorrowed::new_nfd();
+assert_eq!(nfd.normalize("ä"), "a\u{0308}");
+assert!(!nfd.is_normalized("ä"));
+```
 
 <!-- cargo-rdme end -->
 

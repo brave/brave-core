@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.73"
+rust-version = "1.82"
 name = "cxx-build"
-version = "1.0.140"
+version = "1.0.192"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = false
 exclude = ["build.rs"]
@@ -38,23 +38,30 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/cxx"
 
 [package.metadata.docs.rs]
-rustdoc-args = ["--generate-link-to-definition"]
 targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = [
+    "--generate-link-to-definition",
+    "--generate-macro-expansion",
+    "--extern-html-root-url=core=https://doc.rust-lang.org",
+    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
+    "--extern-html-root-url=std=https://doc.rust-lang.org",
+]
 
 [features]
-experimental-async-fn = []
 parallel = ["cc/parallel"]
 
 [lib]
 name = "cxx_build"
 path = "src/lib.rs"
-doc-scrape-examples = false
 
 [dependencies.cc]
-version = "1.0.83"
+version = "1.0.101"
 
 [dependencies.codespan-reporting]
-version = "0.11.1"
+version = "0.13.1"
+
+[dependencies.indexmap]
+version = "2.9.0"
 
 [dependencies.proc-macro2]
 version = "1.0.74"

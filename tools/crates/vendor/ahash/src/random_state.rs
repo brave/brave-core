@@ -11,11 +11,6 @@ cfg_if::cfg_if! {
     }
 }
 cfg_if::cfg_if! {
-    if #[cfg(feature = "specialize")]{
-        use crate::BuildHasherExt;
-    }
-}
-cfg_if::cfg_if! {
     if #[cfg(feature = "std")] {
         extern crate std as alloc;
     } else {
@@ -24,7 +19,7 @@ cfg_if::cfg_if! {
 }
 
 #[cfg(feature = "atomic-polyfill")]
-use atomic_polyfill as atomic;
+use portable_atomic as atomic;
 #[cfg(not(feature = "atomic-polyfill"))]
 use core::sync::atomic;
 
@@ -79,7 +74,7 @@ cfg_if::cfg_if! {
 
             SEEDS.get_or_init(|| {
                 let mut result: [u8; 64] = [0; 64];
-                getrandom::getrandom(&mut result).expect("getrandom::getrandom() failed.");
+                getrandom::fill(&mut result).expect("getrandom::fill() failed.");
                 Box::new(result.convert())
             })
         }
@@ -394,16 +389,16 @@ impl BuildHasher for RandomState {
 ```
         use ahash::{AHasher, RandomState};
         use std::hash::{Hasher, BuildHasher};
-    
+
         let build_hasher = RandomState::new();
         let mut hasher_1 = build_hasher.build_hasher();
         let mut hasher_2 = build_hasher.build_hasher();
-    
+
         hasher_1.write_u32(1234);
         hasher_2.write_u32(1234);
-    
+
         assert_eq!(hasher_1.finish(), hasher_2.finish());
-    
+
         let other_build_hasher = RandomState::new();
         let mut different_hasher = other_build_hasher.build_hasher();
         different_hasher.write_u32(1234);
@@ -458,17 +453,17 @@ impl BuildHasher for RandomState {
     /// implementation of [`Hash`].  The way to create a combined hash of
     /// multiple values is to call [`Hash::hash`] multiple times using the same
     /// [`Hasher`], not to call this method repeatedly and combine the results.
-    #[cfg(feature = "specialize")]
+    #[cfg(specialize)]
     #[inline]
     fn hash_one<T: Hash>(&self, x: T) -> u64 {
         RandomState::hash_one(self, x)
     }
 }
 
-#[cfg(feature = "specialize")]
-impl BuildHasherExt for RandomState {
+#[cfg(specialize)]
+impl RandomState {
     #[inline]
-    fn hash_as_u64<T: Hash + ?Sized>(&self, value: &T) -> u64 {
+    pub(crate) fn hash_as_u64<T: Hash + ?Sized>(&self, value: &T) -> u64 {
         let mut hasher = AHasherU64 {
             buffer: self.k1,
             pad: self.k0,
@@ -478,14 +473,14 @@ impl BuildHasherExt for RandomState {
     }
 
     #[inline]
-    fn hash_as_fixed_length<T: Hash + ?Sized>(&self, value: &T) -> u64 {
+    pub(crate) fn hash_as_fixed_length<T: Hash + ?Sized>(&self, value: &T) -> u64 {
         let mut hasher = AHasherFixed(self.build_hasher());
         value.hash(&mut hasher);
         hasher.finish()
     }
 
     #[inline]
-    fn hash_as_str<T: Hash + ?Sized>(&self, value: &T) -> u64 {
+    pub(crate) fn hash_as_str<T: Hash + ?Sized>(&self, value: &T) -> u64 {
         let mut hasher = AHasherStr(self.build_hasher());
         value.hash(&mut hasher);
         hasher.finish()

@@ -17,36 +17,29 @@ ignore = []
 allow = [
     "MIT",
     "Apache-2.0",
-    "MPL-2.0",
+    "CDLA-Permissive-2.0",
     "ISC",
     "BSD-3-Clause",
+    "Unicode-3.0",
+    "Zlib",
 ]
 exceptions = [
-    { allow = [
-        "Unicode-DFS-2016",
-    ], name = "unicode-ident" },
-    { allow = [
-        "OpenSSL",
-    ], name = "ring" },
 ]
-
-[[licenses.clarify]]
-name = "ring"
-expression = "MIT AND ISC AND OpenSSL"
-license-files = [{ path = "LICENSE", hash = 0xbd0eed23 }]
 
 [bans]
 multiple-versions = "deny"
 deny = [
     "openssl",
     # Unfortunately we can't ban this since some people want a curl client instead of reqwest
-    #"curl", 
+    #"curl",
 ]
 skip = [
+    { crate = "core-foundation@0.9.4", reason = "system-configuration uses this old version" },
+    { crate = "getrandom@0.2.16", reason = "ring uses this old version" },
+    { crate = "hashbrown@0.15.5", reason = "gix uses this old version" },
 ]
 skip-tree = [
-    # sigh
-    "windows-sys@0.52.0",
+    "windows-sys",
 ]
 
 [sources]

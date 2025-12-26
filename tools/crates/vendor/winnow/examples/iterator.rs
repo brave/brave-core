@@ -15,16 +15,7 @@ fn main() {
 
     // `from_fn` (available from Rust 1.34) can create an iterator
     // from a closure
-    let it = std::iter::from_fn(move || {
-        match parser.parse_next(&mut data) {
-            // when successful, a parser returns a tuple of
-            // the remaining input and the output value.
-            // So we replace the captured input data with the
-            // remaining input, to be parsed on the next call
-            Ok(o) => Some(o),
-            _ => None,
-        }
-    });
+    let it = std::iter::from_fn(move || parser.parse_next(&mut data).ok());
 
     for value in it {
         println!("parser returned: {value}");

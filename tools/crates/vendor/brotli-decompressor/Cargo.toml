@@ -11,7 +11,7 @@
 
 [package]
 name = "brotli-decompressor"
-version = "4.0.2"
+version = "4.0.3"
 authors = [
     "Daniel Reiter Horn <danielrh@dropbox.com>",
     "The Brotli Authors",

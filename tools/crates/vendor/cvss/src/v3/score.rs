@@ -2,7 +2,7 @@
 
 use crate::severity::Severity;
 
-/// CVSS V3.1 scores.
+/// CVSS v3.1 scores.
 ///
 /// Formula described in CVSS v3.1 Specification: Section 5:
 /// <https://www.first.org/cvss/specification-document#t20>

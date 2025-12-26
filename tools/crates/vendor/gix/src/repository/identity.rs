@@ -1,7 +1,7 @@
 use std::time::SystemTime;
 
 use crate::{
-    bstr::BString,
+    bstr::{BString, ByteSlice},
     config,
     config::tree::{gitoxide, keys, Author, Committer, Key, User},
 };
@@ -38,12 +38,27 @@ impl crate::Repository {
                 .as_ref()
                 .or(p.user.email.as_ref())
                 .map(AsRef::as_ref)?,
-            time: match extract_time_or_default(p.committer.time.as_ref(), &gitoxide::Commit::COMMITTER_DATE) {
-                Ok(t) => t,
-                Err(err) => return Some(Err(err)),
-            },
+            time: p.committer.time.as_ref().map(AsRef::as_ref)?,
         })
         .into()
+    }
+
+    /// Return the committer or its fallback just like [`committer()`](Self::committer()), but if *not* set generate a
+    /// possibly arbitrary fallback and configure it in memory on this instance. That fallback is then returned and future
+    /// calls to [`committer()`](Self::committer()) will return it as well.
+    pub fn committer_or_set_generic_fallback(&mut self) -> Result<gix_actor::SignatureRef<'_>, config::time::Error> {
+        if self.committer().is_none() {
+            let mut config = gix_config::File::new(gix_config::file::Metadata::api());
+            config
+                .set_raw_value(&gitoxide::Committer::NAME_FALLBACK, "no name configured")
+                .expect("works - statically known");
+            config
+                .set_raw_value(&gitoxide::Committer::EMAIL_FALLBACK, "noEmailAvailable@example.com")
+                .expect("works - statically known");
+            let mut repo_config = self.config_snapshot_mut();
+            repo_config.append(config);
+        }
+        self.committer().expect("committer was just set")
     }
 
     /// Return the author as configured by this repository, which is determined by…
@@ -63,23 +78,9 @@ impl crate::Repository {
         Ok(gix_actor::SignatureRef {
             name: p.author.name.as_ref().or(p.user.name.as_ref()).map(AsRef::as_ref)?,
             email: p.author.email.as_ref().or(p.user.email.as_ref()).map(AsRef::as_ref)?,
-            time: match extract_time_or_default(p.author.time.as_ref(), &gitoxide::Commit::AUTHOR_DATE) {
-                Ok(t) => t,
-                Err(err) => return Some(Err(err)),
-            },
+            time: p.author.time.as_ref().map(AsRef::as_ref)?,
         })
         .into()
-    }
-}
-
-fn extract_time_or_default(
-    time: Option<&Result<gix_date::Time, gix_date::parse::Error>>,
-    config_key: &'static keys::Time,
-) -> Result<gix_date::Time, config::time::Error> {
-    match time {
-        Some(Ok(t)) => Ok(*t),
-        None => Ok(gix_date::Time::now_local_or_utc()),
-        Some(Err(err)) => Err(config::time::Error::from(config_key).with_source(err.clone())),
     }
 }
 
@@ -87,8 +88,7 @@ fn extract_time_or_default(
 pub(crate) struct Entity {
     pub name: Option<BString>,
     pub email: Option<BString>,
-    /// A time parsed from an environment variable, handling potential errors is delayed.
-    pub time: Option<Result<gix_date::Time, gix_date::parse::Error>>,
+    pub time: Option<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -124,14 +124,23 @@ impl Personas {
                     .map(std::borrow::Cow::into_owned),
             )
         }
-        let now = SystemTime::now();
-        let parse_date = |key: &str, date: &keys::Time| -> Option<Result<gix_date::Time, gix_date::parse::Error>> {
+        let parse_date = |key: &str, date: &keys::Any| -> Option<String> {
             debug_assert_eq!(
                 key,
                 date.logical_name(),
                 "BUG: drift of expected name and actual name of the key (we hardcode it to save an allocation)"
             );
-            config.string(key).map(|time| date.try_into_time(time, now.into()))
+            config
+                .string(key)
+                .map(std::borrow::Cow::into_owned)
+                .and_then(|config_date| {
+                    config_date
+                        .to_str()
+                        .ok()
+                        .and_then(|date| gix_date::parse(date, Some(SystemTime::now())).ok())
+                })
+                .or_else(|| Some(gix_date::Time::now_local_or_utc()))
+                .map(|time| time.format(gix_date::time::Format::Raw))
         };
 
         let fallback = (
@@ -149,7 +158,7 @@ impl Personas {
 
         user_email = user_email.or_else(|| {
             config
-                .string(gitoxide::User::EMAIL_FALLBACK.logical_name().as_str())
+                .string(gitoxide::User::EMAIL_FALLBACK)
                 .map(std::borrow::Cow::into_owned)
         });
         Personas {

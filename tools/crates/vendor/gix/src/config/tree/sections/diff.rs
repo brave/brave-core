@@ -15,6 +15,12 @@ impl Diff {
     .with_note(
         "The limit is actually squared, so 1000 stands for up to 1 million diffs if fuzzy rename tracking is enabled",
     );
+
+    /// The `diff.ignoreSubmodules` key.
+    pub const IGNORE_SUBMODULES: Ignore =
+        Ignore::new_with_validate("ignoreSubmodules", &config::Tree::DIFF, validate::Ignore)
+            .with_note("This setting affects only the submodule status, and thus the repository status in general.");
+
     /// The `diff.renames` key.
     pub const RENAMES: Renames = Renames::new_renames("renames", &config::Tree::DIFF);
 
@@ -45,6 +51,7 @@ impl Section for Diff {
     fn keys(&self) -> &[&dyn Key] {
         &[
             &Self::ALGORITHM,
+            &Self::IGNORE_SUBMODULES,
             &Self::RENAME_LIMIT,
             &Self::RENAMES,
             &Self::DRIVER_COMMAND,
@@ -59,6 +66,9 @@ impl Section for Diff {
 /// The `diff.algorithm` key.
 pub type Algorithm = keys::Any<validate::Algorithm>;
 
+/// The `diff.ignoreSubmodules` key.
+pub type Ignore = keys::Any<validate::Ignore>;
+
 /// The `diff.renames` key.
 pub type Renames = keys::Any<validate::Renames>;
 
@@ -71,12 +81,27 @@ mod algorithm {
     use crate::{
         bstr::BStr,
         config,
-        config::{diff::algorithm::Error, tree::sections::diff::Algorithm},
+        config::{
+            diff::algorithm,
+            key,
+            tree::sections::diff::{Algorithm, Ignore},
+        },
     };
+
+    impl Ignore {
+        /// See if `value` is an actual ignore
+        pub fn try_into_ignore(
+            &'static self,
+            value: Cow<'_, BStr>,
+        ) -> Result<gix_submodule::config::Ignore, key::GenericErrorWithValue> {
+            gix_submodule::config::Ignore::try_from(value.as_ref())
+                .map_err(|()| key::GenericErrorWithValue::from_value(self, value.into_owned()))
+        }
+    }
 
     impl Algorithm {
         /// Derive the diff algorithm identified by `name`, case-insensitively.
-        pub fn try_into_algorithm(&self, name: Cow<'_, BStr>) -> Result<gix_diff::blob::Algorithm, Error> {
+        pub fn try_into_algorithm(&self, name: Cow<'_, BStr>) -> Result<gix_diff::blob::Algorithm, algorithm::Error> {
             let algo = if name.eq_ignore_ascii_case(b"myers") || name.eq_ignore_ascii_case(b"default") {
                 gix_diff::blob::Algorithm::Myers
             } else if name.eq_ignore_ascii_case(b"minimal") {
@@ -88,7 +113,7 @@ mod algorithm {
                     name: name.into_owned(),
                 });
             } else {
-                return Err(Error::Unknown {
+                return Err(algorithm::Error::Unknown {
                     name: name.into_owned(),
                 });
             };
@@ -165,11 +190,20 @@ mod renames {
     }
 }
 
-mod validate {
+pub(super) mod validate {
     use crate::{
         bstr::BStr,
         config::tree::{keys, Diff},
     };
+
+    pub struct Ignore;
+    impl keys::Validate for Ignore {
+        fn validate(&self, value: &BStr) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+            gix_submodule::config::Ignore::try_from(value)
+                .map_err(|()| format!("Value '{value}' is not a valid submodule 'ignore' value"))?;
+            Ok(())
+        }
+    }
 
     pub struct Algorithm;
     impl keys::Validate for Algorithm {

@@ -7,6 +7,7 @@
 #![forbid(unsafe_code)]
 #![deny(rust_2018_idioms, nonstandard_style, future_incompatible)]
 
+mod buffer;
 mod huffman_tree;
 mod inflater_managed;
 mod input_buffer;

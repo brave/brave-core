@@ -22,6 +22,8 @@ use tokio::task::{spawn_local, JoinHandle, LocalSet};
 /// # Examples
 ///
 /// ```
+/// # #[cfg(not(target_family = "wasm"))]
+/// # {
 /// use std::rc::Rc;
 /// use tokio::task;
 /// use tokio_util::task::LocalPoolHandle;
@@ -39,12 +41,13 @@ use tokio::task::{spawn_local, JoinHandle, LocalSet};
 ///             task::spawn_local(async move {
 ///                 println!("{}", data_clone);
 ///             });
-///     
+///
 ///             data.to_string()
-///         }   
+///         }
 ///     }).await.unwrap();
 ///     println!("output: {}", output);
 /// }
+/// # }
 /// ```
 ///
 #[derive(Clone)]
@@ -94,6 +97,8 @@ impl LocalPoolHandle {
     ///
     /// # Examples
     /// ```
+    /// # #[cfg(not(target_family = "wasm"))]
+    /// # {
     /// use std::rc::Rc;
     /// use tokio_util::task::LocalPoolHandle;
     ///
@@ -116,6 +121,7 @@ impl LocalPoolHandle {
     ///
     ///     assert_eq!(output, "test");
     /// }
+    /// # }
     /// ```
     pub fn spawn_pinned<F, Fut>(&self, create_task: F) -> JoinHandle<Fut::Output>
     where
@@ -144,6 +150,8 @@ impl LocalPoolHandle {
     /// This method can be used to spawn a task on all worker threads of the pool:
     ///
     /// ```
+    /// # #[cfg(not(target_family = "wasm"))]
+    /// # {
     /// use tokio_util::task::LocalPoolHandle;
     ///
     /// #[tokio::main]
@@ -167,6 +175,7 @@ impl LocalPoolHandle {
     ///         handle.await.unwrap();
     ///     }
     /// }
+    /// # }
     /// ```
     ///
     #[track_caller]

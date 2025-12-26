@@ -9,16 +9,16 @@ use crate::error;
 pub struct IndeterminateOffset;
 
 impl fmt::Display for IndeterminateOffset {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str("The system's UTC offset could not be determined")
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for IndeterminateOffset {}
+impl core::error::Error for IndeterminateOffset {}
 
 impl From<IndeterminateOffset> for crate::Error {
+    #[inline]
     fn from(err: IndeterminateOffset) -> Self {
         Self::IndeterminateOffset(err)
     }
@@ -27,6 +27,7 @@ impl From<IndeterminateOffset> for crate::Error {
 impl TryFrom<crate::Error> for IndeterminateOffset {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: crate::Error) -> Result<Self, Self::Error> {
         match err {
             crate::Error::IndeterminateOffset(err) => Ok(err),

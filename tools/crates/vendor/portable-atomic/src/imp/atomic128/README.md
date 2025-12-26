@@ -8,11 +8,14 @@ Here is the table of targets that support 128-bit atomics and the instructions u
 
 | target_arch | load | store | CAS | RMW | note |
 | ----------- | ---- | ----- | --- | --- | ---- |
-| x86_64 | cmpxchg16b or vmovdqa | cmpxchg16b or vmovdqa | cmpxchg16b | cmpxchg16b | Requires `cmpxchg16b` target feature (enabled by default on Apple and Windows (except Windows 7) targets). vmovdqa requires Intel, AMD, or Zhaoxin CPU with AVX. <br> Both compile-time and run-time detection are supported for cmpxchg16b. vmovdqa is currently run-time detection only. <br> Requires rustc 1.59+ |
+| x86_64 | cmpxchg16b or vmovdqa | cmpxchg16b or vmovdqa | cmpxchg16b | cmpxchg16b | Requires `cmpxchg16b` target feature (enabled by default on Apple, Windows (except Windows 7, since Rust 1.78), and Fuchsia (since Rust 1.87) targets). vmovdqa requires Intel, AMD, or Zhaoxin CPU with AVX. <br> Both compile-time and run-time detection are supported for cmpxchg16b. vmovdqa is currently run-time detection only. <br> Requires rustc 1.59+ |
 | aarch64/arm64ec | ldxp/stxp or casp or ldp/ldiapp | ldxp/stxp or casp or stp/stilp/swpp | ldxp/stxp or casp | ldxp/stxp or casp/swpp/ldclrp/ldsetp | casp requires `lse` target feature, ldp/stp requires `lse2` target feature, ldiapp/stilp requires `lse2` and `rcpc3` target features, swpp/ldclrp/ldsetp requires `lse128` target feature. <br> Both compile-time and run-time detection are supported. <br> Requires rustc 1.59+ (aarch64) / 1.84+ (arm64ec) |
-| riscv64 | amocas.q | amocas.q | amocas.q | amocas.q | Experimental because LLVM marking the corresponding target feature as experimental. Requires `experimental-zacas` target feature. Both compile-time and run-time detection are supported (run-time detection is currently disabled by default). <br> Requires rustc 1.59+ |
+| riscv64 | amocas.q | amocas.q | amocas.q | amocas.q | Requires `zacas` target feature. Both compile-time and run-time detection are supported. <br> Requires rustc 1.59+ |
 | powerpc64 | lq | stq | lqarx/stqcx. | lqarx/stqcx. | Requires `quadword-atomics` target feature (enabled by default on powerpc64le). Both compile-time and run-time detection are supported. <br> Requires nightly |
 | s390x | lpq | stpq | cdsg | cdsg | Requires rustc 1.84+ |
+| loongarch64 | sc.q | sc.q | sc.q | sc.q | Unimplemented. Requires `scq` target feature. |
+| mips64r6 | lldp | lldp/scdp | lldp/scdp | lldp/scdp | Unimplemented (unsupported in LLVM). Requires Release 6 Paired LL/SC family of instructions |
+| nvptx64 | ld.b128 | st.b128 | atom.cas.b128 | atom.exch.b128/atom.cas.b128 | Unimplemented. Requires `ptx83` and `sm_90`. |
 
 On compiler versions or platforms where these are not supported, the fallback implementation is used.
 

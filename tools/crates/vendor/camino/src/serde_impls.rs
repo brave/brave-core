@@ -1,14 +1,75 @@
 // Copyright (c) The camino Contributors
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-//! Serde implementations for `Utf8Path`.
+//! Serde implementations for the types in this crate.
 //!
-//! The Serde implementations for `Utf8PathBuf` are derived, but `Utf8Path` is an unsized type which
-//! the derive impls can't handle. Implement these by hand.
+//! * `Utf8Path` is an unsized type which the derive impls can't handle.
+//! * `Utf8PathBuf` could be derived, but we don't depend on serde_derive to
+//!   improve compile times. It's also very straightforward to implement.
 
 use crate::{Utf8Path, Utf8PathBuf};
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
+use serde_core::{Deserialize, Deserializer, Serialize, Serializer, de};
 use std::fmt;
+
+struct Utf8PathBufVisitor;
+
+impl<'a> de::Visitor<'a> for Utf8PathBufVisitor {
+    type Value = Utf8PathBuf;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a UTF-8 path string")
+    }
+
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        Ok(v.into())
+    }
+
+    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        Ok(v.into())
+    }
+
+    fn visit_bytes<E>(self, v: &[u8]) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        std::str::from_utf8(v)
+            .map(Into::into)
+            .map_err(|_| de::Error::invalid_value(de::Unexpected::Bytes(v), &self))
+    }
+
+    fn visit_byte_buf<E>(self, v: Vec<u8>) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        String::from_utf8(v)
+            .map(Into::into)
+            .map_err(|e| de::Error::invalid_value(de::Unexpected::Bytes(&e.into_bytes()), &self))
+    }
+}
+
+impl<'de> Deserialize<'de> for Utf8PathBuf {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_string(Utf8PathBufVisitor)
+    }
+}
+
+impl Serialize for Utf8PathBuf {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        self.as_str().serialize(serializer)
+    }
+}
 
 struct Utf8PathVisitor;
 
@@ -16,7 +77,7 @@ impl<'a> de::Visitor<'a> for Utf8PathVisitor {
     type Value = &'a Utf8Path;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a borrowed path")
+        formatter.write_str("a borrowed UTF-8 path")
     }
 
     fn visit_borrowed_str<E>(self, v: &'a str) -> Result<Self::Value, E>
@@ -72,6 +133,7 @@ impl<'de> Deserialize<'de> for Box<Utf8Path> {
 mod tests {
     use super::*;
     use crate::Utf8PathBuf;
+    use serde::{Deserialize, Serialize};
     use serde_bytes::ByteBuf;
 
     #[test]
@@ -169,7 +231,7 @@ mod tests {
         path: Utf8PathBuf,
     }
 
-    impl<'de> TestTrait<'de> for DecodeOwned {
+    impl TestTrait<'_> for DecodeOwned {
         fn description() -> &'static str {
             "DecodeOwned"
         }
@@ -202,7 +264,7 @@ mod tests {
         path: Box<Utf8Path>,
     }
 
-    impl<'de> TestTrait<'de> for DecodeBoxed {
+    impl TestTrait<'_> for DecodeBoxed {
         fn description() -> &'static str {
             "DecodeBoxed"
         }

@@ -1,24 +1,16 @@
-use crate::{time::Sign, OffsetInSeconds, SecondsSinceUnixEpoch, Time};
+use crate::{OffsetInSeconds, SecondsSinceUnixEpoch, Time};
 
 /// Instantiation
 impl Time {
     /// Create a new instance from seconds and offset.
     pub fn new(seconds: SecondsSinceUnixEpoch, offset: OffsetInSeconds) -> Self {
-        Time {
-            seconds,
-            offset,
-            sign: offset.into(),
-        }
+        Time { seconds, offset }
     }
 
     /// Return the current time without figuring out a timezone offset
     pub fn now_utc() -> Self {
         let seconds = jiff::Timestamp::now().as_second();
-        Self {
-            seconds,
-            offset: 0,
-            sign: Sign::Plus,
-        }
+        Self { seconds, offset: 0 }
     }
 
     /// Return the current local time, or `None` if the local time wasn't available.
@@ -31,10 +23,6 @@ impl Time {
         let zdt = jiff::Zoned::now();
         let seconds = zdt.timestamp().as_second();
         let offset = zdt.offset().seconds();
-        Self {
-            seconds,
-            offset,
-            sign: offset.into(),
-        }
+        Self { seconds, offset }
     }
 }

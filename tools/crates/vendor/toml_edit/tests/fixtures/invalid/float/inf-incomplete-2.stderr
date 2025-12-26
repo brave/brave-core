@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 21
-  |
-1 | inf-incomplete-2 = +in
-  |                     ^
-invalid integer

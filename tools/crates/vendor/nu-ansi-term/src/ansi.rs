@@ -1,7 +1,7 @@
 #![allow(missing_docs)]
 use crate::style::{Color, Style};
 use crate::write::AnyWrite;
-use std::fmt;
+use core::fmt;
 
 impl Style {
     /// Write any bytes that go *before* a piece of text to the given writer.
@@ -11,6 +11,11 @@ impl Style {
         // output at all, but a user may just want a code-free string.
         if self.is_plain() {
             return Ok(());
+        }
+
+        // Prefix everything with reset characters if needed
+        if self.prefix_with_reset {
+            write!(f, "\x1B[0m")?
         }
 
         // Write the codes’ prefix, then write numbers, separated by
@@ -24,6 +29,8 @@ impl Style {
                     write!(f, ";")?;
                 }
                 written_anything = true;
+                #[cfg(feature = "gnu_legacy")]
+                write!(f, "0")?;
                 write!(f, "{}", c)?;
                 Ok(())
             };
@@ -57,21 +64,42 @@ impl Style {
         // The foreground and background colors, if specified, need to be
         // handled specially because the number codes are more complicated.
         // (see `write_background_code` and `write_foreground_code`)
-        if let Some(bg) = self.background {
-            if written_anything {
-                write!(f, ";")?;
-            }
-            written_anything = true;
-            bg.write_background_code(f)?;
-        }
 
-        if let Some(fg) = self.foreground {
-            if written_anything {
-                write!(f, ";")?;
+        #[cfg(feature = "gnu_legacy")]
+        // with GNU, write foreground first, else background first.
+        {
+            if let Some(fg) = self.foreground {
+                if written_anything {
+                    write!(f, ";")?;
+                }
+                written_anything = true;
+                fg.write_foreground_code(f)?;
             }
-            fg.write_foreground_code(f)?;
-        }
 
+            if let Some(bg) = self.background {
+                if written_anything {
+                    write!(f, ";")?;
+                }
+                bg.write_background_code(f)?;
+            }
+        }
+        #[cfg(not(feature = "gnu_legacy"))]
+        {
+            if let Some(bg) = self.background {
+                if written_anything {
+                    write!(f, ";")?;
+                }
+                written_anything = true;
+                bg.write_background_code(f)?;
+            }
+
+            if let Some(fg) = self.foreground {
+                if written_anything {
+                    write!(f, ";")?;
+                }
+                fg.write_foreground_code(f)?;
+            }
+        }
         // All the codes end with an `m`, because reasons.
         write!(f, "m")?;
 
@@ -180,6 +208,8 @@ impl Style {
     /// # Examples
     ///
     /// ```
+    /// # #[cfg(not(feature = "gnu_legacy"))]
+    /// # {
     /// use nu_ansi_term::{Style, Color::Blue};
     ///
     /// let style = Style::default().bold();
@@ -193,8 +223,27 @@ impl Style {
     /// let style = Style::default();
     /// assert_eq!("",
     ///            style.prefix().to_string());
+    /// # }
     /// ```
-    pub fn prefix(self) -> Prefix {
+    ///     
+    /// # Examples with gnu_legacy feature enabled
+    /// Styles like bold, underlined, etc. are two-digit now
+    ///
+    /// ```
+    /// # #[cfg(feature = "gnu_legacy")]
+    /// # {
+    /// use nu_ansi_term::{Style, Color::Blue};
+    ///
+    /// let style = Style::default().bold();
+    /// assert_eq!("\x1b[01m",
+    ///            style.prefix().to_string());
+    ///
+    /// let style = Blue.bold();
+    /// assert_eq!("\x1b[01;34m",
+    ///            style.prefix().to_string());
+    /// # }
+    /// ```
+    pub const fn prefix(self) -> Prefix {
         Prefix(self)
     }
 
@@ -203,8 +252,9 @@ impl Style {
     /// a reset followed by the next color and style, depending on the two styles.
     ///
     /// # Examples
-    ///
     /// ```
+    /// # #[cfg(not(feature = "gnu_legacy"))]
+    /// # {
     /// use nu_ansi_term::{Style, Color::Green};
     ///
     /// let style = Style::default().bold();
@@ -218,8 +268,21 @@ impl Style {
     /// let style = Style::default();
     /// assert_eq!("",
     ///            style.infix(style).to_string());
+    /// # }
     /// ```
-    pub fn infix(self, next: Style) -> Infix {
+    /// # Examples with gnu_legacy feature enabled
+    /// Styles like bold, underlined, etc. are two-digit now
+    /// ```
+    /// # #[cfg(feature = "gnu_legacy")]
+    /// # {
+    /// use nu_ansi_term::Color::Green;
+    ///
+    /// let style = Green.normal();
+    /// assert_eq!("\x1b[01m",
+    ///            style.infix(Green.bold()).to_string());
+    /// # }
+    /// ```
+    pub const fn infix(self, next: Style) -> Infix {
         Infix(self, next)
     }
 
@@ -243,7 +306,7 @@ impl Style {
     /// assert_eq!("",
     ///            style.suffix().to_string());
     /// ```
-    pub fn suffix(self) -> Suffix {
+    pub const fn suffix(self) -> Suffix {
         Suffix(self)
     }
 }
@@ -259,8 +322,8 @@ impl Color {
     /// ```
     /// use nu_ansi_term::Color::Green;
     ///
-    /// assert_eq!("\x1b[0m",
-    ///            Green.suffix().to_string());
+    /// assert_eq!("\x1b[32m",
+    ///            Green.prefix().to_string());
     /// ```
     pub fn prefix(self) -> Prefix {
         Prefix(self.normal())
@@ -337,22 +400,28 @@ impl fmt::Display for Suffix {
 }
 
 #[cfg(test)]
+#[allow(unused)]
+macro_rules! test {
+    ($name: ident: $style: expr; $input: expr => $result: expr) => {
+        #[test]
+        fn $name() {
+            assert_eq!($style.paint($input).to_string(), $result.to_string());
+
+            let mut v = Vec::new();
+            $style.paint($input.as_bytes()).write_to(&mut v).unwrap();
+            assert_eq!(v.as_slice(), $result.as_bytes());
+        }
+    };
+}
+
+#[cfg(test)]
+#[cfg(all(not(feature = "gnu_legacy"), feature = "std"))]
 mod test {
+
     use crate::style::Color::*;
     use crate::style::Style;
-
-    macro_rules! test {
-        ($name: ident: $style: expr; $input: expr => $result: expr) => {
-            #[test]
-            fn $name() {
-                assert_eq!($style.paint($input).to_string(), $result.to_string());
-
-                let mut v = Vec::new();
-                $style.paint($input.as_bytes()).write_to(&mut v).unwrap();
-                assert_eq!(v.as_slice(), $result.as_bytes());
-            }
-        };
-    }
+    use crate::Color;
+    use std::default::Default;
 
     test!(plain:                 Style::default();                  "text/plain" => "text/plain");
     test!(red:                   Red;                               "hi" => "\x1B[31mhi\x1B[0m");
@@ -368,6 +437,8 @@ mod test {
     test!(magenta_on_white:      Magenta.on(White);                  "hi" => "\x1B[47;35mhi\x1B[0m");
     test!(magenta_on_white_2:    Magenta.normal().on(White);         "hi" => "\x1B[47;35mhi\x1B[0m");
     test!(yellow_on_blue_2:      Cyan.on(Blue).fg(Yellow);          "hi" => "\x1B[44;33mhi\x1B[0m");
+    test!(yellow_on_blue_reset:  Cyan.on(Blue).reset_before_style().fg(Yellow); "hi" => "\x1B[0m\x1B[44;33mhi\x1B[0m");
+    test!(yellow_on_blue_reset_2: Cyan.on(Blue).fg(Yellow).reset_before_style(); "hi" => "\x1B[0m\x1B[44;33mhi\x1B[0m");
     test!(cyan_bold_on_white:    Cyan.bold().on(White);             "hi" => "\x1B[1;47;36mhi\x1B[0m");
     test!(cyan_ul_on_white:      Cyan.underline().on(White);        "hi" => "\x1B[4;47;36mhi\x1B[0m");
     test!(cyan_bold_ul_on_white: Cyan.bold().underline().on(White); "hi" => "\x1B[1;4;47;36mhi\x1B[0m");
@@ -380,6 +451,8 @@ mod test {
     test!(blue_on_rgb:           Blue.on(Rgb(70,130,180));          "hi" => "\x1B[48;2;70;130;180;34mhi\x1B[0m");
     test!(rgb_on_rgb:            Rgb(70,130,180).on(Rgb(5,10,15));  "hi" => "\x1B[48;2;5;10;15;38;2;70;130;180mhi\x1B[0m");
     test!(bold:                  Style::new().bold();               "hi" => "\x1B[1mhi\x1B[0m");
+    test!(bold_with_reset:       Style::new().reset_before_style().bold(); "hi" => "\x1B[0m\x1B[1mhi\x1B[0m");
+    test!(bold_with_reset_2:     Style::new().bold().reset_before_style(); "hi" => "\x1B[0m\x1B[1mhi\x1B[0m");
     test!(underline:             Style::new().underline();          "hi" => "\x1B[4mhi\x1B[0m");
     test!(bunderline:            Style::new().bold().underline();   "hi" => "\x1B[1;4mhi\x1B[0m");
     test!(dimmed:                Style::new().dimmed();             "hi" => "\x1B[2mhi\x1B[0m");
@@ -403,5 +476,79 @@ mod test {
         assert_eq!(White.normal().infix(White.bold()).to_string(), "\x1B[1m");
         assert_eq!(White.normal().infix(Blue.normal()).to_string(), "\x1B[34m");
         assert_eq!(Blue.bold().infix(Blue.bold()).to_string(), "");
+    }
+
+    #[test]
+    fn test_write_prefix_no_gnu_compat_order() {
+        let style = Style {
+            foreground: Some(Color::Red),
+            background: Some(Color::Blue),
+            ..Default::default()
+        };
+        assert_eq!(
+            style.paint("file").to_string(),
+            "\u{1b}[44;31mfile\u{1b}[0m".to_string()
+        );
+    }
+}
+
+#[cfg(test)]
+#[cfg(feature = "gnu_legacy")]
+mod gnu_legacy_test {
+    use crate::style::Color::*;
+    use crate::style::Style;
+    use crate::Color;
+    use std::default::Default;
+
+    test!(plain:                 Style::default();                  "text/plain" => "text/plain");
+    test!(red:                   Red;                               "hi" => "\x1B[31mhi\x1B[0m");
+    test!(black:                 Black.normal();                    "hi" => "\x1B[30mhi\x1B[0m");
+    test!(yellow_bold:           Yellow.bold();                     "hi" => "\x1B[01;33mhi\x1B[0m");
+    test!(yellow_bold_2:         Yellow.normal().bold();            "hi" => "\x1B[01;33mhi\x1B[0m");
+    test!(blue_underline:        Blue.underline();                  "hi" => "\x1B[04;34mhi\x1B[0m");
+    test!(green_bold_ul:         Green.bold().underline();          "hi" => "\x1B[01;04;32mhi\x1B[0m");
+    test!(green_bold_ul_2:       Green.underline().bold();          "hi" => "\x1B[01;04;32mhi\x1B[0m");
+    test!(purple_on_white:       Purple.on(White);                  "hi" => "\x1B[35;47mhi\x1B[0m");
+    test!(purple_on_white_2:     Purple.normal().on(White);         "hi" => "\x1B[35;47mhi\x1B[0m");
+    test!(yellow_on_blue:        Style::new().on(Blue).fg(Yellow);  "hi" => "\x1B[33;44mhi\x1B[0m");
+    test!(yellow_on_blue_reset_2: Cyan.on(Blue).fg(Yellow).reset_before_style(); "hi" => "\x1B[0m\x1B[33;44mhi\x1B[0m");
+    test!(magenta_on_white:      Magenta.on(White);                  "hi" => "\x1B[35;47mhi\x1B[0m");
+    test!(magenta_on_white_2:    Magenta.normal().on(White);         "hi" => "\x1B[35;47mhi\x1B[0m");
+    test!(yellow_on_blue_2:      Cyan.on(Blue).fg(Yellow);          "hi" => "\x1B[33;44mhi\x1B[0m");
+    test!(cyan_bold_on_white:    Cyan.bold().on(White);             "hi" => "\x1B[01;36;47mhi\x1B[0m");
+    test!(cyan_ul_on_white:      Cyan.underline().on(White);        "hi" => "\x1B[04;36;47mhi\x1B[0m");
+    test!(cyan_bold_ul_on_white: Cyan.bold().underline().on(White); "hi" => "\x1B[01;04;36;47mhi\x1B[0m");
+    test!(cyan_ul_bold_on_white: Cyan.underline().bold().on(White); "hi" => "\x1B[01;04;36;47mhi\x1B[0m");
+    test!(fixed:                 Fixed(100);                        "hi" => "\x1B[38;5;100mhi\x1B[0m");
+    test!(fixed_on_purple:       Fixed(100).on(Purple);             "hi" => "\x1B[38;5;100;45mhi\x1B[0m");
+    test!(fixed_on_fixed:        Fixed(100).on(Fixed(200));         "hi" => "\x1B[38;5;100;48;5;200mhi\x1B[0m");
+    test!(rgb:                   Rgb(70,130,180);                   "hi" => "\x1B[38;2;70;130;180mhi\x1B[0m");
+    test!(rgb_on_blue:           Rgb(70,130,180).on(Blue);          "hi" => "\x1B[38;2;70;130;180;44mhi\x1B[0m");
+    test!(blue_on_rgb:           Blue.on(Rgb(70,130,180));          "hi" => "\x1B[34;48;2;70;130;180mhi\x1B[0m");
+    test!(rgb_on_rgb:            Rgb(70,130,180).on(Rgb(5,10,15));  "hi" => "\x1B[38;2;70;130;180;48;2;5;10;15mhi\x1B[0m");
+    test!(bold:                  Style::new().bold();               "hi" => "\x1B[01mhi\x1B[0m");
+    test!(bold_with_reset:       Style::new().reset_before_style().bold(); "hi" => "\x1B[0m\x1B[01mhi\x1B[0m");
+    test!(bold_with_reset_2:     Style::new().bold().reset_before_style(); "hi" => "\x1B[0m\x1B[01mhi\x1B[0m");
+    test!(underline:             Style::new().underline();          "hi" => "\x1B[04mhi\x1B[0m");
+    test!(bunderline:            Style::new().bold().underline();   "hi" => "\x1B[01;04mhi\x1B[0m");
+    test!(dimmed:                Style::new().dimmed();             "hi" => "\x1B[02mhi\x1B[0m");
+    test!(italic:                Style::new().italic();             "hi" => "\x1B[03mhi\x1B[0m");
+    test!(blink:                 Style::new().blink();              "hi" => "\x1B[05mhi\x1B[0m");
+    test!(reverse:               Style::new().reverse();            "hi" => "\x1B[07mhi\x1B[0m");
+    test!(hidden:                Style::new().hidden();             "hi" => "\x1B[08mhi\x1B[0m");
+    test!(stricken:              Style::new().strikethrough();      "hi" => "\x1B[09mhi\x1B[0m");
+    test!(lr_on_lr:              LightRed.on(LightRed);             "hi" => "\x1B[91;101mhi\x1B[0m");
+
+    #[test]
+    fn test_write_prefix_gnu_compat_order() {
+        let style = Style {
+            foreground: Some(Color::Red),
+            background: Some(Color::Blue),
+            ..Default::default()
+        };
+        assert_eq!(
+            style.paint("file").to_string(),
+            "\u{1b}[31;44mfile\u{1b}[0m".to_string()
+        );
     }
 }

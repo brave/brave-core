@@ -12,9 +12,9 @@ pub struct Client {
     /// The negotiated version of the protocol.
     version: usize,
     /// A way to send packet-line encoded information to the process.
-    input: gix_packetline::Writer<std::process::ChildStdin>,
+    input: gix_packetline_blocking::Writer<std::process::ChildStdin>,
     /// A way to read information sent to us by the process.
-    out: gix_packetline::StreamingPeekableIter<std::process::ChildStdout>,
+    out: gix_packetline_blocking::StreamingPeekableIter<std::process::ChildStdout>,
 }
 
 /// A handle to facilitate typical server interactions that include the handshake and command-invocations.
@@ -24,9 +24,9 @@ pub struct Server {
     /// The negotiated version of the protocol, it's the highest supported one.
     version: usize,
     /// A way to receive information from the client.
-    input: gix_packetline::StreamingPeekableIter<std::io::StdinLock<'static>>,
+    input: gix_packetline_blocking::StreamingPeekableIter<std::io::StdinLock<'static>>,
     /// A way to send information to the client.
-    out: gix_packetline::Writer<std::io::StdoutLock<'static>>,
+    out: gix_packetline_blocking::Writer<std::io::StdoutLock<'static>>,
 }
 
 /// The return status of an [invoked command][Client::invoke()].
@@ -83,7 +83,7 @@ impl Status {
 
     /// Returns true if this is an `abort` status.
     pub fn is_abort(&self) -> bool {
-        self.message().map_or(false, |m| m == "abort")
+        self.message() == Some("abort")
     }
 
     /// Return true if the status is explicitly set to indicated delayed output processing
@@ -104,12 +104,13 @@ impl Status {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod client;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod server;
 
-type PacketlineReader<'a, T = std::process::ChildStdout> =
-    gix_packetline::read::WithSidebands<'a, T, fn(bool, &[u8]) -> gix_packetline::read::ProgressAction>;
+type PacketlineReader<'a, T = std::process::ChildStdout> = gix_packetline_blocking::read::WithSidebands<
+    'a,
+    T,
+    fn(bool, &[u8]) -> gix_packetline_blocking::read::ProgressAction,
+>;

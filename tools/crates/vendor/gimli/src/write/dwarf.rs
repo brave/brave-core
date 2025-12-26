@@ -2,8 +2,8 @@ use alloc::vec::Vec;
 
 use crate::common::Encoding;
 use crate::write::{
-    AbbreviationTable, LineProgram, LineStringTable, Result, Sections, StringTable, Unit,
-    UnitTable, Writer,
+    AbbreviationTable, LineProgram, LineString, LineStringTable, Result, Sections, StringTable,
+    Unit, UnitTable, Writer,
 };
 
 /// Writable DWARF information for more than one unit.
@@ -47,6 +47,11 @@ impl Dwarf {
             )?;
         }
         Ok(())
+    }
+
+    /// Get a reference to the data for a line string.
+    pub fn get_line_string<'a>(&'a self, string: &'a LineString) -> &'a [u8] {
+        string.get(&self.strings, &self.line_strings)
     }
 }
 
@@ -101,6 +106,11 @@ impl DwarfUnit {
 
         abbrevs.write(&mut sections.debug_abbrev)?;
         Ok(())
+    }
+
+    /// Get a reference to the data for a line string.
+    pub fn get_line_string<'a>(&'a self, string: &'a LineString) -> &'a [u8] {
+        string.get(&self.strings, &self.line_strings)
     }
 }
 

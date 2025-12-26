@@ -20,7 +20,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 
 use gix_hash::{oid, ObjectId};
@@ -33,13 +33,10 @@ pub use store_impl::{file, packed};
 
 mod fullname;
 ///
-#[allow(clippy::empty_docs)]
 pub mod name;
 ///
-#[allow(clippy::empty_docs)]
 pub mod namespace;
 ///
-#[allow(clippy::empty_docs)]
 pub mod transaction;
 
 mod parse;
@@ -50,18 +47,14 @@ pub use raw::Reference;
 mod target;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod log;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod peel;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod store {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod init {
 
         /// Options for use during [initialization](crate::file::Store::at).
@@ -110,8 +103,9 @@ pub mod store {
     ///
     #[path = "general/handle/mod.rs"]
     mod handle;
-    use crate::file;
     pub use handle::find;
+
+    use crate::file;
 }
 
 /// The git reference store.
@@ -154,7 +148,7 @@ pub enum Kind {
     Object,
     /// A ref that points to another reference, adding a level of indirection.
     ///
-    /// It can be resolved to an id using the [`peel_in_place_to_id()`][`crate::file::ReferenceExt::peel_to_id_in_place()`] method.
+    /// It can be resolved to an id using the [`peel_to_id()`][`crate::file::ReferenceExt::peel_to_id()`] method.
     Symbolic,
 }
 
@@ -172,7 +166,7 @@ pub enum Category<'a> {
     RemoteBranch,
     /// A tag in `refs/notes`
     Note,
-    /// Something outside of `ref/` in the current worktree, typically `HEAD`.
+    /// Something outside `ref/` in the current worktree, typically `HEAD`.
     PseudoRef,
     /// A `PseudoRef`, but referenced so that it will always refer to the main worktree by
     /// prefixing it with `main-worktree/`.

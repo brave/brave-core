@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -38,23 +38,42 @@
 
 use self::boxed_limbs::BoxedLimbs;
 pub(crate) use self::{
-    modulus::{Modulus, OwnedModulus, MODULUS_MAX_LIMBS},
+    modulus::{Modulus, OwnedModulus},
+    modulusvalue::OwnedModulusValue,
     private_exponent::PrivateExponent,
 };
+use super::{inout::AliasingSlices3, limbs512, montgomery::*, LimbSliceError, MAX_LIMBS};
 use crate::{
-    arithmetic::montgomery::*,
     bits::BitLength,
-    c, error,
-    limb::{self, Limb, LimbMask, LIMB_BITS},
+    c,
+    error::{self, LenMismatchError},
+    limb::{self, Limb, LIMB_BITS},
+    polyfill::slice::{self, AsChunks},
 };
-use alloc::vec;
-use core::{marker::PhantomData, num::NonZeroU64};
+use core::{
+    marker::PhantomData,
+    num::{NonZeroU64, NonZeroUsize},
+};
 
 mod boxed_limbs;
 mod modulus;
+mod modulusvalue;
 mod private_exponent;
 
 pub trait PublicModulus {}
+
+// When we need to create a new `Elem`, first we create a `Storage` and then
+// move its `limbs` into the new element. When we want to recylce an `Elem`'s
+// memory allocation, we convert it back into a `Storage`.
+pub struct Storage<M> {
+    limbs: BoxedLimbs<M>,
+}
+
+impl<M, E> From<Elem<M, E>> for Storage<M> {
+    fn from(elem: Elem<M, E>) -> Self {
+        Self { limbs: elem.limbs }
+    }
+}
 
 /// Elements of ℤ/mℤ for some modulus *m*.
 //
@@ -69,12 +88,11 @@ pub struct Elem<M, E = Unencoded> {
     encoding: PhantomData<E>,
 }
 
-// TODO: `derive(Clone)` after https://github.com/rust-lang/rust/issues/26925
-// is resolved or restrict `M: Clone` and `E: Clone`.
-impl<M, E> Clone for Elem<M, E> {
-    fn clone(&self) -> Self {
+impl<M, E> Elem<M, E> {
+    pub fn clone_into(&self, mut out: Storage<M>) -> Self {
+        out.limbs.copy_from_slice(&self.limbs);
         Self {
-            limbs: self.limbs.clone(),
+            limbs: out.limbs,
             encoding: self.encoding,
         }
     }
@@ -83,23 +101,28 @@ impl<M, E> Clone for Elem<M, E> {
 impl<M, E> Elem<M, E> {
     #[inline]
     pub fn is_zero(&self) -> bool {
-        self.limbs.is_zero()
+        limb::limbs_are_zero(&self.limbs).leak()
     }
 }
 
 /// Does a Montgomery reduction on `limbs` assuming they are Montgomery-encoded ('R') and assuming
 /// they are the same size as `m`, but perhaps not reduced mod `m`. The result will be
 /// fully reduced mod `m`.
-fn from_montgomery_amm<M>(limbs: BoxedLimbs<M>, m: &Modulus<M>) -> Elem<M, Unencoded> {
-    debug_assert_eq!(limbs.len(), m.limbs().len());
-
-    let mut limbs = limbs;
-    let mut one = [0; MODULUS_MAX_LIMBS];
+///
+/// WARNING: Takes a `Storage` as an in/out value.
+fn from_montgomery_amm<M>(mut in_out: Storage<M>, m: &Modulus<M>) -> Elem<M, Unencoded> {
+    let mut one = [0; MAX_LIMBS];
     one[0] = 1;
     let one = &one[..m.limbs().len()];
-    limbs_mont_mul(&mut limbs, one, m.limbs(), m.n0(), m.cpu_features());
+    limbs_mul_mont(
+        (&mut in_out.limbs[..], one),
+        m.limbs(),
+        m.n0(),
+        m.cpu_features(),
+    )
+    .unwrap_or_else(unwrap_impossible_limb_slice_error);
     Elem {
-        limbs,
+        limbs: in_out.limbs,
         encoding: PhantomData,
     }
 }
@@ -108,7 +131,7 @@ fn from_montgomery_amm<M>(limbs: BoxedLimbs<M>, m: &Modulus<M>) -> Elem<M, Unenc
 impl<M> Elem<M, R> {
     #[inline]
     pub fn into_unencoded(self, m: &Modulus<M>) -> Elem<M, Unencoded> {
-        from_montgomery_amm(self.limbs, m)
+        from_montgomery_amm(Storage::from(self), m)
     }
 }
 
@@ -128,9 +151,27 @@ impl<M> Elem<M, Unencoded> {
         // See Falko Strenzke, "Manger's Attack revisited", ICICS 2010.
         limb::big_endian_from_limbs(&self.limbs, out)
     }
+}
 
-    fn is_one(&self) -> bool {
-        limb::limbs_equal_limb_constant_time(&self.limbs, 1) == LimbMask::True
+pub fn elem_mul_into<M, AF, BF>(
+    mut out: Storage<M>,
+    a: &Elem<M, AF>,
+    b: &Elem<M, BF>,
+    m: &Modulus<M>,
+) -> Elem<M, <(AF, BF) as ProductEncoding>::Output>
+where
+    (AF, BF): ProductEncoding,
+{
+    limbs_mul_mont(
+        (out.limbs.as_mut(), b.limbs.as_ref(), a.limbs.as_ref()),
+        m.limbs(),
+        m.n0(),
+        m.cpu_features(),
+    )
+    .unwrap_or_else(unwrap_impossible_limb_slice_error);
+    Elem {
+        limbs: out.limbs,
+        encoding: PhantomData,
     }
 }
 
@@ -142,7 +183,13 @@ pub fn elem_mul<M, AF, BF>(
 where
     (AF, BF): ProductEncoding,
 {
-    limbs_mont_mul(&mut b.limbs, &a.limbs, m.limbs(), m.n0(), m.cpu_features());
+    limbs_mul_mont(
+        (&mut b.limbs[..], &a.limbs[..]),
+        m.limbs(),
+        m.n0(),
+        m.cpu_features(),
+    )
+    .unwrap_or_else(unwrap_impossible_limb_slice_error);
     Elem {
         limbs: b.limbs,
         encoding: PhantomData,
@@ -152,6 +199,7 @@ where
 // r *= 2.
 fn elem_double<M, AF>(r: &mut Elem<M, AF>, m: &Modulus<M>) {
     limb::limbs_double_mod(&mut r.limbs, m.limbs())
+        .unwrap_or_else(unwrap_impossible_len_mismatch_error)
 }
 
 // TODO: This is currently unused, but we intend to eventually use this to
@@ -159,22 +207,24 @@ fn elem_double<M, AF>(r: &mut Elem<M, AF>, m: &Modulus<M>) {
 // should update the testing so it is reflective of that usage, instead of
 // the old usage.
 pub fn elem_reduced_once<A, M>(
+    mut r: Storage<M>,
     a: &Elem<A, Unencoded>,
     m: &Modulus<M>,
     other_modulus_len_bits: BitLength,
 ) -> Elem<M, Unencoded> {
     assert_eq!(m.len_bits(), other_modulus_len_bits);
-
-    let mut r = a.limbs.clone();
-    limb::limbs_reduce_once_constant_time(&mut r, m.limbs());
+    r.limbs.copy_from_slice(&a.limbs);
+    limb::limbs_reduce_once(&mut r.limbs, m.limbs())
+        .unwrap_or_else(unwrap_impossible_len_mismatch_error);
     Elem {
-        limbs: BoxedLimbs::new_unchecked(r.into_limbs()),
+        limbs: r.limbs,
         encoding: PhantomData,
     }
 }
 
 #[inline]
 pub fn elem_reduced<Larger, Smaller>(
+    mut r: Storage<Smaller>,
     a: &Elem<Larger, Unencoded>,
     m: &Modulus<Smaller>,
     other_prime_len_bits: BitLength,
@@ -187,15 +237,18 @@ pub fn elem_reduced<Larger, Smaller>(
     // `limbs_from_mont_in_place` requires this.
     assert_eq!(a.limbs.len(), m.limbs().len() * 2);
 
-    let mut tmp = [0; MODULUS_MAX_LIMBS];
+    let mut tmp = [0; MAX_LIMBS];
     let tmp = &mut tmp[..a.limbs.len()];
     tmp.copy_from_slice(&a.limbs);
 
-    let mut r = m.zero();
     limbs_from_mont_in_place(&mut r.limbs, tmp, m.limbs(), m.n0());
-    r
+    Elem {
+        limbs: r.limbs,
+        encoding: PhantomData,
+    }
 }
 
+#[inline]
 fn elem_squared<M, E>(
     mut a: Elem<M, E>,
     m: &Modulus<M>,
@@ -203,7 +256,8 @@ fn elem_squared<M, E>(
 where
     (E, E): ProductEncoding,
 {
-    limbs_mont_square(&mut a.limbs, m.limbs(), m.n0(), m.cpu_features());
+    limbs_square_mont(&mut a.limbs, m.limbs(), m.n0(), m.cpu_features())
+        .unwrap_or_else(unwrap_impossible_limb_slice_error);
     Elem {
         limbs: a.limbs,
         encoding: PhantomData,
@@ -211,6 +265,7 @@ where
 }
 
 pub fn elem_widen<Larger, Smaller>(
+    mut r: Storage<Larger>,
     a: Elem<Smaller, Unencoded>,
     m: &Modulus<Larger>,
     smaller_modulus_bits: BitLength,
@@ -218,14 +273,19 @@ pub fn elem_widen<Larger, Smaller>(
     if smaller_modulus_bits >= m.len_bits() {
         return Err(error::Unspecified);
     }
-    let mut r = m.zero();
-    r.limbs[..a.limbs.len()].copy_from_slice(&a.limbs);
-    Ok(r)
+    let (to_copy, to_zero) = r.limbs.split_at_mut(a.limbs.len());
+    to_copy.copy_from_slice(&a.limbs);
+    to_zero.fill(0);
+    Ok(Elem {
+        limbs: r.limbs,
+        encoding: PhantomData,
+    })
 }
 
 // TODO: Document why this works for all Montgomery factors.
 pub fn elem_add<M, E>(mut a: Elem<M, E>, b: Elem<M, E>, m: &Modulus<M>) -> Elem<M, E> {
-    limb::limbs_add_assign_mod(&mut a.limbs, &b.limbs, m.limbs());
+    limb::limbs_add_assign_mod(&mut a.limbs, &b.limbs, m.limbs())
+        .unwrap_or_else(unwrap_impossible_len_mismatch_error);
     a
 }
 
@@ -238,18 +298,16 @@ pub fn elem_sub<M, E>(mut a: Elem<M, E>, b: &Elem<M, E>, m: &Modulus<M>) -> Elem
             a: *const Limb,
             b: *const Limb,
             m: *const Limb,
-            num_limbs: c::size_t,
+            num_limbs: c::NonZero_size_t,
         );
     }
-    unsafe {
-        LIMBS_sub_mod(
-            a.limbs.as_mut_ptr(),
-            a.limbs.as_ptr(),
-            b.limbs.as_ptr(),
-            m.limbs().as_ptr(),
-            m.limbs().len(),
-        );
-    }
+    let num_limbs = NonZeroUsize::new(m.limbs().len()).unwrap();
+    (a.limbs.as_mut(), b.limbs.as_ref())
+        .with_non_dangling_non_null_pointers_rab(num_limbs, |r, a, b| {
+            let m = m.limbs().as_ptr(); // Also non-dangling because num_limbs is non-zero.
+            unsafe { LIMBS_sub_mod(r, a, b, m, num_limbs) }
+        })
+        .unwrap_or_else(unwrap_impossible_len_mismatch_error);
     a
 }
 
@@ -264,15 +322,18 @@ impl<M> One<M, RR> {
     // values, using `LIMB_BITS` here, rather than `N0::LIMBS_USED * LIMB_BITS`,
     // is correct because R**2 will still be a multiple of the latter as
     // `N0::LIMBS_USED` is either one or two.
-    pub(crate) fn newRR(m: &Modulus<M>) -> Self {
+    pub(crate) fn newRR(mut out: Storage<M>, m: &Modulus<M>) -> Self {
         // The number of limbs in the numbers involved.
         let w = m.limbs().len();
 
         // The length of the numbers involved, in bits. R = 2**r.
         let r = w * LIMB_BITS;
 
-        let mut acc: Elem<M, R> = m.zero();
-        m.oneR(&mut acc.limbs);
+        m.oneR(&mut out.limbs);
+        let mut acc: Elem<M, R> = Elem {
+            limbs: out.limbs,
+            encoding: PhantomData,
+        };
 
         // 2**t * R can be calculated by t doublings starting with R.
         //
@@ -348,9 +409,9 @@ impl<M, E> AsRef<Elem<M, E>> for One<M, E> {
     }
 }
 
-impl<M: PublicModulus, E> Clone for One<M, E> {
-    fn clone(&self) -> Self {
-        Self(self.0.clone())
+impl<M: PublicModulus, E> One<M, E> {
+    pub fn clone_into(&self, out: Storage<M>) -> Self {
+        Self(self.0.clone_into(out))
     }
 }
 
@@ -364,6 +425,7 @@ impl<M: PublicModulus, E> Clone for One<M, E> {
 // TODO: The test coverage needs to be expanded, e.g. test with the largest
 // accepted exponent and with the most common values of 65537 and 3.
 pub(crate) fn elem_exp_vartime<M>(
+    out: Storage<M>,
     base: Elem<M, R>,
     exponent: NonZeroU64,
     m: &Modulus<M>,
@@ -386,7 +448,7 @@ pub(crate) fn elem_exp_vartime<M>(
     // [Knuth]: The Art of Computer Programming, Volume 2: Seminumerical
     //          Algorithms (3rd Edition), Section 4.6.3.
     let exponent = exponent.get();
-    let mut acc = base.clone();
+    let mut acc = base.clone_into(out);
     let mut bit = 1 << (64 - 1 - exponent.leading_zeros());
     debug_assert!((exponent & bit) != 0);
     while bit > 1 {
@@ -399,20 +461,70 @@ pub(crate) fn elem_exp_vartime<M>(
     acc
 }
 
+pub fn elem_exp_consttime<N, P>(
+    out: Storage<P>,
+    base: &Elem<N>,
+    oneRRR: &One<P, RRR>,
+    exponent: &PrivateExponent,
+    p: &Modulus<P>,
+    other_prime_len_bits: BitLength,
+) -> Result<Elem<P, Unencoded>, LimbSliceError> {
+    // `elem_exp_consttime_inner` is parameterized on `STORAGE_LIMBS` only so
+    // we can run tests with larger-than-supported-in-operation test vectors.
+    elem_exp_consttime_inner::<N, P, { ELEM_EXP_CONSTTIME_MAX_MODULUS_LIMBS * STORAGE_ENTRIES }>(
+        out,
+        base,
+        oneRRR,
+        exponent,
+        p,
+        other_prime_len_bits,
+    )
+}
+
+// The maximum modulus size supported for `elem_exp_consttime` in normal
+// operation.
+const ELEM_EXP_CONSTTIME_MAX_MODULUS_LIMBS: usize = 2048 / LIMB_BITS;
+const _LIMBS_PER_CHUNK_DIVIDES_ELEM_EXP_CONSTTIME_MAX_MODULUS_LIMBS: () =
+    assert!(ELEM_EXP_CONSTTIME_MAX_MODULUS_LIMBS % limbs512::LIMBS_PER_CHUNK == 0);
+const WINDOW_BITS: u32 = 5;
+const TABLE_ENTRIES: usize = 1 << WINDOW_BITS;
+const STORAGE_ENTRIES: usize = TABLE_ENTRIES + if cfg!(target_arch = "x86_64") { 3 } else { 0 };
+
 #[cfg(not(target_arch = "x86_64"))]
-pub fn elem_exp_consttime<M>(
-    base: Elem<M, R>,
+fn elem_exp_consttime_inner<N, M, const STORAGE_LIMBS: usize>(
+    out: Storage<M>,
+    base_mod_n: &Elem<N>,
+    oneRRR: &One<M, RRR>,
     exponent: &PrivateExponent,
     m: &Modulus<M>,
-) -> Result<Elem<M, Unencoded>, error::Unspecified> {
+    other_prime_len_bits: BitLength,
+) -> Result<Elem<M, Unencoded>, LimbSliceError> {
     use crate::{bssl, limb::Window};
 
-    const WINDOW_BITS: usize = 5;
-    const TABLE_ENTRIES: usize = 1 << WINDOW_BITS;
+    let base_rinverse: Elem<M, RInverse> = elem_reduced(out, base_mod_n, m, other_prime_len_bits);
 
     let num_limbs = m.limbs().len();
+    let m_chunked: AsChunks<Limb, { limbs512::LIMBS_PER_CHUNK }> = match slice::as_chunks(m.limbs())
+    {
+        (m, []) => m,
+        _ => {
+            return Err(LimbSliceError::len_mismatch(LenMismatchError::new(
+                num_limbs,
+            )))
+        }
+    };
+    let cpe = m_chunked.len(); // 512-bit chunks per entry.
 
-    let mut table = vec![0; TABLE_ENTRIES * num_limbs];
+    // This code doesn't have the strict alignment requirements that the x86_64
+    // version does, but uses the same aligned storage for convenience.
+    assert!(STORAGE_LIMBS % (STORAGE_ENTRIES * limbs512::LIMBS_PER_CHUNK) == 0); // TODO: `const`
+    let mut table = limbs512::AlignedStorage::<STORAGE_LIMBS>::zeroed();
+    let mut table = table
+        .aligned_chunks_mut(TABLE_ENTRIES, cpe)
+        .map_err(LimbSliceError::len_mismatch)?;
+
+    // TODO: Rewrite the below in terms of `AsChunks`.
+    let table = table.as_flattened_mut();
 
     fn gather<M>(table: &[Limb], acc: &mut Elem<M, R>, i: Window) {
         prefixed_extern! {
@@ -452,9 +564,19 @@ pub fn elem_exp_consttime<M>(
     }
 
     // table[0] = base**0 (i.e. 1).
-    m.oneR(entry_mut(&mut table, 0, num_limbs));
+    m.oneR(entry_mut(table, 0, num_limbs));
 
-    entry_mut(&mut table, 1, num_limbs).copy_from_slice(&base.limbs);
+    // table[1] = base*R == (base/R * RRR)/R
+    limbs_mul_mont(
+        (
+            entry_mut(table, 1, num_limbs),
+            base_rinverse.limbs.as_ref(),
+            oneRRR.as_ref().limbs.as_ref(),
+        ),
+        m.limbs(),
+        m.n0(),
+        m.cpu_features(),
+    )?;
     for i in 2..TABLE_ENTRIES {
         let (src1, src2) = if i % 2 == 0 {
             (i / 2, i / 2)
@@ -465,12 +587,16 @@ pub fn elem_exp_consttime<M>(
         let src1 = entry(previous, src1, num_limbs);
         let src2 = entry(previous, src2, num_limbs);
         let dst = entry_mut(rest, 0, num_limbs);
-        limbs_mont_product(dst, src1, src2, m.limbs(), m.n0(), m.cpu_features());
+        limbs_mul_mont((dst, src1, src2), m.limbs(), m.n0(), m.cpu_features())?;
     }
 
-    let tmp = m.zero();
     let mut acc = Elem {
-        limbs: base.limbs,
+        limbs: base_rinverse.limbs,
+        encoding: PhantomData,
+    };
+    let tmp = m.alloc_zero();
+    let tmp = Elem {
+        limbs: tmp.limbs,
         encoding: PhantomData,
     };
     let (acc, _) = limb::fold_5_bit_windows(
@@ -486,194 +612,183 @@ pub fn elem_exp_consttime<M>(
 }
 
 #[cfg(target_arch = "x86_64")]
-pub fn elem_exp_consttime<M>(
-    base: Elem<M, R>,
+fn elem_exp_consttime_inner<N, M, const STORAGE_LIMBS: usize>(
+    out: Storage<M>,
+    base_mod_n: &Elem<N>,
+    oneRRR: &One<M, RRR>,
     exponent: &PrivateExponent,
     m: &Modulus<M>,
-) -> Result<Elem<M, Unencoded>, error::Unspecified> {
-    use crate::{cpu, limb::LIMB_BYTES};
-
-    // Pretty much all the math here requires CPU feature detection to have
-    // been done. `cpu_features` isn't threaded through all the internal
-    // functions, so just make it clear that it has been done at this point.
-    let cpu_features = m.cpu_features();
-
-    // The x86_64 assembly was written under the assumption that the input data
-    // is aligned to `MOD_EXP_CTIME_ALIGN` bytes, which was/is 64 in OpenSSL.
-    // Similarly, OpenSSL uses the x86_64 assembly functions by giving it only
-    // inputs `tmp`, `am`, and `np` that immediately follow the table. All the
-    // awkwardness here stems from trying to use the assembly code like OpenSSL
-    // does.
-
-    use crate::limb::Window;
-
-    const WINDOW_BITS: usize = 5;
-    const TABLE_ENTRIES: usize = 1 << WINDOW_BITS;
-
-    let num_limbs = m.limbs().len();
-
-    const ALIGNMENT: usize = 64;
-    assert_eq!(ALIGNMENT % LIMB_BYTES, 0);
-    let mut table = vec![0; ((TABLE_ENTRIES + 3) * num_limbs) + ALIGNMENT];
-    let (table, state) = {
-        let misalignment = (table.as_ptr() as usize) % ALIGNMENT;
-        let table = &mut table[((ALIGNMENT - misalignment) / LIMB_BYTES)..];
-        assert_eq!((table.as_ptr() as usize) % ALIGNMENT, 0);
-        table.split_at_mut(TABLE_ENTRIES * num_limbs)
+    other_prime_len_bits: BitLength,
+) -> Result<Elem<M, Unencoded>, LimbSliceError> {
+    use super::limbs::x86_64::mont::{
+        gather5, mul_mont5, mul_mont_gather5_amm, power5_amm, scatter5, sqr_mont5,
     };
-
-    fn scatter(table: &mut [Limb], acc: &[Limb], i: Window, num_limbs: usize) {
-        prefixed_extern! {
-            fn bn_scatter5(a: *const Limb, a_len: c::size_t, table: *mut Limb, i: Window);
-        }
-        unsafe { bn_scatter5(acc.as_ptr(), num_limbs, table.as_mut_ptr(), i) }
-    }
-
-    fn gather(table: &[Limb], acc: &mut [Limb], i: Window, num_limbs: usize) {
-        prefixed_extern! {
-            fn bn_gather5(r: *mut Limb, a_len: c::size_t, table: *const Limb, i: Window);
-        }
-        unsafe { bn_gather5(acc.as_mut_ptr(), num_limbs, table.as_ptr(), i) }
-    }
-
-    fn limbs_mul_mont_gather5_amm(
-        table: &[Limb],
-        acc: &mut [Limb],
-        base: &[Limb],
-        m: &[Limb],
-        n0: &N0,
-        i: Window,
-        num_limbs: usize,
-    ) {
-        prefixed_extern! {
-            fn bn_mul_mont_gather5(
-                rp: *mut Limb,
-                ap: *const Limb,
-                table: *const Limb,
-                np: *const Limb,
-                n0: &N0,
-                num: c::size_t,
-                power: Window,
-            );
-        }
-        unsafe {
-            bn_mul_mont_gather5(
-                acc.as_mut_ptr(),
-                base.as_ptr(),
-                table.as_ptr(),
-                m.as_ptr(),
-                n0,
-                num_limbs,
-                i,
-            );
-        }
-    }
-
-    fn power_amm(
-        table: &[Limb],
-        acc: &mut [Limb],
-        m_cached: &[Limb],
-        n0: &N0,
-        i: Window,
-        num_limbs: usize,
-    ) {
-        prefixed_extern! {
-            fn bn_power5(
-                r: *mut Limb,
-                a: *const Limb,
-                table: *const Limb,
-                n: *const Limb,
-                n0: &N0,
-                num: c::size_t,
-                i: Window,
-            );
-        }
-        unsafe {
-            bn_power5(
-                acc.as_mut_ptr(),
-                acc.as_ptr(),
-                table.as_ptr(),
-                m_cached.as_ptr(),
-                n0,
-                num_limbs,
-                i,
-            );
-        }
-    }
-
-    // These are named `(tmp, am, np)` in BoringSSL.
-    let (acc, base_cached, m_cached): (&mut [Limb], &[Limb], &[Limb]) = {
-        let (acc, rest) = state.split_at_mut(num_limbs);
-        let (base_cached, rest) = rest.split_at_mut(num_limbs);
-
-        // Upstream, the input `base` is not Montgomery-encoded, so they compute a
-        // Montgomery-encoded copy and store it here.
-        base_cached.copy_from_slice(&base.limbs);
-
-        let m_cached = &mut rest[..num_limbs];
-        // "To improve cache locality" according to upstream.
-        m_cached.copy_from_slice(m.limbs());
-
-        (acc, base_cached, m_cached)
+    use crate::{
+        cpu::{
+            intel::{Adx, Bmi2},
+            GetFeature as _,
+        },
+        limb::{LeakyWindow, Window},
+        polyfill::slice::AsChunksMut,
     };
 
     let n0 = m.n0();
 
+    let cpu2 = m.cpu_features().get_feature();
+    let cpu3 = m.cpu_features().get_feature();
+
+    if base_mod_n.limbs.len() != m.limbs().len() * 2 {
+        return Err(LimbSliceError::len_mismatch(LenMismatchError::new(
+            base_mod_n.limbs.len(),
+        )));
+    }
+
+    let m_original: AsChunks<Limb, 8> = match slice::as_chunks(m.limbs()) {
+        (m, []) => m,
+        _ => return Err(LimbSliceError::len_mismatch(LenMismatchError::new(8))),
+    };
+    let cpe = m_original.len(); // 512-bit chunks per entry
+
+    let oneRRR = &oneRRR.as_ref().limbs;
+    let oneRRR = match slice::as_chunks(oneRRR) {
+        (c, []) => c,
+        _ => {
+            return Err(LimbSliceError::len_mismatch(LenMismatchError::new(
+                oneRRR.len(),
+            )))
+        }
+    };
+
+    // The x86_64 assembly was written under the assumption that the input data
+    // is aligned to `MOD_EXP_CTIME_ALIGN` bytes, which was/is 64 in OpenSSL.
+    // Subsequently, it was changed such that, according to BoringSSL, they
+    // only require 16 byte alignment. We enforce the old, stronger, alignment
+    // unless/until we can see a benefit to reducing it.
+    //
+    // Similarly, OpenSSL uses the x86_64 assembly functions by giving it only
+    // inputs `tmp`, `am`, and `np` that immediately follow the table.
+    // According to BoringSSL, in older versions of the OpenSSL code, this
+    // extra space was required for memory safety because the assembly code
+    // would over-read the table; according to BoringSSL, this is no longer the
+    // case. Regardless, the upstream code also contained comments implying
+    // that this was also important for performance. For now, we do as OpenSSL
+    // did/does.
+    const MOD_EXP_CTIME_ALIGN: usize = 64;
+    // Required by
+    const _TABLE_ENTRIES_IS_32: () = assert!(TABLE_ENTRIES == 32);
+    const _STORAGE_ENTRIES_HAS_3_EXTRA: () = assert!(STORAGE_ENTRIES == TABLE_ENTRIES + 3);
+
+    assert!(STORAGE_LIMBS % (STORAGE_ENTRIES * limbs512::LIMBS_PER_CHUNK) == 0); // TODO: `const`
+    let mut table = limbs512::AlignedStorage::<STORAGE_LIMBS>::zeroed();
+    let mut table = table
+        .aligned_chunks_mut(STORAGE_ENTRIES, cpe)
+        .map_err(LimbSliceError::len_mismatch)?;
+    let (mut table, mut state) = table.split_at_mut(TABLE_ENTRIES * cpe);
+    assert_eq!((table.as_ptr() as usize) % MOD_EXP_CTIME_ALIGN, 0);
+
+    // These are named `(tmp, am, np)` in BoringSSL.
+    let (mut acc, mut rest) = state.split_at_mut(cpe);
+    let (mut base_cached, mut m_cached) = rest.split_at_mut(cpe);
+
+    // "To improve cache locality" according to upstream.
+    m_cached
+        .as_flattened_mut()
+        .copy_from_slice(m_original.as_flattened());
+    let m_cached = m_cached.as_ref();
+
+    let out: Elem<M, RInverse> = elem_reduced(out, base_mod_n, m, other_prime_len_bits);
+    let base_rinverse = match slice::as_chunks(&out.limbs) {
+        (c, []) => c,
+        _ => {
+            return Err(LimbSliceError::len_mismatch(LenMismatchError::new(
+                out.limbs.len(),
+            )))
+        }
+    };
+
+    // base_cached = base*R == (base/R * RRR)/R
+    mul_mont5(
+        base_cached.as_mut(),
+        base_rinverse,
+        oneRRR,
+        m_cached,
+        n0,
+        cpu2,
+    )?;
+    let base_cached = base_cached.as_ref();
+    let mut out = Storage::from(out); // recycle.
+
     // Fill in all the powers of 2 of `acc` into the table using only squaring and without any
     // gathering, storing the last calculated power into `acc`.
     fn scatter_powers_of_2(
-        table: &mut [Limb],
-        acc: &mut [Limb],
-        m_cached: &[Limb],
+        mut table: AsChunksMut<Limb, 8>,
+        mut acc: AsChunksMut<Limb, 8>,
+        m_cached: AsChunks<Limb, 8>,
         n0: &N0,
-        mut i: Window,
-        num_limbs: usize,
-        cpu_features: cpu::Features,
-    ) {
+        mut i: LeakyWindow,
+        cpu: Option<(Adx, Bmi2)>,
+    ) -> Result<(), LimbSliceError> {
         loop {
-            scatter(table, acc, i, num_limbs);
+            scatter5(acc.as_ref(), table.as_mut(), i)?;
             i *= 2;
-            if i >= (TABLE_ENTRIES as Window) {
+            if i >= TABLE_ENTRIES as LeakyWindow {
                 break;
             }
-            limbs_mont_square(acc, m_cached, n0, cpu_features);
+            sqr_mont5(acc.as_mut(), m_cached, n0, cpu)?;
         }
+        Ok(())
     }
 
     // All entries in `table` will be Montgomery encoded.
 
     // acc = table[0] = base**0 (i.e. 1).
-    m.oneR(acc);
-    scatter(table, acc, 0, num_limbs);
+    m.oneR(acc.as_flattened_mut());
+    scatter5(acc.as_ref(), table.as_mut(), 0)?;
 
     // acc = base**1 (i.e. base).
-    acc.copy_from_slice(base_cached);
+    acc.as_flattened_mut()
+        .copy_from_slice(base_cached.as_flattened());
 
     // Fill in entries 1, 2, 4, 8, 16.
-    scatter_powers_of_2(table, acc, m_cached, n0, 1, num_limbs, cpu_features);
+    scatter_powers_of_2(table.as_mut(), acc.as_mut(), m_cached, n0, 1, cpu2)?;
     // Fill in entries 3, 6, 12, 24; 5, 10, 20, 30; 7, 14, 28; 9, 18; 11, 22; 13, 26; 15, 30;
     // 17; 19; 21; 23; 25; 27; 29; 31.
-    for i in (3..(TABLE_ENTRIES as Window)).step_by(2) {
-        limbs_mul_mont_gather5_amm(table, acc, base_cached, m_cached, n0, i - 1, num_limbs);
-        scatter_powers_of_2(table, acc, m_cached, n0, i, num_limbs, cpu_features);
+    for i in (3..(TABLE_ENTRIES as LeakyWindow)).step_by(2) {
+        let power = Window::from(i - 1);
+        assert!(power < 32); // Not secret,
+        unsafe {
+            mul_mont_gather5_amm(
+                acc.as_mut(),
+                base_cached,
+                table.as_ref(),
+                m_cached,
+                n0,
+                power,
+                cpu3,
+            )
+        }?;
+        scatter_powers_of_2(table.as_mut(), acc.as_mut(), m_cached, n0, i, cpu2)?;
     }
+
+    let table = table.as_ref();
 
     let acc = limb::fold_5_bit_windows(
         exponent.limbs(),
         |initial_window| {
-            gather(table, acc, initial_window, num_limbs);
+            unsafe { gather5(acc.as_mut(), table, initial_window) }
+                .unwrap_or_else(unwrap_impossible_limb_slice_error);
             acc
         },
-        |acc, window| {
-            power_amm(table, acc, m_cached, n0, window, num_limbs);
+        |mut acc, window| {
+            unsafe { power5_amm(acc.as_mut(), table, m_cached, n0, window, cpu3) }
+                .unwrap_or_else(unwrap_impossible_limb_slice_error);
             acc
         },
     );
 
-    let mut r_amm = base.limbs;
-    r_amm.copy_from_slice(acc);
-
-    Ok(from_montgomery_amm(r_amm, m))
+    // Reuse `base_rinverse`'s limbs to save an allocation.
+    out.limbs.copy_from_slice(acc.as_flattened());
+    Ok(from_montgomery_amm(out, m))
 }
 
 /// Verified a == b**-1 (mod m), i.e. a**-1 == b (mod m).
@@ -682,11 +797,8 @@ pub fn verify_inverses_consttime<M>(
     b: Elem<M, Unencoded>,
     m: &Modulus<M>,
 ) -> Result<(), error::Unspecified> {
-    if elem_mul(a, b, m).is_one() {
-        Ok(())
-    } else {
-        Err(error::Unspecified)
-    }
+    let r = elem_mul(a, b, m);
+    limb::verify_limbs_equal_1_leak_bit(&r.limbs)
 }
 
 #[inline]
@@ -694,17 +806,35 @@ pub fn elem_verify_equal_consttime<M, E>(
     a: &Elem<M, E>,
     b: &Elem<M, E>,
 ) -> Result<(), error::Unspecified> {
-    if limb::limbs_equal_limbs_consttime(&a.limbs, &b.limbs) == LimbMask::True {
-        Ok(())
-    } else {
-        Err(error::Unspecified)
+    let equal = limb::limbs_equal_limbs_consttime(&a.limbs, &b.limbs)
+        .unwrap_or_else(unwrap_impossible_len_mismatch_error);
+    if !equal.leak() {
+        return Err(error::Unspecified);
+    }
+    Ok(())
+}
+
+#[cold]
+#[inline(never)]
+fn unwrap_impossible_len_mismatch_error<T>(LenMismatchError { .. }: LenMismatchError) -> T {
+    unreachable!()
+}
+
+#[cold]
+#[inline(never)]
+fn unwrap_impossible_limb_slice_error(err: LimbSliceError) {
+    match err {
+        LimbSliceError::LenMismatch(_) => unreachable!(),
+        LimbSliceError::TooShort(_) => unreachable!(),
+        LimbSliceError::TooLong(_) => unreachable!(),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{cpu, test};
+    use crate::cpu;
+    use crate::testutil as test;
 
     // Type-level representation of an arbitrary modulus.
     struct M {}
@@ -715,7 +845,7 @@ mod tests {
     fn test_elem_exp_consttime() {
         let cpu_features = cpu::features();
         test::run(
-            test_file!("../../crypto/fipsmodule/bn/test/mod_exp_tests.txt"),
+            test_vector_file!("../../crypto/fipsmodule/bn/test/mod_exp_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -728,9 +858,62 @@ mod tests {
                     PrivateExponent::from_be_bytes_for_test_only(untrusted::Input::from(&bytes), &m)
                         .expect("valid exponent")
                 };
-                let base = into_encoded(base, &m);
-                let actual_result = elem_exp_consttime(base, &e, &m).unwrap();
-                assert_elem_eq(&actual_result, &expected_result);
+
+                let oneRR = One::newRR(m.alloc_zero(), &m);
+                let oneRRR = One::newRRR(oneRR, &m);
+
+                // `base` in the test vectors is reduced (mod M) already but
+                // the API expects the bsae to be (mod N) where N = M * P for
+                // some other prime of the same length. Fake that here.
+                // Pretend there's another prime of equal length.
+                struct N {}
+                let other_modulus_len_bits = m.len_bits();
+                let base: Elem<N> = {
+                    let mut limbs = BoxedLimbs::zero(base.limbs.len() * 2);
+                    limbs[..base.limbs.len()].copy_from_slice(&base.limbs);
+                    Elem {
+                        limbs,
+                        encoding: PhantomData,
+                    }
+                };
+
+                let too_big = m.limbs().len() > ELEM_EXP_CONSTTIME_MAX_MODULUS_LIMBS;
+                let actual_result = if !too_big {
+                    elem_exp_consttime(
+                        m.alloc_zero(),
+                        &base,
+                        &oneRRR,
+                        &e,
+                        &m,
+                        other_modulus_len_bits,
+                    )
+                } else {
+                    let actual_result = elem_exp_consttime(
+                        m.alloc_zero(),
+                        &base,
+                        &oneRRR,
+                        &e,
+                        &m,
+                        other_modulus_len_bits,
+                    );
+                    // TODO: Be more specific with which error we expect?
+                    assert!(actual_result.is_err());
+                    // Try again with a larger-than-normally-supported limit
+                    elem_exp_consttime_inner::<_, _, { (4096 / LIMB_BITS) * STORAGE_ENTRIES }>(
+                        m.alloc_zero(),
+                        &base,
+                        &oneRRR,
+                        &e,
+                        &m,
+                        other_modulus_len_bits,
+                    )
+                };
+                match actual_result {
+                    Ok(r) => assert_elem_eq(&r, &expected_result),
+                    Err(LimbSliceError::LenMismatch { .. }) => panic!(),
+                    Err(LimbSliceError::TooLong { .. }) => panic!(),
+                    Err(LimbSliceError::TooShort { .. }) => panic!(),
+                };
 
                 Ok(())
             },
@@ -745,7 +928,7 @@ mod tests {
     fn test_elem_mul() {
         let cpu_features = cpu::features();
         test::run(
-            test_file!("../../crypto/fipsmodule/bn/test/mod_mul_tests.txt"),
+            test_vector_file!("../../crypto/fipsmodule/bn/test/mod_mul_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -755,8 +938,8 @@ mod tests {
                 let a = consume_elem(test_case, "A", &m);
                 let b = consume_elem(test_case, "B", &m);
 
-                let b = into_encoded(b, &m);
-                let a = into_encoded(a, &m);
+                let b = into_encoded(m.alloc_zero(), b, &m);
+                let a = into_encoded(m.alloc_zero(), a, &m);
                 let actual_result = elem_mul(&a, b, &m);
                 let actual_result = actual_result.into_unencoded(&m);
                 assert_elem_eq(&actual_result, &expected_result);
@@ -770,7 +953,7 @@ mod tests {
     fn test_elem_squared() {
         let cpu_features = cpu::features();
         test::run(
-            test_file!("bigint_elem_squared_tests.txt"),
+            test_vector_file!("bigint_elem_squared_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -779,7 +962,7 @@ mod tests {
                 let expected_result = consume_elem(test_case, "ModSquare", &m);
                 let a = consume_elem(test_case, "A", &m);
 
-                let a = into_encoded(a, &m);
+                let a = into_encoded(m.alloc_zero(), a, &m);
                 let actual_result = elem_squared(a, &m);
                 let actual_result = actual_result.into_unencoded(&m);
                 assert_elem_eq(&actual_result, &expected_result);
@@ -793,7 +976,7 @@ mod tests {
     fn test_elem_reduced() {
         let cpu_features = cpu::features();
         test::run(
-            test_file!("bigint_elem_reduced_tests.txt"),
+            test_vector_file!("bigint_elem_reduced_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -806,8 +989,8 @@ mod tests {
                     consume_elem_unchecked::<M>(test_case, "A", expected_result.limbs.len() * 2);
                 let other_modulus_len_bits = m_.len_bits();
 
-                let actual_result = elem_reduced(&a, &m, other_modulus_len_bits);
-                let oneRR = One::newRR(&m);
+                let actual_result = elem_reduced(m.alloc_zero(), &a, &m, other_modulus_len_bits);
+                let oneRR = One::newRR(m.alloc_zero(), &m);
                 let actual_result = elem_mul(oneRR.as_ref(), actual_result, &m);
                 assert_elem_eq(&actual_result, &expected_result);
 
@@ -820,7 +1003,7 @@ mod tests {
     fn test_elem_reduced_once() {
         let cpu_features = cpu::features();
         test::run(
-            test_file!("bigint_elem_reduced_once_tests.txt"),
+            test_vector_file!("bigint_elem_reduced_once_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -832,7 +1015,8 @@ mod tests {
                 let expected_result = consume_elem::<M>(test_case, "r", &m);
                 let other_modulus_len_bits = m.len_bits();
 
-                let actual_result = elem_reduced_once(&a, &m, other_modulus_len_bits);
+                let actual_result =
+                    elem_reduced_once(m.alloc_zero(), &a, &m, other_modulus_len_bits);
                 assert_elem_eq(&actual_result, &expected_result);
 
                 Ok(())
@@ -866,7 +1050,9 @@ mod tests {
 
     fn consume_modulus<M>(test_case: &mut test::TestCase, name: &str) -> OwnedModulus<M> {
         let value = test_case.consume_bytes(name);
-        OwnedModulus::from_be_bytes(untrusted::Input::from(&value)).unwrap()
+        OwnedModulus::from(
+            OwnedModulusValue::from_be_bytes(untrusted::Input::from(&value)).unwrap(),
+        )
     }
 
     fn assert_elem_eq<M, E>(a: &Elem<M, E>, b: &Elem<M, E>) {
@@ -875,8 +1061,8 @@ mod tests {
         }
     }
 
-    fn into_encoded<M>(a: Elem<M, Unencoded>, m: &Modulus<M>) -> Elem<M, R> {
-        let oneRR = One::newRR(m);
+    fn into_encoded<M>(out: Storage<M>, a: Elem<M, Unencoded>, m: &Modulus<M>) -> Elem<M, R> {
+        let oneRR = One::newRR(out, m);
         elem_mul(oneRR.as_ref(), a, m)
     }
 }

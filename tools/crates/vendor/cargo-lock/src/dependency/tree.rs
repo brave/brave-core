@@ -6,10 +6,10 @@
 // Licensed under the same terms as `cargo-audit` (i.e. Apache 2.0 + MIT)
 
 use super::{
-    graph::{EdgeDirection, Graph, NodeIndex, Nodes},
     Dependency,
+    graph::{EdgeDirection, Graph, NodeIndex, Nodes},
 };
-use crate::{error::Error, lockfile::Lockfile, Map};
+use crate::{Map, error::Error, lockfile::Lockfile};
 use std::{collections::BTreeSet as Set, io};
 
 /// Dependency tree computed from a `Cargo.lock` file
@@ -227,6 +227,12 @@ mod tests {
     #[test]
     fn compute_tree_git_ref() {
         let lockfile = Lockfile::load("tests/examples/Cargo.lock.git-ref").unwrap();
+        Tree::new(&lockfile).unwrap();
+    }
+
+    #[test]
+    fn load_same_git() {
+        let lockfile = Lockfile::load("tests/examples/Cargo.lock.same-git").unwrap();
         Tree::new(&lockfile).unwrap();
     }
 }

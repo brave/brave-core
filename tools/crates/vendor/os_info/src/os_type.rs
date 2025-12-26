@@ -2,6 +2,7 @@ use std::fmt::{self, Display, Formatter};
 
 /// A list of supported operating system types.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[allow(non_camel_case_types, clippy::upper_case_acronyms)]
 #[non_exhaustive]
@@ -14,10 +15,14 @@ pub enum Type {
     Alpaquita,
     /// Alpine Linux (<https://en.wikipedia.org/wiki/Alpine_Linux>).
     Alpine,
+    /// ALT Linux (https://en.wikipedia.org/wiki/ALT_Linux).
+    ALTLinux,
     /// Amazon Linux AMI (<https://en.wikipedia.org/wiki/Amazon_Machine_Image#Amazon_Linux_AMI>).
     Amazon,
     /// Android (<https://en.wikipedia.org/wiki/Android_(operating_system)>).
     Android,
+    /// AOSC OS (<https://aosc.io/aosc-os/>).
+    AOSC,
     /// Arch Linux (<https://en.wikipedia.org/wiki/Arch_Linux>).
     Arch,
     /// Artix Linux (<https://en.wikipedia.org/wiki/Artix_Linux>).
@@ -28,10 +33,14 @@ pub enum Type {
     CachyOS,
     /// CentOS (<https://en.wikipedia.org/wiki/CentOS>).
     CentOS,
+    /// Cygwin (<https://en.wikipedia.org/wiki/Cygwin>).
+    Cygwin,
     /// Debian (<https://en.wikipedia.org/wiki/Debian>).
     Debian,
     /// DragonFly BSD (<https://en.wikipedia.org/wiki/DragonFly_BSD>).
     DragonFly,
+    /// Elementary OS (<https://en.wikipedia.org/wiki/Elementary_OS>).
+    Elementary,
     /// Emscripten (<https://en.wikipedia.org/wiki/Emscripten>).
     Emscripten,
     /// EndeavourOS (<https://en.wikipedia.org/wiki/EndeavourOS>).
@@ -48,6 +57,10 @@ pub enum Type {
     HardenedBSD,
     /// Illumos (https://en.wikipedia.org/wiki/Illumos).
     Illumos,
+    /// instantOS (<https://instantos.io/>).
+    InstantOS,
+    /// iOS (<https://en.wikipedia.org/wiki/iOS>).
+    Ios,
     /// Kali Linux (https://en.wikipedia.org/wiki/Kali_Linux).
     Kali,
     /// Linux based operating system (<https://en.wikipedia.org/wiki/Linux>).
@@ -80,9 +93,12 @@ pub enum Type {
     openSUSE,
     /// Oracle Linux (<https://en.wikipedia.org/wiki/Oracle_Linux>).
     OracleLinux,
+    /// PikaOS (<https://wiki.pika-os.com/en/home>)
+    PikaOS,
     /// Pop!_OS (<https://en.wikipedia.org/wiki/Pop!_OS>)
     Pop,
     /// Raspberry Pi OS (<https://en.wikipedia.org/wiki/Raspberry_Pi_OS>).
+    #[cfg_attr(feature = "serde", serde(alias = "RaspberryPiOS"))]
     Raspbian,
     /// Red Hat Linux (<https://en.wikipedia.org/wiki/Red_Hat_Linux>).
     Redhat,
@@ -100,10 +116,12 @@ pub enum Type {
     Ubuntu,
     /// Ultramarine (<https://ultramarine-linux.org/>).
     Ultramarine,
-    /// Uos (<https://www.chinauos.com/>).
+    /// Uos (<https://uos.uniontech.com/>).
     Uos,
     /// Void Linux (<https://en.wikipedia.org/wiki/Void_Linux>).
     Void,
+    /// Zorin OS (<https://en.wikipedia.org/wiki/Zorin_OS>).
+    Zorin,
     /// Unknown operating system.
     Unknown,
     /// Windows (<https://en.wikipedia.org/wiki/Microsoft_Windows>).
@@ -122,15 +140,20 @@ impl Display for Type {
             Type::Alpaquita => write!(f, "Alpaquita Linux"),
             Type::Alpine => write!(f, "Alpine Linux"),
             Type::AlmaLinux => write!(f, "AlmaLinux"),
+            Type::ALTLinux => write!(f, "ALT Linux"),
             Type::Amazon => write!(f, "Amazon Linux AMI"),
+            Type::AOSC => write!(f, "AOSC OS"),
             Type::Arch => write!(f, "Arch Linux"),
             Type::Bluefin => write!(f, "Bluefin"),
             Type::CachyOS => write!(f, "CachyOS Linux"),
             Type::Artix => write!(f, "Artix Linux"),
             Type::DragonFly => write!(f, "DragonFly BSD"),
+            Type::Elementary => write!(f, "Elementary OS"),
             Type::Garuda => write!(f, "Garuda Linux"),
             Type::Gentoo => write!(f, "Gentoo Linux"),
             Type::Illumos => write!(f, "illumos"),
+            Type::InstantOS => write!(f, "instantOS"),
+            Type::Ios => write!(f, "iOS"),
             Type::Kali => write!(f, "Kali Linux"),
             Type::Macos => write!(f, "Mac OS"),
             Type::MidnightBSD => write!(f, "Midnight BSD"),
@@ -138,6 +161,7 @@ impl Display for Type {
             Type::Nobara => write!(f, "Nobara Linux"),
             Type::openEuler => write!(f, "EulerOS"),
             Type::OracleLinux => write!(f, "Oracle Linux"),
+            Type::PikaOS => write!(f, "PikaOS"),
             Type::Pop => write!(f, "Pop!_OS"),
             Type::Raspbian => write!(f, "Raspberry Pi OS"),
             Type::Redhat => write!(f, "Red Hat Linux"),
@@ -147,6 +171,7 @@ impl Display for Type {
             Type::Ultramarine => write!(f, "Ultramarine Linux"),
             Type::Uos => write!(f, "UOS"),
             Type::Void => write!(f, "Void Linux"),
+            Type::Zorin => write!(f, "Zorin OS"),
             _ => write!(f, "{self:?}"),
         }
     }
@@ -168,15 +193,19 @@ mod tests {
             (Type::AlmaLinux, "AlmaLinux"),
             (Type::Alpaquita, "Alpaquita Linux"),
             (Type::Alpine, "Alpine Linux"),
+            (Type::ALTLinux, "ALT Linux"),
             (Type::Amazon, "Amazon Linux AMI"),
             (Type::Android, "Android"),
+            (Type::AOSC, "AOSC OS"),
             (Type::Arch, "Arch Linux"),
             (Type::Artix, "Artix Linux"),
             (Type::Bluefin, "Bluefin"),
             (Type::CachyOS, "CachyOS Linux"),
             (Type::CentOS, "CentOS"),
+            (Type::Cygwin, "Cygwin"),
             (Type::Debian, "Debian"),
             (Type::DragonFly, "DragonFly BSD"),
+            (Type::Elementary, "Elementary OS"),
             (Type::Emscripten, "Emscripten"),
             (Type::EndeavourOS, "EndeavourOS"),
             (Type::Fedora, "Fedora"),
@@ -185,6 +214,8 @@ mod tests {
             (Type::Gentoo, "Gentoo Linux"),
             (Type::HardenedBSD, "HardenedBSD"),
             (Type::Illumos, "illumos"),
+            (Type::InstantOS, "instantOS"),
+            (Type::Ios, "iOS"),
             (Type::Kali, "Kali Linux"),
             (Type::Linux, "Linux"),
             (Type::Mabox, "Mabox"),
@@ -201,6 +232,7 @@ mod tests {
             (Type::openEuler, "EulerOS"),
             (Type::openSUSE, "openSUSE"),
             (Type::OracleLinux, "Oracle Linux"),
+            (Type::PikaOS, "PikaOS"),
             (Type::Pop, "Pop!_OS"),
             (Type::Raspbian, "Raspberry Pi OS"),
             (Type::Redhat, "Red Hat Linux"),
@@ -214,6 +246,7 @@ mod tests {
             (Type::Unknown, "Unknown"),
             (Type::Uos, "UOS"),
             (Type::Void, "Void Linux"),
+            (Type::Zorin, "Zorin OS"),
             (Type::Windows, "Windows"),
         ];
 

@@ -76,7 +76,8 @@ fn skip_node_value(pos: usize, lead: u16) -> usize {
 /// - [ICU4C UCharsTrie](https://unicode-org.github.io/icu-docs/apidoc/released/icu4c/classicu_1_1UCharsTrie.html)
 /// - [ICU4J CharsTrie](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/com/ibm/icu/util/CharsTrie.html) API.
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
-#[cfg_attr(feature = "databake", derive(databake::Bake), databake(path = icu_collections::char16trie))]
+#[cfg_attr(feature = "databake", derive(databake::Bake))]
+#[cfg_attr(feature = "databake", databake(path = icu_collections::char16trie))]
 #[derive(Clone, Debug, PartialEq, Eq, ZeroFrom)]
 pub struct Char16Trie<'data> {
     /// An array of u16 containing the trie data.
@@ -87,12 +88,14 @@ pub struct Char16Trie<'data> {
 
 impl<'data> Char16Trie<'data> {
     /// Returns a new [`Char16Trie`] with ownership of the provided data.
+    #[inline]
     pub fn new(data: ZeroVec<'data, u16>) -> Self {
         Self { data }
     }
 
     /// Returns a new [`Char16TrieIterator`] backed by borrowed data from the `trie` data
-    pub fn iter(&self) -> Char16TrieIterator {
+    #[inline]
+    pub fn iter(&self) -> Char16TrieIterator<'_> {
         Char16TrieIterator::new(&self.data)
     }
 }
@@ -163,6 +166,7 @@ macro_rules! trie_unwrap {
 
 impl<'a> Char16TrieIterator<'a> {
     /// Returns a new [`Char16TrieIterator`] backed by borrowed data for the `trie` array
+    #[inline]
     pub fn new(trie: &'a ZeroSlice<u16>) -> Self {
         Self {
             trie,
@@ -326,7 +330,7 @@ impl<'a> Char16TrieIterator<'a> {
                         | trie_unwrap!(self.trie.get(pos)) as usize;
                     pos += 1;
                 } else {
-                    pos += (trie_unwrap!(self.trie.get(pos)) as usize) << 16
+                    pos += ((trie_unwrap!(self.trie.get(pos)) as usize) << 16)
                         | trie_unwrap!(self.trie.get(pos + 1)) as usize;
                     pos += 2;
                 }
@@ -413,7 +417,7 @@ impl<'a> Char16TrieIterator<'a> {
                 ((self.trie.get(pos + 1)? as usize) << 16) | (self.trie.get(pos + 2)? as usize);
             pos + delta + 3
         } else {
-            let delta = ((delta - MIN_TWO_UNIT_DELTA_LEAD) as usize) << 16
+            let delta = (((delta - MIN_TWO_UNIT_DELTA_LEAD) as usize) << 16)
                 | (self.trie.get(pos + 1)? as usize);
             pos + delta + 2
         };
@@ -467,9 +471,9 @@ impl<'a> Char16TrieIterator<'a> {
         let v = if lead_unit < MIN_TWO_UNIT_VALUE_LEAD {
             lead_unit.into()
         } else if lead_unit < THREE_UNIT_VALUE_LEAD {
-            ((lead_unit - MIN_TWO_UNIT_VALUE_LEAD) as i32) << 16 | self.trie.get(pos)? as i32
+            (((lead_unit - MIN_TWO_UNIT_VALUE_LEAD) as i32) << 16) | self.trie.get(pos)? as i32
         } else {
-            (self.trie.get(pos)? as i32) << 16 | self.trie.get(pos + 1)? as i32
+            ((self.trie.get(pos)? as i32) << 16) | self.trie.get(pos + 1)? as i32
         };
         Some(v)
     }
@@ -479,10 +483,10 @@ impl<'a> Char16TrieIterator<'a> {
         let v = if lead_unit < (MIN_TWO_UNIT_NODE_VALUE_LEAD) {
             ((lead_unit >> 6) - 1).into()
         } else if lead_unit < THREE_UNIT_NODE_VALUE_LEAD {
-            (((lead_unit & 0x7fc0) - MIN_TWO_UNIT_NODE_VALUE_LEAD) as i32) << 10
+            ((((lead_unit & 0x7fc0) - MIN_TWO_UNIT_NODE_VALUE_LEAD) as i32) << 10)
                 | self.trie.get(pos)? as i32
         } else {
-            (self.trie.get(pos)? as i32) << 16 | self.trie.get(pos + 1)? as i32
+            ((self.trie.get(pos)? as i32) << 16) | self.trie.get(pos + 1)? as i32
         };
         Some(v)
     }

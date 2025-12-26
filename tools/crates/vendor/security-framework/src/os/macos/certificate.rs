@@ -109,9 +109,9 @@ impl CertificateProperties {
     #[must_use]
     pub fn get(&self, oid: CertificateOid) -> Option<CertificateProperty> {
         unsafe {
-            self.0.find(oid.as_ptr().cast::<c_void>()).map(|value| {
-                CertificateProperty(CFDictionary::wrap_under_get_rule(*value as *mut _))
-            })
+            self.0
+                .find(oid.as_ptr().cast::<c_void>())
+                .map(|value| CertificateProperty(CFDictionary::wrap_under_get_rule(*value as *mut _)))
         }
     }
 }
@@ -232,9 +232,8 @@ mod test {
         let value = properties
             .get(CertificateOid::x509_v1_signature_algorithm())
             .unwrap();
-        let section = match value.get() {
-            PropertyType::Section(section) => section,
-            _ => panic!(),
+        let PropertyType::Section(section) = value.get() else {
+            panic!()
         };
         let properties = section
             .iter()

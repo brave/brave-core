@@ -42,21 +42,17 @@ impl Store {
 
 fn hash_path(id: &gix_hash::oid, mut root: PathBuf) -> PathBuf {
     let mut hex = gix_hash::Kind::hex_buf();
-    let hex_len = id.hex_to_buf(hex.as_mut());
-    let buf = std::str::from_utf8(&hex[..hex_len]).expect("ascii only in hex");
-    root.push(&buf[..2]);
-    root.push(&buf[2..]);
+    let hex = id.hex_to_buf(hex.as_mut());
+    root.push(&hex[..2]);
+    root.push(&hex[2..]);
     root
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod find;
 ///
-#[allow(clippy::empty_docs)]
 pub mod iter;
 ///
-#[allow(clippy::empty_docs)]
 pub mod verify;
 
 /// The type for an iterator over `Result<gix_hash::ObjectId, Error>)`
@@ -66,5 +62,4 @@ pub struct Iter {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod write;

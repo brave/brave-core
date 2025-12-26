@@ -2,12 +2,16 @@ use std::process::Command;
 
 use log::{error, trace};
 
-use crate::{architecture, bitness, uname::uname, Info, Type, Version};
+use crate::{
+    architecture, bitness,
+    uname::{uname, UnameField},
+    Info, Type, Version,
+};
 
 pub fn current_platform() -> Info {
     trace!("openbsd::current_platform is called");
 
-    let version = uname("-r")
+    let version = uname(UnameField::Release)
         .map(Version::from_string)
         .unwrap_or_else(|| Version::Unknown);
 

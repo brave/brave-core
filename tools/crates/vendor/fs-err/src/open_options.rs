@@ -1,4 +1,7 @@
 use std::{fs, io, path::PathBuf};
+
+use crate::errors::{Error, ErrorKind};
+
 #[derive(Clone, Debug)]
 /// Wrapper around [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)
 pub struct OpenOptions(fs::OpenOptions);
@@ -67,12 +70,11 @@ impl OpenOptions {
     where
         P: Into<PathBuf>,
     {
-        // We have to either duplicate the logic or call the deprecated method here.
-        // We can't let the deprecated function call this method, because we can't construct
-        // `&fs_err::OpenOptions` from `&fs::OpenOptions` without cloning
-        // (although cloning would probably be cheap).
-        #[allow(deprecated)]
-        crate::File::from_options(path.into(), self.options())
+        let path = path.into();
+        match self.0.open(&path) {
+            Ok(file) => Ok(crate::File::from_parts(file, path)),
+            Err(source) => Err(Error::build(source, ErrorKind::OpenFile, path)),
+        }
     }
 }
 

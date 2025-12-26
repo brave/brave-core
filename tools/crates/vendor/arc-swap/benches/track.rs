@@ -75,7 +75,7 @@ fn with_background<F: Fn(&ArcSwap<usize>) + Sync>(
         // Perform the benchmarks
         batch(c, name, &shared_number);
 
-        // Ask the threads to terminate, so they don't disturb any other banchmarks
+        // Ask the threads to terminate, so they don't disturb any other benchmarks
         stop.store(true, Ordering::Relaxed);
     })
     .unwrap();

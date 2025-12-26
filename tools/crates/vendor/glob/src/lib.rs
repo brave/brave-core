@@ -61,6 +61,7 @@
     html_root_url = "https://docs.rs/glob/0.3.1"
 )]
 #![deny(missing_docs)]
+#![allow(clippy::while_let_loop)]
 
 #[cfg(test)]
 #[macro_use]
@@ -70,6 +71,7 @@ extern crate doc_comment;
 doctest!("../README.md");
 
 use std::cmp;
+use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
 use std::fs;
@@ -208,9 +210,7 @@ pub fn glob_with(pattern: &str, options: MatchOptions) -> Result<Paths, PatternE
     }
 
     // make sure that the pattern is valid first, else early return with error
-    if let Err(err) = Pattern::new(pattern) {
-        return Err(err);
-    }
+    let _ = Pattern::new(pattern)?;
 
     let mut components = Path::new(pattern).components().peekable();
     loop {
@@ -259,6 +259,7 @@ pub fn glob_with(pattern: &str, options: MatchOptions) -> Result<Paths, PatternE
             original: "".to_string(),
             tokens: Vec::new(),
             is_recursive: false,
+            has_metachars: false,
         });
     }
 
@@ -391,7 +392,7 @@ impl Iterator for Paths {
         if let Some(scope) = self.scope.take() {
             if !self.dir_patterns.is_empty() {
                 // Shouldn't happen, but we're using -1 as a special index.
-                assert!(self.dir_patterns.len() < !0 as usize);
+                assert!(self.dir_patterns.len() < usize::MAX);
 
                 fill_todo(&mut self.todo, &self.dir_patterns, 0, &scope, self.options);
             }
@@ -409,7 +410,7 @@ impl Iterator for Paths {
 
             // idx -1: was already checked by fill_todo, maybe path was '.' or
             // '..' that we can't match here because of normalization.
-            if idx == !0 as usize {
+            if idx == usize::MAX {
                 if self.require_dir && !path.is_directory {
                     continue;
                 }
@@ -525,7 +526,7 @@ impl fmt::Display for PatternError {
 /// - `*` matches any (possibly empty) sequence of characters.
 ///
 /// - `**` matches the current directory and arbitrary
-///   subdirectories. To match files in arbitrary subdiretories, use
+///   subdirectories. To match files in arbitrary subdirectories, use
 ///   `**/*`.
 ///
 ///   This sequence **must** form a single path component, so both
@@ -552,6 +553,9 @@ pub struct Pattern {
     original: String,
     tokens: Vec<PatternToken>,
     is_recursive: bool,
+    /// A bool value that indicates whether the pattern contains any metacharacters.
+    /// We use this information for some fast path optimizations.
+    has_metachars: bool,
 }
 
 /// Show the original glob pattern.
@@ -605,15 +609,19 @@ impl Pattern {
         let chars = pattern.chars().collect::<Vec<_>>();
         let mut tokens = Vec::new();
         let mut is_recursive = false;
+        let mut has_metachars = false;
         let mut i = 0;
 
         while i < chars.len() {
             match chars[i] {
                 '?' => {
+                    has_metachars = true;
                     tokens.push(AnyChar);
                     i += 1;
                 }
                 '*' => {
+                    has_metachars = true;
+
                     let old = i;
 
                     while i < chars.len() && chars[i] == '*' {
@@ -622,55 +630,61 @@ impl Pattern {
 
                     let count = i - old;
 
-                    if count > 2 {
-                        return Err(PatternError {
-                            pos: old + 2,
-                            msg: ERROR_WILDCARDS,
-                        });
-                    } else if count == 2 {
-                        // ** can only be an entire path component
-                        // i.e. a/**/b is valid, but a**/b or a/**b is not
-                        // invalid matches are treated literally
-                        let is_valid = if i == 2 || path::is_separator(chars[i - count - 1]) {
-                            // it ends in a '/'
-                            if i < chars.len() && path::is_separator(chars[i]) {
-                                i += 1;
-                                true
-                            // or the pattern ends here
-                            // this enables the existing globbing mechanism
-                            } else if i == chars.len() {
-                                true
-                            // `**` ends in non-separator
+                    match count.cmp(&2) {
+                        Ordering::Greater => {
+                            return Err(PatternError {
+                                pos: old + 2,
+                                msg: ERROR_WILDCARDS,
+                            })
+                        }
+                        Ordering::Equal => {
+                            // ** can only be an entire path component
+                            // i.e. a/**/b is valid, but a**/b or a/**b is not
+                            // invalid matches are treated literally
+                            let is_valid = if i == 2 || path::is_separator(chars[i - count - 1]) {
+                                // it ends in a '/'
+                                if i < chars.len() && path::is_separator(chars[i]) {
+                                    i += 1;
+                                    true
+                                // or the pattern ends here
+                                // this enables the existing globbing mechanism
+                                } else if i == chars.len() {
+                                    true
+                                // `**` ends in non-separator
+                                } else {
+                                    return Err(PatternError {
+                                        pos: i,
+                                        msg: ERROR_RECURSIVE_WILDCARDS,
+                                    });
+                                }
+                            // `**` begins with non-separator
                             } else {
                                 return Err(PatternError {
-                                    pos: i,
+                                    pos: old - 1,
                                     msg: ERROR_RECURSIVE_WILDCARDS,
                                 });
-                            }
-                        // `**` begins with non-separator
-                        } else {
-                            return Err(PatternError {
-                                pos: old - 1,
-                                msg: ERROR_RECURSIVE_WILDCARDS,
-                            });
-                        };
+                            };
 
-                        if is_valid {
-                            // collapse consecutive AnyRecursiveSequence to a
-                            // single one
+                            if is_valid {
+                                // collapse consecutive AnyRecursiveSequence to a
+                                // single one
 
-                            let tokens_len = tokens.len();
+                                let tokens_len = tokens.len();
 
-                            if !(tokens_len > 1 && tokens[tokens_len - 1] == AnyRecursiveSequence) {
-                                is_recursive = true;
-                                tokens.push(AnyRecursiveSequence);
+                                if !(tokens_len > 1
+                                    && tokens[tokens_len - 1] == AnyRecursiveSequence)
+                                {
+                                    is_recursive = true;
+                                    tokens.push(AnyRecursiveSequence);
+                                }
                             }
                         }
-                    } else {
-                        tokens.push(AnySequence);
+                        Ordering::Less => tokens.push(AnySequence),
                     }
                 }
                 '[' => {
+                    has_metachars = true;
+
                     if i + 4 <= chars.len() && chars[i + 1] == '!' {
                         match chars[i + 3..].iter().position(|x| *x == ']') {
                             None => (),
@@ -711,6 +725,7 @@ impl Pattern {
             tokens,
             original: pattern.to_string(),
             is_recursive,
+            has_metachars,
         })
     }
 
@@ -843,8 +858,8 @@ impl Pattern {
                             false
                         }
                         AnyChar => true,
-                        AnyWithin(ref specifiers) => in_char_specifiers(&specifiers, c, options),
-                        AnyExcept(ref specifiers) => !in_char_specifiers(&specifiers, c, options),
+                        AnyWithin(ref specifiers) => in_char_specifiers(specifiers, c, options),
+                        AnyExcept(ref specifiers) => !in_char_specifiers(specifiers, c, options),
                         Char(c2) => chars_eq(c, c2, options.case_sensitive),
                         AnySequence | AnyRecursiveSequence => unreachable!(),
                     } {
@@ -874,25 +889,12 @@ fn fill_todo(
     path: &PathWrapper,
     options: MatchOptions,
 ) {
-    // convert a pattern that's just many Char(_) to a string
-    fn pattern_as_str(pattern: &Pattern) -> Option<String> {
-        let mut s = String::new();
-        for token in &pattern.tokens {
-            match *token {
-                Char(c) => s.push(c),
-                _ => return None,
-            }
-        }
-
-        Some(s)
-    }
-
     let add = |todo: &mut Vec<_>, next_path: PathWrapper| {
         if idx + 1 == patterns.len() {
             // We know it's good, so don't make the iterator match this path
             // against the pattern again. In particular, it can't match
             // . or .. globs since these never show up as path components.
-            todo.push(Ok((next_path, !0 as usize)));
+            todo.push(Ok((next_path, usize::MAX)));
         } else {
             fill_todo(todo, patterns, idx + 1, &next_path, options);
         }
@@ -901,8 +903,17 @@ fn fill_todo(
     let pattern = &patterns[idx];
     let is_dir = path.is_directory;
     let curdir = path.as_ref() == Path::new(".");
-    match pattern_as_str(pattern) {
-        Some(s) => {
+    match (pattern.has_metachars, is_dir) {
+        (false, _) => {
+            debug_assert!(
+                pattern
+                    .tokens
+                    .iter()
+                    .all(|tok| matches!(tok, PatternToken::Char(_))),
+                "broken invariant: pattern has metachars but shouldn't"
+            );
+            let s = pattern.as_str();
+
             // This pattern component doesn't have any metacharacters, so we
             // don't need to read the current directory to know where to
             // continue. So instead of passing control back to the iterator,
@@ -912,7 +923,7 @@ fn fill_todo(
             let next_path = if curdir {
                 PathBuf::from(s)
             } else {
-                path.join(&s)
+                path.join(s)
             };
             let next_path = PathWrapper::from_path(next_path);
             if (special && is_dir)
@@ -923,7 +934,7 @@ fn fill_todo(
                 add(todo, next_path);
             }
         }
-        None if is_dir => {
+        (true, true) => {
             let dirs = fs::read_dir(path).and_then(|d| {
                 d.map(|e| {
                     e.map(|e| {
@@ -941,7 +952,7 @@ fn fill_todo(
                 Ok(mut children) => {
                     if options.require_literal_leading_dot {
                         children
-                            .retain(|x| !x.file_name().unwrap().to_str().unwrap().starts_with("."));
+                            .retain(|x| !x.file_name().unwrap().to_str().unwrap().starts_with('.'));
                     }
                     children.sort_by(|p1, p2| p2.file_name().cmp(&p1.file_name()));
                     todo.extend(children.into_iter().map(|x| Ok((x, idx))));
@@ -967,7 +978,7 @@ fn fill_todo(
                 }
             }
         }
-        None => {
+        (true, false) => {
             // not a directory, nothing more to find
         }
     }
@@ -1031,7 +1042,7 @@ fn chars_eq(a: char, b: char, case_sensitive: bool) -> bool {
         true
     } else if !case_sensitive && a.is_ascii() && b.is_ascii() {
         // FIXME: work with non-ascii chars properly (issue #9084)
-        a.to_ascii_lowercase() == b.to_ascii_lowercase()
+        a.eq_ignore_ascii_case(&b)
     } else {
         a == b
     }
@@ -1168,8 +1179,7 @@ mod test {
                 .ok()
                 .and_then(|p| match p.components().next().unwrap() {
                     Component::Prefix(prefix_component) => {
-                        let path = Path::new(prefix_component.as_os_str());
-                        path.join("*");
+                        let path = Path::new(prefix_component.as_os_str()).join("*");
                         Some(path.to_path_buf())
                     }
                     _ => panic!("no prefix in this path"),
@@ -1490,12 +1500,12 @@ mod test {
     fn test_matches_path() {
         // on windows, (Path::new("a/b").as_str().unwrap() == "a\\b"), so this
         // tests that / and \ are considered equivalent on windows
-        assert!(Pattern::new("a/b").unwrap().matches_path(&Path::new("a/b")));
+        assert!(Pattern::new("a/b").unwrap().matches_path(Path::new("a/b")));
     }
 
     #[test]
     fn test_path_join() {
-        let pattern = Path::new("one").join(&Path::new("**/*.rs"));
+        let pattern = Path::new("one").join(Path::new("**/*.rs"));
         assert!(Pattern::new(pattern.to_str().unwrap()).is_ok());
     }
 }

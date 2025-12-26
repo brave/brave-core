@@ -17,6 +17,8 @@ mod parse_from_description;
 #[cfg(feature = "parsing")]
 mod try_from_parsed;
 
+#[cfg(feature = "parsing")]
+use core::convert::Infallible;
 use core::fmt;
 
 pub use component_range::ComponentRange;
@@ -36,51 +38,51 @@ pub use parse_from_description::ParseFromDescription;
 #[cfg(feature = "parsing")]
 pub use try_from_parsed::TryFromParsed;
 
-#[cfg(feature = "parsing")]
-use crate::internal_macros::bug;
-
 /// A unified error type for anything returned by a method in the time crate.
 ///
 /// This can be used when you either don't know or don't care about the exact error returned.
 /// `Result<_, time::Error>` (or its alias `time::Result<_>`) will work in these situations.
-#[allow(missing_copy_implementations, variant_size_differences)]
 #[non_exhaustive]
 #[derive(Debug)]
 pub enum Error {
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     ConversionRange(ConversionRange),
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     ComponentRange(ComponentRange),
     #[cfg(feature = "local-offset")]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     IndeterminateOffset(IndeterminateOffset),
     #[cfg(feature = "formatting")]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     Format(Format),
     #[cfg(feature = "parsing")]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     ParseFromDescription(ParseFromDescription),
     #[cfg(feature = "parsing")]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     #[non_exhaustive]
     #[deprecated(
         since = "0.3.28",
         note = "no longer output. moved to the `ParseFromDescription` variant"
     )]
-    UnexpectedTrailingCharacters,
+    UnexpectedTrailingCharacters {
+        #[doc(hidden)]
+        never: Infallible,
+    },
     #[cfg(feature = "parsing")]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     TryFromParsed(TryFromParsed),
     #[cfg(all(any(feature = "formatting", feature = "parsing"), feature = "alloc"))]
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     InvalidFormatDescription(InvalidFormatDescription),
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     DifferentVariant(DifferentVariant),
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     InvalidVariant(InvalidVariant),
 }
 
 impl fmt::Display for Error {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::ConversionRange(e) => e.fmt(f),
@@ -93,7 +95,7 @@ impl fmt::Display for Error {
             Self::ParseFromDescription(e) => e.fmt(f),
             #[cfg(feature = "parsing")]
             #[allow(deprecated)]
-            Self::UnexpectedTrailingCharacters => bug!("variant should not be used"),
+            Self::UnexpectedTrailingCharacters { never } => match *never {},
             #[cfg(feature = "parsing")]
             Self::TryFromParsed(e) => e.fmt(f),
             #[cfg(all(any(feature = "formatting", feature = "parsing"), feature = "alloc"))]
@@ -104,10 +106,9 @@ impl fmt::Display for Error {
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for Error {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+impl core::error::Error for Error {
+    #[inline]
+    fn source(&self) -> Option<&(dyn core::error::Error + 'static)> {
         match self {
             Self::ConversionRange(err) => Some(err),
             Self::ComponentRange(err) => Some(err),
@@ -119,7 +120,7 @@ impl std::error::Error for Error {
             Self::ParseFromDescription(err) => Some(err),
             #[cfg(feature = "parsing")]
             #[allow(deprecated)]
-            Self::UnexpectedTrailingCharacters => bug!("variant should not be used"),
+            Self::UnexpectedTrailingCharacters { never } => match *never {},
             #[cfg(feature = "parsing")]
             Self::TryFromParsed(err) => Some(err),
             #[cfg(all(any(feature = "formatting", feature = "parsing"), feature = "alloc"))]

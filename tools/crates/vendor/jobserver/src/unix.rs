@@ -8,10 +8,9 @@ use std::mem::MaybeUninit;
 use std::os::unix::prelude::*;
 use std::path::Path;
 use std::process::Command;
-use std::ptr;
 use std::sync::{
     atomic::{AtomicBool, Ordering},
-    Arc, Once,
+    Arc,
 };
 use std::thread::{self, Builder, JoinHandle};
 use std::time::Duration;
@@ -72,30 +71,19 @@ impl Client {
     unsafe fn mk() -> io::Result<Client> {
         let mut pipes = [0; 2];
 
-        // Attempt atomically-create-with-cloexec if we can on Linux,
-        // detected by using the `syscall` function in `libc` to try to work
-        // with as many kernels/glibc implementations as possible.
+        // Atomically-create-with-cloexec on Linux.
         #[cfg(target_os = "linux")]
-        {
-            static PIPE2_AVAILABLE: AtomicBool = AtomicBool::new(true);
-            if PIPE2_AVAILABLE.load(Ordering::SeqCst) {
-                match libc::syscall(libc::SYS_pipe2, pipes.as_mut_ptr(), libc::O_CLOEXEC) {
-                    -1 => {
-                        let err = io::Error::last_os_error();
-                        if err.raw_os_error() == Some(libc::ENOSYS) {
-                            PIPE2_AVAILABLE.store(false, Ordering::SeqCst);
-                        } else {
-                            return Err(err);
-                        }
-                    }
-                    _ => return Ok(Client::from_fds(pipes[0], pipes[1])),
-                }
-            }
+        if libc::pipe2(pipes.as_mut_ptr(), libc::O_CLOEXEC) == -1 {
+            return Err(io::Error::last_os_error());
         }
 
-        cvt(libc::pipe(pipes.as_mut_ptr()))?;
-        drop(set_cloexec(pipes[0], true));
-        drop(set_cloexec(pipes[1], true));
+        #[cfg(not(target_os = "linux"))]
+        {
+            cvt(libc::pipe(pipes.as_mut_ptr()))?;
+            drop(set_cloexec(pipes[0], true));
+            drop(set_cloexec(pipes[1], true));
+        }
+
         Ok(Client::from_fds(pipes[0], pipes[1]))
     }
 
@@ -390,26 +378,24 @@ pub(crate) fn spawn_helper(
     state: Arc<super::HelperState>,
     mut f: Box<dyn FnMut(io::Result<crate::Acquired>) + Send>,
 ) -> io::Result<Helper> {
-    static USR1_INIT: Once = Once::new();
-    let mut err = None;
-    USR1_INIT.call_once(|| unsafe {
-        let mut new: libc::sigaction = mem::zeroed();
-        #[cfg(target_os = "aix")]
-        {
-            new.sa_union.__su_sigaction = sigusr1_handler;
-        }
-        #[cfg(not(target_os = "aix"))]
-        {
-            new.sa_sigaction = sigusr1_handler as usize;
-        }
-        new.sa_flags = libc::SA_SIGINFO as _;
-        if libc::sigaction(libc::SIGUSR1, &new, ptr::null_mut()) != 0 {
-            err = Some(io::Error::last_os_error());
-        }
-    });
+    #[cfg(not(miri))]
+    {
+        use std::sync::Once;
 
-    if let Some(e) = err.take() {
-        return Err(e);
+        static USR1_INIT: Once = Once::new();
+        let mut err = None;
+        USR1_INIT.call_once(|| unsafe {
+            let mut new: libc::sigaction = mem::zeroed();
+            new.sa_sigaction = sigusr1_handler as usize;
+            new.sa_flags = libc::SA_SIGINFO as _;
+            if libc::sigaction(libc::SIGUSR1, &new, std::ptr::null_mut()) != 0 {
+                err = Some(io::Error::last_os_error());
+            }
+        });
+
+        if let Some(e) = err.take() {
+            return Err(e);
+        }
     }
 
     let state2 = state.clone();
@@ -454,6 +440,7 @@ impl Helper {
             if state.consumer_done {
                 break;
             }
+            #[cfg(not(miri))]
             unsafe {
                 // Ignore the return value here of `pthread_kill`,
                 // apparently on OSX if you kill a dead thread it will
@@ -516,7 +503,7 @@ unsafe fn fd_check(fd: c_int, check_pipe: bool) -> Result<(), FromEnvErrorInner>
 }
 
 fn clone_fd_and_set_cloexec(fd: c_int) -> Result<File, FromEnvErrorInner> {
-    // Safety: fd is a valid fd dand it remains open until returns
+    // Safety: fd is a valid fd and it remains open until returns
     unsafe { BorrowedFd::borrow_raw(fd) }
         .try_clone_to_owned()
         .map(File::from)
@@ -556,6 +543,7 @@ fn cvt(t: c_int) -> io::Result<c_int> {
     }
 }
 
+#[cfg(not(miri))]
 extern "C" fn sigusr1_handler(
     _signum: c_int,
     _info: *mut libc::siginfo_t,
@@ -570,12 +558,7 @@ mod test {
 
     use crate::{test::run_named_fifo_try_acquire_tests, Client};
 
-    use std::{
-        fs::File,
-        io::{self, Write},
-        os::unix::io::AsRawFd,
-        sync::Arc,
-    };
+    use std::{fs::File, io::Write, os::unix::io::AsRawFd, sync::Arc};
 
     fn from_imp_client(imp: ClientImp) -> Client {
         Client {
@@ -629,7 +612,7 @@ mod test {
         #[cfg(not(target_os = "linux"))]
         assert_eq!(
             new_client_from_pipe().0.try_acquire().unwrap_err().kind(),
-            io::ErrorKind::Unsupported
+            std::io::ErrorKind::Unsupported
         );
 
         #[cfg(target_os = "linux")]

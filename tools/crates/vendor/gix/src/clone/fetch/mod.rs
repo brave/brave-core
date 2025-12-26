@@ -1,6 +1,7 @@
-use crate::bstr::BString;
-use crate::bstr::ByteSlice;
-use crate::clone::PrepareFetch;
+use crate::{
+    bstr::{BString, ByteSlice},
+    clone::PrepareFetch,
+};
 
 /// The error returned by [`PrepareFetch::fetch_only()`].
 #[derive(Debug, thiserror::Error)]
@@ -44,6 +45,8 @@ pub enum Error {
         wanted: gix_ref::PartialName,
         candidates: Vec<BString>,
     },
+    #[error(transparent)]
+    CommitterOrFallback(#[from] crate::config::time::Error),
 }
 
 /// Modification
@@ -72,15 +75,6 @@ impl PrepareFetch {
         P: crate::NestedProgress,
         P::SubProgress: 'static,
     {
-        self.fetch_only_inner(&mut progress, should_interrupt).await
-    }
-
-    #[gix_protocol::maybe_async::maybe_async]
-    async fn fetch_only_inner(
-        &mut self,
-        progress: &mut dyn crate::DynNestedProgress,
-        should_interrupt: &std::sync::atomic::AtomicBool,
-    ) -> Result<(crate::Repository, crate::remote::fetch::Outcome), Error> {
         use crate::{bstr::ByteVec, remote, remote::fetch::RefLogMessage};
 
         let repo = self
@@ -88,10 +82,11 @@ impl PrepareFetch {
             .as_mut()
             .expect("user error: multiple calls are allowed only until it succeeds");
 
+        repo.committer_or_set_generic_fallback()?;
+
         if !self.config_overrides.is_empty() {
             let mut snapshot = repo.config_snapshot_mut();
             snapshot.append_config(&self.config_overrides, gix_config::Source::Api)?;
-            snapshot.commit()?;
         }
 
         let remote_name = match self.remote_name.as_ref() {
@@ -105,13 +100,15 @@ impl PrepareFetch {
                 .unwrap_or_else(|| "origin".into()),
         };
 
-        let mut remote = repo
-            .remote_at(self.url.clone())?
-            .with_refspecs(
-                Some(format!("+refs/heads/*:refs/remotes/{remote_name}/*").as_str()),
-                remote::Direction::Fetch,
-            )
-            .expect("valid static spec");
+        let mut remote = repo.remote_at(self.url.clone())?;
+        if remote.fetch_specs.is_empty() {
+            remote = remote
+                .with_refspecs(
+                    Some(format!("+refs/heads/*:refs/remotes/{remote_name}/*").as_str()),
+                    remote::Direction::Fetch,
+                )
+                .expect("valid static spec");
+        }
         let mut clone_fetch_tags = None;
         if let Some(f) = self.configure_remote.as_mut() {
             remote = f(remote).map_err(Error::RemoteConfiguration)?;
@@ -143,7 +140,7 @@ impl PrepareFetch {
             let mut fetch_opts = {
                 let mut opts = self.fetch_options.clone();
                 if !opts.extra_refspecs.contains(&head_refspec) {
-                    opts.extra_refspecs.push(head_refspec.clone())
+                    opts.extra_refspecs.push(head_refspec.clone());
                 }
                 if let Some(ref_name) = &self.ref_name {
                     opts.extra_refspecs.push(
@@ -154,18 +151,19 @@ impl PrepareFetch {
                 }
                 opts
             };
-            match connection.prepare_fetch(&mut *progress, fetch_opts.clone()).await {
+            match connection.prepare_fetch(&mut progress, fetch_opts.clone()).await {
                 Ok(prepare) => prepare,
-                Err(remote::fetch::prepare::Error::RefMap(remote::ref_map::Error::MappingValidation(err)))
-                    if err.issues.len() == 1
-                        && fetch_opts.extra_refspecs.contains(&head_refspec)
-                        && matches!(
-                            err.issues.first(),
-                            Some(gix_refspec::match_group::validate::Issue::Conflict {
-                                destination_full_ref_name,
-                                ..
-                            }) if *destination_full_ref_name == head_local_tracking_branch
-                        ) =>
+                Err(remote::fetch::prepare::Error::RefMap(remote::ref_map::Error::InitRefMap(
+                    gix_protocol::fetch::refmap::init::Error::MappingValidation(err),
+                ))) if err.issues.len() == 1
+                    && fetch_opts.extra_refspecs.contains(&head_refspec)
+                    && matches!(
+                        err.issues.first(),
+                        Some(gix_refspec::match_group::validate::Issue::Conflict {
+                            destination_full_ref_name,
+                            ..
+                        }) if *destination_full_ref_name == head_local_tracking_branch
+                    ) =>
                 {
                     let head_refspec_idx = fetch_opts
                         .extra_refspecs
@@ -178,7 +176,7 @@ impl PrepareFetch {
                     // refspec, as git can do this without connecting twice.
                     let connection = remote.connect(remote::Direction::Fetch).await?;
                     fetch_opts.extra_refspecs.remove(head_refspec_idx);
-                    connection.prepare_fetch(&mut *progress, fetch_opts).await?
+                    connection.prepare_fetch(&mut progress, fetch_opts).await?
                 }
                 Err(err) => return Err(err.into()),
             }
@@ -202,7 +200,7 @@ impl PrepareFetch {
                 message: reflog_message.clone(),
             })
             .with_shallow(self.shallow.clone())
-            .receive_inner(progress, should_interrupt)
+            .receive(&mut progress, should_interrupt)
             .await?;
 
         util::append_config_to_repo_config(repo, config);

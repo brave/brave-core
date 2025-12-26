@@ -1,3 +1,49 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## `parking_lot` - [0.12.5](https://github.com/Amanieu/parking_lot/compare/parking_lot-v0.12.4...parking_lot-v0.12.5) - 2025-09-30
+
+- Bumped MSRV to 1.71
+- Fixed Miri when the `hardware-lock-elision` feature is enabled (#491)
+- Added missing `into_arc(_fair)` methods (#472)
+- Fixed `RawRwLock::bump_*()` not releasing lock when there are multiple readers (#471)
+
+## `parking_lot_core` - [0.9.12](https://github.com/Amanieu/parking_lot/compare/parking_lot_core-v0.9.11...parking_lot_core-v0.9.12) - 2025-09-30
+
+- Bumped MSRV to 1.71
+- Switched from `windows-targets` to `windows-link`. (#493)
+- Replaced `thread-id` dependency with `std::thread::ThreadId` (#483)
+- Added SGX implementation for `ThreadParker.park_until` (#481)
+
+## `lock_api` - [0.4.14](https://github.com/Amanieu/parking_lot/compare/lock_api-v0.4.13...lock_api-v0.4.14) - 2025-09-30
+
+- Fixed use of `doc_cfg` when building on docs.rs.
+- Bumped MSRV to 1.71
+- Added `#[track_caller]` where locking implementations could feasibly need to panic
+- Added `try_map_or_err` to various mutex guards (#480)
+- Removed unnecessary build script and `autocfg` dependency (#474)
+- Added missing `into_arc(_fair)` methods (#472)
+
+## `parking_lot` - [0.12.4](https://github.com/Amanieu/parking_lot/compare/parking_lot-v0.12.3...parking_lot-v0.12.4) - 2025-05-29
+
+- Fix parked upgraders potentially not being woken up after a write lock
+- Fix clearing `PARKED_WRITER_BIT` after a timeout
+
+## `parking_lot_core` - [0.9.11](https://github.com/Amanieu/parking_lot/compare/parking_lot_core-v0.9.10...parking_lot_core-v0.9.11) - 2025-05-29
+
+- Use Release/Acquire ordering in thread_parker::windows::Backend::create
+- Remove warnings due to new lint on unknown cfgs
+
+## `lock_api` - [0.4.13](https://github.com/Amanieu/parking_lot/compare/lock_api-v0.4.12...lock_api-v0.4.13) - 2025-05-29
+
+- Remove warnings due to new lint on unknown cfgs
+
 ## parking_lot 0.12.3 (2024-05-24)
 
 - Export types provided by arc_lock feature (#442)

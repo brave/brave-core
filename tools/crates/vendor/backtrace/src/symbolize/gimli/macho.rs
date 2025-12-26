@@ -1,5 +1,8 @@
-use super::{gimli, Box, Context, Endian, EndianSlice, Mapping, Path, Stash, Vec};
+use super::mystd::path::Path;
+use super::{gimli, Context, Endian, EndianSlice, Mapping, Stash};
+use alloc::boxed::Box;
 use alloc::sync::Arc;
+use alloc::vec::Vec;
 use core::convert::TryInto;
 use object::macho;
 use object::read::macho::{MachHeader, Nlist, Section, Segment as _};
@@ -250,7 +253,7 @@ impl<'a> Object<'a> {
     /// Try to load a context for an object file.
     ///
     /// If dsymutil was not run, then the DWARF may be found in the source object files.
-    pub(super) fn search_object_map<'b>(&'b mut self, addr: u64) -> Option<(&Context<'b>, u64)> {
+    pub(super) fn search_object_map<'b>(&'b mut self, addr: u64) -> Option<(&'b Context<'b>, u64)> {
         // `object_map` contains a map from addresses to symbols and object paths.
         // Look up the address and get a mapping for the object.
         let object_map = self.object_map.as_ref()?;
@@ -281,20 +284,12 @@ impl<'a> Object<'a> {
     }
 }
 
-fn object_mapping(path: &[u8]) -> Option<Mapping> {
+fn object_mapping(file: &object::read::ObjectMapFile<'_>) -> Option<Mapping> {
     use super::mystd::ffi::OsStr;
     use super::mystd::os::unix::prelude::*;
 
-    let map;
-
-    // `N_OSO` symbol names can be either `/path/to/object.o` or `/path/to/archive.a(object.o)`.
-    let member_name = if let Some((archive_path, member_name)) = split_archive_path(path) {
-        map = super::mmap(Path::new(OsStr::from_bytes(archive_path)))?;
-        Some(member_name)
-    } else {
-        map = super::mmap(Path::new(OsStr::from_bytes(path)))?;
-        None
-    };
+    let map = super::mmap(Path::new(OsStr::from_bytes(file.path())))?;
+    let member_name = file.member();
     Mapping::mk(map, |data, stash| {
         let data = match member_name {
             Some(member_name) => {
@@ -312,16 +307,6 @@ fn object_mapping(path: &[u8]) -> Option<Mapping> {
         let obj = Object::parse(macho, endian, data)?;
         Context::new(stash, obj, None, None)
     })
-}
-
-fn split_archive_path(path: &[u8]) -> Option<(&[u8], &[u8])> {
-    let (last, path) = path.split_last()?;
-    if *last != b')' {
-        return None;
-    }
-    let index = path.iter().position(|&x| x == b'(')?;
-    let (archive, rest) = path.split_at(index);
-    Some((archive, &rest[1..]))
 }
 
 pub(super) fn handle_split_dwarf<'data>(

@@ -1,7 +1,117 @@
+use gix_diff::tree::recorder::Location;
 pub use gix_diff::*;
 
 ///
-#[allow(clippy::empty_docs)]
+pub mod options {
+    ///
+    pub mod init {
+        /// The error returned when instantiating [diff options](crate::diff::Options).
+        #[derive(Debug, thiserror::Error)]
+        #[allow(missing_docs)]
+        pub enum Error {
+            #[cfg(feature = "blob-diff")]
+            #[error(transparent)]
+            RewritesConfiguration(#[from] crate::diff::new_rewrites::Error),
+        }
+    }
+}
+
+/// General diff-related options for configuring rename-tracking and blob diffs.
+#[derive(Debug, Copy, Clone)]
+pub struct Options {
+    location: Option<Location>,
+    #[cfg(feature = "blob-diff")]
+    rewrites: Option<gix_diff::Rewrites>,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Options {
+            location: Some(Location::Path),
+            #[cfg(feature = "blob-diff")]
+            rewrites: None,
+        }
+    }
+}
+
+#[cfg(feature = "blob-diff")]
+impl From<Options> for gix_diff::tree_with_rewrites::Options {
+    fn from(opts: Options) -> Self {
+        gix_diff::tree_with_rewrites::Options {
+            location: opts.location,
+            #[cfg(feature = "blob-diff")]
+            rewrites: opts.rewrites,
+        }
+    }
+}
+
+/// Lifecycle
+impl Options {
+    #[cfg(feature = "blob-diff")]
+    pub(crate) fn from_configuration(config: &crate::config::Cache) -> Result<Self, options::init::Error> {
+        Ok(Options {
+            location: Some(Location::Path),
+            rewrites: {
+                let (rewrites, is_configured) = config.diff_renames()?;
+                if is_configured {
+                    rewrites
+                } else {
+                    Some(Default::default())
+                }
+            },
+        })
+    }
+}
+
+/// Setters
+impl Options {
+    /// Do not keep track of filepaths at all, which will leave all `location` fields empty.
+    pub fn no_locations(&mut self) -> &mut Self {
+        self.location = None;
+        self
+    }
+
+    /// Keep track of file-names, which makes `location` fields usable with the filename of the changed item.
+    pub fn track_filename(&mut self) -> &mut Self {
+        self.location = Some(Location::FileName);
+        self
+    }
+
+    /// Keep track of the entire path of a change, relative to the repository. (default).
+    ///
+    /// This makes the `location` field fully usable.
+    pub fn track_path(&mut self) -> &mut Self {
+        self.location = Some(Location::Path);
+        self
+    }
+
+    /// Provide `None` to disable rewrite tracking entirely, or pass `Some(<configuration>)` to control to
+    /// what extent rename and copy tracking is performed.
+    ///
+    /// Note that by default, the git configuration determines rewrite tracking and git defaults are used
+    /// if nothing is configured, which turns rename tracking with 50% similarity on, while not tracking copies at all.
+    #[cfg(feature = "blob-diff")]
+    pub fn track_rewrites(&mut self, renames: Option<gix_diff::Rewrites>) -> &mut Self {
+        self.rewrites = renames;
+        self
+    }
+}
+
+/// Builder
+impl Options {
+    /// Provide `None` to disable rewrite tracking entirely, or pass `Some(<configuration>)` to control to
+    /// what extent rename and copy tracking is performed.
+    ///
+    /// Note that by default, the git configuration determines rewrite tracking and git defaults are used
+    /// if nothing is configured, which turns rename tracking with 50% similarity on, while not tracking copies at all.
+    #[cfg(feature = "blob-diff")]
+    pub fn with_rewrites(mut self, renames: Option<gix_diff::Rewrites>) -> Self {
+        self.rewrites = renames;
+        self
+    }
+}
+
+///
 pub mod rename {
     /// Determine how to do rename tracking.
     #[derive(Debug, Copy, Clone, Eq, PartialEq)]
@@ -19,7 +129,7 @@ pub mod rename {
 
 ///
 #[cfg(feature = "blob-diff")]
-mod utils {
+pub(crate) mod utils {
     use gix_diff::{rewrites::Copies, Rewrites};
 
     use crate::{
@@ -29,7 +139,6 @@ mod utils {
     };
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod new_rewrites {
         /// The error returned by [`new_rewrites()`](super::new_rewrites()).
         #[derive(Debug, thiserror::Error)]
@@ -43,7 +152,6 @@ mod utils {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod resource_cache {
         /// The error returned by [`resource_cache()`](super::resource_cache()).
         #[derive(Debug, thiserror::Error)]
@@ -63,41 +171,52 @@ mod utils {
     }
 
     /// Create an instance by reading all relevant information from the `config`uration, while being `lenient` or not.
-    /// Returns `Ok(None)` if nothing is configured.
+    /// Returns `Ok((None, false))` if nothing is configured, or `Ok((None, true))` if it's configured and disabled.
     ///
     /// Note that missing values will be defaulted similar to what git does.
     #[allow(clippy::result_large_err)]
     pub fn new_rewrites(
         config: &gix_config::File<'static>,
         lenient: bool,
-    ) -> Result<Option<Rewrites>, new_rewrites::Error> {
-        let key = "diff.renames";
+    ) -> Result<(Option<Rewrites>, bool), new_rewrites::Error> {
+        new_rewrites_inner(config, lenient, &Diff::RENAMES, &Diff::RENAME_LIMIT)
+    }
+
+    pub(crate) fn new_rewrites_inner(
+        config: &gix_config::File<'static>,
+        lenient: bool,
+        renames: &'static crate::config::tree::diff::Renames,
+        rename_limit: &'static crate::config::tree::keys::UnsignedInteger,
+    ) -> Result<(Option<Rewrites>, bool), new_rewrites::Error> {
         let copies = match config
-            .boolean(key)
-            .map(|value| Diff::RENAMES.try_into_renames(value))
+            .boolean(renames)
+            .map(|value| renames.try_into_renames(value))
             .transpose()
             .with_leniency(lenient)?
         {
             Some(renames) => match renames {
-                Tracking::Disabled => return Ok(None),
+                Tracking::Disabled => return Ok((None, true)),
                 Tracking::Renames => None,
                 Tracking::RenamesAndCopies => Some(Copies::default()),
             },
-            None => return Ok(None),
+            None => return Ok((None, false)),
         };
 
         let default = Rewrites::default();
-        Ok(Rewrites {
-            copies,
-            limit: config
-                .integer("diff.renameLimit")
-                .map(|value| Diff::RENAME_LIMIT.try_into_usize(value))
-                .transpose()
-                .with_leniency(lenient)?
-                .unwrap_or(default.limit),
-            ..default
-        }
-        .into())
+        Ok((
+            Rewrites {
+                copies,
+                limit: config
+                    .integer(rename_limit)
+                    .map(|value| rename_limit.try_into_usize(value))
+                    .transpose()
+                    .with_leniency(lenient)?
+                    .unwrap_or(default.limit),
+                ..default
+            }
+            .into(),
+            true,
+        ))
     }
 
     /// Return a low-level utility to efficiently prepare a blob-level diff operation between two resources,

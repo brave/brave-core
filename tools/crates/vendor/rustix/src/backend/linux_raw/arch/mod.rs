@@ -30,6 +30,7 @@
 #[cfg_attr(target_arch = "mips32r6", path = "mips32r6.rs")]
 #[cfg_attr(target_arch = "mips64", path = "mips64.rs")]
 #[cfg_attr(target_arch = "mips64r6", path = "mips64r6.rs")]
+#[cfg_attr(target_arch = "powerpc", path = "powerpc.rs")]
 #[cfg_attr(target_arch = "powerpc64", path = "powerpc64.rs")]
 #[cfg_attr(target_arch = "riscv64", path = "riscv64.rs")]
 #[cfg_attr(target_arch = "s390x", path = "s390x.rs")]
@@ -46,6 +47,7 @@ pub(in crate::backend) mod asm;
     target_arch = "mips32r6",
     target_arch = "mips64",
     target_arch = "mips64r6",
+    target_arch = "powerpc",
     target_arch = "powerpc64",
     target_arch = "riscv64",
     target_arch = "s390x",
@@ -54,8 +56,8 @@ pub(in crate::backend) mod asm;
 pub(in crate::backend) use self::asm as choose;
 
 // On 32-bit x86, use vDSO wrappers for all syscalls. We could use the
-// architecture syscall instruction (`int 0x80`), but the vDSO kernel_vsyscall
-// mechanism is much faster.
+// architecture syscall instruction (`int 0x80`), but the vDSO
+// `__kernel_vsyscall` mechanism is much faster.
 #[cfg(target_arch = "x86")]
 pub(in crate::backend) use super::vdso_wrappers::x86_via_vdso as choose;
 

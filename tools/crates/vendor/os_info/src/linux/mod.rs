@@ -29,13 +29,16 @@ mod tests {
             Type::AlmaLinux
             | Type::Alpaquita
             | Type::Alpine
+            | Type::ALTLinux
             | Type::Amazon
+            | Type::AOSC
             | Type::Arch
             | Type::Artix
             | Type::Bluefin
             | Type::CachyOS
             | Type::CentOS
             | Type::Debian
+            | Type::Elementary
             | Type::EndeavourOS
             | Type::Fedora
             | Type::Garuda
@@ -52,6 +55,7 @@ mod tests {
             | Type::openEuler
             | Type::openSUSE
             | Type::OracleLinux
+            | Type::PikaOS
             | Type::Pop
             | Type::Raspbian
             | Type::Redhat
@@ -62,6 +66,7 @@ mod tests {
             | Type::Ubuntu
             | Type::Ultramarine
             | Type::Void
+            | Type::Zorin
             | Type::Mint => (),
             os_type => {
                 panic!("Unexpected OS type: {}", os_type);

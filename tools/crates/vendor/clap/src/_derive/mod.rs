@@ -8,7 +8,7 @@
 //!     3. [Arg Attributes](#arg-attributes)
 //!     4. [ValueEnum Attributes](#valueenum-attributes)
 //!     5. [Possible Value Attributes](#possible-value-attributes)
-//! 3. [Arg Types](#arg-types)
+//! 3. [Field Types](#field-types)
 //! 4. [Doc Comments](#doc-comments)
 //! 5. [Mixing Builder and Derive APIs](#mixing-builder-and-derive-apis)
 //! 6. [Tips](#tips)
@@ -294,9 +294,18 @@
 //!   - When not present: [Doc comment summary](#doc-comments)
 //! - `skip`: Ignore this variant
 //!
-//! ## Arg Types
+//! ## Field Types
 //!
-//! `clap` assumes some intent based on the type used:
+//! `clap` assumes some intent based on the type used.
+//!
+//! ### Subcommand Types
+//!
+//! | Type                  | Effect              | Implies                                                   |
+//! |-----------------------|---------------------|-----------------------------------------------------------|
+//! | `Option<T>`           | optional subcommand |                                                           |
+//! | `T`                   | required subcommand | `.subcommand_required(true).arg_required_else_help(true)` |
+//!
+//! ### Arg Types
 //!
 //! | Type                  | Effect                                               | Implies                                                     | Notes |
 //! |-----------------------|------------------------------------------------------|-------------------------------------------------------------|-------|
@@ -311,7 +320,7 @@
 //! | `Option<Vec<Vec<T>>>` | `0..` occurrences of argument, grouped by occurrence | `.action(ArgAction::Append).required(false)`  | requires `unstable-v5` |
 //!
 //! In addition, [`.value_parser(value_parser!(T))`][crate::value_parser!] is called for each
-//! field.
+//! field in the absence of a [`#[arg(value_parser)]` attribute](#arg-attributes).
 //!
 //! Notes:
 //! - For custom type behavior, you can override the implied attributes/settings and/or set additional ones

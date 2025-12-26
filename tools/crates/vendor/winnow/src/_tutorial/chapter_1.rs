@@ -40,7 +40,7 @@
 //! [`Parser::parse`].
 //!
 //! You'll note that `I` and `O` are parameterized -- while most of the examples in this book
-//! will be with `&str` (i.e. parsing a string); they do not have to be strings; nor do they
+//! will be with `&str` (i.e. parsing a string); [they do not have to be strings][stream]; nor do they
 //! have to be the same type (consider the simple example where `I = &str`, and `O = u64` -- this
 //! parses a string into an unsigned integer.)
 //!
@@ -81,6 +81,7 @@
 use super::chapter_6;
 use super::chapter_7;
 use crate::Parser;
+use crate::_topic::stream;
 
 pub use super::chapter_0 as previous;
 pub use super::chapter_2 as next;

@@ -278,7 +278,7 @@ impl DateTimeParser {
     /// whenever parsing a datetime with an offset that is inconsistent with
     /// the time zone.
     ///
-    /// # Example
+    /// # Example: respecting offsets even when they're invalid
     ///
     /// ```
     /// use jiff::{civil::date, fmt::temporal::DateTimeParser, tz};
@@ -297,6 +297,128 @@ impl DateTimeParser {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    ///
+    /// # Example: all offsets are invalid for gaps in civil time by default
+    ///
+    /// When parsing a datetime with an offset for a gap in civil time, the
+    /// offset is treated as invalid. This results in parsing failing. For
+    /// example, some parts of Indiana in the US didn't start using daylight
+    /// saving time until 2006. If a datetime for 2006 were serialized before
+    /// the updated daylight saving time rules were known, then this parse
+    /// error will prevent you from silently changing the originally intended
+    /// time:
+    ///
+    /// ```
+    /// use jiff::{fmt::temporal::DateTimeParser};
+    ///
+    /// static PARSER: DateTimeParser = DateTimeParser::new();
+    ///
+    /// // DST in Indiana/Vevay began at 2006-04-02T02:00 local time.
+    /// // The last time Indiana/Vevay observed DST was in 1972.
+    /// let result = PARSER.parse_zoned(
+    ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
+    /// );
+    /// assert_eq!(
+    ///     result.unwrap_err().to_string(),
+    ///     "parsing \"2006-04-02T02:30-05[America/Indiana/Vevay]\" failed: \
+    ///      datetime 2006-04-02T02:30:00 could not resolve to timestamp \
+    ///      since 'reject' conflict resolution was chosen, and because \
+    ///      datetime has offset -05, but the time zone America/Indiana/Vevay \
+    ///      for the given datetime falls in a gap \
+    ///      (between offsets -05 and -04), \
+    ///      and all offsets for a gap are regarded as invalid",
+    /// );
+    /// ```
+    ///
+    /// If one doesn't want an error here, then you can either prioritize the
+    /// instant in time by respecting the offset:
+    ///
+    /// ```
+    /// use jiff::{fmt::temporal::DateTimeParser, tz};
+    ///
+    /// static PARSER: DateTimeParser = DateTimeParser::new()
+    ///     .offset_conflict(tz::OffsetConflict::AlwaysOffset);
+    ///
+    /// let zdt = PARSER.parse_zoned(
+    ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
+    /// )?;
+    /// assert_eq!(
+    ///     zdt.to_string(),
+    ///     "2006-04-02T03:30:00-04:00[America/Indiana/Vevay]",
+    /// );
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// or you can force your own disambiguation rules, e.g., by taking the
+    /// earlier time:
+    ///
+    /// ```
+    /// use jiff::{fmt::temporal::DateTimeParser, tz};
+    ///
+    /// static PARSER: DateTimeParser = DateTimeParser::new()
+    ///     .disambiguation(tz::Disambiguation::Earlier)
+    ///     .offset_conflict(tz::OffsetConflict::AlwaysTimeZone);
+    ///
+    /// let zdt = PARSER.parse_zoned(
+    ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
+    /// )?;
+    /// assert_eq!(
+    ///     zdt.to_string(),
+    ///     "2006-04-02T01:30:00-05:00[America/Indiana/Vevay]",
+    /// );
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// # Example: a `Z` never results in an offset conflict
+    ///
+    /// [RFC 9557] specifies that `Z` indicates that the offset from UTC to
+    /// get local time is unknown. Since it doesn't prescribe a particular
+    /// offset, when a `Z` is parsed with a time zone annotation, the
+    /// `OffsetConflict::ALwaysOffset` strategy is used regardless of what
+    /// is set here. For example:
+    ///
+    /// ```
+    /// use jiff::fmt::temporal::DateTimeParser;
+    ///
+    /// // NOTE: The default is reject.
+    /// static PARSER: DateTimeParser = DateTimeParser::new();
+    ///
+    /// let zdt = PARSER.parse_zoned(
+    ///     "2025-06-20T17:30Z[America/New_York]",
+    /// )?;
+    /// assert_eq!(
+    ///     zdt.to_string(),
+    ///     "2025-06-20T13:30:00-04:00[America/New_York]",
+    /// );
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// Conversely, if the `+00:00` offset was used, then an error would
+    /// occur because of the offset conflict:
+    ///
+    /// ```
+    /// use jiff::fmt::temporal::DateTimeParser;
+    ///
+    /// // NOTE: The default is reject.
+    /// static PARSER: DateTimeParser = DateTimeParser::new();
+    ///
+    /// let result = PARSER.parse_zoned(
+    ///     "2025-06-20T17:30+00[America/New_York]",
+    /// );
+    /// assert_eq!(
+    ///     result.unwrap_err().to_string(),
+    ///     "parsing \"2025-06-20T17:30+00[America/New_York]\" failed: \
+    ///      datetime 2025-06-20T17:30:00 could not resolve to a timestamp \
+    ///      since 'reject' conflict resolution was chosen, and because \
+    ///      datetime has offset +00, but the time zone America/New_York \
+    ///      for the given datetime unambiguously has offset -04",
+    /// );
+    /// ```
+    ///
+    /// [RFC 9557]: https://datatracker.ietf.org/doc/rfc9557/
     #[inline]
     pub const fn offset_conflict(
         self,
@@ -447,6 +569,11 @@ impl DateTimeParser {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    ///
+    /// If you _really_ need to parse something like `2024-06-08T07:00-04`
+    /// into a `Zoned` with a fixed offset of `-04:00` as its `TimeZone`,
+    /// then you'll need to use lower level parsing routines. See the
+    /// documentation on [`Pieces`] for a case study of how to achieve this.
     pub fn parse_zoned<I: AsRef<[u8]>>(
         &self,
         input: I,
@@ -561,7 +688,7 @@ impl DateTimeParser {
     ///
     /// # Example: parsing a timestamp from a datetime with a time zone
     ///
-    /// A timestamp can also be parsed fron a time zone aware datetime string.
+    /// A timestamp can also be parsed from a time zone aware datetime string.
     /// The time zone is ignored and the offset is always used.
     ///
     /// ```
@@ -835,7 +962,7 @@ impl DateTimeParser {
     /// # Example
     ///
     /// ```
-    /// use jiff::{fmt::temporal::DateTimeParser, tz::{self, TimeZone}};
+    /// use jiff::{fmt::temporal::DateTimeParser, tz::TimeZone};
     ///
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
@@ -991,7 +1118,7 @@ impl DateTimeParser {
 /// type to a machine (but also human) readable format. Using this printer, one
 /// can convert [`Zoned`], [`Timestamp`], [`civil::DateTime`], [`civil::Date`]
 /// or [`civil::Time`] values to a string. Note that all of those types provide
-/// [`Diplay`](core::fmt::Display) implementations that utilize the default
+/// [`Display`](core::fmt::Display) implementations that utilize the default
 /// configuration of this printer. However, this printer can be configured to
 /// behave differently and can also print directly to anything that implements
 /// the [`fmt::Write`](Write) trait.
@@ -1408,7 +1535,7 @@ impl DateTimePrinter {
     /// # Example
     ///
     /// ```
-    /// use jiff::{fmt::temporal::DateTimePrinter, tz::{self, TimeZone}};
+    /// use jiff::{fmt::temporal::DateTimePrinter, tz::TimeZone};
     ///
     /// const PRINTER: DateTimePrinter = DateTimePrinter::new();
     ///
@@ -1912,11 +2039,9 @@ impl SpanParser {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    #[inline]
     pub fn parse_span<I: AsRef<[u8]>>(&self, input: I) -> Result<Span, Error> {
-        let input = input.as_ref();
-        let parsed = self.p.parse_temporal_duration(input)?;
-        let span = parsed.into_full()?;
-        Ok(span)
+        self.p.parse_span(input)
     }
 
     /// Parse an ISO 8601 duration string into a [`SignedDuration`] value.
@@ -1957,14 +2082,45 @@ impl SpanParser {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    #[inline]
     pub fn parse_duration<I: AsRef<[u8]>>(
         &self,
         input: I,
     ) -> Result<SignedDuration, Error> {
-        let input = input.as_ref();
-        let parsed = self.p.parse_signed_duration(input)?;
-        let dur = parsed.into_full()?;
-        Ok(dur)
+        self.p.parse_signed_duration(input)
+    }
+
+    /// Parse an ISO 8601 duration string into a [`std::time::Duration`] value.
+    ///
+    /// # Errors
+    ///
+    /// This returns an error if the span string given is invalid or if it is
+    /// valid but can't be converted to a `std::time::Duration`. This can occur
+    /// when the parsed time exceeds the maximum `std::time::Duration` value,
+    /// or if there are any non-zero units greater than hours.
+    ///
+    /// # Example
+    ///
+    /// This shows a basic example of using this routine.
+    ///
+    /// ```
+    /// use std::time::Duration;
+    ///
+    /// use jiff::fmt::temporal::SpanParser;
+    ///
+    /// static PARSER: SpanParser = SpanParser::new();
+    ///
+    /// let duration = PARSER.parse_unsigned_duration(b"PT48m")?;
+    /// assert_eq!(duration, Duration::from_secs(48 * 60));
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    #[inline]
+    pub fn parse_unsigned_duration<I: AsRef<[u8]>>(
+        &self,
+        input: I,
+    ) -> Result<core::time::Duration, Error> {
+        self.p.parse_unsigned_duration(input)
     }
 }
 
@@ -2117,6 +2273,42 @@ impl SpanPrinter {
         buf
     }
 
+    /// Format a `std::time::Duration` into a string.
+    ///
+    /// This balances the units of the duration up to at most hours
+    /// automatically.
+    ///
+    /// This is a convenience routine for
+    /// [`SpanPrinter::print_unsigned_duration`] with a `String`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::time::Duration;
+    ///
+    /// use jiff::fmt::temporal::SpanPrinter;
+    ///
+    /// const PRINTER: SpanPrinter = SpanPrinter::new();
+    ///
+    /// let dur = Duration::new(86_525, 123_000_789);
+    /// assert_eq!(
+    ///     PRINTER.unsigned_duration_to_string(&dur),
+    ///     "PT24H2M5.123000789S",
+    /// );
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    #[cfg(feature = "alloc")]
+    pub fn unsigned_duration_to_string(
+        &self,
+        duration: &core::time::Duration,
+    ) -> alloc::string::String {
+        let mut buf = alloc::string::String::with_capacity(4);
+        // OK because writing to `String` never fails.
+        self.print_unsigned_duration(duration, &mut buf).unwrap();
+        buf
+    }
+
     /// Print a `Span` to the given writer.
     ///
     /// # Errors
@@ -2188,7 +2380,44 @@ impl SpanPrinter {
         duration: &SignedDuration,
         wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_duration(duration, wtr)
+        self.p.print_signed_duration(duration, wtr)
+    }
+
+    /// Print a `std::time::Duration` to the given writer.
+    ///
+    /// This balances the units of the duration up to at most hours
+    /// automatically.
+    ///
+    /// # Errors
+    ///
+    /// This only returns an error when writing to the given [`Write`]
+    /// implementation would fail. Some such implementations, like for `String`
+    /// and `Vec<u8>`, never fail (unless memory allocation fails). In such
+    /// cases, it would be appropriate to call `unwrap()` on the result.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::time::Duration;
+    /// use jiff::fmt::temporal::SpanPrinter;
+    ///
+    /// const PRINTER: SpanPrinter = SpanPrinter::new();
+    ///
+    /// let dur = Duration::new(86_525, 123_000_789);
+    ///
+    /// let mut buf = String::new();
+    /// // Printing to a `String` can never fail.
+    /// PRINTER.print_unsigned_duration(&dur, &mut buf).unwrap();
+    /// assert_eq!(buf, "PT24H2M5.123000789S");
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn print_unsigned_duration<W: Write>(
+        &self,
+        duration: &core::time::Duration,
+        wtr: W,
+    ) -> Result<(), Error> {
+        self.p.print_unsigned_duration(duration, wtr)
     }
 }
 

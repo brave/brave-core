@@ -56,6 +56,7 @@ macro_rules! assert_closed {
 trait AssertSend: Send + Sync {}
 impl AssertSend for broadcast::Sender<i32> {}
 impl AssertSend for broadcast::Receiver<i32> {}
+impl AssertSend for broadcast::WeakSender<i32> {}
 
 #[test]
 fn send_try_recv_bounded() {
@@ -564,13 +565,11 @@ fn sender_len() {
 #[test]
 #[cfg(not(all(target_family = "wasm", not(target_os = "wasi"))))]
 fn sender_len_random() {
-    use rand::Rng;
-
     let (tx, mut rx1) = broadcast::channel(16);
     let mut rx2 = tx.subscribe();
 
     for _ in 0..1000 {
-        match rand::thread_rng().gen_range(0..4) {
+        match rand::random_range(0..4) {
             0 => {
                 let _ = rx1.try_recv();
             }
@@ -655,4 +654,69 @@ async fn receiver_recv_is_cooperative() {
         } => {},
         _ = tokio::task::yield_now() => {},
     }
+}
+
+#[test]
+fn broadcast_sender_closed() {
+    let (tx, rx) = broadcast::channel::<()>(1);
+    let rx2 = tx.subscribe();
+
+    let mut task = task::spawn(tx.closed());
+    assert_pending!(task.poll());
+
+    drop(rx);
+    assert!(!task.is_woken());
+    assert_pending!(task.poll());
+
+    drop(rx2);
+    assert!(task.is_woken());
+    assert_ready!(task.poll());
+}
+
+#[test]
+fn broadcast_sender_closed_with_extra_subscribe() {
+    let (tx, rx) = broadcast::channel::<()>(1);
+    let rx2 = tx.subscribe();
+
+    let mut task = task::spawn(tx.closed());
+    assert_pending!(task.poll());
+
+    drop(rx);
+    assert!(!task.is_woken());
+    assert_pending!(task.poll());
+
+    drop(rx2);
+    assert!(task.is_woken());
+
+    let rx3 = tx.subscribe();
+    assert_pending!(task.poll());
+
+    drop(rx3);
+    assert!(task.is_woken());
+    assert_ready!(task.poll());
+
+    let mut task2 = task::spawn(tx.closed());
+    assert_ready!(task2.poll());
+
+    let rx4 = tx.subscribe();
+    let mut task3 = task::spawn(tx.closed());
+    assert_pending!(task3.poll());
+
+    drop(rx4);
+    assert!(task3.is_woken());
+    assert_ready!(task3.poll());
+}
+
+#[tokio::test]
+async fn broadcast_sender_new_must_be_closed() {
+    let capacity = 1;
+    let tx: broadcast::Sender<()> = broadcast::Sender::new(capacity);
+
+    let mut task = task::spawn(tx.closed());
+    assert_ready!(task.poll());
+
+    let _rx = tx.subscribe();
+
+    let mut task2 = task::spawn(tx.closed());
+    assert_pending!(task2.poll());
 }

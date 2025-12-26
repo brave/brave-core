@@ -7,14 +7,14 @@ use crate::combinator::DisplayDebug;
 #[cfg(feature = "std")]
 use crate::error::FromRecoverableError;
 use crate::error::{AddContext, FromExternalError, ParserError};
-use crate::lib::std::borrow::Borrow;
-use crate::lib::std::ops::Range;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
 use crate::stream::Recover;
 use crate::stream::StreamIsPartial;
 use crate::stream::{Location, Stream};
 use crate::*;
+use core::borrow::Borrow;
+use core::ops::Range;
 
 /// [`Parser`] implementation for [`Parser::by_ref`]
 pub struct ByRef<'p, P, I, O, E> {
@@ -548,7 +548,7 @@ where
     I: Stream,
     E: AddContext<I, C>,
     E: ParserError<I>,
-    C: Clone + crate::lib::std::fmt::Debug,
+    C: Clone + core::fmt::Debug,
 {
     pub(crate) parser: F,
     pub(crate) context: C,
@@ -563,7 +563,7 @@ where
     I: Stream,
     E: AddContext<I, C>,
     E: ParserError<I>,
-    C: Clone + crate::lib::std::fmt::Debug,
+    C: Clone + core::fmt::Debug,
 {
     #[inline]
     fn parse_next(&mut self, i: &mut I) -> Result<O, E> {
@@ -575,6 +575,77 @@ where
                 .map_err(|err| err.add_context(i, &start, context.clone()))
         })
         .parse_next(i)
+    }
+}
+
+/// [`Parser`] implementation for [`Parser::context`]
+pub struct ContextWith<P, I, O, E, F, C, FI>
+where
+    P: Parser<I, O, E>,
+    I: Stream,
+    E: AddContext<I, C>,
+    E: ParserError<I>,
+    F: Fn() -> FI + Clone,
+    C: core::fmt::Debug,
+    FI: Iterator<Item = C>,
+{
+    pub(crate) parser: P,
+    pub(crate) context: F,
+    pub(crate) i: core::marker::PhantomData<I>,
+    pub(crate) o: core::marker::PhantomData<O>,
+    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) c: core::marker::PhantomData<C>,
+    pub(crate) fi: core::marker::PhantomData<FI>,
+}
+
+impl<P, I, O, E, F, C, FI> Parser<I, O, E> for ContextWith<P, I, O, E, F, C, FI>
+where
+    P: Parser<I, O, E>,
+    I: Stream,
+    E: AddContext<I, C>,
+    E: ParserError<I>,
+    F: Fn() -> FI + Clone,
+    C: core::fmt::Debug,
+    FI: Iterator<Item = C>,
+{
+    #[inline]
+    fn parse_next(&mut self, i: &mut I) -> Result<O, E> {
+        let context = self.context.clone();
+        let start = i.checkpoint();
+        (self.parser).parse_next(i).map_err(|mut err| {
+            for context in context() {
+                err = err.add_context(i, &start, context);
+            }
+            err
+        })
+    }
+}
+
+/// [`Parser`] implementation for [`Parser::map_err`]
+pub struct MapErr<F, G, I, O, E, E2>
+where
+    F: Parser<I, O, E>,
+    G: FnMut(E) -> E2,
+{
+    pub(crate) parser: F,
+    pub(crate) map: G,
+    pub(crate) i: core::marker::PhantomData<I>,
+    pub(crate) o: core::marker::PhantomData<O>,
+    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) e2: core::marker::PhantomData<E2>,
+}
+
+impl<F, G, I, O, E, E2> Parser<I, O, E2> for MapErr<F, G, I, O, E, E2>
+where
+    F: Parser<I, O, E>,
+    G: FnMut(E) -> E2,
+{
+    #[inline]
+    fn parse_next(&mut self, i: &mut I) -> Result<O, E2> {
+        match self.parser.parse_next(i) {
+            Err(e) => Err((self.map)(e)),
+            Ok(o) => Ok(o),
+        }
     }
 }
 

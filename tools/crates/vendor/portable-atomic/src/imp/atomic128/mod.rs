@@ -8,19 +8,34 @@ See README.md for details.
 
 // AArch64
 #[cfg(any(
-    all(target_arch = "aarch64", any(not(portable_atomic_no_asm), portable_atomic_unstable_asm)),
-    all(target_arch = "arm64ec", not(portable_atomic_no_asm))
+    all(
+        target_arch = "aarch64",
+        not(all(
+            any(miri, portable_atomic_sanitize_thread),
+            not(portable_atomic_atomic_intrinsics),
+        )),
+        any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
+    ),
+    all(
+        target_arch = "arm64ec",
+        not(all(
+            any(miri, portable_atomic_sanitize_thread),
+            not(portable_atomic_atomic_intrinsics),
+        )),
+        not(portable_atomic_no_asm),
+    ),
 ))]
 // Use intrinsics.rs on Miri and Sanitizer that do not support inline assembly.
-#[cfg_attr(
-    all(any(miri, portable_atomic_sanitize_thread), portable_atomic_new_atomic_intrinsics),
-    path = "intrinsics.rs"
-)]
+#[cfg_attr(any(miri, portable_atomic_sanitize_thread), path = "intrinsics.rs")]
 pub(super) mod aarch64;
 
 // powerpc64
 #[cfg(all(
     target_arch = "powerpc64",
+    not(all(
+        any(miri, portable_atomic_sanitize_thread),
+        not(portable_atomic_atomic_intrinsics),
+    )),
     portable_atomic_unstable_asm_experimental_arch,
     any(
         target_feature = "quadword-atomics",
@@ -37,49 +52,61 @@ pub(super) mod aarch64;
                             any(target_endian = "little", not(target_feature = "crt-static")),
                         ),
                         all(
-                            any(target_env = "musl", target_env = "ohos", target_env = "uclibc"),
-                            not(target_feature = "crt-static"),
+                            target_env = "musl",
+                            any(not(target_feature = "crt-static"), feature = "std"),
                         ),
+                        target_env = "ohos",
+                        all(target_env = "uclibc", not(target_feature = "crt-static")),
                         portable_atomic_outline_atomics,
                     ),
                 ),
                 target_os = "android",
-                target_os = "freebsd",
+                all(
+                    target_os = "freebsd",
+                    any(
+                        target_endian = "little",
+                        not(target_feature = "crt-static"),
+                        portable_atomic_outline_atomics,
+                    ),
+                ),
                 target_os = "openbsd",
+                all(
+                    target_os = "aix",
+                    not(portable_atomic_pre_llvm_20),
+                    any(test, portable_atomic_outline_atomics), // TODO(aix): currently disabled by default
+                ),
             ),
             not(any(miri, portable_atomic_sanitize_thread)),
         ),
     ),
 ))]
 // Use intrinsics.rs on Miri and Sanitizer that do not support inline assembly.
-#[cfg_attr(
-    all(any(miri, portable_atomic_sanitize_thread), not(portable_atomic_pre_llvm_15)),
-    path = "intrinsics.rs"
-)]
+#[cfg_attr(any(miri, portable_atomic_sanitize_thread), path = "intrinsics.rs")]
 pub(super) mod powerpc64;
 
 // riscv64
 #[cfg(all(
     target_arch = "riscv64",
-    not(portable_atomic_no_asm),
+    not(any(miri, portable_atomic_sanitize_thread)),
+    any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
     any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
+        target_feature = "zacas",
+        portable_atomic_target_feature = "zacas",
         all(
             feature = "fallback",
             not(portable_atomic_no_outline_atomics),
-            any(test, portable_atomic_outline_atomics), // TODO(riscv): currently disabled by default
             any(target_os = "linux", target_os = "android"),
-            not(any(miri, portable_atomic_sanitize_thread)),
         ),
     ),
 ))]
-// Use intrinsics.rs on Miri and Sanitizer that do not support inline assembly.
-#[cfg_attr(any(miri, portable_atomic_sanitize_thread), path = "intrinsics.rs")]
 pub(super) mod riscv64;
 
 // s390x
-#[cfg(all(target_arch = "s390x", not(portable_atomic_no_asm)))]
+#[cfg(all(
+    target_arch = "s390x",
+    not(all(any(miri, portable_atomic_sanitize_thread), not(portable_atomic_atomic_intrinsics))),
+    not(portable_atomic_no_asm),
+))]
 // Use intrinsics.rs on Miri and Sanitizer that do not support inline assembly.
 #[cfg_attr(any(miri, portable_atomic_sanitize_thread), path = "intrinsics.rs")]
 pub(super) mod s390x;

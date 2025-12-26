@@ -3,12 +3,16 @@ use std::str;
 
 use log::{error, trace};
 
-use crate::{bitness, uname::uname, Info, Type, Version};
+use crate::{
+    bitness,
+    uname::{uname, UnameField},
+    Info, Type, Version,
+};
 
 pub fn current_platform() -> Info {
     trace!("freebsd::current_platform is called");
 
-    let version = uname("-r")
+    let version = uname(UnameField::Release)
         .map(Version::from_string)
         .unwrap_or_else(|| Version::Unknown);
 
@@ -24,7 +28,7 @@ pub fn current_platform() -> Info {
 }
 
 fn get_os() -> Type {
-    match uname("-s").as_deref() {
+    match uname(UnameField::Sysname).as_deref() {
         Some("MidnightBSD") => Type::MidnightBSD,
         Some("FreeBSD") => {
             let check_hardening = match Command::new("/sbin/sysctl")

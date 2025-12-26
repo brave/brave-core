@@ -8,19 +8,15 @@ use indexmap::IndexMap;
 
 use std::collections::HashMap;
 
-use rand::rngs::SmallRng;
-use rand::seq::SliceRandom;
-use rand::SeedableRng;
-
 use std::hash::{Hash, Hasher};
 
 use std::borrow::Borrow;
 use std::ops::Deref;
 
 /// Use a consistently seeded Rng for benchmark stability
-fn small_rng() -> SmallRng {
+fn small_rng() -> fastrand::Rng {
     let seed = u64::from_le_bytes(*b"indexmap");
-    SmallRng::seed_from_u64(seed)
+    fastrand::Rng::with_seed(seed)
 }
 
 #[derive(PartialEq, Eq, Copy, Clone)]
@@ -37,8 +33,10 @@ impl<'a, S> From<&'a S> for &'a OneShot<str>
 where
     S: AsRef<str>,
 {
+    #[allow(unsafe_code)]
     fn from(s: &'a S) -> Self {
         let s: &str = s.as_ref();
+        // SAFETY: OneShot is a `repr(transparent)` wrapper
         unsafe { &*(s as *const str as *const OneShot<str>) }
     }
 }
@@ -68,7 +66,7 @@ where
 {
     let mut v = Vec::from_iter(iter);
     let mut rng = small_rng();
-    v.shuffle(&mut rng);
+    rng.shuffle(&mut v);
     v
 }
 
