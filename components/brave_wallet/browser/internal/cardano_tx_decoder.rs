@@ -29,11 +29,16 @@ use crate::ffi::CxxSerializableTxInput;
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxOutput;
 #[allow(unused_imports)]
+use crate::ffi::CxxSerializableTxOutputToken;
+#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxWitness;
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableVkeyWitness;
 
+// Constants definitions come from
+// https://github.com/IntersectMBO/cardano-ledger/blob/30d293d7166561d47bccf56b7e1473cdab84714d/eras/conway/impl/cddl/data/conway.cddl
 const CARDANO_TX_HASH_SIZE: usize = 32;
+const CARDANO_SCRIPT_HASH_SIZE: usize = 28;
 const TRANSACTION_BODY_INDEX: usize = 0;
 const WITNESS_SET_INDEX: usize = 1;
 const INPUTS_KEY: u8 = 0;
@@ -41,7 +46,6 @@ const OUTPUTS_KEY: u8 = 1;
 const FEE_KEY: u8 = 2;
 const TTL_KEY: u8 = 3;
 const VK_WITNESS_KEY: u8 = 0;
-// https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/conway/impl/cddl-files/conway.cddl#L154
 const SET_TAG: u64 = 258;
 
 // Global variable to control whether SET_TAG is used (for testing purposes)
@@ -100,14 +104,21 @@ macro_rules! impl_error {
 mod ffi {
     #[derive(Clone)]
     struct CxxSerializableTxInput {
-        tx_hash: [u8; 32],
+        tx_hash: [u8; 32], // CARDANO_TX_HASH_SIZE
         index: u32,
+    }
+
+    #[derive(Clone)]
+    struct CxxSerializableTxOutputToken {
+        token_id: Vec<u8>,
+        amount: u64,
     }
 
     #[derive(Clone)]
     struct CxxSerializableTxOutput {
         addr: Vec<u8>,
         amount: u64,
+        tokens: Vec<CxxSerializableTxOutputToken>,
     }
 
     #[derive(Clone)]
@@ -121,8 +132,8 @@ mod ffi {
 
     #[derive(Clone)]
     struct CxxSerializableVkeyWitness {
-        pubkey: [u8; 32],
-        signature: [u8; 64],
+        pubkey: [u8; 32],    // CARDANO_PUBKEY_SIZE
+        signature: [u8; 64], // CARDANO_SIGNATURE_SIZE
     }
 
     #[derive(Clone)]
@@ -154,7 +165,7 @@ mod ffi {
         fn encode_cardano_transaction_output(
             output: &CxxSerializableTxOutput,
         ) -> Box<CxxEncodedCardanoTransactionOutputResult>;
-        fn get_cardano_transaction_hash(tx: &CxxSerializableTx) -> [u8; 32];
+        fn get_cardano_transaction_hash(tx: &CxxSerializableTx) -> [u8; 32]; // CARDANO_TX_HASH_SIZE
         fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult>;
         fn apply_signatures(
             bytes: &[u8],
@@ -356,10 +367,61 @@ fn encode_tx_inputs(inputs: &[CxxSerializableTxInput]) -> CborValue {
     }
 }
 
+fn encode_tx_output_tokens(tokens: &Vec<CxxSerializableTxOutputToken>) -> CborValue {
+    // Build the multiasset map for tokens (policy_id => { name => amount }).
+    use std::collections::BTreeMap;
+    let mut multiasset: BTreeMap<&[u8], BTreeMap<&[u8], u64>> = BTreeMap::new();
+    for token in tokens.iter() {
+        let token_id = token.token_id.as_slice();
+        let (policy_id, name) = token_id.split_at(token_id.len().min(CARDANO_SCRIPT_HASH_SIZE));
+
+        let policy_entry = multiasset.entry(policy_id).or_insert_with(BTreeMap::new);
+        policy_entry.insert(name, token.amount);
+    }
+
+    // Build the CBOR map for the sorted multiasset.
+    let multiasset_val = CborValue::Map(
+        multiasset
+            .iter()
+            .map(|(policy_id, assets)| {
+                (
+                    CborValue::Bytes(policy_id.to_vec()),
+                    CborValue::Map(
+                        assets
+                            .iter()
+                            .map(|(name, amount)| {
+                                (
+                                    CborValue::Bytes(name.to_vec()),
+                                    CborValue::Integer((*amount).into()),
+                                )
+                            })
+                            .collect(),
+                    ),
+                )
+            })
+            .collect(),
+    );
+
+    multiasset_val
+}
+
 fn encode_tx_output(output: &CxxSerializableTxOutput) -> CborValue {
-    let addr = CborValue::Bytes(output.addr.clone());
-    let amount = CborValue::Integer(output.amount.into());
-    CborValue::Array(vec![addr, amount])
+    if output.tokens.is_empty() {
+        // No tokens, so return as [addr, amount]
+        return CborValue::Array(vec![
+            CborValue::Bytes(output.addr.clone()),
+            CborValue::Integer(output.amount.into()),
+        ]);
+    }
+
+    // Have tokens, so return as [addr, [amount, multiasset]]
+    return CborValue::Array(vec![
+        CborValue::Bytes(output.addr.clone()),
+        CborValue::Array(vec![
+            CborValue::Integer(output.amount.into()),
+            encode_tx_output_tokens(&output.tokens),
+        ]),
+    ]);
 }
 
 fn encode_tx_outputs(outputs: &[CxxSerializableTxOutput]) -> CborValue {
@@ -518,7 +580,7 @@ fn extract_inputs(
         };
 
         // Extract transaction hash and index
-        let tx_hash: [u8; 32] = match &input_array[0] {
+        let tx_hash: [u8; CARDANO_TX_HASH_SIZE] = match &input_array[0] {
             CborValue::Bytes(bytes) => {
                 bytes.clone().try_into().map_err(|_| Error::InvalidInputFormat)?
             }
@@ -534,6 +596,58 @@ fn extract_inputs(
     }
 
     Ok(inputs)
+}
+
+fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputToken>, Error> {
+    let mut tokens: Vec<CxxSerializableTxOutputToken> = Vec::new();
+
+    match &multiasset {
+        CborValue::Map(token_map) => {
+            for (policy_id_val, asset_map_val) in token_map {
+                // Each policy_id_val: Bytes(28)
+                let policy_id: [u8; CARDANO_SCRIPT_HASH_SIZE] = match policy_id_val {
+                    CborValue::Bytes(bytes) if bytes.len() == CARDANO_SCRIPT_HASH_SIZE => {
+                        bytes.clone().try_into().map_err(|_| Error::InvalidOutputFormat)?
+                    }
+                    _ => return Err(Error::InvalidOutputFormat),
+                };
+                // Each asset_map_val: Map<Bytes,name> -> Integer(amount)
+                match asset_map_val {
+                    CborValue::Map(asset_map) => {
+                        for (asset_name_val, amount_val) in asset_map {
+                            let asset_name = match asset_name_val {
+                                CborValue::Bytes(bytes) => {
+                                    if bytes.is_empty() {
+                                        return Err(Error::InvalidOutputFormat);
+                                    }
+                                    bytes.clone()
+                                }
+                                _ => return Err(Error::InvalidOutputFormat),
+                            };
+                            let token_amount: u64 = match amount_val {
+                                CborValue::Integer(n) => {
+                                    (*n).try_into().map_err(|_| Error::InvalidOutputFormat)?
+                                }
+                                _ => return Err(Error::InvalidOutputFormat),
+                            };
+                            tokens.push(CxxSerializableTxOutputToken {
+                                token_id: {
+                                    let mut combined = policy_id.to_vec();
+                                    combined.extend_from_slice(&asset_name);
+                                    combined
+                                },
+                                amount: token_amount,
+                            });
+                        }
+                    }
+                    _ => return Err(Error::InvalidOutputFormat),
+                }
+            }
+        }
+        _ => return Err(Error::InvalidOutputFormat),
+    }
+
+    Ok(tokens)
 }
 
 fn extract_outputs(
@@ -563,12 +677,33 @@ fn extract_outputs(
             _ => return Err(Error::InvalidOutputFormat),
         };
 
-        let amount = match &output_array[1] {
-            CborValue::Integer(i) => (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?,
+        // The amount field can be either an Integer (ADA) or an Array [Integer,
+        // Map(tokens)]
+        let (amount, tokens) = match &output_array[1] {
+            // Simple case: only ADA
+            CborValue::Integer(i) => {
+                let amount: u64 = (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?;
+                (amount, Vec::new())
+            }
+            // Multi-asset case: [ada, tokens_map]
+            CborValue::Array(arr) => {
+                if arr.len() != 2 {
+                    return Err(Error::InvalidOutputFormat);
+                }
+                let amount: u64 = match &arr[0] {
+                    CborValue::Integer(i) => {
+                        (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?
+                    }
+                    _ => return Err(Error::InvalidOutputFormat),
+                };
+
+                let tokens = extract_tokens(&arr[1])?;
+                (amount, tokens)
+            }
             _ => return Err(Error::InvalidOutputFormat),
         };
 
-        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, amount });
+        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, amount, tokens });
     }
 
     Ok(outputs)

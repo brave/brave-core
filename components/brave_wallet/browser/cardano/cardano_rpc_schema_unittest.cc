@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
 #include <array>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
@@ -103,18 +104,55 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "10000";
   valid.amount.back().unit = "lovelace";
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
-  // Still using first one.
-  EXPECT_EQ(converted->lovelace_amount, 555u);
-
-  valid.amount.front().unit = "some_token";
-  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
-  // Other token is ignored.
-  EXPECT_EQ(converted->lovelace_amount, 10000u);
+  // Lovelace entry appears twice, parsing fails.
+  EXPECT_FALSE(converted);
+  valid.amount.pop_back();
 
   valid.amount.clear();
   valid.amount.emplace_back();
-  valid.amount.back().quantity = "10000";
+  valid.amount.back().quantity = "1000";
   valid.amount.back().unit = "lovelace";
+
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "555";
+  valid.amount.back().unit = base::HexEncode(foo_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "1";
+  valid.amount.back().unit = base::HexEncode(bar_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->tokens[bar_token], 1u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  // bar and baz have the same policy id, still parsed ok.
+  ASSERT_EQ(base::span(bar_token).first(28u), base::span(baz_token).first(28u));
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(baz_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->tokens[bar_token], 1u);
+  EXPECT_EQ(converted->tokens[baz_token], 100000000000u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  // Empty name after policy id fails.
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(base::span(baz_token).first(28u));
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
+
+  // Short policy id fails.
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(std::vector<uint8_t>(27u, 0));
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
 
   for (auto* value :
        {"", "xx0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e",

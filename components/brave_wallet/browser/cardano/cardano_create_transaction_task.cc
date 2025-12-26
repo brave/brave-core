@@ -83,17 +83,6 @@ CardanoCreateTransactionTask::CreateTargetOutput() {
   return target_output;
 }
 
-CardanoTransaction::TxOutput
-CardanoCreateTransactionTask::CreateChangeOutput() {
-  CardanoTransaction::TxOutput change_output;
-  change_output.type = CardanoTransaction::TxOutputType::kChange;
-  change_output.amount = 0;
-  change_output.address =
-      *CardanoAddress::FromString(change_address_->address_string);
-
-  return change_output;
-}
-
 cardano_rpc::CardanoRpc* CardanoCreateTransactionTask::GetCardanoRpc() {
   return cardano_wallet_service_->GetCardanoRpc(
       GetNetworkForCardanoAccount(account_id_));
@@ -135,13 +124,13 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
 
   base::expected<CardanoTransaction, std::string> solved_transaction;
   if (sending_max_amount_) {
-    CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
+    CardanoMaxSendSolver solver(transaction_, *change_address_,
+                                *latest_epoch_parameters_,
                                 TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   } else {
-    transaction_.AddOutput(CreateChangeOutput());
-
-    CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
+    CardanoKnapsackSolver solver(transaction_, *change_address_,
+                                 *latest_epoch_parameters_,
                                  TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   }
@@ -226,7 +215,11 @@ void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
             mojom::CardanoKeyRole::kExternal);
   // TODO(https://github.com/brave/brave-browser/issues/45278): should update
   // account pref with new address.
-  change_address_ = std::move(address.value());
+  change_address_ = CardanoAddress::FromString(address.value()->address_string);
+  if (!change_address_) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
   OnMaybeAllRequiredDataFetched();
 }
 
