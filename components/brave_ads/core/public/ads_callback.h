@@ -31,7 +31,7 @@ using GetStatementOfAccountsCallback =
 
 using ParseAndSaveNewTabPageAdsCallback =
     base::OnceCallback<void(bool success)>;
-using MaybeServeNewTabPageAdCallback =
+using MaybeServeNewTabPageAdRefCallback =
     base::OnceCallback<void(base::optional_ref<const NewTabPageAdInfo> ad)>;
 
 using MaybeGetNotificationAdCallback =

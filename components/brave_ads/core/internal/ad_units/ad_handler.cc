@@ -58,7 +58,7 @@ void AdHandler::ParseAndSaveNewTabPageAds(
 }
 
 void AdHandler::MaybeServeNewTabPageAd(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeNewTabPageAdRefCallback callback) {
   new_tab_page_ad_handler_.MaybeServe(std::move(callback));
 }
 

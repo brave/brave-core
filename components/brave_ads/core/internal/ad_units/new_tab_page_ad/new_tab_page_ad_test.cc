@@ -147,7 +147,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -166,7 +166,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -183,7 +183,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -204,7 +204,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -221,7 +221,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
   MockCreativeNewTabPageAds();
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
@@ -250,7 +250,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   MockCreativeNewTabPageAds();
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
@@ -278,7 +278,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   MockCreativeNewTabPageAds();
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
@@ -312,7 +312,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   MockCreativeNewTabPageAds();
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
@@ -346,7 +346,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   MockCreativeNewTabPageAds();
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {

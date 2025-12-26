@@ -40,34 +40,34 @@ class NewTabPageAdServing final {
     delegate_ = delegate;
   }
 
-  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
+  void MaybeServeAd(MaybeServeNewTabPageAdRefCallback callback);
 
  private:
   bool IsSupported() const { return !!eligible_ads_; }
 
   bool CanServeAd(const AdEventList& ad_events) const;
 
-  void GetAdEvents(MaybeServeNewTabPageAdCallback callback);
-  void GetAdEventsCallback(MaybeServeNewTabPageAdCallback callback,
+  void GetAdEvents(MaybeServeNewTabPageAdRefCallback callback);
+  void GetAdEventsCallback(MaybeServeNewTabPageAdRefCallback callback,
                            bool success,
                            const AdEventList& ad_events);
 
-  void GetUserModel(MaybeServeNewTabPageAdCallback callback);
-  void GetUserModelCallback(MaybeServeNewTabPageAdCallback callback,
+  void GetUserModel(MaybeServeNewTabPageAdRefCallback callback);
+  void GetUserModelCallback(MaybeServeNewTabPageAdRefCallback callback,
                             uint64_t trace_id,
                             UserModelInfo user_model) const;
 
-  void GetEligibleAds(MaybeServeNewTabPageAdCallback callback,
+  void GetEligibleAds(MaybeServeNewTabPageAdRefCallback callback,
                       UserModelInfo user_model) const;
-  void GetEligibleAdsCallback(MaybeServeNewTabPageAdCallback callback,
+  void GetEligibleAdsCallback(MaybeServeNewTabPageAdRefCallback callback,
                               uint64_t trace_id,
                               CreativeNewTabPageAdList creative_ads) const;
 
   void ServeAd(const NewTabPageAdInfo& ad,
-               MaybeServeNewTabPageAdCallback callback) const;
+               MaybeServeNewTabPageAdRefCallback callback) const;
   void SuccessfullyServedAd(const NewTabPageAdInfo& ad,
-                            MaybeServeNewTabPageAdCallback callback) const;
-  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback) const;
+                            MaybeServeNewTabPageAdRefCallback callback) const;
+  void FailedToServeAd(MaybeServeNewTabPageAdRefCallback callback) const;
 
   void NotifyOpportunityAroseToServeNewTabPageAd() const;
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;

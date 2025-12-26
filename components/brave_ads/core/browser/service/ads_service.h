@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -17,7 +16,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -109,7 +107,7 @@ class AdsService : public KeyedService {
   virtual void PrefetchNewTabPageAd() = 0;
 
   // Called to get the prefetched new tab page ad for display.
-  virtual std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() = 0;
+  virtual mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() = 0;
 
   // Called when failing to prefetch a new tab page ad for the specified
   // `placement_id` and `creative_instance_id`.

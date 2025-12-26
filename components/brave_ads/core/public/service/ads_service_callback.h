@@ -25,6 +25,9 @@ using GetDiagnosticsCallback =
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
+using MaybeServeNewTabPageAdCallback =
+    base::OnceCallback<void(mojom::NewTabPageAdInfoPtr ad)>;
+
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
 

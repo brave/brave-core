@@ -41,7 +41,7 @@ NewTabPageAdServing::~NewTabPageAdServing() {
 }
 
 void NewTabPageAdServing::MaybeServeAd(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeNewTabPageAdRefCallback callback) {
   GetAdEvents(std::move(callback));
 }
 
@@ -66,7 +66,8 @@ bool NewTabPageAdServing::CanServeAd(const AdEventList& ad_events) const {
   return true;
 }
 
-void NewTabPageAdServing::GetAdEvents(MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdServing::GetAdEvents(
+    MaybeServeNewTabPageAdRefCallback callback) {
   const database::table::AdEvents database_table;
   database_table.Get(
       mojom::AdType::kNewTabPageAd, mojom::ConfirmationType::kServedImpression,
@@ -76,7 +77,7 @@ void NewTabPageAdServing::GetAdEvents(MaybeServeNewTabPageAdCallback callback) {
 }
 
 void NewTabPageAdServing::GetAdEventsCallback(
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -93,7 +94,7 @@ void NewTabPageAdServing::GetAdEventsCallback(
 }
 
 void NewTabPageAdServing::GetUserModel(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeNewTabPageAdRefCallback callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "NewTabPageAdServing::GetUserModel",
@@ -105,7 +106,7 @@ void NewTabPageAdServing::GetUserModel(
 }
 
 void NewTabPageAdServing::GetUserModelCallback(
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     uint64_t trace_id,
     UserModelInfo user_model) const {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
@@ -118,7 +119,7 @@ void NewTabPageAdServing::GetUserModelCallback(
 }
 
 void NewTabPageAdServing::GetEligibleAds(
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     UserModelInfo user_model) const {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
@@ -133,7 +134,7 @@ void NewTabPageAdServing::GetEligibleAds(
 }
 
 void NewTabPageAdServing::GetEligibleAdsCallback(
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     uint64_t trace_id,
     CreativeNewTabPageAdList creative_ads) const {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
@@ -158,7 +159,7 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
 
 void NewTabPageAdServing::ServeAd(
     const NewTabPageAdInfo& ad,
-    MaybeServeNewTabPageAdCallback callback) const {
+    MaybeServeNewTabPageAdRefCallback callback) const {
   if (!ad.IsValid()) {
     BLOG(0, "New tab page ad not served: Invalid ad");
     return FailedToServeAd(std::move(callback));
@@ -171,14 +172,14 @@ void NewTabPageAdServing::ServeAd(
 
 void NewTabPageAdServing::SuccessfullyServedAd(
     const NewTabPageAdInfo& ad,
-    MaybeServeNewTabPageAdCallback callback) const {
+    MaybeServeNewTabPageAdRefCallback callback) const {
   NotifyDidServeNewTabPageAd(ad);
 
   std::move(callback).Run(ad);
 }
 
 void NewTabPageAdServing::FailedToServeAd(
-    MaybeServeNewTabPageAdCallback callback) const {
+    MaybeServeNewTabPageAdRefCallback callback) const {
   NotifyFailedToServeNewTabPageAd();
 
   std::move(callback).Run(/*ad=*/std::nullopt);

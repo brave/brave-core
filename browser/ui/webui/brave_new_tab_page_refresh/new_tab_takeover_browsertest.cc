@@ -166,7 +166,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
       });
 
   EXPECT_CALL(GetAdsServiceMock(), MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(std::nullopt));
+      .WillOnce(::testing::Return(nullptr));
 
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
@@ -191,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
   testing::Mock::VerifyAndClearExpectations(&ads_service_mock);
 
   EXPECT_CALL(ads_service_mock, MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(std::nullopt));
+      .WillOnce(::testing::Return(nullptr));
   chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();

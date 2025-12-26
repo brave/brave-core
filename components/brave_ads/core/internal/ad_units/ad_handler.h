@@ -45,7 +45,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
                                  ParseAndSaveNewTabPageAdsCallback callback);
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
+  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdRefCallback callback);
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
