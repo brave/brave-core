@@ -368,8 +368,11 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
   auto* tab1 = GetTabAtModelIndex(indices[0]);
   auto* tab2 = GetTabAtModelIndex(indices[1]);
 
+  const bool is_vertical_tab =
+      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
+
   gfx::ScopedCanvas scoped_canvas(&canvas);
-  if (!tab1->data().pinned) {
+  if (is_vertical_tab && !tab1->data().pinned) {
     // We assume paired split tabs are both unpinned or both pinned.
     CHECK(!tab2->data().pinned);
     // clip canvas to avoid painting split tab bounding box in pinned tabs area
@@ -381,8 +384,7 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
   for (auto tab : {tab1, tab2}) {
     bounding_rects.Union(tab->bounds());
   }
-  const bool is_vertical_tab =
-      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
+
   if (!is_vertical_tab) {
     // In order to make margin between the bounding box and tab strip.
     // Need to compensate the amount of overlap because it's hidden by overlap
