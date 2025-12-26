@@ -15,6 +15,7 @@ import BrowserMenu
 import CertificateUtilities
 import Data
 import Lottie
+import Onboarding
 import Playlist
 import Preferences
 import Shared
@@ -405,6 +406,13 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
     displayFavoritesController()
+
+    // Dismiss any onboarding popovers when entering overlay mode
+    if let popoverController = presentedViewController as? PopoverController,
+      popoverController.contentController is FocusNTPOnboardingViewController
+    {
+      popoverController.dismissPopover()
+    }
   }
 
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
@@ -1000,7 +1008,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return url
     }()
     /// The selected tab's url
-    let selectedTabOriginalURL = tabManager.selectedTab?.visibleURL
+    _ = tabManager.selectedTab?.visibleURL
 
     clearPageZoomDialog()
 

@@ -51,6 +51,12 @@ extension BrowserViewController {
       return
     }
 
+    // Don't show onboarding if we're in overlay mode or no longer on an NTP
+    guard !topToolbar.inOverlayMode,
+      activeNewTabPageViewController != nil,
+      topToolbar.currentURL == nil
+    else { return }
+
     var controller: UIViewController & PopoverContentComponent
 
     if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
@@ -76,7 +82,9 @@ extension BrowserViewController {
       controller: UIViewController & PopoverContentComponent,
       onDismiss: @escaping () -> Void
     ) {
-      guard let info = activeNewTabPageViewController?.onboardingYouTubeFavoriteInfo,
+      // Double-check that we're still on the NTP and not in overlay mode before presenting
+      guard !topToolbar.inOverlayMode,
+        let info = activeNewTabPageViewController?.onboardingYouTubeFavoriteInfo,
         let cellSuperview = info.cell.superview
       else { return }
       let frame = view.convert(info.cell.frame, from: cellSuperview)
