@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/html_iframe_element.cc b/third_party/blink/renderer/core/html/html_iframe_element.cc
+index b89071d26a9eef14cb8652cd587de112a2df052f..71fe02720ffbe8dc15641e7738d19f0faf6e5873 100644
+--- a/third_party/blink/renderer/core/html/html_iframe_element.cc
++++ b/third_party/blink/renderer/core/html/html_iframe_element.cc
+@@ -111,6 +111,7 @@ void HTMLIFrameElement::SetCollapsed(bool collapse) {
+   // middle of a style recalc.
+   DCHECK(!GetDocument().InStyleRecalc());
+ 
++  if (base::FeatureList::IsEnabled(features::kBraveCollapsedElementAttribute)) { collapse ? setAttribute(AtomicString("brave-collapsed-element"), "") : removeAttribute(AtomicString("brave-collapsed-element")); }
+   // Trigger style recalc to trigger layout tree re-attachment.
+   SetNeedsStyleRecalc(kLocalStyleChange, StyleChangeReasonForTracing::Create(
+                                              style_change_reason::kFrame));
