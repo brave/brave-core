@@ -20,11 +20,13 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -57,28 +59,156 @@ struct ContentBlockTestParam {
   std::string expected_json;
 };
 
-std::pair<std::vector<OAIMessage>, base::Value::Dict>
-GetMockMessagesAndExpectedContent() {
+std::pair<std::vector<OAIMessage>, base::Value::List>
+GetMockMessagesAndExpectedMessagesJson() {
   std::vector<OAIMessage> messages;
 
-  // Create a simple user message with text content
-  OAIMessage message;
-  message.role = "user";
-  message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
-      mojom::TextContentBlock::New("test message")));
-  messages.push_back(std::move(message));
+  // User message with multiple content blocks
+  {
+    OAIMessage message;
+    message.role = "user";
 
-  // Create expected messages dict for verification
-  base::Value::Dict expected_content;
-  expected_content.Set("role", "user");
-  base::Value::List content_list;
-  base::Value::Dict content_dict;
-  content_dict.Set("type", "text");
-  content_dict.Set("text", "test message");
-  content_list.Append(std::move(content_dict));
-  expected_content.Set("content", std::move(content_list));
+    // Memory block
+    auto memory_map = BuildExpectedMemory(
+        {{"name", "Jane"}}, {{"memories", {"memory1", "memory2"}}});
+    message.content.push_back(mojom::ContentBlock::NewMemoryContentBlock(
+        mojom::MemoryContentBlock::New(std::move(memory_map))));
 
-  return std::make_pair(std::move(messages), std::move(expected_content));
+    // Page text block
+    message.content.push_back(mojom::ContentBlock::NewPageTextContentBlock(
+        mojom::PageTextContentBlock::New(
+            "This is a page about The Mandalorian.")));
+
+    // Page excerpt block
+    message.content.push_back(mojom::ContentBlock::NewPageExcerptContentBlock(
+        mojom::PageExcerptContentBlock::New("The Mandalorian")));
+
+    // Text block
+    message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("Est-ce lié à une série plus large?")));
+
+    messages.push_back(std::move(message));
+  }
+
+  // Assistant message with tool calls
+  {
+    OAIMessage message;
+    message.role = "assistant";
+    message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("Going to use a tool...")));
+    message.tool_calls.push_back(mojom::ToolUseEvent::New(
+        "get_weather", "123", "{\"location\":\"New York\"}", std::nullopt,
+        nullptr));
+    message.tool_calls.push_back(mojom::ToolUseEvent::New(
+        "get_screenshot", "456", "{\"type\":\"tab\"}", std::nullopt, nullptr));
+    messages.push_back(std::move(message));
+  }
+
+  // First tool response
+  {
+    OAIMessage message;
+    message.role = "tool";
+    message.tool_call_id = "123";
+    message.content.push_back(
+        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+            "The temperature in New York is 60 degrees.")));
+    message.content.push_back(
+        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+            "The wind in New York is 5 mph from the SW.")));
+    messages.push_back(std::move(message));
+  }
+
+  // Second tool response
+  {
+    OAIMessage message;
+    message.role = "tool";
+    message.tool_call_id = "456";
+    message.content.push_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                 "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"))));
+    messages.push_back(std::move(message));
+  }
+
+  const std::string expected_messages_body = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "brave-user-memory",
+          "memory": {"name": "Jane", "memories": ["memory1", "memory2"]}
+        },
+        {
+          "type": "brave-page-text",
+          "text": "This is a page about The Mandalorian."
+        },
+        {
+          "type": "brave-page-excerpt",
+          "text": "The Mandalorian"
+        },
+        {
+          "type": "text",
+          "text": "Est-ce lié à une série plus large?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "Going to use a tool..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"New York\"}"
+          }
+        },
+        {
+          "id": "456",
+          "type": "function",
+          "function": {
+            "name": "get_screenshot",
+            "arguments": "{\"type\":\"tab\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "123",
+      "content": [
+        {
+          "type": "text",
+          "text": "The temperature in New York is 60 degrees."
+        },
+        {
+          "type": "text",
+          "text": "The wind in New York is 5 mph from the SW."
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "456",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          }
+        }
+      ]
+    }
+  ])";
+
+  return std::make_pair(std::move(messages),
+                        base::test::ParseJsonList(expected_messages_body));
 }
 
 class MockCallbacks {
@@ -384,7 +514,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
   //  - messages are correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_credential = "test-premium-credential";
-  auto [messages, expected_content] = GetMockMessagesAndExpectedContent();
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
@@ -446,10 +577,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
         // Verify messages content matches expected
         const base::Value::List* messages_list = body_dict.FindList("messages");
         EXPECT_TRUE(messages_list);
-        EXPECT_EQ(messages_list->size(), 1u);
-        const base::Value::Dict* message_dict = (*messages_list)[0].GetIfDict();
-        EXPECT_TRUE(message_dict);
-        EXPECT_EQ(*message_dict, expected_content);
+        EXPECT_EQ(*messages_list, expected_messages_json);
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
@@ -520,7 +648,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   //  - headers are set correctly when premium credentials are available
   //  - messages are correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
-  auto [messages, expected_content] = GetMockMessagesAndExpectedContent();
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
@@ -575,10 +704,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
         // Verify messages content matches expected
         const base::Value::List* messages_list = dict.FindList("messages");
         EXPECT_TRUE(messages_list);
-        EXPECT_EQ(messages_list->size(), 1u);
-        const base::Value::Dict* message_dict = (*messages_list)[0].GetIfDict();
-        EXPECT_TRUE(message_dict);
-        EXPECT_EQ(*message_dict, expected_content);
+        EXPECT_EQ(*messages_list, expected_messages_json);
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
@@ -640,6 +766,121 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
+  // Tests that we interpret tool use reponses. For more variants
+  // see tests for `ToolUseEventFromToolCallsResponse`.
+  std::vector<OAIMessage> messages =
+      GetMockMessagesAndExpectedMessagesJson().first;
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected.
+  // Tool use is only supported for streaming requests since the completion
+  // callback only supports a single event.
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        {
+          // Send response with both content and tool calls
+          auto chunk = base::test::ParseJsonDict(R"({
+            "choices": [{
+              "delta": {
+                "content": "This is a test completion",
+                "tool_calls": [
+                  {
+                    "id": "call_123",
+                    "type": "function",
+                    "function": {
+                      "name": "get_weather",
+                      "arguments": "{\"location\":\"New York\"}"
+                    }
+                  },
+                  {
+                    "id": "call_456",
+                    "type": "function",
+                    "function": {
+                      "name": "search_web",
+                      "arguments": "{\"query\":\"Hello, world!\"}"
+                    }
+                  }
+                ]
+              }
+            }]
+          })");
+          data_received_callback.Run(base::ok(base::Value(std::move(chunk))));
+        }
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "This is a test completion");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
+                        mojom::ToolUseEvent::New("get_weather", "call_123",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt, nullptr));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        EXPECT_MOJOM_EQ(
+            result.event->get_tool_use_event(),
+            mojom::ToolUseEvent::New("search_web", "call_456",
+                                     "{\"query\":\"Hello, world!\"}",
+                                     std::nullopt, nullptr));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](const EngineConsumer::GenerationResult& result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_FALSE(result->event);
+        EXPECT_FALSE(result->model_key.has_value());
+      });
+
+  // The payload of the request is not important for this test
+  client_->PerformRequest(
+      std::move(messages), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+}
+
 TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
   std::string expected_completion_response = "complete text";
 
@@ -648,7 +889,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
   testing::StrictMock<MockCallbacks> mock_callbacks;
   base::RunLoop run_loop;
 
-  auto [messages, expected_content] = GetMockMessagesAndExpectedContent();
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
 
   EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
       .WillOnce(
@@ -678,11 +920,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
             // Verify messages content matches expected
             const base::Value::List* messages_list = dict.FindList("messages");
             EXPECT_TRUE(messages_list);
-            EXPECT_EQ(messages_list->size(), 1u);
-            const base::Value::Dict* message_dict =
-                (*messages_list)[0].GetIfDict();
-            EXPECT_TRUE(message_dict);
-            EXPECT_EQ(*message_dict, expected_content);
+            EXPECT_EQ(*messages_list, expected_messages_json);
 
             // Simulate non-streaming completion
             auto completion_dict = base::test::ParseJsonDict(R"({
@@ -725,7 +963,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
 TEST_F(ConversationAPIV2ClientUnitTest,
        PerformRequest_WithModelNameOverride_Streaming) {
   // Tests that the model name override is correctly passed to the API
-  auto [messages, expected_content] = GetMockMessagesAndExpectedContent();
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
   std::string override_model_name = "llama-3-8b-instruct";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -803,7 +1042,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
        PerformRequest_WithModelNameOverride_NonStreaming) {
   // Tests that the non-streaming version (Request) is called with null
   // callback
-  auto messages = GetMockMessagesAndExpectedContent().first;
+  auto messages = GetMockMessagesAndExpectedMessagesJson().first;
   std::string override_model_name = "llama-3-8b-instruct";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -912,7 +1151,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_FailWithEmptyMessages) {
 TEST_F(ConversationAPIV2ClientUnitTest,
        PerformRequest_NullEventUponBadResponse) {
   // Tests handling of successful response with invalid/unparseable body
-  auto messages = GetMockMessagesAndExpectedContent().first;
+  auto messages = GetMockMessagesAndExpectedMessagesJson().first;
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -965,7 +1204,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
 
 TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
   // Tests handling of server error response (rate limit)
-  auto messages = GetMockMessagesAndExpectedContent().first;
+  auto messages = GetMockMessagesAndExpectedMessagesJson().first;
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();

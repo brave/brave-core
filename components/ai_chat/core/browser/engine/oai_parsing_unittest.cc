@@ -595,7 +595,7 @@ TEST(OAIParsingTest, ParseOAICompletionResponse_MissingModelField) {
 }
 
 TEST(OAIParsingTest, ParseOAICompletionResponse_EmptyContent) {
-  // Test with empty content string (should still return result)
+  // Test with empty content string (should return nullopt)
   constexpr char kResponseJson[] = R"({
     "model": "gpt-3.5-turbo",
     "choices": [{
@@ -608,10 +608,7 @@ TEST(OAIParsingTest, ParseOAICompletionResponse_EmptyContent) {
   auto response_dict = base::test::ParseJsonDict(kResponseJson);
   auto result = ParseOAICompletionResponse(response_dict, nullptr);
 
-  ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event);
-  ASSERT_TRUE(result->event->is_completion_event());
-  EXPECT_EQ(result->event->get_completion_event()->completion, "");
+  ASSERT_FALSE(result.has_value());
 }
 
 TEST(OAIParsingTest, ParseOAICompletionResponse_WithModelService) {

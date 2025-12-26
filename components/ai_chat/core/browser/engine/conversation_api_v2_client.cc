@@ -242,6 +242,30 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     }
     message_dict.Set("content", std::move(content_list));
 
+    // Tool calls
+    if (!message.tool_calls.empty()) {
+      base::Value::List tool_call_dicts;
+      for (const auto& tool_event : message.tool_calls) {
+        base::Value::Dict tool_call_dict;
+        tool_call_dict.Set("id", tool_event->id);
+        tool_call_dict.Set("type", "function");
+
+        base::Value::Dict function_dict;
+        function_dict.Set("name", tool_event->tool_name);
+
+        function_dict.Set("arguments", tool_event->arguments_json);
+
+        tool_call_dict.Set("function", std::move(function_dict));
+        tool_call_dicts.Append(std::move(tool_call_dict));
+      }
+
+      message_dict.Set("tool_calls", std::move(tool_call_dicts));
+    }
+
+    if (!message.tool_call_id.empty()) {
+      message_dict.Set("tool_call_id", message.tool_call_id);
+    }
+
     serialized_messages.Append(std::move(message_dict));
   }
 
@@ -308,6 +332,10 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
+
+  if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
@@ -435,9 +463,27 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     return;
   }
 
+  auto& result_params = result->GetDict();
   if (auto result_data =
-          ParseOAICompletionResponse(result->GetDict(), model_service_)) {
+          ParseOAICompletionResponse(result_params, model_service_)) {
     callback.Run(std::move(*result_data));
+  }
+
+  // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
+  // or choices[0].message.tool_calls
+  const base::Value::Dict* content_container =
+      GetOAIContentContainer(result_params);
+  if (content_container) {
+    if (const base::Value::List* tool_calls =
+            content_container->FindList("tool_calls")) {
+      // Provide any valid tool use events to the callback
+      for (auto& tool_use_event :
+           ToolUseEventFromToolCallsResponse(tool_calls)) {
+        auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_use_event));
+        callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+      }
+    }
   }
 }
 
