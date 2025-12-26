@@ -139,6 +139,8 @@ void SetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state,
                                                 bool value);
 bool GetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state);
 
+ControlType ControlTypeFromString(const std::string& string);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_UTILS_H_

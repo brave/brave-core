@@ -817,6 +817,23 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 }
             });
 
+        // Manual shred layout
+        LinearLayout braveShieldsManualShredItemLayout
+                = mShredSiteDataLayout.findViewById(R.id.brave_shields_manual_shred_site_data_layout_id);
+        braveShieldsManualShredItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        BraveActivity.getBraveActivity().shredSiteData();
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "setupShredSiteDataLayout manual shred click " + e);
+                    }
+                }
+            });
+        
+
+        String autoShredSettingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mUrlSpec, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
+
         // Autoshred layout
         LinearLayout braveShieldsAutoShredItemLayout
                 = mShredSiteDataLayout.findViewById(R.id.brave_shields_auto_shred_site_data_layout_id);
@@ -861,10 +878,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             });
         RadioButton autoShredOption1 = mAutoShredOptionsLayout.findViewById(R.id.option1);
             autoShredOption1.setText("Never");
+            autoShredOption1.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER));
         RadioButton autoShredOption2 = mAutoShredOptionsLayout.findViewById(R.id.option2);
             autoShredOption2.setText("Site tab closed");
+            autoShredOption2.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED));
         RadioButton autoShredOption3 = mAutoShredOptionsLayout.findViewById(R.id.option3);
             autoShredOption3.setText("App close");
+            autoShredOption3.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT));
         Button autoShredDoneButton = mAutoShredOptionsLayout.findViewById(R.id.done_button);
             autoShredDoneButton.setOnClickListener(mDoneClickListener);
 
@@ -880,23 +900,17 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                             boolean isChecked = checkedRadioButton.isChecked();
                             if (isChecked) {
                                 if (checkedId == R.id.option1) {
-                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
-                                    //         layout, BraveShieldsContentSettings.BLOCK_RESOURCE,
-                                    //         false);
+                                     BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                             BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER,
+                                             false);
                                 } else if (checkedId == R.id.option2) {
-                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
-                                    //         layout,
-                                    //         layout.equals(
-                                    //                 BraveShieldsContentSettings
-                                    //                         .RESOURCE_IDENTIFIER_FINGERPRINTING)
-                                    //                 ? BraveShieldsContentSettings.DEFAULT
-                                    //                 : BraveShieldsContentSettings
-                                    //                           .BLOCK_THIRDPARTY_RESOURCE,
-                                    //         false);
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                             BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED,
+                                             false);
                                 } else if (checkedId == R.id.option3) {
-                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
-                                    //         layout, BraveShieldsContentSettings.ALLOW_RESOURCE,
-                                    //         false);
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                             BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT,
+                                             false);
                                 }
                                 if (null != mMenuObserver) {
                                     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
@@ -1324,24 +1338,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         setUpMainLayout();
     }
-
-    // private void setupShredDataSwitchClick(SwitchCompat braveShieldsShredDataSwitch) {
-    //     if (null == braveShieldsShredDataSwitch) {
-    //         return;
-    //     }
-
-    //     OnCheckedChangeListener braveShieldsShredDataChangeListener = new OnCheckedChangeListener() {
-    //         @Override
-    //         public void onCheckedChanged(CompoundButton buttonView,
-    //                                      boolean isChecked) {
-    //             LinearLayout shredSiteDataLayout = mSecondaryLayout.findViewById(R.id.brave_shields_shred_site_data_layout_id);
-    //             mMainLayout.setVisibility(View.GONE);
-    //             shredSiteDataLayout.setVisibility(View.VISIBLE);
-    //         }
-    //     };
-
-    //     braveShieldsShredDataSwitch.setOnCheckedChangeListener(braveShieldsShredDataChangeListener);
-    // }
 
     private void setupBlockingScriptsSwitchClick(SwitchCompat braveShieldsBlockingScriptsSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
