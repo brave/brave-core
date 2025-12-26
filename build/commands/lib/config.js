@@ -8,11 +8,8 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
+const EnvConfig = require('./envConfig')
 const Log = require('./logging')
-
-let envConfig = null
-let envConfigParseErrors = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -27,22 +24,10 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-const packageConfig = function (key, sourceDir = braveCoreDir) {
-  let packages = { config: {} }
-  const configAbsolutePath = path.join(sourceDir, 'package.json')
-  if (fs.existsSync(configAbsolutePath)) {
-    packages = require(path.relative(__dirname, configAbsolutePath))
-  }
+const envConfig = new EnvConfig(braveCoreDir)
 
-  // packages.config should include version string.
-  let obj = Object.assign({}, packages.config, { version: packages.version })
-  for (let i = 0, len = key.length; i < len; i++) {
-    if (!obj) {
-      return obj
-    }
-    obj = obj[key[i]]
-  }
-  return obj
+const getEnvConfig = (keyPath, defaultValue = undefined) => {
+  return envConfig.get(keyPath, defaultValue)
 }
 
 const readArgsGn = (srcDir, outputDir) => {
@@ -68,66 +53,6 @@ print(json.dumps(result))
   return JSON.parse(result.stdout.toString().trim())
 }
 
-const getEnvConfig = (key, defaultValue = undefined) => {
-  if (!envConfig) {
-    envConfig = {}
-    envConfigParseErrors = {}
-
-    // Parse src/brave/.env with all included env files.
-    let envConfigPath = path.join(braveCoreDir, '.env')
-    if (fs.existsSync(envConfigPath)) {
-      dotenvPopulateWithIncludes(envConfig, envConfigPath)
-    } else {
-      // The .env file is used by `gn gen`. Create it if it doesn't exist.
-      const defaultEnvConfigContent =
-        '# This is a placeholder .env config file for the build system.\n'
-        + '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
-      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
-    }
-
-    // Attempt to parse JSON-parseable values (strings, numbers, booleans, null,
-    // objects, arrays). If parsing fails, store the value as string.
-    for (const [key, value] of Object.entries(envConfig)) {
-      try {
-        if (typeof defaultValue === 'string') {
-          envConfig[key] = value
-        } else {
-          envConfig[key] = JSON.parse(value)
-        }
-      } catch (e) {
-        envConfig[key] = value
-        envConfigParseErrors[key] = e.message
-      }
-    }
-  }
-
-  const keyJoined = key.join('_')
-  const envConfigValue = envConfig[keyJoined]
-  if (envConfigValue !== undefined) {
-    if (
-      defaultValue !== undefined
-      && getValueType(defaultValue) !== getValueType(envConfigValue)
-    ) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${getValueType(defaultValue)}, got ${getValueType(envConfigValue)}`,
-      )
-      const parseError = envConfigParseErrors[keyJoined]
-      if (parseError) {
-        Log.error(`${parseError}:\n${envConfigValue}`)
-      }
-      process.exit(1)
-    }
-    return envConfigValue
-  }
-
-  const packageConfigValue = packageConfig(key)
-  if (packageConfigValue !== undefined) {
-    return packageConfigValue
-  }
-
-  return defaultValue
-}
-
 const getDepotToolsDir = (rootDir) => {
   let depotToolsDir = getEnvConfig(['projects', 'depot_tools', 'dir'])
   if (!path.isAbsolute(depotToolsDir)) {
@@ -150,7 +75,7 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const getBraveVersion = (ignorePatchVersionNumber) => {
-  const braveVersion = packageConfig(['version'])
+  const braveVersion = envConfig.getPackageVersion()
   if (!ignorePatchVersionNumber) {
     return braveVersion
   }
@@ -1352,15 +1277,5 @@ Object.defineProperty(Config.prototype, 'useSiso', {
     )
   },
 })
-
-function getValueType(value) {
-  if (value === undefined) {
-    return 'undefined'
-  }
-  if (value === null) {
-    return 'null'
-  }
-  return value.constructor.name
-}
 
 module.exports = new Config()
