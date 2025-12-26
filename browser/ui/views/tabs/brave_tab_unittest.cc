@@ -115,6 +115,7 @@ class BraveTabRenamingUnitTest : public BraveTabTest {
                 SetCustomTitleForTab,
                 (Tab * tab, const std::optional<std::u16string>& title),
                 (override));
+    MOCK_METHOD(void, CloseTab, (Tab * tab, CloseTabSource source), (override));
   };
 
   BraveTabRenamingUnitTest() = default;
@@ -286,4 +287,60 @@ TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
   tab.InvalidateLayout();
   views::test::RunScheduledLayout(&tab);
   EXPECT_FALSE(tab.close_button_for_test()->GetVisible());
+}
+
+TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
+  testing::NiceMock<BraveTabRenamingUnitTest::MockTabSlotController>
+      tab_slot_controller;
+  auto tab = std::make_unique<BraveTab>(&tab_slot_controller);
+  tab_slot_controller.set_active_tab(tab.get());
+
+  // Create a widget to host the tab
+  auto widget =
+      CreateTestWidget(views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET);
+  widget->SetContentsView(std::move(tab));
+  auto* tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
+  tab_ptr->SetBoundsRect({0, 0, 100, 50});
+  views::test::RunScheduledLayout(tab_ptr);
+
+  // Default should be enabled (true)
+  EXPECT_TRUE(tab_slot_controller.CanCloseTabViaMiddleButtonClick());
+
+  // Simulate middle mouse button click - should close the tab
+  ui::MouseEvent press_event(ui::EventType::kMousePressed, gfx::Point(50, 25),
+                             gfx::Point(), base::TimeTicks(),
+                             ui::EF_MIDDLE_MOUSE_BUTTON, 0);
+  ui::MouseEvent release_event(
+      ui::EventType::kMouseReleased, gfx::Point(50, 25), gfx::Point(),
+      base::TimeTicks(), ui::EF_MIDDLE_MOUSE_BUTTON, 0);
+  testing::Mock::VerifyAndClearExpectations(&tab_slot_controller);
+  EXPECT_CALL(tab_slot_controller,
+              CloseTab(tab_ptr, CloseTabSource::kFromMouse))
+      .Times(1);
+  tab_ptr->OnMousePressed(press_event);
+  tab_ptr->OnMouseReleased(release_event);
+
+  // Test disabling middle click to close
+  tab_slot_controller.set_can_close_tab_via_middle_button_click(false);
+  EXPECT_FALSE(tab_slot_controller.CanCloseTabViaMiddleButtonClick());
+
+  // Simulate middle mouse button click - should NOT close the tab
+  testing::Mock::VerifyAndClearExpectations(&tab_slot_controller);
+  EXPECT_CALL(tab_slot_controller,
+              CloseTab(tab_ptr, CloseTabSource::kFromMouse))
+      .Times(0);
+  tab_ptr->OnMousePressed(press_event);
+  tab_ptr->OnMouseReleased(release_event);
+
+  // Test re-enabling middle click to close
+  tab_slot_controller.set_can_close_tab_via_middle_button_click(true);
+  EXPECT_TRUE(tab_slot_controller.CanCloseTabViaMiddleButtonClick());
+
+  // Simulate middle mouse button click - should close the tab again
+  testing::Mock::VerifyAndClearExpectations(&tab_slot_controller);
+  EXPECT_CALL(tab_slot_controller,
+              CloseTab(tab_ptr, CloseTabSource::kFromMouse))
+      .Times(1);
+  tab_ptr->OnMousePressed(press_event);
+  tab_ptr->OnMouseReleased(release_event);
 }

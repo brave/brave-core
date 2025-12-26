@@ -65,6 +65,10 @@ bool TabStrip::ShouldAlwaysHideCloseButton() const {
   return false;
 }
 
+bool TabStrip::CanCloseTabViaMiddleButtonClick() const {
+  return true;
+}
+
 bool TabStrip::IsVerticalTabsFloating() const {
   return false;
 }

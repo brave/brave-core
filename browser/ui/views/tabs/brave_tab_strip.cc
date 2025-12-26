@@ -53,6 +53,8 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
       controller_->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged,
                           base::Unretained(this)));
+  middle_click_close_tab_enabled_.Init(brave_tabs::kMiddleClickCloseTabEnabled,
+                                       controller_->GetProfile()->GetPrefs());
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -88,6 +90,10 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
               BraveVerticalTabStripRegionView::State::kFloating &&
           vertical_region_view->state() ==
               BraveVerticalTabStripRegionView::State::kCollapsed);
+}
+
+bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
+  return *middle_click_close_tab_enabled_;
 }
 
 bool BraveTabStrip::ShouldDrawStrokes() const {

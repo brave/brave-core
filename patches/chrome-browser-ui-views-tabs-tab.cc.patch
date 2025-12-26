@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..011d7c8a7a9efe127c35b6b23123830289948b0a 100644
+index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..129598d1a22484a9d14987213ce47bf013717a32 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -376,6 +376,7 @@ void Tab::Layout(PassKey) {
@@ -18,3 +18,12 @@ index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..011d7c8a7a9efe127c35b6b231238302
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
+@@ -621,7 +623,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
+   // Close tab on middle click, but only if the button is released over the tab
+   // (normal windows behavior is to discard presses of a UI element where the
+   // releases happen off the element).
+-  if (event.IsOnlyMiddleMouseButton()) {
++  if (event.IsOnlyMiddleMouseButton() && controller_->CanCloseTabViaMiddleButtonClick()) {
+     if (HitTestPoint(event.location())) {
+       controller_->CloseTab(this, CloseTabSource::kFromMouse);
+     } else if (closing_) {

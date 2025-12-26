@@ -49,6 +49,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kSharedPinnedTab,
       brave_tabs::kTreeTabsEnabled,
       brave_tabs::kAlwaysHideTabCloseButton,
+      brave_tabs::kMiddleClickCloseTabEnabled,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,
