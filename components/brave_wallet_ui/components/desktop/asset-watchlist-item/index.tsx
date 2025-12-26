@@ -19,7 +19,6 @@ import { reduceInt } from '../../../utils/string-utils'
 import {
   withPlaceholderIcon, //
 } from '../../shared/create-placeholder-icon/index'
-import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
 import {
@@ -27,6 +26,7 @@ import {
   AssetName,
   NameAndIcon,
   AssetIcon,
+  NftIconWrapper,
   Button,
   Icon,
   RightSide,
@@ -45,7 +45,7 @@ export interface Props {
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
-const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIconWrapper, ICON_CONFIG)
 
 const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
