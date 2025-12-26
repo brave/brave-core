@@ -51,7 +51,6 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
     "//brave/components/p3a/pref_names.h",
     "//brave/components/request_otr/common/pref_names.h",
-    "//brave/components/search_engines/brave_search_engines_pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
 
