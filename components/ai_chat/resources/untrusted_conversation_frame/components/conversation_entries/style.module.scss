@@ -45,10 +45,7 @@
 }
 
 .humanTextRow {
-  display: flex;
-  align-items: center;
   white-space: pre-wrap;
-  gap: var(--leo-spacing-m);
 }
 
 .editLabel {
@@ -97,7 +94,30 @@
   --leo-icon-size: 20px;
 }
 
-.skillLabel {
-  --leo-label-font-text: var(--leo-font-large-regular);
-  --leo-label-padding: var(--leo-spacing-xs) var(--leo-spacing-s);
+.richLabel {
+  background-color: var(--leo-color-primary-20);
+  color: var(--leo-color-primary-60);
+  border-radius: 6px;
+  padding: 0 var(--leo-spacing-s);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  vertical-align: top;
+
+  max-width: 200px;
+
+  & > img {
+    height: 14px;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+  }
+
+  & > .richLabelTitle {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    flex-shrink: 1;
+  }
 }
