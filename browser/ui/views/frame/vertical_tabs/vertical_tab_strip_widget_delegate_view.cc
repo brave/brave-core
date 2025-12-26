@@ -186,16 +186,16 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
   // Convert coordinate system based on Browser's widget.
   gfx::Rect host_bounds = host_->ConvertRectToWidget(host_->GetLocalBounds());
   gfx::Rect widget_bounds = host_bounds;
-  widget_bounds.set_width(region_view_->GetPreferredSize().width());
-  if (widget_bounds.IsEmpty()) {
+  auto insets = host_->GetInsets();
+  widget_bounds.set_width(region_view_->GetPreferredSize().width() +
+                          insets.width());
+  if (!region_view_->GetVisible() || widget_bounds.IsEmpty()) {
     widget->Hide();
     return;
   }
 
   DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()));
 
-  auto insets = host_->GetInsets();
-  widget_bounds.set_width(widget_bounds.width() + insets.width());
   if (GetInsets() != insets) {
     SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
   }

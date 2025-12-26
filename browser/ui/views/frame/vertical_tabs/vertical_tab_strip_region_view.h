@@ -91,6 +91,10 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ListenFullscreenChanges();
   void StopListeningFullscreenChanges();
 
+  // Show vertical tab strip when mouse moves around the hot corner
+  // when it's completely hidden.
+  void ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
+
   // views::View:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
@@ -100,7 +104,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
-  void AddedToWidget() override;
 
   // views::ResizeAreaDelegate
   void OnResize(int resize_amount, bool done_resizing) override;
@@ -123,7 +126,6 @@ class BraveVerticalTabStripRegionView : public views::View,
       ui::mojom::MenuSourceType source_type) override;
 
   class HeaderView;
-  class MouseWatcher;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -160,7 +162,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   bool IsFloatingEnabledForBrowserFullscreen() const;
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();
-  void OnMouseExited();
   void OnMouseEntered();
   void OnMousePressedInTree();
   void UpdateBubbleArrow();
@@ -226,8 +227,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
-
-  std::unique_ptr<MouseWatcher> mouse_watcher_;
 
 #if BUILDFLAG(IS_MAC)
   BooleanPrefMember show_toolbar_on_fullscreen_pref_;
