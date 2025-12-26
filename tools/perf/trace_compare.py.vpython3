@@ -1,0 +1,36 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is a vpython "spec" file for trace_compare.py
+# It includes the necessary dependencies for the script.
+
+python_version: "3.11"
+
+
+# Include essential dependencies from root .vpython3
+wheel: <
+  name: "infra/python/wheels/numpy/${vpython_platform}"
+  version: "version:1.23.5.chromium.4"
+>
+
+wheel: <
+  name: "infra/python/wheels/protobuf-py3"
+  version: "version:6.31.0"
+>
+
+wheel: <
+  name: "infra/python/wheels/perfetto-py3"
+  version: "version:0.11.0"
+>
+
+wheel: <
+  name: "infra/python/wheels/scipy/${vpython_platform}"
+  version: "version:1.10.1"
+>
+
+wheel: <
+  name: "infra/python/wheels/six-py2_py3"
+  version: "version:1.15.0"
+>
