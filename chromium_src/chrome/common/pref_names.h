@@ -14,6 +14,11 @@ namespace prefs {
 // about whether or not to override actual DNS state will be made in
 // stub_resolver_config_reader.
 inline constexpr char kBraveVpnDnsConfig[] = "brave.brave_vpn.dns_config";
+
+#if defined(TOOLKIT_VIEWS)
+// Whether to show the share menu on the location bar.
+inline constexpr char kPinShareMenuButton[] = "brave.pin_share_menu_button";
+#endif  // defined(TOOLKIT_VIEWS)
 }  // namespace prefs
 
 #include <chrome/common/pref_names.h>  // IWYU pragma: export
