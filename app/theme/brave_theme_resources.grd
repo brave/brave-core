@@ -22,17 +22,29 @@
         <structure type="chrome_scaled_image" name="IDR_PLAYLIST_DEFAULT_THUMBNAIL" file="brave/playlist_default_thumbnail.png" />
       </if>
 
-      <if expr="not is_linux and not is_android">
+      <if expr="not is_linux and not is_android and not is_brave_origin_branded">
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32_beta.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32_nightly.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32_dev.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/product_logo_32_development.png" />
       </if>
-      <if expr="is_linux">
+      <if expr="not is_linux and not is_android and is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave_origin/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave_origin/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave_origin/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave_origin/product_logo_32_development.png" />
+      </if>
+      <if expr="is_linux and not is_brave_origin_branded">
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/linux/product_logo_32_beta.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/linux/product_logo_32_nightly.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/linux/product_logo_32_dev.png" />
         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/linux/product_logo_32_development.png" />
+      </if>
+      <if expr="is_linux and is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave_origin/linux/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave_origin/linux/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave_origin/linux/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave_origin/linux/product_logo_32_development.png" />
       </if>
 
       <if expr="toolkit_views">

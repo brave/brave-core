@@ -1,0 +1,10 @@
+diff --git a/chrome/installer/launcher_support/BUILD.gn b/chrome/installer/launcher_support/BUILD.gn
+index ee3f090025b1c2074faa3c5791cf19fd53b7ee91..8aa9bc182bfd936e1425231c7caef411af78d1b0 100644
+--- a/chrome/installer/launcher_support/BUILD.gn
++++ b/chrome/installer/launcher_support/BUILD.gn
+@@ -12,4 +12,5 @@ source_set("launcher_support") {
+     "//base",
+     "//build:branding_buildflags",
+   ]
++  import("//brave/chromium_src/chrome/installer/launcher_support/sources.gni") deps += brave_chromium_src_chrome_installer_launcher_support_deps
+ }

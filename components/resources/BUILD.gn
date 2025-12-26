@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -57,6 +58,7 @@ brave_grit("static_resources") {
     "enable_brave_wallet=$enable_brave_wallet",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",
+    "is_brave_origin_branded=$is_brave_origin_branded",
   ]
 
   output_dir = "$root_gen_dir/components"
