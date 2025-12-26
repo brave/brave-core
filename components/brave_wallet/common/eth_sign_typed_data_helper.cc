@@ -268,8 +268,9 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
   }
 
   if (type.starts_with("bytes")) {
-    unsigned num_bits;
-    if (!base::StringToUint(type.substr(5), &num_bits) || num_bits > 32) {
+    unsigned num_bytes;
+    if (!base::StringToUint(type.substr(5), &num_bytes) || num_bytes == 0 ||
+        num_bytes > 32) {
       return std::nullopt;
     }
     const std::string* value_str = value.GetIfString();
@@ -278,7 +279,7 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     }
     std::vector<uint8_t> bytes;
     CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
-    if (bytes.size() > 32) {
+    if (bytes.size() != num_bytes) {
       return std::nullopt;
     }
     Eip712HashArray result = {};
