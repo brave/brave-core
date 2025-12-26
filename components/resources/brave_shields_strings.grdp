@@ -20,7 +20,15 @@
     <ph name="STATUS_BEFORE">$1</ph>Shields are DOWN<ph name="STATUS_AFTER">/$1</ph> for this site
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
+  <message name="IDS_BRAVE_SHIELDS_STATUS_UP" desc="Status label for when Brave Shields is enabled." formatter_data="webui=BraveShields">
+    Shields <ph name="UP_BEFORE">$1</ph>up<ph name="UP_AFTER">/$1</ph> for this site
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_STATUS_DOWN" desc="Status label for when Brave Shields is disabled." formatter_data="webui=BraveShields">
+    Shields <ph name="DOWN_BEFORE">$1</ph>down<ph name="DOWN_AFTER">/$1</ph> for this site
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button." formatter_data="webui=BraveShields">
     If this site seems broken, try Shields down.
   </message>
 
@@ -28,11 +36,31 @@
     <ph name="NOTE_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER">/$1</ph>
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_TITLE" desc="Title for the alert if the user is experiencing issues with the site.">
+  <message name="IDS_BRAVE_SHIELDS_PRIVACY_NOTE" desc="A note about reduced privacy protections with a link." formatter_data="webui=BraveShields">
+    This may reduce Brave's privacy protections. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED" desc="Summary text for blocked trackers and ads." formatter_data="webui=BraveShields">
+    Trackers, ads, and more blocked.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED_TITLE" desc="Title of the trackers and ads blocked details view" formatter_data="webui=BraveShields">
+    Trackers and ads
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SITE_NOT_WORKING" desc="Prompt asking if site is not working with Shields on." formatter_data="webui=BraveShields">
+    Is this site not working correctly with Shields on?
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_REPORT" desc="Button label to report a broken site." formatter_data="webui=BraveShields">
+    Report
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_TITLE" desc="Title for the alert if the user is experiencing issues with the site." formatter_data="webui=BraveShields">
     Are you experiencing issues with this site?
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_DESC1" desc="First part of the description for the alert if the user is experiencing issues with the site.">
+  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_DESC1" desc="First part of the description for the alert if the user is experiencing issues with the site." formatter_data="webui=BraveShields">
     We're trying out an experiment to increase website compatibility, where we keep only ad blocking enabled. Warning: removes all privacy protections. Do you want to try it out? <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>.
   </message>
 
@@ -40,35 +68,35 @@
     Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Adblock-Only mode.">
+  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Adblock-Only mode." formatter_data="webui=BraveShields">
     Enable Adblock-Only mode
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_DISMISS_ALERT" desc="A button label to dismiss the alert.">
+  <message name="IDS_BRAVE_SHIELDS_DISMISS_ALERT" desc="A button label to dismiss the alert." formatter_data="webui=BraveShields">
     Dismiss
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_TITLE" desc="Title for the alert to ask if the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_TITLE" desc="Title for the alert to ask if the site is working correctly now." formatter_data="webui=BraveShields">
     Is the site working correctly now?
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_DESC" desc="Description for the alert to ask if the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_DESC" desc="Description for the alert to ask if the site is working correctly now." formatter_data="webui=BraveShields">
     Please consider submitting a report if this site is still broken.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_LOOKS_GOOD" desc="A button label to indicate the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_LOOKS_GOOD" desc="A button label to indicate the site is working correctly now." formatter_data="webui=BraveShields">
     Looks good
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_REPORT_SITE" desc="A button label to report the site if it is not working correctly.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_REPORT_SITE" desc="A button label to report the site if it is not working correctly." formatter_data="webui=BraveShields">
     Report site
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Adblock-Only mode is enabled.">
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Adblock-Only mode is enabled." formatter_data="webui=BraveShields">
     Adblock-Only mode enabled
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled.">
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled." formatter_data="webui=BraveShields">
     You're currently using Adblock-Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.
   </message>
 
@@ -88,6 +116,10 @@
     Advanced controls
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_ADVANCED_OPTIONS" desc="A button label to expand/collapse advanced options." formatter_data="webui=BraveShields">
+    Advanced options
+  </message>
+
   <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
     Changing these settings might break sites.
   </message>
@@ -100,31 +132,39 @@
     Global defaults
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements">
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENTS" desc="Label for block elements section." formatter_data="webui=BraveShields">
+    Block elements
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements" formatter_data="webui=BraveShields">
     Clear all blocked elements
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS" desc="Button label for global settings." formatter_data="webui=BraveShields">
+    Global Settings
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_MANAGED" desc="A description to explain the settings managed by organization.">
     Settings managed by organization
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE" desc="A link to allow script to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE" desc="A link to allow script to be executed in a page." formatter_data="webui=BraveShields">
     Allow
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPT_BLOCK" desc="A text to indicate a script will be blocked in a page.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPT_BLOCK" desc="A text to indicate a script will be blocked in a page." formatter_data="webui=BraveShields">
     Block
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL" desc="A link to allow all scripts to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL" desc="A link to allow all scripts to be executed in a page." formatter_data="webui=BraveShields">
     Allow all
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL" desc="A link to block all scripts to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL" desc="A link to block all scripts to be executed in a page." formatter_data="webui=BraveShields">
     Block all
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists.">
+  <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists." formatter_data="webui=BraveShields">
     Filter lists
   </message>
 
@@ -136,31 +176,31 @@
     Enable HTTPS
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option." formatter_data="webui=BraveShields">
     Block scripts
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule." formatter_data="webui=BraveShields">
     (enforced)
   </message>
 
-   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
+   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule." formatter_data="webui=BraveShields">
     (enforced by extension)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY" desc="A label for scripts Scripts blocked option which is overridden by a policy rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY" desc="A label for scripts Scripts blocked option which is overridden by a policy rule." formatter_data="webui=BraveShields">
     (enforced by policy)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST" desc="A label for scripts Scripts blocked option which is overridden by a allowlist built into the browser's WebUI.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST" desc="A label for scripts Scripts blocked option which is overridden by a allowlist built into the browser's WebUI." formatter_data="webui=BraveShields">
     (enforced by allowlist)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule." formatter_data="webui=BraveShields">
     (enforced by supervisor)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_PWA" desc="A label for scripts Scripts blocked option which is overridden by a PWA.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_PWA" desc="A label for scripts Scripts blocked option which is overridden by a PWA." formatter_data="webui=BraveShields">
     (enforced by PWA)
   </message>
 
@@ -172,23 +212,23 @@
     Trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts." formatter_data="webui=BraveShields">
     Block trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts." formatter_data="webui=BraveShields">
     Aggressively block trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts" formatter_data="webui=BraveShields">
     Allow all trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_THIRD_PARTY_COOKIES_BLOCKED" desc="Menu option that would block third-party cookies.">
+  <message name="IDS_BRAVE_SHIELDS_THIRD_PARTY_COOKIES_BLOCKED" desc="Menu option that would block third-party cookies." formatter_data="webui=BraveShields">
     Block third-party cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
+  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled." formatter_data="webui=BraveShields">
     Forget me when I close this site
   </message>
 
@@ -212,11 +252,11 @@
     Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies." formatter_data="webui=BraveShields">
     Block all cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIES_ALLOWED_ALL" desc="Menu option that would allow all cookies on the current website.">
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_ALLOWED_ALL" desc="Menu option that would allow all cookies on the current website." formatter_data="webui=BraveShields">
     Allow all cookies
   </message>
 
@@ -224,27 +264,27 @@
     Fingerprinting blocked
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts." formatter_data="webui=BraveShields">
     Block fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts." formatter_data="webui=BraveShields">
     Aggressively block fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts." formatter_data="webui=BraveShields">
     Allow fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED" desc="Menu option that doesn't upgrade HTTP connections.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED" desc="Menu option that doesn't upgrade HTTP connections." formatter_data="webui=BraveShields">
     Don't upgrade HTTP connections
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD" desc="Menu option that prefers to use HTTPS whenever possible.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD" desc="Menu option that prefers to use HTTPS whenever possible." formatter_data="webui=BraveShields">
     Upgrade connections to HTTPS
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT" desc="Menu option that requires HTTPS on all connections.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT" desc="Menu option that requires HTTPS on all connections." formatter_data="webui=BraveShields">
     Only connect with HTTPS
   </message>
 
@@ -265,11 +305,15 @@
 <ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPT_DETAILS_TITLE" desc="Title of the blocked scripts details view" formatter_data="webui=BraveShields">
+    Scripts
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts" formatter_data="webui=BraveShields">
     Blocked scripts
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed scripts">
+  <message name="IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed scripts" formatter_data="webui=BraveShields">
     Allowed scripts
   </message>
 
@@ -277,11 +321,15 @@
     anti-fingerprinting protections applied
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT" desc="The label in the shields fingerprinting side panel for users to obtain more information.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_PROTECTIONS_TITLE" desc="Title of the fingerprinting protections details view" formatter_data="webui=BraveShields">
+    Fingerprinting protections
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT" desc="The label in the shields fingerprinting side panel for users to obtain more information." formatter_data="webui=BraveShields">
     Learn more
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION" desc="The description in the shields fingerprinting side panel.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION" desc="The description in the shields fingerprinting side panel." formatter_data="webui=BraveShields">
     Applied protections do not necessarily indicate that this web page is attempting to fingerprint your browser.
   </message>
 
