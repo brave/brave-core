@@ -50,17 +50,8 @@
 
 namespace {
 
-bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
+bool PrepareTabForFirstPartyStorageCleanup(content::WebContents* contents,
                                            const std::string& etldplusone) {
-  if (tab_handle == tabs::TabHandle::Null()) {
-    return false;
-  }
-  auto* tab = tab_handle.Get();
-  if (!tab) {
-    return false;
-  }
-
-  content::WebContents* contents = tab->GetContents();
   if (!contents) {
     return false;
   }
@@ -220,7 +211,7 @@ void BraveEphemeralStorageServiceDelegate::
 
     base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
-      if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
+      if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetContents(),
                                                          ephemeral_domain)) {
         continue;
       }
