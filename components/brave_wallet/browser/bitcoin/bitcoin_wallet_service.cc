@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
+#include "base/numerics/checked_math.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
@@ -33,8 +34,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -437,6 +440,29 @@ void CreateTransactionTask::WorkOnTask() {
     return;
   }
 
+  if (!transaction_.sending_max_amount()) {
+    BitcoinTransaction::TxOutput target_output;
+    target_output.type = BitcoinTransaction::TxOutputType::kTarget;
+    target_output.amount = transaction_.amount();
+    target_output.address = transaction_.to();
+    target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        target_output.address, IsTestnet());
+    const uint32_t target_vbytes =
+        BitcoinSerializer::CalcOutputVBytesInTransaction(target_output);
+    base::CheckedNumeric<uint64_t> dust_threshold =
+        ApplyFeeRate(kDustRelayFeeRate, target_vbytes);
+    if (!dust_threshold.IsValid()) {
+      SetError(WalletInternalErrorMessage());
+      ScheduleWorkOnTask();
+      return;
+    }
+    if (transaction_.amount() < dust_threshold.ValueOrDie()) {
+      SetError(WalletAmountTooSmallErrorMessage());
+      ScheduleWorkOnTask();
+      return;
+    }
+  }
+
   if (!chain_height_) {
     bitcoin_wallet_service_->bitcoin_rpc().GetChainHeight(
         GetNetworkForBitcoinAccount(account_id_),
@@ -450,6 +476,35 @@ void CreateTransactionTask::WorkOnTask() {
         account_id_.Clone(), base::BindOnce(&CreateTransactionTask::OnGetUtxos,
                                             weak_ptr_factory_.GetWeakPtr()));
     return;
+  }
+
+  // Guard against requests that exceed the available balance early to avoid
+  // constructing invalid transactions.
+  if (!transaction_.sending_max_amount()) {
+    base::CheckedNumeric<uint64_t> available = 0;
+    for (const auto& [_, utxos] : utxo_map_) {
+      for (const auto& utxo : utxos) {
+        uint64_t utxo_value = 0;
+        if (!base::StringToUint64(utxo.value, &utxo_value)) {
+          SetError(WalletInternalErrorMessage());
+          ScheduleWorkOnTask();
+          return;
+        }
+
+        available += utxo_value;
+        if (!available.IsValid()) {
+          SetError(WalletInternalErrorMessage());
+          ScheduleWorkOnTask();
+          return;
+        }
+      }
+    }
+
+    if (transaction_.amount() > available.ValueOrDie()) {
+      SetError(WalletInsufficientBalanceErrorMessage());
+      ScheduleWorkOnTask();
+      return;
+    }
   }
 
   if (!change_address_) {
@@ -544,7 +599,11 @@ void CreateTransactionTask::OnGetFeeEstimates(
   }
 
   estimates_ = std::move(estimates.value());
-  DCHECK(!estimates_.empty());
+  if (estimates_.empty()) {
+    SetError(WalletInternalErrorMessage());
+    WorkOnTask();
+    return;
+  }
   WorkOnTask();
 }
 
@@ -594,13 +653,15 @@ void CreateTransactionTask::OnFetchRawTransactions(
 
 double CreateTransactionTask::GetFeeRate() {
   DCHECK(!estimates_.empty());
+  double rate = 0.0;
   if (estimates_.contains(kMediumPriorityTargetBlock)) {
-    return estimates_.at(kMediumPriorityTargetBlock);
+    rate = estimates_.at(kMediumPriorityTargetBlock);
+  } else if (estimates_.contains(kHighPriorityTargetBlock)) {
+    rate = estimates_.at(kHighPriorityTargetBlock);
+  } else {
+    rate = IsTestnet() ? kFallbackTestnetFeeRate : kFallbackMainnetFeeRate;
   }
-  if (estimates_.contains(kHighPriorityTargetBlock)) {
-    return estimates_.at(kHighPriorityTargetBlock);
-  }
-  return IsTestnet() ? kFallbackTestnetFeeRate : kFallbackMainnetFeeRate;
+  return std::max(rate, kDustRelayFeeRate);
 }
 
 double CreateTransactionTask::GetLongtermFeeRate() {

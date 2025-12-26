@@ -222,6 +222,23 @@ TEST_F(BitcoinRpcUnitTest, GetFeeEstimates) {
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
+  // Zero fee value should be rejected.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected(ParsingError()))));
+  url_loader_factory_.AddResponse(req_url, R"({"1": 0})");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Huge fee value should be rejected or clamped; currently expecting
+  // rejection.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected(ParsingError()))));
+  url_loader_factory_.AddResponse(req_url, R"({"1": 1000000000})");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
   // Non-integer key fails.
   EXPECT_CALL(callback,
               Run(GetFeeEstimatesResult(base::unexpected(ParsingError()))));
@@ -368,6 +385,14 @@ TEST_F(BitcoinRpcUnitTest, GetTransactionRaw) {
   EXPECT_CALL(callback,
               Run(Truly([&](auto& arg) { return arg == tx_expected; })));
   url_loader_factory_.AddResponse(req_url, tx_json);
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Syntactically valid hex but malformed transaction payload should be
+  // rejected.
+  EXPECT_CALL(callback, Run(MatchError(ParsingError())));
+  url_loader_factory_.AddResponse(req_url, "");
   bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

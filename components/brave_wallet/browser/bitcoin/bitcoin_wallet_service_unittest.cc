@@ -16,6 +16,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -428,6 +429,25 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
             "00142DAF8BA8858A8D65B8C6107ECE99DA1FAEF0B944");
 }
 
+TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionRejectsDustTarget) {
+  SetupBtcAccount();
+
+  // Guard against creating outputs below dust threshold (unspendable/unsafe).
+  using CreateTransactionResult =
+      base::expected<BitcoinTransaction, std::string>;
+  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+
+  EXPECT_CALL(callback, Run(Truly([](const CreateTransactionResult& arg) {
+                return !arg.has_value();
+              })));
+
+  // Amount is intentionally below any reasonable dust threshold.
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress, 1,
+                                             false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
   SetupBtcAccount(5, 5);
 
@@ -826,6 +846,68 @@ TEST_F(BitcoinWalletServiceUnitTest, BitcoinImportRunsDiscovery) {
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
   EXPECT_EQ(5u, acc_info->next_receive_address->key_id->index);
   EXPECT_EQ(8u, acc_info->next_change_address->key_id->index);
+}
+
+// Tests for gaps identified in notes.md
+
+TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionInvalidAddressError) {
+  // Tests that invalid address produces parsing error during transaction
+  // creation.
+  SetupBtcAccount();
+
+  using CreateTransactionResult =
+      base::expected<BitcoinTransaction, std::string>;
+  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+
+  // Expect failure with parsing error message.
+  EXPECT_CALL(callback, Run(Truly([](const CreateTransactionResult& arg) {
+                EXPECT_FALSE(arg.has_value());
+                EXPECT_EQ(arg.error(), WalletParsingErrorMessage());
+                return !arg.has_value();
+              })));
+
+  // Attempt to create transaction with invalid address.
+  bitcoin_wallet_service_->CreateTransaction(
+      account_id(), "invalid_bitcoin_address", 10000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionMaxSendDrainsCorrectly) {
+  // Tests that max-send (sending_max_amount=true) drains the entire balance
+  // except for fees, leaving no change output.
+  SetupBtcAccount();
+
+  using CreateTransactionResult =
+      base::expected<BitcoinTransaction, std::string>;
+  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+
+  BitcoinTransaction actual_tx;
+  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
+                EXPECT_TRUE(arg.has_value());
+                actual_tx = arg.value();
+                return true;
+              })));
+
+  // Use max-send mode.
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress, 0,
+                                             true, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Verify max-send behavior:
+  // - All available UTXOs should be consumed
+  // - Single output (no change)
+  // - Output amount = total inputs - fee
+  uint64_t total_inputs = actual_tx.TotalInputsAmount();
+  uint64_t fee = actual_tx.EffectiveFeeAmount();
+  EXPECT_GT(total_inputs, 0u);
+  EXPECT_GT(fee, 0u);
+
+  // Max-send should have only 1 output (target, no change).
+  EXPECT_EQ(actual_tx.outputs().size(), 1u);
+  EXPECT_EQ(actual_tx.outputs()[0].amount, total_inputs - fee);
+  EXPECT_EQ(actual_tx.outputs()[0].address, kMockBtcAddress);
 }
 
 }  // namespace brave_wallet
