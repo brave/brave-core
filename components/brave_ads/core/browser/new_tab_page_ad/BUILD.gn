@@ -1,0 +1,32 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("new_tab_page_ad") {
+  sources = [
+    "new_tab_page_ad_prefetcher.cc",
+    "new_tab_page_ad_prefetcher.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/public:headers",
+  ]
+
+  deps = [ "//brave/components/brave_ads/core/browser/service" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_page_ad_prefetcher_unittest.cc" ]
+
+  deps = [
+    ":new_tab_page_ad",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//brave/components/brave_ads/core/public:headers",
+    "//testing/gtest",
+    "//url",
+  ]
+}

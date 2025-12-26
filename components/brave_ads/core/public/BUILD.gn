@@ -43,7 +43,6 @@ source_set("headers") {
     "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
     "prefs/pref_registry.h",
-    "service/ads_service_callback.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",
     "user_engagement/reactions/reactions_util.h",

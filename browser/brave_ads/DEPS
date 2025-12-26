@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_ads/content/browser",
   "+brave/components/brave_ads/core/browser/service",
+  "+brave/components/brave_ads/core/browser/virtual_pref",
   "+brave/components/brave_ads/core/mojom",
 ]

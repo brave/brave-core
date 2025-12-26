@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_KEY_CONFIG_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_KEY_CONFIG_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_KEY_CONFIG_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_KEY_CONFIG_H_
 
 #include <memory>
 #include <optional>
@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/brave_ads/core/browser/service/oblivious_http_feature.h"
+#include "brave/components/brave_ads/core/browser/network/oblivious_http_feature.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -89,4 +89,4 @@ class ObliviousHttpKeyConfig {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_KEY_CONFIG_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_KEY_CONFIG_H_
