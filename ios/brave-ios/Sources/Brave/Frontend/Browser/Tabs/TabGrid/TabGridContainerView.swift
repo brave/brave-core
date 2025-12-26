@@ -141,7 +141,7 @@ class TabGridContainerView: UIView {
 
   // MARK: -
 
-  private func scrollToSelectedItem(animated: Bool) {
+  fileprivate func scrollToSelectedItem(animated: Bool) {
     guard let tab = tabs.first(where: \.isVisible),
       let indexPath = dataSource.indexPath(for: tab.id)
     else { return }
@@ -470,6 +470,13 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       self.viewModel = viewModel
       self.contextMenu = contextMenu
       self._selectedTabList = selectedTabList
+
+      // Set up scroll handler to be called after mode switch completes
+      viewModel.onModeSwitchComplete = { [weak self] in
+        guard let self, let containerView = self.containerView else { return }
+        containerView.collectionView.layoutIfNeeded()
+        containerView.scrollToSelectedItem(animated: false)
+      }
     }
 
     func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource) {
