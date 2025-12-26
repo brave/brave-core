@@ -42,7 +42,7 @@ FilterUnsupportedChromiumActions(
 //        `kShowAddBookmarkButton`, `kShowSidePanel`, `kShowWallet`,
 //        `kShowAIChat`, `kShowVPN`.
 //        In 'Address bar' category: `kShowReward`,
-//        `kShowBraveNews`.
+//        `kShowBraveNews`, `kShowShareMenu`.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
     content::WebContents& web_contents,
