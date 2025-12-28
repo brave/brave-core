@@ -24,7 +24,6 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/image_fetcher/ios/ios_image_decoder_impl.h"
 #include "components/signin/public/identity_manager/primary_account_access_token_fetcher.h"
-#include "components/signin/public/identity_manager/scope_set.h"
 #include "google_apis/gaia/gaia_constants.h"
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
