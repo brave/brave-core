@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "net/base/net_export.h"
 #include "net/cert/ct_objects_extractor.h"
@@ -298,6 +299,8 @@ std::string SignatureAlgorithmDigestToName(
     case bssl::SignatureAlgorithm::kEcdsaSha512:
     case bssl::SignatureAlgorithm::kRsaPssSha512:
       return "SHA-512";
+    case bssl::SignatureAlgorithm::kMtcProofDraftDavidben08:
+      NOTREACHED();
   }
 }
 
@@ -318,6 +321,8 @@ std::string SignatureAlgorithmIdToName(
     case bssl::SignatureAlgorithm::kEcdsaSha384:
     case bssl::SignatureAlgorithm::kEcdsaSha512:
       return "ECDSA";
+    case bssl::SignatureAlgorithm::kMtcProofDraftDavidben08:
+      NOTREACHED();
   }
 }
 
