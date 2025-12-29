@@ -212,7 +212,94 @@ export const style = scoped.css`
     max-width: 700px;
     width: 60%;
     padding: ${spacing['4Xl']};
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  /* Browser Dropdown Styles */
+  .browser-dropdown {
+    display: flex;
+    flex-direction: column;
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .browser-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: ${spacing['2Xl']};
+    padding: ${spacing['2Xl']} ${spacing['3Xl']};
+  }
+
+  .browser-icons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .browser-icons-grid leo-icon {
+    --leo-icon-size: 18px;
+    --leo-icon-color: ${color.icon.default};
+  }
+
+  .browser-dropdown-header h3 {
+    font: ${font.heading.h3};
+    color: ${color.text.primary};
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .browser-dropdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing.m};
+    padding: 0 ${spacing.m} ${spacing.m};
+    max-height: 432px;
+    overflow-y: auto;
+  }
+
+  .browser-item {
+    display: flex;
+    align-items: center;
+    gap: ${spacing['2Xl']};
+    padding: ${spacing.l} ${spacing['2Xl']};
+    border: 1px solid ${color.divider.subtle};
+    border-radius: ${radius.m};
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .browser-item:hover {
+    background: ${color.container.highlight};
+  }
+
+  .browser-item-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .browser-item-icon leo-icon {
+    --leo-icon-size: 40px;
+    --leo-icon-color: ${color.icon.default};
+  }
+
+  .browser-item-name {
+    flex: 1;
+    font: ${font.heading.h4};
+    color: ${color.text.primary};
+    opacity: 0.9;
+  }
+
 
   .footer {
     display: flex;

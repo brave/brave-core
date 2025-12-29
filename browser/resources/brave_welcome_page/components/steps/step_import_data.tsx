@@ -5,8 +5,22 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import Label from '@brave/leo/react/label'
 
 import { StepContentProps, StepFooterProps } from '../types'
+
+const browserProfiles = [
+  { name: 'Google Chrome', icon: 'chromerelease-color', profile: 'Agustín Ruiz' },
+  { name: 'Google Chrome', icon: 'chromerelease-color', profile: 'Work' },
+  { name: 'Microsoft Edge', icon: 'edge-color' },
+  { name: 'Vivaldi', icon: 'vivaldi-color' },
+  { name: 'DuckDuckGo', icon: 'duckduckgo-color' },
+  { name: 'Firefox', icon: 'firefox-color' },
+  { name: 'Edge', icon: 'edge-color' },
+  { name: 'Ecosia', icon: 'ecosia-color' },
+  { name: 'Safari', icon: 'safari-color' }
+]
 
 export function StepImportDataContent({}: StepContentProps) {
   return (
@@ -19,7 +33,30 @@ export function StepImportDataContent({}: StepContentProps) {
         </div>
       </div>
       <div className="right-content">
-      Content from step 2
+        <div className="browser-dropdown">
+          <div className="browser-dropdown-header">
+            <div className="browser-icons-grid">
+              <Icon name="chromerelease-color" />
+              <Icon name="safari-color" />
+              <Icon name="firefox-color" />
+              <Icon name="edge-color" />
+            </div>
+            <h3>Select your previous browser</h3>
+          </div>
+          <div className="browser-dropdown-list">
+            {browserProfiles.map((browser, index) => (
+              <div key={index} className="browser-item">
+                <div className="browser-item-icon">
+                  <Icon name={browser.icon} />
+                </div>
+                <span className="browser-item-name">{browser.name}</span>
+                {browser.profile && (
+                  <Label mode="loud" color="neutral">{browser.profile}</Label>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
