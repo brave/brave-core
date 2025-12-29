@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 import { style } from './app.style'
 import { StepDefinition } from './types'
@@ -97,8 +98,13 @@ export function App() {
   return (
     <div data-css-scope={style.scope}>
       <div className="container">
-        <div className={`step-wrapper ${getTransitionClass()}`}>
-          <DisplayedContent {...stepProps} />
+        <div className="content-area">
+          <div className="brave-logo-container">
+            <Icon name='social-brave-release-favicon-fullheight-color'/>
+          </div>
+          <div className={`step-wrapper ${getTransitionClass()}`}>
+            <DisplayedContent {...stepProps} />
+          </div>
         </div>
         <CurrentFooter {...stepProps} />
       </div>

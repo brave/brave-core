@@ -93,6 +93,21 @@ export const style = scoped.css`
     overflow: hidden;
   }
 
+  .content-area {
+    display: flex;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Static Brave logo - stays in place during transitions */
+  .content-area > .brave-logo-container {
+    position: absolute;
+    top: ${spacing['4Xl']};
+    left: ${spacing['4Xl']};
+    z-index: 10;
+  }
+
   /* Step transition wrapper */
   .step-wrapper {
     display: flex;
@@ -159,14 +174,17 @@ export const style = scoped.css`
     max-width: 430px;
     width: 40%;
     padding: ${spacing['4Xl']};
+    /* Add top padding to account for the absolutely positioned logo */
+    padding-top: calc(${spacing['4Xl']} + 52px + ${spacing['4Xl']});
   }
 
   .brave-logo-container {
     margin-bottom: ${spacing['4Xl']};
   }
-    .brave-logo-container leo-icon{
+
+  .brave-logo-container leo-icon {
     --leo-icon-size: 52px;
-    }
+  }
 
   .left-text-content {
     display: flex;
@@ -206,10 +224,16 @@ export const style = scoped.css`
 
   /* Tablet breakpoints */
   @media (max-width: 1024px) {
-  .container{
-  max-height: auto;
-  height:auto;
-  }
+    .container {
+      max-height: auto;
+      height: auto;
+    }
+
+    .content-area > .brave-logo-container {
+      top: ${spacing['2Xl']};
+      left: ${spacing['2Xl']};
+    }
+
     .content {
       flex-direction: column;
     }
@@ -218,12 +242,14 @@ export const style = scoped.css`
       max-width: 100%;
       width: 100%;
       padding: ${spacing['2Xl']};
+      padding-top: calc(${spacing['2Xl']} + 52px + ${spacing['2Xl']});
     }
 
     .right-content {
       max-width: 100%;
       width: 100%;
       padding: ${spacing['2Xl']};
+      overflow: hidden;
     }
 
     .footer {
