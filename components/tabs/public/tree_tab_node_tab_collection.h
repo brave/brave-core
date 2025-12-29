@@ -66,8 +66,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       tabs::TabCollection& parent,
       std::vector<TreeTabNodeTabCollection*>& nodes);
 
-  // Could be nullptr on closing the tab. Should be nulled out in order to avoid
-  // dangling pointer issues.
+  // Could be nullptr on closing the tab.
   base::WeakPtr<tabs::TabInterface> current_tab_;
 
   // Callback invoked when this TreeTabNode is destroyed.
