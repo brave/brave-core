@@ -31,6 +31,15 @@ export function App() {
   const [displayedContentIndex, setDisplayedContentIndex] = React.useState(0)
   const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
   const [direction, setDirection] = React.useState<TransitionDirection>('forward')
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true)
+
+  // Clear initial load flag after entrance animation completes
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false)
+    }, 1500) // 0.6s delay + 0.9s animation duration
+    return () => clearTimeout(timer)
+  }, [])
 
   const navigateToStep = React.useCallback((newIndex: number, dir: TransitionDirection) => {
     if (transitionState !== 'idle') return
@@ -97,7 +106,7 @@ export function App() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className="container">
+      <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
         <div className="content-area">
           <div className="brave-logo-container">
             <Icon name='social-brave-release-favicon-fullheight-color'/>

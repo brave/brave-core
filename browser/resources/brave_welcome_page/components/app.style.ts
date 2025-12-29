@@ -93,6 +93,23 @@ export const style = scoped.css`
     overflow: hidden;
   }
 
+  /* Initial page entrance animation */
+  .container.entrance-animation {
+    opacity: 0;
+    animation: entranceFadeScale 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
+  }
+
+  @keyframes entranceFadeScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   .content-area {
     display: flex;
     flex: 1;
