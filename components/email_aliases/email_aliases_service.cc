@@ -37,27 +37,16 @@ namespace email_aliases {
 
 namespace {
 
-constexpr char kBraveServicesKeyHeader[] = "Brave-Key";
-
-constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
-constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
-constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
-
 constexpr char kEmailAliasesServiceURL[] = "https://%s/manage";
 
-// Minimum interval between verify/result polls
-constexpr base::TimeDelta kSessionPollInterval = base::Seconds(2);
-// Maximum total polling duration for a single verification flow.
-constexpr base::TimeDelta kMaxSessionPollDuration = base::Minutes(30);
-
 const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
-    net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
+    net::DefineNetworkTrafficAnnotation("brave_email_aliases_service", R"(
       semantics {
-        sender: "Email Aliases service"
+        sender: "Email Aliases Service"
         description:
-          "Call Brave Accounts Service API"
+          "Call to Email Aliases Service API"
         trigger:
-          "When the user requests to authenticate with Email Aliases"
+          "When the user communicates with Email Aliases"
         destination: BRAVE_OWNED_SERVICE
       }
       policy {
@@ -103,19 +92,6 @@ base::expected<T, std::string> ParseResponseDictAs(
 }  // namespace
 
 // static
-GURL EmailAliasesService::GetAccountsServiceVerifyInitURL() {
-  return GURL(absl::StrFormat(kAccountServiceEndpoint,
-                              brave_domains::GetServicesDomain("accounts.bsg"),
-                              kAccountsServiceVerifyInitPath));
-}
-
-GURL EmailAliasesService::GetAccountsServiceVerifyResultURL() {
-  return GURL(absl::StrFormat(kAccountServiceEndpoint,
-                              brave_domains::GetServicesDomain("accounts.bsg"),
-                              kAccountsServiceVerifyResultPath));
-}
-
-// static
 GURL EmailAliasesService::GetEmailAliasesServiceURL() {
   return GURL(absl::StrFormat(kEmailAliasesServiceURL,
                               brave_domains::GetServicesDomain("aliases")));
@@ -127,10 +103,8 @@ EmailAliasesService::EmailAliasesService(
     os_crypt_async::OSCryptAsync* os_crypt_async)
     : url_loader_factory_(url_loader_factory),
       pref_service_(pref_service),
-      verify_init_url_(GetAccountsServiceVerifyInitURL()),
-      verify_result_url_(GetAccountsServiceVerifyResultURL()),
       email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {
-  CHECK(features::IsEmailAliasesEnabled());
+  CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(pref_service_);
 
   os_crypt_async->GetInstance(base::BindOnce(
@@ -140,9 +114,7 @@ EmailAliasesService::EmailAliasesService(
 EmailAliasesService::~EmailAliasesService() = default;
 
 // static
-void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  EmailAliasesAuth::RegisterProfilePrefs(registry);
-}
+void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {}
 
 void EmailAliasesService::Shutdown() {
   receivers_.Clear();
@@ -155,64 +127,11 @@ void EmailAliasesService::BindInterface(
 }
 
 void EmailAliasesService::NotifyObserversAuthStateChanged(
-    mojom::AuthenticationStatus status,
-    const std::optional<std::string>& error_message) {
+    mojom::AuthenticationStatus status) {
   const auto email = auth_ ? auth_->GetAuthEmail() : std::string();
   for (auto& observer : observers_) {
-    observer->OnAuthStateChanged(
-        mojom::AuthState::New(status, email, error_message));
+    observer->OnAuthStateChanged(mojom::AuthState::New(status, email));
   }
-}
-
-void EmailAliasesService::ResetVerificationFlow() {
-  CHECK(auth_);
-  verification_simple_url_loader_.reset();
-  session_request_timer_.Stop();
-  verification_token_.clear();
-  auth_->SetAuthToken({});
-}
-
-void EmailAliasesService::RequestAuthentication(
-    const std::string& auth_email,
-    RequestAuthenticationCallback callback) {
-  CHECK(auth_);
-  ResetVerificationFlow();
-  auth_->SetAuthEmail(auth_email);
-  if (auth_email.empty()) {
-    std::move(callback).Run(base::unexpected(
-        l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED)));
-    return;
-  }
-  AuthenticationRequest auth_request;
-  auth_request.email = auth_email;
-  auth_request.intent = "auth_token";
-  auth_request.service = "email-aliases";
-  std::optional<std::string> body = base::WriteJson(auth_request.ToValue());
-  CHECK(body);
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = verify_init_url_;
-  resource_request->method = net::HttpRequestHeaders::kPostMethod;
-  resource_request->headers.SetHeader(kBraveServicesKeyHeader,
-                                      BUILDFLAG(BRAVE_SERVICES_KEY));
-  verification_simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), kTrafficAnnotation);
-  verification_simple_url_loader_->SetRetryOptions(
-      /* max_retries=*/3,
-      network::SimpleURLLoader::RETRY_ON_5XX |
-          network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
-  verification_simple_url_loader_->AttachStringForUpload(*body,
-                                                         "application/json");
-
-  // Wrap the mojo result callback for case when user's cancelled verification
-  // flow. It is an error to drop response callbacks which still correspond to
-  // an open interface pipe.
-  auto wrapper = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      std::move(callback), base::unexpected(std::string()));
-  verification_simple_url_loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
-                     base::Unretained(this), std::move(wrapper)),
-      kMaxResponseLength.InBytesUnsigned());
 }
 
 void EmailAliasesService::OnEncryptorReady(
@@ -243,160 +162,16 @@ mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
     return mojom::AuthenticationStatus::kStartup;
   } else if (IsAuthenticated()) {
     return mojom::AuthenticationStatus::kAuthenticated;
-  } else if (!verification_token_.empty()) {
-    return mojom::AuthenticationStatus::kAuthenticating;
   }
   return mojom::AuthenticationStatus::kUnauthenticated;
 }
 
 void EmailAliasesService::OnAuthChanged() {
-  NotifyObserversAuthStateChanged(GetCurrentStatus());
-}
-
-void EmailAliasesService::OnRequestAuthenticationResponse(
-    RequestAuthenticationCallback callback,
-    std::optional<std::string> response_body) {
-  verification_simple_url_loader_.reset();
-  if (!response_body) {
-    std::move(callback).Run(base::unexpected(
-        l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY)));
-    return;
+  const auto email = auth_ ? auth_->GetAuthEmail() : std::string();
+  for (auto& observer : observers_) {
+    observer->OnAuthStateChanged(
+        mojom::AuthState::New(GetCurrentStatus(), email));
   }
-  const auto response_body_dict = base::JSONReader::ReadDict(
-      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!response_body_dict) {
-    std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
-        IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY)));
-    return;
-  }
-  auto error_message = ErrorResponse::FromValue(*response_body_dict);
-  if (error_message) {
-    LOG(ERROR) << "Email Aliases verification error: " << error_message->error;
-    std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
-        IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN)));
-    return;
-  }
-  auto parsed_auth = AuthenticationResponse::FromValue(*response_body_dict);
-  if (!parsed_auth || parsed_auth->verification_token.empty()) {
-    LOG(ERROR) << "Email Aliases verification error: No verification token";
-    std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
-        IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN)));
-    return;
-  }
-  // Success; set the verification token and notify observers.
-  verification_token_ = parsed_auth->verification_token;
-  NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticating);
-  std::move(callback).Run(base::ok(std::monostate{}));
-  // Begin the polling window.
-  RequestSession();
-}
-
-void EmailAliasesService::RequestSession() {
-  CHECK(!verification_simple_url_loader_.get());
-  if (verification_token_.empty()) {
-    // No verification token; polling has been cancelled.
-    return;
-  }
-  SessionRequest session_request;
-  session_request.wait = true;
-  std::optional<std::string> body = base::WriteJson(session_request.ToValue());
-  CHECK(body);
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = verify_result_url_;
-  resource_request->method = net::HttpRequestHeaders::kPostMethod;
-  resource_request->headers.SetHeader(
-      "Authorization", std::string("Bearer ") + verification_token_);
-  resource_request->headers.SetHeader(kBraveServicesKeyHeader,
-                                      BUILDFLAG(BRAVE_SERVICES_KEY));
-  verification_simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), kTrafficAnnotation);
-  verification_simple_url_loader_->AttachStringForUpload(*body,
-                                                         "application/json");
-  verification_simple_url_loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
-                     base::Unretained(this)),
-      kMaxResponseLength.InBytesUnsigned());
-}
-
-void EmailAliasesService::OnRequestSessionResponse(
-    std::optional<std::string> response_body) {
-  verification_simple_url_loader_.reset();
-  if (!response_body) {
-    // No response body, log it and re-request.
-    LOG(ERROR) << "Email Aliases service error: No response body";
-    MaybeRequestSessionAgain();
-    return;
-  }
-  const auto response_body_dict = base::JSONReader::ReadDict(
-      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!response_body_dict) {
-    // Invalid response body, log it and re-request.
-    LOG(ERROR) << "Email Aliases service error: Invalid response body";
-    MaybeRequestSessionAgain();
-    return;
-  }
-  auto error_message = ErrorResponse::FromValue(*response_body_dict);
-  if (error_message) {
-    // An error has been reported by the server, indicating that verification
-    // failed. Log it and notify observers.
-    LOG(ERROR) << "Email Aliases service error: " << error_message->error;
-    session_poll_elapsed_timer_.reset();
-    NotifyObserversAuthStateChanged(
-        mojom::AuthenticationStatus::kUnauthenticated,
-        /*error_message=*/l10n_util::GetStringUTF8(
-            IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
-    return;
-  }
-  auto parsed_session = SessionResponse::FromValue(*response_body_dict);
-  if (!parsed_session) {
-    // No error message but unparseable response, log it and re-request.
-    LOG(ERROR) << "Email Aliases service verification error: Parse error but "
-                  "no error message";
-    MaybeRequestSessionAgain();
-    return;
-  }
-  if (!parsed_session->verified || !parsed_session->auth_token) {
-    // Verification still in progress; no auth token yet. Re-request.
-    MaybeRequestSessionAgain();
-    return;
-  }
-  // Success; set the auth token and notify observers.
-  auth_->SetAuthToken(*parsed_session->auth_token);
-  session_poll_elapsed_timer_.reset();
-  // Kick off an initial aliases refresh on successful authentication.
-  RefreshAliases();
-}
-
-void EmailAliasesService::MaybeRequestSessionAgain() {
-  if (!session_poll_elapsed_timer_.has_value()) {
-    session_poll_elapsed_timer_.emplace();
-  }
-  if (session_poll_elapsed_timer_->Elapsed() > kMaxSessionPollDuration) {
-    LOG(ERROR) << "Email Aliases service verification error: exceeded max "
-                  "poll duration";
-    session_poll_elapsed_timer_.reset();
-    NotifyObserversAuthStateChanged(
-        mojom::AuthenticationStatus::kUnauthenticated,
-        /*error_message=*/l10n_util::GetStringUTF8(
-            IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
-    return;
-  }
-  // Session request timer should not be running at this point.
-  CHECK(!session_request_timer_.IsRunning());
-  // Schedule the next request after a short interval.
-  session_request_timer_.Start(
-      FROM_HERE, kSessionPollInterval,
-      base::BindOnce(&EmailAliasesService::RequestSession,
-                     base::Unretained(this)));
-}
-
-void EmailAliasesService::CancelAuthenticationOrLogout(
-    CancelAuthenticationOrLogoutCallback callback) {
-  ResetVerificationFlow();
-  std::move(callback).Run();
-  NotifyObserversAuthStateChanged(
-      mojom::AuthenticationStatus::kUnauthenticated);
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
@@ -451,8 +226,7 @@ void EmailAliasesService::AddObserver(
   auto* remote = observers_.Get(id);
   if (remote) {
     remote->OnAuthStateChanged(
-        mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail(),
-                              /*error_message=*/std::nullopt));
+        mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail()));
   }
 }
 

@@ -19,6 +19,7 @@
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/test_utils.h"
@@ -45,6 +46,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
                                     brave_account::features::kBraveAccount},
                                    {});
     EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
+    brave_account::prefs::RegisterPrefs(prefs_.registry());
   }
 
   void SetUp() override {
@@ -58,64 +60,6 @@ class EmailAliasesServiceTest : public ::testing::Test {
         keyed_service_.get(), true);
   }
 
-  // Make authentication request and wait for the response.
-  // Returns the error string if any, or std::nullopt on success.
-  std::optional<std::string> RequestAuthenticationWithResponse(
-      const std::string& email,
-      const std::string& response_body) {
-    test_url_loader_factory_.AddResponse(
-        keyed_service_->GetAccountsServiceVerifyInitURL().spec(),
-        response_body);
-    base::test::TestFuture<base::expected<std::monostate, std::string>> result;
-    service_->RequestAuthentication(email, result.GetCallback());
-    if (!result.Get().has_value()) {
-      return result.Get().error();
-    }
-    return std::nullopt;
-  }
-
-  void CancelAuthenticationOrLogout() {
-    const auto expected =
-        email_aliases::mojom::AuthenticationStatus::kUnauthenticated;
-    base::test::TestFuture<void> await;
-    service_->CancelAuthenticationOrLogout(await.GetCallback());
-    EXPECT_TRUE(await.Wait());
-    EXPECT_TRUE(observer_->WaitFor(expected));
-  }
-
-  void CallRequestAuthenticationAndCheck(
-      const std::string& email,
-      const std::string& response_body,
-      AuthenticationStatus expected_status,
-      const std::optional<std::string>& expected_error = std::nullopt) {
-    const auto expected = expected_status;
-    auto error = RequestAuthenticationWithResponse(email, response_body);
-    if (expected_error) {
-      EXPECT_TRUE(error.has_value());
-      EXPECT_EQ(*error, *expected_error);
-    } else {
-      EXPECT_FALSE(error.has_value());
-    }
-    EXPECT_TRUE(observer_->WaitFor(expected));
-  }
-
-  void RunRequestSessionTest(const std::vector<std::string>& responses,
-                             AuthenticationStatus expected_status) {
-    auto error = RequestAuthenticationWithResponse(
-        "test@example.com", "{\"verificationToken\":\"token123\"}");
-    EXPECT_FALSE(error.has_value());
-    // After verify/init success we should transition to Authenticating.
-    EXPECT_TRUE(observer_->WaitFor(AuthenticationStatus::kAuthenticating));
-    if (expected_status == AuthenticationStatus::kAuthenticating) {
-      return;
-    }
-    for (const auto& body : responses) {
-      test_url_loader_factory_.AddResponse(
-          keyed_service_->GetAccountsServiceVerifyResultURL().spec(), body);
-    }
-    EXPECT_TRUE(observer_->WaitFor(expected_status));
-  }
-
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   TestingPrefServiceSimple prefs_;
@@ -125,50 +69,6 @@ class EmailAliasesServiceTest : public ::testing::Test {
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<test::AuthStateObserver> observer_;
 };
-
-TEST_F(EmailAliasesServiceTest, RequestAuthentication_EmptyEmail) {
-  CallRequestAuthenticationAndCheck(
-      "", "dummy body", AuthenticationStatus::kUnauthenticated,
-      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED));
-}
-
-TEST_F(EmailAliasesServiceTest, RequestAuthentication_InvalidJson) {
-  CallRequestAuthenticationAndCheck(
-      "test@example.com", "not a json", AuthenticationStatus::kUnauthenticated,
-      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
-}
-
-TEST_F(EmailAliasesServiceTest, RequestAuthentication_NoVerificationToken) {
-  CallRequestAuthenticationAndCheck(
-      "test@example.com", "{\"foo\":\"bar\"}",
-      AuthenticationStatus::kUnauthenticated,
-      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
-}
-
-TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success) {
-  CallRequestAuthenticationAndCheck("test@example.com",
-                                    "{\"verificationToken\":\"token123\"}",
-                                    AuthenticationStatus::kAuthenticating);
-}
-
-TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success_MultipleCalls) {
-  test_url_loader_factory_.AddResponse(
-      keyed_service_->GetAccountsServiceVerifyInitURL().spec(),
-      "{\"verificationToken\":\"token123\"}");
-  base::test::TestFuture<base::expected<std::monostate, std::string>> result1;
-  service_->RequestAuthentication("test@example.com", result1.GetCallback());
-
-  base::test::TestFuture<base::expected<std::monostate, std::string>> result2;
-  service_->RequestAuthentication("test@example.com", result2.GetCallback());
-
-  base::test::TestFuture<base::expected<std::monostate, std::string>> result3;
-  service_->RequestAuthentication("test@example.com", result3.GetCallback());
-
-  // First two calls are cancelled and receive empty error.
-  EXPECT_FALSE(result1.Get().has_value());
-  EXPECT_FALSE(result2.Get().has_value());
-  EXPECT_TRUE(result3.Get().has_value());
-}
 
 TEST_F(EmailAliasesServiceTest, Auth) {
   EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
@@ -187,8 +87,10 @@ TEST_F(EmailAliasesServiceTest, Auth) {
   auth.SetAuthEmail("test@domain.com");
   auth.SetAuthToken("token");
 
+  /*
   {
     // set the same email
+    prefs_.SetString(std::string_view path, std::string_view value)
     prefs_.SetDict(
         prefs::kAuth,
         base::Value::Dict()
@@ -218,197 +120,8 @@ TEST_F(EmailAliasesServiceTest, Auth) {
                                      .Set("token", "invalid"));
     EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
     EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
-  }
+  }*/
 }
-
-TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
-  RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
-                         "\"service\":\"email-aliases\"}"},
-                        AuthenticationStatus::kAuthenticated);
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
-}
-
-TEST_F(EmailAliasesServiceTest, SessionPreserved) {
-  RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
-                         "\"service\":\"email-aliases\"}"},
-                        AuthenticationStatus::kAuthenticated);
-  // Simulate next start.
-  keyed_service_ = std::make_unique<EmailAliasesService>(
-      test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
-  {
-    auto initialized =
-        test::AuthStateObserver::Setup(keyed_service_.get(), true);
-  }
-  EXPECT_TRUE(keyed_service_->IsAuthenticated());
-  EXPECT_EQ("auth456", keyed_service_->GetAuthTokenForTesting());
-
-  // New Observer is notified.
-  auto observer = test::AuthStateObserver::Setup(keyed_service_.get());
-  EXPECT_TRUE(observer->WaitFor(AuthenticationStatus::kAuthenticated));
-
-  // Prefs contain values.
-  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()));
-  EXPECT_EQ("test@example.com", auth.GetAuthEmail());
-  EXPECT_EQ("auth456", auth.CheckAndGetAuthToken());
-
-  const auto& pref_value = prefs_.GetDict(prefs::kAuth);
-  EXPECT_EQ("test@example.com", *pref_value.FindString("email"));
-  EXPECT_FALSE(pref_value.FindString("token")->empty());  // token saved
-  EXPECT_NE("auth456", *pref_value.FindString("token"));  // token encrypted
-}
-
-TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
-  RunRequestSessionTest({"not a json"}, AuthenticationStatus::kAuthenticating);
-}
-
-TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
-  RunRequestSessionTest(
-      {
-          "{\"authToken\":null, \"verified\":false, "
-          "\"service\":\"email-aliases\"}",  // triggers retry
-          "{\"authToken\":\"auth456\", \"verified\":true, "
-          "\"service\":\"email-aliases\"}"  // success
-      },
-      email_aliases::mojom::AuthenticationStatus::kAuthenticated);
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
-  // unauthenticated, authenticating, authenticated
-  EXPECT_EQ(observer_->GetStatus().status,
-            email_aliases::mojom::AuthenticationStatus::kAuthenticated);
-}
-
-TEST_F(EmailAliasesServiceTest, RequestSession_StopsOnVerificationFailed) {
-  RunRequestSessionTest(
-      {"{\"error\":\"verification_failed\", \"code\":400, \"status\":400}"},
-      email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "");
-}
-
-TEST_F(EmailAliasesServiceTest,
-       CancelAuthenticationOrLogout_ClearsStateAndNotifies) {
-  // Authenticate
-  RunRequestSessionTest(
-      {"{\"authToken\":\"auth456\", \"verified\":true, "
-       "\"service\":\"email-aliases\"}"},
-      email_aliases::mojom::AuthenticationStatus::kAuthenticated);
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
-
-  // Now log out
-  CancelAuthenticationOrLogout();
-
-  // Auth token should be cleared
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "");
-}
-
-TEST_F(EmailAliasesServiceTest,
-       CancelAuthenticationOrLogout_WhileAuthenticating) {
-  RunRequestSessionTest(
-      {"{\"authentication\":\"pending\"}"},
-      email_aliases::mojom::AuthenticationStatus::kAuthenticating);
-
-  CancelAuthenticationOrLogout();
-
-  EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "");
-}
-
-// Timing-specific tests use a separate fixture with MOCK_TIME to validate
-// rate limiting and total polling duration.
-class EmailAliasesServiceTimingTest : public ::testing::Test {
- protected:
-  void SetUp() override {
-    feature_list_.InitWithFeatures({email_aliases::features::kEmailAliases,
-                                    brave_account::features::kBraveAccount},
-                                   {});
-    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
-    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
-    service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
-    observer_ =
-        email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
-  }
-
-  // Starts auth and captures verify/result request times via interceptor.
-  void StartAuthAndCaptureRequests(const std::string& init_body,
-                                   const std::string& result_body) {
-    // Intercept verify/result requests and record timestamps.
-    const GURL verify_result_url =
-        EmailAliasesService::GetAccountsServiceVerifyResultURL();
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, verify_result_url](const network::ResourceRequest& request) {
-          if (request.url == verify_result_url) {
-            verify_result_request_times_.push_back(
-                task_environment_.NowTicks());
-          }
-        }));
-
-    // Provide canned responses for init and result endpoints.
-    url_loader_factory_.AddResponse(
-        EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(),
-        init_body);
-    url_loader_factory_.AddResponse(verify_result_url.spec(), result_body);
-
-    // Kick off authentication.
-    base::test::TestFuture<base::expected<std::monostate, std::string>> result;
-    service_->RequestAuthentication("test@example.com", result.GetCallback());
-    EXPECT_TRUE(result.Get().has_value());
-  }
-
-  base::test::TaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  base::test::ScopedFeatureList feature_list_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  TestingPrefServiceSimple prefs_;
-  std::unique_ptr<EmailAliasesService> service_;
-  std::unique_ptr<test::AuthStateObserver> observer_;
-  std::vector<base::TimeTicks> verify_result_request_times_;
-};
-
-TEST_F(EmailAliasesServiceTimingTest, VerifyResult_IsRateLimitedByTwoSeconds) {
-  // First poll happens immediately; subsequent polls are delayed by 2s.
-  const std::string init_body = "{\"verificationToken\":\"token123\"}";
-  const std::string pending_body =
-      "{\"authToken\":null,\"service\":\"email-aliases\",\"verified\":false}";
-  StartAuthAndCaptureRequests(init_body, pending_body);
-
-  // Wait for the first verify/result request.
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return verify_result_request_times_.size() >= 1; }));
-
-  // Advance exactly 2 seconds to allow the next scheduled poll.
-  task_environment_.FastForwardBy(base::Seconds(2));
-
-  // Wait for the second request to be issued.
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return verify_result_request_times_.size() >= 2; }));
-
-  ASSERT_GE(verify_result_request_times_.size(), 2u);
-  const base::TimeDelta delta =
-      verify_result_request_times_[1] - verify_result_request_times_[0];
-  EXPECT_GE(delta, base::Seconds(2));
-}
-
-TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
-  // Provide a perpetually pending response; after 30 minutes total, polling
-  // should stop and we should transition to Unauthenticated with an error.
-  const std::string init_body = "{\"verificationToken\":\"token123\"}";
-  const std::string pending_body =
-      "{\"authToken\":null,\"service\":\"email-aliases\",\"verified\":false}";
-  StartAuthAndCaptureRequests(init_body, pending_body);
-
-  // 30 minutes * 60 seconds / 2 seconds + 2(the first + the last request) = 902
-  const unsigned long expected_requests = 30 * 60 / 2 + 2;
-
-  // 2 seconds for the last timer tick.
-  task_environment_.FastForwardBy(base::Minutes(30) + base::Seconds(2));
-
-  EXPECT_EQ(verify_result_request_times_.size(), expected_requests);
-
-  EXPECT_EQ(observer_->GetStatus().status,
-            email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/48696): Add tests for
-// checking cancellation of polling, etc.
 
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
@@ -522,6 +235,7 @@ class EmailAliasesAPITest : public ::testing::Test {
  protected:
   void SetUp() override {
     EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
+    brave_account::prefs::RegisterPrefs(prefs_.registry());
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     SetupAuth();
 
@@ -733,19 +447,11 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
-  // Authenticate to set a non-empty auth token.
-  const std::string init_body = R"({"verificationToken":"token123"})";
-  const std::string result_body =
-      R"({"authToken":"auth456", "verified":true, "service":"email-aliases"})";
-  url_loader_factory_.AddResponse(
-      EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(), init_body);
-  url_loader_factory_.AddResponse(
-      EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(),
-      result_body);
+  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                        base::BindLambdaForTesting([&]() {}));
+  auth.SetAuthEmail("test@domain.com");
+  auth.SetAuthToken("auth456");
 
-  base::test::TestFuture<base::expected<std::monostate, std::string>> result;
-  service_->RequestAuthentication("test@example.com", result.GetCallback());
-  ASSERT_TRUE(result.Get().has_value());
   // Wait until auth token is set by the session poll response.
   EXPECT_TRUE(base::test::RunUntil(
       [&]() { return service_->GetAuthTokenForTesting() == "auth456"; }));

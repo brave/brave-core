@@ -32,7 +32,6 @@ class OSCryptAsync;
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
 }  // namespace network
 
 namespace email_aliases {
@@ -61,17 +60,6 @@ class EmailAliasesService : public KeyedService,
   void Shutdown() override;
 
   // mojom::EmailAliasesService:
-  // Initiates the authentication flow for the provided |auth_email|. On success
-  // the service transitions to kAuthenticating and continues with session
-  // polling.
-  void RequestAuthentication(const std::string& auth_email,
-                             RequestAuthenticationCallback callback) override;
-
-  // Cancels any in-flight verification requests, clears authentication state,
-  // transitions to kUnauthenticated, and acknowledges via |callback|.
-  void CancelAuthenticationOrLogout(
-      CancelAuthenticationOrLogoutCallback callback) override;
-
   // Requests generation of a new alias and returns the result via |callback|.
   void GenerateAlias(GenerateAliasCallback callback) override;
 
@@ -100,10 +88,6 @@ class EmailAliasesService : public KeyedService,
   // Returns the current auth token for tests. Empty when unauthenticated.
   std::string GetAuthTokenForTesting();
 
-  // Build the fully-qualified Brave Accounts verification URLs.
-  static GURL GetAccountsServiceVerifyInitURL();
-  static GURL GetAccountsServiceVerifyResultURL();
-
   // Returns the base URL for the Email Aliases service.
   static GURL GetEmailAliasesServiceURL();
 
@@ -121,35 +105,8 @@ class EmailAliasesService : public KeyedService,
 
   void OnAuthChanged();
 
-  // Handles the response to the verify/init request. Parses a verification
-  // token and, if present, proceeds to poll the session endpoint. Invokes
-  // |callback| with an optional error message.
-  void OnRequestAuthenticationResponse(
-      RequestAuthenticationCallback callback,
-      std::optional<std::string> response_body);
-
-  // Posts a request to the verify/result endpoint to wait for completion of
-  // the authentication flow.
-  void RequestSession();
-
-  // Handles the response to the verify/result polling request. Extracts the
-  // auth token and transitions to kAuthenticated, or calls
-  // MaybeRequestSessionAgain when authentication is still pending.
-  void OnRequestSessionResponse(std::optional<std::string> response_body);
-
-  // Decides whether to call RequestSession again, depending on the whether
-  // the polling window has elapsed. Adds a delay if the minimum interval
-  // between requests has not yet elapsed.
-  void MaybeRequestSessionAgain();
-
   // Notifies all registered observers of an authentication state change.
-  void NotifyObserversAuthStateChanged(
-      mojom::AuthenticationStatus status,
-      const std::optional<std::string>& error_message = std::nullopt);
-
-  // Cancels in-flight verification requests and clears verification/auth
-  // tokens to reset the authentication flow to a clean state.
-  void ResetVerificationFlow();
+  void NotifyObserversAuthStateChanged(mojom::AuthenticationStatus status);
 
   // Fetch helper for Email Aliases backend. Specifically for GET/HEAD.
   void ApiFetch(const GURL& url,
@@ -192,9 +149,6 @@ class EmailAliasesService : public KeyedService,
   // Connected observers that receive authentication state updates.
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 
-  // Temporary token returned by verify/init and used to authorize polling.
-  std::string verification_token_;
-
   std::optional<EmailAliasesAuth> auth_;
 
   // URL loader factory used to issue network requests to Brave Accounts.
@@ -202,27 +156,8 @@ class EmailAliasesService : public KeyedService,
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
 
-  // Single SimpleURLLoader instance used for both verify/init and
-  // verify/result requests. Recreated for each new request.
-  std::unique_ptr<network::SimpleURLLoader> verification_simple_url_loader_;
-
-  // Cached URLs computed once per service lifetime
-  // Cached fully-qualified verify/init URLs.
-  const GURL verify_init_url_;
-
-  // Cached fully-qualified verify/result URL.
-  const GURL verify_result_url_;
-
   // Cached fully-qualified email aliases service base URL.
   const GURL email_aliases_service_base_url_;
-
-  // One-shot timer used to delay subsequent verify/result polls so that they
-  // are not issued more frequently than the minimum interval.
-  base::OneShotTimer session_request_timer_;
-
-  // Elapsed timer for the current verification polling window. Used to
-  // enforce a maximum total polling duration.
-  std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

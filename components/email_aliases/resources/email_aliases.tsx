@@ -27,7 +27,6 @@ export const ManagePageConnected = ({
   const [authState, setAuthState] = React.useState<AuthState>({
     status: AuthenticationStatus.kStartup,
     email: '',
-    errorMessage: undefined,
   })
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
   React.useEffect(() => {

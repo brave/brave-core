@@ -15,12 +15,6 @@ class PrefService;
 
 namespace email_aliases {
 
-namespace prefs {
-
-inline constexpr char kAuth[] = "brave.email_aliases.auth";
-
-}  // namespace prefs
-
 class EmailAliasesAuth {
  public:
   using OnChangedCallback = base::RepeatingClosure;

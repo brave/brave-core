@@ -5,7 +5,6 @@
 
 import { font, typography } from '@brave/leo/tokens/css/variables'
 import { Introduction } from './email_aliases_introduction'
-import { MainEmailEntryForm } from './email_aliases_signin_page'
 import { MainView } from './email_aliases_main_view'
 import * as React from 'react'
 import Col from './styles/Col'
@@ -28,6 +27,13 @@ const PageCol = styled(Col)`
   }
 `
 
+const BraveAccountSignIn = () => {
+  const ref = React.useRef(null)
+  return React.createElement('settings-brave-account-row', {
+    ref,
+  })
+}
+
 export const ManagePage = ({
   aliasesState,
   authState,
@@ -39,13 +45,8 @@ export const ManagePage = ({
 }) => (
   <PageCol>
     <Introduction />
-    {authState.status === AuthenticationStatus.kUnauthenticated
-    || authState.status === AuthenticationStatus.kAuthenticating ? (
-      <MainEmailEntryForm
-        authState={authState}
-        emailAliasesService={emailAliasesService}
-      />
-    ) : (
+    <BraveAccountSignIn />
+    {authState.status === AuthenticationStatus.kAuthenticated && (
       <MainView
         authState={authState}
         aliasesState={aliasesState}

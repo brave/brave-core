@@ -12,7 +12,6 @@ const uint8 kMaxAliases = 5;
 enum AuthenticationStatus {
   kStartup,
   kUnauthenticated,
-  kAuthenticating,
   kAuthenticated,
 };
 
@@ -20,8 +19,6 @@ struct AuthState {
   AuthenticationStatus status;
   // The authentication email address for this current account
   string email;
-  // Error message if authentication has failed somehow
-  string? error_message;
 };
 
 struct Alias {
@@ -42,19 +39,10 @@ interface EmailAliasesServiceObserver {
   // Called when aliases have been updated for the currently authenticated
   // account.
   OnAliasesUpdated(array<Alias> aliases);
-
 };
 
 // Interface for managing email aliases
 interface EmailAliasesService {
-
-  // Initiate authentication using the user's auth email.
-  RequestAuthentication(string auth_email) =>
-    result<mojo_base.mojom.Empty, string>;
-
-  // Cancel pending authentication or log out if already authenticated.
-  CancelAuthenticationOrLogout() => ();
-
   // Generate a proposed email alias.
   GenerateAlias() => result<string, string>;
 
