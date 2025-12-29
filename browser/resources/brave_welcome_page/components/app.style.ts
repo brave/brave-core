@@ -1,0 +1,249 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { scoped } from '$web-common/scoped_css'
+
+import bgLight from './img/bg-light.jpg'
+
+export const style = scoped.css`
+  /* CSS Reset */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  & {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font: ${font.large.regular};
+    color: ${color.text.primary};
+    background-color: ${color.primitive.neutral['0']};
+    background-image: url(${bgLight});
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: ${spacing.xl};
+  }
+
+  h1 {
+    font: ${font.heading.h1};
+    margin: 0;
+    margin-bottom: ${spacing['2Xl']};
+  }
+  p{
+  margin-bottom: ${spacing['l']};
+  }  
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-width: 1130px;
+    max-height: 700px;
+    width: 100%;
+    height: calc(100dvh - 2 * ${spacing.xl});
+    background-color: ${color.material.thick};
+    border-radius: ${radius.xxl};
+    backdrop-filter: blur(35px);
+    overflow: hidden;
+  }
+
+  /* Step transition wrapper */
+  .step-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .step-visible {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* Exiting animations */
+  .step-exit-left {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+
+  .step-exit-right {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+
+  /* Entering animations */
+  .step-enter-from-right {
+    animation: slideInFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .step-enter-from-left {
+    animation: slideInFromLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .content {
+    display: flex;
+    width: 100%;
+    flex: 1;
+  }
+
+  .left-content {
+    max-width: 430px;
+    width: 40%;
+    padding: ${spacing['4Xl']};
+  }
+
+  .brave-logo-container {
+    margin-bottom: ${spacing['4Xl']};
+  }
+    .brave-logo-container leo-icon{
+    --leo-icon-size: 52px;
+    }
+
+  .left-text-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-content {
+    max-width: 700px;
+    width: 60%;
+    padding: ${spacing['4Xl']};
+  }
+
+  .footer {
+    display: flex;
+    width: 100%;
+    padding: ${spacing['2Xl']};
+    align-items: center;
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, ${color.material.thick}, transparent);
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    display: flex;
+    gap: ${spacing['2Xl']};
+  }
+
+  .footer-right {
+    display: flex;
+    gap: ${spacing['m']};
+    text-align: right;
+  }
+
+  .main-button {
+    min-width: 240px;
+  }
+
+  /* Tablet breakpoints */
+  @media (max-width: 1024px) {
+  .container{
+  max-height: auto;
+  height:auto;
+  }
+    .content {
+      flex-direction: column;
+    }
+
+    .left-content {
+      max-width: 100%;
+      width: 100%;
+      padding: ${spacing['2Xl']};
+    }
+
+    .right-content {
+      max-width: 100%;
+      width: 100%;
+      padding: ${spacing['2Xl']};
+    }
+
+    .footer {
+      flex-direction: column;
+      gap: ${spacing['m']};
+      padding: ${spacing['xl']};
+    }
+
+    .footer-left,
+    .footer-right {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .footer-right {
+      order: -1;
+    }
+
+    .main-button {
+      order: -1;
+    }
+  }
+`
