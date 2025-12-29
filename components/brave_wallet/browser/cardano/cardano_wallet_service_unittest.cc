@@ -9,10 +9,9 @@
 #include <optional>
 #include <string>
 
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -28,13 +27,17 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using base::test::RunOnceClosure;
-using testing::_;
-using testing::DoAll;
-using testing::SaveArg;
-using testing::Truly;
+using base::test::TestFuture;
 
 namespace brave_wallet {
+
+namespace {
+
+constexpr char kExternal0Address[] =
+    "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+    "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8";
+
+}
 
 class CardanoWalletServiceUnitTest : public testing::Test {
  public:
@@ -75,7 +78,6 @@ class CardanoWalletServiceUnitTest : public testing::Test {
     cardano_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kCardanoMainnet, 0);
     ASSERT_TRUE(cardano_account_);
-    task_environment_.RunUntilIdle();
     keyring_service_->UpdateNextUnusedAddressForCardanoAccount(
         cardano_account_->account_id, next_external_index, next_internal_index);
   }
@@ -85,11 +87,10 @@ class CardanoWalletServiceUnitTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList scoped_btc_feature_{
+  base::test::ScopedFeatureList scoped_feature_{
       features::kBraveWalletCardanoFeature};
 
   mojom::AccountInfoPtr cardano_account_;
-  mojom::AccountInfoPtr hw_btc_account_;
 
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -105,59 +106,82 @@ class CardanoWalletServiceUnitTest : public testing::Test {
 TEST_F(CardanoWalletServiceUnitTest, GetBalance) {
   SetupCardanoAccount();
 
-  base::MockCallback<CardanoWalletService::GetBalanceCallback> callback;
+  TestFuture<mojom::CardanoBalancePtr, const std::optional<std::string>&>
+      balance_future;
 
-  auto expected_balance = mojom::CardanoBalance::New();
-  expected_balance->total_balance = 969750u + 2000000u + 7000000u;
+  cardano_wallet_service_->GetBalance(account_id(), std::nullopt,
+                                      balance_future.GetCallback());
 
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::CardanoBalancePtr& balance) {
-                              EXPECT_EQ(balance, expected_balance);
-                              return true;
-                            }),
-                            std::optional<std::string>()));
-  cardano_wallet_service_->GetBalance(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  auto [balance, error] = balance_future.Take();
+  EXPECT_FALSE(error);
+  EXPECT_EQ(balance->total_balance, 969750u + 2000000u + 7000000u);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
+  SetupCardanoAccount();
+  auto& token1 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token1.quantity = "12345";
+  token1.unit =
+      "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e";
+
+  auto& token2 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token2.quantity = "100";
+  token2.unit =
+      "8bca871dcd4f1dd9588d901d02677b6d2413fd19e4c8febfc353edff5045505041";
+
+  auto& token3 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][1]
+                     .amount.emplace_back();
+  token3.quantity = "200";
+  token3.unit =
+      "8bca871dcd4f1dd9588d901d02677b6d2413fd19e4c8febfc353edff5045505041";
+
+  TestFuture<mojom::CardanoBalancePtr, const std::optional<std::string>&>
+      balance_future;
+
+  cardano_wallet_service_->GetBalance(
+      account_id(),
+      "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e",
+      balance_future.GetCallback());
+
+  auto [balance, error] = balance_future.Take();
+  EXPECT_FALSE(error);
+  EXPECT_EQ(balance->total_balance, 12345u);
+
+  cardano_wallet_service_->GetBalance(
+      account_id(),
+      "8bca871dcd4f1dd9588d901d02677b6d2413fd19e4c8febfc353edff5045505041",
+      balance_future.GetCallback());
+
+  std::tie(balance, error) = balance_future.Take();
+  EXPECT_FALSE(error);
+  EXPECT_EQ(balance->total_balance, 100u + 200u);
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {
   SetupCardanoAccount();
 
-  base::MockCallback<CardanoWalletService::GetTransactionStatusCallback>
-      callback;
+  TestFuture<base::expected<bool, std::string>> tx_status_future;
 
-  EXPECT_CALL(callback,
-              Run(Truly([&](const base::expected<bool, std::string>& tx) {
-                EXPECT_FALSE(tx.value());
-                return true;
-              })))
-      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_wallet_service_->GetTransactionStatus(
-      mojom::kCardanoMainnet, kMockCardanoTxid, callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      mojom::kCardanoMainnet, kMockCardanoTxid, tx_status_future.GetCallback());
+
+  EXPECT_FALSE(tx_status_future.Take().value());
 
   cardano_test_rpc_server_->AddConfirmedTransaction(kMockCardanoTxid);
 
-  EXPECT_CALL(callback,
-              Run(Truly([&](const base::expected<bool, std::string>& tx) {
-                EXPECT_TRUE(tx.value());
-                return true;
-              })))
-      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_wallet_service_->GetTransactionStatus(
-      mojom::kCardanoMainnet, kMockCardanoTxid, callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      mojom::kCardanoMainnet, kMockCardanoTxid, tx_status_future.GetCallback());
+
+  EXPECT_TRUE(tx_status_future.Take().value());
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetUsedAddresses) {
   SetupCardanoAccount();
   auto addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
   EXPECT_EQ(addresses.size(), 1u);
-  EXPECT_EQ(addresses[0]->address_string,
-            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
-            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+  EXPECT_EQ(addresses[0]->address_string, kExternal0Address);
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetUnusedAddresses) {
@@ -170,9 +194,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetUnusedAddresses) {
 TEST_F(CardanoWalletServiceUnitTest, GetChangeAddress) {
   SetupCardanoAccount();
   auto address = cardano_wallet_service_->GetChangeAddress(account_id());
-  EXPECT_EQ(address->address_string,
-            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
-            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+  EXPECT_EQ(address->address_string, kExternal0Address);
 }
 
 TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
@@ -180,19 +202,13 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   // for all corner cases.
   SetupCardanoAccount();
 
-  base::MockCallback<CardanoWalletService::CardanoCreateTransactionTaskCallback>
-      callback;
+  TestFuture<base::expected<CardanoTransaction, std::string>> create_tx_future;
 
-  base::expected<CardanoTransaction, std::string> captured_tx;
-
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(DoAll(SaveArg<0>(&captured_tx),
-                      RunOnceClosure(task_environment_.QuitClosure())));
   cardano_wallet_service_->CreateCardanoTransaction(
       account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 8800000,
-      false, callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      false, create_tx_future.GetCallback());
+
+  auto captured_tx = create_tx_future.Take();
 
   ASSERT_TRUE(captured_tx.has_value());
 
@@ -204,8 +220,7 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   EXPECT_EQ(captured_tx->fee(), 176017u);
   EXPECT_EQ(captured_tx->invalid_after(), 155486947u);
 
-  base::test::TestFuture<std::string, CardanoTransaction, std::string>
-      post_future;
+  TestFuture<std::string, CardanoTransaction, std::string> post_future;
 
   cardano_wallet_service_->SignAndPostTransaction(
       account_id(), captured_tx.value(), post_future.GetCallback());

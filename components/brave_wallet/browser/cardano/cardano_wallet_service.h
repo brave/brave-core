@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
@@ -39,6 +40,7 @@ class CardanoWalletService : public mojom::CardanoWalletService {
 
   // mojom::CardanoWalletService:
   void GetBalance(mojom::AccountIdPtr account_id,
+                  const std::optional<std::string>& token_id_hex,
                   GetBalanceCallback callback) override;
 
   using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
@@ -95,6 +97,7 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   void OnGetUtxosForGetBalance(
+      const std::optional<cardano_rpc::TokenId>& token_id,
       GetBalanceCallback callback,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
