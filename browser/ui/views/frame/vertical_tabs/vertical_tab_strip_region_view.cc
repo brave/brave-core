@@ -1143,13 +1143,17 @@ void BraveVerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged() {
 
 void BraveVerticalTabStripRegionView::
     OnHideComopletelyWhenCollapsedPrefChanged() {
+  OnFloatingModePrefChanged();
   if (state_ == State::kCollapsed) {
     // When setting is turned on/off, we should make sure vertical tab strip is
     // getting hidden/shown.
     SetVisible(
         !tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_));
   }
-  OnFloatingModePrefChanged();
+
+  // Call after setting visibility as region view's visibility is referred when
+  // updating widget bounds at
+  // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
   PreferredSizeChanged();
 }
 
