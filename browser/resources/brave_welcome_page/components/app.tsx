@@ -10,7 +10,7 @@ import { style } from './app.style'
 import { StepDefinition } from './types'
 import {
   StepDefaultBrowserContent, StepDefaultBrowserFooter,
-  StepImportDataContent, StepImportDataFooter,
+  StepImportDataContent, StepImportDataFooter, ImportDataProvider,
   StepMakeYoursContent, StepMakeYoursFooter,
   StepBraveSearchContent, StepBraveSearchFooter,
   StepCompleteContent, StepCompleteFooter
@@ -128,18 +128,20 @@ export function App() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
-      <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
-        <div className="content-area">
-          <div className="brave-logo-container">
-            <Icon name='social-brave-release-favicon-fullheight-color'/>
+    <ImportDataProvider>
+      <div data-css-scope={style.scope}>
+        <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
+          <div className="content-area">
+            <div className="brave-logo-container">
+              <Icon name='social-brave-release-favicon-fullheight-color'/>
+            </div>
+            <div className={`step-wrapper ${getTransitionClass()}`}>
+              <DisplayedContent {...stepProps} />
+            </div>
           </div>
-          <div className={`step-wrapper ${getTransitionClass()}`}>
-            <DisplayedContent {...stepProps} />
-          </div>
+          <CurrentFooter {...stepProps} />
         </div>
-        <CurrentFooter {...stepProps} />
       </div>
-    </div>
+    </ImportDataProvider>
   )
 }

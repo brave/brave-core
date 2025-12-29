@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export { StepDefaultBrowserContent, StepDefaultBrowserFooter } from './step_default_browser'
-export { StepImportDataContent, StepImportDataFooter } from './step_import_data'
+export { StepImportDataContent, StepImportDataFooter, ImportDataProvider } from './step_import_data'
 export { StepMakeYoursContent, StepMakeYoursFooter } from './step_make_yours'
 export { StepBraveSearchContent, StepBraveSearchFooter } from './step_brave_search'
 export { StepCompleteContent, StepCompleteFooter } from './step_complete'

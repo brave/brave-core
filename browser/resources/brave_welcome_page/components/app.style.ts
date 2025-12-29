@@ -225,6 +225,18 @@ export const style = scoped.css`
     border-radius: ${radius.xl};
     overflow: hidden;
     width: 100%;
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .browser-dropdown-header {
@@ -300,6 +312,86 @@ export const style = scoped.css`
     opacity: 0.9;
   }
 
+  /* Import container - wraps both states */
+  .import-container {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing['2Xl']};
+    width: 100%;
+  }
+
+  /* Selected browser header */
+  .browser-selected-header {
+    display: flex;
+    align-items: center;
+    gap: ${spacing['2Xl']};
+    padding: ${spacing['2Xl']} ${spacing['3Xl']};
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+    cursor: pointer;
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .browser-selected-header h3 {
+    flex: 1;
+    font: ${font.heading.h3};
+    color: ${color.text.primary};
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .browser-selected-header .browser-item-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .browser-selected-header .browser-item-icon leo-icon {
+    --leo-icon-size: 40px;
+  }
+
+  .browser-selected-header > leo-icon:last-child {
+    --leo-icon-size: 20px;
+    --leo-icon-color: ${color.icon.default};
+  }
+
+  /* Import options container */
+  .import-options {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing['3Xl']};
+    padding: ${spacing['3Xl']};
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+    animation: fadeIn 0.25s ease-out 0.1s both;
+  }
+
+  .import-options h4 {
+    font: ${font.heading.h4};
+    color: ${color.text.primary};
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .import-options-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid ${color.divider.subtle};
+    border-radius: ${radius.m};
+    overflow: hidden;
+  }
+
+  .import-option-item {
+    display: flex;
+    align-items: center;
+    padding: ${spacing.l} ${spacing.xl};
+    border-bottom: 1px solid ${color.divider.subtle};
+    cursor: pointer;
+  }
+
+  .import-option-item:last-child {
+    border-bottom: none;
+  }
+
 
   .footer {
     display: flex;
@@ -329,7 +421,7 @@ export const style = scoped.css`
   /* Tablet breakpoints */
   @media (max-width: 1024px) {
     .container {
-      max-height: auto;
+      max-height: calc(100dvh - 2 * ${spacing.xl});
       height: auto;
     }
 
@@ -355,6 +447,7 @@ export const style = scoped.css`
       padding: ${spacing['2Xl']};
       overflow: hidden;
     }
+
 
     .footer {
       flex-direction: column;
