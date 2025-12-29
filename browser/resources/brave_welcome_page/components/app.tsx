@@ -5,6 +5,103 @@
 
 import * as React from 'react'
 
+import { style } from './app.style'
+import { StepDefinition } from './types'
+import {
+  StepDefaultBrowserContent, StepDefaultBrowserFooter,
+  StepImportDataContent, StepImportDataFooter,
+  StepCompleteContent, StepCompleteFooter
+} from './steps'
+
+// Define your onboarding steps here
+const steps: StepDefinition[] = [
+  { id: 'default-browser', Content: StepDefaultBrowserContent, Footer: StepDefaultBrowserFooter },
+  { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
+  { id: 'complete', Content: StepCompleteContent, Footer: StepCompleteFooter },
+]
+
+type TransitionDirection = 'forward' | 'backward'
+type TransitionState = 'idle' | 'exiting' | 'entering'
+
+const TRANSITION_DURATION = 300 // ms
+
 export function App() {
-  return <div></div>
+  const [currentStepIndex, setCurrentStepIndex] = React.useState(0)
+  const [displayedContentIndex, setDisplayedContentIndex] = React.useState(0)
+  const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
+  const [direction, setDirection] = React.useState<TransitionDirection>('forward')
+
+  const navigateToStep = React.useCallback((newIndex: number, dir: TransitionDirection) => {
+    if (transitionState !== 'idle') return
+
+    setDirection(dir)
+    setTransitionState('exiting')
+
+    setTimeout(() => {
+      setDisplayedContentIndex(newIndex)
+      setCurrentStepIndex(newIndex)
+      setTransitionState('entering')
+
+      setTimeout(() => {
+        setTransitionState('idle')
+      }, TRANSITION_DURATION)
+    }, TRANSITION_DURATION)
+  }, [transitionState])
+
+  const handleNext = React.useCallback(() => {
+    if (currentStepIndex < steps.length - 1) {
+      navigateToStep(currentStepIndex + 1, 'forward')
+    } else {
+      // Last step completed - close welcome page or redirect
+      console.log('Onboarding complete!')
+    }
+  }, [currentStepIndex, navigateToStep])
+
+  const handleBack = React.useCallback(() => {
+    if (currentStepIndex > 0) {
+      navigateToStep(currentStepIndex - 1, 'backward')
+    }
+  }, [currentStepIndex, navigateToStep])
+
+  const handleSkip = React.useCallback(() => {
+    handleNext()
+  }, [handleNext])
+
+  // Content uses displayedContentIndex (animated)
+  const DisplayedContent = steps[displayedContentIndex].Content
+  // Footer uses currentStepIndex (updates immediately, no animation)
+  const CurrentFooter = steps[currentStepIndex].Footer
+
+  const isFirstStep = currentStepIndex === 0
+  const isLastStep = currentStepIndex === steps.length - 1
+
+  const stepProps = {
+    onNext: handleNext,
+    onBack: handleBack,
+    onSkip: handleSkip,
+    isFirstStep,
+    isLastStep
+  }
+
+  const getTransitionClass = () => {
+    if (transitionState === 'idle') return 'step-visible'
+    if (transitionState === 'exiting') {
+      return direction === 'forward' ? 'step-exit-left' : 'step-exit-right'
+    }
+    if (transitionState === 'entering') {
+      return direction === 'forward' ? 'step-enter-from-right' : 'step-enter-from-left'
+    }
+    return ''
+  }
+
+  return (
+    <div data-css-scope={style.scope}>
+      <div className="container">
+        <div className={`step-wrapper ${getTransitionClass()}`}>
+          <DisplayedContent {...stepProps} />
+        </div>
+        <CurrentFooter {...stepProps} />
+      </div>
+    </div>
+  )
 }
