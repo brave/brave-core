@@ -11,6 +11,9 @@ import { StepDefinition } from './types'
 import {
   StepDefaultBrowserContent, StepDefaultBrowserFooter,
   StepImportDataContent, StepImportDataFooter,
+  StepMakeYoursContent, StepMakeYoursFooter,
+  StepBraveSearchContent, StepBraveSearchFooter,
+  StepBetterWebContent, StepBetterWebFooter,
   StepCompleteContent, StepCompleteFooter
 } from './steps'
 
@@ -18,6 +21,9 @@ import {
 const steps: StepDefinition[] = [
   { id: 'default-browser', Content: StepDefaultBrowserContent, Footer: StepDefaultBrowserFooter },
   { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
+  { id: 'make-yours', Content: StepMakeYoursContent, Footer: StepMakeYoursFooter },
+  { id: 'brave-search', Content: StepBraveSearchContent, Footer: StepBraveSearchFooter },
+  { id: 'better-web', Content: StepBetterWebContent, Footer: StepBetterWebFooter },
   { id: 'complete', Content: StepCompleteContent, Footer: StepCompleteFooter },
 ]
 

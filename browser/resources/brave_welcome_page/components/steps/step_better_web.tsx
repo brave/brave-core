@@ -8,24 +8,23 @@ import Button from '@brave/leo/react/button'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
-export function StepImportDataContent({}: StepContentProps) {
+export function StepBetterWebContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
         <div className="left-text-content">
-          <h1>Bring along your old browser content</h1>
-          <p>Import everything from your old browser and make the transition seamless.</p>
-          <p>You can also do this later in Brave's settings.</p>
+          <h1>Build a better web with us</h1>
+          <p>Help improve Brave by sharing anonymous usage data. Your privacy is always protected.</p>
         </div>
       </div>
       <div className="right-content">
-      Content from step 2
+      Content from step 5
       </div>
     </div>
   )
 }
 
-export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps) {
+export function StepBetterWebFooter({ onNext, onBack, onSkip }: StepFooterProps) {
   return (
     <div className="footer">
       <div className="footer-left">
@@ -34,7 +33,7 @@ export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps
       <div className="footer-right">
         <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Import
+          Continue
         </Button>
       </div>
     </div>

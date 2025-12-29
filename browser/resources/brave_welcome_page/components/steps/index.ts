@@ -5,5 +5,8 @@
 
 export { StepDefaultBrowserContent, StepDefaultBrowserFooter } from './step_default_browser'
 export { StepImportDataContent, StepImportDataFooter } from './step_import_data'
+export { StepMakeYoursContent, StepMakeYoursFooter } from './step_make_yours'
+export { StepBraveSearchContent, StepBraveSearchFooter } from './step_brave_search'
+export { StepBetterWebContent, StepBetterWebFooter } from './step_better_web'
 export { StepCompleteContent, StepCompleteFooter } from './step_complete'
 
