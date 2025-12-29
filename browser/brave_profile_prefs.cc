@@ -369,6 +369,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2025-10
   registry->RegisterBooleanPref(kNoScriptControlType, false);
+
+  // Added 2025-12
+  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -489,16 +492,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (brave_search::IsDefaultAPIEnabled()) {
     brave_search::BraveSearchDefaultHost::RegisterProfilePrefs(registry);
   }
-
-  // Restore default behaviour for Android until we figure out if we want this
-  // option there.
-#if BUILDFLAG(IS_ANDROID)
-  bool allow_open_search_engines = true;
-#else
-  bool allow_open_search_engines = false;
-#endif
-  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
-                                allow_open_search_engines);
 
   omnibox::RegisterBraveProfilePrefs(registry);
 
