@@ -21,7 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // scrim views if needed.
     {kAppBrowserUseNewLayout, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPopupBrowserUseNewLayout, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSideBySide, base::FEATURE_ENABLED_BY_DEFAULT},
     {kTabbedBrowserUseNewLayout, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabstripComboButton, base::FEATURE_ENABLED_BY_DEFAULT},
