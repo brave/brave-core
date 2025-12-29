@@ -19,6 +19,7 @@
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/vector_icon_types.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/layout/flex_layout.h"
 
 namespace {
@@ -41,8 +42,18 @@ MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
                                                   split_tab_index);
 }
 
+// static
+BraveMultiContentsViewMiniToolbar* BraveMultiContentsViewMiniToolbar::From(
+    MultiContentsViewMiniToolbar* toolbar) {
+  return static_cast<BraveMultiContentsViewMiniToolbar*>(toolbar);
+}
+
 BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
+
+void BraveMultiContentsViewMiniToolbar::HideMenuButton() {
+  image_button_->SetVisible(false);
+}
 
 void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
                                                     bool is_highlighted) {

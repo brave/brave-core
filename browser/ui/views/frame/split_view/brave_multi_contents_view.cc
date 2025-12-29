@@ -11,11 +11,14 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
+#include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/widget/widget.h"
 
@@ -46,17 +49,29 @@ void BraveMultiContentsView::Layout(PassKey) {
 
 void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   if (!contents_container_view_for_web_panel_) {
-    contents_container_view_for_web_panel_ = AddChildView(
-        std::make_unique<BraveContentsContainerView>(browser_view_));
+    contents_container_view_for_web_panel_ =
+        AddChildView(std::make_unique<BraveContentsContainerView>(
+            browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
+    web_contents_focused_subscriptions_.push_back(
+        contents_container_view_for_web_panel_->contents_view()
+            ->AddWebContentsFocusedCallback(base::BindRepeating(
+                &BraveMultiContentsView::OnWebContentsFocused,
+                base::Unretained(this))));
+    browser_view_->browser()
+        ->GetFeatures()
+        .devtools_ui_controller()
+        ->MakeSureControllerExists(contents_container_view_for_web_panel_);
   }
 }
 
-void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
+void BraveMultiContentsView::SetWebPanelContents(
+    content::WebContents* web_contents) {
   CHECK(contents_container_view_for_web_panel_);
-  contents_container_view_for_web_panel_->SetVisible(visible);
-  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
-                                                                 false);
+  contents_container_view_for_web_panel_->contents_view()->SetWebContents(
+      web_contents);
+  contents_container_view_for_web_panel_->SetVisible(web_contents);
+  UpdateContentsBorderAndOverlay();
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {
@@ -129,6 +144,78 @@ void BraveMultiContentsView::ResetResizeArea() {
   delegate_->ResizeWebContents(0.5, /*done_resizing=*/true);
 }
 
+void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
+  if (!contents_container_view_for_web_panel_ ||
+      !contents_container_view_for_web_panel_->GetVisible()) {
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  if (!contents_container_view_for_web_panel_->IsActive()) {
+    // Web panel is visible but inactive. Hide border of web panel.
+    contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+        /*is_in_split*/ false, /*is_active*/ false,
+        /*is_highlighted*/ false);
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  // When web panel is active, only it should have active border.
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+      /*is_in_split*/ false, /*is_active*/ true,
+      /*is_highlighted*/ false);
+
+  for (auto* contents_container_view : contents_container_views_) {
+    contents_container_view->UpdateBorderAndOverlay(IsInSplitView(),
+                                                    /*is_active*/ false,
+                                                    /*is_highlighted*/ false);
+  }
+}
+
+void BraveMultiContentsView::OnWebContentsFocused(views::WebView* web_view) {
+  // Early return if web panel is not used.
+  if (!contents_container_view_for_web_panel_ ||
+      !contents_container_view_for_web_panel_->GetVisible()) {
+    MultiContentsView::OnWebContentsFocused(web_view);
+    return;
+  }
+
+  // When a tab is detached, focus manager could make another web contents
+  // focused. We don't need to make web contents' tab activated here. Next
+  // active tab could be selected by tab strip model and its web contents will
+  // get focused.
+  if (!GetActiveContentsView()->web_contents()) {
+    return;
+  }
+
+  // When tab is activated from Tab UI, we don't need to ask activate
+  // |web_view|'s contents to TabStripModel again. It's not activated here when
+  // activating tab by clicking contents.
+  if (auto* tab =
+          tabs::TabInterface::MaybeGetFromContents(web_view->web_contents());
+      tab && tab->IsActivated()) {
+    return;
+  }
+
+  // Base class only gives focus for inactive split tab because that inactive
+  // split tab could get focused in upstream.
+  // With web panel feature, other tabs also could get focused.
+  // When web panel has focus, previously active split tab could get focus.
+  // Also, web panel's tab also needs focus.
+  // So, notify always.
+  delegate_->WebContentsFocused(web_view->web_contents());
+}
+
+void BraveMultiContentsView::ExecuteOnEachVisibleContentsView(
+    base::RepeatingCallback<void(ContentsWebView*)> callback) {
+  if (contents_container_view_for_web_panel_ &&
+      contents_container_view_for_web_panel_->GetVisible()) {
+    callback.Run(contents_container_view_for_web_panel_->contents_view());
+  }
+
+  MultiContentsView::ExecuteOnEachVisibleContentsView(callback);
+}
+
 int BraveMultiContentsView::GetWebPanelWidth() const {
   if (!contents_container_view_for_web_panel_ ||
       !contents_container_view_for_web_panel_->GetVisible()) {
@@ -142,16 +229,32 @@ void BraveMultiContentsView::UpdateCornerRadius() {
   UpdateContentsBorderAndOverlay();
 }
 
-BraveContentsContainerView*
-BraveMultiContentsView::GetActiveContentsContainerView() {
-  return BraveContentsContainerView::From(
-      contents_container_views_[active_index_]);
+ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()
+    const {
+  if (is_web_panel_active_) {
+    return contents_container_view_for_web_panel_;
+  }
+
+  return MultiContentsView::GetActiveContentsContainerView();
 }
 
-BraveContentsContainerView*
-BraveMultiContentsView::GetInactiveContentsContainerView() {
-  return BraveContentsContainerView::From(
-      contents_container_views_[GetInactiveIndex()]);
+ContentsWebView* BraveMultiContentsView::GetActiveContentsView() const {
+  if (is_web_panel_active_) {
+    return contents_container_view_for_web_panel_->contents_view();
+  }
+
+  return MultiContentsView::GetActiveContentsView();
+}
+
+ContentsContainerView* BraveMultiContentsView::GetContentsContainerViewFor(
+    content::WebContents* web_contents) const {
+  if (is_web_panel_active_ &&
+      contents_container_view_for_web_panel_->contents_view()->web_contents() ==
+          web_contents) {
+    return contents_container_view_for_web_panel_;
+  }
+
+  return MultiContentsView::GetContentsContainerViewFor(web_contents);
 }
 
 BEGIN_METADATA(BraveMultiContentsView)
