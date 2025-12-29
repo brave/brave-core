@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 25
-  |
-1 | leading-zero-sign-1 = -01
-  |                         ^
-expected newline, `#`

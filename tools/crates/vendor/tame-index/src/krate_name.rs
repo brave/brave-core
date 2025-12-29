@@ -1,6 +1,7 @@
 use crate::error::{Error, InvalidKrateName};
 
 #[cfg(test)]
+/// Create a `KrateName` from a string literal.
 #[macro_export]
 macro_rules! kn {
     ($kn:literal) => {
@@ -144,9 +145,9 @@ impl<'name> KrateName<'name> {
             ("nul", Windows),
             ("override", Keyword),
             ("priv", Keyword),
+            ("prn", Windows),
             ("proc-macro", Standard),
             ("proc_macro", Standard),
-            ("prn", Windows),
             ("pub", Keyword),
             ("ref", Keyword),
             ("return", Keyword),
@@ -200,7 +201,7 @@ impl<'name> TryFrom<&'name str> for KrateName<'name> {
     }
 }
 
-impl<'name> KrateName<'name> {
+impl KrateName<'_> {
     /// Writes the crate's prefix to the specified string
     ///
     /// Cargo uses a simple prefix in the registry index so that crate's can be
@@ -259,14 +260,14 @@ impl<'name> KrateName<'name> {
 
 use std::fmt;
 
-impl<'k> fmt::Display for KrateName<'k> {
+impl fmt::Display for KrateName<'_> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.0)
     }
 }
 
-impl<'k> fmt::Debug for KrateName<'k> {
+impl fmt::Debug for KrateName<'_> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.0)
@@ -329,10 +330,12 @@ mod test {
             Error::InvalidKrateName(InvalidKrateName::InvalidLength(71))
         ));
 
-        assert!(KrateName::cargo(
-            "aaaaaaaabbbbbbbbccccccccddddddddaaaaaaaabbbbbbbbccccccccddddddddxxxxxxx"
-        )
-        .is_ok());
+        assert!(
+            KrateName::cargo(
+                "aaaaaaaabbbbbbbbccccccccddddddddaaaaaaaabbbbbbbbccccccccddddddddxxxxxxx"
+            )
+            .is_ok()
+        );
     }
 
     /// Validates the crate name can't be a reserved name

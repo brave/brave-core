@@ -483,7 +483,8 @@ impl<'cmd> Parser<'cmd> {
                     pos_sc_name.clone(),
                     matcher
                         .arg_ids()
-                        .map(|id| self.cmd.find(id).unwrap().to_string())
+                        // skip groups
+                        .filter_map(|id| self.cmd.find(id).map(|a| a.to_string()))
                         .collect(),
                     Usage::new(self.cmd).create_usage_with_title(&[]),
                 ));
@@ -1462,7 +1463,8 @@ impl<'cmd> Parser<'cmd> {
 
                     if add {
                         if let Some(default) = default {
-                            let arg_values = vec![default.to_os_string()];
+                            let arg_values =
+                                default.iter().map(|os_str| os_str.to_os_string()).collect();
                             let trailing_idx = None;
                             let _ = ok!(self.react(
                                 None,
@@ -1586,7 +1588,7 @@ impl Parser<'_> {
             .filter(|arg_id| {
                 matcher.check_explicit(arg_id, &crate::builder::ArgPredicate::IsPresent)
             })
-            .filter(|n| self.cmd.find(n).map(|a| !a.is_hide_set()).unwrap_or(true))
+            .filter(|n| self.cmd.find(n).map(|a| !a.is_hide_set()).unwrap_or(false))
             .cloned()
             .collect();
 

@@ -10,7 +10,7 @@ use crate::{bstr::BString, ext::ReferenceExt, reference, Reference};
 impl crate::Repository {
     /// Create a lightweight tag with given `name` (and without `refs/tags/` prefix) pointing to the given `target`, and return it as reference.
     ///
-    /// It will be created with `constraint` which is most commonly to [only create it][PreviousValue::MustNotExist]
+    /// It will be created with `constraint` which is most commonly to [only create it](PreviousValue::MustNotExist)
     /// or to [force overwriting a possibly existing tag](PreviousValue::Any).
     pub fn tag_reference(
         &self,
@@ -135,7 +135,8 @@ impl crate::Repository {
 
     /// Edit one or more references as described by their `edits`.
     /// Note that one can set the committer name for use in the ref-log by temporarily
-    /// [overriding the git-config][crate::Repository::config_snapshot_mut()].
+    /// [overriding the git-config](crate::Repository::config_snapshot_mut()), or use
+    /// [`edit_references_as(committer)`](Self::edit_references_as()) for convenience.
     ///
     /// Returns all reference edits, which might be more than where provided due the splitting of symbolic references, and
     /// whose previous (_old_) values are the ones seen on in storage after the reference was locked.
@@ -143,23 +144,34 @@ impl crate::Repository {
         &self,
         edits: impl IntoIterator<Item = RefEdit>,
     ) -> Result<Vec<RefEdit>, reference::edit::Error> {
+        self.edit_references_as(edits, self.committer().transpose()?)
+    }
+
+    /// A way to apply reference `edits` similar to [edit_references(…)](Self::edit_references()), but set a specific
+    /// `commiter` for use in the reflog. It can be `None` if it's the purpose `edits` are configured to not update the
+    /// reference log, or cause a failure otherwise.
+    pub fn edit_references_as(
+        &self,
+        edits: impl IntoIterator<Item = RefEdit>,
+        committer: Option<gix_actor::SignatureRef<'_>>,
+    ) -> Result<Vec<RefEdit>, reference::edit::Error> {
         let (file_lock_fail, packed_refs_lock_fail) = self.config.lock_timeout()?;
         self.refs
             .transaction()
             .prepare(edits, file_lock_fail, packed_refs_lock_fail)?
-            .commit(self.committer().transpose()?)
+            .commit(committer)
             .map_err(Into::into)
     }
 
     /// Return the repository head, an abstraction to help dealing with the `HEAD` reference.
     ///
-    /// The `HEAD` reference can be in various states, for more information, the documentation of [`Head`][crate::Head].
+    /// The `HEAD` reference can be in various states, for more information, the documentation of [`Head`](crate::Head).
     pub fn head(&self) -> Result<crate::Head<'_>, reference::find::existing::Error> {
         let head = self.find_reference("HEAD")?;
         Ok(match head.inner.target {
             Target::Symbolic(branch) => match self.find_reference(&branch) {
                 Ok(r) => crate::head::Kind::Symbolic(r.detach()),
-                Err(reference::find::existing::Error::NotFound) => crate::head::Kind::Unborn(branch),
+                Err(reference::find::existing::Error::NotFound { .. }) => crate::head::Kind::Unborn(branch),
                 Err(err) => return Err(err),
             },
             Target::Object(target) => crate::head::Kind::Detached {
@@ -184,7 +196,7 @@ impl crate::Repository {
 
     /// Return the name to the symbolic reference `HEAD` points to, or `None` if the head is detached.
     ///
-    /// The difference to [`head_ref()`][Self::head_ref()] is that the latter requires the reference to exist,
+    /// The difference to [`head_ref()`](Self::head_ref()) is that the latter requires the reference to exist,
     /// whereas here we merely return a the name of the possibly unborn reference.
     pub fn head_name(&self) -> Result<Option<FullName>, reference::find::existing::Error> {
         Ok(self.head()?.referent_name().map(std::borrow::ToOwned::to_owned))
@@ -202,7 +214,7 @@ impl crate::Repository {
     /// is freshly initialized and doesn't have any commits yet. It could also fail if the
     /// head does not point to a commit.
     pub fn head_commit(&self) -> Result<crate::Commit<'_>, reference::head_commit::Error> {
-        Ok(self.head()?.peel_to_commit_in_place()?)
+        Ok(self.head()?.peel_to_commit()?)
     }
 
     /// Return the tree id the `HEAD` reference currently points to after peeling it fully,
@@ -215,23 +227,57 @@ impl crate::Repository {
         Ok(self.head_commit()?.tree_id()?)
     }
 
+    /// Like [`Self::head_tree_id()`], but will return an empty tree hash if the repository HEAD is unborn.
+    pub fn head_tree_id_or_empty(&self) -> Result<crate::Id<'_>, reference::head_tree_id::Error> {
+        self.head_tree_id().or_else(|err| {
+            if let reference::head_tree_id::Error::HeadCommit(reference::head_commit::Error::PeelToCommit(
+                crate::head::peel::to_commit::Error::PeelToObject(crate::head::peel::to_object::Error::Unborn {
+                    ..
+                }),
+            )) = err
+            {
+                Ok(self.empty_tree().id())
+            } else {
+                Err(err)
+            }
+        })
+    }
+
+    /// Return the tree object the `HEAD^{tree}` reference currently points to after peeling it fully,
+    /// following symbolic references and tags until a tree is found.
+    ///
+    /// Note that this may fail for various reasons, most notably because the repository
+    /// is freshly initialized and doesn't have any commits yet. It could also fail if the
+    /// head does not point to a tree, unlikely but possible.
+    pub fn head_tree(&self) -> Result<crate::Tree<'_>, reference::head_tree::Error> {
+        Ok(self.head_commit()?.tree()?)
+    }
+
     /// Find the reference with the given partial or full `name`, like `main`, `HEAD`, `heads/branch` or `origin/other`,
     /// or return an error if it wasn't found.
     ///
-    /// Consider [`try_find_reference(…)`][crate::Repository::try_find_reference()] if the reference might not exist
+    /// Consider [`try_find_reference(…)`](crate::Repository::try_find_reference()) if the reference might not exist
     /// without that being considered an error.
     pub fn find_reference<'a, Name, E>(&self, name: Name) -> Result<Reference<'_>, reference::find::existing::Error>
     where
-        Name: TryInto<&'a PartialNameRef, Error = E>,
+        Name: TryInto<&'a PartialNameRef, Error = E> + Clone,
         gix_ref::file::find::Error: From<E>,
     {
+        // TODO: is there a way to just pass `partial_name` to `try_find_reference()`? Compiler freaks out then
+        //       as it still wants to see `E` there, not `Infallible`.
+        let partial_name = name
+            .clone()
+            .try_into()
+            .map_err(|err| reference::find::Error::Find(gix_ref::file::find::Error::from(err)))?;
         self.try_find_reference(name)?
-            .ok_or(reference::find::existing::Error::NotFound)
+            .ok_or_else(|| reference::find::existing::Error::NotFound {
+                name: partial_name.to_owned(),
+            })
     }
 
     /// Return a platform for iterating references.
     ///
-    /// Common kinds of iteration are [all][crate::reference::iter::Platform::all()] or [prefixed][crate::reference::iter::Platform::prefixed()]
+    /// Common kinds of iteration are [all](crate::reference::iter::Platform::all()) or [prefixed](crate::reference::iter::Platform::prefixed())
     /// references.
     pub fn references(&self) -> Result<reference::iter::Platform<'_>, reference::iter::Error> {
         Ok(reference::iter::Platform {
@@ -243,14 +289,13 @@ impl crate::Repository {
     /// Try to find the reference named `name`, like `main`, `heads/branch`, `HEAD` or `origin/other`, and return it.
     ///
     /// Otherwise return `None` if the reference wasn't found.
-    /// If the reference is expected to exist, use [`find_reference()`][crate::Repository::find_reference()].
+    /// If the reference is expected to exist, use [`find_reference()`](crate::Repository::find_reference()).
     pub fn try_find_reference<'a, Name, E>(&self, name: Name) -> Result<Option<Reference<'_>>, reference::find::Error>
     where
         Name: TryInto<&'a PartialNameRef, Error = E>,
         gix_ref::file::find::Error: From<E>,
     {
-        let state = self;
-        match state.refs.try_find(name) {
+        match self.refs.try_find(name) {
             Ok(r) => match r {
                 Some(r) => Ok(Some(Reference::from_ref(r, self))),
                 None => Ok(None),

@@ -7,15 +7,15 @@ use std::sync::Arc;
 
 mod test;
 
-/// Executes `op` within every thread in the current threadpool. If this is
-/// called from a non-Rayon thread, it will execute in the global threadpool.
+/// Executes `op` within every thread in the current thread pool. If this is
+/// called from a non-Rayon thread, it will execute in the global thread pool.
 /// Any attempts to use `join`, `scope`, or parallel iterators will then operate
-/// within that threadpool. When the call has completed on each thread, returns
+/// within that thread pool. When the call has completed on each thread, returns
 /// a vector containing all of their return values.
 ///
-/// For more information, see the [`ThreadPool::broadcast()`][m] method.
+/// For more information, see the [`ThreadPool::broadcast()`] method.
 ///
-/// [m]: struct.ThreadPool.html#method.broadcast
+/// [`ThreadPool::broadcast()`]: crate::ThreadPool::broadcast()
 pub fn broadcast<OP, R>(op: OP) -> Vec<R>
 where
     OP: Fn(BroadcastContext<'_>) -> R + Sync,
@@ -25,14 +25,14 @@ where
     unsafe { broadcast_in(op, &Registry::current()) }
 }
 
-/// Spawns an asynchronous task on every thread in this thread-pool. This task
+/// Spawns an asynchronous task on every thread in this thread pool. This task
 /// will run in the implicit, global scope, which means that it may outlast the
 /// current stack frame -- therefore, it cannot capture any references onto the
 /// stack (you will likely need a `move` closure).
 ///
-/// For more information, see the [`ThreadPool::spawn_broadcast()`][m] method.
+/// For more information, see the [`ThreadPool::spawn_broadcast()`] method.
 ///
-/// [m]: struct.ThreadPool.html#method.spawn_broadcast
+/// [`ThreadPool::spawn_broadcast()`]: crate::ThreadPool::spawn_broadcast()
 pub fn spawn_broadcast<OP>(op: OP)
 where
     OP: Fn(BroadcastContext<'_>) + Send + Sync + 'static,

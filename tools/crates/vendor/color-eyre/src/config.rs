@@ -11,39 +11,6 @@ use std::env;
 use std::fmt::Write as _;
 use std::{fmt, path::PathBuf, sync::Arc};
 
-#[derive(Debug)]
-struct InstallError;
-
-impl fmt::Display for InstallError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("could not install the BacktracePrinter as another was already installed")
-    }
-}
-
-impl std::error::Error for InstallError {}
-
-#[derive(Debug)]
-struct InstallThemeError;
-
-impl fmt::Display for InstallThemeError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("could not set the provided `Theme` globally as another was already set")
-    }
-}
-
-impl std::error::Error for InstallThemeError {}
-
-#[derive(Debug)]
-struct InstallColorSpantraceThemeError;
-
-impl fmt::Display for InstallColorSpantraceThemeError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("could not set the provided `Theme` via `color_spantrace::set_theme` globally as another was already set")
-    }
-}
-
-impl std::error::Error for InstallColorSpantraceThemeError {}
-
 /// A struct that represents a theme that is used by `color_eyre`
 #[derive(Debug, Copy, Clone, Default)]
 pub struct Theme {
@@ -193,7 +160,7 @@ pub struct Frame {
 #[derive(Debug)]
 struct StyledFrame<'a>(&'a Frame, Theme);
 
-impl<'a> fmt::Display for StyledFrame<'a> {
+impl fmt::Display for StyledFrame<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self(frame, theme) = self;
 

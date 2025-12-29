@@ -9,25 +9,27 @@ use crate::OwoColorize;
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct Rgb(pub u8, pub u8, pub u8);
 
+impl crate::private::Sealed for Rgb {}
+
 impl DynColor for Rgb {
     fn fmt_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Rgb(r, g, b) = self;
-        write!(f, "\x1b[38;2;{};{};{}m", r, g, b)
+        write!(f, "\x1b[38;2;{r};{g};{b}m")
     }
 
     fn fmt_ansi_bg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Rgb(r, g, b) = self;
-        write!(f, "\x1b[48;2;{};{};{}m", r, g, b)
+        write!(f, "\x1b[48;2;{r};{g};{b}m")
     }
 
     fn fmt_raw_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Rgb(r, g, b) = self;
-        write!(f, "38;2;{};{};{}", r, g, b)
+        write!(f, "38;2;{r};{g};{b}")
     }
 
     fn fmt_raw_ansi_bg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Rgb(r, g, b) = self;
-        write!(f, "48;2;{};{};{}", r, g, b)
+        write!(f, "48;2;{r};{g};{b}")
     }
 
     #[doc(hidden)]
@@ -41,6 +43,8 @@ impl DynColor for Rgb {
         self.get_dyncolors_fg()
     }
 }
+
+impl crate::private::Sealed for str {}
 
 impl DynColor for str {
     fn fmt_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -77,14 +81,14 @@ impl DynColor for str {
 /// Implemented for drop-in replacement support for `colored`
 impl<'a> From<&'a str> for AnsiColors {
     fn from(color: &'a str) -> Self {
+        #[allow(clippy::match_same_arms)] // defaults to white color
         match color {
             "black" => AnsiColors::Black,
             "red" => AnsiColors::Red,
             "green" => AnsiColors::Green,
             "yellow" => AnsiColors::Yellow,
             "blue" => AnsiColors::Blue,
-            "magenta" => AnsiColors::Magenta,
-            "purple" => AnsiColors::Magenta,
+            "magenta" | "purple" => AnsiColors::Magenta,
             "cyan" => AnsiColors::Cyan,
             "white" => AnsiColors::White,
             "bright black" => AnsiColors::BrightBlack,

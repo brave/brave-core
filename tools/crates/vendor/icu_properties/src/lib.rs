@@ -9,50 +9,50 @@
 //! and as part of the [`icu`](https://docs.rs/icu/latest/icu/) crate. See the latter for more details on the ICU4X project.
 //!
 //! APIs that return a [`CodePointSetData`] exist for binary properties and certain enumerated
-//! properties. See the [`sets`] module for more details.
+//! properties.
 //!
-//! APIs that return a [`CodePointMapData`] exist for certain enumerated properties. See the
-//! [`maps`] module for more details.
+//! APIs that return a [`CodePointMapData`] exist for certain enumerated properties.
 //!
 //! # Examples
 //!
 //! ## Property data as `CodePointSetData`s
 //!
 //! ```
-//! use icu::properties::{maps, sets, GeneralCategory};
+//! use icu::properties::{CodePointSetData, CodePointMapData};
+//! use icu::properties::props::{GeneralCategory, Emoji};
 //!
 //! // A binary property as a `CodePointSetData`
 //!
-//! assert!(sets::emoji().contains('🎃')); // U+1F383 JACK-O-LANTERN
-//! assert!(!sets::emoji().contains('木')); // U+6728
+//! assert!(CodePointSetData::new::<Emoji>().contains('🎃')); // U+1F383 JACK-O-LANTERN
+//! assert!(!CodePointSetData::new::<Emoji>().contains('木')); // U+6728
 //!
 //! // An individual enumerated property value as a `CodePointSetData`
 //!
-//! let line_sep_data = maps::general_category()
+//! let line_sep_data = CodePointMapData::<GeneralCategory>::new()
 //!     .get_set_for_value(GeneralCategory::LineSeparator);
 //! let line_sep = line_sep_data.as_borrowed();
 //!
-//! assert!(line_sep.contains32(0x2028));
-//! assert!(!line_sep.contains32(0x2029));
+//! assert!(line_sep.contains('\u{2028}'));
+//! assert!(!line_sep.contains('\u{2029}'));
 //! ```
 //!
 //! ## Property data as `CodePointMapData`s
 //!
 //! ```
-//! use icu::properties::{maps, Script};
+//! use icu::properties::CodePointMapData;
+//! use icu::properties::props::Script;
 //!
-//! assert_eq!(maps::script().get('🎃'), Script::Common); // U+1F383 JACK-O-LANTERN
-//! assert_eq!(maps::script().get('木'), Script::Han); // U+6728
+//! assert_eq!(CodePointMapData::<Script>::new().get('🎃'), Script::Common); // U+1F383 JACK-O-LANTERN
+//! assert_eq!(CodePointMapData::<Script>::new().get('木'), Script::Han); // U+6728
 //! ```
 //!
 //! [`ICU4X`]: ../icu/index.html
 //! [Unicode Properties]: https://unicode-org.github.io/icu/userguide/strings/properties.html
-//! [`CodePointSetData`]: crate::sets::CodePointSetData
-//! [`CodePointMapData`]: crate::maps::CodePointMapData
-//! [`sets`]: crate::sets
+//! [`CodePointSetData`]: crate::CodePointSetData
+//! [`CodePointMapData`]: crate::CodePointMapData
 
 // https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
-#![cfg_attr(not(any(test, feature = "std")), no_std)]
+#![cfg_attr(not(any(test, doc)), no_std)]
 #![cfg_attr(
     not(test),
     deny(
@@ -62,55 +62,39 @@
         clippy::panic,
         clippy::exhaustive_structs,
         clippy::exhaustive_enums,
+        clippy::trivially_copy_pass_by_ref,
         missing_debug_implementations,
     )
 )]
 #![warn(missing_docs)]
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
-#[cfg(feature = "bidi")]
-pub mod bidi;
-
-mod error;
-pub mod maps;
+mod code_point_set;
+pub use code_point_set::{CodePointSetData, CodePointSetDataBorrowed};
+mod code_point_map;
+pub use code_point_map::{CodePointMapData, CodePointMapDataBorrowed};
+mod emoji;
+pub use emoji::{EmojiSetData, EmojiSetDataBorrowed};
+mod names;
+pub use names::{
+    PropertyNamesLong, PropertyNamesLongBorrowed, PropertyNamesShort, PropertyNamesShortBorrowed,
+    PropertyParser, PropertyParserBorrowed,
+};
+mod runtime;
 
 // NOTE: The Pernosco debugger has special knowledge
 // of the `CanonicalCombiningClass` struct inside the `props`
 // module. Please do not change the crate-module-qualified
 // name of that struct without coordination.
-mod props;
-
-pub mod bidi_data;
-pub mod exemplar_chars;
+pub mod props;
 pub mod provider;
-pub(crate) mod runtime;
-#[allow(clippy::exhaustive_structs)] // TODO
 pub mod script;
-pub mod sets;
+
+mod bidi;
 mod trievalue;
 
-pub use props::{
-    BidiClass, CanonicalCombiningClass, EastAsianWidth, GeneralCategory, GeneralCategoryGroup,
-    GraphemeClusterBreak, HangulSyllableType, IndicSyllabicCategory, JoiningType, LineBreak,
-    Script, SentenceBreak, WordBreak,
-};
-
-/// Module for working with the names of property values
-pub mod names {
-    pub use crate::props::{
-        PropertyEnumToValueNameLinearMapper, PropertyEnumToValueNameLinearMapperBorrowed,
-    };
-    pub use crate::props::{
-        PropertyEnumToValueNameLinearTiny4Mapper, PropertyEnumToValueNameLinearTiny4MapperBorrowed,
-    };
-    pub use crate::props::{
-        PropertyEnumToValueNameSparseMapper, PropertyEnumToValueNameSparseMapperBorrowed,
-    };
-    pub use crate::props::{PropertyValueNameToEnumMapper, PropertyValueNameToEnumMapperBorrowed};
+mod private {
+    pub trait Sealed {}
 }
-
-pub use error::PropertiesError;
-
-#[doc(no_inline)]
-pub use PropertiesError as Error;

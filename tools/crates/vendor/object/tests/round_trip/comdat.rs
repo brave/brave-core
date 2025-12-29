@@ -13,11 +13,11 @@ fn coff_x86_64_comdat() {
     let mut object =
         write::Object::new(BinaryFormat::Coff, Architecture::X86_64, Endianness::Little);
 
-    let (section1, offset) =
-        object.add_subsection(write::StandardSection::Text, b"s1", &[0, 1, 2, 3], 4);
+    let section1 = object.add_subsection(write::StandardSection::Text, b"s1");
+    let offset = object.append_section_data(section1, &[0, 1, 2, 3], 4);
     object.section_symbol(section1);
-    let (section2, _) =
-        object.add_subsection(write::StandardSection::Data, b"s1", &[0, 1, 2, 3], 4);
+    let section2 = object.add_subsection(write::StandardSection::Data, b"s1");
+    object.append_section_data(section2, &[0, 1, 2, 3], 4);
     object.section_symbol(section2);
 
     let symbol = object.add_symbol(write::Symbol {
@@ -107,8 +107,8 @@ fn coff_x86_64_comdat() {
         read::SymbolSection::Section(section1.index())
     );
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
     assert_eq!(symbol.address(), 0);
 
     let symbol = symbols.next();
@@ -132,10 +132,10 @@ fn elf_x86_64_comdat() {
     let mut object =
         write::Object::new(BinaryFormat::Elf, Architecture::X86_64, Endianness::Little);
 
-    let (section1, offset) =
-        object.add_subsection(write::StandardSection::Text, b"s1", &[0, 1, 2, 3], 4);
-    let (section2, _) =
-        object.add_subsection(write::StandardSection::Data, b"s1", &[0, 1, 2, 3], 4);
+    let section1 = object.add_subsection(write::StandardSection::Text, b"s1");
+    let offset = object.append_section_data(section1, &[0, 1, 2, 3], 4);
+    let section2 = object.add_subsection(write::StandardSection::Data, b"s1");
+    object.append_section_data(section2, &[0, 1, 2, 3], 4);
 
     let symbol = object.add_symbol(write::Symbol {
         name: b"s1".to_vec(),
@@ -166,10 +166,6 @@ fn elf_x86_64_comdat() {
 
     let section = sections.next().unwrap();
     println!("{:?}", section);
-    assert_eq!(section.name(), Ok(""));
-
-    let section = sections.next().unwrap();
-    println!("{:?}", section);
     assert_eq!(section.name(), Ok(".group"));
 
     let section1 = sections.next().unwrap();
@@ -191,10 +187,6 @@ fn elf_x86_64_comdat() {
     let mut symbols = object.symbols();
 
     let symbol = symbols.next().unwrap();
-    println!("{:?}", symbol);
-    assert_eq!(symbol.name(), Ok(""));
-
-    let symbol = symbols.next().unwrap();
     let symbol_index = symbol.index();
     println!("{:?}", symbol);
     assert_eq!(symbol.name(), Ok("s1"));
@@ -204,8 +196,8 @@ fn elf_x86_64_comdat() {
         read::SymbolSection::Section(section1.index())
     );
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
     assert_eq!(symbol.address(), 0);
 
     let symbol = symbols.next();

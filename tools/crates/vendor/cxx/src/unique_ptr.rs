@@ -1,20 +1,22 @@
 use crate::cxx_vector::{CxxVector, VectorElement};
+use crate::extern_type::ExternType;
 use crate::fmt::display;
 use crate::kind::Trivial;
 use crate::string::CxxString;
-use crate::ExternType;
 #[cfg(feature = "std")]
 use alloc::string::String;
 #[cfg(feature = "std")]
 use alloc::vec::Vec;
+use core::cmp::Ordering;
 use core::ffi::c_void;
 use core::fmt::{self, Debug, Display};
+use core::hash::{Hash, Hasher};
 use core::marker::PhantomData;
 use core::mem::{self, MaybeUninit};
 use core::ops::{Deref, DerefMut};
 use core::pin::Pin;
 #[cfg(feature = "std")]
-use std::io::{self, IoSlice, Read, Write};
+use std::io::{self, IoSlice, Read, Seek, SeekFrom, Write};
 
 /// Binding to C++ `std::unique_ptr<T, std::default_delete<T>>`.
 #[repr(C)]
@@ -105,7 +107,7 @@ where
     /// UniquePtr. This differs from Rust norms, so extra care should be taken
     /// in the way the pointer is used.
     pub fn as_mut_ptr(&self) -> *mut T {
-        self.as_ptr() as *mut T
+        self.as_ptr().cast_mut()
     }
 
     /// Consumes the UniquePtr, releasing its ownership of the heap-allocated T.
@@ -205,6 +207,47 @@ where
     }
 }
 
+impl<T> PartialEq for UniquePtr<T>
+where
+    T: PartialEq + UniquePtrTarget,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.as_ref() == other.as_ref()
+    }
+}
+
+impl<T> Eq for UniquePtr<T> where T: Eq + UniquePtrTarget {}
+
+impl<T> PartialOrd for UniquePtr<T>
+where
+    T: PartialOrd + UniquePtrTarget,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        PartialOrd::partial_cmp(&self.as_ref(), &other.as_ref())
+    }
+}
+
+impl<T> Ord for UniquePtr<T>
+where
+    T: Ord + UniquePtrTarget,
+{
+    fn cmp(&self, other: &Self) -> Ordering {
+        Ord::cmp(&self.as_ref(), &other.as_ref())
+    }
+}
+
+impl<T> Hash for UniquePtr<T>
+where
+    T: Hash + UniquePtrTarget,
+{
+    fn hash<H>(&self, hasher: &mut H)
+    where
+        H: Hasher,
+    {
+        self.as_ref().hash(hasher);
+    }
+}
+
 /// Forwarding `Read` trait implementation in a manner similar to `Box<T>`.
 ///
 /// Note that the implementation will panic for null `UniquePtr<T>`.
@@ -236,6 +279,39 @@ where
 
     // TODO: Foward other `Read` trait methods when they get stabilized (e.g.
     // `read_buf` and/or `is_read_vectored`).
+}
+
+/// Forwarding `Seek` trait implementation in a manner similar to `Box<T>`.
+///
+/// Note that the implementation will panic for null `UniquePtr<T>`.
+#[cfg(feature = "std")]
+impl<T> Seek for UniquePtr<T>
+where
+    for<'a> Pin<&'a mut T>: Seek,
+    T: UniquePtrTarget,
+{
+    #[inline]
+    fn seek(&mut self, pos: SeekFrom) -> io::Result<u64> {
+        self.pin_mut().seek(pos)
+    }
+
+    #[inline]
+    fn rewind(&mut self) -> io::Result<()> {
+        self.pin_mut().rewind()
+    }
+
+    #[inline]
+    fn stream_position(&mut self) -> io::Result<u64> {
+        self.pin_mut().stream_position()
+    }
+
+    #[inline]
+    fn seek_relative(&mut self, offset: i64) -> io::Result<()> {
+        self.pin_mut().seek_relative(offset)
+    }
+
+    // TODO: Foward other `Seek` trait methods if/when possible:
+    // * `stream_len`: If/when stabilized
 }
 
 /// Forwarding `Write` trait implementation in a manner similar to `Box<T>`.
@@ -346,23 +422,23 @@ unsafe impl UniquePtrTarget for CxxString {
     fn __null() -> MaybeUninit<*mut c_void> {
         let mut repr = MaybeUninit::uninit();
         unsafe {
-            unique_ptr_std_string_null(&mut repr);
+            unique_ptr_std_string_null(&raw mut repr);
         }
         repr
     }
     unsafe fn __raw(raw: *mut Self) -> MaybeUninit<*mut c_void> {
         let mut repr = MaybeUninit::uninit();
-        unsafe { unique_ptr_std_string_raw(&mut repr, raw) }
+        unsafe { unique_ptr_std_string_raw(&raw mut repr, raw) }
         repr
     }
     unsafe fn __get(repr: MaybeUninit<*mut c_void>) -> *const Self {
-        unsafe { unique_ptr_std_string_get(&repr) }
+        unsafe { unique_ptr_std_string_get(&raw const repr) }
     }
     unsafe fn __release(mut repr: MaybeUninit<*mut c_void>) -> *mut Self {
-        unsafe { unique_ptr_std_string_release(&mut repr) }
+        unsafe { unique_ptr_std_string_release(&raw mut repr) }
     }
     unsafe fn __drop(mut repr: MaybeUninit<*mut c_void>) {
-        unsafe { unique_ptr_std_string_drop(&mut repr) }
+        unsafe { unique_ptr_std_string_drop(&raw mut repr) }
     }
 }
 

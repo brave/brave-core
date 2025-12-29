@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.71"
 name = "security-framework"
-version = "3.2.0"
+version = "3.5.1"
 authors = [
     "Steven Fackler <sfackler@gmail.com>",
     "Kornel <kornel@geekhood.net>",
@@ -45,11 +45,37 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/kornelski/rust-security-framework"
 
 [package.metadata.docs.rs]
-features = ["OSX_10_15"]
 targets = [
     "x86_64-apple-darwin",
     "aarch64-apple-ios",
 ]
+features = ["OSX_10_15"]
+
+[badges.maintenance]
+status = "looking-for-maintainer"
+
+[features]
+OSX_10_12 = ["security-framework-sys/OSX_10_12"]
+OSX_10_13 = [
+    "OSX_10_12",
+    "security-framework-sys/OSX_10_13",
+    "alpn",
+    "session-tickets",
+]
+OSX_10_14 = [
+    "OSX_10_13",
+    "security-framework-sys/OSX_10_14",
+]
+OSX_10_15 = [
+    "OSX_10_14",
+    "security-framework-sys/OSX_10_15",
+]
+alpn = []
+default = ["OSX_10_12"]
+job-bless = []
+nightly = []
+session-tickets = []
+sync-keychain = ["OSX_10_13"]
 
 [lib]
 name = "security_framework"
@@ -84,11 +110,11 @@ version = "0.4.20"
 optional = true
 
 [dependencies.security-framework-sys]
-version = "2.14"
+version = "2.15"
 default-features = false
 
 [dev-dependencies.env_logger]
-version = "0.10"
+version = "0.11"
 
 [dev-dependencies.hex]
 version = "0.4.3"
@@ -102,36 +128,12 @@ version = "0.3.23"
 [dev-dependencies.x509-parser]
 version = "0.16"
 
-[features]
-OSX_10_12 = ["security-framework-sys/OSX_10_12"]
-OSX_10_13 = [
-    "OSX_10_12",
-    "security-framework-sys/OSX_10_13",
-    "alpn",
-    "session-tickets",
-]
-OSX_10_14 = [
-    "OSX_10_13",
-    "security-framework-sys/OSX_10_14",
-]
-OSX_10_15 = [
-    "OSX_10_14",
-    "security-framework-sys/OSX_10_15",
-]
-alpn = []
-default = ["OSX_10_12"]
-job-bless = []
-nightly = []
-session-tickets = []
-sync-keychain = ["OSX_10_13"]
-
-[badges.maintenance]
-status = "looking-for-maintainer"
-
 [lints.clippy]
 cast_possible_truncation = "allow"
 cast_possible_wrap = "allow"
 cast_sign_loss = "allow"
+default_trait_access = "allow"
+doc_markdown = "allow"
 if_not_else = "allow"
 inline_always = "allow"
 items_after_statements = "allow"
@@ -140,8 +142,11 @@ map_unwrap_or = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
 module_name_repetitions = "allow"
+needless_continue = "allow"
+needless_pass_by_value = "allow"
 redundant_closure_for_method_calls = "allow"
 similar_names = "allow"
+struct_field_names = "allow"
 unnested_or_patterns = "allow"
 wildcard_imports = "allow"
 

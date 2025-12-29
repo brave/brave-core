@@ -11,10 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.59"
+rust-version = "1.63"
 name = "thread_local"
-version = "1.1.8"
+version = "1.1.9"
 authors = ["Amanieu d'Antras <amanieu@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Per-object thread-local storage"
 documentation = "https://docs.rs/thread_local/"
 readme = "README.md"
@@ -26,18 +32,20 @@ keywords = [
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Amanieu/thread_local-rs"
 
+[features]
+nightly = []
+
+[lib]
+name = "thread_local"
+path = "src/lib.rs"
+
 [[bench]]
 name = "thread_local"
+path = "benches/thread_local.rs"
 harness = false
 
 [dependencies.cfg-if]
 version = "1.0.0"
 
-[dependencies.once_cell]
-version = "1.5.2"
-
 [dev-dependencies.criterion]
 version = "0.5.1"
-
-[features]
-nightly = []

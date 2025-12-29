@@ -28,11 +28,13 @@ impl<W> WriterExt for W {
     }
 }
 
+#[cfg(feature = "issue-url")]
 pub(crate) trait DisplayExt: Sized + Display {
     fn with_header<H: Display>(self, header: H) -> Header<Self, H>;
     fn with_footer<F: Display>(self, footer: F) -> Footer<Self, F>;
 }
 
+#[cfg(feature = "issue-url")]
 impl<T> DisplayExt for T
 where
     T: Display,
@@ -65,7 +67,7 @@ impl<'a, H: ?Sized, W> HeaderWriter<'a, H, W> {
     }
 }
 
-impl<'a, H: ?Sized, W> fmt::Write for ReadyHeaderWriter<'a, '_, H, W>
+impl<H: ?Sized, W> fmt::Write for ReadyHeaderWriter<'_, '_, H, W>
 where
     H: Display,
     W: fmt::Write,
@@ -80,11 +82,13 @@ where
     }
 }
 
+#[cfg(feature = "issue-url")]
 pub(crate) struct FooterWriter<W> {
     inner: W,
     had_output: bool,
 }
 
+#[cfg(feature = "issue-url")]
 impl<W> fmt::Write for FooterWriter<W>
 where
     W: fmt::Write,
@@ -98,6 +102,7 @@ where
     }
 }
 
+#[cfg(feature = "issue-url")]
 #[allow(explicit_outlives_requirements)]
 pub(crate) struct Footer<B, H>
 where
@@ -108,6 +113,7 @@ where
     footer: H,
 }
 
+#[cfg(feature = "issue-url")]
 impl<B, H> fmt::Display for Footer<B, H>
 where
     B: Display,
@@ -129,6 +135,7 @@ where
     }
 }
 
+#[cfg(feature = "issue-url")]
 #[allow(explicit_outlives_requirements)]
 pub(crate) struct Header<B, H>
 where
@@ -139,6 +146,7 @@ where
     h: H,
 }
 
+#[cfg(feature = "issue-url")]
 impl<B, H> fmt::Display for Header<B, H>
 where
     B: Display,

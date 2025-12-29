@@ -2,26 +2,39 @@ use std::path::{Path, PathBuf};
 
 use gix_features::fs::walkdir::DirEntryIter;
 use gix_object::bstr::ByteSlice;
+use gix_path::RelativePath;
 
 use crate::{file::iter::LooseThenPacked, store_impl::file, BString, FullName};
 
 /// An iterator over all valid loose reference paths as seen from a particular base directory.
 pub(in crate::store_impl::file) struct SortedLoosePaths {
     pub(crate) base: PathBuf,
-    filename_prefix: Option<BString>,
+    /// An prefix like `refs/heads/foo/` or `refs/heads/prefix` that a returned reference must match against..
+    prefix: Option<BString>,
+    /// A suffix like `HEAD` that a returned reference must match against..
+    suffix: Option<BString>,
     file_walk: Option<DirEntryIter>,
 }
 
 impl SortedLoosePaths {
-    pub fn at(path: &Path, base: PathBuf, filename_prefix: Option<BString>, precompose_unicode: bool) -> Self {
+    pub fn at(
+        path: &Path,
+        base: PathBuf,
+        prefix: Option<BString>,
+        suffix: Option<BString>,
+        precompose_unicode: bool,
+    ) -> Self {
+        let depth = if suffix.is_some() { 1 } else { usize::MAX };
         SortedLoosePaths {
             base,
-            filename_prefix,
+            prefix,
+            suffix,
             file_walk: path.is_dir().then(|| {
                 // serial iteration as we expect most refs in packed-refs anyway.
                 gix_features::fs::walkdir_sorted_new(
                     path,
                     gix_features::fs::walkdir::Parallelism::Serial,
+                    depth,
                     precompose_unicode,
                 )
                 .into_iter()
@@ -37,35 +50,28 @@ impl Iterator for SortedLoosePaths {
         for entry in self.file_walk.as_mut()?.by_ref() {
             match entry {
                 Ok(entry) => {
-                    if !entry.file_type().map_or(false, |ft| ft.is_file()) {
+                    if !entry.file_type().is_ok_and(|ft| ft.is_file()) {
                         continue;
                     }
                     let full_path = entry.path().into_owned();
-                    if let Some((prefix, name)) = self
-                        .filename_prefix
-                        .as_deref()
-                        .and_then(|prefix| full_path.file_name().map(|name| (prefix, name)))
-                    {
-                        match gix_path::os_str_into_bstr(name) {
-                            Ok(name) => {
-                                if !name.starts_with(prefix) {
-                                    continue;
-                                }
-                            }
-                            Err(_) => continue, // TODO: silently skipping ill-formed UTF-8 on windows - maybe this can be better?
-                        }
-                    }
                     let full_name = full_path
                         .strip_prefix(&self.base)
-                        .expect("prefix-stripping cannot fail as prefix is our root");
-                    let full_name = match gix_path::try_into_bstr(full_name) {
-                        Ok(name) => {
-                            let name = gix_path::to_unix_separators_on_windows(name);
-                            name.into_owned()
-                        }
-                        Err(_) => continue, // TODO: silently skipping ill-formed UTF-8 on windows here, maybe there are better ways?
+                        .expect("prefix-stripping cannot fail as base is within our root");
+                    let Ok(full_name) = gix_path::try_into_bstr(full_name)
+                        .map(|name| gix_path::to_unix_separators_on_windows(name).into_owned())
+                    else {
+                        continue;
                     };
-
+                    if let Some(prefix) = &self.prefix {
+                        if !full_name.starts_with(prefix) {
+                            continue;
+                        }
+                    }
+                    if let Some(suffix) = &self.suffix {
+                        if !full_name.ends_with(suffix) {
+                            continue;
+                        }
+                    }
                     if gix_validate::reference::name_partial(full_name.as_bstr()).is_ok() {
                         let name = FullName(full_name);
                         return Some(Ok((full_path, name)));
@@ -92,8 +98,14 @@ impl file::Store {
 
     /// Return an iterator over all loose references that start with the given `prefix`.
     ///
-    /// Otherwise it's similar to [`loose_iter()`][file::Store::loose_iter()].
-    pub fn loose_iter_prefixed(&self, prefix: &Path) -> std::io::Result<LooseThenPacked<'_, '_>> {
+    /// Otherwise, it's similar to [`loose_iter()`](file::Store::loose_iter()).
+    ///
+    /// Note that if a prefix isn't using a trailing `/`, like in `refs/heads/foo`, it will effectively
+    /// start the traversal in the parent directory, e.g. `refs/heads/` and list everything inside that
+    /// starts with `foo`, like `refs/heads/foo` and `refs/heads/foobar`.
+    ///
+    /// Prefixes are relative paths with slash-separated components.
+    pub fn loose_iter_prefixed(&self, prefix: &RelativePath) -> std::io::Result<LooseThenPacked<'_, '_>> {
         self.iter_prefixed_packed(prefix, None)
     }
 }

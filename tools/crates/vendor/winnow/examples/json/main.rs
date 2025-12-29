@@ -52,15 +52,11 @@ struct Args {
     implementation: Impl,
 }
 
+#[derive(Default)]
 enum Impl {
+    #[default]
     Naive,
     Dispatch,
-}
-
-impl Default for Impl {
-    fn default() -> Self {
-        Self::Naive
-    }
 }
 
 impl Args {

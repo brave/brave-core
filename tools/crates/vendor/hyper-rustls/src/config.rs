@@ -1,7 +1,5 @@
 #[cfg(feature = "rustls-native-certs")]
 use std::io;
-#[cfg(feature = "rustls-platform-verifier")]
-use std::sync::Arc;
 
 #[cfg(any(
     feature = "rustls-platform-verifier",
@@ -12,19 +10,37 @@ use rustls::client::WantsClientCert;
 use rustls::{ClientConfig, ConfigBuilder, WantsVerifier};
 #[cfg(feature = "rustls-native-certs")]
 use rustls_native_certs::CertificateResult;
+#[cfg(feature = "rustls-platform-verifier")]
+use rustls_platform_verifier::BuilderVerifierExt;
 
 /// Methods for configuring roots
 ///
 /// This adds methods (gated by crate features) for easily configuring
 /// TLS server roots a rustls ClientConfig will trust.
-pub trait ConfigBuilderExt {
+pub trait ConfigBuilderExt: sealed::Sealed {
+    /// Use the platform's native verifier to verify server certificates.
+    ///
+    /// See the documentation for [rustls-platform-verifier] for more details.
+    ///
+    /// # Panics
+    ///
+    /// Since 0.27.7, this method will panic if the platform verifier cannot be initialized.
+    /// Use `try_with_platform_verifier()` instead to handle errors gracefully.
+    ///
+    /// [rustls-platform-verifier]: https://docs.rs/rustls-platform-verifier
+    #[deprecated(since = "0.27.7", note = "use `try_with_platform_verifier` instead")]
+    #[cfg(feature = "rustls-platform-verifier")]
+    fn with_platform_verifier(self) -> ConfigBuilder<ClientConfig, WantsClientCert>;
+
     /// Use the platform's native verifier to verify server certificates.
     ///
     /// See the documentation for [rustls-platform-verifier] for more details.
     ///
     /// [rustls-platform-verifier]: https://docs.rs/rustls-platform-verifier
     #[cfg(feature = "rustls-platform-verifier")]
-    fn with_platform_verifier(self) -> ConfigBuilder<ClientConfig, WantsClientCert>;
+    fn try_with_platform_verifier(
+        self,
+    ) -> Result<ConfigBuilder<ClientConfig, WantsClientCert>, rustls::Error>;
 
     /// This configures the platform's trusted certs, as implemented by
     /// rustls-native-certs
@@ -43,11 +59,15 @@ pub trait ConfigBuilderExt {
 impl ConfigBuilderExt for ConfigBuilder<ClientConfig, WantsVerifier> {
     #[cfg(feature = "rustls-platform-verifier")]
     fn with_platform_verifier(self) -> ConfigBuilder<ClientConfig, WantsClientCert> {
-        let provider = self.crypto_provider().clone();
-        self.dangerous()
-            .with_custom_certificate_verifier(Arc::new(
-                rustls_platform_verifier::Verifier::new().with_provider(provider),
-            ))
+        self.try_with_platform_verifier()
+            .expect("failure to initialize platform verifier")
+    }
+
+    #[cfg(feature = "rustls-platform-verifier")]
+    fn try_with_platform_verifier(
+        self,
+    ) -> Result<ConfigBuilder<ClientConfig, WantsClientCert>, rustls::Error> {
+        BuilderVerifierExt::with_platform_verifier(self)
     }
 
     #[cfg(feature = "rustls-native-certs")]
@@ -105,4 +125,12 @@ impl ConfigBuilderExt for ConfigBuilder<ClientConfig, WantsVerifier> {
         );
         self.with_root_certificates(roots)
     }
+}
+
+mod sealed {
+    use super::*;
+
+    pub trait Sealed {}
+
+    impl Sealed for ConfigBuilder<ClientConfig, WantsVerifier> {}
 }

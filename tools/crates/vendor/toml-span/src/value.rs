@@ -52,7 +52,7 @@ impl<'de> Value<'de> {
     /// Returns true if the value is a table and is non-empty
     #[inline]
     pub fn has_keys(&self) -> bool {
-        self.value.as_ref().map_or(false, |val| {
+        self.value.as_ref().is_some_and(|val| {
             if let ValueInner::Table(table) = val {
                 !table.is_empty()
             } else {
@@ -64,7 +64,7 @@ impl<'de> Value<'de> {
     /// Returns true if the value is a table and has the specified key
     #[inline]
     pub fn has_key(&self, key: &str) -> bool {
-        self.value.as_ref().map_or(false, |val| {
+        self.value.as_ref().is_some_and(|val| {
             if let ValueInner::Table(table) = val {
                 table.contains_key(key)
             } else {
@@ -209,7 +209,7 @@ impl<'de> AsRef<ValueInner<'de>> for Value<'de> {
     }
 }
 
-impl<'de> fmt::Debug for Value<'de> {
+impl fmt::Debug for Value<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}", self.value)
     }
@@ -225,43 +225,43 @@ pub struct Key<'de> {
     pub span: Span,
 }
 
-impl<'de> std::borrow::Borrow<str> for Key<'de> {
+impl std::borrow::Borrow<str> for Key<'_> {
     fn borrow(&self) -> &str {
         self.name.as_ref()
     }
 }
 
-impl<'de> fmt::Debug for Key<'de> {
+impl fmt::Debug for Key<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&self.name)
     }
 }
 
-impl<'de> fmt::Display for Key<'de> {
+impl fmt::Display for Key<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&self.name)
     }
 }
 
-impl<'de> Ord for Key<'de> {
+impl Ord for Key<'_> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.name.cmp(&other.name)
     }
 }
 
-impl<'de> PartialOrd for Key<'de> {
+impl PartialOrd for Key<'_> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl<'de> PartialEq for Key<'de> {
+impl PartialEq for Key<'_> {
     fn eq(&self, other: &Self) -> bool {
         self.name.eq(&other.name)
     }
 }
 
-impl<'de> Eq for Key<'de> {}
+impl Eq for Key<'_> {}
 
 /// A toml table, always represented as a sorted map.
 ///

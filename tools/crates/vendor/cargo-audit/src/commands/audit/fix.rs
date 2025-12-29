@@ -4,7 +4,7 @@ use crate::{auditor::Auditor, lockfile, prelude::*};
 use abscissa_core::{Command, Runnable};
 use cargo_lock::Lockfile;
 use clap::Parser;
-use rustsec::{advisory::Id, Fixer};
+use rustsec::{Fixer, advisory::Id};
 use std::{
     collections::BTreeSet,
     path::{Path, PathBuf},

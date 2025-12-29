@@ -17,86 +17,76 @@ this module and use fallback implementation instead.
 Refs:
 - RISC-V Instruction Set Manual
   "Zacas" Extension for Atomic Compare-and-Swap (CAS) Instructions
-  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-8b9dc50-2024-08-30/src/zacas.adoc
+  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-56e76be-2025-08-26/src/zacas.adoc
 - RISC-V Atomics ABI Specification
-  https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/draft-20240829-13bfa9f54634cb60d86b9b333e109f077805b4b3/riscv-atomic.adoc
+  https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/draft-20250812-301374e92976e298e676e7129a6212926b2299ce/riscv-atomic.adoc
 
 Generated asm:
-- riscv64gc (+experimental-zacas) https://godbolt.org/z/hPY86hWcc
+- riscv64gc (+zacas) https://godbolt.org/z/c59a9fs63
 */
 
 include!("macros.rs");
 
-#[cfg(not(any(
-    target_feature = "experimental-zacas",
-    portable_atomic_target_feature = "experimental-zacas",
-)))]
+#[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
 #[path = "../fallback/outline_atomics.rs"]
 mod fallback;
 
 #[cfg(not(portable_atomic_no_outline_atomics))]
-#[cfg(any(test, portable_atomic_outline_atomics))] // TODO(riscv): currently disabled by default
-#[cfg(any(
-    test,
-    not(any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
-    )),
-))]
+#[cfg(any(test, not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"))))]
 #[cfg(any(target_os = "linux", target_os = "android"))]
 #[path = "../detect/riscv_linux.rs"]
 mod detect;
 
-use core::{arch::asm, sync::atomic::Ordering};
+#[cfg(not(portable_atomic_no_asm))]
+use core::arch::asm;
+use core::sync::atomic::Ordering;
 
 use crate::utils::{Pair, U128};
 
 macro_rules! debug_assert_zacas {
     () => {
-        #[cfg(not(any(
-            target_feature = "experimental-zacas",
-            portable_atomic_target_feature = "experimental-zacas",
-        )))]
+        #[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
         {
-            debug_assert!(detect::detect().has_zacas());
+            debug_assert!(detect::detect().zacas());
         }
     };
 }
 
-// LLVM doesn't support `.option arch, +zabha` directive as of LLVM 19 because it is experimental.
-// So, we currently always using .4byte directive.
+// `.option arch, +zacas` directive requires LLVM 20, so we use .4byte directive for old LLVM.
 // Note that `.insn <value>` directive requires LLVM 19.
 // https://github.com/llvm/llvm-project/commit/2a086dce691e3cc34a2fc27f4fb255bb2cbbfac9
-// // https://github.com/riscv-non-isa/riscv-asm-manual/blob/ad0de8c004e29c9a7ac33cfd054f4d4f9392f2fb/src/asm-manual.adoc#arch
-// macro_rules! start_zacas {
-//     () => {
-//         ".option push\n.option arch, +zacas"
-//     };
-// }
-// macro_rules! end_zacas {
-//     () => {
-//         ".option pop"
-//     };
-// }
+// https://github.com/riscv-non-isa/riscv-asm-manual/blob/v0.0.1/src/asm-manual.adoc#arch
+#[cfg(not(portable_atomic_pre_llvm_20))]
+macro_rules! start_zacas {
+    () => {
+        ".option push\n.option arch, +zacas"
+    };
+}
+#[cfg(not(portable_atomic_pre_llvm_20))]
+macro_rules! end_zacas {
+    () => {
+        ".option pop"
+    };
+}
 
-// LLVM doesn't support `.option arch, +zabha` directive as of LLVM 19 because it is experimental.
-// So, we currently always using .4byte directive.
-// macro_rules! atomic_rmw_amocas_order {
-//     ($op:ident, $order:ident) => {
-//         atomic_rmw_amocas_order!($op, $order, failure = $order)
-//     };
-//     ($op:ident, $order:ident, failure = $failure:ident) => {
-//         match $order {
-//             Ordering::Relaxed => $op!("", ""),
-//             Ordering::Acquire => $op!("", ".aq"),
-//             Ordering::Release => $op!("", ".rl"),
-//             Ordering::AcqRel => $op!("", ".aqrl"),
-//             Ordering::SeqCst if $failure == Ordering::SeqCst => $op!("fence rw,rw", ".aqrl"),
-//             Ordering::SeqCst => $op!("", ".aqrl"),
-//             _ => unreachable!(),
-//         }
-//     };
-// }
+#[cfg(not(portable_atomic_pre_llvm_20))]
+macro_rules! atomic_rmw_amocas_order {
+    ($op:ident, $order:ident) => {
+        atomic_rmw_amocas_order!($op, $order, failure = $order)
+    };
+    ($op:ident, $order:ident, failure = $failure:ident) => {
+        match $order {
+            Ordering::Relaxed => $op!("", ""),
+            Ordering::Acquire => $op!("", ".aq"),
+            Ordering::Release => $op!("", ".rl"),
+            Ordering::AcqRel => $op!("", ".aqrl"),
+            Ordering::SeqCst if $failure == Ordering::SeqCst => $op!("fence rw,rw", ".aqrl"),
+            Ordering::SeqCst => $op!("", ".aqrl"),
+            _ => unreachable!(),
+        }
+    };
+}
+#[cfg(portable_atomic_pre_llvm_20)]
 macro_rules! atomic_rmw_amocas_order_insn {
     ($op:ident, $order:ident) => {
         atomic_rmw_amocas_order_insn!($op, $order, failure = $order)
@@ -115,16 +105,10 @@ macro_rules! atomic_rmw_amocas_order_insn {
 }
 
 // If zacas is available at compile-time, we can always use zacas_fn.
-#[cfg(any(
-    target_feature = "experimental-zacas",
-    portable_atomic_target_feature = "experimental-zacas",
-))]
+#[cfg(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"))]
 use self::atomic_load_zacas as atomic_load;
 // Otherwise, we need to do run-time detection and can use zacas_fn only if zacas is available.
-#[cfg(not(any(
-    target_feature = "experimental-zacas",
-    portable_atomic_target_feature = "experimental-zacas",
-)))]
+#[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
 #[inline]
 unsafe fn atomic_load(src: *mut u128, order: Ordering) -> u128 {
     fn_alias! {
@@ -142,7 +126,7 @@ unsafe fn atomic_load(src: *mut u128, order: Ordering) -> u128 {
         match order {
             Ordering::Relaxed => {
                 ifunc!(unsafe fn(src: *mut u128) -> u128 {
-                    if detect::detect().has_zacas() {
+                    if detect::detect().zacas() {
                         atomic_load_zacas_relaxed
                     } else {
                         fallback::atomic_load_non_seqcst
@@ -151,7 +135,7 @@ unsafe fn atomic_load(src: *mut u128, order: Ordering) -> u128 {
             }
             Ordering::Acquire => {
                 ifunc!(unsafe fn(src: *mut u128) -> u128 {
-                    if detect::detect().has_zacas() {
+                    if detect::detect().zacas() {
                         atomic_load_zacas_acquire
                     } else {
                         fallback::atomic_load_non_seqcst
@@ -160,7 +144,7 @@ unsafe fn atomic_load(src: *mut u128, order: Ordering) -> u128 {
             }
             Ordering::SeqCst => {
                 ifunc!(unsafe fn(src: *mut u128) -> u128 {
-                    if detect::detect().has_zacas() {
+                    if detect::detect().zacas() {
                         atomic_load_zacas_seqcst
                     } else {
                         fallback::atomic_load_seqcst
@@ -179,23 +163,24 @@ unsafe fn atomic_load_zacas(src: *mut u128, order: Ordering) -> u128 {
 
     // SAFETY: the caller must uphold the safety contract.
     unsafe {
-        // LLVM doesn't support `.option arch, +zabha` directive as of LLVM 19 because it is experimental.
-        // So, we currently always using .4byte directive.
-        // macro_rules! load {
-        //     ($fence:tt, $asm_order:tt) => {
-        //         asm!(
-        //             start_zacas!(),
-        //             $fence,                                               // fence
-        //             concat!("amocas.q", $asm_order, " a2, a2, 0({src})"), // atomic { if *dst == a2:a3 { *dst = a2:a3 } else { a2:a3 = *dst } }
-        //             end_zacas!(),
-        //             src = in(reg) ptr_reg!(src),
-        //             inout("a2") 0_u64 => out_lo,
-        //             inout("a3") 0_u64 => out_hi,
-        //             options(nostack, preserves_flags),
-        //         )
-        //     };
-        // }
-        // atomic_rmw_amocas_order!(load, order);
+        #[cfg(not(portable_atomic_pre_llvm_20))]
+        macro_rules! load {
+            ($fence:tt, $asm_order:tt) => {
+                asm!(
+                    start_zacas!(),
+                    $fence,                                               // fence
+                    concat!("amocas.q", $asm_order, " a2, a2, 0({src})"), // atomic { if *dst == a2:a3 { *dst = a2:a3 } else { a2:a3 = *dst } }
+                    end_zacas!(),
+                    src = in(reg) ptr_reg!(src),
+                    inout("a2") 0_u64 => out_lo,
+                    inout("a3") 0_u64 => out_hi,
+                    options(nostack, preserves_flags),
+                )
+            };
+        }
+        #[cfg(not(portable_atomic_pre_llvm_20))]
+        atomic_rmw_amocas_order!(load, order);
+        #[cfg(portable_atomic_pre_llvm_20)]
         macro_rules! load {
             ($fence:tt, $insn_order:tt) => {
                 asm!(
@@ -209,6 +194,7 @@ unsafe fn atomic_load_zacas(src: *mut u128, order: Ordering) -> u128 {
                 )
             };
         }
+        #[cfg(portable_atomic_pre_llvm_20)]
         atomic_rmw_amocas_order_insn!(load, order);
         U128 { pair: Pair { lo: out_lo, hi: out_hi } }.whole
     }
@@ -230,17 +216,11 @@ unsafe fn atomic_compare_exchange(
     success: Ordering,
     failure: Ordering,
 ) -> Result<u128, u128> {
-    #[cfg(any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
-    ))]
+    #[cfg(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"))]
     // SAFETY: the caller must uphold the safety contract.
     // cfg guarantees that zacas instructions are available at compile-time.
     let (prev, ok) = unsafe { atomic_compare_exchange_zacas(dst, old, new, success, failure) };
-    #[cfg(not(any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
-    )))]
+    #[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
     let (prev, ok) = {
         fn_alias! {
             // inline(never) is just a hint and also not strictly necessary
@@ -260,7 +240,7 @@ unsafe fn atomic_compare_exchange(
             match order {
                 Ordering::Relaxed => {
                     ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-                        if detect::detect().has_zacas() {
+                        if detect::detect().zacas() {
                             zacas_relaxed_fn
                         } else {
                             fallback::atomic_compare_exchange_non_seqcst
@@ -269,7 +249,7 @@ unsafe fn atomic_compare_exchange(
                 }
                 Ordering::Acquire => {
                     ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-                        if detect::detect().has_zacas() {
+                        if detect::detect().zacas() {
                             zacas_acquire_fn
                         } else {
                             fallback::atomic_compare_exchange_non_seqcst
@@ -278,7 +258,7 @@ unsafe fn atomic_compare_exchange(
                 }
                 Ordering::Release => {
                     ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-                        if detect::detect().has_zacas() {
+                        if detect::detect().zacas() {
                             zacas_release_fn
                         } else {
                             fallback::atomic_compare_exchange_non_seqcst
@@ -287,7 +267,7 @@ unsafe fn atomic_compare_exchange(
                 }
                 Ordering::AcqRel => {
                     ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-                        if detect::detect().has_zacas() {
+                        if detect::detect().zacas() {
                             zacas_acqrel_fn
                         } else {
                             fallback::atomic_compare_exchange_non_seqcst
@@ -296,7 +276,7 @@ unsafe fn atomic_compare_exchange(
                 }
                 Ordering::SeqCst => {
                     ifunc!(unsafe fn(dst: *mut u128, old: u128, new: u128) -> (u128, bool) {
-                        if detect::detect().has_zacas() {
+                        if detect::detect().zacas() {
                             zacas_seqcst_fn
                         } else {
                             fallback::atomic_compare_exchange_seqcst
@@ -307,11 +287,7 @@ unsafe fn atomic_compare_exchange(
             }
         }
     };
-    if ok {
-        Ok(prev)
-    } else {
-        Err(prev)
-    }
+    if ok { Ok(prev) } else { Err(prev) }
 }
 #[inline]
 unsafe fn atomic_compare_exchange_zacas(
@@ -330,27 +306,28 @@ unsafe fn atomic_compare_exchange_zacas(
 
     // SAFETY: the caller must uphold the safety contract.
     unsafe {
-        // LLVM doesn't support `.option arch, +zabha` directive as of LLVM 19 because it is experimental.
-        // So, we currently always using .4byte directive.
-        // macro_rules! cmpxchg {
-        //     ($fence:tt, $asm_order:tt) => {
-        //         asm!(
-        //             start_zacas!(),
-        //             $fence,                                               // fence
-        //             concat!("amocas.q", $asm_order, " a4, a2, 0({dst})"), // atomic { if *dst == a4:a5 { *dst = a2:a3 } else { a4:a5 = *dst } }
-        //             end_zacas!(),
-        //             dst = in(reg) ptr_reg!(dst),
-        //             // must be allocated to even/odd register pair
-        //             inout("a4") old.pair.lo => prev_lo,
-        //             inout("a5") old.pair.hi => prev_hi,
-        //             // must be allocated to even/odd register pair
-        //             in("a2") new.pair.lo,
-        //             in("a3") new.pair.hi,
-        //             options(nostack, preserves_flags),
-        //         )
-        //     };
-        // }
-        // atomic_rmw_amocas_order!(cmpxchg, order, failure = failure);
+        #[cfg(not(portable_atomic_pre_llvm_20))]
+        macro_rules! cmpxchg {
+            ($fence:tt, $asm_order:tt) => {
+                asm!(
+                    start_zacas!(),
+                    $fence,                                               // fence
+                    concat!("amocas.q", $asm_order, " a4, a2, 0({dst})"), // atomic { if *dst == a4:a5 { *dst = a2:a3 } else { a4:a5 = *dst } }
+                    end_zacas!(),
+                    dst = in(reg) ptr_reg!(dst),
+                    // must be allocated to even/odd register pair
+                    inout("a4") old.pair.lo => prev_lo,
+                    inout("a5") old.pair.hi => prev_hi,
+                    // must be allocated to even/odd register pair
+                    in("a2") new.pair.lo,
+                    in("a3") new.pair.hi,
+                    options(nostack, preserves_flags),
+                )
+            };
+        }
+        #[cfg(not(portable_atomic_pre_llvm_20))]
+        atomic_rmw_amocas_order!(cmpxchg, order, failure = failure);
+        #[cfg(portable_atomic_pre_llvm_20)]
         macro_rules! cmpxchg {
             ($fence:tt, $insn_order:tt) => {
                 asm!(
@@ -368,6 +345,7 @@ unsafe fn atomic_compare_exchange_zacas(
                 )
             };
         }
+        #[cfg(portable_atomic_pre_llvm_20)]
         atomic_rmw_amocas_order_insn!(cmpxchg, order, failure = failure);
         let prev = U128 { pair: Pair { lo: prev_lo, hi: prev_hi } }.whole;
         (prev, prev == old.whole)
@@ -386,7 +364,7 @@ unsafe fn byte_wise_atomic_load(src: *const u128) -> u128 {
     unsafe {
         asm!(
             "ld {out_lo}, ({src})",  // atomic { out_lo = *src }
-            "ld {out_hi}, 8({src})", // atomic { out_hi = *src.add(8) }
+            "ld {out_hi}, 8({src})", // atomic { out_hi = *src.byte_add(8) }
             src = in(reg) ptr_reg!(src),
             out_lo = out(reg) out_lo,
             out_hi = out(reg) out_hi,
@@ -430,16 +408,10 @@ macro_rules! select_atomic_rmw {
             }
         }
         // If zacas is available at compile-time, we can always use zacas_fn.
-        #[cfg(any(
-            target_feature = "experimental-zacas",
-            portable_atomic_target_feature = "experimental-zacas",
-        ))]
+        #[cfg(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"))]
         use self::$zacas_fn as $name;
         // Otherwise, we need to do run-time detection and can use zacas_fn only if zacas is available.
-        #[cfg(not(any(
-            target_feature = "experimental-zacas",
-            portable_atomic_target_feature = "experimental-zacas",
-        )))]
+        #[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
         #[inline]
         unsafe fn $name(dst: *mut u128 $(, $($arg)*)?, order: Ordering) $(-> $ret_ty)? {
             fn_alias! {
@@ -459,7 +431,7 @@ macro_rules! select_atomic_rmw {
                 match order {
                     Ordering::Relaxed => {
                         ifunc!(unsafe fn(dst: *mut u128 $(, $($arg)*)?) $(-> $ret_ty)? {
-                            if detect::detect().has_zacas() {
+                            if detect::detect().zacas() {
                                 zacas_relaxed_fn
                             } else {
                                 fallback::$non_seqcst_fallback_fn
@@ -468,7 +440,7 @@ macro_rules! select_atomic_rmw {
                     }
                     Ordering::Acquire => {
                         ifunc!(unsafe fn(dst: *mut u128 $(, $($arg)*)?) $(-> $ret_ty)? {
-                            if detect::detect().has_zacas() {
+                            if detect::detect().zacas() {
                                 zacas_acquire_fn
                             } else {
                                 fallback::$non_seqcst_fallback_fn
@@ -477,7 +449,7 @@ macro_rules! select_atomic_rmw {
                     }
                     Ordering::Release => {
                         ifunc!(unsafe fn(dst: *mut u128 $(, $($arg)*)?) $(-> $ret_ty)? {
-                            if detect::detect().has_zacas() {
+                            if detect::detect().zacas() {
                                 zacas_release_fn
                             } else {
                                 fallback::$non_seqcst_fallback_fn
@@ -486,7 +458,7 @@ macro_rules! select_atomic_rmw {
                     }
                     Ordering::AcqRel => {
                         ifunc!(unsafe fn(dst: *mut u128 $(, $($arg)*)?) $(-> $ret_ty)? {
-                            if detect::detect().has_zacas() {
+                            if detect::detect().zacas() {
                                 zacas_acqrel_fn
                             } else {
                                 fallback::$non_seqcst_fallback_fn
@@ -495,7 +467,7 @@ macro_rules! select_atomic_rmw {
                     }
                     Ordering::SeqCst => {
                         ifunc!(unsafe fn(dst: *mut u128 $(, $($arg)*)?) $(-> $ret_ty)? {
-                            if detect::detect().has_zacas() {
+                            if detect::detect().zacas() {
                                 zacas_seqcst_fn
                             } else {
                                 fallback::$seqcst_fallback_fn
@@ -622,26 +594,18 @@ select_atomic_rmw! {
 
 #[inline]
 fn is_lock_free() -> bool {
-    #[cfg(any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
-    ))]
+    #[cfg(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"))]
     {
         // zacas is available at compile-time.
         true
     }
-    #[cfg(not(any(
-        target_feature = "experimental-zacas",
-        portable_atomic_target_feature = "experimental-zacas",
-    )))]
+    #[cfg(not(any(target_feature = "zacas", portable_atomic_target_feature = "zacas")))]
     {
-        detect::detect().has_zacas()
+        detect::detect().zacas()
     }
 }
-const IS_ALWAYS_LOCK_FREE: bool = cfg!(any(
-    target_feature = "experimental-zacas",
-    portable_atomic_target_feature = "experimental-zacas",
-));
+const IS_ALWAYS_LOCK_FREE: bool =
+    cfg!(any(target_feature = "zacas", portable_atomic_target_feature = "zacas"));
 
 atomic128!(AtomicI128, i128, atomic_max, atomic_min);
 atomic128!(AtomicU128, u128, atomic_umax, atomic_umin);

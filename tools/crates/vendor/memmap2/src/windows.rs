@@ -77,6 +77,7 @@ struct SYSTEM_INFO {
     wProcessorRevision: WORD,
 }
 
+#[allow(dead_code)]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct FILETIME {
@@ -136,8 +137,7 @@ extern "system" {
 ///
 /// This aligns the pointer to `allocation_granularity()` or 1 if unknown.
 fn empty_slice_ptr() -> *mut c_void {
-    let align = allocation_granularity().max(1);
-    unsafe { mem::transmute(align) }
+    allocation_granularity().max(1) as *mut c_void
 }
 
 pub struct MmapInner {
@@ -216,7 +216,7 @@ impl MmapInner {
             Ok(MmapInner {
                 handle: Some(new_handle),
                 ptr: ptr.offset(alignment as isize),
-                len: len as usize,
+                len,
                 copy,
             })
         }
@@ -227,6 +227,7 @@ impl MmapInner {
         handle: RawHandle,
         offset: u64,
         _populate: bool,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         let write = protection_supported(handle, PAGE_READWRITE);
         let exec = protection_supported(handle, PAGE_EXECUTE_READ);
@@ -259,6 +260,7 @@ impl MmapInner {
         handle: RawHandle,
         offset: u64,
         _populate: bool,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         let write = protection_supported(handle, PAGE_READWRITE);
         let mut access = FILE_MAP_READ | FILE_MAP_EXECUTE;
@@ -281,6 +283,7 @@ impl MmapInner {
         handle: RawHandle,
         offset: u64,
         _populate: bool,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         let exec = protection_supported(handle, PAGE_EXECUTE_READ);
         let mut access = FILE_MAP_READ | FILE_MAP_WRITE;
@@ -303,6 +306,7 @@ impl MmapInner {
         handle: RawHandle,
         offset: u64,
         _populate: bool,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         let exec = protection_supported(handle, PAGE_EXECUTE_READWRITE);
         let mut access = FILE_MAP_COPY;
@@ -325,6 +329,7 @@ impl MmapInner {
         handle: RawHandle,
         offset: u64,
         _populate: bool,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         let write = protection_supported(handle, PAGE_READWRITE);
         let exec = protection_supported(handle, PAGE_EXECUTE_READ);
@@ -348,6 +353,7 @@ impl MmapInner {
         _stack: bool,
         _populate: bool,
         _huge: Option<u8>,
+        _no_reserve: bool,
     ) -> io::Result<MmapInner> {
         // Ensure a non-zero length for the underlying mapping
         let mapped_len = len.max(1);
@@ -382,7 +388,7 @@ impl MmapInner {
                 Ok(MmapInner {
                     handle: None,
                     ptr,
-                    len: len as usize,
+                    len,
                     copy: false,
                 })
             } else {
@@ -463,7 +469,7 @@ impl MmapInner {
 
     #[inline]
     pub fn mut_ptr(&mut self) -> *mut u8 {
-        self.ptr as *mut u8
+        self.ptr.cast()
     }
 
     #[inline]

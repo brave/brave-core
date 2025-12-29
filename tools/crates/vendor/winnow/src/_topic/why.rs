@@ -4,7 +4,7 @@
 //!
 //! <div class="warning">
 //!
-//! **Note:** This will focus on principles and priorities. For a deeper and wider wider
+//! **Note:** This will focus on principles and priorities. For a deeper and wider
 //! comparison with other Rust parser libraries, see
 //! [parse-rosetta-rs](https://github.com/rosetta-rs/parse-rosetta-rs).
 //!

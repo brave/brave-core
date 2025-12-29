@@ -187,6 +187,76 @@ impl ReaderOffset for usize {
     }
 }
 
+/// A trait for addresses within a DWARF section.
+///
+/// Currently this is a simple extension trait for `u64`, but it may be expanded
+/// in the future to support user-defined address types.
+pub(crate) trait ReaderAddress: Sized {
+    /// Add a length to an address of the given size.
+    ///
+    /// Returns an error for overflow.
+    fn add_sized(self, length: u64, size: u8) -> Result<Self>;
+
+    /// Add a length to an address of the given size.
+    ///
+    /// Wraps the result to the size of the address to allow for the possibility
+    /// that the length is a negative value.
+    fn wrapping_add_sized(self, length: u64, size: u8) -> Self;
+
+    /// The all-zeros value of an address.
+    fn zeros() -> Self;
+
+    /// The all-ones value of an address of the given size.
+    fn ones_sized(size: u8) -> Self;
+
+    /// Return the minimum value for a tombstone address.
+    ///
+    /// A variety of values may be used as tombstones in DWARF data.  DWARF 6 specifies a
+    /// tombstone value of -1, and this is compatible with most sections in earlier DWARF
+    /// versions. However, for .debug_loc and .debug_ranges in DWARF 4 and earlier, the
+    /// tombstone value is -2, because -1 already has a special meaning. -2 has also been
+    /// seen in .debug_line, possibly from a proprietary fork of lld.
+    ///
+    /// So this function returns -2 (cast to an unsigned value), and callers can consider
+    /// addresses greater than or equal to this value to be tombstones.
+    ///
+    /// Prior to the use of -1 or -2 for tombstones, it was common to use 0 or 1.
+    /// Additionally, gold may leave the relocation addend in place. These values are not
+    /// handled by this function, so callers will need to handle them separately if they
+    /// want to.
+    fn min_tombstone(size: u8) -> Self {
+        Self::zeros().wrapping_add_sized(-2i64 as u64, size)
+    }
+}
+
+impl ReaderAddress for u64 {
+    #[inline]
+    fn add_sized(self, length: u64, size: u8) -> Result<Self> {
+        let address = self.checked_add(length).ok_or(Error::AddressOverflow)?;
+        let mask = Self::ones_sized(size);
+        if address & !mask != 0 {
+            return Err(Error::AddressOverflow);
+        }
+        Ok(address)
+    }
+
+    #[inline]
+    fn wrapping_add_sized(self, length: u64, size: u8) -> Self {
+        let mask = Self::ones_sized(size);
+        self.wrapping_add(length) & mask
+    }
+
+    #[inline]
+    fn zeros() -> Self {
+        0
+    }
+
+    #[inline]
+    fn ones_sized(size: u8) -> Self {
+        !0 >> (64 - size * 8)
+    }
+}
+
 #[cfg(not(feature = "read"))]
 pub(crate) mod seal_if_no_alloc {
     #[derive(Debug)]
@@ -274,7 +344,7 @@ pub trait Reader: Debug + Clone {
     ///
     /// Does not advance the reader.
     #[cfg(feature = "read")]
-    fn to_slice(&self) -> Result<Cow<[u8]>>;
+    fn to_slice(&self) -> Result<Cow<'_, [u8]>>;
 
     /// Convert all remaining data to a clone-on-write string.
     ///
@@ -285,7 +355,7 @@ pub trait Reader: Debug + Clone {
     ///
     /// Returns an error if the data contains invalid characters.
     #[cfg(feature = "read")]
-    fn to_string(&self) -> Result<Cow<str>>;
+    fn to_string(&self) -> Result<Cow<'_, str>>;
 
     /// Convert all remaining data to a clone-on-write string, including invalid characters.
     ///
@@ -294,7 +364,7 @@ pub trait Reader: Debug + Clone {
     ///
     /// Does not advance the reader.
     #[cfg(feature = "read")]
-    fn to_string_lossy(&self) -> Result<Cow<str>>;
+    fn to_string_lossy(&self) -> Result<Cow<'_, str>>;
 
     /// Read exactly `buf.len()` bytes into `buf`.
     fn read_slice(&mut self, buf: &mut [u8]) -> Result<()>;
@@ -452,6 +522,15 @@ pub trait Reader: Debug + Clone {
         }
     }
 
+    /// Read a byte and validate it as an address size.
+    fn read_address_size(&mut self) -> Result<u8> {
+        let size = self.read_u8()?;
+        match size {
+            1 | 2 | 4 | 8 => Ok(size),
+            _ => Err(Error::UnsupportedAddressSize(size)),
+        }
+    }
+
     /// Read an address-sized integer, and return it as a `u64`.
     fn read_address(&mut self, address_size: u8) -> Result<u64> {
         match address_size {
@@ -498,5 +577,18 @@ pub trait Reader: Debug + Clone {
             otherwise => Err(Error::UnsupportedOffsetSize(otherwise)),
         }
         .and_then(Self::Offset::from_u64)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_min_tombstone() {
+        assert_eq!(u64::min_tombstone(1), 0xfe);
+        assert_eq!(u64::min_tombstone(2), 0xfffe);
+        assert_eq!(u64::min_tombstone(4), 0xffff_fffe);
+        assert_eq!(u64::min_tombstone(8), 0xffff_ffff_ffff_fffe);
     }
 }

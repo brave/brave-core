@@ -9,11 +9,10 @@
 //! said, `dbghelp.dll` almost always successfully loads on Windows.
 //!
 //! Note though that since we're loading all this support dynamically we can't
-//! actually use the raw definitions in `winapi`, but rather we need to define
+//! actually use the raw definitions in `windows_sys`, but rather we need to define
 //! the function pointer types ourselves and use that. We don't really want to
-//! be in the business of duplicating winapi, so we have a Cargo feature
-//! `verify-winapi` which asserts that all bindings match those in winapi and
-//! this feature is enabled on CI.
+//! be in the business of duplicating auto-generated bindings, so we assert that all bindings match
+//! those in `windows_sys.rs`.
 //!
 //! Finally, you'll note here that the dll for `dbghelp.dll` is never unloaded,
 //! and that's currently intentional. The thinking is that we can globally cache
@@ -25,66 +24,11 @@
 
 use alloc::vec::Vec;
 
-use super::windows::*;
+use super::windows_sys::*;
+use core::ffi::c_void;
 use core::mem;
 use core::ptr;
 use core::slice;
-
-// Work around `SymGetOptions` and `SymSetOptions` not being present in winapi
-// itself. Otherwise this is only used when we're double-checking types against
-// winapi.
-#[cfg(feature = "verify-winapi")]
-mod dbghelp {
-    use crate::windows::*;
-    pub use winapi::um::dbghelp::{
-        StackWalk64, StackWalkEx, SymFromAddrW, SymFunctionTableAccess64, SymGetLineFromAddrW64,
-        SymGetModuleBase64, SymGetOptions, SymInitializeW, SymSetOptions,
-    };
-
-    extern "system" {
-        // Not defined in winapi yet
-        pub fn SymFromInlineContextW(
-            hProcess: HANDLE,
-            Address: DWORD64,
-            InlineContext: ULONG,
-            Displacement: PDWORD64,
-            Symbol: PSYMBOL_INFOW,
-        ) -> BOOL;
-        pub fn SymGetLineFromInlineContextW(
-            hProcess: HANDLE,
-            dwAddr: DWORD64,
-            InlineContext: ULONG,
-            qwModuleBaseAddress: DWORD64,
-            pdwDisplacement: PDWORD,
-            Line: PIMAGEHLP_LINEW64,
-        ) -> BOOL;
-        pub fn SymAddrIncludeInlineTrace(hProcess: HANDLE, Address: DWORD64) -> DWORD;
-        pub fn SymQueryInlineTrace(
-            hProcess: HANDLE,
-            StartAddress: DWORD64,
-            StartContext: DWORD,
-            StartRetAddress: DWORD64,
-            CurAddress: DWORD64,
-            CurContext: LPDWORD,
-            CurFrameIndex: LPDWORD,
-        ) -> BOOL;
-        pub fn SymGetSearchPathW(
-            hprocess: HANDLE,
-            searchpatha: PWSTR,
-            searchpathlength: DWORD,
-        ) -> BOOL;
-        pub fn SymSetSearchPathW(hprocess: HANDLE, searchpatha: PCWSTR) -> BOOL;
-        pub fn EnumerateLoadedModulesW64(
-            hprocess: HANDLE,
-            enumloadedmodulescallback: PENUMLOADED_MODULES_CALLBACKW64,
-            usercontext: PVOID,
-        ) -> BOOL;
-    }
-
-    pub fn assert_equal_types<T>(a: T, _b: T) -> T {
-        a
-    }
-}
 
 // This macro is used to define a `Dbghelp` structure which internally contains
 // all the function pointers that we might load.
@@ -94,7 +38,7 @@ macro_rules! dbghelp {
     }) => (
         pub struct Dbghelp {
             /// The loaded DLL for `dbghelp.dll`
-            dll: HMODULE,
+            dll: HINSTANCE,
 
             // Each function pointer for each function we might use
             $($name: usize,)*
@@ -114,15 +58,13 @@ macro_rules! dbghelp {
         impl Dbghelp {
             /// Attempts to open `dbghelp.dll`. Returns success if it works or
             /// error if `LoadLibraryW` fails.
-            ///
-            /// Panics if library is already loaded.
             fn ensure_open(&mut self) -> Result<(), ()> {
                 if !self.dll.is_null() {
                     return Ok(())
                 }
                 let lib = b"dbghelp.dll\0";
                 unsafe {
-                    self.dll = LoadLibraryA(lib.as_ptr().cast::<i8>());
+                    self.dll = LoadLibraryA(lib.as_ptr());
                     if self.dll.is_null() {
                         Err(())
                     }  else {
@@ -135,24 +77,29 @@ macro_rules! dbghelp {
             // either read the cached function pointer or load it and return the
             // loaded value. Loads are asserted to succeed.
             $(pub fn $name(&mut self) -> Option<$name> {
+                // Assert that windows_sys::$name is declared to have the same
+                // argument types and return type as our declaration, although
+                // it might be either extern "C" or extern "system".
+                cfg_if::cfg_if! {
+                    if #[cfg(any(target_arch = "x86", not(windows_raw_dylib)))] {
+                        let _: unsafe extern "system" fn($($argty),*) -> $ret = super::windows_sys::$name;
+                    } else {
+                        let _: unsafe extern "C" fn($($argty),*) -> $ret = super::windows_sys::$name;
+                    }
+                }
+
                 unsafe {
                     if self.$name == 0 {
                         let name = concat!(stringify!($name), "\0");
                         self.$name = self.symbol(name.as_bytes())?;
                     }
-                    let ret = mem::transmute::<usize, $name>(self.$name);
-                    #[cfg(feature = "verify-winapi")]
-                    dbghelp::assert_equal_types(ret, dbghelp::$name);
-                    Some(ret)
+                    Some(mem::transmute::<usize, $name>(self.$name))
                 }
             })*
 
             fn symbol(&self, symbol: &[u8]) -> Option<usize> {
                 unsafe {
-                    match GetProcAddress(self.dll, symbol.as_ptr().cast()) as usize {
-                        0 => None,
-                        n => Some(n),
-                    }
+                    GetProcAddress(self.dll, symbol.as_ptr()).map(|address|address as usize)
                 }
             }
         }
@@ -162,27 +109,26 @@ macro_rules! dbghelp {
         #[allow(dead_code)]
         impl Init {
             $(pub fn $name(&self) -> $name {
+                // FIXME: https://github.com/rust-lang/backtrace-rs/issues/678
+                #[allow(static_mut_refs)]
                 unsafe {
                     DBGHELP.$name().unwrap()
                 }
             })*
 
             pub fn dbghelp(&self) -> *mut Dbghelp {
-                unsafe {
-                    ptr::addr_of_mut!(DBGHELP)
-                }
+                #[allow(unused_unsafe)]
+                unsafe { ptr::addr_of_mut!(DBGHELP) }
             }
         }
     )
 
 }
 
-const SYMOPT_DEFERRED_LOADS: DWORD = 0x00000004;
-
 dbghelp! {
     extern "system" {
-        fn SymGetOptions() -> DWORD;
-        fn SymSetOptions(options: DWORD) -> DWORD;
+        fn SymGetOptions() -> u32;
+        fn SymSetOptions(options: u32) -> u32;
         fn SymInitializeW(
             handle: HANDLE,
             path: PCWSTR,
@@ -191,7 +137,7 @@ dbghelp! {
         fn SymGetSearchPathW(
             hprocess: HANDLE,
             searchpatha: PWSTR,
-            searchpathlength: DWORD
+            searchpathlength: u32
         ) -> BOOL;
         fn SymSetSearchPathW(
             hprocess: HANDLE,
@@ -200,14 +146,14 @@ dbghelp! {
         fn EnumerateLoadedModulesW64(
             hprocess: HANDLE,
             enumloadedmodulescallback: PENUMLOADED_MODULES_CALLBACKW64,
-            usercontext: PVOID
+            usercontext: *const c_void
         ) -> BOOL;
         fn StackWalk64(
-            MachineType: DWORD,
+            MachineType: u32,
             hProcess: HANDLE,
             hThread: HANDLE,
-            StackFrame: LPSTACKFRAME64,
-            ContextRecord: PVOID,
+            StackFrame: *mut STACKFRAME64,
+            ContextRecord: *mut c_void,
             ReadMemoryRoutine: PREAD_PROCESS_MEMORY_ROUTINE64,
             FunctionTableAccessRoutine: PFUNCTION_TABLE_ACCESS_ROUTINE64,
             GetModuleBaseRoutine: PGET_MODULE_BASE_ROUTINE64,
@@ -215,63 +161,63 @@ dbghelp! {
         ) -> BOOL;
         fn SymFunctionTableAccess64(
             hProcess: HANDLE,
-            AddrBase: DWORD64
-        ) -> PVOID;
+            AddrBase: u64
+        ) -> *mut c_void;
         fn SymGetModuleBase64(
             hProcess: HANDLE,
-            AddrBase: DWORD64
-        ) -> DWORD64;
+            AddrBase: u64
+        ) -> u64;
+        fn SymFromAddrW(
+            hProcess: HANDLE,
+            Address: u64,
+            Displacement: *mut u64,
+            Symbol: *mut SYMBOL_INFOW
+        ) -> BOOL;
+        fn SymGetLineFromAddrW64(
+            hProcess: HANDLE,
+            dwAddr: u64,
+            pdwDisplacement: *mut u32,
+            Line: *mut IMAGEHLP_LINEW64
+        ) -> BOOL;
         fn StackWalkEx(
-            MachineType: DWORD,
+            MachineType: u32,
             hProcess: HANDLE,
             hThread: HANDLE,
-            StackFrame: LPSTACKFRAME_EX,
-            ContextRecord: PVOID,
+            StackFrame: *mut STACKFRAME_EX,
+            ContextRecord: *mut c_void,
             ReadMemoryRoutine: PREAD_PROCESS_MEMORY_ROUTINE64,
             FunctionTableAccessRoutine: PFUNCTION_TABLE_ACCESS_ROUTINE64,
             GetModuleBaseRoutine: PGET_MODULE_BASE_ROUTINE64,
             TranslateAddress: PTRANSLATE_ADDRESS_ROUTINE64,
-            Flags: DWORD
+            Flags: u32
         ) -> BOOL;
         fn SymFromInlineContextW(
             hProcess: HANDLE,
-            Address: DWORD64,
-            InlineContext: ULONG,
-            Displacement: PDWORD64,
-            Symbol: PSYMBOL_INFOW
+            Address: u64,
+            InlineContext: u32,
+            Displacement: *mut u64,
+            Symbol: *mut SYMBOL_INFOW
         ) -> BOOL;
         fn SymGetLineFromInlineContextW(
             hProcess: HANDLE,
-            dwAddr: DWORD64,
-            InlineContext: ULONG,
-            qwModuleBaseAddress: DWORD64,
-            pdwDisplacement: PDWORD,
-            Line: PIMAGEHLP_LINEW64
+            dwAddr: u64,
+            InlineContext: u32,
+            qwModuleBaseAddress: u64,
+            pdwDisplacement: *mut u32,
+            Line: *mut IMAGEHLP_LINEW64
         ) -> BOOL;
         fn SymAddrIncludeInlineTrace(
             hProcess: HANDLE,
-            Address: DWORD64
-        ) -> DWORD;
+            Address: u64
+        ) -> u32;
         fn SymQueryInlineTrace(
             hProcess: HANDLE,
-            StartAddress: DWORD64,
-            StartContext: DWORD,
-            StartRetAddress: DWORD64,
-            CurAddress: DWORD64,
-            CurContext: LPDWORD,
-            CurFrameIndex: LPDWORD
-        ) -> BOOL;
-        fn SymFromAddrW(
-            hProcess: HANDLE,
-            Address: DWORD64,
-            Displacement: PDWORD64,
-            Symbol: PSYMBOL_INFOW
-        ) -> BOOL;
-        fn SymGetLineFromAddrW64(
-            hProcess: HANDLE,
-            dwAddr: DWORD64,
-            pdwDisplacement: PDWORD,
-            Line: PIMAGEHLP_LINEW64
+            StartAddress: u64,
+            StartContext: u32,
+            StartRetAddress: u64,
+            CurAddress: u64,
+            CurContext: *mut u32,
+            CurFrameIndex: *mut u32
         ) -> BOOL;
     }
 }
@@ -287,7 +233,7 @@ pub struct Init {
 /// synchronization. Also note that it is safe to call this function multiple
 /// times recursively.
 pub fn init() -> Result<Init, ()> {
-    use core::sync::atomic::{AtomicUsize, Ordering::SeqCst};
+    use core::sync::atomic::{AtomicPtr, Ordering::SeqCst};
 
     // Helper function for generating a name that's unique to the process.
     fn mutex_name() -> [u8; 33] {
@@ -341,22 +287,21 @@ pub fn init() -> Result<Init, ()> {
         //
         // After we've actually go the lock we simply acquire it, and our `Init`
         // handle we hand out will be responsible for dropping it eventually.
-        static LOCK: AtomicUsize = AtomicUsize::new(0);
+        static LOCK: AtomicPtr<c_void> = AtomicPtr::new(ptr::null_mut());
         let mut lock = LOCK.load(SeqCst);
-        if lock == 0 {
+        if lock.is_null() {
             let name = mutex_name();
-            lock = CreateMutexA(ptr::null_mut(), 0, name.as_ptr().cast::<i8>()) as usize;
-            if lock == 0 {
+            lock = CreateMutexA(ptr::null_mut(), FALSE, name.as_ptr());
+            if lock.is_null() {
                 return Err(());
             }
-            if let Err(other) = LOCK.compare_exchange(0, lock, SeqCst, SeqCst) {
-                debug_assert!(other != 0);
-                CloseHandle(lock as HANDLE);
+            if let Err(other) = LOCK.compare_exchange(ptr::null_mut(), lock, SeqCst, SeqCst) {
+                debug_assert!(!other.is_null());
+                CloseHandle(lock);
                 lock = other;
             }
         }
-        debug_assert!(lock != 0);
-        let lock = lock as HANDLE;
+        debug_assert!(!lock.is_null());
         let r = WaitForSingleObjectEx(lock, INFINITE, FALSE);
         debug_assert_eq!(r, 0);
         let ret = Init { lock };
@@ -373,19 +318,26 @@ pub fn init() -> Result<Init, ()> {
         // functions in it, and that's detailed more below. We only do this
         // once, though, so we've got a global boolean indicating whether we're
         // done yet or not.
+        // FIXME: https://github.com/rust-lang/backtrace-rs/issues/678
+        #[allow(static_mut_refs)]
         DBGHELP.ensure_open()?;
 
         static mut INITIALIZED: bool = false;
-        if INITIALIZED {
-            return Ok(ret);
+        if !INITIALIZED {
+            set_optional_options(ret.dbghelp());
+            INITIALIZED = true;
         }
-
-        let orig = DBGHELP.SymGetOptions().unwrap()();
+        Ok(ret)
+    }
+}
+unsafe fn set_optional_options(dbghelp: *mut Dbghelp) -> Option<()> {
+    unsafe {
+        let orig = (*dbghelp).SymGetOptions()?();
 
         // Ensure that the `SYMOPT_DEFERRED_LOADS` flag is set, because
         // according to MSVC's own docs about this: "This is the fastest, most
         // efficient way to use the symbol handler.", so let's do that!
-        DBGHELP.SymSetOptions().unwrap()(orig | SYMOPT_DEFERRED_LOADS);
+        (*dbghelp).SymSetOptions()?(orig | SYMOPT_DEFERRED_LOADS);
 
         // Actually initialize symbols with MSVC. Note that this can fail, but we
         // ignore it. There's not a ton of prior art for this per se, but LLVM
@@ -399,7 +351,7 @@ pub fn init() -> Result<Init, ()> {
         // the time, but now that it's using this crate it means that someone will
         // get to initialization first and the other will pick up that
         // initialization.
-        DBGHELP.SymInitializeW().unwrap()(GetCurrentProcess(), ptr::null_mut(), TRUE);
+        (*dbghelp).SymInitializeW()?(GetCurrentProcess(), ptr::null_mut(), TRUE);
 
         // The default search path for dbghelp will only look in the current working
         // directory and (possibly) `_NT_SYMBOL_PATH` and `_NT_ALT_SYMBOL_PATH`.
@@ -413,7 +365,7 @@ pub fn init() -> Result<Init, ()> {
         search_path_buf.resize(1024, 0);
 
         // Prefill the buffer with the current search path.
-        if DBGHELP.SymGetSearchPathW().unwrap()(
+        if (*dbghelp).SymGetSearchPathW()?(
             GetCurrentProcess(),
             search_path_buf.as_mut_ptr(),
             search_path_buf.len() as _,
@@ -433,7 +385,7 @@ pub fn init() -> Result<Init, ()> {
         let mut search_path = SearchPath::new(search_path_buf);
 
         // Update the search path to include the directory of the executable and each DLL.
-        DBGHELP.EnumerateLoadedModulesW64().unwrap()(
+        (*dbghelp).EnumerateLoadedModulesW64()?(
             GetCurrentProcess(),
             Some(enum_loaded_modules_callback),
             ((&mut search_path) as *mut SearchPath) as *mut c_void,
@@ -442,11 +394,9 @@ pub fn init() -> Result<Init, ()> {
         let new_search_path = search_path.finalize();
 
         // Set the new search path.
-        DBGHELP.SymSetSearchPathW().unwrap()(GetCurrentProcess(), new_search_path.as_ptr());
-
-        INITIALIZED = true;
-        Ok(ret)
+        (*dbghelp).SymSetSearchPathW()?(GetCurrentProcess(), new_search_path.as_ptr());
     }
+    Some(())
 }
 
 struct SearchPath {
@@ -495,9 +445,9 @@ impl SearchPath {
 
 extern "system" fn enum_loaded_modules_callback(
     module_name: PCWSTR,
-    _: DWORD64,
-    _: ULONG,
-    user_context: PVOID,
+    _: u64,
+    _: u32,
+    user_context: *const c_void,
 ) -> BOOL {
     // `module_name` is an absolute path like `C:\path\to\module.dll`
     // or `C:\path\to\module.exe`

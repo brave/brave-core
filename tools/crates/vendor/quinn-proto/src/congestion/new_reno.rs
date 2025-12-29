@@ -1,9 +1,9 @@
 use std::any::Any;
 use std::sync::Arc;
 
-use super::{Controller, ControllerFactory, BASE_DATAGRAM_SIZE};
-use crate::connection::RttEstimator;
+use super::{BASE_DATAGRAM_SIZE, Controller, ControllerFactory};
 use crate::Instant;
+use crate::connection::RttEstimator;
 
 /// A simple, standard congestion controller
 #[derive(Debug, Clone)]
@@ -110,6 +110,14 @@ impl Controller for NewReno {
 
     fn window(&self) -> u64 {
         self.window
+    }
+
+    fn metrics(&self) -> super::ControllerMetrics {
+        super::ControllerMetrics {
+            congestion_window: self.window(),
+            ssthresh: Some(self.ssthresh),
+            pacing_rate: None,
+        }
     }
 
     fn clone_box(&self) -> Box<dyn Controller> {

@@ -4,17 +4,15 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 //! ECDSA Signatures using the P-256 and P-384 curves.
-
-#![allow(clippy::cast_possible_truncation)] // XXX
 
 use super::digest_scalar::digest_scalar;
 use crate::{
@@ -85,8 +83,9 @@ impl EcdsaKeyPair {
         alg: &'static EcdsaSigningAlgorithm,
         rng: &dyn rand::SecureRandom,
     ) -> Result<pkcs8::Document, error::Unspecified> {
-        let private_key = ec::Seed::generate(alg.curve, rng, cpu::features())?;
-        let public_key = private_key.compute_public_key()?;
+        let cpu = cpu::features();
+        let private_key = ec::Seed::generate(alg.curve, rng, cpu)?;
+        let public_key = private_key.compute_public_key(cpu)?;
         Ok(pkcs8::wrap_key(
             alg.pkcs8_template,
             private_key.bytes_less_safe(),
@@ -154,9 +153,12 @@ impl EcdsaKeyPair {
         key_pair: ec::KeyPair,
         rng: &dyn rand::SecureRandom,
     ) -> Result<Self, error::KeyRejected> {
+        let cpu = cpu::features();
+
         let (seed, public_key) = key_pair.split();
-        let d = private_key::private_key_as_scalar(alg.private_key_ops, &seed);
-        let d = alg.private_scalar_ops.to_mont(&d);
+        let n = &alg.private_scalar_ops.scalar_ops.scalar_modulus(cpu);
+        let d = private_key::private_key_as_scalar(n, &seed);
+        let d = alg.private_scalar_ops.to_mont(&d, cpu);
 
         let nonce_key = NonceRandomKey::new(alg, &seed, rng)?;
         Ok(Self {
@@ -173,6 +175,8 @@ impl EcdsaKeyPair {
         rng: &dyn rand::SecureRandom,
         message: &[u8],
     ) -> Result<signature::Signature, error::Unspecified> {
+        let cpu = cpu::features();
+
         // Step 4 (out of order).
         let h = digest::digest(self.alg.digest_alg, message);
 
@@ -185,7 +189,7 @@ impl EcdsaKeyPair {
             rng,
         };
 
-        self.sign_digest(h, &nonce_rng)
+        self.sign_digest(h, &nonce_rng, cpu)
     }
 
     #[cfg(test)]
@@ -197,7 +201,7 @@ impl EcdsaKeyPair {
         // Step 4 (out of order).
         let h = digest::digest(self.alg.digest_alg, message);
 
-        self.sign_digest(h, rng)
+        self.sign_digest(h, rng, cpu::features())
     }
 
     /// Returns the signature of message digest `h` using a "random" nonce
@@ -206,6 +210,7 @@ impl EcdsaKeyPair {
         &self,
         h: digest::Digest,
         rng: &dyn rand::SecureRandom,
+        cpu: cpu::Features,
     ) -> Result<signature::Signature, error::Unspecified> {
         // NSA Suite B Implementer's Guide to ECDSA Section 3.4.1: ECDSA
         // Signature Generation.
@@ -235,38 +240,40 @@ impl EcdsaKeyPair {
         let scalar_ops = ops.scalar_ops;
         let cops = scalar_ops.common;
         let private_key_ops = self.alg.private_key_ops;
+        let q = &cops.elem_modulus(cpu);
+        let n = &scalar_ops.scalar_modulus(cpu);
 
         for _ in 0..100 {
             // XXX: iteration conut?
             // Step 1.
-            let k = private_key::random_scalar(self.alg.private_key_ops, rng)?;
-            let k_inv = ops.scalar_inv_to_mont(&k);
+            let k = private_key::random_scalar(self.alg.private_key_ops, n, rng)?;
+            let k_inv = ops.scalar_inv_to_mont(&k, cpu);
 
             // Step 2.
-            let r = private_key_ops.point_mul_base(&k);
+            let r = private_key_ops.point_mul_base(&k, cpu);
 
             // Step 3.
             let r = {
-                let (x, _) = private_key::affine_from_jacobian(private_key_ops, &r)?;
-                let x = cops.elem_unencoded(&x);
-                elem_reduced_to_scalar(cops, &x)
+                let (x, _) = private_key::affine_from_jacobian(private_key_ops, q, &r)?;
+                let x = q.elem_unencoded(&x);
+                n.elem_reduced_to_scalar(&x)
             };
-            if cops.is_zero(&r) {
+            if n.is_zero(&r) {
                 continue;
             }
 
             // Step 4 is done by the caller.
 
             // Step 5.
-            let e = digest_scalar(scalar_ops, h);
+            let e = digest_scalar(n, h);
 
             // Step 6.
             let s = {
-                let dr = scalar_ops.scalar_product(&self.d, &r);
-                let e_plus_dr = scalar_sum(cops, &e, dr);
-                scalar_ops.scalar_product(&k_inv, &e_plus_dr)
+                let mut e_plus_dr = scalar_ops.scalar_product(&self.d, &r, cpu);
+                n.add_assign(&mut e_plus_dr, &e);
+                scalar_ops.scalar_product(&k_inv, &e_plus_dr, cpu)
             };
-            if cops.is_zero(&s) {
+            if n.is_zero(&s) {
                 continue;
             }
 
@@ -334,7 +341,7 @@ impl rand::sealed::SecureRandom for NonceRandom<'_> {
     }
 }
 
-impl<'a> sealed::Sealed for NonceRandom<'a> {}
+impl sealed::Sealed for NonceRandom<'_> {}
 
 struct NonceRandomKey(digest::Digest);
 
@@ -414,25 +421,31 @@ fn format_rs_asn1(ops: &'static ScalarOps, r: &Scalar, s: &Scalar, out: &mut [u8
         };
         let value = &fixed[first_index..];
 
-        out[0] = der::Tag::Integer as u8;
+        out[0] = der::Tag::Integer.into();
 
         // Lengths less than 128 are encoded in one byte.
         assert!(value.len() < 128);
-        out[1] = value.len() as u8;
+        #[allow(clippy::cast_possible_truncation)]
+        {
+            out[1] = value.len() as u8;
+        }
 
         out[2..][..value.len()].copy_from_slice(value);
 
         2 + value.len()
     }
 
-    out[0] = der::Tag::Sequence as u8;
+    out[0] = der::Tag::Sequence.into();
     let r_tlv_len = format_integer_tlv(ops, r, &mut out[2..]);
     let s_tlv_len = format_integer_tlv(ops, s, &mut out[2..][r_tlv_len..]);
 
     // Lengths less than 128 are encoded in one byte.
     let value_len = r_tlv_len + s_tlv_len;
     assert!(value_len < 128);
-    out[1] = value_len as u8;
+    #[allow(clippy::cast_possible_truncation)]
+    {
+        out[1] = value_len as u8;
+    }
 
     2 + value_len
 }
@@ -513,14 +526,15 @@ static EC_PUBLIC_KEY_P384_PKCS8_V1_TEMPLATE: pkcs8::Template = pkcs8::Template {
 
 #[cfg(test)]
 mod tests {
-    use crate::{rand, signature, test};
+    use crate::testutil as test;
+    use crate::{rand, signature};
 
     #[test]
     fn signature_ecdsa_sign_fixed_test() {
         let rng = rand::SystemRandom::new();
 
         test::run(
-            test_file!("ecdsa_sign_fixed_tests.txt"),
+            test_vector_file!("ecdsa_sign_fixed_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -562,7 +576,7 @@ mod tests {
         let rng = rand::SystemRandom::new();
 
         test::run(
-            test_file!("ecdsa_sign_asn1_tests.txt"),
+            test_vector_file!("ecdsa_sign_asn1_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 

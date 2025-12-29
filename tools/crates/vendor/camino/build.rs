@@ -15,11 +15,12 @@ fn main() {
     // Required by Rust 1.79+.
     println!("cargo:rustc-check-cfg=cfg(doc_cfg)");
     println!("cargo:rustc-check-cfg=cfg(path_buf_deref_mut)");
-    println!("cargo:rustc-check-cfg=cfg(path_buf_capacity)");
-    println!("cargo:rustc-check-cfg=cfg(shrink_to)");
     println!("cargo:rustc-check-cfg=cfg(try_reserve_2)");
     println!("cargo:rustc-check-cfg=cfg(os_str_bytes)");
+    println!("cargo:rustc-check-cfg=cfg(os_string_pathbuf_leak)");
     println!("cargo:rustc-check-cfg=cfg(absolute_path)");
+    println!("cargo:rustc-check-cfg=cfg(path_add_extension)");
+    println!("cargo:rustc-check-cfg=cfg(pathbuf_const_new)");
 
     let compiler = match rustc_version() {
         Some(compiler) => compiler,
@@ -29,14 +30,7 @@ fn main() {
     // NOTE:
     // Adding a new cfg gated by Rust version MUST be accompanied by an addition to the matrix in
     // .github/workflows/ci.yml.
-    if compiler.minor >= 44 {
-        println!("cargo:rustc-cfg=path_buf_capacity");
-    }
-    if compiler.minor >= 56 {
-        println!("cargo:rustc-cfg=shrink_to");
-    }
-    // NOTE: the below checks use == rather than `matches!`. This is because `matches!` isn't stable
-    // on Rust 1.34.
+    //
     // try_reserve_2 was added in a 1.63 nightly.
     if (compiler.minor >= 63
         && (compiler.channel == ReleaseChannel::Stable || compiler.channel == ReleaseChannel::Beta))
@@ -61,20 +55,20 @@ fn main() {
     {
         println!("cargo:rustc-cfg=absolute_path");
     }
-
-    // Catch situations where the actual features aren't enabled. Currently, they're only shown with
-    // `-vv` output, but maybe that will be noticed.
-    #[cfg(all(feature = "proptest", not(feature = "proptest1")))]
+    // os_string_pathbuf_leak was added in 1.89.
+    if (compiler.minor >= 89 && compiler.channel == ReleaseChannel::Stable) || compiler.minor >= 90
     {
-        println!(
-            "cargo:warning=proptest feature is enabled, but proptest1 isn't -- this won't do anything"
-        );
+        println!("cargo:rustc-cfg=os_string_pathbuf_leak");
     }
-    #[cfg(all(feature = "serde", not(feature = "serde1")))]
+    // path_add_extension was added in 1.91.
+    if (compiler.minor >= 91 && compiler.channel == ReleaseChannel::Stable) || compiler.minor >= 92
     {
-        println!(
-            "cargo:warning=serde feature is enabled, but serde1 isn't -- this won't do anything"
-        );
+        println!("cargo:rustc-cfg=path_add_extension");
+    }
+    // pathbuf_const_new was added in 1.91.
+    if (compiler.minor >= 91 && compiler.channel == ReleaseChannel::Stable) || compiler.minor >= 92
+    {
+        println!("cargo:rustc-cfg=pathbuf_const_new");
     }
 }
 

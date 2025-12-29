@@ -23,6 +23,8 @@ macro_rules! colors {
                 )*
             }
 
+            impl crate::private::Sealed for AnsiColors {}
+
             impl crate::DynColor for AnsiColors {
                 fn fmt_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                     let color = match self {
@@ -80,6 +82,8 @@ macro_rules! colors {
             /// A color for use with [`OwoColorize`](crate::OwoColorize)'s `fg` and `bg` methods.
             pub struct $color;
 
+            impl crate::private::Sealed for $color {}
+
             impl crate::Color for $color {
                 const ANSI_FG: &'static str = concat!("\x1b[", stringify!($fg), "m");
                 const ANSI_BG: &'static str = concat!("\x1b[", stringify!($bg), "m");
@@ -88,15 +92,13 @@ macro_rules! colors {
                 const RAW_ANSI_BG: &'static str = stringify!($bg);
 
                 #[doc(hidden)]
-                type DynEquivelant = ansi_colors::AnsiColors;
+                type DynEquivalent = ansi_colors::AnsiColors;
 
                 #[doc(hidden)]
-                const DYN_EQUIVELANT: Self::DynEquivelant = ansi_colors::AnsiColors::$color;
+                const DYN_EQUIVALENT: Self::DynEquivalent = ansi_colors::AnsiColors::$color;
 
                 #[doc(hidden)]
-                fn into_dyncolors() -> crate::DynColors {
-                    crate::DynColors::Ansi(ansi_colors::AnsiColors::$color)
-                }
+                const DYN_COLORS_EQUIVALENT: crate::DynColors = crate::DynColors::Ansi(ansi_colors::AnsiColors::$color);
             }
         )*
 
@@ -127,7 +129,7 @@ colors! {
 macro_rules! impl_fmt_for {
     ($($trait:path),* $(,)?) => {
         $(
-            impl<'a, Color: crate::Color, T: $trait> $trait for FgColorDisplay<'a, Color, T> {
+            impl<'a, Color: crate::Color, T: ?Sized + $trait> $trait for FgColorDisplay<'a, Color, T> {
                 #[inline(always)]
                 fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                     f.write_str(Color::ANSI_FG)?;
@@ -136,7 +138,7 @@ macro_rules! impl_fmt_for {
                 }
             }
 
-            impl<'a, Color: crate::Color, T: $trait> $trait for BgColorDisplay<'a, Color, T> {
+            impl<'a, Color: crate::Color, T: ?Sized + $trait> $trait for BgColorDisplay<'a, Color, T> {
                 #[inline(always)]
                 fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                     f.write_str(Color::ANSI_BG)?;
@@ -163,7 +165,7 @@ impl_fmt_for! {
 macro_rules! impl_fmt_for_dyn {
     ($($trait:path),* $(,)?) => {
         $(
-            impl<'a, Color: crate::DynColor, T: $trait> $trait for FgDynColorDisplay<'a, Color, T> {
+            impl<'a, Color: crate::DynColor, T: ?Sized + $trait> $trait for FgDynColorDisplay<'a, Color, T> {
                 #[inline(always)]
                 fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                     (self.1).fmt_ansi_fg(f)?;
@@ -172,7 +174,7 @@ macro_rules! impl_fmt_for_dyn {
                 }
             }
 
-            impl<'a, Color: crate::DynColor, T: $trait> $trait for BgDynColorDisplay<'a, Color, T> {
+            impl<'a, Color: crate::DynColor, T: ?Sized + $trait> $trait for BgDynColorDisplay<'a, Color, T> {
                 #[inline(always)]
                 fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                     (self.1).fmt_ansi_bg(f)?;

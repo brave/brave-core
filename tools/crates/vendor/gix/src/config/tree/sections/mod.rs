@@ -1,3 +1,4 @@
+#![allow(clippy::unnecessary_literal_bound)]
 #![allow(missing_docs)]
 
 /// The `author` top-level section.
@@ -75,6 +76,10 @@ mod init;
 #[derive(Copy, Clone, Default)]
 pub struct Mailmap;
 mod mailmap;
+
+#[derive(Copy, Clone, Default)]
+pub struct Merge;
+mod merge;
 
 /// The `pack` top-level section.
 #[derive(Copy, Clone, Default)]

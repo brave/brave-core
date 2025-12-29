@@ -22,12 +22,43 @@ pub fn simple_enum() {
     A::add_definitions_recursively(&mut defs);
     assert_eq!(
         schema_map! {
-        "ABacon" => Definition::Struct{ fields: Fields::Empty },
-        "AEggs" => Definition::Struct{ fields: Fields::Empty },
+        "A__Bacon" => Definition::Struct{ fields: Fields::Empty },
+        "A__Eggs" => Definition::Struct{ fields: Fields::Empty },
             "A" => Definition::Enum {
                 tag_width: 1,
-                variants: vec![(0, "Bacon".to_string(), "ABacon".to_string()), (1, "Eggs".to_string(), "AEggs".to_string())]
+                variants: vec![(0, "Bacon".to_string(), "A__Bacon".to_string()), (1, "Eggs".to_string(), "A__Eggs".to_string())]
             }
+        },
+        defs
+    );
+}
+
+#[test]
+pub fn shadow_enum() {
+    #[allow(dead_code)]
+    #[derive(borsh::BorshSchema)]
+    enum State {
+        V1(StateV1),
+    }
+    #[derive(borsh::BorshSchema)]
+    struct StateV1;
+
+    assert_eq!(
+        "State".to_string(),
+        <State as borsh::BorshSchema>::declaration()
+    );
+    let mut defs = Default::default();
+    State::add_definitions_recursively(&mut defs);
+    assert_eq!(
+        schema_map! {
+            "State" => Definition::Enum {
+                tag_width: 1,
+                variants: vec![(0, "V1".to_string(), "State__V1".to_string())]
+            },
+            "State__V1" => Definition::Struct {
+                fields: Fields::UnnamedFields(["StateV1".to_string()].into())
+            },
+            "StateV1" => Definition::Struct{ fields: Fields::Empty }
         },
         defs
     );
@@ -45,10 +76,10 @@ pub fn single_field_enum() {
     A::add_definitions_recursively(&mut defs);
     assert_eq!(
         schema_map! {
-            "ABacon" => Definition::Struct {fields: Fields::Empty},
+            "A__Bacon" => Definition::Struct {fields: Fields::Empty},
             "A" => Definition::Enum {
                 tag_width: 1,
-                variants: vec![(0, "Bacon".to_string(), "ABacon".to_string())]
+                variants: vec![(0, "Bacon".to_string(), "A__Bacon".to_string())]
             }
         },
         defs
@@ -127,25 +158,25 @@ pub fn complex_enum_with_schema() {
     assert_eq!(
         schema_map! {
         "Cucumber" => Definition::Struct {fields: Fields::Empty},
-        "ASalad" => Definition::Struct{ fields: Fields::UnnamedFields(vec!["Tomatoes".to_string(), "Cucumber".to_string(), "Oil".to_string()])},
-        "ABacon" => Definition::Struct {fields: Fields::Empty},
+        "A__Salad" => Definition::Struct{ fields: Fields::UnnamedFields(vec!["Tomatoes".to_string(), "Cucumber".to_string(), "Oil".to_string()])},
+        "A__Bacon" => Definition::Struct {fields: Fields::Empty},
         "Oil" => Definition::Struct {fields: Fields::Empty},
             "A" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                    (0, "Bacon".to_string(), "ABacon".to_string()),
-                    (1, "Eggs".to_string(), "AEggs".to_string()),
-                    (2, "Salad".to_string(), "ASalad".to_string()),
-                    (3, "Sausage".to_string(), "ASausage".to_string())
+                    (0, "Bacon".to_string(), "A__Bacon".to_string()),
+                    (1, "Eggs".to_string(), "A__Eggs".to_string()),
+                    (2, "Salad".to_string(), "A__Salad".to_string()),
+                    (3, "Sausage".to_string(), "A__Sausage".to_string())
                 ]
             },
         "Wrapper" => Definition::Struct {fields: Fields::Empty},
         "Tomatoes" => Definition::Struct {fields: Fields::Empty},
-        "ASausage" => Definition::Struct { fields: Fields::NamedFields(vec![
+        "A__Sausage" => Definition::Struct { fields: Fields::NamedFields(vec![
         ("wrapper".to_string(), "Wrapper".to_string()),
         ("filling".to_string(), "Filling".to_string())
         ])},
-        "AEggs" => Definition::Struct {fields: Fields::Empty},
+        "A__Eggs" => Definition::Struct {fields: Fields::Empty},
         "Filling" => Definition::Struct {fields: Fields::Empty}
         },
         defs

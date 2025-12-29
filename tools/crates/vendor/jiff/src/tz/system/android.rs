@@ -246,7 +246,7 @@ unsafe fn load_symbol<F>(handle: NonNull<c_void>, symbol: &CStr) -> Option<F> {
 ///
 /// Callers should only use this when they expect an error to have occurred
 /// with one of the `dl*` APIs. If `dlerror` returns a null pointer, then a
-/// generic "unknwon error" message is returned.
+/// generic "unknown error" message is returned.
 fn dlerror_message() -> Vec<u8> {
     // SAFETY: I believe `dlerror()` is always safe to call.
     let msg = unsafe { dlerror() };

@@ -124,6 +124,8 @@ fn test_panic_backwards_compatibility() {
         .args(["run", "--example", "theme_test_helper"])
         .arg("--no-default-features")
         .args(&features)
+        .env("RUSTFLAGS", "-Awarnings")
+        .env("CARGO_FUTURE_INCOMPAT_REPORT_FREQUENCY", "never")
         .output()
         .expect("failed to execute process");
     let target = String::from_utf8(output.stderr).expect("failed to convert output to `String`");
@@ -168,7 +170,12 @@ fn test_backwards_compatibility(target: String, file_name: &str) {
     fn normalize_backtrace(input: &str) -> String {
         input
             .lines()
-            .take_while(|v| !v.contains("core::panic"))
+            .take_while(|v| {
+                !v.contains("core::panic")
+                    && !v.contains("theme_test_helper::main")
+                    && !v.contains("theme::test_error_backwards_compatibility::closure")
+                    && !v.contains("theme::test_error_backwards_compatibility::{{closure}}")
+            })
             .collect::<Vec<_>>()
             .join("\n")
     }

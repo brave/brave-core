@@ -1,4 +1,4 @@
-use std::num::NonZeroU16;
+use std::num::NonZero;
 use std::str::{self, FromStr};
 
 use super::{ast, unused, Error, Span, Spanned, Unused};
@@ -214,7 +214,7 @@ component_definition! {
         },
         Ignore = "ignore" {
             #[required]
-            count = "count": Option<#[from_str] NonZeroU16> => count,
+            count = "count": Option<#[from_str] NonZero<u16>> => count,
         },
         Minute = "minute" {
             padding = "padding": Option<Padding> => padding,
@@ -263,6 +263,7 @@ component_definition! {
         Year = "year" {
             padding = "padding": Option<Padding> => padding,
             repr = "repr": Option<YearRepr> => repr,
+            range = "range": Option<YearRange> => range,
             base = "base": Option<YearBase> => iso_week_based,
             sign_behavior = "sign": Option<SignBehavior> => sign_is_mandatory,
         },
@@ -427,6 +428,12 @@ modifier! {
         Full = b"full",
         Century = b"century",
         LastTwo = b"last_two",
+    }
+
+    enum YearRange {
+        Standard = b"standard",
+        #[default]
+        Extended = b"extended",
     }
 }
 

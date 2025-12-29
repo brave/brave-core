@@ -6,7 +6,6 @@ use gix_object::WriteTo;
 use crate::index;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod integrity {
     use std::marker::PhantomData;
 
@@ -89,7 +88,6 @@ pub mod integrity {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod checksum {
     /// Returned by [`index::File::verify_checksum()`][crate::index::File::verify_checksum()].
     pub type Error = crate::verify::checksum::Error;
@@ -222,7 +220,7 @@ impl index::File {
                         .add_child_with_id("Sha1 of index".into(), integrity::ProgressId::ChecksumBytes.into()),
                     should_interrupt,
                 )
-                .map_err(Into::into)
+                .map_err(index::traverse::Error::IndexVerify)
                 .map(|id| integrity::Outcome {
                     actual_index_checksum: id,
                     pack_traverse_statistics: None,
@@ -264,7 +262,7 @@ impl index::File {
                     }
                 }
                 Blob => {}
-            };
+            }
         }
         Ok(())
     }

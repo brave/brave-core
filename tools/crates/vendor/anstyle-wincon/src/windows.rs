@@ -8,15 +8,15 @@ type StdioColorInnerResult = Result<(anstyle::AnsiColor, anstyle::AnsiColor), in
 
 /// Cached [`get_colors`] call for [`std::io::stdout`]
 pub fn stdout_initial_colors() -> StdioColorResult {
-    static INITIAL: once_cell::sync::OnceCell<StdioColorInnerResult> =
-        once_cell::sync::OnceCell::new();
+    static INITIAL: once_cell_polyfill::sync::OnceLock<StdioColorInnerResult> =
+        once_cell_polyfill::sync::OnceLock::new();
     (*INITIAL.get_or_init(|| get_colors_(&std::io::stdout()))).map_err(Into::into)
 }
 
 /// Cached [`get_colors`] call for [`std::io::stderr`]
 pub fn stderr_initial_colors() -> StdioColorResult {
-    static INITIAL: once_cell::sync::OnceCell<StdioColorInnerResult> =
-        once_cell::sync::OnceCell::new();
+    static INITIAL: once_cell_polyfill::sync::OnceLock<StdioColorInnerResult> =
+        once_cell_polyfill::sync::OnceLock::new();
     (*INITIAL.get_or_init(|| get_colors_(&std::io::stderr()))).map_err(Into::into)
 }
 

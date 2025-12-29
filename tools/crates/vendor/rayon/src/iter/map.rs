@@ -8,25 +8,21 @@ use std::iter;
 ///
 /// This struct is created by the [`map()`] method on [`ParallelIterator`]
 ///
-/// [`map()`]: trait.ParallelIterator.html#method.map
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`map()`]: ParallelIterator::map()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
-pub struct Map<I: ParallelIterator, F> {
+pub struct Map<I, F> {
     base: I,
     map_op: F,
 }
 
-impl<I: ParallelIterator + Debug, F> Debug for Map<I, F> {
+impl<I: Debug, F> Debug for Map<I, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Map").field("base", &self.base).finish()
     }
 }
 
-impl<I, F> Map<I, F>
-where
-    I: ParallelIterator,
-{
+impl<I, F> Map<I, F> {
     /// Creates a new `Map` iterator.
     pub(super) fn new(base: I, map_op: F) -> Self {
         Map { base, map_op }
@@ -108,7 +104,7 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 struct MapProducer<'f, P, F> {
     base: P,
@@ -161,8 +157,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Consumer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Consumer implementation
 
 struct MapConsumer<'f, C, F> {
     base: C,

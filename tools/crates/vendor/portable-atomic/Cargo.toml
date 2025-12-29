@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.34"
 name = "portable-atomic"
-version = "1.10.0"
+version = "1.12.0"
 build = "build.rs"
 exclude = [
     "/.*",
@@ -21,6 +21,7 @@ exclude = [
     "/target-specs",
     "/DEVELOPMENT.md",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -40,9 +41,6 @@ categories = [
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/portable-atomic"
 
-[package.metadata.cargo_check_external_types]
-allowed_external_types = ["serde::*"]
-
 [package.metadata.docs.rs]
 features = [
     "float",
@@ -50,7 +48,29 @@ features = [
     "serde",
     "critical-section",
 ]
+rustdoc-args = [
+    "--extend-css",
+    "src/rustdoc.css",
+    "--cfg",
+    "portable_atomic_unstable_f16",
+    "--cfg",
+    "portable_atomic_unstable_f128",
+]
 targets = ["x86_64-unknown-linux-gnu"]
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = ["serde_core::*"]
+
+[features]
+default = ["fallback"]
+disable-fiq = []
+fallback = []
+float = []
+force-amo = []
+require-cas = []
+s-mode = []
+std = []
+unsafe-assume-single-core = []
 
 [lib]
 name = "portable_atomic"
@@ -78,28 +98,27 @@ version = "2"
 [dev-dependencies.paste]
 version = "1"
 
+[dev-dependencies.quickcheck]
+version = "1"
+default-features = false
+
+[dev-dependencies.rustversion]
+version = "1"
+
 [dev-dependencies.sptr]
 version = "0.3"
 
 [dev-dependencies.static_assertions]
 version = "1"
 
-[features]
-default = ["fallback"]
-disable-fiq = []
-fallback = []
-float = []
-force-amo = []
-require-cas = []
-s-mode = []
-std = []
-unsafe-assume-single-core = []
-
 [target."cfg(unix)".dev-dependencies.libc]
 version = "=0.2.163"
 
+[target."cfg(valgrind)".dev-dependencies.crabgrind]
+version = "0.1"
+
 [target."cfg(windows)".dev-dependencies.windows-sys]
-version = "0.59"
+version = "0.61"
 features = [
     "Win32_Foundation",
     "Win32_System_Threading",
@@ -115,6 +134,7 @@ pedantic = "warn"
 trailing_empty_array = "warn"
 transmute_undefined_repr = "warn"
 undocumented_unsafe_blocks = "warn"
+unused_trait_names = "warn"
 
 [lints.clippy.bool_assert_comparison]
 level = "allow"
@@ -219,6 +239,7 @@ improper_ctypes_definitions = "warn"
 non_ascii_idents = "warn"
 rust_2018_idioms = "warn"
 single_use_lifetimes = "warn"
+unnameable_types = "warn"
 unreachable_pub = "warn"
 
 [lints.rust.unexpected_cfgs]
@@ -226,13 +247,21 @@ level = "warn"
 priority = 0
 check-cfg = [
     'cfg(target_arch,values("xtensa"))',
+    'cfg(target_arch,values("amdgpu"))',
+    'cfg(target_arch,values("loongarch32"))',
+    'cfg(target_os,values("trusty"))',
     'cfg(target_os,values("psx"))',
     'cfg(target_env,values("psx"))',
     'cfg(target_feature,values("lse2","lse128","rcpc3"))',
     'cfg(target_feature,values("quadword-atomics"))',
     'cfg(target_feature,values("zaamo","zabha"))',
+    'cfg(target_feature,values("zacas"))',
+    'cfg(target_feature,values("miscellaneous-extensions-3"))',
     'cfg(target_pointer_width,values("128"))',
-    "cfg(portable_atomic_test_outline_atomics_detect_false,qemu,valgrind)",
-    "cfg(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics)",
+    "cfg(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics,portable_atomic_unstable_f16,portable_atomic_unstable_f128)",
     "cfg(portable_atomic_unstable_coerce_unsized)",
+    "cfg(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind)",
 ]
+
+[profile.release]
+debug = 2

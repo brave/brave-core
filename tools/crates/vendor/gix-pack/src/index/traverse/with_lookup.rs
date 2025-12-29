@@ -9,14 +9,14 @@ use gix_features::{
 
 use super::{Error, Reducer};
 use crate::{
-    data, index,
+    data, exact_vec, index,
     index::{traverse::Outcome, util},
 };
 
 /// Traversal options for [`index::File::traverse_with_lookup()`]
 pub struct Options<F> {
-    /// If `Some`, only use the given amount of threads. Otherwise, the amount of threads to use will be selected based on
-    /// the amount of available logical cores.
+    /// If `Some`, only use the given number of threads. Otherwise, the number of threads to use will be selected based on
+    /// the number of available logical cores.
     pub thread_limit: Option<usize>,
     /// The kinds of safety checks to perform.
     pub check: index::traverse::SafetyCheck,
@@ -152,7 +152,7 @@ impl index::File {
                             Some(entries.len()),
                             gix_features::progress::count_with_decimals("objects", 2),
                         );
-                        let mut stats = Vec::with_capacity(entries.len());
+                        let mut stats = exact_vec(entries.len());
                         progress.set(0);
                         for index_entry in entries.iter() {
                             let result = self.decode_and_process_entry(

@@ -58,7 +58,7 @@ s! {
         pub msg_stime: crate::time_t,
         pub msg_rtime: crate::time_t,
         pub msg_ctime: crate::time_t,
-        __msg_cbytes: u64,
+        pub __msg_cbytes: u64,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
@@ -77,9 +77,10 @@ s! {
             target_arch = "mips64r6",
             target_arch = "powerpc64",
             target_arch = "riscv64",
-            target_arch = "sparc64"
+            target_arch = "sparc64",
+            target_arch = "s390x",
         )))]
-        __reserved: crate::__syscall_ulong_t,
+        __reserved: Padding<crate::__syscall_ulong_t>,
         pub sem_ctime: crate::time_t,
         #[cfg(not(any(
             target_arch = "aarch64",
@@ -88,12 +89,92 @@ s! {
             target_arch = "mips64r6",
             target_arch = "powerpc64",
             target_arch = "riscv64",
-            target_arch = "sparc64"
+            target_arch = "sparc64",
+            target_arch = "s390x",
         )))]
-        __reserved2: crate::__syscall_ulong_t,
+        __reserved2: Padding<crate::__syscall_ulong_t>,
         pub sem_nsems: crate::__syscall_ulong_t,
         __glibc_reserved3: crate::__syscall_ulong_t,
         __glibc_reserved4: crate::__syscall_ulong_t,
+    }
+
+    pub struct timex {
+        pub modes: c_uint,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub offset: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub offset: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub freq: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub freq: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub maxerror: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub maxerror: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub esterror: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub esterror: c_long,
+        pub status: c_int,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub constant: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub constant: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub precision: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub precision: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub tolerance: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub tolerance: c_long,
+        pub time: crate::timeval,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub tick: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub tick: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub ppsfreq: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub ppsfreq: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub jitter: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub jitter: c_long,
+        pub shift: c_int,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub stabil: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub stabil: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub jitcnt: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub jitcnt: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub calcnt: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub calcnt: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub errcnt: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub errcnt: c_long,
+        #[cfg(all(target_arch = "x86_64", target_pointer_width = "32"))]
+        pub stbcnt: i64,
+        #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "32")))]
+        pub stbcnt: c_long,
+        pub tai: c_int,
+        pub __unused1: i32,
+        pub __unused2: i32,
+        pub __unused3: i32,
+        pub __unused4: i32,
+        pub __unused5: i32,
+        pub __unused6: i32,
+        pub __unused7: i32,
+        pub __unused8: i32,
+        pub __unused9: i32,
+        pub __unused10: i32,
+        pub __unused11: i32,
     }
 }
 
@@ -117,7 +198,7 @@ cfg_if! {
     } else if #[cfg(any(target_arch = "s390x"))] {
         mod s390x;
         pub use self::s390x::*;
-    } else if #[cfg(any(target_arch = "x86_64"))] {
+    } else if #[cfg(target_arch = "x86_64")] {
         mod x86_64;
         pub use self::x86_64::*;
     } else if #[cfg(any(target_arch = "riscv64"))] {

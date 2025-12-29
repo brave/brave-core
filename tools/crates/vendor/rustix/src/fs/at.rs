@@ -6,15 +6,17 @@
 //! [`CWD`]: crate::fs::CWD
 //! [`ABS`]: crate::fs::ABS
 
+#![allow(unsafe_code)]
+
+use crate::buffer::Buffer;
 use crate::fd::OwnedFd;
-use crate::ffi::CStr;
-#[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 use crate::fs::Access;
 #[cfg(not(target_os = "espidf"))]
 use crate::fs::AtFlags;
 #[cfg(apple)]
 use crate::fs::CloneFlags;
-#[cfg(linux_kernel)]
+#[cfg(any(linux_kernel, apple))]
 use crate::fs::RenameFlags;
 #[cfg(not(target_os = "espidf"))]
 use crate::fs::Stat;
@@ -24,24 +26,37 @@ use crate::fs::{Dev, FileType};
 use crate::fs::{Gid, Uid};
 use crate::fs::{Mode, OFlags};
 use crate::{backend, io, path};
-use backend::fd::{AsFd, BorrowedFd};
-use core::mem::MaybeUninit;
-use core::slice;
+use backend::fd::AsFd;
 #[cfg(feature = "alloc")]
-use {crate::ffi::CString, crate::path::SMALL_PATH_BUFFER_SIZE, alloc::vec::Vec};
+use {
+    crate::ffi::{CStr, CString},
+    crate::path::SMALL_PATH_BUFFER_SIZE,
+    alloc::vec::Vec,
+    backend::fd::BorrowedFd,
+};
 #[cfg(not(any(target_os = "espidf", target_os = "vita")))]
 use {crate::fs::Timestamps, crate::timespec::Nsecs};
 
 /// `UTIME_NOW` for use with [`utimensat`].
 ///
 /// [`utimensat`]: crate::fs::utimensat
-#[cfg(not(any(target_os = "espidf", target_os = "redox", target_os = "vita")))]
+#[cfg(not(any(
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "vita"
+)))]
 pub const UTIME_NOW: Nsecs = backend::c::UTIME_NOW as Nsecs;
 
 /// `UTIME_OMIT` for use with [`utimensat`].
 ///
 /// [`utimensat`]: crate::fs::utimensat
-#[cfg(not(any(target_os = "espidf", target_os = "redox", target_os = "vita")))]
+#[cfg(not(any(
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "redox",
+    target_os = "vita"
+)))]
 pub const UTIME_OMIT: Nsecs = backend::c::UTIME_OMIT as Nsecs;
 
 /// `openat(dirfd, path, oflags, mode)`—Opens a file.
@@ -81,6 +96,7 @@ pub fn openat<P: path::Arg, Fd: AsFd>(
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/readlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/readlinkat.2.html
 #[cfg(feature = "alloc")]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 #[inline]
 pub fn readlinkat<P: path::Arg, Fd: AsFd, B: Into<Vec<u8>>>(
     dirfd: Fd,
@@ -97,8 +113,16 @@ fn _readlinkat(dirfd: BorrowedFd<'_>, path: &CStr, mut buffer: Vec<u8>) -> io::R
     buffer.reserve(SMALL_PATH_BUFFER_SIZE);
 
     loop {
-        let nread =
-            backend::fs::syscalls::readlinkat(dirfd.as_fd(), path, buffer.spare_capacity_mut())?;
+        let buf = buffer.spare_capacity_mut();
+
+        // SAFETY: `readlinkat` behaves.
+        let nread = unsafe {
+            backend::fs::syscalls::readlinkat(
+                dirfd.as_fd(),
+                path,
+                (buf.as_mut_ptr().cast(), buf.len()),
+            )?
+        };
 
         debug_assert!(nread <= buffer.capacity());
         if nread < buffer.capacity() {
@@ -136,14 +160,9 @@ fn _readlinkat(dirfd: BorrowedFd<'_>, path: &CStr, mut buffer: Vec<u8>) -> io::R
 /// `readlinkat(fd, path)`—Reads the contents of a symlink, without
 /// allocating.
 ///
-/// This is the "raw" version which avoids allocating, but which is
-/// significantly trickier to use; most users should use plain [`readlinkat`].
-///
-/// This version writes bytes into the buffer and returns two slices, one
-/// containing the written bytes, and one containing the remaining
-/// uninitialized space. If the number of written bytes is equal to the length
-/// of the buffer, it means the buffer wasn't big enough to hold the full
-/// string, and callers should try again with a bigger buffer.
+/// This is the "raw" version which avoids allocating, but which truncates the
+/// string if it doesn't fit in the provided buffer, and doesn't NUL-terminate
+/// the string.
 ///
 /// # References
 ///  - [POSIX]
@@ -152,27 +171,17 @@ fn _readlinkat(dirfd: BorrowedFd<'_>, path: &CStr, mut buffer: Vec<u8>) -> io::R
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/readlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/readlinkat.2.html
 #[inline]
-pub fn readlinkat_raw<P: path::Arg, Fd: AsFd>(
+pub fn readlinkat_raw<P: path::Arg, Fd: AsFd, Buf: Buffer<u8>>(
     dirfd: Fd,
     path: P,
-    buf: &mut [MaybeUninit<u8>],
-) -> io::Result<(&mut [u8], &mut [MaybeUninit<u8>])> {
-    path.into_with_c_str(|path| _readlinkat_raw(dirfd.as_fd(), path, buf))
-}
-
-#[allow(unsafe_code)]
-fn _readlinkat_raw<'a>(
-    dirfd: BorrowedFd<'_>,
-    path: &CStr,
-    buf: &'a mut [MaybeUninit<u8>],
-) -> io::Result<(&'a mut [u8], &'a mut [MaybeUninit<u8>])> {
-    let n = backend::fs::syscalls::readlinkat(dirfd.as_fd(), path, buf)?;
-    unsafe {
-        Ok((
-            slice::from_raw_parts_mut(buf.as_mut_ptr().cast::<u8>(), n),
-            &mut buf[n..],
-        ))
-    }
+    mut buf: Buf,
+) -> io::Result<Buf::Output> {
+    // SAFETY: `readlinkat` behaves.
+    let len = path.into_with_c_str(|path| unsafe {
+        backend::fs::syscalls::readlinkat(dirfd.as_fd(), path, buf.parts_mut())
+    })?;
+    // SAFETY: `readlinkat` behaves.
+    unsafe { Ok(buf.assume_init(len)) }
 }
 
 /// `mkdirat(fd, path, mode)`—Creates a directory.
@@ -240,6 +249,8 @@ pub fn unlinkat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> i
 /// `renameat(old_dirfd, old_path, new_dirfd, new_path)`—Renames a file or
 /// directory.
 ///
+/// See [`renameat_with`] to pass additional flags.
+///
 /// # References
 ///  - [POSIX]
 ///  - [Linux]
@@ -268,13 +279,17 @@ pub fn renameat<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
 /// `renameat2(old_dirfd, old_path, new_dirfd, new_path, flags)`—Renames a
 /// file or directory.
 ///
+/// `renameat_with` is the same as [`renameat`] but adds an additional
+/// flags operand.
+///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/renameat2.2.html
-#[cfg(linux_kernel)]
+#[cfg(any(apple, linux_kernel))]
 #[inline]
 #[doc(alias = "renameat2")]
+#[doc(alias = "renameatx_np")]
 pub fn renameat_with<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
     old_dirfd: PFd,
     old_path: P,
@@ -352,7 +367,7 @@ pub fn statat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> io:
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/faccessat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/faccessat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 #[inline]
 #[doc(alias = "faccessat")]
 pub fn accessat<P: path::Arg, Fd: AsFd>(
@@ -372,7 +387,7 @@ pub fn accessat<P: path::Arg, Fd: AsFd>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/utimensat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/utimensat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 #[inline]
 pub fn utimensat<P: path::Arg, Fd: AsFd>(
     dirfd: Fd,
@@ -412,7 +427,7 @@ pub fn chmodat<P: path::Arg, Fd: AsFd>(
 /// # References
 ///  - [Apple]
 ///
-/// [Apple]: https://opensource.apple.com/source/xnu/xnu-3789.21.4/bsd/man/man2/clonefile.2.auto.html
+/// [Apple]: https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/clonefile.2
 #[cfg(apple)]
 #[inline]
 pub fn fclonefileat<Fd: AsFd, DstFd: AsFd, P: path::Arg>(
@@ -434,7 +449,13 @@ pub fn fclonefileat<Fd: AsFd, DstFd: AsFd, P: path::Arg>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/mknodat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/mknodat.2.html
-#[cfg(not(any(apple, target_os = "espidf", target_os = "vita", target_os = "wasi")))]
+#[cfg(not(any(
+    apple,
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
 #[inline]
 pub fn mknodat<P: path::Arg, Fd: AsFd>(
     dirfd: Fd,
@@ -446,6 +467,24 @@ pub fn mknodat<P: path::Arg, Fd: AsFd>(
     path.into_with_c_str(|path| {
         backend::fs::syscalls::mknodat(dirfd.as_fd(), path, file_type, mode, dev)
     })
+}
+
+/// `mkfifoat(dirfd, path, mode)`—Make a FIFO special file.
+///
+/// # References
+///  - [POSIX]
+///
+/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/mkfifoat.html
+#[cfg(not(any(
+    apple,
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
+#[inline]
+pub fn mkfifoat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, mode: Mode) -> io::Result<()> {
+    mknodat(dirfd, path, FileType::Fifo, mode, 0)
 }
 
 /// `fchownat(dirfd, path, owner, group, flags)`—Sets file or directory

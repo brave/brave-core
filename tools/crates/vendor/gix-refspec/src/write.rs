@@ -53,7 +53,7 @@ impl Instruction<'_> {
                 out.write_all(ref_or_pattern)
             }
             Instruction::Fetch(Fetch::Only { src }) => out.write_all(src),
-            Instruction::Fetch(Fetch::Exclude { src }) => {
+            Instruction::Fetch(Fetch::Exclude { src }) | Instruction::Push(Push::Exclude { src }) => {
                 out.write_all(b"^")?;
                 out.write_all(src)
             }

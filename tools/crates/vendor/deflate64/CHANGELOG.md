@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog].
 
 ### Security
 
+## [0.1.10] - 2025-10-01
 ## [0.1.9] - 2024-07-16
 ### Fixed
 - Infinite loop with empty output buffer in `Deflate64Decoder` [`#30`](https://github.com/anatawa12/deflate64-rs/pull/30)
@@ -70,7 +71,8 @@ The format is based on [Keep a Changelog].
 ### Added
 - Initial Deflate64 implementation
 
-[Unreleased]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.10...HEAD
+[0.1.10]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.9...v0.1.10
 [0.1.9]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.6...v0.1.7

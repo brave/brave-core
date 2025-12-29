@@ -2,7 +2,8 @@ use std::collections::VecDeque;
 
 use gix_hash::ObjectId;
 
-/// The error is part of the item returned by the [`traverse()`][impl_::traverse()] function.
+/// The error is part of the item returned by the [`breadthfirst()`](crate::tree::breadthfirst())  and
+///[`depthfirst()`](crate::tree::depthfirst()) functions.
 #[derive(Debug, thiserror::Error)]
 #[allow(missing_docs)]
 pub enum Error {
@@ -28,7 +29,7 @@ impl State {
     }
 }
 
-pub(crate) mod impl_ {
+pub(super) mod function {
     use std::borrow::BorrowMut;
 
     use gix_object::{FindExt, TreeRefIter};
@@ -38,17 +39,19 @@ pub(crate) mod impl_ {
 
     /// Start a breadth-first iteration over the `root` trees entries.
     ///
+    /// Note that non-trees will be listed first, so the natural order of entries within a tree is lost.
+    ///
     /// * `root`
     ///   * the tree to iterate in a nested fashion.
     /// * `state` - all state used for the iteration. If multiple iterations are performed, allocations can be minimized by reusing
     ///   this state.
     /// * `find` - a way to lookup new object data during traversal by their `ObjectId`, writing their data into buffer and returning
-    ///    an iterator over entries if the object is present and is a tree. Caching should be implemented within this function
-    ///    as needed. The return value is `Option<TreeIter>` which degenerates all error information. Not finding a commit should also
-    ///    be considered an errors as all objects in the tree DAG should be present in the database. Hence [`Error::Find`] should
-    ///    be escalated into a more specific error if its encountered by the caller.
+    ///   an iterator over entries if the object is present and is a tree. Caching should be implemented within this function
+    ///   as needed. The return value is `Option<TreeIter>` which degenerates all error information. Not finding a commit should also
+    ///   be considered an errors as all objects in the tree DAG should be present in the database. Hence [`Error::Find`] should
+    ///   be escalated into a more specific error if it's encountered by the caller.
     /// * `delegate` - A way to observe entries and control the iteration while allowing the optimizer to let you pay only for what you use.
-    pub fn traverse<StateMut, Find, V>(
+    pub fn breadthfirst<StateMut, Find, V>(
         root: TreeRefIter<'_>,
         mut state: StateMut,
         objects: Find,
@@ -74,7 +77,7 @@ pub(crate) mod impl_ {
                         Continue => {
                             delegate.pop_path_component();
                             delegate.push_back_tracked_path_component(entry.filename);
-                            state.next.push_back(entry.oid.to_owned())
+                            state.next.push_back(entry.oid.to_owned());
                         }
                         Cancel => {
                             return Err(Error::Cancelled);

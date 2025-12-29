@@ -54,7 +54,7 @@ impl Slots {
             if slot.0.load(Relaxed) == Debt::NONE {
                 // We are allowed to split into the check and acquiring the debt. That's because we
                 // are the only ones allowed to change NONE to something else. But we still need a
-                // read-write operation wit SeqCst on it :-(
+                // read-write operation with SeqCst on it :-(
                 let old = slot.0.swap(ptr, SeqCst);
                 debug_assert_eq!(Debt::NONE, old);
                 local.offset.set(i + 1);

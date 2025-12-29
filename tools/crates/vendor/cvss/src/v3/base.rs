@@ -15,14 +15,14 @@ pub use self::{
 };
 
 use super::Score;
-use crate::{Error, Metric, MetricType, Result, PREFIX};
+use crate::{Error, Metric, MetricType, PREFIX, Result};
 use alloc::{borrow::ToOwned, vec::Vec};
 use core::{fmt, str::FromStr};
 
 #[cfg(feature = "serde")]
 use {
     alloc::string::{String, ToString},
-    serde::{de, ser, Deserialize, Serialize},
+    serde::{Deserialize, Serialize, de, ser},
 };
 
 #[cfg(feature = "std")]
@@ -161,6 +161,34 @@ impl Base {
         (1.0 - ((1.0 - c_score) * (1.0 - i_score) * (1.0 - a_score)).abs()).into()
     }
 
+    /// Iterate over all defined Base metrics
+    pub fn metrics(&self) -> impl Iterator<Item = (MetricType, &dyn fmt::Debug)> {
+        [
+            (
+                MetricType::AV,
+                self.av.as_ref().map(|m| m as &dyn fmt::Debug),
+            ),
+            (
+                MetricType::AC,
+                self.ac.as_ref().map(|m| m as &dyn fmt::Debug),
+            ),
+            (
+                MetricType::PR,
+                self.pr.as_ref().map(|m| m as &dyn fmt::Debug),
+            ),
+            (
+                MetricType::UI,
+                self.ui.as_ref().map(|m| m as &dyn fmt::Debug),
+            ),
+            (MetricType::S, self.s.as_ref().map(|m| m as &dyn fmt::Debug)),
+            (MetricType::C, self.c.as_ref().map(|m| m as &dyn fmt::Debug)),
+            (MetricType::I, self.i.as_ref().map(|m| m as &dyn fmt::Debug)),
+            (MetricType::A, self.a.as_ref().map(|m| m as &dyn fmt::Debug)),
+        ]
+        .into_iter()
+        .filter_map(|(name, metric)| metric.as_ref().map(|&m| (name, m)))
+    }
+
     /// Calculate Base CVSS `Severity` according to the
     /// Qualitative Severity Rating Scale (i.e. Low / Medium / High / Critical)
     ///
@@ -191,7 +219,9 @@ macro_rules! write_metrics {
 impl fmt::Display for Base {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}:3.{}", PREFIX, self.minor_version)?;
-        write_metrics!(f, self.av, self.ac, self.pr, self.ui, self.s, self.c, self.i, self.a);
+        write_metrics!(
+            f, self.av, self.ac, self.pr, self.ui, self.s, self.c, self.i, self.a
+        );
         Ok(())
     }
 }
@@ -241,7 +271,7 @@ impl FromStr for Base {
                 _ => {
                     return Err(Error::UnsupportedVersion {
                         version: version_string.to_owned(),
-                    })
+                    });
                 }
             },
             ..Default::default()

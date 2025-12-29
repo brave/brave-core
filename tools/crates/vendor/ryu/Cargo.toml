@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.36"
+edition = "2021"
+rust-version = "1.68"
 name = "ryu"
-version = "1.0.19"
+version = "1.0.21"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = false
 exclude = [
@@ -39,8 +39,14 @@ license = "Apache-2.0 OR BSL-1.0"
 repository = "https://github.com/dtolnay/ryu"
 
 [package.metadata.docs.rs]
-rustdoc-args = ["--generate-link-to-definition"]
 targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = [
+    "--generate-link-to-definition",
+    "--generate-macro-expansion",
+    "--extern-html-root-url=core=https://doc.rust-lang.org",
+    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
+    "--extern-html-root-url=std=https://doc.rust-lang.org",
+]
 
 [features]
 small = []
@@ -48,7 +54,6 @@ small = []
 [lib]
 name = "ryu"
 path = "src/lib.rs"
-doc-scrape-examples = false
 
 [[example]]
 name = "upstream_benchmark"
@@ -89,10 +94,15 @@ path = "tests/s2f_test.rs"
 [[bench]]
 name = "bench"
 path = "benches/bench.rs"
+harness = false
 
 [dependencies.no-panic]
 version = "0.1"
 optional = true
+
+[dev-dependencies.criterion]
+version = "0.8"
+default-features = false
 
 [dev-dependencies.num_cpus]
 version = "1.8"

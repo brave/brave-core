@@ -1,7 +1,6 @@
 use crate::off64_t;
 use crate::prelude::*;
 
-pub type c_char = i8;
 pub type wchar_t = i32;
 pub type greg_t = i64;
 pub type __u64 = c_ulonglong;
@@ -25,7 +24,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: c_long,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 3],
+        __unused: Padding<[c_long; 3]>,
     }
 
     pub struct stat64 {
@@ -45,7 +44,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: c_long,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 3],
+        __unused: Padding<[c_long; 3]>,
     }
 
     pub struct _libc_xmmreg {
@@ -92,12 +91,12 @@ s! {
         pub start_code: c_ulong,
         pub start_stack: c_ulong,
         pub signal: c_long,
-        __reserved: c_int,
+        __reserved: Padding<c_int>,
         #[cfg(target_pointer_width = "32")]
-        __pad1: u32,
+        __pad1: Padding<u32>,
         pub u_ar0: *mut user_regs_struct,
         #[cfg(target_pointer_width = "32")]
-        __pad2: u32,
+        __pad2: Padding<u32>,
         pub u_fpstate: *mut user_fpregs_struct,
         pub magic: c_ulong,
         pub u_comm: [c_char; 32],
@@ -105,42 +104,11 @@ s! {
         pub error_code: c_ulong,
         pub fault_address: c_ulong,
     }
-}
 
-s_no_extra_traits! {
-    pub union __c_anonymous_uc_sigmask {
-        uc_sigmask: crate::sigset_t,
-        uc_sigmask64: crate::sigset64_t,
-    }
-
-    #[allow(missing_debug_implementations)]
-    #[repr(align(16))]
-    pub struct max_align_t {
-        priv_: [f64; 4],
-    }
-}
-
-cfg_if! {
-    if #[cfg(feature = "extra_traits")] {
-        impl PartialEq for __c_anonymous_uc_sigmask {
-            fn eq(&self, other: &__c_anonymous_uc_sigmask) -> bool {
-                unsafe { self.uc_sigmask == other.uc_sigmask }
-            }
-        }
-        impl Eq for __c_anonymous_uc_sigmask {}
-        impl hash::Hash for __c_anonymous_uc_sigmask {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                unsafe { self.uc_sigmask.hash(state) }
-            }
-        }
-    }
-}
-
-s_no_extra_traits! {
     pub struct _libc_fpxreg {
         pub significand: [u16; 4],
         pub exponent: u16,
-        __padding: [u16; 3],
+        __padding: Padding<[u16; 3]>,
     }
 
     pub struct _libc_fpstate {
@@ -187,192 +155,29 @@ s_no_extra_traits! {
     }
 }
 
+s_no_extra_traits! {
+    pub union __c_anonymous_uc_sigmask {
+        uc_sigmask: crate::sigset_t,
+        uc_sigmask64: crate::sigset64_t,
+    }
+
+    #[repr(align(16))]
+    pub struct max_align_t {
+        priv_: [f64; 4],
+    }
+}
+
 cfg_if! {
     if #[cfg(feature = "extra_traits")] {
-        impl PartialEq for _libc_fpxreg {
-            fn eq(&self, other: &Self) -> bool {
-                self.significand == other.significand && self.exponent == other.exponent
-                // Ignore padding field
+        impl PartialEq for __c_anonymous_uc_sigmask {
+            fn eq(&self, other: &__c_anonymous_uc_sigmask) -> bool {
+                unsafe { self.uc_sigmask == other.uc_sigmask }
             }
         }
-        impl Eq for _libc_fpxreg {}
-        impl fmt::Debug for _libc_fpxreg {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("_libc_fpxreg")
-                    .field("significand", &self.significand)
-                    .field("exponent", &self.exponent)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-        impl hash::Hash for _libc_fpxreg {
+        impl Eq for __c_anonymous_uc_sigmask {}
+        impl hash::Hash for __c_anonymous_uc_sigmask {
             fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.significand.hash(state);
-                self.exponent.hash(state);
-                // Ignore padding field
-            }
-        }
-
-        impl PartialEq for _libc_fpstate {
-            fn eq(&self, other: &Self) -> bool {
-                self.cwd == other.cwd
-                    && self.swd == other.swd
-                    && self.ftw == other.ftw
-                    && self.fop == other.fop
-                    && self.rip == other.rip
-                    && self.rdp == other.rdp
-                    && self.mxcsr == other.mxcsr
-                    && self.mxcr_mask == other.mxcr_mask
-                    && self._st == other._st
-                    && self._xmm == other._xmm
-                // Ignore padding field
-            }
-        }
-        impl Eq for _libc_fpstate {}
-        impl fmt::Debug for _libc_fpstate {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("_libc_fpstate")
-                    .field("cwd", &self.cwd)
-                    .field("swd", &self.swd)
-                    .field("ftw", &self.ftw)
-                    .field("fop", &self.fop)
-                    .field("rip", &self.rip)
-                    .field("rdp", &self.rdp)
-                    .field("mxcsr", &self.mxcsr)
-                    .field("mxcr_mask", &self.mxcr_mask)
-                    .field("_st", &self._st)
-                    .field("_xmm", &self._xmm)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-        impl hash::Hash for _libc_fpstate {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.cwd.hash(state);
-                self.swd.hash(state);
-                self.ftw.hash(state);
-                self.fop.hash(state);
-                self.rip.hash(state);
-                self.rdp.hash(state);
-                self.mxcsr.hash(state);
-                self.mxcr_mask.hash(state);
-                self._st.hash(state);
-                self._xmm.hash(state);
-                // Ignore padding field
-            }
-        }
-
-        impl PartialEq for mcontext_t {
-            fn eq(&self, other: &Self) -> bool {
-                self.gregs == other.gregs && self.fpregs == other.fpregs
-                // Ignore padding field
-            }
-        }
-        impl Eq for mcontext_t {}
-        impl fmt::Debug for mcontext_t {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("mcontext_t")
-                    .field("gregs", &self.gregs)
-                    .field("fpregs", &self.fpregs)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-        impl hash::Hash for mcontext_t {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.gregs.hash(state);
-                self.fpregs.hash(state);
-                // Ignore padding field
-            }
-        }
-
-        impl PartialEq for ucontext_t {
-            fn eq(&self, other: &Self) -> bool {
-                self.uc_flags == other.uc_flags
-                    && self.uc_link == other.uc_link
-                    && self.uc_stack == other.uc_stack
-                    && self.uc_mcontext == other.uc_mcontext
-                    && self.uc_sigmask64 == other.uc_sigmask64
-                // Ignore padding field
-            }
-        }
-        impl Eq for ucontext_t {}
-        impl fmt::Debug for ucontext_t {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("ucontext_t")
-                    .field("uc_flags", &self.uc_flags)
-                    .field("uc_link", &self.uc_link)
-                    .field("uc_stack", &self.uc_stack)
-                    .field("uc_mcontext", &self.uc_mcontext)
-                    .field("uc_sigmask64", &self.uc_sigmask64)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-        impl hash::Hash for ucontext_t {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.uc_flags.hash(state);
-                self.uc_link.hash(state);
-                self.uc_stack.hash(state);
-                self.uc_mcontext.hash(state);
-                self.uc_sigmask64.hash(state);
-                // Ignore padding field
-            }
-        }
-
-        impl PartialEq for user_fpregs_struct {
-            fn eq(&self, other: &user_fpregs_struct) -> bool {
-                self.cwd == other.cwd
-                    && self.swd == other.swd
-                    && self.ftw == other.ftw
-                    && self.fop == other.fop
-                    && self.rip == other.rip
-                    && self.rdp == other.rdp
-                    && self.mxcsr == other.mxcsr
-                    && self.mxcr_mask == other.mxcr_mask
-                    && self.st_space == other.st_space
-                    && self
-                        .xmm_space
-                        .iter()
-                        .zip(other.xmm_space.iter())
-                        .all(|(a, b)| a == b)
-                // Ignore padding field
-            }
-        }
-
-        impl Eq for user_fpregs_struct {}
-
-        impl fmt::Debug for user_fpregs_struct {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("user_fpregs_struct")
-                    .field("cwd", &self.cwd)
-                    .field("swd", &self.swd)
-                    .field("ftw", &self.ftw)
-                    .field("fop", &self.fop)
-                    .field("rip", &self.rip)
-                    .field("rdp", &self.rdp)
-                    .field("mxcsr", &self.mxcsr)
-                    .field("mxcr_mask", &self.mxcr_mask)
-                    .field("st_space", &self.st_space)
-                    // FIXME: .field("xmm_space", &self.xmm_space)
-                    // Ignore padding field
-                    .finish()
-            }
-        }
-
-        impl hash::Hash for user_fpregs_struct {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.cwd.hash(state);
-                self.swd.hash(state);
-                self.ftw.hash(state);
-                self.fop.hash(state);
-                self.rip.hash(state);
-                self.rdp.hash(state);
-                self.mxcsr.hash(state);
-                self.mxcr_mask.hash(state);
-                self.st_space.hash(state);
-                self.xmm_space.hash(state);
-                // Ignore padding field
+                unsafe { self.uc_sigmask.hash(state) }
             }
         }
     }
@@ -546,7 +351,7 @@ pub const SYS_munlockall: c_long = 152;
 pub const SYS_vhangup: c_long = 153;
 pub const SYS_modify_ldt: c_long = 154;
 pub const SYS_pivot_root: c_long = 155;
-// FIXME: SYS__sysctl is in the NDK sources but for some reason is
+// FIXME(android): SYS__sysctl is in the NDK sources but for some reason is
 //        not available in the tests
 // pub const SYS__sysctl: c_long = 156;
 pub const SYS_prctl: c_long = 157;
@@ -566,10 +371,13 @@ pub const SYS_sethostname: c_long = 170;
 pub const SYS_setdomainname: c_long = 171;
 pub const SYS_iopl: c_long = 172;
 pub const SYS_ioperm: c_long = 173;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 174;
 pub const SYS_init_module: c_long = 175;
 pub const SYS_delete_module: c_long = 176;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 177;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 178;
 pub const SYS_quotactl: c_long = 179;
 pub const SYS_nfsservctl: c_long = 180;

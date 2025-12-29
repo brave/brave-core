@@ -11,7 +11,7 @@ pub mod io {
     pub use std::io::{IoSlice, IoSliceMut};
 }
 
-#[cfg(not(any(target_os = "redox", target_os = "wasi")))]
+#[cfg(not(target_os = "wasi"))]
 #[cfg(feature = "net")]
 pub mod net {
     pub use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6};
@@ -19,7 +19,7 @@ pub mod net {
 
 pub mod os {
     pub mod fd {
-        // Change  to use `std::os::fd` when MSRV becomes 1.66 or higher.
+        // Change to use `std::os::fd` when MSRV becomes Rust 1.66 or higher.
 
         #[cfg(target_os = "wasi")]
         pub use std::os::fd::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};

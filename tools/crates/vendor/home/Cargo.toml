@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.81"
+edition = "2024"
+rust-version = "1.88"
 name = "home"
-version = "0.5.11"
+version = "0.5.12"
 authors = ["Brian Anderson <andersrb@gmail.com>"]
 build = false
 include = [
@@ -34,13 +34,14 @@ documentation = "https://docs.rs/home"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-lang/cargo"
+resolver = "2"
 
 [lib]
 name = "home"
 path = "src/lib.rs"
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = "0.59"
+version = "0.61"
 features = [
     "Win32_Foundation",
     "Win32_UI_Shell",

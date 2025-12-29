@@ -5,8 +5,6 @@
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_X86_64) && defined(__ELF__)
 .text	
-.extern	OPENSSL_ia32cap_P
-.hidden OPENSSL_ia32cap_P
 .globl	gcm_init_clmul
 .hidden gcm_init_clmul
 .type	gcm_init_clmul,@function
@@ -169,61 +167,6 @@ _CET_ENDBR
 .cfi_endproc	
 
 .size	gcm_init_clmul,.-gcm_init_clmul
-.globl	gcm_gmult_clmul
-.hidden gcm_gmult_clmul
-.type	gcm_gmult_clmul,@function
-.align	16
-gcm_gmult_clmul:
-.cfi_startproc	
-_CET_ENDBR
-.L_gmult_clmul:
-	movdqu	(%rdi),%xmm0
-	movdqa	.Lbswap_mask(%rip),%xmm5
-	movdqu	(%rsi),%xmm2
-	movdqu	32(%rsi),%xmm4
-.byte	102,15,56,0,197
-	movdqa	%xmm0,%xmm1
-	pshufd	$78,%xmm0,%xmm3
-	pxor	%xmm0,%xmm3
-.byte	102,15,58,68,194,0
-.byte	102,15,58,68,202,17
-.byte	102,15,58,68,220,0
-	pxor	%xmm0,%xmm3
-	pxor	%xmm1,%xmm3
-
-	movdqa	%xmm3,%xmm4
-	psrldq	$8,%xmm3
-	pslldq	$8,%xmm4
-	pxor	%xmm3,%xmm1
-	pxor	%xmm4,%xmm0
-
-	movdqa	%xmm0,%xmm4
-	movdqa	%xmm0,%xmm3
-	psllq	$5,%xmm0
-	pxor	%xmm0,%xmm3
-	psllq	$1,%xmm0
-	pxor	%xmm3,%xmm0
-	psllq	$57,%xmm0
-	movdqa	%xmm0,%xmm3
-	pslldq	$8,%xmm0
-	psrldq	$8,%xmm3
-	pxor	%xmm4,%xmm0
-	pxor	%xmm3,%xmm1
-
-
-	movdqa	%xmm0,%xmm4
-	psrlq	$1,%xmm0
-	pxor	%xmm4,%xmm1
-	pxor	%xmm0,%xmm4
-	psrlq	$5,%xmm0
-	pxor	%xmm4,%xmm0
-	psrlq	$1,%xmm0
-	pxor	%xmm1,%xmm0
-.byte	102,15,56,0,197
-	movdqu	%xmm0,(%rdi)
-	ret
-.cfi_endproc	
-.size	gcm_gmult_clmul,.-gcm_gmult_clmul
 .globl	gcm_ghash_clmul
 .hidden gcm_ghash_clmul
 .type	gcm_ghash_clmul,@function
@@ -244,14 +187,8 @@ _CET_ENDBR
 	jz	.Lodd_tail
 
 	movdqu	16(%rsi),%xmm6
-	leaq	OPENSSL_ia32cap_P(%rip),%rax
-	movl	4(%rax),%eax
 	cmpq	$0x30,%rcx
 	jb	.Lskip4x
-
-	andl	$71303168,%eax
-	cmpl	$4194304,%eax
-	je	.Lskip4x
 
 	subq	$0x30,%rcx
 	movq	$0xA040608020C0E000,%rax
@@ -620,6 +557,7 @@ _CET_ENDBR
 .align	32
 gcm_init_avx:
 .cfi_startproc	
+
 _CET_ENDBR
 	vzeroupper
 
@@ -732,6 +670,7 @@ _CET_ENDBR
 .align	32
 gcm_ghash_avx:
 .cfi_startproc	
+
 _CET_ENDBR
 	vzeroupper
 

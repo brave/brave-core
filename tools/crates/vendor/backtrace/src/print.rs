@@ -24,13 +24,12 @@ pub struct BacktraceFmt<'a, 'b> {
 
 /// The styles of printing that we can print
 #[derive(Copy, Clone, Eq, PartialEq)]
+#[non_exhaustive]
 pub enum PrintFmt {
     /// Prints a terser backtrace which ideally only contains relevant information
     Short,
     /// Prints a backtrace that contains all possible information
     Full,
-    #[doc(hidden)]
-    __Nonexhaustive,
 }
 
 impl<'a, 'b> BacktraceFmt<'a, 'b> {
@@ -254,7 +253,7 @@ impl BacktraceFrameFmt<'_, '_, '_> {
         match (symbol_name, &self.fmt.format) {
             (Some(name), PrintFmt::Short) => write!(self.fmt.fmt, "{name:#}")?,
             (Some(name), PrintFmt::Full) => write!(self.fmt.fmt, "{name}")?,
-            (None, _) | (_, PrintFmt::__Nonexhaustive) => write!(self.fmt.fmt, "<unknown>")?,
+            (None, _) => write!(self.fmt.fmt, "<unknown>")?,
         }
         self.fmt.fmt.write_str("\n")?;
 
@@ -289,7 +288,7 @@ impl BacktraceFrameFmt<'_, '_, '_> {
             write!(self.fmt.fmt, ":{colno}")?;
         }
 
-        write!(self.fmt.fmt, "\n")?;
+        writeln!(self.fmt.fmt)?;
         Ok(())
     }
 

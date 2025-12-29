@@ -33,9 +33,9 @@ impl<'a> BytesOrWideString<'a> {
     pub fn to_str_lossy(&self) -> Cow<'a, str> {
         use self::BytesOrWideString::*;
 
-        match self {
-            &Bytes(slice) => String::from_utf8_lossy(slice),
-            &Wide(wide) => Cow::Owned(String::from_utf16_lossy(wide)),
+        match *self {
+            Bytes(slice) => String::from_utf8_lossy(slice),
+            Wide(wide) => Cow::Owned(String::from_utf16_lossy(wide)),
         }
     }
 

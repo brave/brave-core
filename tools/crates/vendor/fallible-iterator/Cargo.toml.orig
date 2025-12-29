@@ -1,0 +1,15 @@
+[package]
+name = "fallible-iterator"
+version = "0.2.0"
+authors = ["Steven Fackler <sfackler@gmail.com>"]
+edition = "2018"
+license = "MIT/Apache-2.0"
+description = "Fallible iterator traits"
+repository = "https://github.com/sfackler/rust-fallible-iterator"
+readme = "README.md"
+categories = ["algorithms", "no-std"]
+
+[features]
+alloc = []
+std = []
+default = ["std"]

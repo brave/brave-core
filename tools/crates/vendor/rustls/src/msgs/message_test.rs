@@ -8,7 +8,7 @@ use super::codec::Reader;
 use super::enums::AlertLevel;
 use super::message::{Message, OutboundOpaqueMessage, PlainMessage};
 use crate::enums::{AlertDescription, HandshakeType};
-use crate::msgs::base::{PayloadU16, PayloadU24, PayloadU8};
+use crate::msgs::base::{MaybeEmpty, NonEmpty, PayloadU8, PayloadU16, PayloadU24};
 
 #[test]
 fn test_read_fuzz_corpus() {
@@ -32,7 +32,7 @@ fn test_read_fuzz_corpus() {
         let msg = OutboundOpaqueMessage::read(&mut rd)
             .unwrap()
             .into_plain_message();
-        println!("{:?}", msg);
+        println!("{msg:?}");
 
         let Ok(msg) = Message::try_from(msg) else {
             continue;
@@ -70,7 +70,7 @@ fn can_read_safari_client_hello_with_ip_address_in_sni_extension() {
         \x01\x00\x00\x0a\x00\x0a\x00\x08\x00\x1d\x00\x17\x00\x18\x00\x19";
     let mut rd = Reader::init(bytes);
     let m = OutboundOpaqueMessage::read(&mut rd).unwrap();
-    println!("m = {:?}", m);
+    println!("m = {m:?}");
     Message::try_from(m.into_plain_message()).unwrap();
 }
 
@@ -91,19 +91,34 @@ fn construct_all_types() {
     ];
     for &bytes in samples.iter() {
         let m = OutboundOpaqueMessage::read(&mut Reader::init(bytes)).unwrap();
-        println!("m = {:?}", m);
+        println!("m = {m:?}");
         let m = Message::try_from(m.into_plain_message());
-        println!("m' = {:?}", m);
+        println!("m' = {m:?}");
     }
 }
 
 #[test]
 fn debug_payload() {
     assert_eq!("01020304", format!("{:?}", Payload::new(vec![1, 2, 3, 4])));
-    assert_eq!("01020304", format!("{:?}", PayloadU8(vec![1, 2, 3, 4])));
-    assert_eq!("01020304", format!("{:?}", PayloadU16(vec![1, 2, 3, 4])));
+    assert_eq!(
+        "01020304",
+        format!("{:?}", PayloadU8::<NonEmpty>::new(vec![1, 2, 3, 4]))
+    );
+    assert_eq!(
+        "01020304",
+        format!("{:?}", PayloadU16::<MaybeEmpty>::new(vec![1, 2, 3, 4]))
+    );
     assert_eq!(
         "01020304",
         format!("{:?}", PayloadU24(Payload::new(vec![1, 2, 3, 4])))
+    );
+}
+
+#[test]
+fn into_wire_format() {
+    // Message::into_wire_bytes() include both message-level and handshake-level headers
+    assert_eq!(
+        Message::build_key_update_request().into_wire_bytes(),
+        &[0x16, 0x3, 0x4, 0x0, 0x5, 0x18, 0x0, 0x0, 0x1, 0x1]
     );
 }

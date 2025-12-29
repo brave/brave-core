@@ -3,7 +3,7 @@ use alloc::vec::Vec;
 use core::fmt::{self, Debug, Formatter};
 
 use aws_lc_rs::aead::{
-    self, Aad, BoundKey, Nonce, NonceSequence, OpeningKey, SealingKey, UnboundKey, NONCE_LEN,
+    self, Aad, BoundKey, NONCE_LEN, Nonce, NonceSequence, OpeningKey, SealingKey, UnboundKey,
 };
 use aws_lc_rs::agreement;
 use aws_lc_rs::cipher::{AES_128_KEY_LEN, AES_256_KEY_LEN};
@@ -16,7 +16,7 @@ use crate::crypto::aws_lc_rs::unspecified_err;
 use crate::crypto::hpke::{
     EncapsulatedSecret, Hpke, HpkeOpener, HpkePrivateKey, HpkePublicKey, HpkeSealer, HpkeSuite,
 };
-use crate::crypto::tls13::{expand, HkdfExpander, HkdfPrkExtract, HkdfUsingHmac};
+use crate::crypto::tls13::{HkdfExpander, HkdfPrkExtract, HkdfUsingHmac, expand};
 use crate::msgs::enums::{HpkeAead, HpkeKdf, HpkeKem};
 use crate::msgs::handshake::HpkeSymmetricCipherSuite;
 #[cfg(feature = "std")]
@@ -576,7 +576,7 @@ impl<const KDF_SIZE: usize> DhKem<KDF_SIZE> {
         let pk_r = agreement::UnparsedPublicKey::new(self.agreement_algorithm, &recipient.0);
         let kem_context = [enc.as_ref(), pk_r.bytes()].concat();
 
-        let shared_secret = agreement::agree(&sk_e, &pk_r, aws_lc_rs::error::Unspecified, |dh| {
+        let shared_secret = agreement::agree(&sk_e, pk_r, aws_lc_rs::error::Unspecified, |dh| {
             Ok(self.extract_and_expand(dh, &kem_context))
         })
         .map_err(unspecified_err)?;
@@ -616,7 +616,7 @@ impl<const KDF_SIZE: usize> DhKem<KDF_SIZE> {
             .map_err(unspecified_err)?;
         let kem_context = [&enc.0, pk_rm.as_ref()].concat();
 
-        let shared_secret = agreement::agree(&sk_r, &pk_e, aws_lc_rs::error::Unspecified, |dh| {
+        let shared_secret = agreement::agree(&sk_r, pk_e, aws_lc_rs::error::Unspecified, |dh| {
             Ok(self.extract_and_expand(dh, &kem_context))
         })
         .map_err(unspecified_err)?;

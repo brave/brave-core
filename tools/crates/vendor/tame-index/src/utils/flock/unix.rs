@@ -146,10 +146,10 @@ pub(super) fn is_unsupported(err: &std::io::Error) -> bool {
 
 #[inline]
 pub(super) fn is_contended(err: &Error) -> bool {
-    err.raw_os_error().map_or(false, |x| x == libc::EWOULDBLOCK)
+    err.raw_os_error() == Some(libc::EWOULDBLOCK)
 }
 
 #[inline]
 pub(super) fn is_timed_out(err: &Error) -> bool {
-    err.raw_os_error().map_or(false, |x| x == libc::EINTR)
+    err.raw_os_error() == Some(libc::EINTR)
 }

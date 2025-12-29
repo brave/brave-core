@@ -1,7 +1,7 @@
 fixedbitset
 ---
 
-A simple bitset container for Rust
+A simple fixed size bitset container for Rust.
 
 Please read the [API documentation here](https://docs.rs/fixedbitset/)
 
@@ -10,6 +10,45 @@ Please read the [API documentation here](https://docs.rs/fixedbitset/)
 
 # Recent Changes
 
+-   0.5.7
+    - [#127](https://github.com/petgraph/fixedbitset/pull/127) and [#128](https://github.com/petgraph/fixedbitset/pull/128): Optimize `Clone::clone_from` to avoid
+      extra allocations and copies.
+-   0.5.6
+    - Fixed FixedBitset not implementing Send/Sync due to the stack size shrink.
+-   0.5.5 (yanked)
+    - [#116](https://github.com/petgraph/fixedbitset/pull/116): Add functions for counting the results of a set operation (`union_count`, 
+       `intersection_count`, `difference_count`, `symmetric_difference_count`) by @james7132.
+    - [#118](https://github.com/petgraph/fixedbitset/pull/118): Shrink the stack size of FixedBitset. There should be zero stack size overhead
+      compared to a Vec.
+    - [#119](https://github.com/petgraph/fixedbitset/pull/119): Fix builds for wasm32.
+    - [#120](https://github.com/petgraph/fixedbitset/pull/119): Add more utility functions that were previously missing from the public interface:
+       `contains_any_in_range`, `contains_all_in_range`, `minimum`, `maximum`, `is_full`, `count_zeroes`, and `remove_range`.
+    - [#121](https://github.com/petgraph/fixedbitset/pull/121): Add support for SIMD acceleration for AVX builds.
+-   0.5.4
+    - [#112](https://github.com/petgraph/fixedbitset/pull/112): Fix undefined behavior in IntoOnes and setup testing with MIRI by @SkiFire13
+-   0.5.3 (yanked)
+    - [#109](https://github.com/petgraph/fixedbitset/pull/109): Fix non-x86(_64) builds by @james7132
+-   0.5.2 (yanked)
+    - [#86](https://github.com/petgraph/fixedbitset/pull/86): Explicit SIMD vectorization for set operations by @james7132.
+-   0.5.1
+    - [#102](https://github.com/petgraph/fixedbitset/pull/102): Added `contains_unchecked`, `insert_unchecked`, `put_unchecked`,
+      `set_unchecked`, `toggle_unchecked`, `removed_unchecked`, `copy_bit_unchecked` unsafe variants of the safe functions, by @james7132
+    - [#103](https://github.com/petgraph/fixedbitset/pull/103): Added `into_ones` which returns a owned iterator over the one
+      values from a bitset, by @james7132.
+    - [#104](https://github.com/petgraph/fixedbitset/pull/104): Implemented `DoubleEndedIterator` for `Union`, `Intersection`,
+      `Difference`, and `SymmetricDifference` , by @james7132.
+-   0.5.0
+    - [#74](https://github.com/petgraph/fixedbitset/pull/74): Accelerated set operations (union, intersection, difference, 
+      symmetric difference) by using larger blocks internally, by @james7132.
+    - [#88](https://github.com/petgraph/fixedbitset/pull/88): Added `FixedBitSet::remove` by @james7132.
+    - [#89](https://github.com/petgraph/fixedbitset/pull/89): Added `FixedBitSet::zeros`  and the `Zeros` iterator by @james7132.
+    - [#92](https://github.com/petgraph/fixedbitset/pull/92): Added `FixedBitSet::grow_and_insert` function, a 
+      non-panicking version of `insert` that grows the underlying storage as need, by @shuoli84.
+    - [#98](https://github.com/petgraph/fixedbitset/pull/98): `Ones` now implements `DoubleEndedIterator`, by @tikhu.
+    - [#99](https://github.com/petgraph/fixedbitset/pull/99): **Breaking change**: serde now serializes and deserializes from a little-endian encoded
+      raw byte buffer. Existing stored instances of the serialized bitsets will need to be
+      re-encoded.
+    - Bumped MSRV to 1.56.
 -   0.4.2
     - [#79](https://github.com/petgraph/fixedbitset/pull/79): Add `is_clear`,
     clarify `is_empty` and `len` documentation by \@nicopap.

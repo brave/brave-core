@@ -12,9 +12,10 @@
 //! strictly dominates **B** and there does not exist any node **C** where **A**
 //! dominates **C** and **C** dominates **B**.
 
-use std::cmp::Ordering;
-use std::collections::{hash_map::Iter, HashMap, HashSet};
-use std::hash::Hash;
+use alloc::{vec, vec::Vec};
+use core::{cmp::Ordering, hash::Hash};
+
+use hashbrown::{hash_map::Iter, HashMap, HashSet};
 
 use crate::visit::{DfsPostOrder, GraphBase, IntoNeighbors, Visitable, Walker};
 
@@ -53,7 +54,7 @@ where
     ///
     /// If the given node is not reachable from the root, then `None` is
     /// returned.
-    pub fn strict_dominators(&self, node: N) -> Option<DominatorsIter<N>> {
+    pub fn strict_dominators(&self, node: N) -> Option<DominatorsIter<'_, N>> {
         if self.dominators.contains_key(&node) {
             Some(DominatorsIter {
                 dominators: self,
@@ -69,7 +70,7 @@ where
     ///
     /// If the given node is not reachable from the root, then `None` is
     /// returned.
-    pub fn dominators(&self, node: N) -> Option<DominatorsIter<N>> {
+    pub fn dominators(&self, node: N) -> Option<DominatorsIter<'_, N>> {
         if self.dominators.contains_key(&node) {
             Some(DominatorsIter {
                 dominators: self,
@@ -82,7 +83,7 @@ where
 
     /// Iterate over all nodes immediately dominated by the given node (not
     /// including the given node itself).
-    pub fn immediately_dominated_by(&self, node: N) -> DominatedByIter<N> {
+    pub fn immediately_dominated_by(&self, node: N) -> DominatedByIter<'_, N> {
         DominatedByIter {
             iter: self.dominators.iter(),
             node,
@@ -132,9 +133,11 @@ where
     type Item = N;
 
     fn next(&mut self) -> Option<Self::Item> {
-        for next in self.iter.by_ref() {
-            if next.1 == &self.node {
-                return Some(*next.0);
+        for (dominator, dominated) in self.iter.by_ref() {
+            // The root node dominates itself, but it should not be included in
+            // the results.
+            if dominated == &self.node && dominated != dominator {
+                return Some(*dominator);
             }
         }
         None
@@ -147,15 +150,29 @@ where
 
 /// The undefined dominator sentinel, for when we have not yet discovered a
 /// node's dominator.
-const UNDEFINED: usize = ::std::usize::MAX;
+const UNDEFINED: usize = usize::MAX;
 
 /// This is an implementation of the engineered ["Simple, Fast Dominance
 /// Algorithm"][0] discovered by Cooper et al.
 ///
-/// This algorithm is **O(|V|²)**, and therefore has slower theoretical running time
-/// than the Lengauer-Tarjan algorithm (which is **O(|E| log |V|)**. However,
+/// This algorithm is **O(|V|²)** where V is the set of nodes, and therefore has slower theoretical running time
+/// than the Lengauer-Tarjan algorithm (which is **O(|E| log |V|)** where E is the set of edges). However,
 /// Cooper et al found it to be faster in practice on control flow graphs of up
-/// to ~30,000 vertices.
+/// to ~30,000 nodes.
+///
+/// # Arguments
+/// * `graph`: a control-flow graph.
+/// * `root`: the *root* node of the `graph`.
+///
+/// # Returns
+/// * `Dominators`: the dominance relation for given `graph` and `root`
+///   represented by [`struct@Dominators`].
+///
+/// # Complexity
+/// * Time complexity: **O(|V|²)**.
+/// * Auxiliary space: **O(|V| + |E|)**.
+///
+/// where **|V|** is the number of nodes and **|E|** is the number of edges.
 ///
 /// [0]: http://www.hipersoft.rice.edu/grads/publications/dom14.pdf
 pub fn simple_fast<G>(graph: G, root: G::NodeId) -> Dominators<G::NodeId>
@@ -225,8 +242,7 @@ where
     }
 
     // All done! Translate the indices back into proper `G::NodeId`s.
-
-    debug_assert!(!dominators.iter().any(|&dom| dom == UNDEFINED));
+    debug_assert!(!dominators.contains(&UNDEFINED));
 
     Dominators {
         root,
@@ -326,5 +342,6 @@ mod tests {
         let dom_by: Vec<_> = doms.immediately_dominated_by(1).collect();
         assert_eq!(vec![2], dom_by);
         assert_eq!(None, doms.immediately_dominated_by(99).next());
+        assert_eq!(1, doms.immediately_dominated_by(0).count());
     }
 }

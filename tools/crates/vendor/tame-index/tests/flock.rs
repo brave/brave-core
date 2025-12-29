@@ -1,3 +1,5 @@
+#![allow(missing_docs)]
+
 use std::time::Duration;
 use tame_index::utils::flock::LockOptions;
 

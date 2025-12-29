@@ -20,7 +20,6 @@ pub mod transform;
 pub(crate) mod test {
     use crate::identity::SecIdentity;
     use crate::item::{ItemClass, ItemSearchOptions, Reference, SearchResult};
-    use crate::os::macos::item::ItemSearchOptionsExt;
     use crate::os::macos::keychain::SecKeychain;
     use std::fs::File;
     use std::io::prelude::*;

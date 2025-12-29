@@ -10,7 +10,7 @@ impl Default for Options {
             permissions: Default::default(),
             git_dir_trust: None,
             filter_config_section: None,
-            lossy_config: None,
+            lossy_config: false,
             lenient_config: true,
             bail_if_untrusted: false,
             open_path_as_is: false,
@@ -120,13 +120,12 @@ impl Options {
         self
     }
 
-    /// By default, in release mode configuration will be read without retaining non-essential information like
-    /// comments or whitespace to optimize lookup performance.
+    /// If set, default is false, configuration will be read without retaining non-essential information like comments
+    /// or whitespace to optimize lookup performance.
     ///
-    /// Some application might want to toggle this to false in they want to display or edit configuration losslessly
-    /// with all whitespace and comments included.
+    /// This will prevent displaying or editing configuration losslessly.
     pub fn lossy_config(mut self, toggle: bool) -> Self {
-        self.lossy_config = toggle.into();
+        self.lossy_config = toggle;
         self
     }
 
@@ -163,7 +162,7 @@ impl gix_sec::trust::DefaultForLevel for Options {
                 permissions: Permissions::default_for_level(level),
                 git_dir_trust: gix_sec::Trust::Full.into(),
                 filter_config_section: Some(config::section::is_trusted),
-                lossy_config: None,
+                lossy_config: false,
                 bail_if_untrusted: false,
                 lenient_config: true,
                 open_path_as_is: false,
@@ -179,7 +178,7 @@ impl gix_sec::trust::DefaultForLevel for Options {
                 bail_if_untrusted: false,
                 lenient_config: true,
                 open_path_as_is: false,
-                lossy_config: None,
+                lossy_config: false,
                 api_config_overrides: Vec::new(),
                 cli_config_overrides: Vec::new(),
                 current_dir: None,

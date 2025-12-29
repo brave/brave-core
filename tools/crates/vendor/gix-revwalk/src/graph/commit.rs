@@ -4,9 +4,9 @@ use smallvec::SmallVec;
 use super::LazyCommit;
 use crate::graph::{Commit, Either, Generation};
 
-impl<'graph> LazyCommit<'graph> {
+impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
     /// Return an iterator over the parents of this commit.
-    pub fn iter_parents(&self) -> Parents<'graph> {
+    pub fn iter_parents(&self) -> Parents<'graph, 'cache> {
         let backing = match &self.backing {
             Either::Left(buf) => Either::Left(gix_object::CommitRefIter::from_bytes(buf)),
             Either::Right((cache, pos)) => Either::Right((*cache, cache.commit_at(*pos).iter_parents())),
@@ -20,7 +20,7 @@ impl<'graph> LazyCommit<'graph> {
     /// Note that this can only fail if the commit is backed by the object database *and* parsing fails.
     pub fn committer_timestamp(&self) -> Result<SecondsSinceUnixEpoch, gix_object::decode::Error> {
         Ok(match &self.backing {
-            Either::Left(buf) => gix_object::CommitRefIter::from_bytes(buf).committer()?.time.seconds,
+            Either::Left(buf) => gix_object::CommitRefIter::from_bytes(buf).committer()?.seconds(),
             Either::Right((cache, pos)) => cache.commit_at(*pos).committer_timestamp() as SecondsSinceUnixEpoch, // a cast as we cannot represent the error and trying seems overkill
         })
     }
@@ -31,6 +31,23 @@ impl<'graph> LazyCommit<'graph> {
             Either::Left(_) => None,
             Either::Right((cache, pos)) => cache.commit_at(*pos).generation().into(),
         }
+    }
+
+    /// Returns the generation of the commit and its commit-time, either from cache if available, or parsed from the object buffer.
+    pub fn generation_and_timestamp(
+        &self,
+    ) -> Result<(Option<Generation>, SecondsSinceUnixEpoch), gix_object::decode::Error> {
+        Ok(match &self.backing {
+            Either::Left(buf) => (None, gix_object::CommitRefIter::from_bytes(buf).committer()?.seconds()),
+            Either::Right((cache, pos)) => {
+                let commit = cache.commit_at(*pos);
+                (
+                    commit.generation().into(),
+                    // a cast as we cannot represent the error and trying seems overkill
+                    cache.commit_at(*pos).committer_timestamp() as SecondsSinceUnixEpoch,
+                )
+            }
+        })
     }
 
     /// Convert ourselves into an owned version, which effectively detaches us from the underlying graph.
@@ -49,7 +66,7 @@ impl<'graph> LazyCommit<'graph> {
                         Token::Parent { id } => parents.push(id),
                         Token::Author { .. } => {}
                         Token::Committer { signature } => {
-                            timestamp = Some(signature.time.seconds);
+                            timestamp = Some(signature.seconds());
                             break;
                         }
                         _ => {
@@ -89,17 +106,17 @@ impl<'graph> LazyCommit<'graph> {
 }
 
 /// An iterator over the parents of a commit.
-pub struct Parents<'graph> {
+pub struct Parents<'graph, 'cache> {
     backing: Either<
         gix_object::CommitRefIter<'graph>,
         (
-            &'graph gix_commitgraph::Graph,
-            gix_commitgraph::file::commit::Parents<'graph>,
+            &'cache gix_commitgraph::Graph,
+            gix_commitgraph::file::commit::Parents<'cache>,
         ),
     >,
 }
 
-impl<'graph> Iterator for Parents<'graph> {
+impl Iterator for Parents<'_, '_> {
     type Item = Result<gix_hash::ObjectId, iter_parents::Error>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -123,7 +140,6 @@ impl<'graph> Iterator for Parents<'graph> {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod iter_parents {
     /// The error returned by the [`Parents`][super::Parents] iterator.
     #[derive(Debug, thiserror::Error)]
@@ -137,7 +153,6 @@ pub mod iter_parents {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod to_owned {
     /// The error returned by [`to_owned()`][crate::graph::LazyCommit::to_owned()].
     #[derive(Debug, thiserror::Error)]

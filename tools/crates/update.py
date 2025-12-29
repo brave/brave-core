@@ -26,6 +26,7 @@ with brave_chromium_utils.sys_path('//tools/rust'):
     CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
                          'cargo' + ('.exe' if sys.platform == 'win32' else ''))
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
+FILTER_CHECKSUM_PATTERNS = ['.git', '**/.git']
 
 
 def setup_workspace():
@@ -141,6 +142,82 @@ def create_dependency_placeholders():
                     print(f"Created placeholder for: {dir_path}")
 
 
+def filter_dependencies():
+    """Filter .cargo-checksum.json files and remove unwanted files from fs."""
+    vendor_path = Path('vendor')
+
+    def matches_any_filter_pattern(file_path):
+        """Check if a file path matches any of the filter patterns."""
+        return any(
+            fnmatch.fnmatch(file_path, pattern)
+            for pattern in FILTER_CHECKSUM_PATTERNS)
+
+    # Count total packages for progress reporting
+    all_packages = [d for d in vendor_path.iterdir() if d.is_dir()]
+    total_packages = len(all_packages)
+
+    # Iterate through all vendored packages
+    for idx, package_dir in enumerate(all_packages, 1):
+        print(f"\rFiltering dependencies: {idx}/{total_packages}",
+              end='',
+              flush=True)
+
+        # Remove matching files from filesystem by walking the directory
+        removed_files = []
+        for item in package_dir.rglob('*'):
+            if item.is_file():
+                relative_path = item.relative_to(package_dir)
+                if matches_any_filter_pattern(str(relative_path)):
+                    try:
+                        item.unlink()
+                        removed_files.append(str(relative_path))
+                    except Exception as e:
+                        print(f"\nWarning: Could not remove {item}: {e}")
+
+        # Print removed files on separate lines if any were removed
+        if removed_files:
+            print()  # Move to new line
+            for file_path in removed_files:
+                print(f"  Removed {package_dir.name}/{file_path}")
+
+        # Update checksum file if it exists
+        checksum_file = package_dir / '.cargo-checksum.json'
+        if not checksum_file.exists():
+            continue
+
+        # Read the checksum file
+        with open(checksum_file, 'r') as f:
+            checksum_data = json.load(f)
+
+        if 'files' not in checksum_data:
+            continue
+
+        # Filter out entries matching the patterns from checksum
+        original_count = len(checksum_data['files'])
+        filtered_files = {
+            file_path: checksum
+            for file_path, checksum in checksum_data['files'].items()
+            if not matches_any_filter_pattern(file_path)
+        }
+
+        removed_count = original_count - len(filtered_files)
+        if removed_count > 0:
+            checksum_data['files'] = filtered_files
+
+            # Write back the filtered checksum file
+            with open(checksum_file, 'w') as f:
+                json.dump(checksum_data, f)
+
+            if not removed_files:
+                print()  # Move to new line if we haven't already
+            print(
+                f"  Filtered {removed_count} entries from {package_dir.name}/.cargo-checksum.json"
+            )
+
+    # Final newline after all packages processed
+    print()
+
+
 def create_cargo_config():
     # Create .cargo directory and write config.toml
     cargo_config = {
@@ -163,6 +240,7 @@ def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_workspace()
     add_dependencies()
+    filter_dependencies()
     create_dependency_placeholders()
     create_cargo_config()
 

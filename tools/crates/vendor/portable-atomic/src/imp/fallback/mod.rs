@@ -33,45 +33,57 @@ type and the value type must be the same.
                             any(target_endian = "little", not(target_feature = "crt-static")),
                         ),
                         all(
-                            any(target_env = "musl", target_env = "ohos", target_env = "uclibc"),
-                            not(target_feature = "crt-static"),
+                            target_env = "musl",
+                            any(not(target_feature = "crt-static"), feature = "std"),
                         ),
+                        target_env = "ohos",
+                        all(target_env = "uclibc", not(target_feature = "crt-static")),
                         portable_atomic_outline_atomics,
                     ),
                 ),
                 target_os = "android",
-                target_os = "freebsd",
+                all(
+                    target_os = "freebsd",
+                    any(
+                        target_endian = "little",
+                        not(target_feature = "crt-static"),
+                        portable_atomic_outline_atomics,
+                    ),
+                ),
                 target_os = "openbsd",
+                all(
+                    target_os = "aix",
+                    not(portable_atomic_pre_llvm_20),
+                    portable_atomic_outline_atomics, // TODO(aix): currently disabled by default
+                ),
             ),
             not(any(miri, portable_atomic_sanitize_thread)),
         ),
         all(
             target_arch = "riscv32",
             not(any(miri, portable_atomic_sanitize_thread)),
-            not(portable_atomic_no_asm),
+            any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
             any(
-                target_feature = "experimental-zacas",
-                portable_atomic_target_feature = "experimental-zacas",
+                target_feature = "zacas",
+                portable_atomic_target_feature = "zacas",
                 all(
                     feature = "fallback",
                     not(portable_atomic_no_outline_atomics),
-                    any(test, portable_atomic_outline_atomics), // TODO(riscv): currently disabled by default
                     any(target_os = "linux", target_os = "android"),
                 ),
             ),
         ),
         all(
             target_arch = "riscv64",
-            not(portable_atomic_no_asm),
+            not(any(miri, portable_atomic_sanitize_thread)),
+            any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
             any(
-                target_feature = "experimental-zacas",
-                portable_atomic_target_feature = "experimental-zacas",
+                target_feature = "zacas",
+                portable_atomic_target_feature = "zacas",
                 all(
                     feature = "fallback",
                     not(portable_atomic_no_outline_atomics),
-                    any(test, portable_atomic_outline_atomics), // TODO(riscv): currently disabled by default
                     any(target_os = "linux", target_os = "android"),
-                    not(any(miri, portable_atomic_sanitize_thread)),
                 ),
             ),
         ),
@@ -112,6 +124,8 @@ use self::{
     seq_lock::{SeqLock, SeqLockWriteGuard},
     utils::CachePadded,
 };
+#[cfg(portable_atomic_no_strict_provenance)]
+use crate::utils::ptr::PtrExt as _;
 
 // Some 64-bit architectures have ABI with 32-bit pointer width (e.g., x86_64 X32 ABI,
 // AArch64 ILP32 ABI, mips64 N32 ABI). On those targets, AtomicU64 is fast,
@@ -234,7 +248,7 @@ macro_rules! atomic {
             #[cfg_attr(all(debug_assertions, not(portable_atomic_no_track_caller)), track_caller)]
             pub(crate) fn load(&self, order: Ordering) -> $int_type {
                 crate::utils::assert_load_ordering(order);
-                let lock = lock(self.v.get() as usize);
+                let lock = lock(self.v.get().addr());
 
                 // Try doing an optimistic read first.
                 if let Some(stamp) = lock.optimistic_read() {
@@ -257,13 +271,13 @@ macro_rules! atomic {
             #[cfg_attr(all(debug_assertions, not(portable_atomic_no_track_caller)), track_caller)]
             pub(crate) fn store(&self, val: $int_type, order: Ordering) {
                 crate::utils::assert_store_ordering(order);
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 self.write(val, &guard)
             }
 
             #[inline]
             pub(crate) fn swap(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(val, &guard);
                 prev
@@ -279,7 +293,7 @@ macro_rules! atomic {
                 failure: Ordering,
             ) -> Result<$int_type, $int_type> {
                 crate::utils::assert_compare_exchange_ordering(success, failure);
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 if prev == current {
                     self.write(new, &guard);
@@ -305,7 +319,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_add(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev.wrapping_add(val), &guard);
                 prev
@@ -313,7 +327,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_sub(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev.wrapping_sub(val), &guard);
                 prev
@@ -321,7 +335,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_and(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev & val, &guard);
                 prev
@@ -329,7 +343,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_nand(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(!(prev & val), &guard);
                 prev
@@ -337,7 +351,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_or(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev | val, &guard);
                 prev
@@ -345,7 +359,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_xor(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev ^ val, &guard);
                 prev
@@ -353,7 +367,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_max(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(core::cmp::max(prev, val), &guard);
                 prev
@@ -361,7 +375,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_min(&self, val: $int_type, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(core::cmp::min(prev, val), &guard);
                 prev
@@ -369,7 +383,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_not(&self, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(!prev, &guard);
                 prev
@@ -381,7 +395,7 @@ macro_rules! atomic {
 
             #[inline]
             pub(crate) fn fetch_neg(&self, _order: Ordering) -> $int_type {
-                let guard = lock(self.v.get() as usize).write();
+                let guard = lock(self.v.get().addr()).write();
                 let prev = self.read(&guard);
                 self.write(prev.wrapping_neg(), &guard);
                 prev
@@ -399,7 +413,21 @@ macro_rules! atomic {
     };
 }
 
-#[cfg_attr(portable_atomic_no_cfg_target_has_atomic, cfg(any(test, portable_atomic_no_atomic_64)))]
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(
+        test,
+        not(any(
+            not(portable_atomic_no_atomic_64),
+            all(
+                target_arch = "riscv32",
+                not(any(miri, portable_atomic_sanitize_thread)),
+                any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
+                any(target_feature = "zacas", portable_atomic_target_feature = "zacas"),
+            ),
+        ))
+    ))
+)]
 #[cfg_attr(
     not(portable_atomic_no_cfg_target_has_atomic),
     cfg(any(
@@ -409,11 +437,8 @@ macro_rules! atomic {
             all(
                 target_arch = "riscv32",
                 not(any(miri, portable_atomic_sanitize_thread)),
-                not(portable_atomic_no_asm),
-                any(
-                    target_feature = "experimental-zacas",
-                    portable_atomic_target_feature = "experimental-zacas",
-                ),
+                any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
+                any(target_feature = "zacas", portable_atomic_target_feature = "zacas"),
             ),
         ))
     ))

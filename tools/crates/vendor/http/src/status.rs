@@ -1,6 +1,6 @@
 //! HTTP status codes
 //!
-//! This module contains HTTP-status code related structs an errors. The main
+//! This module contains HTTP-status code related structs and errors. The main
 //! type in this module is `StatusCode` which is not intended to be used through
 //! this module but rather the `http::StatusCode` type.
 //!
@@ -44,7 +44,7 @@ use std::str::FromStr;
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct StatusCode(NonZeroU16);
 
-/// A possible error value when converting a `StatusCode` from a `u16` or `&str`
+/// A possible error value when converting a `StatusCode` from a `u16` or `&str`.
 ///
 /// This error indicates that the supplied input was not a valid number, was less
 /// than 100, or was greater than 999.
@@ -70,17 +70,16 @@ impl StatusCode {
     /// assert!(err.is_err());
     /// ```
     #[inline]
-    pub fn from_u16(src: u16) -> Result<StatusCode, InvalidStatusCode> {
-        if !(100..1000).contains(&src) {
-            return Err(InvalidStatusCode::new());
+    pub const fn from_u16(src: u16) -> Result<StatusCode, InvalidStatusCode> {
+        if let 100..=999 = src {
+            if let Some(code) = NonZeroU16::new(src) {
+                return Ok(StatusCode(code));
+            }
         }
-
-        NonZeroU16::new(src)
-            .map(StatusCode)
-            .ok_or_else(InvalidStatusCode::new)
+        Err(InvalidStatusCode::new())
     }
 
-    /// Converts a &[u8] to a status code
+    /// Converts a `&[u8]` to a status code.
     pub fn from_bytes(src: &[u8]) -> Result<StatusCode, InvalidStatusCode> {
         if src.len() != 3 {
             return Err(InvalidStatusCode::new());
@@ -117,7 +116,7 @@ impl StatusCode {
     /// ```
     #[inline]
     pub const fn as_u16(&self) -> u16 {
-        (*self).0.get()
+        self.0.get()
     }
 
     /// Returns a &str representation of the `StatusCode`
@@ -175,31 +174,31 @@ impl StatusCode {
     /// Check if status is within 100-199.
     #[inline]
     pub fn is_informational(&self) -> bool {
-        200 > self.0.get() && self.0.get() >= 100
+        (100..200).contains(&self.0.get())
     }
 
     /// Check if status is within 200-299.
     #[inline]
     pub fn is_success(&self) -> bool {
-        300 > self.0.get() && self.0.get() >= 200
+        (200..300).contains(&self.0.get())
     }
 
     /// Check if status is within 300-399.
     #[inline]
     pub fn is_redirection(&self) -> bool {
-        400 > self.0.get() && self.0.get() >= 300
+        (300..400).contains(&self.0.get())
     }
 
     /// Check if status is within 400-499.
     #[inline]
     pub fn is_client_error(&self) -> bool {
-        500 > self.0.get() && self.0.get() >= 400
+        (400..500).contains(&self.0.get())
     }
 
     /// Check if status is within 500-599.
     #[inline]
     pub fn is_server_error(&self) -> bool {
-        600 > self.0.get() && self.0.get() >= 500
+        (500..600).contains(&self.0.get())
     }
 }
 
@@ -334,6 +333,9 @@ status_codes! {
     /// 102 Processing
     /// [[RFC2518, Section 10.1](https://datatracker.ietf.org/doc/html/rfc2518#section-10.1)]
     (102, PROCESSING, "Processing");
+    /// 103 Early Hints
+    /// [[RFC8297, Section 2](https://datatracker.ietf.org/doc/html/rfc8297#section-2)]
+    (103, EARLY_HINTS, "Early Hints");
 
     /// 200 OK
     /// [[RFC9110, Section 15.3.1](https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.1)]
@@ -523,7 +525,7 @@ status_codes! {
 }
 
 impl InvalidStatusCode {
-    fn new() -> InvalidStatusCode {
+    const fn new() -> InvalidStatusCode {
         InvalidStatusCode { _priv: () }
     }
 }
