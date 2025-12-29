@@ -45,11 +45,24 @@ extension UIViewController {
       completion?(false, nil)
       return
     }
+    askForLocalAuthentication(using: windowProtection, viewType: viewType, completion: completion)
+  }
 
+  func askForLocalAuthentication(
+    using windowProtection: WindowProtection,
+    errorOnNoPasscode: Bool = false,
+    viewType: AuthViewType = .general,
+    completion: ((Bool, LAError.Code?) -> Void)? = nil
+  ) {
     // No Pincode set on device
+    // And caller does not need it then
     // Local Authentication is not necesseary
     if !windowProtection.isPassCodeAvailable {
-      completion?(true, nil)
+      if errorOnNoPasscode {
+        completion?(false, .passcodeNotSet)
+      } else {
+        completion?(true, nil)
+      }
     } else {
       windowProtection.presentAuthenticationForViewController(
         determineLockWithPasscode: false,
