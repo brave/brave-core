@@ -256,6 +256,12 @@ public protocol TabState: AnyObject {
   /// Returns the PDF data for the current page if one is being displayed
   var dataForDisplayedPDF: Data? { get }
   /// Returns a colour that was sampled from the top of the page for UI purposes
+  @available(
+    iOS,
+    deprecated: 26.0,
+    message:
+      "Use WebViewProxy.obscuredContentInsets and avoid adding views in the top safe area when compiling without UIDesignRequiresCompatibility"
+  )
   var sampledPageTopColor: UIColor? { get }
   /// The scale applied to the WKWebView which can be used to apply custom zoom settings to a page
   var viewScale: CGFloat { get set }
@@ -354,10 +360,12 @@ extension TabState {
 }
 
 /// A basic proxy over the underlying web view that may be displaying web content
-public protocol WebViewProxy {
+public protocol WebViewProxy: AnyObject {
   var scrollView: UIScrollView? { get }
   var bounds: CGRect { get }
   var frame: CGRect { get }
+  @available(iOS 26.0, *)
+  var obscuredContentInsets: UIEdgeInsets { get set }
   func becomeFirstResponder() -> Bool
 }
 

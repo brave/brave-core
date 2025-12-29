@@ -610,11 +610,30 @@ private class WebKitWebView: WKWebView {
     super.buildMenu(with: builder)
     buildMenu?(builder)
   }
+
+  override var safeAreaInsets: UIEdgeInsets {
+    if #available(iOS 26.0, *) {
+      // In iOS 26+ we are using the new `obscuredContentInsets` API to fix the
+      // pages viewport and allow us to apply decorative blur effects behind
+      // toolbars. Using this API though only seems to only work correctly when the
+      // `safeAreaInsets` are set to 0 because we have to add the safe area already
+      // to the obscuredContentInsets for it to adjust the viewport correctly.
+      // WKWebView will still report the safe area to the page despite the viewport
+      // CSS metrics being correctly reported and you end up with pages like YouTube
+      // having extra whitespace added to the top & bottom of the page.
+      return .zero
+    }
+    return super.safeAreaInsets
+  }
 }
 
 // Unfortunately neccessary because UIScrollView is optional in WebViewProxy
-private struct WKWebViewProxy: WebViewProxy {
+private class WKWebViewProxy: WebViewProxy {
   var webView: WKWebView
+
+  init(webView: WKWebView) {
+    self.webView = webView
+  }
 
   var scrollView: UIScrollView? {
     webView.scrollView
@@ -631,6 +650,19 @@ private struct WKWebViewProxy: WebViewProxy {
   func becomeFirstResponder() -> Bool {
     webView.becomeFirstResponder()
   }
+
+  #if compiler(>=6.2)
+  @available(iOS 26.0, *)
+  public var obscuredContentInsets: UIEdgeInsets {
+    get { webView.obscuredContentInsets }
+    set { webView.obscuredContentInsets = newValue }
+  }
+  #else
+  public var obscuredContentInsets: UIEdgeInsets {
+    get { .zero }
+    set {}
+  }
+  #endif
 }
 
 private struct WebKitBackForwardList: BackForwardListProxy {

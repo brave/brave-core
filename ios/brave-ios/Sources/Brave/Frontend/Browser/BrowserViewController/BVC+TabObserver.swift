@@ -16,8 +16,19 @@ extension BrowserViewController: TabObserver {
   public func tabDidCreateWebView(_ tab: some TabState) {
     tab.view.frame = webViewContainer.frame
 
-    if tab.isVisible, let scrollView = tab.webViewProxy?.scrollView {
-      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+    if let scrollView = tab.webViewProxy?.scrollView {
+      if tab.isVisible {
+        toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+      }
+      if #available(iOS 26.0, *) {
+        // We set the content inset + safe area insets ourselves so we normalize this to `always`
+        scrollView.contentInsetAdjustmentBehavior = .always
+      } else {
+        // On iOS 17/18 setting clipsToBounds as false can still let us achieve the visual effect
+        // of the web view scrolling under blurred toolbars despite the frame being tied to the
+        // toolbars itself.
+        scrollView.clipsToBounds = false
+      }
     }
 
     var injectedScripts: [TabContentScript] = [
