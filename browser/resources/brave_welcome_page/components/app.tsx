@@ -13,7 +13,6 @@ import {
   StepImportDataContent, StepImportDataFooter,
   StepMakeYoursContent, StepMakeYoursFooter,
   StepBraveSearchContent, StepBraveSearchFooter,
-  StepBetterWebContent, StepBetterWebFooter,
   StepCompleteContent, StepCompleteFooter
 } from './steps'
 
@@ -23,7 +22,6 @@ const steps: StepDefinition[] = [
   { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
   { id: 'make-yours', Content: StepMakeYoursContent, Footer: StepMakeYoursFooter },
   { id: 'brave-search', Content: StepBraveSearchContent, Footer: StepBraveSearchFooter },
-  { id: 'better-web', Content: StepBetterWebContent, Footer: StepBetterWebFooter },
   { id: 'complete', Content: StepCompleteContent, Footer: StepCompleteFooter },
 ]
 
@@ -82,6 +80,25 @@ export function App() {
   const handleSkip = React.useCallback(() => {
     handleNext()
   }, [handleNext])
+
+  // Keyboard navigation with arrow keys
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't navigate if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return
+      }
+
+      if (e.key === 'ArrowRight') {
+        handleNext()
+      } else if (e.key === 'ArrowLeft') {
+        handleBack()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleNext, handleBack])
 
   // Content uses displayedContentIndex (animated)
   const DisplayedContent = steps[displayedContentIndex].Content

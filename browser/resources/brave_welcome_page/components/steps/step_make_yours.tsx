@@ -14,7 +14,7 @@ export function StepMakeYoursContent({}: StepContentProps) {
       <div className="left-content">
         <div className="left-text-content">
           <h1>Make Brave yours</h1>
-          <p>Customize your browser experience with themes, extensions, and settings that match your style.</p>
+          <p>Personalize your browsing experience with your preferred tab layout and color modes.</p>
         </div>
       </div>
       <div className="right-content">

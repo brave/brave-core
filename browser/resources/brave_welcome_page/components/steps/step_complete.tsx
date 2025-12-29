@@ -13,12 +13,13 @@ export function StepCompleteContent({}: StepContentProps) {
     <div className="content">
       <div className="left-content">
         <div className="left-text-content">
-          <h1>You're all set!</h1>
-          <p>Brave is ready. Start browsing with privacy, speed, and rewards.</p>
+          <h1>Build a better web with us</h1>
+          <p>Help Brave be better and create better products by enabling these private metrics. We promise to protect your privacy in everything we do.</p>
+          <p>You can change these choices at any time in Brave at brave://settings/privacy. Read our full Privacy Policy.</p>
         </div>
       </div>
       <div className="right-content">
-        {/* Right content for completion step - success animation, tips, etc. */}
+      Content from step 5
       </div>
     </div>
   )
