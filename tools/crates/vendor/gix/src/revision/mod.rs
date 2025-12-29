@@ -6,13 +6,11 @@
 pub use gix_revision as plumbing;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod walk;
-pub use walk::iter::Walk;
+pub use walk::iter_impl::Walk;
 
 ///
 #[cfg(feature = "revision")]
-#[allow(clippy::empty_docs)]
 pub mod spec;
 
 /// The specification of a revision as parsed from a revision specification like `HEAD@{1}` or `v1.2.3...main`.
@@ -30,5 +28,6 @@ pub struct Spec<'repo> {
     pub(crate) first_ref: Option<gix_ref::Reference>,
     /// The second name of a reference as seen while parsing a `RevSpec`, for completeness.
     pub(crate) second_ref: Option<gix_ref::Reference>,
-    pub(crate) repo: &'repo crate::Repository,
+    /// The owning repository.
+    pub repo: &'repo crate::Repository,
 }

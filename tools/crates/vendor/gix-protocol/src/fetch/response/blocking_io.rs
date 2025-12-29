@@ -4,7 +4,7 @@ use gix_transport::{client, Protocol};
 
 use crate::fetch::{
     response,
-    response::{Acknowledgement, ShallowUpdate, WantedRef},
+    response::{shallow_update_from_line, Acknowledgement, ShallowUpdate, WantedRef},
     Response,
 };
 
@@ -119,7 +119,7 @@ impl Response {
                             io::ErrorKind::UnexpectedEof,
                             "Could not read message headline",
                         )));
-                    };
+                    }
 
                     match line.trim_end() {
                         "acknowledgments" => {
@@ -128,7 +128,7 @@ impl Response {
                             }
                         }
                         "shallow-info" => {
-                            if parse_v2_section(&mut line, reader, &mut shallows, ShallowUpdate::from_line)? {
+                            if parse_v2_section(&mut line, reader, &mut shallows, shallow_update_from_line)? {
                                 break 'section false;
                             }
                         }

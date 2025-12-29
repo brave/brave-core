@@ -48,24 +48,24 @@ pub fn derive_impl(input: &DeriveInput) -> TokenStream2 {
 
     // Safety (based on the safety checklist on the ULE trait):
     //  1. #name does not include any uninitialized or padding bytes.
-    //     (achieved by enforcing #[repr(transparent)] or #[repr(packed)] on a struct of only ULE types)
+    //     (achieved by enforcing #[repr(transparent)] or #[repr(C, packed)] on a struct of only ULE types)
     //  2. #name is aligned to 1 byte.
-    //     (achieved by enforcing #[repr(transparent)] or #[repr(packed)] on a struct of only ULE types)
-    //  3. The impl of validate_byte_slice() returns an error if any byte is not valid.
-    //  4. The impl of validate_byte_slice() returns an error if there are extra bytes.
+    //     (achieved by enforcing #[repr(transparent)] or #[repr(C, packed)] on a struct of only ULE types)
+    //  3. The impl of validate_bytes() returns an error if any byte is not valid.
+    //  4. The impl of validate_bytes() returns an error if there are extra bytes.
     //  5. The other ULE methods use the default impl.
     //  6. [This impl does not enforce the non-safety equality constraint, it is up to the user to do so, ideally via a custom derive]
     quote! {
         unsafe impl zerovec::ule::ULE for #name {
             #[inline]
-            fn validate_byte_slice(bytes: &[u8]) -> Result<(), zerovec::ZeroVecError> {
+            fn validate_bytes(bytes: &[u8]) -> Result<(), zerovec::ule::UleError> {
                 const SIZE: usize = ::core::mem::size_of::<#name>();
-                #[allow(clippy::modulo_one)]
+                #[expect(clippy::modulo_one)]
                 if bytes.len() % SIZE != 0 {
-                    return Err(zerovec::ZeroVecError::length::<Self>(bytes.len()));
+                    return Err(zerovec::ule::UleError::length::<Self>(bytes.len()));
                 }
                 // Validate the bytes
-                #[allow(clippy::indexing_slicing)] // We're slicing a chunk of known size
+                #[expect(clippy::indexing_slicing)] // We're slicing a chunk of known size
                 for chunk in bytes.chunks_exact(SIZE) {
                     #validators
                     debug_assert_eq!(#remaining_offset, SIZE);
@@ -86,8 +86,11 @@ pub(crate) fn generate_ule_validators(
     utils::generate_per_field_offsets(fields, false, |field, prev_offset_ident, size_ident| {
         let ty = &field.field.ty;
         quote! {
-            #[allow(clippy::indexing_slicing)] // generate_per_field_offsets produces valid indices
-            <#ty as zerovec::ule::ULE>::validate_byte_slice(&bytes[#prev_offset_ident .. #prev_offset_ident + #size_ident])?;
+            if let Some(bytes) = bytes.get(#prev_offset_ident .. #prev_offset_ident + #size_ident) {
+                <#ty as zerovec::ule::ULE>::validate_bytes(bytes)?;
+            } else {
+                return Err(zerovec::ule::UleError::parse::<Self>());
+            }
         }
     })
 }

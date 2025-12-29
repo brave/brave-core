@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -53,10 +53,7 @@ impl<T: RandomlyConstructable> Random<T> {
 #[inline]
 pub fn generate<T: RandomlyConstructable>(
     rng: &dyn SecureRandom,
-) -> Result<Random<T>, error::Unspecified>
-where
-    T: RandomlyConstructable,
-{
+) -> Result<Random<T>, error::Unspecified> {
     let mut r = T::zero();
     rng.fill(r.as_mut_bytes())?;
     Ok(Random(r))
@@ -89,8 +86,8 @@ pub(crate) mod sealed {
 }
 
 /// A type that can be returned by `ring::rand::generate()`.
-pub trait RandomlyConstructable: self::sealed::RandomlyConstructable {}
-impl<T> RandomlyConstructable for T where T: self::sealed::RandomlyConstructable {}
+pub trait RandomlyConstructable: sealed::RandomlyConstructable {}
+impl<T> RandomlyConstructable for T where T: sealed::RandomlyConstructable {}
 
 /// A secure random number generator where the random values come directly
 /// from the operating system.
@@ -126,23 +123,34 @@ impl crate::sealed::Sealed for SystemRandom {}
 // implementation.
 #[cfg(any(
     all(feature = "less-safe-getrandom-custom-or-rdrand", target_os = "none"),
+    all(feature = "less-safe-getrandom-espidf", target_os = "espidf"),
     target_os = "aix",
     target_os = "android",
     target_os = "dragonfly",
     target_os = "freebsd",
+    target_os = "fuchsia",
     target_os = "haiku",
     target_os = "hermit",
+    target_os = "hurd",
+    target_os = "horizon",
     target_os = "illumos",
-    target_os = "ios",
     target_os = "linux",
-    target_os = "macos",
     target_os = "netbsd",
     target_os = "openbsd",
     target_os = "redox",
     target_os = "solaris",
-    target_os = "tvos",
     target_os = "vita",
     target_os = "windows",
+    all(
+        target_vendor = "apple",
+        any(
+            target_os = "ios",
+            target_os = "macos",
+            target_os = "tvos",
+            target_os = "visionos",
+            target_os = "watchos",
+        )
+    ),
     all(
         target_arch = "wasm32",
         any(

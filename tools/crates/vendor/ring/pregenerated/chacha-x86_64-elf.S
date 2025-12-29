@@ -6,9 +6,6 @@
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_X86_64) && defined(__ELF__)
 .text	
 
-.extern	OPENSSL_ia32cap_P
-.hidden OPENSSL_ia32cap_P
-
 .section	.rodata
 .align	64
 .Lzero:
@@ -40,19 +37,13 @@
 .long	16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16
 .byte	67,104,97,67,104,97,50,48,32,102,111,114,32,120,56,54,95,54,52,44,32,67,82,89,80,84,79,71,65,77,83,32,98,121,32,60,97,112,112,114,111,64,111,112,101,110,115,115,108,46,111,114,103,62,0
 .text	
-.globl	ChaCha20_ctr32
-.hidden ChaCha20_ctr32
-.type	ChaCha20_ctr32,@function
+.globl	ChaCha20_ctr32_nohw
+.hidden ChaCha20_ctr32_nohw
+.type	ChaCha20_ctr32_nohw,@function
 .align	64
-ChaCha20_ctr32:
+ChaCha20_ctr32_nohw:
 .cfi_startproc	
 _CET_ENDBR
-	cmpq	$0,%rdx
-	je	.Lno_data
-	movq	OPENSSL_ia32cap_P+4(%rip),%r10
-	testl	$512,%r10d
-	jnz	.LChaCha20_ssse3
-
 	pushq	%rbx
 .cfi_adjust_cfa_offset	8
 .cfi_offset	rbx,-16
@@ -329,163 +320,16 @@ _CET_ENDBR
 .Lno_data:
 	ret
 .cfi_endproc	
-.size	ChaCha20_ctr32,.-ChaCha20_ctr32
-.type	ChaCha20_ssse3,@function
+.size	ChaCha20_ctr32_nohw,.-ChaCha20_ctr32_nohw
+.globl	ChaCha20_ctr32_ssse3_4x
+.hidden ChaCha20_ctr32_ssse3_4x
+.type	ChaCha20_ctr32_ssse3_4x,@function
 .align	32
-ChaCha20_ssse3:
-.LChaCha20_ssse3:
+ChaCha20_ctr32_ssse3_4x:
 .cfi_startproc	
+_CET_ENDBR
 	movq	%rsp,%r9
 .cfi_def_cfa_register	r9
-	cmpq	$128,%rdx
-	ja	.LChaCha20_4x
-
-.Ldo_sse3_after_all:
-	subq	$64+8,%rsp
-	movdqa	.Lsigma(%rip),%xmm0
-	movdqu	(%rcx),%xmm1
-	movdqu	16(%rcx),%xmm2
-	movdqu	(%r8),%xmm3
-	movdqa	.Lrot16(%rip),%xmm6
-	movdqa	.Lrot24(%rip),%xmm7
-
-	movdqa	%xmm0,0(%rsp)
-	movdqa	%xmm1,16(%rsp)
-	movdqa	%xmm2,32(%rsp)
-	movdqa	%xmm3,48(%rsp)
-	movq	$10,%r8
-	jmp	.Loop_ssse3
-
-.align	32
-.Loop_outer_ssse3:
-	movdqa	.Lone(%rip),%xmm3
-	movdqa	0(%rsp),%xmm0
-	movdqa	16(%rsp),%xmm1
-	movdqa	32(%rsp),%xmm2
-	paddd	48(%rsp),%xmm3
-	movq	$10,%r8
-	movdqa	%xmm3,48(%rsp)
-	jmp	.Loop_ssse3
-
-.align	32
-.Loop_ssse3:
-	paddd	%xmm1,%xmm0
-	pxor	%xmm0,%xmm3
-.byte	102,15,56,0,222
-	paddd	%xmm3,%xmm2
-	pxor	%xmm2,%xmm1
-	movdqa	%xmm1,%xmm4
-	psrld	$20,%xmm1
-	pslld	$12,%xmm4
-	por	%xmm4,%xmm1
-	paddd	%xmm1,%xmm0
-	pxor	%xmm0,%xmm3
-.byte	102,15,56,0,223
-	paddd	%xmm3,%xmm2
-	pxor	%xmm2,%xmm1
-	movdqa	%xmm1,%xmm4
-	psrld	$25,%xmm1
-	pslld	$7,%xmm4
-	por	%xmm4,%xmm1
-	pshufd	$78,%xmm2,%xmm2
-	pshufd	$57,%xmm1,%xmm1
-	pshufd	$147,%xmm3,%xmm3
-	nop
-	paddd	%xmm1,%xmm0
-	pxor	%xmm0,%xmm3
-.byte	102,15,56,0,222
-	paddd	%xmm3,%xmm2
-	pxor	%xmm2,%xmm1
-	movdqa	%xmm1,%xmm4
-	psrld	$20,%xmm1
-	pslld	$12,%xmm4
-	por	%xmm4,%xmm1
-	paddd	%xmm1,%xmm0
-	pxor	%xmm0,%xmm3
-.byte	102,15,56,0,223
-	paddd	%xmm3,%xmm2
-	pxor	%xmm2,%xmm1
-	movdqa	%xmm1,%xmm4
-	psrld	$25,%xmm1
-	pslld	$7,%xmm4
-	por	%xmm4,%xmm1
-	pshufd	$78,%xmm2,%xmm2
-	pshufd	$147,%xmm1,%xmm1
-	pshufd	$57,%xmm3,%xmm3
-	decq	%r8
-	jnz	.Loop_ssse3
-	paddd	0(%rsp),%xmm0
-	paddd	16(%rsp),%xmm1
-	paddd	32(%rsp),%xmm2
-	paddd	48(%rsp),%xmm3
-
-	cmpq	$64,%rdx
-	jb	.Ltail_ssse3
-
-	movdqu	0(%rsi),%xmm4
-	movdqu	16(%rsi),%xmm5
-	pxor	%xmm4,%xmm0
-	movdqu	32(%rsi),%xmm4
-	pxor	%xmm5,%xmm1
-	movdqu	48(%rsi),%xmm5
-	leaq	64(%rsi),%rsi
-	pxor	%xmm4,%xmm2
-	pxor	%xmm5,%xmm3
-
-	movdqu	%xmm0,0(%rdi)
-	movdqu	%xmm1,16(%rdi)
-	movdqu	%xmm2,32(%rdi)
-	movdqu	%xmm3,48(%rdi)
-	leaq	64(%rdi),%rdi
-
-	subq	$64,%rdx
-	jnz	.Loop_outer_ssse3
-
-	jmp	.Ldone_ssse3
-
-.align	16
-.Ltail_ssse3:
-	movdqa	%xmm0,0(%rsp)
-	movdqa	%xmm1,16(%rsp)
-	movdqa	%xmm2,32(%rsp)
-	movdqa	%xmm3,48(%rsp)
-	xorq	%r8,%r8
-
-.Loop_tail_ssse3:
-	movzbl	(%rsi,%r8,1),%eax
-	movzbl	(%rsp,%r8,1),%ecx
-	leaq	1(%r8),%r8
-	xorl	%ecx,%eax
-	movb	%al,-1(%rdi,%r8,1)
-	decq	%rdx
-	jnz	.Loop_tail_ssse3
-
-.Ldone_ssse3:
-	leaq	(%r9),%rsp
-.cfi_def_cfa_register	rsp
-.Lssse3_epilogue:
-	ret
-.cfi_endproc	
-.size	ChaCha20_ssse3,.-ChaCha20_ssse3
-.type	ChaCha20_4x,@function
-.align	32
-ChaCha20_4x:
-.LChaCha20_4x:
-.cfi_startproc	
-	movq	%rsp,%r9
-.cfi_def_cfa_register	r9
-	movq	%r10,%r11
-	shrq	$32,%r10
-	testq	$32,%r10
-	jnz	.LChaCha20_8x
-	cmpq	$192,%rdx
-	ja	.Lproceed4x
-
-	andq	$71303168,%r11
-	cmpq	$4194304,%r11
-	je	.Ldo_sse3_after_all
-
-.Lproceed4x:
 	subq	$0x140+8,%rsp
 	movdqa	.Lsigma(%rip),%xmm11
 	movdqu	(%rcx),%xmm15
@@ -1018,12 +862,14 @@ ChaCha20_4x:
 .L4x_epilogue:
 	ret
 .cfi_endproc	
-.size	ChaCha20_4x,.-ChaCha20_4x
-.type	ChaCha20_8x,@function
+.size	ChaCha20_ctr32_ssse3_4x,.-ChaCha20_ctr32_ssse3_4x
+.globl	ChaCha20_ctr32_avx2
+.hidden ChaCha20_ctr32_avx2
+.type	ChaCha20_ctr32_avx2,@function
 .align	32
-ChaCha20_8x:
-.LChaCha20_8x:
+ChaCha20_ctr32_avx2:
 .cfi_startproc	
+_CET_ENDBR
 	movq	%rsp,%r9
 .cfi_def_cfa_register	r9
 	subq	$0x280+8,%rsp
@@ -1624,5 +1470,5 @@ ChaCha20_8x:
 .L8x_epilogue:
 	ret
 .cfi_endproc	
-.size	ChaCha20_8x,.-ChaCha20_8x
+.size	ChaCha20_ctr32_avx2,.-ChaCha20_ctr32_avx2
 #endif

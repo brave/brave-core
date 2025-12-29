@@ -7,7 +7,9 @@ use alloc::string::String;
 use alloc::string::ToString;
 use alloc::vec::Vec;
 use core::fmt::{self, Display};
+use core::hint;
 use core::num::FpCategory;
+use core::str;
 use serde::ser::{self, Impossible, Serialize};
 
 /// A structure for serializing Rust values into JSON.
@@ -1534,23 +1536,6 @@ pub enum CharEscape {
     AsciiControl(u8),
 }
 
-impl CharEscape {
-    #[inline]
-    fn from_escape_table(escape: u8, byte: u8) -> CharEscape {
-        match escape {
-            self::BB => CharEscape::Backspace,
-            self::TT => CharEscape::Tab,
-            self::NN => CharEscape::LineFeed,
-            self::FF => CharEscape::FormFeed,
-            self::RR => CharEscape::CarriageReturn,
-            self::QU => CharEscape::Quote,
-            self::BS => CharEscape::ReverseSolidus,
-            self::UU => CharEscape::AsciiControl(byte),
-            _ => unreachable!(),
-        }
-    }
-}
-
 /// This trait abstracts away serializing the JSON control characters, which allows the user to
 /// optionally pretty print the JSON output.
 pub trait Formatter {
@@ -1688,23 +1673,51 @@ pub trait Formatter {
     }
 
     /// Writes a floating point value like `-31.26e+12` to the specified writer.
+    ///
+    /// # Special cases
+    ///
+    /// This function **does not** check for NaN or infinity. If the input
+    /// number is not a finite float, the printed representation will be some
+    /// correctly formatted but unspecified numerical value.
+    ///
+    /// Please check [`is_finite`] yourself before calling this function, or
+    /// check [`is_nan`] and [`is_infinite`] and handle those cases yourself
+    /// with a different `Formatter` method.
+    ///
+    /// [`is_finite`]: f32::is_finite
+    /// [`is_nan`]: f32::is_nan
+    /// [`is_infinite`]: f32::is_infinite
     #[inline]
     fn write_f32<W>(&mut self, writer: &mut W, value: f32) -> io::Result<()>
     where
         W: ?Sized + io::Write,
     {
-        let mut buffer = ryu::Buffer::new();
+        let mut buffer = zmij::Buffer::new();
         let s = buffer.format_finite(value);
         writer.write_all(s.as_bytes())
     }
 
     /// Writes a floating point value like `-31.26e+12` to the specified writer.
+    ///
+    /// # Special cases
+    ///
+    /// This function **does not** check for NaN or infinity. If the input
+    /// number is not a finite float, the printed representation will be some
+    /// correctly formatted but unspecified numerical value.
+    ///
+    /// Please check [`is_finite`] yourself before calling this function, or
+    /// check [`is_nan`] and [`is_infinite`] and handle those cases yourself
+    /// with a different `Formatter` method.
+    ///
+    /// [`is_finite`]: f64::is_finite
+    /// [`is_nan`]: f64::is_nan
+    /// [`is_infinite`]: f64::is_infinite
     #[inline]
     fn write_f64<W>(&mut self, writer: &mut W, value: f64) -> io::Result<()>
     where
         W: ?Sized + io::Write,
     {
-        let mut buffer = ryu::Buffer::new();
+        let mut buffer = zmij::Buffer::new();
         let s = buffer.format_finite(value);
         writer.write_all(s.as_bytes())
     }
@@ -1756,30 +1769,33 @@ pub trait Formatter {
     {
         use self::CharEscape::*;
 
-        let s = match char_escape {
-            Quote => b"\\\"",
-            ReverseSolidus => b"\\\\",
-            Solidus => b"\\/",
-            Backspace => b"\\b",
-            FormFeed => b"\\f",
-            LineFeed => b"\\n",
-            CarriageReturn => b"\\r",
-            Tab => b"\\t",
+        let escape_char = match char_escape {
+            Quote => b'"',
+            ReverseSolidus => b'\\',
+            Solidus => b'/',
+            Backspace => b'b',
+            FormFeed => b'f',
+            LineFeed => b'n',
+            CarriageReturn => b'r',
+            Tab => b't',
+            AsciiControl(_) => b'u',
+        };
+
+        match char_escape {
             AsciiControl(byte) => {
                 static HEX_DIGITS: [u8; 16] = *b"0123456789abcdef";
                 let bytes = &[
                     b'\\',
-                    b'u',
+                    escape_char,
                     b'0',
                     b'0',
                     HEX_DIGITS[(byte >> 4) as usize],
                     HEX_DIGITS[(byte & 0xF) as usize],
                 ];
-                return writer.write_all(bytes);
+                writer.write_all(bytes)
             }
-        };
-
-        writer.write_all(s)
+            _ => writer.write_all(&[b'\\', escape_char]),
+        }
     }
 
     /// Writes the representation of a byte array. Formatters can choose whether
@@ -1919,7 +1935,7 @@ pub trait Formatter {
 }
 
 /// This structure compacts a JSON value with no extra whitespace.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct CompactFormatter;
 
 impl Formatter for CompactFormatter {}
@@ -2069,31 +2085,51 @@ where
     W: ?Sized + io::Write,
     F: ?Sized + Formatter,
 {
-    let bytes = value.as_bytes();
+    let mut bytes = value.as_bytes();
 
-    let mut start = 0;
+    let mut i = 0;
+    while i < bytes.len() {
+        let (string_run, rest) = bytes.split_at(i);
+        let (&byte, rest) = rest.split_first().unwrap();
 
-    for (i, &byte) in bytes.iter().enumerate() {
         let escape = ESCAPE[byte as usize];
+
+        i += 1;
         if escape == 0 {
             continue;
         }
 
-        if start < i {
-            tri!(formatter.write_string_fragment(writer, &value[start..i]));
+        bytes = rest;
+        i = 0;
+
+        // Safety: string_run is a valid utf8 string, since we only split on ascii sequences
+        let string_run = unsafe { str::from_utf8_unchecked(string_run) };
+        if !string_run.is_empty() {
+            tri!(formatter.write_string_fragment(writer, string_run));
         }
 
-        let char_escape = CharEscape::from_escape_table(escape, byte);
+        let char_escape = match escape {
+            self::BB => CharEscape::Backspace,
+            self::TT => CharEscape::Tab,
+            self::NN => CharEscape::LineFeed,
+            self::FF => CharEscape::FormFeed,
+            self::RR => CharEscape::CarriageReturn,
+            self::QU => CharEscape::Quote,
+            self::BS => CharEscape::ReverseSolidus,
+            self::UU => CharEscape::AsciiControl(byte),
+            // Safety: the escape table does not contain any other type of character.
+            _ => unsafe { hint::unreachable_unchecked() },
+        };
         tri!(formatter.write_char_escape(writer, char_escape));
-
-        start = i + 1;
     }
 
-    if start == bytes.len() {
+    // Safety: bytes is a valid utf8 string, since we only split on ascii sequences
+    let string_run = unsafe { str::from_utf8_unchecked(bytes) };
+    if string_run.is_empty() {
         return Ok(());
     }
 
-    formatter.write_string_fragment(writer, &value[start..])
+    formatter.write_string_fragment(writer, string_run)
 }
 
 const BB: u8 = b'b'; // \x08

@@ -6,13 +6,11 @@ use core::str;
 
 use crate::endian::{BigEndian as BE, U32Bytes};
 use crate::pod::{bytes_of, Pod};
-use crate::read::util::StringTable;
-use crate::xcoff;
-
 use crate::read::{
     self, Bytes, Error, ObjectSymbol, ObjectSymbolTable, ReadError, ReadRef, Result, SectionIndex,
-    SymbolFlags, SymbolIndex, SymbolKind, SymbolScope, SymbolSection,
+    StringTable, SymbolFlags, SymbolIndex, SymbolKind, SymbolScope, SymbolSection,
 };
+use crate::xcoff;
 
 use super::{FileHeader, XcoffFile};
 
@@ -89,6 +87,8 @@ where
     }
 
     /// Iterate over the symbols.
+    ///
+    /// This does not return null symbols.
     #[inline]
     pub fn iter<'table>(&'table self) -> SymbolIterator<'data, 'table, Xcoff, R> {
         SymbolIterator {
@@ -107,8 +107,9 @@ where
     }
 
     /// Return the symbol entry at the given index and offset.
-    pub fn get<T: Pod>(&self, index: usize, offset: usize) -> Result<&'data T> {
+    pub fn get<T: Pod>(&self, index: SymbolIndex, offset: usize) -> Result<&'data T> {
         let entry = index
+            .0
             .checked_add(offset)
             .and_then(|x| self.symbols.get(x))
             .read_error("Invalid XCOFF symbol index")?;
@@ -116,13 +117,27 @@ where
         Bytes(bytes).read().read_error("Invalid XCOFF symbol data")
     }
 
-    /// Return the symbol at the given index.
-    pub fn symbol(&self, index: usize) -> Result<&'data Xcoff::Symbol> {
+    /// Get the symbol at the given index.
+    ///
+    /// This does not check if the symbol is null, but does check if the index is in bounds.
+    fn symbol_unchecked(&self, index: SymbolIndex) -> Result<&'data Xcoff::Symbol> {
         self.get::<Xcoff::Symbol>(index, 0)
     }
 
+    /// Get the symbol at the given index.
+    ///
+    /// Returns an error for null symbols and out of bounds indices.
+    /// Note that this is unable to check whether the index is an auxiliary symbol.
+    pub fn symbol(&self, index: SymbolIndex) -> Result<&'data Xcoff::Symbol> {
+        let symbol = self.symbol_unchecked(index)?;
+        if symbol.is_null() {
+            return Err(Error("Invalid XCOFF symbol index"));
+        }
+        Ok(symbol)
+    }
+
     /// Return a file auxiliary symbol.
-    pub fn aux_file(&self, index: usize, offset: usize) -> Result<&'data Xcoff::FileAux> {
+    pub fn aux_file(&self, index: SymbolIndex, offset: usize) -> Result<&'data Xcoff::FileAux> {
         debug_assert!(self.symbol(index)?.has_aux_file());
         let aux_file = self.get::<Xcoff::FileAux>(index, offset)?;
         if let Some(aux_type) = aux_file.x_auxtype() {
@@ -134,7 +149,7 @@ where
     }
 
     /// Return the csect auxiliary symbol.
-    pub fn aux_csect(&self, index: usize, offset: usize) -> Result<&'data Xcoff::CsectAux> {
+    pub fn aux_csect(&self, index: SymbolIndex, offset: usize) -> Result<&'data Xcoff::CsectAux> {
         debug_assert!(self.symbol(index)?.has_aux_csect());
         let aux_csect = self.get::<Xcoff::CsectAux>(index, offset)?;
         if let Some(aux_type) = aux_csect.x_auxtype() {
@@ -179,10 +194,14 @@ impl<'data, 'table, Xcoff: FileHeader, R: ReadRef<'data>> Iterator
     type Item = (SymbolIndex, &'data Xcoff::Symbol);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let index = self.index;
-        let symbol = self.symbols.symbol(index).ok()?;
-        self.index += 1 + symbol.n_numaux() as usize;
-        Some((SymbolIndex(index), symbol))
+        loop {
+            let index = SymbolIndex(self.index);
+            let symbol = self.symbols.symbol_unchecked(index).ok()?;
+            self.index += 1 + symbol.n_numaux() as usize;
+            if !symbol.is_null() {
+                return Some((index, symbol));
+            }
+        }
     }
 }
 
@@ -223,7 +242,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbolTable<'data
     }
 
     fn symbol_by_index(&self, index: SymbolIndex) -> read::Result<Self::Symbol> {
-        let symbol = self.symbols.symbol(index.0)?;
+        let symbol = self.symbols.symbol(index)?;
         Ok(XcoffSymbol {
             file: self.file,
             symbols: self.symbols,
@@ -296,6 +315,22 @@ where
     pub(super) symbol: &'data Xcoff::Symbol,
 }
 
+impl<'data, 'file, Xcoff, R> XcoffSymbol<'data, 'file, Xcoff, R>
+where
+    Xcoff: FileHeader,
+    R: ReadRef<'data>,
+{
+    /// Get the XCOFF file containing this symbol.
+    pub fn xcoff_file(&self) -> &'file XcoffFile<'data, Xcoff, R> {
+        self.file
+    }
+
+    /// Get the raw XCOFF symbol structure.
+    pub fn xcoff_symbol(&self) -> &'data Xcoff::Symbol {
+        self.symbol
+    }
+}
+
 impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> read::private::Sealed
     for XcoffSymbol<'data, 'file, Xcoff, R>
 {
@@ -313,7 +348,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
         if self.symbol.has_aux_file() {
             // By convention the file name is in the first auxiliary entry.
             self.symbols
-                .aux_file(self.index.0, 1)?
+                .aux_file(self.index, 1)?
                 .fname(self.symbols.strings)
         } else {
             self.symbol.name(self.symbols.strings)
@@ -350,7 +385,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
             if let Ok(aux_csect) = self
                 .file
                 .symbols
-                .aux_csect(self.index.0, self.symbol.n_numaux() as usize)
+                .aux_csect(self.index, self.symbol.n_numaux() as usize)
             {
                 let sym_type = aux_csect.sym_type();
                 if sym_type == xcoff::XTY_SD || sym_type == xcoff::XTY_CM {
@@ -366,7 +401,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
             if let Ok(aux_csect) = self
                 .file
                 .symbols
-                .aux_csect(self.index.0, self.symbol.n_numaux() as usize)
+                .aux_csect(self.index, self.symbol.n_numaux() as usize)
             {
                 let sym_type = aux_csect.sym_type();
                 if sym_type == xcoff::XTY_SD || sym_type == xcoff::XTY_CM {
@@ -391,7 +426,6 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
             }
         }
         match self.symbol.n_sclass() {
-            xcoff::C_NULL => SymbolKind::Null,
             xcoff::C_FILE => SymbolKind::File,
             _ => SymbolKind::Unknown,
         }
@@ -421,7 +455,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
         if self.symbol.has_aux_csect() {
             if let Ok(aux_csect) = self
                 .symbols
-                .aux_csect(self.index.0, self.symbol.n_numaux() as usize)
+                .aux_csect(self.index, self.symbol.n_numaux() as usize)
             {
                 let sym_type = aux_csect.sym_type();
                 sym_type == xcoff::XTY_SD || sym_type == xcoff::XTY_LD || sym_type == xcoff::XTY_CM
@@ -483,7 +517,7 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> ObjectSymbol<'data>
             if let Ok(aux_csect) = self
                 .file
                 .symbols
-                .aux_csect(self.index.0, self.symbol.n_numaux() as usize)
+                .aux_csect(self.index, self.symbol.n_numaux() as usize)
             {
                 x_smtyp = aux_csect.x_smtyp();
                 x_smclas = aux_csect.x_smclas();
@@ -517,6 +551,22 @@ pub trait Symbol: Debug + Pod {
         &'data self,
         strings: StringTable<'data, R>,
     ) -> Result<&'data [u8]>;
+
+    /// Return the section index for the symbol.
+    fn section(&self) -> Option<SectionIndex> {
+        let index = self.n_scnum();
+        if index > 0 {
+            Some(SectionIndex(index as usize))
+        } else {
+            None
+        }
+    }
+
+    /// Return true if the symbol is a null placeholder.
+    #[inline]
+    fn is_null(&self) -> bool {
+        self.n_sclass() == xcoff::C_NULL
+    }
 
     /// Return true if the symbol is undefined.
     #[inline]

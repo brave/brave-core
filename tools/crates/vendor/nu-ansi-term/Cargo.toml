@@ -10,48 +10,83 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.62.1"
 name = "nu-ansi-term"
-version = "0.46.0"
+version = "0.50.3"
 authors = [
     "ogham@bsago.me",
     "Ryan Scheel (Havvy) <ryan.havvy@gmail.com>",
     "Josh Triplett <josh@joshtriplett.org>",
     "The Nushell Project Developers",
 ]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Library for ANSI terminal colors and styles (bold, underline)"
+readme = "README.md"
 license = "MIT"
 repository = "https://github.com/nushell/nu-ansi-term"
 
+[features]
+default = ["std"]
+derive_serde_style = ["serde"]
+gnu_legacy = []
+std = []
+
 [lib]
+name = "nu_ansi_term"
+path = "src/lib.rs"
 doctest = true
 
-[dependencies.overload]
-version = "0.1.1"
+[[example]]
+name = "256_colors"
+path = "examples/256_colors.rs"
+
+[[example]]
+name = "basic_colors"
+path = "examples/basic_colors.rs"
+
+[[example]]
+name = "gradient_colors"
+path = "examples/gradient_colors.rs"
+
+[[example]]
+name = "hyperlink"
+path = "examples/hyperlink.rs"
+
+[[example]]
+name = "rgb_colors"
+path = "examples/rgb_colors.rs"
+
+[[example]]
+name = "title"
+path = "examples/title.rs"
+
+[[test]]
+name = "style"
+path = "tests/style.rs"
 
 [dependencies.serde]
-version = "1.0.90"
+version = "1.0.152"
 features = ["derive"]
 optional = true
 
 [dev-dependencies.doc-comment]
-version = "0.3"
-
-[dev-dependencies.regex]
-version = "1.1.9"
+version = "0.3.3"
 
 [dev-dependencies.serde_json]
-version = "1.0.39"
+version = "1.0.94"
 
-[features]
-derive_serde_style = ["serde"]
-
-[target."cfg(target_os=\"windows\")".dependencies.winapi]
-version = "0.3.4"
+[target."cfg(windows)".dependencies.windows]
+version = ">=0.59, <=0.61"
 features = [
-    "consoleapi",
-    "errhandlingapi",
-    "fileapi",
-    "handleapi",
-    "processenv",
+    "Win32_Foundation",
+    "Win32_System_Console",
+    "Win32_Storage_FileSystem",
+    "Win32_Security",
 ]
+package = "windows-sys"

@@ -6,10 +6,10 @@
 //! in memory, and then writing it all at once. It supports two major use cases:
 //!
 //! * Use the [`DwarfUnit`](./struct.DwarfUnit.html) type when writing DWARF
-//! for a single compilation unit.
+//!   for a single compilation unit.
 //!
 //! * Use the [`Dwarf`](./struct.Dwarf.html) type when writing DWARF for multiple
-//! compilation units.
+//!   compilation units.
 //!
 //! The module also supports reading in DWARF debugging information and writing it out
 //! again, possibly after modifying it. Create a [`read::Dwarf`](../read/struct.Dwarf.html)
@@ -69,6 +69,9 @@ pub use self::endian_vec::*;
 
 mod writer;
 pub use self::writer::*;
+
+mod relocate;
+pub use self::relocate::*;
 
 #[macro_use]
 mod section;
@@ -201,7 +204,7 @@ pub enum Error {
 }
 
 impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter) -> result::Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> result::Result<(), fmt::Error> {
         match *self {
             Error::OffsetOutOfBounds => write!(f, "The given offset is out of bounds."),
             Error::LengthOutOfBounds => write!(f, "The given length is out of bounds."),
@@ -361,7 +364,7 @@ mod convert {
     }
 
     impl fmt::Display for ConvertError {
-        fn fmt(&self, f: &mut fmt::Formatter) -> result::Result<(), fmt::Error> {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> result::Result<(), fmt::Error> {
             use self::ConvertError::*;
             match *self {
                 Read(ref e) => e.fmt(f),

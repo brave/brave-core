@@ -203,6 +203,35 @@ fn large_filename() {
     assert!(entries.next().is_none());
 }
 
+// This test checks very particular scenario where a path component starting
+// with ".." of a long path gets split at 100-byte mark so that ".." part goes
+// into header and gets interpreted as parent dir (and rejected) .
+#[test]
+fn large_filename_with_dot_dot_at_100_byte_mark() {
+    let mut ar = Builder::new(Vec::new());
+
+    let mut header = Header::new_gnu();
+    header.set_mode(0o644);
+    header.set_size(4);
+
+    let mut long_name_with_dot_dot = "tdir/".repeat(19);
+    long_name_with_dot_dot.push_str("tt/..file");
+
+    t!(ar.append_data(&mut header, &long_name_with_dot_dot, b"test".as_slice()));
+
+    let rd = Cursor::new(t!(ar.into_inner()));
+    let mut ar = Archive::new(rd);
+    let mut entries = t!(ar.entries());
+
+    let mut f = entries.next().unwrap().unwrap();
+    assert_eq!(&*f.path_bytes(), long_name_with_dot_dot.as_bytes());
+    assert_eq!(f.header().size().unwrap(), 4);
+    let mut s = String::new();
+    t!(f.read_to_string(&mut s));
+    assert_eq!(s, "test");
+    assert!(entries.next().is_none());
+}
+
 fn reading_entries_common<R: Read>(mut entries: Entries<R>) {
     let mut a = t!(entries.next().unwrap());
     assert_eq!(&*a.header().path_bytes(), b"a");

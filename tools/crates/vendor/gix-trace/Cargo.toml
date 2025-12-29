@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.82"
 name = "gix-trace"
-version = "0.1.12"
+version = "0.1.16"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
@@ -34,6 +34,11 @@ repository = "https://github.com/GitoxideLabs/gitoxide"
 all-features = true
 features = ["document-features"]
 
+[features]
+default = []
+tracing = ["dep:tracing-core"]
+tracing-detail = []
+
 [lib]
 name = "gix_trace"
 path = "src/lib.rs"
@@ -45,13 +50,8 @@ version = "0.2.0"
 optional = true
 
 [dependencies.tracing-core]
-version = "0.1.31"
+version = "0.1.35"
 optional = true
-
-[features]
-default = []
-tracing = ["dep:tracing-core"]
-tracing-detail = []
 
 [lints.clippy]
 bool_to_int_with_if = "allow"
@@ -82,6 +82,7 @@ inline_always = "allow"
 items_after_statements = "allow"
 iter_not_returning_iterator = "allow"
 iter_without_into_iter = "allow"
+large_enum_variant = "allow"
 large_stack_arrays = "allow"
 manual_assert = "allow"
 manual_is_variant_and = "allow"
@@ -98,6 +99,7 @@ module_name_repetitions = "allow"
 must_use_candidate = "allow"
 mut_mut = "allow"
 naive_bytecount = "allow"
+needless_continue = "allow"
 needless_for_each = "allow"
 needless_pass_by_value = "allow"
 needless_raw_string_hashes = "allow"
@@ -105,6 +107,7 @@ no_effect_underscore_binding = "allow"
 option_option = "allow"
 range_plus_one = "allow"
 redundant_else = "allow"
+result_large_err = "allow"
 return_self_not_must_use = "allow"
 should_panic_without_expect = "allow"
 similar_names = "allow"

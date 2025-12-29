@@ -157,6 +157,17 @@ where
         }
     }
 
+    /// Get the wrapped [`RawStream`]
+    #[inline]
+    pub fn as_inner(&self) -> &S {
+        match &self.inner {
+            StreamInner::PassThrough(w) => w,
+            StreamInner::Strip(w) => w.as_inner(),
+            #[cfg(all(windows, feature = "wincon"))]
+            StreamInner::Wincon(w) => w.as_inner(),
+        }
+    }
+
     /// Returns `true` if the descriptor/handle refers to a terminal/tty.
     #[inline]
     pub fn is_terminal(&self) -> bool {

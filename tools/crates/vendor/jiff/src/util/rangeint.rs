@@ -22,13 +22,44 @@ macro_rules! define_ranged {
         smaller { $($smaller_name:ident $smaller_repr:ty),* },
         bigger { $($bigger_name:ident $bigger_repr:ty),* }
     ) => {
-        #[derive(Clone, Copy, Hash)]
+        #[derive(Clone, Copy)]
         pub(crate) struct $name<const MIN: i128, const MAX: i128> {
-            val: $repr,
+            /// The actual value of the integer.
+            ///
+            /// Callers should not access this directly. There are some very
+            /// rare cases where algorithms are too difficult to express on
+            /// ranged integers, and it's useful to be able to reach inside and
+            /// access the raw value directly. (For example, the conversions
+            /// between Unix epoch day and Gregorian date.)
+            pub(crate) val: $repr,
+            /// The minimum possible value computed so far.
+            ///
+            /// This value is only present when `debug_assertions` are enabled.
+            /// In that case, it is used to ensure the minimum possible value
+            /// when the integer is actually observed (or converted) is still
+            /// within the legal range.
+            ///
+            /// Callers should not access this directly. There are some very
+            /// rare cases where algorithms are too difficult to express on
+            /// ranged integers, and it's useful to be able to reach inside and
+            /// access the raw value directly. (For example, the conversions
+            /// between Unix epoch day and Gregorian date.)
             #[cfg(debug_assertions)]
-            min: $repr,
+            pub(crate) min: $repr,
+            /// The maximum possible value computed so far.
+            ///
+            /// This value is only present when `debug_assertions` are enabled.
+            /// In that case, it is used to ensure the maximum possible value
+            /// when the integer is actually observed (or converted) is still
+            /// within the legal range.
+            ///
+            /// Callers should not access this directly. There are some very
+            /// rare cases where algorithms are too difficult to express on
+            /// ranged integers, and it's useful to be able to reach inside and
+            /// access the raw value directly. (For example, the conversions
+            /// between Unix epoch day and Gregorian date.)
             #[cfg(debug_assertions)]
-            max: $repr,
+            pub(crate) max: $repr,
         }
 
         impl<const MIN: i128, const MAX: i128> $name<MIN, MAX> {
@@ -90,6 +121,26 @@ macro_rules! define_ranged {
             #[inline]
             pub(crate) fn new(val: impl TryInto<$repr>) -> Option<Self> {
                 let val = val.try_into().ok()?;
+                if !Self::contains(val) {
+                    return None;
+                }
+                #[cfg(not(debug_assertions))]
+                {
+                    Some(Self { val })
+                }
+                #[cfg(debug_assertions)]
+                {
+                    Some(Self {
+                        val,
+                        min: Self::MIN_REPR,
+                        max: Self::MAX_REPR,
+                    })
+                }
+            }
+
+            /// Like `new`, but monomorphic and works in a `const` context.
+            #[inline]
+            pub(crate) const fn new_const(val: $repr) -> Option<Self> {
                 if !Self::contains(val) {
                     return None;
                 }
@@ -315,7 +366,7 @@ macro_rules! define_ranged {
             /// otherwise printing the debug representation of a type will fail
             /// if a ranged integer is out of bounds. (And this is annoying.)
             #[inline]
-            fn get_unchecked(self) -> $repr {
+            pub(crate) const fn get_unchecked(self) -> $repr {
                 self.val
             }
 
@@ -874,6 +925,16 @@ macro_rules! define_ranged {
             }
         }
 
+        // We hand-write the `Hash` impl to avoid the min/max values
+        // influencing the hash. Only the actual value should be hashed.
+        //
+        // See: https://github.com/BurntSushi/jiff/issues/330
+        impl<const MIN: i128, const MAX: i128> core::hash::Hash for $name<MIN, MAX> {
+            fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+                self.val.hash(state);
+            }
+        }
+
         impl<
             const MIN1: i128,
             const MAX1: i128,
@@ -924,7 +985,7 @@ macro_rules! define_ranged {
                 #[cfg(debug_assertions)]
                 {
                     // We specifically allow constants that don't fit in the
-                    // bounds of the integer type, but we don't allow constans
+                    // bounds of the integer type, but we don't allow constants
                     // that can't fit in the actual integer representation.
                     // This makes doing things like `number % one-plus-max`
                     // much more convenient.
@@ -1100,17 +1161,6 @@ macro_rules! define_ranged {
             }
 
             impl<
-                const MIN: i128,
-                const MAX: i128,
-            > PartialEq<$smaller_repr> for $name<MIN, MAX>
-            {
-                #[inline]
-                fn eq(&self, other: &$smaller_repr) -> bool {
-                    self.eq(&<$repr>::from(*other))
-                }
-            }
-
-            impl<
                 const MIN1: i128,
                 const MAX1: i128,
                 const MIN2: i128,
@@ -1123,20 +1173,6 @@ macro_rules! define_ranged {
                     other: &$smaller_name<MIN1, MAX1>,
                 ) -> Option<Ordering> {
                     self.partial_cmp(&Self::rfrom(*other))
-                }
-            }
-
-            impl<
-                const MIN: i128,
-                const MAX: i128,
-            > PartialOrd<$smaller_repr> for $name<MIN, MAX>
-            {
-                #[inline]
-                fn partial_cmp(
-                    &self,
-                    other: &$smaller_repr,
-                ) -> Option<Ordering> {
-                    self.partial_cmp(&<$repr>::from(*other))
                 }
             }
 
@@ -1416,17 +1452,6 @@ macro_rules! define_ranged {
             }
 
             impl<
-                const MIN: i128,
-                const MAX: i128,
-            > PartialEq<$bigger_repr> for $name<MIN, MAX>
-            {
-                #[inline]
-                fn eq(&self, other: &$bigger_repr) -> bool {
-                    <$bigger_name<MIN, MAX>>::rfrom(*self).eq(other)
-                }
-            }
-
-            impl<
                 const MIN1: i128,
                 const MAX1: i128,
                 const MIN2: i128,
@@ -1439,20 +1464,6 @@ macro_rules! define_ranged {
                     other: &$bigger_name<MIN1, MAX1>,
                 ) -> Option<Ordering> {
                     <$bigger_name<MIN1, MAX1>>::rfrom(*self).partial_cmp(other)
-                }
-            }
-
-            impl<
-                const MIN: i128,
-                const MAX: i128,
-            > PartialOrd<$bigger_repr> for $name<MIN, MAX>
-            {
-                #[inline]
-                fn partial_cmp(
-                    &self,
-                    other: &$bigger_repr,
-                ) -> Option<Ordering> {
-                    <$bigger_name<MIN, MAX>>::rfrom(*self).partial_cmp(other)
                 }
             }
 
@@ -2033,20 +2044,6 @@ macro_rules! define_ranged {
             }
         }
 
-        impl<const MIN: i128, const MAX: i128> PartialEq<$repr> for $name<MIN, MAX> {
-            #[inline]
-            fn eq(&self, other: &$repr) -> bool {
-                self.val.eq(other)
-            }
-        }
-
-        impl<const MIN: i128, const MAX: i128> PartialEq<$name<MIN, MAX>> for $repr {
-            #[inline]
-            fn eq(&self, other: &$name<MIN, MAX>) -> bool {
-                self.eq(&other.val)
-            }
-        }
-
         impl<const MIN: i128, const MAX: i128> Ord for $name<MIN, MAX> {
             #[inline]
             fn cmp(&self, other: &Self) -> core::cmp::Ordering {
@@ -2086,26 +2083,6 @@ macro_rules! define_ranged {
                 other: &$name<MIN, MAX>,
             ) -> Option<core::cmp::Ordering> {
                 <$repr>::from(*self).partial_cmp(&other.val)
-            }
-        }
-
-        impl<const MIN: i128, const MAX: i128> PartialOrd<$repr> for $name<MIN, MAX> {
-            #[inline]
-            fn partial_cmp(
-                &self,
-                other: &$repr,
-            ) -> Option<core::cmp::Ordering> {
-                self.val.partial_cmp(other)
-            }
-        }
-
-        impl<const MIN: i128, const MAX: i128> PartialOrd<$name<MIN, MAX>> for $repr {
-            #[inline]
-            fn partial_cmp(
-                &self,
-                other: &$name<MIN, MAX>,
-            ) -> Option<core::cmp::Ordering> {
-                self.partial_cmp(&other.val)
             }
         }
 
@@ -2328,6 +2305,231 @@ where
     #[inline]
     fn try_rinto(self, what: &'static str) -> Result<U, Error> {
         U::try_rfrom(what, self)
+    }
+}
+
+macro_rules! composite {
+    (($($name:ident),* $(,)?) => $with:expr) => {{
+        crate::util::rangeint::composite!(($($name = $name),*) => $with)
+    }};
+    (($($name:ident = $rangeint:expr),* $(,)?) => $with:expr) => {{
+        #[cfg(not(debug_assertions))]
+        {
+            $(
+                let $name = $rangeint.val;
+            )*
+            let val = $with;
+            crate::util::rangeint::Composite { val }
+        }
+        #[cfg(debug_assertions)]
+        {
+            let val = {
+                $(
+                    let $name = $rangeint.val;
+                )*
+                $with
+            };
+            let min = {
+                $(
+                    let $name = $rangeint.min;
+                )*
+                $with
+            };
+            let max = {
+                $(
+                    let $name = $rangeint.max;
+                )*
+                $with
+            };
+            crate::util::rangeint::Composite { val, min, max }
+        }
+    }};
+}
+
+macro_rules! uncomposite {
+    ($composite:expr, $val:ident => ($($get:expr),* $(,)?) $(,)?) => {{
+        #[cfg(not(debug_assertions))]
+        {
+            ($({
+                let val = {
+                    let $val = $composite.val;
+                    $get
+                };
+                crate::util::rangeint::Composite { val }
+            }),*)
+        }
+        #[cfg(debug_assertions)]
+        {
+            ($({
+                let val = {
+                    let $val = $composite.val;
+                    $get
+                };
+                let min = {
+                    let $val = $composite.min;
+                    $get
+                };
+                let max = {
+                    let $val = $composite.max;
+                    $get
+                };
+                crate::util::rangeint::Composite { val, min, max }
+            }),*)
+        }
+    }};
+}
+
+pub(crate) use {composite, uncomposite};
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct Composite<T> {
+    pub(crate) val: T,
+    #[cfg(debug_assertions)]
+    pub(crate) min: T,
+    #[cfg(debug_assertions)]
+    pub(crate) max: T,
+}
+
+impl<T> Composite<T> {
+    #[inline]
+    pub(crate) fn map<U>(self, map: impl Fn(T) -> U) -> Composite<U> {
+        #[cfg(not(debug_assertions))]
+        {
+            Composite { val: map(self.val) }
+        }
+        #[cfg(debug_assertions)]
+        {
+            Composite {
+                val: map(self.val),
+                min: map(self.min),
+                max: map(self.max),
+            }
+        }
+    }
+
+    #[inline]
+    pub(crate) fn zip2<U>(self, other: Composite<U>) -> Composite<(T, U)> {
+        #[cfg(not(debug_assertions))]
+        {
+            Composite { val: (self.val, other.val) }
+        }
+        #[cfg(debug_assertions)]
+        {
+            Composite {
+                val: (self.val, other.val),
+                min: (self.min, other.min),
+                max: (self.max, other.max),
+            }
+        }
+    }
+}
+
+impl<T, U> Composite<(T, U)> {
+    #[inline]
+    pub(crate) fn unzip2(self) -> (Composite<T>, Composite<U>) {
+        #[cfg(not(debug_assertions))]
+        {
+            (Composite { val: self.val.0 }, Composite { val: self.val.1 })
+        }
+        #[cfg(debug_assertions)]
+        {
+            (
+                Composite {
+                    val: self.val.0,
+                    min: self.min.0,
+                    max: self.max.0,
+                },
+                Composite {
+                    val: self.val.1,
+                    min: self.min.1,
+                    max: self.max.1,
+                },
+            )
+        }
+    }
+}
+
+impl Composite<i8> {
+    pub(crate) const fn to_rint<const MIN: i128, const MAX: i128>(
+        self,
+    ) -> ri8<MIN, MAX> {
+        #[cfg(not(debug_assertions))]
+        {
+            ri8 { val: self.val }
+        }
+        #[cfg(debug_assertions)]
+        {
+            ri8 { val: self.val, min: self.min, max: self.max }
+        }
+    }
+}
+
+impl Composite<i16> {
+    pub(crate) const fn to_rint<const MIN: i128, const MAX: i128>(
+        self,
+    ) -> ri16<MIN, MAX> {
+        #[cfg(not(debug_assertions))]
+        {
+            ri16 { val: self.val }
+        }
+        #[cfg(debug_assertions)]
+        {
+            ri16 { val: self.val, min: self.min, max: self.max }
+        }
+    }
+}
+
+impl Composite<i32> {
+    pub(crate) const fn to_rint<const MIN: i128, const MAX: i128>(
+        self,
+    ) -> ri32<MIN, MAX> {
+        #[cfg(not(debug_assertions))]
+        {
+            ri32 { val: self.val }
+        }
+        #[cfg(debug_assertions)]
+        {
+            ri32 { val: self.val, min: self.min, max: self.max }
+        }
+    }
+}
+
+impl Composite<i64> {
+    pub(crate) const fn to_rint<const MIN: i128, const MAX: i128>(
+        self,
+    ) -> ri64<MIN, MAX> {
+        #[cfg(not(debug_assertions))]
+        {
+            ri64 { val: self.val }
+        }
+        #[cfg(debug_assertions)]
+        {
+            ri64 { val: self.val, min: self.min, max: self.max }
+        }
+    }
+
+    pub(crate) fn try_to_rint<const MIN: i128, const MAX: i128>(
+        self,
+        what: &'static str,
+    ) -> Result<ri64<MIN, MAX>, Error> {
+        #[cfg(not(debug_assertions))]
+        {
+            if !ri64::<MIN, MAX>::contains(self.val) {
+                return Err(ri64::<MIN, MAX>::error(what, self.val));
+            }
+            Ok(ri64 { val: self.val })
+        }
+        #[cfg(debug_assertions)]
+        {
+            if !ri64::<MIN, MAX>::contains(self.val) {
+                return Err(ri64::<MIN, MAX>::error(what, self.val));
+            }
+            Ok(ri64 {
+                val: self.val,
+                min: self.min.clamp(MIN as i64, MAX as i64),
+                max: self.max.clamp(MIN as i64, MAX as i64),
+            })
+        }
     }
 }
 

@@ -139,7 +139,7 @@ The full protocol for a thread to fall asleep is as follows:
   * Checks the JEC to see that it has not changed from `final_value`.
     * If it has, then the thread goes back to searching for work. We reset to
       just before we got sleepy, so that we will do one more search
-      before attending to sleep again (rather than searching for many rounds).
+      before attempting to sleep again (rather than searching for many rounds).
   * Increments the number of sleeping threads by 1.
 * The thread then executes a seq-cst fence operation (see below).
 * The thread then does one final check for injected jobs (see below). If any
@@ -158,7 +158,7 @@ is avoiding a race condition wherein:
 The JEC protocol largely prevents this, but due to rollover, this prevention is
 not complete. It is possible -- if unlikely -- that enough activity occurs for
 Thread A to observe the same JEC value that it saw when getting sleepy. If the
-new work being published came from *inside* the thread-pool, then this race
+new work being published came from *inside* the thread pool, then this race
 condition isn't too harmful. It means that we have fewer workers processing the
 work then we should, but we won't deadlock. This seems like an acceptable risk
 given that this is unlikely in practice.

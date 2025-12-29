@@ -4,8 +4,8 @@
 
 use criterion::{black_box, BenchmarkId, Criterion};
 
-use icu_normalizer::properties::CanonicalDecomposition;
-use icu_normalizer::{ComposingNormalizer, DecomposingNormalizer};
+use icu_normalizer::properties::CanonicalDecompositionBorrowed;
+use icu_normalizer::{ComposingNormalizerBorrowed, DecomposingNormalizerBorrowed};
 
 struct BenchDataContent {
     pub file_name: String,
@@ -25,10 +25,10 @@ fn strip_headers(content: &str) -> String {
 }
 
 fn normalizer_bench_data() -> [BenchDataContent; 15] {
-    let nfc_normalizer: ComposingNormalizer = ComposingNormalizer::new_nfc();
-    let nfd_normalizer: DecomposingNormalizer = DecomposingNormalizer::new_nfd();
-    let nfkc_normalizer: ComposingNormalizer = ComposingNormalizer::new_nfkc();
-    let nfkd_normalizer: DecomposingNormalizer = DecomposingNormalizer::new_nfkd();
+    let nfc_normalizer = ComposingNormalizerBorrowed::new_nfc();
+    let nfd_normalizer = DecomposingNormalizerBorrowed::new_nfd();
+    let nfkc_normalizer = ComposingNormalizerBorrowed::new_nfkc();
+    let nfkd_normalizer = DecomposingNormalizerBorrowed::new_nfkd();
 
     let content_latin: (&str, &str) = (
         "TestNames_Latin",
@@ -107,16 +107,16 @@ fn normalizer_bench_data() -> [BenchDataContent; 15] {
     ]
     .map(|(file_name, raw_content)| BenchDataContent {
         file_name: file_name.to_owned(),
-        nfc: nfc_normalizer.normalize(raw_content),
-        nfd: nfd_normalizer.normalize(raw_content),
-        nfkc: nfkc_normalizer.normalize(raw_content),
-        nfkd: nfkd_normalizer.normalize(raw_content),
+        nfc: nfc_normalizer.normalize(raw_content).to_string(),
+        nfd: nfd_normalizer.normalize(raw_content).to_string(),
+        nfkc: nfkc_normalizer.normalize(raw_content).to_string(),
+        nfkd: nfkd_normalizer.normalize(raw_content).to_string(),
     })
 }
 
 #[cfg(debug_assertions)]
 fn function_under_bench(
-    _canonical_decomposer: &CanonicalDecomposition,
+    _canonical_decomposer: &CanonicalDecompositionBorrowed,
     _decomposable_points: &str,
 ) {
     // using debug assertion fails some test.
@@ -125,7 +125,10 @@ fn function_under_bench(
 }
 
 #[cfg(not(debug_assertions))]
-fn function_under_bench(canonical_decomposer: &CanonicalDecomposition, decomposable_points: &str) {
+fn function_under_bench(
+    canonical_decomposer: &CanonicalDecompositionBorrowed,
+    decomposable_points: &str,
+) {
     decomposable_points.chars().for_each(|point| {
         canonical_decomposer.decompose(point);
     });
@@ -135,7 +138,7 @@ pub fn criterion_benchmark(criterion: &mut Criterion) {
     let group_name = "canonical_decomposition";
     let mut group = criterion.benchmark_group(group_name);
 
-    let decomposer = CanonicalDecomposition::new();
+    let decomposer = CanonicalDecompositionBorrowed::new();
 
     for bench_data_content in black_box(normalizer_bench_data()) {
         group.bench_function(

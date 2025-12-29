@@ -2,7 +2,11 @@ use std::{process::Command, str};
 
 use log::{error, trace};
 
-use crate::{bitness, uname::uname, Info, Type, Version};
+use crate::{
+    bitness,
+    uname::{uname, UnameField},
+    Info, Type, Version,
+};
 
 pub fn current_platform() -> Info {
     trace!("aix::current_platform is called");
@@ -23,13 +27,13 @@ pub fn current_platform() -> Info {
 }
 
 fn get_version() -> Option<String> {
-    let major = uname("-v")?;
-    let minor = uname("-r").unwrap_or(String::from("0"));
+    let major = uname(UnameField::Version)?;
+    let minor = uname(UnameField::Release).unwrap_or(String::from("0"));
     Some(format!("{}.{}", major, minor))
 }
 
 fn get_os() -> Type {
-    match uname("-s").as_deref() {
+    match uname(UnameField::Sysname).as_deref() {
         Some("AIX") => Type::AIX,
         _ => Type::Unknown,
     }

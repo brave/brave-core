@@ -11,7 +11,7 @@ mod windows_console {
 
     fn enable_vt(handle: RawHandle) -> std::io::Result<()> {
         unsafe {
-            let handle: HANDLE = std::mem::transmute(handle);
+            let handle: HANDLE = handle as HANDLE;
             if handle.is_null() {
                 return Err(std::io::Error::new(
                     std::io::ErrorKind::BrokenPipe,
@@ -33,7 +33,7 @@ mod windows_console {
         }
     }
 
-    pub fn enable_virtual_terminal_processing() -> std::io::Result<()> {
+    pub(crate) fn enable_virtual_terminal_processing() -> std::io::Result<()> {
         let stdout = std::io::stdout();
         let stdout_handle = stdout.as_raw_handle();
         let stderr = std::io::stderr();
@@ -72,7 +72,7 @@ pub fn enable_ansi_colors() -> Option<bool> {
     windows_console::enable_ansi_colors()
 }
 
-/// Raw ENABLE_VIRTUAL_TERMINAL_PROCESSING on stdout/stderr
+/// Raw `ENABLE_VIRTUAL_TERMINAL_PROCESSING` on stdout/stderr
 #[cfg(windows)]
 pub fn enable_virtual_terminal_processing() -> std::io::Result<()> {
     windows_console::enable_virtual_terminal_processing()

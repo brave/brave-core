@@ -16,13 +16,11 @@ use log::{debug, trace};
 use crate::{
     cache::Cache,
     deflate::{calculate_block_size, BlockType},
-    hash::{ZopfliHash, HASH_POOL},
+    hash::ZopfliHash,
     lz77::{find_longest_match, LitLen, Lz77Store},
     symbols::{get_dist_extra_bits, get_dist_symbol, get_length_extra_bits, get_length_symbol},
     util::{ZOPFLI_MAX_MATCH, ZOPFLI_NUM_D, ZOPFLI_NUM_LL, ZOPFLI_WINDOW_MASK, ZOPFLI_WINDOW_SIZE},
 };
-
-const K_INV_LOG2: f64 = core::f64::consts::LOG2_E; // 1.0 / log(2.0)
 
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)] // False-positive
@@ -41,20 +39,21 @@ fn get_cost_fixed(litlen: usize, dist: u16) -> f64 {
         let lbits = get_length_extra_bits(litlen);
         let lsym = get_length_symbol(litlen);
         // Every dist symbol has length 5.
-        7 + (lsym > 279) as usize + 5 + dbits + lbits
+        7 + u32::from(lsym > 279) + 5 + dbits + lbits
     };
-    result as f64
+    f64::from(result)
 }
 
 /// Cost model based on symbol statistics.
 fn get_cost_stat(litlen: usize, dist: u16, stats: &SymbolStats) -> f64 {
+    assert!(litlen < ZOPFLI_NUM_LL); // Eases inlining and gets rid of index bound checks below
     if dist == 0 {
         stats.ll_symbols[litlen]
     } else {
         let lsym = get_length_symbol(litlen);
-        let lbits = get_length_extra_bits(litlen) as f64;
-        let dsym = get_dist_symbol(dist);
-        let dbits = get_dist_extra_bits(dist) as f64;
+        let lbits = f64::from(get_length_extra_bits(litlen));
+        let dsym = get_dist_symbol(dist) as usize;
+        let dbits = f64::from(get_dist_extra_bits(dist));
         lbits + dbits + stats.ll_symbols[lsym] + stats.d_symbols[dsym]
     }
 }
@@ -66,8 +65,8 @@ struct RanState {
 }
 
 impl RanState {
-    fn new() -> RanState {
-        RanState { m_w: 1, m_z: 2 }
+    const fn new() -> Self {
+        Self { m_w: 1, m_z: 2 }
     }
 
     /// Get random number: "Multiply-With-Carry" generator of G. Marsaglia
@@ -92,8 +91,8 @@ struct SymbolStats {
 }
 
 impl Default for SymbolStats {
-    fn default() -> SymbolStats {
-        SymbolStats {
+    fn default() -> Self {
+        Self {
             litlens: [0; ZOPFLI_NUM_LL],
             dists: [0; ZOPFLI_NUM_D],
             ll_symbols: [0.0; ZOPFLI_NUM_LL],
@@ -123,7 +122,7 @@ impl SymbolStats {
     }
 
     /// Calculates the entropy of each symbol, based on the counts of each symbol. The
-    /// result is similar to the result of length_limited_code_lengths, but with the
+    /// result is similar to the result of `length_limited_code_lengths`, but with the
     /// actual theoretical bit lengths according to the entropy. Since the resulting
     /// values are fractional, they cannot be used to encode the tree specified by
     /// DEFLATE.
@@ -133,7 +132,7 @@ impl SymbolStats {
 
             let sum = count.iter().sum();
 
-            let log2sum = (if sum == 0 { n } else { sum } as f64).ln() * K_INV_LOG2;
+            let log2sum = (if sum == 0 { n } else { sum } as f64).log2();
 
             for i in 0..n {
                 // When the count of the symbol is 0, but its cost is requested anyway, it
@@ -142,18 +141,8 @@ impl SymbolStats {
                 if count[i] == 0 {
                     bitlengths[i] = log2sum;
                 } else {
-                    bitlengths[i] = log2sum - (count[i] as f64).ln() * K_INV_LOG2;
+                    bitlengths[i] = log2sum - (count[i] as f64).log2();
                 }
-
-                // Depending on compiler and architecture, the above subtraction of two
-                // floating point numbers may give a negative result very close to zero
-                // instead of zero (e.g. -5.973954e-17 with gcc 4.1.2 on Ubuntu 11.4). Clamp
-                // it to zero. These floating point imprecisions do not affect the cost model
-                // significantly so this is ok.
-                if bitlengths[i] < 0.0 && bitlengths[i] > -1E-5 {
-                    bitlengths[i] = 0.0;
-                }
-                debug_assert!(bitlengths[i] >= 0.0);
             }
         }
 
@@ -168,7 +157,7 @@ impl SymbolStats {
                 LitLen::Literal(lit) => self.litlens[lit as usize] += 1,
                 LitLen::LengthDist(len, dist) => {
                     self.litlens[get_length_symbol(len as usize)] += 1;
-                    self.dists[get_dist_symbol(dist)] += 1;
+                    self.dists[get_dist_symbol(dist) as usize] += 1;
                 }
             }
         }
@@ -322,27 +311,27 @@ fn get_best_lengths<F: Fn(usize, u16) -> f64, C: Cache>(
 
         // Literal.
         if i < inend {
-            let new_cost = costmodel(arr[i] as usize, 0) + costs[j] as f64;
+            let new_cost = costmodel(arr[i] as usize, 0) + f64::from(costs[j]);
             debug_assert!(new_cost >= 0.0);
-            if new_cost < costs[j + 1] as f64 {
+            if new_cost < f64::from(costs[j + 1]) {
                 costs[j + 1] = new_cost as f32;
                 length_array[j + 1] = 1;
             }
         }
         // Lengths.
         let kend = cmp::min(leng as usize, inend - i);
-        let mincostaddcostj = mincost + costs[j] as f64;
+        let mincostaddcostj = mincost + f64::from(costs[j]);
 
         for (k, &sublength) in sublen.iter().enumerate().take(kend + 1).skip(3) {
             // Calling the cost model is expensive, avoid this if we are already at
             // the minimum possible cost that it can return.
-            if costs[j + k] as f64 <= mincostaddcostj {
+            if f64::from(costs[j + k]) <= mincostaddcostj {
                 continue;
             }
 
-            let new_cost = costmodel(k, sublength) + costs[j] as f64;
+            let new_cost = costmodel(k, sublength) + f64::from(costs[j]);
             debug_assert!(new_cost >= 0.0);
-            if new_cost < costs[j + k] as f64 {
+            if new_cost < f64::from(costs[j + k]) {
                 debug_assert!(k <= ZOPFLI_MAX_MATCH);
                 costs[j + k] = new_cost as f32;
                 length_array[j + k] = k as u16;
@@ -352,7 +341,7 @@ fn get_best_lengths<F: Fn(usize, u16) -> f64, C: Cache>(
     }
 
     debug_assert!(costs[blocksize] >= 0.0);
-    (costs[blocksize] as f64, length_array)
+    (f64::from(costs[blocksize]), length_array)
 }
 
 /// Calculates the optimal path of lz77 lengths to use, from the calculated
@@ -422,7 +411,6 @@ pub fn lz77_optimal_fixed<C: Cache>(
     inend: usize,
     store: &mut Lz77Store,
 ) {
-    let mut h = HASH_POOL.pull();
     let mut costs = Vec::with_capacity(inend - instart);
     lz77_optimal_run(
         lmc,
@@ -431,7 +419,7 @@ pub fn lz77_optimal_fixed<C: Cache>(
         inend,
         get_cost_fixed,
         store,
-        &mut h,
+        &mut ZopfliHash::new(),
         &mut costs,
     );
 }
@@ -456,7 +444,7 @@ pub fn lz77_optimal<C: Cache>(
     let mut stats = SymbolStats::default();
     stats.get_statistics(&currentstore);
 
-    let mut h = HASH_POOL.pull();
+    let mut h = ZopfliHash::new();
     let mut costs = Vec::with_capacity(inend - instart + 1);
 
     let mut beststats = SymbolStats::default();
@@ -494,10 +482,10 @@ pub fn lz77_optimal<C: Cache>(
             beststats = stats;
             bestcost = cost;
 
-            debug!("Iteration {}: {} bit", current_iteration, cost);
+            debug!("Iteration {current_iteration}: {cost} bit");
         } else {
             iterations_without_improvement += 1;
-            trace!("Iteration {}: {} bit", current_iteration, cost);
+            trace!("Iteration {current_iteration}: {cost} bit");
             if iterations_without_improvement >= max_iterations_without_improvement {
                 break;
             }

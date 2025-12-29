@@ -14,7 +14,6 @@ pub struct Request<'a> {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod next_request {
     use bstr::BString;
 
@@ -27,12 +26,11 @@ pub mod next_request {
         #[error("{msg} '{actual}'")]
         Protocol { msg: String, actual: BString },
         #[error(transparent)]
-        PacketlineDecode(#[from] gix_packetline::decode::Error),
+        PacketlineDecode(#[from] gix_packetline_blocking::decode::Error),
     }
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod handshake {
     /// The error returned by [Server::handshake()][super::Server::handshake()].
     #[derive(Debug, thiserror::Error)]
@@ -65,9 +63,9 @@ impl Server {
         pick_version: &mut dyn FnMut(&[usize]) -> Option<usize>,
         available_capabilities: &[&str],
     ) -> Result<Self, handshake::Error> {
-        let mut input = gix_packetline::StreamingPeekableIter::new(
+        let mut input = gix_packetline_blocking::StreamingPeekableIter::new(
             stdin.lock(),
-            &[gix_packetline::PacketLineRef::Flush],
+            &[gix_packetline_blocking::PacketLineRef::Flush],
             false, /* packet tracing */
         );
         let mut read = input.as_read();
@@ -75,7 +73,7 @@ impl Server {
         read.read_line_to_string(&mut buf)?;
         if buf
             .strip_prefix(welcome_prefix)
-            .map_or(true, |rest| rest.trim_end() != "-client")
+            .is_none_or(|rest| rest.trim_end() != "-client")
         {
             return Err(handshake::Error::Protocol {
                 msg: format!("Expected '{welcome_prefix}-client, got"),
@@ -106,11 +104,11 @@ impl Server {
             );
         }
         let version = pick_version(&versions).ok_or(handshake::Error::VersionMismatch { actual: versions })?;
-        read.reset_with(&[gix_packetline::PacketLineRef::Flush]);
-        let mut out = gix_packetline::Writer::new(stdout.lock());
+        read.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
+        let mut out = gix_packetline_blocking::Writer::new(stdout.lock());
         out.write_all(format!("{welcome_prefix}-server").as_bytes())?;
         out.write_all(format!("version={version}").as_bytes())?;
-        gix_packetline::encode::flush_to_write(out.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
         out.flush()?;
 
         let mut capabilities = HashSet::new();
@@ -128,13 +126,13 @@ impl Server {
                     }
                 }
                 None => continue,
-            };
+            }
         }
 
         for cap in &capabilities {
             out.write_all(format!("capability={cap}").as_bytes())?;
         }
-        gix_packetline::encode::flush_to_write(out.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
         out.flush()?;
 
         drop(read);
@@ -194,11 +192,11 @@ impl Server {
                     actual: line.into(),
                 })?;
             assert!(tokens.next().is_none(), "configured to yield at most two tokens");
-            meta.push((key.as_bstr().to_string(), value.into()))
+            meta.push((key.as_bstr().to_string(), value.into()));
         }
 
         drop(read);
-        self.input.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+        self.input.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
 
         Ok(Some(Request {
             parent: self,
@@ -235,7 +233,7 @@ mod request {
             if let Some(message) = status.message() {
                 out.write_all(format!("status={message}").as_bytes())?;
             }
-            gix_packetline::encode::flush_to_write(out.inner_mut())?;
+            gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
             out.flush()
         }
     }
@@ -250,7 +248,7 @@ mod request {
     }
 
     struct WriteAndFlushOnDrop<'a> {
-        inner: &'a mut gix_packetline::Writer<std::io::StdoutLock<'static>>,
+        inner: &'a mut gix_packetline_blocking::Writer<std::io::StdoutLock<'static>>,
     }
 
     impl std::io::Write for WriteAndFlushOnDrop<'_> {
@@ -265,7 +263,7 @@ mod request {
 
     impl Drop for WriteAndFlushOnDrop<'_> {
         fn drop(&mut self) {
-            gix_packetline::encode::flush_to_write(self.inner.inner_mut()).ok();
+            gix_packetline_blocking::encode::flush_to_write(self.inner.inner_mut()).ok();
             self.inner.flush().ok();
         }
     }

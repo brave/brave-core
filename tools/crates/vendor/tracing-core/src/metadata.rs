@@ -1,6 +1,6 @@
 //! Metadata describing trace data.
 use super::{callsite, field};
-use crate::stdlib::{
+use core::{
     cmp, fmt,
     str::FromStr,
     sync::atomic::{AtomicUsize, Ordering},
@@ -191,7 +191,7 @@ pub struct Kind(u8);
 ///         // ...
 ///         # drop(span); Id::from_u64(1)
 ///     }
-
+///
 ///     fn event(&self, event: &Event<'_>) {
 ///         // ...
 ///         # drop(event);
@@ -330,9 +330,17 @@ impl<'a> Metadata<'a> {
     pub fn is_span(&self) -> bool {
         self.kind.is_span()
     }
+
+    /// Generate a fake field that will never match a real field.
+    ///
+    /// Used via valueset to fill in for unknown fields.
+    #[doc(hidden)]
+    pub const fn private_fake_field(&self) -> field::Field {
+        self.fields.fake_field()
+    }
 }
 
-impl<'a> fmt::Debug for Metadata<'a> {
+impl fmt::Debug for Metadata<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut meta = f.debug_struct("Metadata");
         meta.field("name", &self.name)
@@ -440,12 +448,12 @@ impl fmt::Debug for Kind {
     }
 }
 
-impl<'a> Eq for Metadata<'a> {}
+impl Eq for Metadata<'_> {}
 
-impl<'a> PartialEq for Metadata<'a> {
+impl PartialEq for Metadata<'_> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
-        if core::ptr::eq(&self, &other) {
+        if core::ptr::eq(self, other) {
             true
         } else if cfg!(not(debug_assertions)) {
             // In a well-behaving application, two `Metadata` can be assumed to
@@ -548,7 +556,7 @@ impl fmt::Display for Level {
 
 #[cfg(feature = "std")]
 #[cfg_attr(docsrs, doc(cfg(feature = "std")))]
-impl crate::stdlib::error::Error for ParseLevelError {}
+impl std::error::Error for ParseLevelError {}
 
 impl FromStr for Level {
     type Err = ParseLevelError;
@@ -729,7 +737,7 @@ impl LevelFilter {
                 // the inputs to `set_max` to the set of valid discriminants.
                 // Therefore, **as long as `MAX_VALUE` is only ever set by
                 // `set_max`**, this is safe.
-                crate::stdlib::hint::unreachable_unchecked()
+                core::hint::unreachable_unchecked()
             },
         }
     }
@@ -1047,7 +1055,7 @@ impl PartialOrd<Level> for LevelFilter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::stdlib::mem;
+    use core::mem;
 
     #[test]
     fn level_from_str() {

@@ -12,9 +12,14 @@
 [package]
 rust-version = "1.0"
 name = "scratch"
-version = "1.0.7"
+version = "1.0.9"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = "build.rs"
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Compile-time temporary directory shared by multiple crates and erased by `cargo clean`"
 documentation = "https://docs.rs/scratch"
 readme = "README.md"
@@ -26,12 +31,14 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/scratch"
 
 [package.metadata.docs.rs]
-rustdoc-args = ["--generate-link-to-definition"]
 targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = [
+    "--generate-link-to-definition",
+    "--extern-html-root-url=core=https://doc.rust-lang.org",
+    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
+    "--extern-html-root-url=std=https://doc.rust-lang.org",
+]
 
 [lib]
 name = "scratch"
-doc-scrape-examples = false
-
-[dev-dependencies.fs2]
-version = "0.4"
+path = "src/lib.rs"

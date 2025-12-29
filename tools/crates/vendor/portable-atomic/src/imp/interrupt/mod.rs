@@ -29,8 +29,8 @@ MSP430 as well.
 
 See also README.md of this directory.
 
-[^avr1]: https://github.com/llvm/llvm-project/blob/llvmorg-19.1.0/llvm/lib/Target/AVR/AVRExpandPseudoInsts.cpp#L1074
-[^avr2]: https://github.com/llvm/llvm-project/blob/llvmorg-19.1.0/llvm/test/CodeGen/AVR/atomics/load16.ll#L5
+[^avr1]: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/AVR/AVRExpandPseudoInsts.cpp#L1072
+[^avr2]: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/test/CodeGen/AVR/atomics/load16.ll#L5
 */
 
 // On some platforms, atomic load/store can be implemented in a more efficient
@@ -45,6 +45,14 @@ See also README.md of this directory.
     all(target_arch = "avr", portable_atomic_no_asm),
     feature = "critical-section",
 )))]
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(test, portable_atomic_no_atomic_cas))
+)]
+#[cfg_attr(
+    not(portable_atomic_no_cfg_target_has_atomic),
+    cfg(any(test, not(target_has_atomic = "ptr")))
+)]
 use self::arch::atomic;
 
 #[cfg(not(feature = "critical-section"))]
@@ -104,6 +112,17 @@ where
 
     r
 }
+
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(test, target_arch = "avr", target_arch = "msp430", portable_atomic_no_atomic_cas))
+)]
+#[cfg_attr(
+    not(portable_atomic_no_cfg_target_has_atomic),
+    cfg(any(test, target_arch = "avr", target_arch = "msp430", not(target_has_atomic = "ptr")))
+)]
+items! {
+use core::ptr;
 
 #[cfg_attr(target_pointer_width = "16", repr(C, align(2)))]
 #[cfg_attr(target_pointer_width = "32", repr(C, align(4)))]
@@ -211,7 +230,7 @@ impl<T> AtomicPtr<T> {
         // from a reference.
         with(|| unsafe {
             let prev = self.p.get().read();
-            if prev == current {
+            if ptr::eq(prev, current) {
                 self.p.get().write(new);
                 Ok(prev)
             } else {
@@ -244,6 +263,7 @@ impl<T> AtomicPtr<T> {
         // guarantee atomicity in a compatible way. (see module-level comments)
         unsafe { &*(self as *const Self as *const atomic::AtomicPtr<T>) }
     }
+}
 }
 
 macro_rules! atomic_int {
@@ -858,67 +878,78 @@ macro_rules! atomic_int {
     };
 }
 
-#[cfg(target_pointer_width = "16")]
-#[cfg(not(target_arch = "avr"))]
-atomic_int!(load_store_atomic, AtomicIsize, isize, 2);
-#[cfg(target_pointer_width = "16")]
-#[cfg(not(target_arch = "avr"))]
-atomic_int!(load_store_atomic, AtomicUsize, usize, 2);
-#[cfg(target_arch = "avr")]
-atomic_int!(all_critical_session, AtomicIsize, isize, 2);
-#[cfg(target_arch = "avr")]
-atomic_int!(all_critical_session, AtomicUsize, usize, 2);
-#[cfg(target_pointer_width = "32")]
-atomic_int!(load_store_atomic, AtomicIsize, isize, 4);
-#[cfg(target_pointer_width = "32")]
-atomic_int!(load_store_atomic, AtomicUsize, usize, 4);
-#[cfg(target_pointer_width = "64")]
-atomic_int!(load_store_atomic, AtomicIsize, isize, 8);
-#[cfg(target_pointer_width = "64")]
-atomic_int!(load_store_atomic, AtomicUsize, usize, 8);
-#[cfg(target_pointer_width = "128")]
-atomic_int!(load_store_atomic, AtomicIsize, isize, 16);
-#[cfg(target_pointer_width = "128")]
-atomic_int!(load_store_atomic, AtomicUsize, usize, 16);
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(test, target_arch = "avr", target_arch = "msp430", portable_atomic_no_atomic_cas))
+)]
+#[cfg_attr(
+    not(portable_atomic_no_cfg_target_has_atomic),
+    cfg(any(test, target_arch = "avr", target_arch = "msp430", not(target_has_atomic = "ptr")))
+)]
+items! {
+    #[cfg(target_pointer_width = "16")]
+    #[cfg(not(target_arch = "avr"))]
+    atomic_int!(load_store_atomic, AtomicIsize, isize, 2);
+    #[cfg(target_pointer_width = "16")]
+    #[cfg(not(target_arch = "avr"))]
+    atomic_int!(load_store_atomic, AtomicUsize, usize, 2);
+    #[cfg(target_arch = "avr")]
+    atomic_int!(all_critical_session, AtomicIsize, isize, 2);
+    #[cfg(target_arch = "avr")]
+    atomic_int!(all_critical_session, AtomicUsize, usize, 2);
+    #[cfg(target_pointer_width = "32")]
+    atomic_int!(load_store_atomic, AtomicIsize, isize, 4);
+    #[cfg(target_pointer_width = "32")]
+    atomic_int!(load_store_atomic, AtomicUsize, usize, 4);
+    #[cfg(target_pointer_width = "64")]
+    atomic_int!(load_store_atomic, AtomicIsize, isize, 8);
+    #[cfg(target_pointer_width = "64")]
+    atomic_int!(load_store_atomic, AtomicUsize, usize, 8);
+    #[cfg(target_pointer_width = "128")]
+    atomic_int!(load_store_atomic, AtomicIsize, isize, 16);
+    #[cfg(target_pointer_width = "128")]
+    atomic_int!(load_store_atomic, AtomicUsize, usize, 16);
 
-#[cfg(not(all(target_arch = "avr", portable_atomic_no_asm)))]
-atomic_int!(load_store_atomic[sub_word], AtomicI8, i8, 1);
-#[cfg(not(all(target_arch = "avr", portable_atomic_no_asm)))]
-atomic_int!(load_store_atomic[sub_word], AtomicU8, u8, 1);
-#[cfg(all(target_arch = "avr", portable_atomic_no_asm))]
-atomic_int!(all_critical_session, AtomicI8, i8, 1);
-#[cfg(all(target_arch = "avr", portable_atomic_no_asm))]
-atomic_int!(all_critical_session, AtomicU8, u8, 1);
-#[cfg(not(target_arch = "avr"))]
-atomic_int!(load_store_atomic[sub_word], AtomicI16, i16, 2);
-#[cfg(not(target_arch = "avr"))]
-atomic_int!(load_store_atomic[sub_word], AtomicU16, u16, 2);
-#[cfg(target_arch = "avr")]
-atomic_int!(all_critical_session, AtomicI16, i16, 2);
-#[cfg(target_arch = "avr")]
-atomic_int!(all_critical_session, AtomicU16, u16, 2);
+    #[cfg(not(all(target_arch = "avr", portable_atomic_no_asm)))]
+    atomic_int!(load_store_atomic[sub_word], AtomicI8, i8, 1);
+    #[cfg(not(all(target_arch = "avr", portable_atomic_no_asm)))]
+    atomic_int!(load_store_atomic[sub_word], AtomicU8, u8, 1);
+    #[cfg(all(target_arch = "avr", portable_atomic_no_asm))]
+    atomic_int!(all_critical_session, AtomicI8, i8, 1);
+    #[cfg(all(target_arch = "avr", portable_atomic_no_asm))]
+    atomic_int!(all_critical_session, AtomicU8, u8, 1);
+    #[cfg(not(target_arch = "avr"))]
+    atomic_int!(load_store_atomic[sub_word], AtomicI16, i16, 2);
+    #[cfg(not(target_arch = "avr"))]
+    atomic_int!(load_store_atomic[sub_word], AtomicU16, u16, 2);
+    #[cfg(target_arch = "avr")]
+    atomic_int!(all_critical_session, AtomicI16, i16, 2);
+    #[cfg(target_arch = "avr")]
+    atomic_int!(all_critical_session, AtomicU16, u16, 2);
 
-#[cfg(not(target_pointer_width = "16"))]
-atomic_int!(load_store_atomic, AtomicI32, i32, 4);
-#[cfg(not(target_pointer_width = "16"))]
-atomic_int!(load_store_atomic, AtomicU32, u32, 4);
+    #[cfg(not(target_pointer_width = "16"))]
+    atomic_int!(load_store_atomic, AtomicI32, i32, 4);
+    #[cfg(not(target_pointer_width = "16"))]
+    atomic_int!(load_store_atomic, AtomicU32, u32, 4);
+
+    cfg_has_fast_atomic_64! {
+        atomic_int!(load_store_atomic, AtomicI64, i64, 8);
+        atomic_int!(load_store_atomic, AtomicU64, u64, 8);
+    }
+}
+
+// Double or more width atomics (require fallback feature for consistency with other situations).
 #[cfg(target_pointer_width = "16")]
 #[cfg(any(test, feature = "fallback"))]
 atomic_int!(all_critical_session, AtomicI32, i32, 4);
 #[cfg(target_pointer_width = "16")]
 #[cfg(any(test, feature = "fallback"))]
 atomic_int!(all_critical_session, AtomicU32, u32, 4);
-
-cfg_has_fast_atomic_64! {
-    atomic_int!(load_store_atomic, AtomicI64, i64, 8);
-    atomic_int!(load_store_atomic, AtomicU64, u64, 8);
-}
 #[cfg(any(test, feature = "fallback"))]
 cfg_no_fast_atomic_64! {
     atomic_int!(all_critical_session, AtomicI64, i64, 8);
     atomic_int!(all_critical_session, AtomicU64, u64, 8);
 }
-
 #[cfg(any(test, feature = "fallback"))]
 atomic_int!(all_critical_session, AtomicI128, i128, 16);
 #[cfg(any(test, feature = "fallback"))]

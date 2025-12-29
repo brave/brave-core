@@ -13,10 +13,17 @@
 edition = "2018"
 rust-version = "1.51"
 name = "percent-encoding"
-version = "2.3.1"
+version = "2.3.2"
 authors = ["The rust-url developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Percent encoding and decoding"
-categories = ["no_std"]
+readme = false
+categories = ["no-std"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/servo/rust-url/"
 
@@ -27,3 +34,7 @@ rustdoc-args = ["--generate-link-to-definition"]
 alloc = []
 default = ["std"]
 std = ["alloc"]
+
+[lib]
+name = "percent_encoding"
+path = "src/lib.rs"

@@ -1,14 +1,17 @@
 //! `RawDir` and `RawDirEntry`.
 
-use core::fmt;
-use core::mem::{align_of, MaybeUninit};
-use linux_raw_sys::general::linux_dirent64;
-
 use crate::backend::fs::syscalls::getdents_uninit;
 use crate::fd::AsFd;
 use crate::ffi::CStr;
 use crate::fs::FileType;
 use crate::io;
+use core::fmt;
+use core::mem::{align_of, MaybeUninit};
+
+#[cfg(not(linux_raw_dep))]
+use libc::dirent64 as linux_dirent64;
+#[cfg(linux_raw_dep)]
+use linux_raw_sys::general::linux_dirent64;
 
 /// A directory iterator implemented with getdents.
 ///
@@ -235,3 +238,17 @@ impl<'buf, Fd: AsFd> RawDir<'buf, Fd> {
         self.offset >= self.initialized
     }
 }
+
+/// ```compile_fail
+/// use rustix::fs::{CWD, Mode, OFlags, RawDir, openat};
+/// use std::mem::MaybeUninit;
+///
+/// let mut buf = [MaybeUninit::uninit(); 47];
+/// let fd = openat(CWD, c".", OFlags::DIRECTORY, Mode::empty()).unwrap();
+/// let mut iter = RawDir::new(fd, &mut buf);
+/// let item1 = iter.next().unwrap();
+/// let item2 = iter.next().unwrap();
+/// println!("{item2:?}");
+/// println!("{item1:?}");
+/// ```
+fn _doctest() {}

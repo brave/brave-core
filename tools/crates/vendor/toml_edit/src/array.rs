@@ -5,8 +5,7 @@ use crate::repr::Decor;
 use crate::value::{DEFAULT_LEADING_VALUE_DECOR, DEFAULT_VALUE_DECOR};
 use crate::{Item, RawString, Value};
 
-/// Type representing a TOML array,
-/// payload of the `Value::Array` variant's value
+/// A TOML [`Value`] that contains a sequence of [`Value`]s
 #[derive(Debug, Default, Clone)]
 pub struct Array {
     // `trailing` represents whitespaces, newlines
@@ -20,11 +19,11 @@ pub struct Array {
     pub(crate) values: Vec<Item>,
 }
 
-/// An owned iterator type over `Table`'s key/value pairs.
+/// An owned iterator type over [`Array`]'s [`Value`]s
 pub type ArrayIntoIter = Box<dyn Iterator<Item = Value>>;
-/// An iterator type over `Array`'s values.
+/// An iterator type over [`Array`]'s [`Value`]s
 pub type ArrayIter<'a> = Box<dyn Iterator<Item = &'a Value> + 'a>;
-/// An iterator type over `Array`'s values.
+/// An iterator type over [`Array`]'s [`Value`]s
 pub type ArrayIterMut<'a> = Box<dyn Iterator<Item = &'a mut Value> + 'a>;
 
 /// Constructors

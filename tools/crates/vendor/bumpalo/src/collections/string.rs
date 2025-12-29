@@ -679,6 +679,7 @@ impl<'bump> String<'bump> {
     /// let s = String::from_str_in("hello", &b);
     /// assert_eq!(s, "hello");
     /// ```
+    #[inline]
     pub fn from_str_in(s: &str, bump: &'bump Bump) -> String<'bump> {
         let len = s.len();
         let mut t = String::with_capacity_in(len, bump);
@@ -2150,3 +2151,19 @@ impl<'a, 'bump> DoubleEndedIterator for Drain<'a, 'bump> {
 }
 
 impl<'a, 'bump> FusedIterator for Drain<'a, 'bump> {}
+
+#[cfg(feature = "serde")]
+mod serialize {
+    use super::*;
+
+    use serde::{Serialize, Serializer};
+
+    impl<'bump> Serialize for String<'bump> {
+        fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+        {
+            serializer.serialize_str(&self)
+        }
+    }
+}

@@ -5,7 +5,7 @@
 #![cfg_attr(feature = "experimental-thread-local", no_std)]
 #![cfg_attr(feature = "experimental-thread-local", feature(thread_local))]
 
-//! Making [`Arc`][Arc] itself atomic
+//! Making [`Arc`] itself atomic
 //!
 //! The [`ArcSwap`] type is a container for an `Arc` that can be changed atomically. Semantically,
 //! it is similar to something like `Atomic<Arc<T>>` (if there was such a thing) or
@@ -124,8 +124,9 @@
 //!
 //! [RwLock]: https://doc.rust-lang.org/std/sync/struct.RwLock.html
 
+#[rustversion::since(1.36.0)]
 #[allow(unused_imports)]
-#[macro_use]
+#[cfg_attr(feature = "experimental-thread-local", macro_use)]
 extern crate alloc;
 
 pub mod access;
@@ -141,6 +142,16 @@ pub mod strategy;
 #[cfg(feature = "weak")]
 mod weak;
 
+// Hack to not rely on std on newer compilers (where alloc is stabilized) but still fall back to
+// std on old compilers.
+mod imports {
+    #[rustversion::since(1.36.0)]
+    pub use alloc::{boxed::Box, rc::Rc, sync::Arc};
+
+    #[rustversion::before(1.36.0)]
+    pub use std::{boxed::Box, rc::Rc, sync::Arc};
+}
+
 use core::borrow::Borrow;
 use core::fmt::{Debug, Display, Formatter, Result as FmtResult};
 use core::marker::PhantomData;
@@ -149,7 +160,7 @@ use core::ops::Deref;
 use core::ptr;
 use core::sync::atomic::{AtomicPtr, Ordering};
 
-use alloc::sync::Arc;
+use crate::imports::Arc;
 
 use crate::access::{Access, Map};
 pub use crate::as_raw::AsRaw;
@@ -886,7 +897,7 @@ macro_rules! t {
             }
 
             /// Two different writers publish two series of values. The readers check that it is
-            /// always increasing in each serie.
+            /// always increasing in each series.
             ///
             /// For performance, we try to reuse the threads here.
             #[test]

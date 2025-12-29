@@ -1,23 +1,59 @@
-# TwoX-Hash
+A Rust implementation of the [xxHash] algorithm.
 
-A Rust implementation of the [XXHash] algorithm.
+[![Crates.io][crates-badge]][crates-url]
+[![Documentation][docs-badge]][docs-url]
+[![Build Status][actions-badge]][actions-url]
 
-[![Build Status](https://travis-ci.org/shepmaster/twox-hash.svg)](https://travis-ci.org/shepmaster/twox-hash) [![Current Version](https://img.shields.io/crates/v/twox-hash.svg)](https://crates.io/crates/twox-hash)
+[xxHash]: https://github.com/Cyan4973/xxHash
 
-[Documentation](https://docs.rs/twox-hash/)
+[crates-badge]: https://img.shields.io/crates/v/twox-hash.svg
+[crates-url]: https://crates.io/crates/twox-hash
+[docs-badge]: https://img.shields.io/docsrs/twox-hash
+[docs-url]: https://docs.rs/twox-hash/
+[actions-badge]: https://github.com/shepmaster/twox-hash/actions/workflows/ci.yml/badge.svg?branch=main
+[actions-url]: https://github.com/shepmaster/twox-hash/actions/workflows/ci.yml?query=branch%3Amain
 
-[XXHash]: https://github.com/Cyan4973/xxHash
+# Examples
 
-## Examples
+These examples use [`XxHash64`][] but the same ideas can be
+used for [`XxHash32`][], [`XxHash3_64`][], or [`XxHash3_128`][].
 
-### With a fixed seed
+## Hashing arbitrary data
+
+### When all the data is available at once
 
 ```rust
-use std::hash::BuildHasherDefault;
-use std::collections::HashMap;
 use twox_hash::XxHash64;
 
-let mut hash: HashMap<_, _, BuildHasherDefault<XxHash64>> = Default::default();
+let seed = 1234;
+let hash = XxHash64::oneshot(seed, b"some bytes");
+assert_eq!(0xeab5_5659_a496_d78b, hash);
+```
+
+### When the data is streaming
+
+```rust
+use std::hash::Hasher as _;
+use twox_hash::XxHash64;
+
+let seed = 1234;
+let mut hasher = XxHash64::with_seed(seed);
+hasher.write(b"some");
+hasher.write(b" ");
+hasher.write(b"bytes");
+let hash = hasher.finish();
+assert_eq!(0xeab5_5659_a496_d78b, hash);
+```
+
+## In a [`HashMap`][]
+
+### With a default seed
+
+```rust
+use std::{collections::HashMap, hash::BuildHasherDefault};
+use twox_hash::XxHash64;
+
+let mut hash = HashMap::<_, _, BuildHasherDefault<XxHash64>>::default();
 hash.insert(42, "the answer");
 assert_eq!(hash.get(&42), Some(&"the answer"));
 ```
@@ -26,73 +62,46 @@ assert_eq!(hash.get(&42), Some(&"the answer"));
 
 ```rust
 use std::collections::HashMap;
-use twox_hash::RandomXxHashBuilder64;
+use twox_hash::xxhash64;
 
-let mut hash: HashMap<_, _, RandomXxHashBuilder64> = Default::default();
+let mut hash = HashMap::<_, _, xxhash64::RandomState>::default();
 hash.insert(42, "the answer");
 assert_eq!(hash.get(&42), Some(&"the answer"));
 ```
 
-## Benchmarks
+### With a fixed seed
 
-### 64-bit
+```rust
+use std::collections::HashMap;
+use twox_hash::xxhash64;
 
-|   Bytes | SipHasher (MB/s) | XXHash (MB/s) | Ratio |
-|---------|------------------|---------------|-------|
-|       1 |               52 |            38 |   73% |
-|       4 |              210 |           148 |   70% |
-|      16 |              615 |           615 |  100% |
-|      32 |              914 |          1391 |  152% |
-|     128 |             1347 |          3657 |  271% |
-|     256 |             1414 |          5019 |  355% |
-|     512 |             1546 |          6168 |  399% |
-|    1024 |             1565 |          6206 |  397% |
-| 1048576 |             1592 |          7564 |  475% |
+let mut hash = HashMap::with_hasher(xxhash64::State::with_seed(0xdead_cafe));
+hash.insert(42, "the answer");
+assert_eq!(hash.get(&42), Some(&"the answer"));
+```
 
-|   Bytes | [FnvHasher][fnv] (MB/s) | XXHash (MB/s) | Ratio |
-|---------|-------------------------|---------------|-------|
-|       1 |                    1000 |            38 |    4% |
-|       4 |                     800 |           148 |   19% |
-|      16 |                     761 |           615 |   81% |
-|      32 |                     761 |          1391 |  183% |
-|     128 |                     727 |          3657 |  503% |
-|     256 |                     759 |          5019 |  661% |
-|     512 |                     745 |          6168 |  828% |
-|    1024 |                     741 |          6206 |  838% |
-| 1048576 |                     745 |          7564 | 1015% |
+# Feature Flags
 
-### 32-bit
+| name        | description                                                                                                                   |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------|
+| xxhash32    | Include the [`XxHash32`][] algorithm                                                                                          |
+| xxhash64    | Include the [`XxHash64`][] algorithm                                                                                          |
+| xxhash3_64  | Include the [`XxHash3_64`][] algorithm                                                                                        |
+| xxhash3_128 | Include the [`XxHash3_128`][] algorithm                                                                                       |
+| random      | Create random instances of the hashers                                                                                        |
+| serialize   | Serialize and deserialize hasher state with Serde                                                                             |
+| std         | Use the Rust standard library. Enable this if you want SIMD support in [`XxHash3_64`][] or [`XxHash3_128`][]                  |
+| alloc       | Use the Rust allocator library. Enable this if you want to create [`XxHash3_64`][] or [`XxHash3_128`][]  with dynamic secrets |
 
-|   Bytes | SipHasher (MB/s) | XXHash32 (MB/s) | Ratio |
-|---------|------------------|-----------------|-------|
-|       1 |               52 |              55 |  106% |
-|       4 |              210 |             210 |  100% |
-|      16 |              615 |            1230 |  200% |
-|      32 |              914 |            1882 |  206% |
-|     128 |             1347 |            3282 |  244% |
-|     256 |             1414 |            3459 |  245% |
-|     512 |             1546 |            3792 |  245% |
-|    1024 |             1565 |            3938 |  252% |
-| 1048576 |             1592 |            4127 |  259% |
+# Benchmarks
 
-|   Bytes | [FnvHasher][fnv] (MB/s) | XXHash32 (MB/s) | Ratio |
-|---------|-------------------------|-----------------|-------|
-|       1 |                    1000 |              55 |    6% |
-|       4 |                     800 |             210 |   26% |
-|      16 |                     761 |            1230 |  162% |
-|      32 |                     761 |            1882 |  247% |
-|     128 |                     727 |            3282 |  451% |
-|     256 |                     759 |            3459 |  456% |
-|     512 |                     745 |            3792 |  509% |
-|    1024 |                     741 |            3938 |  531% |
-| 1048576 |                     745 |            4127 |  554% |
+See benchmarks in the [comparison][] README.
 
+[comparison]: https://github.com/shepmaster/twox-hash/tree/main/comparison
 
-[fnv]: https://github.com/servo/rust-fnv
+# Contributing
 
-## Contributing
-
-1. Fork it ( https://github.com/shepmaster/twox-hash/fork )
+1. Fork it (<https://github.com/shepmaster/twox-hash/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Add a failing test.
 4. Add code to pass the test.
@@ -100,3 +109,10 @@ assert_eq!(hash.get(&42), Some(&"the answer"));
 6. Ensure tests pass.
 7. Push to the branch (`git push origin my-new-feature`)
 8. Create a new Pull Request
+
+
+[`Hashmap`]: std::collections::HashMap
+[`XxHash32`]: crate::XxHash32
+[`XxHash64`]: crate::XxHash64
+[`XxHash3_64`]: crate::XxHash3_64
+[`XxHash3_128`]: crate::XxHash3_128

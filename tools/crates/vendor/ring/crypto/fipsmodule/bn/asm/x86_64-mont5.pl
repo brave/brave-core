@@ -1,17 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2011-2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
+# project.
 # ====================================================================
 
 # August 2011.
@@ -50,7 +55,7 @@ open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
 # output, so this isn't useful anyway.
 $addx = 1;
 
-# int bn_mul_mont_gather5(
+# int bn_mul_mont_gather5_nohw(
 $rp="%rdi";	# BN_ULONG *rp,
 $ap="%rsi";	# const BN_ULONG *ap,
 $bp="%rdx";	# const BN_ULONG *bp,
@@ -72,409 +77,20 @@ $m1="%rbp";
 $code=<<___;
 .text
 
-.extern	OPENSSL_ia32cap_P
-
-.globl	bn_mul_mont_gather5
-.type	bn_mul_mont_gather5,\@function,6
-.align	64
-bn_mul_mont_gather5:
-.cfi_startproc
-	_CET_ENDBR
-	mov	${num}d,${num}d
-	mov	%rsp,%rax
-.cfi_def_cfa_register	%rax
-	test	\$7,${num}d
-	jnz	.Lmul_enter
-___
-$code.=<<___ if ($addx);
-	leaq	OPENSSL_ia32cap_P(%rip),%r11
-	mov	8(%r11),%r11d
-___
-$code.=<<___;
-	jmp	.Lmul4x_enter
-
-.align	16
-.Lmul_enter:
-	movd	`($win64?56:8)`(%rsp),%xmm5	# load 7th argument
-	push	%rbx
-.cfi_push	%rbx
-	push	%rbp
-.cfi_push	%rbp
-	push	%r12
-.cfi_push	%r12
-	push	%r13
-.cfi_push	%r13
-	push	%r14
-.cfi_push	%r14
-	push	%r15
-.cfi_push	%r15
-
-	neg	$num
-	mov	%rsp,%r11
-	lea	-280(%rsp,$num,8),%r10	# future alloca(8*(num+2)+256+8)
-	neg	$num			# restore $num
-	and	\$-1024,%r10		# minimize TLB usage
-
-	# An OS-agnostic version of __chkstk.
-	#
-	# Some OSes (Windows) insist on stack being "wired" to
-	# physical memory in strictly sequential manner, i.e. if stack
-	# allocation spans two pages, then reference to farmost one can
-	# be punishable by SEGV. But page walking can do good even on
-	# other OSes, because it guarantees that villain thread hits
-	# the guard page before it can make damage to innocent one...
-	sub	%r10,%r11
-	and	\$-4096,%r11
-	lea	(%r10,%r11),%rsp
-	mov	(%rsp),%r11
-	cmp	%r10,%rsp
-	ja	.Lmul_page_walk
-	jmp	.Lmul_page_walk_done
-
-.Lmul_page_walk:
-	lea	-4096(%rsp),%rsp
-	mov	(%rsp),%r11
-	cmp	%r10,%rsp
-	ja	.Lmul_page_walk
-.Lmul_page_walk_done:
-
-	lea	.Linc(%rip),%r10
-	mov	%rax,8(%rsp,$num,8)	# tp[num+1]=%rsp
-.cfi_cfa_expression	%rsp+8,$num,8,mul,plus,deref,+8
-.Lmul_body:
-
-	lea	128($bp),%r12		# reassign $bp (+size optimization)
-___
-		$bp="%r12";
-		$STRIDE=2**5*8;		# 5 is "window size"
-		$N=$STRIDE/4;		# should match cache line size
-$code.=<<___;
-	movdqa	0(%r10),%xmm0		# 00000001000000010000000000000000
-	movdqa	16(%r10),%xmm1		# 00000002000000020000000200000002
-	lea	24-112(%rsp,$num,8),%r10# place the mask after tp[num+3] (+ICache optimization)
-	and	\$-16,%r10
-
-	pshufd	\$0,%xmm5,%xmm5		# broadcast index
-	movdqa	%xmm1,%xmm4
-	movdqa	%xmm1,%xmm2
-___
-########################################################################
-# Calculate masks by comparing 0..31 to $idx and save result to stack.
-#
-# We compute sixteen 16-byte masks and store them on the stack. Mask i is stored
-# in `16*i - 128`(%rax) and contains the comparisons for idx == 2*i and
-# idx == 2*i + 1 in its lower and upper halves, respectively. Mask calculations
-# are scheduled in groups of four.
-$code.=<<___;
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0		# compare to 1,0
-	.byte	0x67
-	movdqa	%xmm4,%xmm3
-___
-for($k=0;$k<$STRIDE/16-4;$k+=4) {
-$code.=<<___;
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1		# compare to 3,2
-	movdqa	%xmm0,`16*($k+0)+112`(%r10)
-	movdqa	%xmm4,%xmm0
-
-	paddd	%xmm2,%xmm3
-	pcmpeqd	%xmm5,%xmm2		# compare to 5,4
-	movdqa	%xmm1,`16*($k+1)+112`(%r10)
-	movdqa	%xmm4,%xmm1
-
-	paddd	%xmm3,%xmm0
-	pcmpeqd	%xmm5,%xmm3		# compare to 7,6
-	movdqa	%xmm2,`16*($k+2)+112`(%r10)
-	movdqa	%xmm4,%xmm2
-
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0
-	movdqa	%xmm3,`16*($k+3)+112`(%r10)
-	movdqa	%xmm4,%xmm3
-___
-}
-$code.=<<___;				# last iteration can be optimized
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1
-	movdqa	%xmm0,`16*($k+0)+112`(%r10)
-
-	paddd	%xmm2,%xmm3
-	.byte	0x67
-	pcmpeqd	%xmm5,%xmm2
-	movdqa	%xmm1,`16*($k+1)+112`(%r10)
-
-	pcmpeqd	%xmm5,%xmm3
-	movdqa	%xmm2,`16*($k+2)+112`(%r10)
-	pand	`16*($k+0)-128`($bp),%xmm0	# while it's still in register
-
-	pand	`16*($k+1)-128`($bp),%xmm1
-	pand	`16*($k+2)-128`($bp),%xmm2
-	movdqa	%xmm3,`16*($k+3)+112`(%r10)
-	pand	`16*($k+3)-128`($bp),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-___
-for($k=0;$k<$STRIDE/16-4;$k+=4) {
-$code.=<<___;
-	movdqa	`16*($k+0)-128`($bp),%xmm4
-	movdqa	`16*($k+1)-128`($bp),%xmm5
-	movdqa	`16*($k+2)-128`($bp),%xmm2
-	pand	`16*($k+0)+112`(%r10),%xmm4
-	movdqa	`16*($k+3)-128`($bp),%xmm3
-	pand	`16*($k+1)+112`(%r10),%xmm5
-	por	%xmm4,%xmm0
-	pand	`16*($k+2)+112`(%r10),%xmm2
-	por	%xmm5,%xmm1
-	pand	`16*($k+3)+112`(%r10),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-___
-}
-$code.=<<___;
-	por	%xmm1,%xmm0
-	# Combine the upper and lower halves of %xmm0.
-	pshufd	\$0x4e,%xmm0,%xmm1	# Swap upper and lower halves.
-	por	%xmm1,%xmm0
-	lea	$STRIDE($bp),$bp
-	movq	%xmm0,$m0		# m0=bp[0]
-
-	mov	($n0),$n0		# pull n0[0] value
-	mov	($ap),%rax
-
-	xor	$i,$i			# i=0
-	xor	$j,$j			# j=0
-
-	mov	$n0,$m1
-	mulq	$m0			# ap[0]*bp[0]
-	mov	%rax,$lo0
-	mov	($np),%rax
-
-	imulq	$lo0,$m1		# "tp[0]"*n0
-	mov	%rdx,$hi0
-
-	mulq	$m1			# np[0]*m1
-	add	%rax,$lo0		# discarded
-	mov	8($ap),%rax
-	adc	\$0,%rdx
-	mov	%rdx,$hi1
-
-	lea	1($j),$j		# j++
-	jmp	.L1st_enter
-
-.align	16
-.L1st:
-	add	%rax,$hi1
-	mov	($ap,$j,8),%rax
-	adc	\$0,%rdx
-	add	$hi0,$hi1		# np[j]*m1+ap[j]*bp[0]
-	mov	$lo0,$hi0
-	adc	\$0,%rdx
-	mov	$hi1,-16(%rsp,$j,8)	# tp[j-1]
-	mov	%rdx,$hi1
-
-.L1st_enter:
-	mulq	$m0			# ap[j]*bp[0]
-	add	%rax,$hi0
-	mov	($np,$j,8),%rax
-	adc	\$0,%rdx
-	lea	1($j),$j		# j++
-	mov	%rdx,$lo0
-
-	mulq	$m1			# np[j]*m1
-	cmp	$num,$j
-	jne	.L1st			# note that upon exit $j==$num, so
-					# they can be used interchangeably
-
-	add	%rax,$hi1
-	adc	\$0,%rdx
-	add	$hi0,$hi1		# np[j]*m1+ap[j]*bp[0]
-	adc	\$0,%rdx
-	mov	$hi1,-16(%rsp,$num,8)	# tp[num-1]
-	mov	%rdx,$hi1
-	mov	$lo0,$hi0
-
-	xor	%rdx,%rdx
-	add	$hi0,$hi1
-	adc	\$0,%rdx
-	mov	$hi1,-8(%rsp,$num,8)
-	mov	%rdx,(%rsp,$num,8)	# store upmost overflow bit
-
-	lea	1($i),$i		# i++
-	jmp	.Louter
-.align	16
-.Louter:
-	lea	24+128(%rsp,$num,8),%rdx	# where 256-byte mask is (+size optimization)
-	and	\$-16,%rdx
-	pxor	%xmm4,%xmm4
-	pxor	%xmm5,%xmm5
-___
-for($k=0;$k<$STRIDE/16;$k+=4) {
-$code.=<<___;
-	movdqa	`16*($k+0)-128`($bp),%xmm0
-	movdqa	`16*($k+1)-128`($bp),%xmm1
-	movdqa	`16*($k+2)-128`($bp),%xmm2
-	movdqa	`16*($k+3)-128`($bp),%xmm3
-	pand	`16*($k+0)-128`(%rdx),%xmm0
-	pand	`16*($k+1)-128`(%rdx),%xmm1
-	por	%xmm0,%xmm4
-	pand	`16*($k+2)-128`(%rdx),%xmm2
-	por	%xmm1,%xmm5
-	pand	`16*($k+3)-128`(%rdx),%xmm3
-	por	%xmm2,%xmm4
-	por	%xmm3,%xmm5
-___
-}
-$code.=<<___;
-	por	%xmm5,%xmm4
-	# Combine the upper and lower halves of %xmm4 as %xmm0.
-	pshufd	\$0x4e,%xmm4,%xmm0	# Swap upper and lower halves.
-	por	%xmm4,%xmm0
-	lea	$STRIDE($bp),$bp
-
-	mov	($ap),%rax		# ap[0]
-	movq	%xmm0,$m0		# m0=bp[i]
-
-	xor	$j,$j			# j=0
-	mov	$n0,$m1
-	mov	(%rsp),$lo0
-
-	mulq	$m0			# ap[0]*bp[i]
-	add	%rax,$lo0		# ap[0]*bp[i]+tp[0]
-	mov	($np),%rax
-	adc	\$0,%rdx
-
-	imulq	$lo0,$m1		# tp[0]*n0
-	mov	%rdx,$hi0
-
-	mulq	$m1			# np[0]*m1
-	add	%rax,$lo0		# discarded
-	mov	8($ap),%rax
-	adc	\$0,%rdx
-	mov	8(%rsp),$lo0		# tp[1]
-	mov	%rdx,$hi1
-
-	lea	1($j),$j		# j++
-	jmp	.Linner_enter
-
-.align	16
-.Linner:
-	add	%rax,$hi1
-	mov	($ap,$j,8),%rax
-	adc	\$0,%rdx
-	add	$lo0,$hi1		# np[j]*m1+ap[j]*bp[i]+tp[j]
-	mov	(%rsp,$j,8),$lo0
-	adc	\$0,%rdx
-	mov	$hi1,-16(%rsp,$j,8)	# tp[j-1]
-	mov	%rdx,$hi1
-
-.Linner_enter:
-	mulq	$m0			# ap[j]*bp[i]
-	add	%rax,$hi0
-	mov	($np,$j,8),%rax
-	adc	\$0,%rdx
-	add	$hi0,$lo0		# ap[j]*bp[i]+tp[j]
-	mov	%rdx,$hi0
-	adc	\$0,$hi0
-	lea	1($j),$j		# j++
-
-	mulq	$m1			# np[j]*m1
-	cmp	$num,$j
-	jne	.Linner			# note that upon exit $j==$num, so
-					# they can be used interchangeably
-	add	%rax,$hi1
-	adc	\$0,%rdx
-	add	$lo0,$hi1		# np[j]*m1+ap[j]*bp[i]+tp[j]
-	mov	(%rsp,$num,8),$lo0
-	adc	\$0,%rdx
-	mov	$hi1,-16(%rsp,$num,8)	# tp[num-1]
-	mov	%rdx,$hi1
-
-	xor	%rdx,%rdx
-	add	$hi0,$hi1
-	adc	\$0,%rdx
-	add	$lo0,$hi1		# pull upmost overflow bit
-	adc	\$0,%rdx
-	mov	$hi1,-8(%rsp,$num,8)
-	mov	%rdx,(%rsp,$num,8)	# store upmost overflow bit
-
-	lea	1($i),$i		# i++
-	cmp	$num,$i
-	jb	.Louter
-
-	xor	$i,$i			# i=0 and clear CF!
-	mov	(%rsp),%rax		# tp[0]
-	lea	(%rsp),$ap		# borrow ap for tp
-	mov	$num,$j			# j=num
-	jmp	.Lsub
-.align	16
-.Lsub:	sbb	($np,$i,8),%rax
-	mov	%rax,($rp,$i,8)		# rp[i]=tp[i]-np[i]
-	mov	8($ap,$i,8),%rax	# tp[i+1]
-	lea	1($i),$i		# i++
-	dec	$j			# doesn't affect CF!
-	jnz	.Lsub
-
-	sbb	\$0,%rax		# handle upmost overflow bit
-	mov	\$-1,%rbx
-	xor	%rax,%rbx
-	xor	$i,$i
-	mov	$num,$j			# j=num
-
-.Lcopy:					# conditional copy
-	mov	($rp,$i,8),%rcx
-	mov	(%rsp,$i,8),%rdx
-	and	%rbx,%rcx
-	and	%rax,%rdx
-	mov	$i,(%rsp,$i,8)		# zap temporary vector
-	or	%rcx,%rdx
-	mov	%rdx,($rp,$i,8)		# rp[i]=tp[i]
-	lea	1($i),$i
-	sub	\$1,$j
-	jnz	.Lcopy
-
-	mov	8(%rsp,$num,8),%rsi	# restore %rsp
-.cfi_def_cfa	%rsi,8
-	mov	\$1,%rax
-
-	mov	-48(%rsi),%r15
-.cfi_restore	%r15
-	mov	-40(%rsi),%r14
-.cfi_restore	%r14
-	mov	-32(%rsi),%r13
-.cfi_restore	%r13
-	mov	-24(%rsi),%r12
-.cfi_restore	%r12
-	mov	-16(%rsi),%rbp
-.cfi_restore	%rbp
-	mov	-8(%rsi),%rbx
-.cfi_restore	%rbx
-	lea	(%rsi),%rsp
-.cfi_def_cfa_register	%rsp
-.Lmul_epilogue:
-	ret
-.cfi_endproc
-.size	bn_mul_mont_gather5,.-bn_mul_mont_gather5
 ___
 {{{
 my @A=("%r10","%r11");
 my @N=("%r13","%rdi");
 $code.=<<___;
+.globl	bn_mul4x_mont_gather5
 .type	bn_mul4x_mont_gather5,\@function,6
 .align	32
 bn_mul4x_mont_gather5:
 .cfi_startproc
+	_CET_ENDBR
 	.byte	0x67
 	mov	%rsp,%rax
 .cfi_def_cfa_register	%rax
-.Lmul4x_enter:
-___
-$code.=<<___ if ($addx);
-	and	\$0x80108,%r11d
-	cmp	\$0x80108,%r11d		# check for AD*X+BMI2+BMI1
-	je	.Lmulx4x_enter
-___
-$code.=<<___;
 	push	%rbx
 .cfi_push	%rbx
 	push	%rbp
@@ -490,6 +106,9 @@ $code.=<<___;
 .Lmul4x_prologue:
 
 	.byte	0x67
+	# num is declared as an int, a 32-bit parameter, so the upper half is
+	# undefined. It is important that this write to ${num}, which zeros the
+	# upper half, predates the first access.
 	shl	\$3,${num}d		# convert $num to bytes
 	lea	($num,$num,2),%r10	# 3*$num in bytes
 	neg	$num			# -$num
@@ -1035,42 +654,6 @@ $code.=<<___;
 	mov	8*3(%rbp),%r15
 	jmp	.Lsqr4x_sub_entry
 ___
-} else {
-my @ri=("%rax",$bp,$m0,$m1);
-my $rp="%rdx";
-$code.=<<___
-	xor	\$1,$N[1]
-	lea	($tp,$num),$tp		# rewind $tp
-	sar	\$5,$num		# cf=0
-	lea	($np,$N[1],8),$np
-	mov	56+8(%rsp),$rp		# restore $rp
-	jmp	.Lsub4x
-
-.align	32
-.Lsub4x:
-	.byte	0x66
-	mov	8*0($tp),@ri[0]
-	mov	8*1($tp),@ri[1]
-	.byte	0x66
-	sbb	16*0($np),@ri[0]
-	mov	8*2($tp),@ri[2]
-	sbb	16*1($np),@ri[1]
-	mov	3*8($tp),@ri[3]
-	lea	4*8($tp),$tp
-	sbb	16*2($np),@ri[2]
-	mov	@ri[0],8*0($rp)
-	sbb	16*3($np),@ri[3]
-	lea	16*4($np),$np
-	mov	@ri[1],8*1($rp)
-	mov	@ri[2],8*2($rp)
-	mov	@ri[3],8*3($rp)
-	lea	8*4($rp),$rp
-
-	inc	$num
-	jnz	.Lsub4x
-
-	ret
-___
 }
 $code.=<<___;
 .cfi_endproc
@@ -1079,7 +662,7 @@ ___
 }}}
 {{{
 ######################################################################
-# void bn_power5(
+# void bn_power5_nohw(
 my $rptr="%rdi";	# BN_ULONG *rptr,
 my $aptr="%rsi";	# const BN_ULONG *aptr,
 my $bptr="%rdx";	# const void *table,
@@ -1094,23 +677,14 @@ my @A1=("%r12","%r13");
 my ($a0,$a1,$ai)=("%r14","%r15","%rbx");
 
 $code.=<<___;
-.globl	bn_power5
-.type	bn_power5,\@function,6
+.globl	bn_power5_nohw
+.type	bn_power5_nohw,\@function,6
 .align	32
-bn_power5:
+bn_power5_nohw:
 .cfi_startproc
 	_CET_ENDBR
 	mov	%rsp,%rax
 .cfi_def_cfa_register	%rax
-___
-$code.=<<___ if ($addx);
-	leaq	OPENSSL_ia32cap_P(%rip),%r11
-	mov	8(%r11),%r11d
-	and	\$0x80108,%r11d
-	cmp	\$0x80108,%r11d		# check for AD*X+BMI2+BMI1
-	je	.Lpowerx5_enter
-___
-$code.=<<___;
 	push	%rbx
 .cfi_push	%rbx
 	push	%rbp
@@ -1125,6 +699,9 @@ $code.=<<___;
 .cfi_push	%r15
 .Lpower5_prologue:
 
+	# num is declared as an int, a 32-bit parameter, so the upper half is
+	# undefined. It is important that this write to ${num}, which zeros the
+	# upper half, come before the first access.
 	shl	\$3,${num}d		# convert $num to bytes
 	lea	($num,$num,2),%r10d	# 3*$num
 	neg	$num
@@ -1233,7 +810,7 @@ $code.=<<___;
 .Lpower5_epilogue:
 	ret
 .cfi_endproc
-.size	bn_power5,.-bn_power5
+.size	bn_power5_nohw,.-bn_power5_nohw
 
 .globl	bn_sqr8x_internal
 .hidden	bn_sqr8x_internal
@@ -2108,13 +1685,14 @@ if ($addx) {{{
 my $bp="%rdx";	# restore original value
 
 $code.=<<___;
+.globl	bn_mulx4x_mont_gather5
 .type	bn_mulx4x_mont_gather5,\@function,6
 .align	32
 bn_mulx4x_mont_gather5:
 .cfi_startproc
+	_CET_ENDBR
 	mov	%rsp,%rax
 .cfi_def_cfa_register	%rax
-.Lmulx4x_enter:
 	push	%rbx
 .cfi_push	%rbx
 	push	%rbp
@@ -2129,6 +1707,9 @@ bn_mulx4x_mont_gather5:
 .cfi_push	%r15
 .Lmulx4x_prologue:
 
+	# num is declared as an int, a 32-bit parameter, so the upper half is
+	# undefined. It is important that this write to ${num}, which zeros the
+	# upper half, predates the first access.
 	shl	\$3,${num}d		# convert $num to bytes
 	lea	($num,$num,2),%r10	# 3*$num in bytes
 	neg	$num			# -$num
@@ -2583,7 +2164,7 @@ $code.=<<___;
 ___
 }{
 ######################################################################
-# void bn_power5(
+# void bn_powerx5(
 my $rptr="%rdi";	# BN_ULONG *rptr,
 my $aptr="%rsi";	# const BN_ULONG *aptr,
 my $bptr="%rdx";	# const void *table,
@@ -2598,13 +2179,14 @@ my @A1=("%r12","%r13");
 my ($a0,$a1,$ai)=("%r14","%r15","%rbx");
 
 $code.=<<___;
+.globl	bn_powerx5
 .type	bn_powerx5,\@function,6
 .align	32
 bn_powerx5:
 .cfi_startproc
+	_CET_ENDBR
 	mov	%rsp,%rax
 .cfi_def_cfa_register	%rax
-.Lpowerx5_enter:
 	push	%rbx
 .cfi_push	%rbx
 	push	%rbp
@@ -2619,6 +2201,9 @@ bn_powerx5:
 .cfi_push	%r15
 .Lpowerx5_prologue:
 
+	# num is declared as an int, a 32-bit parameter, so the upper half is
+	# undefined. It is important that this write to ${num}, which zeros the
+	# upper half, predates the first access.
 	shl	\$3,${num}d		# convert $num to bytes
 	lea	($num,$num,2),%r10	# 3*$num in bytes
 	neg	$num
@@ -3638,7 +3223,7 @@ mul_handler:
 	cmp	%r10,%rbx		# context->Rip>=epilogue label
 	jae	.Lcommon_seh_tail
 
-	lea	.Lmul_epilogue(%rip),%r10
+	lea	.Lmul4x_epilogue(%rip),%r10 # *ring*: hacked for deletion of _nohw
 	cmp	%r10,%rbx
 	ja	.Lbody_40
 
@@ -3705,17 +3290,13 @@ mul_handler:
 
 .section	.pdata
 .align	4
-	.rva	.LSEH_begin_bn_mul_mont_gather5
-	.rva	.LSEH_end_bn_mul_mont_gather5
-	.rva	.LSEH_info_bn_mul_mont_gather5
-
 	.rva	.LSEH_begin_bn_mul4x_mont_gather5
 	.rva	.LSEH_end_bn_mul4x_mont_gather5
 	.rva	.LSEH_info_bn_mul4x_mont_gather5
 
-	.rva	.LSEH_begin_bn_power5
-	.rva	.LSEH_end_bn_power5
-	.rva	.LSEH_info_bn_power5
+	.rva	.LSEH_begin_bn_power5_nohw
+	.rva	.LSEH_end_bn_power5_nohw
+	.rva	.LSEH_info_bn_power5_nohw
 ___
 $code.=<<___ if ($addx);
 	.rva	.LSEH_begin_bn_mulx4x_mont_gather5
@@ -3733,17 +3314,12 @@ $code.=<<___;
 
 .section	.xdata
 .align	8
-.LSEH_info_bn_mul_mont_gather5:
-	.byte	9,0,0,0
-	.rva	mul_handler
-	.rva	.Lmul_body,.Lmul_body,.Lmul_epilogue		# HandlerData[]
-.align	8
 .LSEH_info_bn_mul4x_mont_gather5:
 	.byte	9,0,0,0
 	.rva	mul_handler
 	.rva	.Lmul4x_prologue,.Lmul4x_body,.Lmul4x_epilogue		# HandlerData[]
 .align	8
-.LSEH_info_bn_power5:
+.LSEH_info_bn_power5_nohw:
 	.byte	9,0,0,0
 	.rva	mul_handler
 	.rva	.Lpower5_prologue,.Lpower5_body,.Lpower5_epilogue	# HandlerData[]

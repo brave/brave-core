@@ -10,34 +10,29 @@
 // that will work properly even if they've renamed the crate and have not
 // imported its traits.
 
+// See comment in `include.rs` for why we disable the prelude.
+#![no_implicit_prelude]
 #![allow(warnings)]
+
+include!("include.rs");
 
 extern crate zerocopy as _zerocopy;
 
-#[macro_use]
-mod util;
-
-use std::{marker::PhantomData, option::IntoIter};
-
-use static_assertions::assert_impl_all;
-
-#[derive(
-    _zerocopy::KnownLayout, _zerocopy::FromZeroes, _zerocopy::FromBytes, _zerocopy::Unaligned,
-)]
+#[derive(_zerocopy::KnownLayout, _zerocopy::FromBytes, _zerocopy::Unaligned)]
 #[repr(C)]
-struct TypeParams<'a, T, I: Iterator> {
+struct TypeParams<'a, T, I: imp::Iterator> {
     a: T,
     c: I::Item,
     d: u8,
-    e: PhantomData<&'a [u8]>,
-    f: PhantomData<&'static str>,
-    g: PhantomData<String>,
+    e: imp::PhantomData<&'a [::core::primitive::u8]>,
+    f: imp::PhantomData<&'static ::core::primitive::str>,
+    g: imp::PhantomData<imp::String>,
 }
 
-assert_impl_all!(
-    TypeParams<'static, (), IntoIter<()>>:
+util_assert_impl_all!(
+    TypeParams<'static, (), imp::IntoIter<()>>:
         _zerocopy::KnownLayout,
-        _zerocopy::FromZeroes,
+        _zerocopy::FromZeros,
         _zerocopy::FromBytes,
         _zerocopy::Unaligned
 );

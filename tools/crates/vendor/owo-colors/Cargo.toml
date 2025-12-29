@@ -10,11 +10,17 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.51"
+edition = "2021"
+rust-version = "1.70"
 name = "owo-colors"
-version = "3.5.0"
+version = "4.2.3"
 authors = ["jam1garner <8260240+jam1garner@users.noreply.github.com>"]
+build = "build.rs"
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Zero-allocation terminal colors that'll make people go owo"
 documentation = "https://docs.rs/owo-colors"
 readme = "README.md"
@@ -25,10 +31,12 @@ keywords = [
     "terminal",
     "ansi_term",
 ]
-categories = ["command-line-interface"]
+categories = [
+    "command-line-interface",
+    "no-std::no-alloc",
+]
 license = "MIT"
-license-file = "LICENSE"
-repository = "https://github.com/jam1garner/owo-colors"
+repository = "https://github.com/owo-colors/owo-colors"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -37,18 +45,60 @@ rustdoc-args = [
     "doc_cfg",
 ]
 
+[features]
+alloc = []
+supports-colors = [
+    "dep:supports-color-2",
+    "supports-color",
+]
+
+[lib]
+name = "owo_colors"
+path = "src/lib.rs"
+
 [[example]]
-name = "supports_color"
-required-features = ["supports-colors"]
+name = "all_xterm_colors"
+path = "examples/all_xterm_colors.rs"
+
+[[example]]
+name = "banner"
+path = "examples/banner.rs"
+
+[[example]]
+name = "colors"
+path = "examples/colors.rs"
+
+[[example]]
+name = "const_colors"
+path = "examples/const_colors.rs"
+
+[[example]]
+name = "custom_colors"
+path = "examples/custom_colors.rs"
+
+[[example]]
+name = "dyn_colors"
+path = "examples/dyn_colors.rs"
+
+[[example]]
+name = "extra_colors"
+path = "examples/extra_colors.rs"
 
 [[example]]
 name = "override"
+path = "examples/override.rs"
+required-features = ["supports-colors"]
+
+[[example]]
+name = "supports_color"
+path = "examples/supports_color.rs"
 required-features = ["supports-colors"]
 
 [dependencies.supports-color]
-version = "1.3"
+version = "3.0.0"
 optional = true
 
-[features]
-alloc = []
-supports-colors = ["supports-color"]
+[dependencies.supports-color-2]
+version = "2.0"
+optional = true
+package = "supports-color"

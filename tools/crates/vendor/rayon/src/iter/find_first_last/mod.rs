@@ -14,9 +14,9 @@ mod test;
 //
 // To solve this, we assign each consumer a lower and upper bound for an
 // imaginary "range" of data that it consumes. The initial consumer starts with
-// the range 0..usize::max_value(). The split divides this range in half so that
-// one resulting consumer has the range 0..(usize::max_value() / 2), and the
-// other has (usize::max_value() / 2)..usize::max_value(). Every subsequent
+// the range 0..usize::MAX. The split divides this range in half so that
+// one resulting consumer has the range 0..(usize::MAX / 2), and the
+// other has (usize::MAX / 2)..usize::max_value(). Every subsequent
 // split divides the range in half again until it cannot be split anymore
 // (i.e. its length is 1), in which case the split returns two consumers with
 // the same range. In that case both consumers will continue to consume all
@@ -43,7 +43,7 @@ where
     I: ParallelIterator,
     P: Fn(&I::Item) -> bool + Sync,
 {
-    let best_found = AtomicUsize::new(usize::max_value());
+    let best_found = AtomicUsize::new(usize::MAX);
     let consumer = FindConsumer::new(&find_op, MatchPosition::Leftmost, &best_found);
     pi.drive_unindexed(consumer)
 }
@@ -71,7 +71,7 @@ impl<'p, P> FindConsumer<'p, P> {
         FindConsumer {
             find_op,
             lower_bound: Cell::new(0),
-            upper_bound: usize::max_value(),
+            upper_bound: usize::MAX,
             match_position,
             best_found,
         }

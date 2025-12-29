@@ -44,7 +44,7 @@ impl Time {
         match format {
             Format::Custom(CustomFormat(format)) => self.to_time().strftime(format).to_string(),
             Format::Unix => self.seconds.to_string(),
-            Format::Raw => self.to_bstring().to_string(),
+            Format::Raw => self.to_string(),
         }
     }
 }

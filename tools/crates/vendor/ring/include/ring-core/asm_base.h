@@ -1,16 +1,16 @@
-/* Copyright (c) 2023, Google Inc.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
- * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
- * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+// Copyright 2023 The BoringSSL Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #ifndef OPENSSL_HEADER_ASM_BASE_H
 #define OPENSSL_HEADER_ASM_BASE_H
@@ -73,14 +73,13 @@
 #error "ARM assembler must define __ARM_ARCH"
 #endif
 
-// __ARM_ARCH__ is used by OpenSSL assembly to determine the minimum target ARM
-// version.
-//
-// TODO(davidben): Switch the assembly to use |__ARM_ARCH| directly.
-#define __ARM_ARCH__ __ARM_ARCH
-
 // Even when building for 32-bit ARM, support for aarch64 crypto instructions
 // will be included.
+//
+// TODO(davidben): Remove this and the corresponding ifdefs? This is only
+// defined because some OpenSSL assembly files would allow disabling the NEON
+// code entirely. I think we'd prefer to do that by lifting the dispatch to C
+// anyway.
 #define __ARM_MAX_ARCH__ 8
 
 // Support macros for

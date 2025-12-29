@@ -15,6 +15,7 @@ pub use crate::util::{inner_u32, inner_u64};
 #[path = "../util_libc.rs"]
 mod util_libc;
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     for chunk in dest.chunks_mut(256) {
         let ret = unsafe { libc::getentropy(chunk.as_mut_ptr().cast::<c_void>(), chunk.len()) };

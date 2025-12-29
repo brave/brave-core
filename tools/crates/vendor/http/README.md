@@ -62,9 +62,9 @@ fn main() {
 
 # Supported Rust Versions
 
-This project follows the [Tokio MSRV][msrv] and is currently set to `1.49`.
+This project follows the [hyper's MSRV _policy_][msrv], though it can be lower, and is currently set to `1.57`.
 
-[msrv]: https://github.com/tokio-rs/tokio/#supported-rust-versions
+[msrv]: https://hyper.rs/contrib/msrv/
 
 # License
 

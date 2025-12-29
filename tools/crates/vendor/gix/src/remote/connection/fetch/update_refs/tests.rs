@@ -56,8 +56,9 @@ mod update {
         remote::{
             fetch,
             fetch::{
+                refmap::{Mapping, Source, SpecIndex},
                 refs::{tests::restricted, update::TypeChange},
-                Mapping, RefLogMessage, Source, SpecIndex,
+                RefLogMessage,
             },
         },
     };
@@ -123,7 +124,7 @@ mod update {
             (
                 "+refs/remotes/origin/g:refs/heads/main",
                 fetch::refs::update::Mode::RejectedCurrentlyCheckedOut {
-                    worktree_dirs: vec![repo.work_dir().expect("present").to_owned()],
+                    worktree_dirs: vec![repo.workdir().expect("present").to_owned()],
                 },
                 None,
                 "checked out branches cannot be written, as it requires a merge of sorts which isn't done here",
@@ -182,7 +183,7 @@ mod update {
                             new.id(),
                             remote_ref.target().id(),
                             "remote ref provides the id to set in the local reference"
-                        )
+                        );
                     }
                     _ => unreachable!("only updates"),
                 }
@@ -495,7 +496,7 @@ mod update {
                 "refs/heads/main",
                 fetch::refs::Update {
                     mode: fetch::refs::update::Mode::RejectedCurrentlyCheckedOut {
-                        worktree_dirs: vec![repo.work_dir().expect("present").to_owned()],
+                        worktree_dirs: vec![repo.workdir().expect("present").to_owned()],
                     },
                     type_change: None,
                     edit_index: None,
@@ -775,7 +776,7 @@ mod update {
             }
             _ => unreachable!("only updates"),
         }
-        assert_eq!(edit.name.as_bstr(), "refs/remotes/origin/new-HEAD",);
+        assert_eq!(edit.name.as_bstr(), "refs/remotes/origin/new-HEAD");
     }
 
     #[test]
@@ -910,23 +911,23 @@ mod update {
     fn mapping_from_spec(
         spec: &str,
         remote_repo: &gix::Repository,
-    ) -> (Vec<fetch::Mapping>, Vec<gix::refspec::RefSpec>) {
+    ) -> (Vec<fetch::refmap::Mapping>, Vec<gix::refspec::RefSpec>) {
         let spec = gix_refspec::parse(spec.into(), gix_refspec::parse::Operation::Fetch).unwrap();
         let group = gix_refspec::MatchGroup::from_fetch_specs(Some(spec));
         let references = remote_repo.references().unwrap();
         let mut references: Vec<_> = references.all().unwrap().map(|r| into_remote_ref(r.unwrap())).collect();
         references.push(into_remote_ref(remote_repo.find_reference("HEAD").unwrap()));
         let mappings = group
-            .match_remotes(references.iter().map(remote_ref_to_item))
+            .match_lhs(references.iter().map(remote_ref_to_item))
             .mappings
             .into_iter()
-            .map(|m| fetch::Mapping {
+            .map(|m| fetch::refmap::Mapping {
                 remote: m.item_index.map_or_else(
                     || match m.lhs {
-                        gix_refspec::match_group::SourceRef::ObjectId(id) => fetch::Source::ObjectId(id),
+                        gix_refspec::match_group::SourceRef::ObjectId(id) => fetch::refmap::Source::ObjectId(id),
                         _ => unreachable!("not a ref, must be id: {:?}", m),
                     },
-                    |idx| fetch::Source::Ref(references[idx].clone()),
+                    |idx| fetch::refmap::Source::Ref(references[idx].clone()),
                 ),
                 local: m.rhs.map(std::borrow::Cow::into_owned),
                 spec_index: SpecIndex::ExplicitInRemote(m.spec_index),
@@ -944,7 +945,7 @@ mod update {
             },
             TargetRef::Symbolic(name) => {
                 let target = name.as_bstr().into();
-                match r.peel_to_id_in_place() {
+                match r.peel_to_id() {
                     Ok(id) => gix_protocol::handshake::Ref::Symbolic {
                         full_ref_name,
                         target,

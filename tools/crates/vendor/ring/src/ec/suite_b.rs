@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -15,7 +15,7 @@
 //! Elliptic curve operations on P-256 & P-384.
 
 use self::ops::*;
-use crate::{arithmetic::montgomery::*, cpu, ec, error, io::der, limb::LimbMask, pkcs8};
+use crate::{arithmetic::montgomery::*, cpu, ec, error, io::der, pkcs8};
 
 // NIST SP 800-56A Step 3: "If q is an odd prime p, verify that
 // yQ**2 = xQ**3 + axQ + b in GF(p), where the arithmetic is performed modulo
@@ -30,10 +30,10 @@ use crate::{arithmetic::montgomery::*, cpu, ec, error, io::der, limb::LimbMask, 
 //     y**2 == (x**2 + a)*x + b  (mod q)
 //
 fn verify_affine_point_is_on_the_curve(
-    ops: &CommonOps,
+    q: &Modulus<Q>,
     (x, y): (&Elem<R>, &Elem<R>),
 ) -> Result<(), error::Unspecified> {
-    verify_affine_point_is_on_the_curve_scaled(ops, (x, y), &ops.a, &ops.b)
+    verify_affine_point_is_on_the_curve_scaled(q, (x, y), &Elem::from(q.a()), &Elem::from(q.b()))
 }
 
 // Use `verify_affine_point_is_on_the_curve` instead of this function whenever
@@ -46,16 +46,16 @@ fn verify_affine_point_is_on_the_curve(
 //
 // This function also verifies that the point is not at infinity.
 fn verify_jacobian_point_is_on_the_curve(
-    ops: &CommonOps,
+    q: &Modulus<Q>,
     p: &Point,
 ) -> Result<Elem<R>, error::Unspecified> {
-    let z = ops.point_z(p);
+    let z = q.point_z(p);
 
     // Verify that the point is not at infinity.
-    ops.elem_verify_is_not_zero(&z)?;
+    q.elem_verify_is_not_zero(&z)?;
 
-    let x = ops.point_x(p);
-    let y = ops.point_y(p);
+    let x = q.point_x(p);
+    let y = q.point_y(p);
 
     // We are given Jacobian coordinates (x, y, z). So, we have:
     //
@@ -99,12 +99,12 @@ fn verify_jacobian_point_is_on_the_curve(
     //
     //            y**2  ==  (x**2  +  z**4 * a) * x  +  (z**6) * b
     //
-    let z2 = ops.elem_squared(&z);
-    let z4 = ops.elem_squared(&z2);
-    let z4_a = ops.elem_product(&z4, &ops.a);
-    let z6 = ops.elem_product(&z4, &z2);
-    let z6_b = ops.elem_product(&z6, &ops.b);
-    verify_affine_point_is_on_the_curve_scaled(ops, (&x, &y), &z4_a, &z6_b)?;
+    let z2 = q.elem_squared(&z);
+    let z4 = q.elem_squared(&z2);
+    let z4_a = q.elem_product(&z4, &Elem::from(q.a()));
+    let z6 = q.elem_product(&z4, &z2);
+    let z6_b = q.elem_product(&z6, &Elem::from(q.b()));
+    verify_affine_point_is_on_the_curve_scaled(q, (&x, &y), &z4_a, &z6_b)?;
     Ok(z2)
 }
 
@@ -134,19 +134,19 @@ fn verify_jacobian_point_is_on_the_curve(
 // Elliptic Curve Cryptosystems" by Johannes Blömer, Martin Otto, and
 // Jean-Pierre Seifert.
 fn verify_affine_point_is_on_the_curve_scaled(
-    ops: &CommonOps,
+    q: &Modulus<Q>,
     (x, y): (&Elem<R>, &Elem<R>),
     a_scaled: &Elem<R>,
     b_scaled: &Elem<R>,
 ) -> Result<(), error::Unspecified> {
-    let lhs = ops.elem_squared(y);
+    let lhs = q.elem_squared(y);
 
-    let mut rhs = ops.elem_squared(x);
-    ops.elem_add(&mut rhs, a_scaled);
-    ops.elem_mul(&mut rhs, x);
-    ops.elem_add(&mut rhs, b_scaled);
+    let mut rhs = q.elem_squared(x);
+    q.add_assign(&mut rhs, a_scaled);
+    q.elem_mul(&mut rhs, x);
+    q.add_assign(&mut rhs, b_scaled);
 
-    if ops.elems_are_equal(&lhs, &rhs) != LimbMask::True {
+    if !q.elems_are_equal(&lhs, &rhs).leak() {
         return Err(error::Unspecified);
     }
 
@@ -218,7 +218,7 @@ pub(crate) fn key_pair_from_bytes(
     let seed = ec::Seed::from_bytes(curve, private_key_bytes, cpu_features)
         .map_err(|error::Unspecified| error::KeyRejected::invalid_component())?;
 
-    let r = ec::KeyPair::derive(seed)
+    let r = ec::KeyPair::derive(seed, cpu_features)
         .map_err(|error::Unspecified| error::KeyRejected::unexpected_error())?;
     if public_key_bytes.as_slice_less_safe() != r.public_key().as_ref() {
         return Err(error::KeyRejected::inconsistent_components());

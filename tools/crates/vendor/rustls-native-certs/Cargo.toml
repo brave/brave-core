@@ -13,8 +13,9 @@
 edition = "2021"
 rust-version = "1.71"
 name = "rustls-native-certs"
-version = "0.8.1"
+version = "0.8.2"
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -61,7 +62,7 @@ version = "0.17"
 version = "0.23"
 
 [dev-dependencies.rustls-webpki]
-version = "0.102"
+version = "0.103"
 
 [dev-dependencies.serial_test]
 version = "3"
@@ -73,13 +74,13 @@ version = "3.5"
 version = "0.9"
 
 [dev-dependencies.webpki-roots]
-version = "0.26"
+version = "1"
 
 [dev-dependencies.x509-parser]
-version = "0.16"
+version = "0.17"
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies.openssl-probe]
-version = "0.1.2"
+version = "0.1.6"
 
 [target.'cfg(target_os = "macos")'.dependencies.security-framework]
 version = "3"

@@ -14,6 +14,7 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 const MAX_BUFFER_SIZE: usize = 65536;
 
 #[cfg(not(target_feature = "atomics"))]
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     for chunk in dest.chunks_mut(MAX_BUFFER_SIZE) {
         if get_random_values(chunk).is_err() {

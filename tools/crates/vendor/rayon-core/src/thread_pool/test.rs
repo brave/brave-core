@@ -21,7 +21,7 @@ fn workers_stop() {
     let registry;
 
     {
-        // once we exit this block, thread-pool will be dropped
+        // once we exit this block, thread pool will be dropped
         let thread_pool = ThreadPoolBuilder::new().num_threads(22).build().unwrap();
         registry = thread_pool.install(|| {
             // do some work on these threads
@@ -32,7 +32,7 @@ fn workers_stop() {
         assert_eq!(registry.num_threads(), 22);
     }
 
-    // once thread-pool is dropped, registry should terminate, which
+    // once thread pool is dropped, registry should terminate, which
     // should lead to worker threads stopping
     registry.wait_until_stopped();
 }
@@ -51,7 +51,7 @@ fn sleeper_stop() {
     let registry;
 
     {
-        // once we exit this block, thread-pool will be dropped
+        // once we exit this block, thread pool will be dropped
         let thread_pool = ThreadPoolBuilder::new().num_threads(22).build().unwrap();
         registry = Arc::clone(&thread_pool.registry);
 
@@ -59,7 +59,7 @@ fn sleeper_stop() {
         thread::sleep(time::Duration::from_secs(1));
     }
 
-    // once thread-pool is dropped, registry should terminate, which
+    // once thread pool is dropped, registry should terminate, which
     // should lead to worker threads stopping
     registry.wait_until_stopped();
 }
@@ -97,7 +97,7 @@ fn failed_thread_stack() {
     // macOS and Windows weren't fazed, or at least didn't fail the way we want.
     // They work with `isize::MAX`, but 32-bit platforms may feasibly allocate a
     // 2GB stack, so it might not fail until the second thread.
-    let stack_size = ::std::isize::MAX as usize;
+    let stack_size = isize::MAX as usize;
 
     let (start_count, start_handler) = count_handler();
     let (exit_count, exit_handler) = count_handler();
@@ -130,7 +130,7 @@ fn panic_thread_name() {
             if i >= 5 {
                 panic!();
             }
-            format!("panic_thread_name#{}", i)
+            format!("panic_thread_name#{i}")
         });
 
     let pool = crate::unwind::halt_unwinding(|| builder.build());

@@ -229,12 +229,12 @@ pub enum Advice {
     /// Indicates that the application would like the wired pages in this address range to be
     /// zeroed out if the address range is deallocated without first unwiring the pages (i.e.
     /// a munmap(2) without a preceding munlock(2) or the application quits).  This is used
-    /// with madvise() system call.
-    #[cfg(any(target_os = "macos", target_os = "ios"))]
+    /// with `madvise()` system call.
+    #[cfg(target_vendor = "apple")]
     ZeroWiredPages = libc::MADV_ZERO_WIRED_PAGES,
 }
 
-/// Values supported by [`Mmap::unsafe_advise`][crate::Mmap::unsafe_advise] and [`MmapMut::unsafe_advise`][crate::MmapMut::unsafe_advise] functions.
+/// Values supported by [`Mmap::unchecked_advise`][crate::Mmap::unchecked_advise] and [`MmapMut::unchecked_advise`][crate::MmapMut::unchecked_advise] functions.
 ///
 /// These flags can be passed to the [madvise (2)][man_page] system call
 /// and effects on the mapped pages which are conceptually writes,
@@ -319,7 +319,7 @@ pub enum UncheckedAdvice {
     /// Using the returned value with conceptually write to the
     /// mapped pages, i.e. borrowing the mapping while the pages
     /// are still being freed results in undefined behaviour.
-    #[cfg(any(target_os = "linux", target_os = "macos", target_os = "ios"))]
+    #[cfg(any(target_os = "linux", target_vendor = "apple"))]
     Free = libc::MADV_FREE,
 
     /// **MADV_REMOVE** - Linux only (since Linux 2.6.16)
@@ -358,7 +358,7 @@ pub enum UncheckedAdvice {
     /// Using the returned value with conceptually write to the
     /// mapped pages, i.e. borrowing the mapping while the pages
     /// are still being freed results in undefined behaviour.
-    #[cfg(any(target_os = "macos", target_os = "ios"))]
+    #[cfg(target_vendor = "apple")]
     FreeReusable = libc::MADV_FREE_REUSABLE,
 
     /// **MADV_FREE_REUSE** - Darwin only
@@ -372,7 +372,7 @@ pub enum UncheckedAdvice {
     /// Using the returned value with conceptually write to the
     /// mapped pages, i.e. borrowing the mapping while the pages
     /// are still being freed results in undefined behaviour.
-    #[cfg(any(target_os = "macos", target_os = "ios"))]
+    #[cfg(target_vendor = "apple")]
     FreeReuse = libc::MADV_FREE_REUSE,
 }
 

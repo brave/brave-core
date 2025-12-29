@@ -3,7 +3,6 @@ use std::{io::Read, path::PathBuf};
 use crate::DOT_GIT_DIR;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod from_gitdir_file {
     /// The error returned by [`from_gitdir_file()`][crate::path::from_gitdir_file()].
     #[derive(Debug, thiserror::Error)]
@@ -21,15 +20,12 @@ fn read_regular_file_content_with_size_limit(path: &std::path::Path) -> std::io:
     let max_file_size = 1024 * 64; // NOTE: git allows 1MB here
     let file_size = file.metadata()?.len();
     if file_size > max_file_size {
-        return Err(std::io::Error::new(
-            std::io::ErrorKind::Other,
-            format!(
-                "Refusing to open files larger than {} bytes, '{}' was {} bytes large",
-                max_file_size,
-                path.display(),
-                file_size
-            ),
-        ));
+        return Err(std::io::Error::other(format!(
+            "Refusing to open files larger than {} bytes, '{}' was {} bytes large",
+            max_file_size,
+            path.display(),
+            file_size
+        )));
     }
     let mut buf = Vec::with_capacity(512);
     file.read_to_end(&mut buf)?;

@@ -7,7 +7,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
 use bstr::BString;
 /// Provides types needed for using [`stack::Platform::matching_attributes()`].
@@ -62,5 +62,4 @@ pub struct Stack {
 pub(crate) type PathIdMapping = (BString, gix_hash::ObjectId);
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod stack;

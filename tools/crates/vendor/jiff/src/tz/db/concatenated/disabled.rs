@@ -1,17 +1,17 @@
-use crate::tz::TimeZone;
+use crate::tz::{TimeZone, TimeZoneNameIter};
 
 #[derive(Clone)]
-pub(crate) struct Concatenated;
+pub(crate) struct Database;
 
-impl Concatenated {
-    pub(crate) fn from_env() -> Concatenated {
-        Concatenated
+impl Database {
+    pub(crate) fn from_env() -> Database {
+        Database
     }
 
     #[cfg(feature = "std")]
     pub(crate) fn from_path(
         path: &std::path::Path,
-    ) -> Result<Concatenated, crate::Error> {
+    ) -> Result<Database, crate::Error> {
         Err(crate::error::err!(
             "system concatenated tzdb unavailable: \
              crate feature `tzdb-concatenated` is disabled, \
@@ -20,8 +20,8 @@ impl Concatenated {
         ))
     }
 
-    pub(crate) fn none() -> Concatenated {
-        Concatenated
+    pub(crate) fn none() -> Database {
+        Database
     }
 
     pub(crate) fn reset(&self) {}
@@ -30,9 +30,8 @@ impl Concatenated {
         None
     }
 
-    #[cfg(feature = "alloc")]
-    pub(crate) fn available(&self) -> alloc::vec::Vec<alloc::string::String> {
-        alloc::vec::Vec::new()
+    pub(crate) fn available<'d>(&'d self) -> TimeZoneNameIter<'d> {
+        TimeZoneNameIter::empty()
     }
 
     pub(crate) fn is_definitively_empty(&self) -> bool {
@@ -40,7 +39,7 @@ impl Concatenated {
     }
 }
 
-impl core::fmt::Debug for Concatenated {
+impl core::fmt::Debug for Database {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "Concatenated(unavailable)")
     }

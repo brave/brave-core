@@ -20,7 +20,7 @@ pub enum Error {
     InvalidAttribute { attribute: BString },
     #[error("Invalid character in attribute value: {character:?}")]
     InvalidAttributeValue { character: char },
-    #[error("Escape character '\\' is not allowed as the last character in an attribute value")]
+    #[error(r"Escape character '\' is not allowed as the last character in an attribute value")]
     TrailingEscapeCharacter,
     #[error("Attribute specification cannot be empty")]
     EmptyAttribute,
@@ -155,7 +155,7 @@ fn parse_long_keywords(input: &[u8], p: &mut Pattern, cursor: &mut usize) -> Res
                     keyword: BString::from(keyword),
                 });
             }
-        };
+        }
         Ok(())
     })
 }

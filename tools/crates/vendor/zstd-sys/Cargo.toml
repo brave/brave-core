@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd-sys"
-version = "2.0.13+zstd.1.5.6"
+version = "2.0.16+zstd.1.5.7"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 build = "build.rs"
 links = "zstd"
@@ -29,7 +29,14 @@ include = [
     "/zstd/lib/**/*.c",
     "/zstd/lib/**/*.h",
     "/zstd/lib/**/*.S",
+    "/zstd/contrib/seekable_format/*.c",
+    "/zstd/contrib/seekable_format/*.h",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Low-level bindings for the zstd compression library."
 readme = "Readme.md"
 keywords = [
@@ -47,30 +54,12 @@ repository = "https://github.com/gyscos/zstd-rs"
 [package.metadata.docs.rs]
 features = ["experimental"]
 
-[lib]
-doctest = false
-
-[build-dependencies.bindgen]
-version = "0.69"
-features = [
-    "runtime",
-    "which-rustfmt",
-]
-optional = true
-default-features = false
-
-[build-dependencies.cc]
-version = "1.0.45"
-features = ["parallel"]
-
-[build-dependencies.pkg-config]
-version = "0.3"
-
 [features]
 debug = []
 default = [
     "legacy",
     "zdict_builder",
+    "bindgen",
 ]
 experimental = []
 fat-lto = []
@@ -79,8 +68,30 @@ no_asm = []
 no_wasm_shim = []
 non-cargo = []
 pkg-config = []
+seekable = []
 std = []
 thin = []
 thin-lto = []
 zdict_builder = []
 zstdmt = []
+
+[lib]
+name = "zstd_sys"
+path = "src/lib.rs"
+doctest = false
+
+[build-dependencies.bindgen]
+version = "0.72"
+features = ["runtime"]
+optional = true
+default-features = false
+
+[build-dependencies.cc]
+version = "1.0.45"
+features = ["parallel"]
+
+[build-dependencies.pkg-config]
+version = "0.3.28"
+
+[lints.rust]
+non_upper_case_globals = "allow"

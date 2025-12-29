@@ -4,16 +4,16 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 use super::{super::PUBLIC_KEY_PUBLIC_MODULUS_MAX_LEN, mgf1, Padding, RsaEncoding, Verification};
-use crate::{bits, digest, error, rand};
+use crate::{bb, bits, digest, error, rand};
 
 /// RSA PSS padding as described in [RFC 3447 Section 8.1].
 ///
@@ -157,9 +157,9 @@ impl Verification for PSS {
             db[0] ^= b;
 
             // Step 8.
-            for db in db[1..].iter_mut() {
-                *db ^= masked_bytes.read_byte()?;
-            }
+            let db_rest = &mut db[1..];
+            let masked_bytes = masked_bytes.read_bytes(db_rest.len())?;
+            bb::xor_assign_at_start(db_rest, masked_bytes.as_slice_less_safe());
             Ok(())
         })?;
 

@@ -1,11 +1,14 @@
-use std::ffi::{OsStr, OsString};
-use std::path::{Path, PathBuf};
+use std::{
+    ffi::{OsStr, OsString},
+    path::{Path, PathBuf},
+};
 
 use bstr::{BString, ByteSlice};
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
 use crate::env::git::EXE_NAME;
 
+mod auxiliary;
 mod git;
 
 /// Return the location at which installation specific git configuration file can be found, or `None`
@@ -30,18 +33,16 @@ pub fn installation_config_prefix() -> Option<&'static Path> {
 
 /// Return the shell that Git would use, the shell to execute commands from.
 ///
-/// On Windows, this is the full path to `sh.exe` bundled with Git, and on
-/// Unix it's `/bin/sh` as posix compatible shell.
-/// If the bundled shell on Windows cannot be found, `sh` is returned as the name of a shell
-/// as it could possibly be found in `PATH`.
-/// Note that the returned path might not be a path on disk.
+/// On Windows, this is the full path to `sh.exe` bundled with Git for Windows if we can find it.
+/// If the bundled shell on Windows cannot be found, `sh.exe` is returned as the name of a shell,
+/// as it could possibly be found in `PATH`. On Unix it's `/bin/sh` as the POSIX-compatible shell.
+///
+/// Note that the returned path might not be a path on disk, if it is a fallback path or if the
+/// file was moved or deleted since the first time this function is called.
 pub fn shell() -> &'static OsStr {
-    static PATH: Lazy<OsString> = Lazy::new(|| {
+    static PATH: LazyLock<OsString> = LazyLock::new(|| {
         if cfg!(windows) {
-            core_dir()
-                .and_then(|p| p.ancestors().nth(3)) // Skip something like mingw64/libexec/git-core.
-                .map(|p| p.join("usr").join("bin").join("sh.exe"))
-                .map_or_else(|| OsString::from("sh"), Into::into)
+            auxiliary::find_git_associated_windows_executable_with_fallback("sh")
         } else {
             "/bin/sh".into()
         }
@@ -50,15 +51,17 @@ pub fn shell() -> &'static OsStr {
 }
 
 /// Return the name of the Git executable to invoke it.
+///
 /// If it's in the `PATH`, it will always be a short name.
 ///
 /// Note that on Windows, we will find the executable in the `PATH` if it exists there, or search it
 /// in alternative locations which when found yields the full path to it.
 pub fn exe_invocation() -> &'static Path {
     if cfg!(windows) {
-        /// The path to the Git executable as located in the `PATH` or in other locations that it's known to be installed to.
-        /// It's `None` if environment variables couldn't be read or if no executable could be found.
-        static EXECUTABLE_PATH: Lazy<Option<PathBuf>> = Lazy::new(|| {
+        /// The path to the Git executable as located in the `PATH` or in other locations that it's
+        /// known to be installed to. It's `None` if environment variables couldn't be read or if
+        /// no executable could be found.
+        static EXECUTABLE_PATH: LazyLock<Option<PathBuf>> = LazyLock::new(|| {
             std::env::split_paths(&std::env::var_os("PATH")?)
                 .chain(git::ALTERNATIVE_LOCATIONS.iter().map(Into::into))
                 .find_map(|prefix| {
@@ -82,11 +85,11 @@ pub fn exe_invocation() -> &'static Path {
     }
 }
 
-/// Returns the fully qualified path in the *xdg-home* directory (or equivalent in the home dir) to `file`,
-/// accessing `env_var(<name>)` to learn where these bases are.
+/// Returns the fully qualified path in the *xdg-home* directory (or equivalent in the home dir) to
+/// `file`, accessing `env_var(<name>)` to learn where these bases are.
 ///
-/// Note that the `HOME` directory should ultimately come from [`home_dir()`] as it handles windows correctly.
-/// The same can be achieved by using [`var()`] as `env_var`.
+/// Note that the `HOME` directory should ultimately come from [`home_dir()`] as it handles Windows
+/// correctly. The same can be achieved by using [`var()`] as `env_var`.
 pub fn xdg_config(file: &str, env_var: &mut dyn FnMut(&str) -> Option<OsString>) -> Option<PathBuf> {
     env_var("XDG_CONFIG_HOME")
         .map(|home| {
@@ -106,7 +109,7 @@ pub fn xdg_config(file: &str, env_var: &mut dyn FnMut(&str) -> Option<OsString>)
         })
 }
 
-static GIT_CORE_DIR: Lazy<Option<PathBuf>> = Lazy::new(|| {
+static GIT_CORE_DIR: LazyLock<Option<PathBuf>> = LazyLock::new(|| {
     let mut cmd = std::process::Command::new(exe_invocation());
 
     #[cfg(windows)]
@@ -136,34 +139,52 @@ pub fn core_dir() -> Option<&'static Path> {
     GIT_CORE_DIR.as_deref()
 }
 
-/// Returns the platform dependent system prefix or `None` if it cannot be found (right now only on windows).
+fn system_prefix_from_core_dir<F>(core_dir_func: F) -> Option<PathBuf>
+where
+    F: Fn() -> Option<&'static Path>,
+{
+    let path = core_dir_func()?;
+    let one_past_prefix = path.components().enumerate().find_map(|(idx, c)| {
+        matches!(c,std::path::Component::Normal(name) if name.to_str() == Some("libexec")).then_some(idx)
+    })?;
+    Some(path.components().take(one_past_prefix.checked_sub(1)?).collect())
+}
+
+fn system_prefix_from_exepath_var<F>(var_os_func: F) -> Option<PathBuf>
+where
+    F: Fn(&str) -> Option<OsString>,
+{
+    // Only attempt this optimization if the `EXEPATH` variable is set to an absolute path.
+    let root = var_os_func("EXEPATH").map(PathBuf::from).filter(|r| r.is_absolute())?;
+
+    let mut candidates = ["clangarm64", "mingw64", "mingw32"]
+        .iter()
+        .map(|component| root.join(component))
+        .filter(|candidate| candidate.is_dir());
+
+    let path = candidates.next()?;
+    match candidates.next() {
+        Some(_) => None, // Multiple plausible candidates, so don't use the `EXEPATH` optimization.
+        None => Some(path),
+    }
+}
+
+/// Returns the platform dependent system prefix or `None` if it cannot be found (right now only on Windows).
 ///
 /// ### Performance
 ///
-/// On windows, the slowest part is the launch of the Git executable in the PATH, which only happens when launched
-/// from outside of the `msys2` shell.
+/// On Windows, the slowest part is the launch of the Git executable in the PATH. This is often
+/// avoided by inspecting the environment, when launched from inside a Git Bash MSYS2 shell.
 ///
 /// ### When `None` is returned
 ///
-/// This happens only windows if the git binary can't be found at all for obtaining its executable path, or if the git binary
-/// wasn't built with a well-known directory structure or environment.
+/// This happens only Windows if the git binary can't be found at all for obtaining its executable
+/// path, or if the git binary wasn't built with a well-known directory structure or environment.
 pub fn system_prefix() -> Option<&'static Path> {
     if cfg!(windows) {
-        static PREFIX: Lazy<Option<PathBuf>> = Lazy::new(|| {
-            if let Some(root) = std::env::var_os("EXEPATH").map(PathBuf::from) {
-                for candidate in ["mingw64", "mingw32"] {
-                    let candidate = root.join(candidate);
-                    if candidate.is_dir() {
-                        return Some(candidate);
-                    }
-                }
-            }
-
-            let path = GIT_CORE_DIR.as_deref()?;
-            let one_past_prefix = path.components().enumerate().find_map(|(idx, c)| {
-                matches!(c,std::path::Component::Normal(name) if name.to_str() == Some("libexec")).then_some(idx)
-            })?;
-            Some(path.components().take(one_past_prefix.checked_sub(1)?).collect())
+        static PREFIX: LazyLock<Option<PathBuf>> = LazyLock::new(|| {
+            system_prefix_from_exepath_var(|key| std::env::var_os(key))
+                .or_else(|| system_prefix_from_core_dir(core_dir))
         });
         PREFIX.as_deref()
     } else {
@@ -177,19 +198,20 @@ pub fn home_dir() -> Option<PathBuf> {
     std::env::var("HOME").map(PathBuf::from).ok()
 }
 
-/// Tries to obtain the home directory from `HOME` on all platforms, but falls back to [`home::home_dir()`] for
-/// more complex ways of obtaining a home directory, particularly useful on Windows.
+/// Tries to obtain the home directory from `HOME` on all platforms, but falls back to
+/// [`std::env::home_dir()`] for more complex ways of obtaining a home directory, particularly useful
+/// on Windows.
 ///
-/// The reason `HOME` is tried first is to allow Windows users to have a custom location for their linux-style
-/// home, as otherwise they would have to accumulate dot files in a directory these are inconvenient and perceived
-/// as clutter.
+/// The reason `HOME` is tried first is to allow Windows users to have a custom location for their
+/// linux-style home, as otherwise they would have to accumulate dot files in a directory these are
+/// inconvenient and perceived as clutter.
 #[cfg(not(target_family = "wasm"))]
 pub fn home_dir() -> Option<PathBuf> {
-    std::env::var_os("HOME").map(Into::into).or_else(home::home_dir)
+    std::env::var_os("HOME").map(Into::into).or_else(std::env::home_dir)
 }
 
-/// Returns the contents of an environment variable of `name` with some special handling
-/// for certain environment variables (like `HOME`) for platform compatibility.
+/// Returns the contents of an environment variable of `name` with some special handling for
+/// certain environment variables (like `HOME`) for platform compatibility.
 pub fn var(name: &str) -> Option<OsString> {
     if name == "HOME" {
         home_dir().map(PathBuf::into_os_string)
@@ -197,3 +219,6 @@ pub fn var(name: &str) -> Option<OsString> {
         std::env::var_os(name)
     }
 }
+
+#[cfg(test)]
+mod tests;

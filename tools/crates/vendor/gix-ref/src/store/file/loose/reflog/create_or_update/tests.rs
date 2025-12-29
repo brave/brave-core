@@ -1,5 +1,5 @@
 use gix_actor::Signature;
-use gix_date::{time::Sign, Time};
+use gix_date::parse::TimeBuf;
 use gix_object::bstr::ByteSlice;
 use gix_testtools::tempfile::TempDir;
 
@@ -57,17 +57,13 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
         let committer = Signature {
             name: "committer".into(),
             email: "committer@example.com".into(),
-            time: Time {
-                seconds: 1234,
-                offset: 1800,
-                sign: Sign::Plus,
-            },
+            time: gix_date::parse_header("1234 +0800").unwrap(),
         };
         store.reflog_create_or_append(
             full_name,
             None,
             &new,
-            committer.to_ref().into(),
+            committer.to_ref(&mut TimeBuf::default()).into(),
             b"the message".as_bstr(),
             false,
         )?;
@@ -85,11 +81,12 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
                     }]
                 );
                 let previous = hex_to_id("0000000000000000000000111111111111111111");
+                buf.clear();
                 store.reflog_create_or_append(
                     full_name,
                     Some(previous),
                     &new,
-                    committer.to_ref().into(),
+                    committer.to_ref(&mut TimeBuf::default()).into(),
                     b"next message".as_bstr(),
                     false,
                 )?;
@@ -112,7 +109,7 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
                     "there is no logs in disabled mode"
                 );
             }
-        };
+        }
 
         // create onto existing directory
         let full_name_str = "refs/heads/other";
@@ -121,11 +118,12 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
         let directory_in_place_of_reflog = reflog_path.join("empty-a").join("empty-b");
         std::fs::create_dir_all(directory_in_place_of_reflog)?;
 
+        buf.clear();
         store.reflog_create_or_append(
             full_name,
             None,
             &new,
-            committer.to_ref().into(),
+            committer.to_ref(&mut TimeBuf::default()).into(),
             b"more complicated reflog creation".as_bstr(),
             false,
         )?;

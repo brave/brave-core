@@ -3,7 +3,8 @@ use std::convert::TryFrom;
 
 use pki_types::{CertificateDer, ServerName, SignatureVerificationAlgorithm, UnixTime};
 use rcgen::{
-    BasicConstraints, Certificate, CertificateParams, DnType, IsCa, KeyPair, KeyUsagePurpose,
+    BasicConstraints, CertificateParams, CertifiedIssuer, DnType, IsCa, Issuer, KeyPair,
+    KeyUsagePurpose,
 };
 use webpki::{anchor_from_trusted_cert, EndEntityCert, Error, KeyUsage};
 use x509_parser::extensions::{GeneralName, NameConstraints as X509ParserNameConstraints};
@@ -62,20 +63,24 @@ struct ConstraintTest {
 
 impl ConstraintTest {
     fn new(webpki_name_constraints: &[u8]) -> Self {
-        // Create a trust anchor CA certificate that has the name constraints we want to test.
-        let mut trust_anchor = CertificateParams::new([]).unwrap();
-        trust_anchor
-            .distinguished_name
-            .push(DnType::CommonName, "Name Constraint Test CA");
-        trust_anchor.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
-        trust_anchor.key_usages = vec![
-            KeyUsagePurpose::KeyCertSign,
-            KeyUsagePurpose::DigitalSignature,
-        ];
         let name_constraints = rcgen_name_constraints(webpki_name_constraints);
-        trust_anchor.name_constraints = Some(name_constraints.clone());
-        let key_pair = KeyPair::generate().unwrap();
-        let trust_anchor = trust_anchor.self_signed(&key_pair).unwrap();
+
+        // Create a trust anchor CA certificate that has the name constraints we want to test.
+        let trust_anchor = {
+            let mut params = CertificateParams::new([]).unwrap();
+            params
+                .distinguished_name
+                .push(DnType::CommonName, "Name Constraint Test CA");
+            params.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
+            params.key_usages = vec![
+                KeyUsagePurpose::KeyCertSign,
+                KeyUsagePurpose::DigitalSignature,
+            ];
+            params.name_constraints = Some(name_constraints.clone());
+
+            let key = KeyPair::generate().unwrap();
+            CertifiedIssuer::self_signed(params, key).unwrap()
+        };
 
         let certs_for_subtrees = |suffix| {
             name_constraints
@@ -83,9 +88,8 @@ impl ConstraintTest {
                 .iter()
                 .filter_map(|subtree| match subtree {
                     rcgen::GeneralSubtree::DnsName(dns_name) => Some(rcgen_ee_for_name(
-                        format!("valid{}{}", dns_name, suffix),
+                        format!("valid{dns_name}{suffix}"),
                         &trust_anchor,
-                        &key_pair,
                     )),
                     _ => None,
                 })
@@ -99,21 +103,17 @@ impl ConstraintTest {
             // For each permitted subtree in the name constraints, issue an end entity certificate
             // that contains a DNS name that will **not** match the permitted subtree base.
             forbidden_certs: certs_for_subtrees(".invalid"),
-            trust_anchor: trust_anchor.into(),
+            trust_anchor: trust_anchor.der().to_owned(),
         }
     }
 }
 
-fn rcgen_ee_for_name(
-    name: String,
-    issuer: &Certificate,
-    issuer_key: &KeyPair,
-) -> CertificateDer<'static> {
+fn rcgen_ee_for_name(name: String, issuer: &Issuer<'_, KeyPair>) -> CertificateDer<'static> {
     let mut ee = CertificateParams::new(vec![name.clone()]).unwrap();
     ee.distinguished_name.push(DnType::CommonName, name);
     ee.is_ca = IsCa::NoCa;
     let key_pair = KeyPair::generate().unwrap();
-    ee.signed_by(&key_pair, issuer, issuer_key).unwrap().into()
+    ee.signed_by(&key_pair, issuer).unwrap().into()
 }
 
 /// Convert the webpki trust anchor DER encoding of name constraints to rcgen NameConstraints.
@@ -152,7 +152,7 @@ fn rcgen_name_constraints(der: &[u8]) -> rcgen::NameConstraints {
             .iter()
             .map(|subtree| match &subtree.base {
                 GeneralName::DNSName(base) => rcgen::GeneralSubtree::DnsName(base.to_string()),
-                name => panic!("unexpected subtree base general name type: {}", name),
+                name => panic!("unexpected subtree base general name type: {name}"),
             })
             .collect(),
     };

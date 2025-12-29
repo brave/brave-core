@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 20
-  |
-1 | bad-uni-esc-7 = "\uabag"
-  |                    ^
-invalid unicode 4-digit hex code

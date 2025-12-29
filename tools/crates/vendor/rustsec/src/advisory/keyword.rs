@@ -1,7 +1,7 @@
 //! Advisory keywords
 
 use crate::error::Error;
-use serde::{de::Error as DeError, Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, de::Error as DeError};
 use std::str::FromStr;
 
 /// Keywords on advisories, similar to Cargo keywords

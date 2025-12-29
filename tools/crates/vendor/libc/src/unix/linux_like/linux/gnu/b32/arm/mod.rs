@@ -1,10 +1,14 @@
 use crate::prelude::*;
-use crate::{off64_t, off_t};
+use crate::{
+    off64_t,
+    off_t,
+};
 
-pub type c_char = u8;
 pub type wchar_t = u32;
 
 s! {
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
@@ -52,32 +56,44 @@ s! {
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
         pub mode: c_ushort,
-        __pad1: c_ushort,
+        __pad1: Padding<c_ushort>,
         pub __seq: c_ushort,
-        __pad2: c_ushort,
-        __unused1: c_ulong,
-        __unused2: c_ulong,
+        __pad2: Padding<c_ushort>,
+        __unused1: Padding<c_ulong>,
+        __unused2: Padding<c_ulong>,
     }
 
     pub struct stat64 {
         pub st_dev: crate::dev_t,
-        __pad1: c_uint,
-        __st_ino: crate::ino_t,
+        #[cfg(not(gnu_time_bits64))]
+        __pad1: Padding<c_uint>,
+        #[cfg(not(gnu_time_bits64))]
+        __st_ino: c_ulong,
+        #[cfg(gnu_time_bits64)]
+        pub st_ino: crate::ino_t,
         pub st_mode: crate::mode_t,
         pub st_nlink: crate::nlink_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        __pad2: c_uint,
+        #[cfg(not(gnu_time_bits64))]
+        __pad2: Padding<c_uint>,
         pub st_size: off64_t,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt64_t,
         pub st_atime: crate::time_t,
         pub st_atime_nsec: c_long,
+        #[cfg(gnu_time_bits64)]
+        _atime_pad: c_int,
         pub st_mtime: crate::time_t,
         pub st_mtime_nsec: c_long,
+        #[cfg(gnu_time_bits64)]
+        _mtime_pad: c_int,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
+        #[cfg(gnu_time_bits64)]
+        _ctime_pad: c_int,
+        #[cfg(not(gnu_time_bits64))]
         pub st_ino: crate::ino64_t,
     }
 
@@ -116,27 +132,33 @@ s! {
         pub shm_perm: crate::ipc_perm,
         pub shm_segsz: size_t,
         pub shm_atime: crate::time_t,
-        __unused1: c_ulong,
+        #[cfg(not(gnu_time_bits64))]
+        __unused1: Padding<c_ulong>,
         pub shm_dtime: crate::time_t,
-        __unused2: c_ulong,
+        #[cfg(not(gnu_time_bits64))]
+        __unused2: Padding<c_ulong>,
         pub shm_ctime: crate::time_t,
-        __unused3: c_ulong,
+        #[cfg(not(gnu_time_bits64))]
+        __unused3: Padding<c_ulong>,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __unused4: c_ulong,
-        __unused5: c_ulong,
+        __unused4: Padding<c_ulong>,
+        __unused5: Padding<c_ulong>,
     }
 
     pub struct msqid_ds {
         pub msg_perm: crate::ipc_perm,
         pub msg_stime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved1: c_ulong,
         pub msg_rtime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved2: c_ulong,
         pub msg_ctime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved3: c_ulong,
-        __msg_cbytes: c_ulong,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
@@ -210,16 +232,7 @@ s! {
         pub arm_cpsr: c_ulong,
         pub arm_orig_r0: c_ulong,
     }
-}
 
-s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
-    #[repr(align(8))]
-    pub struct max_align_t {
-        priv_: [i64; 2],
-    }
-
-    #[allow(missing_debug_implementations)]
     #[repr(align(8))]
     pub struct ucontext_t {
         pub uc_flags: c_ulong,
@@ -231,38 +244,10 @@ s_no_extra_traits! {
     }
 }
 
-cfg_if! {
-    if #[cfg(feature = "extra_traits")] {
-        impl PartialEq for ucontext_t {
-            fn eq(&self, other: &ucontext_t) -> bool {
-                self.uc_flags == other.uc_flags
-                    && self.uc_link == other.uc_link
-                    && self.uc_stack == other.uc_stack
-                    && self.uc_mcontext == other.uc_mcontext
-                    && self.uc_sigmask == other.uc_sigmask
-            }
-        }
-        impl Eq for ucontext_t {}
-        impl fmt::Debug for ucontext_t {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("ucontext_t")
-                    .field("uc_flags", &self.uc_link)
-                    .field("uc_link", &self.uc_link)
-                    .field("uc_stack", &self.uc_stack)
-                    .field("uc_mcontext", &self.uc_mcontext)
-                    .field("uc_sigmask", &self.uc_sigmask)
-                    .finish()
-            }
-        }
-        impl hash::Hash for ucontext_t {
-            fn hash<H: hash::Hasher>(&self, state: &mut H) {
-                self.uc_flags.hash(state);
-                self.uc_link.hash(state);
-                self.uc_stack.hash(state);
-                self.uc_mcontext.hash(state);
-                self.uc_sigmask.hash(state);
-            }
-        }
+s_no_extra_traits! {
+    #[repr(align(8))]
+    pub struct max_align_t {
+        priv_: [i64; 2],
     }
 }
 
@@ -398,7 +383,13 @@ pub const MCL_ONFAULT: c_int = 0x0004;
 pub const POLLWRNORM: c_short = 0x100;
 pub const POLLWRBAND: c_short = 0x200;
 
-pub const F_GETLK: c_int = 5;
+cfg_if! {
+    if #[cfg(gnu_file_offset_bits64)] {
+        pub const F_GETLK: c_int = 12;
+    } else {
+        pub const F_GETLK: c_int = 5;
+    }
+}
 pub const F_GETOWN: c_int = 9;
 pub const F_SETOWN: c_int = 8;
 

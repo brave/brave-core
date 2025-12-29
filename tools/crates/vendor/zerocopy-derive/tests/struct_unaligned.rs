@@ -6,15 +6,11 @@
 // This file may not be copied, modified, or distributed except according to
 // those terms.
 
+// See comment in `include.rs` for why we disable the prelude.
+#![no_implicit_prelude]
 #![allow(warnings)]
 
-mod util;
-
-use std::{marker::PhantomData, option::IntoIter};
-
-use {static_assertions::assert_impl_all, zerocopy::Unaligned};
-
-use crate::util::AU16;
+include!("include.rs");
 
 // A struct is `Unaligned` if:
 // - `repr(align)` is no more than 1 and either
@@ -22,23 +18,23 @@ use crate::util::AU16;
 //     - all fields Unaligned
 //   - `repr(packed)`
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(C)]
 struct Foo {
     a: u8,
 }
 
-assert_impl_all!(Foo: Unaligned);
+util_assert_impl_all!(Foo: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(transparent)]
 struct Bar {
     a: u8,
 }
 
-assert_impl_all!(Bar: Unaligned);
+util_assert_impl_all!(Bar: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(packed)]
 struct Baz {
     // NOTE: The `u16` type is not guaranteed to have alignment 2, although it
@@ -51,50 +47,50 @@ struct Baz {
     a: u16,
 }
 
-assert_impl_all!(Baz: Unaligned);
+util_assert_impl_all!(Baz: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(C, align(1))]
 struct FooAlign {
     a: u8,
 }
 
-assert_impl_all!(FooAlign: Unaligned);
+util_assert_impl_all!(FooAlign: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(transparent)]
 struct Unsized {
     a: [u8],
 }
 
-assert_impl_all!(Unsized: Unaligned);
+util_assert_impl_all!(Unsized: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(C)]
-struct TypeParams<'a, T: ?Sized, I: Iterator> {
+struct TypeParams<'a, T: ?imp::Sized, I: imp::Iterator> {
     a: I::Item,
     b: u8,
-    c: PhantomData<&'a [u8]>,
-    d: PhantomData<&'static str>,
-    e: PhantomData<String>,
+    c: imp::PhantomData<&'a [::core::primitive::u8]>,
+    d: imp::PhantomData<&'static ::core::primitive::str>,
+    e: imp::PhantomData<imp::String>,
     f: T,
 }
 
-assert_impl_all!(TypeParams<'static, (), IntoIter<()>>: Unaligned);
-assert_impl_all!(TypeParams<'static, u8, IntoIter<()>>: Unaligned);
-assert_impl_all!(TypeParams<'static, [u8], IntoIter<()>>: Unaligned);
+util_assert_impl_all!(TypeParams<'static, (), imp::IntoIter<()>>: imp::Unaligned);
+util_assert_impl_all!(TypeParams<'static, ::core::primitive::u8, imp::IntoIter<()>>: imp::Unaligned);
+util_assert_impl_all!(TypeParams<'static, [::core::primitive::u8], imp::IntoIter<()>>: imp::Unaligned);
 
 // Deriving `Unaligned` should work if the struct has bounded parameters.
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(transparent)]
-struct WithParams<'a: 'b, 'b: 'a, const N: usize, T: 'a + 'b + Unaligned>(
+struct WithParams<'a: 'b, 'b: 'a, T: 'a + 'b + imp::Unaligned, const N: usize>(
     [T; N],
-    PhantomData<&'a &'b ()>,
+    imp::PhantomData<&'a &'b ()>,
 )
 where
     'a: 'b,
     'b: 'a,
-    T: 'a + 'b + Unaligned;
+    T: 'a + 'b + imp::Unaligned;
 
-assert_impl_all!(WithParams<'static, 'static, 42, u8>: Unaligned);
+util_assert_impl_all!(WithParams<'static, 'static, u8, 42>: imp::Unaligned);

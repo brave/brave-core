@@ -1,17 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
+# project.
 # ====================================================================
 #
 # November 2014
@@ -75,8 +80,6 @@ open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
 
 $code.=<<___;
 .text
-
-.extern OPENSSL_ia32cap_P
 
 .section .rodata
 .align	64
@@ -226,20 +229,12 @@ my @x=map("\"$_\"",@x);
 ########################################################################
 # Generic code path that handles all lengths on pre-SSSE3 processors.
 $code.=<<___;
-.globl	ChaCha20_ctr32
-.type	ChaCha20_ctr32,\@function,5
+.globl	ChaCha20_ctr32_nohw
+.type	ChaCha20_ctr32_nohw,\@function,5
 .align	64
-ChaCha20_ctr32:
+ChaCha20_ctr32_nohw:
 .cfi_startproc
 	_CET_ENDBR
-	cmp	\$0,$len
-	je	.Lno_data
-	mov	OPENSSL_ia32cap_P+4(%rip),%r10
-___
-$code.=<<___;
-	test	\$`1<<(41-32)`,%r10d
-	jnz	.LChaCha20_ssse3
-
 	push	%rbx
 .cfi_push	rbx
 	push	%rbp
@@ -411,166 +406,8 @@ $code.=<<___;
 .Lno_data:
 	ret
 .cfi_endproc
-.size	ChaCha20_ctr32,.-ChaCha20_ctr32
+.size	ChaCha20_ctr32_nohw,.-ChaCha20_ctr32_nohw
 ___
-
-########################################################################
-# SSSE3 code path that handles shorter lengths
-{
-my ($a,$b,$c,$d,$t,$t1,$rot16,$rot24)=map("%xmm$_",(0..7));
-
-sub SSSE3ROUND {	# critical path is 20 "SIMD ticks" per round
-	&paddd	($a,$b);
-	&pxor	($d,$a);
-	&pshufb	($d,$rot16);
-
-	&paddd	($c,$d);
-	&pxor	($b,$c);
-	&movdqa	($t,$b);
-	&psrld	($b,20);
-	&pslld	($t,12);
-	&por	($b,$t);
-
-	&paddd	($a,$b);
-	&pxor	($d,$a);
-	&pshufb	($d,$rot24);
-
-	&paddd	($c,$d);
-	&pxor	($b,$c);
-	&movdqa	($t,$b);
-	&psrld	($b,25);
-	&pslld	($t,7);
-	&por	($b,$t);
-}
-
-my $xframe = $win64 ? 32+8 : 8;
-
-$code.=<<___;
-.type	ChaCha20_ssse3,\@function,5
-.align	32
-ChaCha20_ssse3:
-.LChaCha20_ssse3:
-.cfi_startproc
-	mov	%rsp,%r9		# frame pointer
-.cfi_def_cfa_register	r9
-___
-$code.=<<___;
-	cmp	\$128,$len		# we might throw away some data,
-	ja	.LChaCha20_4x		# but overall it won't be slower
-
-.Ldo_sse3_after_all:
-	sub	\$64+$xframe,%rsp
-___
-$code.=<<___	if ($win64);
-	movaps	%xmm6,-0x28(%r9)
-	movaps	%xmm7,-0x18(%r9)
-.Lssse3_body:
-___
-$code.=<<___;
-	movdqa	.Lsigma(%rip),$a
-	movdqu	($key),$b
-	movdqu	16($key),$c
-	movdqu	($counter),$d
-	movdqa	.Lrot16(%rip),$rot16
-	movdqa	.Lrot24(%rip),$rot24
-
-	movdqa	$a,0x00(%rsp)
-	movdqa	$b,0x10(%rsp)
-	movdqa	$c,0x20(%rsp)
-	movdqa	$d,0x30(%rsp)
-	mov	\$10,$counter		# reuse $counter
-	jmp	.Loop_ssse3
-
-.align	32
-.Loop_outer_ssse3:
-	movdqa	.Lone(%rip),$d
-	movdqa	0x00(%rsp),$a
-	movdqa	0x10(%rsp),$b
-	movdqa	0x20(%rsp),$c
-	paddd	0x30(%rsp),$d
-	mov	\$10,$counter
-	movdqa	$d,0x30(%rsp)
-	jmp	.Loop_ssse3
-
-.align	32
-.Loop_ssse3:
-___
-	&SSSE3ROUND();
-	&pshufd	($c,$c,0b01001110);
-	&pshufd	($b,$b,0b00111001);
-	&pshufd	($d,$d,0b10010011);
-	&nop	();
-
-	&SSSE3ROUND();
-	&pshufd	($c,$c,0b01001110);
-	&pshufd	($b,$b,0b10010011);
-	&pshufd	($d,$d,0b00111001);
-
-	&dec	($counter);
-	&jnz	(".Loop_ssse3");
-
-$code.=<<___;
-	paddd	0x00(%rsp),$a
-	paddd	0x10(%rsp),$b
-	paddd	0x20(%rsp),$c
-	paddd	0x30(%rsp),$d
-
-	cmp	\$64,$len
-	jb	.Ltail_ssse3
-
-	movdqu	0x00($inp),$t
-	movdqu	0x10($inp),$t1
-	pxor	$t,$a			# xor with input
-	movdqu	0x20($inp),$t
-	pxor	$t1,$b
-	movdqu	0x30($inp),$t1
-	lea	0x40($inp),$inp		# inp+=64
-	pxor	$t,$c
-	pxor	$t1,$d
-
-	movdqu	$a,0x00($out)		# write output
-	movdqu	$b,0x10($out)
-	movdqu	$c,0x20($out)
-	movdqu	$d,0x30($out)
-	lea	0x40($out),$out		# out+=64
-
-	sub	\$64,$len
-	jnz	.Loop_outer_ssse3
-
-	jmp	.Ldone_ssse3
-
-.align	16
-.Ltail_ssse3:
-	movdqa	$a,0x00(%rsp)
-	movdqa	$b,0x10(%rsp)
-	movdqa	$c,0x20(%rsp)
-	movdqa	$d,0x30(%rsp)
-	xor	$counter,$counter
-
-.Loop_tail_ssse3:
-	movzb	($inp,$counter),%eax
-	movzb	(%rsp,$counter),%ecx
-	lea	1($counter),$counter
-	xor	%ecx,%eax
-	mov	%al,-1($out,$counter)
-	dec	$len
-	jnz	.Loop_tail_ssse3
-
-.Ldone_ssse3:
-___
-$code.=<<___	if ($win64);
-	movaps	-0x28(%r9),%xmm6
-	movaps	-0x18(%r9),%xmm7
-___
-$code.=<<___;
-	lea	(%r9),%rsp
-.cfi_def_cfa_register	rsp
-.Lssse3_epilogue:
-	ret
-.cfi_endproc
-.size	ChaCha20_ssse3,.-ChaCha20_ssse3
-___
-}
 
 ########################################################################
 # SSSE3 code path that handles longer messages.
@@ -706,29 +543,16 @@ my @x=map("\"$_\"",@xx);
 my $xframe = $win64 ? 0xa8 : 8;
 
 $code.=<<___;
-.type	ChaCha20_4x,\@function,5
+.globl	ChaCha20_ctr32_ssse3_4x
+.type	ChaCha20_ctr32_ssse3_4x,\@function,5
 .align	32
-ChaCha20_4x:
-.LChaCha20_4x:
+ChaCha20_ctr32_ssse3_4x:
 .cfi_startproc
+	_CET_ENDBR
 	mov		%rsp,%r9		# frame pointer
 .cfi_def_cfa_register	r9
-	mov		%r10,%r11
-___
-$code.=<<___	if ($avx>1);
-	shr		\$32,%r10		# OPENSSL_ia32cap_P+8
-	test		\$`1<<5`,%r10		# test AVX2
-	jnz		.LChaCha20_8x
 ___
 $code.=<<___;
-	cmp		\$192,$len
-	ja		.Lproceed4x
-
-	and		\$`1<<26|1<<22`,%r11	# isolate XSAVE+MOVBE
-	cmp		\$`1<<22`,%r11		# check for MOVBE without XSAVE
-	je		.Ldo_sse3_after_all	# to detect Atom
-
-.Lproceed4x:
 	sub		\$0x140+$xframe,%rsp
 ___
 	################ stack layout
@@ -1156,7 +980,7 @@ $code.=<<___;
 .L4x_epilogue:
 	ret
 .cfi_endproc
-.size	ChaCha20_4x,.-ChaCha20_4x
+.size	ChaCha20_ctr32_ssse3_4x,.-ChaCha20_ctr32_ssse3_4x
 ___
 }
 
@@ -1285,11 +1109,12 @@ my @x=map("\"$_\"",@xx);
 my $xframe = $win64 ? 0xa8 : 8;
 
 $code.=<<___;
-.type	ChaCha20_8x,\@function,5
+.globl	ChaCha20_ctr32_avx2
+.type	ChaCha20_ctr32_avx2,\@function,5
 .align	32
-ChaCha20_8x:
-.LChaCha20_8x:
+ChaCha20_ctr32_avx2:
 .cfi_startproc
+	_CET_ENDBR
 	mov		%rsp,%r9		# frame register
 .cfi_def_cfa_register	r9
 	sub		\$0x280+$xframe,%rsp
@@ -1801,7 +1626,7 @@ $code.=<<___;
 .L8x_epilogue:
 	ret
 .cfi_endproc
-.size	ChaCha20_8x,.-ChaCha20_8x
+.size	ChaCha20_ctr32_avx2,.-ChaCha20_ctr32_avx2
 ___
 }
 
@@ -1985,42 +1810,33 @@ full_handler:
 
 .section	.pdata
 .align	4
-	.rva	.LSEH_begin_ChaCha20_ctr32
-	.rva	.LSEH_end_ChaCha20_ctr32
-	.rva	.LSEH_info_ChaCha20_ctr32
+	.rva	.LSEH_begin_ChaCha20_ctr32_nohw
+	.rva	.LSEH_end_ChaCha20_ctr32_nohw
+	.rva	.LSEH_info_ChaCha20_ctr32_nohw
 
-	.rva	.LSEH_begin_ChaCha20_ssse3
-	.rva	.LSEH_end_ChaCha20_ssse3
-	.rva	.LSEH_info_ChaCha20_ssse3
-
-	.rva	.LSEH_begin_ChaCha20_4x
-	.rva	.LSEH_end_ChaCha20_4x
-	.rva	.LSEH_info_ChaCha20_4x
+	.rva	.LSEH_begin_ChaCha20_ctr32_ssse3_4x
+	.rva	.LSEH_end_ChaCha20_ctr32_ssse3_4x
+	.rva	.LSEH_info_ChaCha20_ctr32_ssse3_4x
 ___
 $code.=<<___ if ($avx>1);
-	.rva	.LSEH_begin_ChaCha20_8x
-	.rva	.LSEH_end_ChaCha20_8x
-	.rva	.LSEH_info_ChaCha20_8x
+	.rva	.LSEH_begin_ChaCha20_ctr32_avx2
+	.rva	.LSEH_end_ChaCha20_ctr32_avx2
+	.rva	.LSEH_info_ChaCha20_ctr32_avx2
 ___
 $code.=<<___;
 .section	.xdata
 .align	8
-.LSEH_info_ChaCha20_ctr32:
+.LSEH_info_ChaCha20_ctr32_nohw:
 	.byte	9,0,0,0
 	.rva	se_handler
 
-.LSEH_info_ChaCha20_ssse3:
-	.byte	9,0,0,0
-	.rva	ssse3_handler
-	.rva	.Lssse3_body,.Lssse3_epilogue
-
-.LSEH_info_ChaCha20_4x:
+.LSEH_info_ChaCha20_ctr32_ssse3_4x:
 	.byte	9,0,0,0
 	.rva	full_handler
 	.rva	.L4x_body,.L4x_epilogue
 ___
 $code.=<<___ if ($avx>1);
-.LSEH_info_ChaCha20_8x:
+.LSEH_info_ChaCha20_ctr32_avx2:
 	.byte	9,0,0,0
 	.rva	full_handler
 	.rva	.L8x_body,.L8x_epilogue			# HandlerData[]

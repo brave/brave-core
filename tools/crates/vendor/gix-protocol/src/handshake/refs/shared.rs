@@ -1,6 +1,9 @@
 use bstr::{BStr, BString, ByteSlice};
 
-use crate::handshake::{refs::parse::Error, Ref};
+use crate::{
+    fetch::response::ShallowUpdate,
+    handshake::{refs::parse::Error, Ref},
+};
 
 impl From<InternalRef> for Ref {
     fn from(v: InternalRef) -> Self {
@@ -115,7 +118,7 @@ pub(crate) fn from_capabilities<'a>(
                 b"(null)" => None,
                 name => Some(name.into()),
             },
-        })
+        });
     }
     Ok(out_refs)
 }
@@ -123,6 +126,7 @@ pub(crate) fn from_capabilities<'a>(
 pub(in crate::handshake::refs) fn parse_v1(
     num_initial_out_refs: usize,
     out_refs: &mut Vec<InternalRef>,
+    out_shallow: &mut Vec<ShallowUpdate>,
     line: &BStr,
 ) -> Result<(), Error> {
     let trimmed = line.trim_end();
@@ -160,7 +164,15 @@ pub(in crate::handshake::refs) fn parse_v1(
             });
         }
         None => {
-            let object = gix_hash::ObjectId::from_hex(hex_hash.as_bytes())?;
+            let object = match gix_hash::ObjectId::from_hex(hex_hash.as_bytes()) {
+                Ok(id) => id,
+                Err(_) if hex_hash.as_bstr() == "shallow" => {
+                    let id = gix_hash::ObjectId::from_hex(path)?;
+                    out_shallow.push(ShallowUpdate::Shallow(id));
+                    return Ok(());
+                }
+                Err(err) => return Err(err.into()),
+            };
             match out_refs
                 .iter()
                 .take(num_initial_out_refs)
@@ -179,7 +191,7 @@ pub(in crate::handshake::refs) fn parse_v1(
                     object,
                     path: path.into(),
                 }),
-            };
+            }
         }
     }
     Ok(())
@@ -274,5 +286,40 @@ pub(in crate::handshake::refs) fn parse_v2(line: &BStr) -> Result<Ref, Error> {
             })
         }
         _ => Err(Error::MalformedV2RefLine(trimmed.to_owned().into())),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use gix_transport::client;
+
+    use crate::handshake::{refs, refs::shared::InternalRef};
+
+    #[test]
+    fn extract_symbolic_references_from_capabilities() -> Result<(), client::Error> {
+        let caps = client::Capabilities::from_bytes(
+            b"\0unrelated symref=HEAD:refs/heads/main symref=ANOTHER:refs/heads/foo symref=MISSING_NAMESPACE_TARGET:(null) agent=git/2.28.0",
+        )?
+            .0;
+        let out = refs::shared::from_capabilities(caps.iter()).expect("a working example");
+
+        assert_eq!(
+            out,
+            vec![
+                InternalRef::SymbolicForLookup {
+                    path: "HEAD".into(),
+                    target: Some("refs/heads/main".into())
+                },
+                InternalRef::SymbolicForLookup {
+                    path: "ANOTHER".into(),
+                    target: Some("refs/heads/foo".into())
+                },
+                InternalRef::SymbolicForLookup {
+                    path: "MISSING_NAMESPACE_TARGET".into(),
+                    target: None
+                }
+            ]
+        );
+        Ok(())
     }
 }

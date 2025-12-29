@@ -4,8 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(__ELF__)
-#include <ring-core/arm_arch.h>
-
 .section	.rodata
 
 .type	_vpaes_consts,%object
@@ -180,25 +178,6 @@ _vpaes_encrypt_core:
 	tbl	v0.16b, {v0.16b}, v1.16b	// vpshufb	%xmm1,	%xmm0,	%xmm0
 	ret
 .size	_vpaes_encrypt_core,.-_vpaes_encrypt_core
-
-.globl	vpaes_encrypt
-.hidden	vpaes_encrypt
-.type	vpaes_encrypt,%function
-.align	4
-vpaes_encrypt:
-	AARCH64_SIGN_LINK_REGISTER
-	stp	x29,x30,[sp,#-16]!
-	add	x29,sp,#0
-
-	ld1	{v7.16b}, [x0]
-	bl	_vpaes_encrypt_preheat
-	bl	_vpaes_encrypt_core
-	st1	{v0.16b}, [x1]
-
-	ldp	x29,x30,[sp],#16
-	AARCH64_VALIDATE_LINK_REGISTER
-	ret
-.size	vpaes_encrypt,.-vpaes_encrypt
 
 .type	_vpaes_encrypt_2x,%function
 .align	4

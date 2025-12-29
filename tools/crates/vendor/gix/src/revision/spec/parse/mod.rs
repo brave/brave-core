@@ -6,11 +6,11 @@ use gix_revision::spec::parse;
 use crate::{bstr::BStr, revision::Spec, Repository};
 
 mod types;
-use crate::bstr::BString;
 pub use types::{Error, ObjectKindHint, Options, RefsHint};
 
+use crate::bstr::BString;
+
 ///
-#[allow(clippy::empty_docs)]
 pub mod single {
     use crate::bstr::BString;
 
@@ -26,7 +26,6 @@ pub mod single {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod error;
 
 impl<'repo> Spec<'repo> {

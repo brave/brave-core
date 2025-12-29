@@ -130,6 +130,100 @@ quickcheck_limit! {
         true
     }
 
+    fn insert_sorted_by(insert: Vec<(u32, u32)>) -> bool {
+        let mut hmap = HashMap::new();
+        let mut map = IndexMap::new();
+        let mut map2 = IndexMap::new();
+        for &(key, value) in &insert {
+            hmap.insert(key, value);
+            map.insert_sorted_by(key, value, |key1, _, key2, _| key2.cmp(key1));
+            match map2.entry(key) {
+                Entry::Occupied(e) => *e.into_mut() = value,
+                Entry::Vacant(e) => {
+                    e.insert_sorted_by(value, |key1, _, key2, _| key2.cmp(key1));
+                }
+            }
+        }
+        let hsorted = hmap.iter().sorted_by(|(key1, _), (key2, _)| key2.cmp(key1));
+        itertools::assert_equal(hsorted, &map);
+        itertools::assert_equal(&map, &map2);
+        true
+    }
+
+    fn insert_sorted_by_key(insert: Vec<(i32, u32)>) -> bool {
+        let mut hmap = HashMap::new();
+        let mut map = IndexMap::new();
+        let mut map2 = IndexMap::new();
+        for &(key, value) in &insert {
+            hmap.insert(key, value);
+            map.insert_sorted_by_key(key, value, |&k, _| (k.unsigned_abs(), k));
+            match map2.entry(key) {
+                Entry::Occupied(e) => *e.into_mut() = value,
+                Entry::Vacant(e) => {
+                    e.insert_sorted_by_key(value, |&k, _| (k.unsigned_abs(), k));
+                }
+            }
+        }
+        let hsorted = hmap.iter().sorted_by_key(|(&k, _)| (k.unsigned_abs(), k));
+        itertools::assert_equal(hsorted, &map);
+        itertools::assert_equal(&map, &map2);
+        true
+    }
+
+    fn replace_index(insert: Vec<u8>, index: u8, new_key: u8) -> TestResult {
+        if insert.is_empty() {
+            return TestResult::discard();
+        }
+        let mut map = IndexMap::new();
+        for &key in &insert {
+            map.insert(key, ());
+        }
+        let mut index = usize::from(index);
+        if index < map.len() {
+            match map.replace_index(index, new_key) {
+                Ok(old_key) => {
+                    assert!(old_key == new_key || !map.contains_key(&old_key));
+                }
+                Err((i, key)) => {
+                    assert_eq!(key, new_key);
+                    index = i;
+                }
+            }
+            assert_eq!(map.get_index_of(&new_key), Some(index));
+            assert_eq!(map.get_index(index), Some((&new_key, &())));
+            TestResult::passed()
+        } else {
+            TestResult::must_fail(move || map.replace_index(index, new_key))
+        }
+    }
+
+    fn vacant_replace_index(insert: Vec<u8>, index: u8, new_key: u8) -> TestResult {
+        if insert.is_empty() {
+            return TestResult::discard();
+        }
+        let mut map = IndexMap::new();
+        for &key in &insert {
+            map.insert(key, ());
+        }
+        let index = usize::from(index);
+        if let Some((&old_key, &())) = map.get_index(index) {
+            match map.entry(new_key) {
+                Entry::Occupied(_) => return TestResult::discard(),
+                Entry::Vacant(entry) => {
+                    let (replaced_key, entry) = entry.replace_index(index);
+                    assert_eq!(old_key, replaced_key);
+                    assert_eq!(*entry.key(), new_key);
+                }
+            };
+            assert!(!map.contains_key(&old_key));
+            assert_eq!(map.get_index_of(&new_key), Some(index));
+            assert_eq!(map.get_index(index), Some((&new_key, &())));
+            TestResult::passed()
+        } else {
+            TestResult::must_fail(move || map.replace_index(index, new_key))
+        }
+    }
+
     fn pop(insert: Vec<u8>) -> bool {
         let mut map = IndexMap::new();
         for &key in &insert {
@@ -189,6 +283,47 @@ quickcheck_limit! {
             // If `Vec::drain` panicked, so should we.
             TestResult::must_fail(move || { map.drain(range); })
         }
+    }
+
+    fn extract_if_odd(insert: Vec<u8>) -> bool {
+        let mut map = IndexMap::new();
+        for &x in &insert {
+            map.insert(x, x.to_string());
+        }
+
+        let (odd, even): (Vec<_>, Vec<_>) = map.keys().copied().partition(|k| k % 2 == 1);
+
+        let extracted: Vec<_> = map
+            .extract_if(.., |k, _| k % 2 == 1)
+            .map(|(k, _)| k)
+            .collect();
+
+        even.iter().all(|k| map.contains_key(k))
+            && map.keys().eq(&even)
+            && extracted == odd
+    }
+
+    fn extract_if_odd_limit(insert: Vec<u8>, limit: usize) -> bool {
+        let mut map = IndexMap::new();
+        for &x in &insert {
+            map.insert(x, x.to_string());
+        }
+        let limit = limit % (map.len() + 1);
+
+        let mut i = 0;
+        let (odd, other): (Vec<_>, Vec<_>) = map.keys().copied().partition(|k| {
+            k % 2 == 1 && i < limit && { i += 1; true }
+        });
+
+        let extracted: Vec<_> = map
+            .extract_if(.., |k, _| k % 2 == 1)
+            .map(|(k, _)| k)
+            .take(limit)
+            .collect();
+
+        other.iter().all(|k| map.contains_key(k))
+            && map.keys().eq(&other)
+            && extracted == odd
     }
 
     fn shift_remove(insert: Vec<u8>, remove: Vec<u8>) -> bool {
@@ -694,8 +829,7 @@ quickcheck_limit! {
 
 fn assert_sorted_by_key<I, Key, X>(iterable: I, key: Key)
 where
-    I: IntoIterator,
-    I::Item: Ord + Clone + Debug,
+    I: IntoIterator<Item: Ord + Clone + Debug>,
     Key: Fn(&I::Item) -> X,
     X: Ord,
 {

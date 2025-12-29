@@ -5,7 +5,6 @@
 use std::path::{Path, PathBuf};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod pattern;
 
 /// A trait to convert bytes into patterns and their associated value.
@@ -16,11 +15,12 @@ pub trait Pattern: Clone + PartialEq + Eq + std::fmt::Debug + std::hash::Hash + 
     type Value: PartialEq + Eq + std::fmt::Debug + std::hash::Hash + Ord + PartialOrd + Clone;
 
     /// Parse all patterns in `bytes` line by line, ignoring lines with errors, and collect them.
-    fn bytes_to_patterns(bytes: &[u8], source: &Path) -> Vec<pattern::Mapping<Self::Value>>;
+    fn bytes_to_patterns(&self, bytes: &[u8], source: &Path) -> Vec<pattern::Mapping<Self::Value>>;
 }
 
 /// Add the given file at `source` if it exists, otherwise do nothing.
 /// If a `root` is provided, it's not considered a global file anymore.
+/// `parse` is a way to parse bytes to pattern.
 /// Returns `true` if the file was added, or `false` if it didn't exist.
 pub fn add_patterns_file<T: Pattern>(
     patterns: &mut Vec<pattern::List<T>>,
@@ -28,8 +28,15 @@ pub fn add_patterns_file<T: Pattern>(
     follow_symlinks: bool,
     root: Option<&Path>,
     buf: &mut Vec<u8>,
+    parse: T,
 ) -> std::io::Result<bool> {
     let previous_len = patterns.len();
-    patterns.extend(pattern::List::<T>::from_file(source, root, follow_symlinks, buf)?);
+    patterns.extend(pattern::List::<T>::from_file(
+        source,
+        root,
+        follow_symlinks,
+        buf,
+        parse,
+    )?);
     Ok(patterns.len() != previous_len)
 }

@@ -41,7 +41,7 @@ fn coff_x86_64_tls() {
     assert_eq!(section.name(), Ok(".tls$"));
     assert_eq!(section.kind(), SectionKind::Data);
     assert_eq!(section.size(), 30);
-    assert_eq!(&section.data().unwrap()[..], &[1; 30]);
+    assert_eq!(section.data().unwrap(), &[1; 30]);
 
     let mut symbols = object.symbols();
 
@@ -51,8 +51,8 @@ fn coff_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Data);
     assert_eq!(symbol.section_index(), Some(tls_index));
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
 }
 
 #[test]
@@ -98,15 +98,11 @@ fn elf_x86_64_tls() {
 
     let section = sections.next().unwrap();
     println!("{:?}", section);
-    assert_eq!(section.name(), Ok(""));
-
-    let section = sections.next().unwrap();
-    println!("{:?}", section);
     let tdata_index = section.index();
     assert_eq!(section.name(), Ok(".tdata"));
     assert_eq!(section.kind(), SectionKind::Tls);
     assert_eq!(section.size(), 30);
-    assert_eq!(&section.data().unwrap()[..], &[1; 30]);
+    assert_eq!(section.data().unwrap(), &[1; 30]);
 
     let section = sections.next().unwrap();
     println!("{:?}", section);
@@ -114,13 +110,9 @@ fn elf_x86_64_tls() {
     assert_eq!(section.name(), Ok(".tbss"));
     assert_eq!(section.kind(), SectionKind::UninitializedTls);
     assert_eq!(section.size(), 31);
-    assert_eq!(&section.data().unwrap()[..], &[]);
+    assert_eq!(section.data().unwrap(), &[]);
 
     let mut symbols = object.symbols();
-
-    let symbol = symbols.next().unwrap();
-    println!("{:?}", symbol);
-    assert_eq!(symbol.name(), Ok(""));
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -128,8 +120,8 @@ fn elf_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(tdata_index));
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
     assert_eq!(symbol.size(), 30);
 
     let symbol = symbols.next().unwrap();
@@ -138,8 +130,8 @@ fn elf_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(tbss_index));
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
     assert_eq!(symbol.size(), 31);
 }
 
@@ -194,7 +186,7 @@ fn macho_x86_64_tls() {
     assert_eq!(thread_data.segment_name(), Ok(Some("__DATA")));
     assert_eq!(thread_data.kind(), SectionKind::Tls);
     assert_eq!(thread_data.size(), 30);
-    assert_eq!(&thread_data.data().unwrap()[..], &[1; 30]);
+    assert_eq!(thread_data.data().unwrap(), &[1; 30]);
 
     let thread_vars = sections.next().unwrap();
     println!("{:?}", thread_vars);
@@ -203,7 +195,7 @@ fn macho_x86_64_tls() {
     assert_eq!(thread_vars.segment_name(), Ok(Some("__DATA")));
     assert_eq!(thread_vars.kind(), SectionKind::TlsVariables);
     assert_eq!(thread_vars.size(), 2 * 3 * 8);
-    assert_eq!(&thread_vars.data().unwrap()[..], &[0; 48][..]);
+    assert_eq!(thread_vars.data().unwrap(), &[0; 48]);
 
     let thread_bss = sections.next().unwrap();
     println!("{:?}", thread_bss);
@@ -223,8 +215,8 @@ fn macho_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(thread_data_index));
     assert_eq!(symbol.scope(), SymbolScope::Compilation);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -233,8 +225,8 @@ fn macho_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(thread_bss_index));
     assert_eq!(symbol.scope(), SymbolScope::Compilation);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -242,8 +234,8 @@ fn macho_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(thread_vars_index));
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -251,8 +243,8 @@ fn macho_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Tls);
     assert_eq!(symbol.section_index(), Some(thread_vars_index));
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), false);
+    assert!(!symbol.is_weak());
+    assert!(!symbol.is_undefined());
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -261,14 +253,26 @@ fn macho_x86_64_tls() {
     assert_eq!(symbol.kind(), SymbolKind::Unknown);
     assert_eq!(symbol.section_index(), None);
     assert_eq!(symbol.scope(), SymbolScope::Unknown);
-    assert_eq!(symbol.is_weak(), false);
-    assert_eq!(symbol.is_undefined(), true);
+    assert!(!symbol.is_weak());
+    assert!(symbol.is_undefined());
 
     let mut relocations = thread_vars.relocations();
 
     let (offset, relocation) = relocations.next().unwrap();
     println!("{:?}", relocation);
-    assert_eq!(offset, 0);
+    assert_eq!(offset, 40);
+    assert_eq!(relocation.kind(), RelocationKind::Absolute);
+    assert_eq!(relocation.encoding(), RelocationEncoding::Generic);
+    assert_eq!(relocation.size(), 64);
+    assert_eq!(
+        relocation.target(),
+        read::RelocationTarget::Symbol(tls2_init_symbol)
+    );
+    assert_eq!(relocation.addend(), 0);
+
+    let (offset, relocation) = relocations.next().unwrap();
+    println!("{:?}", relocation);
+    assert_eq!(offset, 24);
     assert_eq!(relocation.kind(), RelocationKind::Absolute);
     assert_eq!(relocation.encoding(), RelocationEncoding::Generic);
     assert_eq!(relocation.size(), 64);
@@ -292,25 +296,13 @@ fn macho_x86_64_tls() {
 
     let (offset, relocation) = relocations.next().unwrap();
     println!("{:?}", relocation);
-    assert_eq!(offset, 24);
+    assert_eq!(offset, 0);
     assert_eq!(relocation.kind(), RelocationKind::Absolute);
     assert_eq!(relocation.encoding(), RelocationEncoding::Generic);
     assert_eq!(relocation.size(), 64);
     assert_eq!(
         relocation.target(),
         read::RelocationTarget::Symbol(tlv_bootstrap_symbol)
-    );
-    assert_eq!(relocation.addend(), 0);
-
-    let (offset, relocation) = relocations.next().unwrap();
-    println!("{:?}", relocation);
-    assert_eq!(offset, 40);
-    assert_eq!(relocation.kind(), RelocationKind::Absolute);
-    assert_eq!(relocation.encoding(), RelocationEncoding::Generic);
-    assert_eq!(relocation.size(), 64);
-    assert_eq!(
-        relocation.target(),
-        read::RelocationTarget::Symbol(tls2_init_symbol)
     );
     assert_eq!(relocation.addend(), 0);
 }

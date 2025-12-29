@@ -1,8 +1,8 @@
 use object::read::{Object, ObjectSection};
 use object::{read, write};
 use object::{
-    Architecture, BinaryFormat, Endianness, RelocationEncoding, RelocationKind, SymbolFlags,
-    SymbolKind, SymbolScope,
+    Architecture, BinaryFormat, Endianness, RelocationEncoding, RelocationFlags, RelocationKind,
+    SymbolFlags, SymbolKind, SymbolScope,
 };
 
 #[test]
@@ -27,11 +27,13 @@ fn reloc_overflow() {
                 text,
                 write::Relocation {
                     offset: i,
-                    size: 64,
-                    kind: RelocationKind::Absolute,
-                    encoding: RelocationEncoding::Generic,
                     symbol,
                     addend: 0,
+                    flags: RelocationFlags::Generic {
+                        kind: RelocationKind::Absolute,
+                        encoding: RelocationEncoding::Generic,
+                        size: 64,
+                    },
                 },
             )
             .unwrap();

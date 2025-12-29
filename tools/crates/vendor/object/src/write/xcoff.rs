@@ -5,7 +5,7 @@ use crate::write::string::*;
 use crate::write::util::*;
 use crate::write::*;
 
-use crate::{xcoff, AddressSize};
+use crate::xcoff;
 
 #[derive(Default, Clone, Copy)]
 struct SectionOffsets {
@@ -20,6 +20,9 @@ struct SymbolOffsets {
     str_id: Option<StringId>,
     aux_count: u8,
     storage_class: u8,
+    x_smtyp: u8,
+    x_smclas: u8,
+    containing_csect: Option<SymbolId>,
 }
 
 impl<'a> Object<'a> {
@@ -66,13 +69,134 @@ impl<'a> Object<'a> {
         }
     }
 
-    pub(crate) fn xcoff_fixup_relocation(&mut self, relocation: &mut Relocation) -> i64 {
-        let constant = match relocation.kind {
-            RelocationKind::Relative => relocation.addend + 4,
-            _ => relocation.addend,
+    pub(crate) fn xcoff_section_flags(&self, section: &Section<'_>) -> SectionFlags {
+        let s_flags = match section.kind {
+            SectionKind::Text
+            | SectionKind::ReadOnlyData
+            | SectionKind::ReadOnlyString
+            | SectionKind::ReadOnlyDataWithRel => xcoff::STYP_TEXT,
+            SectionKind::Data => xcoff::STYP_DATA,
+            SectionKind::UninitializedData => xcoff::STYP_BSS,
+            SectionKind::Tls => xcoff::STYP_TDATA,
+            SectionKind::UninitializedTls => xcoff::STYP_TBSS,
+            SectionKind::OtherString => xcoff::STYP_INFO,
+            SectionKind::Debug | SectionKind::DebugString => xcoff::STYP_DEBUG,
+            SectionKind::Other | SectionKind::Metadata => 0,
+            SectionKind::Note
+            | SectionKind::Linker
+            | SectionKind::Common
+            | SectionKind::Unknown
+            | SectionKind::TlsVariables
+            | SectionKind::Elf(_) => {
+                return SectionFlags::None;
+            }
+        }
+        .into();
+        SectionFlags::Xcoff { s_flags }
+    }
+
+    pub(crate) fn xcoff_symbol_flags(&self, symbol: &Symbol) -> SymbolFlags<SectionId, SymbolId> {
+        let n_sclass = match symbol.kind {
+            SymbolKind::File => xcoff::C_FILE,
+            SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => {
+                if symbol.is_local() {
+                    xcoff::C_STAT
+                } else if symbol.weak {
+                    xcoff::C_WEAKEXT
+                } else {
+                    xcoff::C_EXT
+                }
+            }
+            SymbolKind::Section | SymbolKind::Label | SymbolKind::Unknown => {
+                return SymbolFlags::None;
+            }
         };
-        relocation.addend -= constant;
-        constant
+        let (x_smtyp, x_smclas) = if n_sclass == xcoff::C_EXT
+            || n_sclass == xcoff::C_WEAKEXT
+            || n_sclass == xcoff::C_HIDEXT
+        {
+            let section_kind = if let SymbolSection::Section(id) = symbol.section {
+                self.sections[id.0].kind
+            } else {
+                SectionKind::Unknown
+            };
+            match symbol.kind {
+                SymbolKind::Text => (xcoff::XTY_SD, xcoff::XMC_PR),
+                SymbolKind::Data => {
+                    if section_kind == SectionKind::UninitializedData {
+                        (xcoff::XTY_CM, xcoff::XMC_BS)
+                    } else if section_kind == SectionKind::ReadOnlyData {
+                        (xcoff::XTY_SD, xcoff::XMC_RO)
+                    } else {
+                        (xcoff::XTY_SD, xcoff::XMC_RW)
+                    }
+                }
+                SymbolKind::Tls => {
+                    if section_kind == SectionKind::UninitializedTls {
+                        (xcoff::XTY_CM, xcoff::XMC_UL)
+                    } else {
+                        (xcoff::XTY_SD, xcoff::XMC_TL)
+                    }
+                }
+                _ => {
+                    return SymbolFlags::None;
+                }
+            }
+        } else {
+            (0, 0)
+        };
+        SymbolFlags::Xcoff {
+            n_sclass,
+            x_smtyp,
+            x_smclas,
+            containing_csect: None,
+        }
+    }
+
+    pub(crate) fn xcoff_translate_relocation(&mut self, reloc: &mut Relocation) -> Result<()> {
+        let (kind, _encoding, size) = if let RelocationFlags::Generic {
+            kind,
+            encoding,
+            size,
+        } = reloc.flags
+        {
+            (kind, encoding, size)
+        } else {
+            return Ok(());
+        };
+
+        let r_rtype = match kind {
+            RelocationKind::Absolute => xcoff::R_POS,
+            RelocationKind::Relative => xcoff::R_REL,
+            RelocationKind::Got => xcoff::R_TOC,
+            _ => {
+                return Err(Error(format!("unimplemented relocation {:?}", reloc)));
+            }
+        };
+        let r_rsize = size - 1;
+        reloc.flags = RelocationFlags::Xcoff { r_rtype, r_rsize };
+        Ok(())
+    }
+
+    pub(crate) fn xcoff_adjust_addend(&mut self, relocation: &mut Relocation) -> Result<bool> {
+        let r_rtype = if let RelocationFlags::Xcoff { r_rtype, .. } = relocation.flags {
+            r_rtype
+        } else {
+            return Err(Error(format!("invalid relocation flags {:?}", relocation)));
+        };
+        if r_rtype == xcoff::R_REL {
+            relocation.addend += 4;
+        }
+        Ok(true)
+    }
+
+    pub(crate) fn xcoff_relocation_size(&self, reloc: &Relocation) -> Result<u8> {
+        let r_rsize = if let RelocationFlags::Xcoff { r_rsize, .. } = reloc.flags {
+            r_rsize
+        } else {
+            return Err(Error(format!("unexpected relocation {:?}", reloc)));
+        };
+        Ok(r_rsize + 1)
     }
 
     pub(crate) fn xcoff_write(&self, buffer: &mut dyn WritableBuffer) -> Result<()> {
@@ -153,33 +277,25 @@ impl<'a> Object<'a> {
             symbol_offsets[index].index = symtab_count;
             symtab_count += 1;
 
-            let storage_class = if let SymbolFlags::Xcoff { n_sclass, .. } = symbol.flags {
-                n_sclass
-            } else {
-                match symbol.kind {
-                    SymbolKind::Null => xcoff::C_NULL,
-                    SymbolKind::File => xcoff::C_FILE,
-                    SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => {
-                        if symbol.is_local() {
-                            xcoff::C_STAT
-                        } else if symbol.weak {
-                            xcoff::C_WEAKEXT
-                        } else {
-                            xcoff::C_EXT
-                        }
-                    }
-                    SymbolKind::Section | SymbolKind::Label | SymbolKind::Unknown => {
-                        return Err(Error(format!(
-                            "unimplemented symbol `{}` kind {:?}",
-                            symbol.name().unwrap_or(""),
-                            symbol.kind
-                        )));
-                    }
-                }
+            let SymbolFlags::Xcoff {
+                n_sclass,
+                x_smtyp,
+                x_smclas,
+                containing_csect,
+            } = self.symbol_flags(symbol)
+            else {
+                return Err(Error(format!(
+                    "unimplemented symbol `{}` kind {:?}",
+                    symbol.name().unwrap_or(""),
+                    symbol.kind
+                )));
             };
-            symbol_offsets[index].storage_class = storage_class;
+            symbol_offsets[index].storage_class = n_sclass;
+            symbol_offsets[index].x_smtyp = x_smtyp;
+            symbol_offsets[index].x_smclas = x_smclas;
+            symbol_offsets[index].containing_csect = containing_csect;
 
-            if storage_class == xcoff::C_FILE {
+            if n_sclass == xcoff::C_FILE {
                 if is_64 && file_str_id.is_none() {
                     file_str_id = Some(strtab.add(b".file"));
                 }
@@ -191,7 +307,7 @@ impl<'a> Object<'a> {
             }
 
             symbol_offsets[index].aux_count = 0;
-            match storage_class {
+            match n_sclass {
                 xcoff::C_FILE => {
                     symbol_offsets[index].aux_count = 1;
                     symtab_count += 1;
@@ -264,35 +380,12 @@ impl<'a> Object<'a> {
                     ))
                 })?
                 .copy_from_slice(&section.name);
-            let flags = if let SectionFlags::Xcoff { s_flags } = section.flags {
-                s_flags
-            } else {
-                match section.kind {
-                    SectionKind::Text
-                    | SectionKind::ReadOnlyData
-                    | SectionKind::ReadOnlyString
-                    | SectionKind::ReadOnlyDataWithRel => xcoff::STYP_TEXT,
-                    SectionKind::Data => xcoff::STYP_DATA,
-                    SectionKind::UninitializedData => xcoff::STYP_BSS,
-                    SectionKind::Tls => xcoff::STYP_TDATA,
-                    SectionKind::UninitializedTls => xcoff::STYP_TBSS,
-                    SectionKind::OtherString => xcoff::STYP_INFO,
-                    SectionKind::Debug => xcoff::STYP_DEBUG,
-                    SectionKind::Other | SectionKind::Metadata => 0,
-                    SectionKind::Note
-                    | SectionKind::Linker
-                    | SectionKind::Common
-                    | SectionKind::Unknown
-                    | SectionKind::TlsVariables
-                    | SectionKind::Elf(_) => {
-                        return Err(Error(format!(
-                            "unimplemented section `{}` kind {:?}",
-                            section.name().unwrap_or(""),
-                            section.kind
-                        )));
-                    }
-                }
-                .into()
+            let SectionFlags::Xcoff { s_flags } = self.section_flags(section) else {
+                return Err(Error(format!(
+                    "unimplemented section `{}` kind {:?}",
+                    section.name().unwrap_or(""),
+                    section.kind
+                )));
             };
             if is_64 {
                 let section_header = xcoff::SectionHeader64 {
@@ -306,7 +399,7 @@ impl<'a> Object<'a> {
                     s_lnnoptr: U64::new(BE, 0),
                     s_nreloc: U32::new(BE, section.relocations.len() as u32),
                     s_nlnno: U32::new(BE, 0),
-                    s_flags: U32::new(BE, flags),
+                    s_flags: U32::new(BE, s_flags),
                     s_reserve: U32::new(BE, 0),
                 };
                 buffer.write(&section_header);
@@ -325,7 +418,7 @@ impl<'a> Object<'a> {
                     // the actual count of relocation entries in the s_paddr field.
                     s_nreloc: U16::new(BE, section.relocations.len() as u16),
                     s_nlnno: U16::new(BE, 0),
-                    s_flags: U32::new(BE, flags),
+                    s_flags: U32::new(BE, s_flags),
                 };
                 buffer.write(&section_header);
             }
@@ -346,30 +439,26 @@ impl<'a> Object<'a> {
             if !section.relocations.is_empty() {
                 debug_assert_eq!(section_offsets[index].reloc_offset, buffer.len());
                 for reloc in &section.relocations {
-                    let rtype = match reloc.kind {
-                        RelocationKind::Absolute => xcoff::R_POS,
-                        RelocationKind::Relative => xcoff::R_REL,
-                        RelocationKind::Got => xcoff::R_TOC,
-                        RelocationKind::Xcoff(x) => x,
-                        _ => {
-                            return Err(Error(format!("unimplemented relocation {:?}", reloc)));
-                        }
-                    };
+                    let (r_rtype, r_rsize) =
+                        if let RelocationFlags::Xcoff { r_rtype, r_rsize } = reloc.flags {
+                            (r_rtype, r_rsize)
+                        } else {
+                            return Err(Error("invalid relocation flags".into()));
+                        };
                     if is_64 {
                         let xcoff_rel = xcoff::Rel64 {
                             r_vaddr: U64::new(BE, reloc.offset),
                             r_symndx: U32::new(BE, symbol_offsets[reloc.symbol.0].index as u32),
-                            // Specifies the bit length of the relocatable reference minus one.
-                            r_rsize: (reloc.size - 1),
-                            r_rtype: rtype,
+                            r_rsize,
+                            r_rtype,
                         };
                         buffer.write(&xcoff_rel);
                     } else {
                         let xcoff_rel = xcoff::Rel32 {
                             r_vaddr: U32::new(BE, reloc.offset as u32),
                             r_symndx: U32::new(BE, symbol_offsets[reloc.symbol.0].index as u32),
-                            r_rsize: (reloc.size - 1),
-                            r_rtype: rtype,
+                            r_rsize,
+                            r_rtype,
                         };
                         buffer.write(&xcoff_rel);
                     }
@@ -380,13 +469,10 @@ impl<'a> Object<'a> {
         // Write symbols.
         debug_assert_eq!(symtab_offset, buffer.len());
         for (index, symbol) in self.symbols.iter().enumerate() {
-            let (n_value, section_kind) = if let SymbolSection::Section(id) = symbol.section {
-                (
-                    section_offsets[id.0].address + symbol.value,
-                    self.sections[id.0].kind,
-                )
+            let n_value = if let SymbolSection::Section(id) = symbol.section {
+                section_offsets[id.0].address + symbol.value
             } else {
-                (symbol.value, SectionKind::Unknown)
+                symbol.value
             };
             let n_scnum = match symbol.section {
                 SymbolSection::None => {
@@ -476,43 +562,9 @@ impl<'a> Object<'a> {
                 || n_sclass == xcoff::C_HIDEXT
             {
                 debug_assert_eq!(n_numaux, 1);
-                let (x_smtyp, x_smclas) = if let SymbolFlags::Xcoff {
-                    x_smtyp, x_smclas, ..
-                } = symbol.flags
-                {
-                    (x_smtyp, x_smclas)
-                } else {
-                    match symbol.kind {
-                        SymbolKind::Text => (xcoff::XTY_SD, xcoff::XMC_PR),
-                        SymbolKind::Data => {
-                            if section_kind == SectionKind::UninitializedData {
-                                (xcoff::XTY_CM, xcoff::XMC_BS)
-                            } else if section_kind == SectionKind::ReadOnlyData {
-                                (xcoff::XTY_SD, xcoff::XMC_RO)
-                            } else {
-                                (xcoff::XTY_SD, xcoff::XMC_RW)
-                            }
-                        }
-                        SymbolKind::Tls => {
-                            if section_kind == SectionKind::UninitializedTls {
-                                (xcoff::XTY_CM, xcoff::XMC_UL)
-                            } else {
-                                (xcoff::XTY_SD, xcoff::XMC_TL)
-                            }
-                        }
-                        _ => {
-                            return Err(Error(format!(
-                                "unimplemented symbol `{}` kind {:?}",
-                                symbol.name().unwrap_or(""),
-                                symbol.kind
-                            )));
-                        }
-                    }
-                };
-                let scnlen = if let SymbolFlags::Xcoff {
-                    containing_csect: Some(containing_csect),
-                    ..
-                } = symbol.flags
+                let x_smtyp = symbol_offsets[index].x_smtyp;
+                let x_smclas = symbol_offsets[index].x_smclas;
+                let scnlen = if let Some(containing_csect) = symbol_offsets[index].containing_csect
                 {
                     symbol_offsets[containing_csect.0].index as u64
                 } else {

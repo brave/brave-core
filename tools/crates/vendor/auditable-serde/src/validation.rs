@@ -1,10 +1,13 @@
-use crate::{Package, VersionInfo};
+use crate::{is_default, Package, VersionInfo};
 use serde::{Deserialize, Serialize};
 use std::{convert::TryFrom, fmt::Display};
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
-pub struct RawVersionInfo {
+pub(crate) struct RawVersionInfo {
     pub packages: Vec<Package>,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "is_default")]
+    pub format: u32,
 }
 
 pub enum ValidationError {
@@ -36,6 +39,7 @@ impl TryFrom<RawVersionInfo> for VersionInfo {
         } else {
             Ok(VersionInfo {
                 packages: v.packages,
+                format: v.format,
             })
         }
     }
@@ -99,6 +103,7 @@ mod tests {
         let pkg1 = dummy_package(1, false, vec![0]);
         let raw = RawVersionInfo {
             packages: vec![pkg0, pkg1],
+            format: 0,
         };
         assert!(VersionInfo::try_from(raw).is_err());
     }
@@ -109,6 +114,7 @@ mod tests {
         let pkg1 = dummy_package(1, false, vec![]);
         let raw = RawVersionInfo {
             packages: vec![pkg0, pkg1],
+            format: 0,
         };
         assert!(VersionInfo::try_from(raw).is_ok());
     }

@@ -12,7 +12,7 @@ pub mod algos;
 pub mod impls;
 
 pub use self::{input_stream::InputStream, track_closed::TrackClosed, track_eof::TrackEof};
-pub use async_compression::Level;
+pub use compression_core::Level;
 pub use futures::{executor::block_on, pin_mut, stream::Stream};
 pub use std::{future::Future, io::Result, iter::FromIterator, pin::Pin};
 

@@ -2,13 +2,19 @@ use crate::detection::inside_proc_macro;
 use crate::fallback::{self, FromStr2 as _};
 #[cfg(span_locations)]
 use crate::location::LineColumn;
+#[cfg(proc_macro_span)]
+use crate::probe::proc_macro_span;
+#[cfg(all(span_locations, proc_macro_span_file))]
+use crate::probe::proc_macro_span_file;
+#[cfg(all(span_locations, proc_macro_span_location))]
+use crate::probe::proc_macro_span_location;
 use crate::{Delimiter, Punct, Spacing, TokenTree};
 use core::fmt::{self, Debug, Display};
 #[cfg(span_locations)]
 use core::ops::Range;
 use core::ops::RangeBounds;
 use std::ffi::CStr;
-#[cfg(super_unstable)]
+#[cfg(span_locations)]
 use std::path::PathBuf;
 
 #[derive(Clone)]
@@ -360,45 +366,6 @@ impl Iterator for TokenTreeIter {
     }
 }
 
-#[derive(Clone, PartialEq, Eq)]
-#[cfg(super_unstable)]
-pub(crate) enum SourceFile {
-    Compiler(proc_macro::SourceFile),
-    Fallback(fallback::SourceFile),
-}
-
-#[cfg(super_unstable)]
-impl SourceFile {
-    fn nightly(sf: proc_macro::SourceFile) -> Self {
-        SourceFile::Compiler(sf)
-    }
-
-    /// Get the path to this source file as a string.
-    pub(crate) fn path(&self) -> PathBuf {
-        match self {
-            SourceFile::Compiler(a) => a.path(),
-            SourceFile::Fallback(a) => a.path(),
-        }
-    }
-
-    pub(crate) fn is_real(&self) -> bool {
-        match self {
-            SourceFile::Compiler(a) => a.is_real(),
-            SourceFile::Fallback(a) => a.is_real(),
-        }
-    }
-}
-
-#[cfg(super_unstable)]
-impl Debug for SourceFile {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            SourceFile::Compiler(a) => Debug::fmt(a, f),
-            SourceFile::Fallback(a) => Debug::fmt(a, f),
-        }
-    }
-}
-
 #[derive(Copy, Clone)]
 pub(crate) enum Span {
     Compiler(proc_macro::Span),
@@ -456,19 +423,11 @@ impl Span {
         }
     }
 
-    #[cfg(super_unstable)]
-    pub(crate) fn source_file(&self) -> SourceFile {
-        match self {
-            Span::Compiler(s) => SourceFile::nightly(s.source_file()),
-            Span::Fallback(s) => SourceFile::Fallback(s.source_file()),
-        }
-    }
-
     #[cfg(span_locations)]
     pub(crate) fn byte_range(&self) -> Range<usize> {
         match self {
             #[cfg(proc_macro_span)]
-            Span::Compiler(s) => s.byte_range(),
+            Span::Compiler(s) => proc_macro_span::byte_range(s),
             #[cfg(not(proc_macro_span))]
             Span::Compiler(_) => 0..0,
             Span::Fallback(s) => s.byte_range(),
@@ -478,12 +437,12 @@ impl Span {
     #[cfg(span_locations)]
     pub(crate) fn start(&self) -> LineColumn {
         match self {
-            #[cfg(proc_macro_span)]
+            #[cfg(proc_macro_span_location)]
             Span::Compiler(s) => LineColumn {
-                line: s.line(),
-                column: s.column().saturating_sub(1),
+                line: proc_macro_span_location::line(s),
+                column: proc_macro_span_location::column(s).saturating_sub(1),
             },
-            #[cfg(not(proc_macro_span))]
+            #[cfg(not(proc_macro_span_location))]
             Span::Compiler(_) => LineColumn { line: 0, column: 0 },
             Span::Fallback(s) => s.start(),
         }
@@ -492,24 +451,46 @@ impl Span {
     #[cfg(span_locations)]
     pub(crate) fn end(&self) -> LineColumn {
         match self {
-            #[cfg(proc_macro_span)]
+            #[cfg(proc_macro_span_location)]
             Span::Compiler(s) => {
-                let end = s.end();
+                let end = proc_macro_span_location::end(s);
                 LineColumn {
-                    line: end.line(),
-                    column: end.column().saturating_sub(1),
+                    line: proc_macro_span_location::line(&end),
+                    column: proc_macro_span_location::column(&end).saturating_sub(1),
                 }
             }
-            #[cfg(not(proc_macro_span))]
+            #[cfg(not(proc_macro_span_location))]
             Span::Compiler(_) => LineColumn { line: 0, column: 0 },
             Span::Fallback(s) => s.end(),
+        }
+    }
+
+    #[cfg(span_locations)]
+    pub(crate) fn file(&self) -> String {
+        match self {
+            #[cfg(proc_macro_span_file)]
+            Span::Compiler(s) => proc_macro_span_file::file(s),
+            #[cfg(not(proc_macro_span_file))]
+            Span::Compiler(_) => "<token stream>".to_owned(),
+            Span::Fallback(s) => s.file(),
+        }
+    }
+
+    #[cfg(span_locations)]
+    pub(crate) fn local_file(&self) -> Option<PathBuf> {
+        match self {
+            #[cfg(proc_macro_span_file)]
+            Span::Compiler(s) => proc_macro_span_file::local_file(s),
+            #[cfg(not(proc_macro_span_file))]
+            Span::Compiler(_) => None,
+            Span::Fallback(s) => s.local_file(),
         }
     }
 
     pub(crate) fn join(&self, other: Span) -> Option<Span> {
         let ret = match (self, other) {
             #[cfg(proc_macro_span)]
-            (Span::Compiler(a), Span::Compiler(b)) => Span::Compiler(a.join(b)?),
+            (Span::Compiler(a), Span::Compiler(b)) => Span::Compiler(proc_macro_span::join(a, b)?),
             (Span::Fallback(a), Span::Fallback(b)) => Span::Fallback(a.join(b)?),
             _ => return None,
         };
@@ -952,7 +933,7 @@ impl Literal {
     pub(crate) fn subspan<R: RangeBounds<usize>>(&self, range: R) -> Option<Span> {
         match self {
             #[cfg(proc_macro_span)]
-            Literal::Compiler(lit) => lit.subspan(range).map(Span::Compiler),
+            Literal::Compiler(lit) => proc_macro_span::subspan(lit, range).map(Span::Compiler),
             #[cfg(not(proc_macro_span))]
             Literal::Compiler(_lit) => None,
             Literal::Fallback(lit) => lit.subspan(range).map(Span::Fallback),

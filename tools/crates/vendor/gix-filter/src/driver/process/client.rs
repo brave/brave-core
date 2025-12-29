@@ -8,7 +8,6 @@ use crate::driver::{
 };
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod handshake {
     /// The error returned by [Client::handshake()][super::Client::handshake()].
     #[derive(Debug, thiserror::Error)]
@@ -24,7 +23,6 @@ pub mod handshake {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod invoke {
     /// The error returned by [Client::invoke()][super::Client::invoke()].
     #[derive(Debug, thiserror::Error)]
@@ -35,7 +33,6 @@ pub mod invoke {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod without_content {
         /// The error returned by [Client::invoke_without_content()][super::super::Client::invoke_without_content()].
         #[derive(Debug, thiserror::Error)]
@@ -44,7 +41,7 @@ pub mod invoke {
             #[error("Failed to read or write to the process")]
             Io(#[from] std::io::Error),
             #[error(transparent)]
-            PacketlineDecode(#[from] gix_packetline::decode::Error),
+            PacketlineDecode(#[from] gix_packetline_blocking::decode::Error),
         }
 
         impl From<super::Error> for Error {
@@ -68,17 +65,18 @@ impl Client {
         versions: &[usize],
         desired_capabilities: &[&str],
     ) -> Result<Self, handshake::Error> {
-        let mut out = gix_packetline::Writer::new(process.stdin.take().expect("configured stdin when spawning"));
+        let mut out =
+            gix_packetline_blocking::Writer::new(process.stdin.take().expect("configured stdin when spawning"));
         out.write_all(format!("{welcome_prefix}-client").as_bytes())?;
         for version in versions {
             out.write_all(format!("version={version}").as_bytes())?;
         }
-        gix_packetline::encode::flush_to_write(out.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
         out.flush()?;
 
-        let mut input = gix_packetline::StreamingPeekableIter::new(
+        let mut input = gix_packetline_blocking::StreamingPeekableIter::new(
             process.stdout.take().expect("configured stdout when spawning"),
-            &[gix_packetline::PacketLineRef::Flush],
+            &[gix_packetline_blocking::PacketLineRef::Flush],
             false, /* packet tracing */
         );
         let mut read = input.as_read();
@@ -86,7 +84,7 @@ impl Client {
         read.read_line_to_string(&mut buf)?;
         if buf
             .strip_prefix(welcome_prefix)
-            .map_or(true, |rest| rest.trim_end() != "-server")
+            .is_none_or(|rest| rest.trim_end() != "-server")
         {
             return Err(handshake::Error::Protocol {
                 msg: format!("Wanted '{welcome_prefix}-server, got "),
@@ -128,10 +126,10 @@ impl Client {
         for capability in desired_capabilities {
             out.write_all(format!("capability={capability}").as_bytes())?;
         }
-        gix_packetline::encode::flush_to_write(out.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
         out.flush()?;
 
-        read.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+        read.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
         let mut capabilities = HashSet::new();
         loop {
             buf.clear();
@@ -170,7 +168,7 @@ impl Client {
     ) -> Result<process::Status, invoke::Error> {
         self.send_command_and_meta(command, meta)?;
         std::io::copy(content, &mut self.input)?;
-        gix_packetline::encode::flush_to_write(self.input.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(self.input.inner_mut())?;
         self.input.flush()?;
         Ok(self.read_status()?)
     }
@@ -192,7 +190,7 @@ impl Client {
                 inspect_line(line.as_bstr());
             }
         }
-        self.out.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+        self.out.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
         let status = self.read_status()?;
         Ok(status)
     }
@@ -200,7 +198,7 @@ impl Client {
     /// Return a `Read` implementation that reads the server process output until the next flush package, and validates
     /// the status. If the status indicates failure, the last read will also fail.
     pub fn as_read(&mut self) -> impl std::io::Read + '_ {
-        self.out.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+        self.out.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
         ReadProcessOutputAndStatus {
             inner: self.out.as_read(),
         }
@@ -228,7 +226,7 @@ impl Client {
             buf.push_str(&value);
             self.input.write_all(&buf)?;
         }
-        gix_packetline::encode::flush_to_write(self.input.inner_mut())?;
+        gix_packetline_blocking::encode::flush_to_write(self.input.inner_mut())?;
         Ok(())
     }
 }
@@ -251,7 +249,7 @@ fn read_status(read: &mut PacketlineReader<'_>) -> std::io::Result<process::Stat
     if count > 0 && matches!(status, process::Status::Previous) {
         status = process::Status::Unset;
     }
-    read.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+    read.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
     Ok(status)
 }
 
@@ -259,22 +257,19 @@ struct ReadProcessOutputAndStatus<'a> {
     inner: PacketlineReader<'a>,
 }
 
-impl<'a> std::io::Read for ReadProcessOutputAndStatus<'a> {
+impl std::io::Read for ReadProcessOutputAndStatus<'_> {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         let num_read = self.inner.read(buf)?;
         if num_read == 0 {
-            self.inner.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+            self.inner.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
             let status = read_status(&mut self.inner)?;
             if status.is_success() {
                 Ok(0)
             } else {
-                Err(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    format!(
-                        "Process indicated error after reading: {}",
-                        status.message().unwrap_or_default()
-                    ),
-                ))
+                Err(std::io::Error::other(format!(
+                    "Process indicated error after reading: {}",
+                    status.message().unwrap_or_default()
+                )))
             }
         } else {
             Ok(num_read)
