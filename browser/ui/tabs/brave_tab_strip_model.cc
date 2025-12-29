@@ -169,20 +169,7 @@ void BraveTabStripModel::SetCustomTitleForTab(
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
-    tree_tab_node_created_subscription_ =
-        std::make_unique<base::CallbackListSubscription>(
-            tree_tab_model_->RegisterAddTreeTabNodeCallback(base::BindRepeating(
-                &BraveTabStripModel::NotifyTreeTabNodeCreated,
-                base::Unretained(this))));
-    tree_tab_node_will_be_destroyed_subscription_ =
-        std::make_unique<base::CallbackListSubscription>(
-            tree_tab_model_->RegisterWillRemoveTreeTabNodeCallback(
-                base::BindRepeating(
-                    &BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed,
-                    base::Unretained(this))));
   } else {
-    tree_tab_node_created_subscription_.reset();
-    tree_tab_node_will_be_destroyed_subscription_.reset();
     FlattenTreeTabs();
   }
 }
@@ -191,6 +178,19 @@ void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   CHECK(!tree_tab_model_);
   tree_tab_model_ = std::make_unique<TreeTabModel>();
+
+  tree_tab_node_created_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterAddTreeTabNodeCallback(
+              base::BindRepeating(&BraveTabStripModel::NotifyTreeTabNodeCreated,
+                                  base::Unretained(this))));
+
+  tree_tab_node_will_be_destroyed_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterWillRemoveTreeTabNodeCallback(
+              base::BindRepeating(
+                  &BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed,
+                  base::Unretained(this))));
 
   auto* unpinned = contents_data_->unpinned_collection();
   CHECK(unpinned);
@@ -215,6 +215,8 @@ void BraveTabStripModel::FlattenTreeTabs() {
 
   tabs::TreeTabNodeTabCollection::FlattenTreeTabs(*unpinned);
 
+  tree_tab_node_created_subscription_.reset();
+  tree_tab_node_will_be_destroyed_subscription_.reset();
   tree_tab_model_.reset();
 }
 
