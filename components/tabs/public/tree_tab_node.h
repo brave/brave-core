@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
 
 #include "base/memory/raw_ref.h"
-#include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 
 namespace tabs {

@@ -24,8 +24,6 @@ class BraveTabStripCollectionDelegate {
       const BraveTabStripCollectionDelegate&) = delete;
   virtual ~BraveTabStripCollectionDelegate();
 
-  base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;
-
   // Returns true if this delegate wants to handle tab manipulation actions
   // such as adding/moving/removing tabs.
   virtual bool ShouldHandleTabManipulation() const = 0;
