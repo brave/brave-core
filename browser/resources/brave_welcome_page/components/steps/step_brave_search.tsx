@@ -8,24 +8,23 @@ import Button from '@brave/leo/react/button'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
-export function StepImportDataContent({}: StepContentProps) {
+export function StepBraveSearchContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
         <div className="left-text-content">
-          <h1>Bring along your old browser content</h1>
-          <p>Import everything from your old browser and make the transition seamless.</p>
-          <p>You can also do this later in Brave's settings.</p>
+          <h1>Help Brave Search grow</h1>
+          <p>Use Brave Search as your default search engine. It's private, independent, and gets better the more people use it.</p>
         </div>
       </div>
       <div className="right-content">
-      Content from step 2
+      Content from step 4
       </div>
     </div>
   )
 }
 
-export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps) {
+export function StepBraveSearchFooter({ onNext, onBack, onSkip }: StepFooterProps) {
   return (
     <div className="footer">
       <div className="footer-left">
@@ -34,7 +33,7 @@ export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps
       <div className="footer-right">
         <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Import
+          Set as default search
         </Button>
       </div>
     </div>
