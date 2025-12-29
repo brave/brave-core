@@ -4,8 +4,6 @@
 
 use std::{borrow::Cow, collections::BTreeMap};
 
-use bstr::BStr;
-
 /// All relevant information about a git module, typically from `.gitmodules` files.
 ///
 /// Note that overrides from other configuration might be relevant, which is why this type
@@ -19,11 +17,9 @@ pub struct File {
 mod access;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod config;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod is_active_platform;
 
 /// A platform to keep the state necessary to perform repeated active checks, created by [File::is_active_platform()].
@@ -66,7 +62,7 @@ impl File {
         let mut config_to_append = gix_config::File::new(config.meta_owned());
         let mut prev_name = None;
         for ((module_name, field), values) in values {
-            if prev_name.map_or(true, |pn: &BStr| pn != module_name) {
+            if prev_name != Some(module_name) {
                 config_to_append
                     .new_section("submodule", Some(Cow::Owned(module_name.to_owned())))
                     .expect("all names come from valid configuration, so remain valid");
@@ -87,7 +83,6 @@ impl File {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 mod init {
     use std::path::PathBuf;
 

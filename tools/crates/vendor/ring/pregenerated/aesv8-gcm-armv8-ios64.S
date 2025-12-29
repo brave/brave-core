@@ -4,7 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(__APPLE__)
-#include <ring-core/arm_arch.h>
 #if __ARM_MAX_ARCH__ >= 8
 
 

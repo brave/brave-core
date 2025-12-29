@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use petgraph::data::Build;
 use petgraph::prelude::*;
@@ -177,9 +177,8 @@ const BIPARTITE: &str = "
 ";
 
 /// Parse a text adjacency matrix format into a directed graph
-fn parse_graph<Ty, G>(s: &str) -> G
+fn parse_graph<G>(s: &str) -> G
 where
-    Ty: EdgeType,
     G: Default + Build<NodeWeight = (), EdgeWeight = ()> + NodeIndexable,
 {
     let mut g: G = Default::default();
@@ -221,35 +220,35 @@ where
     }
 
     pub fn petersen_a(self) -> G {
-        parse_graph::<Ty, _>(PETERSEN_A)
+        parse_graph::<_>(PETERSEN_A)
     }
 
     pub fn petersen_b(self) -> G {
-        parse_graph::<Ty, _>(PETERSEN_B)
+        parse_graph::<_>(PETERSEN_B)
     }
 
     pub fn full_a(self) -> G {
-        parse_graph::<Ty, _>(FULL_A)
+        parse_graph::<_>(FULL_A)
     }
 
     pub fn full_b(self) -> G {
-        parse_graph::<Ty, _>(FULL_B)
+        parse_graph::<_>(FULL_B)
     }
 
     pub fn praust_a(self) -> G {
-        parse_graph::<Ty, _>(PRAUST_A)
+        parse_graph::<_>(PRAUST_A)
     }
 
     pub fn praust_b(self) -> G {
-        parse_graph::<Ty, _>(PRAUST_B)
+        parse_graph::<_>(PRAUST_B)
     }
 
     pub fn bigger(self) -> G {
-        parse_graph::<Ty, _>(BIGGER)
+        parse_graph::<_>(BIGGER)
     }
 
     pub fn bipartite(self) -> G {
-        parse_graph::<Ty, _>(BIPARTITE)
+        parse_graph::<_>(BIPARTITE)
     }
 }
 
@@ -328,6 +327,51 @@ pub fn directed_fan(n: usize) -> DiGraph<(), ()> {
 
         edge_forward = !edge_forward;
         prev_ix = Some(ix);
+    }
+
+    g
+}
+
+#[allow(clippy::needless_range_loop)]
+pub fn build_graph(node_count: usize, dense: bool) -> Graph<usize, i32, Undirected> {
+    use core::cmp::{max, min};
+
+    let mut graph = Graph::new_undirected();
+    let nodes: Vec<NodeIndex<_>> = (0..node_count).map(|i| graph.add_node(i)).collect();
+    for i in 0..node_count {
+        let n1 = nodes[i];
+        let neighbour_count = if dense {
+            i % (node_count / 3) + 3
+        } else {
+            i % 8 + 3
+        };
+        let j_from = max(0, i as i32 - neighbour_count as i32 / 2) as usize;
+        let j_to = min(node_count, j_from + neighbour_count);
+        for j in j_from..j_to {
+            let n2 = nodes[j];
+            let distance = (i + 3) % 10;
+            graph.add_edge(n1, n2, distance as i32);
+        }
+    }
+    graph
+}
+
+pub fn build_2d_grid(width: usize, height: usize) -> Graph<(usize, usize), usize, Undirected> {
+    let mut g = Graph::new_undirected();
+
+    for j in 0..height {
+        for i in 0..width {
+            let node = g.add_node((i, j));
+
+            if j > 0 {
+                let up = NodeIndex::new(node.index() - width);
+                g.add_edge(node, up, 1);
+            }
+            if i > 0 {
+                let right = NodeIndex::new(node.index() - 1);
+                g.add_edge(node, right, 1);
+            }
+        }
     }
 
     g

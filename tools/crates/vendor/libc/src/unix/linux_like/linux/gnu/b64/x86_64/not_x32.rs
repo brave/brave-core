@@ -1,9 +1,6 @@
 use crate::prelude::*;
 use crate::pthread_mutex_t;
 
-pub type c_long = i64;
-pub type c_ulong = u64;
-
 s! {
     pub struct statvfs {
         pub f_bsize: c_ulong,
@@ -244,10 +241,13 @@ pub const SYS_sethostname: c_long = 170;
 pub const SYS_setdomainname: c_long = 171;
 pub const SYS_iopl: c_long = 172;
 pub const SYS_ioperm: c_long = 173;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 174;
 pub const SYS_init_module: c_long = 175;
 pub const SYS_delete_module: c_long = 176;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 177;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 178;
 pub const SYS_quotactl: c_long = 179;
 pub const SYS_nfsservctl: c_long = 180;

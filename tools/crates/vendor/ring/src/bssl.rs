@@ -4,23 +4,23 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::{c, error};
+use crate::error;
+use core::ffi::c_int;
 
 /// An `int` returned from a foreign function containing **1** if the function
 /// was successful or **0** if an error occurred. This is the convention used by
 /// C code in `ring`.
-#[derive(Clone, Copy, Debug)]
 #[must_use]
 #[repr(transparent)]
-pub struct Result(c::int);
+pub struct Result(c_int);
 
 impl From<Result> for core::result::Result<(), error::Unspecified> {
     fn from(ret: Result) -> Self {
@@ -37,17 +37,17 @@ impl From<Result> for core::result::Result<(), error::Unspecified> {
 #[cfg(test)]
 mod tests {
     mod result {
-        use crate::{bssl, c};
-        use core::mem;
+        use crate::bssl;
+        use core::{
+            ffi::c_int,
+            mem::{align_of, size_of},
+        };
 
         #[test]
         fn size_and_alignment() {
-            type Underlying = c::int;
-            assert_eq!(mem::size_of::<bssl::Result>(), mem::size_of::<Underlying>());
-            assert_eq!(
-                mem::align_of::<bssl::Result>(),
-                mem::align_of::<Underlying>()
-            );
+            type Underlying = c_int;
+            assert_eq!(size_of::<bssl::Result>(), size_of::<Underlying>());
+            assert_eq!(align_of::<bssl::Result>(), align_of::<Underlying>());
         }
 
         #[test]

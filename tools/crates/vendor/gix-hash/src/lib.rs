@@ -6,19 +6,34 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+
+// Remove this once other hashes (e.g., SHA-256, and potentially others)
+// are supported, and this crate can build without [`ObjectId::Sha1`].
+#[cfg(not(feature = "sha1"))]
+compile_error!("Please set the `sha1` feature flag");
 
 #[path = "oid.rs"]
 mod borrowed;
 pub use borrowed::{oid, Error};
 
+/// Hash functions and hash utilities
+pub mod hasher;
+pub use hasher::_impl::{hasher, Hasher};
+
+/// Error types for utility hash functions
+pub mod io;
+pub use io::_impl::{bytes, bytes_of_file, bytes_with_hasher};
+
 mod object_id;
 pub use object_id::{decode, ObjectId};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod prefix;
+
+///
+pub mod verify;
 
 /// A partial, owned hash possibly identifying an object uniquely, whose non-prefix bytes are zeroed.
 ///

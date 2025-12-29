@@ -118,7 +118,7 @@ where
     }
 }
 
-impl<I> crate::lib::std::ops::Deref for Partial<I> {
+impl<I> core::ops::Deref for Partial<I> {
     type Target = I;
 
     #[inline(always)]
@@ -127,8 +127,8 @@ impl<I> crate::lib::std::ops::Deref for Partial<I> {
     }
 }
 
-impl<I: crate::lib::std::fmt::Display> crate::lib::std::fmt::Display for Partial<I> {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl<I: core::fmt::Display> core::fmt::Display for Partial<I> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.input.fmt(f)
     }
 }
@@ -186,8 +186,18 @@ impl<I: Stream> Stream for Partial<I> {
         self.input.next_slice(offset)
     }
     #[inline(always)]
+    unsafe fn next_slice_unchecked(&mut self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.next_slice_unchecked(offset) }
+    }
+    #[inline(always)]
     fn peek_slice(&self, offset: usize) -> Self::Slice {
         self.input.peek_slice(offset)
+    }
+    #[inline(always)]
+    unsafe fn peek_slice_unchecked(&self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.peek_slice_unchecked(offset) }
     }
 
     #[inline(always)]
@@ -200,7 +210,7 @@ impl<I: Stream> Stream for Partial<I> {
     }
 
     #[inline(always)]
-    fn raw(&self) -> &dyn crate::lib::std::fmt::Debug {
+    fn raw(&self) -> &dyn core::fmt::Debug {
         &self.input
     }
 }
@@ -325,7 +335,7 @@ where
     I: FindSlice<T>,
 {
     #[inline(always)]
-    fn find_slice(&self, substr: T) -> Option<crate::lib::std::ops::Range<usize>> {
+    fn find_slice(&self, substr: T) -> Option<core::ops::Range<usize>> {
         self.input.find_slice(substr)
     }
 }

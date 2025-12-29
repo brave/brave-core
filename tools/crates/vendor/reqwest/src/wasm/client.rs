@@ -30,24 +30,30 @@ fn js_fetch(req: &web_sys::Request) -> Promise {
     }
 }
 
-/// dox
+/// An HTTP Client for WebAssembly.
+///
+/// Uses the browser's Fetch API to make requests. The `Client` holds
+/// configuration that applies to all requests. To configure a `Client`,
+/// use `Client::builder()`.
 #[derive(Clone)]
 pub struct Client {
     config: Arc<Config>,
 }
 
-/// dox
+/// A `ClientBuilder` can be used to create a `Client` with custom configuration.
 pub struct ClientBuilder {
     config: Config,
 }
 
 impl Client {
-    /// dox
+    /// Constructs a new `Client`.
     pub fn new() -> Self {
         Client::builder().build().unwrap_throw()
     }
 
-    /// dox
+    /// Creates a `ClientBuilder` to configure a `Client`.
+    ///
+    /// This is the same as `ClientBuilder::new()`.
     pub fn builder() -> ClientBuilder {
         ClientBuilder::new()
     }
@@ -216,13 +222,20 @@ async fn fetch(req: Request) -> crate::Result<Response> {
         init.credentials(creds);
     }
 
+    if let Some(cache) = req.cache {
+        init.set_cache(cache);
+    }
+
     if let Some(body) = req.body() {
         if !body.is_empty() {
             init.body(Some(body.to_js_value()?.as_ref()));
         }
     }
 
-    let abort = AbortGuard::new()?;
+    let mut abort = AbortGuard::new()?;
+    if let Some(timeout) = req.timeout() {
+        abort.timeout(*timeout);
+    }
     init.signal(Some(&abort.signal()));
 
     let js_req = web_sys::Request::new_with_str_and_init(req.url().as_str(), &init)
@@ -233,6 +246,13 @@ async fn fetch(req: Request) -> crate::Result<Response> {
     let p = js_fetch(&js_req);
     let js_resp = super::promise::<web_sys::Response>(p)
         .await
+        .map_err(|error| {
+            if error.to_string() == "JsValue(\"reqwest::errors::TimedOut\")" {
+                crate::error::TimedOut.into()
+            } else {
+                error
+            }
+        })
         .map_err(crate::error::request)?;
 
     // Convert from the js Response
@@ -263,7 +283,9 @@ async fn fetch(req: Request) -> crate::Result<Response> {
 // ===== impl ClientBuilder =====
 
 impl ClientBuilder {
-    /// dox
+    /// Constructs a new `ClientBuilder`.
+    ///
+    /// This is the same as `Client::builder()`.
     pub fn new() -> Self {
         ClientBuilder {
             config: Config::default(),

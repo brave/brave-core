@@ -86,8 +86,7 @@ impl<'a> TagRefIter<'a> {
                 let kind = (|i: &mut _| parse::header_field(i, b"type", take_while(1.., AsChar::is_alpha)))
                     .context(StrContext::Expected("type <object kind>".into()))
                     .parse_next(input)?;
-                let kind = Kind::from_bytes(kind)
-                    .map_err(|_| winnow::error::ErrMode::from_error_kind(input, winnow::error::ErrorKind::Verify))?;
+                let kind = Kind::from_bytes(kind).map_err(|_| winnow::error::ErrMode::from_input(input))?;
                 *state = Name;
                 Token::TargetKind(kind)
             }
@@ -153,7 +152,7 @@ pub enum Token<'a> {
     },
 }
 
-impl<'a> Token<'a> {
+impl Token<'_> {
     /// Return the object id of this token if its a [Target][Token::Target].
     pub fn id(&self) -> Option<&oid> {
         match self {

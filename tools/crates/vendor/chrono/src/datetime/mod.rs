@@ -14,22 +14,22 @@ use core::{fmt, hash, str};
 #[cfg(feature = "std")]
 use std::time::{SystemTime, UNIX_EPOCH};
 
+#[allow(deprecated)]
+use crate::Date;
 #[cfg(all(feature = "unstable-locales", feature = "alloc"))]
 use crate::format::Locale;
-use crate::format::{
-    parse, parse_and_remainder, parse_rfc3339, Fixed, Item, ParseError, ParseResult, Parsed,
-    StrftimeItems, TOO_LONG,
-};
 #[cfg(feature = "alloc")]
-use crate::format::{write_rfc2822, write_rfc3339, DelayedFormat, SecondsFormat};
+use crate::format::{DelayedFormat, SecondsFormat, write_rfc2822, write_rfc3339};
+use crate::format::{
+    Fixed, Item, ParseError, ParseResult, Parsed, StrftimeItems, TOO_LONG, parse,
+    parse_and_remainder, parse_rfc3339,
+};
 use crate::naive::{Days, IsoWeek, NaiveDate, NaiveDateTime, NaiveTime};
 #[cfg(feature = "clock")]
 use crate::offset::Local;
 use crate::offset::{FixedOffset, LocalResult, Offset, TimeZone, Utc};
-#[allow(deprecated)]
-use crate::Date;
-use crate::{expect, try_opt};
 use crate::{Datelike, Months, TimeDelta, Timelike, Weekday};
+use crate::{expect, try_opt};
 
 #[cfg(any(feature = "rkyv", feature = "rkyv-16", feature = "rkyv-32", feature = "rkyv-64"))]
 use rkyv::{Archive, Deserialize, Serialize};
@@ -714,6 +714,61 @@ impl<Tz: TimeZone> DateTime<Tz> {
 
 impl DateTime<Utc> {
     /// Makes a new `DateTime<Utc>` from the number of non-leap seconds
+    /// since January 1, 1970 0:00:00 UTC (aka "UNIX timestamp").
+    ///
+    /// This is a convenience wrapper around [`DateTime::from_timestamp`],
+    /// which is useful in functions like [`Iterator::map`] to avoid a closure.
+    ///
+    /// This is guaranteed to round-trip with regard to [`timestamp`](DateTime::timestamp).
+    ///
+    /// If you need to create a `DateTime` with a [`TimeZone`] different from [`Utc`], use
+    /// [`TimeZone::timestamp_opt`] or [`DateTime::with_timezone`]; if you need to create a
+    /// `DateTime` with more precision, use [`DateTime::from_timestamp_micros`],
+    /// [`DateTime::from_timestamp_millis`], or [`DateTime::from_timestamp_nanos`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `None` on out-of-range number of seconds,
+    /// otherwise returns `Some(DateTime {...})`.
+    ///
+    /// # Examples
+    ///
+    /// Using [`Option::and_then`]:
+    ///
+    /// ```
+    /// # use chrono::DateTime;
+    /// let maybe_timestamp: Option<i64> = Some(1431648000);
+    /// let maybe_dt = maybe_timestamp.and_then(DateTime::from_timestamp_secs);
+    ///
+    /// assert!(maybe_dt.is_some());
+    /// assert_eq!(maybe_dt.unwrap().to_string(), "2015-05-15 00:00:00 UTC");
+    /// ```
+    ///
+    /// Using [`Iterator::map`]:
+    ///
+    /// ```
+    /// # use chrono::{DateTime, Utc};
+    /// let v = vec![i64::MIN, 1_000_000_000, 1_234_567_890, i64::MAX];
+    /// let timestamps: Vec<Option<DateTime<Utc>>> = v
+    ///     .into_iter()
+    ///     .map(DateTime::from_timestamp_secs)
+    ///     .collect();
+    ///
+    /// assert_eq!(vec![
+    ///     None,
+    ///     Some(DateTime::parse_from_rfc3339("2001-09-09 01:46:40Z").unwrap().to_utc()),
+    ///     Some(DateTime::parse_from_rfc3339("2009-02-13 23:31:30Z").unwrap().to_utc()),
+    ///     None,
+    /// ], timestamps);
+    /// ```
+    ///
+    #[inline]
+    #[must_use]
+    pub const fn from_timestamp_secs(secs: i64) -> Option<Self> {
+        Self::from_timestamp(secs, 0)
+    }
+
+    /// Makes a new `DateTime<Utc>` from the number of non-leap seconds
     /// since January 1, 1970 0:00:00 UTC (aka "UNIX timestamp")
     /// and the number of nanoseconds since the last whole non-leap second.
     ///
@@ -858,7 +913,8 @@ impl DateTime<Utc> {
     }
 
     /// The Unix Epoch, 1970-01-01 00:00:00 UTC.
-    pub const UNIX_EPOCH: Self = Self { datetime: NaiveDateTime::UNIX_EPOCH, offset: Utc };
+    pub const UNIX_EPOCH: Self =
+        expect(NaiveDate::from_ymd_opt(1970, 1, 1), "").and_time(NaiveTime::MIN).and_utc();
 }
 
 impl Default for DateTime<Utc> {
@@ -975,7 +1031,7 @@ impl DateTime<FixedOffset> {
     ///   [Appendix A.5]
     /// - Single letter 'military' time zone names are parsed as a `-0000` offset.
     ///   They were defined with the wrong sign in RFC 822 and corrected in RFC 2822. But because
-    ///   the meaning is now ambiguous, the standard says they should be be considered as `-0000`
+    ///   the meaning is now ambiguous, the standard says they should be considered as `-0000`
     ///   unless there is out-of-band information confirming their meaning.
     ///   The exception is `Z`, which remains identical to `+0000`.
     ///
@@ -1849,11 +1905,7 @@ impl From<SystemTime> for DateTime<Utc> {
                 // unlikely but should be handled
                 let dur = e.duration();
                 let (sec, nsec) = (dur.as_secs() as i64, dur.subsec_nanos());
-                if nsec == 0 {
-                    (-sec, 0)
-                } else {
-                    (-sec - 1, 1_000_000_000 - nsec)
-                }
+                if nsec == 0 { (-sec, 0) } else { (-sec - 1, 1_000_000_000 - nsec) }
             }
         };
         Utc.timestamp_opt(sec, nsec).unwrap()
@@ -1884,7 +1936,7 @@ impl<Tz: TimeZone> From<DateTime<Tz>> for SystemTime {
 #[cfg(all(
     target_arch = "wasm32",
     feature = "wasmbind",
-    not(any(target_os = "emscripten", target_os = "wasi"))
+    not(any(target_os = "emscripten", target_os = "wasi", target_os = "linux"))
 ))]
 impl From<js_sys::Date> for DateTime<Utc> {
     fn from(date: js_sys::Date) -> DateTime<Utc> {
@@ -1895,7 +1947,7 @@ impl From<js_sys::Date> for DateTime<Utc> {
 #[cfg(all(
     target_arch = "wasm32",
     feature = "wasmbind",
-    not(any(target_os = "emscripten", target_os = "wasi"))
+    not(any(target_os = "emscripten", target_os = "wasi", target_os = "linux"))
 ))]
 impl From<&js_sys::Date> for DateTime<Utc> {
     fn from(date: &js_sys::Date) -> DateTime<Utc> {
@@ -1906,7 +1958,7 @@ impl From<&js_sys::Date> for DateTime<Utc> {
 #[cfg(all(
     target_arch = "wasm32",
     feature = "wasmbind",
-    not(any(target_os = "emscripten", target_os = "wasi"))
+    not(any(target_os = "emscripten", target_os = "wasi", target_os = "linux"))
 ))]
 impl From<DateTime<Utc>> for js_sys::Date {
     /// Converts a `DateTime<Utc>` to a JS `Date`. The resulting value may be lossy,
@@ -1933,12 +1985,12 @@ where
     }
 }
 
-/// Number of days between Januari 1, 1970 and December 31, 1 BCE which we define to be day 0.
+/// Number of days between January 1, 1970 and December 31, 1 BCE which we define to be day 0.
 /// 4 full leap year cycles until December 31, 1600     4 * 146097 = 584388
 /// 1 day until January 1, 1601                                           1
-/// 369 years until Januari 1, 1970                      369 * 365 = 134685
+/// 369 years until January 1, 1970                      369 * 365 = 134685
 /// of which floor(369 / 4) are leap years          floor(369 / 4) =     92
 /// except for 1700, 1800 and 1900                                       -3 +
 ///                                                                  --------
 ///                                                                  719163
-const UNIX_EPOCH_DAY: i64 = 719_163;
+pub(crate) const UNIX_EPOCH_DAY: i64 = 719_163;

@@ -1,5 +1,5 @@
 use crate::style::Style;
-use std::fmt;
+use core::fmt;
 
 /// Styles have a special `Debug` implementation that only shows the fields that
 /// are set. Fields that haven’t been touched aren’t included in the output.
@@ -93,10 +93,6 @@ mod test {
     use crate::style::Color::*;
     use crate::style::Style;
 
-    fn style() -> Style {
-        Style::new()
-    }
-
     macro_rules! test {
         ($name: ident: $obj: expr => $result: expr) => {
             #[test]
@@ -106,10 +102,10 @@ mod test {
         };
     }
 
-    test!(empty:   style()                  => "Style {}");
-    test!(bold:    style().bold()           => "Style { bold }");
-    test!(italic:  style().italic()         => "Style { italic }");
-    test!(both:    style().bold().italic()  => "Style { bold, italic }");
+    test!(empty:   Style::new()                  => "Style {}");
+    test!(bold:    Style::new().bold()           => "Style { bold }");
+    test!(italic:  Style::new().italic()         => "Style { italic }");
+    test!(both:    Style::new().bold().italic()  => "Style { bold, italic }");
 
     test!(red:     Red.normal()                     => "Style { fg(Red) }");
     test!(redblue: Red.normal().on(Rgb(3, 2, 4))    => "Style { fg(Red), on(Rgb(3, 2, 4)) }");
@@ -120,25 +116,21 @@ mod test {
 
     #[test]
     fn long_and_detailed() {
-        extern crate regex;
         let expected_debug = "Style { fg(Blue), bold }";
-        let expected_pretty_repat = r##"(?x)
-        Style\s+\{\s+
-            foreground:\s+Some\(\s+
-                Blue,?\s+
-            \),\s+
-            background:\s+None,\s+
-            blink:\s+false,\s+
-            bold:\s+true,\s+
-            dimmed:\s+false,\s+
-            hidden:\s+false,\s+
-            italic:\s+false,\s+
-            reverse:\s+false,\s+
-            strikethrough:\s+
-            false,\s+
-            underline:\s+false,?\s+
-            \}"##;
-        let re = regex::Regex::new(expected_pretty_repat).unwrap();
+        let expected_pretty_repat = r"Style {
+    foreground: Some(
+        Blue,
+    ),
+    background: None,
+    blink: false,
+    bold: true,
+    dimmed: false,
+    hidden: false,
+    italic: false,
+    reverse: false,
+    strikethrough: false,
+    underline: false,
+}";
 
         let style = Blue.bold();
         let style_fmt_debug = format!("{:?}", style);
@@ -147,6 +139,6 @@ mod test {
         println!("style_fmt_pretty:\n{}", style_fmt_pretty);
 
         assert_eq!(expected_debug, style_fmt_debug);
-        assert!(re.is_match(&style_fmt_pretty));
+        assert_eq!(expected_pretty_repat, style_fmt_pretty);
     }
 }

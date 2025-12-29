@@ -1,3 +1,10 @@
+//! Thread-specific namespace functions.
+//!
+//! # Safety
+//!
+//! The `unshare` function can cause threads to use different file descriptor tables.
+#![allow(unsafe_code)]
+
 use bitflags::bitflags;
 use linux_raw_sys::general::{
     CLONE_FILES, CLONE_FS, CLONE_NEWCGROUP, CLONE_NEWIPC, CLONE_NEWNET, CLONE_NEWNS, CLONE_NEWPID,
@@ -63,27 +70,27 @@ bitflags! {
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     pub struct UnshareFlags: u32 {
-        /// `CLONE_FILES`.
+        /// `CLONE_FILES`
         const FILES = CLONE_FILES;
-        /// `CLONE_FS`.
+        /// `CLONE_FS`
         const FS = CLONE_FS;
-        /// `CLONE_NEWCGROUP`.
+        /// `CLONE_NEWCGROUP`
         const NEWCGROUP = CLONE_NEWCGROUP;
-        /// `CLONE_NEWIPC`.
+        /// `CLONE_NEWIPC`
         const NEWIPC = CLONE_NEWIPC;
-        /// `CLONE_NEWNET`.
+        /// `CLONE_NEWNET`
         const NEWNET = CLONE_NEWNET;
-        /// `CLONE_NEWNS`.
+        /// `CLONE_NEWNS`
         const NEWNS = CLONE_NEWNS;
-        /// `CLONE_NEWPID`.
+        /// `CLONE_NEWPID`
         const NEWPID = CLONE_NEWPID;
-        /// `CLONE_NEWTIME`.
+        /// `CLONE_NEWTIME`
         const NEWTIME = CLONE_NEWTIME;
-        /// `CLONE_NEWUSER`.
+        /// `CLONE_NEWUSER`
         const NEWUSER = CLONE_NEWUSER;
         /// `CLONE_NEWUTS`
         const NEWUTS = CLONE_NEWUTS;
-        /// `CLONE_SYSVSEM`.
+        /// `CLONE_SYSVSEM`
         const SYSVSEM = CLONE_SYSVSEM;
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
@@ -127,13 +134,29 @@ pub fn move_into_thread_name_spaces(
     syscalls::setns(fd, allowed_types.bits() as c_int).map(|_r| ())
 }
 
+/// `unshare(flags)`—Deprecated in favor of [`unshare_unsafe`].
+///
+/// This function should be unsafe; see the safety comment on `unshare_unsafe`.
+#[deprecated(since = "1.1.0", note = "Use `unshare_unsafe`")]
+pub fn unshare(flags: UnshareFlags) -> io::Result<()> {
+    // SAFETY: This is not actually safe. This function is deprecated and users
+    // should use `unshare_unsafe` instead.
+    unsafe { syscalls::unshare(flags) }
+}
+
 /// `unshare(flags)`—Disassociate parts of the current thread's execution
 /// context with other threads.
+///
+/// # Safety
+///
+/// When using `UnshareFlags::FILES`, this function can cause one thread to be
+/// unable to use file descriptors created on a different thread. Callers must
+/// ensure that threads never observe file descriptors from unshared tables.
 ///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/unshare.2.html
-pub fn unshare(flags: UnshareFlags) -> io::Result<()> {
+pub unsafe fn unshare_unsafe(flags: UnshareFlags) -> io::Result<()> {
     syscalls::unshare(flags)
 }

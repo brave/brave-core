@@ -1,3 +1,42 @@
+# 0.1.36 (December 18, 2025)
+
+- Fix `record_all` panic ([#3432])
+
+[#3432]: https://github.com/tokio-rs/tracing/pull/3432
+
+# 0.1.35 (November 26, 2025)
+
+### Added
+
+- Switch to unconditional `no_std` ([#3323])
+- Improve code generation at trace points significantly ([#3398])
+
+### Fixed
+
+- Add missing `dyn` keyword in `Visit` documentation code sample ([#3387])
+
+### Documented
+
+- Add favicon for extra pretty docs ([#3351])
+
+[#3323]: https://github.com/tokio-rs/tracing/pull/#3323
+[#3351]: https://github.com/tokio-rs/tracing/pull/#3351
+[#3387]: https://github.com/tokio-rs/tracing/pull/#3387
+[#3398]: https://github.com/tokio-rs/tracing/pull/#3398
+
+# 0.1.34 (June 6, 2025)
+
+### Changed
+
+- Bump MSRV to 1.65 ([#3033])
+
+### Fixed
+
+- Do not compare references to pointers to compare pointers ([#3236])
+
+[#3033]: https://github.com/tokio-rs/tracing/pull/3033
+[#3236]: https://github.com/tokio-rs/tracing/pull/3236
+
 # 0.1.33 (November 25, 2024)
 
 ### Added

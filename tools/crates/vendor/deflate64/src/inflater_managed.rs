@@ -1,8 +1,10 @@
+use crate::buffer::Buffer;
 use crate::huffman_tree::HuffmanTree;
 use crate::input_buffer::{BitsBuffer, InputBuffer};
 use crate::output_window::OutputWindow;
 use crate::{array_copy, array_copy1, BlockType, InflateResult, InflaterState, InternalErr};
 use std::cmp::min;
+use std::mem::MaybeUninit;
 
 // Extra bits for length code 257 - 285.
 static EXTRA_LENGTH_BITS: &[u8] = &[
@@ -137,7 +139,20 @@ impl InflaterManaged {
     ///
     /// This will decompress data until `output` is full, `input` is empty,
     /// the end if the deflate64 stream is hit, or there is error data in the deflate64 stream.
-    pub fn inflate(&mut self, input: &[u8], mut output: &mut [u8]) -> InflateResult {
+    pub fn inflate(&mut self, input: &[u8], output: &mut [u8]) -> InflateResult {
+        self.inflate_internal(input, Buffer::Init(output))
+    }
+
+    /// Same as [`Self::inflate`] but accepts uninitialized buffer
+    pub fn inflate_uninit(
+        &mut self,
+        input: &[u8],
+        output: &mut [MaybeUninit<u8>],
+    ) -> InflateResult {
+        self.inflate_internal(input, Buffer::Uninit(output))
+    }
+
+    fn inflate_internal(&mut self, input: &[u8], mut output: Buffer<'_>) -> InflateResult {
         // copy bytes from output to outputbytes if we have available bytes
         // if buffer is not filled up. keep decoding until no input are available
         // if decodeBlock returns false. Throw an exception.
@@ -146,21 +161,21 @@ impl InflaterManaged {
         while 'while_loop: {
             let mut copied = 0;
             if self.uncompressed_size == usize::MAX {
-                copied = self.output.copy_to(output);
+                copied = self.output.copy_to(output.reborrow());
             } else if self.uncompressed_size > self.current_inflated_count {
                 let len = min(
                     output.len(),
                     self.uncompressed_size - self.current_inflated_count,
                 );
-                output = &mut output[..len];
-                copied = self.output.copy_to(output);
+                output = output.index_mut(..len);
+                copied = self.output.copy_to(output.reborrow());
                 self.current_inflated_count += copied;
             } else {
                 self.state = InflaterState::Done;
                 self.output.clear_bytes_used();
             }
             if copied > 0 {
-                output = &mut output[copied..];
+                output = output.index_mut(copied..);
                 result.bytes_written += copied;
             }
 

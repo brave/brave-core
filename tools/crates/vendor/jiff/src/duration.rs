@@ -18,7 +18,7 @@ impl Duration {
     ///
     /// This returns an error only in the case where this is an unsigned
     /// duration with a number of whole seconds that exceeds `|i64::MIN|`.
-    #[inline]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(crate) fn to_signed(self) -> Result<SDuration, Error> {
         match self {
             Duration::Span(span) => Ok(SDuration::Span(span)),
@@ -55,7 +55,7 @@ impl Duration {
     /// be different, the actual end result is the same (failure).
     ///
     /// TODO: Write unit tests for this.
-    #[inline]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(crate) fn checked_neg(self) -> Result<Duration, Error> {
         match self {
             Duration::Span(span) => Ok(Duration::Span(span.negate())),
@@ -101,7 +101,7 @@ impl Duration {
     }
 
     /// Returns true if and only if this duration is negative.
-    #[inline]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(crate) fn is_negative(&self) -> bool {
         match *self {
             Duration::Span(ref span) => span.is_negative(),

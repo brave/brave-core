@@ -6,7 +6,6 @@
 // copied, modified, or distributed except according to those terms.
 
 use crate::POINTER_WIDTH;
-use once_cell::sync::Lazy;
 use std::cell::Cell;
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
@@ -17,17 +16,19 @@ use std::sync::Mutex;
 /// indefinitely when it is used by many short-lived threads.
 struct ThreadIdManager {
     free_from: usize,
-    free_list: BinaryHeap<Reverse<usize>>,
+    free_list: Option<BinaryHeap<Reverse<usize>>>,
 }
+
 impl ThreadIdManager {
-    fn new() -> Self {
+    const fn new() -> Self {
         Self {
             free_from: 0,
-            free_list: BinaryHeap::new(),
+            free_list: None,
         }
     }
+
     fn alloc(&mut self) -> usize {
-        if let Some(id) = self.free_list.pop() {
+        if let Some(id) = self.free_list.as_mut().and_then(|heap| heap.pop()) {
             id.0
         } else {
             // `free_from` can't overflow as each thread takes up at least 2 bytes of memory and
@@ -38,12 +39,15 @@ impl ThreadIdManager {
             id
         }
     }
+
     fn free(&mut self, id: usize) {
-        self.free_list.push(Reverse(id));
+        self.free_list
+            .get_or_insert_with(BinaryHeap::new)
+            .push(Reverse(id));
     }
 }
-static THREAD_ID_MANAGER: Lazy<Mutex<ThreadIdManager>> =
-    Lazy::new(|| Mutex::new(ThreadIdManager::new()));
+
+static THREAD_ID_MANAGER: Mutex<ThreadIdManager> = Mutex::new(ThreadIdManager::new());
 
 /// Data which is unique to the current thread while it is running.
 /// A thread ID may be reused after a thread exits.

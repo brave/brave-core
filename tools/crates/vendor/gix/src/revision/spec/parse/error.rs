@@ -26,7 +26,7 @@ pub enum CandidateInfo {
     /// The candidate is a commit.
     Commit {
         /// The date of the commit.
-        date: gix_date::Time,
+        date: String,
         /// The subject line.
         title: BString,
     },
@@ -39,7 +39,13 @@ impl std::fmt::Display for CandidateInfo {
             CandidateInfo::Tag { name } => write!(f, "tag {name:?}"),
             CandidateInfo::Object { kind } => std::fmt::Display::fmt(kind, f),
             CandidateInfo::Commit { date, title } => {
-                write!(f, "commit {} {title:?}", date.format(gix_date::time::format::SHORT))
+                write!(
+                    f,
+                    "commit {} {title:?}",
+                    gix_date::parse_header(date)
+                        .unwrap_or_default()
+                        .format(gix_date::time::format::SHORT)
+                )
             }
         }
     }
@@ -91,7 +97,7 @@ impl Error {
                                 use bstr::ByteSlice;
                                 let commit = obj.to_commit_ref();
                                 CandidateInfo::Commit {
-                                    date: commit.committer().time,
+                                    date: commit.committer().time.trim().into(),
                                     title: commit.message().title.trim().into(),
                                 }
                             }
@@ -105,7 +111,6 @@ impl Error {
     }
 
     pub(crate) fn from_errors(errors: Vec<Self>) -> Self {
-        assert!(!errors.is_empty());
         match errors.len() {
             0 => unreachable!(
                 "BUG: cannot create something from nothing, must have recorded some errors to call from_errors()"

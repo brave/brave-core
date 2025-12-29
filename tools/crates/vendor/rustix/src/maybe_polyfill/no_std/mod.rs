@@ -10,7 +10,7 @@
 
 #[cfg(not(windows))]
 pub mod io;
-#[cfg(not(any(target_os = "redox", target_os = "wasi")))]
+#[cfg(not(target_os = "wasi"))]
 #[cfg(feature = "net")]
 pub mod net;
 pub mod os;

@@ -2,7 +2,7 @@
 
 #![allow(unsafe_code)]
 use crate::fd::OwnedFd;
-use crate::{backend, io};
+use crate::{backend, ffi, io};
 use backend::fd::{AsFd, RawFd};
 
 /// Raw file descriptor in another process.
@@ -17,7 +17,7 @@ bitflags::bitflags! {
     /// All flags are reserved for future use.
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct PidfdGetfdFlags: backend::c::c_uint {
+    pub struct PidfdGetfdFlags: ffi::c_uint {
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;
     }

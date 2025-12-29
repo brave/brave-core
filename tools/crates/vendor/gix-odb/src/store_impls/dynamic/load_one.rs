@@ -32,7 +32,7 @@ impl super::Store {
                 })
                 .map_err(|err| match err {
                     gix_pack::data::header::decode::Error::Io { source, .. } => source,
-                    other => std::io::Error::new(std::io::ErrorKind::Other, other),
+                    other => std::io::Error::other(other),
                 })
         }
 

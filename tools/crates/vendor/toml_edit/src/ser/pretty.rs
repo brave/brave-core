@@ -1,4 +1,12 @@
-pub(crate) struct Pretty;
+pub(crate) struct Pretty {
+    in_value: bool,
+}
+
+impl Pretty {
+    pub(crate) fn new() -> Self {
+        Self { in_value: false }
+    }
+}
 
 impl crate::visit_mut::VisitMut for Pretty {
     fn visit_document_mut(&mut self, node: &mut crate::DocumentMut) {
@@ -6,7 +14,9 @@ impl crate::visit_mut::VisitMut for Pretty {
     }
 
     fn visit_item_mut(&mut self, node: &mut crate::Item) {
-        node.make_item();
+        if !self.in_value {
+            node.make_item();
+        }
 
         crate::visit_mut::visit_item_mut(self, node);
     }
@@ -25,7 +35,10 @@ impl crate::visit_mut::VisitMut for Pretty {
     fn visit_value_mut(&mut self, node: &mut crate::Value) {
         node.decor_mut().clear();
 
+        let old_in_value = self.in_value;
+        self.in_value = true;
         crate::visit_mut::visit_value_mut(self, node);
+        self.in_value = old_in_value;
     }
 
     fn visit_array_mut(&mut self, node: &mut crate::Array) {

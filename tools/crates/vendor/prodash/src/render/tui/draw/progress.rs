@@ -1,10 +1,5 @@
-use std::{
-    fmt,
-    sync::atomic::Ordering,
-    time::{Duration, SystemTime},
-};
+use std::{fmt, sync::atomic::Ordering, time::Duration};
 
-use humantime::format_duration;
 use tui::{
     buffer::Buffer,
     layout::Rect,
@@ -145,7 +140,7 @@ pub(crate) fn headline(
 
 struct ProgressFormat<'a>(&'a Option<Value>, u16, Option<unit::display::Throughput>);
 
-impl<'a> fmt::Display for ProgressFormat<'a> {
+impl fmt::Display for ProgressFormat<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self.0 {
             Some(p) => match p.unit.as_ref() {
@@ -300,13 +295,14 @@ fn add_block_eta(state: progress::State, progress_text: &mut String) {
             progress_text.push_str(reason);
             progress_text.push(']');
             if let Some(eta) = maybe_eta {
-                let now = SystemTime::now();
+                let eta = jiff::Timestamp::try_from(eta).expect("reasonable system time");
+                let now = jiff::Timestamp::now();
                 if eta > now {
                     use std::fmt::Write;
                     write!(
                         progress_text,
-                        " → {} to {}",
-                        format_duration(eta.duration_since(now).expect("computation to work")),
+                        " → {:#} to {}",
+                        eta.duration_since(now),
                         if let progress::State::Blocked(_, _) = state {
                             "unblock"
                         } else {

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.60"
 name = "crossbeam-channel"
-version = "0.5.14"
+version = "0.5.15"
 build = false
 autolib = false
 autobins = false
@@ -37,6 +37,10 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/crossbeam-rs/crossbeam"
+
+[features]
+default = ["std"]
+std = ["crossbeam-utils/std"]
 
 [lib]
 name = "crossbeam_channel"
@@ -126,10 +130,6 @@ version = "0.8"
 
 [dev-dependencies.signal-hook]
 version = "0.3"
-
-[features]
-default = ["std"]
-std = ["crossbeam-utils/std"]
 
 [lints.clippy.declare_interior_mutable_const]
 level = "allow"

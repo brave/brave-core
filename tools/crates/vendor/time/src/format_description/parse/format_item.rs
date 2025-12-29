@@ -2,13 +2,14 @@
 
 use alloc::boxed::Box;
 use alloc::string::String;
-use core::num::NonZeroU16;
+use core::num::NonZero;
 use core::str::{self, FromStr};
 
 use super::{ast, unused, Error, Span, Spanned};
 use crate::internal_macros::bug;
 
 /// Parse an AST iterator into a sequence of format items.
+#[inline]
 pub(super) fn parse<'a>(
     ast_items: impl Iterator<Item = Result<ast::Item<'a>, Error>>,
 ) -> impl Iterator<Item = Result<Item<'a>, Error>> {
@@ -105,6 +106,7 @@ impl Item<'_> {
 impl<'a> TryFrom<Item<'a>> for crate::format_description::BorrowedFormatItem<'a> {
     type Error = Error;
 
+    #[inline]
     fn try_from(item: Item<'a>) -> Result<Self, Self::Error> {
         match item {
             Item::Literal(literal) => Ok(Self::Literal(literal)),
@@ -116,7 +118,7 @@ impl<'a> TryFrom<Item<'a>> for crate::format_description::BorrowedFormatItem<'a>
                 public: crate::error::InvalidFormatDescription::NotSupported {
                     what: "optional item",
                     context: "runtime-parsed format descriptions",
-                    index: span.start.byte as _,
+                    index: span.start.byte as usize,
                 },
             }),
             Item::First { value: _, span } => Err(Error {
@@ -126,7 +128,7 @@ impl<'a> TryFrom<Item<'a>> for crate::format_description::BorrowedFormatItem<'a>
                 public: crate::error::InvalidFormatDescription::NotSupported {
                     what: "'first' item",
                     context: "runtime-parsed format descriptions",
-                    index: span.start.byte as _,
+                    index: span.start.byte as usize,
                 },
             }),
         }
@@ -134,6 +136,7 @@ impl<'a> TryFrom<Item<'a>> for crate::format_description::BorrowedFormatItem<'a>
 }
 
 impl From<Item<'_>> for crate::format_description::OwnedFormatItem {
+    #[inline]
     fn from(item: Item<'_>) -> Self {
         match item {
             Item::Literal(literal) => Self::Literal(literal.to_vec().into_boxed_slice()),
@@ -147,6 +150,7 @@ impl From<Item<'_>> for crate::format_description::OwnedFormatItem {
 }
 
 impl<'a> From<Box<[Item<'a>]>> for crate::format_description::OwnedFormatItem {
+    #[inline]
     fn from(items: Box<[Item<'a>]>) -> Self {
         let items = items.into_vec();
         match <[_; 1]>::try_from(items) {
@@ -181,6 +185,7 @@ macro_rules! component_definition {
 
         $(impl $variant {
             /// Parse the component from the AST, given its modifiers.
+            #[inline]
             fn with_modifiers(
                 modifiers: &[ast::Modifier<'_>],
                 _component_span: Span,
@@ -193,7 +198,7 @@ macro_rules! component_definition {
                 };
 
                 for modifier in modifiers {
-                    $(#[allow(clippy::string_lit_as_bytes)]
+                    $(#[expect(clippy::string_lit_as_bytes)]
                     if modifier.key.eq_ignore_ascii_case($parse_field.as_bytes()) {
                         this.$field = component_definition!(@if_from_str $($from_str)?
                             then {
@@ -207,7 +212,7 @@ macro_rules! component_definition {
                         _inner: unused(modifier.key.span.error("invalid modifier key")),
                         public: crate::error::InvalidFormatDescription::InvalidModifier {
                             value: String::from_utf8_lossy(*modifier.key).into_owned(),
-                            index: modifier.key.span.start.byte as _,
+                            index: modifier.key.span.start.byte as usize,
                         }
                     });
                 }
@@ -219,7 +224,7 @@ macro_rules! component_definition {
                             public:
                                 crate::error::InvalidFormatDescription::MissingRequiredModifier {
                                     name: $parse_field,
-                                    index: _component_span.start.byte as _,
+                                    index: _component_span.start.byte as usize,
                                 }
                         });
                     }
@@ -230,6 +235,7 @@ macro_rules! component_definition {
         })*
 
         impl From<$name> for crate::format_description::Component {
+            #[inline]
             fn from(component: $name) -> Self {
                 match component {$(
                     $name::$variant($variant { $($field),* }) => {
@@ -253,11 +259,12 @@ macro_rules! component_definition {
         }
 
         /// Parse a component from the AST, given its name and modifiers.
+        #[inline]
         fn component_from_ast(
             name: &Spanned<&[u8]>,
             modifiers: &[ast::Modifier<'_>],
         ) -> Result<Component, Error> {
-            $(#[allow(clippy::string_lit_as_bytes)]
+            $(#[expect(clippy::string_lit_as_bytes)]
             if name.eq_ignore_ascii_case($parse_variant.as_bytes()) {
                 return Ok(Component::$variant($variant::with_modifiers(&modifiers, name.span)?));
             })*
@@ -265,7 +272,7 @@ macro_rules! component_definition {
                 _inner: unused(name.span.error("invalid component")),
                 public: crate::error::InvalidFormatDescription::InvalidComponentName {
                     name: String::from_utf8_lossy(name).into_owned(),
-                    index: name.span.start.byte as _,
+                    index: name.span.start.byte as usize,
                 },
             })
         }
@@ -285,7 +292,7 @@ component_definition! {
         },
         Ignore = "ignore" {
             #[required]
-            count = "count": Option<#[from_str] NonZeroU16> => count,
+            count = "count": Option<#[from_str] NonZero<u16>> => count,
         },
         Minute = "minute" {
             padding = "padding": Option<Padding> => padding,
@@ -334,6 +341,7 @@ component_definition! {
         Year = "year" {
             padding = "padding": Option<Padding> => padding,
             repr = "repr": Option<YearRepr> => repr,
+            range = "range": Option<YearRange> => range,
             base = "base": Option<YearBase> => iso_week_based,
             sign_behavior = "sign": Option<SignBehavior> => sign_is_mandatory,
         },
@@ -393,6 +401,7 @@ macro_rules! modifier {
 
         impl $name {
             /// Parse the modifier from its string representation.
+            #[inline]
             fn from_modifier_value(value: &Spanned<&[u8]>) -> Result<Option<Self>, Error> {
                 $(if value.eq_ignore_ascii_case($parse_variant) {
                     return Ok(Some(Self::$variant));
@@ -401,13 +410,14 @@ macro_rules! modifier {
                     _inner: unused(value.span.error("invalid modifier value")),
                     public: crate::error::InvalidFormatDescription::InvalidModifier {
                         value: String::from_utf8_lossy(value).into_owned(),
-                        index: value.span.start.byte as _,
+                        index: value.span.start.byte as usize,
                     },
                 })
             }
         }
 
         impl From<$name> for target_ty!($name $($target_ty)?) {
+            #[inline]
             fn from(modifier: $name) -> Self {
                 match modifier {
                     $($name::$variant => target_value!($name $variant $($target_value)?)),*
@@ -524,9 +534,16 @@ modifier! {
         Century = b"century",
         LastTwo = b"last_two",
     }
+
+    enum YearRange {
+        Standard = b"standard",
+        #[default]
+        Extended = b"extended",
+    }
 }
 
 /// Parse a modifier value using `FromStr`. Requires the modifier value to be valid UTF-8.
+#[inline]
 fn parse_from_modifier_value<T: FromStr>(value: &Spanned<&[u8]>) -> Result<Option<T>, Error> {
     str::from_utf8(value)
         .ok()
@@ -536,7 +553,7 @@ fn parse_from_modifier_value<T: FromStr>(value: &Spanned<&[u8]>) -> Result<Optio
             _inner: unused(value.span.error("invalid modifier value")),
             public: crate::error::InvalidFormatDescription::InvalidModifier {
                 value: String::from_utf8_lossy(value).into_owned(),
-                index: value.span.start.byte as _,
+                index: value.span.start.byte as usize,
             },
         })
 }

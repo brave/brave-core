@@ -1,10 +1,11 @@
 #![allow(clippy::result_large_err)]
-use gix_config::KeyRef;
 use std::{
     borrow::Cow,
     error::Error,
     fmt::{Debug, Formatter},
 };
+
+use gix_config::KeyRef;
 
 use crate::{
     bstr::BStr,

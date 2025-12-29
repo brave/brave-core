@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "linux-raw-sys"
-version = "0.4.15"
+version = "0.11.0"
 authors = ["Dan Gohman <dev@sunfishcode.online>"]
 build = false
 exclude = [
@@ -43,6 +43,7 @@ features = [
     "bootparam",
     "btrfs",
     "elf_uapi",
+    "image",
     "ioctl",
     "landlock",
     "netlink",
@@ -64,26 +65,8 @@ targets = [
     "i686-unknown-linux-gnu",
 ]
 
-[lib]
-name = "linux_raw_sys"
-path = "src/lib.rs"
-
-[dependencies.compiler_builtins]
-version = "0.1.49"
-optional = true
-
-[dependencies.core]
-version = "1.0.0"
-optional = true
-package = "rustc-std-workspace-core"
-
-[dev-dependencies.libc]
-version = "0.2.100"
-
-[dev-dependencies.static_assertions]
-version = "1.1.0"
-
 [features]
+auxvec = []
 bootparam = []
 btrfs = []
 default = [
@@ -98,6 +81,7 @@ general = []
 if_arp = []
 if_ether = []
 if_packet = []
+image = []
 io_uring = []
 ioctl = []
 landlock = []
@@ -110,12 +94,26 @@ prctl = []
 ptrace = []
 rustc-dep-of-std = [
     "core",
-    "compiler_builtins",
     "no_std",
 ]
 std = []
 system = []
 xdp = []
+
+[lib]
+name = "linux_raw_sys"
+path = "src/lib.rs"
+
+[dependencies.core]
+version = "1.0.0"
+optional = true
+package = "rustc-std-workspace-core"
+
+[dev-dependencies.libc]
+version = "0.2.100"
+
+[dev-dependencies.static_assertions]
+version = "1.1.0"
 
 [lints.rust.unexpected_cfgs]
 level = "warn"

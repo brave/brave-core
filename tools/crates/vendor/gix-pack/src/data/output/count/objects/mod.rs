@@ -14,14 +14,14 @@ pub use types::{Error, ObjectExpansion, Options, Outcome};
 mod tree;
 
 /// Generate [`Count`][output::Count]s from input `objects` with object expansion based on [`options`][Options]
-/// to learn which objects would would constitute a pack. This step is required to know exactly how many objects would
-/// be in a pack while keeping data around to avoid minimize object database access.
+/// to learn which objects would constitute a pack. This step is required to know exactly how many objects would
+/// be in a pack while keeping data around to minimize database object access.
 ///
 /// A [`Count`][output::Count] object maintains enough state to greatly accelerate future access of packed objects.
 ///
 /// * `db` - the object store to use for accessing objects.
 /// * `objects_ids`
-///   * A list of objects ids to add to the pack. Duplication checks are performed so no object is ever added to a pack twice.
+///   * A list of objects IDs to add to the pack. Duplication checks are performed so no object is ever added to a pack twice.
 ///   * Objects may be expanded based on the provided [`options`][Options]
 /// * `objects`
 ///   * count the amount of objects we encounter
@@ -194,7 +194,7 @@ mod expand {
                                     for token in commit_iter {
                                         match token {
                                             Ok(gix_object::commit::ref_iter::Token::Parent { id }) => {
-                                                parent_commit_ids.push(id)
+                                                parent_commit_ids.push(id);
                                             }
                                             Ok(_) => break,
                                             Err(err) => return Err(Error::CommitDecode(err)),
@@ -247,14 +247,14 @@ mod expand {
 
                                         changes_delegate.clear();
                                         let objects = CountingObjects::new(db);
-                                        gix_diff::tree::Changes::from(Some(parent_tree))
-                                            .needed_to_obtain(
-                                                current_tree_iter,
-                                                &mut tree_diff_state,
-                                                &objects,
-                                                &mut changes_delegate,
-                                            )
-                                            .map_err(Error::TreeChanges)?;
+                                        gix_diff::tree(
+                                            parent_tree,
+                                            current_tree_iter,
+                                            &mut tree_diff_state,
+                                            &objects,
+                                            &mut changes_delegate,
+                                        )
+                                        .map_err(Error::TreeChanges)?;
                                         stats.decoded_objects += objects.into_count();
                                     }
                                     &changes_delegate.objects

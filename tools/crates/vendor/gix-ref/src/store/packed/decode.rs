@@ -34,7 +34,7 @@ impl Default for Header {
     }
 }
 
-fn until_newline<'a, E>(input: &mut &'a [u8]) -> PResult<&'a BStr, E>
+fn until_newline<'a, E>(input: &mut &'a [u8]) -> ModalResult<&'a BStr, E>
 where
     E: ParserError<&'a [u8]>,
 {
@@ -43,7 +43,7 @@ where
         .parse_next(input)
 }
 
-pub fn header<'a, E>(input: &mut &'a [u8]) -> PResult<Header, E>
+pub fn header<'a, E>(input: &mut &'a [u8]) -> ModalResult<Header, E>
 where
     E: ParserError<&'a [u8]>,
 {
@@ -67,7 +67,7 @@ where
 
 pub fn reference<'a, E: ParserError<&'a [u8]> + FromExternalError<&'a [u8], crate::name::Error>>(
     input: &mut &'a [u8],
-) -> PResult<packed::Reference<'a>, E> {
+) -> ModalResult<packed::Reference<'a>, E> {
     (
         terminated(hex_hash, b" "),
         until_newline.try_map(TryInto::try_into),

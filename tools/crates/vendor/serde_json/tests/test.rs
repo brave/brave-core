@@ -11,6 +11,7 @@
     clippy::let_underscore_untyped,
     clippy::shadow_unrelated,
     clippy::too_many_lines,
+    clippy::uninlined_format_args,
     clippy::unreadable_literal,
     clippy::unseparated_literal_suffix,
     clippy::vec_init_then_push,
@@ -147,8 +148,8 @@ fn test_write_f64() {
         (3.1, "3.1"),
         (-1.5, "-1.5"),
         (0.5, "0.5"),
-        (f64::MIN, "-1.7976931348623157e308"),
-        (f64::MAX, "1.7976931348623157e308"),
+        (f64::MIN, "-1.7976931348623157e+308"),
+        (f64::MAX, "1.7976931348623157e+308"),
         (f64::EPSILON, "2.220446049250313e-16"),
     ];
     test_encode_ok(tests);

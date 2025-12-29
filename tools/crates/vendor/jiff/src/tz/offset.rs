@@ -7,12 +7,13 @@ use crate::{
     civil,
     duration::{Duration, SDuration},
     error::{err, Error, ErrorContext},
+    shared::util::itime::IOffset,
     span::Span,
     timestamp::Timestamp,
     tz::{AmbiguousOffset, AmbiguousTimestamp, AmbiguousZoned, TimeZone},
     util::{
         array_str::ArrayStr,
-        rangeint::{RFrom, RInto, TryRFrom},
+        rangeint::{self, Composite, RFrom, RInto, TryRFrom},
         t::{self, C},
     },
     RoundMode, SignedDuration, SignedDurationRound, Unit,
@@ -231,7 +232,7 @@ impl Offset {
     // warrant its existence. And I think I'd rather `Offset::hms` be const and
     // exported instead of this monstrosity.
     #[inline]
-    const fn constant_seconds(seconds: i32) -> Offset {
+    pub(crate) const fn constant_seconds(seconds: i32) -> Offset {
         if !t::SpanZoneOffset::contains(seconds) {
             panic!("invalid time zone offset seconds")
         }
@@ -376,7 +377,7 @@ impl Offset {
     /// assert!(!tz::offset(-5).is_positive());
     /// ```
     pub fn is_positive(self) -> bool {
-        self.seconds_ranged() > 0
+        self.seconds_ranged() > C(0)
     }
 
     /// Returns true if and only if this offset is less than zero.
@@ -391,7 +392,7 @@ impl Offset {
     /// assert!(tz::offset(-5).is_negative());
     /// ```
     pub fn is_negative(self) -> bool {
-        self.seconds_ranged() < 0
+        self.seconds_ranged() < C(0)
     }
 
     /// Returns true if and only if this offset is zero.
@@ -408,7 +409,7 @@ impl Offset {
     /// assert!(!tz::offset(-5).is_zero());
     /// ```
     pub fn is_zero(self) -> bool {
-        self.seconds_ranged() == 0
+        self.seconds_ranged() == C(0)
     }
 
     /// Converts this offset into a [`TimeZone`].
@@ -445,7 +446,21 @@ impl Offset {
     /// ```
     #[inline]
     pub fn to_datetime(self, timestamp: Timestamp) -> civil::DateTime {
-        timestamp_to_datetime_zulu(timestamp, self)
+        let idt = timestamp.to_itimestamp().zip2(self.to_ioffset()).map(
+            #[allow(unused_mut)]
+            |(mut its, ioff)| {
+                // This is tricky, but if we have a minimal number of seconds,
+                // then the minimum possible nanosecond value is actually 0.
+                // So we clamp it in this case. (This encodes the invariant
+                // enforced by `Timestamp::new`.)
+                #[cfg(debug_assertions)]
+                if its.second == t::UnixSeconds::MIN_REPR {
+                    its.nanosecond = 0;
+                }
+                its.to_datetime(ioff)
+            },
+        );
+        civil::DateTime::from_idatetime(idt)
     }
 
     /// Converts the given civil datetime to a timestamp using this offset.
@@ -507,7 +522,16 @@ impl Offset {
         self,
         dt: civil::DateTime,
     ) -> Result<Timestamp, Error> {
-        datetime_zulu_to_timestamp(dt, self)
+        let its = dt
+            .to_idatetime()
+            .zip2(self.to_ioffset())
+            .map(|(idt, ioff)| idt.to_timestamp(ioff));
+        Timestamp::from_itimestamp(its).with_context(|| {
+            err!(
+                "converting {dt} with offset {offset} to timestamp overflowed",
+                offset = self,
+            )
+        })
     }
 
     /// Adds the given span of time to this offset.
@@ -796,8 +820,8 @@ impl Offset {
     /// ```
     #[inline]
     pub fn until(self, other: Offset) -> Span {
-        Span::new()
-            .seconds_ranged(other.seconds_ranged() - self.seconds_ranged())
+        let diff = other.seconds_ranged() - self.seconds_ranged();
+        Span::new().seconds_ranged(diff.rinto())
     }
 
     /// Returns the span of time since the other offset given from this offset.
@@ -1011,8 +1035,42 @@ impl Offset {
         Offset { span: seconds.rinto() }
     }
 
+    /*
     #[inline]
-    pub(crate) fn seconds_ranged(self) -> t::SpanZoneOffset {
+    pub(crate) fn from_ioffset(ioff: Composite<IOffset>) -> Offset {
+        let span = rangeint::uncomposite!(ioff, c => (c.second));
+        Offset { span: span.to_rint() }
+    }
+    */
+
+    #[inline]
+    pub(crate) fn to_ioffset(self) -> Composite<IOffset> {
+        rangeint::composite! {
+            (second = self.span) => {
+                IOffset { second }
+            }
+        }
+    }
+
+    #[inline]
+    pub(crate) const fn from_ioffset_const(ioff: IOffset) -> Offset {
+        Offset::from_seconds_unchecked(ioff.second)
+    }
+
+    #[inline]
+    pub(crate) const fn from_seconds_unchecked(second: i32) -> Offset {
+        Offset { span: t::SpanZoneOffset::new_unchecked(second) }
+    }
+
+    /*
+    #[inline]
+    pub(crate) const fn to_ioffset_const(self) -> IOffset {
+        IOffset { second: self.span.get_unchecked() }
+    }
+    */
+
+    #[inline]
+    pub(crate) const fn seconds_ranged(self) -> t::SpanZoneOffset {
         self.span
     }
 
@@ -1049,7 +1107,7 @@ impl Offset {
 
 impl core::fmt::Debug for Offset {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        let sign = if self.seconds_ranged() < 0 { "-" } else { "" };
+        let sign = if self.seconds_ranged() < C(0) { "-" } else { "" };
         write!(
             f,
             "{sign}{:02}:{:02}:{:02}",
@@ -1062,7 +1120,7 @@ impl core::fmt::Debug for Offset {
 
 impl core::fmt::Display for Offset {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        let sign = if self.span < 0 { "-" } else { "+" };
+        let sign = if self.span < C(0) { "-" } else { "+" };
         let hours = self.part_hours_ranged().abs().get();
         let minutes = self.part_minutes_ranged().abs().get();
         let seconds = self.part_seconds_ranged().abs().get();
@@ -1882,6 +1940,23 @@ impl OffsetConflict {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    ///
+    /// Rounding does not occur when the parsed offset itself contains
+    /// sub-minute precision. In that case, exact equality is used:
+    ///
+    /// ```
+    /// use jiff::Zoned;
+    ///
+    /// let result = "1970-06-01T00-00:45:00[Africa/Monrovia]".parse::<Zoned>();
+    /// assert_eq!(
+    ///     result.unwrap_err().to_string(),
+    ///     "parsing \"1970-06-01T00-00:45:00[Africa/Monrovia]\" failed: \
+    ///      datetime 1970-06-01T00:00:00 could not resolve to a timestamp \
+    ///      since 'reject' conflict resolution was chosen, and because \
+    ///      datetime has offset -00:45, but the time zone Africa/Monrovia \
+    ///      for the given datetime unambiguously has offset -00:44:30",
+    /// );
+    /// ```
     pub fn resolve_with<F>(
         self,
         dt: civil::DateTime,
@@ -1934,45 +2009,10 @@ impl OffsetConflict {
 
         let amb = tz.to_ambiguous_timestamp(dt);
         match amb.offset() {
-            // Basically, if the offset parsed matches one of our ambiguous
-            // offsets, then the offset is used to resolve the ambiguity and
-            // yields an unambiguous result. But in every other case, the
-            // offset parsed is completely ignored. (And this may result in
-            // returning an ambiguous instant.)
-            //
-            // Note that gaps are a little weird here. We always pick the
-            // "before" offset even when it doesn't match what's `given`.
-            // This matches what Temporal does, and I think makes more
-            // intuitive sense. For example, if we have
-            //
-            //   2024-03-10T01:30:00-05:00[US/Eastern]
-            //
-            // And set the hour to `2`, then it makes sense to result in a
-            // clock time of `03:30` in offset `-04`. Moreover, if we always
-            // took what was given, then starting with
-            //
-            //   2024-03-31T12:00:00+00:00[Atlantic/Azores]
-            //
-            // And setting the hour to `0` would result in
-            //
-            //   2024-03-30T23:00:00-01:00[Atlantic/Azores]
-            //
-            // which is highly unintuitive. In the other direction, we might
-            // start with
-            //
-            //   2024-03-10T03:30:00-04:00[US/Eastern]
-            //
-            // And setting the hour to `2` still results in the clock time
-            // being set to `03:30`, i.e., not changing in this instance.
-            //
-            // See also: https://github.com/tc39/proposal-temporal/issues/3078
-            // See also: https://github.com/BurntSushi/jiff/issues/211
-            Gap { before, after }
-                if is_equal(given, before) || is_equal(given, after) =>
-            {
-                let kind = Unambiguous { offset: before };
-                AmbiguousTimestamp::new(dt, kind)
-            }
+            // We only look for folds because we consider all offsets for gaps
+            // to be invalid. Which is consistent with how they're treated as
+            // `OffsetConflict::Reject`. Thus, like any other invalid offset,
+            // we fallback to disambiguation (which is handled by the caller).
             Fold { before, after }
                 if is_equal(given, before) || is_equal(given, after) =>
             {
@@ -2014,34 +2054,15 @@ impl OffsetConflict {
                 tzname = tz.diagnostic_name(),
             )),
             Unambiguous { .. } => Ok(amb.into_ambiguous_zoned(tz)),
-            Gap { before, after }
-                if !is_equal(given, before) && !is_equal(given, after) =>
-            {
-                // Temporal actually seems to report an error whenever a gap
-                // is found, even if the parsed offset matches one of the two
-                // offsets in the gap. I think the reasoning is because the
-                // parsed offset and offsets from the gap will flip-flop, thus
-                // resulting in a datetime with an offset distinct from the one
-                // given. Here's an example. Consider this datetime:
-                //
-                //     2024-03-10T02:30-04:00[America/New_York]
-                //
-                // This occurs in the EST->EDT transition gap, such that
-                // `02:30` never actually appears on a clock for folks in
-                // `America/New_York`. The `-04` offset means that the
-                // timestamp this corresponds to is unambiguous. Namely, it is:
-                //
-                //     2024-03-10T06:30Z
-                //
-                // This instant, when converted to `America/New_York`, is:
-                //
-                //     2024-03-10T01:30-05:00[America/New_York]
-                //
-                // As you can see, the offset flip-flopped. The same flip-flop
-                // happens the other way if you use `02:30-05:00`. Presumably,
-                // Temporal errors here because the offset changes. But the
-                // instant in time is the same *and* it is unambiguous. So it's
-                // not clear to me why we ought to error in this case.
+            Gap { before, after } => {
+                // In `jiff 0.1`, we reported an error when we found a gap
+                // where neither offset matched what was given. But now we
+                // report an error whenever we find a gap, as we consider
+                // all offsets to be invalid for the gap. This now matches
+                // Temporal's behavior which I think is more consistent. And in
+                // particular, this makes it more consistent with the behavior
+                // of `PreferOffset` when a gap is found (which was also
+                // changed to treat all offsets in a gap as invalid).
                 //
                 // Ref: https://github.com/tc39/proposal-temporal/issues/2892
                 Err(err!(
@@ -2049,8 +2070,8 @@ impl OffsetConflict {
                      since 'reject' conflict resolution was chosen, and \
                      because datetime has offset {given}, but the time \
                      zone {tzname} for the given datetime falls in a gap \
-                     between offsets {before} and {after}, neither of which \
-                     match the offset",
+                     (between offsets {before} and {after}), and all \
+                     offsets for a gap are regarded as invalid",
                     tzname = tz.diagnostic_name(),
                 ))
             }
@@ -2067,107 +2088,10 @@ impl OffsetConflict {
                     tzname = tz.diagnostic_name(),
                 ))
             }
-            Gap { .. } | Fold { .. } => {
+            Fold { .. } => {
                 let kind = Unambiguous { offset: given };
                 Ok(AmbiguousTimestamp::new(dt, kind).into_ambiguous_zoned(tz))
             }
         }
     }
-}
-
-fn timestamp_to_datetime_zulu(
-    timestamp: Timestamp,
-    offset: Offset,
-) -> civil::DateTime {
-    let mut second = timestamp.as_second_ranged();
-    let nanosecond = timestamp.subsec_nanosecond_ranged();
-    second += offset.seconds_ranged();
-    // This is a little tricky. The day, second and nanosecond can all be
-    // shifted when nanoseconds are themselves negative. Since all three
-    // can vary, we need to shove them into a single `NoUnits::vary_many`
-    // closure to make range arithmetic work correctly. We convert them
-    // back to their proper units afterwards.
-    let day = second.without_bounds().div_floor(t::SECONDS_PER_CIVIL_DAY);
-    let second: t::NoUnits =
-        second.without_bounds().rem_floor(t::SECONDS_PER_CIVIL_DAY);
-    let nanosecond = nanosecond.without_bounds();
-    let [delta_day, delta_second, delta_nanosecond] = t::NoUnits::vary_many(
-        [day, second, nanosecond],
-        |[_, second, nanosecond]| {
-            if nanosecond >= 0 {
-                [C(0), C(0), C(0)]
-            } else if second > 0 {
-                [C(0), C(-1), t::NANOS_PER_SECOND.rinto()]
-            } else {
-                [
-                    C(-1),
-                    t::SECONDS_PER_CIVIL_DAY - C(1),
-                    t::NANOS_PER_SECOND.rinto(),
-                ]
-            }
-        },
-    );
-
-    // Given the ranges on UnixSeconds and FractionalNanoseconds, it is
-    // technically possible that the subtraction on `day` here could
-    // overflow. But! This can only happen when the Unix second is its
-    // minimal value, *and* the number of nanoseconds is non-zero. That
-    // case is specifically rejected when constructing a `Timestamp` value,
-    // so it is correct to assert that the overflow can never happen.
-    let day = t::UnixEpochDays::rfrom(day)
-        .try_checked_add("day", delta_day)
-        .unwrap();
-    let second = (second + delta_second) * t::NANOS_PER_SECOND;
-    let nanosecond = nanosecond + delta_nanosecond;
-    let civil_day_nanosecond = second + nanosecond;
-    let date = civil::Date::from_unix_epoch_days(day);
-    let time = civil::Time::from_nanosecond(civil_day_nanosecond);
-    civil::DateTime::from_parts(date, time)
-}
-
-fn datetime_zulu_to_timestamp(
-    dt: civil::DateTime,
-    offset: Offset,
-) -> Result<Timestamp, Error> {
-    let (date, time) = (dt.date(), dt.time());
-    let day = date.to_unix_epoch_days().without_bounds();
-    let civil_day_nanosecond = time.to_nanosecond().without_bounds();
-    let second = civil_day_nanosecond.div_floor(t::NANOS_PER_SECOND);
-    let nanosecond = civil_day_nanosecond.rem_floor(t::NANOS_PER_SECOND);
-    let [delta_day, delta_second, delta_nanosecond] = t::NoUnits::vary_many(
-        [day, second, nanosecond],
-        |[day, _second, nanosecond]| {
-            if day >= 0 || nanosecond == 0 {
-                [C(0), C(0), C(0)]
-            } else {
-                [
-                    C(1),
-                    -(t::SECONDS_PER_CIVIL_DAY - C(1)),
-                    (-t::NANOS_PER_SECOND).rinto(),
-                ]
-            }
-        },
-    );
-
-    let day = day + delta_day;
-    let second = day * t::SECONDS_PER_CIVIL_DAY + second + delta_second;
-    // This can overflow our Timestamp limits, so we need to make sure we're
-    // doing arithmetic using `UnixSeconds` boundaries. This is precisely the
-    // point at which a DateTime->Timestamp conversion can fail, and is a
-    // result of guaranteeing that all Timestamp->DateTime conversions succeed.
-    let second = t::UnixSeconds::rfrom(second)
-        .try_checked_sub("offset-second", offset.seconds_ranged())
-        .with_context(|| {
-            err!(
-                "converting {dt} with offset {offset} to timestamp overflowed \
-                 (second={second}, nanosecond={nanosecond})",
-            )
-        })?;
-    let nanosecond = nanosecond + delta_nanosecond;
-    Timestamp::new_ranged(second, nanosecond).with_context(|| {
-        err!(
-            "converting {dt} with offset {offset} to timestamp overflowed \
-             (second={second}, nanosecond={nanosecond})",
-        )
-    })
 }

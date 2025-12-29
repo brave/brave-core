@@ -12,7 +12,7 @@ APIs ([`CryptoProvider`] for example).
 * ECDSA, Ed25519 or RSA server authentication by clients `*`
 * ECDSA, Ed25519[^1] or RSA server authentication by servers `*`
 * Forward secrecy using ECDHE; with curve25519, nistp256 or nistp384 curves `*`
-* Post-quantum hybrid key exchange with [X25519MLKEM768](https://datatracker.ietf.org/doc/draft-kwiatkowski-tls-ecdhe-mlkem/) [^2] `*`
+* Post-quantum hybrid key exchange with [X25519MLKEM768](https://datatracker.ietf.org/doc/draft-ietf-tls-ecdhe-mlkem/) [^2] `*`
 * AES128-GCM and AES256-GCM bulk encryption, with safe nonces `*`
 * ChaCha20-Poly1305 bulk encryption ([RFC7905](https://tools.ietf.org/html/rfc7905)) `*`
 * ALPN support
@@ -59,7 +59,7 @@ and will not support:
   certificates"). _Rustls' default certificate verifier does not support using a trust anchor as
   both a CA certificate and an end-entity certificate in order to limit complexity and risk in
   path building. While dangerous, all authentication can be turned off if required --
-  see the [example code](https://github.com/rustls/rustls/blob/992e2364a006b2e84a8cf6a7c3eaf0bdb773c9de/examples/src/bin/tlsclient-mio.rs#L318)_ `*`
+  see the [example code](https://github.com/rustls/rustls/blob/v/0.23.23/examples/src/bin/tlsclient-mio.rs#L338)_ `*`
 
 ### About "custom extensions"
 

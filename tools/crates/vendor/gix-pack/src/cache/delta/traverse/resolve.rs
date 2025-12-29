@@ -188,7 +188,7 @@ where
             header_ofs += consumed;
 
             fully_resolved_delta_bytes.resize(result_size as usize, 0);
-            data::delta::apply(&base_bytes, fully_resolved_delta_bytes, &delta_bytes[header_ofs..]);
+            data::delta::apply(&base_bytes, fully_resolved_delta_bytes, &delta_bytes[header_ofs..])?;
 
             // FIXME: this actually invalidates the "pack_offset()" computation, which is not obvious to consumers
             //        at all
@@ -251,8 +251,8 @@ where
 }
 
 /// * `initial_threads` is the threads we may spawn, not accounting for our own thread which is still considered used by the parent
-///    system. Since this thread will take a controlling function, we may spawn one more than that. In threaded mode, we will finish
-///    all remaining work.
+///   system. Since this thread will take a controlling function, we may spawn one more than that. In threaded mode, we will finish
+///   all remaining work.
 #[allow(clippy::too_many_arguments)]
 fn deltas_mt<T, F, MBFN, E, R>(
     mut threads_to_create: isize,
@@ -367,7 +367,7 @@ where
                                         &base_bytes,
                                         &mut fully_resolved_delta_bytes,
                                         &delta_bytes[header_ofs..],
-                                    );
+                                    )?;
 
                                     // FIXME: this actually invalidates the "pack_offset()" computation, which is not obvious to consumers
                                     //        at all

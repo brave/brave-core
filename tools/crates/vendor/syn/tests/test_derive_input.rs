@@ -1,5 +1,6 @@
 #![allow(
     clippy::assertions_on_result_states,
+    clippy::elidable_lifetime_names,
     clippy::manual_let_else,
     clippy::needless_lifetimes,
     clippy::too_many_lines,
@@ -7,7 +8,9 @@
 )]
 
 #[macro_use]
-mod macros;
+mod snapshot;
+
+mod debug;
 
 use quote::quote;
 use syn::{Data, DeriveInput};

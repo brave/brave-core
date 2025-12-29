@@ -116,23 +116,18 @@ pub trait StoreMut<K, V>: Store<K, V> {
 
     /// Removes all items from the store.
     fn lm_clear(&mut self);
+}
 
+pub trait StoreBulkMut<K, V>: StoreMut<K, V> {
     /// Retains items satisfying a predicate in this store.
-    fn lm_retain<F>(&mut self, mut predicate: F)
+    fn lm_retain<F>(&mut self, predicate: F)
     where
-        F: FnMut(&K, &V) -> bool,
-    {
-        let mut i = 0;
-        while i < self.lm_len() {
-            #[allow(clippy::unwrap_used)] // i is in range
-            let (k, v) = self.lm_get(i).unwrap();
-            if predicate(k, v) {
-                i += 1;
-            } else {
-                self.lm_remove(i);
-            }
-        }
-    }
+        F: FnMut(&K, &V) -> bool;
+
+    /// Extends this store with items from an iterator.
+    fn lm_extend<I>(&mut self, other: I)
+    where
+        I: IntoIterator<Item = (K, V)>;
 }
 
 /// Iterator methods for the LiteMap store.

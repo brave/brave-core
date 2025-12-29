@@ -209,7 +209,7 @@ pub(crate) fn float(input: &mut Input<'_>) -> ModalResult<f64> {
     .parse_next(input)
 }
 
-pub(crate) fn float_<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
+fn float_<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
     (
         dec_int,
         alt((exp.void(), (frac.void(), opt(exp.void())).void())),
@@ -226,7 +226,7 @@ pub(crate) fn float_<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
 
 // frac = decimal-point zero-prefixable-int
 // decimal-point = %x2E               ; .
-pub(crate) fn frac<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
+fn frac<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
     (
         b'.',
         cut_err(zero_prefixable_int)
@@ -243,7 +243,7 @@ pub(crate) fn frac<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
 }
 
 // zero-prefixable-int = DIGIT *( DIGIT / underscore DIGIT )
-pub(crate) fn zero_prefixable_int<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
+fn zero_prefixable_int<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
     (
         digit,
         repeat(
@@ -267,7 +267,7 @@ pub(crate) fn zero_prefixable_int<'i>(input: &mut Input<'i>) -> ModalResult<&'i 
 
 // exp = "e" float-exp-part
 // float-exp-part = [ minus / plus ] zero-prefixable-int
-pub(crate) fn exp<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
+fn exp<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
     (
         one_of((b'e', b'E')),
         opt(one_of([b'+', b'-'])),
@@ -284,7 +284,7 @@ pub(crate) fn exp<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {
 }
 
 // special-float = [ minus / plus ] ( inf / nan )
-pub(crate) fn special_float(input: &mut Input<'_>) -> ModalResult<f64> {
+fn special_float(input: &mut Input<'_>) -> ModalResult<f64> {
     (opt(one_of((b'+', b'-'))), alt((inf, nan)))
         .map(|(s, f)| match s {
             Some(b'+') | None => f,
@@ -305,13 +305,13 @@ pub(crate) fn nan(input: &mut Input<'_>) -> ModalResult<f64> {
 const NAN: &[u8] = b"nan";
 
 // DIGIT = %x30-39 ; 0-9
-pub(crate) fn digit(input: &mut Input<'_>) -> ModalResult<u8> {
+fn digit(input: &mut Input<'_>) -> ModalResult<u8> {
     one_of(DIGIT).parse_next(input)
 }
 const DIGIT: RangeInclusive<u8> = b'0'..=b'9';
 
 // HEXDIG = DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
-pub(crate) fn hexdig(input: &mut Input<'_>) -> ModalResult<u8> {
+fn hexdig(input: &mut Input<'_>) -> ModalResult<u8> {
     one_of(HEXDIG).parse_next(input)
 }
 pub(crate) const HEXDIG: (RangeInclusive<u8>, RangeInclusive<u8>, RangeInclusive<u8>) =

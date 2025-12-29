@@ -1,8 +1,12 @@
-use crate::bstr::{BStr, BString};
-use crate::util::OwnedOrStaticAtomicBool;
-use crate::worktree::IndexPersistedOrInMemory;
-use crate::{config, dirwalk, is_dir_to_mode, Repository};
 use std::sync::atomic::AtomicBool;
+
+use crate::{
+    bstr::{BStr, BString},
+    config, dirwalk, is_dir_to_mode,
+    util::OwnedOrStaticAtomicBool,
+    worktree::IndexPersistedOrInMemory,
+    Repository,
+};
 
 impl Repository {
     /// Return default options suitable for performing a directory walk on this repository.
@@ -36,7 +40,7 @@ impl Repository {
         delegate: &mut dyn gix_dir::walk::Delegate,
     ) -> Result<dirwalk::Outcome<'_>, dirwalk::Error> {
         let _span = gix_trace::coarse!("gix::dirwalk");
-        let workdir = self.work_dir().ok_or(dirwalk::Error::MissingWorkDir)?;
+        let workdir = self.workdir().ok_or(dirwalk::Error::MissingWorkDir)?;
         let mut excludes = self.excludes(
             index,
             None,
@@ -56,7 +60,7 @@ impl Repository {
         let accelerate_lookup = fs_caps.ignore_case.then(|| index.prepare_icase_backing());
         let mut opts = gix_dir::walk::Options::from(options);
         let worktree_relative_worktree_dirs_storage;
-        if let Some(workdir) = self.work_dir().filter(|_| opts.for_deletion.is_some()) {
+        if let Some(workdir) = self.workdir().filter(|_| opts.for_deletion.is_some()) {
             let linked_worktrees = self.worktrees()?;
             if !linked_worktrees.is_empty() {
                 let real_workdir = gix_path::realpath_opts(
@@ -92,7 +96,7 @@ impl Repository {
                     stack
                         .set_case(case)
                         .at_entry(relative_path, Some(is_dir_to_mode(is_dir)), &self.objects)
-                        .map_or(false, |platform| platform.matching_attributes(out))
+                        .is_ok_and(|platform| platform.matching_attributes(out))
                 },
                 excludes: Some(&mut excludes.inner),
                 objects: &self.objects,

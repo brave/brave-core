@@ -1,12 +1,5 @@
-use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
-
-/// `struct itimerspec` for use with [`timerfd_gettime`] and
-/// [`timerfd_settime`].
-///
-/// [`timerfd_gettime`]: crate::time::timerfd_gettime
-/// [`timerfd_settime`]: crate::time::timerfd_settime
-pub type Itimerspec = linux_raw_sys::general::__kernel_itimerspec;
 
 bitflags! {
     /// `TFD_*` flags for use with [`timerfd_create`].
@@ -14,7 +7,7 @@ bitflags! {
     /// [`timerfd_create`]: crate::time::timerfd_create
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct TimerfdFlags: c::c_uint {
+    pub struct TimerfdFlags: ffi::c_uint {
         /// `TFD_NONBLOCK`
         #[doc(alias = "TFD_NONBLOCK")]
         const NONBLOCK = linux_raw_sys::general::TFD_NONBLOCK;
@@ -34,7 +27,7 @@ bitflags! {
     /// [`timerfd_settime`]: crate::time::timerfd_settime
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct TimerfdTimerFlags: c::c_uint {
+    pub struct TimerfdTimerFlags: ffi::c_uint {
         /// `TFD_TIMER_ABSTIME`
         #[doc(alias = "TFD_TIMER_ABSTIME")]
         const ABSTIME = linux_raw_sys::general::TFD_TIMER_ABSTIME;

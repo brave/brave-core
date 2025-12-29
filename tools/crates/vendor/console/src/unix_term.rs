@@ -1,10 +1,9 @@
 use std::env;
 use std::fmt::Display;
 use std::fs;
-use std::io;
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 use std::mem;
-use std::os::unix::io::AsRawFd;
+use std::os::fd::{AsRawFd, RawFd};
 use std::str;
 
 #[cfg(not(target_os = "macos"))]
@@ -13,16 +12,16 @@ use once_cell::sync::Lazy;
 use crate::kb::Key;
 use crate::term::Term;
 
-pub use crate::common_term::*;
+pub(crate) use crate::common_term::*;
 
-pub const DEFAULT_WIDTH: u16 = 80;
+pub(crate) const DEFAULT_WIDTH: u16 = 80;
 
 #[inline]
-pub fn is_a_terminal(out: &Term) -> bool {
+pub(crate) fn is_a_terminal(out: &impl AsRawFd) -> bool {
     unsafe { libc::isatty(out.as_raw_fd()) != 0 }
 }
 
-pub fn is_a_color_terminal(out: &Term) -> bool {
+pub(crate) fn is_a_color_terminal(out: &Term) -> bool {
     if !is_a_terminal(out) {
         return false;
     }
@@ -37,7 +36,7 @@ pub fn is_a_color_terminal(out: &Term) -> bool {
     }
 }
 
-pub fn c_result<F: FnOnce() -> libc::c_int>(f: F) -> io::Result<()> {
+fn c_result<F: FnOnce() -> libc::c_int>(f: F) -> io::Result<()> {
     let res = f();
     if res != 0 {
         Err(io::Error::last_os_error())
@@ -46,58 +45,97 @@ pub fn c_result<F: FnOnce() -> libc::c_int>(f: F) -> io::Result<()> {
     }
 }
 
-pub fn terminal_size(out: &Term) -> Option<(u16, u16)> {
-    unsafe {
-        if libc::isatty(out.as_raw_fd()) != 1 {
-            return None;
-        }
-
+pub(crate) fn terminal_size(out: &Term) -> Option<(u16, u16)> {
+    if !is_a_terminal(out) {
+        return None;
+    }
+    let winsize = unsafe {
         let mut winsize: libc::winsize = mem::zeroed();
 
         // FIXME: ".into()" used as a temporary fix for a libc bug
         // https://github.com/rust-lang/libc/pull/704
         #[allow(clippy::useless_conversion)]
         libc::ioctl(out.as_raw_fd(), libc::TIOCGWINSZ.into(), &mut winsize);
-        if winsize.ws_row > 0 && winsize.ws_col > 0 {
-            Some((winsize.ws_row as u16, winsize.ws_col as u16))
-        } else {
-            None
-        }
+        winsize
+    };
+    if winsize.ws_row > 0 && winsize.ws_col > 0 {
+        Some((winsize.ws_row as u16, winsize.ws_col as u16))
+    } else {
+        None
     }
 }
 
-pub fn read_secure() -> io::Result<String> {
-    let f_tty;
-    let fd = unsafe {
-        if libc::isatty(libc::STDIN_FILENO) == 1 {
-            f_tty = None;
-            libc::STDIN_FILENO
+enum Input<T> {
+    Stdin(io::Stdin),
+    File(T),
+}
+
+impl Input<BufReader<fs::File>> {
+    fn buffered() -> io::Result<Self> {
+        Ok(match Input::unbuffered()? {
+            Input::Stdin(s) => Input::Stdin(s),
+            Input::File(f) => Input::File(BufReader::new(f)),
+        })
+    }
+}
+
+impl Input<fs::File> {
+    fn unbuffered() -> io::Result<Self> {
+        let stdin = io::stdin();
+        if is_a_terminal(&stdin) {
+            Ok(Input::Stdin(stdin))
         } else {
             let f = fs::OpenOptions::new()
                 .read(true)
                 .write(true)
                 .open("/dev/tty")?;
-            let fd = f.as_raw_fd();
-            f_tty = Some(BufReader::new(f));
-            fd
+            Ok(Input::File(f))
         }
-    };
+    }
+}
+
+// NB: this is not a full BufRead implementation because io::Stdin does not implement BufRead.
+impl<T: BufRead> Input<T> {
+    fn read_line(&mut self, buf: &mut String) -> io::Result<usize> {
+        match self {
+            Self::Stdin(s) => s.read_line(buf),
+            Self::File(f) => f.read_line(buf),
+        }
+    }
+}
+
+impl AsRawFd for Input<fs::File> {
+    fn as_raw_fd(&self) -> RawFd {
+        match self {
+            Self::Stdin(s) => s.as_raw_fd(),
+            Self::File(f) => f.as_raw_fd(),
+        }
+    }
+}
+
+impl AsRawFd for Input<BufReader<fs::File>> {
+    fn as_raw_fd(&self) -> RawFd {
+        match self {
+            Self::Stdin(s) => s.as_raw_fd(),
+            Self::File(f) => f.get_ref().as_raw_fd(),
+        }
+    }
+}
+
+pub(crate) fn read_secure() -> io::Result<String> {
+    let mut input = Input::buffered()?;
 
     let mut termios = mem::MaybeUninit::uninit();
-    c_result(|| unsafe { libc::tcgetattr(fd, termios.as_mut_ptr()) })?;
+    c_result(|| unsafe { libc::tcgetattr(input.as_raw_fd(), termios.as_mut_ptr()) })?;
     let mut termios = unsafe { termios.assume_init() };
     let original = termios;
     termios.c_lflag &= !libc::ECHO;
-    c_result(|| unsafe { libc::tcsetattr(fd, libc::TCSAFLUSH, &termios) })?;
+    c_result(|| unsafe { libc::tcsetattr(input.as_raw_fd(), libc::TCSAFLUSH, &termios) })?;
     let mut rv = String::new();
 
-    let read_rv = if let Some(mut f) = f_tty {
-        f.read_line(&mut rv)
-    } else {
-        io::stdin().read_line(&mut rv)
-    };
+    let read_rv = input.read_line(&mut rv);
 
-    c_result(|| unsafe { libc::tcsetattr(fd, libc::TCSAFLUSH, &original) })?;
+    c_result(|| unsafe { libc::tcsetattr(input.as_raw_fd(), libc::TCSAFLUSH, &original) })?;
 
     read_rv.map(|_| {
         let len = rv.trim_end_matches(&['\r', '\n'][..]).len();
@@ -106,7 +144,7 @@ pub fn read_secure() -> io::Result<String> {
     })
 }
 
-fn poll_fd(fd: i32, timeout: i32) -> io::Result<bool> {
+fn poll_fd(fd: RawFd, timeout: i32) -> io::Result<bool> {
     let mut pollfd = libc::pollfd {
         fd,
         events: libc::POLLIN,
@@ -121,7 +159,7 @@ fn poll_fd(fd: i32, timeout: i32) -> io::Result<bool> {
 }
 
 #[cfg(target_os = "macos")]
-fn select_fd(fd: i32, timeout: i32) -> io::Result<bool> {
+fn select_fd(fd: RawFd, timeout: i32) -> io::Result<bool> {
     unsafe {
         let mut read_fd_set: libc::fd_set = mem::zeroed();
 
@@ -153,7 +191,7 @@ fn select_fd(fd: i32, timeout: i32) -> io::Result<bool> {
     }
 }
 
-fn select_or_poll_term_fd(fd: i32, timeout: i32) -> io::Result<bool> {
+fn select_or_poll_term_fd(fd: RawFd, timeout: i32) -> io::Result<bool> {
     // There is a bug on macos that ttys cannot be polled, only select()
     // works.  However given how problematic select is in general, we
     // normally want to use poll there too.
@@ -166,7 +204,7 @@ fn select_or_poll_term_fd(fd: i32, timeout: i32) -> io::Result<bool> {
     poll_fd(fd, timeout)
 }
 
-fn read_single_char(fd: i32) -> io::Result<Option<char>> {
+fn read_single_char(fd: RawFd) -> io::Result<Option<char>> {
     // timeout of zero means that it will not block
     let is_ready = select_or_poll_term_fd(fd, 0)?;
 
@@ -185,7 +223,7 @@ fn read_single_char(fd: i32) -> io::Result<Option<char>> {
 // Similar to libc::read. Read count bytes into slice buf from descriptor fd.
 // If successful, return the number of bytes read.
 // Will return an error if nothing was read, i.e when called at end of file.
-fn read_bytes(fd: i32, buf: &mut [u8], count: u8) -> io::Result<u8> {
+fn read_bytes(fd: RawFd, buf: &mut [u8], count: u8) -> io::Result<u8> {
     let read = unsafe { libc::read(fd, buf.as_mut_ptr() as *mut _, count as usize) };
     if read < 0 {
         Err(io::Error::last_os_error())
@@ -204,7 +242,7 @@ fn read_bytes(fd: i32, buf: &mut [u8], count: u8) -> io::Result<u8> {
     }
 }
 
-fn read_single_key_impl(fd: i32) -> Result<Key, io::Error> {
+fn read_single_key_impl(fd: RawFd) -> Result<Key, io::Error> {
     loop {
         match read_single_char(fd)? {
             Some('\x1b') => {
@@ -297,30 +335,20 @@ fn read_single_key_impl(fd: i32) -> Result<Key, io::Error> {
     }
 }
 
-pub fn read_single_key(ctrlc_key: bool) -> io::Result<Key> {
-    let tty_f;
-    let fd = unsafe {
-        if libc::isatty(libc::STDIN_FILENO) == 1 {
-            libc::STDIN_FILENO
-        } else {
-            tty_f = fs::OpenOptions::new()
-                .read(true)
-                .write(true)
-                .open("/dev/tty")?;
-            tty_f.as_raw_fd()
-        }
-    };
+pub(crate) fn read_single_key(ctrlc_key: bool) -> io::Result<Key> {
+    let input = Input::unbuffered()?;
+
     let mut termios = core::mem::MaybeUninit::uninit();
-    c_result(|| unsafe { libc::tcgetattr(fd, termios.as_mut_ptr()) })?;
+    c_result(|| unsafe { libc::tcgetattr(input.as_raw_fd(), termios.as_mut_ptr()) })?;
     let mut termios = unsafe { termios.assume_init() };
     let original = termios;
     unsafe { libc::cfmakeraw(&mut termios) };
     termios.c_oflag = original.c_oflag;
-    c_result(|| unsafe { libc::tcsetattr(fd, libc::TCSADRAIN, &termios) })?;
-    let rv: io::Result<Key> = read_single_key_impl(fd);
-    c_result(|| unsafe { libc::tcsetattr(fd, libc::TCSADRAIN, &original) })?;
+    c_result(|| unsafe { libc::tcsetattr(input.as_raw_fd(), libc::TCSADRAIN, &termios) })?;
+    let rv = read_single_key_impl(input.as_raw_fd());
+    c_result(|| unsafe { libc::tcsetattr(input.as_raw_fd(), libc::TCSADRAIN, &original) })?;
 
-    // if the user hit ^C we want to signal SIGINT to outselves.
+    // if the user hit ^C we want to signal SIGINT to ourselves.
     if let Err(ref err) = rv {
         if err.kind() == io::ErrorKind::Interrupted {
             if !ctrlc_key {
@@ -336,7 +364,7 @@ pub fn read_single_key(ctrlc_key: bool) -> io::Result<Key> {
     rv
 }
 
-pub fn key_from_utf8(buf: &[u8]) -> Key {
+fn key_from_utf8(buf: &[u8]) -> Key {
     if let Ok(s) = str::from_utf8(buf) {
         if let Some(c) = s.chars().next() {
             return Key::Char(c);
@@ -352,15 +380,15 @@ static IS_LANG_UTF8: Lazy<bool> = Lazy::new(|| match std::env::var("LANG") {
 });
 
 #[cfg(target_os = "macos")]
-pub fn wants_emoji() -> bool {
+pub(crate) fn wants_emoji() -> bool {
     true
 }
 
 #[cfg(not(target_os = "macos"))]
-pub fn wants_emoji() -> bool {
+pub(crate) fn wants_emoji() -> bool {
     *IS_LANG_UTF8
 }
 
-pub fn set_title<T: Display>(title: T) {
+pub(crate) fn set_title<T: Display>(title: T) {
     print!("\x1b]0;{}\x07", title);
 }

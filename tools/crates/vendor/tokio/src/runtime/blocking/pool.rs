@@ -128,7 +128,7 @@ pub(crate) struct Task {
 
 #[derive(PartialEq, Eq)]
 pub(crate) enum Mandatory {
-    #[cfg_attr(not(fs), allow(dead_code))]
+    #[cfg_attr(not(feature = "fs"), allow(dead_code))]
     Mandatory,
     NonMandatory,
 }
@@ -379,7 +379,12 @@ impl Spawner {
         let fut =
             blocking_task::<F, BlockingTask<F>>(BlockingTask::new(func), spawn_meta, id.as_u64());
 
-        let (task, handle) = task::unowned(fut, BlockingSchedule::new(rt), id);
+        let (task, handle) = task::unowned(
+            fut,
+            BlockingSchedule::new(rt),
+            id,
+            task::SpawnLocation::capture(),
+        );
 
         let spawned = self.spawn_task(Task::new(task, is_mandatory), rt);
         (handle, spawned)

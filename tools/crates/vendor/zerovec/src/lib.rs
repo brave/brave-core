@@ -19,7 +19,7 @@
 //! - [`ZeroMap2d<'a, K0, K1, V>`] to map from the pair `(K0, K1)` to `V`
 //!
 //! The first two are intended as close-to-drop-in replacements for `Vec<T>` in Serde structs. The third and fourth are
-//! intended as a replacement for `HashMap` or [`LiteMap`](docs.rs/litemap). When used with Serde derives, **be sure to apply
+//! intended as a replacement for `HashMap` or [`LiteMap`](https://docs.rs/litemap). When used with Serde derives, **be sure to apply
 //! `#[serde(borrow)]` to these types**, same as one would for [`Cow<'a, T>`].
 //!
 //! [`ZeroVec<'a, T>`], [`VarZeroVec<'a, T>`], [`ZeroMap<'a, K, V>`], and [`ZeroMap2d<'a, K0, K1, V>`] all behave like
@@ -35,12 +35,12 @@
 //! # Cargo features
 //!
 //! This crate has several optional Cargo features:
-//!  -  `serde`: Allows serializing and deserializing `zerovec`'s abstractions via [`serde`](https://docs.rs/serde)
-//!  -   `yoke`: Enables implementations of `Yokeable` from the [`yoke`](https://docs.rs/yoke/) crate, which is also useful
-//!              in situations involving a lot of zero-copy deserialization.
+//!  - `serde`: Allows serializing and deserializing `zerovec`'s abstractions via [`serde`](https://docs.rs/serde)
+//!  - `yoke`: Enables implementations of `Yokeable` from the [`yoke`](https://docs.rs/yoke/) crate, which is also useful
+//!    in situations involving a lot of zero-copy deserialization.
 //!  - `derive`: Makes it easier to use custom types in these collections by providing the [`#[make_ule]`](crate::make_ule) and
-//!     [`#[make_varule]`](crate::make_varule) proc macros, which generate appropriate [`ULE`](crate::ule::ULE) and
-//!     [`VarULE`](crate::ule::VarULE)-conformant types for a given "normal" type.
+//!    [`#[make_varule]`](crate::make_varule) proc macros, which generate appropriate [`ULE`](crate::ule::ULE) and
+//!    [`VarULE`](crate::ule::VarULE)-conformant types for a given "normal" type.
 //!  - `std`: Enabled `std::Error` implementations for error types. This crate is by default `no_std` with a dependency on `alloc`.
 //!
 //! [`ZeroVec<'a, T>`]: ZeroVec
@@ -75,7 +75,7 @@
 //! };
 //! let bincode_bytes =
 //!     bincode::serialize(&data).expect("Serialization should be successful");
-//! assert_eq!(bincode_bytes.len(), 67);
+//! assert_eq!(bincode_bytes.len(), 63);
 //!
 //! let deserialized: DataStruct = bincode::deserialize(&bincode_bytes)
 //!     .expect("Deserialization should be successful");
@@ -149,7 +149,7 @@
 //!
 //! let bincode_bytes = bincode::serialize(&data)
 //!     .expect("Serialization should be successful");
-//! assert_eq!(bincode_bytes.len(), 168);
+//! assert_eq!(bincode_bytes.len(), 160);
 //!
 //! let deserialized: Data = bincode::deserialize(&bincode_bytes)
 //!     .expect("Deserialization should be successful");
@@ -194,7 +194,7 @@
 //! is appended for baseline comparisons, e.g. `zeromap/lookup/small/hashmap`.
 
 // https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
-#![cfg_attr(not(any(test, feature = "std")), no_std)]
+#![cfg_attr(not(any(test, doc)), no_std)]
 #![cfg_attr(
     not(test),
     deny(
@@ -204,6 +204,7 @@
         clippy::panic,
         clippy::exhaustive_structs,
         clippy::exhaustive_enums,
+        clippy::trivially_copy_pass_by_ref,
         missing_debug_implementations,
     )
 )]
@@ -211,13 +212,15 @@
 // is better here.
 #![allow(clippy::needless_lifetimes)]
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
-mod error;
-mod flexzerovec;
+mod cow;
 #[cfg(feature = "hashmap")]
 pub mod hashmap;
+#[cfg(feature = "alloc")]
 mod map;
+#[cfg(feature = "alloc")]
 mod map2d;
 #[cfg(test)]
 pub mod samples;
@@ -227,31 +230,34 @@ mod zerovec;
 // This must be after `mod zerovec` for some impls on `ZeroSlice<RawBytesULE>`
 // to show up in the right spot in the docs
 pub mod ule;
-
 #[cfg(feature = "yoke")]
 mod yoke_impls;
 mod zerofrom_impls;
 
-pub use crate::error::ZeroVecError;
+pub use crate::cow::VarZeroCow;
 #[cfg(feature = "hashmap")]
 pub use crate::hashmap::ZeroHashMap;
+#[cfg(feature = "alloc")]
 pub use crate::map::map::ZeroMap;
+#[cfg(feature = "alloc")]
 pub use crate::map2d::map::ZeroMap2d;
 pub use crate::varzerovec::{slice::VarZeroSlice, vec::VarZeroVec};
 pub use crate::zerovec::{ZeroSlice, ZeroVec};
 
-pub(crate) use flexzerovec::chunk_to_usize;
-
-#[doc(hidden)]
+#[doc(hidden)] // macro use
 pub mod __zerovec_internal_reexport {
     pub use zerofrom::ZeroFrom;
 
+    #[cfg(feature = "alloc")]
+    pub use alloc::borrow;
+    #[cfg(feature = "alloc")]
     pub use alloc::boxed;
 
     #[cfg(feature = "serde")]
     pub use serde;
 }
 
+#[cfg(feature = "alloc")]
 pub mod maps {
     //! This module contains additional utility types and traits for working with
     //! [`ZeroMap`] and [`ZeroMap2d`]. See their docs for more details on the general purpose
@@ -292,12 +298,19 @@ pub mod vecs {
     #[doc(no_inline)]
     pub use crate::zerovec::{ZeroSlice, ZeroVec};
 
+    pub use crate::zerovec::ZeroSliceIter;
+
     #[doc(no_inline)]
     pub use crate::varzerovec::{VarZeroSlice, VarZeroVec};
 
-    pub use crate::varzerovec::{Index16, Index32, VarZeroVecFormat, VarZeroVecOwned};
+    #[cfg(feature = "alloc")]
+    pub use crate::varzerovec::VarZeroVecOwned;
+    pub use crate::varzerovec::{Index16, Index32, Index8, VarZeroSliceIter, VarZeroVecFormat};
 
-    pub use crate::flexzerovec::{FlexZeroSlice, FlexZeroVec, FlexZeroVecOwned};
+    pub type VarZeroVec16<'a, T> = VarZeroVec<'a, T, Index16>;
+    pub type VarZeroVec32<'a, T> = VarZeroVec<'a, T, Index32>;
+    pub type VarZeroSlice16<T> = VarZeroSlice<T, Index16>;
+    pub type VarZeroSlice32<T> = VarZeroSlice<T, Index32>;
 }
 
 // Proc macro reexports
@@ -417,6 +430,7 @@ pub use zerovec_derive::make_ule;
 ///
 /// - [`Ord`] and [`PartialOrd`]
 /// - [`ZeroMapKV`]
+/// - [`alloc::borrow::ToOwned`]
 ///
 /// To disable one of the automatic derives, use `#[zerovec::skip_derive(...)]` like so: `#[zerovec::skip_derive(ZeroMapKV)]`.
 /// `Ord` and `PartialOrd` are implemented as a unit and can only be disabled as a group with `#[zerovec::skip_derive(Ord)]`.
@@ -436,6 +450,10 @@ pub use zerovec_derive::make_ule;
 ///
 /// Note that this implementation will autogenerate [`EncodeAsVarULE`] impls for _both_ `Self` and `&Self`
 /// for convenience. This allows for a little more flexibility encoding slices.
+///
+/// In case there are multiple [`VarULE`] (i.e., variable-sized) fields, this macro will produce private fields that
+/// appropriately pack the data together, with the packing format by default being [`crate::vecs::Index16`], but can be
+/// overridden with `#[zerovec::format(zerovec::vecs::Index8)]`.
 ///
 /// [`EncodeAsVarULE`]: ule::EncodeAsVarULE
 /// [`VarULE`]: ule::VarULE
@@ -520,6 +538,8 @@ pub use zerovec_derive::make_ule;
 pub use zerovec_derive::make_varule;
 
 #[cfg(test)]
+// Expected sizes are based on a 64-bit architecture
+#[cfg(target_pointer_width = "64")]
 mod tests {
     use super::*;
     use core::mem::size_of;
@@ -547,12 +567,10 @@ mod tests {
         check_size_of!(56 | 48, ZeroMap<str, u32>);
         check_size_of!(64 | 48, ZeroMap<str, str>);
         check_size_of!(120 | 96, ZeroMap2d<str, str, str>);
-        check_size_of!(32 | 24, vecs::FlexZeroVec);
 
         check_size_of!(24, Option<ZeroVec<u8>>);
         check_size_of!(32 | 24, Option<VarZeroVec<str>>);
         check_size_of!(64 | 56 | 48, Option<ZeroMap<str, str>>);
         check_size_of!(120 | 104 | 96, Option<ZeroMap2d<str, str, str>>);
-        check_size_of!(32 | 24, Option<vecs::FlexZeroVec>);
     }
 }

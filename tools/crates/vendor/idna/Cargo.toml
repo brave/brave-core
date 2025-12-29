@@ -13,9 +13,10 @@
 edition = "2018"
 rust-version = "1.57"
 name = "idna"
-version = "1.0.3"
+version = "1.1.0"
 authors = ["The rust-url developers"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -23,7 +24,7 @@ autobenches = false
 description = "IDNA (Internationalizing Domain Names in Applications) and Punycode."
 readme = "README.md"
 keywords = [
-    "no_std",
+    "no-std",
     "web",
     "http",
 ]
@@ -32,6 +33,15 @@ repository = "https://github.com/servo/rust-url/"
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
+
+[features]
+alloc = []
+compiled_data = ["idna_adapter/compiled_data"]
+default = [
+    "std",
+    "compiled_data",
+]
+std = ["alloc"]
 
 [lib]
 name = "idna"
@@ -77,12 +87,3 @@ version = "1.0"
 
 [dev-dependencies.tester]
 version = "0.9"
-
-[features]
-alloc = []
-compiled_data = ["idna_adapter/compiled_data"]
-default = [
-    "std",
-    "compiled_data",
-]
-std = ["alloc"]

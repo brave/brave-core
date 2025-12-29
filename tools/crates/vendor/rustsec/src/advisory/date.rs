@@ -1,7 +1,7 @@
 //! Advisory dates
 
 use crate::error::{Error, ErrorKind};
-use serde::{de, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de};
 use std::{
     fmt::{self, Display},
     str::FromStr,
@@ -82,7 +82,7 @@ macro_rules! check_date_part {
     ($name:expr, $string:expr, $parts:expr, $len:expr, $min:expr, $max:expr) => {
         let part = $parts
             .next()
-            .ok_or_else(|| format_err!(ErrorKind::Parse, "invalid date: {}", $string))?;
+            .ok_or_else(|| Error::new(ErrorKind::Parse, format!("invalid date: {}", $string)))?;
 
         if part.len() != $len {
             fail!(ErrorKind::Parse, "malformed {}: {}", $name, $string);

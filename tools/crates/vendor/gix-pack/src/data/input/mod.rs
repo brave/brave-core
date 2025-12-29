@@ -14,7 +14,7 @@ pub struct Entry {
     /// when resolving thin packs.
     /// Depends on `CompressionMode` when the iterator is initialized.
     pub compressed: Option<Vec<u8>>,
-    /// The amount of bytes the compressed portion of the entry takes, i.e. the portion behind behind the header.
+    /// The amount of bytes the compressed portion of the entry takes, i.e. the portion behind the header.
     pub compressed_size: u64,
     /// The CRC32 over the complete entry, that is encoded header and compressed object data.
     /// Depends on `CompressionMode` when the iterator is initialized

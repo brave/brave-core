@@ -349,7 +349,7 @@ impl Errno {
     pub const ILSEQ: Self = Self::from_errno(errno::EILSEQ);
     /// `EINPROGRESS`
     pub const INPROGRESS: Self = Self::from_errno(errno::EINPROGRESS);
-    /// `EINTR`.
+    /// `EINTR`
     ///
     /// For a convenient way to retry system calls that exit with `INTR`, use
     /// [`retry_on_intr`].

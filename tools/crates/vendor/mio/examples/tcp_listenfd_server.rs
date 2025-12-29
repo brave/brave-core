@@ -1,8 +1,8 @@
 // You can run this example from the root of the mio repo:
 // cargo run --example tcp_listenfd_server --features="os-poll net"
 // or with wasi:
-// cargo +nightly build --target wasm32-wasi  --example tcp_listenfd_server --features="os-poll net"
-// wasmtime run --tcplisten 127.0.0.1:9000 --env 'LISTEN_FDS=1' target/wasm32-wasi/debug/examples/tcp_listenfd_server.wasm
+// cargo +nightly build --target wasm32-wasip1  --example tcp_listenfd_server --features="os-poll net"
+// wasmtime run --tcplisten 127.0.0.1:9000 --env 'LISTEN_FDS=1' target/wasm32-wasip1/debug/examples/tcp_listenfd_server.wasm
 
 use mio::event::Event;
 use mio::net::{TcpListener, TcpStream};
@@ -89,7 +89,7 @@ fn main() -> io::Result<()> {
                         }
                     };
 
-                    println!("Accepted connection from: {}", address);
+                    println!("Accepted connection from: {address}");
 
                     let token = next(&mut unique_token);
                     poll.registry()
@@ -185,7 +185,7 @@ fn handle_connection_event(
             if let Ok(str_buf) = from_utf8(received_data) {
                 println!("Received data: {}", str_buf.trim_end());
             } else {
-                println!("Received (none UTF-8) data: {:?}", received_data);
+                println!("Received (none UTF-8) data: {received_data:?}");
             }
         }
 

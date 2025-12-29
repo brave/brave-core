@@ -5,8 +5,8 @@ use super::{
     unaffected_range::{Bound, UnaffectedRange},
 };
 use crate::{
-    advisory::{versions::RawVersions, Versions},
     Error,
+    advisory::{Versions, versions::RawVersions},
 };
 use semver::{Prerelease, Version, VersionReq};
 

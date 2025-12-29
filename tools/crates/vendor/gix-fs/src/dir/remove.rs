@@ -20,7 +20,11 @@ impl<'a> Iter<'a> {
         if !target.starts_with(boundary) {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
-                format!("Removal target {target:?} must be contained in boundary {boundary:?}"),
+                format!(
+                    "Removal target '{target}' must be contained in boundary '{boundary}'",
+                    target = target.display(),
+                    boundary = boundary.display()
+                ),
             ));
         }
         let cursor = if target == boundary {
@@ -93,7 +97,7 @@ pub fn empty_depth_first(delete_dir: PathBuf) -> std::io::Result<()> {
             if entry.file_type()?.is_dir() {
                 next_to_push.push(entry.path());
             } else {
-                return Err(std::io::Error::new(std::io::ErrorKind::Other, "Directory not empty"));
+                return Err(std::io::Error::other("Directory not empty"));
             }
         }
         if num_entries == 0 {

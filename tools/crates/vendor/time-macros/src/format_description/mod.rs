@@ -67,9 +67,7 @@ impl Location {
 
 #[derive(Clone, Copy)]
 struct Span {
-    #[allow(clippy::missing_docs_in_private_items)]
     start: Location,
-    #[allow(clippy::missing_docs_in_private_items)]
     end: Location,
 }
 
@@ -163,7 +161,6 @@ impl From<Error> for crate::Error {
 
 struct Unused<T>(core::marker::PhantomData<T>);
 
-#[allow(clippy::missing_const_for_fn)] // false positive
 fn unused<T>(_: T) -> Unused<T> {
     Unused(core::marker::PhantomData)
 }

@@ -7,7 +7,6 @@ use crate::{
 };
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod body;
 mod decode;
 
@@ -18,14 +17,44 @@ impl<'a> CommitRef<'a> {
     }
 
     /// Return an iterator over message trailers as obtained from the last paragraph of the commit message.
-    /// May be empty.
+    /// Maybe empty.
     pub fn message_trailers(&self) -> body::Trailers<'a> {
         BodyRef::from_bytes(self.message).trailers()
     }
 }
 
+/// Convenience methods
+impl<'a> CommitRef<'a> {
+    /// Get an iterator over all `Signed-off-by` trailers in the commit message.
+    /// This is useful for finding who signed off on the commit.
+    pub fn signed_off_by_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
+        self.message_trailers().signed_off_by()
+    }
+
+    /// Get an iterator over `Co-authored-by` trailers in the commit message.
+    /// This is useful for squashed commits that contain multiple authors.
+    pub fn co_authored_by_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
+        self.message_trailers().co_authored_by()
+    }
+
+    /// Get all authors mentioned in `Signed-off-by` and `Co-authored-by` trailers.
+    /// This is useful for squashed commits that contain multiple authors.
+    /// Returns a Vec of author strings that can include both signers and co-authors.
+    pub fn author_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
+        self.message_trailers().authors()
+    }
+
+    /// Get an iterator over all attribution-related trailers
+    /// (`Signed-off-by,` `Co-authored-by`, `Acked-by`, `Reviewed-by`, `Tested-by`).
+    /// This provides a comprehensive view of everyone who contributed to or reviewed the commit.
+    /// Note that the same name may occur multiple times, it's not a unified list.
+    pub fn attribution_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
+        self.message_trailers().attributions()
+    }
+}
+
 impl<'a> MessageRef<'a> {
-    /// Parse the given `input` as message.
+    /// Parse the given `input` as a message.
     ///
     /// Note that this cannot fail as everything will be interpreted as title if there is no body separator.
     pub fn from_bytes(input: &'a [u8]) -> Self {
@@ -46,7 +75,7 @@ impl<'a> MessageRef<'a> {
         summary(self.title)
     }
 
-    /// Further parse the body into into non-trailer and trailers, which can be iterated from the returned [`BodyRef`].
+    /// Further parse the body into non-trailer and trailers, which can be iterated from the returned [`BodyRef`].
     pub fn body(&self) -> Option<BodyRef<'a>> {
         self.body.map(|b| BodyRef::from_bytes(b))
     }

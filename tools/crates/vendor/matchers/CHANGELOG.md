@@ -1,3 +1,12 @@
+<a name="0.2.0"></a>
+## 0.2.0 (2024-07-01)
+
+
+#### Changes
+
+*   Update to `regex-automata` v0.4 (#5) ([92217ada](https://github.com/hawkw/matchers/commit/92217ada16bb2c873e2ac6e49f4e74ec93a23b22))
+
+
 <a name="0.1.0"></a>
 ## 0.1.0 (2021-02-25)
 
@@ -21,6 +30,3 @@
 #### Bug Fixes
 
 *   only short-circuit when known not to match ([71544493](https://github.com/hawkw/matchers/commit/71544493613049009f33f4885a1287eee0f21aa4))
-
-
-

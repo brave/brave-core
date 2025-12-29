@@ -3,28 +3,23 @@ use std::fmt::{self, Debug};
 use super::chunks::ChunkProducer;
 use super::plumbing::*;
 use super::*;
-use crate::math::div_round_up;
 
 /// `FoldChunksWith` is an iterator that groups elements of an underlying iterator and applies a
 /// function over them, producing a single value for each group.
 ///
 /// This struct is created by the [`fold_chunks_with()`] method on [`IndexedParallelIterator`]
 ///
-/// [`fold_chunks_with()`]: trait.IndexedParallelIterator.html#method.fold_chunks
-/// [`IndexedParallelIterator`]: trait.IndexedParallelIterator.html
+/// [`fold_chunks_with()`]: IndexedParallelIterator::fold_chunks()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
-pub struct FoldChunksWith<I, U, F>
-where
-    I: IndexedParallelIterator,
-{
+pub struct FoldChunksWith<I, U, F> {
     base: I,
     chunk_size: usize,
     item: U,
     fold_op: F,
 }
 
-impl<I: IndexedParallelIterator + Debug, U: Debug, F> Debug for FoldChunksWith<I, U, F> {
+impl<I: Debug, U: Debug, F> Debug for FoldChunksWith<I, U, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Fold")
             .field("base", &self.base)
@@ -34,12 +29,7 @@ impl<I: IndexedParallelIterator + Debug, U: Debug, F> Debug for FoldChunksWith<I
     }
 }
 
-impl<I, U, F> FoldChunksWith<I, U, F>
-where
-    I: IndexedParallelIterator,
-    U: Send + Clone,
-    F: Fn(U, I::Item) -> U + Send + Sync,
-{
+impl<I, U, F> FoldChunksWith<I, U, F> {
     /// Creates a new `FoldChunksWith` iterator
     pub(super) fn new(base: I, chunk_size: usize, item: U, fold_op: F) -> Self {
         FoldChunksWith {
@@ -78,7 +68,7 @@ where
     F: Fn(U, I::Item) -> U + Send + Sync,
 {
     fn len(&self) -> usize {
-        div_round_up(self.base.len(), self.chunk_size)
+        self.base.len().div_ceil(self.chunk_size)
     }
 
     fn drive<C>(self, consumer: C) -> C::Result
@@ -213,7 +203,7 @@ mod test {
             v.par_iter()
                 .fold_chunks_with(n, 0, sum)
                 .collect_into_vec(&mut res);
-            assert_eq!(expected, res, "Case {} failed", i);
+            assert_eq!(expected, res, "Case {i} failed");
 
             res.truncate(0);
             v.into_par_iter()
@@ -223,8 +213,7 @@ mod test {
             assert_eq!(
                 expected.into_iter().rev().collect::<Vec<u32>>(),
                 res,
-                "Case {} reversed failed",
-                i
+                "Case {i} reversed failed"
             );
         }
     }

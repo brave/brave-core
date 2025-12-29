@@ -1,11 +1,11 @@
 use tracing::{debug, trace};
 
+use crate::Instant;
 use crate::connection::spaces::PacketSpace;
 use crate::crypto::{HeaderKey, KeyPair, PacketKey};
 use crate::packet::{Packet, PartialDecode, SpaceId};
 use crate::token::ResetToken;
-use crate::Instant;
-use crate::{TransportError, RESET_TOKEN_SIZE};
+use crate::{RESET_TOKEN_SIZE, TransportError};
 
 /// Removes header protection of a packet, or returns `None` if the packet was dropped
 pub(super) fn unprotect_header(
@@ -131,7 +131,7 @@ pub(super) fn decrypt_packet_body(
 
     if crypto_update {
         // Validate incoming key update
-        if number <= rx_packet || prev_crypto.map_or(false, |x| x.update_unacked) {
+        if number <= rx_packet || prev_crypto.is_some_and(|x| x.update_unacked) {
             return Err(Some(TransportError::KEY_UPDATE_ERROR("")));
         }
     }

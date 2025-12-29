@@ -485,14 +485,11 @@ tracker][github-issue-leap].
 
 ## Why isn't there any integration with `std::time::Duration`?
 
-The omission of `std::time::Duration` from the `jiff 0.1.0` release was quite
-intentional. Firstly, a `Duration` is an absolute time, meaning there is no way
-to distinguish between `3600 seconds` and `1 hour`. Secondly, a `Duration` is
-unsigned, which makes some API interactions awkward.
-
-It is likely that there will eventually be at least some integration points
-with `std::time::Duration`. [This issue][github-issue-duration] discusses some
-of the challenges.
+The initial release of `jiff 0.1` originally left out any integration
+points with `std::time::Duration`. Since then, `SignedDuration` has
+been added to Jiff. And `TryFrom` trait implementations have been added
+to both `SignedDuration` and `Span` to make conversions between it and
+`std::time::Duration` easier.
 
 
 ## What are the `ZoneDifference` and `ZonedRound` types for?
@@ -630,7 +627,6 @@ serious confusion and conflicts in names when someone wants to use both an
 [POSIX TZ]: https://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html
 [IANA Time Zone Database]: https://en.wikipedia.org/wiki/Tz_database
 [TAI]: https://en.wikipedia.org/wiki/International_Atomic_Time
-[github-issue-duration]: https://github.com/BurntSushi/jiff/issues/21
 [github-issue-leap]: https://github.com/BurntSushi/jiff/issues/7
 [`java.time`]: https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html
 [NodaTime]: https://nodatime.org/

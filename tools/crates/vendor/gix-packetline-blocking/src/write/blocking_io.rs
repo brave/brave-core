@@ -46,8 +46,7 @@ impl<T> Writer<T> {
 impl<T: io::Write> io::Write for Writer<T> {
     fn write(&mut self, mut buf: &[u8]) -> io::Result<usize> {
         if buf.is_empty() {
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Err(io::Error::other(
                 "empty packet lines are not permitted as '0004' is invalid",
             ));
         }

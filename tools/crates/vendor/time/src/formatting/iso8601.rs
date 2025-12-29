@@ -2,6 +2,7 @@
 
 use std::io;
 
+#[allow(unused_imports, reason = "MSRV of 1.87")]
 use num_conv::prelude::*;
 
 use crate::convert::*;
@@ -14,7 +15,7 @@ use crate::{error, Date, Time, UtcOffset};
 
 /// Format the date portion of ISO 8601.
 pub(super) fn format_date<const CONFIG: EncodedConfig>(
-    output: &mut impl io::Write,
+    output: &mut (impl io::Write + ?Sized),
     date: Date,
 ) -> Result<usize, error::Format> {
     let mut bytes = 0;
@@ -69,8 +70,9 @@ pub(super) fn format_date<const CONFIG: EncodedConfig>(
 }
 
 /// Format the time portion of ISO 8601.
+#[inline]
 pub(super) fn format_time<const CONFIG: EncodedConfig>(
-    output: &mut impl io::Write,
+    output: &mut (impl io::Write + ?Sized),
     time: Time,
 ) -> Result<usize, error::Format> {
     let mut bytes = 0;
@@ -87,17 +89,17 @@ pub(super) fn format_time<const CONFIG: EncodedConfig>(
     match Iso8601::<CONFIG>::TIME_PRECISION {
         TimePrecision::Hour { decimal_digits } => {
             let hours = (hours as f64)
-                + (minutes as f64) / Minute::per(Hour) as f64
-                + (seconds as f64) / Second::per(Hour) as f64
-                + (nanoseconds as f64) / Nanosecond::per(Hour) as f64;
+                + (minutes as f64) / Minute::per_t::<f64>(Hour)
+                + (seconds as f64) / Second::per_t::<f64>(Hour)
+                + (nanoseconds as f64) / Nanosecond::per_t::<f64>(Hour);
             format_float(output, hours, 2, decimal_digits)?;
         }
         TimePrecision::Minute { decimal_digits } => {
             bytes += format_number_pad_zero::<2>(output, hours)?;
             bytes += write_if(output, Iso8601::<CONFIG>::USE_SEPARATORS, b":")?;
             let minutes = (minutes as f64)
-                + (seconds as f64) / Second::per(Minute) as f64
-                + (nanoseconds as f64) / Nanosecond::per(Minute) as f64;
+                + (seconds as f64) / Second::per_t::<f64>(Minute)
+                + (nanoseconds as f64) / Nanosecond::per_t::<f64>(Minute);
             bytes += format_float(output, minutes, 2, decimal_digits)?;
         }
         TimePrecision::Second { decimal_digits } => {
@@ -105,7 +107,8 @@ pub(super) fn format_time<const CONFIG: EncodedConfig>(
             bytes += write_if(output, Iso8601::<CONFIG>::USE_SEPARATORS, b":")?;
             bytes += format_number_pad_zero::<2>(output, minutes)?;
             bytes += write_if(output, Iso8601::<CONFIG>::USE_SEPARATORS, b":")?;
-            let seconds = (seconds as f64) + (nanoseconds as f64) / Nanosecond::per(Second) as f64;
+            let seconds =
+                (seconds as f64) + (nanoseconds as f64) / Nanosecond::per_t::<f64>(Second);
             bytes += format_float(output, seconds, 2, decimal_digits)?;
         }
     }
@@ -114,8 +117,9 @@ pub(super) fn format_time<const CONFIG: EncodedConfig>(
 }
 
 /// Format the UTC offset portion of ISO 8601.
+#[inline]
 pub(super) fn format_offset<const CONFIG: EncodedConfig>(
-    output: &mut impl io::Write,
+    output: &mut (impl io::Write + ?Sized),
     offset: UtcOffset,
 ) -> Result<usize, error::Format> {
     if Iso8601::<CONFIG>::FORMAT_TIME && offset.is_utc() {

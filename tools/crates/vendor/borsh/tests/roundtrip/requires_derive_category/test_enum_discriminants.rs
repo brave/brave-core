@@ -134,6 +134,20 @@ enum C {
     C5(D),
 }
 
+#[test]
+fn test_enum_tuples() {
+    let values = vec![
+        C::C1,
+        C::C2(u64::MAX),
+        C::C3(1, 2),
+        C::C4 { x: 0, y: 100 },
+        C::C5(D { x: u64::MAX }),
+    ];
+    for value in values {
+        assert_eq!(from_slice::<C>(&to_vec(&value).unwrap()).unwrap(), value);
+    }
+}
+
 #[derive(BorshSerialize, BorshDeserialize, PartialEq, Eq, Clone, Copy, Debug)]
 #[borsh(use_discriminant = true)]
 enum X {

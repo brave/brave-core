@@ -57,7 +57,6 @@ pub const O_LARGEFILE: c_int = 0x2000;
 pub const O_NDELAY: c_int = 0x80;
 
 pub const SOCK_NONBLOCK: c_int = 128;
-pub const PIDFD_NONBLOCK: c_int = 128;
 
 pub const EDEADLK: c_int = 45;
 pub const ENAMETOOLONG: c_int = 78;
@@ -164,6 +163,7 @@ pub const SA_ONSTACK: c_uint = 0x08000000;
 pub const SA_SIGINFO: c_uint = 0x00000008;
 pub const SA_NOCLDWAIT: c_int = 0x00010000;
 
+pub const SIGEMT: c_int = 7;
 pub const SIGCHLD: c_int = 18;
 pub const SIGBUS: c_int = 10;
 pub const SIGTTIN: c_int = 26;

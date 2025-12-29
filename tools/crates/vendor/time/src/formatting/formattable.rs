@@ -34,7 +34,6 @@ impl<T: Deref> Formattable for T where T::Target: Formattable {}
 
 /// Seal the trait to prevent downstream users from implementing it.
 mod sealed {
-    #[allow(clippy::wildcard_imports)]
     use super::*;
 
     /// Format the item using a format description, the intended output, and the various components.
@@ -42,13 +41,14 @@ mod sealed {
         /// Format the item into the provided output, returning the number of bytes written.
         fn format_into(
             &self,
-            output: &mut impl io::Write,
+            output: &mut (impl io::Write + ?Sized),
             date: Option<Date>,
             time: Option<Time>,
             offset: Option<UtcOffset>,
         ) -> Result<usize, error::Format>;
 
         /// Format the item directly to a `String`.
+        #[inline]
         fn format(
             &self,
             date: Option<Date>,
@@ -62,11 +62,11 @@ mod sealed {
     }
 }
 
-// region: custom formats
 impl sealed::Sealed for BorrowedFormatItem<'_> {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -85,9 +85,10 @@ impl sealed::Sealed for BorrowedFormatItem<'_> {
 }
 
 impl sealed::Sealed for [BorrowedFormatItem<'_>] {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -101,9 +102,10 @@ impl sealed::Sealed for [BorrowedFormatItem<'_>] {
 }
 
 impl sealed::Sealed for OwnedFormatItem {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -122,9 +124,10 @@ impl sealed::Sealed for OwnedFormatItem {
 }
 
 impl sealed::Sealed for [OwnedFormatItem] {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -137,13 +140,14 @@ impl sealed::Sealed for [OwnedFormatItem] {
     }
 }
 
-impl<T: Deref> sealed::Sealed for T
+impl<T> sealed::Sealed for T
 where
-    T::Target: sealed::Sealed,
+    T: Deref<Target: sealed::Sealed>,
 {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -151,13 +155,11 @@ where
         self.deref().format_into(output, date, time, offset)
     }
 }
-// endregion custom formats
 
-// region: well-known formats
 impl sealed::Sealed for Rfc2822 {
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -208,7 +210,7 @@ impl sealed::Sealed for Rfc2822 {
 impl sealed::Sealed for Rfc3339 {
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -243,7 +245,6 @@ impl sealed::Sealed for Rfc3339 {
         bytes += write(output, b":")?;
         bytes += format_number_pad_zero::<2>(output, time.second())?;
 
-        #[allow(clippy::if_not_else)]
         if time.nanosecond() != 0 {
             let nanos = time.nanosecond();
             bytes += write(output, b".")?;
@@ -283,9 +284,10 @@ impl sealed::Sealed for Rfc3339 {
 }
 
 impl<const CONFIG: EncodedConfig> sealed::Sealed for Iso8601<CONFIG> {
+    #[inline]
     fn format_into(
         &self,
-        output: &mut impl io::Write,
+        output: &mut (impl io::Write + ?Sized),
         date: Option<Date>,
         time: Option<Time>,
         offset: Option<UtcOffset>,
@@ -314,4 +316,3 @@ impl<const CONFIG: EncodedConfig> sealed::Sealed for Iso8601<CONFIG> {
         Ok(bytes)
     }
 }
-// endregion well-known formats

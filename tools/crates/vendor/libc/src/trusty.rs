@@ -1,29 +1,8 @@
-pub use crate::arch::c_char_def as c_char;
 use crate::prelude::*;
 pub type size_t = usize;
 pub type ssize_t = isize;
 
 pub type off_t = i64;
-
-pub type c_schar = i8;
-pub type c_uchar = u8;
-pub type c_short = i16;
-pub type c_ushort = u16;
-pub type c_int = i32;
-pub type c_uint = u32;
-
-cfg_if! {
-    if #[cfg(target_pointer_width = "32")] {
-        pub type c_long = i32;
-        pub type c_ulong = u32;
-    } else if #[cfg(target_pointer_width = "64")] {
-        pub type c_long = i64;
-        pub type c_ulong = u64;
-    }
-}
-
-pub type c_longlong = i64;
-pub type c_ulonglong = u64;
 
 pub type c_uint8_t = u8;
 pub type c_uint16_t = u16;
@@ -37,9 +16,6 @@ pub type c_int64_t = i64;
 
 pub type intptr_t = isize;
 pub type uintptr_t = usize;
-
-pub type c_float = f32;
-pub type c_double = f64;
 
 pub type time_t = c_long;
 

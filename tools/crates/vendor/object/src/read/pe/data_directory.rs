@@ -1,7 +1,8 @@
 use core::slice;
 
+use crate::endian::LittleEndian as LE;
+use crate::pe;
 use crate::read::{Error, ReadError, ReadRef, Result};
-use crate::{pe, LittleEndian as LE};
 
 use super::{
     DelayLoadImportTable, ExportTable, ImportTable, RelocationBlockIterator, ResourceDirectory,
@@ -177,9 +178,9 @@ impl pe::ImageDataDirectory {
     /// This function has some limitations:
     /// - It requires that the data is contained in a single section.
     /// - It uses the size field of the directory entry, which is
-    /// not desirable for all data directories.
+    ///   not desirable for all data directories.
     /// - It uses the `virtual_address` of the directory entry as an address,
-    /// which is not valid for `IMAGE_DIRECTORY_ENTRY_SECURITY`.
+    ///   which is not valid for `IMAGE_DIRECTORY_ENTRY_SECURITY`.
     pub fn file_range(&self, sections: &SectionTable<'_>) -> Result<(u32, u32)> {
         let (offset, section_size) = sections
             .pe_file_range_at(self.virtual_address.get(LE))
@@ -196,9 +197,9 @@ impl pe::ImageDataDirectory {
     /// This function has some limitations:
     /// - It requires that the data is contained in a single section.
     /// - It uses the size field of the directory entry, which is
-    /// not desirable for all data directories.
+    ///   not desirable for all data directories.
     /// - It uses the `virtual_address` of the directory entry as an address,
-    /// which is not valid for `IMAGE_DIRECTORY_ENTRY_SECURITY`.
+    ///   which is not valid for `IMAGE_DIRECTORY_ENTRY_SECURITY`.
     pub fn data<'data, R: ReadRef<'data>>(
         &self,
         data: R,

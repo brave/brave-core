@@ -1,10 +1,10 @@
 //! Certificate support.
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::array::{CFArray, CFArrayRef};
 use core_foundation::base::{TCFType, ToVoid};
 use core_foundation::data::CFData;
 use core_foundation::dictionary::CFMutableDictionary;
 use core_foundation::string::CFString;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation_sys::base::kCFAllocatorDefault;
 #[cfg(any(target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::base::{errSecNotTrusted, errSecSuccess};
@@ -150,6 +150,8 @@ impl SecCertificate {
 
     #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     #[must_use]
+    #[allow(clippy::unused_self)]
+    #[allow(clippy::needless_pass_by_value)]
     fn pk_to_der(&self, public_key: key::SecKey) -> Option<Vec<u8>> {
         use security_framework_sys::item::{kSecAttrKeySizeInBits, kSecAttrKeyType};
 
@@ -161,7 +163,7 @@ impl SecCertificate {
         let public_keysize = unsafe { CFNumber::from_void(*public_keysize) };
         let public_keysize_val = public_keysize.to_i64()? as u32;
         let hdr_bytes = get_asn1_header_bytes(
-            unsafe { CFString::wrap_under_get_rule(*public_key_type as _) },
+            unsafe { CFString::wrap_under_get_rule((*public_key_type).cast()) },
             public_keysize_val,
         )?;
         let public_key_data = public_key.external_representation()?;

@@ -109,7 +109,7 @@ impl ValueType {
     /// Construct a `ValueType` from a base type DIE.
     #[cfg(feature = "read")]
     pub fn from_entry<R: Reader>(
-        entry: &DebuggingInformationEntry<R>,
+        entry: &DebuggingInformationEntry<'_, '_, R>,
     ) -> Result<Option<ValueType>> {
         if entry.tag() != constants::DW_TAG_base_type {
             return Ok(None);
@@ -199,7 +199,7 @@ impl Value {
             Value::I32(value) => value as u64,
             Value::U32(value) => u64::from(value),
             Value::I64(value) => value as u64,
-            Value::U64(value) => value as u64,
+            Value::U64(value) => value,
             _ => return Err(Error::IntegralTypeRequired),
         };
         Ok(value)

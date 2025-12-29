@@ -4,7 +4,6 @@ use crate::{entry, extension, Entry, State, Version};
 
 mod entries;
 ///
-#[allow(clippy::empty_docs)]
 pub mod header;
 
 mod error {
@@ -17,17 +16,16 @@ mod error {
     pub enum Error {
         #[error(transparent)]
         Header(#[from] decode::header::Error),
+        #[error("Could not hash index data")]
+        Hasher(#[from] gix_hash::hasher::Error),
         #[error("Could not parse entry at index {index}")]
         Entry { index: u32 },
         #[error("Mandatory extension wasn't implemented or malformed.")]
         Extension(#[from] extension::decode::Error),
         #[error("Index trailer should have been {expected} bytes long, but was {actual}")]
         UnexpectedTrailerLength { expected: usize, actual: usize },
-        #[error("Shared index checksum was {actual_checksum} but should have been {expected_checksum}")]
-        ChecksumMismatch {
-            actual_checksum: gix_hash::ObjectId,
-            expected_checksum: gix_hash::ObjectId,
-        },
+        #[error("Shared index checksum mismatch")]
+        Verify(#[from] gix_hash::verify::Error),
     }
 }
 pub use error::Error;
@@ -68,7 +66,7 @@ impl State {
     ) -> Result<(Self, Option<gix_hash::ObjectId>), Error> {
         let _span = gix_features::trace::detail!("gix_index::State::from_bytes()", options = ?_options);
         let (version, num_entries, post_header_data) = header::decode(data, object_hash)?;
-        let start_of_extensions = extension::end_of_index_entry::decode(data, object_hash);
+        let start_of_extensions = extension::end_of_index_entry::decode(data, object_hash)?;
 
         let mut num_threads = gix_features::parallel::num_threads(thread_limit);
         let path_backing_buffer_size = entries::estimate_path_storage_requirements_in_bytes(
@@ -218,12 +216,7 @@ impl State {
         let checksum = gix_hash::ObjectId::from_bytes_or_panic(data);
         let checksum = (!checksum.is_null()).then_some(checksum);
         if let Some((expected_checksum, actual_checksum)) = expected_checksum.zip(checksum) {
-            if actual_checksum != expected_checksum {
-                return Err(Error::ChecksumMismatch {
-                    actual_checksum,
-                    expected_checksum,
-                });
-            }
+            actual_checksum.verify(&expected_checksum)?;
         }
         let EntriesOutcome {
             entries,

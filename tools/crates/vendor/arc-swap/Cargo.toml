@@ -12,8 +12,14 @@
 [package]
 edition = "2018"
 name = "arc-swap"
-version = "1.7.1"
+version = "1.8.0"
 authors = ["Michal 'vorner' Vaner <vorner@vorner.cz>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Atomically swappable Arc"
 documentation = "https://docs.rs/arc-swap"
 readme = "README.md"
@@ -34,20 +40,44 @@ features = [
     "weak",
 ]
 
-[profile.bench]
-debug = 2
+[badges.maintenance]
+status = "actively-developed"
+
+[features]
+experimental-strategies = []
+experimental-thread-local = []
+internal-test-strategies = []
+weak = []
+
+[lib]
+name = "arc_swap"
+path = "src/lib.rs"
+
+[[test]]
+name = "random"
+path = "tests/random.rs"
+
+[[test]]
+name = "stress"
+path = "tests/stress.rs"
 
 [[bench]]
 name = "background"
+path = "benches/background.rs"
 harness = false
 
 [[bench]]
 name = "int-access"
+path = "benches/int-access.rs"
 harness = false
 
 [[bench]]
 name = "track"
+path = "benches/track.rs"
 harness = false
+
+[dependencies.rustversion]
+version = "1"
 
 [dependencies.serde]
 version = "1"
@@ -58,13 +88,13 @@ optional = true
 version = "~1"
 
 [dev-dependencies.criterion]
-version = "~0.5"
+version = "~0.7"
 
 [dev-dependencies.crossbeam-utils]
 version = "~0.8"
 
 [dev-dependencies.itertools]
-version = "0.12"
+version = "0.14"
 
 [dev-dependencies.num_cpus]
 version = "~1"
@@ -82,13 +112,7 @@ version = "1"
 version = "1.0.130"
 
 [dev-dependencies.serde_test]
-version = "1.0.130"
+version = "1.0.177"
 
-[features]
-experimental-strategies = []
-experimental-thread-local = []
-internal-test-strategies = []
-weak = []
-
-[badges.maintenance]
-status = "actively-developed"
+[profile.bench]
+debug = 2

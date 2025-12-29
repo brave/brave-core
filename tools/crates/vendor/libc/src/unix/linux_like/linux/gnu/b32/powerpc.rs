@@ -1,10 +1,14 @@
 use crate::prelude::*;
-use crate::{off64_t, off_t};
+use crate::{
+    off64_t,
+    off_t,
+};
 
-pub type c_char = u8;
 pub type wchar_t = i32;
 
 s! {
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
@@ -53,9 +57,42 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
         __seq: u32,
-        __pad1: u32,
+        __pad1: Padding<u32>,
         __glibc_reserved1: u64,
         __glibc_reserved2: u64,
+    }
+
+    pub struct stat {
+        pub st_dev: crate::dev_t,
+        #[cfg(not(gnu_file_offset_bits64))]
+        __pad1: Padding<c_ushort>,
+        pub st_ino: crate::ino_t,
+        pub st_mode: crate::mode_t,
+        pub st_nlink: crate::nlink_t,
+        pub st_uid: crate::uid_t,
+        pub st_gid: crate::gid_t,
+        pub st_rdev: crate::dev_t,
+        #[cfg(not(gnu_time_bits64))]
+        __pad2: Padding<c_ushort>,
+        pub st_size: off_t,
+        pub st_blksize: crate::blksize_t,
+        pub st_blocks: crate::blkcnt_t,
+        pub st_atime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _atime_pad: c_int,
+        pub st_atime_nsec: c_long,
+        pub st_mtime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _mtime_pad: c_int,
+        pub st_mtime_nsec: c_long,
+        pub st_ctime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _ctime_pad: c_int,
+        pub st_ctime_nsec: c_long,
+        #[cfg(not(gnu_time_bits64))]
+        __glibc_reserved4: c_ulong,
+        #[cfg(not(gnu_time_bits64))]
+        __glibc_reserved5: c_ulong,
     }
 
     pub struct stat64 {
@@ -66,17 +103,26 @@ s! {
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        __pad2: c_ushort,
+        #[cfg(not(gnu_time_bits64))]
+        __pad2: Padding<c_ushort>,
         pub st_size: off64_t,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt64_t,
         pub st_atime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _atime_pad: c_int,
         pub st_atime_nsec: c_long,
         pub st_mtime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _mtime_pad: c_int,
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
+        #[cfg(gnu_time_bits64)]
+        _ctime_pad: c_int,
         pub st_ctime_nsec: c_long,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved4: c_ulong,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved5: c_ulong,
     }
 
@@ -113,13 +159,20 @@ s! {
 
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
+        #[cfg(gnu_time_bits64)]
+        pub shm_segsz: size_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved1: c_uint,
         pub shm_atime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved2: c_uint,
         pub shm_dtime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved3: c_uint,
         pub shm_ctime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved4: c_uint,
+        #[cfg(not(gnu_time_bits64))]
         pub shm_segsz: size_t,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
@@ -130,13 +183,16 @@ s! {
 
     pub struct msqid_ds {
         pub msg_perm: crate::ipc_perm,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved1: c_uint,
         pub msg_stime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved2: c_uint,
         pub msg_rtime: crate::time_t,
+        #[cfg(not(gnu_time_bits64))]
         __glibc_reserved3: c_uint,
         pub msg_ctime: crate::time_t,
-        __msg_cbytes: c_ulong,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
@@ -302,7 +358,13 @@ pub const MCL_ONFAULT: c_int = 0x8000;
 pub const POLLWRNORM: c_short = 0x100;
 pub const POLLWRBAND: c_short = 0x200;
 
-pub const F_GETLK: c_int = 5;
+cfg_if! {
+    if #[cfg(gnu_file_offset_bits64)] {
+        pub const F_GETLK: c_int = 12;
+    } else {
+        pub const F_GETLK: c_int = 5;
+    }
+}
 pub const F_GETOWN: c_int = 9;
 pub const F_SETOWN: c_int = 8;
 
@@ -556,9 +618,11 @@ pub const SYS_modify_ldt: c_long = 123;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 127;
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 130;
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
@@ -595,6 +659,7 @@ pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
 pub const SYS_setresuid: c_long = 164;
 pub const SYS_getresuid: c_long = 165;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 166;
 pub const SYS_poll: c_long = 167;
 pub const SYS_nfsservctl: c_long = 168;

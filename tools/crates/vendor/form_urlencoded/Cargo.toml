@@ -13,22 +13,22 @@
 edition = "2018"
 rust-version = "1.51"
 name = "form_urlencoded"
-version = "1.2.1"
+version = "1.2.2"
 authors = ["The rust-url developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Parser and serializer for the application/x-www-form-urlencoded syntax, as used by HTML forms."
-categories = ["no_std"]
+readme = false
+categories = ["no-std"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/servo/rust-url"
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
-
-[lib]
-test = false
-
-[dependencies.percent-encoding]
-version = "2.3.0"
-default-features = false
 
 [features]
 alloc = ["percent-encoding/alloc"]
@@ -37,3 +37,12 @@ std = [
     "alloc",
     "percent-encoding/std",
 ]
+
+[lib]
+name = "form_urlencoded"
+path = "src/lib.rs"
+test = false
+
+[dependencies.percent-encoding]
+version = "2.3.0"
+default-features = false

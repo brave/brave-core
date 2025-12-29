@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -15,7 +15,7 @@
 //! EdDSA Signatures.
 
 use super::{super::ops::*, eddsa_digest};
-use crate::{error, sealed, signature};
+use crate::{cpu, error, sealed, signature};
 
 /// Parameters for EdDSA signing and verification.
 pub struct EdDSAParameters;
@@ -40,6 +40,8 @@ impl signature::VerificationAlgorithm for EdDSAParameters {
         msg: untrusted::Input,
         signature: untrusted::Input,
     ) -> Result<(), error::Unspecified> {
+        let cpu_features = cpu::features();
+
         let public_key: &[u8; ELEM_LEN] = public_key.as_slice_less_safe().try_into()?;
         let (signature_r, signature_s) = signature.read_all(error::Unspecified, |input| {
             let signature_r: &[u8; ELEM_LEN] = input
@@ -63,7 +65,7 @@ impl signature::VerificationAlgorithm for EdDSAParameters {
 
         let mut r = Point::new_at_infinity();
         unsafe { x25519_ge_double_scalarmult_vartime(&mut r, &h, &a, &signature_s) };
-        let r_check = r.into_encoded_point();
+        let r_check = r.into_encoded_point(cpu_features);
         if *signature_r != r_check {
             return Err(error::Unspecified);
         }

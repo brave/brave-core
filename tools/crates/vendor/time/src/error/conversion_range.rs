@@ -10,16 +10,16 @@ use crate::error;
 pub struct ConversionRange;
 
 impl fmt::Display for ConversionRange {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str("Source value is out of range for the target type")
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for ConversionRange {}
+impl core::error::Error for ConversionRange {}
 
 impl From<ConversionRange> for crate::Error {
+    #[inline]
     fn from(err: ConversionRange) -> Self {
         Self::ConversionRange(err)
     }
@@ -28,6 +28,7 @@ impl From<ConversionRange> for crate::Error {
 impl TryFrom<crate::Error> for ConversionRange {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: crate::Error) -> Result<Self, Self::Error> {
         match err {
             crate::Error::ConversionRange(err) => Ok(err),

@@ -6,20 +6,23 @@ pub(crate) struct CpuInfo(u32);
 
 impl CpuInfo {
     #[inline]
-    fn set(&mut self, bit: u32) {
-        self.0 = set(self.0, bit);
+    fn set(&mut self, bit: CpuInfoFlag) {
+        self.0 = set(self.0, bit as u32);
     }
     #[inline]
-    fn test(self, bit: u32) -> bool {
-        test(self.0, bit)
+    #[must_use]
+    fn test(self, bit: CpuInfoFlag) -> bool {
+        test(self.0, bit as u32)
     }
 }
 
 #[inline]
+#[must_use]
 fn set(x: u32, bit: u32) -> u32 {
-    x | 1 << bit
+    x | (1 << bit)
 }
 #[inline]
+#[must_use]
 fn test(x: u32, bit: u32) -> bool {
     x & (1 << bit) != 0
 }
@@ -33,11 +36,10 @@ pub(crate) fn detect() -> CpuInfo {
     if info.0 != 0 {
         return info;
     }
-    info.set(CpuInfo::INIT);
-    // Note: detect_false cfg is intended to make it easy for portable-atomic developers to
-    // test cases such as has_cmpxchg16b == false, has_lse == false,
-    // __kuser_helper_version < 5, etc., and is not a public API.
-    if !cfg!(portable_atomic_test_outline_atomics_detect_false) {
+    info.set(CpuInfoFlag::Init);
+    // Note: detect_false cfg is intended to make it easy for developers to test
+    // cases where features usually available is not available, and is not a public API.
+    if !cfg!(portable_atomic_test_detect_false) {
         _detect(&mut info);
     }
     CACHE.store(info.0, Ordering::Relaxed);
@@ -47,280 +49,150 @@ pub(crate) fn detect() -> CpuInfo {
 macro_rules! flags {
     ($(
         $(#[$attr:meta])*
-        $flag:ident ($shift:literal, $func:ident, $name:literal, $cfg:meta),
+        $func:ident($name:literal, any($($cfg:ident),*)),
     )*) => {
+        #[allow(dead_code, non_camel_case_types)]
+        #[derive(Clone, Copy)]
+        #[cfg_attr(test, derive(PartialEq, Eq, PartialOrd, Ord))]
+        #[repr(u32)]
+        enum CpuInfoFlag {
+            Init = 0,
+            $($func,)*
+        }
         impl CpuInfo {
-            const INIT: u32 = 0;
             $(
                 $(#[$attr])*
-                const $flag: u32 = $shift;
-                $(#[$attr])*
-                #[cfg(any(test, not($cfg)))]
+                #[cfg(any(test, not(any($($cfg = $name),*))))]
                 #[inline]
+                #[must_use]
                 pub(crate) fn $func(self) -> bool {
-                    self.test(Self::$flag)
+                    self.test(CpuInfoFlag::$func)
                 }
             )*
             #[cfg(test)] // for test
-            const ALL_FLAGS: &'static [(&'static str, u32, bool)] = &[$(
-                ($name, Self::$flag, cfg!($cfg)),
+            const ALL_FLAGS: &'static [(&'static str, CpuInfoFlag, bool)] = &[$(
+                ($name, CpuInfoFlag::$func, cfg!(any($($cfg = $name),*))),
             )*];
         }
+        #[test]
+        #[cfg_attr(portable_atomic_test_detect_false, ignore = "detection disabled")]
+        fn test_detect() {$(
+            $(#[$attr])*
+            {
+                const _: u32 = 1_u32 << CpuInfoFlag::$func as u32;
+                assert_eq!($name.replace(|c: char| c == '-' || c == '.', "_"), stringify!($func));
+                if detect().$func() {
+                    assert!(detect().test(CpuInfoFlag::$func));
+                } else {
+                    assert!(!detect().test(CpuInfoFlag::$func));
+                }
+            }
+        )*}
     };
 }
 
+// rustc definitions: https://github.com/rust-lang/rust/blob/ddaf12390d3ffb7d5ba74491a48f3cd528e5d777/compiler/rustc_target/src/target_features.rs
+
+// LLVM definitions: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/AArch64/AArch64Features.td
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
 flags! {
+    // The Armv8.1 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv8-1-architecture-extension
     // FEAT_LSE, Large System Extensions
-    // https://developer.arm.com/documentation/109697/0100/Feature-descriptions/The-Armv8-1-architecture-extension
     // > This feature is supported in AArch64 state only.
     // > FEAT_LSE is OPTIONAL from Armv8.0.
     // > FEAT_LSE is mandatory from Armv8.1.
-    HAS_LSE(1, has_lse, "lse", any(target_feature = "lse", portable_atomic_target_feature = "lse")),
+    lse("lse", any(target_feature /* 1.61+ */, portable_atomic_target_feature)),
+
+    // The Armv8.3 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv8-3-architecture-extension
+    // FEAT_LRCPC, Load-Acquire RCpc instructions
+    // > These instructions are added to the A64 instruction set only.
+    // > FEAT_LRCPC is OPTIONAL from Armv8.2.
+    // > FEAT_LRCPC is mandatory from Armv8.3.
+    #[cfg(test)] // test-only
+    rcpc("rcpc", any(target_feature /* 1.61+ */)),
+
+    // The Armv8.4 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv8-4-architecture-extension
     // FEAT_LSE2, Large System Extensions version 2
-    // https://developer.arm.com/documentation/109697/0100/Feature-descriptions/The-Armv8-4-architecture-extension
     // > This feature is supported in AArch64 state only.
     // > FEAT_LSE2 is OPTIONAL from Armv8.2.
     // > FEAT_LSE2 is mandatory from Armv8.4.
     #[cfg_attr(not(test), allow(dead_code))]
-    HAS_LSE2(2, has_lse2, "lse2", any(target_feature = "lse2", portable_atomic_target_feature = "lse2")),
+    lse2("lse2", any(target_feature /* nightly */, portable_atomic_target_feature)),
+    // FEAT_LRCPC2, Load-Acquire RCpc instructions version 2
+    // > These instructions are added to the A64 instruction set only.
+    // > FEAT_LRCPC2 is OPTIONAL from Armv8.2.
+    // > FEAT_LRCPC2 is mandatory from Armv8.4.
+    // > If FEAT_LRCPC2 is implemented, then FEAT_LRCPC is implemented.
+    #[cfg(test)] // test-only
+    rcpc2("rcpc2", any(target_feature /* 1.61+ */)),
+
+    // The Armv8.9 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv8-9-architecture-extension
     // FEAT_LRCPC3, Load-Acquire RCpc instructions version 3
-    // https://developer.arm.com/documentation/109697/0100/Feature-descriptions/The-Armv8-9-architecture-extension
     // > This feature is supported in AArch64 state only.
     // > FEAT_LRCPC3 is OPTIONAL from Armv8.2.
     // > If FEAT_LRCPC3 is implemented, then FEAT_LRCPC2 is implemented.
     #[cfg_attr(not(test), allow(dead_code))]
-    HAS_RCPC3(3, has_rcpc3, "rcpc3", any(target_feature = "rcpc3", portable_atomic_target_feature = "rcpc3")),
+    rcpc3("rcpc3", any(target_feature /* nightly */, portable_atomic_target_feature)),
+
+    // The Armv9.4 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv9-4-architecture-extension
     // FEAT_LSE128, 128-bit Atomics
-    // https://developer.arm.com/documentation/109697/0100/Feature-descriptions/The-Armv9-4-architecture-extension
     // > This feature is supported in AArch64 state only.
     // > FEAT_LSE128 is OPTIONAL from Armv9.3.
     // > If FEAT_LSE128 is implemented, then FEAT_LSE is implemented.
     #[cfg_attr(not(test), allow(dead_code))]
-    HAS_LSE128(4, has_lse128, "lse128", any(target_feature = "lse128", portable_atomic_target_feature = "lse128")),
+    lse128("lse128", any(target_feature /* nightly */, portable_atomic_target_feature)),
+
+    // The Armv9.6 architecture extension
+    // https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions/The-Armv9-6-architecture-extension
+    // FEAT_LSFE, Large System Float Extension
+    // > This feature is supported in AArch64 state only.
+    // > FEAT_LSFE is OPTIONAL from Armv9.3.
+    // > If FEAT_LSFE is implemented, then FEAT_FP is implemented.
+    #[cfg(test)] // test-only
+    lsfe("lsfe", any(target_feature /* N/A */, portable_atomic_target_feature)),
+
+    #[cfg(test)] // test-only
+    cpuid("cpuid", any(/* no corresponding target feature */)),
 }
 
+// LLVM definitions: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/ARM/ARMFeatures.td
+#[cfg(target_arch = "arm")]
+flags! {
+    #[cfg(test)] // test-only
+    lpae("lpae", any(/* no corresponding target feature */)),
+}
+
+// LLVM definitions: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/PowerPC/PPC.td
 #[cfg(target_arch = "powerpc64")]
 flags! {
     // lqarx and stqcx.
-    HAS_QUADWORD_ATOMICS(1, has_quadword_atomics, "quadword-atomics", any(target_feature = "quadword-atomics", portable_atomic_target_feature = "quadword-atomics")),
+    quadword_atomics("quadword-atomics", any(target_feature /* nightly */, portable_atomic_target_feature)),
 }
 
+// LLVM definitions: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/RISCV/RISCVFeatures.td
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 flags! {
     // amocas.{w,d,q}
-    HAS_ZACAS(1, has_zacas, "zacas", any(target_feature = "experimental-zacas", portable_atomic_target_feature = "experimental-zacas")),
+    zacas("zacas", any(target_feature /* nightly */, portable_atomic_target_feature)),
+    #[cfg(test)] // test-only
+    zabha("zabha", any(target_feature /* nightly */, portable_atomic_target_feature)),
+    #[cfg(test)] // test-only
+    zalasr("zalasr", any(/* no corresponding target feature */)),
 }
 
+// LLVM definitions: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/X86/X86.td
 #[cfg(target_arch = "x86_64")]
 flags! {
     // cmpxchg16b
-    HAS_CMPXCHG16B(1, has_cmpxchg16b, "cmpxchg16b", any(target_feature = "cmpxchg16b", portable_atomic_target_feature = "cmpxchg16b")),
+    cmpxchg16b("cmpxchg16b", any(target_feature /* 1.69+ */, portable_atomic_target_feature)),
     // atomic vmovdqa
     #[cfg(target_feature = "sse")]
-    HAS_VMOVDQA_ATOMIC(2, has_vmovdqa_atomic, "vmovdqa-atomic", any(/* always false */)),
-}
-
-// core::ffi::c_* (except c_void) requires Rust 1.64, libc requires Rust 1.63
-#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-#[cfg(not(windows))]
-#[allow(dead_code, unused_macros, non_camel_case_types)]
-#[macro_use]
-mod c_types {
-    /// Defines constants with #[cfg(test)] static assertions which checks
-    /// values are the same as the platform's latest header files' ones.
-    // Note: This macro is sys_const!({ }), not sys_const! { }.
-    // An extra brace is used in input to make contents rustfmt-able:.
-    macro_rules! sys_const {
-        ({$(
-            $(#[$attr:meta])*
-            $vis:vis const $name:ident: $ty:ty = $val:expr;
-        )*}) => {
-            $(
-                $(#[$attr])*
-                $vis const $name: $ty = $val;
-            )*
-            // Static assertions for FFI bindings.
-            // This checks that FFI bindings defined in this crate and FFI bindings generated for
-            // the platform's latest header file using bindgen have the same values.
-            // Since this is static assertion, we can detect problems with
-            // `cargo check --tests --target <target>` run in CI (via TESTS=1 build.sh)
-            // without actually running tests on these platforms.
-            // See also https://github.com/taiki-e/test-helper/blob/HEAD/tools/codegen/src/ffi.rs.
-            #[cfg(test)]
-            #[allow(
-                unused_attributes, // for #[allow(..)] in $(#[$attr])*
-                clippy::cast_possible_wrap,
-                clippy::cast_sign_loss,
-                clippy::cast_possible_truncation,
-            )]
-            const _: fn() = || {$(
-                $(#[$attr])*
-                sys_const_cmp!($name, $ty);
-            )*};
-        };
-    }
-    #[cfg(test)]
-    macro_rules! sys_const_cmp {
-        (RTLD_DEFAULT, $ty:ty) => {
-            // ptr comparison and ptr-to-int cast are not stable on const context, so use ptr-to-int
-            // transmute and compare its result.
-            static_assert!(
-                // SAFETY: Pointer-to-integer transmutes are valid (since we are okay with losing the
-                // provenance here). (Same as <pointer>::addr().)
-                unsafe {
-                    core::mem::transmute::<$ty, usize>(RTLD_DEFAULT)
-                        == core::mem::transmute::<$ty, usize>(test_helper::sys::RTLD_DEFAULT)
-                }
-            );
-        };
-        ($name:ident, $ty:ty) => {
-            static_assert!($name == test_helper::sys::$name as $ty);
-        };
-    }
-    /// Defines functions with #[cfg(test)] static assertions which checks
-    /// signatures are the same as the platform's latest header files' ones.
-    // Note: This macro is sys_fn!({ }), not sys_fn! { }.
-    // An extra brace is used in input to make contents rustfmt-able:.
-    macro_rules! sys_fn {
-        ({
-            $(#[$extern_attr:meta])*
-            extern $abi:literal {$(
-                $(#[$fn_attr:meta])*
-                $vis:vis fn $name:ident($($arg_pat:ident: $arg_ty:ty),* $(,)?) $(-> $ret_ty:ty)?;
-            )*}
-        }) => {
-            $(#[$extern_attr])*
-            extern $abi {$(
-                $(#[$fn_attr])*
-                $vis fn $name($($arg_pat: $arg_ty),*) $(-> $ret_ty)?;
-            )*}
-            // Static assertions for FFI bindings.
-            // This checks that FFI bindings defined in this crate and FFI bindings generated for
-            // the platform's latest header file using bindgen have the same signatures.
-            // Since this is static assertion, we can detect problems with
-            // `cargo check --tests --target <target>` run in CI (via TESTS=1 build.sh)
-            // without actually running tests on these platforms.
-            // See also https://github.com/taiki-e/test-helper/blob/HEAD/tools/codegen/src/ffi.rs.
-            #[cfg(test)]
-            const _: fn() = || {$(
-                $(#[$fn_attr])*
-                {
-                    let mut _f: unsafe extern $abi fn($($arg_ty),*) $(-> $ret_ty)? = $name;
-                    _f = test_helper::sys::$name;
-                }
-            )*};
-        };
-    }
-    /// Defines #[repr(C)] structs with #[cfg(test)] static assertions which checks
-    /// fields are the same as the platform's latest header files' ones.
-    // Note: This macro is sys_struct!({ }), not sys_struct! { }.
-    // An extra brace is used in input to make contents rustfmt-able:.
-    macro_rules! sys_struct {
-        ({$(
-            $(#[$struct_attr:meta])*
-            $struct_vis:vis struct $struct_name:ident {$(
-                $(#[$field_attr:meta])*
-                $field_vis:vis $field_name:ident: $field_ty:ty,
-            )*}
-        )*}) => {
-            $(
-                $(#[$struct_attr])*
-                #[derive(Copy, Clone)]
-                #[cfg_attr(test, derive(Debug, PartialEq))]
-                #[repr(C)]
-                $struct_vis struct $struct_name {$(
-                    $(#[$field_attr])*
-                    $field_vis $field_name: $field_ty,
-                )*}
-            )*
-            // Static assertions for FFI bindings.
-            // This checks that FFI bindings defined in this crate and FFI bindings generated for
-            // the platform's latest header file using bindgen have the same fields.
-            // Since this is static assertion, we can detect problems with
-            // `cargo check --tests --target <target>` run in CI (via TESTS=1 build.sh)
-            // without actually running tests on these platforms.
-            // See also https://github.com/taiki-e/test-helper/blob/HEAD/tools/codegen/src/ffi.rs.
-            #[cfg(test)]
-            #[allow(clippy::undocumented_unsafe_blocks)]
-            const _: fn() = || {$(
-                $(#[$struct_attr])*
-                {
-                    static_assert!(
-                        core::mem::size_of::<$struct_name>()
-                            == core::mem::size_of::<test_helper::sys::$struct_name>()
-                    );
-                    let s: $struct_name = unsafe { core::mem::zeroed() };
-                    // field names and types
-                    let _ = test_helper::sys::$struct_name {$(
-                        $(#[$field_attr])*
-                        $field_name: s.$field_name,
-                    )*};
-                    // field offsets
-                    #[cfg(not(portable_atomic_no_offset_of))]
-                    {$(
-                        $(#[$field_attr])*
-                        static_assert!(
-                            core::mem::offset_of!($struct_name, $field_name) ==
-                            core::mem::offset_of!(test_helper::sys::$struct_name, $field_name),
-                        );
-                    )*}
-                }
-            )*};
-        };
-    }
-
-    pub(crate) type c_void = core::ffi::c_void;
-    // c_{,u}int is {i,u}32 on non-16-bit architectures
-    // https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/ffi/mod.rs#L147
-    // (16-bit architectures currently don't use this module)
-    pub(crate) type c_int = i32;
-    pub(crate) type c_uint = u32;
-    // c_{,u}long is {i,u}64 on non-Windows 64-bit targets, otherwise is {i,u}32
-    // https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/ffi/mod.rs#L159
-    // (Windows currently doesn't use this module - this module is cfg(not(windows)))
-    #[cfg(target_pointer_width = "64")]
-    pub(crate) type c_long = i64;
-    #[cfg(target_pointer_width = "64")]
-    pub(crate) type c_ulong = u64;
-    #[cfg(not(target_pointer_width = "64"))]
-    pub(crate) type c_long = i32;
-    #[cfg(not(target_pointer_width = "64"))]
-    pub(crate) type c_ulong = u32;
-    // c_size_t is currently always usize
-    // https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/ffi/mod.rs#L67
-    pub(crate) type c_size_t = usize;
-    // c_char is u8 by default on most non-Apple/non-Windows Arm/PowerPC/RISC-V/s390x/Hexagon targets
-    // (Linux/Android/FreeBSD/NetBSD/OpenBSD/VxWorks/Fuchsia/QNX Neutrino/Horizon/AIX/z/OS)
-    // https://github.com/rust-lang/rust/blob/1.80.0/library/core/src/ffi/mod.rs#L83
-    // https://github.com/llvm/llvm-project/blob/llvmorg-19.1.0/lldb/source/Utility/ArchSpec.cpp#L712
-    // RISC-V https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/draft-20240829-13bfa9f54634cb60d86b9b333e109f077805b4b3/riscv-cc.adoc#cc-type-representations
-    // Hexagon https://lists.llvm.org/pipermail/llvm-dev/attachments/20190916/21516a52/attachment-0001.pdf
-    // AIX https://www.ibm.com/docs/en/xl-c-aix/13.1.3?topic=specifiers-character-types
-    // z/OS https://www.ibm.com/docs/en/zos/3.1.0?topic=specifiers-character-types
-    // (Windows currently doesn't use this module)
-    #[cfg(not(target_vendor = "apple"))]
-    pub(crate) type c_char = u8;
-    // c_char is i8 on all Apple targets
-    #[cfg(target_vendor = "apple")]
-    pub(crate) type c_char = i8;
-
-    // Static assertions for C type definitions.
-    #[cfg(test)]
-    const _: fn() = || {
-        use test_helper::sys;
-        let _: c_int = 0 as std::os::raw::c_int;
-        let _: c_uint = 0 as std::os::raw::c_uint;
-        let _: c_long = 0 as std::os::raw::c_long;
-        let _: c_ulong = 0 as std::os::raw::c_ulong;
-        let _: c_size_t = 0 as libc::size_t; // std::os::raw::c_size_t is unstable
-        #[cfg(not(any(
-            all(target_arch = "aarch64", target_os = "illumos"), // TODO: https://github.com/rust-lang/rust/issues/129945
-            all(target_arch = "riscv64", target_os = "android"), // TODO: https://github.com/rust-lang/rust/issues/129945
-        )))]
-        let _: c_char = 0 as std::os::raw::c_char;
-        let _: c_char = 0 as sys::c_char;
-    };
+    vmovdqa_atomic("vmovdqa-atomic", any(/* no corresponding target feature */)),
 }
 
 #[allow(
@@ -338,7 +210,7 @@ mod tests_common {
 
     #[test]
     fn test_bit_flags() {
-        let mut flags = vec![("init", CpuInfo::INIT)];
+        let mut flags = vec![("init", CpuInfoFlag::Init)];
         flags.extend(CpuInfo::ALL_FLAGS.iter().map(|&(name, flag, _)| (name, flag)));
         let flag_set = flags.iter().map(|(_, flag)| flag).collect::<BTreeSet<_>>();
         let name_set = flags.iter().map(|(_, flag)| flag).collect::<BTreeSet<_>>();
@@ -369,11 +241,7 @@ mod tests_common {
 
     #[test]
     fn print_features() {
-        use std::{
-            fmt::Write as _,
-            io::{self, Write},
-            string::String,
-        };
+        use std::{fmt::Write as _, string::String};
 
         let mut features = String::new();
         features.push_str("\nfeatures:\n");
@@ -389,106 +257,14 @@ mod tests_common {
                 );
             }
         }
-        let stdout = io::stderr();
-        let mut stdout = stdout.lock();
-        let _ = stdout.write_all(features.as_bytes());
+        test_helper::eprintln_nocapture!("{}", features);
     }
 
-    #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    #[test]
-    #[cfg_attr(portable_atomic_test_outline_atomics_detect_false, ignore)]
-    fn test_detect() {
-        let proc_cpuinfo = test_helper::cpuinfo::ProcCpuinfo::new();
-        if detect().has_lse() {
-            assert!(detect().test(CpuInfo::HAS_LSE));
-            if let Ok(proc_cpuinfo) = proc_cpuinfo {
-                assert!(proc_cpuinfo.lse);
-            }
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_LSE));
-            if let Ok(proc_cpuinfo) = proc_cpuinfo {
-                assert!(!proc_cpuinfo.lse);
-            }
-        }
-        if detect().has_lse2() {
-            assert!(detect().test(CpuInfo::HAS_LSE));
-            assert!(detect().test(CpuInfo::HAS_LSE2));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { lse2: Some(lse2), .. }) = proc_cpuinfo {
-                assert!(lse2);
-            }
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_LSE2));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { lse2: Some(lse2), .. }) = proc_cpuinfo {
-                assert!(!lse2);
-            }
-        }
-        if detect().has_lse128() {
-            assert!(detect().test(CpuInfo::HAS_LSE));
-            assert!(detect().test(CpuInfo::HAS_LSE2));
-            assert!(detect().test(CpuInfo::HAS_LSE128));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { lse128: Some(lse128), .. }) = proc_cpuinfo
-            {
-                assert!(lse128);
-            }
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_LSE128));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { lse128: Some(lse128), .. }) = proc_cpuinfo
-            {
-                assert!(!lse128);
-            }
-        }
-        if detect().has_rcpc3() {
-            assert!(detect().test(CpuInfo::HAS_RCPC3));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { rcpc3: Some(rcpc3), .. }) = proc_cpuinfo {
-                assert!(rcpc3);
-            }
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_RCPC3));
-            if let Ok(test_helper::cpuinfo::ProcCpuinfo { rcpc3: Some(rcpc3), .. }) = proc_cpuinfo {
-                assert!(!rcpc3);
-            }
-        }
-    }
-    #[cfg(target_arch = "powerpc64")]
-    #[test]
-    #[cfg_attr(portable_atomic_test_outline_atomics_detect_false, ignore)]
-    fn test_detect() {
-        let proc_cpuinfo = test_helper::cpuinfo::ProcCpuinfo::new();
-        if detect().has_quadword_atomics() {
-            assert!(detect().test(CpuInfo::HAS_QUADWORD_ATOMICS));
-            if let Ok(proc_cpuinfo) = proc_cpuinfo {
-                assert!(proc_cpuinfo.power8);
-            }
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_QUADWORD_ATOMICS));
-            if let Ok(proc_cpuinfo) = proc_cpuinfo {
-                assert!(!proc_cpuinfo.power8);
-            }
-        }
-    }
-    #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
-    #[test]
-    #[cfg_attr(portable_atomic_test_outline_atomics_detect_false, ignore)]
-    fn test_detect() {
-        if detect().has_zacas() {
-            assert!(detect().test(CpuInfo::HAS_ZACAS));
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_ZACAS));
-        }
-    }
-    #[cfg(target_arch = "x86_64")]
-    #[test]
-    #[cfg_attr(portable_atomic_test_outline_atomics_detect_false, ignore)]
-    fn test_detect() {
-        if detect().has_cmpxchg16b() {
-            assert!(detect().test(CpuInfo::HAS_CMPXCHG16B));
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_CMPXCHG16B));
-        }
-        if detect().has_vmovdqa_atomic() {
-            assert!(detect().test(CpuInfo::HAS_VMOVDQA_ATOMIC));
-        } else {
-            assert!(!detect().test(CpuInfo::HAS_VMOVDQA_ATOMIC));
-        }
-    }
+    // Static assertions for C type definitions.
+    // Assertions with core::ffi types are in crate::utils::ffi module.
+    #[cfg(not(any(windows, target_arch = "x86", target_arch = "x86_64")))]
+    const _: fn() = || {
+        use test_helper::sys;
+        let _: crate::utils::ffi::c_char = 0 as sys::c_char;
+    };
 }

@@ -1,4 +1,4 @@
-use owo_colors::{colors::xterm, OwoColorize};
+use owo_colors::{OwoColorize, colors::xterm};
 
 fn main() {
     println!("{}", "Electric violet".fg::<xterm::ElectricViolet>());

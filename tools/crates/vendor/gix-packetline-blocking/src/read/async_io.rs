@@ -81,10 +81,7 @@ where
                             return (
                                 true,
                                 None,
-                                Some(Err(io::Error::new(
-                                    io::ErrorKind::Other,
-                                    crate::read::Error { message: err },
-                                ))),
+                                Some(Err(io::Error::other(crate::read::Error { message: err }))),
                             );
                         }
                     }

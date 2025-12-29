@@ -89,10 +89,8 @@ pub(crate) enum InterruptDrawInfo {
     Deferred(bool),
 }
 
-#[cfg(not(any(feature = "render-tui-crossterm", feature = "render-tui-termion")))]
-compile_error!(
-    "Please set either the 'render-tui-crossterm' or 'render-tui-termion' feature whne using the 'render-tui'"
-);
+#[cfg(not(any(feature = "render-tui-crossterm")))]
+compile_error!("Please set the 'render-tui-crossterm' feature when using the 'render-tui'");
 
 use crosstermion::crossterm::event::{KeyCode, KeyEventKind, KeyModifiers};
 use crosstermion::{

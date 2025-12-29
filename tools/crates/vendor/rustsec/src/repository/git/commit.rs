@@ -42,22 +42,32 @@ pub struct Commit {
 impl Commit {
     /// Get information about HEAD
     pub(crate) fn from_repo_head(repo: &Repository) -> Result<Self, Error> {
-        let commit = repo
-            .repo
-            .head_commit()
-            .map_err(|err| format_err!(ErrorKind::Repo, "unable to locate head commit: {}", err))?;
+        let commit = repo.repo.head_commit().map_err(|err| {
+            Error::with_source(
+                ErrorKind::Repo,
+                "unable to locate head commit".to_owned(),
+                err,
+            )
+        })?;
 
         // Since we are pulling multiple pieces from the commit it's better to do this once
         let cref = commit.decode().map_err(|err| {
-            format_err!(
+            Error::with_source(
                 ErrorKind::Repo,
-                "unable to decode commit information: {}",
-                err
+                "unable to decode commit information".to_owned(),
+                err,
             )
         })?;
 
         let commit_id = commit.id;
-        let timestamp = crate::repository::git::gix_time_to_time(cref.committer.time);
+        let Some(time) = gix::date::parse_header(cref.committer.time) else {
+            return Err(Error::new(
+                ErrorKind::Repo,
+                format!("unable to parse commit time: {}", cref.committer.time),
+            ));
+        };
+
+        let timestamp = crate::repository::git::gix_time_to_time(time);
         let author = {
             let sig = cref.author();
             format!("{} <{}>", sig.name, sig.email)
@@ -66,10 +76,9 @@ impl Commit {
         let summary = cref.message_summary().to_string();
 
         if summary.is_empty() {
-            return Err(format_err!(
+            return Err(Error::new(
                 ErrorKind::Repo,
-                "no commit summary for {}",
-                commit_id
+                format!("no commit summary for {}", commit_id),
             ));
         }
         let commit_id = CommitHash::from_gix(commit_id);
@@ -121,15 +130,19 @@ impl Commit {
     /// Reset the repository's state to match this commit
     pub(crate) fn reset(&self, repo: &Repository) -> Result<(), Error> {
         let repo = &repo.repo;
-        let workdir = repo.work_dir().ok_or_else(|| {
-            format_err!(ErrorKind::Repo, "unable to checkout, repository is bare")
-        })?;
+        let workdir = repo
+            .workdir()
+            .ok_or_else(|| Error::new(ErrorKind::Repo, "unable to checkout, repository is bare"))?;
 
         let root_tree = repo
             .find_object(self.commit_id.to_gix())
-            .map_err(|err| format_err!(ErrorKind::Repo, "unable to locate commit: {}", err))?
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "unable to locate commit".to_owned(), err)
+            })?
             .peel_to_tree()
-            .map_err(|err| format_err!(ErrorKind::Repo, "unable to peel to tree: {}", err))?
+            .map_err(|err| {
+                Error::with_source(ErrorKind::Repo, "unable to peel to tree".to_owned(), err)
+            })?
             .id;
 
         let all_validations_for_max_safety =
@@ -137,11 +150,10 @@ impl Commit {
         let index =
             gix::index::State::from_tree(&root_tree, &repo.objects, all_validations_for_max_safety)
                 .map_err(|err| {
-                    format_err!(
+                    Error::with_source(
                         ErrorKind::Repo,
-                        "failed to create index from tree '{}': {}",
-                        root_tree,
-                        err
+                        format!("failed to create index from tree '{}'", root_tree),
+                        err,
                     )
                 })?;
 
@@ -162,11 +174,11 @@ impl Commit {
             &gix::interrupt::IS_INTERRUPTED,
             opts,
         )
-        .map_err(|err| format_err!(ErrorKind::Repo, "failed to checkout: {}", err))?;
+        .map_err(|err| Error::with_source(ErrorKind::Repo, "failed to checkout".to_owned(), err))?;
 
-        index
-            .write(Default::default())
-            .map_err(|err| format_err!(ErrorKind::Repo, "failed to write index: {}", err))?;
+        index.write(Default::default()).map_err(|err| {
+            Error::with_source(ErrorKind::Repo, "failed to write index".to_owned(), err)
+        })?;
 
         Ok(())
     }
