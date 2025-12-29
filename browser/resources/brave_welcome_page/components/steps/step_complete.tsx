@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
@@ -13,9 +12,6 @@ export function StepCompleteContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
-        <div className="brave-logo-container">
-          <Icon name='social-brave-release-favicon-fullheight-color'/>
-        </div>
         <div className="left-text-content">
           <h1>You're all set!</h1>
           <p>Brave is ready. Start browsing with privacy, speed, and rewards.</p>

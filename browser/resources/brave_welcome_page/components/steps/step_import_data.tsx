@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
@@ -13,9 +12,6 @@ export function StepImportDataContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
-        <div className="brave-logo-container">
-          <Icon name='social-brave-release-favicon-fullheight-color'/>
-        </div>
         <div className="left-text-content">
           <h1>Bring along your old browser content</h1>
           <p>Import everything from your old browser and make the transition seamless.</p>
@@ -23,7 +19,7 @@ export function StepImportDataContent({}: StepContentProps) {
         </div>
       </div>
       <div className="right-content">
-        {/* Right content for import step - browser selection, etc. */}
+        Hola paso 2
       </div>
     </div>
   )

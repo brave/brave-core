@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
@@ -13,16 +12,13 @@ export function StepDefaultBrowserContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
-        <div className="brave-logo-container">
-          <Icon name='social-brave-release-favicon-fullheight-color'/>
-        </div>
         <div className="left-text-content">
           <h1>Get ready for the best browsing experience</h1>
           <p>Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</p>
         </div>
       </div>
       <div className="right-content">
-        {/* Right content for step 1 */}
+        Hola paso 1
       </div>
     </div>
   )
