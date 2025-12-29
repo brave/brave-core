@@ -153,7 +153,8 @@ class BraveBrowserView : public BrowserView,
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // commands::AcceleratorService:
-  void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
+  void OnAcceleratorsChanged(
+      const commands::AcceleratorPrefManager::Accelerators& changed) override;
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
   void UpdateRoundedCornersUI();

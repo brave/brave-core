@@ -251,7 +251,7 @@ TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
 }
 
 TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
-  commands::Accelerators defaults = {
+  commands::AcceleratorPrefManager::Accelerators defaults = {
       {IDC_FOCUS_MENU_BAR, {commands::FromCodesString("Alt+KeyF")}},
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}};
 
@@ -404,7 +404,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(99999));
 
   // Test FilterCommandsByPolicy
-  commands::Accelerators test_accelerators = {
+  commands::AcceleratorPrefManager::Accelerators test_accelerators = {
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}},
       {IDC_CONFIGURE_BRAVE_NEWS, {commands::FromCodesString("Control+KeyN")}},
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
