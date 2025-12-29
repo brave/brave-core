@@ -18,7 +18,7 @@ export function StepDefaultBrowserContent({}: StepContentProps) {
         </div>
       </div>
       <div className="right-content">
-        Hola paso 1
+        Content from step 1
       </div>
     </div>
   )

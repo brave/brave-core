@@ -14,7 +14,7 @@ export function StepBraveSearchContent({}: StepContentProps) {
       <div className="left-content">
         <div className="left-text-content">
           <h1>Help Brave Search grow</h1>
-          <p>Use Brave Search as your default search engine. It's private, independent, and gets better the more people use it.</p>
+          <p>Opt into the Web Discovery Project to help grow the index and improve search results.</p>
         </div>
       </div>
       <div className="right-content">
@@ -33,7 +33,7 @@ export function StepBraveSearchFooter({ onNext, onBack, onSkip }: StepFooterProp
       <div className="footer-right">
         <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Set as default search
+          Sure, I'll help
         </Button>
       </div>
     </div>
