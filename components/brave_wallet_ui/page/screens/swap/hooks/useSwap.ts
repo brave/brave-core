@@ -865,7 +865,7 @@ export const useSwap = () => {
   )
 
   const onChangeRecipient = useCallback(
-    async (address: string) => {
+    async (address: string, account?: BraveWallet.AccountInfo) => {
       if (!fromToken || !fromAccount || !toToken) {
         return
       }
@@ -879,8 +879,20 @@ export const useSwap = () => {
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
+
+      // Refresh quote with the new recipient account
+      await handleQuoteRefreshInternal({
+        toAccountId: account?.accountId,
+      })
     },
-    [fromToken, toToken, fromAccount, history, isBridge],
+    [
+      fromToken,
+      toToken,
+      fromAccount,
+      history,
+      isBridge,
+      handleQuoteRefreshInternal,
+    ],
   )
 
   // Memos

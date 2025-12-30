@@ -97,7 +97,10 @@ interface Props {
   quoteOptions: QuoteOption[]
   selectedQuoteOptionId: string | undefined
   onSelectQuoteOption: (id: string) => void
-  onChangeRecipient: (address: string) => void
+  onChangeRecipient: (
+    address: string,
+    account?: BraveWallet.AccountInfo,
+  ) => void
   onChangeSlippageTolerance: (slippage: string) => void
   toAccount?: BraveWallet.AccountInfo
   swapFees?: BraveWallet.SwapFees
@@ -168,7 +171,7 @@ export const QuoteInfo = (props: Props) => {
   // Methods
   const handleSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
-      onChangeRecipient(account.accountId.address)
+      onChangeRecipient(account.accountId.address, account)
       setShowAccountSelector(false)
     },
     [onChangeRecipient],
