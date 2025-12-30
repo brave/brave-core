@@ -224,6 +224,21 @@ export const style = scoped.css`
     justify-content: center;
   }
 
+  /* Welcome page hero image */
+  .right-content.welcome-hero {
+    padding: 0;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   /* Browser Dropdown Styles */
   .browser-dropdown {
     display: flex;
@@ -1258,12 +1273,12 @@ export const style = scoped.css`
     position: relative;
     overflow: hidden;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    background: linear-gradient(
-      to bottom,
-      var(--swatch-light-top) 0%,
-      var(--swatch-light-top) 50%,
-      var(--swatch-light-bottom) 50%,
-      var(--swatch-light-bottom) 100%
+    background: conic-gradient(
+      from 0deg,
+      var(--swatch-color-1) 0deg 90deg,
+      var(--swatch-color-2) 90deg 180deg,
+      var(--swatch-color-3) 180deg 270deg,
+      var(--swatch-color-1) 270deg 360deg
     );
   }
 
@@ -1287,6 +1302,8 @@ export const style = scoped.css`
     transform: translate(-50%, -50%);
     --leo-icon-size: 28px;
     --leo-icon-color: ${color.primary[50]};
+    background: ${color.container.background};
+    border-radius:100%;
   }
 
   /* Segmented Control customization */
@@ -1356,6 +1373,10 @@ export const style = scoped.css`
       width: 100%;
       padding: ${spacing['2Xl']};
       overflow: hidden;
+    }
+
+    .right-content.welcome-hero {
+      padding: 0;
     }
 
     .mock-window-preview {

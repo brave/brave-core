@@ -192,26 +192,25 @@ type Theme = 'system' | 'light' | 'dark'
 
 interface ColorOption {
   id: string
-  lightTop: string
-  lightBottom: string
-  darkTop: string
-  darkBottom: string
+  color1: string  
+  color2: string  
+  color3: string  
 }
 
 const colorOptions: ColorOption[] = [
-  { id: 'default', lightTop: '#FFFFFF', lightBottom: '#E4E4E5', darkTop: '#39457A', darkBottom: '#39457A' },
-  { id: 'purple', lightTop: '#D7DBFF', lightBottom: '#BBC1FF', darkTop: '#414379', darkBottom: '#414379' },
-  { id: 'teal', lightTop: '#CDE3E5', lightBottom: '#AEC3C6', darkTop: '#465759', darkBottom: '#465759' },
-  { id: 'cyan', lightTop: '#B3E6EF', lightBottom: '#77D4E4', darkTop: '#005261', darkBottom: '#005261' },
-  { id: 'green', lightTop: '#C3E6CD', lightBottom: '#96D5A9', darkTop: '#165330', darkBottom: '#165330' },
-  { id: 'olive', lightTop: '#D5E2CE', lightBottom: '#B6C3B1', darkTop: '#4C574A', darkBottom: '#4C574A' },
-  { id: 'gold', lightTop: '#FAE29F', lightBottom: '#E2C384', darkTop: '#5E4507', darkBottom: '#5E4507' },
-  { id: 'orange', lightTop: '#F6D7CA', lightBottom: '#FFB597', darkTop: '#76381F', darkBottom: '#76381F' },
-  { id: 'tan', lightTop: '#FDD6C6', lightBottom: '#DBB8A9', darkTop: '#664F45', darkBottom: '#664F45' },
-  { id: 'pink', lightTop: '#F8D2EA', lightBottom: '#F2B1DB', darkTop: '#6C355B', darkBottom: '#6C355B' },
-  { id: 'dusty-rose', lightTop: '#FBD5DA', lightBottom: '#D9B6BB', darkTop: '#664D51', darkBottom: '#664D51' },
-  { id: 'hot-pink', lightTop: '#FFD1DF', lightBottom: '#FFB1C9', darkTop: '#75334B', darkBottom: '#75334B' },
-  { id: 'lavender', lightTop: '#E6D7FA', lightBottom: '#D5BBF6', darkTop: '#563D72', darkBottom: '#563D72' },
+  { id: 'default', color1: '#FFFFFF', color2: '#D7DBFF', color3: '#4C54D2' },
+  { id: 'purple', color1: '#D7DBFF', color2: '#BBC1FF', color3: '#8B8FD6' },
+  { id: 'teal', color1: '#CDE3E5', color2: '#AEC3C6', color3: '#5A7A7D' },
+  { id: 'cyan', color1: '#B3E6EF', color2: '#77D4E4', color3: '#007A8C' },
+  { id: 'green', color1: '#C3E6CD', color2: '#96D5A9', color3: '#2D7A4A' },
+  { id: 'olive', color1: '#D5E2CE', color2: '#B6C3B1', color3: '#6B7A66' },
+  { id: 'gold', color1: '#FAE29F', color2: '#E2C384', color3: '#8B6914' },
+  { id: 'orange', color1: '#F6D7CA', color2: '#FFB597', color3: '#A85232' },
+  { id: 'tan', color1: '#FDD6C6', color2: '#DBB8A9', color3: '#8B6E61' },
+  { id: 'pink', color1: '#F8D2EA', color2: '#F2B1DB', color3: '#9E4D84' },
+  { id: 'dusty-rose', color1: '#FBD5DA', color2: '#D9B6BB', color3: '#8B6A70' },
+  { id: 'hot-pink', color1: '#FFD1DF', color2: '#FFB1C9', color3: '#A84D6B' },
+  { id: 'lavender', color1: '#E6D7FA', color2: '#D5BBF6', color3: '#7D5A9E' },
 ]
 
 // Hook to detect system theme preference
@@ -328,8 +327,9 @@ export function StepMakeYoursContent({}: StepContentProps) {
                   onClick={() => setSelectedColor(colorOpt.id)}
                   aria-label={`Select ${colorOpt.id} color`}
                   style={{
-                    '--swatch-light-top': colorOpt.lightTop,
-                    '--swatch-light-bottom': colorOpt.lightBottom,
+                    '--swatch-color-1': colorOpt.color1,
+                    '--swatch-color-2': colorOpt.color2,
+                    '--swatch-color-3': colorOpt.color3,
                   } as React.CSSProperties}
                 >
                   {selectedColor === colorOpt.id && (

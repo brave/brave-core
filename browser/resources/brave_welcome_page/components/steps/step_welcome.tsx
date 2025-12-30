@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { StepContentProps, StepFooterProps } from '../types'
+import welcomeImage from '../img/welcome.png'
 
 export function StepWelcomeContent({}: StepContentProps) {
   return (
@@ -17,8 +18,8 @@ export function StepWelcomeContent({}: StepContentProps) {
           <p>Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</p>
         </div>
       </div>
-      <div className="right-content">
-        Content from step 1
+      <div className="right-content welcome-hero">
+        <img src={welcomeImage} alt="Welcome to Brave" className="hero-image" />
       </div>
     </div>
   )
