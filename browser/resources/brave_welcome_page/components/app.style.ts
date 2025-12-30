@@ -704,7 +704,7 @@ export const style = scoped.css`
     inset: 32px;
     display: flex;
     flex-direction: column;
-    background: white;
+    background: ${color.container.background};
     border-radius: ${radius.l};
     overflow: hidden;
     box-shadow: 0px 0px 0px 0.75px rgba(6, 6, 5, 0.2);
@@ -727,7 +727,7 @@ export const style = scoped.css`
     align-items: center;
     height: 40px;
     padding: 0 4px;
-    background: #e4e4e5;
+    background: ${color.neutral[10]};
   }
 
   .browser-tabs {
@@ -758,11 +758,11 @@ export const style = scoped.css`
     width: 32px;
     padding: 6px 8px;
     justify-content: center;
-    border: 1px solid #c9c9ca;
+    border: 1px solid ${color.divider.subtle};
   }
 
   .browser-tab.active {
-    background: #fafafb;
+    background: ${color.container.background};
   }
 
   .tab-title {
@@ -783,7 +783,7 @@ export const style = scoped.css`
   .tab-close {
     --leo-icon-size: 16px;
     flex-shrink: 0;
-    color: #464649;
+    color: ${color.icon.default};
   }
 
   .tab-divider {
@@ -793,7 +793,7 @@ export const style = scoped.css`
     transform: translateY(-50%);
     width: 1px;
     height: 24px;
-    background: #c9c9ca;
+    background: ${color.divider.subtle};
   }
 
   .browser-tab:not(.active):not(.pinned) {
@@ -814,7 +814,7 @@ export const style = scoped.css`
 
   .browser-tab-add leo-icon {
     --leo-icon-size: 20px;
-    --leo-icon-color: #464649;
+    --leo-icon-color: ${color.icon.default};
   }
 
   .browser-tab-dropdown {
@@ -830,7 +830,7 @@ export const style = scoped.css`
 
   .browser-tab-dropdown leo-icon {
     --leo-icon-size: 20px;
-    --leo-icon-color: #464649;
+    --leo-icon-color: ${color.icon.default};
   }
 
   /* Address Bar */
@@ -839,7 +839,7 @@ export const style = scoped.css`
     align-items: center;
     gap: 16px;
     padding: 6px 8px;
-    background: white;
+    background: ${color.container.background};
     border-top-left-radius: ${radius.m};
     border-top-right-radius: 10px;
   }
@@ -864,7 +864,7 @@ export const style = scoped.css`
 
   .toolbar-btn leo-icon {
     --leo-icon-size: 20px;
-    --leo-icon-color: #464649;
+    --leo-icon-color: ${color.icon.default};
   }
 
   .toolbar-btn.disabled {
@@ -882,13 +882,13 @@ export const style = scoped.css`
     align-items: center;
     gap: 8px;
     padding: 4px;
-    background: #f2f2f3;
+    background: ${color.container.highlight};
     border-radius: ${radius.m};
   }
 
   .addressbar-shield {
     --leo-icon-size: 20px;
-    --leo-icon-color: #464649;
+    --leo-icon-color: ${color.icon.default};
     padding: 4px;
   }
 
@@ -911,7 +911,7 @@ export const style = scoped.css`
     display: flex;
     align-items: center;
     padding: 4px;
-    border: 1px solid #f2f2f3;
+    border: 1px solid ${color.divider.subtle};
     border-radius: ${radius.m};
   }
 
@@ -925,7 +925,7 @@ export const style = scoped.css`
 
   .menu-btn leo-icon:last-child {
     --leo-icon-size: 18px;
-    --leo-icon-color: #464649;
+    --leo-icon-color: ${color.icon.default};
   }
 
   /* Browser Content */
@@ -937,7 +937,7 @@ export const style = scoped.css`
   .browser-content-bg {
     width: 100%;
     height: 100%;
-    background: #f2f2f3;
+    background: ${color.container.highlight};
     border-radius: ${radius.m};
     box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   }
@@ -963,7 +963,7 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     width: 244px;
-    background: white;
+    background: ${color.container.background};
     overflow: hidden;
   }
 
@@ -980,7 +980,7 @@ export const style = scoped.css`
     justify-content: center;
     flex: 1 0 calc(50% - 2px);
     height: 32px;
-    border: 1px solid #e4e4e5;
+    border: 1px solid ${color.divider.subtle};
     border-radius: ${radius.m};
   }
 
@@ -990,7 +990,7 @@ export const style = scoped.css`
 
   .sidebar-divider {
     height: 1px;
-    background: #f2f2f3;
+    background: ${color.divider.subtle};
     margin: 0;
   }
 
@@ -1019,7 +1019,7 @@ export const style = scoped.css`
   }
 
   .vertical-tab.active {
-    background: #f2f2f3;
+    background: ${color.container.highlight};
   }
 
   .vertical-tab-title {
@@ -1040,12 +1040,156 @@ export const style = scoped.css`
   .vertical-tab-close {
     --leo-icon-size: 16px;
     flex-shrink: 0;
-    color: #464649;
+    color: ${color.icon.default};
   }
 
   .browser-content.vertical {
     flex: 1;
     padding: 0 4px 4px 0;
+  }
+
+  /* Preview Theme Overrides - Light Mode */
+  .browser-chrome.preview-theme-light {
+    --preview-bg: #FFFFFF;
+    --preview-bg-highlight: #F0F2F5;
+    --preview-tabbar-bg: #E3E5E7;
+    --preview-text-primary: #1D1F25;
+    --preview-text-secondary: #6B6F7B;
+    --preview-icon-color: #6B6F7B;
+    --preview-divider: rgba(0, 0, 0, 0.08);
+  }
+
+  /* Preview Theme Overrides - Dark Mode */
+  .browser-chrome.preview-theme-dark {
+    --preview-bg: #1E2029;
+    --preview-bg-highlight: #2B2E3A;
+    --preview-tabbar-bg: #14151A;
+    --preview-text-primary: #F0F2F5;
+    --preview-text-secondary: #9A9DAA;
+    --preview-icon-color: #9A9DAA;
+    --preview-divider: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Apply theme colors to browser chrome elements */
+  .browser-chrome.preview-theme-light,
+  .browser-chrome.preview-theme-dark {
+    background: var(--preview-bg);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tabbar,
+  .browser-chrome.preview-theme-dark .browser-tabbar {
+    background: var(--preview-tabbar-bg);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tab.active,
+  .browser-chrome.preview-theme-dark .browser-tab.active {
+    background: var(--preview-bg);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tab.pinned,
+  .browser-chrome.preview-theme-dark .browser-tab.pinned {
+    border-color: var(--preview-divider);
+  }
+
+  .browser-chrome.preview-theme-light .tab-title,
+  .browser-chrome.preview-theme-dark .tab-title {
+    color: var(--preview-text-primary);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tab:not(.active) .tab-title,
+  .browser-chrome.preview-theme-dark .browser-tab:not(.active) .tab-title {
+    color: var(--preview-text-secondary);
+  }
+
+  .browser-chrome.preview-theme-light .tab-close,
+  .browser-chrome.preview-theme-dark .tab-close {
+    color: var(--preview-icon-color);
+  }
+
+  .browser-chrome.preview-theme-light .tab-divider,
+  .browser-chrome.preview-theme-dark .tab-divider {
+    background: var(--preview-divider);
+  }
+
+  .browser-chrome.preview-theme-light .browser-addressbar,
+  .browser-chrome.preview-theme-dark .browser-addressbar {
+    background: var(--preview-bg);
+  }
+
+  .browser-chrome.preview-theme-light .toolbar-btn leo-icon,
+  .browser-chrome.preview-theme-dark .toolbar-btn leo-icon {
+    --leo-icon-color: var(--preview-icon-color);
+  }
+
+  .browser-chrome.preview-theme-light .addressbar-field,
+  .browser-chrome.preview-theme-dark .addressbar-field {
+    background: var(--preview-bg-highlight);
+  }
+
+  .browser-chrome.preview-theme-light .addressbar-url,
+  .browser-chrome.preview-theme-dark .addressbar-url {
+    color: var(--preview-text-primary);
+  }
+
+  .browser-chrome.preview-theme-light .menu-btn,
+  .browser-chrome.preview-theme-dark .menu-btn {
+    border-color: var(--preview-divider);
+  }
+
+  .browser-chrome.preview-theme-light .menu-btn leo-icon:last-child,
+  .browser-chrome.preview-theme-dark .menu-btn leo-icon:last-child {
+    --leo-icon-color: var(--preview-icon-color);
+  }
+
+  .browser-chrome.preview-theme-light .browser-content-bg,
+  .browser-chrome.preview-theme-dark .browser-content-bg {
+    background: var(--preview-bg-highlight);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tab-add leo-icon,
+  .browser-chrome.preview-theme-dark .browser-tab-add leo-icon {
+    --leo-icon-color: var(--preview-icon-color);
+  }
+
+  .browser-chrome.preview-theme-light .browser-tab-dropdown leo-icon,
+  .browser-chrome.preview-theme-dark .browser-tab-dropdown leo-icon {
+    --leo-icon-color: var(--preview-icon-color);
+  }
+
+  /* Vertical layout theme overrides */
+  .browser-chrome.preview-theme-light .vertical-sidebar,
+  .browser-chrome.preview-theme-dark .vertical-sidebar {
+    background: var(--preview-bg);
+  }
+
+  .browser-chrome.preview-theme-light .pinned-tab,
+  .browser-chrome.preview-theme-dark .pinned-tab {
+    border-color: var(--preview-divider);
+  }
+
+  .browser-chrome.preview-theme-light .sidebar-divider,
+  .browser-chrome.preview-theme-dark .sidebar-divider {
+    background: var(--preview-divider);
+  }
+
+  .browser-chrome.preview-theme-light .vertical-tab.active,
+  .browser-chrome.preview-theme-dark .vertical-tab.active {
+    background: var(--preview-bg-highlight);
+  }
+
+  .browser-chrome.preview-theme-light .vertical-tab-title,
+  .browser-chrome.preview-theme-dark .vertical-tab-title {
+    color: var(--preview-text-primary);
+  }
+
+  .browser-chrome.preview-theme-light .vertical-tab:not(.active) .vertical-tab-title,
+  .browser-chrome.preview-theme-dark .vertical-tab:not(.active) .vertical-tab-title {
+    color: var(--preview-text-secondary);
+  }
+
+  .browser-chrome.preview-theme-light .vertical-tab-close,
+  .browser-chrome.preview-theme-dark .vertical-tab-close {
+    color: var(--preview-icon-color);
   }
 
   .customize-options {
