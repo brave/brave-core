@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { style } from './app.style'
+import { style } from './styles'
 import { StepDefinition } from './types'
 import {
   StepWelcomeContent, StepWelcomeFooter,
