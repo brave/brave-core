@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { StepContentProps, StepFooterProps } from '../types'
+import wdpImage from '../img/wdp.png'
 
 export function StepBraveSearchContent({}: StepContentProps) {
   return (
@@ -18,7 +19,7 @@ export function StepBraveSearchContent({}: StepContentProps) {
         </div>
       </div>
       <div className="right-content">
-      Content from step 4
+        <img src={wdpImage} alt="Help Brave Search grow" className="hero-image" />
       </div>
     </div>
   )
