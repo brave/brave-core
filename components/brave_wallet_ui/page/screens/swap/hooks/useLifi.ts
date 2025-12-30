@@ -74,6 +74,7 @@ export function useLifi({
           jupiterTransactionParams: undefined,
           zeroExTransactionParams: undefined,
           squidTransactionParams: undefined,
+          gate3TransactionParams: undefined,
         }
 
         transactionResponse = await generateSwapTransaction(

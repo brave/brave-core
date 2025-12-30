@@ -527,4 +527,113 @@ std::optional<std::string> EncodeTransactionParams(
 
 }  // namespace squid
 
+// namespace gate3 currently only supports Near Intents provider
+//
+// Docs: https://gate3.bsg.brave.com/docs (requires internal Brave VPN)
+namespace gate3 {
+
+namespace {
+
+std::optional<std::string> EncodeCoinType(mojom::CoinType coin) {
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      return "ETH";
+    case mojom::CoinType::SOL:
+      return "SOL";
+    case mojom::CoinType::BTC:
+      return "BTC";
+    case mojom::CoinType::FIL:
+      return "FIL";
+    case mojom::CoinType::ZEC:
+      return "ZEC";
+    case mojom::CoinType::ADA:
+      return "ADA";
+    case mojom::CoinType::DOT:
+      return "DOT";
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
+  switch (provider) {
+    case mojom::SwapProvider::kAuto:
+      return "AUTO";
+    case mojom::SwapProvider::kLiFi:
+      return "LIFI";
+    case mojom::SwapProvider::kZeroEx:
+      return "ZERO_EX";
+    case mojom::SwapProvider::kJupiter:
+      return "JUPITER";
+    case mojom::SwapProvider::kSquid:
+      return "SQUID";
+    case mojom::SwapProvider::kNearIntents:
+      return "NEAR_INTENTS";
+
+    default:
+      return std::nullopt;
+  }
+}
+
+std::optional<std::string> EncodeRoutePriority(
+    mojom::RoutePriority route_priority) {
+  switch (route_priority) {
+    case mojom::RoutePriority::kFastest:
+      return "FASTEST";
+    case mojom::RoutePriority::kCheapest:
+      return "CHEAPEST";
+    default:
+      return std::nullopt;
+  }
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
+  base::Value::Dict result;
+
+  // Source coin type from account
+  auto source_coin = EncodeCoinType(params->from_account_id->coin);
+  if (!source_coin) {
+    return std::nullopt;
+  }
+
+  // Destination coin type from account
+  auto destination_coin = EncodeCoinType(params->to_account_id->coin);
+  if (!destination_coin) {
+    return std::nullopt;
+  }
+
+  // Source
+  result.Set("sourceCoin", *source_coin);
+  result.Set("sourceChainId", params->from_chain_id);
+  result.Set("sourceTokenAddress", params->from_token);
+  result.Set("refundTo", params->from_account_id->address);
+
+  // Destination
+  result.Set("destinationCoin", *destination_coin);
+  result.Set("destinationChainId", params->to_chain_id);
+  result.Set("destinationTokenAddress", params->to_token);
+  result.Set("recipient", params->to_account_id->address);
+
+  result.Set("swapType", "EXACT_INPUT");
+  // amount refers to source or destination based on swapType.
+  result.Set("amount", params->from_amount);
+  result.Set("slippagePercentage", params->slippage_percentage);
+
+  auto provider = EncodeProvider(params->provider);
+  if (!provider) {
+    return std::nullopt;
+  }
+  result.Set("provider", *provider);
+
+  auto route_priority = EncodeRoutePriority(params->route_priority);
+  if (!route_priority) {
+    return std::nullopt;
+  }
+  result.Set("routePriority", *route_priority);
+
+  return GetJSON(base::Value(std::move(result)));
+}
+}  // namespace gate3
+
 }  // namespace brave_wallet

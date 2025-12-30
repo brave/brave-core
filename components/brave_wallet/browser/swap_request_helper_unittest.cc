@@ -6,7 +6,9 @@
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
@@ -1667,6 +1669,226 @@ TEST(SwapRequestHelperUnitTest, EncodeSquidTransactionParams) {
     }
   )");
   EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsErc20ToSpl) {
+  // Test ERC20 (USDC on Ethereum) to SPL (USDC on Solana) cross-chain swap
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kMainnetChainId;
+  params->from_token =
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";  // USDC on Ethereum
+  params->from_amount = "1000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived,
+                    "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->to_chain_id = mojom::kSolanaMainnet;
+  params->to_token =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC on Solana
+  params->slippage_percentage = "0.5";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "sourceCoin": "ETH",
+      "sourceChainId": "0x1",
+      "sourceTokenAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "refundTo": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "destinationCoin": "SOL",
+      "destinationChainId": "0x65",
+      "destinationTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "recipient": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+      "swapType": "EXACT_INPUT",
+      "amount": "1000000",
+      "slippagePercentage": "0.5",
+      "provider": "NEAR_INTENTS"
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsNativeSolToNativeBtc) {
+  // Test native SOL to native BTC cross-chain swap
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived,
+                    "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->from_chain_id = mojom::kSolanaMainnet;
+  params->from_token = "";             // Native SOL
+  params->from_amount = "1000000000";  // 1 SOL
+  // BTC uses index-based account IDs, create directly
+  params->to_account_id = mojom::AccountId::New(
+      mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+      mojom::AccountKind::kDerived,
+      "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq", 0, "btc_account_key");
+  params->to_chain_id = mojom::kBitcoinMainnet;
+  params->to_token = "";  // Native BTC
+  params->slippage_percentage = "1.0";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "sourceCoin": "SOL",
+      "sourceChainId": "0x65",
+      "sourceTokenAddress": "",
+      "refundTo": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+      "destinationCoin": "BTC",
+      "destinationChainId": "bitcoin_mainnet",
+      "destinationTokenAddress": "",
+      "recipient": "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+      "swapType": "EXACT_INPUT",
+      "amount": "1000000000",
+      "slippagePercentage": "1.0",
+      "provider": "NEAR_INTENTS"
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsNativeBtcToNativeEth) {
+  // Test native BTC to native ETH cross-chain swap
+  auto params = mojom::SwapQuoteParams::New();
+  // BTC uses index-based account IDs, create directly
+  params->from_account_id = mojom::AccountId::New(
+      mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+      mojom::AccountKind::kDerived,
+      "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq", 0, "btc_account_key");
+  params->from_chain_id = mojom::kBitcoinMainnet;
+  params->from_token = "";  // Native BTC
+  params->from_amount = "100000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kMainnetChainId;
+  params->to_token = "";  // Native ETH
+  params->slippage_percentage = "0.5";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "sourceCoin": "BTC",
+      "sourceChainId": "bitcoin_mainnet",
+      "sourceTokenAddress": "",
+      "refundTo": "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+      "destinationCoin": "ETH",
+      "destinationChainId": "0x1",
+      "destinationTokenAddress": "",
+      "recipient": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "swapType": "EXACT_INPUT",
+      "amount": "100000",
+      "slippagePercentage": "0.5",
+      "provider": "NEAR_INTENTS"
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsErc20ToErc20) {
+  // Test ERC20 (USDC) to ERC20 (USDT) same-chain swap on Ethereum
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kMainnetChainId;
+  params->from_token =
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";  // USDC on Ethereum
+  params->from_amount = "1000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kMainnetChainId;
+  params->to_token =
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7";  // USDT on Ethereum
+  params->slippage_percentage = "0.5";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "sourceCoin": "ETH",
+      "sourceChainId": "0x1",
+      "sourceTokenAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "refundTo": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "destinationCoin": "ETH",
+      "destinationChainId": "0x1",
+      "destinationTokenAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "recipient": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "swapType": "EXACT_INPUT",
+      "amount": "1000000",
+      "slippagePercentage": "0.5",
+      "provider": "NEAR_INTENTS"
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAllCoinTypes) {
+  // Test that all supported coin types are correctly encoded
+  struct CoinTypeTestCase {
+    mojom::CoinType coin;
+    mojom::KeyringId keyring;
+    std::string expected_coin_string;
+  };
+
+  std::vector<CoinTypeTestCase> test_cases = {
+      {mojom::CoinType::ETH, mojom::KeyringId::kDefault, "ETH"},
+      {mojom::CoinType::SOL, mojom::KeyringId::kSolana, "SOL"},
+      {mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84, "BTC"},
+      {mojom::CoinType::FIL, mojom::KeyringId::kFilecoin, "FIL"},
+      {mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet, "ZEC"},
+  };
+
+  for (const auto& test_case : test_cases) {
+    auto params = mojom::SwapQuoteParams::New();
+    params->from_account_id = mojom::AccountId::New(
+        test_case.coin, test_case.keyring, mojom::AccountKind::kDerived,
+        "test_address", 0, "test_unique_key");
+    params->to_account_id = mojom::AccountId::New(
+        test_case.coin, test_case.keyring, mojom::AccountKind::kDerived,
+        "test_address", 0, "test_unique_key");
+    params->from_chain_id = "test_chain";
+    params->from_token = "test_token";
+    params->from_amount = "1000000";
+    params->to_chain_id = "test_chain";
+    params->to_token = "test_token";
+    params->slippage_percentage = "0.5";
+    params->route_priority = mojom::RoutePriority::kCheapest;
+    params->provider = mojom::SwapProvider::kNearIntents;
+
+    auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+    ASSERT_NE(encoded_params, std::nullopt)
+        << "Failed for coin type: " << test_case.expected_coin_string;
+
+    auto parsed = ParseJson(*encoded_params);
+    ASSERT_TRUE(parsed.is_dict());
+
+    auto* source_coin = parsed.GetDict().FindString("sourceCoin");
+    ASSERT_NE(source_coin, nullptr);
+    EXPECT_EQ(*source_coin, test_case.expected_coin_string);
+
+    auto* dest_coin = parsed.GetDict().FindString("destinationCoin");
+    ASSERT_NE(dest_coin, nullptr);
+    EXPECT_EQ(*dest_coin, test_case.expected_coin_string);
+  }
 }
 
 }  // namespace brave_wallet

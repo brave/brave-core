@@ -375,4 +375,119 @@ namespace swap_responses {
     DOMString statusCode;
     DOMString type;
   };
+
+  // Gate3 swap response types
+
+  enum Gate3Provider {
+    AUTO,
+    NEAR_INTENTS,
+    ZERO_EX,
+    JUPITER,
+    LIFI
+  };
+
+  dictionary Gate3ChainSpec {
+    DOMString coin;
+    DOMString chainId;
+  };
+
+  dictionary Gate3EvmTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString from;
+    DOMString to;
+    DOMString value;
+    DOMString data;
+  };
+
+  dictionary Gate3SolanaTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString from;
+    DOMString to;
+    DOMString value;
+
+    any splTokenMint;
+    any splTokenAmount;
+    any decimals;
+  };
+
+  dictionary Gate3BitcoinTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString to;
+    DOMString value;
+    DOMString refundTo;
+  };
+
+  dictionary Gate3SwapTool {
+    DOMString name;
+    any logo;
+  };
+
+  dictionary Gate3SwapStepToken {
+    DOMString coin;
+    DOMString chainId;
+    any contractAddress;
+    DOMString symbol;
+    DOMString decimals;
+    any logo;
+  };
+
+  dictionary Gate3SwapRouteStep {
+    Gate3SwapStepToken sourceToken;
+    DOMString sourceAmount;
+
+    Gate3SwapStepToken destinationToken;
+    DOMString destinationAmount;
+
+    Gate3SwapTool tool;
+  };
+
+  dictionary Gate3SwapRoute {
+    DOMString id;
+    Gate3Provider provider;
+
+    Gate3SwapRouteStep[] steps;
+
+    DOMString sourceAmount;
+    DOMString destinationAmount;
+    DOMString destinationAmountMin;
+
+    any estimatedTime;
+    any priceImpact;
+
+    any depositAddress;
+    any depositMemo;
+    any expiresAt;
+
+    // Nullable union field of the following structs:
+    //  - Gate3EvmTransactionParams
+    //  - Gate3SolanaTransactionParams
+    //  - Gate3BitcoinTransactionParams
+    //
+    // Schema:
+    //  {
+    //    evm: Gate3EvmTransactionParams  or null
+    //    solana: Gate3SolanaTransactionParams or null
+    //    bitcoin: Gate3BitcoinTransactionParams or null
+    //  }
+    any transactionParams;
+
+    // Provider-specific requirements
+    boolean hasPostSubmitHook;
+    boolean requiresTokenAllowance;
+    boolean requiresFirmRoute;
+  };
+
+  dictionary Gate3Quote {
+    Gate3SwapRoute[] routes;
+  };
+
+  enum Gate3ErrorKind {
+    INSUFFICIENT_LIQUIDITY,
+    UNKNOWN
+  };
+
+  dictionary Gate3Error {
+    DOMString message;
+    Gate3ErrorKind kind;
+  };
 };

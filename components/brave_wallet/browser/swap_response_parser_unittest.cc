@@ -2755,4 +2755,443 @@ TEST(SwapResponseParserUnitTest, ParseSquidTransactionResponse) {
   ASSERT_TRUE(response);
 }
 
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
+  // Indicative quote response from Gate3 API
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_da99b36c884a",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714449",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://static1.tokenterminal.com/near/products/nearintents/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714449",
+          "destinationAmountMin": "710876",
+          "estimatedTime": "42",
+          "priceImpact": "-28.561424569827942",
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "transactionParams": null,
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_da99b36c884a");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kNearIntents);
+  EXPECT_EQ(route->source_amount, "1000000");
+  EXPECT_EQ(route->destination_amount, "714449");
+  EXPECT_EQ(route->destination_amount_min, "710876");
+  ASSERT_TRUE(route->estimated_time.has_value());
+  EXPECT_EQ(*route->estimated_time, "42");
+  ASSERT_TRUE(route->price_impact.has_value());
+  EXPECT_EQ(*route->price_impact, "-28.561424569827942");
+  EXPECT_FALSE(route->deposit_address.has_value());
+  EXPECT_FALSE(route->deposit_memo.has_value());
+  EXPECT_FALSE(route->expires_at.has_value());
+  EXPECT_TRUE(route->has_post_submit_hook);
+  EXPECT_FALSE(route->requires_token_allowance);
+  EXPECT_TRUE(route->requires_firm_route);
+  EXPECT_FALSE(route->transaction_params);
+
+  // Verify steps
+  ASSERT_EQ(route->steps.size(), 1u);
+  const auto& step = route->steps[0];
+  EXPECT_EQ(step->source_amount, "1000000");
+  EXPECT_EQ(step->destination_amount, "714449");
+
+  // Verify source token
+  EXPECT_EQ(step->source_token->coin, "ETH");
+  EXPECT_EQ(step->source_token->chain_id, "0x1");
+  EXPECT_EQ(step->source_token->contract_address,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(step->source_token->symbol, "USDC");
+  EXPECT_EQ(step->source_token->decimals, "6");
+  EXPECT_EQ(step->source_token->logo, "");
+
+  // Verify destination token
+  EXPECT_EQ(step->destination_token->coin, "SOL");
+  EXPECT_EQ(step->destination_token->chain_id, "0x65");
+  EXPECT_EQ(step->destination_token->contract_address,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(step->destination_token->symbol, "USDC");
+  EXPECT_EQ(step->destination_token->decimals, "6");
+  EXPECT_EQ(step->destination_token->logo, "");
+
+  // Verify tool
+  EXPECT_EQ(step->tool->name, "NEAR Intents");
+  EXPECT_EQ(
+      step->tool->logo,
+      "https://static1.tokenterminal.com/near/products/nearintents/logo.png");
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
+  // Firm quote response with EVM transaction params
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_e6df68df401c",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714488",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://static1.tokenterminal.com/near/products/nearintents/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714488",
+          "destinationAmountMin": "710915",
+          "estimatedTime": "42",
+          "priceImpact": "-28.551420568227304",
+          "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
+          "depositMemo": null,
+          "expiresAt": "2025-12-30T11:26:07.371000Z",
+          "transactionParams": {
+            "evm": {
+              "chain": {
+                "coin": "ETH",
+                "chainId": "0x1"
+              },
+              "from": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+              "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+              "value": "0",
+              "data": "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54ef95e96700000000000000000000000000000000000000000000000000000000000f4240"
+            },
+            "solana": null,
+            "bitcoin": null
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_e6df68df401c");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kNearIntents);
+  EXPECT_EQ(route->source_amount, "1000000");
+  EXPECT_EQ(route->destination_amount, "714488");
+  EXPECT_EQ(route->destination_amount_min, "710915");
+  ASSERT_TRUE(route->deposit_address.has_value());
+  EXPECT_EQ(*route->deposit_address,
+            "0x16a0FdeB69D821753440dFA092316F54eF95E967");
+  ASSERT_TRUE(route->expires_at.has_value());
+  EXPECT_EQ(*route->expires_at, "2025-12-30T11:26:07.371000Z");
+
+  // Verify EVM transaction params
+  ASSERT_TRUE(route->transaction_params);
+  ASSERT_TRUE(route->transaction_params->is_evm_transaction_params());
+
+  const auto& evm_params =
+      route->transaction_params->get_evm_transaction_params();
+  EXPECT_EQ(evm_params->chain->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(evm_params->chain->chain_id, "0x1");
+  EXPECT_EQ(evm_params->from, "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045");
+  EXPECT_EQ(evm_params->to, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(evm_params->value, "0");
+  EXPECT_EQ(evm_params->data,
+            "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54"
+            "ef95e967"
+            "00000000000000000000000000000000000000000000000000000000000f4240");
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
+  // Firm quote response with Solana transaction params
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_sol_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "990000",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "990000",
+          "destinationAmountMin": "980000",
+          "estimatedTime": "60",
+          "priceImpact": "-1.5",
+          "depositAddress": "DepositAddress123",
+          "depositMemo": null,
+          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "transactionParams": {
+            "evm": null,
+            "solana": {
+              "chain": {
+                "coin": "SOL",
+                "chainId": "0x65"
+              },
+              "from": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+              "to": "DepositAddress123",
+              "value": "0",
+              "splTokenMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "splTokenAmount": "1000000",
+              "decimals": "6"
+            },
+            "bitcoin": null
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_sol_test");
+
+  // Verify Solana transaction params
+  ASSERT_TRUE(route->transaction_params);
+  ASSERT_TRUE(route->transaction_params->is_solana_transaction_params());
+
+  const auto& sol_params =
+      route->transaction_params->get_solana_transaction_params();
+  EXPECT_EQ(sol_params->chain->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(sol_params->chain->chain_id, "0x65");
+  EXPECT_EQ(sol_params->from, "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  EXPECT_EQ(sol_params->to, "DepositAddress123");
+  EXPECT_EQ(sol_params->value, "0");
+  ASSERT_TRUE(sol_params->spl_token_mint.has_value());
+  EXPECT_EQ(*sol_params->spl_token_mint,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  ASSERT_TRUE(sol_params->spl_token_amount.has_value());
+  EXPECT_EQ(*sol_params->spl_token_amount, "1000000");
+  ASSERT_TRUE(sol_params->decimals.has_value());
+  EXPECT_EQ(*sol_params->decimals, "6");
+}
+
+TEST(SwapResponseParserUnitTest,
+     ParseGate3QuoteResponseWithBitcoinTransaction) {
+  // Firm quote response with Bitcoin transaction params
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_btc_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "BTC",
+                "chainId": "bitcoin_mainnet",
+                "contractAddress": null,
+                "symbol": "BTC",
+                "decimals": "8",
+                "logo": null
+              },
+              "sourceAmount": "100000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                "symbol": "ETH",
+                "decimals": "18",
+                "logo": null
+              },
+              "destinationAmount": "50000000000000000",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "100000",
+          "destinationAmount": "50000000000000000",
+          "destinationAmountMin": "49500000000000000",
+          "estimatedTime": "600",
+          "priceImpact": "-0.5",
+          "depositAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "depositMemo": null,
+          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "transactionParams": {
+            "evm": null,
+            "solana": null,
+            "bitcoin": {
+              "chain": {
+                "coin": "BTC",
+                "chainId": "bitcoin_mainnet"
+              },
+              "to": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+              "value": "100000",
+              "refundTo": "bc1sender123456789"
+            }
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_btc_test");
+
+  // Verify Bitcoin transaction params
+  ASSERT_TRUE(route->transaction_params);
+  ASSERT_TRUE(route->transaction_params->is_bitcoin_transaction_params());
+
+  const auto& btc_params =
+      route->transaction_params->get_bitcoin_transaction_params();
+  EXPECT_EQ(btc_params->chain->coin, mojom::CoinType::BTC);
+  EXPECT_EQ(btc_params->chain->chain_id, "bitcoin_mainnet");
+  EXPECT_EQ(btc_params->to, "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh");
+  EXPECT_EQ(btc_params->value, "100000");
+  EXPECT_EQ(btc_params->refund_to, "bc1sender123456789");
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3ErrorResponse) {
+  std::string json(R"(
+    {
+      "message": "Provider NEAR_INTENTS does not support this swap",
+      "kind": "UNKNOWN"
+    }
+  )");
+
+  auto error = gate3::ParseErrorResponse(ParseJson(json));
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->message, "Provider NEAR_INTENTS does not support this swap");
+  EXPECT_EQ(error->kind, mojom::Gate3SwapErrorKind::kUnknown);
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3ErrorResponseInsufficientLiquidity) {
+  std::string json(R"(
+    {
+      "message": "No liquidity available for this swap",
+      "kind": "INSUFFICIENT_LIQUIDITY"
+    }
+  )");
+
+  auto error = gate3::ParseErrorResponse(ParseJson(json));
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->message, "No liquidity available for this swap");
+  EXPECT_EQ(error->kind, mojom::Gate3SwapErrorKind::kInsufficientLiquidity);
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseInvalidJson) {
+  // Empty routes
+  std::string json_empty_routes(R"({"routes": []})");
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json_empty_routes));
+  EXPECT_FALSE(quote);
+
+  // Missing routes field
+  std::string json_no_routes(R"({})");
+  quote = gate3::ParseQuoteResponse(ParseJson(json_no_routes));
+  EXPECT_FALSE(quote);
+
+  // Invalid provider
+  std::string json_invalid_provider(R"(
+    {
+      "routes": [
+        {
+          "id": "test",
+          "provider": "INVALID_PROVIDER",
+          "steps": [],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714449",
+          "destinationAmountMin": "710876",
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+  quote = gate3::ParseQuoteResponse(ParseJson(json_invalid_provider));
+  EXPECT_FALSE(quote);
+}
+
 }  // namespace brave_wallet

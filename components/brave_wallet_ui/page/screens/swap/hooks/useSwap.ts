@@ -15,6 +15,7 @@ import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useLifi } from './useLifi'
 import { useSquid } from './useSquid'
+import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
   useScopedBalanceUpdater, //
@@ -57,6 +58,9 @@ import {
   getSquidFromAmount,
   getSquidToAmount,
   getSquidQuoteOptions,
+  getGate3FromAmount,
+  getGate3ToAmount,
+  getGate3QuoteOptions,
 } from '../swap.utils'
 import {
   makeSwapOrBridgeRoute, //
@@ -327,6 +331,17 @@ export const useSwap = () => {
       })
     }
 
+    if (quoteUnion.gate3Quote) {
+      return getGate3QuoteOptions({
+        quote: quoteUnion.gate3Quote,
+        fromToken,
+        toToken,
+        fromNetwork,
+        spotPrices,
+        defaultFiatCurrency,
+      })
+    }
+
     return []
   }, [
     fromNetwork,
@@ -369,6 +384,7 @@ export const useSwap = () => {
   const zeroEx = useZeroEx(swapProviderHookParams)
   const lifi = useLifi(swapProviderHookParams)
   const squid = useSquid(swapProviderHookParams)
+  const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
 
@@ -624,6 +640,52 @@ export const useSwap = () => {
             spenderAddress: quoteResponse.response.squidQuote.allowanceTarget,
             token: params.fromToken,
           })
+        }
+
+        if (quoteResponse.response.gate3Quote) {
+          const { routes } = quoteResponse.response.gate3Quote
+
+          // If overrides.selectedQuoteOptionId is undefined, we will use the
+          // first route as the default option.
+          const route = overrides.selectedQuoteOptionId
+            ? routes.find(
+                (route) => route.id === overrides.selectedQuoteOptionId,
+              ) || routes[0]
+            : routes[0]
+
+          if (!route) {
+            return
+          }
+
+          if (params.editingFromOrToAmount === 'from') {
+            setToAmount(
+              getGate3ToAmount({
+                route,
+                toToken: params.toToken,
+              }).format(6),
+            )
+          } else {
+            setFromAmount(
+              getGate3FromAmount({
+                route,
+                fromToken: params.fromToken,
+              }).format(6),
+            )
+          }
+
+          // Check allowance for EVM tokens that require it
+          if (
+            route.requiresTokenAllowance
+            && params.fromToken.coin === BraveWallet.CoinType.ETH
+            && route.depositAddress
+          ) {
+            await checkAllowance({
+              account: fromAccount,
+              spendAmount: fromAssetBalance.format(),
+              spenderAddress: route.depositAddress,
+              token: params.fromToken,
+            })
+          }
         }
       }
 
@@ -942,7 +1004,11 @@ export const useSwap = () => {
     }
 
     if (isBridge && hasSolInFillPath) {
-      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kLiFi]
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kNearIntents,
+      ]
     }
 
     if (isBridge && hasEthInFillPath) {
@@ -950,6 +1016,7 @@ export const useSwap = () => {
         BraveWallet.SwapProvider.kAuto,
         BraveWallet.SwapProvider.kLiFi,
         BraveWallet.SwapProvider.kSquid,
+        BraveWallet.SwapProvider.kNearIntents,
       ]
     }
 
@@ -1038,6 +1105,22 @@ export const useSwap = () => {
         return 'unknownError'
       }
 
+      // Gate3 specific validations
+      if (quoteErrorUnion?.gate3Error) {
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
+        ) {
+          return 'insufficientLiquidity'
+        }
+
+        return 'unknownError'
+      }
+
+      if (quoteUnion?.gate3Quote?.routes.length === 0) {
+        return 'insufficientLiquidity'
+      }
+
       const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
         fromToken.decimals,
       )
@@ -1068,6 +1151,24 @@ export const useSwap = () => {
         return 'insufficientAllowance'
       }
 
+      // Gate3 EVM allowance check
+      if (quoteUnion?.gate3Quote) {
+        const route = selectedQuoteOptionId
+          ? quoteUnion.gate3Quote.routes.find(
+              (r) => r.id === selectedQuoteOptionId,
+            ) || quoteUnion.gate3Quote.routes[0]
+          : quoteUnion.gate3Quote.routes[0]
+
+        if (
+          route?.requiresTokenAllowance
+          && fromToken.coin === BraveWallet.CoinType.ETH
+          && fromToken.contractAddress
+          && !hasAllowance
+        ) {
+          return 'insufficientAllowance'
+        }
+      }
+
       return undefined
     }, [
       fromAmount,
@@ -1081,11 +1182,13 @@ export const useSwap = () => {
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
       quoteUnion?.squidQuote,
+      quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
       backendError,
       selectedProvider,
       availableProvidersForSwap,
+      selectedQuoteOptionId,
     ])
 
   const onSubmit = useCallback(async () => {
@@ -1192,6 +1295,46 @@ export const useSwap = () => {
       }
     }
 
+    if (quoteUnion.gate3Quote) {
+      const route = selectedQuoteOptionId
+        ? quoteUnion.gate3Quote.routes.find(
+            (route) => route.id === selectedQuoteOptionId,
+          ) || quoteUnion.gate3Quote.routes[0]
+        : quoteUnion.gate3Quote.routes[0]
+
+      if (!route) {
+        setIsSubmittingSwap(false)
+        return
+      }
+
+      // Check if we need to approve allowance first
+      if (
+        route.requiresTokenAllowance
+        && fromToken.coin === BraveWallet.CoinType.ETH
+        && !hasAllowance
+      ) {
+        if (route.depositAddress) {
+          await approveSpendAllowance({
+            account: fromAccount,
+            network: fromNetwork,
+            spenderAddress: route.depositAddress,
+            token: fromToken,
+            spendAmount: fromAssetBalance.format(),
+          })
+        }
+      } else {
+        const error = await gate3.exchange(route)
+        if (error) {
+          console.log('gate3.exchange error', error.gate3Error)
+          setQuoteErrorUnion(error)
+        } else {
+          setFromAmount('')
+          setToAmount('')
+          reset()
+        }
+      }
+    }
+
     setIsSubmittingSwap(false)
   }, [
     selectedQuoteOptionId,
@@ -1207,6 +1350,7 @@ export const useSwap = () => {
     lifi,
     jupiter,
     squid,
+    gate3,
   ])
 
   const onChangeSwapProvider = useCallback(

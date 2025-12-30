@@ -32,6 +32,10 @@ std::optional<std::string> EncodeTransactionParams(
     mojom::SwapQuoteParamsPtr params);
 }  // namespace squid
 
+namespace gate3 {
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
+}  // namespace gate3
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_REQUEST_HELPER_H_

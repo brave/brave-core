@@ -51,6 +51,13 @@ mojom::SquidTransactionUnionPtr ParseTransactionResponse(
 
 }  // namespace squid
 
+namespace gate3 {
+
+mojom::Gate3SwapQuotePtr ParseQuoteResponse(const base::Value& json_value);
+mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value);
+
+}  // namespace gate3
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_
