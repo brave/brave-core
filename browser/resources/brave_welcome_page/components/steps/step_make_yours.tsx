@@ -12,6 +12,173 @@ import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 import { StepContentProps, StepFooterProps } from '../types'
 import wallpaperImage from '../img/bg-light.jpg'
 
+function MockBrowserWindowHorizontal() {
+  return (
+    <div className="browser-chrome">
+      {/* Tab Bar */}
+      <div className="browser-tabbar">
+        <div className="browser-tabs">
+          {/* Pinned GitHub tab */}
+          <div className="browser-tab pinned">
+            <Icon name="social-github" />
+          </div>
+          {/* Active tab */}
+          <div className="browser-tab active">
+            <Icon name="social-brave-release-favicon-fullheight-color" />
+            <span className="tab-title">Welcome to Brave</span>
+            <Icon name="close" className="tab-close" />
+          </div>
+          {/* Inactive tab */}
+          <div className="browser-tab">
+            <Icon name="brave-icon-search-color" />
+            <span className="tab-title">Brave Search</span>
+            <div className="tab-divider" />
+          </div>
+          {/* Add tab button */}
+          <div className="browser-tab-add">
+            <Icon name="plus-add" />
+          </div>
+        </div>
+        {/* Dropdown button */}
+        <div className="browser-tab-dropdown">
+          <Icon name="carat-down" />
+        </div>
+      </div>
+
+      {/* Address Bar */}
+      <div className="browser-addressbar">
+        <div className="addressbar-actions">
+          <div className="toolbar-btn">
+            <Icon name="browser-back" />
+          </div>
+          <div className="toolbar-btn disabled">
+            <Icon name="browser-forward" />
+          </div>
+          <div className="toolbar-btn">
+            <Icon name="browser-refresh" />
+          </div>
+          <div className="toolbar-btn">
+            <Icon name="browser-bookmark-normal" />
+          </div>
+        </div>
+
+        <div className="addressbar-field">
+          <div className="toolbar-btn small">
+            <Icon name="shield-done" />
+          </div>
+          <span className="addressbar-url">brave.com</span>
+          <div className="toolbar-btn small">
+            <Icon name="share-macos" />
+          </div>
+        </div>
+
+        <div className="addressbar-menu">
+          <div className="menu-btn">
+            <Icon name="social-brave-release-favicon-fullheight-color" />
+            <Icon name="more-vertical" />
+          </div>
+        </div>
+      </div>
+
+      {/* Browser Content */}
+      <div className="browser-content">
+        <div className="browser-content-bg" />
+      </div>
+    </div>
+  )
+}
+
+function MockBrowserWindowVertical() {
+  return (
+    <div className="browser-chrome vertical">
+      {/* Address Bar (at top for vertical layout) */}
+      <div className="browser-addressbar">
+        <div className="addressbar-actions">
+          <div className="toolbar-btn">
+            <Icon name="browser-back" />
+          </div>
+          <div className="toolbar-btn disabled">
+            <Icon name="browser-forward" />
+          </div>
+          <div className="toolbar-btn">
+            <Icon name="browser-refresh" />
+          </div>
+          <div className="toolbar-btn">
+            <Icon name="browser-bookmark-normal" />
+          </div>
+        </div>
+
+        <div className="addressbar-field">
+          <div className="toolbar-btn small">
+            <Icon name="shield-done" />
+          </div>
+          <span className="addressbar-url">brave.com</span>
+          <div className="toolbar-btn small">
+            <Icon name="share-macos" />
+          </div>
+        </div>
+
+        <div className="addressbar-menu">
+          <div className="menu-btn">
+            <Icon name="social-brave-release-favicon-fullheight-color" />
+            <Icon name="more-vertical" />
+          </div>
+        </div>
+      </div>
+
+      {/* Content area with sidebar */}
+      <div className="browser-main-content">
+        {/* Vertical Tab Sidebar */}
+        <div className="vertical-sidebar">
+          {/* Pinned tabs row */}
+          <div className="pinned-tabs-row">
+            <div className="pinned-tab">
+              <Icon name="social-github" />
+            </div>
+            <div className="pinned-tab">
+              <Icon name="google-calendar-color" />
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="sidebar-divider" />
+
+          {/* Vertical tabs list */}
+          <div className="vertical-tabs-list">
+            {/* Active tab */}
+            <div className="vertical-tab active">
+              <Icon name="social-brave-release-favicon-fullheight-color" />
+              <span className="vertical-tab-title">Welcome to Brave</span>
+              <Icon name="close" className="vertical-tab-close" />
+            </div>
+            {/* Inactive tab */}
+            <div className="vertical-tab">
+              <Icon name="brave-icon-search-color" />
+              <span className="vertical-tab-title">Brave Search</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Browser Content */}
+        <div className="browser-content vertical">
+          <div className="browser-content-bg" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface MockBrowserWindowProps {
+  layout: 'horizontal' | 'vertical'
+}
+
+function MockBrowserWindow({ layout }: MockBrowserWindowProps) {
+  if (layout === 'vertical') {
+    return <MockBrowserWindowVertical />
+  }
+  return <MockBrowserWindowHorizontal />
+}
+
 type TabLayout = 'horizontal' | 'vertical'
 type Theme = 'system' | 'light' | 'dark'
 
@@ -71,7 +238,7 @@ export function StepMakeYoursContent({}: StepContentProps) {
             <div className="mock-window-wallpaper">
               <img src={wallpaperImage} alt="" className="mock-window-wallpaper-image" />
             </div>
-            <Icon name="social-brave-release-favicon-fullheight-color" className="mock-window-brave-icon" />
+            <MockBrowserWindow layout={tabLayout} />
           </div>
 
           {/* Options */}

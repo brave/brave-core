@@ -698,6 +698,356 @@ export const style = scoped.css`
     z-index: 1;
   }
 
+  /* Browser Chrome Preview Styles */
+  .browser-chrome {
+    position: absolute;
+    inset: 32px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: ${radius.l};
+    overflow: hidden;
+    box-shadow: 0px 0px 0px 0.75px rgba(6, 6, 5, 0.2);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .browser-chrome::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0px 1px 0.5px 0px rgba(255, 255, 255, 0.2);
+    border-radius: inherit;
+  }
+
+  /* Tab Bar */
+  .browser-tabbar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 4px;
+    background: #e4e4e5;
+  }
+
+  .browser-tabs {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .browser-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: ${radius.m};
+    flex: 1;
+    min-width: 0;
+  }
+
+  .browser-tab leo-icon {
+    --leo-icon-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .browser-tab.pinned {
+    flex: 0 0 32px;
+    width: 32px;
+    padding: 6px 8px;
+    justify-content: center;
+    border: 1px solid #c9c9ca;
+  }
+
+  .browser-tab.active {
+    background: #fafafb;
+  }
+
+  .tab-title {
+    flex: 1;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.08px;
+    color: ${color.text.primary};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .browser-tab:not(.active) .tab-title {
+    color: ${color.text.secondary};
+  }
+
+  .tab-close {
+    --leo-icon-size: 16px;
+    flex-shrink: 0;
+    color: #464649;
+  }
+
+  .tab-divider {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 24px;
+    background: #c9c9ca;
+  }
+
+  .browser-tab:not(.active):not(.pinned) {
+    position: relative;
+  }
+
+  .browser-tab-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border-radius: ${radius.m};
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
+  .browser-tab-add leo-icon {
+    --leo-icon-size: 20px;
+    --leo-icon-color: #464649;
+  }
+
+  .browser-tab-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border-radius: ${radius.m};
+    flex-shrink: 0;
+  }
+
+  .browser-tab-dropdown leo-icon {
+    --leo-icon-size: 20px;
+    --leo-icon-color: #464649;
+  }
+
+  /* Address Bar */
+  .browser-addressbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 8px;
+    background: white;
+    border-top-left-radius: ${radius.m};
+    border-top-right-radius: 10px;
+  }
+
+  .addressbar-actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    border-radius: ${radius.m};
+    cursor: pointer;
+  }
+
+  .toolbar-btn leo-icon {
+    --leo-icon-size: 20px;
+    --leo-icon-color: #464649;
+  }
+
+  .toolbar-btn.disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .toolbar-btn.small {
+    border-radius: ${radius.s};
+  }
+
+  .addressbar-field {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    background: #f2f2f3;
+    border-radius: ${radius.m};
+  }
+
+  .addressbar-shield {
+    --leo-icon-size: 20px;
+    --leo-icon-color: #464649;
+    padding: 4px;
+  }
+
+  .addressbar-url {
+    flex: 1;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.23px;
+    color: ${color.text.primary};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .addressbar-menu {
+    display: flex;
+  }
+
+  .menu-btn {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border: 1px solid #f2f2f3;
+    border-radius: ${radius.m};
+  }
+
+  .menu-btn leo-icon {
+    --leo-icon-size: 20px;
+  }
+
+  .menu-btn leo-icon:first-child {
+    margin-right: -4px;
+  }
+
+  .menu-btn leo-icon:last-child {
+    --leo-icon-size: 18px;
+    --leo-icon-color: #464649;
+  }
+
+  /* Browser Content */
+  .browser-content {
+    flex: 1;
+    padding: 0 4px 4px;
+  }
+
+  .browser-content-bg {
+    width: 100%;
+    height: 100%;
+    background: #f2f2f3;
+    border-radius: ${radius.m};
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Vertical Tabs Layout Styles */
+  .browser-chrome.vertical {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .browser-chrome.vertical .browser-addressbar {
+    border-top-left-radius: ${radius.m};
+    border-top-right-radius: 10px;
+  }
+
+  .browser-main-content {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .vertical-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 244px;
+    background: white;
+    overflow: hidden;
+  }
+
+  .pinned-tabs-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .pinned-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 calc(50% - 2px);
+    height: 32px;
+    border: 1px solid #e4e4e5;
+    border-radius: ${radius.m};
+  }
+
+  .pinned-tab leo-icon {
+    --leo-icon-size: 16px;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: #f2f2f3;
+    margin: 0;
+  }
+
+  .vertical-tabs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .vertical-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: ${radius.m};
+  }
+
+  .vertical-tab leo-icon {
+    --leo-icon-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .vertical-tab.active {
+    background: #f2f2f3;
+  }
+
+  .vertical-tab-title {
+    flex: 1;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.08px;
+    color: ${color.text.primary};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vertical-tab:not(.active) .vertical-tab-title {
+    color: ${color.text.secondary};
+  }
+
+  .vertical-tab-close {
+    --leo-icon-size: 16px;
+    flex-shrink: 0;
+    color: #464649;
+  }
+
+  .browser-content.vertical {
+    flex: 1;
+    padding: 0 4px 4px 0;
+  }
+
   .customize-options {
     display: flex;
     flex-direction: column;
@@ -860,7 +1210,7 @@ export const style = scoped.css`
     .mock-window-preview {
       max-height: 255px;
       flex: 0 0 auto;
-      height: 200px;
+      height: 255px;
     }
 
     .customize-content {
