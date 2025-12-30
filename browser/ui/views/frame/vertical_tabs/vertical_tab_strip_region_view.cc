@@ -1210,9 +1210,21 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
   };
 
   if (!ignore_animation && width_animation_.is_animating()) {
-    return gfx::Tween::IntValueBetween(width_animation_.GetCurrentValue(),
-                                       calculate_collapsed_width(),
-                                       calculate_expanded_width());
+    int width = gfx::Tween::IntValueBetween(width_animation_.GetCurrentValue(),
+                                            calculate_collapsed_width(),
+                                            calculate_expanded_width());
+#if BUILDFLAG(IS_MAC)
+    // When region view's width is zero, widget gets hidden by
+    // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
+    // Then, width animation seems not working properly on macOS.
+    // To avoid widget getting hidden, we set a minimum width when
+    // animation goes for showing.
+    constexpr int kMinShowWidth = 3;
+    if (width_animation_.IsShowing() && width < kMinShowWidth) {
+      width = kMinShowWidth;
+    }
+#endif
+    return width;
   }
 
   if (state == State::kExpanded || state == State::kFloating) {
