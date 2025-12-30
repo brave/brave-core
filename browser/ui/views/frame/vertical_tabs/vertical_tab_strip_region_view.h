@@ -191,7 +191,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   raw_ptr<HeaderView> header_view_ = nullptr;
-  raw_ptr<views::View> contents_view_ = nullptr;
 
   // Separator between tabs and new tab button.
   raw_ptr<views::View> separator_ = nullptr;
