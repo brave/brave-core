@@ -7,6 +7,7 @@ import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 import bgLight from './img/bg-light.jpg'
+import bgDark from './img/bg-dark.jpg'
 
 export const style = scoped.css`
   /* CSS Reset */
@@ -68,6 +69,12 @@ export const style = scoped.css`
     background-position: center center;
     background-repeat: no-repeat;
     padding: ${spacing.xl};
+  }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      background-image: url(${bgDark});
+    }
   }
 
   h1 {
