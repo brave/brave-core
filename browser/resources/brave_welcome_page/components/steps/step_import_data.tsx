@@ -162,6 +162,8 @@ export function ImportDataProvider({ children }: { children: React.ReactNode }) 
   )
 }
 
+type TransitionState = 'idle' | 'dropdown-exiting' | 'dropdown-entering' | 'selected-exiting' | 'selected-entering' | 'morphing-to-transfer'
+
 export function StepImportDataContent({}: StepContentProps) {
   const {
     setIsBrowserSelected,
@@ -175,15 +177,52 @@ export function StepImportDataContent({}: StepContentProps) {
     importStatuses
   } = React.useContext(ImportDataContext)
 
+  const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
+  const [displayedBrowser, setDisplayedBrowser] = React.useState<BrowserProfile | null>(selectedBrowser)
+  const prevIsImporting = React.useRef(isImporting)
+
+  // Handle transition when import starts - trigger morph animation
+  React.useEffect(() => {
+    if (isImporting && !prevIsImporting.current && selectedBrowser) {
+      // Trigger the morphing animation class briefly
+      setTransitionState('morphing-to-transfer')
+      setTimeout(() => setTransitionState('idle'), 50)
+    }
+    prevIsImporting.current = isImporting
+  }, [isImporting, selectedBrowser])
+
   const handleBrowserSelect = (browser: BrowserProfile) => {
-    setSelectedBrowser(browser)
-    setIsBrowserSelected(true)
+    // Start exit animation for dropdown
+    setTransitionState('dropdown-exiting')
+    setDisplayedBrowser(browser)
+    
+    // After exit animation, switch to selected state with enter animation
+    setTimeout(() => {
+      setSelectedBrowser(browser)
+      setIsBrowserSelected(true)
+      setTransitionState('selected-entering')
+      
+      // Reset to idle after enter animation completes
+      setTimeout(() => setTransitionState('idle'), 350)
+    }, 200)
   }
 
   const handleClearSelection = () => {
     if (isImporting || importComplete) return // Don't allow changing during/after import
-    setSelectedBrowser(null)
-    setIsBrowserSelected(false)
+    
+    // Start exit animation for selected header
+    setTransitionState('selected-exiting')
+    
+    // After exit animation, switch to dropdown state with enter animation
+    setTimeout(() => {
+      setSelectedBrowser(null)
+      setIsBrowserSelected(false)
+      setDisplayedBrowser(null)
+      setTransitionState('dropdown-entering')
+      
+      // Reset to idle after enter animation completes
+      setTimeout(() => setTransitionState('idle'), 300)
+    }, 200)
   }
 
   const handleImportToggle = (id: string, checked: boolean) => {
@@ -195,6 +234,18 @@ export function StepImportDataContent({}: StepContentProps) {
 
   // Show importing state
   const showImportingState = isImporting || importComplete
+  
+  // Determine which view to show based on transition state and selected browser
+  const isExitingDropdown = transitionState === 'dropdown-exiting'
+  const isEnteringDropdown = transitionState === 'dropdown-entering'
+  const isExitingSelected = transitionState === 'selected-exiting'
+  const isEnteringSelected = transitionState === 'selected-entering'
+  const isMorphingToTransfer = transitionState === 'morphing-to-transfer'
+  
+  // Show dropdown when no browser selected OR during dropdown transitions
+  const showDropdown = (!selectedBrowser && transitionState !== 'selected-entering') || isExitingDropdown || isEnteringDropdown
+  // Show selected/morphing header when browser is selected
+  const showSelected = selectedBrowser && transitionState !== 'dropdown-entering'
 
   return (
     <div className="content">
@@ -207,70 +258,82 @@ export function StepImportDataContent({}: StepContentProps) {
       </div>
       <div className="right-content">
         <div className="import-container">
-          {/* Browser transfer header - shows during import */}
-          {showImportingState && selectedBrowser ? (
-            <div className="browser-transfer-header">
+          {/* Morphing header - transitions between selected and transfer states */}
+          {showSelected && (selectedBrowser || displayedBrowser) ? (
+            <div 
+              className={`browser-morphing-header ${showImportingState ? 'transfer-mode' : 'selected-mode'} ${isExitingSelected ? 'exiting' : ''} ${isEnteringSelected ? 'entering' : ''} ${isMorphingToTransfer ? 'morphing-to-transfer' : ''}`}
+              onClick={!showImportingState ? handleClearSelection : undefined}
+            >
+              {/* Browser icon - shared element that morphs position */}
               <div className="browser-item-icon">
-                <Icon name={selectedBrowser.icon} />
+                <Icon name={(selectedBrowser || displayedBrowser)!.icon} />
               </div>
-              <div className="transfer-arrows">
-                <Icon name="carat-right" className="arrow-1" />
-                <Icon name="carat-right" className="arrow-2" />
-                <Icon name="carat-right" className="arrow-3" />
-              </div>
-              <div className="brave-icon-with-spinner">
-                <Icon name="social-brave-release-favicon-fullheight-color" />
-                {isImporting && (
-                  <div className="transfer-spinner">
-                    <ProgressRing />
-                  </div>
+              
+              {/* Selected state elements - fade out during morph */}
+              <div className="selected-elements">
+                <h3 className="browser-selected-name">{(selectedBrowser || displayedBrowser)!.name}</h3>
+                {(selectedBrowser || displayedBrowser)!.profile && (
+                  <Label mode="loud" color="neutral">{(selectedBrowser || displayedBrowser)!.profile}</Label>
                 )}
-                {importComplete && (
-                  <div className="transfer-complete">
-                    <Icon name="check-circle-filled" />
-                  </div>
-                )}
+                <Icon name="carat-down" />
               </div>
-            </div>
-          ) : selectedBrowser ? (
-            <div className="browser-selected-header" onClick={handleClearSelection}>
-              <div className="browser-item-icon">
-                <Icon name={selectedBrowser.icon} />
+              
+              {/* Transfer state elements - fade in during morph */}
+              <div className="transfer-elements">
+                <div className="transfer-arrows">
+                  <Icon name="carat-right" className="arrow-1" />
+                  <Icon name="carat-right" className="arrow-2" />
+                  <Icon name="carat-right" className="arrow-3" />
+                </div>
+                <div className="brave-icon-with-spinner">
+                  <Icon name="social-brave-release-favicon-fullheight-color" />
+                  {isImporting && (
+                    <div className="transfer-spinner">
+                      <ProgressRing />
+                    </div>
+                  )}
+                  {importComplete && (
+                    <div className="transfer-complete">
+                      <Icon name="check-circle-filled" />
+                    </div>
+                  )}
+                </div>
               </div>
-              <h3 className="browser-selected-name">{selectedBrowser.name}</h3>
-              {selectedBrowser.profile && (
-                <Label mode="loud" color="neutral">{selectedBrowser.profile}</Label>
-              )}
-              <Icon name="carat-down" />
             </div>
           ) : (
-            <div className="browser-dropdown">
-              <div className="browser-dropdown-header">
-                <div className="browser-icons-grid">
-                  <Icon name="chromerelease-color" />
-                  <Icon name="safari-color" />
-                  <Icon name="firefox-color" />
-                  <Icon name="edge-color" />
-                </div>
-                <h3>Select your previous browser</h3>
-              </div>
-              <div className="browser-dropdown-list">
-                {browserProfiles.map((browser, index) => (
-                  <div
-                    key={index}
-                    className="browser-item"
-                    onClick={() => handleBrowserSelect(browser)}
-                  >
-                    <div className="browser-item-icon">
-                      <Icon name={browser.icon} />
+            <div className="browser-selector-wrapper">
+              {/* Browser dropdown list */}
+              {showDropdown && (
+                <div className={`browser-dropdown ${isExitingDropdown ? 'exiting' : ''} ${isEnteringDropdown ? 'entering' : ''}`}>
+                  <div className="browser-dropdown-header">
+                    <div className="browser-icons-grid">
+                      <Icon name="chromerelease-color" />
+                      <Icon name="safari-color" />
+                      <Icon name="firefox-color" />
+                      <Icon name="edge-color" />
                     </div>
-                    <span className="browser-item-name">{browser.name}</span>
-                    {browser.profile && (
-                      <Label mode="loud" color="neutral">{browser.profile}</Label>
-                    )}
+                    <h3>Select your previous browser</h3>
                   </div>
-                ))}
-              </div>
+                  <div className="browser-dropdown-list">
+                    {browserProfiles.map((browser, index) => (
+                      <div
+                        key={index}
+                        className="browser-item"
+                        onClick={() => handleBrowserSelect(browser)}
+                        style={{ animationDelay: `${index * 30}ms` }}
+                      >
+                        <div className="browser-item-icon">
+                          <Icon name={browser.icon} />
+                        </div>
+                        <span className="browser-item-name">{browser.name}</span>
+                        {browser.profile && (
+                          <Label mode="loud" color="neutral">{browser.profile}</Label>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
