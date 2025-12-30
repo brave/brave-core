@@ -15,7 +15,7 @@ export function StepWelcomeContent({}: StepContentProps) {
       <div className="left-content">
         <div className="left-text-content">
           <h1>Get ready for the best browsing experience</h1>
-          <p>Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</p>
+          <p>Experience the web without being watched. Brave shields you from trackers, ads, and fingerprinting, all automatically.</p>
         </div>
       </div>
       <div className="right-content welcome-hero">
