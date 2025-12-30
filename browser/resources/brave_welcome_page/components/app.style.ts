@@ -704,11 +704,22 @@ export const style = scoped.css`
   }
 
   .mock-window-wallpaper-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: blur(6px);
     transform: scale(1.05);
+    transition: opacity 0.4s ease;
+  }
+
+  .mock-window-wallpaper-image.wallpaper-hidden {
+    opacity: 0;
+  }
+
+  .mock-window-wallpaper-image.wallpaper-visible {
+    opacity: 1;
   }
 
   .mock-window-brave-icon {
@@ -732,6 +743,7 @@ export const style = scoped.css`
     box-shadow: 0px 0px 0px 0.75px rgba(6, 6, 5, 0.2);
     pointer-events: none;
     user-select: none;
+    transition: background-color 0.4s ease;
   }
 
   .browser-chrome::after {
@@ -750,6 +762,7 @@ export const style = scoped.css`
     height: 40px;
     padding: 0 4px;
     background: ${color.neutral[10]};
+    transition: background-color 0.4s ease;
   }
 
   .browser-tabs {
@@ -785,6 +798,7 @@ export const style = scoped.css`
 
   .browser-tab.active {
     background: ${color.container.background};
+    transition: background-color 0.4s ease;
   }
 
   .tab-title {
@@ -796,6 +810,7 @@ export const style = scoped.css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.4s ease;
   }
 
   .browser-tab:not(.active) .tab-title {
@@ -806,6 +821,7 @@ export const style = scoped.css`
     --leo-icon-size: 16px;
     flex-shrink: 0;
     color: ${color.icon.default};
+    transition: color 0.4s ease;
   }
 
   .tab-divider {
@@ -816,6 +832,7 @@ export const style = scoped.css`
     width: 1px;
     height: 24px;
     background: ${color.divider.subtle};
+    transition: background-color 0.4s ease;
   }
 
   .browser-tab:not(.active):not(.pinned) {
@@ -864,6 +881,7 @@ export const style = scoped.css`
     background: ${color.container.background};
     border-top-left-radius: ${radius.m};
     border-top-right-radius: 10px;
+    transition: background-color 0.4s ease;
   }
 
   .addressbar-actions {
@@ -906,6 +924,7 @@ export const style = scoped.css`
     padding: 4px;
     background: ${color.container.highlight};
     border-radius: ${radius.m};
+    transition: background-color 0.4s ease;
   }
 
   .addressbar-shield {
@@ -923,6 +942,7 @@ export const style = scoped.css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.4s ease;
   }
 
   .addressbar-menu {
@@ -935,6 +955,7 @@ export const style = scoped.css`
     padding: 4px;
     border: 1px solid ${color.divider.subtle};
     border-radius: ${radius.m};
+    transition: border-color 0.4s ease;
   }
 
   .menu-btn leo-icon {
@@ -962,6 +983,7 @@ export const style = scoped.css`
     background: ${color.container.highlight};
     border-radius: ${radius.m};
     box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.4s ease;
   }
 
   /* Vertical Tabs Layout Styles */
@@ -987,6 +1009,7 @@ export const style = scoped.css`
     width: 244px;
     background: ${color.container.background};
     overflow: hidden;
+    transition: background-color 0.4s ease;
   }
 
   .pinned-tabs-row {
@@ -1004,6 +1027,7 @@ export const style = scoped.css`
     height: 32px;
     border: 1px solid ${color.divider.subtle};
     border-radius: ${radius.m};
+    transition: border-color 0.4s ease;
   }
 
   .pinned-tab leo-icon {
@@ -1014,6 +1038,7 @@ export const style = scoped.css`
     height: 1px;
     background: ${color.divider.subtle};
     margin: 0;
+    transition: background-color 0.4s ease;
   }
 
   .vertical-tabs-list {
@@ -1042,6 +1067,7 @@ export const style = scoped.css`
 
   .vertical-tab.active {
     background: ${color.container.highlight};
+    transition: background-color 0.4s ease;
   }
 
   .vertical-tab-title {
@@ -1053,6 +1079,7 @@ export const style = scoped.css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.4s ease;
   }
 
   .vertical-tab:not(.active) .vertical-tab-title {
@@ -1063,6 +1090,7 @@ export const style = scoped.css`
     --leo-icon-size: 16px;
     flex-shrink: 0;
     color: ${color.icon.default};
+    transition: color 0.4s ease;
   }
 
   .browser-content.vertical {
