@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
-export function StepDefaultBrowserContent({}: StepContentProps) {
+export function StepWelcomeContent({}: StepContentProps) {
   return (
     <div className="content">
       <div className="left-content">
@@ -24,7 +24,7 @@ export function StepDefaultBrowserContent({}: StepContentProps) {
   )
 }
 
-export function StepDefaultBrowserFooter({ onNext, onBack, onSkip, isFirstStep }: StepFooterProps) {
+export function StepWelcomeFooter({ onNext, onBack, onSkip, isFirstStep }: StepFooterProps) {
   return (
     <div className="footer">
       <div className="footer-left">
@@ -35,7 +35,7 @@ export function StepDefaultBrowserFooter({ onNext, onBack, onSkip, isFirstStep }
       <div className="footer-right">
         <Button kind="plain-faint" size="large" onClick={onSkip}>Maybe later</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Set as default browser
+          Get started
         </Button>
       </div>
     </div>

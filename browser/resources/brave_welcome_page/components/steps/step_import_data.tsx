@@ -156,12 +156,14 @@ export function StepImportDataContent({}: StepContentProps) {
                     className="import-option-item"
                     onClick={() => handleImportToggle(option.id, !selectedImports[option.id])}
                   >
-                    <Checkbox
-                      checked={selectedImports[option.id]}
-                      onChange={(detail) => handleImportToggle(option.id, detail.checked)}
-                    >
-                      {option.label}
-                    </Checkbox>
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <Checkbox
+                        checked={selectedImports[option.id]}
+                        onChange={(detail) => handleImportToggle(option.id, detail.checked)}
+                      >
+                        {option.label}
+                      </Checkbox>
+                    </div>
                   </div>
                 ))}
               </div>
