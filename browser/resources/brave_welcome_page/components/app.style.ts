@@ -1399,13 +1399,6 @@ export const style = scoped.css`
       gap: ${spacing.l};
     }
 
-    .customize-option-label {
-      flex: 1 0 100%;
-    }
-
-    .customize-option-row leo-segmented-control {
-      width: 100%;
-    }
 
     .customize-colors-row {
       flex-wrap: wrap;
