@@ -14,11 +14,14 @@
 #define SharingHubIconView SharingHubIconView_ChromiumImpl
 
 // Exposes private method to the Brave implementation.
-#define GetController()   \
-  GetController_Unused(); \
-                          \
- protected:               \
-  SharingHubBubbleController* GetController()
+#define GetController()                              \
+  GetController_Unused();                            \
+                                                     \
+ protected:                                          \
+  SharingHubBubbleController* GetController() const; \
+                                                     \
+ private:                                            \
+  SharingHubBubbleController* GetController_Unused2()
 
 #include <chrome/browser/ui/views/sharing_hub/sharing_hub_icon_view.h>  // IWYU pragma: export
 
