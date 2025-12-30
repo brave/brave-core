@@ -261,7 +261,7 @@ export function StepImportDataContent({}: StepContentProps) {
           {/* Morphing header - transitions between selected and transfer states */}
           {showSelected && (selectedBrowser || displayedBrowser) ? (
             <div 
-              className={`browser-morphing-header ${showImportingState ? 'transfer-mode' : 'selected-mode'} ${isExitingSelected ? 'exiting' : ''} ${isEnteringSelected ? 'entering' : ''} ${isMorphingToTransfer ? 'morphing-to-transfer' : ''}`}
+              className={`browser-morphing-header ${showImportingState ? 'transfer-mode' : 'selected-mode'} ${isExitingSelected ? 'exiting' : ''} ${isEnteringSelected ? 'entering' : ''} ${isMorphingToTransfer ? 'morphing-to-transfer' : ''} ${importComplete ? 'import-complete' : ''}`}
               onClick={!showImportingState ? handleClearSelection : undefined}
             >
               {/* Browser icon - shared element that morphs position */}

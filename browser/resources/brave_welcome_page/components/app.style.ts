@@ -649,6 +649,14 @@ export const style = scoped.css`
     animation: arrowPulse 1.5s ease-in-out infinite 1s;
   }
 
+  /* Stop animation when import is complete */
+  .browser-morphing-header.import-complete .transfer-arrows .arrow-1,
+  .browser-morphing-header.import-complete .transfer-arrows .arrow-2,
+  .browser-morphing-header.import-complete .transfer-arrows .arrow-3 {
+    animation: none;
+    opacity: 1;
+  }
+
   @keyframes arrowPulse {
     0%, 100% {
       opacity: 0.3;
