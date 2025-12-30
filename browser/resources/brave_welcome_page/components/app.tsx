@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import { style } from './app.style'
 import { StepDefinition } from './types'
 import {
-  StepDefaultBrowserContent, StepDefaultBrowserFooter,
+  StepWelcomeContent, StepWelcomeFooter,
   StepImportDataContent, StepImportDataFooter, ImportDataProvider,
   StepMakeYoursContent, StepMakeYoursFooter,
   StepBraveSearchContent, StepBraveSearchFooter,
@@ -18,7 +18,7 @@ import {
 
 // Define your onboarding steps here
 const steps: StepDefinition[] = [
-  { id: 'default-browser', Content: StepDefaultBrowserContent, Footer: StepDefaultBrowserFooter },
+  { id: 'welcome', Content: StepWelcomeContent, Footer: StepWelcomeFooter },
   { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
   { id: 'make-yours', Content: StepMakeYoursContent, Footer: StepMakeYoursFooter },
   { id: 'brave-search', Content: StepBraveSearchContent, Footer: StepBraveSearchFooter },

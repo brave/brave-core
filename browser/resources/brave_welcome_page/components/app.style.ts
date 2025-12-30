@@ -454,6 +454,9 @@ export const style = scoped.css`
   .privacy-card-unchecked {
     filter: grayscale(1);
   }
+  .privacy-card-unchecked .privacy-card-icon {
+  opacity: 0.5;
+}
 
   .privacy-card-unchecked .privacy-card-title,
   .privacy-card-unchecked .privacy-card-subtitle {
