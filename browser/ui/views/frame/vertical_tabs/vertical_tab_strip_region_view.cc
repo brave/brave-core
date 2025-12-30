@@ -62,10 +62,8 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/resize_area.h"
-#include "ui/views/controls/scroll_view.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
@@ -323,27 +321,6 @@ END_METADATA
 
 }  // namespace
 
-class VerticalTabStripScrollContentsView : public views::View {
-  METADATA_HEADER(VerticalTabStripScrollContentsView, views::View)
- public:
-  VerticalTabStripScrollContentsView() {
-    SetLayoutManager(std::make_unique<views::FillLayout>());
-  }
-  ~VerticalTabStripScrollContentsView() override = default;
-
-  // views::View:
-  void ChildPreferredSizeChanged(views::View* child) override {
-    PreferredSizeChanged();
-  }
-
-  void OnPaintBackground(gfx::Canvas* canvas) override {
-    canvas->DrawColor(GetColorProvider()->GetColor(kColorToolbar));
-  }
-};
-
-BEGIN_METADATA(VerticalTabStripScrollContentsView)
-END_METADATA
-
 class BraveVerticalTabStripRegionView::HeaderView : public views::View {
   METADATA_HEADER(HeaderView, views::View)
  public:
@@ -473,8 +450,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       base::BindRepeating(&BraveVerticalTabStripRegionView::ToggleState,
                           base::Unretained(this)),
       this, browser_));
-  contents_view_ =
-      AddChildView(std::make_unique<VerticalTabStripScrollContentsView>());
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
@@ -806,8 +781,12 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
-  // As we have to update ScrollView's viewport size and its contents size,
-  // laying out children manually will be more handy.
+  if (original_region_view_->parent() != this) {
+    // When original_region_view_ is not a child of this view, it means that
+    // the vertical tab strip is not visible.
+    return;
+  }
+
   const auto contents_bounds = GetContentsBounds();
 
   const gfx::Size header_size{contents_bounds.width(),
@@ -821,14 +800,14 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       kSeparatorHeight - header_view_->height();
   const int contents_view_preferred_height =
       tab_strip()->GetPreferredSize().height();
-  contents_view_->SetBoundsRect(gfx::Rect(
+  original_region_view_->SetBoundsRect(gfx::Rect(
       header_view_->bounds().bottom_left(),
       gfx::Size(
           contents_bounds.width(),
           std::min(contents_view_max_height, contents_view_preferred_height))));
 
   gfx::Rect separator_bounds(
-      contents_view_->bounds().bottom_left(),
+      original_region_view_->bounds().bottom_left(),
       gfx::Size(contents_bounds.width(), kSeparatorHeight));
   separator_bounds.Inset(
       gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
@@ -875,14 +854,14 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
       tab_strip_region_view_original_index_ =
           original_parent_of_region_view_->GetIndexOf(original_region_view_);
       original_parent_of_region_view_->RemoveChildView(original_region_view_);
-      contents_view_->AddChildView(original_region_view_.get());
+      AddChildView(original_region_view_.get());
     }
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   } else {
     if (Contains(original_region_view_)) {
-      contents_view_->RemoveChildView(original_region_view_);
+      RemoveChildView(original_region_view_);
       CHECK(tab_strip_region_view_original_index_.has_value());
       original_parent_of_region_view_->AddChildViewAt(
           original_region_view_.get(), *tab_strip_region_view_original_index_);

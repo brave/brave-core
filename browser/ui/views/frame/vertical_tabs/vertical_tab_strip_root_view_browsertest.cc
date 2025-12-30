@@ -93,8 +93,12 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
   }
 };
 
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
+#define MAYBE_DragAfterCurrentTab DISABLED_DragAfterCurrentTab
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
-                       DragAfterCurrentTab) {
+                       MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
