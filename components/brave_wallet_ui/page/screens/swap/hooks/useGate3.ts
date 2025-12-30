@@ -21,6 +21,7 @@ import {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendBtcTransactionMutation,
+  useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
 
 export function useGate3(params: SwapParams) {
@@ -39,6 +40,8 @@ export function useGate3(params: SwapParams) {
   const [sendEvmTransaction] = useSendEvmTransactionMutation()
   const [sendSolTransaction] = useSendSolTransactionMutation()
   const [sendSPLTransfer] = useSendSPLTransferMutation()
+  const [sendSolanaSerializedTransaction] =
+    useSendSolanaSerializedTransactionMutation()
   const [sendBtcTransaction] = useSendBtcTransactionMutation()
   const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
 
@@ -166,8 +169,24 @@ export function useGate3(params: SwapParams) {
         }
 
         if (transactionParams.solanaTransactionParams) {
-          const { to, value, splTokenMint, splTokenAmount, decimals } =
-            transactionParams.solanaTransactionParams
+          const {
+            to,
+            value,
+            splTokenMint,
+            splTokenAmount,
+            decimals,
+            versionedTransaction,
+          } = transactionParams.solanaTransactionParams
+
+          if (versionedTransaction) {
+            await sendSolanaSerializedTransaction({
+              chainId: fromNetwork!.chainId,
+              accountId: fromAccount!.accountId,
+              txType: BraveWallet.TransactionType.SolanaSwap,
+              encodedTransaction: versionedTransaction,
+            })
+            return
+          }
 
           // For SPL token transfers
           if (splTokenMint && splTokenAmount && decimals) {

@@ -1329,11 +1329,16 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
     solana_result->from = solana_params->from;
     solana_result->to = solana_params->to;
     solana_result->value = solana_params->value;
+
     solana_result->spl_token_mint =
         ParseNullableString(solana_params->spl_token_mint);
     solana_result->spl_token_amount =
         ParseNullableString(solana_params->spl_token_amount);
     solana_result->decimals = ParseNullableString(solana_params->decimals);
+
+    solana_result->versioned_transaction =
+        ParseNullableString(solana_params->versioned_transaction);
+
     return mojom::TransactionParamsUnion::NewSolanaTransactionParams(
         std::move(solana_result));
   }

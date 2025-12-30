@@ -408,6 +408,8 @@ namespace swap_responses {
     any splTokenMint;
     any splTokenAmount;
     any decimals;
+
+    any versionedTransaction;
   };
 
   dictionary Gate3BitcoinTransactionParams {

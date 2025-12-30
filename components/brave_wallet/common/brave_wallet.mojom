@@ -646,6 +646,7 @@ struct Gate3SolanaTransactionParams {
   string? spl_token_mint;
   string? spl_token_amount;
   string? decimals;
+  string? versioned_transaction;
 };
 
 struct Gate3BitcoinTransactionParams {
