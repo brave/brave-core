@@ -25,7 +25,7 @@ export function StepWelcomeContent({}: StepContentProps) {
   )
 }
 
-export function StepWelcomeFooter({ onNext, onBack, onSkip, isFirstStep }: StepFooterProps) {
+export function StepWelcomeFooter({ onNext, onBack, isFirstStep }: StepFooterProps) {
   return (
     <div className="footer">
       <div className="footer-left">
@@ -34,7 +34,6 @@ export function StepWelcomeFooter({ onNext, onBack, onSkip, isFirstStep }: StepF
         )}
       </div>
       <div className="footer-right">
-        <Button kind="plain-faint" size="large" onClick={onSkip}>Maybe later</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
           Get started
         </Button>
