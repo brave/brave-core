@@ -10,7 +10,8 @@ import SegmentedControl from '@brave/leo/react/segmentedControl'
 import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 
 import { StepContentProps, StepFooterProps } from '../types'
-import wallpaperImage from '../img/bg-light.jpg'
+import wallpaperLight from '../img/bg-light.jpg'
+import wallpaperDark from '../img/bg-dark.jpg'
 
 interface MockBrowserWindowVariantProps {
   themeClass: string
@@ -272,7 +273,7 @@ export function StepMakeYoursContent({}: StepContentProps) {
           {/* Mock Window Preview */}
           <div className="mock-window-preview">
             <div className="mock-window-wallpaper">
-              <img src={wallpaperImage} alt="" className="mock-window-wallpaper-image" />
+              <img src={effectiveTheme === 'dark' ? wallpaperDark : wallpaperLight} alt="" className="mock-window-wallpaper-image" />
             </div>
             <MockBrowserWindow layout={tabLayout} effectiveTheme={effectiveTheme} />
           </div>
