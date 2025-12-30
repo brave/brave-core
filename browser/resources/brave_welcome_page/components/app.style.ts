@@ -654,6 +654,154 @@ export const style = scoped.css`
     color: ${color.text.tertiary};
   }
 
+  /* Customize Options Styles (Make Yours step) */
+  .customize-content {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing['2Xl']};
+    width: 100%;
+    max-width: 620px;
+    height: 100%;
+  }
+
+  .mock-window-preview {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border-radius: ${radius.xl};
+    overflow: hidden;
+  }
+
+  .mock-window-wallpaper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mock-window-wallpaper-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(6px);
+    transform: scale(1.05);
+  }
+
+  .mock-window-brave-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    --leo-icon-size: 80px;
+    z-index: 1;
+  }
+
+  .customize-options {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing['2Xl']};
+    width: 100%;
+  }
+
+  .customize-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${spacing.m};
+    padding: ${spacing.xl} ${spacing['2Xl']};
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+  }
+
+  .customize-appearance-card .customize-option-row {
+    background: transparent;
+    border-radius: 0;
+    padding: ${spacing.xl} ${spacing['2Xl']};
+  }
+
+  .customize-option-label {
+    font: ${font.heading.h4};
+    color: ${color.text.primary};
+    opacity: 0.9;
+  }
+
+  .customize-appearance-card {
+    display: flex;
+    flex-direction: column;
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+  }
+
+  .customize-divider {
+    height: 1px;
+    background: ${color.divider.subtle};
+    margin: 0;
+  }
+
+  .customize-colors-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${spacing.m};
+    padding: ${spacing.l} ${spacing.xl} ${spacing.xl};
+  }
+
+  .color-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background: linear-gradient(
+      to bottom,
+      var(--swatch-light-top) 0%,
+      var(--swatch-light-top) 50%,
+      var(--swatch-light-bottom) 50%,
+      var(--swatch-light-bottom) 100%
+    );
+  }
+
+  .color-swatch:hover {
+    transform: scale(1.08);
+  }
+
+  .color-swatch:focus-visible {
+    outline: 2px solid ${color.primary[50]};
+    outline-offset: 2px;
+  }
+
+  .color-swatch-selected {
+    box-shadow: 0 0 0 1px ${color.primary[10]}, 0 0 0 3px ${color.primary[50]};
+  }
+
+  .color-swatch-check {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    --leo-icon-size: 28px;
+    --leo-icon-color: ${color.primary[50]};
+  }
+
+  /* Segmented Control customization */
+  .customize-option-row leo-segmented-control {
+    --leo-segmentedcontrol-radius: 1000px;
+    --leo-segmentedcontrol-background: ${color.neutral[10]};
+  }
+
+  .customize-option-row leo-segmented-control-item {
+    --leo-segmentedcontrolitem-icon-gap: ${spacing.xs};
+  }
+
+  .customize-option-row leo-icon {
+    --leo-icon-size: 20px;
+  }
+
   .footer {
     display: flex;
     width: 100%;
@@ -709,6 +857,43 @@ export const style = scoped.css`
       overflow: hidden;
     }
 
+    .mock-window-preview {
+      max-height: 255px;
+      flex: 0 0 auto;
+      height: 200px;
+    }
+
+    .customize-content {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .customize-options {
+      width: 100%;
+    }
+
+    .customize-option-row {
+      flex-wrap: wrap;
+      gap: ${spacing.l};
+    }
+
+    .customize-option-label {
+      flex: 1 0 100%;
+    }
+
+    .customize-option-row leo-segmented-control {
+      width: 100%;
+    }
+
+    .customize-colors-row {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: ${spacing.l};
+    }
+
+    .color-swatch {
+      flex: 0 0 auto;
+    }
 
     .footer {
       flex-direction: column;
