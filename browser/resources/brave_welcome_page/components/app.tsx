@@ -108,14 +108,6 @@ export function App() {
   const isFirstStep = currentStepIndex === 0
   const isLastStep = currentStepIndex === steps.length - 1
 
-  const stepProps = {
-    onNext: handleNext,
-    onBack: handleBack,
-    onSkip: handleSkip,
-    isFirstStep,
-    isLastStep
-  }
-
   const getTransitionClass = () => {
     if (transitionState === 'idle') return 'step-visible'
     if (transitionState === 'exiting') {
@@ -136,10 +128,22 @@ export function App() {
               <Icon name='social-brave-release-favicon-fullheight-color'/>
             </div>
             <div className={`step-wrapper ${getTransitionClass()}`}>
-              <DisplayedContent {...stepProps} />
+              <DisplayedContent
+                onNext={handleNext}
+                onBack={handleBack}
+                onSkip={handleSkip}
+                isFirstStep={isFirstStep}
+                isLastStep={isLastStep}
+              />
             </div>
           </div>
-          <CurrentFooter {...stepProps} />
+          <CurrentFooter
+            onNext={handleNext}
+            onBack={handleBack}
+            onSkip={handleSkip}
+            isFirstStep={isFirstStep}
+            isLastStep={isLastStep}
+          />
         </div>
       </div>
     </ImportDataProvider>
