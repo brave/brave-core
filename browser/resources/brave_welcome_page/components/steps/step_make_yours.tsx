@@ -12,15 +12,19 @@ import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 import { StepContentProps, StepFooterProps } from '../types'
 import wallpaperImage from '../img/bg-light.jpg'
 
-function MockBrowserWindowHorizontal() {
+interface MockBrowserWindowVariantProps {
+  themeClass: string
+}
+
+function MockBrowserWindowHorizontal({ themeClass }: MockBrowserWindowVariantProps) {
   return (
-    <div className="browser-chrome">
+    <div className={`browser-chrome ${themeClass}`}>
       {/* Tab Bar */}
       <div className="browser-tabbar">
         <div className="browser-tabs">
           {/* Pinned GitHub tab */}
           <div className="browser-tab pinned">
-            <Icon name="social-github" />
+            <Icon name="examplecom-color" />
           </div>
           {/* Active tab */}
           <div className="browser-tab active">
@@ -88,9 +92,9 @@ function MockBrowserWindowHorizontal() {
   )
 }
 
-function MockBrowserWindowVertical() {
+function MockBrowserWindowVertical({ themeClass }: MockBrowserWindowVariantProps) {
   return (
-    <div className="browser-chrome vertical">
+    <div className={`browser-chrome vertical ${themeClass}`}>
       {/* Address Bar (at top for vertical layout) */}
       <div className="browser-addressbar">
         <div className="addressbar-actions">
@@ -133,7 +137,7 @@ function MockBrowserWindowVertical() {
           {/* Pinned tabs row */}
           <div className="pinned-tabs-row">
             <div className="pinned-tab">
-              <Icon name="social-github" />
+              <Icon name="examplecom-color" />
             </div>
             <div className="pinned-tab">
               <Icon name="google-calendar-color" />
@@ -170,13 +174,16 @@ function MockBrowserWindowVertical() {
 
 interface MockBrowserWindowProps {
   layout: 'horizontal' | 'vertical'
+  effectiveTheme: 'light' | 'dark'
 }
 
-function MockBrowserWindow({ layout }: MockBrowserWindowProps) {
+function MockBrowserWindow({ layout, effectiveTheme }: MockBrowserWindowProps) {
+  const themeClass = `preview-theme-${effectiveTheme}`
+  
   if (layout === 'vertical') {
-    return <MockBrowserWindowVertical />
+    return <MockBrowserWindowVertical themeClass={themeClass} />
   }
-  return <MockBrowserWindowHorizontal />
+  return <MockBrowserWindowHorizontal themeClass={themeClass} />
 }
 
 type TabLayout = 'horizontal' | 'vertical'
@@ -206,10 +213,39 @@ const colorOptions: ColorOption[] = [
   { id: 'lavender', lightTop: '#E6D7FA', lightBottom: '#D5BBF6', darkTop: '#563D72', darkBottom: '#563D72' },
 ]
 
+// Hook to detect system theme preference
+function useSystemTheme(): 'light' | 'dark' {
+  const [systemTheme, setSystemTheme] = React.useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    return 'light'
+  })
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light')
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  return systemTheme
+}
+
 export function StepMakeYoursContent({}: StepContentProps) {
   const [tabLayout, setTabLayout] = React.useState<TabLayout>('horizontal')
   const [theme, setTheme] = React.useState<Theme>('system')
   const [selectedColor, setSelectedColor] = React.useState<string>('default')
+  
+  const systemTheme = useSystemTheme()
+  
+  // Compute effective theme: use system preference when 'system' is selected
+  const effectiveTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme
 
   const handleTabLayoutChange = (detail: { value: string | undefined }) => {
     if (detail.value) {
@@ -238,7 +274,7 @@ export function StepMakeYoursContent({}: StepContentProps) {
             <div className="mock-window-wallpaper">
               <img src={wallpaperImage} alt="" className="mock-window-wallpaper-image" />
             </div>
-            <MockBrowserWindow layout={tabLayout} />
+            <MockBrowserWindow layout={tabLayout} effectiveTheme={effectiveTheme} />
           </div>
 
           {/* Options */}
