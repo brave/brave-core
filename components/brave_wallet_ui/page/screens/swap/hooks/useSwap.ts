@@ -415,7 +415,13 @@ export const useSwap = () => {
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
-      if (!fromAccount || !toAccountId || !fromNetwork || !fromAssetBalance) {
+      const effectiveToAccountId = overrides.toAccountId ?? toAccountId
+      if (
+        !fromAccount
+        || !effectiveToAccountId
+        || !fromNetwork
+        || !fromAssetBalance
+      ) {
         return
       }
 
@@ -428,6 +434,7 @@ export const useSwap = () => {
           overrides.toAmount === undefined ? toAmount : overrides.toAmount,
         fromToken: overrides.fromToken || fromToken,
         toToken: overrides.toToken || toToken,
+        toAccountId: effectiveToAccountId,
         editingFromOrToAmount,
         provider:
           overrides.provider === undefined
@@ -480,7 +487,7 @@ export const useSwap = () => {
                   .format()
               : '',
           fromToken: params.fromToken.contractAddress,
-          toAccountId: toAccountId,
+          toAccountId: params.toAccountId,
           toChainId: params.toToken.chainId,
           toAmount:
             params.editingFromOrToAmount === 'to' && params.toAmount
@@ -762,6 +769,7 @@ export const useSwap = () => {
       await handleQuoteRefreshInternal({
         toToken: token,
         toAmount: '',
+        toAccountId: account?.accountId,
       })
     },
     [

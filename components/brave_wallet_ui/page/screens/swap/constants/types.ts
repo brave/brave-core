@@ -98,6 +98,7 @@ export type SwapParamsOverrides = {
   toAmount?: string
   fromToken?: BraveWallet.BlockchainToken
   toToken?: BraveWallet.BlockchainToken
+  toAccountId?: BraveWallet.AccountId
   provider?: BraveWallet.SwapProvider
   slippage?: string
   selectedQuoteOptionId?: string
