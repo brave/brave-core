@@ -105,14 +105,6 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
               IsPrivacySandboxCurrentlyUnrestricted,
               (),
               (const, override));
-  MOCK_METHOD(bool,
-              IsCookieDeprecationExperimentEligible,
-              (),
-              (const, override));
-  MOCK_METHOD(TpcdExperimentEligibility,
-              GetCookieDeprecationExperimentCurrentEligibility,
-              (),
-              (const, override));
 };
 
 class PrivacySandboxSettingsTest : public testing::Test {
