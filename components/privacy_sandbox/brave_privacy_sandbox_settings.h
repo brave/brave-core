@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
-#include "components/privacy_sandbox/tpcd_experiment_eligibility.h"
 
 class HostContentSettingsMap;
 class PrefService;
@@ -99,8 +98,6 @@ class BravePrivacySandboxSettings
   bool IsPrivateAggregationDebugModeAllowed(
       const url::Origin& top_frame_origin,
       const url::Origin& reporting_origin) const override;
-  privacy_sandbox::TpcdExperimentEligibility
-  GetCookieDeprecationExperimentCurrentEligibility() const override;
 
   void SetAllPrivacySandboxAllowedForTesting() override;
   void SetTopicsBlockedForTesting() override;

@@ -162,13 +162,6 @@ bool BravePrivacySandboxSettings::IsPrivateAggregationDebugModeAllowed(
   return false;
 }
 
-privacy_sandbox::TpcdExperimentEligibility
-BravePrivacySandboxSettings::GetCookieDeprecationExperimentCurrentEligibility()
-    const {
-  return privacy_sandbox::TpcdExperimentEligibility(
-      privacy_sandbox::TpcdExperimentEligibility::Reason::k3pCookiesBlocked);
-}
-
 void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
 void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
 
