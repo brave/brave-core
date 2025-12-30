@@ -482,7 +482,7 @@ export const style = scoped.css`
   .browser-morphing-header .transfer-elements {
     display: flex;
     align-items: center;
-    gap: ${spacing['2Xl']};
+    gap: ${spacing.xl};
     transition: opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s;
   }
 
@@ -657,6 +657,13 @@ export const style = scoped.css`
     opacity: 1;
   }
 
+  /* Apply grayscale to browser icon when import is complete */
+  .browser-morphing-header.import-complete .browser-item-icon {
+    filter: grayscale(1);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+  }
+
   @keyframes arrowPulse {
     0%, 100% {
       opacity: 0.3;
@@ -679,7 +686,7 @@ export const style = scoped.css`
   .transfer-spinner {
     position: absolute;
     bottom: -4px;
-    right: -4px;
+    right: -12px;
     background: ${color.container.background};
     border-radius: 50%;
     display: flex;
@@ -707,7 +714,7 @@ export const style = scoped.css`
   .transfer-complete {
     position: absolute;
     bottom: -4px;
-    right: -4px;
+    right: -12px;
     background: ${color.container.background};
     border-radius: 50%;
     display: flex;
