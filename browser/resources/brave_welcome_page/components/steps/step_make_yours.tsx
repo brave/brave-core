@@ -272,7 +272,16 @@ export function StepMakeYoursContent({}: StepContentProps) {
           {/* Mock Window Preview */}
           <div className="mock-window-preview">
             <div className="mock-window-wallpaper">
-              <img src={effectiveTheme === 'dark' ? wallpaperDark : wallpaperLight} alt="" className="mock-window-wallpaper-image" />
+              <img 
+                src={wallpaperLight} 
+                alt="" 
+                className={`mock-window-wallpaper-image ${effectiveTheme === 'light' ? 'wallpaper-visible' : 'wallpaper-hidden'}`} 
+              />
+              <img 
+                src={wallpaperDark} 
+                alt="" 
+                className={`mock-window-wallpaper-image ${effectiveTheme === 'dark' ? 'wallpaper-visible' : 'wallpaper-hidden'}`} 
+              />
             </div>
             <MockBrowserWindow layout={tabLayout} effectiveTheme={effectiveTheme} />
           </div>
