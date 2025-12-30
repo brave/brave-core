@@ -12,15 +12,15 @@ use crate::{
     remote::{
         fetch,
         fetch::{
+            refmap::Source,
             refs::update::{Mode, TypeChange},
-            RefLogMessage, Source,
+            RefLogMessage,
         },
     },
     Repository,
 };
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod update;
 
 /// Information about the update of a single reference, corresponding the respective entry in [`RefMap::mappings`][crate::remote::fetch::RefMap::mappings].
@@ -64,7 +64,7 @@ impl From<Mode> for Update {
 pub(crate) fn update(
     repo: &Repository,
     message: RefLogMessage,
-    mappings: &[fetch::Mapping],
+    mappings: &[fetch::refmap::Mapping],
     refspecs: &[gix_refspec::RefSpec],
     extra_refspecs: &[gix_refspec::RefSpec],
     fetch_tags: fetch::Tags,
@@ -80,7 +80,7 @@ pub(crate) fn update(
         .to_refspec()
         .filter(|_| matches!(fetch_tags, crate::remote::fetch::Tags::Included));
     for (remote, local, spec, is_implicit_tag) in mappings.iter().filter_map(
-        |fetch::Mapping {
+        |fetch::refmap::Mapping {
              remote,
              local,
              spec_index,
@@ -90,18 +90,20 @@ pub(crate) fn update(
                     remote,
                     local,
                     spec,
-                    implicit_tag_refspec.map_or(false, |tag_spec| spec.to_ref() == tag_spec),
+                    implicit_tag_refspec.is_some_and(|tag_spec| spec.to_ref() == tag_spec),
                 )
             })
         },
     ) {
         // `None` only if unborn.
         let remote_id = remote.as_id();
-        if matches!(dry_run, fetch::DryRun::No) && !remote_id.map_or(true, |id| repo.objects.exists(id)) {
+        if matches!(dry_run, fetch::DryRun::No) && !remote_id.is_none_or(|id| repo.objects.exists(id)) {
             if let Some(remote_id) = remote_id.filter(|id| !repo.objects.exists(id)) {
                 let update = if is_implicit_tag {
                     Mode::ImplicitTagNotSentByRemote.into()
                 } else {
+                    // Assure the ODB is not to blame for the missing object.
+                    repo.try_find_object(remote_id)?;
                     Mode::RejectedSourceObjectNotFound { id: remote_id.into() }.into()
                 };
                 updates.push(update);
@@ -125,7 +127,7 @@ pub(crate) fn update(
 
                         match existing
                             .try_id()
-                            .map_or_else(|| existing.clone().peel_to_id_in_place(), Ok)
+                            .map_or_else(|| existing.clone().peel_to_id(), Ok)
                             .map(crate::Id::detach)
                         {
                             Ok(local_id) => {
@@ -155,22 +157,22 @@ pub(crate) fn update(
                                                 .find_object(local_id)?
                                                 .try_into_commit()
                                                 .map_err(|_| ())
-                                                .and_then(|c| {
-                                                    c.committer().map(|a| a.time.seconds).map_err(|_| ())
-                                                }).and_then(|local_commit_time|
-                                                remote_id
-                                                    .to_owned()
-                                                    .ancestors(&repo.objects)
-                                                    .sorting(
-                                                        gix_traverse::commit::simple::Sorting::ByCommitTimeNewestFirstCutoffOlderThan {
-                                                            seconds: local_commit_time
-                                                        },
-                                                    )
-                                                    .map_err(|_| ())
-                                            );
+                                                .and_then(|c| c.committer().map(|a| a.seconds()).map_err(|_| ()))
+                                                .and_then(|local_commit_time| {
+                                                    remote_id
+                                                        .to_owned()
+                                                        .ancestors(&repo.objects)
+                                                        .sorting(
+                                                            gix_traverse::commit::simple::Sorting::ByCommitTimeCutoff {
+                                                                order: Default::default(),
+                                                                seconds: local_commit_time,
+                                                            },
+                                                        )
+                                                        .map_err(|_| ())
+                                                });
                                             match ancestors {
                                                 Ok(mut ancestors) => {
-                                                    ancestors.any(|cid| cid.map_or(false, |c| c.id == local_id))
+                                                    ancestors.any(|cid| cid.is_ok_and(|c| c.id == local_id))
                                                 }
                                                 Err(_) => {
                                                     force = true;
@@ -284,7 +286,7 @@ pub(crate) fn update(
             mode,
             type_change,
             edit_index,
-        })
+        });
     }
 
     for (update_index, edit_index) in edit_indices_to_validate {
@@ -312,7 +314,7 @@ pub(crate) fn update(
                 Change::Delete { .. } => {
                     unreachable!("we don't do that here")
                 }
-            };
+            }
         }
     }
 
@@ -374,7 +376,7 @@ fn update_needs_adjustment_as_edits_symbolic_target_is_missing(
                 Change::Delete { .. } => {
                     unreachable!("we don't ever delete here")
                 }
-            };
+            }
             let target_ref_exists_locally = repo.refs.try_find(new_target_ref).ok().flatten().is_some();
             if target_ref_exists_locally {
                 return false;
@@ -389,7 +391,7 @@ fn update_needs_adjustment_as_edits_symbolic_target_is_missing(
 fn new_value_by_remote(
     repo: &Repository,
     remote: &Source,
-    mappings: &[fetch::Mapping],
+    mappings: &[fetch::refmap::Mapping],
 ) -> Result<Target, update::Error> {
     let remote_id = remote.as_id();
     Ok(
@@ -442,7 +444,7 @@ fn insert_head(
     head: Option<crate::Head<'_>>,
     out: &mut BTreeMap<gix_ref::FullName, Vec<PathBuf>>,
 ) -> Result<(), update::Error> {
-    if let Some((head, wd)) = head.and_then(|head| head.repo.work_dir().map(|wd| (head, wd))) {
+    if let Some((head, wd)) = head.and_then(|head| head.repo.workdir().map(|wd| (head, wd))) {
         out.entry("HEAD".try_into().expect("valid"))
             .or_default()
             .push(wd.to_owned());

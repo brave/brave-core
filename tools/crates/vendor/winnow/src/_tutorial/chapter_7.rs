@@ -604,7 +604,7 @@
 //! #              })
 //! #             .map(Hex)
 //!             .parse(input)
-//!             .map_err(|e| HexError::from_parse(e, input))
+//!             .map_err(|e| HexError::from_parse(e))
 //!     }
 //! }
 //!
@@ -620,18 +620,17 @@
 //! }
 //!
 //! impl HexError {
-//!     fn from_parse(error: ParseError<&str, ContextError>, input: &str) -> Self {
+//!     // Avoiding `From` so `winnow` types don't become part of our public API
+//!     fn from_parse(error: ParseError<&str, ContextError>) -> Self {
 //!         // The default renderer for `ContextError` is still used but that can be
 //!         // customized as well to better fit your needs.
 //!         let message = error.inner().to_string();
-//!         let input = input.to_owned();
-//!         let start = error.offset();
+//!         let input = (*error.input()).to_owned();
 //!         // Assume the error span is only for the first `char`.
-//!         // Semantic errors are free to choose the entire span returned by `Parser::with_span`.
-//!         let end = (start + 1..).find(|e| input.is_char_boundary(*e)).unwrap_or(start);
+//!         let span = error.char_span();
 //!         Self {
 //!             message,
-//!             span: start..end,
+//!             span,
 //!             input,
 //!         }
 //!     }
@@ -712,6 +711,11 @@
 //!     assert_eq!(input.parse::<Hex>().unwrap_err().to_string(), error);
 //! }
 //! ```
+//!
+//! To add spans to your parsed data for inclusion in semantic errors, see [`Parser::with_span`].
+//!
+//! For richer syntactic errors with spans,
+//! consider separating lexing and parsing and annotating your tokens with [`Parser::with_span`].
 
 #![allow(unused_imports)]
 use super::chapter_1;

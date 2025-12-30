@@ -21,15 +21,20 @@ pub struct Match<'a> {
     pub sequence_number: usize,
 }
 
-/// An implementation of the [`Pattern`] trait for ignore patterns.
-#[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Default)]
-pub struct Ignore;
+/// An implementation of the [`Pattern`] trait for ignore-patterns.
+#[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
+pub struct Ignore {
+    /// If `support_precious` is `true`, we will parse `$` prefixed entries as precious.
+    /// This is backward-incompatible as files that actually start with `$` like `$houdini`
+    /// will then not be ignored anymore, instead it ignores `houdini`.
+    pub support_precious: bool,
+}
 
 impl Pattern for Ignore {
     type Value = crate::Kind;
 
-    fn bytes_to_patterns(bytes: &[u8], _source: &std::path::Path) -> Vec<pattern::Mapping<Self::Value>> {
-        crate::parse(bytes)
+    fn bytes_to_patterns(&self, bytes: &[u8], _source: &std::path::Path) -> Vec<pattern::Mapping<Self::Value>> {
+        crate::parse(bytes, self.support_precious)
             .map(|(pattern, line_number, kind)| pattern::Mapping {
                 pattern,
                 value: kind,
@@ -44,14 +49,22 @@ impl Search {
     /// Given `git_dir`, a `.git` repository, load static ignore patterns from `info/exclude`
     /// and from `excludes_file` if it is provided.
     /// Note that it's not considered an error if the provided `excludes_file` does not exist.
-    pub fn from_git_dir(git_dir: &Path, excludes_file: Option<PathBuf>, buf: &mut Vec<u8>) -> std::io::Result<Self> {
+    /// `parse` is a way to parse bytes to ignore patterns.
+    pub fn from_git_dir(
+        git_dir: &Path,
+        excludes_file: Option<PathBuf>,
+        buf: &mut Vec<u8>,
+        parse: Ignore,
+    ) -> std::io::Result<Self> {
         let mut group = Self::default();
 
         let follow_symlinks = true;
         // order matters! More important ones first.
         group.patterns.extend(
             excludes_file
-                .and_then(|file| pattern::List::<Ignore>::from_file(file, None, follow_symlinks, buf).transpose())
+                .and_then(|file| {
+                    pattern::List::<Ignore>::from_file(file, None, follow_symlinks, buf, parse).transpose()
+                })
                 .transpose()?,
         );
         group.patterns.extend(pattern::List::<Ignore>::from_file(
@@ -59,23 +72,25 @@ impl Search {
             None,
             follow_symlinks,
             buf,
+            parse,
         )?);
         Ok(group)
     }
 
     /// Parse a list of ignore patterns, using slashes as path separators.
-    pub fn from_overrides(patterns: impl IntoIterator<Item = impl Into<OsString>>) -> Self {
-        Self::from_overrides_inner(&mut patterns.into_iter().map(Into::into))
+    /// `parse` is a way to parse bytes to ignore patterns.
+    pub fn from_overrides(patterns: impl IntoIterator<Item = impl Into<OsString>>, parse: Ignore) -> Self {
+        Self::from_overrides_inner(&mut patterns.into_iter().map(Into::into), parse)
     }
 
-    fn from_overrides_inner(patterns: &mut dyn Iterator<Item = OsString>) -> Self {
+    fn from_overrides_inner(patterns: &mut dyn Iterator<Item = OsString>, parse: Ignore) -> Self {
         Search {
             patterns: vec![pattern::List {
                 patterns: patterns
                     .enumerate()
                     .filter_map(|(seq_id, pattern)| {
                         let pattern = gix_path::try_into_bstr(PathBuf::from(pattern)).ok()?;
-                        crate::parse(pattern.as_ref())
+                        crate::parse(pattern.as_ref(), parse.support_precious)
                             .next()
                             .map(|(p, _seq_id, kind)| pattern::Mapping {
                                 pattern: p,
@@ -95,9 +110,16 @@ impl Search {
 impl Search {
     /// Add patterns as parsed from `bytes`, providing their `source` path and possibly their `root` path, the path they
     /// are relative to. This also means that `source` is contained within `root` if `root` is provided.
-    pub fn add_patterns_buffer(&mut self, bytes: &[u8], source: impl Into<PathBuf>, root: Option<&Path>) {
+    /// Use `parse` to control how ignore patterns are parsed.
+    pub fn add_patterns_buffer(
+        &mut self,
+        bytes: &[u8],
+        source: impl Into<PathBuf>,
+        root: Option<&Path>,
+        parse: Ignore,
+    ) {
         self.patterns
-            .push(pattern::List::from_bytes(bytes, source.into(), root));
+            .push(pattern::List::from_bytes(bytes, source.into(), root, parse));
     }
 }
 

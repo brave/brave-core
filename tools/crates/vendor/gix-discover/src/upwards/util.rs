@@ -22,8 +22,7 @@ pub(crate) fn shorten_path_with_cwd(cursor: PathBuf, cwd: &Path) -> PathBuf {
             let relative_path_components = path_relative_to_cwd.components().count();
             let current_component_len = cursor.components().map(comp_len).sum::<usize>();
             (relative_path_components * "..".len() < current_component_len).then(|| {
-                std::iter::repeat("..")
-                    .take(relative_path_components)
+                std::iter::repeat_n("..", relative_path_components)
                     .chain(Some(DOT_GIT_DIR))
                     .collect()
             })

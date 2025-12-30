@@ -27,7 +27,7 @@ pub(super) struct Counters {
 pub(super) struct JobsEventCounter(usize);
 
 impl JobsEventCounter {
-    pub(super) const DUMMY: JobsEventCounter = JobsEventCounter(std::usize::MAX);
+    pub(super) const DUMMY: JobsEventCounter = JobsEventCounter(usize::MAX);
 
     #[inline]
     pub(super) fn as_usize(self) -> usize {
@@ -152,8 +152,7 @@ impl AtomicCounters {
         let old_value = Counters::new(self.value.fetch_sub(ONE_INACTIVE, Ordering::SeqCst));
         debug_assert!(
             old_value.inactive_threads() > 0,
-            "sub_inactive_thread: old_value {:?} has no inactive threads",
-            old_value,
+            "sub_inactive_thread: old_value {old_value:?} has no inactive threads",
         );
         debug_assert!(
             old_value.sleeping_threads() <= old_value.inactive_threads(),
@@ -166,7 +165,7 @@ impl AtomicCounters {
         // Current heuristic: whenever an inactive thread goes away, if
         // there are any sleeping threads, wake 'em up.
         let sleeping_threads = old_value.sleeping_threads();
-        std::cmp::min(sleeping_threads, 2)
+        Ord::min(sleeping_threads, 2)
     }
 
     /// Subtracts a sleeping thread. This cannot fail, but it is only
@@ -178,8 +177,7 @@ impl AtomicCounters {
         let old_value = Counters::new(self.value.fetch_sub(ONE_SLEEPING, Ordering::SeqCst));
         debug_assert!(
             old_value.sleeping_threads() > 0,
-            "sub_sleeping_thread: old_value {:?} had no sleeping threads",
-            old_value,
+            "sub_sleeping_thread: old_value {old_value:?} had no sleeping threads",
         );
         debug_assert!(
             old_value.sleeping_threads() <= old_value.inactive_threads(),
@@ -194,13 +192,11 @@ impl AtomicCounters {
     pub(super) fn try_add_sleeping_thread(&self, old_value: Counters) -> bool {
         debug_assert!(
             old_value.inactive_threads() > 0,
-            "try_add_sleeping_thread: old_value {:?} has no inactive threads",
-            old_value,
+            "try_add_sleeping_thread: old_value {old_value:?} has no inactive threads",
         );
         debug_assert!(
             old_value.sleeping_threads() < THREADS_MAX,
-            "try_add_sleeping_thread: old_value {:?} has too many sleeping threads",
-            old_value,
+            "try_add_sleeping_thread: old_value {old_value:?} has too many sleeping threads",
         );
 
         let mut new_value = old_value;

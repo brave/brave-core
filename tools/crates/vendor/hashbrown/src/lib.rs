@@ -17,6 +17,7 @@
         core_intrinsics,
         dropck_eyepatch,
         min_specialization,
+        trivial_clone,
         extend_one,
         allocator_api,
         slice_ptr_get,
@@ -38,15 +39,18 @@
 #![warn(missing_docs)]
 #![warn(rust_2018_idioms)]
 #![cfg_attr(feature = "nightly", warn(fuzzy_provenance_casts))]
-#![cfg_attr(feature = "nightly", allow(internal_features))]
-
-/// Default hasher for [`HashMap`] and [`HashSet`].
-#[cfg(feature = "default-hasher")]
-pub type DefaultHashBuilder = foldhash::fast::RandomState;
-
-/// Dummy default hasher for [`HashMap`] and [`HashSet`].
-#[cfg(not(feature = "default-hasher"))]
-pub enum DefaultHashBuilder {}
+#![cfg_attr(
+    feature = "nightly",
+    allow(clippy::incompatible_msrv, internal_features)
+)]
+#![cfg_attr(
+    all(feature = "nightly", target_arch = "loongarch64"),
+    feature(stdarch_loongarch)
+)]
+#![cfg_attr(
+    all(feature = "nightly", feature = "default-hasher"),
+    feature(hasher_prefixfree_extras)
+)]
 
 #[cfg(test)]
 #[macro_use]
@@ -56,14 +60,15 @@ extern crate std;
 #[cfg_attr(feature = "rustc-dep-of-std", allow(unused_extern_crates))]
 extern crate alloc;
 
-#[cfg(feature = "nightly")]
+#[doc = include_str!("../README.md")]
 #[cfg(doctest)]
-doc_comment::doctest!("../README.md");
+pub struct ReadmeDoctests;
 
 #[macro_use]
 mod macros;
 
 mod control;
+mod hasher;
 mod raw;
 mod util;
 
@@ -76,6 +81,10 @@ mod rustc_entry;
 mod scopeguard;
 mod set;
 mod table;
+
+pub use crate::hasher::DefaultHashBuilder;
+#[cfg(feature = "default-hasher")]
+pub use crate::hasher::DefaultHasher;
 
 pub mod hash_map {
     //! A hash map implemented with quadratic probing and SIMD lookup.

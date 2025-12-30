@@ -19,13 +19,13 @@ impl Sink {
     }
 }
 
-impl crate::traits::Write for Sink {
+impl gix_object::Write for Sink {
     fn write_stream(
         &self,
         kind: gix_object::Kind,
         mut size: u64,
         from: &mut dyn io::Read,
-    ) -> Result<gix_hash::ObjectId, crate::write::Error> {
+    ) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
         let mut buf = [0u8; u16::MAX as usize];
         let header = gix_object::encode::loose_header(kind, size);
 
@@ -36,7 +36,7 @@ impl crate::traits::Write for Sink {
             Ok(())
         };
 
-        let mut hasher = gix_features::hash::hasher(self.object_hash);
+        let mut hasher = gix_hash::hasher(self.object_hash);
         hasher.update(&header);
         possibly_compress(&header).map_err(Box::new)?;
 
@@ -53,6 +53,6 @@ impl crate::traits::Write for Sink {
             c.reset();
         }
 
-        Ok(hasher.digest().into())
+        Ok(hasher.try_finalize()?)
     }
 }

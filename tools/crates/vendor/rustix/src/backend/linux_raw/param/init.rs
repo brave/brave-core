@@ -13,46 +13,44 @@ use core::ptr::{null_mut, read, NonNull};
 #[cfg(feature = "runtime")]
 use core::sync::atomic::AtomicBool;
 use core::sync::atomic::{AtomicPtr, AtomicUsize, Ordering};
-use linux_raw_sys::elf::*;
-use linux_raw_sys::general::{
+use linux_raw_sys::auxvec::{
     AT_CLKTCK, AT_EXECFN, AT_HWCAP, AT_HWCAP2, AT_MINSIGSTKSZ, AT_NULL, AT_PAGESZ, AT_SYSINFO_EHDR,
 };
 #[cfg(feature = "runtime")]
-use linux_raw_sys::general::{AT_ENTRY, AT_PHDR, AT_PHENT, AT_PHNUM, AT_RANDOM, AT_SECURE};
+use linux_raw_sys::auxvec::{AT_ENTRY, AT_PHDR, AT_PHENT, AT_PHNUM, AT_RANDOM, AT_SECURE};
+use linux_raw_sys::elf::*;
 
 #[cfg(feature = "param")]
 #[inline]
 pub(crate) fn page_size() -> usize {
-    unsafe { PAGE_SIZE.load(Ordering::Relaxed) }
+    PAGE_SIZE.load(Ordering::Relaxed)
 }
 
 #[cfg(feature = "param")]
 #[inline]
 pub(crate) fn clock_ticks_per_second() -> u64 {
-    unsafe { CLOCK_TICKS_PER_SECOND.load(Ordering::Relaxed) as u64 }
+    CLOCK_TICKS_PER_SECOND.load(Ordering::Relaxed) as u64
 }
 
 #[cfg(feature = "param")]
 #[inline]
 pub(crate) fn linux_hwcap() -> (usize, usize) {
-    unsafe {
-        (
-            HWCAP.load(Ordering::Relaxed),
-            HWCAP2.load(Ordering::Relaxed),
-        )
-    }
+    (
+        HWCAP.load(Ordering::Relaxed),
+        HWCAP2.load(Ordering::Relaxed),
+    )
 }
 
 #[cfg(feature = "param")]
 #[inline]
 pub(crate) fn linux_minsigstksz() -> usize {
-    unsafe { MINSIGSTKSZ.load(Ordering::Relaxed) }
+    MINSIGSTKSZ.load(Ordering::Relaxed)
 }
 
 #[cfg(feature = "param")]
 #[inline]
 pub(crate) fn linux_execfn() -> &'static CStr {
-    let execfn = unsafe { EXECFN.load(Ordering::Relaxed) };
+    let execfn = EXECFN.load(Ordering::Relaxed);
 
     // SAFETY: We initialize `EXECFN` to a valid `CStr` pointer, and we assume
     // the `AT_EXECFN` value provided by the kernel points to a valid C string.
@@ -62,62 +60,60 @@ pub(crate) fn linux_execfn() -> &'static CStr {
 #[cfg(feature = "runtime")]
 #[inline]
 pub(crate) fn linux_secure() -> bool {
-    unsafe { SECURE.load(Ordering::Relaxed) }
+    SECURE.load(Ordering::Relaxed)
 }
 
 #[cfg(feature = "runtime")]
 #[inline]
 pub(crate) fn exe_phdrs() -> (*const c_void, usize, usize) {
-    unsafe {
-        (
-            PHDR.load(Ordering::Relaxed).cast(),
-            PHENT.load(Ordering::Relaxed),
-            PHNUM.load(Ordering::Relaxed),
-        )
-    }
+    (
+        PHDR.load(Ordering::Relaxed).cast(),
+        PHENT.load(Ordering::Relaxed),
+        PHNUM.load(Ordering::Relaxed),
+    )
 }
 
 /// `AT_SYSINFO_EHDR` isn't present on all platforms in all configurations, so
 /// if we don't see it, this function returns a null pointer.
 #[inline]
 pub(in super::super) fn sysinfo_ehdr() -> *const Elf_Ehdr {
-    unsafe { SYSINFO_EHDR.load(Ordering::Relaxed) }
+    SYSINFO_EHDR.load(Ordering::Relaxed)
 }
 
 #[cfg(feature = "runtime")]
 #[inline]
 pub(crate) fn entry() -> usize {
-    unsafe { ENTRY.load(Ordering::Relaxed) }
+    ENTRY.load(Ordering::Relaxed)
 }
 
 #[cfg(feature = "runtime")]
 #[inline]
 pub(crate) fn random() -> *const [u8; 16] {
-    unsafe { RANDOM.load(Ordering::Relaxed) }
+    RANDOM.load(Ordering::Relaxed)
 }
 
-static mut PAGE_SIZE: AtomicUsize = AtomicUsize::new(0);
-static mut CLOCK_TICKS_PER_SECOND: AtomicUsize = AtomicUsize::new(0);
-static mut HWCAP: AtomicUsize = AtomicUsize::new(0);
-static mut HWCAP2: AtomicUsize = AtomicUsize::new(0);
-static mut MINSIGSTKSZ: AtomicUsize = AtomicUsize::new(0);
-static mut SYSINFO_EHDR: AtomicPtr<Elf_Ehdr> = AtomicPtr::new(null_mut());
+static PAGE_SIZE: AtomicUsize = AtomicUsize::new(0);
+static CLOCK_TICKS_PER_SECOND: AtomicUsize = AtomicUsize::new(0);
+static HWCAP: AtomicUsize = AtomicUsize::new(0);
+static HWCAP2: AtomicUsize = AtomicUsize::new(0);
+static MINSIGSTKSZ: AtomicUsize = AtomicUsize::new(0);
+static SYSINFO_EHDR: AtomicPtr<Elf_Ehdr> = AtomicPtr::new(null_mut());
 // Initialize `EXECFN` to a valid `CStr` pointer so that we don't need to check
 // for null on every `execfn` call.
-static mut EXECFN: AtomicPtr<c::c_char> = AtomicPtr::new(b"\0".as_ptr() as _);
+static EXECFN: AtomicPtr<c::c_char> = AtomicPtr::new(b"\0".as_ptr() as _);
 #[cfg(feature = "runtime")]
-static mut SECURE: AtomicBool = AtomicBool::new(false);
+static SECURE: AtomicBool = AtomicBool::new(false);
 // Use `dangling` so that we can always treat it like an empty slice.
 #[cfg(feature = "runtime")]
-static mut PHDR: AtomicPtr<Elf_Phdr> = AtomicPtr::new(NonNull::dangling().as_ptr());
+static PHDR: AtomicPtr<Elf_Phdr> = AtomicPtr::new(NonNull::dangling().as_ptr());
 #[cfg(feature = "runtime")]
-static mut PHENT: AtomicUsize = AtomicUsize::new(0);
+static PHENT: AtomicUsize = AtomicUsize::new(0);
 #[cfg(feature = "runtime")]
-static mut PHNUM: AtomicUsize = AtomicUsize::new(0);
+static PHNUM: AtomicUsize = AtomicUsize::new(0);
 #[cfg(feature = "runtime")]
-static mut ENTRY: AtomicUsize = AtomicUsize::new(0);
+static ENTRY: AtomicUsize = AtomicUsize::new(0);
 #[cfg(feature = "runtime")]
-static mut RANDOM: AtomicPtr<[u8; 16]> = AtomicPtr::new(NonNull::dangling().as_ptr());
+static RANDOM: AtomicPtr<[u8; 16]> = AtomicPtr::new(NonNull::dangling().as_ptr());
 
 /// When "use-explicitly-provided-auxv" is enabled, we export a function to be
 /// called during initialization, and passed a pointer to the original

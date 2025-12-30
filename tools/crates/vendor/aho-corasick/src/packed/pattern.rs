@@ -211,7 +211,7 @@ pub(crate) struct Pattern<'a>(&'a [u8]);
 impl<'a> fmt::Debug for Pattern<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Pattern")
-            .field("lit", &String::from_utf8_lossy(&self.0))
+            .field("lit", &String::from_utf8_lossy(self.0))
             .finish()
     }
 }
@@ -224,7 +224,7 @@ impl<'p> Pattern<'p> {
 
     /// Returns the bytes of this pattern.
     pub(crate) fn bytes(&self) -> &[u8] {
-        &self.0
+        self.0
     }
 
     /// Returns the first `len` low nybbles from this pattern. If this pattern

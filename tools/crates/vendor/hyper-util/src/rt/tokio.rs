@@ -1,5 +1,56 @@
-#![allow(dead_code)]
-//! Tokio IO integration for hyper
+//! [`tokio`] runtime components integration for [`hyper`].
+//!
+//! [`hyper::rt`] exposes a set of traits to allow hyper to be agnostic to
+//! its underlying asynchronous runtime. This submodule provides glue for
+//! [`tokio`] users to bridge those types to [`hyper`]'s interfaces.
+//!
+//! # IO
+//!
+//! [`hyper`] abstracts over asynchronous readers and writers using [`Read`]
+//! and [`Write`], while [`tokio`] abstracts over this using [`AsyncRead`]
+//! and [`AsyncWrite`]. This submodule provides a collection of IO adaptors
+//! to bridge these two IO ecosystems together: [`TokioIo<I>`],
+//! [`WithHyperIo<I>`], and [`WithTokioIo<I>`].
+//!
+//! To compare and constrast these IO adaptors and to help explain which
+//! is the proper choice for your needs, here is a table showing which IO
+//! traits these implement, given two types `T` and `H` which implement
+//! Tokio's and Hyper's corresponding IO traits:
+//!
+//! |                    | [`AsyncRead`]    | [`AsyncWrite`]    | [`Read`]     | [`Write`]    |
+//! |--------------------|------------------|-------------------|--------------|--------------|
+//! | `T`                | ✅ **true**      | ✅ **true**       | ❌ **false** | ❌ **false** |
+//! | `H`                | ❌ **false**     | ❌ **false**      | ✅ **true**  | ✅ **true**  |
+//! | [`TokioIo<T>`]     | ❌ **false**     | ❌ **false**      | ✅ **true**  | ✅ **true**  |
+//! | [`TokioIo<H>`]     | ✅ **true**      | ✅ **true**       | ❌ **false** | ❌ **false** |
+//! | [`WithHyperIo<T>`] | ✅ **true**      | ✅ **true**       | ✅ **true**  | ✅ **true**  |
+//! | [`WithHyperIo<H>`] | ❌ **false**     | ❌ **false**      | ❌ **false** | ❌ **false** |
+//! | [`WithTokioIo<T>`] | ❌ **false**     | ❌ **false**      | ❌ **false** | ❌ **false** |
+//! | [`WithTokioIo<H>`] | ✅ **true**      | ✅ **true**       | ✅ **true**  | ✅ **true**  |
+//!
+//! For most situations, [`TokioIo<I>`] is the proper choice. This should be
+//! constructed, wrapping some underlying [`hyper`] or [`tokio`] IO, at the
+//! call-site of a function like [`hyper::client::conn::http1::handshake`].
+//!
+//! [`TokioIo<I>`] switches across these ecosystems, but notably does not
+//! preserve the existing IO trait implementations of its underlying IO. If
+//! one wishes to _extend_ IO with additional implementations,
+//! [`WithHyperIo<I>`] and [`WithTokioIo<I>`] are the correct choice.
+//!
+//! For example, a Tokio reader/writer can be wrapped in [`WithHyperIo<I>`].
+//! That will implement _both_ sets of IO traits. Conversely,
+//! [`WithTokioIo<I>`] will implement both sets of IO traits given a
+//! reader/writer that implements Hyper's [`Read`] and [`Write`].
+//!
+//! See [`tokio::io`] and ["_Asynchronous IO_"][tokio-async-docs] for more
+//! information.
+//!
+//! [`AsyncRead`]: tokio::io::AsyncRead
+//! [`AsyncWrite`]: tokio::io::AsyncWrite
+//! [`Read`]: hyper::rt::Read
+//! [`Write`]: hyper::rt::Write
+//! [tokio-async-docs]: https://docs.rs/tokio/latest/tokio/#asynchronous-io
+
 use std::{
     future::Future,
     pin::Pin,
@@ -9,6 +60,14 @@ use std::{
 
 use hyper::rt::{Executor, Sleep, Timer};
 use pin_project_lite::pin_project;
+
+#[cfg(feature = "tracing")]
+use tracing::instrument::Instrument;
+
+pub use self::{with_hyper_io::WithHyperIo, with_tokio_io::WithTokioIo};
+
+mod with_hyper_io;
+mod with_tokio_io;
 
 /// Future executor that utilises `tokio` threads.
 #[non_exhaustive]
@@ -49,6 +108,10 @@ where
     Fut::Output: Send + 'static,
 {
     fn execute(&self, fut: Fut) {
+        #[cfg(feature = "tracing")]
+        tokio::spawn(fut.in_current_span());
+
+        #[cfg(not(feature = "tracing"))]
         tokio::spawn(fut);
     }
 }
@@ -232,6 +295,10 @@ impl Timer for TokioTimer {
             sleep.reset(new_deadline)
         }
     }
+
+    fn now(&self) -> Instant {
+        tokio::time::Instant::now().into()
+    }
 }
 
 impl TokioTimer {
@@ -263,7 +330,6 @@ mod tests {
     use hyper::rt::Executor;
     use tokio::sync::oneshot;
 
-    #[cfg(not(miri))]
     #[tokio::test]
     async fn simple_execute() -> Result<(), Box<dyn std::error::Error>> {
         let (tx, rx) = oneshot::channel();

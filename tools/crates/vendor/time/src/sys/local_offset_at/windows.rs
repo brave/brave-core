@@ -9,7 +9,8 @@ use crate::{OffsetDateTime, UtcOffset};
 
 // ffi: WINAPI FILETIME struct
 #[repr(C)]
-#[allow(non_snake_case, clippy::missing_docs_in_private_items)]
+#[expect(non_snake_case, reason = "system API")]
+#[expect(clippy::missing_docs_in_private_items)]
 struct FileTime {
     dwLowDateTime: u32,
     dwHighDateTime: u32,
@@ -17,7 +18,8 @@ struct FileTime {
 
 // ffi: WINAPI SYSTEMTIME struct
 #[repr(C)]
-#[allow(non_snake_case, clippy::missing_docs_in_private_items)]
+#[expect(non_snake_case, reason = "system API")]
+#[expect(clippy::missing_docs_in_private_items)]
 struct SystemTime {
     wYear: u16,
     wMonth: u16,
@@ -43,6 +45,7 @@ extern "system" {
 }
 
 /// Convert a `SYSTEMTIME` to a `FILETIME`. Returns `None` if any error occurred.
+#[inline]
 fn systemtime_to_filetime(systime: &SystemTime) -> Option<FileTime> {
     let mut ft = MaybeUninit::uninit();
 
@@ -57,14 +60,16 @@ fn systemtime_to_filetime(systime: &SystemTime) -> Option<FileTime> {
 }
 
 /// Convert a `FILETIME` to an `i64`, representing a number of seconds.
+#[inline]
 fn filetime_to_secs(filetime: &FileTime) -> i64 {
     /// FILETIME represents 100-nanosecond intervals
-    const FT_TO_SECS: u64 = Nanosecond::per(Second) as u64 / 100;
+    const FT_TO_SECS: u64 = Nanosecond::per_t::<u64>(Second) / 100;
     ((filetime.dwHighDateTime.extend::<u64>() << 32 | filetime.dwLowDateTime.extend::<u64>())
         / FT_TO_SECS) as i64
 }
 
 /// Convert an [`OffsetDateTime`] to a `SYSTEMTIME`.
+#[inline]
 fn offset_to_systemtime(datetime: OffsetDateTime) -> SystemTime {
     let (_, month, day_of_month) = datetime.to_offset(UtcOffset::UTC).date().to_calendar_date();
     SystemTime {
@@ -80,6 +85,7 @@ fn offset_to_systemtime(datetime: OffsetDateTime) -> SystemTime {
 }
 
 /// Obtain the system's UTC offset.
+#[inline]
 pub(super) fn local_offset_at(datetime: OffsetDateTime) -> Option<UtcOffset> {
     // This function falls back to UTC if any system call fails.
     let systime_utc = offset_to_systemtime(datetime.to_offset(UtcOffset::UTC));

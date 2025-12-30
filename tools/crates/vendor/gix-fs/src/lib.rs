@@ -36,16 +36,13 @@ mod snapshot;
 pub use snapshot::{FileSnapshot, SharedFileSnapshot, SharedFileSnapshotMut};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod symlink;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod read_dir;
 pub use read_dir::function::read_dir;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod dir;
 
 /// Like [`std::env::current_dir()`], but it will `precompose_unicode` if that value is true, if the current directory
@@ -80,18 +77,29 @@ pub struct Stack {
 }
 
 #[cfg(unix)]
-/// Returns whether a a file has the executable permission set.
+/// Returns whether a file has the executable permission set.
 pub fn is_executable(metadata: &std::fs::Metadata) -> bool {
     use std::os::unix::fs::MetadataExt;
-    (metadata.mode() & 0o100) != 0
+    (metadata.mode() & 0o111) != 0
+}
+
+/// Classifiers for IO-errors.
+pub mod io_err {
+    use std::io::ErrorKind;
+
+    /// Return `true` if `err` indicates that the entry doesn't exist on disk. `raw` is used as well
+    /// for additional checks while the variants are outside the MSRV.
+    pub fn is_not_found(err: ErrorKind, raw_err: Option<i32>) -> bool {
+        // TODO: use variant once MSRV is 1.83
+        err == ErrorKind::NotFound || raw_err == Some(20)
+    }
 }
 
 #[cfg(not(unix))]
-/// Returns whether a a file has the executable permission set.
+/// Returns whether a file has the executable permission set.
 pub fn is_executable(_metadata: &std::fs::Metadata) -> bool {
     false
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod stack;

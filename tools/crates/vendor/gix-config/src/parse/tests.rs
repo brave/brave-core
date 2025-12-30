@@ -1,8 +1,9 @@
 mod section {
-    use crate::parse::section::Header;
-    use crate::parse::{section, Comment, Event, Events, Section};
-    use bstr::BStr;
     use std::borrow::Cow;
+
+    use bstr::BStr;
+
+    use crate::parse::{section, section::Header, Comment, Event, Events, Section};
 
     #[test]
     #[cfg(target_pointer_width = "64")]
@@ -83,10 +84,10 @@ mod section {
 
             #[test]
             fn legacy_subsection_format_does_not_use_escapes() {
-                let invalid = header("invalid", Some((".", "\\ \"")));
+                let invalid = header("invalid", Some((".", r#"\ ""#)));
                 assert_eq!(
                     invalid.to_bstring(),
-                    "[invalid.\\ \"]",
+                    r#"[invalid.\ "]"#,
                     "no escaping happens for legacy subsections"
                 );
                 assert!(invalid.is_legacy());

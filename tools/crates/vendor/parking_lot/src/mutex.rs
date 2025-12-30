@@ -110,7 +110,9 @@ pub type MappedMutexGuard<'a, T> = lock_api::MappedMutexGuard<'a, RawMutex, T>;
 
 #[cfg(test)]
 mod tests {
-    use crate::{Condvar, Mutex};
+    use crate::{Condvar, MappedMutexGuard, Mutex, MutexGuard};
+    use std::collections::HashMap;
+    use std::ops::Deref;
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::mpsc::channel;
     use std::sync::Arc;
@@ -307,5 +309,77 @@ mod tests {
 
         assert_eq!(*(mutex.lock()), *(deserialized.lock()));
         assert_eq!(contents, *(deserialized.lock()));
+    }
+
+    #[test]
+    fn test_map_or_err_not_mapped() {
+        let mut map = HashMap::new();
+        map.insert("hello".to_string(), "world".to_string());
+
+        let mutex = Mutex::new(map);
+        let guard = mutex.lock();
+        let guard = match MutexGuard::try_map_or_err(guard, |the_map| {
+            the_map.get_mut("hello2").ok_or(12345i32)
+        }) {
+            Ok(_) => unreachable!(),
+            Err((guard, data)) => {
+                assert_eq!(data, 12345i32);
+                assert_eq!(guard.get("hello"), Some(&"world".to_string()));
+                guard
+            }
+        };
+
+        // Lets try again
+        let mapped_guard = match MutexGuard::try_map_or_err(guard, |the_map| {
+            the_map.get_mut("hello").ok_or("unreachable")
+        }) {
+            Ok(mapped_guard) => mapped_guard,
+            Err((_, _)) => unreachable!(),
+        };
+
+        assert_eq!(mapped_guard.as_str(), "world");
+
+        match MappedMutexGuard::try_map_or_err(mapped_guard, |the_string| {
+            if the_string != "world" {
+                //unreachable
+                Ok(the_string.as_mut_str())
+            } else {
+                Err(45678i32)
+            }
+        }) {
+            Ok(_) => unreachable!(),
+            Err((guard, err)) => {
+                assert_eq!(guard.as_str(), "world");
+                assert_eq!(err, 45678i32);
+            }
+        };
+    }
+
+    #[test]
+    fn test_map_or_err_mapped() {
+        let mut map = HashMap::new();
+        map.insert("hello".to_string(), "world".to_string());
+
+        let mutex = Mutex::new(map);
+        let guard = mutex.lock();
+        let mapped_guard = match MutexGuard::try_map_or_err(guard, |the_map| {
+            the_map.get_mut("hello").ok_or("unreachable")
+        }) {
+            Ok(mapped_guard) => mapped_guard,
+            Err((_, _)) => unreachable!(),
+        };
+
+        assert_eq!(mapped_guard.as_str(), "world");
+
+        match MappedMutexGuard::try_map_or_err(mapped_guard, |the_string| {
+            if the_string == "world" {
+                Ok(the_string.as_mut_str())
+            } else {
+                Err("unreachable")
+            }
+        }) {
+            Ok(mapped_guard) => assert_eq!(mapped_guard.deref(), "world"),
+            Err((_, _)) => unreachable!(),
+        };
     }
 }

@@ -1,21 +1,26 @@
 extern crate quickcheck;
-use self::quickcheck::{Arbitrary, Gen};
 
-use crate::graph::{node_index, IndexType};
+use alloc::{boxed::Box, vec::Vec};
+
+use self::quickcheck::{Arbitrary, Gen};
+use crate::{
+    graph::{node_index, IndexType},
+    visit::NodeIndexable,
+    EdgeType, Graph,
+};
+
 #[cfg(feature = "stable_graph")]
 use crate::stable_graph::StableGraph;
-use crate::{EdgeType, Graph};
 
 #[cfg(feature = "graphmap")]
 use crate::graphmap::{GraphMap, NodeTrait};
-use crate::visit::NodeIndexable;
 
 /// Return a random float in the range [0, 1.)
 fn random_01<G: Gen>(g: &mut G) -> f64 {
     // from rand
     let bits = 53;
     let scale = 1. / ((1u64 << bits) as f64);
-    let x: u64 = Arbitrary::arbitrary(g);
+    let x: u64 = g.next_u64();
     (x >> (64 - bits)) as f64 * scale
 }
 

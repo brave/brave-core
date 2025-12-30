@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 8
-  |
-1 | partial"quoted" = 5
-  |        ^
-expected `.`, `=`

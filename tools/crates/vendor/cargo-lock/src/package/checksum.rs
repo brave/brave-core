@@ -1,7 +1,7 @@
 //! Package checksums (i.e. SHA-256 digests)
 
 use crate::{Error, Result};
-use serde::{de, ser, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de, ser};
 use std::{fmt, str::FromStr};
 
 /// Cryptographic checksum (SHA-256) for a package

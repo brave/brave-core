@@ -14,12 +14,13 @@ pub use core_foundation_sys::url::*;
 use crate::base::{CFIndex, TCFType};
 use crate::string::CFString;
 
+use core::ffi::c_char;
 use core_foundation_sys::base::{kCFAllocatorDefault, Boolean};
 use std::fmt;
 use std::path::{Path, PathBuf};
 use std::ptr;
 
-use libc::{c_char, strlen, PATH_MAX};
+use libc::{strlen, PATH_MAX};
 
 #[cfg(unix)]
 use std::ffi::OsStr;

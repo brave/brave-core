@@ -299,7 +299,7 @@ macro_rules! eprintln {
 /// represent an anticipated runtime failure mode of that computation, `Err(E)`.
 /// `Result` is used alongside user defined types which represent the various
 /// anticipated runtime failure modes that the associated computation could
-/// encounter. `Result` must be propagated manually, often with the the help of the
+/// encounter. `Result` must be propagated manually, often with the help of the
 /// `?` operator and `Try` trait, and they must be reported manually, often with
 /// the help of the `Error` trait.
 ///
@@ -311,7 +311,6 @@ macro_rules! eprintln {
 /// [`std::panic::set_hook()`]: ../std/panic/fn.set_hook.html
 /// [`panic_any`]: ../std/panic/fn.panic_any.html
 /// [`Box`]: ../std/boxed/struct.Box.html
-/// [`Any`]: crate::any::Any
 /// [`format!`]: ../std/macro.format.html
 /// [book]: ../book/ch09-00-error-handling.html
 /// [`std::result`]: ../std/result/index.html

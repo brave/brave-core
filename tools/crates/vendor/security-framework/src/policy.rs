@@ -1,7 +1,7 @@
 //! Security Policies support.
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::base::{CFOptionFlags, TCFType};
 use core_foundation::string::CFString;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use security_framework_sys::base::{errSecParam, SecPolicyRef};
 use security_framework_sys::policy::*;
 use std::fmt;

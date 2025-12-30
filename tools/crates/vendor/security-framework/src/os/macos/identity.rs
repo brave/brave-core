@@ -69,14 +69,14 @@ mod test {
     fn with_certificate() {
         let dir = p!(tempdir());
 
-        let mut keychain = p!(CreateOptions::new()
+        let keychain = p!(CreateOptions::new()
             .password("foobar")
             .create(dir.path().join("test.keychain")));
 
         let key = include_bytes!("../../../test/server.key");
         p!(ImportOptions::new()
             .filename("server.key")
-            .keychain(&mut keychain)
+            .keychain(&keychain)
             .import(key));
 
         let cert = test::certificate();

@@ -24,13 +24,13 @@ pub const EXIT_SUCCESS: i32 = backend::c::EXIT_SUCCESS;
 /// [Linux]: https://man7.org/linux/man-pages/man3/exit.3.html
 pub const EXIT_FAILURE: i32 = backend::c::EXIT_FAILURE;
 
-/// The exit status used by a process terminated with a [`Signal::Abort`]
+/// The exit status used by a process terminated with a [`Signal::ABORT`]
 /// signal.
 ///
 /// # References
 ///  - [Linux]
 ///
 /// [Linux]: https://tldp.org/LDP/abs/html/exitcodes.html
-/// [`Signal::Abort`]: crate::process::Signal::Abort
+/// [`Signal::ABORT`]: crate::process::Signal::ABORT
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
 pub const EXIT_SIGNALED_SIGABRT: i32 = backend::c::EXIT_SIGNALED_SIGABRT;

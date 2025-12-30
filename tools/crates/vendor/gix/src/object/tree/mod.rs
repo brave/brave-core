@@ -2,7 +2,17 @@ use gix_hash::ObjectId;
 pub use gix_object::tree::{EntryKind, EntryMode};
 use gix_object::{bstr::BStr, FindExt, TreeRefIter};
 
-use crate::{object::find, Id, ObjectDetached, Tree};
+use crate::{object::find, Id, ObjectDetached, Repository, Tree};
+
+/// All state needed to conveniently edit a tree, using only [update-or-insert](Editor::upsert()) and [removals](Editor::remove()).
+#[cfg(feature = "tree-editor")]
+#[derive(Clone)]
+pub struct Editor<'repo> {
+    pub(crate) inner: gix_object::tree::Editor<'repo>,
+    pub(crate) validate: gix_validate::path::component::Options,
+    /// The owning repository.
+    pub repo: &'repo crate::Repository,
+}
 
 /// Initialization
 impl<'repo> Tree<'repo> {
@@ -41,7 +51,6 @@ impl<'repo> Tree<'repo> {
 
     /// Follow a sequence of `path` components starting from this instance, and look them up one by one until the last component
     /// is looked up and its tree entry is returned.
-    /// Use `buf` as temporary location for sub-trees to avoid allocating a temporary buffer for each lookup.
     ///
     /// # Performance Notes
     ///
@@ -49,16 +58,18 @@ impl<'repo> Tree<'repo> {
     /// to reuse a vector and use a binary search instead, which might be able to improve performance over all.
     /// However, a benchmark should be created first to have some data and see which trade-off to choose here.
     ///
-    pub fn lookup_entry<I, P>(&self, path: I, buf: &mut Vec<u8>) -> Result<Option<Entry<'repo>>, find::existing::Error>
+    pub fn lookup_entry<I, P>(&self, path: I) -> Result<Option<Entry<'repo>>, find::existing::Error>
     where
         I: IntoIterator<Item = P>,
         P: PartialEq<BStr>,
     {
-        let mut path = path.into_iter().peekable();
+        let mut buf = self.repo.empty_reusable_buffer();
         buf.clear();
+
+        let mut path = path.into_iter().peekable();
         buf.extend_from_slice(&self.data);
         while let Some(component) = path.next() {
-            match TreeRefIter::from_bytes(buf)
+            match TreeRefIter::from_bytes(&buf)
                 .filter_map(Result::ok)
                 .find(|entry| component.eq(entry.filename))
             {
@@ -70,7 +81,7 @@ impl<'repo> Tree<'repo> {
                         }));
                     } else {
                         let next_id = entry.oid.to_owned();
-                        let obj = self.repo.objects.find(&next_id, buf)?;
+                        let obj = self.repo.objects.find(&next_id, &mut buf)?;
                         if !obj.kind.is_tree() {
                             return Ok(None);
                         }
@@ -134,17 +145,13 @@ impl<'repo> Tree<'repo> {
     pub fn lookup_entry_by_path(
         &self,
         relative_path: impl AsRef<std::path::Path>,
-        buf: &mut Vec<u8>,
     ) -> Result<Option<Entry<'repo>>, find::existing::Error> {
         use crate::bstr::ByteSlice;
-        self.lookup_entry(
-            relative_path.as_ref().components().map(|c: std::path::Component<'_>| {
-                gix_path::os_str_into_bstr(c.as_os_str())
-                    .unwrap_or_else(|_| "".into())
-                    .as_bytes()
-            }),
-            buf,
-        )
+        self.lookup_entry(relative_path.as_ref().components().map(|c: std::path::Component<'_>| {
+            gix_path::os_str_into_bstr(c.as_os_str())
+                .unwrap_or_else(|_| "".into())
+                .as_bytes()
+        }))
     }
 
     /// Like [`Self::peel_to_entry()`], but takes a `Path` directly via `relative_path`, a path relative to this tree.
@@ -167,75 +174,52 @@ impl<'repo> Tree<'repo> {
 }
 
 ///
+#[cfg(feature = "tree-editor")]
+pub mod editor;
+
+///
 #[cfg(feature = "blob-diff")]
 pub mod diff;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod traverse;
 
 ///
-#[allow(clippy::empty_docs)]
-mod iter;
-pub use iter::EntryRef;
+mod iter {
+    use super::{EntryRef, Tree};
 
-impl<'r> std::fmt::Debug for Tree<'r> {
+    impl<'repo> Tree<'repo> {
+        /// Return an iterator over tree entries to obtain information about files and directories this tree contains.
+        pub fn iter(&self) -> impl Iterator<Item = Result<EntryRef<'repo, '_>, gix_object::decode::Error>> {
+            let repo = self.repo;
+            gix_object::TreeRefIter::from_bytes(&self.data).map(move |e| e.map(|entry| EntryRef { inner: entry, repo }))
+        }
+    }
+}
+
+impl std::fmt::Debug for Tree<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Tree({})", self.id)
     }
+}
+
+/// An entry within a tree
+pub struct EntryRef<'repo, 'a> {
+    /// The actual entry ref we are wrapping.
+    pub inner: gix_object::tree::EntryRef<'a>,
+    /// The owning repository.
+    pub repo: &'repo Repository,
 }
 
 /// An entry in a [`Tree`], similar to an entry in a directory.
 #[derive(PartialEq, Debug, Clone)]
 pub struct Entry<'repo> {
     pub(crate) inner: gix_object::tree::Entry,
-    pub(crate) repo: &'repo crate::Repository,
+    /// The owning repository.
+    pub repo: &'repo crate::Repository,
 }
 
-mod entry {
-    use crate::{bstr::BStr, ext::ObjectIdExt, object::tree::Entry};
-
-    /// Access
-    impl<'repo> Entry<'repo> {
-        /// The kind of object to which `oid` is pointing to.
-        pub fn mode(&self) -> gix_object::tree::EntryMode {
-            self.inner.mode
-        }
-
-        /// The name of the file in the parent tree.
-        pub fn filename(&self) -> &BStr {
-            self.inner.filename.as_ref()
-        }
-
-        /// Return the object id of the entry.
-        pub fn id(&self) -> crate::Id<'repo> {
-            self.inner.oid.attach(self.repo)
-        }
-
-        /// Return the object this entry points to.
-        pub fn object(&self) -> Result<crate::Object<'repo>, crate::object::find::existing::Error> {
-            self.id().object()
-        }
-
-        /// Return the plain object id of this entry, without access to the repository.
-        pub fn oid(&self) -> &gix_hash::oid {
-            &self.inner.oid
-        }
-
-        /// Return the plain object id of this entry, without access to the repository.
-        pub fn object_id(&self) -> gix_hash::ObjectId {
-            self.inner.oid
-        }
-    }
-
-    /// Consuming
-    impl Entry<'_> {
-        /// Return the contained object.
-        pub fn detach(self) -> gix_object::tree::Entry {
-            self.inner
-        }
-    }
-}
+mod entry;
 
 mod _impls {
     use crate::Tree;

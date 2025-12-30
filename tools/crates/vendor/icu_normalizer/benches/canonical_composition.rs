@@ -5,8 +5,10 @@
 use criterion::{black_box, BenchmarkId, Criterion};
 use detone::IterDecomposeVietnamese;
 
-use icu_normalizer::properties::{CanonicalComposition, CanonicalDecomposition, Decomposed};
-use icu_normalizer::ComposingNormalizer;
+use icu_normalizer::properties::{
+    CanonicalCompositionBorrowed, CanonicalDecompositionBorrowed, Decomposed,
+};
+use icu_normalizer::ComposingNormalizerBorrowed;
 
 struct BenchDataContent {
     pub file_name: String,
@@ -23,9 +25,9 @@ fn strip_headers(content: &str) -> String {
 }
 
 fn normalizer_bench_data() -> [BenchDataContent; 16] {
-    let nfc_normalizer: ComposingNormalizer = ComposingNormalizer::new_nfc();
+    let nfc_normalizer = ComposingNormalizerBorrowed::new_nfc();
 
-    return [
+    [
         BenchDataContent {
             file_name: "TestNames_Latin".to_owned(),
             pairs: decompose_data(
@@ -143,11 +145,11 @@ fn normalizer_bench_data() -> [BenchDataContent; 16] {
                 result
             },
         },
-    ];
+    ]
 }
 
 fn function_under_bench(
-    canonical_composer: &CanonicalComposition,
+    canonical_composer: &CanonicalCompositionBorrowed,
     composable_points: &[(char, char)],
 ) {
     for pair in composable_points.iter() {
@@ -159,7 +161,7 @@ pub fn criterion_benchmark(criterion: &mut Criterion) {
     let group_name = "canonical_composition";
     let mut group = criterion.benchmark_group(group_name);
 
-    let composer = CanonicalComposition::new();
+    let composer = CanonicalCompositionBorrowed::new();
 
     for bench_data_content in black_box(normalizer_bench_data()) {
         group.bench_function(
@@ -172,7 +174,7 @@ pub fn criterion_benchmark(criterion: &mut Criterion) {
 }
 
 fn decompose_data(nfc: &str) -> Vec<(char, char)> {
-    let decomposer = CanonicalDecomposition::new();
+    let decomposer = CanonicalDecompositionBorrowed::new();
     nfc.chars()
         .map(|c| decomposer.decompose(c))
         .filter_map(|decomposed| {

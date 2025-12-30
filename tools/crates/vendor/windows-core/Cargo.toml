@@ -11,11 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.56"
+rust-version = "1.82"
 name = "windows-core"
-version = "0.52.0"
-authors = ["Microsoft"]
-description = "Rust for Windows"
+version = "0.62.2"
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+description = "Core type support for COM and Windows"
 readme = "readme.md"
 categories = ["os::windows-apis"]
 license = "MIT OR Apache-2.0"
@@ -25,9 +30,41 @@ repository = "https://github.com/microsoft/windows-rs"
 default-target = "x86_64-pc-windows-msvc"
 targets = []
 
-[dependencies.windows-targets]
-version = "0.52.0"
-
 [features]
-default = []
-implement = []
+default = ["std"]
+std = [
+    "windows-result/std",
+    "windows-strings/std",
+]
+
+[lib]
+name = "windows_core"
+path = "src/lib.rs"
+
+[dependencies.windows-implement]
+version = "0.60.2"
+default-features = false
+
+[dependencies.windows-interface]
+version = "0.59.3"
+default-features = false
+
+[dependencies.windows-link]
+version = "0.2.1"
+default-features = false
+
+[dependencies.windows-result]
+version = "0.4.1"
+default-features = false
+
+[dependencies.windows-strings]
+version = "0.5.1"
+default-features = false
+
+[lints.rust]
+missing_unsafe_on_extern = "warn"
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(windows_raw_dylib, windows_slim_errors)"]

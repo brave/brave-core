@@ -13,7 +13,7 @@
 #![allow(dead_code)]
 
 use crate::backend::reg::{
-    ArgReg, FromAsm, RetReg, SyscallNumber, ToAsm, A0, A1, A2, A3, A4, A5, R0,
+    ArgReg, FromAsm, RetReg, SyscallNumber, ToAsm as _, A0, A1, A2, A3, A4, A5, R0,
 };
 use crate::backend::vdso_wrappers::SyscallType;
 use core::arch::asm;
@@ -56,6 +56,7 @@ pub(in crate::backend) unsafe fn indirect_syscall1_noreturn(
 ) -> ! {
     asm!(
         "call {callee}",
+        "ud2",
         callee = in(reg) callee,
         in("eax") nr.to_asm(),
         in("ebx") a0.to_asm(),
@@ -245,6 +246,7 @@ pub(in crate::backend) unsafe fn syscall1_readonly(
 pub(in crate::backend) unsafe fn syscall1_noreturn(nr: SyscallNumber<'_>, a0: ArgReg<'_, A0>) -> ! {
     asm!(
         "int $$0x80",
+        "ud2",
         in("eax") nr.to_asm(),
         in("ebx") a0.to_asm(),
         options(nostack, noreturn)

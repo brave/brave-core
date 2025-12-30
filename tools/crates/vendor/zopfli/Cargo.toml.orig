@@ -1,0 +1,52 @@
+[package]
+name = "zopfli"
+version = "0.8.3"
+edition = "2021"
+rust-version = "1.73.0"
+description = "A Rust implementation of the Zopfli compression algorithm."
+readme = "README.md"
+homepage = "https://github.com/zopfli-rs/zopfli"
+repository = "https://github.com/zopfli-rs/zopfli"
+license = "Apache-2.0"
+keywords = ["compression"]
+categories = ["compression", "no-std"]
+exclude = [
+  ".github/*",
+  ".gitignore",
+  "Makefile",
+  "benchmark-builds/*",
+  "rustfmt.toml",
+  "test/*",
+]
+
+# docs.rs uses a nightly toolchain, so it can leverage unstable rustdoc features.
+# Reference: https://docs.rs/about/builds
+[package.metadata.docs.rs]
+cargo-args = ["--all-features"]
+
+[[bin]]
+name = "zopfli"
+required-features = ["gzip", "std", "zlib"]
+
+[dependencies]
+bumpalo = "3.19.0"
+crc32fast = { version = "1.5.0", default-features = false, optional = true }
+log = { version = "0.4.28", optional = true }
+simd-adler32 = { version = "0.3.7", default-features = false, optional = true }
+
+[dev-dependencies]
+miniz_oxide = "0.8.9"
+proptest = "1.7.0"
+proptest-derive = "0.6.0"
+
+[features]
+default = ["gzip", "std", "zlib"]
+gzip = ["dep:crc32fast"]
+nightly = ["crc32fast?/nightly"]
+std = ["crc32fast?/std", "dep:log", "simd-adler32?/std"]
+zlib = ["dep:simd-adler32"]
+
+[profile.release]
+# Generate full debug information for release builds anyway for ease of profiling.
+# This does not affect packages that depend on the Zopfli library package
+debug = true

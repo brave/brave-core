@@ -15,21 +15,18 @@
 //! - `gzip` (enabled by default): enables support for compression in the gzip format.
 //! - `zlib` (enabled by default): enables support for compression in the Zlib format.
 //! - `std` (enabled by default): enables linking against the Rust standard library. When not enabled,
-//!                               the crate is built with the `#![no_std]` attribute and can be used
-//!                               in any environment where [`alloc`](https://doc.rust-lang.org/alloc/)
-//!                               (i.e., a memory allocator) is available. In addition, the crate
-//!                               exposes minimalist versions of the `std` I/O traits it needs to
-//!                               function, allowing users to implement them. Disabling `std` requires
-//!                               enabling `nightly` due to dependencies on unstable language features.
-//! - `nightly`: enables performance optimizations that are specific to the nightly Rust toolchain.
-//!              Currently, this feature improves rustdoc generation and enables the namesake feature
-//!              on `crc32fast`, but this may change in the future. This feature also used to enable
-//!              `simd-adler32`'s namesake feature, but it no longer does as the latest `simd-adler32`
-//!              release does not build with the latest nightlies (as of 2024-05-18) when that feature
-//!              is enabled.
+//!   the crate is built with the `#![no_std]` attribute and can be used in any environment where
+//!   [`alloc`](https://doc.rust-lang.org/alloc/) (i.e., a memory allocator) is available. In addition,
+//!   the crate exposes minimalist versions of the `std` I/O traits it needs to function, allowing users
+//!   to implement them.
+//! - `nightly`: enables code constructs and features specific to the nightly Rust toolchain. Currently,
+//!   this feature improves rustdoc generation and enables the namesake feature on `crc32fast`, but this
+//!   may change in the future. This feature also used to enable `simd-adler32`'s namesake feature, but
+//!   it no longer does as the latest `simd-adler32` release does not build with the latest nightlies
+//!   (as of 2024-05-18) when that feature is enabled.
 
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(feature = "nightly", feature(doc_auto_cfg), feature(error_in_core))]
+#![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
 // No-op log implementation for no-std targets
 #[cfg(not(feature = "std"))]
@@ -115,8 +112,8 @@ pub struct Options {
 }
 
 impl Default for Options {
-    fn default() -> Options {
-        Options {
+    fn default() -> Self {
+        Self {
             iteration_count: NonZeroU64::new(15).unwrap(),
             iterations_without_improvement: NonZeroU64::new(u64::MAX).unwrap(),
             maximum_block_splits: 15,
@@ -183,12 +180,13 @@ pub fn compress<R: std::io::Read, W: Write>(
     }
 }
 
-/// Populates object pools for expensive objects that Zopfli uses. Call this on a background thread
-/// when you know ahead of time that compression will be needed.
-#[cfg(feature = "std")]
-pub fn prewarm_object_pools() {
-    hash::HASH_POOL.pull();
-}
+#[doc(hidden)]
+#[deprecated(
+    since = "0.8.2",
+    note = "Object pools are no longer used. This function is now a no-op and will be removed in version 0.9.0."
+)]
+#[cfg(feature = "std")] // TODO remove for 0.9.0
+pub fn prewarm_object_pools() {}
 
 #[cfg(all(test, feature = "std"))]
 mod test {

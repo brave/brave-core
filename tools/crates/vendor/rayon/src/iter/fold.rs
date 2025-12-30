@@ -3,13 +3,7 @@ use super::*;
 
 use std::fmt::{self, Debug};
 
-impl<U, I, ID, F> Fold<I, ID, F>
-where
-    I: ParallelIterator,
-    F: Fn(U, I::Item) -> U + Sync + Send,
-    ID: Fn() -> U + Sync + Send,
-    U: Send,
-{
+impl<I, ID, F> Fold<I, ID, F> {
     pub(super) fn new(base: I, identity: ID, fold_op: F) -> Self {
         Fold {
             base,
@@ -22,8 +16,7 @@ where
 /// `Fold` is an iterator that applies a function over an iterator producing a single value.
 /// This struct is created by the [`fold()`] method on [`ParallelIterator`]
 ///
-/// [`fold()`]: trait.ParallelIterator.html#method.fold
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`fold()`]: ParallelIterator::fold()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
 pub struct Fold<I, ID, F> {
@@ -32,7 +25,7 @@ pub struct Fold<I, ID, F> {
     fold_op: F,
 }
 
-impl<I: ParallelIterator + Debug, ID, F> Debug for Fold<I, ID, F> {
+impl<I: Debug, ID, F> Debug for Fold<I, ID, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Fold").field("base", &self.base).finish()
     }
@@ -179,12 +172,7 @@ where
 
 // ///////////////////////////////////////////////////////////////////////////
 
-impl<U, I, F> FoldWith<I, U, F>
-where
-    I: ParallelIterator,
-    F: Fn(U, I::Item) -> U + Sync + Send,
-    U: Send + Clone,
-{
+impl<I, U, F> FoldWith<I, U, F> {
     pub(super) fn new(base: I, item: U, fold_op: F) -> Self {
         FoldWith {
             base,
@@ -197,8 +185,7 @@ where
 /// `FoldWith` is an iterator that applies a function over an iterator producing a single value.
 /// This struct is created by the [`fold_with()`] method on [`ParallelIterator`]
 ///
-/// [`fold_with()`]: trait.ParallelIterator.html#method.fold_with
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`fold_with()`]: ParallelIterator::fold_with()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
 pub struct FoldWith<I, U, F> {
@@ -207,7 +194,7 @@ pub struct FoldWith<I, U, F> {
     fold_op: F,
 }
 
-impl<I: ParallelIterator + Debug, U: Debug, F> Debug for FoldWith<I, U, F> {
+impl<I: Debug, U: Debug, F> Debug for FoldWith<I, U, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("FoldWith")
             .field("base", &self.base)

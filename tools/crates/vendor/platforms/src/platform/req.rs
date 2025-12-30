@@ -145,7 +145,6 @@ mod tests {
         SPARC64_UNKNOWN_OPENBSD,
         SPARCV9_SUN_SOLARIS,
         AARCH64_UWP_WINDOWS_MSVC,
-        I586_PC_WINDOWS_MSVC,
         I686_PC_WINDOWS_GNU,
         I686_PC_WINDOWS_MSVC,
         I686_UWP_WINDOWS_GNU,
@@ -199,7 +198,6 @@ mod tests {
             [
                 "aarch64-pc-windows-msvc",
                 "aarch64-uwp-windows-msvc",
-                "i586-pc-windows-msvc",
                 "i686-pc-windows-gnu",
                 "i686-pc-windows-msvc",
                 "i686-uwp-windows-gnu",

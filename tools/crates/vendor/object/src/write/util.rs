@@ -167,6 +167,7 @@ impl<'a> BytesMut for &'a mut [u8] {
 /// Write an unsigned number using the LEB128 encoding to a buffer.
 ///
 /// Returns the number of bytes written.
+#[allow(dead_code)]
 pub(crate) fn write_uleb128(buf: &mut Vec<u8>, mut val: u64) -> usize {
     let mut len = 0;
     loop {
@@ -255,6 +256,6 @@ mod tests {
 
         assert_eq!(bytes.write_at(3, &u16::to_be(0x89ab)), Err(()));
         assert_eq!(bytes.write_at(4, &u16::to_be(0x89ab)), Err(()));
-        assert_eq!(vec![].write_at(0, &u32::to_be(0x89ab)), Err(()));
+        assert_eq!([].write_at(0, &u32::to_be(0x89ab)), Err(()));
     }
 }

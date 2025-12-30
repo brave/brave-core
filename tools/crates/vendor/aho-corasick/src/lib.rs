@@ -227,7 +227,7 @@ this crate can be used without the standard library.
 #![no_std]
 #![deny(missing_docs)]
 #![deny(rustdoc::broken_intra_doc_links)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 extern crate alloc;
 #[cfg(any(test, feature = "std"))]

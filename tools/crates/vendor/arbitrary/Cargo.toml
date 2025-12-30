@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63.0"
 name = "arbitrary"
-version = "1.4.1"
+version = "1.4.2"
 authors = [
     "The Rust-Fuzz Project Developers",
     "Nick Fitzgerald <fitzgen@gmail.com>",
@@ -23,6 +23,7 @@ authors = [
     "Corey Farwell <coreyf@rwell.org>",
 ]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -37,6 +38,9 @@ keywords = [
 categories = ["development-tools::testing"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-fuzz/arbitrary/"
+
+[features]
+derive = ["derive_arbitrary"]
 
 [lib]
 name = "arbitrary"
@@ -61,11 +65,8 @@ name = "path"
 path = "tests/path.rs"
 
 [dependencies.derive_arbitrary]
-version = "1.4.0"
+version = "~1.4.0"
 optional = true
 
 [dev-dependencies.exhaustigen]
 version = "0.1.0"
-
-[features]
-derive = ["derive_arbitrary"]

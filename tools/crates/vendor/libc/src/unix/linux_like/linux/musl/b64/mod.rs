@@ -1,10 +1,10 @@
 use crate::prelude::*;
 
-pub type c_long = i64;
-pub type c_ulong = u64;
 pub type regoff_t = c_long;
 
 s! {
+    // MIPS implementation is special, see the subfolder.
+    #[cfg(not(target_arch = "mips64"))]
     pub struct stack_t {
         pub ss_sp: *mut c_void,
         pub ss_flags: c_int,
@@ -19,6 +19,8 @@ s! {
         __val: [c_ulong; 16],
     }
 
+    // PowerPC implementation is special, see the subfolder.
+    #[cfg(not(target_arch = "powerpc64"))]
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
         pub shm_segsz: size_t,
@@ -28,8 +30,8 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: c_ulong,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
 
     pub struct msqid_ds {
@@ -37,41 +39,13 @@ s! {
         pub msg_stime: crate::time_t,
         pub msg_rtime: crate::time_t,
         pub msg_ctime: crate::time_t,
-        __msg_cbytes: c_ulong,
+        pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
         pub msg_lrpid: crate::pid_t,
-        __pad1: c_ulong,
-        __pad2: c_ulong,
-    }
-
-    pub struct msghdr {
-        pub msg_name: *mut c_void,
-        pub msg_namelen: crate::socklen_t,
-        pub msg_iov: *mut crate::iovec,
-        #[cfg(target_endian = "big")]
-        __pad1: c_int,
-        pub msg_iovlen: c_int,
-        #[cfg(target_endian = "little")]
-        __pad1: c_int,
-        pub msg_control: *mut c_void,
-        #[cfg(target_endian = "big")]
-        __pad2: c_int,
-        pub msg_controllen: crate::socklen_t,
-        #[cfg(target_endian = "little")]
-        __pad2: c_int,
-        pub msg_flags: c_int,
-    }
-
-    pub struct cmsghdr {
-        #[cfg(target_endian = "big")]
-        pub __pad1: c_int,
-        pub cmsg_len: crate::socklen_t,
-        #[cfg(target_endian = "little")]
-        pub __pad1: c_int,
-        pub cmsg_level: c_int,
-        pub cmsg_type: c_int,
+        __pad1: Padding<c_ulong>,
+        __pad2: Padding<c_ulong>,
     }
 
     pub struct sem_t {
@@ -82,10 +56,6 @@ s! {
 pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 56;
 pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 40;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 32;
-
-extern "C" {
-    pub fn getrandom(buf: *mut c_void, buflen: size_t, flags: c_uint) -> ssize_t;
-}
 
 cfg_if! {
     if #[cfg(target_arch = "aarch64")] {
@@ -109,6 +79,9 @@ cfg_if! {
     } else if #[cfg(any(target_arch = "loongarch64"))] {
         mod loongarch64;
         pub use self::loongarch64::*;
+    } else if #[cfg(any(target_arch = "wasm32"))] {
+        mod wasm32;
+        pub use self::wasm32::*;
     } else {
         // Unknown target_arch
     }

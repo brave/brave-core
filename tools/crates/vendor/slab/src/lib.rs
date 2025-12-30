@@ -1,4 +1,4 @@
-#![cfg_attr(not(feature = "std"), no_std)]
+#![no_std]
 #![warn(
     missing_debug_implementations,
     missing_docs,
@@ -9,6 +9,7 @@
     no_crate_inject,
     attr(deny(warnings, rust_2018_idioms), allow(dead_code, unused_variables))
 ))]
+#![allow(clippy::incompatible_msrv)] // false positive: https://github.com/rust-lang/rust-clippy/issues/12280
 
 //! Pre-allocated storage for a uniform data type.
 //!
@@ -113,6 +114,8 @@
 #[cfg(not(feature = "std"))]
 extern crate alloc;
 #[cfg(feature = "std")]
+extern crate std;
+#[cfg(feature = "std")]
 extern crate std as alloc;
 
 #[cfg(feature = "serde")]
@@ -122,6 +125,7 @@ mod builder;
 
 use alloc::vec::{self, Vec};
 use core::iter::{self, FromIterator, FusedIterator};
+use core::mem::MaybeUninit;
 use core::{fmt, mem, ops, slice};
 
 /// Pre-allocated storage for a uniform data type
@@ -166,6 +170,33 @@ impl<T> Default for Slab<T> {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+/// The error type returned by [`Slab::get_disjoint_mut`].
+pub enum GetDisjointMutError {
+    /// An index provided was not associated with a value.
+    IndexVacant,
+
+    /// An index provided was out-of-bounds for the slab.
+    IndexOutOfBounds,
+
+    /// Two indices provided were overlapping.
+    OverlappingIndices,
+}
+
+impl fmt::Display for GetDisjointMutError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let msg = match self {
+            GetDisjointMutError::IndexVacant => "an index is vacant",
+            GetDisjointMutError::IndexOutOfBounds => "an index is out of bounds",
+            GetDisjointMutError::OverlappingIndices => "there were overlapping indices",
+        };
+        fmt::Display::fmt(msg, f)
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for GetDisjointMutError {}
+
 /// A handle to a vacant entry in a `Slab`.
 ///
 /// `VacantEntry` allows constructing values with the key that they will be
@@ -206,7 +237,7 @@ pub struct Iter<'a, T> {
     len: usize,
 }
 
-impl<'a, T> Clone for Iter<'a, T> {
+impl<T> Clone for Iter<'_, T> {
     fn clone(&self) -> Self {
         Self {
             entries: self.entries.clone(),
@@ -239,30 +270,13 @@ impl<T> Slab<T> {
     /// The function does not allocate and the returned slab will have no
     /// capacity until `insert` is called or capacity is explicitly reserved.
     ///
-    /// This is `const fn` on Rust 1.39+.
-    ///
     /// # Examples
     ///
     /// ```
     /// # use slab::*;
     /// let slab: Slab<i32> = Slab::new();
     /// ```
-    #[cfg(not(slab_no_const_vec_new))]
     pub const fn new() -> Self {
-        Self {
-            entries: Vec::new(),
-            next: 0,
-            len: 0,
-        }
-    }
-    /// Construct a new, empty `Slab`.
-    ///
-    /// The function does not allocate and the returned slab will have no
-    /// capacity until `insert` is called or capacity is explicitly reserved.
-    ///
-    /// This is `const fn` on Rust 1.39+.
-    #[cfg(slab_no_const_vec_new)]
-    pub fn new() -> Self {
         Self {
             entries: Vec::new(),
             next: 0,
@@ -790,6 +804,50 @@ impl<T> Slab<T> {
         }
     }
 
+    /// Returns mutable references to many indices at once.
+    ///
+    /// Returns [`GetDisjointMutError`] if the indices are out of bounds,
+    /// overlapping, or vacant.
+    pub fn get_disjoint_mut<const N: usize>(
+        &mut self,
+        keys: [usize; N],
+    ) -> Result<[&mut T; N], GetDisjointMutError> {
+        // NB: The optimizer should inline the loops into a sequence
+        // of instructions without additional branching.
+        for (i, &key) in keys.iter().enumerate() {
+            for &prev_key in &keys[..i] {
+                if key == prev_key {
+                    return Err(GetDisjointMutError::OverlappingIndices);
+                }
+            }
+        }
+
+        let entries_ptr = self.entries.as_mut_ptr();
+        let entries_len = self.entries.len();
+
+        let mut res = MaybeUninit::<[&mut T; N]>::uninit();
+        let res_ptr = res.as_mut_ptr() as *mut &mut T;
+
+        for (i, &key) in keys.iter().enumerate() {
+            // `key` won't be greater than `entries_len`.
+            if key >= entries_len {
+                return Err(GetDisjointMutError::IndexOutOfBounds);
+            }
+            // SAFETY: we made sure above that this key is in bounds.
+            match unsafe { &mut *entries_ptr.add(key) } {
+                Entry::Vacant(_) => return Err(GetDisjointMutError::IndexVacant),
+                Entry::Occupied(entry) => {
+                    // SAFETY: `res` and `keys` both have N elements so `i` must be in bounds.
+                    // We checked above that all selected `entry`s are distinct.
+                    unsafe { res_ptr.add(i).write(entry) };
+                }
+            }
+        }
+        // SAFETY: the loop above only terminates successfully if it initialized
+        // all elements of this array.
+        Ok(unsafe { res.assume_init() })
+    }
+
     /// Return a reference to the value associated with the given key without
     /// performing bounds checking.
     ///
@@ -926,7 +984,7 @@ impl<T> Slab<T> {
     /// slab.key_of(bad); // this will panic
     /// unreachable!();
     /// ```
-    #[cfg_attr(not(slab_no_track_caller), track_caller)]
+    #[track_caller]
     pub fn key_of(&self, present_element: &T) -> usize {
         let element_ptr = present_element as *const T as usize;
         let base_ptr = self.entries.as_ptr() as usize;
@@ -1095,7 +1153,7 @@ impl<T> Slab<T> {
     /// assert_eq!(slab.remove(hello), "hello");
     /// assert!(!slab.contains(hello));
     /// ```
-    #[cfg_attr(not(slab_no_track_caller), track_caller)]
+    #[track_caller]
     pub fn remove(&mut self, key: usize) -> T {
         self.try_remove(key).expect("invalid key")
     }
@@ -1116,10 +1174,7 @@ impl<T> Slab<T> {
     /// assert!(!slab.contains(hello));
     /// ```
     pub fn contains(&self, key: usize) -> bool {
-        match self.entries.get(key) {
-            Some(&Entry::Occupied(_)) => true,
-            _ => false,
-        }
+        matches!(self.entries.get(key), Some(&Entry::Occupied(_)))
     }
 
     /// Retain only the elements specified by the predicate.
@@ -1203,7 +1258,7 @@ impl<T> Slab<T> {
 impl<T> ops::Index<usize> for Slab<T> {
     type Output = T;
 
-    #[cfg_attr(not(slab_no_track_caller), track_caller)]
+    #[track_caller]
     fn index(&self, key: usize) -> &T {
         match self.entries.get(key) {
             Some(Entry::Occupied(v)) => v,
@@ -1213,7 +1268,7 @@ impl<T> ops::Index<usize> for Slab<T> {
 }
 
 impl<T> ops::IndexMut<usize> for Slab<T> {
-    #[cfg_attr(not(slab_no_track_caller), track_caller)]
+    #[track_caller]
     fn index_mut(&mut self, key: usize) -> &mut T {
         match self.entries.get_mut(key) {
             Some(&mut Entry::Occupied(ref mut v)) => v,

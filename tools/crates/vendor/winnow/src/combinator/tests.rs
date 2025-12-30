@@ -9,16 +9,16 @@ use crate::binary::u8;
 use crate::binary::Endianness;
 use crate::error::ErrMode;
 use crate::error::ParserError;
-#[cfg(feature = "alloc")]
-use crate::lib::std::borrow::ToOwned;
 use crate::prelude::*;
 use crate::stream::Stream;
 use crate::token::take;
 use crate::ModalResult;
 use crate::Partial;
+#[cfg(feature = "alloc")]
+use alloc::borrow::ToOwned;
 
 #[cfg(feature = "alloc")]
-use crate::lib::std::vec::Vec;
+use alloc::vec::Vec;
 
 #[test]
 fn eof_on_slices() {
@@ -108,7 +108,7 @@ Ok(
     );
 }
 
-use crate::lib::std::convert::From;
+use ::core::convert::From;
 impl From<u32> for CustomError {
     fn from(_: u32) -> Self {
         CustomError
@@ -1255,8 +1255,8 @@ Err(
 fn alt_test() {
     #[cfg(feature = "alloc")]
     use crate::{
+        alloc::{fmt::Debug, string::String},
         error::ParserError,
-        lib::std::{fmt::Debug, string::String},
     };
 
     #[cfg(feature = "alloc")]
@@ -2006,7 +2006,26 @@ fn separated0_empty_sep_test() {
 
     let i = &b"abcabc"[..];
 
-    assert_parse!(empty_sep.parse_peek(Partial::new(i)), str![]);
+    assert_parse!(
+        empty_sep.parse_peek(Partial::new(i)),
+        str![[r#"
+Err(
+    Cut(
+        InputError {
+            input: Partial {
+                input: [
+                    97,
+                    98,
+                    99,
+                ],
+                partial: true,
+            },
+        },
+    ),
+)
+
+"#]]
+    );
 }
 
 #[test]
@@ -2501,7 +2520,29 @@ fn repeat0_empty_test() {
         repeat(0.., "").parse_next(i)
     }
 
-    assert_parse!(multi_empty.parse_peek(Partial::new(&b"abcdef"[..])), str![]);
+    assert_parse!(
+        multi_empty.parse_peek(Partial::new(&b"abcdef"[..])),
+        str![[r#"
+Err(
+    Cut(
+        InputError {
+            input: Partial {
+                input: [
+                    97,
+                    98,
+                    99,
+                    100,
+                    101,
+                    102,
+                ],
+                partial: true,
+            },
+        },
+    ),
+)
+
+"#]]
+    );
 }
 
 #[test]
@@ -3357,21 +3398,6 @@ Ok(
     );
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-struct NilError;
-
-impl<I: Stream> ParserError<I> for NilError {
-    type Inner = Self;
-
-    fn from_input(_: &I) -> NilError {
-        NilError
-    }
-
-    fn into_inner(self) -> Result<Self::Inner, Self> {
-        Ok(self)
-    }
-}
-
 #[test]
 #[cfg(feature = "alloc")]
 fn fold_repeat0_test() {
@@ -3518,7 +3544,29 @@ fn fold_repeat0_empty_test() {
         repeat(0.., "").fold(Vec::new, fold_into_vec).parse_next(i)
     }
 
-    assert_parse!(multi_empty.parse_peek(Partial::new(&b"abcdef"[..])), str![]);
+    assert_parse!(
+        multi_empty.parse_peek(Partial::new(&b"abcdef"[..])),
+        str![[r#"
+Err(
+    Cut(
+        InputError {
+            input: Partial {
+                input: [
+                    97,
+                    98,
+                    99,
+                    100,
+                    101,
+                    102,
+                ],
+                partial: true,
+            },
+        },
+    ),
+)
+
+"#]]
+    );
 }
 
 #[test]

@@ -13,10 +13,10 @@ mod init {
     };
 
     static DEREGISTER_COUNT: AtomicUsize = AtomicUsize::new(0);
-    static REGISTERED_HOOKS: once_cell::sync::Lazy<parking_lot::Mutex<Vec<(i32, signal_hook::SigId)>>> =
-        once_cell::sync::Lazy::new(Default::default);
-    static DEFAULT_BEHAVIOUR_HOOKS: once_cell::sync::Lazy<parking_lot::Mutex<Vec<signal_hook::SigId>>> =
-        once_cell::sync::Lazy::new(Default::default);
+    static REGISTERED_HOOKS: std::sync::LazyLock<parking_lot::Mutex<Vec<(i32, signal_hook::SigId)>>> =
+        std::sync::LazyLock::new(Default::default);
+    static DEFAULT_BEHAVIOUR_HOOKS: std::sync::LazyLock<parking_lot::Mutex<Vec<signal_hook::SigId>>> =
+        std::sync::LazyLock::new(Default::default);
 
     /// A type to help deregistering hooks registered with [`init_handler`](super::init_handler());
     #[derive(Default)]
@@ -239,7 +239,7 @@ where
     }
 
     fn consume(&mut self, amt: usize) {
-        self.inner.consume(amt)
+        self.inner.consume(amt);
     }
 }
 

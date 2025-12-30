@@ -466,6 +466,16 @@ impl Send {
                     store.try_for_each(|mut stream| {
                         let stream = &mut *stream;
 
+                        if stream.state.is_send_closed() && stream.buffered_send_data == 0 {
+                            tracing::trace!(
+                                "skipping send-closed stream; id={:?}; flow={:?}",
+                                stream.id,
+                                stream.send_flow
+                            );
+
+                            return Ok(());
+                        }
+
                         tracing::trace!(
                             "decrementing stream window; id={:?}; decr={}; flow={:?}",
                             stream.id,

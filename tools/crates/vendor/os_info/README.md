@@ -12,7 +12,7 @@
 
 **Project details:**
 [![LoC](https://tokei.rs/b1/github/stanislav-tkach/os_info)](https://github.com/stanislav-tkach/os_info)
-![Rust 1.60+ required](https://img.shields.io/badge/rust-1.41+-blue.svg?label=Required%20Rust)
+![Rust 1.60+ required](https://img.shields.io/badge/rust-1.60+-blue.svg?label=Required%20Rust)
 
 ## Overview
 
@@ -85,12 +85,14 @@ Right now, the following operating system types can be returned:
 - Alpine Linux
 - Amazon Linux AMI
 - Android
+- AOSC OS
 - Arch Linux
 - Artix Linux
 - CachyOS
 - CentOS
 - Debian
 - DragonFly BSD
+- Elementary OS
 - Emscripten
 - EndeavourOS
 - Fedora
@@ -99,6 +101,7 @@ Right now, the following operating system types can be returned:
 - Gentoo Linux
 - HardenedBSD
 - illumos
+- iOS
 - Kali Linux
 - Linux
 - Mabox

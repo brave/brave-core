@@ -28,7 +28,7 @@ use std::path::Path;
 
 mod error;
 
-pub use crate::error::Error;
+pub use crate::error::*;
 
 /// Loads audit info from the specified binary compiled with `cargo auditable`.
 ///
@@ -82,7 +82,8 @@ pub fn audit_info_from_reader<T: BufRead>(
 pub fn json_from_reader<T: BufRead>(reader: &mut T, limits: Limits) -> Result<String, Error> {
     let compressed_data = get_compressed_audit_data(reader, limits)?;
     let decompressed_data =
-        decompress_to_vec_zlib_with_limit(&compressed_data, limits.decompressed_json_size)?;
+        decompress_to_vec_zlib_with_limit(&compressed_data, limits.decompressed_json_size)
+            .map_err(DecompressError::from_miniz)?;
     Ok(String::from_utf8(decompressed_data)?)
 }
 
@@ -144,7 +145,8 @@ pub fn json_from_slice(
         Err(Error::OutputLimitExceeded)?;
     }
     let decompressed_data =
-        decompress_to_vec_zlib_with_limit(compressed_audit_data, decompressed_json_size_limit)?;
+        decompress_to_vec_zlib_with_limit(compressed_audit_data, decompressed_json_size_limit)
+            .map_err(DecompressError::from_miniz)?;
     Ok(String::from_utf8(decompressed_data)?)
 }
 

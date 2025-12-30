@@ -11,6 +11,7 @@ use twox_hash::XxHash64;
 const SEED: u64 = 0xaabbccdd;
 
 /// Split the 64bit `hash` into (g, f0, f1).
+///
 /// g denotes the highest 16bits of the hash modulo `m`, and is referred to as first level hash.
 /// (f0, f1) denotes the middle, and lower 24bits of the hash respectively.
 /// (f0, f1) are used to distribute the keys with same g, into distinct slots.
@@ -47,6 +48,7 @@ pub fn compute_index(f: (u32, u32), d: (u32, u32), m: u32) -> Option<usize> {
 
 /// Compute displacements for the given `key_hashes`, which split the keys into distinct slots by a
 /// two-level hashing schema.
+///
 /// Returns a tuple of where the first item is the displacement array and the second item is the
 /// reverse mapping used to permute keys, values into their slots.
 ///
@@ -60,7 +62,7 @@ pub fn compute_index(f: (u32, u32), d: (u32, u32), m: u32) -> Option<usize> {
 /// # Arguments
 ///
 /// * `key_hashes` - [`ExactSizeIterator`] over the hashed key values
-#[allow(clippy::indexing_slicing, clippy::unwrap_used)]
+#[expect(clippy::indexing_slicing, clippy::unwrap_used)]
 pub fn compute_displacements(
     key_hashes: impl ExactSizeIterator<Item = u64>,
 ) -> (Vec<(u32, u32)>, Vec<usize>) {

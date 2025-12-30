@@ -1,9 +1,11 @@
-use crate::commit::topo::iter::gen_and_commit_time;
-use crate::commit::topo::{Error, Sorting, WalkFlags};
-use crate::commit::{find, Info, Parents, Topo};
 use gix_hash::{oid, ObjectId};
-use gix_revwalk::graph::IdMap;
-use gix_revwalk::PriorityQueue;
+use gix_revwalk::{graph::IdMap, PriorityQueue};
+
+use crate::commit::{
+    find,
+    topo::{iter::gen_and_commit_time, Error, Sorting, WalkFlags},
+    Info, Parents, Topo,
+};
 
 /// Builder for [`Topo`].
 pub struct Builder<Find, Predicate> {
@@ -28,18 +30,19 @@ where
         tips: impl IntoIterator<Item = impl Into<ObjectId>>,
         ends: Option<impl IntoIterator<Item = impl Into<ObjectId>>>,
     ) -> Self {
-        let tips = tips.into_iter().map(Into::into).collect::<Vec<_>>();
-        let ends = ends
-            .map(|e| e.into_iter().map(Into::into).collect::<Vec<_>>())
-            .unwrap_or_default();
+        Self::new(find).with_tips(tips).with_ends(ends.into_iter().flatten())
+    }
 
+    /// Create a new `Builder` for a [`Topo`] that reads commits from a
+    /// repository with `find`.
+    pub fn new(find: Find) -> Self {
         Self {
             commit_graph: Default::default(),
             find,
             sorting: Default::default(),
             parents: Default::default(),
-            tips,
-            ends,
+            tips: Default::default(),
+            ends: Default::default(),
             predicate: |_| true,
         }
     }
@@ -69,6 +72,23 @@ where
     Find: gix_object::Find,
     Predicate: FnMut(&oid) -> bool,
 {
+    /// Add commits to start reading from.
+    ///
+    /// The behavior is similar to specifying additional `ends` in `git rev-list --topo-order ^ends tips`.
+    pub fn with_tips(mut self, tips: impl IntoIterator<Item = impl Into<ObjectId>>) -> Self {
+        self.tips.extend(tips.into_iter().map(Into::into));
+        self
+    }
+
+    /// Add commits ending the traversal.
+    ///
+    /// These commits themselves will not be read, i.e. the behavior is similar to specifying additional
+    /// `ends` in `git rev-list --topo-order ^ends tips`.
+    pub fn with_ends(mut self, ends: impl IntoIterator<Item = impl Into<ObjectId>>) -> Self {
+        self.ends.extend(ends.into_iter().map(Into::into));
+        self
+    }
+
     /// Set the `sorting` to use for the topological walk.
     pub fn sorting(mut self, sorting: Sorting) -> Self {
         self.sorting = sorting;

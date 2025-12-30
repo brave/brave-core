@@ -1,9 +1,9 @@
 //! Provides helpers for deserializing [`Value`]/[`ValueInner`] into Rust types
 
 use crate::{
+    DeserError, Deserialize, Error, ErrorKind, Span,
     span::Spanned,
     value::{self, Table, Value, ValueInner},
-    DeserError, Deserialize, Error, ErrorKind, Span,
 };
 use std::{fmt::Display, str::FromStr};
 
@@ -136,6 +136,7 @@ impl<'de> TableHelper<'de> {
     /// Note that if the key exists but deserialization fails, an error will be
     /// appended and if [`Self::finalize`] is called it will return that error
     /// along with any others that occurred
+    #[inline]
     pub fn optional<T: Deserialize<'de>>(&mut self, name: &'static str) -> Option<T> {
         self.optional_s(name).map(|v| v.value)
     }

@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -144,12 +144,14 @@ pub static AES_256: Algorithm = Algorithm {
 };
 
 fn aes_init_128(key: &[u8], cpu_features: cpu::Features) -> Result<KeyInner, error::Unspecified> {
-    let aes_key = aes::Key::new(key, aes::Variant::AES_128, cpu_features)?;
+    let key = key.try_into().map_err(|_| error::Unspecified)?;
+    let aes_key = aes::Key::new(aes::KeyBytes::AES_128(key), cpu_features)?;
     Ok(KeyInner::Aes(aes_key))
 }
 
 fn aes_init_256(key: &[u8], cpu_features: cpu::Features) -> Result<KeyInner, error::Unspecified> {
-    let aes_key = aes::Key::new(key, aes::Variant::AES_256, cpu_features)?;
+    let key = key.try_into().map_err(|_| error::Unspecified)?;
+    let aes_key = aes::Key::new(aes::KeyBytes::AES_256(key), cpu_features)?;
     Ok(KeyInner::Aes(aes_key))
 }
 

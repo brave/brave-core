@@ -1,20 +1,25 @@
-/*
- * Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
- * Copyright (c) 2014, Intel Corporation. All Rights Reserved.
- *
- * Licensed under the OpenSSL license (the "License").  You may not use
- * this file except in compliance with the License.  You can obtain a copy
- * in the file LICENSE in the source distribution or at
- * https://www.openssl.org/source/license.html
- *
- * Originally written by Shay Gueron (1, 2), and Vlad Krasnov (1)
- * (1) Intel Corporation, Israel Development Center, Haifa, Israel
- * (2) University of Haifa, Israel
- *
- * Reference:
- * S.Gueron and V.Krasnov, "Fast Prime Field Elliptic Curve Cryptography with
- *                          256 Bit Primes"
- */
+// Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
+// Copyright (c) 2014, Intel Corporation. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Originally written by Shay Gueron (1, 2), and Vlad Krasnov (1)
+// (1) Intel Corporation, Israel Development Center, Haifa, Israel
+// (2) University of Haifa, Israel
+//
+// Reference:
+// S.Gueron and V.Krasnov, "Fast Prime Field Elliptic Curve Cryptography with
+//                          256 Bit Primes"
 
 #include <ring-core/base.h>
 
@@ -29,15 +34,17 @@
 typedef P256_POINT_AFFINE PRECOMP256_ROW[64];
 
 // One converted into the Montgomery domain
-static const BN_ULONG ONE[P256_LIMBS] = {
-    TOBN(0x00000000, 0x00000001), TOBN(0xffffffff, 0x00000000),
-    TOBN(0xffffffff, 0xffffffff), TOBN(0x00000000, 0xfffffffe),
+static const BN_ULONG ONE_MONT[P256_LIMBS] = {
+    TOBN(0x00000000, 0x00000001),
+    TOBN(0xffffffff, 0x00000000),
+    TOBN(0xffffffff, 0xffffffff),
+    TOBN(0x00000000, 0xfffffffe),
 };
 
 // Precomputed tables for the default generator
 #include "p256-nistz-table.h"
 
-// Recode window to a signed digit, see |nistp_recode_scalar_bits| in
+// Recode window to a signed digit, see |ec_GFp_nistp_recode_scalar_bits| in
 // util.c for details
 static crypto_word_t booth_recode_w5(crypto_word_t in) {
   crypto_word_t s, d;
@@ -104,11 +111,11 @@ static void copy_conditional(BN_ULONG dst[P256_LIMBS],
 //
 // (declare-fun x () (_ BitVec 64))
 //
-// (assert (and (= x #x0000000000000000) (= (is_not_zero x) #x0000000000000001)))
-// (check-sat)
+// (assert (and (= x #x0000000000000000) (= (is_not_zero x)
+// #x0000000000000001))) (check-sat)
 //
-// (assert (and (not (= x #x0000000000000000)) (= (is_not_zero x) #x0000000000000000)))
-// (check-sat)
+// (assert (and (not (= x #x0000000000000000)) (= (is_not_zero x)
+// #x0000000000000000))) (check-sat)
 //
 static BN_ULONG is_not_zero(BN_ULONG in) {
   in |= (0 - in);
@@ -116,6 +123,94 @@ static BN_ULONG is_not_zero(BN_ULONG in) {
   return in;
 }
 
+#if defined(OPENSSL_X86_64)
+// Dispatch between CPU variations. The "_adx" suffixed functions use MULX in
+// addition to ADCX/ADOX. MULX is part of BMI2, not ADX, so we must check both
+// capabilities.
+       void ecp_nistz256_mul_mont(BN_ULONG res[P256_LIMBS],
+                                  const BN_ULONG a[P256_LIMBS],
+                                  const BN_ULONG b[P256_LIMBS]) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_mul_mont_adx(res, a, b);
+  } else {
+    ecp_nistz256_mul_mont_nohw(res, a, b);
+  }
+}
+
+       void ecp_nistz256_sqr_mont(BN_ULONG res[P256_LIMBS],
+                                  const BN_ULONG a[P256_LIMBS]) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_sqr_mont_adx(res, a);
+  } else {
+    ecp_nistz256_sqr_mont_nohw(res, a);
+  }
+}
+
+       void ecp_nistz256_ord_mul_mont(BN_ULONG res[P256_LIMBS],
+                                      const BN_ULONG a[P256_LIMBS],
+                                      const BN_ULONG b[P256_LIMBS]) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_ord_mul_mont_adx(res, a, b);
+  } else {
+    ecp_nistz256_ord_mul_mont_nohw(res, a, b);
+  }
+}
+
+       void ecp_nistz256_ord_sqr_mont(BN_ULONG res[P256_LIMBS],
+                                      const BN_ULONG a[P256_LIMBS],
+                                      BN_ULONG rep) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_ord_sqr_mont_adx(res, a, rep);
+  } else {
+    ecp_nistz256_ord_sqr_mont_nohw(res, a, rep);
+  }
+}
+
+static void ecp_nistz256_select_w5(P256_POINT *val, const P256_POINT in_t[16],
+                                   int index) {
+  if (avx2_available) {
+    ecp_nistz256_select_w5_avx2(val, in_t, index);
+  } else {
+    ecp_nistz256_select_w5_nohw(val, in_t, index);
+  }
+}
+
+static void ecp_nistz256_select_w7(P256_POINT_AFFINE *val,
+                                   const P256_POINT_AFFINE in_t[64],
+                                   int index) {
+  if (avx2_available) {
+    ecp_nistz256_select_w7_avx2(val, in_t, index);
+  } else {
+    ecp_nistz256_select_w7_nohw(val, in_t, index);
+  }
+}
+
+       void ecp_nistz256_point_double(P256_POINT *r, const P256_POINT *a) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_point_double_adx(r, a);
+  } else {
+    ecp_nistz256_point_double_nohw(r, a);
+  }
+}
+
+       void ecp_nistz256_point_add(P256_POINT *r, const P256_POINT *a,
+                                   const P256_POINT *b) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_point_add_adx(r, a, b);
+  } else {
+    ecp_nistz256_point_add_nohw(r, a, b);
+  }
+}
+
+       void ecp_nistz256_point_add_affine(P256_POINT *r, const P256_POINT *a,
+                                          const P256_POINT_AFFINE *b) {
+  if (adx_bmi2_available) {
+    ecp_nistz256_point_add_affine_adx(r, a, b);
+  } else {
+    ecp_nistz256_point_add_affine_nohw(r, a, b);
+  }
+}
+#endif  // OPENSSL_X86_64
 
 // r = p * p_scalar
 static void ecp_nistz256_windowed_mul(P256_POINT *r,
@@ -144,7 +239,7 @@ static void ecp_nistz256_windowed_mul(P256_POINT *r,
 
   limbs_copy(row[1 - 1].X, p_x, P256_LIMBS);
   limbs_copy(row[1 - 1].Y, p_y, P256_LIMBS);
-  limbs_copy(row[1 - 1].Z, ONE, P256_LIMBS);
+  limbs_copy(row[1 - 1].Z, ONE_MONT, P256_LIMBS);
 
   ecp_nistz256_point_double(&row[2 - 1], &row[1 - 1]);
   ecp_nistz256_point_add(&row[3 - 1], &row[2 - 1], &row[1 - 1]);
@@ -263,7 +358,7 @@ void p256_point_mul_base(Limb r[3][P256_LIMBS], const Limb scalar[P256_LIMBS]) {
   limbs_copy(p.X, t.X, P256_LIMBS);
   limbs_copy(p.Y, t.Y, P256_LIMBS);
   limbs_zero(p.Z, P256_LIMBS);
-  copy_conditional(p.Z, ONE, is_not_zero(wvalue >> 1));
+  copy_conditional(p.Z, ONE_MONT, is_not_zero(wvalue >> 1));
 
   for (int i = 1; i < 37; i++) {
     wvalue = calc_wvalue(&index, p_str);
@@ -296,14 +391,14 @@ void p256_point_mul_base_vartime(Limb r[3][P256_LIMBS],
   size_t wvalue = calc_first_wvalue(&index, p_str);
 
   // Convert |p| from affine to Jacobian coordinates. We set Z to zero if |p|
-  // is infinity and |ONE| otherwise. |p| was computed from the table, so it
-  // is infinity iff |wvalue >> 1| is zero.
+  // is infinity and |ONE_MONT| otherwise. |p| was computed from the table, so
+  // it is infinity iff |wvalue >> 1| is zero.
   if ((wvalue >> 1) != 0) {
     OPENSSL_memcpy(p.X, &ecp_nistz256_precomputed[0][(wvalue >> 1) - 1].X,
                    sizeof(p.X));
     OPENSSL_memcpy(p.Y, &ecp_nistz256_precomputed[0][(wvalue >> 1) - 1].Y,
                    sizeof(p.Y));
-    OPENSSL_memcpy(p.Z, ONE, sizeof(p.Z));
+    OPENSSL_memcpy(p.Z, ONE_MONT, sizeof(p.Z));
   } else {
     OPENSSL_memset(p.X, 0, sizeof(p.X));
     OPENSSL_memset(p.Y, 0, sizeof(p.Y));

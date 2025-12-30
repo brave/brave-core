@@ -2,7 +2,7 @@ use super::Style;
 
 /// When printing out one colored string followed by another, use one of
 /// these rules to figure out which *extra* control codes need to be sent.
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Difference {
     /// Print out the control codes specified by this style to end up looking
     /// like the second string's styles.

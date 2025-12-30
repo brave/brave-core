@@ -5,7 +5,6 @@
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_X86_64) && defined(__APPLE__)
 .text	
-
 .globl	_gcm_init_clmul
 .private_extern _gcm_init_clmul
 
@@ -168,61 +167,6 @@ L$_init_clmul:
 
 
 
-.globl	_gcm_gmult_clmul
-.private_extern _gcm_gmult_clmul
-
-.p2align	4
-_gcm_gmult_clmul:
-
-_CET_ENDBR
-L$_gmult_clmul:
-	movdqu	(%rdi),%xmm0
-	movdqa	L$bswap_mask(%rip),%xmm5
-	movdqu	(%rsi),%xmm2
-	movdqu	32(%rsi),%xmm4
-.byte	102,15,56,0,197
-	movdqa	%xmm0,%xmm1
-	pshufd	$78,%xmm0,%xmm3
-	pxor	%xmm0,%xmm3
-.byte	102,15,58,68,194,0
-.byte	102,15,58,68,202,17
-.byte	102,15,58,68,220,0
-	pxor	%xmm0,%xmm3
-	pxor	%xmm1,%xmm3
-
-	movdqa	%xmm3,%xmm4
-	psrldq	$8,%xmm3
-	pslldq	$8,%xmm4
-	pxor	%xmm3,%xmm1
-	pxor	%xmm4,%xmm0
-
-	movdqa	%xmm0,%xmm4
-	movdqa	%xmm0,%xmm3
-	psllq	$5,%xmm0
-	pxor	%xmm0,%xmm3
-	psllq	$1,%xmm0
-	pxor	%xmm3,%xmm0
-	psllq	$57,%xmm0
-	movdqa	%xmm0,%xmm3
-	pslldq	$8,%xmm0
-	psrldq	$8,%xmm3
-	pxor	%xmm4,%xmm0
-	pxor	%xmm3,%xmm1
-
-
-	movdqa	%xmm0,%xmm4
-	psrlq	$1,%xmm0
-	pxor	%xmm4,%xmm1
-	pxor	%xmm0,%xmm4
-	psrlq	$5,%xmm0
-	pxor	%xmm4,%xmm0
-	psrlq	$1,%xmm0
-	pxor	%xmm1,%xmm0
-.byte	102,15,56,0,197
-	movdqu	%xmm0,(%rdi)
-	ret
-
-
 .globl	_gcm_ghash_clmul
 .private_extern _gcm_ghash_clmul
 
@@ -243,14 +187,8 @@ L$_ghash_clmul:
 	jz	L$odd_tail
 
 	movdqu	16(%rsi),%xmm6
-	leaq	_OPENSSL_ia32cap_P(%rip),%rax
-	movl	4(%rax),%eax
 	cmpq	$0x30,%rcx
 	jb	L$skip4x
-
-	andl	$71303168,%eax
-	cmpl	$4194304,%eax
-	je	L$skip4x
 
 	subq	$0x30,%rcx
 	movq	$0xA040608020C0E000,%rax
@@ -619,6 +557,7 @@ L$done:
 .p2align	5
 _gcm_init_avx:
 
+
 _CET_ENDBR
 	vzeroupper
 
@@ -730,6 +669,7 @@ L$init_start_avx:
 
 .p2align	5
 _gcm_ghash_avx:
+
 
 _CET_ENDBR
 	vzeroupper

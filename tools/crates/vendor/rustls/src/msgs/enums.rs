@@ -1,6 +1,6 @@
 #![allow(clippy::upper_case_acronyms)]
 #![allow(non_camel_case_types)]
-use crate::crypto::KeyExchangeAlgorithm;
+use crate::crypto::{KeyExchangeAlgorithm, hash};
 use crate::msgs::codec::{Codec, Reader};
 
 enum_builder! {
@@ -16,6 +16,32 @@ enum_builder! {
         SHA256 => 0x04,
         SHA384 => 0x05,
         SHA512 => 0x06,
+    }
+}
+
+impl HashAlgorithm {
+    /// Returns the hash of the empty input.
+    ///
+    /// This returns `None` for some hash algorithms, so the caller
+    /// should be prepared to do the computation themselves in this case.
+    pub(crate) fn hash_for_empty_input(&self) -> Option<hash::Output> {
+        match self {
+            Self::SHA256 => Some(hash::Output::new(
+                b"\xe3\xb0\xc4\x42\x98\xfc\x1c\x14\
+                  \x9a\xfb\xf4\xc8\x99\x6f\xb9\x24\
+                  \x27\xae\x41\xe4\x64\x9b\x93\x4c\
+                  \xa4\x95\x99\x1b\x78\x52\xb8\x55",
+            )),
+            Self::SHA384 => Some(hash::Output::new(
+                b"\x38\xb0\x60\xa7\x51\xac\x96\x38\
+                  \x4c\xd9\x32\x7e\xb1\xb1\xe3\x6a\
+                  \x21\xfd\xb7\x11\x14\xbe\x07\x43\
+                  \x4c\x0c\xc7\xbf\x63\xf6\xe1\xda\
+                  \x27\x4e\xde\xbf\xe7\x6f\x65\xfb\
+                  \xd5\x1a\xd2\xf1\x48\x98\xb9\x5b",
+            )),
+            _ => None,
+        }
     }
 }
 
@@ -253,10 +279,6 @@ enum_builder! {
     }
 }
 
-impl ECPointFormat {
-    pub(crate) const SUPPORTED: [Self; 1] = [Self::Uncompressed];
-}
-
 enum_builder! {
     /// The `HeartbeatMode` TLS protocol enum.  Values in this enum are taken
     /// from the various RFCs covering TLS, and are listed by IANA.
@@ -281,11 +303,11 @@ enum_builder! {
 }
 
 enum_builder! {
-    /// The `PSKKeyExchangeMode` TLS protocol enum.  Values in this enum are taken
+    /// The `PskKeyExchangeMode` TLS protocol enum.  Values in this enum are taken
     /// from the various RFCs covering TLS, and are listed by IANA.
     /// The `Unknown` item is used when processing unrecognised ordinals.
     #[repr(u8)]
-    pub enum PSKKeyExchangeMode {
+    pub enum PskKeyExchangeMode {
         PSK_KE => 0x00,
         PSK_DHE_KE => 0x01,
     }
@@ -313,19 +335,6 @@ enum_builder! {
 }
 
 enum_builder! {
-    /// The `CertificateType` enum sent in the cert_type extensions.
-    /// Values in this enum are taken from the various RFCs covering TLS, and are listed by IANA.
-    ///
-    /// [RFC 6091 Section 5]: <https://datatracker.ietf.org/doc/html/rfc6091#section-5>
-    /// [RFC 7250 Section 7]: <https://datatracker.ietf.org/doc/html/rfc7250#section-7>
-    #[repr(u8)]
-    pub enum CertificateType {
-        X509 => 0x00,
-        RawPublicKey => 0x02,
-    }
-}
-
-enum_builder! {
     /// The Key Encapsulation Mechanism (`Kem`) type for HPKE operations.
     /// Listed by IANA, as specified in [RFC 9180 Section 7.1]
     ///
@@ -346,17 +355,13 @@ enum_builder! {
     ///
     /// [RFC 9180 Section 7.2]: <https://datatracker.ietf.org/doc/html/rfc9180#name-key-derivation-functions-kd>
     #[repr(u16)]
+    #[derive(Default)]
     pub enum HpkeKdf {
+        // TODO(XXX): revisit the default configuration. This is just what Cloudflare ships right now.
+        #[default]
         HKDF_SHA256 => 0x0001,
         HKDF_SHA384 => 0x0002,
         HKDF_SHA512 => 0x0003,
-    }
-}
-
-impl Default for HpkeKdf {
-    // TODO(XXX): revisit the default configuration. This is just what Cloudflare ships right now.
-    fn default() -> Self {
-        Self::HKDF_SHA256
     }
 }
 
@@ -366,7 +371,10 @@ enum_builder! {
     ///
     /// [RFC 9180 Section 7.3]: <https://datatracker.ietf.org/doc/html/rfc9180#name-authenticated-encryption-wi>
     #[repr(u16)]
+    #[derive(Default)]
     pub enum HpkeAead {
+        // TODO(XXX): revisit the default configuration. This is just what Cloudflare ships right now.
+        #[default]
         AES_128_GCM => 0x0001,
         AES_256_GCM => 0x0002,
         CHACHA20_POLY_1305 => 0x0003,
@@ -384,13 +392,6 @@ impl HpkeAead {
             Self::AES_128_GCM | Self::AES_256_GCM | Self::CHACHA20_POLY_1305 => Some(16),
             _ => None,
         }
-    }
-}
-
-impl Default for HpkeAead {
-    // TODO(XXX): revisit the default configuration. This is just what Cloudflare ships right now.
-    fn default() -> Self {
-        Self::AES_128_GCM
     }
 }
 
@@ -445,9 +446,9 @@ pub(crate) mod tests {
             HeartbeatMode::PeerNotAllowedToSend,
         );
         test_enum8::<ECCurveType>(ECCurveType::ExplicitPrime, ECCurveType::NamedCurve);
-        test_enum8::<PSKKeyExchangeMode>(
-            PSKKeyExchangeMode::PSK_KE,
-            PSKKeyExchangeMode::PSK_DHE_KE,
+        test_enum8::<PskKeyExchangeMode>(
+            PskKeyExchangeMode::PSK_KE,
+            PskKeyExchangeMode::PSK_DHE_KE,
         );
         test_enum8::<KeyUpdateRequest>(
             KeyUpdateRequest::UpdateNotRequested,
@@ -457,7 +458,6 @@ pub(crate) mod tests {
             CertificateStatusType::OCSP,
             CertificateStatusType::OCSP,
         );
-        test_enum8::<CertificateType>(CertificateType::X509, CertificateType::RawPublicKey);
     }
 
     pub(crate) fn test_enum8<T: for<'a> Codec<'a>>(first: T, last: T) {

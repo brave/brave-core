@@ -1,0 +1,41 @@
+framework = "IOSurface"
+crate = "objc2-io-surface"
+required-crates = []
+custom-lib-rs = true
+macos = "10.6"
+maccatalyst = "13.0"
+# NOTE: IOSurface.tbd in the iOS SDK does contain some $ld$previous$
+# directives, but they only work when using Swift's auto-linking, not when
+# telling the linker to link the framework directly via the commandline (as
+# Rust does).
+ios = "11.0"
+tvos = "11.0"
+visionos = "1.0"
+
+# Needs xpc_object_t
+fn.IOSurfaceCreateXPCObject.skipped = true
+fn.IOSurfaceLookupFromXPCObject.skipped = true
+
+# Needs task_id_token_t
+fn.IOSurfaceSetOwnershipIdentity.skipped = true
+
+# Defined in other crates too, so needs manual definition
+typedef.IOSurfaceRef.renamed = "IOSurfaceRef" # TODO: Merge IOSurface and IOSurfaceRef somehow
+typedef.IOSurfaceRef.skipped = true
+struct.__IOSurface.skipped = true
+external.IOSurfaceRef.module = "IOSurface.IOSurfaceRef"
+
+##
+## Safety
+##
+
+# SAFETY: IOSurface methods and functions are well-behaved.
+unsafe-default-safety.documentation-is-reviewed = true
+
+# TODO(breaking): Mark as unsafe (takes pointer)
+class.IOSurface.methods."lockWithOptions:seed:".unsafe = false
+class.IOSurface.methods."unlockWithOptions:seed:".unsafe = false
+
+# TODO(breaking): Maybe mark as `unsafe`? Takes `AnyObject` generic.
+class.IOSurface.methods."initWithProperties:".unsafe = false
+class.IOSurface.methods."setAllAttachments:".unsafe = false

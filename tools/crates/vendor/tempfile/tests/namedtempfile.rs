@@ -2,7 +2,7 @@
 
 use std::ffi::{OsStr, OsString};
 use std::fs::File;
-use std::io::{Read, Seek, SeekFrom, Write};
+use std::io::{self, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use tempfile::{env, tempdir, Builder, NamedTempFile, TempPath};
 
@@ -10,8 +10,18 @@ fn exists<P: AsRef<Path>>(path: P) -> bool {
     std::fs::metadata(path.as_ref()).is_ok()
 }
 
+/// For the wasi platforms, `std::env::temp_dir` will panic. For those targets, configure the /tmp
+/// directory instead as the base directory for temp files.
+fn configure_wasi_temp_dir() {
+    if cfg!(target_os = "wasi") {
+        let _ = tempfile::env::override_temp_dir(Path::new("/tmp"));
+    }
+}
+
 #[test]
 fn test_prefix() {
+    configure_wasi_temp_dir();
+
     let tmpfile = NamedTempFile::with_prefix("prefix").unwrap();
     let name = tmpfile.path().file_name().unwrap().to_str().unwrap();
     assert!(name.starts_with("prefix"));
@@ -19,6 +29,8 @@ fn test_prefix() {
 
 #[test]
 fn test_suffix() {
+    configure_wasi_temp_dir();
+
     let tmpfile = NamedTempFile::with_suffix("suffix").unwrap();
     let name = tmpfile.path().file_name().unwrap().to_str().unwrap();
     assert!(name.ends_with("suffix"));
@@ -26,6 +38,8 @@ fn test_suffix() {
 
 #[test]
 fn test_basic() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     write!(tmpfile, "abcde").unwrap();
     tmpfile.seek(SeekFrom::Start(0)).unwrap();
@@ -36,6 +50,8 @@ fn test_basic() {
 
 #[test]
 fn test_deleted() {
+    configure_wasi_temp_dir();
+
     let tmpfile = NamedTempFile::new().unwrap();
     let path = tmpfile.path().to_path_buf();
     assert!(exists(&path));
@@ -45,6 +61,8 @@ fn test_deleted() {
 
 #[test]
 fn test_persist() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     let old_path = tmpfile.path().to_path_buf();
     let persist_path = env::temp_dir().join("persisted_temporary_file");
@@ -74,6 +92,8 @@ fn test_persist() {
 
 #[test]
 fn test_persist_noclobber() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     let old_path = tmpfile.path().to_path_buf();
     let persist_target = NamedTempFile::new().unwrap();
@@ -98,6 +118,8 @@ fn test_persist_noclobber() {
 
 #[test]
 fn test_customnamed() {
+    configure_wasi_temp_dir();
+
     let tmpfile = Builder::new()
         .prefix("tmp")
         .suffix(&".rs")
@@ -112,6 +134,8 @@ fn test_customnamed() {
 
 #[test]
 fn test_append() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = Builder::new().append(true).tempfile().unwrap();
     tmpfile.write_all(b"a").unwrap();
     tmpfile.seek(SeekFrom::Start(0)).unwrap();
@@ -125,6 +149,8 @@ fn test_append() {
 
 #[test]
 fn test_reopen() {
+    configure_wasi_temp_dir();
+
     let source = NamedTempFile::new().unwrap();
     let mut first = source.reopen().unwrap();
     let mut second = source.reopen().unwrap();
@@ -138,6 +164,8 @@ fn test_reopen() {
 
 #[test]
 fn test_into_file() {
+    configure_wasi_temp_dir();
+
     let mut file = NamedTempFile::new().unwrap();
     let path = file.path().to_owned();
     write!(file, "abcde").expect("write failed");
@@ -154,6 +182,8 @@ fn test_into_file() {
 
 #[test]
 fn test_immut() {
+    configure_wasi_temp_dir();
+
     let tmpfile = NamedTempFile::new().unwrap();
     (&tmpfile).write_all(b"abcde").unwrap();
     (&tmpfile).seek(SeekFrom::Start(0)).unwrap();
@@ -164,6 +194,8 @@ fn test_immut() {
 
 #[test]
 fn test_temppath() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     write!(tmpfile, "abcde").unwrap();
 
@@ -173,6 +205,8 @@ fn test_temppath() {
 
 #[test]
 fn test_temppath_persist() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     write!(tmpfile, "abcde").unwrap();
 
@@ -201,6 +235,8 @@ fn test_temppath_persist() {
 
 #[test]
 fn test_temppath_persist_noclobber() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     write!(tmpfile, "abcde").unwrap();
 
@@ -232,6 +268,8 @@ fn test_temppath_persist_noclobber() {
 
 #[test]
 fn temp_path_from_existing() {
+    configure_wasi_temp_dir();
+
     let tmp_dir = tempdir().unwrap();
     let tmp_file_path_1 = tmp_dir.path().join("testfile1");
     let tmp_file_path_2 = tmp_dir.path().join("testfile2");
@@ -276,22 +314,52 @@ fn temp_path_from_argument_types() {
 
 #[test]
 fn test_write_after_close() {
+    configure_wasi_temp_dir();
+
     let path = NamedTempFile::new().unwrap().into_temp_path();
     File::create(path).unwrap().write_all(b"test").unwrap();
 }
 
 #[test]
 fn test_change_dir() {
-    std::env::set_current_dir(env::temp_dir()).unwrap();
+    configure_wasi_temp_dir();
+
+    let dir_a = tempdir().unwrap();
+    let dir_b = tempdir().unwrap();
+
+    std::env::set_current_dir(&dir_a).expect("failed to change to directory ~");
     let tmpfile = NamedTempFile::new_in(".").unwrap();
     let path = std::env::current_dir().unwrap().join(tmpfile.path());
-    std::env::set_current_dir("/").unwrap();
+    std::env::set_current_dir(&dir_b).expect("failed to change to directory B");
     drop(tmpfile);
-    assert!(!exists(path))
+    assert!(!exists(path));
+
+    drop(dir_a);
+    drop(dir_b);
+}
+
+#[test]
+fn test_change_dir_make() {
+    configure_wasi_temp_dir();
+
+    let dir_a = tempdir().unwrap();
+    let dir_b = tempdir().unwrap();
+
+    std::env::set_current_dir(&dir_a).expect("failed to change to directory A");
+    let tmpfile = Builder::new().make_in(".", |p| File::create(p)).unwrap();
+    let path = std::env::current_dir().unwrap().join(tmpfile.path());
+    std::env::set_current_dir(&dir_b).expect("failed to change to directory B");
+    drop(tmpfile);
+    assert!(!exists(path));
+
+    drop(dir_a);
+    drop(dir_b);
 }
 
 #[test]
 fn test_into_parts() {
+    configure_wasi_temp_dir();
+
     let mut file = NamedTempFile::new().unwrap();
     write!(file, "abcd").expect("write failed");
 
@@ -313,6 +381,8 @@ fn test_into_parts() {
 
 #[test]
 fn test_from_parts() {
+    configure_wasi_temp_dir();
+
     let mut file = NamedTempFile::new().unwrap();
     write!(file, "abcd").expect("write failed");
 
@@ -325,6 +395,8 @@ fn test_from_parts() {
 
 #[test]
 fn test_keep() {
+    configure_wasi_temp_dir();
+
     let mut tmpfile = NamedTempFile::new().unwrap();
     write!(tmpfile, "abcde").unwrap();
     let (mut f, temp_path) = tmpfile.into_parts();
@@ -353,24 +425,46 @@ fn test_keep() {
 }
 
 #[test]
-fn test_builder_keep() {
-    let mut tmpfile = Builder::new().keep(true).tempfile().unwrap();
-    write!(tmpfile, "abcde").unwrap();
-    let path = tmpfile.path().to_owned();
-    drop(tmpfile);
+fn test_disable_cleanup() {
+    configure_wasi_temp_dir();
 
-    {
-        // Try opening it again.
-        let mut f = File::open(&path).unwrap();
-        let mut buf = String::new();
-        f.read_to_string(&mut buf).unwrap();
-        assert_eq!("abcde", buf);
+    // Case 0: never mark as "disable cleanup"
+    // Case 1: enable "disable cleanup" in the builder, don't touch it after.
+    // Case 2: enable "disable cleanup" in the builder, turn it off after.
+    // Case 3: don't enable disable cleanup in the builder, turn it on after.
+
+    for case in 0..4 {
+        let in_builder = case & 1 > 0;
+        let toggle = case & 2 > 0;
+        let mut tmpfile = Builder::new()
+            .disable_cleanup(in_builder)
+            .tempfile()
+            .unwrap();
+        write!(tmpfile, "abcde").unwrap();
+        if toggle {
+            tmpfile.disable_cleanup(!in_builder);
+        }
+
+        let path = tmpfile.path().to_owned();
+        drop(tmpfile);
+
+        if in_builder ^ toggle {
+            // Try opening it again.
+            let mut f = File::open(&path).unwrap();
+            let mut buf = String::new();
+            f.read_to_string(&mut buf).unwrap();
+            assert_eq!("abcde", buf);
+            std::fs::remove_file(&path).unwrap();
+        } else {
+            assert!(!path.exists(), "tempfile wasn't deleted");
+        }
     }
-    std::fs::remove_file(&path).unwrap();
 }
 
 #[test]
 fn test_make() {
+    configure_wasi_temp_dir();
+
     let tmpfile = Builder::new().make(|path| File::create(path)).unwrap();
 
     assert!(tmpfile.path().is_file());
@@ -378,6 +472,8 @@ fn test_make() {
 
 #[test]
 fn test_make_in() {
+    configure_wasi_temp_dir();
+
     let tmp_dir = tempdir().unwrap();
 
     let tmpfile = Builder::new()
@@ -390,6 +486,8 @@ fn test_make_in() {
 
 #[test]
 fn test_make_fnmut() {
+    configure_wasi_temp_dir();
+
     let mut count = 0;
 
     // Show that an FnMut can be used.
@@ -456,20 +554,29 @@ fn test_make_uds_conflict() {
 /// Make sure we re-seed with system randomness if we run into a conflict.
 #[test]
 fn test_reseed() {
+    configure_wasi_temp_dir();
+
     // Deterministic seed.
     fastrand::seed(42);
 
+    // I need to create 5 conflicts but I can't just make 5 temporary files because we fork the RNG
+    // each time we create a file.
     let mut attempts = 0;
-    let _files: Vec<_> = std::iter::repeat_with(|| {
-        Builder::new()
-            .make(|path| {
-                attempts += 1;
-                File::options().write(true).create_new(true).open(path)
-            })
-            .unwrap()
-    })
-    .take(5)
-    .collect();
+    let mut files: Vec<_> = Vec::new();
+    let _ = Builder::new().make(|path| -> io::Result<File> {
+        if attempts == 5 {
+            return Err(io::Error::new(io::ErrorKind::Other, "stop!"));
+        }
+        attempts += 1;
+        let f = File::options()
+            .write(true)
+            .create_new(true)
+            .open(path)
+            .unwrap();
+
+        files.push(NamedTempFile::from_parts(f, TempPath::from_path(path)));
+        Err(io::Error::new(io::ErrorKind::AlreadyExists, "fake!"))
+    });
 
     assert_eq!(5, attempts);
     attempts = 0;

@@ -1,7 +1,7 @@
-use crate::backport::*;
 use crate::error::{ErrorKind, Position};
 use crate::identifier::Identifier;
 use crate::{BuildMetadata, Comparator, Op, Prerelease, Version, VersionReq};
+use alloc::vec::Vec;
 use core::str::FromStr;
 
 /// Error parsing a SemVer version or version requirement.
@@ -89,12 +89,7 @@ impl FromStr for VersionReq {
         if let Some((ch, text)) = wildcard(text) {
             let rest = text.trim_start_matches(' ');
             if rest.is_empty() {
-                #[cfg(not(no_const_vec_new))]
                 return Ok(VersionReq::STAR);
-                #[cfg(no_const_vec_new)] // rustc <1.39
-                return Ok(VersionReq {
-                    comparators: Vec::new(),
-                });
             } else if rest.starts_with(',') {
                 return Err(Error::new(ErrorKind::WildcardNotTheOnlyComparator(ch)));
             } else {

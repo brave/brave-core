@@ -3,7 +3,6 @@ use bstr::BStr;
 use super::Ref;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod parse {
     use bstr::BString;
 
@@ -75,6 +74,3 @@ pub use async_io::{from_v1_refs_received_as_part_of_handshake_and_capabilities, 
 mod blocking_io;
 #[cfg(feature = "blocking-client")]
 pub use blocking_io::{from_v1_refs_received_as_part_of_handshake_and_capabilities, from_v2_refs};
-
-#[cfg(test)]
-mod tests;

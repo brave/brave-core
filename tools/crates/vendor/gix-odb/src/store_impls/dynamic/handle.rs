@@ -32,7 +32,7 @@ pub(crate) enum IntraPackLookup<'a> {
     },
 }
 
-impl<'a> IntraPackLookup<'a> {
+impl IntraPackLookup<'_> {
     pub(crate) fn pack_offset_by_id(&self, id: &oid) -> Option<gix_pack::data::Offset> {
         match self {
             IntraPackLookup::Single(index) => index
@@ -335,7 +335,7 @@ where
 {
     fn drop(&mut self) {
         if let Some(token) = self.token.take() {
-            self.store.remove_handle(token)
+            self.store.remove_handle(token);
         }
     }
 }

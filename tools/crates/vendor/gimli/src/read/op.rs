@@ -1243,6 +1243,9 @@ impl<R: Reader, S: EvaluationStorage<R>> Evaluation<R, S> {
                 size,
                 space,
             } => {
+                if size > self.encoding.address_size {
+                    return Err(Error::InvalidDerefSize(size));
+                }
                 let entry = self.pop()?;
                 let addr = entry.to_u64(self.addr_mask)?;
                 let addr_space = if space {
@@ -2022,7 +2025,6 @@ mod tests {
     use crate::leb128;
     use crate::read::{EndianSlice, Error, Result, UnitOffset};
     use crate::test_util::GimliSectionMethods;
-    use core::usize;
     use test_assembler::{Endian, Section};
 
     fn encoding4() -> Encoding {
@@ -2095,7 +2097,7 @@ mod tests {
 
     fn check_op_parse<F>(
         input: F,
-        expect: &Operation<EndianSlice<LittleEndian>>,
+        expect: &Operation<EndianSlice<'_, LittleEndian>>,
         encoding: Encoding,
     ) where
         F: Fn(Section) -> Section,
@@ -2864,7 +2866,7 @@ mod tests {
             markers.push(Marker(None, Vec::new()));
         }
 
-        fn write(stack: &mut Vec<u8>, index: usize, mut num: u64, nbytes: u8) {
+        fn write(stack: &mut [u8], index: usize, mut num: u64, nbytes: u8) {
             for i in 0..nbytes as usize {
                 stack[index + i] = (num & 0xff) as u8;
                 num >>= 8;
@@ -2918,7 +2920,7 @@ mod tests {
 
     fn check_eval_with_args<F>(
         program: &[AssemblerEntry],
-        expect: Result<&[Piece<EndianSlice<LittleEndian>>]>,
+        expect: Result<&[Piece<EndianSlice<'_, LittleEndian>>]>,
         encoding: Encoding,
         object_address: Option<u64>,
         initial_value: Option<u64>,
@@ -2967,7 +2969,7 @@ mod tests {
 
     fn check_eval(
         program: &[AssemblerEntry],
-        expect: Result<&[Piece<EndianSlice<LittleEndian>>]>,
+        expect: Result<&[Piece<EndianSlice<'_, LittleEndian>>]>,
         encoding: Encoding,
     ) {
         check_eval_with_args(program, expect, encoding, None, None, None, |_, result| {
@@ -3502,6 +3504,46 @@ mod tests {
                             }
                         }
                         _ => panic!(),
+                    };
+                }
+
+                Ok(result)
+            },
+        );
+
+        #[rustfmt::skip]
+        let program = [
+            Op(DW_OP_addr), U32(0x7fff_ffff),
+            Op(DW_OP_deref_size), U8(8),
+        ];
+        check_eval_with_args(
+            &program,
+            Err(Error::InvalidDerefSize(8)),
+            encoding4(),
+            None,
+            None,
+            None,
+            |eval, mut result| {
+                while result != EvaluationResult::Complete {
+                    result = match result {
+                        EvaluationResult::RequiresMemory {
+                            address,
+                            size,
+                            space,
+                            base_type,
+                        } => {
+                            assert_eq!(base_type, UnitOffset(0));
+                            let mut v = address << 2;
+                            if let Some(value) = space {
+                                v += value;
+                            }
+                            v &= (1u64 << (8 * size)) - 1;
+                            eval.resume_with_memory(Value::Generic(v))?
+                        }
+                        EvaluationResult::RequiresRelocatedAddress(address) => {
+                            eval.resume_with_relocated_address(address)?
+                        }
+                        _ => panic!("Unexpected result: {:?}", result),
                     };
                 }
 

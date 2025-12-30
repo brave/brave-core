@@ -1,14 +1,24 @@
-use super::mystd::borrow::ToOwned;
 use super::mystd::env;
-use super::mystd::ffi::{CStr, OsStr};
-use super::mystd::io::Error;
+use super::mystd::ffi::OsStr;
 use super::mystd::os::unix::prelude::*;
 use super::xcoff;
-use super::{Library, LibrarySegment, Vec};
+use super::{Library, LibrarySegment};
+use alloc::borrow::ToOwned;
 use alloc::vec;
+use alloc::vec::Vec;
+use core::ffi::{c_int, CStr};
 use core::mem;
 
 const EXE_IMAGE_BASE: u64 = 0x100000000;
+
+unsafe extern "C" {
+    #[link_name = "_Errno"]
+    fn errno_location() -> *mut c_int;
+}
+
+fn errno() -> i32 {
+    unsafe { (*errno_location()) as i32 }
+}
 
 /// On AIX, we use `loadquery` with `L_GETINFO` flag to query libraries mmapped.
 /// See https://www.ibm.com/docs/en/aix/7.2?topic=l-loadquery-subroutine for
@@ -26,15 +36,14 @@ pub(super) fn native_libraries() -> Vec<Library> {
             {
                 break;
             } else {
-                match Error::last_os_error().raw_os_error() {
-                    Some(libc::ENOMEM) => {
+                match errno() {
+                    libc::ENOMEM => {
                         buffer.resize(buffer.len() * 2, mem::zeroed::<libc::ld_info>());
                     }
-                    Some(_) => {
+                    _ => {
                         // If other error occurs, return empty libraries.
                         return Vec::new();
                     }
-                    _ => unreachable!(),
                 }
             }
         }
