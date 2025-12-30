@@ -7,18 +7,26 @@ pub enum Architecture {
     Aarch64,
     #[allow(non_camel_case_types)]
     Aarch64_Ilp32,
+    Alpha,
     Arm,
     Avr,
     Bpf,
     Csky,
+    E2K32,
+    E2K64,
     I386,
     X86_64,
     #[allow(non_camel_case_types)]
     X86_64_X32,
     Hexagon,
+    Hppa,
+    LoongArch32,
     LoongArch64,
+    M68k,
     Mips,
     Mips64,
+    #[allow(non_camel_case_types)]
+    Mips64_N32,
     Msp430,
     PowerPc,
     PowerPc64,
@@ -27,7 +35,10 @@ pub enum Architecture {
     S390x,
     Sbf,
     Sharc,
+    Sparc,
+    Sparc32Plus,
     Sparc64,
+    SuperH,
     Wasm32,
     Wasm64,
     Xtensa,
@@ -51,17 +62,24 @@ impl Architecture {
             Architecture::Unknown => None,
             Architecture::Aarch64 => Some(AddressSize::U64),
             Architecture::Aarch64_Ilp32 => Some(AddressSize::U32),
+            Architecture::Alpha => Some(AddressSize::U64),
             Architecture::Arm => Some(AddressSize::U32),
             Architecture::Avr => Some(AddressSize::U8),
             Architecture::Bpf => Some(AddressSize::U64),
             Architecture::Csky => Some(AddressSize::U32),
+            Architecture::E2K32 => Some(AddressSize::U32),
+            Architecture::E2K64 => Some(AddressSize::U64),
             Architecture::I386 => Some(AddressSize::U32),
             Architecture::X86_64 => Some(AddressSize::U64),
             Architecture::X86_64_X32 => Some(AddressSize::U32),
             Architecture::Hexagon => Some(AddressSize::U32),
+            Architecture::Hppa => Some(AddressSize::U32),
+            Architecture::LoongArch32 => Some(AddressSize::U32),
             Architecture::LoongArch64 => Some(AddressSize::U64),
+            Architecture::M68k => Some(AddressSize::U32),
             Architecture::Mips => Some(AddressSize::U32),
             Architecture::Mips64 => Some(AddressSize::U64),
+            Architecture::Mips64_N32 => Some(AddressSize::U32),
             Architecture::Msp430 => Some(AddressSize::U16),
             Architecture::PowerPc => Some(AddressSize::U32),
             Architecture::PowerPc64 => Some(AddressSize::U64),
@@ -70,10 +88,13 @@ impl Architecture {
             Architecture::S390x => Some(AddressSize::U64),
             Architecture::Sbf => Some(AddressSize::U64),
             Architecture::Sharc => Some(AddressSize::U32),
+            Architecture::Sparc => Some(AddressSize::U32),
+            Architecture::Sparc32Plus => Some(AddressSize::U32),
             Architecture::Sparc64 => Some(AddressSize::U64),
             Architecture::Wasm32 => Some(AddressSize::U32),
             Architecture::Wasm64 => Some(AddressSize::U64),
             Architecture::Xtensa => Some(AddressSize::U32),
+            Architecture::SuperH => Some(AddressSize::U32),
         }
     }
 }
@@ -111,6 +132,21 @@ pub enum BinaryFormat {
     Pe,
     Wasm,
     Xcoff,
+}
+
+impl BinaryFormat {
+    /// The target's native binary format for relocatable object files.
+    ///
+    /// Defaults to `Elf` for unknown platforms.
+    pub fn native_object() -> BinaryFormat {
+        if cfg!(target_os = "windows") {
+            BinaryFormat::Coff
+        } else if cfg!(target_os = "macos") {
+            BinaryFormat::MachO
+        } else {
+            BinaryFormat::Elf
+        }
+    }
 }
 
 /// The kind of a section.
@@ -188,6 +224,11 @@ pub enum SectionKind {
     ///
     /// Example Mach-O sections: `__DWARF/__debug_info`
     Debug,
+    /// Debug strings.
+    ///
+    /// This is the same as either `Debug` or `OtherString`, depending on the file format.
+    /// This value is only used in the API for writing files. It is never returned when reading files.
+    DebugString,
     /// Information for the linker.
     ///
     /// Example COFF sections: `.drectve`
@@ -255,8 +296,6 @@ pub enum ComdatKind {
 pub enum SymbolKind {
     /// The symbol kind is unknown.
     Unknown,
-    /// The symbol is a null placeholder.
-    Null,
     /// The symbol is for executable code.
     Text,
     /// The symbol is for a data object.
@@ -302,6 +341,8 @@ pub enum SymbolScope {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum RelocationKind {
+    /// The operation is unknown.
+    Unknown,
     /// S + A
     Absolute,
     /// S + A - P
@@ -322,19 +363,6 @@ pub enum RelocationKind {
     SectionOffset,
     /// The index of the section containing the symbol.
     SectionIndex,
-    /// Some other ELF relocation. The value is dependent on the architecture.
-    Elf(u32),
-    /// Some other Mach-O relocation. The value is dependent on the architecture.
-    MachO {
-        /// The relocation type.
-        value: u8,
-        /// Whether the relocation is relative to the place.
-        relative: bool,
-    },
-    /// Some other COFF relocation. The value is dependent on the architecture.
-    Coff(u16),
-    /// Some other XCOFF relocation.
-    Xcoff(u8),
 }
 
 /// Information about how the result of the relocation operation is encoded in the place.
@@ -344,6 +372,8 @@ pub enum RelocationKind {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum RelocationEncoding {
+    /// The relocation encoding is unknown.
+    Unknown,
     /// Generic encoding.
     Generic,
 
@@ -402,6 +432,18 @@ pub enum RelocationEncoding {
     /// * 16-bit absolute address
     /// * 6-bit relative address
     SharcTypeB,
+
+    /// E2K 64-bit value stored in two LTS
+    ///
+    /// Memory representation:
+    /// ```text
+    /// 0: LTS1 = value[63:32]
+    /// 4: LTS0 = value[31:0]
+    /// ```
+    E2KLit,
+
+    /// E2K 28-bit value stored in CS0
+    E2KDisp,
 }
 
 /// File flags that are specific to each file format.
@@ -532,5 +574,46 @@ pub enum SymbolFlags<Section, Symbol> {
         ///
         /// Only valid if `x_smtyp` is `XTY_LD`.
         containing_csect: Option<Symbol>,
+    },
+}
+
+/// Relocation fields that are specific to each file format and architecture.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum RelocationFlags {
+    /// Format independent representation.
+    Generic {
+        /// The operation used to calculate the result of the relocation.
+        kind: RelocationKind,
+        /// Information about how the result of the relocation operation is encoded in the place.
+        encoding: RelocationEncoding,
+        /// The size in bits of the place of relocation.
+        size: u8,
+    },
+    /// ELF relocation fields.
+    Elf {
+        /// `r_type` field in the ELF relocation.
+        r_type: u32,
+    },
+    /// Mach-O relocation fields.
+    MachO {
+        /// `r_type` field in the Mach-O relocation.
+        r_type: u8,
+        /// `r_pcrel` field in the Mach-O relocation.
+        r_pcrel: bool,
+        /// `r_length` field in the Mach-O relocation.
+        r_length: u8,
+    },
+    /// COFF relocation fields.
+    Coff {
+        /// `typ` field in the COFF relocation.
+        typ: u16,
+    },
+    /// XCOFF relocation fields.
+    Xcoff {
+        /// `r_rtype` field in the XCOFF relocation.
+        r_rtype: u8,
+        /// `r_rsize` field in the XCOFF relocation.
+        r_rsize: u8,
     },
 }

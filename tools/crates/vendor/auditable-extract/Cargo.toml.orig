@@ -1,0 +1,23 @@
+[package]
+name = "auditable-extract"
+version = "0.3.5"
+authors = ["Sergey \"Shnatsel\" Davidoff <shnatsel@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rust-secure-code/cargo-auditable"
+description = "Extract the dependency trees embedded in binaries by `cargo auditable`"
+categories = ["encoding"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+binfarce = "0.2"
+wasmparser = { version = "0.207.0", default-features = false, optional = true }
+
+[features]
+default = ["wasm"]
+wasm = ["wasmparser"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(fuzzing)'] }
+

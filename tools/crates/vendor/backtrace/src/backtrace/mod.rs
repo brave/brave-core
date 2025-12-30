@@ -63,7 +63,7 @@ pub fn trace<F: FnMut(&Frame) -> bool>(cb: F) {
 ///
 /// See information on `trace` for caveats on `cb` panicking.
 pub unsafe fn trace_unsynchronized<F: FnMut(&Frame) -> bool>(mut cb: F) {
-    trace_imp(&mut cb)
+    unsafe { trace_imp(&mut cb) }
 }
 
 /// A trait representing one frame of a backtrace, yielded to the `trace`
@@ -176,7 +176,6 @@ cfg_if::cfg_if! {
                 unix,
                 not(target_os = "emscripten"),
                 not(all(target_os = "ios", target_arch = "arm")),
-                not(all(target_os = "nto", target_env = "nto70")),
             ),
             all(
                 target_env = "sgx",
@@ -190,15 +189,15 @@ cfg_if::cfg_if! {
     } else if #[cfg(all(windows, not(target_vendor = "uwp")))] {
         cfg_if::cfg_if! {
             if #[cfg(any(target_arch = "x86_64", target_arch = "aarch64", target_arch = "arm64ec"))] {
-                mod dbghelp64;
-                use dbghelp64 as dbghelp;
+                mod win64;
+                use self::win64::trace as trace_imp;
+                pub(crate) use self::win64::Frame as FrameImp;
             } else if #[cfg(any(target_arch = "x86", target_arch = "arm"))] {
-                mod dbghelp32;
-                use dbghelp32 as dbghelp;
+                mod win32;
+                use self::win32::trace as trace_imp;
+                pub(crate) use self::win32::Frame as FrameImp;
             }
         }
-        use self::dbghelp::trace as trace_imp;
-        pub(crate) use self::dbghelp::Frame as FrameImp;
     } else {
         mod noop;
         use self::noop::trace as trace_imp;

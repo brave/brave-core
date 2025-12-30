@@ -2,7 +2,7 @@ use gix_hash::ObjectId;
 
 use crate::{log::Line, store_impl::file::log::LineRef};
 
-impl<'a> LineRef<'a> {
+impl LineRef<'_> {
     /// Convert this instance into its mutable counterpart
     pub fn to_owned(&self) -> Line {
         (*self).into()
@@ -20,13 +20,13 @@ mod write {
     #[derive(Debug, thiserror::Error)]
     #[allow(missing_docs)]
     enum Error {
-        #[error("Messages must not contain newlines\\n")]
+        #[error(r"Messages must not contain newlines (\n)")]
         IllegalCharacter,
     }
 
     impl From<Error> for io::Error {
         fn from(err: Error) -> Self {
-            io::Error::new(io::ErrorKind::Other, err)
+            io::Error::other(err)
         }
     }
 
@@ -48,7 +48,7 @@ mod write {
     }
 }
 
-impl<'a> LineRef<'a> {
+impl LineRef<'_> {
     /// The previous object id of the ref. It will be a null hash if there was no previous id as
     /// this ref is being created.
     pub fn previous_oid(&self) -> ObjectId {
@@ -72,20 +72,18 @@ impl<'a> From<LineRef<'a>> for Line {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod decode {
     use gix_object::bstr::{BStr, ByteSlice};
     use winnow::{
-        combinator::{alt, eof, fail, opt, preceded, rest, terminated},
+        combinator::{alt, eof, fail, opt, preceded, terminated},
         error::{AddContext, ParserError, StrContext},
         prelude::*,
-        token::take_while,
+        token::{rest, take_while},
     };
 
     use crate::{file::log::LineRef, parse::hex_hash};
 
     ///
-    #[allow(clippy::empty_docs)]
     mod error {
         use gix_object::bstr::{BString, ByteSlice};
 
@@ -99,7 +97,7 @@ pub mod decode {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 write!(
                     f,
-                    "{:?} did not match '<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\\t<message>'",
+                    r"{:?} did not match '<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>'",
                     self.input
                 )
             }
@@ -124,7 +122,7 @@ pub mod decode {
         }
     }
 
-    fn message<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> PResult<&'a BStr, E> {
+    fn message<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> ModalResult<&'a BStr, E> {
         if i.is_empty() {
             rest.map(ByteSlice::as_bstr).parse_next(i)
         } else {
@@ -136,41 +134,63 @@ pub mod decode {
 
     fn one<'a, E: ParserError<&'a [u8]> + AddContext<&'a [u8], StrContext>>(
         bytes: &mut &'a [u8],
-    ) -> PResult<LineRef<'a>, E> {
-        (
-            (
+    ) -> ModalResult<LineRef<'a>, E> {
+        let mut tokens = bytes.splitn(2, |b| *b == b'\t');
+        if let (Some(mut first), Some(mut second)) = (tokens.next(), tokens.next()) {
+            let (old, new, signature) = (
                 terminated(hex_hash, b" ").context(StrContext::Expected("<old-hexsha>".into())),
                 terminated(hex_hash, b" ").context(StrContext::Expected("<new-hexsha>".into())),
                 gix_actor::signature::decode.context(StrContext::Expected("<name> <<email>> <timestamp>".into())),
             )
                 .context(StrContext::Expected(
-                    "<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\\t<message>".into(),
-                )),
-            alt((
-                preceded(
-                    b'\t',
-                    message.context(StrContext::Expected("<optional message>".into())),
-                ),
-                b'\n'.value(Default::default()),
-                eof.value(Default::default()),
-                fail.context(StrContext::Expected(
-                    "log message must be separated from signature with whitespace".into(),
-                )),
-            )),
-        )
-            .map(|((old, new, signature), message)| LineRef {
+                    r"<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>".into(),
+                ))
+                .parse_next(&mut first)?;
+
+            // forward the buffer🤦‍♂️
+            message.parse_next(bytes)?;
+            let message = message(&mut second)?;
+            Ok(LineRef {
                 previous_oid: old,
                 new_oid: new,
                 signature,
                 message,
             })
-            .parse_next(bytes)
+        } else {
+            (
+                (
+                    terminated(hex_hash, b" ").context(StrContext::Expected("<old-hexsha>".into())),
+                    terminated(hex_hash, b" ").context(StrContext::Expected("<new-hexsha>".into())),
+                    gix_actor::signature::decode.context(StrContext::Expected("<name> <<email>> <timestamp>".into())),
+                )
+                    .context(StrContext::Expected(
+                        r"<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>".into(),
+                    )),
+                alt((
+                    preceded(
+                        b'\t',
+                        message.context(StrContext::Expected("<optional message>".into())),
+                    ),
+                    b'\n'.value(Default::default()),
+                    eof.value(Default::default()),
+                    fail.context(StrContext::Expected(
+                        "log message must be separated from signature with whitespace".into(),
+                    )),
+                )),
+            )
+                .map(|((old, new, signature), message)| LineRef {
+                    previous_oid: old,
+                    new_oid: new,
+                    signature,
+                    message,
+                })
+                .parse_next(bytes)
+        }
     }
 
     #[cfg(test)]
     mod test {
         use super::*;
-        use gix_date::{time::Sign, Time};
 
         /// Convert a hexadecimal hash into its corresponding `ObjectId` or _panic_.
         fn hex_to_oid(hex: &str) -> gix_hash::ObjectId {
@@ -230,11 +250,7 @@ pub mod decode {
                         signature: gix_actor::SignatureRef {
                             name: b"name".as_bstr(),
                             email: b"foo@example.com".as_bstr(),
-                            time: Time {
-                                seconds: 1234567890,
-                                offset: 0,
-                                sign: Sign::Minus
-                            }
+                            time: "1234567890 -0000"
                         },
                         message: b"".as_bstr(),
                     }
@@ -258,11 +274,7 @@ pub mod decode {
                     signature: gix_actor::SignatureRef {
                         name: b"Sebastian Thiel".as_bstr(),
                         email: b"foo@example.com".as_bstr(),
-                        time: Time {
-                            seconds: 1618030561,
-                            offset: 28800,
-                            sign: Sign::Plus,
-                        },
+                        time: "1618030561 +0800",
                     },
                     message: b"pull --ff-only: Fast-forward".as_bstr(),
                 };

@@ -25,7 +25,7 @@ use security_framework_sys::{
 #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::{item::{
     kSecAttrIsPermanent, kSecAttrLabel, kSecAttrKeyType,
-    kSecAttrKeySizeInBits, kSecPrivateKeyAttrs, kSecAttrAccessControl
+    kSecAttrKeySizeInBits, kSecAttrAccessControl
 }};
 #[cfg(target_os = "macos")]
 use security_framework_sys::item::{
@@ -156,10 +156,10 @@ impl SecKey {
     pub fn generate(attributes: CFDictionary) -> Result<Self, CFError> {
         let mut error: CFErrorRef = ::std::ptr::null_mut();
         let sec_key = unsafe { SecKeyCreateRandomKey(attributes.as_concrete_TypeRef(), &mut error) };
-        if !error.is_null() {
-            Err(unsafe { CFError::wrap_under_create_rule(error) })
-        } else {
+        if error.is_null() {
             Ok(unsafe { Self::wrap_under_create_rule(sec_key) })
+        } else {
+            Err(unsafe { CFError::wrap_under_create_rule(error) })
         }
     }
 
@@ -313,7 +313,7 @@ impl SecKey {
                     CFString::wrap_under_get_rule(kSecKeyKeyExchangeParameterSharedInfo),
                     CFData::from_buffer(shared_info).as_CFType(),
                 ));
-            };
+            }
 
             let parameters = CFDictionary::from_CFType_pairs(&params);
 
@@ -436,11 +436,7 @@ impl GenerateKeyOptions {
     // CFDictionary should not be exposed in public Rust APIs.
     #[deprecated(note = "Pass the options to SecKey::new")]
     pub fn to_dictionary(&self) -> CFDictionary {
-        #[cfg(target_os = "macos")]
-        use security_framework_sys::item::kSecUseKeychain;
-        use security_framework_sys::item::{
-            kSecAttrTokenID, kSecAttrTokenIDSecureEnclave, kSecPublicKeyAttrs,
-        };
+        use security_framework_sys::item::{kSecAttrTokenID, kSecAttrTokenIDSecureEnclave};
 
         let is_permanent = CFBoolean::from(self.location.is_some());
         let mut private_attributes = CFMutableDictionary::from_CFType_pairs(&[(
@@ -451,6 +447,7 @@ impl GenerateKeyOptions {
             private_attributes.set(unsafe { kSecAttrAccessControl }.to_void(), access_control.to_void());
         }
 
+        #[cfg(target_os = "macos")]
         let public_attributes = CFMutableDictionary::from_CFType_pairs(&[(
             unsafe { kSecAttrIsPermanent }.to_void(),
             is_permanent.to_void(),
@@ -460,11 +457,11 @@ impl GenerateKeyOptions {
 
         let size_in_bits = self.size_in_bits.unwrap_or(match () {
             #[cfg(target_os = "macos")]
-            _ if key_type == KeyType::aes().to_str() => 256,
-            _ if key_type == KeyType::rsa().to_str() => 2048,
-            _ if key_type == KeyType::ec().to_str() => 256,
-            _ if key_type == KeyType::ec_sec_prime_random().to_str() => 256,
-            _ => 256,
+            () if key_type == KeyType::aes().to_str() => 256,
+            () if key_type == KeyType::rsa().to_str() => 2048,
+            () if key_type == KeyType::ec().to_str() => 256,
+            () if key_type == KeyType::ec_sec_prime_random().to_str() => 256,
+            () => 256,
         });
         let size_in_bits = CFNumber::from(size_in_bits as i32);
 
@@ -474,8 +471,8 @@ impl GenerateKeyOptions {
         ];
         #[cfg(target_os = "macos")]
         if key_type != KeyType::aes().to_str() {
-                attribute_key_values.push((unsafe { kSecPublicKeyAttrs }.to_void(), public_attributes.to_void()));
-                attribute_key_values.push((unsafe { kSecPrivateKeyAttrs }.to_void(), private_attributes.to_void()));
+            attribute_key_values.push((unsafe { security_framework_sys::item::kSecPublicKeyAttrs }.to_void(), public_attributes.to_void()));
+            attribute_key_values.push((unsafe { security_framework_sys::item::kSecPrivateKeyAttrs }.to_void(), private_attributes.to_void()));
         }
 
         let label = self.label.as_deref().map(CFString::new);
@@ -495,11 +492,11 @@ impl GenerateKeyOptions {
             }
             Some(Location::FileKeychain(keychain)) => {
                 attribute_key_values.push((
-                    unsafe { kSecUseKeychain }.to_void(),
+                    unsafe { security_framework_sys::item::kSecUseKeychain }.to_void(),
                     keychain.as_concrete_TypeRef().to_void(),
                 ));
-            }
-            _ => {}
+            },
+            _ => {},
         }
 
         match self.token.as_ref().unwrap_or(&Token::Software) {
@@ -515,7 +512,7 @@ impl GenerateKeyOptions {
         #[cfg(feature = "sync-keychain")]
         if let Some(ref synchronizable) = self.synchronizable {
             attribute_key_values.push((
-                 unsafe { security_framework_sys::item::kSecAttrSynchronizable }.to_void(),
+                unsafe { security_framework_sys::item::kSecAttrSynchronizable }.to_void(),
                 CFBoolean::from(*synchronizable).to_void(),
             ));
         }

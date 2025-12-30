@@ -4,15 +4,15 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::{ec, error, rand};
+use crate::{cpu, ec, error, rand};
 
 /// A key agreement algorithm.
 macro_rules! suite_b_curve {
@@ -41,23 +41,33 @@ macro_rules! suite_b_curve {
             public_from_private: $public_from_private,
         };
 
-        fn $check_private_key_bytes(bytes: &[u8]) -> Result<(), error::Unspecified> {
+        fn $check_private_key_bytes(
+            bytes: &[u8],
+            cpu: cpu::Features,
+        ) -> Result<(), error::Unspecified> {
             debug_assert_eq!(bytes.len(), $bits / 8);
-            ec::suite_b::private_key::check_scalar_big_endian_bytes($private_key_ops, bytes)
+            ec::suite_b::private_key::check_scalar_big_endian_bytes($private_key_ops, bytes, cpu)
         }
 
         fn $generate_private_key(
             rng: &dyn rand::SecureRandom,
             out: &mut [u8],
+            cpu: cpu::Features,
         ) -> Result<(), error::Unspecified> {
-            ec::suite_b::private_key::generate_private_scalar_bytes($private_key_ops, rng, out)
+            ec::suite_b::private_key::generate_private_scalar_bytes($private_key_ops, rng, out, cpu)
         }
 
         fn $public_from_private(
             public_out: &mut [u8],
             private_key: &ec::Seed,
+            cpu: cpu::Features,
         ) -> Result<(), error::Unspecified> {
-            ec::suite_b::private_key::public_from_private($private_key_ops, public_out, private_key)
+            ec::suite_b::private_key::public_from_private(
+                $private_key_ops,
+                public_out,
+                private_key,
+                cpu,
+            )
         }
     };
 }

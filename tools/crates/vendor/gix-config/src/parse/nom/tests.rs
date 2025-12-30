@@ -88,7 +88,7 @@ mod section_headers {
 
     #[test]
     fn eof_after_escape_in_sub_section() {
-        assert!(section_header.parse_peek(b"[hello \"hello\\").is_err());
+        assert!(section_header.parse_peek(br#"[hello "hello\"#).is_err());
     }
 
     #[test]
@@ -124,7 +124,7 @@ mod sub_section {
 
     #[test]
     fn zero_copy_simple() {
-        let actual = sub_section.parse_peek(b"name\"").unwrap().1;
+        let actual = sub_section.parse_peek(br#"name""#).unwrap().1;
         assert_eq!(actual.as_ref(), "name");
         assert!(matches!(actual, Cow::Borrowed(_)));
     }
@@ -167,6 +167,8 @@ mod config_name {
 }
 
 mod section {
+    use winnow::error::InputError;
+
     use crate::parse::{
         error::ParseNode,
         tests::util::{
@@ -177,7 +179,10 @@ mod section {
         Event, Section,
     };
 
-    fn section<'a>(mut i: &'a [u8], node: &mut ParseNode) -> winnow::IResult<&'a [u8], Section<'a>> {
+    fn section<'a>(
+        mut i: &'a [u8],
+        node: &mut ParseNode,
+    ) -> winnow::ModalResult<(&'a [u8], Section<'a>), InputError<&'a [u8]>> {
         let mut header = None;
         let mut events = Vec::new();
         super::section(&mut i, node, &mut |e| match &header {
@@ -296,7 +301,7 @@ mod section {
                     whitespace_event(" "),
                     Event::KeyValueSeparator,
                     whitespace_event(" "),
-                    value_event("\"lol\"")
+                    value_event(r#""lol""#)
                 ]
             })
         );
@@ -365,7 +370,7 @@ mod section {
                     whitespace_event(" "),
                     Event::KeyValueSeparator,
                     whitespace_event(" "),
-                    value_event("\"lol\"")
+                    value_event(r#""lol""#)
                 ]
             })
         );
@@ -507,13 +512,17 @@ mod section {
 
 mod value_continuation {
     use bstr::ByteSlice;
+    use winnow::error::InputError;
 
     use crate::parse::{
         tests::util::{newline_custom_event, newline_event, value_done_event, value_not_done_event},
         Event,
     };
 
-    pub fn value_impl<'a>(mut i: &'a [u8], events: &mut Vec<Event<'a>>) -> winnow::IResult<&'a [u8], ()> {
+    pub fn value_impl<'a>(
+        mut i: &'a [u8],
+        events: &mut Vec<Event<'a>>,
+    ) -> winnow::ModalResult<(&'a [u8], ()), InputError<&'a [u8]>> {
         super::value_impl(&mut i, &mut |e| events.push(e)).map(|_| (i, ()))
     }
 
@@ -558,7 +567,7 @@ mod value_continuation {
         let mut events = Vec::new();
         assert!(
             value_impl(b"hello\\\r\r\n        world", &mut events).is_err(),
-            "\\r must be followed by \\n"
+            r"\r must be followed by \n"
         );
     }
 
@@ -625,9 +634,9 @@ mod value_continuation {
             vec![
                 value_not_done_event("1"),
                 newline_event(),
-                value_not_done_event("\"2\" a"),
+                value_not_done_event(r#""2" a"#),
                 newline_event(),
-                value_not_done_event("\\\"3 b\\\""),
+                value_not_done_event(r#"\"3 b\""#),
                 newline_event(),
                 value_done_event("4")
             ]
@@ -655,9 +664,9 @@ mod value_continuation {
             vec![
                 value_not_done_event("\"1"),
                 newline_event(),
-                value_not_done_event("\"2\" a"),
+                value_not_done_event(r#""2" a"#),
                 newline_event(),
-                value_not_done_event("\\\"3 b\\\""),
+                value_not_done_event(r#"\"3 b\""#),
                 newline_event(),
                 value_done_event("4 \"")
             ]
@@ -752,7 +761,7 @@ mod value_no_continuation {
 
     #[test]
     fn garbage_after_continuation_is_err() {
-        assert!(value_impl(b"hello \\afwjdls", &mut Default::default()).is_err());
+        assert!(value_impl(br"hello \afwjdls", &mut Default::default()).is_err());
     }
 
     #[test]
@@ -772,6 +781,8 @@ mod value_no_continuation {
 }
 
 mod key_value_pair {
+    use winnow::error::InputError;
+
     use crate::parse::{
         error::ParseNode,
         tests::util::{name_event, value_event, whitespace_event},
@@ -782,7 +793,7 @@ mod key_value_pair {
         mut i: &'a [u8],
         node: &mut ParseNode,
         events: &mut Vec<Event<'a>>,
-    ) -> winnow::IResult<&'a [u8], ()> {
+    ) -> winnow::ModalResult<(&'a [u8], ()), InputError<&'a [u8]>> {
         super::key_value_pair(&mut i, node, &mut |e| events.push(e)).map(|_| (i, ()))
     }
 

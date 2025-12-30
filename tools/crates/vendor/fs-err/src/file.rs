@@ -2,7 +2,12 @@ use std::fs;
 use std::io::{self, Read, Seek, Write};
 use std::path::{Path, PathBuf};
 
+// For file time methods added in Rust 1.75.
+#[cfg(rustc_1_75)]
+use std::{fs::FileTimes, time::SystemTime};
+
 use crate::errors::{Error, ErrorKind};
+use crate::OpenOptions;
 
 /// Wrapper around [`std::fs::File`][std::fs::File] which adds more helpful
 /// information to all errors.
@@ -57,20 +62,31 @@ impl File {
         }
     }
 
-    /// Wrapper for [`OpenOptions::open`](https://doc.rust-lang.org/stable/std/fs/struct.OpenOptions.html#method.open).
+    /// Opens a file in read-write mode.
     ///
-    /// This takes [`&std::fs::OpenOptions`](https://doc.rust-lang.org/stable/std/fs/struct.OpenOptions.html),
-    /// not [`crate::OpenOptions`].
-    #[deprecated = "use fs_err::OpenOptions::open instead"]
-    pub fn from_options<P>(path: P, options: &fs::OpenOptions) -> Result<Self, io::Error>
+    /// Wrapper for [`File::create_new`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.create_new).
+    pub fn create_new<P>(path: P) -> Result<Self, io::Error>
     where
         P: Into<PathBuf>,
     {
         let path = path.into();
-        match options.open(&path) {
+        // TODO: Use fs::File::create_new once MSRV is at least 1.77
+        match fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create_new(true)
+            .open(&path)
+        {
             Ok(file) => Ok(File::from_parts(file, path)),
-            Err(source) => Err(Error::build(source, ErrorKind::OpenFile, path)),
+            Err(err) => Err(Error::build(err, ErrorKind::CreateFile, path)),
         }
+    }
+
+    /// Returns a new `OpenOptions` object.
+    ///
+    /// Wrapper for [`File::options`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.options).
+    pub fn options() -> OpenOptions {
+        OpenOptions::new()
     }
 
     /// Attempts to sync all OS-internal metadata to disk.
@@ -134,6 +150,73 @@ impl File {
     }
 }
 
+/// File time methods added in Rust 1.75.
+#[cfg(rustc_1_75)]
+impl File {
+    /// Changes the timestamps of the underlying file.
+    ///
+    /// Wrapper for [`File::set_times`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_times).
+    pub fn set_times(&self, times: FileTimes) -> Result<(), io::Error> {
+        self.file
+            .set_times(times)
+            .map_err(|source| self.error(source, ErrorKind::SetTimes))
+    }
+
+    /// Changes the modification time of the underlying file.
+    ///
+    /// Wrapper for [`File::set_modified`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_modified).
+    pub fn set_modified(&self, time: SystemTime) -> Result<(), io::Error> {
+        self.file
+            .set_modified(time)
+            .map_err(|source| self.error(source, ErrorKind::SetModified))
+    }
+}
+
+/// Locking methods added in Rust 1.89.
+#[cfg(rustc_1_89)]
+impl File {
+    /// Acquire an exclusive lock on the file. Blocks until the lock can be acquired.
+    ///
+    /// Wrapper for [`File::lock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.lock).
+    pub fn lock(&self) -> Result<(), io::Error> {
+        self.file
+            .lock()
+            .map_err(|source| self.error(source, ErrorKind::Lock))
+    }
+
+    /// Acquire a shared (non-exclusive) lock on the file. Blocks until the lock can be acquired.
+    ///
+    /// Wrapper for [`File::lock_shared()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.lock_shared).
+    pub fn lock_shared(&self) -> Result<(), io::Error> {
+        self.file
+            .lock_shared()
+            .map_err(|source| self.error(source, ErrorKind::Lock))
+    }
+
+    /// Try to acquire an exclusive lock on the file.
+    ///
+    /// Wrapper for [`File::try_lock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.try_lock).
+    pub fn try_lock(&self) -> Result<(), fs::TryLockError> {
+        self.file.try_lock()
+    }
+
+    /// Try to acquire a shared (non-exclusive) lock on the file.
+    ///
+    /// Wrapper for [`File::try_lock_shared()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.try_lock_shared).
+    pub fn try_lock_shared(&self) -> Result<(), fs::TryLockError> {
+        self.file.try_lock_shared()
+    }
+
+    /// Release all locks on the file.
+    ///
+    /// Wrapper for [`File::unlock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.unlock).
+    pub fn unlock(&self) -> Result<(), io::Error> {
+        self.file
+            .unlock()
+            .map_err(|source| self.error(source, ErrorKind::Unlock))
+    }
+}
+
 /// Methods added by fs-err that are not available on
 /// [`std::fs::File`][std::fs::File].
 ///
@@ -153,6 +236,18 @@ impl File {
     /// Extract the raw file and its path from this [`File`](struct.File.html)
     pub fn into_parts(self) -> (fs::File, PathBuf) {
         (self.file, self.path)
+    }
+
+    /// Consumes this [`File`](struct.File.html) and returns the underlying
+    /// [`std::fs::File`][std::fs::File].
+    pub fn into_file(self) -> fs::File {
+        self.file
+    }
+
+    /// Consumes this [`File`](struct.File.html) and returns the underlying
+    /// path as a [`PathBuf`].
+    pub fn into_path(self) -> PathBuf {
+        self.path
     }
 
     /// Returns a reference to the underlying [`std::fs::File`][std::fs::File].
@@ -194,7 +289,7 @@ impl Read for File {
     }
 }
 
-impl<'a> Read for &'a File {
+impl Read for &File {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         (&self.file)
             .read(buf)
@@ -210,7 +305,7 @@ impl<'a> Read for &'a File {
 
 impl From<File> for fs::File {
     fn from(file: File) -> Self {
-        file.into_parts().0
+        file.into_file()
     }
 }
 
@@ -222,7 +317,7 @@ impl Seek for File {
     }
 }
 
-impl<'a> Seek for &'a File {
+impl Seek for &File {
     fn seek(&mut self, pos: std::io::SeekFrom) -> std::io::Result<u64> {
         (&self.file)
             .seek(pos)
@@ -250,7 +345,7 @@ impl Write for File {
     }
 }
 
-impl<'a> Write for &'a File {
+impl Write for &File {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         (&self.file)
             .write(buf)
@@ -303,21 +398,19 @@ mod unix {
         }
     }
 
-    #[cfg(feature = "io_safety")]
+    #[cfg(rustc_1_63)]
     mod io_safety {
         use std::os::unix::io::{AsFd, BorrowedFd, OwnedFd};
 
-        #[cfg_attr(docsrs, doc(cfg(feature = "io_safety")))]
         impl AsFd for crate::File {
             fn as_fd(&self) -> BorrowedFd<'_> {
                 self.file().as_fd()
             }
         }
 
-        #[cfg_attr(docsrs, doc(cfg(feature = "io_safety")))]
         impl From<crate::File> for OwnedFd {
             fn from(file: crate::File) -> Self {
-                file.into_parts().0.into()
+                file.into_file().into()
             }
         }
     }
@@ -363,18 +456,16 @@ mod windows {
         }
     }
 
-    #[cfg(feature = "io_safety")]
+    #[cfg(rustc_1_63)]
     mod io_safety {
         use std::os::windows::io::{AsHandle, BorrowedHandle, OwnedHandle};
 
-        #[cfg_attr(docsrs, doc(cfg(feature = "io_safety")))]
         impl AsHandle for crate::File {
             fn as_handle(&self) -> BorrowedHandle<'_> {
                 self.file().as_handle()
             }
         }
 
-        #[cfg_attr(docsrs, doc(cfg(feature = "io_safety")))]
         impl From<crate::File> for OwnedHandle {
             fn from(file: crate::File) -> Self {
                 file.into_parts().0.into()

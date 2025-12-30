@@ -91,6 +91,11 @@ where
     L: Layer<S>,
     S: Subscriber,
 {
+    fn on_register_dispatch(&self, subscriber: &Dispatch) {
+        self.inner.on_register_dispatch(subscriber);
+        self.layer.on_register_dispatch(subscriber);
+    }
+
     fn register_callsite(&self, metadata: &'static Metadata<'static>) -> Interest {
         self.pick_interest(self.layer.register_callsite(metadata), || {
             self.inner.register_callsite(metadata)
@@ -232,9 +237,7 @@ where
             return Some(self as *const _ as *const ());
         }
 
-        self.layer
-            .downcast_raw(id)
-            .or_else(|| self.inner.downcast_raw(id))
+        unsafe { self.layer.downcast_raw(id) }.or_else(|| unsafe { self.inner.downcast_raw(id) })
     }
 }
 
@@ -370,14 +373,12 @@ where
             // If you don't understand this...that's fine, just don't mess with
             // it. :)
             id if filter::is_plf_downcast_marker(id) => {
-                self.layer.downcast_raw(id).and(self.inner.downcast_raw(id))
+                unsafe { self.layer.downcast_raw(id) }.and(unsafe { self.inner.downcast_raw(id) })
             }
 
             // Otherwise, try to downcast both branches normally...
-            _ => self
-                .layer
-                .downcast_raw(id)
-                .or_else(|| self.inner.downcast_raw(id)),
+            _ => unsafe { self.layer.downcast_raw(id) }
+                .or_else(|| unsafe { self.inner.downcast_raw(id) }),
         }
     }
 }

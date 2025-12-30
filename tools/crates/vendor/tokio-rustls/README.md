@@ -47,7 +47,15 @@ cargo run --example client -- hsts.badssl.com
 See [examples/server.rs](examples/server.rs). You can run it with:
 
 ```sh
-cargo run --example server -- 127.0.0.1:8000 --cert mycert.der --key mykey.der
+cargo run --example server -- 127.0.0.1:8000 --cert certs/cert.pem --key certs/cert.key.pem
+```
+
+If you don't have a certificate and key, you can generate a random key and
+self-signed certificate for testing with:
+
+```sh
+cargo install --locked rustls-cert-gen
+rustls-cert-gen --output certs/ --san localhost
 ```
 
 ### License & Origin

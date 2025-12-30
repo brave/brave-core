@@ -594,26 +594,6 @@ _CET_ENDBR
 	ret
 .cfi_endproc	
 .size	vpaes_set_encrypt_key,.-vpaes_set_encrypt_key
-
-.globl	vpaes_encrypt
-.hidden vpaes_encrypt
-.type	vpaes_encrypt,@function
-.align	16
-vpaes_encrypt:
-.cfi_startproc	
-_CET_ENDBR
-#ifdef BORINGSSL_DISPATCH_TEST
-.extern	BORINGSSL_function_hit
-.hidden BORINGSSL_function_hit
-	movb	$1,BORINGSSL_function_hit+4(%rip)
-#endif
-	movdqu	(%rdi),%xmm0
-	call	_vpaes_preheat
-	call	_vpaes_encrypt_core
-	movdqu	%xmm0,(%rsi)
-	ret
-.cfi_endproc	
-.size	vpaes_encrypt,.-vpaes_encrypt
 .globl	vpaes_ctr32_encrypt_blocks
 .hidden vpaes_ctr32_encrypt_blocks
 .type	vpaes_ctr32_encrypt_blocks,@function

@@ -1,41 +1,56 @@
+use crate::endian::BigEndian;
+use crate::macho;
+use crate::pod::Pod;
 use crate::read::{Architecture, Error, ReadError, ReadRef, Result};
-use crate::{macho, BigEndian, Pod};
 
 pub use macho::{FatArch32, FatArch64, FatHeader};
 
-impl FatHeader {
-    /// Attempt to parse a fat header.
-    ///
-    /// Does not validate the magic value.
-    pub fn parse<'data, R: ReadRef<'data>>(file: R) -> Result<&'data FatHeader> {
-        file.read_at::<FatHeader>(0)
-            .read_error("Invalid fat header size or alignment")
-    }
+/// A 32-bit Mach-O universal binary.
+///
+/// This is a file that starts with [`macho::FatHeader`], and corresponds
+/// to [`crate::FileKind::MachOFat32`].
+pub type MachOFatFile32<'data> = MachOFatFile<'data, macho::FatArch32>;
 
-    /// Attempt to parse a fat header and 32-bit fat arches.
-    pub fn parse_arch32<'data, R: ReadRef<'data>>(file: R) -> Result<&'data [FatArch32]> {
+/// A 64-bit Mach-O universal binary.
+///
+/// This is a file that starts with [`macho::FatHeader`], and corresponds
+/// to [`crate::FileKind::MachOFat64`].
+pub type MachOFatFile64<'data> = MachOFatFile<'data, macho::FatArch64>;
+
+/// A Mach-O universal binary.
+///
+/// This is a file that starts with [`macho::FatHeader`], and corresponds
+/// to [`crate::FileKind::MachOFat32`] or [`crate::FileKind::MachOFat64`].
+#[derive(Debug, Clone)]
+pub struct MachOFatFile<'data, Fat: FatArch> {
+    header: &'data macho::FatHeader,
+    arches: &'data [Fat],
+}
+
+impl<'data, Fat: FatArch> MachOFatFile<'data, Fat> {
+    /// Attempt to parse the fat header and fat arches.
+    pub fn parse<R: ReadRef<'data>>(data: R) -> Result<Self> {
         let mut offset = 0;
-        let header = file
+        let header = data
             .read::<FatHeader>(&mut offset)
             .read_error("Invalid fat header size or alignment")?;
-        if header.magic.get(BigEndian) != macho::FAT_MAGIC {
-            return Err(Error("Invalid 32-bit fat magic"));
+        if header.magic.get(BigEndian) != Fat::MAGIC {
+            return Err(Error("Invalid fat magic"));
         }
-        file.read_slice::<FatArch32>(&mut offset, header.nfat_arch.get(BigEndian) as usize)
-            .read_error("Invalid nfat_arch")
+        let arches = data
+            .read_slice::<Fat>(&mut offset, header.nfat_arch.get(BigEndian) as usize)
+            .read_error("Invalid nfat_arch")?;
+        Ok(MachOFatFile { header, arches })
     }
 
-    /// Attempt to parse a fat header and 64-bit fat arches.
-    pub fn parse_arch64<'data, R: ReadRef<'data>>(file: R) -> Result<&'data [FatArch64]> {
-        let mut offset = 0;
-        let header = file
-            .read::<FatHeader>(&mut offset)
-            .read_error("Invalid fat header size or alignment")?;
-        if header.magic.get(BigEndian) != macho::FAT_MAGIC_64 {
-            return Err(Error("Invalid 64-bit fat magic"));
-        }
-        file.read_slice::<FatArch64>(&mut offset, header.nfat_arch.get(BigEndian) as usize)
-            .read_error("Invalid nfat_arch")
+    /// Return the fat header
+    pub fn header(&self) -> &'data macho::FatHeader {
+        self.header
+    }
+
+    /// Return the array of fat arches.
+    pub fn arches(&self) -> &'data [Fat] {
+        self.arches
     }
 }
 
@@ -43,6 +58,7 @@ impl FatHeader {
 #[allow(missing_docs)]
 pub trait FatArch: Pod {
     type Word: Into<u64>;
+    const MAGIC: u32;
 
     fn cputype(&self) -> u32;
     fn cpusubtype(&self) -> u32;
@@ -75,6 +91,7 @@ pub trait FatArch: Pod {
 
 impl FatArch for FatArch32 {
     type Word = u32;
+    const MAGIC: u32 = macho::FAT_MAGIC;
 
     fn cputype(&self) -> u32 {
         self.cputype.get(BigEndian)
@@ -99,6 +116,7 @@ impl FatArch for FatArch32 {
 
 impl FatArch for FatArch64 {
     type Word = u64;
+    const MAGIC: u32 = macho::FAT_MAGIC_64;
 
     fn cputype(&self) -> u32 {
         self.cputype.get(BigEndian)

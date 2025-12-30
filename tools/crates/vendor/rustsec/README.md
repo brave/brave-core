@@ -24,7 +24,7 @@ database in other capacities.
 
 ## Minimum Supported Rust Version
 
-Rust **1.73** or higher.
+Rust **1.85** or higher.
 
 Minimum supported Rust version can be changed in the future, but it will be
 done with a minor version bump.

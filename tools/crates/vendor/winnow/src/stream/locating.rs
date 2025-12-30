@@ -25,7 +25,7 @@ use crate::stream::UpdateSlice;
 /// byte offsets to line numbers.
 ///
 /// See [`Parser::span`][crate::Parser::span] and [`Parser::with_span`][crate::Parser::with_span] for more details
-#[derive(Copy, Clone, Default, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
 #[doc(alias = "LocatingSliceSpan")]
 #[doc(alias = "Located")]
 pub struct LocatingSlice<I> {
@@ -81,7 +81,13 @@ impl<I> AsRef<I> for LocatingSlice<I> {
     }
 }
 
-impl<I> crate::lib::std::ops::Deref for LocatingSlice<I> {
+impl<I: core::fmt::Debug> core::fmt::Debug for LocatingSlice<I> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        self.input.fmt(f)
+    }
+}
+
+impl<I> core::ops::Deref for LocatingSlice<I> {
     type Target = I;
 
     #[inline(always)]
@@ -90,8 +96,8 @@ impl<I> crate::lib::std::ops::Deref for LocatingSlice<I> {
     }
 }
 
-impl<I: crate::lib::std::fmt::Display> crate::lib::std::fmt::Display for LocatingSlice<I> {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
+impl<I: core::fmt::Display> core::fmt::Display for LocatingSlice<I> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.input.fmt(f)
     }
 }
@@ -149,8 +155,18 @@ impl<I: Stream> Stream for LocatingSlice<I> {
         self.input.next_slice(offset)
     }
     #[inline(always)]
+    unsafe fn next_slice_unchecked(&mut self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.next_slice_unchecked(offset) }
+    }
+    #[inline(always)]
     fn peek_slice(&self, offset: usize) -> Self::Slice {
         self.input.peek_slice(offset)
+    }
+    #[inline(always)]
+    unsafe fn peek_slice_unchecked(&self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.peek_slice_unchecked(offset) }
     }
 
     #[inline(always)]
@@ -163,8 +179,13 @@ impl<I: Stream> Stream for LocatingSlice<I> {
     }
 
     #[inline(always)]
-    fn raw(&self) -> &dyn crate::lib::std::fmt::Debug {
-        &self.input
+    fn raw(&self) -> &dyn core::fmt::Debug {
+        #![allow(deprecated)]
+        self.input.raw()
+    }
+
+    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        self.input.trace(f)
     }
 }
 
@@ -288,7 +309,7 @@ where
     I: FindSlice<T>,
 {
     #[inline(always)]
-    fn find_slice(&self, substr: T) -> Option<crate::lib::std::ops::Range<usize>> {
+    fn find_slice(&self, substr: T) -> Option<core::ops::Range<usize>> {
         self.input.find_slice(substr)
     }
 }

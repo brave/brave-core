@@ -1,4 +1,4 @@
-use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
 
 bitflags! {
@@ -7,7 +7,7 @@ bitflags! {
     /// [`epoll::create`]: crate::event::epoll::create
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct CreateFlags: c::c_uint {
+    pub struct CreateFlags: ffi::c_uint {
         /// `EPOLL_CLOEXEC`
         const CLOEXEC = linux_raw_sys::general::EPOLL_CLOEXEC;
 

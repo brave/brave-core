@@ -3,6 +3,12 @@ use winnow::prelude::*;
 mod parser;
 mod parser_ast;
 mod parser_lexer;
+#[cfg(test)]
+mod test_parser;
+#[cfg(test)]
+mod test_parser_ast;
+#[cfg(test)]
+mod test_parser_lexer;
 
 fn main() -> Result<(), lexopt::Error> {
     let args = Args::parse()?;
@@ -31,9 +37,10 @@ fn calc(
             println!("  {:#?}={}", result, result.eval());
         }
         Impl::Lexer => {
-            let tokens = parser_lexer::lex.parse(input)?;
+            let tokens = parser_lexer::tokens.parse(input)?;
             println!("  {tokens:#?}");
-            let result = parser_lexer::expr.parse(tokens.as_slice()).unwrap();
+            let tokens = parser_lexer::Tokens::new(&tokens);
+            let result = parser_lexer::expr.parse(tokens).unwrap();
             println!("  {:#?}={}", result, result.eval());
         }
     }
@@ -46,16 +53,12 @@ struct Args {
     implementation: Impl,
 }
 
+#[derive(Default)]
 enum Impl {
+    #[default]
     Eval,
     Ast,
     Lexer,
-}
-
-impl Default for Impl {
-    fn default() -> Self {
-        Self::Eval
-    }
 }
 
 impl Args {

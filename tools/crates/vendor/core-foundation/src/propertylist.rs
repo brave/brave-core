@@ -9,8 +9,8 @@
 
 //! Core Foundation property lists
 
+use core::ffi::c_void;
 use std::mem;
-use std::os::raw::c_void;
 use std::ptr;
 
 use crate::base::{CFType, TCFType, TCFTypeRef};

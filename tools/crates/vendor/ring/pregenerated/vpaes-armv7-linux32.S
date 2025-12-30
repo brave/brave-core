@@ -191,26 +191,6 @@ _vpaes_encrypt_core:
 	vtbl.8	d1, {q2}, d3
 	bx	lr
 .size	_vpaes_encrypt_core,.-_vpaes_encrypt_core
-
-.globl	vpaes_encrypt
-.hidden	vpaes_encrypt
-.type	vpaes_encrypt,%function
-.align	4
-vpaes_encrypt:
-	@ _vpaes_encrypt_core uses r8-r11. Round up to r7-r11 to maintain stack
-	@ alignment.
-	stmdb	sp!, {r7,r8,r9,r10,r11,lr}
-	@ _vpaes_encrypt_core uses q4-q5 (d8-d11), which are callee-saved.
-	vstmdb	sp!, {d8,d9,d10,d11}
-
-	vld1.64	{q0}, [r0]
-	bl	_vpaes_preheat
-	bl	_vpaes_encrypt_core
-	vst1.64	{q0}, [r1]
-
-	vldmia	sp!, {d8,d9,d10,d11}
-	ldmia	sp!, {r7,r8,r9,r10,r11, pc}	@ return
-.size	vpaes_encrypt,.-vpaes_encrypt
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@                                                    @@
 @@                  AES key schedule                  @@

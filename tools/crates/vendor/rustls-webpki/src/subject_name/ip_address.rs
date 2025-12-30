@@ -12,38 +12,57 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+#[cfg(feature = "alloc")]
+use alloc::format;
+
 use pki_types::IpAddr;
+#[cfg(feature = "alloc")]
+use pki_types::ServerName;
 
-use super::verify::{GeneralName, NameIterator};
-use crate::Error;
+use super::{GeneralName, NameIterator};
+use crate::cert::Cert;
+use crate::error::{Error, InvalidNameContext};
 
-pub(crate) fn verify_ip_address_names(
-    reference: &IpAddr,
-    mut names: NameIterator<'_>,
-) -> Result<(), Error> {
+pub(crate) fn verify_ip_address_names(reference: &IpAddr, cert: &Cert<'_>) -> Result<(), Error> {
     let ip_address = match reference {
         IpAddr::V4(ip) => untrusted::Input::from(ip.as_ref()),
         IpAddr::V6(ip) => untrusted::Input::from(ip.as_ref()),
     };
 
-    names
-        .find_map(|result| {
-            let name = match result {
-                Ok(name) => name,
-                Err(err) => return Some(Err(err)),
-            };
+    let result = NameIterator::new(cert.subject_alt_name).find_map(|result| {
+        let name = match result {
+            Ok(name) => name,
+            Err(err) => return Some(Err(err)),
+        };
 
-            let presented_id = match name {
-                GeneralName::IpAddress(presented) => presented,
-                _ => return None,
-            };
+        let presented_id = match name {
+            GeneralName::IpAddress(presented) => presented,
+            _ => return None,
+        };
 
-            match presented_id_matches_reference_id(presented_id, ip_address) {
-                true => Some(Ok(())),
-                false => None,
-            }
-        })
-        .unwrap_or(Err(Error::CertNotValidForName))
+        match presented_id_matches_reference_id(presented_id, ip_address) {
+            true => Some(Ok(())),
+            false => None,
+        }
+    });
+
+    match result {
+        Some(result) => return result,
+        #[cfg(feature = "alloc")]
+        None => {}
+        #[cfg(not(feature = "alloc"))]
+        None => Err(Error::CertNotValidForName(InvalidNameContext {})),
+    }
+
+    #[cfg(feature = "alloc")]
+    {
+        Err(Error::CertNotValidForName(InvalidNameContext {
+            expected: ServerName::from(*reference),
+            presented: NameIterator::new(cert.subject_alt_name)
+                .filter_map(|result| Some(format!("{:?}", result.ok()?)))
+                .collect(),
+        }))
+    }
 }
 
 // https://tools.ietf.org/html/rfc5280#section-4.2.1.6 says:
@@ -545,7 +564,7 @@ mod tests {
     }
 }
 
-#[cfg(all(test, feature = "alloc"))]
+#[cfg(all(test, feature = "std"))]
 mod alloc_tests {
     use super::*;
 
@@ -653,13 +672,12 @@ mod alloc_tests {
         ("1003:fca::", "2001:db8::", "0000:0000::", Ok(true)),
     ];
 
-    #[cfg(feature = "std")]
     #[test]
     fn presented_matches_constraint_test() {
         use std::boxed::Box;
         use std::net::IpAddr;
 
-        for &(presented, constraint_address, constraint_mask, expected_result) in
+        for (presented, constraint_address, constraint_mask, expected_result) in
             PRESENTED_MATCHES_CONSTRAINT
         {
             let presented_bytes: Box<[u8]> = match presented.parse::<IpAddr>().unwrap() {
@@ -680,9 +698,8 @@ mod alloc_tests {
                 untrusted::Input::from(&constraint_bytes),
             );
             assert_eq!(
-                actual_result, expected_result,
-                "presented_id_matches_constraint(\"{:?}\", \"{:?}\")",
-                presented_bytes, constraint_bytes
+                &actual_result, expected_result,
+                "presented_id_matches_constraint(\"{presented_bytes:?}\", \"{constraint_bytes:?}\")"
             );
         }
     }

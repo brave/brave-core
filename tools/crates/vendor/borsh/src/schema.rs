@@ -865,14 +865,14 @@ mod ip_addr_std_derive_impl {
     #[borsh(crate = "crate")]
     pub enum IpAddr {
         /// An IPv4 address.
-        V4(std::net::Ipv4Addr),
+        V4(core::net::Ipv4Addr),
         /// An IPv6 address.
-        V6(std::net::Ipv6Addr),
+        V6(core::net::Ipv6Addr),
     }
 }
 
 #[cfg(feature = "std")]
-impl BorshSchema for std::net::Ipv4Addr {
+impl BorshSchema for core::net::Ipv4Addr {
     fn add_definitions_recursively(definitions: &mut BTreeMap<Declaration, Definition>) {
         <ip_addr_std_derive_impl::Ipv4Addr>::add_definitions_recursively(definitions);
     }
@@ -883,7 +883,7 @@ impl BorshSchema for std::net::Ipv4Addr {
 }
 
 #[cfg(feature = "std")]
-impl BorshSchema for std::net::Ipv6Addr {
+impl BorshSchema for core::net::Ipv6Addr {
     fn add_definitions_recursively(definitions: &mut BTreeMap<Declaration, Definition>) {
         <ip_addr_std_derive_impl::Ipv6Addr>::add_definitions_recursively(definitions);
     }
@@ -894,7 +894,7 @@ impl BorshSchema for std::net::Ipv6Addr {
 }
 
 #[cfg(feature = "std")]
-impl BorshSchema for std::net::IpAddr {
+impl BorshSchema for core::net::IpAddr {
     fn add_definitions_recursively(definitions: &mut BTreeMap<Declaration, Definition>) {
         <ip_addr_std_derive_impl::IpAddr>::add_definitions_recursively(definitions);
     }

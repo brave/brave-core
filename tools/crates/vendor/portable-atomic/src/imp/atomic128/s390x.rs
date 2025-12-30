@@ -13,7 +13,7 @@ detailed description of the atomic and synchronize instructions in this architec
 https://github.com/taiki-e/atomic-maybe-uninit/blob/HEAD/src/arch/README.md#s390x
 
 LLVM's minimal supported architecture level is arch8 (z10):
-https://github.com/llvm/llvm-project/blob/llvmorg-19.1.0/llvm/lib/Target/SystemZ/SystemZProcessors.td#L16-L17
+https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/Target/SystemZ/SystemZProcessors.td#L16-L17
 This does not appear to have changed since the current s390x backend was added in LLVM 3.3:
 https://github.com/llvm/llvm-project/commit/5f613dfd1f7edb0ae95d521b7107b582d9df5103#diff-cbaef692b3958312e80fd5507a7e2aff071f1acb086f10e8a96bc06a7bb289db
 
@@ -21,8 +21,8 @@ Note: On Miri and ThreadSanitizer which do not support inline assembly, we don't
 this module and use intrinsics.rs instead.
 
 Refs:
-- z/Architecture Principles of Operation, Fourteenth Edition (SA22-7832-13)
-  https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
+- z/Architecture Principles of Operation, Fifteenth Edition (SA22-7832-14)
+  https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf
 - atomic-maybe-uninit
   https://github.com/taiki-e/atomic-maybe-uninit
 
@@ -188,11 +188,7 @@ unsafe fn atomic_compare_exchange(
         );
         U128 { pair: Pair { hi: prev_hi, lo: prev_lo } }.whole
     };
-    if extract_cc(r) {
-        Ok(prev)
-    } else {
-        Err(prev)
-    }
+    if extract_cc(r) { Ok(prev) } else { Err(prev) }
 }
 
 // cdsg is always strong.
@@ -209,7 +205,7 @@ unsafe fn byte_wise_atomic_load(src: *const u128) -> u128 {
     unsafe {
         let (out_hi, out_lo);
         asm!(
-            "lg {out_hi}, 8({src})", // atomic { out_hi = *src.add(8) }
+            "lg {out_hi}, 8({src})", // atomic { out_hi = *src.byte_add(8) }
             "lg {out_lo}, 0({src})", // atomic { out_lo = *src }
             src = in(reg) src,
             out_hi = out(reg) out_hi,
@@ -264,7 +260,7 @@ unsafe fn atomic_swap(dst: *mut u128, val: u128, _order: Ordering) -> u128 {
     unsafe {
         // atomic swap is always SeqCst.
         asm!(
-            "lg %r0, 8({dst})",             // atomic { r0 = *dst.add(8) }
+            "lg %r0, 8({dst})",             // atomic { r0 = *dst.byte_add(8) }
             "lg %r1, 0({dst})",             // atomic { r1 = *dst }
             "2:", // 'retry:
                 "cdsg %r0, %r12, 0({dst})", // atomic { if *dst == r0:r1 { cc = 0; *dst = r12:r13 } else { cc = 1; r0:r1 = *dst } }
@@ -303,7 +299,7 @@ macro_rules! atomic_rmw_cas_3 {
             unsafe {
                 // atomic RMW is always SeqCst.
                 asm!(
-                    "lg %r0, 8({dst})",             // atomic { r0 = *dst.add(8) }
+                    "lg %r0, 8({dst})",             // atomic { r0 = *dst.byte_add(8) }
                     "lg %r1, 0({dst})",             // atomic { r1 = *dst }
                     "2:", // 'retry:
                         $($op)*
@@ -345,7 +341,7 @@ macro_rules! atomic_rmw_cas_2 {
             unsafe {
                 // atomic RMW is always SeqCst.
                 asm!(
-                    "lg %r0, 8({dst})",             // atomic { r0 = *dst.add(8) }
+                    "lg %r0, 8({dst})",             // atomic { r0 = *dst.byte_add(8) }
                     "lg %r1, 0({dst})",             // atomic { r1 = *dst }
                     "2:", // 'retry:
                         $($op)*

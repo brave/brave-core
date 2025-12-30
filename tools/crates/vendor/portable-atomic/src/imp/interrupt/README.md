@@ -22,7 +22,7 @@ For some targets, the implementation can be changed by explicitly enabling featu
 - On AVR, this disables interrupts by modifying the I (Global Interrupt Enable) bit of the status register (SREG).
 - On Xtensa, this disables interrupts by modifying the PS special register.
 
-Some operations don't require disabling interrupts:
+<a name="no-disable-interrupts"></a>Some operations don't require disabling interrupts:
 
 - On architectures except for AVR: loads and stores with pointer size or smaller
 - On AVR: 8-bit loads and stores

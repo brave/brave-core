@@ -5,6 +5,11 @@ use std::path::PathBuf;
 use std::{env, fs};
 
 fn main() {
+    // skip building the C library when libbzip2-rs is also used
+    if cfg!(feature = "__disabled") {
+        return;
+    }
+
     let mut cfg = cc::Build::new();
     let target = env::var("TARGET").unwrap();
     cfg.warnings(false);

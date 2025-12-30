@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.65"
+rust-version = "1.82"
 name = "gix-index"
-version = "0.35.0"
+version = "0.42.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
@@ -21,6 +21,7 @@ include = [
     "LICENSE-*",
     "README.md",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -28,12 +29,19 @@ autobenches = false
 description = "A work-in-progress crate of the gitoxide project dedicated implementing the git index file"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Byron/gitoxide"
+repository = "https://github.com/GitoxideLabs/gitoxide"
 
 [package.metadata.docs.rs]
 features = [
     "document-features",
     "serde",
+]
+
+[features]
+serde = [
+    "dep:serde",
+    "smallvec/serde",
+    "gix-hash/serde",
 ]
 
 [lib]
@@ -46,7 +54,7 @@ doctest = false
 version = "2"
 
 [dependencies.bstr]
-version = "1.3.0"
+version = "1.12.0"
 default-features = false
 
 [dependencies.document-features]
@@ -60,44 +68,41 @@ version = "0.2.15"
 version = "1.0.7"
 
 [dependencies.gix-bitmap]
-version = "^0.2.11"
+version = "^0.2.15"
 
 [dependencies.gix-features]
-version = "^0.38.2"
-features = [
-    "rustsha1",
-    "progress",
-]
+version = "^0.44.1"
+features = ["progress"]
 
 [dependencies.gix-fs]
-version = "^0.11.3"
+version = "^0.17.0"
 
 [dependencies.gix-hash]
-version = "^0.14.2"
+version = "^0.20.1"
 
 [dependencies.gix-lock]
-version = "^14.0.0"
+version = "^19.0.0"
 
 [dependencies.gix-object]
-version = "^0.44.0"
+version = "^0.51.1"
 
 [dependencies.gix-traverse]
-version = "^0.41.0"
+version = "^0.48.0"
 
 [dependencies.gix-utils]
-version = "^0.1.12"
+version = "^0.3.1"
 
 [dependencies.gix-validate]
-version = "^0.9.0"
+version = "^0.10.1"
 
 [dependencies.hashbrown]
-version = "0.14.3"
+version = "0.16.0"
 
 [dependencies.itoa]
 version = "1.0.3"
 
 [dependencies.memmap2]
-version = "0.9.0"
+version = "0.9.7"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -106,25 +111,99 @@ optional = true
 default-features = false
 
 [dependencies.smallvec]
-version = "1.7.0"
+version = "1.15.1"
 
 [dependencies.thiserror]
-version = "1.0.32"
+version = "2.0.17"
 
-[features]
-serde = [
-    "dep:serde",
-    "smallvec/serde",
-    "gix-hash/serde",
-]
+[dev-dependencies]
 
 [target."cfg(not(windows))".dependencies.libc]
-version = "0.2.149"
+version = "0.2.176"
 
 [target."cfg(not(windows))".dependencies.rustix]
-version = "0.38.20"
+version = "1.1.2"
 features = [
     "std",
     "fs",
 ]
 default-features = false
+
+[lints.clippy]
+bool_to_int_with_if = "allow"
+borrow_as_ptr = "allow"
+cast_lossless = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+checked_conversions = "allow"
+copy_iterator = "allow"
+default_trait_access = "allow"
+doc_markdown = "allow"
+empty_docs = "allow"
+enum_glob_use = "allow"
+explicit_deref_methods = "allow"
+explicit_into_iter_loop = "allow"
+explicit_iter_loop = "allow"
+filter_map_next = "allow"
+fn_params_excessive_bools = "allow"
+from_iter_instead_of_collect = "allow"
+if_not_else = "allow"
+ignored_unit_patterns = "allow"
+implicit_clone = "allow"
+inconsistent_struct_constructor = "allow"
+inefficient_to_string = "allow"
+inline_always = "allow"
+items_after_statements = "allow"
+iter_not_returning_iterator = "allow"
+iter_without_into_iter = "allow"
+large_enum_variant = "allow"
+large_stack_arrays = "allow"
+manual_assert = "allow"
+manual_is_variant_and = "allow"
+manual_let_else = "allow"
+manual_string_new = "allow"
+many_single_char_names = "allow"
+match_bool = "allow"
+match_same_arms = "allow"
+match_wild_err_arm = "allow"
+match_wildcard_for_single_variants = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+mut_mut = "allow"
+naive_bytecount = "allow"
+needless_continue = "allow"
+needless_for_each = "allow"
+needless_pass_by_value = "allow"
+needless_raw_string_hashes = "allow"
+no_effect_underscore_binding = "allow"
+option_option = "allow"
+range_plus_one = "allow"
+redundant_else = "allow"
+result_large_err = "allow"
+return_self_not_must_use = "allow"
+should_panic_without_expect = "allow"
+similar_names = "allow"
+single_match_else = "allow"
+stable_sort_primitive = "allow"
+struct_excessive_bools = "allow"
+struct_field_names = "allow"
+too_long_first_doc_paragraph = "allow"
+too_many_lines = "allow"
+transmute_ptr_to_ptr = "allow"
+trivially_copy_pass_by_ref = "allow"
+unnecessary_join = "allow"
+unnecessary_wraps = "allow"
+unreadable_literal = "allow"
+unused_self = "allow"
+used_underscore_binding = "allow"
+wildcard_imports = "allow"
+
+[lints.clippy.pedantic]
+level = "warn"
+priority = -1
+
+[lints.rust]

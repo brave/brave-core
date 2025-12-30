@@ -9,7 +9,6 @@ mod snapshot;
 pub use snapshot::credential_helpers;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod overrides;
 
 pub mod tree;
@@ -19,7 +18,8 @@ pub use tree::root::Tree;
 ///
 /// Note that these values won't update even if the underlying file(s) change.
 pub struct Snapshot<'repo> {
-    pub(crate) repo: &'repo Repository,
+    /// The owning repository.
+    pub repo: &'repo Repository,
 }
 
 /// A platform to access configuration values and modify them in memory, while making them available when this platform is dropped
@@ -32,18 +32,19 @@ pub struct Snapshot<'repo> {
 // TODO: make it possible to load snapshots with reloading via .config() and write mutated snapshots back to disk which should be the way
 //       to affect all instances of a repo, probably via `config_mut()` and `config_mut_at()`.
 pub struct SnapshotMut<'repo> {
-    pub(crate) repo: Option<&'repo mut Repository>,
+    /// The owning repository.
+    pub repo: Option<&'repo mut Repository>,
     pub(crate) config: gix_config::File<'static>,
 }
 
 /// A utility structure created by [`SnapshotMut::commit_auto_rollback()`] that restores the previous configuration on drop.
 pub struct CommitAutoRollback<'repo> {
-    pub(crate) repo: Option<&'repo mut Repository>,
+    /// The owning repository.
+    pub repo: Option<&'repo mut Repository>,
     pub(crate) prev_config: crate::Config,
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod section {
     /// A filter that returns `true` for `meta` if the meta-data attached to a configuration section can be trusted.
     /// This is either the case if its file is fully trusted, or if it's a section from a system-wide file.
@@ -53,7 +54,6 @@ pub mod section {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod set_value {
     /// The error produced when calling [`SnapshotMut::set(_subsection)?_value()`][crate::config::SnapshotMut::set_value()]
     #[derive(Debug, thiserror::Error)]
@@ -113,10 +113,33 @@ pub enum Error {
 }
 
 ///
-#[allow(clippy::empty_docs)]
+pub mod merge {
+    ///
+    pub mod pipeline_options {
+        /// The error produced when obtaining options needed to fill in [gix_merge::blob::pipeline::Options].
+        #[derive(Debug, thiserror::Error)]
+        #[allow(missing_docs)]
+        pub enum Error {
+            #[error(transparent)]
+            BigFileThreshold(#[from] crate::config::unsigned_integer::Error),
+        }
+    }
+
+    ///
+    pub mod drivers {
+        /// The error produced when obtaining a list of [Drivers](gix_merge::blob::Driver).
+        #[derive(Debug, thiserror::Error)]
+        #[allow(missing_docs)]
+        pub enum Error {
+            #[error(transparent)]
+            ConfigBoolean(#[from] crate::config::boolean::Error),
+        }
+    }
+}
+
+///
 pub mod diff {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod algorithm {
         use crate::bstr::BString;
 
@@ -132,7 +155,6 @@ pub mod diff {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod pipeline_options {
         /// The error produced when obtaining options needed to fill in [gix_diff::blob::pipeline::Options].
         #[derive(Debug, thiserror::Error)]
@@ -146,7 +168,6 @@ pub mod diff {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod drivers {
         use crate::bstr::BString;
 
@@ -165,7 +186,6 @@ pub mod diff {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod stat_options {
     /// The error produced when collecting stat information, and returned by [Repository::stat_options()](crate::Repository::stat_options()).
     #[derive(Debug, thiserror::Error)]
@@ -218,8 +238,8 @@ pub mod command_context {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod exclude_stack {
+    use crate::config;
     use std::path::PathBuf;
 
     /// The error produced when setting up a stack to query `gitignore` information.
@@ -232,11 +252,12 @@ pub mod exclude_stack {
         EnvironmentPermission(#[from] gix_sec::permission::Error<PathBuf>),
         #[error("The value for `core.excludesFile` could not be read from configuration")]
         ExcludesFilePathInterpolation(#[from] gix_config::path::interpolate::Error),
+        #[error(transparent)]
+        ParsePreciousEnabled(#[from] config::boolean::Error),
     }
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod attribute_stack {
     /// The error produced when setting up the attribute stack to query `gitattributes`.
     #[derive(Debug, thiserror::Error)]
@@ -250,10 +271,8 @@ pub mod attribute_stack {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod protocol {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod allow {
         use crate::bstr::BString;
 
@@ -269,7 +288,6 @@ pub mod protocol {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod ssh_connect_options {
     /// The error produced when obtaining ssh connection configuration.
     #[derive(Debug, thiserror::Error)]
@@ -279,7 +297,6 @@ pub mod ssh_connect_options {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod key {
     use crate::bstr::BString;
 
@@ -380,7 +397,6 @@ pub mod key {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod encoding {
     use crate::bstr::BString;
 
@@ -398,10 +414,8 @@ pub mod encoding {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod checkout {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod workers {
         use crate::config;
 
@@ -411,7 +425,6 @@ pub mod checkout {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod abbrev {
     use crate::bstr::BString;
 
@@ -427,10 +440,8 @@ pub mod abbrev {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod remote {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod symbolic_name {
         /// The error produced when failing to produce a symbolic remote name from configuration.
         pub type Error = super::super::key::Error<crate::remote::name::Error, 'v', 'i'>;
@@ -438,77 +449,66 @@ pub mod remote {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod time {
     /// The error produced when failing to parse time from configuration.
     pub type Error = super::key::Error<gix_date::parse::Error, 't', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod lock_timeout {
     /// The error produced when failing to parse timeout for locks.
     pub type Error = super::key::Error<gix_config::value::Error, 'i', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod duration {
     /// The error produced when failing to parse durations (in milliseconds).
     pub type Error = super::key::Error<gix_config::value::Error, 'd', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod boolean {
     /// The error produced when failing to parse time from configuration.
     pub type Error = super::key::Error<gix_config::value::Error, 'b', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod unsigned_integer {
     /// The error produced when failing to parse a signed integer from configuration.
     pub type Error = super::key::Error<gix_config::value::Error, 'k', 'u'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod url {
     /// The error produced when failing to parse a url from the configuration.
     pub type Error = super::key::Error<gix_url::parse::Error, 'u', 'p'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod string {
     /// The error produced when failing to interpret configuration as UTF-8 encoded string.
     pub type Error = super::key::Error<crate::bstr::Utf8Error, 'w', 'd'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod refspec {
     /// The error produced when failing to parse a refspec from the configuration.
     pub type Error = super::key::Error<gix_refspec::parse::Error, 'r', 'p'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod refs_namespace {
     /// The error produced when failing to parse a refspec from the configuration.
     pub type Error = super::key::Error<gix_validate::reference::name::Error, 'v', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod ssl_version {
     /// The error produced when failing to parse a refspec from the configuration.
     pub type Error = super::key::Error<std::convert::Infallible, 's', 'i'>;
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod transport {
     use std::borrow::Cow;
 
@@ -548,7 +548,6 @@ pub mod transport {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod http {
         use std::borrow::Cow;
 
@@ -609,7 +608,7 @@ pub(crate) struct Cache {
     pub(crate) url_rewrite: OnceCell<crate::remote::url::Rewrite>,
     /// The lazy-loaded rename information for diffs.
     #[cfg(feature = "blob-diff")]
-    pub(crate) diff_renames: OnceCell<Option<crate::diff::Rewrites>>,
+    pub(crate) diff_renames: OnceCell<(Option<crate::diff::Rewrites>, bool)>,
     /// A lazily loaded mapping to know which url schemes to allow
     #[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
     pub(crate) url_scheme: OnceCell<crate::remote::url::SchemePermission>,

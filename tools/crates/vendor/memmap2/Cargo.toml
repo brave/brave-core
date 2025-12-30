@@ -10,13 +10,20 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.63"
 name = "memmap2"
-version = "0.9.5"
+version = "0.9.9"
 authors = [
     "Dan Burkert <dan@danburkert.com>",
     "Yevhenii Reizner <razrfalcon@gmail.com>",
 ]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Cross-platform Rust API for memory-mapped file IO"
 documentation = "https://docs.rs/memmap2"
 readme = "README.md"
@@ -28,6 +35,14 @@ keywords = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RazrFalcon/memmap2-rs"
+
+[lib]
+name = "memmap2"
+path = "src/lib.rs"
+
+[[example]]
+name = "cat"
+path = "examples/cat.rs"
 
 [dependencies.stable_deref_trait]
 version = "1.0"

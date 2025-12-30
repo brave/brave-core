@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63.0"
 name = "derive_arbitrary"
-version = "1.4.1"
+version = "1.4.2"
 authors = [
     "The Rust-Fuzz Project Developers",
     "Nick Fitzgerald <fitzgen@gmail.com>",
@@ -22,6 +22,7 @@ authors = [
     "Corey Farwell <coreyf@rwell.org>",
 ]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -36,7 +37,7 @@ keywords = [
     "macro",
 ]
 categories = ["development-tools::testing"]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-fuzz/arbitrary"
 
 [lib]

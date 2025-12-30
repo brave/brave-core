@@ -161,7 +161,7 @@ impl<'a> PartialEq<&'a str> for SmolStr {
     }
 }
 
-impl<'a> PartialEq<SmolStr> for &'a str {
+impl PartialEq<SmolStr> for &str {
     #[inline(always)]
     fn eq(&self, other: &SmolStr) -> bool {
         *self == other
@@ -189,7 +189,7 @@ impl<'a> PartialEq<&'a String> for SmolStr {
     }
 }
 
-impl<'a> PartialEq<SmolStr> for &'a String {
+impl PartialEq<SmolStr> for &String {
     #[inline(always)]
     fn eq(&self, other: &SmolStr) -> bool {
         *self == other
@@ -233,18 +233,30 @@ impl iter::FromIterator<char> for SmolStr {
     }
 }
 
-fn from_char_iter(mut iter: impl Iterator<Item = char>) -> SmolStr {
-    let (min_size, _) = iter.size_hint();
+#[inline]
+fn from_char_iter(iter: impl Iterator<Item = char>) -> SmolStr {
+    from_buf_and_chars([0; _], 0, iter)
+}
+
+fn from_buf_and_chars(
+    mut buf: [u8; INLINE_CAP],
+    buf_len: usize,
+    mut iter: impl Iterator<Item = char>,
+) -> SmolStr {
+    let min_size = iter.size_hint().0 + buf_len;
     if min_size > INLINE_CAP {
-        let heap: String = iter.collect();
+        let heap: String = core::str::from_utf8(&buf[..buf_len])
+            .unwrap()
+            .chars()
+            .chain(iter)
+            .collect();
         if heap.len() <= INLINE_CAP {
             // size hint lied
             return SmolStr::new_inline(&heap);
         }
         return SmolStr(Repr::Heap(heap.into_boxed_str().into()));
     }
-    let mut len = 0;
-    let mut buf = [0u8; INLINE_CAP];
+    let mut len = buf_len;
     while let Some(ch) = iter.next() {
         let size = ch.len_utf8();
         if size + len > INLINE_CAP {
@@ -380,7 +392,7 @@ impl From<Box<str>> for SmolStr {
 impl From<Arc<str>> for SmolStr {
     #[inline]
     fn from(s: Arc<str>) -> SmolStr {
-        let repr = Repr::new_on_stack(s.as_ref()).unwrap_or_else(|| Repr::Heap(s));
+        let repr = Repr::new_on_stack(s.as_ref()).unwrap_or(Repr::Heap(s));
         Self(repr)
     }
 }
@@ -634,22 +646,66 @@ pub trait StrExt: private::Sealed {
 impl StrExt for str {
     #[inline]
     fn to_lowercase_smolstr(&self) -> SmolStr {
-        from_char_iter(self.chars().flat_map(|c| c.to_lowercase()))
+        let len = self.len();
+        if len <= INLINE_CAP {
+            let (buf, rest) = inline_convert_while_ascii(self, u8::to_ascii_lowercase);
+            from_buf_and_chars(
+                buf,
+                len - rest.len(),
+                rest.chars().flat_map(|c| c.to_lowercase()),
+            )
+        } else {
+            self.to_lowercase().into()
+        }
     }
 
     #[inline]
     fn to_uppercase_smolstr(&self) -> SmolStr {
-        from_char_iter(self.chars().flat_map(|c| c.to_uppercase()))
+        let len = self.len();
+        if len <= INLINE_CAP {
+            let (buf, rest) = inline_convert_while_ascii(self, u8::to_ascii_uppercase);
+            from_buf_and_chars(
+                buf,
+                len - rest.len(),
+                rest.chars().flat_map(|c| c.to_uppercase()),
+            )
+        } else {
+            self.to_uppercase().into()
+        }
     }
 
     #[inline]
     fn to_ascii_lowercase_smolstr(&self) -> SmolStr {
-        from_char_iter(self.chars().map(|c| c.to_ascii_lowercase()))
+        let len = self.len();
+        if len <= INLINE_CAP {
+            let mut buf = [0u8; INLINE_CAP];
+            buf[..len].copy_from_slice(self.as_bytes());
+            buf[..len].make_ascii_lowercase();
+            SmolStr(Repr::Inline {
+                // SAFETY: `len` is in bounds
+                len: unsafe { InlineSize::transmute_from_u8(len as u8) },
+                buf,
+            })
+        } else {
+            self.to_ascii_lowercase().into()
+        }
     }
 
     #[inline]
     fn to_ascii_uppercase_smolstr(&self) -> SmolStr {
-        from_char_iter(self.chars().map(|c| c.to_ascii_uppercase()))
+        let len = self.len();
+        if len <= INLINE_CAP {
+            let mut buf = [0u8; INLINE_CAP];
+            buf[..len].copy_from_slice(self.as_bytes());
+            buf[..len].make_ascii_uppercase();
+            SmolStr(Repr::Inline {
+                // SAFETY: `len` is in bounds
+                len: unsafe { InlineSize::transmute_from_u8(len as u8) },
+                buf,
+            })
+        } else {
+            self.to_ascii_uppercase().into()
+        }
     }
 
     #[inline]
@@ -658,7 +714,28 @@ impl StrExt for str {
     }
 
     #[inline]
-    fn replacen_smolstr(&self, from: &str, to: &str, count: usize) -> SmolStr {
+    fn replacen_smolstr(&self, from: &str, to: &str, mut count: usize) -> SmolStr {
+        // Fast path for replacing a single ASCII character with another inline.
+        if let [from_u8] = from.as_bytes() {
+            if let [to_u8] = to.as_bytes() {
+                return if self.len() <= count {
+                    // SAFETY: `from_u8` & `to_u8` are ascii
+                    unsafe { replacen_1_ascii(self, |b| if b == from_u8 { *to_u8 } else { *b }) }
+                } else {
+                    unsafe {
+                        replacen_1_ascii(self, |b| {
+                            if b == from_u8 && count != 0 {
+                                count -= 1;
+                                *to_u8
+                            } else {
+                                *b
+                            }
+                        })
+                    }
+                };
+            }
+        }
+
         let mut result = SmolStrBuilder::new();
         let mut last_end = 0;
         for (start, part) in self.match_indices(from).take(count) {
@@ -672,6 +749,90 @@ impl StrExt for str {
         // always less than or equal to `self.len()`
         result.push_str(unsafe { self.get_unchecked(last_end..self.len()) });
         SmolStr::from(result)
+    }
+}
+
+/// SAFETY: `map` fn must only replace ascii with ascii or return unchanged bytes.
+#[inline]
+unsafe fn replacen_1_ascii(src: &str, mut map: impl FnMut(&u8) -> u8) -> SmolStr {
+    if src.len() <= INLINE_CAP {
+        let mut buf = [0u8; INLINE_CAP];
+        for (idx, b) in src.as_bytes().iter().enumerate() {
+            buf[idx] = map(b);
+        }
+        SmolStr(Repr::Inline {
+            // SAFETY: `len` is in bounds
+            len: unsafe { InlineSize::transmute_from_u8(src.len() as u8) },
+            buf,
+        })
+    } else {
+        let out = src.as_bytes().iter().map(map).collect();
+        // SAFETY: We replaced ascii with ascii on valid utf8 strings.
+        unsafe { String::from_utf8_unchecked(out).into() }
+    }
+}
+
+/// Inline version of std fn `convert_while_ascii`. `s` must have len <= 23.
+#[inline]
+fn inline_convert_while_ascii(s: &str, convert: fn(&u8) -> u8) -> ([u8; INLINE_CAP], &str) {
+    // Process the input in chunks of 16 bytes to enable auto-vectorization.
+    // Previously the chunk size depended on the size of `usize`,
+    // but on 32-bit platforms with sse or neon is also the better choice.
+    // The only downside on other platforms would be a bit more loop-unrolling.
+    const N: usize = 16;
+
+    debug_assert!(s.len() <= INLINE_CAP, "only for inline-able strings");
+
+    let mut slice = s.as_bytes();
+    let mut out = [0u8; INLINE_CAP];
+    let mut out_slice = &mut out[..slice.len()];
+    let mut is_ascii = [false; N];
+
+    while slice.len() >= N {
+        // SAFETY: checked in loop condition
+        let chunk = unsafe { slice.get_unchecked(..N) };
+        // SAFETY: out_slice has at least same length as input slice and gets sliced with the same offsets
+        let out_chunk = unsafe { out_slice.get_unchecked_mut(..N) };
+
+        for j in 0..N {
+            is_ascii[j] = chunk[j] <= 127;
+        }
+
+        // Auto-vectorization for this check is a bit fragile, sum and comparing against the chunk
+        // size gives the best result, specifically a pmovmsk instruction on x86.
+        // See https://github.com/llvm/llvm-project/issues/96395 for why llvm currently does not
+        // currently recognize other similar idioms.
+        if is_ascii.iter().map(|x| *x as u8).sum::<u8>() as usize != N {
+            break;
+        }
+
+        for j in 0..N {
+            out_chunk[j] = convert(&chunk[j]);
+        }
+
+        slice = unsafe { slice.get_unchecked(N..) };
+        out_slice = unsafe { out_slice.get_unchecked_mut(N..) };
+    }
+
+    // handle the remainder as individual bytes
+    while !slice.is_empty() {
+        let byte = slice[0];
+        if byte > 127 {
+            break;
+        }
+        // SAFETY: out_slice has at least same length as input slice
+        unsafe {
+            *out_slice.get_unchecked_mut(0) = convert(&byte);
+        }
+        slice = unsafe { slice.get_unchecked(1..) };
+        out_slice = unsafe { out_slice.get_unchecked_mut(1..) };
+    }
+
+    unsafe {
+        // SAFETY: we know this is a valid char boundary
+        // since we only skipped over leading ascii bytes
+        let rest = core::str::from_utf8_unchecked(slice);
+        (out, rest)
     }
 }
 
@@ -824,3 +985,14 @@ impl<'a> arbitrary::Arbitrary<'a> for SmolStr {
 mod borsh;
 #[cfg(feature = "serde")]
 mod serde;
+
+#[test]
+fn from_buf_and_chars_size_hinted_heap() {
+    let str = from_buf_and_chars(
+        *b"abcdefghijklmnopqr00000",
+        18,
+        "_0x1x2x3x4x5x6x7x8x9x10x11x12x13".chars(),
+    );
+
+    assert_eq!(str, "abcdefghijklmnopqr_0x1x2x3x4x5x6x7x8x9x10x11x12x13");
+}

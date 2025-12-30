@@ -5,7 +5,7 @@
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
-#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, rust_2018_idioms)]
 #![forbid(unsafe_code)]
 
@@ -19,33 +19,33 @@ pub use gix_date as date;
 use smallvec::SmallVec;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod commit;
 mod object;
 ///
-#[allow(clippy::empty_docs)]
 pub mod tag;
 ///
-#[allow(clippy::empty_docs)]
 pub mod tree;
 
 mod blob;
 ///
-#[allow(clippy::empty_docs)]
 pub mod data;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod find;
 
+///
+pub mod write {
+    /// The error type returned by the [`Write`](crate::Write) trait.
+    pub type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
+}
+
 mod traits;
-pub use traits::{Exists, Find, FindExt, FindObjectOrHeader, Header as FindHeader, HeaderExt, WriteTo};
+pub use traits::{Exists, Find, FindExt, FindObjectOrHeader, Header as FindHeader, HeaderExt, Write, WriteTo};
 
 pub mod encode;
 pub(crate) mod parse;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod kind;
 
 /// The four types of objects that git differentiates.
@@ -58,7 +58,7 @@ pub enum Kind {
     Commit,
     Tag,
 }
-/// A chunk of any [`data`][BlobRef::data].
+/// A chunk of any [`data`](BlobRef::data).
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct BlobRef<'a> {
@@ -66,7 +66,7 @@ pub struct BlobRef<'a> {
     pub data: &'a [u8],
 }
 
-/// A mutable chunk of any [`data`][Blob::data].
+/// A mutable chunk of any [`data`](Blob::data).
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Blob {
@@ -74,7 +74,7 @@ pub struct Blob {
     pub data: Vec<u8>,
 }
 
-/// A git commit parsed using [`from_bytes()`][CommitRef::from_bytes()].
+/// A git commit parsed using [`from_bytes()`](CommitRef::from_bytes()).
 ///
 /// A commit encapsulates information about a point in time at which the state of the repository is recorded, usually after a
 /// change which is documented in the commit `message`.
@@ -83,18 +83,18 @@ pub struct Blob {
 pub struct CommitRef<'a> {
     /// HEX hash of tree object we point to. Usually 40 bytes long.
     ///
-    /// Use [`tree()`][CommitRef::tree()] to obtain a decoded version of it.
+    /// Use [`tree()`](CommitRef::tree()) to obtain a decoded version of it.
     #[cfg_attr(feature = "serde", serde(borrow))]
     pub tree: &'a BStr,
     /// HEX hash of each parent commit. Empty for first commit in repository.
     pub parents: SmallVec<[&'a BStr; 1]>,
     /// Who wrote this commit. Name and email might contain whitespace and are not trimmed to ensure round-tripping.
     ///
-    /// Use the [`author()`][CommitRef::author()] method to received a trimmed version of it.
+    /// Use the [`author()`](CommitRef::author()) method to received a trimmed version of it.
     pub author: gix_actor::SignatureRef<'a>,
     /// Who committed this commit. Name and email might contain whitespace and are not trimmed to ensure round-tripping.
     ///
-    /// Use the [`committer()`][CommitRef::committer()] method to received a trimmed version of it.
+    /// Use the [`committer()`](CommitRef::committer()) method to received a trimmed version of it.
     ///
     /// This may be different from the `author` in case the author couldn't write to the repository themselves and
     /// is commonly encountered with contributed commits.
@@ -103,7 +103,7 @@ pub struct CommitRef<'a> {
     pub encoding: Option<&'a BStr>,
     /// The commit message documenting the change.
     pub message: &'a BStr,
-    /// Extra header fields, in order of them being encountered, made accessible with the iterator returned by [`extra_headers()`][CommitRef::extra_headers()].
+    /// Extra header fields, in order of them being encountered, made accessible with the iterator returned by [`extra_headers()`](CommitRef::extra_headers()).
     pub extra_headers: Vec<(&'a BStr, Cow<'a, BStr>)>,
 }
 
@@ -135,15 +135,15 @@ pub struct Commit {
     /// The commit message documenting the change.
     pub message: BString,
     /// Extra header fields, in order of them being encountered, made accessible with the iterator returned
-    /// by [`extra_headers()`][Commit::extra_headers()].
+    /// by [`extra_headers()`](Commit::extra_headers()).
     pub extra_headers: Vec<(BString, BString)>,
 }
 
 /// Represents a git tag, commonly indicating a software release.
-#[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
+#[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TagRef<'a> {
-    /// The hash in hexadecimal being the object this tag points to. Use [`target()`][TagRef::target()] to obtain a byte representation.
+    /// The hash in hexadecimal being the object this tag points to. Use [`target()`](TagRef::target()) to obtain a byte representation.
     #[cfg_attr(feature = "serde", serde(borrow))]
     pub target: &'a BStr,
     /// The kind of object that `target` points to.
@@ -184,13 +184,13 @@ pub struct Tag {
     pub pgp_signature: Option<BString>,
 }
 
-/// Immutable objects are read-only structures referencing most data from [a byte slice][crate::ObjectRef::from_bytes()].
+/// Immutable objects are read-only structures referencing most data from [a byte slice](ObjectRef::from_bytes()).
 ///
 /// Immutable objects are expected to be deserialized from bytes that acts as backing store, and they
-/// cannot be mutated or serialized. Instead, one will [convert][crate::ObjectRef::into_owned()] them into their [`mutable`][Object] counterparts
+/// cannot be mutated or serialized. Instead, one will [convert](ObjectRef::into_owned()) them into their [`mutable`](Object) counterparts
 /// which support mutation and serialization.
 ///
-/// An `ObjectRef` is representing [`Trees`][TreeRef], [`Blobs`][BlobRef], [`Commits`][CommitRef], or [`Tags`][TagRef].
+/// An `ObjectRef` is representing [`Trees`](TreeRef), [`Blobs`](BlobRef), [`Commits`](CommitRef), or [`Tags`](TagRef).
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[allow(missing_docs)]
@@ -206,10 +206,10 @@ pub enum ObjectRef<'a> {
 ///
 /// Mutable objects are Commits, Trees, Blobs and Tags that can be changed and serialized.
 ///
-/// They either created using object [construction][Object] or by [deserializing existing objects][ObjectRef::from_bytes()]
-/// and converting these [into mutable copies][ObjectRef::into_owned()] for adjustments.
+/// They either created using object [construction](Object) or by [deserializing existing objects](ObjectRef::from_bytes())
+/// and converting these [into mutable copies](ObjectRef::into_owned()) for adjustments.
 ///
-/// An `Object` is representing [`Trees`][Tree], [`Blobs`][Blob], [`Commits`][Commit] or [`Tags`][Tag].
+/// An `Object` is representing [`Trees`](Tree), [`Blobs`](Blob), [`Commits`](Commit), or [`Tags`](Tag).
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[allow(clippy::large_enum_variant, missing_docs)]
@@ -238,7 +238,7 @@ pub struct TreeRefIter<'a> {
 }
 
 /// A mutable Tree, containing other trees, blobs or commits.
-#[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
+#[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Tree {
     /// The directories and files contained in this tree. They must be and remain sorted by [`filename`][tree::Entry::filename].
@@ -273,7 +273,6 @@ pub struct Header {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod decode {
     #[cfg(feature = "verbose-object-parsing-errors")]
     mod _decode {
@@ -399,16 +398,22 @@ pub mod decode {
     }
 }
 
+fn object_hasher(hash_kind: gix_hash::Kind, object_kind: Kind, object_size: u64) -> gix_hash::Hasher {
+    let mut hasher = gix_hash::hasher(hash_kind);
+    hasher.update(&encode::loose_header(object_kind, object_size));
+    hasher
+}
+
 /// A function to compute a hash of kind `hash_kind` for an object of `object_kind` and its `data`.
 #[doc(alias = "hash_object", alias = "git2")]
-pub fn compute_hash(hash_kind: gix_hash::Kind, object_kind: Kind, data: &[u8]) -> gix_hash::ObjectId {
-    let header = encode::loose_header(object_kind, data.len() as u64);
-
-    let mut hasher = gix_features::hash::hasher(hash_kind);
-    hasher.update(&header);
+pub fn compute_hash(
+    hash_kind: gix_hash::Kind,
+    object_kind: Kind,
+    data: &[u8],
+) -> Result<gix_hash::ObjectId, gix_hash::hasher::Error> {
+    let mut hasher = object_hasher(hash_kind, object_kind, data.len() as u64);
     hasher.update(data);
-
-    hasher.digest().into()
+    hasher.try_finalize()
 }
 
 /// A function to compute a hash of kind `hash_kind` for an object of `object_kind` and its data read from `stream`
@@ -423,10 +428,7 @@ pub fn compute_stream_hash(
     stream_len: u64,
     progress: &mut dyn gix_features::progress::Progress,
     should_interrupt: &std::sync::atomic::AtomicBool,
-) -> std::io::Result<gix_hash::ObjectId> {
-    let header = encode::loose_header(object_kind, stream_len);
-    let mut hasher = gix_features::hash::hasher(hash_kind);
-
-    hasher.update(&header);
-    gix_features::hash::bytes_with_hasher(stream, stream_len, hasher, progress, should_interrupt)
+) -> Result<gix_hash::ObjectId, gix_hash::io::Error> {
+    let hasher = object_hasher(hash_kind, object_kind, stream_len);
+    gix_hash::bytes_with_hasher(stream, stream_len, hasher, progress, should_interrupt)
 }

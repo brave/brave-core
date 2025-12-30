@@ -2,15 +2,13 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
-use crate::provider::bidi_data::{
-    CheckedBidiPairedBracketType, MirroredPairedBracketData, MirroredPairedBracketDataTryFromError,
+use crate::bidi::BidiMirroringGlyph;
+use crate::props::{
+    BidiClass, CanonicalCombiningClass, EastAsianWidth, GeneralCategory, GeneralCategoryGroup,
+    GraphemeClusterBreak, HangulSyllableType, IndicConjunctBreak, IndicSyllabicCategory,
+    JoiningType, LineBreak, Script, SentenceBreak, VerticalOrientation, WordBreak,
 };
 use crate::script::ScriptWithExt;
-use crate::{
-    BidiClass, CanonicalCombiningClass, EastAsianWidth, GeneralCategory, GeneralCategoryGroup,
-    GraphemeClusterBreak, HangulSyllableType, IndicSyllabicCategory, JoiningType, LineBreak,
-    Script, SentenceBreak, WordBreak,
-};
 use core::convert::TryInto;
 use core::num::TryFromIntError;
 use zerovec::ule::{AsULE, RawBytesULE};
@@ -153,19 +151,31 @@ impl TrieValue for SentenceBreak {
     }
 }
 
-impl TrieValue for CheckedBidiPairedBracketType {
+impl TrieValue for IndicConjunctBreak {
     type TryFromU32Error = TryFromIntError;
 
     fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
-        Ok(match i {
-            1 => CheckedBidiPairedBracketType::Open,
-            2 => CheckedBidiPairedBracketType::Close,
-            _ => CheckedBidiPairedBracketType::None,
-        })
+        u8::try_from(i).map(Self)
+    }
+
+    fn to_u32(self) -> u32 {
+        u32::from(self.0)
     }
 }
 
 impl TrieValue for IndicSyllabicCategory {
+    type TryFromU32Error = TryFromIntError;
+
+    fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
+        u8::try_from(i).map(Self)
+    }
+
+    fn to_u32(self) -> u32 {
+        u32::from(self.0)
+    }
+}
+
+impl TrieValue for VerticalOrientation {
     type TryFromU32Error = TryFromIntError;
 
     fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
@@ -220,7 +230,7 @@ fn packed_u16_to_gcg(value: u16) -> GeneralCategoryGroup {
 
 fn gcg_to_packed_u16(gcg: GeneralCategoryGroup) -> u16 {
     // if it's a single property, translate to that property
-    if gcg.0.count_ones() == 1 {
+    if gcg.0.is_power_of_two() {
         // inverse operation of a bitshift
         gcg.0.trailing_zeros() as u16
     } else {
@@ -252,11 +262,41 @@ impl TrieValue for GeneralCategoryGroup {
     }
 }
 
-impl TrieValue for MirroredPairedBracketData {
-    type TryFromU32Error = MirroredPairedBracketDataTryFromError;
+impl TrieValue for BidiMirroringGlyph {
+    type TryFromU32Error = u32;
 
     fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
-        Self::try_from(i)
+        let code_point = i & 0x1FFFFF;
+        let mirroring_glyph = if code_point == 0 {
+            None
+        } else {
+            Some(char::try_from_u32(code_point).map_err(|_| i)?)
+        };
+        let mirrored = ((i >> 21) & 0x1) == 1;
+        let paired_bracket_type = {
+            let value = ((i >> 22) & 0x3) as u8;
+            match value {
+                0 => crate::bidi::BidiPairedBracketType::None,
+                1 => crate::bidi::BidiPairedBracketType::Open,
+                2 => crate::bidi::BidiPairedBracketType::Close,
+                _ => return Err(i),
+            }
+        };
+        Ok(Self {
+            mirrored,
+            mirroring_glyph,
+            paired_bracket_type,
+        })
+    }
+
+    fn to_u32(self) -> u32 {
+        self.mirroring_glyph.unwrap_or_default() as u32
+            | ((self.mirrored as u32) << 21)
+            | (match self.paired_bracket_type {
+                crate::bidi::BidiPairedBracketType::None => 0,
+                crate::bidi::BidiPairedBracketType::Open => 1,
+                crate::bidi::BidiPairedBracketType::Close => 2,
+            } << 22)
     }
 }
 

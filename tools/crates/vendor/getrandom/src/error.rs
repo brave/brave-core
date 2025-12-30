@@ -1,15 +1,20 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-use core::{fmt, num::NonZeroU32};
+use core::fmt;
 
 // This private alias mirrors `std::io::RawOsError`:
 // https://doc.rust-lang.org/std/io/type.RawOsError.html)
 cfg_if::cfg_if!(
     if #[cfg(target_os = "uefi")] {
+        // See the UEFI spec for more information:
+        // https://uefi.org/specs/UEFI/2.10/Apx_D_Status_Codes.html
         type RawOsError = usize;
+        type NonZeroRawOsError = core::num::NonZeroUsize;
+        const UEFI_ERROR_FLAG: RawOsError = 1 << (RawOsError::BITS - 1);
     } else {
         type RawOsError = i32;
+        type NonZeroRawOsError = core::num::NonZeroI32;
     }
 );
 
@@ -19,16 +24,16 @@ cfg_if::cfg_if!(
 /// if so, which error code the OS gave the application. If such an error is
 /// encountered, please consult with your system documentation.
 ///
-/// Internally this type is a NonZeroU32, with certain values reserved for
-/// certain purposes, see [`Error::INTERNAL_START`] and [`Error::CUSTOM_START`].
-///
 /// *If this crate's `"std"` Cargo feature is enabled*, then:
 /// - [`getrandom::Error`][Error] implements
 ///   [`std::error::Error`](https://doc.rust-lang.org/std/error/trait.Error.html)
 /// - [`std::io::Error`](https://doc.rust-lang.org/std/io/struct.Error.html) implements
 ///   [`From<getrandom::Error>`](https://doc.rust-lang.org/std/convert/trait.From.html).
+
+// note: on non-UEFI targets OS errors are represented as negative integers,
+// while on UEFI targets OS errors have the highest bit set to 1.
 #[derive(Copy, Clone, Eq, PartialEq)]
-pub struct Error(NonZeroU32);
+pub struct Error(NonZeroRawOsError);
 
 impl Error {
     /// This target/platform is not supported by `getrandom`.
@@ -38,29 +43,32 @@ impl Error {
     /// Encountered an unexpected situation which should not happen in practice.
     pub const UNEXPECTED: Error = Self::new_internal(2);
 
-    /// Codes below this point represent OS Errors (i.e. positive i32 values).
-    /// Codes at or above this point, but below [`Error::CUSTOM_START`] are
-    /// reserved for use by the `rand` and `getrandom` crates.
-    pub const INTERNAL_START: u32 = 1 << 31;
+    /// Internal errors can be in the range of 2^16..2^17
+    const INTERNAL_START: RawOsError = 1 << 16;
+    /// Custom errors can be in the range of 2^17..(2^17 + 2^16)
+    const CUSTOM_START: RawOsError = 1 << 17;
 
-    /// Codes at or above this point can be used by users to define their own
-    /// custom errors.
-    pub const CUSTOM_START: u32 = (1 << 31) + (1 << 30);
-
-    /// Creates a new instance of an `Error` from a particular OS error code.
-    ///
-    /// This method is analogous to [`std::io::Error::from_raw_os_error()`][1],
-    /// except that it works in `no_std` contexts and `code` will be
-    /// replaced with `Error::UNEXPECTED` if it isn't in the range
-    /// `1..Error::INTERNAL_START`. Thus, for the result `r`,
-    /// `r == Self::UNEXPECTED || r.raw_os_error().unsigned_abs() == code`.
-    ///
-    /// [1]: https://doc.rust-lang.org/std/io/struct.Error.html#method.from_raw_os_error
+    /// Creates a new instance of an `Error` from a negative error code.
+    #[cfg(not(target_os = "uefi"))]
     #[allow(dead_code)]
-    pub(super) fn from_os_error(code: u32) -> Self {
-        match NonZeroU32::new(code) {
-            Some(code) if code.get() < Self::INTERNAL_START => Self(code),
-            _ => Self::UNEXPECTED,
+    pub(super) fn from_neg_error_code(code: RawOsError) -> Self {
+        if code < 0 {
+            let code = NonZeroRawOsError::new(code).expect("`code` is negative");
+            Self(code)
+        } else {
+            Error::UNEXPECTED
+        }
+    }
+
+    /// Creates a new instance of an `Error` from an UEFI error code.
+    #[cfg(target_os = "uefi")]
+    #[allow(dead_code)]
+    pub(super) fn from_uefi_code(code: RawOsError) -> Self {
+        if code & UEFI_ERROR_FLAG != 0 {
+            let code = NonZeroRawOsError::new(code).expect("The highest bit of `code` is set to 1");
+            Self(code)
+        } else {
+            Self::UNEXPECTED
         }
     }
 
@@ -79,27 +87,53 @@ impl Error {
     #[inline]
     pub fn raw_os_error(self) -> Option<RawOsError> {
         let code = self.0.get();
-        if code >= Self::INTERNAL_START {
-            return None;
+
+        // note: in this method we need to cover only backends which rely on
+        // `Error::{from_error_code, from_errno, from_uefi_code}` methods,
+        // on all other backends this method always returns `None`.
+
+        #[cfg(target_os = "uefi")]
+        {
+            if code & UEFI_ERROR_FLAG != 0 {
+                Some(code)
+            } else {
+                None
+            }
         }
-        let errno = RawOsError::try_from(code).ok()?;
-        #[cfg(target_os = "solid_asp3")]
-        let errno = -errno;
-        Some(errno)
+
+        #[cfg(not(target_os = "uefi"))]
+        {
+            // On most targets `std` expects positive error codes while retrieving error strings:
+            // - `libc`-based targets use `strerror_r` which expects positive error codes.
+            // - Hermit relies on the `hermit-abi` crate, which expects positive error codes:
+            //   https://docs.rs/hermit-abi/0.4.0/src/hermit_abi/errno.rs.html#400-532
+            // - WASIp1 uses the same conventions as `libc`:
+            //   https://github.com/rust-lang/rust/blob/1.85.0/library/std/src/sys/pal/wasi/os.rs#L57-L67
+            //
+            // The only exception is Solid, `std` expects negative system error codes, see:
+            // https://github.com/rust-lang/rust/blob/1.85.0/library/std/src/sys/pal/solid/error.rs#L5-L31
+            if code >= 0 {
+                None
+            } else if cfg!(not(target_os = "solid_asp3")) {
+                code.checked_neg()
+            } else {
+                Some(code)
+            }
+        }
     }
 
     /// Creates a new instance of an `Error` from a particular custom error code.
     pub const fn new_custom(n: u16) -> Error {
-        // SAFETY: code > 0 as CUSTOM_START > 0 and adding n won't overflow a u32.
-        let code = Error::CUSTOM_START + (n as u32);
-        Error(unsafe { NonZeroU32::new_unchecked(code) })
+        // SAFETY: code > 0 as CUSTOM_START > 0 and adding `n` won't overflow `RawOsError`.
+        let code = Error::CUSTOM_START + (n as RawOsError);
+        Error(unsafe { NonZeroRawOsError::new_unchecked(code) })
     }
 
     /// Creates a new instance of an `Error` from a particular internal error code.
     pub(crate) const fn new_internal(n: u16) -> Error {
-        // SAFETY: code > 0 as INTERNAL_START > 0 and adding n won't overflow a u32.
-        let code = Error::INTERNAL_START + (n as u32);
-        Error(unsafe { NonZeroU32::new_unchecked(code) })
+        // SAFETY: code > 0 as INTERNAL_START > 0 and adding `n` won't overflow `RawOsError`.
+        let code = Error::INTERNAL_START + (n as RawOsError);
+        Error(unsafe { NonZeroRawOsError::new_unchecked(code) })
     }
 
     fn internal_desc(&self) -> Option<&'static str> {
@@ -166,7 +200,7 @@ impl fmt::Display for Error {
                 if #[cfg(feature = "std")] {
                     std::io::Error::from_raw_os_error(errno).fmt(f)
                 } else {
-                    write!(f, "OS Error: {}", errno)
+                    write!(f, "OS Error: {errno}")
                 }
             }
         } else if let Some(desc) = self.internal_desc() {
@@ -174,17 +208,5 @@ impl fmt::Display for Error {
         } else {
             write!(f, "Unknown Error: {}", self.0.get())
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::Error;
-    use core::mem::size_of;
-
-    #[test]
-    fn test_size() {
-        assert_eq!(size_of::<Error>(), 4);
-        assert_eq!(size_of::<Result<(), Error>>(), 4);
     }
 }

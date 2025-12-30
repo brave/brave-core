@@ -1,10 +1,12 @@
 //!
 #![allow(clippy::empty_docs)]
 
+use std::convert::Infallible;
+
 /// An empty array of a type usable with the `gix::easy` API to help declaring no parents should be used
 pub const NO_PARENT_IDS: [gix_hash::ObjectId; 0] = [];
 
-/// The error returned by [`commit(…)`][crate::Repository::commit()].
+/// The error returned by [`commit(…)`](crate::Repository::commit()).
 #[derive(Debug, thiserror::Error)]
 #[allow(missing_docs)]
 pub enum Error {
@@ -22,8 +24,13 @@ pub enum Error {
     ReferenceEdit(#[from] crate::reference::edit::Error),
 }
 
+impl From<std::convert::Infallible> for Error {
+    fn from(_value: Infallible) -> Self {
+        unreachable!("cannot be invoked")
+    }
+}
+
 ///
-#[allow(clippy::empty_docs)]
 #[cfg(feature = "revision")]
 pub mod describe {
     use std::borrow::Cow;
@@ -41,7 +48,7 @@ pub mod describe {
         pub id: crate::Id<'repo>,
     }
 
-    impl<'repo> Resolution<'repo> {
+    impl Resolution<'_> {
         /// Turn this instance into something displayable.
         pub fn format(self) -> Result<gix_revision::describe::Format<'static>, Error> {
             let prefix = self.id.shorten()?;
@@ -74,6 +81,8 @@ pub mod describe {
     #[derive(Debug, thiserror::Error)]
     #[allow(missing_docs)]
     pub enum Error {
+        #[error(transparent)]
+        OpenCache(#[from] crate::repository::commit_graph_if_enabled::Error),
         #[error(transparent)]
         Describe(#[from] gix_revision::describe::Error),
         #[error("Could not produce an unambiguous shortened id for formatting.")]
@@ -113,11 +122,11 @@ pub mod describe {
                     .filter_map(Result::ok)
                     .filter_map(|mut r: crate::Reference<'_>| {
                         let target_id = r.target().try_id().map(ToOwned::to_owned);
-                        let peeled_id = r.peel_to_id_in_place().ok()?;
+                        let peeled_id = r.peel_to_id().ok()?;
                         let (prio, tag_time) = match target_id {
                             Some(target_id) if peeled_id != *target_id => {
                                 let tag = repo.find_object(target_id).ok()?.try_into_tag().ok()?;
-                                (1, tag.tagger().ok()??.time.seconds)
+                                (1, tag.tagger().ok()??.seconds())
                             }
                             _ => (0, 0),
                         };
@@ -150,7 +159,7 @@ pub mod describe {
                             // TODO: we assume direct refs for tags, which is the common case, but it doesn't have to be
                             //       so rather follow symrefs till the first object and then peel tags after the first object was found.
                             let tag = r.try_id()?.object().ok()?.try_into_tag().ok()?;
-                            let tag_time = tag.tagger().ok().and_then(|s| s.map(|s| s.time.seconds)).unwrap_or(0);
+                            let tag_time = tag.tagger().ok().and_then(|s| s.map(|s| s.seconds())).unwrap_or(0);
                             let commit_id = tag.target_id().ok()?.object().ok()?.try_into_commit().ok()?.id;
                             Some((commit_id, tag_time, Cow::<BStr>::from(r.name().shorten().to_owned())))
                         })
@@ -172,7 +181,8 @@ pub mod describe {
     /// A support type to allow configuring a `git describe` operation
     pub struct Platform<'repo> {
         pub(crate) id: gix_hash::ObjectId,
-        pub(crate) repo: &'repo crate::Repository,
+        /// The owning repository.
+        pub repo: &'repo crate::Repository,
         pub(crate) select: SelectRef,
         pub(crate) first_parent: bool,
         pub(crate) id_as_fallback: bool,
@@ -192,7 +202,7 @@ pub mod describe {
             self
         }
 
-        /// Only consider the given amount of candidates, instead of the default of 10.
+        /// Only consider the given number of candidates, instead of the default of 10.
         pub fn max_candidates(mut self, candidates: usize) -> Self {
             self.max_candidates = candidates;
             self
@@ -219,11 +229,11 @@ pub mod describe {
         ///
         /// It is greatly recommended to [assure an object cache is set](crate::Repository::object_cache_size_if_unset())
         /// to save ~40% of time.
-        pub fn try_resolve(&self) -> Result<Option<Resolution<'repo>>, Error> {
-            let mut graph = gix_revwalk::Graph::new(
-                &self.repo.objects,
-                gix_commitgraph::Graph::from_info_dir(self.repo.objects.store_ref().path().join("info").as_ref()).ok(),
-            );
+        pub fn try_resolve_with_cache(
+            &self,
+            cache: Option<&'_ gix_commitgraph::Graph>,
+        ) -> Result<Option<Resolution<'repo>>, Error> {
+            let mut graph = self.repo.revision_graph(cache);
             let outcome = gix_revision::describe(
                 &self.id,
                 &mut graph,
@@ -239,6 +249,16 @@ pub mod describe {
                 outcome,
                 id: self.id.attach(self.repo),
             }))
+        }
+
+        /// Like [`Self::try_resolve_with_cache()`], but obtains the commitgraph-cache internally for a single use.
+        ///
+        /// # Performance
+        ///
+        /// Prefer to use the [`Self::try_resolve_with_cache()`] method when processing more than one commit at a time.
+        pub fn try_resolve(&self) -> Result<Option<Resolution<'repo>>, Error> {
+            let cache = self.repo.commit_graph_if_enabled()?;
+            self.try_resolve_with_cache(cache.as_ref())
         }
 
         /// Like [`try_format()`](Self::try_format()), but turns `id_as_fallback()` on to always produce a format.

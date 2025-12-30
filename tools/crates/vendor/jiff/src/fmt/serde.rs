@@ -39,6 +39,13 @@ easy copy & paste.
 * [`tz`]
     * [`jiff::fmt::serde::tz::required`](self::tz::required)
     * [`jiff::fmt::serde::tz::optional`](self::tz::optional)
+* [`unsigned_duration`]
+    * [`friendly`](self::unsigned_duration::friendly)
+        * [`compact`](self::unsigned_duration::friendly::compact)
+            * [`jiff::fmt::serde::unsigned_duration::friendly::compact::required`](self::unsigned_duration::friendly::compact::required)
+            * [`jiff::fmt::serde::unsigned_duration::friendly::compact::optional`](self::unsigned_duration::friendly::compact::optional)
+    * [`required`](self::unsigned_duration::required)
+    * [`optional`](self::unsigned_duration::optional)
 
 # Example: timestamps as an integer
 
@@ -128,8 +135,8 @@ assert_eq!(serde_json::to_string(&got).unwrap(), expected);
 ["friendly" duration format]: crate::fmt::friendly
 */
 
-/// Convenience routines for serializing [`SignedDuration`](crate::SignedDuration)
-/// values.
+/// Convenience routines for serializing
+/// [`SignedDuration`](crate::SignedDuration) values.
 ///
 /// These convenience routines exist because the `Serialize` implementation for
 /// `SignedDuration` always uses the ISO 8601 duration format. These routines
@@ -216,7 +223,7 @@ assert_eq!(serde_json::to_string(&got).unwrap(), expected);
 /// for this. Namely, deserialization automatically supports parsing all
 /// configuration options for serialization unconditionally.
 pub mod duration {
-    /// Serialize a `Span` in the [`friendly`](crate::fmt::friendly) duration
+    /// Serialize a `SignedDuration` in the [`friendly`](crate::fmt::friendly) duration
     /// format.
     pub mod friendly {
         /// Serialize a `SignedDuration` in the
@@ -244,7 +251,7 @@ pub mod duration {
             /// Serialize a required `SignedDuration` in the [`friendly`]
             /// duration format using compact designators.
             #[inline]
-            pub fn required<S: serde::Serializer>(
+            pub fn required<S: serde_core::Serializer>(
                 duration: &crate::SignedDuration,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -254,7 +261,7 @@ pub mod duration {
             /// Serialize an optional `SignedDuration` in the [`friendly`]
             /// duration format using compact designators.
             #[inline]
-            pub fn optional<S: serde::Serializer>(
+            pub fn optional<S: serde_core::Serializer>(
                 duration: &Option<crate::SignedDuration>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -287,7 +294,7 @@ pub mod duration {
 /// However, it is perhaps easier to read, and crucially, unambiguously
 /// represents all components of a `Span` faithfully. (In contrast, the ISO
 /// 8601 format always normalizes sub-second durations into fractional seconds,
-/// which means durations like `1100ms` and `1s100ms` are alwasys considered
+/// which means durations like `1100ms` and `1s100ms` are always considered
 /// equivalent.)
 ///
 /// # Available routines
@@ -388,7 +395,7 @@ pub mod span {
             /// Serialize a required `Span` in the [`friendly`] duration format
             /// using compact designators.
             #[inline]
-            pub fn required<S: serde::Serializer>(
+            pub fn required<S: serde_core::Serializer>(
                 span: &crate::Span,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -398,7 +405,7 @@ pub mod span {
             /// Serialize an optional `Span` in the [`friendly`] duration
             /// format using compact designators.
             #[inline]
-            pub fn optional<S: serde::Serializer>(
+            pub fn optional<S: serde_core::Serializer>(
                 span: &Option<crate::Span>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -428,7 +435,7 @@ pub mod span {
 /// include the time zone, then using [`Zoned`](crate::Zoned) directly will
 /// work as well by utilizing the RFC 9557 extension to RFC 3339.)
 pub mod timestamp {
-    use serde::de;
+    use serde_core::de;
 
     /// A generic visitor for `Option<Timestamp>`.
     struct OptionalVisitor<V>(V);
@@ -465,7 +472,7 @@ pub mod timestamp {
 
     /// (De)serialize an integer number of seconds from the Unix epoch.
     pub mod second {
-        use serde::de;
+        use serde_core::de;
 
         struct Visitor;
 
@@ -584,7 +591,7 @@ pub mod timestamp {
             /// Serialize a required integer number of seconds since the Unix
             /// epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &crate::Timestamp,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -594,7 +601,7 @@ pub mod timestamp {
             /// Deserialize a required integer number of seconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<crate::Timestamp, D::Error> {
                 de.deserialize_i64(super::Visitor)
@@ -607,20 +614,20 @@ pub mod timestamp {
             /// Serialize an optional integer number of seconds since the Unix
             /// epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &Option<crate::Timestamp>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
                 match *timestamp {
                     None => se.serialize_none(),
-                    Some(ts) => se.serialize_i64(ts.as_second()),
+                    Some(ref ts) => super::required::serialize(ts, se),
                 }
             }
 
             /// Deserialize an optional integer number of seconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<Option<crate::Timestamp>, D::Error> {
                 de.deserialize_option(super::super::OptionalVisitor(
@@ -632,7 +639,7 @@ pub mod timestamp {
 
     /// (De)serialize an integer number of milliseconds from the Unix epoch.
     pub mod millisecond {
-        use serde::de;
+        use serde_core::de;
 
         struct Visitor;
 
@@ -754,7 +761,7 @@ pub mod timestamp {
             /// Serialize a required integer number of milliseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &crate::Timestamp,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -764,7 +771,7 @@ pub mod timestamp {
             /// Deserialize a required integer number of milliseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<crate::Timestamp, D::Error> {
                 de.deserialize_i64(super::Visitor)
@@ -777,20 +784,20 @@ pub mod timestamp {
             /// Serialize an optional integer number of milliseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &Option<crate::Timestamp>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
                 match *timestamp {
                     None => se.serialize_none(),
-                    Some(ts) => se.serialize_i64(ts.as_millisecond()),
+                    Some(ref ts) => super::required::serialize(ts, se),
                 }
             }
 
             /// Deserialize an optional integer number of milliseconds since
             /// the Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<Option<crate::Timestamp>, D::Error> {
                 de.deserialize_option(super::super::OptionalVisitor(
@@ -802,7 +809,7 @@ pub mod timestamp {
 
     /// (De)serialize an integer number of microseconds from the Unix epoch.
     pub mod microsecond {
-        use serde::de;
+        use serde_core::de;
 
         struct Visitor;
 
@@ -924,7 +931,7 @@ pub mod timestamp {
             /// Serialize a required integer number of microseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &crate::Timestamp,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -934,7 +941,7 @@ pub mod timestamp {
             /// Deserialize a required integer number of microseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<crate::Timestamp, D::Error> {
                 de.deserialize_i64(super::Visitor)
@@ -947,20 +954,20 @@ pub mod timestamp {
             /// Serialize an optional integer number of microseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &Option<crate::Timestamp>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
                 match *timestamp {
                     None => se.serialize_none(),
-                    Some(ts) => se.serialize_i64(ts.as_microsecond()),
+                    Some(ref ts) => super::required::serialize(ts, se),
                 }
             }
 
             /// Deserialize an optional integer number of microseconds since
             /// the Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<Option<crate::Timestamp>, D::Error> {
                 de.deserialize_option(super::super::OptionalVisitor(
@@ -972,7 +979,7 @@ pub mod timestamp {
 
     /// (De)serialize an integer number of nanoseconds from the Unix epoch.
     pub mod nanosecond {
-        use serde::de;
+        use serde_core::de;
 
         struct Visitor;
 
@@ -1033,7 +1040,7 @@ pub mod timestamp {
             /// Serialize a required integer number of nanoseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &crate::Timestamp,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
@@ -1043,7 +1050,7 @@ pub mod timestamp {
             /// Deserialize a required integer number of nanoseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<crate::Timestamp, D::Error> {
                 de.deserialize_i128(super::Visitor)
@@ -1056,20 +1063,20 @@ pub mod timestamp {
             /// Serialize an optional integer number of nanoseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn serialize<S: serde::Serializer>(
+            pub fn serialize<S: serde_core::Serializer>(
                 timestamp: &Option<crate::Timestamp>,
                 se: S,
             ) -> Result<S::Ok, S::Error> {
                 match *timestamp {
                     None => se.serialize_none(),
-                    Some(ts) => se.serialize_i128(ts.as_nanosecond()),
+                    Some(ref ts) => super::required::serialize(ts, se),
                 }
             }
 
             /// Deserialize an optional integer number of nanoseconds since the
             /// Unix epoch.
             #[inline]
-            pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+            pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
                 de: D,
             ) -> Result<Option<crate::Timestamp>, D::Error> {
                 de.deserialize_option(super::super::OptionalVisitor(
@@ -1119,8 +1126,57 @@ pub mod timestamp {
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
+///
+/// # Example: serializing an unknown `TimeZone` works
+///
+/// For example, when a time zone was created from
+/// [`TimeZone::system`](crate::tz::TimeZone::system) and a system configured
+/// time zone could not be found. One can artificially create this situation
+/// with [`TimeZone::unknown`](crate::tz::TimeZone::unknown):
+///
+/// ```
+/// use jiff::tz::TimeZone;
+///
+/// #[derive(Debug, serde::Deserialize, serde::Serialize)]
+/// struct Record {
+///     #[serde(with = "jiff::fmt::serde::tz::required")]
+///     tz: TimeZone,
+/// }
+///
+/// let record = Record { tz: TimeZone::unknown() };
+/// assert_eq!(
+///     serde_json::to_string(&record)?,
+///     r#"{"tz":"Etc/Unknown"}"#,
+/// );
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// And it deserializes as well:
+///
+/// ```
+/// use jiff::tz::TimeZone;
+///
+/// #[derive(Debug, serde::Deserialize, serde::Serialize)]
+/// struct Record {
+///     #[serde(with = "jiff::fmt::serde::tz::required")]
+///     tz: TimeZone,
+/// }
+///
+/// let json = r#"{"tz":"Etc/Unknown"}"#;
+/// let got: Record = serde_json::from_str(&json)?;
+/// assert!(got.tz.is_unknown());
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// An unknown time zone is "allowed" to percolate through Jiff because it's
+/// usually not desirable to return an error and completely fail if a system
+/// time zone could not be detected. On the other hand, by using a special
+/// `Etc/Unknown` identifier for this case, it still surfaces the fact that
+/// something has gone wrong.
 pub mod tz {
-    use serde::de;
+    use serde_core::de;
 
     use crate::fmt::{temporal, StdFmtWrite};
 
@@ -1219,17 +1275,17 @@ pub mod tz {
         /// derived from a system `/etc/localtime` for which no IANA time zone
         /// identifier could be found.
         #[inline]
-        pub fn serialize<S: serde::Serializer>(
+        pub fn serialize<S: serde_core::Serializer>(
             tz: &crate::tz::TimeZone,
             se: S,
         ) -> Result<S::Ok, S::Error> {
             if !tz.has_succinct_serialization() {
-                return Err(<S::Error as serde::ser::Error>::custom(
+                return Err(<S::Error as serde_core::ser::Error>::custom(
                     "time zones without IANA identifiers that aren't either \
                      fixed offsets or a POSIX time zone can't be serialized \
                      (this typically occurs when this is a system time zone \
                       derived from `/etc/localtime` on Unix systems that \
-                      isn't symlinked to an entry in `/usr/share/zoneinfo`)",
+                      isn't symlinked to an entry in `/usr/share/zoneinfo)",
                 ));
             }
             se.collect_str(&super::TemporalTimeZone(tz))
@@ -1240,7 +1296,7 @@ pub mod tz {
         /// This will attempt to parse an IANA time zone identifier, a fixed
         /// offset or a POSIX time zone string.
         #[inline]
-        pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+        pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
             de: D,
         ) -> Result<crate::tz::TimeZone, D::Error> {
             de.deserialize_str(super::Visitor)
@@ -1259,7 +1315,7 @@ pub mod tz {
         /// derived from a system `/etc/localtime` for which no IANA time zone
         /// identifier could be found.
         #[inline]
-        pub fn serialize<S: serde::Serializer>(
+        pub fn serialize<S: serde_core::Serializer>(
             tz: &Option<crate::tz::TimeZone>,
             se: S,
         ) -> Result<S::Ok, S::Error> {
@@ -1274,11 +1330,485 @@ pub mod tz {
         /// This will attempt to parse an IANA time zone identifier, a fixed
         /// offset or a POSIX time zone string.
         #[inline]
-        pub fn deserialize<'de, D: serde::Deserializer<'de>>(
+        pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
             de: D,
         ) -> Result<Option<crate::tz::TimeZone>, D::Error> {
             de.deserialize_option(super::OptionalVisitor(super::Visitor))
         }
+    }
+}
+
+/// Convenience routines for serializing [`std::time::Duration`] values.
+///
+/// The principal helpers in this module are the
+/// [`required`](crate::fmt::serde::unsigned_duration::required)
+/// and
+/// [`optional`](crate::fmt::serde::unsigned_duration::optional) sub-modules.
+/// Either may be used with Serde's `with` attribute. Each sub-module
+/// provides both a serialization and a deserialization routine for
+/// [`std::time::Duration`]. Deserialization supports either ISO 8601 or the
+/// "[friendly](crate::fmt::friendly)" format. Serialization always uses ISO
+/// 8601 for reasons of increased interoperability. These helpers are meant to
+/// approximate the `Deserialize` and `Serialize` trait implementations for
+/// Jiff's own [`SignedDuration`](crate::SignedDuration).
+///
+/// If you want to serialize a `std::time::Duration` using the
+/// [friendly](crate::fmt::friendly), then you can make use of the
+/// helpers in
+/// [`friendly::compact`](crate::fmt::serde::unsigned_duration::friendly::compact),
+/// also via Serde's `with` attribute. These helpers change their serialization
+/// to the "friendly" format using compact unit designators. Their deserialization
+/// remains the same as the top-level helpers (that is, both ISO 8601 and
+/// friendly formatted duration strings are parsed).
+///
+/// Unlike Jiff's own [`SignedDuration`](crate::SignedDuration), deserializing
+/// a `std::time::Duration` does not support negative durations. If a negative
+/// duration is found, then deserialization will fail. Moreover, as an unsigned
+/// type, a `std::time::Duration` can represent larger durations than a
+/// `SignedDuration`. This means that a `SignedDuration` cannot deserialize
+/// all valid values of a `std::time::Duration`. In other words, be careful not
+/// to mix them.
+///
+/// # Example: maximally interoperable serialization
+///
+/// This example shows how to achieve Serde integration for `std::time::Duration`
+/// in a way that mirrors [`SignedDuration`](crate::SignedDuration). In
+/// particular, this supports deserializing ISO 8601 or "friendly" format
+/// duration strings. In order to be maximally interoperable, this serializes
+/// only in the ISO 8601 format.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use serde::{Deserialize, Serialize};
+///
+/// #[derive(Debug, PartialEq, Serialize, Deserialize)]
+/// struct Task {
+///     name: String,
+///     #[serde(with = "jiff::fmt::serde::unsigned_duration::required")]
+///     timeout: Duration,
+///     #[serde(with = "jiff::fmt::serde::unsigned_duration::optional")]
+///     retry_delay: Option<Duration>,
+/// }
+///
+/// let task = Task {
+///     name: "Task 1".to_string(),
+///     // 1 hour 30 minutes
+///     timeout: Duration::from_secs(60 * 60 + 30 * 60),
+///     // 2 seconds 500 milliseconds
+///     retry_delay: Some(Duration::from_millis(2500)),
+/// };
+///
+/// let expected_json = r#"{"name":"Task 1","timeout":"PT1H30M","retry_delay":"PT2.5S"}"#;
+/// let actual_json = serde_json::to_string(&task)?;
+/// assert_eq!(actual_json, expected_json);
+///
+/// let deserialized_task: Task = serde_json::from_str(&actual_json)?;
+/// assert_eq!(deserialized_task, task);
+///
+/// // Example with None for optional field
+/// let task_no_retry = Task {
+///     name: "Task 2".to_string(),
+///     timeout: Duration::from_secs(5),
+///     retry_delay: None,
+/// };
+/// let expected_json_no_retry = r#"{"name":"Task 2","timeout":"PT5S","retry_delay":null}"#;
+/// let actual_json_no_retry = serde_json::to_string(&task_no_retry)?;
+/// assert_eq!(actual_json_no_retry, expected_json_no_retry);
+///
+/// let deserialized_task_no_retry: Task = serde_json::from_str(&actual_json_no_retry)?;
+/// assert_eq!(deserialized_task_no_retry, task_no_retry);
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// # Example: Round-tripping `std::time::Duration`
+///
+/// This example demonstrates how to serialize and deserialize a
+/// `std::time::Duration` field using the helpers from this module. In
+/// particular, this serializes durations in the more human readable
+/// "friendly" format, but can still deserialize ISO 8601 duration strings.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use serde::{Deserialize, Serialize};
+///
+/// #[derive(Debug, PartialEq, Serialize, Deserialize)]
+/// struct Task {
+///     name: String,
+///     #[serde(with = "jiff::fmt::serde::unsigned_duration::friendly::compact::required")]
+///     timeout: Duration,
+///     #[serde(with = "jiff::fmt::serde::unsigned_duration::friendly::compact::optional")]
+///     retry_delay: Option<Duration>,
+/// }
+///
+/// let task = Task {
+///     name: "Task 1".to_string(),
+///     // 1 hour 30 minutes
+///     timeout: Duration::from_secs(60 * 60 + 30 * 60),
+///     // 2 seconds 500 milliseconds
+///     retry_delay: Some(Duration::from_millis(2500)),
+/// };
+///
+/// let expected_json = r#"{"name":"Task 1","timeout":"1h 30m","retry_delay":"2s 500ms"}"#;
+/// let actual_json = serde_json::to_string(&task)?;
+/// assert_eq!(actual_json, expected_json);
+///
+/// let deserialized_task: Task = serde_json::from_str(&actual_json)?;
+/// assert_eq!(deserialized_task, task);
+///
+/// // Example with None for optional field
+/// let task_no_retry = Task {
+///     name: "Task 2".to_string(),
+///     timeout: Duration::from_secs(5),
+///     retry_delay: None,
+/// };
+/// let expected_json_no_retry = r#"{"name":"Task 2","timeout":"5s","retry_delay":null}"#;
+/// let actual_json_no_retry = serde_json::to_string(&task_no_retry)?;
+/// assert_eq!(actual_json_no_retry, expected_json_no_retry);
+///
+/// let deserialized_task_no_retry: Task = serde_json::from_str(&actual_json_no_retry)?;
+/// assert_eq!(deserialized_task_no_retry, task_no_retry);
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// # Example: custom "friendly" format options
+///
+/// When using
+/// [`friendly::compact`](crate::fmt::serde::unsigned_duration::friendly::compact),
+/// the serialization implementation uses a fixed friendly format
+/// configuration. To use your own configuration, you'll need to write your own
+/// serialization function:
+///
+/// ```
+/// use std::time::Duration;
+///
+/// #[derive(Debug, serde::Deserialize, serde::Serialize)]
+/// struct Data {
+///     #[serde(serialize_with = "custom_friendly")]
+///     // We can reuse an existing deserialization helper so that you
+///     // don't have to write your own.
+///     #[serde(deserialize_with = "jiff::fmt::serde::unsigned_duration::required::deserialize")]
+///     duration: Duration,
+/// }
+///
+/// let json = r#"{"duration": "36 hours 1100ms"}"#;
+/// let got: Data = serde_json::from_str(&json).unwrap();
+/// assert_eq!(got.duration, Duration::new(36 * 60 * 60 + 1, 100_000_000));
+///
+/// let expected = r#"{"duration":"36:00:01.100"}"#;
+/// assert_eq!(serde_json::to_string(&got).unwrap(), expected);
+///
+/// fn custom_friendly<S: serde::Serializer>(
+///     duration: &Duration,
+///     se: S,
+/// ) -> Result<S::Ok, S::Error> {
+///     struct Custom<'a>(&'a Duration);
+///
+///     impl<'a> std::fmt::Display for Custom<'a> {
+///         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+///             use jiff::fmt::{friendly::SpanPrinter, StdFmtWrite};
+///
+///             static PRINTER: SpanPrinter = SpanPrinter::new()
+///                 .hours_minutes_seconds(true)
+///                 .precision(Some(3));
+///
+///             PRINTER
+///                 .print_unsigned_duration(self.0, StdFmtWrite(f))
+///                 .map_err(|_| core::fmt::Error)
+///         }
+///     }
+///
+///     se.collect_str(&Custom(duration))
+/// }
+/// ```
+pub mod unsigned_duration {
+    /// (De)serialize a `std::time::Duration`
+    /// in the [`friendly`](crate::fmt::friendly) duration format.
+    ///
+    /// Note that these will still deserialize ISO 8601 duration strings.
+    /// The main feature of this module is that serialization will use the
+    /// friendly format instead of the ISO 8601 format.
+    pub mod friendly {
+        /// (De)serialize a `std::time::Duration`
+        /// in the [`friendly`](crate::fmt::friendly) duration format using
+        /// compact designators.
+        ///
+        /// Note that these will still deserialize ISO 8601 duration strings.
+        /// The main feature of this module is that serialization will use the
+        /// friendly format instead of the ISO 8601 format.
+        pub mod compact {
+            /// (De)serialize a required `std::time::Duration`
+            /// in the [`friendly`](crate::fmt::friendly) duration format using
+            /// compact designators.
+            ///
+            /// Note that this will still deserialize ISO 8601 duration
+            /// strings. The main feature of this module is that serialization
+            /// will use the friendly format instead of the ISO 8601 format.
+            ///
+            /// This is meant to be used with Serde's `with` attribute.
+            pub mod required {
+                /// Serialize a required "friendly" duration from a
+                /// [`std::time::Duration`].
+                #[inline]
+                pub fn serialize<S: serde_core::Serializer>(
+                    duration: &core::time::Duration,
+                    se: S,
+                ) -> Result<S::Ok, S::Error> {
+                    se.collect_str(&super::DisplayFriendlyCompact(duration))
+                }
+
+                /// Deserialize a required ISO 8601 or friendly duration from a
+                /// [`std::time::Duration`].
+                #[inline]
+                pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
+                    de: D,
+                ) -> Result<core::time::Duration, D::Error> {
+                    super::super::super::required::deserialize(de)
+                }
+            }
+
+            /// (De)serialize an optional `std::time::Duration`
+            /// in the [`friendly`](crate::fmt::friendly) duration format using
+            /// compact designators.
+            ///
+            /// Note that this will still deserialize ISO 8601 duration
+            /// strings. The main feature of this module is that serialization
+            /// will use the friendly format instead of the ISO 8601 format.
+            ///
+            /// This is meant to be used with Serde's `with` attribute.
+            pub mod optional {
+                /// Serialize an optional "friendly" duration from a
+                /// [`std::time::Duration`].
+                #[inline]
+                pub fn serialize<S: serde_core::Serializer>(
+                    duration: &Option<core::time::Duration>,
+                    se: S,
+                ) -> Result<S::Ok, S::Error> {
+                    match *duration {
+                        None => se.serialize_none(),
+                        Some(ref duration) => {
+                            super::required::serialize(duration, se)
+                        }
+                    }
+                }
+
+                /// Deserialize a required ISO 8601 or friendly duration from a
+                /// [`std::time::Duration`].
+                #[inline]
+                pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
+                    de: D,
+                ) -> Result<Option<core::time::Duration>, D::Error>
+                {
+                    super::super::super::optional::deserialize(de)
+                }
+            }
+
+            /// A helper for printing a `std::time::Duration` in the friendly
+            /// format using compact unit designators.
+            struct DisplayFriendlyCompact<'a>(&'a core::time::Duration);
+
+            impl<'a> core::fmt::Display for DisplayFriendlyCompact<'a> {
+                fn fmt(
+                    &self,
+                    f: &mut core::fmt::Formatter,
+                ) -> core::fmt::Result {
+                    use crate::fmt::{
+                        friendly::{Designator, SpanPrinter},
+                        StdFmtWrite,
+                    };
+
+                    static PRINTER: SpanPrinter =
+                        SpanPrinter::new().designator(Designator::Compact);
+                    PRINTER
+                        .print_unsigned_duration(self.0, StdFmtWrite(f))
+                        .map_err(|_| core::fmt::Error)
+                }
+            }
+        }
+    }
+
+    /// (De)serialize a required ISO 8601 or friendly duration from a
+    /// [`std::time::Duration`].
+    ///
+    /// This is meant to be used with Serde's `with` attribute.
+    pub mod required {
+        pub(super) struct Visitor;
+
+        impl<'de> serde_core::de::Visitor<'de> for Visitor {
+            type Value = core::time::Duration;
+
+            fn expecting(
+                &self,
+                f: &mut core::fmt::Formatter,
+            ) -> core::fmt::Result {
+                f.write_str("an unsigned duration string")
+            }
+
+            #[inline]
+            fn visit_bytes<E: serde_core::de::Error>(
+                self,
+                value: &[u8],
+            ) -> Result<core::time::Duration, E> {
+                super::parse_iso_or_friendly(value)
+                    .map_err(serde_core::de::Error::custom)
+            }
+
+            #[inline]
+            fn visit_str<E: serde_core::de::Error>(
+                self,
+                value: &str,
+            ) -> Result<core::time::Duration, E> {
+                self.visit_bytes(value.as_bytes())
+            }
+        }
+
+        /// Serialize a required ISO 8601 duration from a
+        /// [`std::time::Duration`].
+        #[inline]
+        pub fn serialize<S: serde_core::Serializer>(
+            duration: &core::time::Duration,
+            se: S,
+        ) -> Result<S::Ok, S::Error> {
+            se.collect_str(&super::DisplayISO8601(duration))
+        }
+
+        /// Deserialize a required ISO 8601 or friendly duration from a
+        /// [`std::time::Duration`].
+        #[inline]
+        pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
+            de: D,
+        ) -> Result<core::time::Duration, D::Error> {
+            de.deserialize_str(Visitor)
+        }
+    }
+
+    /// (De)serialize an optional ISO 8601 or friendly duration from a
+    /// [`std::time::Duration`].
+    ///
+    /// This is meant to be used with Serde's `with` attribute.
+    pub mod optional {
+        struct Visitor<V>(V);
+
+        impl<
+                'de,
+                V: serde_core::de::Visitor<'de, Value = core::time::Duration>,
+            > serde_core::de::Visitor<'de> for Visitor<V>
+        {
+            type Value = Option<core::time::Duration>;
+
+            fn expecting(
+                &self,
+                f: &mut core::fmt::Formatter,
+            ) -> core::fmt::Result {
+                f.write_str("an unsigned duration string")
+            }
+
+            #[inline]
+            fn visit_some<D: serde_core::de::Deserializer<'de>>(
+                self,
+                de: D,
+            ) -> Result<Option<core::time::Duration>, D::Error> {
+                de.deserialize_str(self.0).map(Some)
+            }
+
+            #[inline]
+            fn visit_none<E: serde_core::de::Error>(
+                self,
+            ) -> Result<Option<core::time::Duration>, E> {
+                Ok(None)
+            }
+        }
+
+        /// Serialize an optional ISO 8601 duration from a
+        /// [`std::time::Duration`].
+        #[inline]
+        pub fn serialize<S: serde_core::Serializer>(
+            duration: &Option<core::time::Duration>,
+            se: S,
+        ) -> Result<S::Ok, S::Error> {
+            match *duration {
+                None => se.serialize_none(),
+                Some(ref duration) => super::required::serialize(duration, se),
+            }
+        }
+
+        /// Deserialize an optional ISO 8601 or friendly duration from a
+        /// [`std::time::Duration`].
+        #[inline]
+        pub fn deserialize<'de, D: serde_core::Deserializer<'de>>(
+            de: D,
+        ) -> Result<Option<core::time::Duration>, D::Error> {
+            de.deserialize_option(Visitor(super::required::Visitor))
+        }
+    }
+
+    /// A helper for printing a `std::time::Duration` in ISO 8601 format.
+    struct DisplayISO8601<'a>(&'a core::time::Duration);
+
+    impl<'a> core::fmt::Display for DisplayISO8601<'a> {
+        fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+            use crate::fmt::temporal::SpanPrinter;
+
+            static PRINTER: SpanPrinter = SpanPrinter::new();
+            PRINTER
+                .print_unsigned_duration(self.0, crate::fmt::StdFmtWrite(f))
+                .map_err(|_| core::fmt::Error)
+        }
+    }
+
+    /// A common parsing function that works in bytes.
+    ///
+    /// Specifically, this parses either an ISO 8601 duration into
+    /// a `std::time::Duration` or a "friendly" duration into a
+    /// `std::time::Duration`. It also tries to give decent error messages.
+    ///
+    /// This works because the friendly and ISO 8601 formats have
+    /// non-overlapping prefixes. Both can start with a `+` or `-`, but aside
+    /// from that, an ISO 8601 duration _always_ has to start with a `P` or
+    /// `p`. We can utilize this property to very quickly determine how to
+    /// parse the input. We just need to handle the possibly ambiguous case
+    /// with a leading sign a little carefully in order to ensure good error
+    /// messages.
+    ///
+    /// (We do the same thing for `Span` and `SignedDuration`.)
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_iso_or_friendly(
+        bytes: &[u8],
+    ) -> Result<core::time::Duration, crate::Error> {
+        if bytes.is_empty() {
+            return Err(crate::error::err!(
+                "an empty string is not a valid `std::time::Duration`, \
+                 expected either a ISO 8601 or Jiff's 'friendly' \
+                 format",
+            ));
+        }
+        let mut first = bytes[0];
+        // N.B. Unsigned durations don't support negative durations (of
+        // course), but we still check for it here so that we can defer to
+        // the dedicated parsers. They will provide their own error messages.
+        if first == b'+' || first == b'-' {
+            if bytes.len() == 1 {
+                return Err(crate::error::err!(
+                    "found nothing after sign `{sign}`, \
+                     which is not a valid `std::time::Duration`, \
+                     expected either a ISO 8601 or Jiff's 'friendly' \
+                     format",
+                    sign = crate::util::escape::Byte(first),
+                ));
+            }
+            first = bytes[1];
+        }
+        let dur = if first == b'P' || first == b'p' {
+            crate::fmt::temporal::DEFAULT_SPAN_PARSER
+                .parse_unsigned_duration(bytes)
+        } else {
+            crate::fmt::friendly::DEFAULT_SPAN_PARSER
+                .parse_unsigned_duration(bytes)
+        }?;
+        Ok(dur)
     }
 }
 
@@ -1287,6 +1817,7 @@ mod tests {
     use crate::{
         span::span_eq, SignedDuration, Span, SpanFieldwise, Timestamp, ToSpan,
     };
+    use core::time::Duration as UnsignedDuration;
 
     #[test]
     fn duration_friendly_compact_required() {
@@ -1328,6 +1859,97 @@ mod tests {
 
         let expected = r#"{"duration":"36h 1s 100ms"}"#;
         assert_eq!(serde_json::to_string(&got).unwrap(), expected);
+    }
+
+    #[test]
+    fn unsigned_duration_required() {
+        #[derive(Debug, serde::Deserialize, serde::Serialize)]
+        struct Data {
+            #[serde(with = "crate::fmt::serde::unsigned_duration::required")]
+            duration: UnsignedDuration,
+        }
+
+        let json = r#"{"duration":"PT36H1.1S"}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            got.duration,
+            UnsignedDuration::new(36 * 60 * 60 + 1, 100_000_000)
+        );
+        assert_eq!(serde_json::to_string(&got).unwrap(), json);
+
+        // Check that we can parse a number of seconds that exceeds
+        // `i64::MAX`. In this case, precisely `u64::MAX`.
+        let json = r#"{"duration":"PT18446744073709551615S"}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            got.duration,
+            UnsignedDuration::new(18446744073709551615, 0)
+        );
+        // Printing ISO 8601 durations balances up to hours, so
+        // it won't match the one we parsed. But the actual duration
+        // value is equivalent.
+        let expected = r#"{"duration":"PT5124095576030431H15S"}"#;
+        assert_eq!(serde_json::to_string(&got).unwrap(), expected);
+    }
+
+    #[test]
+    fn unsigned_duration_optional() {
+        #[derive(Debug, serde::Deserialize, serde::Serialize)]
+        struct Data {
+            #[serde(with = "crate::fmt::serde::unsigned_duration::optional")]
+            duration: Option<UnsignedDuration>,
+        }
+
+        let json = r#"{"duration":"PT36H1.1S"}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            got.duration,
+            Some(UnsignedDuration::new(36 * 60 * 60 + 1, 100_000_000))
+        );
+        assert_eq!(serde_json::to_string(&got).unwrap(), json);
+
+        let json = r#"{"duration":null}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(got.duration, None,);
+        assert_eq!(serde_json::to_string(&got).unwrap(), json);
+    }
+
+    #[test]
+    fn unsigned_duration_compact_required() {
+        #[derive(Debug, serde::Deserialize, serde::Serialize)]
+        struct Data {
+            #[serde(
+                with = "crate::fmt::serde::unsigned_duration::friendly::compact::required"
+            )]
+            duration: UnsignedDuration,
+        }
+
+        let json = r#"{"duration":"36h 1s 100ms"}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            got.duration,
+            UnsignedDuration::new(36 * 60 * 60 + 1, 100_000_000)
+        );
+        assert_eq!(serde_json::to_string(&got).unwrap(), json);
+    }
+
+    #[test]
+    fn unsigned_duration_compact_optional() {
+        #[derive(Debug, serde::Deserialize, serde::Serialize)]
+        struct Data {
+            #[serde(
+                with = "crate::fmt::serde::unsigned_duration::friendly::compact::optional"
+            )]
+            duration: Option<UnsignedDuration>,
+        }
+
+        let json = r#"{"duration":"36h 1s 100ms"}"#;
+        let got: Data = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            got.duration,
+            Some(UnsignedDuration::new(36 * 60 * 60 + 1, 100_000_000))
+        );
+        assert_eq!(serde_json::to_string(&got).unwrap(), json);
     }
 
     #[test]

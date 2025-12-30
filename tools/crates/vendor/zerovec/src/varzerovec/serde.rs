@@ -4,17 +4,24 @@
 
 use super::{VarZeroSlice, VarZeroVec, VarZeroVecFormat};
 use crate::ule::*;
+#[cfg(feature = "alloc")]
 use alloc::boxed::Box;
+#[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 use core::fmt;
 use core::marker::PhantomData;
-use serde::de::{self, Deserialize, Deserializer, SeqAccess, Visitor};
-#[cfg(feature = "serde")]
+#[cfg(feature = "alloc")]
+use serde::de::SeqAccess;
+use serde::de::{self, Deserialize, Deserializer, Visitor};
 use serde::ser::{Serialize, SerializeSeq, Serializer};
 
 struct VarZeroVecVisitor<T: ?Sized, F: VarZeroVecFormat> {
-    #[allow(clippy::type_complexity)] // this is a private marker type, who cares
-    marker: PhantomData<(fn() -> Box<T>, F)>,
+    marker: PhantomData<(fn() -> T, F)>,
+}
+
+#[cfg(feature = "alloc")]
+struct VarZeroVecHumanVisitor<T: ?Sized, F: VarZeroVecFormat> {
+    marker: PhantomData<(fn() -> T, F)>,
 }
 
 impl<T: ?Sized, F: VarZeroVecFormat> Default for VarZeroVecVisitor<T, F> {
@@ -25,10 +32,18 @@ impl<T: ?Sized, F: VarZeroVecFormat> Default for VarZeroVecVisitor<T, F> {
     }
 }
 
+#[cfg(feature = "alloc")]
+impl<T: ?Sized, F: VarZeroVecFormat> Default for VarZeroVecHumanVisitor<T, F> {
+    fn default() -> Self {
+        Self {
+            marker: PhantomData,
+        }
+    }
+}
+
 impl<'de, T, F> Visitor<'de> for VarZeroVecVisitor<T, F>
 where
     T: VarULE + ?Sized,
-    Box<T>: Deserialize<'de>,
     F: VarZeroVecFormat,
 {
     type Value = VarZeroVec<'de, T, F>;
@@ -41,7 +56,21 @@ where
     where
         E: de::Error,
     {
-        VarZeroVec::parse_byte_slice(bytes).map_err(de::Error::custom)
+        VarZeroVec::parse_bytes(bytes).map_err(de::Error::custom)
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl<'de, T, F> Visitor<'de> for VarZeroVecHumanVisitor<T, F>
+where
+    T: VarULE + ?Sized,
+    Box<T>: Deserialize<'de>,
+    F: VarZeroVecFormat,
+{
+    type Value = VarZeroVec<'de, T, F>;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a sequence or borrowed buffer of bytes")
     }
 
     fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
@@ -61,6 +90,7 @@ where
 }
 
 /// This impl requires enabling the optional `serde` Cargo feature of the `zerovec` crate
+#[cfg(feature = "alloc")]
 impl<'de, 'a, T, F> Deserialize<'de> for VarZeroVec<'a, T, F>
 where
     T: VarULE + ?Sized,
@@ -72,12 +102,27 @@ where
     where
         D: Deserializer<'de>,
     {
-        let visitor = VarZeroVecVisitor::<T, F>::default();
         if deserializer.is_human_readable() {
-            deserializer.deserialize_seq(visitor)
+            deserializer.deserialize_seq(VarZeroVecHumanVisitor::<T, F>::default())
         } else {
-            deserializer.deserialize_bytes(visitor)
+            deserializer.deserialize_bytes(VarZeroVecVisitor::<T, F>::default())
         }
+    }
+}
+
+/// This impl requires enabling the optional `serde` Cargo feature of the `zerovec` crate
+#[cfg(not(feature = "alloc"))]
+impl<'de, 'a, T, F> Deserialize<'de> for VarZeroVec<'a, T, F>
+where
+    T: VarULE + ?Sized,
+    F: VarZeroVecFormat,
+    'de: 'a,
+{
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_bytes(VarZeroVecVisitor::<T, F>::default())
     }
 }
 
@@ -85,7 +130,6 @@ where
 impl<'de, 'a, T, F> Deserialize<'de> for &'a VarZeroSlice<T, F>
 where
     T: VarULE + ?Sized,
-    Box<T>: Deserialize<'de>,
     F: VarZeroVecFormat,
     'de: 'a,
 {
@@ -98,20 +142,14 @@ where
                 "&VarZeroSlice cannot be deserialized from human-readable formats",
             ))
         } else {
-            let deserialized = VarZeroVec::<'a, T, F>::deserialize(deserializer)?;
-            let borrowed = if let VarZeroVec::Borrowed(b) = deserialized {
-                b
-            } else {
-                return Err(de::Error::custom(
-                    "&VarZeroSlice can only deserialize in zero-copy ways",
-                ));
-            };
-            Ok(borrowed)
+            let bytes = <&[u8]>::deserialize(deserializer)?;
+            VarZeroSlice::<T, F>::parse_bytes(bytes).map_err(de::Error::custom)
         }
     }
 }
 
 /// This impl requires enabling the optional `serde` Cargo feature of the `zerovec` crate
+#[cfg(feature = "alloc")]
 impl<'de, T, F> Deserialize<'de> for Box<VarZeroSlice<T, F>>
 where
     T: VarULE + ?Sized,
@@ -171,18 +209,30 @@ mod test {
     use crate::{VarZeroSlice, VarZeroVec};
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_VarZeroVec<'data> {
         #[serde(borrow)]
         _data: VarZeroVec<'data, str>,
     }
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_VarZeroSlice<'data> {
         #[serde(borrow)]
         _data: &'data VarZeroSlice<str>,
     }
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_VarZeroVec_of_VarZeroSlice<'data> {
         #[serde(borrow)]
         _data: VarZeroVec<'data, VarZeroSlice<str>>,
@@ -190,25 +240,24 @@ mod test {
 
     // ["foo", "bar", "baz", "dolor", "quux", "lorem ipsum"];
     const BYTES: &[u8] = &[
-        6, 0, 0, 0, 0, 0, 3, 0, 6, 0, 9, 0, 14, 0, 18, 0, 102, 111, 111, 98, 97, 114, 98, 97, 122,
-        100, 111, 108, 111, 114, 113, 117, 117, 120, 108, 111, 114, 101, 109, 32, 105, 112, 115,
-        117, 109,
+        6, 0, 3, 0, 6, 0, 9, 0, 14, 0, 18, 0, 102, 111, 111, 98, 97, 114, 98, 97, 122, 100, 111,
+        108, 111, 114, 113, 117, 117, 120, 108, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109,
     ];
     const JSON_STR: &str = "[\"foo\",\"bar\",\"baz\",\"dolor\",\"quux\",\"lorem ipsum\"]";
     const BINCODE_BUF: &[u8] = &[
-        45, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 3, 0, 6, 0, 9, 0, 14, 0, 18, 0, 102, 111, 111,
-        98, 97, 114, 98, 97, 122, 100, 111, 108, 111, 114, 113, 117, 117, 120, 108, 111, 114, 101,
-        109, 32, 105, 112, 115, 117, 109,
+        41, 0, 0, 0, 0, 0, 0, 0, 6, 0, 3, 0, 6, 0, 9, 0, 14, 0, 18, 0, 102, 111, 111, 98, 97, 114,
+        98, 97, 122, 100, 111, 108, 111, 114, 113, 117, 117, 120, 108, 111, 114, 101, 109, 32, 105,
+        112, 115, 117, 109,
     ];
 
     // ["w", "ω", "文", "𑄃"]
     const NONASCII_STR: &[&str] = &["w", "ω", "文", "𑄃"];
     const NONASCII_BYTES: &[u8] = &[
-        4, 0, 0, 0, 0, 0, 1, 0, 3, 0, 6, 0, 119, 207, 137, 230, 150, 135, 240, 145, 132, 131,
+        4, 0, 1, 0, 3, 0, 6, 0, 119, 207, 137, 230, 150, 135, 240, 145, 132, 131,
     ];
     #[test]
     fn test_serde_json() {
-        let zerovec_orig: VarZeroVec<str> = VarZeroVec::parse_byte_slice(BYTES).expect("parse");
+        let zerovec_orig: VarZeroVec<str> = VarZeroVec::parse_bytes(BYTES).expect("parse");
         let json_str = serde_json::to_string(&zerovec_orig).expect("serialize");
         assert_eq!(JSON_STR, json_str);
         // VarZeroVec should deserialize from JSON to either Vec or VarZeroVec
@@ -223,7 +272,7 @@ mod test {
 
     #[test]
     fn test_serde_bincode() {
-        let zerovec_orig: VarZeroVec<str> = VarZeroVec::parse_byte_slice(BYTES).expect("parse");
+        let zerovec_orig: VarZeroVec<str> = VarZeroVec::parse_bytes(BYTES).expect("parse");
         let bincode_buf = bincode::serialize(&zerovec_orig).expect("serialize");
         assert_eq!(BINCODE_BUF, bincode_buf);
         let zerovec_new: VarZeroVec<str> =
@@ -234,8 +283,7 @@ mod test {
 
     #[test]
     fn test_vzv_borrowed() {
-        let zerovec_orig: &VarZeroSlice<str> =
-            VarZeroSlice::parse_byte_slice(BYTES).expect("parse");
+        let zerovec_orig: &VarZeroSlice<str> = VarZeroSlice::parse_bytes(BYTES).expect("parse");
         let bincode_buf = bincode::serialize(&zerovec_orig).expect("serialize");
         assert_eq!(BINCODE_BUF, bincode_buf);
         let zerovec_new: &VarZeroSlice<str> =
@@ -250,8 +298,7 @@ mod test {
             .copied()
             .map(Box::<str>::from)
             .collect::<Vec<_>>();
-        let mut zerovec: VarZeroVec<str> =
-            VarZeroVec::parse_byte_slice(NONASCII_BYTES).expect("parse");
+        let mut zerovec: VarZeroVec<str> = VarZeroVec::parse_bytes(NONASCII_BYTES).expect("parse");
         assert_eq!(zerovec.to_vec(), src_vec);
         let bincode_buf = bincode::serialize(&zerovec).expect("serialize");
         let zerovec_result =

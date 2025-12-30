@@ -130,7 +130,6 @@ where
 
 impl<A: Array> Default for TinyVec<A> {
   #[inline]
-  #[must_use]
   fn default() -> Self {
     TinyVec::Inline(ArrayVec::default())
   }
@@ -159,7 +158,6 @@ impl<A: Array> DerefMut for TinyVec<A> {
 impl<A: Array, I: SliceIndex<[A::Item]>> Index<I> for TinyVec<A> {
   type Output = <I as SliceIndex<[A::Item]>>::Output;
   #[inline(always)]
-  #[must_use]
   fn index(&self, index: I) -> &Self::Output {
     &self.deref()[index]
   }
@@ -167,7 +165,6 @@ impl<A: Array, I: SliceIndex<[A::Item]>> Index<I> for TinyVec<A> {
 
 impl<A: Array, I: SliceIndex<[A::Item]>> IndexMut<I> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn index_mut(&mut self, index: I) -> &mut Self::Output {
     &mut self.deref_mut()[index]
   }
@@ -194,7 +191,6 @@ impl<A: Array> Serialize for TinyVec<A>
 where
   A::Item: Serialize,
 {
-  #[must_use]
   fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
   where
     S: Serializer,
@@ -218,6 +214,47 @@ where
     D: Deserializer<'de>,
   {
     deserializer.deserialize_seq(TinyVecVisitor(PhantomData))
+  }
+}
+
+#[cfg(feature = "borsh")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "borsh")))]
+impl<A: Array> borsh::BorshSerialize for TinyVec<A>
+where
+  <A as Array>::Item: borsh::BorshSerialize,
+{
+  fn serialize<W: borsh::io::Write>(
+    &self, writer: &mut W,
+  ) -> borsh::io::Result<()> {
+    <usize as borsh::BorshSerialize>::serialize(&self.len(), writer)?;
+    for elem in self.iter() {
+      <<A as Array>::Item as borsh::BorshSerialize>::serialize(elem, writer)?;
+    }
+    Ok(())
+  }
+}
+
+#[cfg(feature = "borsh")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "borsh")))]
+impl<A: Array> borsh::BorshDeserialize for TinyVec<A>
+where
+  <A as Array>::Item: borsh::BorshDeserialize,
+{
+  fn deserialize_reader<R: borsh::io::Read>(
+    reader: &mut R,
+  ) -> borsh::io::Result<Self> {
+    let len = <usize as borsh::BorshDeserialize>::deserialize_reader(reader)?;
+    let mut new_tinyvec = Self::with_capacity(len);
+
+    for _ in 0..len {
+      new_tinyvec.push(
+        <<A as Array>::Item as borsh::BorshDeserialize>::deserialize_reader(
+          reader,
+        )?,
+      )
+    }
+
+    Ok(new_tinyvec)
   }
 }
 
@@ -316,6 +353,7 @@ impl<A: Array> TinyVec<A> {
   /// assert_eq!(Ok(()), tv.try_move_to_the_heap());
   /// assert!(tv.is_heap());
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_move_to_the_heap(&mut self) -> Result<(), TryReserveError> {
     let arr = match self {
@@ -364,6 +402,7 @@ impl<A: Array> TinyVec<A> {
   /// assert!(tv.is_heap());
   /// assert!(tv.capacity() >= 35);
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_move_to_the_heap_and_reserve(
     &mut self, n: usize,
@@ -419,6 +458,7 @@ impl<A: Array> TinyVec<A> {
   /// assert!(tv.is_heap());
   /// assert!(tv.capacity() >= 5);
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_reserve(&mut self, n: usize) -> Result<(), TryReserveError> {
     let arr = match self {
@@ -489,6 +529,7 @@ impl<A: Array> TinyVec<A> {
   /// assert!(tv.is_heap());
   /// assert!(tv.capacity() >= 5);
   /// ```
+  #[inline]
   #[cfg(feature = "rustc_1_57")]
   pub fn try_reserve_exact(&mut self, n: usize) -> Result<(), TryReserveError> {
     let arr = match self {
@@ -527,6 +568,65 @@ impl<A: Array> TinyVec<A> {
     } else {
       TinyVec::Heap(Vec::with_capacity(cap))
     }
+  }
+
+  /// Converts a `TinyVec<[T; N]>` into a `Box<[T]>`.
+  ///
+  /// - For `TinyVec::Heap(Vec<T>)`, it takes the `Vec<T>` and converts it into
+  ///   a `Box<[T]>` without heap reallocation.
+  /// - For `TinyVec::Inline(inner_data)`, it first converts the `inner_data` to
+  ///   `Vec<T>`, then into a `Box<[T]>`. Requiring only a single heap
+  ///   allocation.
+  ///
+  /// ## Example
+  ///
+  /// ```
+  /// use core::mem::size_of_val as mem_size_of;
+  /// use tinyvec::TinyVec;
+  ///
+  /// // Initialize TinyVec with 256 elements (exceeding inline capacity)
+  /// let v: TinyVec<[_; 128]> = (0u8..=255).collect();
+  ///
+  /// assert!(v.is_heap());
+  /// assert_eq!(mem_size_of(&v), 136); // mem size of TinyVec<[u8; N]>: N+8
+  /// assert_eq!(v.len(), 256);
+  ///
+  /// let boxed = v.into_boxed_slice();
+  /// assert_eq!(mem_size_of(&boxed), 16); // mem size of Box<[u8]>: 16 bytes (fat pointer)
+  /// assert_eq!(boxed.len(), 256);
+  /// ```
+  #[inline]
+  #[must_use]
+  pub fn into_boxed_slice(self) -> alloc::boxed::Box<[A::Item]> {
+    self.into_vec().into_boxed_slice()
+  }
+
+  /// Converts a `TinyVec<[T; N]>` into a `Vec<T>`.
+  ///
+  /// `v.into_vec()` is equivalent to `Into::<Vec<_>>::into(v)`.
+  ///
+  /// - For `TinyVec::Inline(_)`, `.into_vec()` **does not** offer a performance
+  ///   advantage over `.to_vec()`.
+  /// - For `TinyVec::Heap(vec_data)`, `.into_vec()` will take `vec_data`
+  ///   without heap reallocation.
+  ///
+  /// ## Example
+  ///
+  /// ```
+  /// use tinyvec::TinyVec;
+  ///
+  /// let v = TinyVec::from([0u8; 8]);
+  /// let v2 = v.clone();
+  ///
+  /// let vec = v.into_vec();
+  /// let vec2: Vec<_> = v2.into();
+  ///
+  /// assert_eq!(vec, vec2);
+  /// ```
+  #[inline]
+  #[must_use]
+  pub fn into_vec(self) -> Vec<A::Item> {
+    self.into()
   }
 }
 
@@ -1222,7 +1322,6 @@ impl<'p, A: Array, I: Iterator<Item = A::Item>> Drop
 
 impl<A: Array> AsMut<[A::Item]> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn as_mut(&mut self) -> &mut [A::Item] {
     &mut *self
   }
@@ -1230,7 +1329,6 @@ impl<A: Array> AsMut<[A::Item]> for TinyVec<A> {
 
 impl<A: Array> AsRef<[A::Item]> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn as_ref(&self) -> &[A::Item] {
     &*self
   }
@@ -1238,7 +1336,6 @@ impl<A: Array> AsRef<[A::Item]> for TinyVec<A> {
 
 impl<A: Array> Borrow<[A::Item]> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn borrow(&self) -> &[A::Item] {
     &*self
   }
@@ -1246,7 +1343,6 @@ impl<A: Array> Borrow<[A::Item]> for TinyVec<A> {
 
 impl<A: Array> BorrowMut<[A::Item]> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn borrow_mut(&mut self) -> &mut [A::Item] {
     &mut *self
   }
@@ -1281,7 +1377,6 @@ impl<A: Array> Extend<A::Item> for TinyVec<A> {
 
 impl<A: Array> From<ArrayVec<A>> for TinyVec<A> {
   #[inline(always)]
-  #[must_use]
   fn from(arr: ArrayVec<A>) -> Self {
     TinyVec::Inline(arr)
   }
@@ -1300,7 +1395,6 @@ where
   A: Array<Item = T>,
 {
   #[inline]
-  #[must_use]
   fn from(slice: &[T]) -> Self {
     if let Ok(arr) = ArrayVec::try_from(slice) {
       TinyVec::Inline(arr)
@@ -1316,7 +1410,6 @@ where
   A: Array<Item = T>,
 {
   #[inline]
-  #[must_use]
   fn from(slice: &mut [T]) -> Self {
     Self::from(&*slice)
   }
@@ -1324,11 +1417,64 @@ where
 
 impl<A: Array> FromIterator<A::Item> for TinyVec<A> {
   #[inline]
-  #[must_use]
   fn from_iter<T: IntoIterator<Item = A::Item>>(iter: T) -> Self {
     let mut av = Self::default();
     av.extend(iter);
     av
+  }
+}
+
+impl<A: Array> Into<Vec<A::Item>> for TinyVec<A> {
+  /// Converts a `TinyVec` into a `Vec`.
+  ///
+  /// ## Examples
+  ///
+  /// ### Inline to Vec
+  ///
+  /// For `TinyVec::Inline(_)`,
+  ///   `.into()` **does not** offer a performance advantage over `.to_vec()`.
+  ///
+  /// ```
+  /// use core::mem::size_of_val as mem_size_of;
+  /// use tinyvec::TinyVec;
+  ///
+  /// let v = TinyVec::from([0u8; 128]);
+  /// assert_eq!(mem_size_of(&v), 136);
+  ///
+  /// let vec: Vec<_> = v.into();
+  /// assert_eq!(mem_size_of(&vec), 24);
+  /// ```
+  ///
+  /// ### Heap into Vec
+  ///
+  /// For `TinyVec::Heap(vec_data)`,
+  ///   `.into()` will take `vec_data` without heap reallocation.
+  ///
+  /// ```
+  /// use core::{
+  ///   any::type_name_of_val as type_of, mem::size_of_val as mem_size_of,
+  /// };
+  /// use tinyvec::TinyVec;
+  ///
+  /// const fn from_heap<T: Default>(owned: Vec<T>) -> TinyVec<[T; 1]> {
+  ///   TinyVec::Heap(owned)
+  /// }
+  ///
+  /// let v = from_heap(vec![0u8; 128]);
+  /// assert_eq!(v.len(), 128);
+  /// assert_eq!(mem_size_of(&v), 24);
+  /// assert!(type_of(&v).ends_with("TinyVec<[u8; 1]>"));
+  ///
+  /// let vec: Vec<_> = v.into();
+  /// assert_eq!(mem_size_of(&vec), 24);
+  /// assert!(type_of(&vec).ends_with("Vec<u8>"));
+  /// ```
+  #[inline]
+  fn into(self) -> Vec<A::Item> {
+    match self {
+      Self::Heap(inner) => inner,
+      Self::Inline(mut inner) => inner.drain_to_vec(),
+    }
   }
 }
 
@@ -1411,7 +1557,6 @@ impl<A: Array> IntoIterator for TinyVec<A> {
   type Item = A::Item;
   type IntoIter = TinyVecIterator<A>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     match self {
       TinyVec::Inline(a) => TinyVecIterator::Inline(a.into_iter()),
@@ -1424,7 +1569,6 @@ impl<'a, A: Array> IntoIterator for &'a mut TinyVec<A> {
   type Item = &'a mut A::Item;
   type IntoIter = core::slice::IterMut<'a, A::Item>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     self.iter_mut()
   }
@@ -1434,7 +1578,6 @@ impl<'a, A: Array> IntoIterator for &'a TinyVec<A> {
   type Item = &'a A::Item;
   type IntoIter = core::slice::Iter<'a, A::Item>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     self.iter()
   }
@@ -1445,7 +1588,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &Self) -> bool {
     self.as_slice().eq(other.as_slice())
   }
@@ -1457,7 +1599,6 @@ where
   A::Item: PartialOrd,
 {
   #[inline]
-  #[must_use]
   fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
     self.as_slice().partial_cmp(other.as_slice())
   }
@@ -1467,7 +1608,6 @@ where
   A::Item: Ord,
 {
   #[inline]
-  #[must_use]
   fn cmp(&self, other: &Self) -> core::cmp::Ordering {
     self.as_slice().cmp(other.as_slice())
   }
@@ -1478,7 +1618,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &&A) -> bool {
     self.as_slice().eq(other.as_slice())
   }
@@ -1489,7 +1628,6 @@ where
   A::Item: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &&[A::Item]) -> bool {
     self.as_slice().eq(*other)
   }

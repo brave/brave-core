@@ -5,8 +5,8 @@
 //! ## Lock-free readers
 //!
 //! All the read operations are always [lock-free]. Most of the time, they are actually
-//! [wait-free]. They are [lock-free] from time to time, with at least `usize::MAX / 4` accesses
-//! that are [wait-free] in between.
+//! [wait-free]. They may wait from time to time, with at least `usize::MAX / 4` [wait-free]
+//! accesses in between waits.
 //!
 //! Writers are [lock-free].
 //!
@@ -33,7 +33,7 @@
 //! There are some (very unscientific) [benchmarks] within the source code of the library, and the
 //! [`DefaultStrategy`][crate::DefaultStrategy] has some numbers measured on my computer.
 //!
-//! The exact numbers are highly dependant on the machine used (both absolute numbers and relative
+//! The exact numbers are highly dependent on the machine used (both absolute numbers and relative
 //! between different data structures). Not only architectures have a huge impact (eg. x86 vs ARM),
 //! but even AMD vs. Intel or two different Intel processors. Therefore, if what matters is more
 //! the speed than the wait-free guarantees, you're advised to do your own measurements.
@@ -82,6 +82,6 @@
 //! [`Arc`]: std::sync::Arc
 //! [`Mutex`]: std::sync::Mutex
 //! [`RwLock`]: std::sync::RwLock
-//! [benchmarks]: https://github.com/vorner/arc-swap/tree/master/benchmarks
+//! [benchmarks]: https://github.com/vorner/arc-swap/tree/master/benches
 //! [lock-free]: https://en.wikipedia.org/wiki/Non-blocking_algorithm#Lock-freedom
 //! [wait-free]: https://en.wikipedia.org/wiki/Non-blocking_algorithm#Wait-freedom

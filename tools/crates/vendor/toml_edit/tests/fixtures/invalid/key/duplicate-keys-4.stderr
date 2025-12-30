@@ -1,5 +1,0 @@
-TOML parse error at line 2, column 1
-  |
-2 | 'spelling' = "favourite"
-  | ^
-duplicate key `spelling` in document root

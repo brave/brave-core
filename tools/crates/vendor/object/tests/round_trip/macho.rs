@@ -37,12 +37,12 @@ fn issue_552_section_file_alignment() {
     // Length of 32 ensures that the file offset of the end of this section is still not a
     // multiple of 32.
     let section = object.add_section(vec![], vec![], object::SectionKind::ReadOnlyDataWithRel);
-    object.append_section_data(section, &vec![0u8; 32], 1);
+    object.append_section_data(section, &[0u8; 32], 1);
 
     // Address is already aligned correctly, so there must not any padding,
     // even though file offset is not aligned.
     let section = object.add_section(vec![], vec![], object::SectionKind::ReadOnlyData);
-    object.append_section_data(section, &vec![0u8; 1], 32);
+    object.append_section_data(section, &[0u8; 1], 32);
 
     let bytes = &*object.write().unwrap();
     //std::fs::write(&"align.o", &bytes).unwrap();

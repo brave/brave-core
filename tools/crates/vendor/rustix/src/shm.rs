@@ -1,6 +1,6 @@
 //! POSIX shared memory
 //!
-//! # Example
+//! # Examples
 //!
 //! ```
 //! use rustix::fs::{ftruncate, Mode};
@@ -59,15 +59,6 @@ use crate::{backend, io, path};
 use super::shm;
 pub use crate::backend::fs::types::Mode;
 pub use crate::backend::shm::types::ShmOFlags as OFlags;
-#[deprecated(note = "Use `shm::OFlags`.")]
-#[doc(hidden)]
-pub use crate::backend::shm::types::ShmOFlags;
-#[deprecated(note = "Use `shm::open`.")]
-#[doc(hidden)]
-pub use open as shm_open;
-#[deprecated(note = "Use `shm::unlink`.")]
-#[doc(hidden)]
-pub use unlink as shm_unlink;
 
 /// `shm_open(name, oflags, mode)`—Opens a shared memory object.
 ///

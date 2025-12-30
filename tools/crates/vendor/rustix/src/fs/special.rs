@@ -27,6 +27,7 @@ use backend::fd::{BorrowedFd, RawFd};
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/fcntl.h.html
 // SAFETY: `AT_FDCWD` is a reserved value that is never dynamically
 // allocated, so it'll remain valid for the duration of `'static`.
+#[cfg(not(target_os = "horizon"))]
 #[doc(alias = "AT_FDCWD")]
 pub const CWD: BorrowedFd<'static> =
     unsafe { BorrowedFd::<'static>::borrow_raw(c::AT_FDCWD as RawFd) };
@@ -38,8 +39,8 @@ pub const CWD: BorrowedFd<'static> =
 /// causes them to fail with [`BADF`] if the accompanying path is not absolute.
 ///
 /// This corresponds to the undocumented by commonly used convention of
-/// passing `-EBADF` as the `dirfd` argument, which is ignored if the path
-/// is absolute, and evokes an `EBADF` error otherwise.
+/// passing `-EBADF` as the `dirfd` argument, which is ignored if the path is
+/// absolute, and evokes an `EBADF` error otherwise.
 ///
 /// [`openat`]: crate::fs::openat
 /// [`BADF`]: crate::io::Errno::BADF
@@ -51,14 +52,17 @@ pub const ABS: BorrowedFd<'static> =
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::fd::AsRawFd;
+    use crate::fd::AsRawFd as _;
 
     #[test]
     fn test_cwd() {
         assert!(CWD.as_raw_fd() != -1);
+        assert!(CWD.as_raw_fd() != c::STDIN_FILENO);
+        assert!(CWD.as_raw_fd() != c::STDOUT_FILENO);
+        assert!(CWD.as_raw_fd() != c::STDERR_FILENO);
         #[cfg(linux_kernel)]
         #[cfg(feature = "io_uring")]
-        assert!(CWD.as_raw_fd() != linux_raw_sys::io_uring::IORING_REGISTER_FILES_SKIP);
+        assert!(CWD.as_raw_fd() != crate::io_uring::IORING_REGISTER_FILES_SKIP.as_raw_fd());
     }
 
     #[test]
@@ -66,8 +70,11 @@ mod tests {
         assert!(ABS.as_raw_fd() < 0);
         assert!(ABS.as_raw_fd() != -1);
         assert!(ABS.as_raw_fd() != c::AT_FDCWD);
+        assert!(ABS.as_raw_fd() != c::STDIN_FILENO);
+        assert!(ABS.as_raw_fd() != c::STDOUT_FILENO);
+        assert!(ABS.as_raw_fd() != c::STDERR_FILENO);
         #[cfg(linux_kernel)]
         #[cfg(feature = "io_uring")]
-        assert!(ABS.as_raw_fd() != linux_raw_sys::io_uring::IORING_REGISTER_FILES_SKIP);
+        assert!(ABS.as_raw_fd() != crate::io_uring::IORING_REGISTER_FILES_SKIP.as_raw_fd());
     }
 }

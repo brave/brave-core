@@ -16,7 +16,10 @@ use windows_sys::Win32::{
     Foundation::{ERROR_SUCCESS, FARPROC, NTSTATUS, STATUS_SUCCESS},
     System::{
         LibraryLoader::{GetModuleHandleA, GetProcAddress},
-        Registry::{RegOpenKeyExW, RegQueryValueExW, HKEY_LOCAL_MACHINE, KEY_READ, REG_SZ},
+        Registry::{
+            RegCloseKey, RegOpenKeyExW, RegQueryValueExW, HKEY, HKEY_LOCAL_MACHINE, KEY_READ,
+            REG_SZ,
+        },
         SystemInformation::{
             GetNativeSystemInfo, GetSystemInfo, PROCESSOR_ARCHITECTURE_AMD64,
             PROCESSOR_ARCHITECTURE_ARM, PROCESSOR_ARCHITECTURE_IA64, PROCESSOR_ARCHITECTURE_INTEL,
@@ -30,10 +33,22 @@ use windows_sys::Win32::{
 use crate::{Bitness, Info, Type, Version};
 
 #[cfg(target_arch = "x86")]
+#[allow(clippy::upper_case_acronyms)]
 type OSVERSIONINFOEX = windows_sys::Win32::System::SystemInformation::OSVERSIONINFOEXA;
 
 #[cfg(not(target_arch = "x86"))]
+#[allow(clippy::upper_case_acronyms)]
 type OSVERSIONINFOEX = windows_sys::Win32::System::SystemInformation::OSVERSIONINFOEXW;
+
+struct HKeyWrapper(HKEY);
+
+impl Drop for HKeyWrapper {
+    fn drop(&mut self) {
+        if !self.0.is_null() {
+            unsafe { RegCloseKey(self.0) };
+        }
+    }
+}
 
 pub fn get() -> Info {
     let (version, edition) = version();
@@ -98,7 +113,8 @@ fn bitness() -> Bitness {
 
 #[cfg(target_pointer_width = "32")]
 fn bitness() -> Bitness {
-    use windows_sys::Win32::Foundation::{BOOL, FALSE, HANDLE};
+    use windows_sys::core::BOOL;
+    use windows_sys::Win32::Foundation::{FALSE, HANDLE};
     use windows_sys::Win32::System::Threading::GetCurrentProcess;
 
     // IsWow64Process is not available on all supported versions of Windows. Use GetModuleHandle to
@@ -128,10 +144,7 @@ fn bitness() -> Bitness {
 // Calls the Win32 API function RtlGetVersion to get the OS version information:
 // https://msdn.microsoft.com/en-us/library/mt723418(v=vs.85).aspx
 fn version_info() -> Option<OSVERSIONINFOEX> {
-    let rtl_get_version = match get_proc_address(b"ntdll\0", b"RtlGetVersion\0") {
-        None => return None,
-        Some(val) => val,
-    };
+    let rtl_get_version = get_proc_address(b"ntdll\0", b"RtlGetVersion\0")?;
 
     type RtlGetVersion = unsafe extern "system" fn(&mut OSVERSIONINFOEX) -> NTSTATUS;
     let rtl_get_version: RtlGetVersion = unsafe { mem::transmute(rtl_get_version) };
@@ -148,10 +161,17 @@ fn version_info() -> Option<OSVERSIONINFOEX> {
 
 fn product_name(info: &OSVERSIONINFOEX) -> Option<String> {
     let sub_key = to_wide("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
-    let mut key = Default::default();
-    if unsafe { RegOpenKeyExW(HKEY_LOCAL_MACHINE, sub_key.as_ptr(), 0, KEY_READ, &mut key) }
-        != ERROR_SUCCESS
-        || key == 0
+    let mut key = HKeyWrapper(ptr::null_mut());
+    if unsafe {
+        RegOpenKeyExW(
+            HKEY_LOCAL_MACHINE,
+            sub_key.as_ptr(),
+            0,
+            KEY_READ,
+            &mut key.0,
+        )
+    } != ERROR_SUCCESS
+        || key.0.is_null()
     {
         log::error!("RegOpenKeyExW(HKEY_LOCAL_MACHINE, ...) failed");
         return None;
@@ -169,7 +189,7 @@ fn product_name(info: &OSVERSIONINFOEX) -> Option<String> {
     let mut data_size = 0;
     if unsafe {
         RegQueryValueExW(
-            key,
+            key.0,
             name.as_ptr(),
             ptr::null_mut(),
             &mut data_type,
@@ -189,7 +209,7 @@ fn product_name(info: &OSVERSIONINFOEX) -> Option<String> {
     let mut data = vec![0u16; data_size as usize / 2];
     if unsafe {
         RegQueryValueExW(
-            key,
+            key.0,
             name.as_ptr(),
             ptr::null_mut(),
             ptr::null_mut(),
@@ -204,11 +224,8 @@ fn product_name(info: &OSVERSIONINFOEX) -> Option<String> {
 
     // If the data has the REG_SZ, REG_MULTI_SZ or REG_EXPAND_SZ type, the string may not have been
     // stored with the proper terminating null characters.
-    match data.last() {
-        Some(0) => {
-            data.pop();
-        }
-        _ => {}
+    if let Some(0) = data.last() {
+        data.pop();
     }
 
     let value = OsString::from_wide(data.as_slice())
@@ -288,7 +305,7 @@ fn get_proc_address(module: &[u8], proc: &[u8]) -> Option<FARPROC> {
     );
 
     let handle = unsafe { GetModuleHandleA(module.as_ptr()) };
-    if handle == 0 {
+    if handle.is_null() {
         log::error!(
             "GetModuleHandleA({}) failed",
             String::from_utf8_lossy(module)

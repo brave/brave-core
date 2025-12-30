@@ -1,5 +1,6 @@
 use crate::{
     error::Error,
+    shared::util::itime::IWeekday,
     util::{
         rangeint::{RFrom, RInto},
         t::{self, C},
@@ -563,6 +564,20 @@ impl Weekday {
     }
 
     #[inline]
+    pub(crate) fn from_iweekday(iweekday: IWeekday) -> Weekday {
+        match iweekday.to_monday_one_offset() {
+            1 => Weekday::Monday,
+            2 => Weekday::Tuesday,
+            3 => Weekday::Wednesday,
+            4 => Weekday::Thursday,
+            5 => Weekday::Friday,
+            6 => Weekday::Saturday,
+            7 => Weekday::Sunday,
+            _ => unreachable!(),
+        }
+    }
+
+    #[inline]
     pub(crate) fn to_monday_zero_offset_ranged(self) -> t::WeekdayZero {
         (self.to_monday_one_offset_ranged() - C(1)).rinto()
     }
@@ -580,6 +595,11 @@ impl Weekday {
     #[inline]
     pub(crate) fn to_sunday_one_offset_ranged(self) -> t::WeekdayOne {
         (self.to_sunday_zero_offset_ranged() + C(1)).rinto()
+    }
+
+    #[inline]
+    pub(crate) fn to_iweekday(self) -> IWeekday {
+        IWeekday::from_monday_one_offset(self.to_monday_one_offset())
     }
 
     #[inline]

@@ -8,6 +8,10 @@ pub enum Error {
     EmptyChoose,
     /// There was not enough underlying data to fulfill some request for raw
     /// bytes.
+    ///
+    /// Note that outside of [`Unstructured::bytes`][crate::Unstructured::bytes],
+    /// most APIs do *not* return this error when running out of underlying arbitrary bytes
+    /// but silently return some default value instead.
     NotEnoughData,
     /// The input bytes were not of the right format
     IncorrectFormat,

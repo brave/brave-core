@@ -4,19 +4,22 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+#![allow(missing_docs)]
+
 use ring::{
     error, rand,
     signature::{self, Ed25519KeyPair, KeyPair},
-    test, test_file,
 };
+#[allow(deprecated)]
+use ring::{test, test_file};
 
 #[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
 use wasm_bindgen_test::{wasm_bindgen_test as test, wasm_bindgen_test_configure};
@@ -46,6 +49,7 @@ fn test_signature_ed25519() {
         }
 
         // Test PKCS#8 generation, parsing, and private-to-public calculations.
+        #[allow(deprecated)]
         let rng = test::rand::FixedSliceRandom { bytes: &seed };
         let pkcs8 = Ed25519KeyPair::generate_pkcs8(&rng).unwrap();
         let key_pair = Ed25519KeyPair::from_pkcs8(pkcs8.as_ref()).unwrap();
@@ -190,10 +194,10 @@ fn test_ed25519_from_pkcs8_(
 #[test]
 fn ed25519_test_generate_pkcs8() {
     let rng = rand::SystemRandom::new();
-    let generated = signature::Ed25519KeyPair::generate_pkcs8(&rng).unwrap();
+    let generated = Ed25519KeyPair::generate_pkcs8(&rng).unwrap();
     let generated = generated.as_ref();
 
-    let _ronudtripped = signature::Ed25519KeyPair::from_pkcs8(generated).unwrap();
+    let _ronudtripped = Ed25519KeyPair::from_pkcs8(generated).unwrap();
 
     // Regression test: Verify we're generating the correct encoding, as
     // `Ed25519KeyPair::from_pkcs8` also accepts our old wrong encoding.
@@ -208,7 +212,7 @@ fn ed25519_test_public_key_coverage() {
     const PUBLIC_KEY_DEBUG: &str =
         "PublicKey(\"5809e9fef6dcec58f0f2e3b0d67e9880a11957e083ace85835c3b6c8fbaf6b7d\")";
 
-    let key_pair = signature::Ed25519KeyPair::from_pkcs8(PRIVATE_KEY).unwrap();
+    let key_pair = Ed25519KeyPair::from_pkcs8(PRIVATE_KEY).unwrap();
 
     // Test `AsRef<[u8]>`
     assert_eq!(key_pair.public_key().as_ref(), PUBLIC_KEY);

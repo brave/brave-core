@@ -1,11 +1,9 @@
 //! Access Control support.
 
-use std::fmt;
-use std::ptr::{self, null};
 use crate::base::{Error, Result};
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::base::{kCFAllocatorDefault, CFOptionFlags, TCFType};
 use core_foundation::string::CFString;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use security_framework_sys::access_control::{
     kSecAttrAccessibleAfterFirstUnlock, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
     kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, kSecAttrAccessibleWhenUnlocked,
@@ -13,6 +11,8 @@ use security_framework_sys::access_control::{
     SecAccessControlGetTypeID,
 };
 use security_framework_sys::base::{errSecParam, SecAccessControlRef};
+use std::fmt;
+use std::ptr;
 
 declare_TCFType! {
     /// A type representing sec access control settings.
@@ -62,11 +62,13 @@ impl SecAccessControl {
                 ProtectionMode::AccessibleAfterFirstUnlockThisDeviceOnly => unsafe { CFString::wrap_under_get_rule(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly) },
                 ProtectionMode::AccessibleAfterFirstUnlock => unsafe { CFString::wrap_under_get_rule(kSecAttrAccessibleAfterFirstUnlock) },
             }
+        }).unwrap_or_else(|| {
+            unsafe { CFString::wrap_under_get_rule(kSecAttrAccessibleWhenUnlocked) }
         });
         unsafe {
             let access_control = SecAccessControlCreateWithFlags(
                 kCFAllocatorDefault,
-                protection_val.map(|v| v.as_CFTypeRef()).unwrap_or(null()),
+                protection_val.as_CFTypeRef(),
                 flags,
                 ptr::null_mut(),
             );

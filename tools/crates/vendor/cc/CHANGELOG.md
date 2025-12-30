@@ -1,10 +1,316 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.50](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.49...cc-v1.2.50) - 2025-12-19
+
+### Other
+
+- Add tests for `OUT_DIR` escape for '..' file paths (#1631)
+- Fix #283: Make warnings(false) actually suppress compiler warnings ([#1633](https://github.com/rust-lang/cc-rs/pull/1633))
+
+## [1.2.49](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.48...cc-v1.2.49) - 2025-12-06
+
+### Other
+
+- Fix run_output to prevent infinite blocking ([#1627](https://github.com/rust-lang/cc-rs/pull/1627))
+- Fix detect_family deadlock ([#1626](https://github.com/rust-lang/cc-rs/pull/1626))
+- Fix link in new debug_str doc comment ([#1625](https://github.com/rust-lang/cc-rs/pull/1625))
+- Support more of Cargo's debug levels with Build::debug_str ([#1624](https://github.com/rust-lang/cc-rs/pull/1624))
+
+## [1.2.48](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.47...cc-v1.2.48) - 2025-11-28
+
+### Other
+
+- Regenerate target info ([#1620](https://github.com/rust-lang/cc-rs/pull/1620))
+
+## [1.2.47](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.46...cc-v1.2.47) - 2025-11-21
+
+### Other
+
+- add helenos linker identifications ([#1615](https://github.com/rust-lang/cc-rs/pull/1615))
+
+## [1.2.46](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.45...cc-v1.2.46) - 2025-11-14
+
+### Other
+
+- Add Visual Studio 2026 support ([#1609](https://github.com/rust-lang/cc-rs/pull/1609))
+
+## [1.2.45](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.44...cc-v1.2.45) - 2025-11-07
+
+### Other
+
+- Regenerate target info ([#1606](https://github.com/rust-lang/cc-rs/pull/1606))
+- Use a default check for the "env" variable in apple_sdk_name ([#1605](https://github.com/rust-lang/cc-rs/pull/1605))
+
+## [1.2.44](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.43...cc-v1.2.44) - 2025-10-31
+
+### Other
+
+- Fix debug assertion for env/abi mismatch ([#1604](https://github.com/rust-lang/cc-rs/pull/1604))
+- Update CHANGELOG for version 1.2.43 ([#1602](https://github.com/rust-lang/cc-rs/pull/1602))
+- Stop passing an invalid target to `llvm-mingw`'s cross-compilation wrappers ([#1495](https://github.com/rust-lang/cc-rs/pull/1495))
+
+## [1.2.43](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.42...cc-v1.2.43) - 2025-10-24
+
+### Other
+
+- Mark `static_flag` and `shared_flag` as deprecated ([#1582](https://github.com/rust-lang/cc-rs/pull/1582))
+
+## [1.2.42](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.41...cc-v1.2.42) - 2025-10-24
+
+### Other
+
+- Fix check-semver-checks ([#1600](https://github.com/rust-lang/cc-rs/pull/1600))
+- minor improvement for docs ([#1598](https://github.com/rust-lang/cc-rs/pull/1598))
+- Fix linker-plugin-lto: use `-flto=thin` ([#1594](https://github.com/rust-lang/cc-rs/pull/1594))
+- Disable check-buildstd for armv7k-apple-watchos ([#1599](https://github.com/rust-lang/cc-rs/pull/1599))
+- Add elf abi to ppc64 targets ([#1596](https://github.com/rust-lang/cc-rs/pull/1596))
+
+## [1.2.41](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.40...cc-v1.2.41) - 2025-10-10
+
+### Other
+
+- Allow using VCToolsVersion to request a specific msvc version ([#1589](https://github.com/rust-lang/cc-rs/pull/1589))
+- Regenerate target info ([#1592](https://github.com/rust-lang/cc-rs/pull/1592))
+- Regenerate windows sys bindings ([#1591](https://github.com/rust-lang/cc-rs/pull/1591))
+- Update windows-bindgen requirement from 0.64 to 0.65 ([#1590](https://github.com/rust-lang/cc-rs/pull/1590))
+- Fix `get_base_archiver_variant` for clang-cl: use `--print-search-dirs` ([#1587](https://github.com/rust-lang/cc-rs/pull/1587))
+
+## [1.2.40](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.39...cc-v1.2.40) - 2025-10-03
+
+### Other
+
+- Reorder changelog and remove duplicate Unreleased section ([#1579](https://github.com/rust-lang/cc-rs/pull/1579))
+- Prefer clang if linker-plugin-lto specified ([#1573](https://github.com/rust-lang/cc-rs/pull/1573))
+- Fix building for Mac Catalyst ([#1577](https://github.com/rust-lang/cc-rs/pull/1577))
+- Improve ESP microcontroller targets ([#1574](https://github.com/rust-lang/cc-rs/pull/1574))
+
+## [1.2.39](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.38...cc-v1.2.39) - 2025-09-26
+
+### Other
+
+- Fix cross compilation to xtensa-esp32s3-espidf ([#1569](https://github.com/rust-lang/cc-rs/pull/1569))
+- Fix autodetect_wasi_compiler: support non utf-8 path ([#1568](https://github.com/rust-lang/cc-rs/pull/1568))
+- Regenerate target info ([#1567](https://github.com/rust-lang/cc-rs/pull/1567))
+- Fix rustcflags mapping: require -Clinker-plugin-lto for -flto ([#1564](https://github.com/rust-lang/cc-rs/pull/1564))
+- Use `$WASI_SDK_PATH` on WASI targets by default ([#1562](https://github.com/rust-lang/cc-rs/pull/1562))
+- Fix atomicity violations in concurrent cache operations ([#1559](https://github.com/rust-lang/cc-rs/pull/1559))
+
+## [1.2.38](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.37...cc-v1.2.38) - 2025-09-19
+
+### Other
+
+- updated the following local packages: find-msvc-tools
+
+## [1.2.37](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.36...cc-v1.2.37) - 2025-09-12
+
+### Other
+
+- Fix errmsg in RustcCodegenFlags::set_rustc_flag ([#1551](https://github.com/rust-lang/cc-rs/pull/1551))
+- propagate stack protector to Linux C compilers ([#1550](https://github.com/rust-lang/cc-rs/pull/1550))
+- Extract new fn `run_commands_in_parallel` ([#1549](https://github.com/rust-lang/cc-rs/pull/1549))
+
+## [1.2.36](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.35...cc-v1.2.36) - 2025-09-05
+
+### Other
+
+- Regenerate windows sys bindings ([#1548](https://github.com/rust-lang/cc-rs/pull/1548))
+- Update windows-bindgen requirement from 0.62 to 0.63 ([#1547](https://github.com/rust-lang/cc-rs/pull/1547))
+- Add fn get_ucrt_dir for find-msvc-tools ([#1546](https://github.com/rust-lang/cc-rs/pull/1546))
+- Regenerate target info ([#1544](https://github.com/rust-lang/cc-rs/pull/1544))
+- fix publish.yml ([#1543](https://github.com/rust-lang/cc-rs/pull/1543))
+- Replace periods with underscores as well when parsing env variables ([#1541](https://github.com/rust-lang/cc-rs/pull/1541))
+
+## [1.2.35](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.34...cc-v1.2.35) - 2025-09-01
+
+### Fixed
+
+- fix building for aarch64-apple-visionos-sim on nightly ([#1534](https://github.com/rust-lang/cc-rs/pull/1534))
+- fix tests apple_sdkroot_wrong ([#1530](https://github.com/rust-lang/cc-rs/pull/1530))
+
+### Other
+
+- Regenerate target info ([#1536](https://github.com/rust-lang/cc-rs/pull/1536))
+- Optimize Tool::to_command ([#1535](https://github.com/rust-lang/cc-rs/pull/1535))
+- Extract find-msvc-tools ([#1531](https://github.com/rust-lang/cc-rs/pull/1531))
+- Add prefer_clang_cl_over_msvc ([#1516](https://github.com/rust-lang/cc-rs/pull/1516))
+
+## [1.2.34](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.33...cc-v1.2.34) - 2025-08-22
+
+### Fixed
+
+- add `-mcpu=mvp` and `-mmutable-globals` for `wasm32v1-none` ([#1524](https://github.com/rust-lang/cc-rs/pull/1524))
+
+### Other
+
+- Optimize parse_version in find_tools.rs ([#1527](https://github.com/rust-lang/cc-rs/pull/1527))
+- Fallback to manually searching for tool dir ([#1526](https://github.com/rust-lang/cc-rs/pull/1526))
+
+## [1.2.33](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.32...cc-v1.2.33) - 2025-08-15
+
+### Other
+
+- Regenerate target info ([#1521](https://github.com/rust-lang/cc-rs/pull/1521))
+- [win][arm64ec] Add testing for Arm64EC Windows ([#1512](https://github.com/rust-lang/cc-rs/pull/1512))
+- Fix parsing of nigthly targets ([#1517](https://github.com/rust-lang/cc-rs/pull/1517))
+- [win][arm64ec] Fix finding assembler and setting is_arm for Arm64EC ([#1511](https://github.com/rust-lang/cc-rs/pull/1511))
+
+## [1.2.32](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.31...cc-v1.2.32) - 2025-08-08
+
+### Fixed
+
+- fix new clippy lint introduced in rust 1.89.0 ([#1509](https://github.com/rust-lang/cc-rs/pull/1509))
+
+### Other
+
+- clarify cargo default if no rerun emitted ([#1508](https://github.com/rust-lang/cc-rs/pull/1508))
+- extract compile_objects_sequential ([#1507](https://github.com/rust-lang/cc-rs/pull/1507))
+- Windows `find_tools`: add support for finding Clang ([#1506](https://github.com/rust-lang/cc-rs/pull/1506))
+- Add m68k-unknown-linux-gnu cross-compile target ([#1505](https://github.com/rust-lang/cc-rs/pull/1505))
+
+## [1.2.31](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.30...cc-v1.2.31) - 2025-08-01
+
+### Other
+
+- Add doc for using sccache/ccache etc ([#1502](https://github.com/rust-lang/cc-rs/pull/1502))
+- ability to statically link against C++ stdlib ([#1497](https://github.com/rust-lang/cc-rs/pull/1497))
+- Add instructions on using sccache ([#1503](https://github.com/rust-lang/cc-rs/pull/1503))
+- Add support for recognizing some architectures supported by GCC, but not LLVM. ([#1500](https://github.com/rust-lang/cc-rs/pull/1500))
+
+## [1.2.30](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.29...cc-v1.2.30) - 2025-07-18
+
+### Other
+
+- define _REENTRANT by default ([#1496](https://github.com/rust-lang/cc-rs/pull/1496))
+
+## [1.2.29](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.28...cc-v1.2.29) - 2025-07-05
+
+### Other
+
+- Fix target parsing for powerpc ([#1490](https://github.com/rust-lang/cc-rs/pull/1490))
+
+## [1.2.28](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.27...cc-v1.2.28) - 2025-07-04
+
+### Other
+
+- Recognize `mlibc` environment ([#1488](https://github.com/rust-lang/cc-rs/pull/1488))
+- Fix clippy warnings about not using variables in `format!` strings ([#1489](https://github.com/rust-lang/cc-rs/pull/1489))
+
+## [1.2.27](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.26...cc-v1.2.27) - 2025-06-13
+
+### Other
+
+- Regenerate windows sys bindings ([#1485](https://github.com/rust-lang/cc-rs/pull/1485))
+- Update windows-bindgen requirement from 0.61 to 0.62 ([#1484](https://github.com/rust-lang/cc-rs/pull/1484))
+- Regenerate target info ([#1483](https://github.com/rust-lang/cc-rs/pull/1483))
+
+## [1.2.26](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.25...cc-v1.2.26) - 2025-06-06
+
+### Other
+
+- Also set `SDKROOT` when building apple platforms ([#1475](https://github.com/rust-lang/cc-rs/pull/1475))
+- use windows 2022 in CI ([#1479](https://github.com/rust-lang/cc-rs/pull/1479))
+- Detect -Wslash-u-filename warning on clang-cl ([#1477](https://github.com/rust-lang/cc-rs/pull/1477))
+
+## [1.2.25](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.24...cc-v1.2.25) - 2025-05-30
+
+### Other
+
+- make `powerp64` use `powerpc64-linux-gnu` prefix ([#1474](https://github.com/rust-lang/cc-rs/pull/1474))
+
+## [1.2.24](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.23...cc-v1.2.24) - 2025-05-23
+
+### Other
+
+- Regenerate windows sys bindings ([#1471](https://github.com/rust-lang/cc-rs/pull/1471))
+
+## [1.2.23](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.22...cc-v1.2.23) - 2025-05-16
+
+### Other
+
+- support "vxworks" and "nto" OSes on `get_base_archiver_variant` ([#1456](https://github.com/rust-lang/cc-rs/pull/1456))
+
+## [1.2.22](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.21...cc-v1.2.22) - 2025-05-09
+
+### Other
+
+- Add `flags` method to `cc::Build` for adding multiple flags ([#1466](https://github.com/rust-lang/cc-rs/pull/1466))
+
+## [1.2.21](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.20...cc-v1.2.21) - 2025-05-02
+
+### Other
+
+- Fix wasm32-unknown-unknown by passing -c ([#1424](https://github.com/rust-lang/cc-rs/pull/1424))
+
+## [1.2.20](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.19...cc-v1.2.20) - 2025-04-25
+
+### Other
+
+- Regenerate target info ([#1461](https://github.com/rust-lang/cc-rs/pull/1461))
+- Fix parser.rs on latest rustc nightly ([#1459](https://github.com/rust-lang/cc-rs/pull/1459))
+
+## [1.2.19](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.18...cc-v1.2.19) - 2025-04-11
+
+### Other
+
+- Fix musl compilation: Add musl as a prefix fallback ([#1455](https://github.com/rust-lang/cc-rs/pull/1455))
+
+## [1.2.18](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.17...cc-v1.2.18) - 2025-04-04
+
+### Other
+
+- Regenerate target info ([#1450](https://github.com/rust-lang/cc-rs/pull/1450))
+- Use `std::thread::available_parallelism` for determining the default number of jobs ([#1447](https://github.com/rust-lang/cc-rs/pull/1447))
+- Fix mips64-openwrt-linux-musl parsing ([#1449](https://github.com/rust-lang/cc-rs/pull/1449))
+- Use compiler prefix `x86_64-linux-musl` ([#1443](https://github.com/rust-lang/cc-rs/pull/1443))
+
+## [1.2.17](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.16...cc-v1.2.17) - 2025-03-21
+
+### Other
+
+- Regenerate target info ([#1439](https://github.com/rust-lang/cc-rs/pull/1439))
+- Regenerate windows sys bindings ([#1437](https://github.com/rust-lang/cc-rs/pull/1437))
+- Fix wasm32-wali-linux-musl target parsing ([#1434](https://github.com/rust-lang/cc-rs/pull/1434))
+- Parse `rustc` target names ([#1413](https://github.com/rust-lang/cc-rs/pull/1413))
+- Regenerate target info ([#1429](https://github.com/rust-lang/cc-rs/pull/1429))
+- Added base support for `wasm32-wali-linux-musl` target ([#1373](https://github.com/rust-lang/cc-rs/pull/1373))
+
+## [1.2.16](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.15...cc-v1.2.16) - 2025-02-28
+
+### Fixed
+
+- force windows compiler to run in `out_dir` to prevent artifacts in cwd (#1415)
+
+### Other
+
+- use `/arch:SSE2` for `x86` target arch (#1425)
+- Regenerate windows-sys binding ([#1422](https://github.com/rust-lang/cc-rs/pull/1422))
+- Regenerate target info ([#1418](https://github.com/rust-lang/cc-rs/pull/1418))
+- Add LIB var when compiling flag_check (#1417)
+- Change flag ordering ([#1403](https://github.com/rust-lang/cc-rs/pull/1403))
+- Fix archiver detection for musl cross compilation ([#1404](https://github.com/rust-lang/cc-rs/pull/1404))
+
+## [1.2.15](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.14...cc-v1.2.15) - 2025-02-21
+
+### Other
+
+- Regenerate target info ([#1406](https://github.com/rust-lang/cc-rs/pull/1406))
+- Always read from all `CFLAGS`-style flags ([#1401](https://github.com/rust-lang/cc-rs/pull/1401))
+- Simplify the error output on failed `Command` invocation ([#1397](https://github.com/rust-lang/cc-rs/pull/1397))
+
+## [1.2.14](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.13...cc-v1.2.14) - 2025-02-14
+
+### Other
+
+- Regenerate target info ([#1398](https://github.com/rust-lang/cc-rs/pull/1398))
+- Add support for setting `-gdwarf-{version}` based on RUSTFLAGS ([#1395](https://github.com/rust-lang/cc-rs/pull/1395))
+- Add support for alternative network stack io-sock on QNX 7.1 aarch64 and x86_64 ([#1312](https://github.com/rust-lang/cc-rs/pull/1312))
 
 ## [1.2.13](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.12...cc-v1.2.13) - 2025-02-08
 

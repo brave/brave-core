@@ -10,18 +10,17 @@ use crate::{
         cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue},
         tree::Core,
     },
+    prelude::ObjectIdExt,
     Repository,
 };
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod pipeline {
     ///
-    #[allow(clippy::empty_docs)]
     pub mod options {
         use crate::{bstr::BString, config};
 
-        /// The error returned by [Pipeline::options()][crate::filter::Pipeline::options()].
+        /// The error returned by [Pipeline::options()](crate::filter::Pipeline::options()).
         #[derive(Debug, thiserror::Error)]
         #[allow(missing_docs)]
         pub enum Error {
@@ -40,9 +39,8 @@ pub mod pipeline {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod convert_to_git {
-        /// The error returned by [Pipeline::convert_to_git()][crate::filter::Pipeline::convert_to_git()].
+        /// The error returned by [Pipeline::convert_to_git()](crate::filter::Pipeline::convert_to_git()).
         #[derive(Debug, thiserror::Error)]
         #[allow(missing_docs)]
         pub enum Error {
@@ -54,9 +52,8 @@ pub mod pipeline {
     }
 
     ///
-    #[allow(clippy::empty_docs)]
     pub mod convert_to_worktree {
-        /// The error returned by [Pipeline::convert_to_worktree()][crate::filter::Pipeline::convert_to_worktree()].
+        /// The error returned by [Pipeline::convert_to_worktree()](crate::filter::Pipeline::convert_to_worktree()).
         #[derive(Debug, thiserror::Error)]
         #[allow(missing_docs)]
         pub enum Error {
@@ -64,6 +61,25 @@ pub mod pipeline {
             WorktreeCacheAtPath(#[from] std::io::Error),
             #[error(transparent)]
             Convert(#[from] gix_filter::pipeline::convert::to_worktree::Error),
+        }
+    }
+
+    ///
+    pub mod worktree_file_to_object {
+        use std::path::PathBuf;
+
+        /// The error returned by [Pipeline::worktree_file_to_object()](crate::filter::Pipeline::worktree_file_to_object()).
+        #[derive(Debug, thiserror::Error)]
+        #[allow(missing_docs)]
+        pub enum Error {
+            #[error("Cannot add worktree files in bare repositories")]
+            MissingWorktree,
+            #[error("Failed to perform IO for object creation for '{}'", path.display())]
+            IO { source: std::io::Error, path: PathBuf },
+            #[error(transparent)]
+            WriteBlob(#[from] crate::object::write::Error),
+            #[error(transparent)]
+            ConvertToGit(#[from] crate::filter::pipeline::convert_to_git::Error),
         }
     }
 }
@@ -74,7 +90,8 @@ pub mod pipeline {
 pub struct Pipeline<'repo> {
     inner: gix_filter::Pipeline,
     cache: gix_worktree::Stack,
-    repo: &'repo Repository,
+    /// The repository this pipeline is associated with.
+    pub repo: &'repo Repository,
 }
 
 /// Lifecycle
@@ -132,11 +149,11 @@ impl<'repo> Pipeline<'repo> {
 }
 
 /// Conversions
-impl<'repo> Pipeline<'repo> {
+impl Pipeline<'_> {
     /// Convert a `src` stream (to be found at `rela_path`, a repo-relative path) to a representation suitable for storage in `git`
     /// by using all attributes at `rela_path` and configuration of the repository to know exactly which filters apply.
     /// `index` is used in particularly rare cases where the CRLF filter in auto-mode tries to determine whether to apply itself,
-    /// and it should match the state used when [instantiating this instance][Self::new()].
+    /// and it should match the state used when [instantiating this instance](Self::new()).
     /// Note that the return-type implements [`std::io::Read`].
     pub fn convert_to_git<R>(
         &mut self,
@@ -155,7 +172,9 @@ impl<'repo> Pipeline<'repo> {
                 entry.matching_attributes(attrs);
             },
             &mut |buf| -> Result<_, gix_object::find::Error> {
-                let entry = match index.entry_by_path(gix_path::into_bstr(rela_path).as_ref()) {
+                let entry = match index
+                    .entry_by_path(gix_path::to_unix_separators_on_windows(gix_path::into_bstr(rela_path)).as_ref())
+                {
                     None => return Ok(None),
                     Some(entry) => entry,
                 };
@@ -188,6 +207,76 @@ impl<'repo> Pipeline<'repo> {
             },
             can_delay,
         )?)
+    }
+
+    /// Add the worktree file at `rela_path` to the object database and return its `(id, entry, symlink_metadata)` for use in a tree or in the index, for instance.
+    /// If `rela_path` is a directory *and* is a repository with its `HEAD` pointing to a commit, it will also be provided with the appropriate kind.
+    /// Note that this can easily lead to embedded repositories as no submodule-crosscheck is performed. Otherwise, unreadable repositories or directories
+    /// are ignored with `None` as return value.
+    ///
+    /// `index` is used in particularly rare cases where the CRLF filter in auto-mode tries to determine whether to apply itself,
+    /// and it should match the state used when [instantiating this instance](Self::new()).
+    ///
+    /// Return `Ok(None)` the file didn't exist in the worktree, or if it was of an untrackable type.
+    pub fn worktree_file_to_object(
+        &mut self,
+        rela_path: &BStr,
+        index: &gix_index::State,
+    ) -> Result<
+        Option<(gix_hash::ObjectId, gix_object::tree::EntryKind, std::fs::Metadata)>,
+        pipeline::worktree_file_to_object::Error,
+    > {
+        use pipeline::worktree_file_to_object::Error;
+
+        let rela_path_as_path = gix_path::from_bstr(rela_path);
+        let repo = self.repo;
+        let worktree_dir = repo.workdir().ok_or(Error::MissingWorktree)?;
+        let path = worktree_dir.join(&rela_path_as_path);
+        let md = match std::fs::symlink_metadata(&path) {
+            Ok(md) => md,
+            Err(err) => {
+                if gix_fs::io_err::is_not_found(err.kind(), err.raw_os_error()) {
+                    return Ok(None);
+                } else {
+                    return Err(Error::IO { source: err, path });
+                }
+            }
+        };
+        let (id, kind) = if md.is_symlink() {
+            let target = std::fs::read_link(&path).map_err(|source| Error::IO { source, path })?;
+            let id = repo.write_blob(gix_path::into_bstr(target).as_ref())?;
+            (id, gix_object::tree::EntryKind::Link)
+        } else if md.is_file() {
+            use gix_filter::pipeline::convert::ToGitOutcome;
+
+            let file = std::fs::File::open(&path).map_err(|source| Error::IO { source, path })?;
+            let file_for_git = self.convert_to_git(file, rela_path_as_path.as_ref(), index)?;
+            let id = match file_for_git {
+                ToGitOutcome::Unchanged(mut file) => repo.write_blob_stream(&mut file)?,
+                ToGitOutcome::Buffer(buf) => repo.write_blob(buf)?,
+                ToGitOutcome::Process(mut read) => repo.write_blob_stream(&mut read)?,
+            };
+
+            let kind = if gix_fs::is_executable(&md) {
+                gix_object::tree::EntryKind::BlobExecutable
+            } else {
+                gix_object::tree::EntryKind::Blob
+            };
+            (id, kind)
+        } else if md.is_dir() {
+            let Some(submodule_repo) = crate::open_opts(&path, repo.open_options().clone()).ok() else {
+                return Ok(None);
+            };
+            let Some(id) = submodule_repo.head_id().ok() else {
+                return Ok(None);
+            };
+            (id.detach().attach(repo), gix_object::tree::EntryKind::Commit)
+        } else {
+            // This is probably a type-change to something we can't track.
+            return Ok(None);
+        };
+
+        Ok(Some((id.detach(), kind, md)))
     }
 
     /// Retrieve the static context that is made available to the process filters.

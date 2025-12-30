@@ -1,7 +1,13 @@
-#![allow(clippy::needless_lifetimes, clippy::uninlined_format_args)]
+#![allow(
+    clippy::elidable_lifetime_names,
+    clippy::needless_lifetimes,
+    clippy::uninlined_format_args
+)]
 
 #[macro_use]
-mod macros;
+mod snapshot;
+
+mod debug;
 
 use proc_macro2::{Delimiter, Group, Ident, Span, TokenStream, TokenTree};
 use quote::quote;
@@ -47,8 +53,6 @@ fn test_macro_variable_attr() {
 
 #[test]
 fn test_negative_impl() {
-    // Rustc parses all of the following.
-
     #[cfg(any())]
     impl ! {}
     let tokens = quote! {
@@ -61,18 +65,11 @@ fn test_negative_impl() {
     }
     "#);
 
-    #[cfg(any())]
-    #[rustfmt::skip]
-    impl !Trait {}
     let tokens = quote! {
         impl !Trait {}
     };
-    snapshot!(tokens as Item, @r#"
-    Item::Impl {
-        generics: Generics,
-        self_ty: Type::Verbatim(`! Trait`),
-    }
-    "#);
+    let err = syn::parse2::<Item>(tokens).unwrap_err();
+    assert_eq!(err.to_string(), "inherent impls cannot be negative");
 
     #[cfg(any())]
     impl !Trait for T {}
@@ -101,19 +98,6 @@ fn test_negative_impl() {
                 ],
             },
         },
-    }
-    "#);
-
-    #[cfg(any())]
-    #[rustfmt::skip]
-    impl !! {}
-    let tokens = quote! {
-        impl !! {}
-    };
-    snapshot!(tokens as Item, @r#"
-    Item::Impl {
-        generics: Generics,
-        self_ty: Type::Verbatim(`! !`),
     }
     "#);
 }

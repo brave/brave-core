@@ -109,71 +109,52 @@ const fn uniform_block(b: u8) -> usize {
     (b as u64 *  0x01_01_01_01_01_01_01_01 /* [1_u8; 8] */) as usize
 }
 
-// A byte-wise range-check on an enire word/block,
-// ensuring all bytes in the word satisfy
-// `33 <= x <= 126 && x != '>' && x != '<'`
-// IMPORTANT: it false negatives if the block contains '?'
+// A byte-wise range-check on an entire word/block,
+// ensuring all bytes in the word satisfy `33 <= (x != 127) <= 255`
 #[inline]
 fn match_uri_char_8_swar(block: ByteBlock) -> usize {
-    // 33 <= x <= 126
+    // 33 <= (x != 127) <= 255
     const M: u8 = 0x21;
-    const N: u8 = 0x7E;
+    // uniform block full of exclamation mark (!) (33).
     const BM: usize = uniform_block(M);
-    const BN: usize = uniform_block(127 - N);
+    // uniform block full of 1.
+    const ONE: usize = uniform_block(0x01);
+    // uniform block full of DEL (127).
+    const DEL: usize = uniform_block(0x7f);
+    // uniform block full of 128.
     const M128: usize = uniform_block(128);
 
     let x = usize::from_ne_bytes(block); // Really just a transmute
     let lt = x.wrapping_sub(BM) & !x; // <= m
-    let gt = x.wrapping_add(BN) | x; // >= n
 
-    // XOR checks to catch '<' & '>' for correctness
-    //
-    // XOR can be thought of as a "distance function"
-    // (somewhat extrapolating from the `xor(x, x) = 0` identity and ∀ x != y: xor(x, y) != 0`
-    // (each u8 "xor key" providing a unique total ordering of u8)
-    // '<' and '>' have a "xor distance" of 2 (`xor('<', '>') = 2`)
-    // xor(x, '>') <= 2 => {'>', '?', '<'}
-    // xor(x, '<') <= 2 => {'<', '=', '>'}
-    //
-    // We assume P('=') > P('?'),
-    // given well/commonly-formatted URLs with querystrings contain
-    // a single '?' but possibly many '='
-    //
-    // Thus it's preferable/near-optimal to "xor distance" on '>',
-    // since we'll slowpath at most one block per URL
-    //
-    // Some rust code to sanity check this yourself:
-    // ```rs
-    // fn xordist(x: u8, n: u8) -> Vec<(char, u8)> {
-    //     (0..=255).into_iter().map(|c| (c as char, c ^ x)).filter(|(_c, y)| *y <= n).collect()
-    // }
-    // (xordist(b'<', 2), xordist(b'>', 2))
-    // ```
-    const B3: usize = uniform_block(3); // (dist <= 2) + 1 to wrap
-    const BGT: usize = uniform_block(b'>');
+    let xor_del = x ^ DEL;
+    let eq_del = xor_del.wrapping_sub(ONE) & !xor_del; // == DEL
 
-    let xgt = x ^ BGT;
-    let ltgtq = xgt.wrapping_sub(B3) & !xgt;
-
-    offsetnz((ltgtq | lt | gt) & M128)
+    offsetnz((lt | eq_del) & M128)
 }
 
 // A byte-wise range-check on an entire word/block,
-// ensuring all bytes in the word satisfy `32 <= x <= 126`
-// IMPORTANT: false negatives if obs-text is present (0x80..=0xFF)
+// ensuring all bytes in the word satisfy `32 <= (x != 127) <= 255`
 #[inline]
 fn match_header_value_char_8_swar(block: ByteBlock) -> usize {
-    // 32 <= x <= 126
+    // 32 <= (x != 127) <= 255
     const M: u8 = 0x20;
-    const N: u8 = 0x7E;
+    // uniform block full of exclamation mark (!) (33).
     const BM: usize = uniform_block(M);
-    const BN: usize = uniform_block(127 - N);
+    // uniform block full of 1.
+    const ONE: usize = uniform_block(0x01);
+    // uniform block full of DEL (127).
+    const DEL: usize = uniform_block(0x7f);
+    // uniform block full of 128.
     const M128: usize = uniform_block(128);
 
     let x = usize::from_ne_bytes(block); // Really just a transmute
     let lt = x.wrapping_sub(BM) & !x; // <= m
-    let gt = x.wrapping_add(BN) | x; // >= n
-    offsetnz((lt | gt) & M128)
+
+    let xor_del = x ^ DEL;
+    let eq_del = xor_del.wrapping_sub(ONE) & !xor_del; // == DEL
+
+    offsetnz((lt | eq_del) & M128)
 }
 
 /// Check block to find offset of first non-zero byte
@@ -202,13 +183,15 @@ fn test_is_header_value_block() {
     for b in 0..32_u8 {
         assert!(!is_header_value_block([b; BLOCK_SIZE]), "b={}", b);
     }
-    // 32..127 => true
-    for b in 32..127_u8 {
+    // 32..=126 => true
+    for b in 32..=126_u8 {
         assert!(is_header_value_block([b; BLOCK_SIZE]), "b={}", b);
     }
-    // 127..=255 => false
-    for b in 127..=255_u8 {
-        assert!(!is_header_value_block([b; BLOCK_SIZE]), "b={}", b);
+    // 127 => false
+    assert!(!is_header_value_block([b'\x7F'; BLOCK_SIZE]), "b={}", b'\x7F');
+    // 128..=255 => true
+    for b in 128..=255_u8 {
+        assert!(is_header_value_block([b; BLOCK_SIZE]), "b={}", b);
     }
 
 
@@ -228,14 +211,15 @@ fn test_is_uri_block() {
     for b in 0..33_u8 {
         assert!(!is_uri_block([b; BLOCK_SIZE]), "b={}", b);
     }
-    // 33..127 => true if b not in { '<', '?', '>' }
-    let falsy = |b| b"<?>".contains(&b);
-    for b in 33..127_u8 {
-        assert_eq!(is_uri_block([b; BLOCK_SIZE]), !falsy(b), "b={}", b);
+    // 33..=126 => true
+    for b in 33..=126_u8 {
+        assert!(is_uri_block([b; BLOCK_SIZE]), "b={}", b);
     }
-    // 127..=255 => false
-    for b in 127..=255_u8 {
-        assert!(!is_uri_block([b; BLOCK_SIZE]), "b={}", b);
+    // 127 => false
+    assert!(!is_uri_block([b'\x7F'; BLOCK_SIZE]), "b={}", b'\x7F');
+    // 128..=255 => true
+    for b in 128..=255_u8 {
+        assert!(is_uri_block([b; BLOCK_SIZE]), "b={}", b);
     }
 }
 

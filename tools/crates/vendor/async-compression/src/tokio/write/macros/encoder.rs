@@ -8,7 +8,7 @@ macro_rules! encoder {
             #[derive(Debug)]
             pub struct $name<$inner> {
                 #[pin]
-                inner: crate::tokio::write::Encoder<$inner, crate::codec::$name>,
+                inner: crate::tokio::write::Encoder<$inner, crate::codecs::$name>,
             }
         }
 
@@ -19,6 +19,14 @@ macro_rules! encoder {
                 ///
                 $($inherent_methods)*
             )*
+
+            /// Creates a new encoder with the given codec, which will take in uncompressed data and write it,
+            /// compressed, to the given stream.
+            pub fn with_codec(read: $inner, codec: crate::codecs::$name) -> $name<$inner> {
+                $name {
+                   inner: crate::tokio::write::Encoder::new(read, codec)
+                }
+            }
         }
 
         impl<$inner> $name<$inner> {
@@ -102,14 +110,12 @@ macro_rules! encoder {
         }
 
         const _: () = {
-            fn _assert() {
-                use crate::util::{_assert_send, _assert_sync};
-                use core::pin::Pin;
-                use tokio::io::AsyncWrite;
+            use crate::core::util::{_assert_send, _assert_sync};
+            use core::pin::Pin;
+            use tokio::io::AsyncWrite;
 
-                _assert_send::<$name<Pin<Box<dyn AsyncWrite + Send>>>>();
-                _assert_sync::<$name<Pin<Box<dyn AsyncWrite + Sync>>>>();
-            }
+            _assert_send::<$name<Pin<Box<dyn AsyncWrite + Send>>>>();
+            _assert_sync::<$name<Pin<Box<dyn AsyncWrite + Sync>>>>();
         };
     }
 }

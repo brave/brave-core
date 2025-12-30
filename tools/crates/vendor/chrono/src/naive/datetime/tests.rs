@@ -125,26 +125,23 @@ fn test_datetime_from_str() {
         "  +82701  -  05  -  6  T  15  :  9  : 60.898989898989   ",
     ];
     for &s in &valid {
-        eprintln!("test_parse_naivedatetime valid {:?}", s);
+        eprintln!("test_parse_naivedatetime valid {s:?}");
         let d = match s.parse::<NaiveDateTime>() {
             Ok(d) => d,
-            Err(e) => panic!("parsing `{}` has failed: {}", s, e),
+            Err(e) => panic!("parsing `{s}` has failed: {e}"),
         };
-        let s_ = format!("{:?}", d);
+        let s_ = format!("{d:?}");
         // `s` and `s_` may differ, but `s.parse()` and `s_.parse()` must be same
         let d_ = match s_.parse::<NaiveDateTime>() {
             Ok(d) => d,
             Err(e) => {
-                panic!("`{}` is parsed into `{:?}`, but reparsing that has failed: {}", s, d, e)
+                panic!("`{s}` is parsed into `{d:?}`, but reparsing that has failed: {e}")
             }
         };
         assert!(
             d == d_,
-            "`{}` is parsed into `{:?}`, but reparsed result \
-             `{:?}` does not match",
-            s,
-            d,
-            d_
+            "`{s}` is parsed into `{d:?}`, but reparsed result \
+             `{d_:?}` does not match"
         );
     }
 
@@ -175,7 +172,7 @@ fn test_datetime_from_str() {
         "+802701-123-12T12:12:12",       // out-of-bound year, invalid month
     ];
     for &s in &invalid {
-        eprintln!("test_datetime_from_str invalid {:?}", s);
+        eprintln!("test_datetime_from_str invalid {s:?}");
         assert!(s.parse::<NaiveDateTime>().is_err());
     }
 }
@@ -199,12 +196,11 @@ fn test_datetime_parse_from_str() {
         NaiveDateTime::parse_from_str("Fri, 09 Aug 2013 23:54:35 GMT", "%a, %d %b %Y %H:%M:%S GMT"),
         Ok(ymdhms(2013, 8, 9, 23, 54, 35))
     );
-    assert!(NaiveDateTime::parse_from_str(
-        "Sat, 09 Aug 2013 23:54:35 GMT",
-        "%a, %d %b %Y %H:%M:%S GMT"
-    )
-    .is_err());
-    assert!(NaiveDateTime::parse_from_str("2014-5-7 12:3456", "%Y-%m-%d %H:%M:%S").is_err());
+    assert!(
+        NaiveDateTime::parse_from_str("Sat, 09 Aug 2013 23:54:35 GMT", "%a, %d %b %Y %H:%M:%S GMT")
+            .is_err()
+    );
+    assert!(NaiveDateTime::parse_from_str("2014-5-7 Q2 12:3456", "%Y-%m-%d Q%q %H:%M:%S").is_err());
     assert!(NaiveDateTime::parse_from_str("12:34:56", "%H:%M:%S").is_err()); // insufficient
     assert_eq!(
         NaiveDateTime::parse_from_str("1441497364", "%s"),

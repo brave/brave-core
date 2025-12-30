@@ -2,7 +2,7 @@
 
 use super::date::{YEAR_MAX, YEAR_MIN};
 use crate::error::{Error, ErrorKind};
-use serde::{de::Error as DeError, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error as DeError};
 use std::{
     fmt::{self, Display},
     str::FromStr,
@@ -79,7 +79,7 @@ impl Id {
 
         self.string
             .split('-')
-            .last()
+            .next_back()
             .and_then(|s| str::parse(s).ok())
     }
 

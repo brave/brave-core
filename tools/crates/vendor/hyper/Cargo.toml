@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "hyper"
-version = "1.6.0"
+version = "1.8.1"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 build = false
 include = [
@@ -43,13 +43,6 @@ categories = [
 license = "MIT"
 repository = "https://github.com/hyperium/hyper"
 
-[package.metadata.capi.header]
-generation = false
-subdirectory = false
-
-[[package.metadata.capi.install.include.asset]]
-from = "capi/include/hyper.h"
-
 [package.metadata.docs.rs]
 features = [
     "ffi",
@@ -66,6 +59,13 @@ rustdoc-args = [
 [package.metadata.playground]
 features = ["full"]
 
+[package.metadata.capi.header]
+generation = false
+subdirectory = false
+
+[[package.metadata.capi.install.include.asset]]
+from = "capi/include/hyper.h"
+
 [features]
 capi = []
 client = [
@@ -76,7 +76,7 @@ client = [
 default = []
 ffi = [
     "dep:http-body-util",
-    "futures-util?/alloc",
+    "dep:futures-util",
 ]
 full = [
     "client",
@@ -85,14 +85,16 @@ full = [
     "server",
 ]
 http1 = [
+    "dep:atomic-waker",
     "dep:futures-channel",
-    "dep:futures-util",
+    "dep:futures-core",
     "dep:httparse",
     "dep:itoa",
+    "dep:pin-utils",
 ]
 http2 = [
     "dep:futures-channel",
-    "dep:futures-util",
+    "dep:futures-core",
     "dep:h2",
 ]
 nightly = []
@@ -107,6 +109,10 @@ tracing = ["dep:tracing"]
 name = "hyper"
 path = "src/lib.rs"
 
+[dependencies.atomic-waker]
+version = "1.1.2"
+optional = true
+
 [dependencies.bytes]
 version = "1.2"
 
@@ -114,8 +120,13 @@ version = "1.2"
 version = "0.3"
 optional = true
 
+[dependencies.futures-core]
+version = "0.3.31"
+optional = true
+
 [dependencies.futures-util]
 version = "0.3"
+features = ["alloc"]
 optional = true
 default-features = false
 
@@ -147,6 +158,10 @@ optional = true
 
 [dependencies.pin-project-lite]
 version = "0.2.4"
+optional = true
+
+[dependencies.pin-utils]
+version = "0.1"
 optional = true
 
 [dependencies.smallvec]

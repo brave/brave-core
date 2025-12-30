@@ -9,6 +9,7 @@ use crate::backend::conv::ret_usize_infallible;
 use crate::pid::{Pid, RawPid};
 
 #[inline]
+#[must_use]
 pub(crate) fn getpid() -> Pid {
     unsafe {
         let pid = ret_usize_infallible(syscall_readonly!(__NR_getpid)) as RawPid;

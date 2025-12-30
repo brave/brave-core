@@ -92,7 +92,7 @@ impl WriteColor for ColorBuffer {
             }
 
             Ok(false)
-        };
+        }
 
         if let Some(fg) = spec.fg() {
             first = write_first(first, self)?;

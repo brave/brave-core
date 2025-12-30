@@ -2,6 +2,9 @@
 // `std::env::current_exe` will return the path of *that* program, and not
 // the Rust program itself.
 
+// This behavior is only known to be supported on Linux and FreeBSD, see
+// https://mail-index.netbsd.org/tech-toolchain/2024/07/27/msg004469.html
+
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -9,6 +12,13 @@ use std::process::Command;
 mod common;
 
 fn main() {
+    if cfg!(target_os = "netbsd") {
+        // NetBSD doesn't support this silliness, so because this is an fn main test,
+        // just pass it on there. If we used ui-test or something we'd use
+        //@ ignore-netbsd
+        return;
+    }
+
     if std::env::var(VAR).is_err() {
         // the parent waits for the child; then we then handle either printing
         // "test result: ok", "test result: ignored", or panicking.

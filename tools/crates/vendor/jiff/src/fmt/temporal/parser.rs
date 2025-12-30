@@ -5,10 +5,7 @@ use crate::{
         offset::{self, ParsedOffset},
         rfc9557::{self, ParsedAnnotations},
         temporal::Pieces,
-        util::{
-            fractional_time_to_duration, fractional_time_to_span,
-            parse_temporal_fraction,
-        },
+        util::{parse_temporal_fraction, DurationUnits},
         Parsed,
     },
     span::Span,
@@ -16,7 +13,11 @@ use crate::{
         AmbiguousZoned, Disambiguation, Offset, OffsetConflict, TimeZone,
         TimeZoneDatabase,
     },
-    util::{escape, parse, t},
+    util::{
+        c::Sign,
+        escape, parse,
+        t::{self, C},
+    },
     SignedDuration, Timestamp, Unit, Zoned,
 };
 
@@ -39,7 +40,7 @@ pub(super) struct ParsedDateTime<'i> {
 }
 
 impl<'i> ParsedDateTime<'i> {
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_pieces(&self) -> Result<Pieces<'i>, Error> {
         let mut pieces = Pieces::from(self.date.date);
         if let Some(ref time) = self.time {
@@ -54,7 +55,7 @@ impl<'i> ParsedDateTime<'i> {
         Ok(pieces)
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_zoned(
         &self,
         db: &TimeZoneDatabase,
@@ -65,7 +66,7 @@ impl<'i> ParsedDateTime<'i> {
             .disambiguate(disambiguation)
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_ambiguous_zoned(
         &self,
         db: &TimeZoneDatabase,
@@ -91,6 +92,22 @@ impl<'i> ParsedDateTime<'i> {
         let Some(ref parsed_offset) = self.offset else {
             return Ok(tz.into_ambiguous_zoned(dt));
         };
+        if parsed_offset.is_zulu() {
+            // When `Z` is used, that means the offset to local time is not
+            // known. In this case, there really can't be a conflict because
+            // there is an explicit acknowledgment that the offset could be
+            // anything. So we just always accept `Z` as if it were `UTC` and
+            // respect that. If we didn't have this special check, we'd fall
+            // below and the `Z` would just be treated as `+00:00`, which would
+            // likely result in `OffsetConflict::Reject` raising an error.
+            // (Unless the actual correct offset at the time is `+00:00` for
+            // the time zone parsed.)
+            return OffsetConflict::AlwaysOffset
+                .resolve(dt, Offset::UTC, tz)
+                .with_context(|| {
+                    err!("parsing {input:?} failed", input = self.input)
+                });
+        }
         let offset = parsed_offset.to_offset()?;
         let is_equal = |parsed: Offset, candidate: Offset| {
             // If they're equal down to the second, then no amount of rounding
@@ -100,7 +117,17 @@ impl<'i> ParsedDateTime<'i> {
             }
             // If the candidate offset we're considering is a whole minute,
             // then we never need rounding.
-            if candidate.part_seconds_ranged() == 0 {
+            //
+            // Alternatively, if the parsed offset has an explicit sub-minute
+            // component (even if it's zero), we should use exact equality.
+            // (The error message for this case when "reject" offset
+            // conflict resolution is used is not the best. But this case
+            // is stupidly rare, so I'm not sure it's worth the effort to
+            // improve the error message. I'd be open to a simple patch
+            // though.)
+            if candidate.part_seconds_ranged() == C(0)
+                || parsed_offset.has_subminute()
+            {
                 return parsed == candidate;
             }
             let Ok(candidate) = candidate.round(Unit::Minute) else {
@@ -115,7 +142,7 @@ impl<'i> ParsedDateTime<'i> {
         )
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_timestamp(&self) -> Result<Timestamp, Error> {
         let time = self.time.as_ref().map(|p| p.time).ok_or_else(|| {
             err!(
@@ -142,7 +169,7 @@ impl<'i> ParsedDateTime<'i> {
         Ok(timestamp)
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_datetime(&self) -> Result<DateTime, Error> {
         if self.offset.as_ref().map_or(false, |o| o.is_zulu()) {
             return Err(err!(
@@ -154,7 +181,7 @@ impl<'i> ParsedDateTime<'i> {
         Ok(DateTime::from_parts(self.date.date, self.time()))
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_date(&self) -> Result<Date, Error> {
         if self.offset.as_ref().map_or(false, |o| o.is_zulu()) {
             return Err(err!(
@@ -166,7 +193,7 @@ impl<'i> ParsedDateTime<'i> {
         Ok(self.date.date)
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn time(&self) -> Time {
         self.time.as_ref().map(|p| p.time).unwrap_or(Time::midnight())
     }
@@ -235,7 +262,7 @@ pub(super) enum ParsedTimeZoneKind<'i> {
     Named(&'i str),
     Offset(ParsedOffset),
     #[cfg(feature = "alloc")]
-    Posix(crate::tz::posix::ReasonablePosixTimeZone),
+    Posix(crate::tz::posix::PosixTimeZoneOwned),
 }
 
 impl<'i> ParsedTimeZone<'i> {
@@ -267,7 +294,7 @@ impl<'i> ParsedTimeZone<'i> {
             }
             #[cfg(feature = "alloc")]
             ParsedTimeZoneKind::Posix(posix_tz) => {
-                Ok(TimeZone::from_reasonable_posix_tz(posix_tz))
+                Ok(TimeZone::from_posix_tz(posix_tz))
             }
         }
     }
@@ -296,7 +323,7 @@ impl DateTimeParser {
     // DateTime :::
     //   Date
     //   Date DateTimeSeparator TimeSpec DateTimeUTCOffset[opt]
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn parse_temporal_datetime<'i>(
         &self,
         input: &'i [u8],
@@ -354,7 +381,7 @@ impl DateTimeParser {
     //
     // TimeDesignator ::: one of
     //   T t
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn parse_temporal_time<'i>(
         &self,
         mut input: &'i [u8],
@@ -444,7 +471,7 @@ impl DateTimeParser {
         Ok(Parsed { value: time, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn parse_time_zone<'i>(
         &self,
         mut input: &'i [u8],
@@ -480,7 +507,7 @@ impl DateTimeParser {
             Ok(Parsed { value, input: remaining })
         };
         // This part get tricky. The common case is absolutely an IANA time
-        // zone identifer. So we try to parse something that looks like an IANA
+        // zone identifier. So we try to parse something that looks like an IANA
         // tz id.
         //
         // In theory, IANA tz ids can never be valid POSIX TZ strings, since
@@ -514,16 +541,19 @@ impl DateTimeParser {
         }
         #[cfg(feature = "alloc")]
         {
-            match crate::tz::posix::IanaTz::parse_v3plus_prefix(consumed) {
-                Ok((iana_tz, input)) => {
-                    let kind = ParsedTimeZoneKind::Posix(iana_tz.into_tz());
+            use crate::tz::posix::PosixTimeZone;
+
+            match PosixTimeZone::parse_prefix(consumed) {
+                Ok((posix_tz, input)) => {
+                    let kind = ParsedTimeZoneKind::Posix(posix_tz);
                     let value = ParsedTimeZone { input: original, kind };
                     Ok(Parsed { value, input })
                 }
-                // We get here for invalid POSIX tz strings, or even if they
-                // are valid but not "reasonable", i.e., `EST5EDT`. Which in
-                // that case would end up doing an IANA tz lookup. (And it
-                // might hit because `EST5EDT` is a legacy IANA tz id. Lol.)
+                // We get here for invalid POSIX tz strings, or even if
+                // they are technically valid according to POSIX but not
+                // "reasonable", i.e., `EST5EDT`. Which in that case would
+                // end up doing an IANA tz lookup. (And it might hit because
+                // `EST5EDT` is a legacy IANA tz id. Lol.)
                 Err(_) => mknamed(consumed, input),
             }
         }
@@ -532,7 +562,7 @@ impl DateTimeParser {
     // Date :::
     //   DateYear - DateMonth - DateDay
     //   DateYear DateMonth DateDay
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_date_spec<'i>(
         &self,
         input: &'i [u8],
@@ -582,7 +612,7 @@ impl DateTimeParser {
     //   TimeHour TimeMinute
     //   TimeHour : TimeMinute : TimeSecond TimeFraction[opt]
     //   TimeHour TimeMinute TimeSecond TimeFraction[opt]
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_time_spec<'i>(
         &self,
         input: &'i [u8],
@@ -654,7 +684,11 @@ impl DateTimeParser {
             hour,
             minute,
             second,
-            nanosecond.unwrap_or(t::SubsecNanosecond::N::<0>()),
+            // OK because `parse_temporal_fraction` guarantees
+            // `0..=999_999_999`.
+            nanosecond
+                .map(|n| t::SubsecNanosecond::new(n).unwrap())
+                .unwrap_or(t::SubsecNanosecond::N::<0>()),
         );
         let value = ParsedTime {
             input: escape::Bytes(mkslice(input)),
@@ -676,7 +710,7 @@ impl DateTimeParser {
     //
     // NOTE: Jiff doesn't have a "month-day" type, but we still have a parsing
     // function for it so that we can detect ambiguous time strings.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_month_day<'i>(
         &self,
         input: &'i [u8],
@@ -719,7 +753,7 @@ impl DateTimeParser {
     //
     // NOTE: Jiff doesn't have a "year-month" type, but we still have a parsing
     // function for it so that we can detect ambiguous time strings.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_year_month<'i>(
         &self,
         input: &'i [u8],
@@ -765,11 +799,15 @@ impl DateTimeParser {
     // sticking with the Temporal spec. But I may loosen this in the future. We
     // should be careful not to introduce any possible ambiguities, though, I
     // don't think there are any?
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_year<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, t::Year>, Error> {
+        // TODO: We could probably decrease the codegen for this function,
+        // or at least make it tighter, by putting the code for signed years
+        // behind an unlineable function.
+
         let Parsed { value: sign, input } = self.parse_year_sign(input);
         if let Some(sign) = sign {
             let (year, input) = parse::split(input, 6).ok_or_else(|| {
@@ -786,13 +824,13 @@ impl DateTimeParser {
             })?;
             let year =
                 t::Year::try_new("year", year).context("year is not valid")?;
-            if year == 0 && sign < 0 {
+            if year == C(0) && sign.is_negative() {
                 return Err(err!(
                     "year zero must be written without a sign or a \
                      positive sign, but not a negative sign",
                 ));
             }
-            Ok(Parsed { value: year * sign, input })
+            Ok(Parsed { value: year * sign.as_ranged_integer(), input })
         } else {
             let (year, input) = parse::split(input, 4).ok_or_else(|| {
                 err!(
@@ -817,7 +855,7 @@ impl DateTimeParser {
     //   10
     //   11
     //   12
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_month<'i>(
         &self,
         input: &'i [u8],
@@ -842,7 +880,7 @@ impl DateTimeParser {
     //   2 DecimalDigit
     //   30
     //   31
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_day<'i>(
         &self,
         input: &'i [u8],
@@ -870,7 +908,7 @@ impl DateTimeParser {
     //   21
     //   22
     //   23
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_hour<'i>(
         &self,
         input: &'i [u8],
@@ -899,7 +937,7 @@ impl DateTimeParser {
     //   3 DecimalDigit
     //   4 DecimalDigit
     //   5 DecimalDigit
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_minute<'i>(
         &self,
         input: &'i [u8],
@@ -929,7 +967,7 @@ impl DateTimeParser {
     //   3 DecimalDigit
     //   4 DecimalDigit
     //   5 DecimalDigit
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_second<'i>(
         &self,
         input: &'i [u8],
@@ -953,7 +991,7 @@ impl DateTimeParser {
         Ok(Parsed { value: second, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_offset<'i>(
         &self,
         input: &'i [u8],
@@ -963,12 +1001,16 @@ impl DateTimeParser {
         P.parse_optional(input)
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_annotations<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ParsedAnnotations<'i>>, Error> {
         const P: rfc9557::Parser = rfc9557::Parser::new();
+        if input.is_empty() || input[0] != b'[' {
+            let value = ParsedAnnotations::none();
+            return Ok(Parsed { input, value });
+        }
         P.parse(input)
     }
 
@@ -977,7 +1019,7 @@ impl DateTimeParser {
     ///
     /// When in extended mode, a `-` is expected. When not in extended mode,
     /// no input is consumed and this routine never fails.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_date_separator<'i>(
         &self,
         mut input: &'i [u8],
@@ -1019,7 +1061,7 @@ impl DateTimeParser {
     ///
     /// When in basic mode (not extended), then a subsequent component is only
     /// expected when `input` begins with two ASCII digits.
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_time_separator<'i>(
         &self,
         mut input: &'i [u8],
@@ -1049,18 +1091,18 @@ impl DateTimeParser {
     // require it?[1]
     //
     // [1]: https://github.com/tc39/proposal-temporal/issues/2843
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_year_sign<'i>(
         &self,
         mut input: &'i [u8],
-    ) -> Parsed<'i, Option<t::Sign>> {
+    ) -> Parsed<'i, Option<Sign>> {
         let Some(sign) = input.get(0).copied() else {
             return Parsed { value: None, input };
         };
         let sign = if sign == b'+' {
-            t::Sign::N::<1>()
+            Sign::Positive
         } else if sign == b'-' {
-            t::Sign::N::<-1>()
+            Sign::Negative
         } else {
             return Parsed { value: None, input };
         };
@@ -1084,100 +1126,158 @@ impl SpanParser {
         SpanParser { _priv: () }
     }
 
-    #[inline(always)]
-    pub(super) fn parse_temporal_duration<'i>(
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    pub(super) fn parse_span<I: AsRef<[u8]>>(
         &self,
-        input: &'i [u8],
-    ) -> Result<Parsed<'i, Span>, Error> {
-        self.parse_span(input).context(
-            "failed to parse ISO 8601 \
-             duration string into `Span`",
-        )
+        input: I,
+    ) -> Result<Span, Error> {
+        #[inline(never)]
+        fn imp(p: &SpanParser, input: &[u8]) -> Result<Span, Error> {
+            let mut builder = DurationUnits::default();
+            let parsed = p.parse_calendar_and_time(input, &mut builder)?;
+            let parsed = parsed.and_then(|_| builder.to_span())?;
+            parsed.into_full()
+        }
+
+        let input = input.as_ref();
+        imp(self, input).with_context(|| {
+            err!(
+                "failed to parse {input:?} as an ISO 8601 duration string",
+                input = escape::Bytes(input)
+            )
+        })
     }
 
-    #[inline(always)]
-    pub(super) fn parse_signed_duration<'i>(
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    pub(super) fn parse_signed_duration<I: AsRef<[u8]>>(
         &self,
-        input: &'i [u8],
-    ) -> Result<Parsed<'i, SignedDuration>, Error> {
-        self.parse_duration(input).context(
-            "failed to parse ISO 8601 \
-             duration string into `SignedDuration`",
-        )
+        input: I,
+    ) -> Result<SignedDuration, Error> {
+        #[inline(never)]
+        fn imp(p: &SpanParser, input: &[u8]) -> Result<SignedDuration, Error> {
+            let mut builder = DurationUnits::default();
+            let parsed = p.parse_time_only(input, &mut builder)?;
+            let parsed = parsed.and_then(|_| builder.to_signed_duration())?;
+            parsed.into_full()
+        }
+
+        let input = input.as_ref();
+        imp(self, input).with_context(|| {
+            err!(
+                "failed to parse {input:?} as an ISO 8601 duration string",
+                input = escape::Bytes(input)
+            )
+        })
     }
 
-    #[inline(always)]
-    fn parse_span<'i>(
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    pub(super) fn parse_unsigned_duration<I: AsRef<[u8]>>(
+        &self,
+        input: I,
+    ) -> Result<core::time::Duration, Error> {
+        #[inline(never)]
+        fn imp(
+            p: &SpanParser,
+            input: &[u8],
+        ) -> Result<core::time::Duration, Error> {
+            let mut builder = DurationUnits::default();
+            let parsed = p.parse_time_only(input, &mut builder)?;
+            let parsed =
+                parsed.and_then(|_| builder.to_unsigned_duration())?;
+            let d = parsed.value;
+            parsed.into_full_with(format_args!("{d:?}"))
+        }
+
+        let input = input.as_ref();
+        imp(self, input).with_context(|| {
+            err!(
+                "failed to parse {input:?} as an ISO 8601 duration string",
+                input = escape::Bytes(input)
+            )
+        })
+    }
+
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_calendar_and_time<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, Span>, Error> {
+        builder: &mut DurationUnits,
+    ) -> Result<Parsed<'i, ()>, Error> {
         let original = escape::Bytes(input);
-        let Parsed { value: sign, input } = self.parse_sign(input);
+        let (sign, input) =
+            if !input.first().map_or(false, |&b| matches!(b, b'+' | b'-')) {
+                (Sign::Positive, input)
+            } else {
+                let Parsed { value: sign, input } = self.parse_sign(input);
+                (sign, input)
+            };
         let Parsed { input, .. } = self.parse_duration_designator(input)?;
-        let Parsed { value: (mut span, parsed_any_date), input } =
-            self.parse_date_units(input, Span::new())?;
+
+        let Parsed { input, .. } = self.parse_date_units(input, builder)?;
         let Parsed { value: has_time, mut input } =
             self.parse_time_designator(input);
         if has_time {
-            let parsed = self.parse_time_units(input, span)?;
+            let parsed = self.parse_time_units(input, builder)?;
             input = parsed.input;
 
-            let (time_span, parsed_any_time) = parsed.value;
-            if !parsed_any_time {
+            if builder.get_min().map_or(true, |min| min > Unit::Hour) {
                 return Err(err!(
                     "found a time designator (T or t) in an ISO 8601 \
                      duration string in {original:?}, but did not find \
                      any time units",
                 ));
             }
-            span = time_span;
-        } else if !parsed_any_date {
-            return Err(err!(
-                "found the start of a ISO 8601 duration string \
-                 in {original:?}, but did not find any units",
-            ));
         }
-        if sign < 0 {
-            span = span.negate();
-        }
-        Ok(Parsed { value: span, input })
+        builder.set_sign(sign);
+        Ok(Parsed { value: (), input })
     }
 
-    #[inline(always)]
-    fn parse_duration<'i>(
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_time_only<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, SignedDuration>, Error> {
-        let Parsed { value: sign, input } = self.parse_sign(input);
+        builder: &mut DurationUnits,
+    ) -> Result<Parsed<'i, ()>, Error> {
+        let original = escape::Bytes(input);
+        let (sign, input) =
+            if !input.first().map_or(false, |&b| matches!(b, b'+' | b'-')) {
+                (Sign::Positive, input)
+            } else {
+                let Parsed { value: sign, input } = self.parse_sign(input);
+                (sign, input)
+            };
         let Parsed { input, .. } = self.parse_duration_designator(input)?;
+
         let Parsed { value: has_time, input } =
             self.parse_time_designator(input);
         if !has_time {
             return Err(err!(
-                "parsing ISO 8601 duration into SignedDuration requires \
+                "parsing ISO 8601 duration into a `SignedDuration` requires \
                  that the duration contain a time component and no \
                  components of days or greater",
             ));
         }
-        let Parsed { value: dur, input } =
-            self.parse_time_units_duration(input, sign == -1)?;
-        Ok(Parsed { value: dur, input })
+
+        let Parsed { input, .. } = self.parse_time_units(input, builder)?;
+        if builder.get_min().map_or(true, |min| min > Unit::Hour) {
+            return Err(err!(
+                "found a time designator (T or t) in an ISO 8601 \
+                 duration string in {original:?}, but did not find \
+                 any time units",
+            ));
+        }
+        builder.set_sign(sign);
+        Ok(Parsed { value: (), input })
     }
 
-    /// Parses consecutive date units from an ISO 8601 duration string into the
-    /// span given.
-    ///
-    /// If 1 or more units were found, then `true` is also returned. Otherwise,
-    /// `false` indicates that no units were parsed. (Which the caller may want
-    /// to treat as an error.)
-    #[inline(always)]
+    /// Parses consecutive units from an ISO 8601 duration string into the
+    /// `DurationUnits` given.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_date_units<'i>(
         &self,
         mut input: &'i [u8],
-        mut span: Span,
-    ) -> Result<Parsed<'i, (Span, bool)>, Error> {
-        let mut parsed_any = false;
-        let mut prev_unit: Option<Unit> = None;
+        builder: &mut DurationUnits,
+    ) -> Result<Parsed<'i, ()>, Error> {
         loop {
             let parsed = self.parse_unit_value(input)?;
             input = parsed.input;
@@ -1187,44 +1287,19 @@ impl SpanParser {
             input = parsed.input;
             let unit = parsed.value;
 
-            if let Some(prev_unit) = prev_unit {
-                if prev_unit <= unit {
-                    return Err(err!(
-                        "found value {value:?} with unit {unit} \
-                         after unit {prev_unit}, but units must be \
-                         written from largest to smallest \
-                         (and they can't be repeated)",
-                        unit = unit.singular(),
-                        prev_unit = prev_unit.singular(),
-                    ));
-                }
-            }
-            prev_unit = Some(unit);
-            span = span.try_units_ranged(unit, value).with_context(|| {
-                err!(
-                    "failed to set value {value:?} as {unit} unit on span",
-                    unit = Unit::from(unit).singular(),
-                )
-            })?;
-            parsed_any = true;
+            builder.set_unit_value(unit, value)?;
         }
-        Ok(Parsed { value: (span, parsed_any), input })
+        Ok(Parsed { value: (), input })
     }
 
     /// Parses consecutive time units from an ISO 8601 duration string into the
-    /// span given.
-    ///
-    /// If 1 or more units were found, then `true` is also returned. Otherwise,
-    /// `false` indicates that no units were parsed. (Which the caller may want
-    /// to treat as an error.)
-    #[inline(always)]
+    /// `DurationUnits` given.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_time_units<'i>(
         &self,
         mut input: &'i [u8],
-        mut span: Span,
-    ) -> Result<Parsed<'i, (Span, bool)>, Error> {
-        let mut parsed_any = false;
-        let mut prev_unit: Option<Unit> = None;
+        builder: &mut DurationUnits,
+    ) -> Result<Parsed<'i, ()>, Error> {
         loop {
             let parsed = self.parse_unit_value(input)?;
             input = parsed.input;
@@ -1238,204 +1313,28 @@ impl SpanParser {
             input = parsed.input;
             let unit = parsed.value;
 
-            if let Some(prev_unit) = prev_unit {
-                if prev_unit <= unit {
-                    return Err(err!(
-                        "found value {value:?} with unit {unit} \
-                         after unit {prev_unit}, but units must be \
-                         written from largest to smallest \
-                         (and they can't be repeated)",
-                        unit = unit.singular(),
-                        prev_unit = prev_unit.singular(),
-                    ));
-                }
-            }
-            prev_unit = Some(unit);
-            parsed_any = true;
-
+            builder.set_unit_value(unit, value)?;
             if let Some(fraction) = fraction {
-                span = fractional_time_to_span(unit, value, fraction, span)?;
-                // Once we see a fraction, we are done. We don't permit parsing
-                // any more units. That is, a fraction can only occur on the
-                // lowest unit of time.
-                break;
-            } else {
-                let result =
-                    span.try_units_ranged(unit, value).with_context(|| {
-                        err!(
-                            "failed to set value {value:?} \
-                             as {unit} unit on span",
-                            unit = Unit::from(unit).singular(),
-                        )
-                    });
-                // This is annoying, but because we can write out a larger
-                // number of hours/minutes/seconds than what we actually
-                // support, we need to be prepared to parse an unbalanced span
-                // if our time units are too big here. This entire dance is
-                // because ISO 8601 requires fractional seconds to represent
-                // milli-, micro- and nano-seconds. This means that spans
-                // cannot retain their full fidelity when roundtripping through
-                // ISO 8601. However, it is guaranteed that their total elapsed
-                // time represented will never change.
-                span = match result {
-                    Ok(span) => span,
-                    Err(_) => fractional_time_to_span(
-                        unit,
-                        value,
-                        t::SubsecNanosecond::N::<0>(),
-                        span,
-                    )?,
-                };
-            }
-        }
-        Ok(Parsed { value: (span, parsed_any), input })
-    }
-
-    /// Parses consecutive time units from an ISO 8601 duration string into
-    /// a Jiff signed duration.
-    ///
-    /// If no time units are found, then this returns an error.
-    #[inline(always)]
-    fn parse_time_units_duration<'i>(
-        &self,
-        mut input: &'i [u8],
-        negative: bool,
-    ) -> Result<Parsed<'i, SignedDuration>, Error> {
-        let mut parsed_any = false;
-        let mut prev_unit: Option<Unit> = None;
-        let mut dur = SignedDuration::ZERO;
-
-        loop {
-            let parsed = self.parse_unit_value(input)?;
-            input = parsed.input;
-            let Some(value) = parsed.value else { break };
-
-            let parsed = parse_temporal_fraction(input)?;
-            input = parsed.input;
-            let fraction = parsed.value;
-
-            let parsed = self.parse_unit_time_designator(input)?;
-            input = parsed.input;
-            let unit = parsed.value;
-
-            if let Some(prev_unit) = prev_unit {
-                if prev_unit <= unit {
-                    return Err(err!(
-                        "found value {value:?} with unit {unit} \
-                         after unit {prev_unit}, but units must be \
-                         written from largest to smallest \
-                         (and they can't be repeated)",
-                        unit = unit.singular(),
-                        prev_unit = prev_unit.singular(),
-                    ));
-                }
-            }
-            prev_unit = Some(unit);
-            parsed_any = true;
-
-            // Convert our parsed unit into a number of seconds.
-            let unit_secs = match unit {
-                Unit::Second => value.get(),
-                Unit::Minute => {
-                    let mins = value.get();
-                    mins.checked_mul(60).ok_or_else(|| {
-                        err!(
-                            "minute units {mins} overflowed i64 when \
-                             converted to seconds"
-                        )
-                    })?
-                }
-                Unit::Hour => {
-                    let hours = value.get();
-                    hours.checked_mul(3_600).ok_or_else(|| {
-                        err!(
-                            "hour units {hours} overflowed i64 when \
-                             converted to seconds"
-                        )
-                    })?
-                }
-                // Guaranteed not to be here since `parse_unit_time_designator`
-                // always returns hours, minutes or seconds.
-                _ => unreachable!(),
-            };
-            // Never panics since nanos==0.
-            let unit_dur = SignedDuration::new(unit_secs, 0);
-            // And now try to add it to our existing duration.
-            let result = if negative {
-                dur.checked_sub(unit_dur)
-            } else {
-                dur.checked_add(unit_dur)
-            };
-            dur = result.ok_or_else(|| {
-                err!(
-                    "adding value {value} from unit {unit} overflowed \
-                     signed duration {dur:?}",
-                    unit = unit.singular(),
-                )
-            })?;
-
-            if let Some(fraction) = fraction {
-                let fraction_dur =
-                    fractional_time_to_duration(unit, fraction)?;
-                let result = if negative {
-                    dur.checked_sub(fraction_dur)
-                } else {
-                    dur.checked_add(fraction_dur)
-                };
-                dur = result.ok_or_else(|| {
-                    err!(
-                        "adding fractional duration {fraction_dur:?} \
-                         from unit {unit} to {dur:?} overflowed \
-                         signed duration limits",
-                        unit = unit.singular(),
-                    )
-                })?;
+                builder.set_fraction(fraction)?;
                 // Once we see a fraction, we are done. We don't permit parsing
                 // any more units. That is, a fraction can only occur on the
                 // lowest unit of time.
                 break;
             }
         }
-        if !parsed_any {
-            return Err(err!(
-                "expected at least one unit of time (hours, minutes or \
-                 seconds) in ISO 8601 duration when parsing into a \
-                 `SignedDuration`",
-            ));
-        }
-        Ok(Parsed { value: dur, input })
+        Ok(Parsed { value: (), input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_unit_value<'i>(
         &self,
-        mut input: &'i [u8],
-    ) -> Result<Parsed<'i, Option<t::NoUnits>>, Error> {
-        // Discovered via `i64::MAX.to_string().len()`.
-        const MAX_I64_DIGITS: usize = 19;
-
-        let mkdigits = parse::slicer(input);
-        while mkdigits(input).len() <= MAX_I64_DIGITS
-            && input.first().map_or(false, u8::is_ascii_digit)
-        {
-            input = &input[1..];
-        }
-        let digits = mkdigits(input);
-        if digits.is_empty() {
-            return Ok(Parsed { value: None, input });
-        }
-        let value = parse::i64(digits).with_context(|| {
-            err!(
-                "failed to parse {digits:?} as 64-bit signed integer",
-                digits = escape::Bytes(digits),
-            )
-        })?;
-        // OK because t::NoUnits permits all possible i64 values.
-        let value = t::NoUnits::new(value).unwrap();
-        Ok(Parsed { value: Some(value), input })
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, Option<u64>>, Error> {
+        let (value, input) = parse::u64_prefix(input)?;
+        Ok(Parsed { value, input })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_unit_date_designator<'i>(
         &self,
         input: &'i [u8],
@@ -1462,7 +1361,7 @@ impl SpanParser {
         Ok(Parsed { value: unit, input: &input[1..] })
     }
 
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_unit_time_designator<'i>(
         &self,
         input: &'i [u8],
@@ -1490,7 +1389,7 @@ impl SpanParser {
 
     // DurationDesignator ::: one of
     //   P p
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_duration_designator<'i>(
         &self,
         input: &'i [u8],
@@ -1513,7 +1412,7 @@ impl SpanParser {
 
     // TimeDesignator ::: one of
     //   T t
-    #[inline(always)]
+    #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_time_designator<'i>(&self, input: &'i [u8]) -> Parsed<'i, bool> {
         if input.is_empty() || !matches!(input[0], b'T' | b't') {
             return Parsed { value: false, input };
@@ -1527,359 +1426,282 @@ impl SpanParser {
     //
     // NOTE: Like with other things with signs, we don't support the Unicode
     // <MINUS> sign. Just ASCII.
-    #[inline(always)]
-    fn parse_sign<'i>(&self, input: &'i [u8]) -> Parsed<'i, t::Sign> {
+    #[cold]
+    #[inline(never)]
+    fn parse_sign<'i>(&self, input: &'i [u8]) -> Parsed<'i, Sign> {
         let Some(sign) = input.get(0).copied() else {
-            return Parsed { value: t::Sign::N::<1>(), input };
+            return Parsed { value: Sign::Positive, input };
         };
         let sign = if sign == b'+' {
-            t::Sign::N::<1>()
+            Sign::Positive
         } else if sign == b'-' {
-            t::Sign::N::<-1>()
+            Sign::Negative
         } else {
-            return Parsed { value: t::Sign::N::<1>(), input };
+            return Parsed { value: Sign::Positive, input };
         };
         Parsed { value: sign, input: &input[1..] }
     }
 }
 
+#[cfg(feature = "alloc")]
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn ok_signed_duration() {
-        let p =
-            |input| SpanParser::new().parse_signed_duration(input).unwrap();
+        let p = |input: &[u8]| {
+            SpanParser::new().parse_signed_duration(input).unwrap()
+        };
 
-        insta::assert_debug_snapshot!(p(b"PT0s"), @r###"
-        Parsed {
-            value: 0s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT0.000000001s"), @r###"
-        Parsed {
-            value: 1ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1s"), @r###"
-        Parsed {
-            value: 1s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT59s"), @r###"
-        Parsed {
-            value: 59s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT60s"), @r###"
-        Parsed {
-            value: 1m,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1m"), @r###"
-        Parsed {
-            value: 1m,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1m0.000000001s"), @r###"
-        Parsed {
-            value: 1m 1ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1.25m"), @r###"
-        Parsed {
-            value: 1m 15s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1h"), @r###"
-        Parsed {
-            value: 1h,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1h0.000000001s"), @r###"
-        Parsed {
-            value: 1h 1ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1.25h"), @r###"
-        Parsed {
-            value: 1h 15m,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"PT0s"), @"0s");
+        insta::assert_debug_snapshot!(p(b"PT0.000000001s"), @"1ns");
+        insta::assert_debug_snapshot!(p(b"PT1s"), @"1s");
+        insta::assert_debug_snapshot!(p(b"PT59s"), @"59s");
+        insta::assert_debug_snapshot!(p(b"PT60s"), @"60s");
+        insta::assert_debug_snapshot!(p(b"PT1m"), @"60s");
+        insta::assert_debug_snapshot!(p(b"PT1m0.000000001s"), @"60s 1ns");
+        insta::assert_debug_snapshot!(p(b"PT1.25m"), @"75s");
+        insta::assert_debug_snapshot!(p(b"PT1h"), @"3600s");
+        insta::assert_debug_snapshot!(p(b"PT1h0.000000001s"), @"3600s 1ns");
+        insta::assert_debug_snapshot!(p(b"PT1.25h"), @"4500s");
 
-        insta::assert_debug_snapshot!(p(b"-PT2562047788015215h30m8.999999999s"), @r###"
-        Parsed {
-            value: 2562047788015215h 30m 8s 999ms 999µs 999ns ago,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT2562047788015215h30m7.999999999s"), @r###"
-        Parsed {
-            value: 2562047788015215h 30m 7s 999ms 999µs 999ns,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"-PT2562047788015215h30m8.999999999s"), @"-9223372036854775808s 999999999ns");
+        insta::assert_debug_snapshot!(p(b"PT2562047788015215h30m7.999999999s"), @"9223372036854775807s 999999999ns");
+
+        insta::assert_debug_snapshot!(p(b"PT9223372036854775807S"), @"9223372036854775807s");
+        insta::assert_debug_snapshot!(p(b"-PT9223372036854775808S"), @"-9223372036854775808s");
     }
 
     #[test]
     fn err_signed_duration() {
-        let p = |input| {
+        let p = |input: &[u8]| {
             SpanParser::new().parse_signed_duration(input).unwrap_err()
         };
 
         insta::assert_snapshot!(
             p(b"P0d"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: parsing ISO 8601 duration into SignedDuration requires that the duration contain a time component and no components of days or greater",
+            @r#"failed to parse "P0d" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
         );
         insta::assert_snapshot!(
             p(b"PT0d"),
-            @r###"failed to parse ISO 8601 duration string into `SignedDuration`: expected to find time unit designator suffix (H, M or S), but found "d" instead"###,
+            @r#"failed to parse "PT0d" as an ISO 8601 duration string: expected to find time unit designator suffix (H, M or S), but found "d" instead"#,
         );
         insta::assert_snapshot!(
             p(b"P0dT1s"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: parsing ISO 8601 duration into SignedDuration requires that the duration contain a time component and no components of days or greater",
+            @r#"failed to parse "P0dT1s" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
         );
 
         insta::assert_snapshot!(
             p(b""),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: expected to find duration beginning with 'P' or 'p', but found end of input",
+            @r#"failed to parse "" as an ISO 8601 duration string: expected to find duration beginning with 'P' or 'p', but found end of input"#,
         );
         insta::assert_snapshot!(
             p(b"P"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: parsing ISO 8601 duration into SignedDuration requires that the duration contain a time component and no components of days or greater",
+            @r#"failed to parse "P" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
         );
         insta::assert_snapshot!(
             p(b"PT"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: expected at least one unit of time (hours, minutes or seconds) in ISO 8601 duration when parsing into a `SignedDuration`",
+            @r#"failed to parse "PT" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PT", but did not find any time units"#,
         );
         insta::assert_snapshot!(
             p(b"PTs"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: expected at least one unit of time (hours, minutes or seconds) in ISO 8601 duration when parsing into a `SignedDuration`",
+            @r#"failed to parse "PTs" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PTs", but did not find any time units"#,
         );
 
         insta::assert_snapshot!(
             p(b"PT1s1m"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: found value 1 with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)",
+            @r#"failed to parse "PT1s1m" as an ISO 8601 duration string: found value 1 with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
         insta::assert_snapshot!(
             p(b"PT1s1h"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: found value 1 with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)",
+            @r#"failed to parse "PT1s1h" as an ISO 8601 duration string: found value 1 with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
         insta::assert_snapshot!(
             p(b"PT1m1h"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)",
+            @r#"failed to parse "PT1m1h" as an ISO 8601 duration string: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
 
         insta::assert_snapshot!(
             p(b"-PT9223372036854775809s"),
-            @r###"failed to parse ISO 8601 duration string into `SignedDuration`: failed to parse "9223372036854775809" as 64-bit signed integer: number '9223372036854775809' too big to parse into 64-bit integer"###,
+            @r#"failed to parse "-PT9223372036854775809s" as an ISO 8601 duration string: `-9223372036854775809` seconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
         insta::assert_snapshot!(
             p(b"PT9223372036854775808s"),
-            @r###"failed to parse ISO 8601 duration string into `SignedDuration`: failed to parse "9223372036854775808" as 64-bit signed integer: number '9223372036854775808' too big to parse into 64-bit integer"###,
+            @r#"failed to parse "PT9223372036854775808s" as an ISO 8601 duration string: `9223372036854775808` seconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
 
         insta::assert_snapshot!(
             p(b"PT1m9223372036854775807s"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: adding value 9223372036854775807 from unit second overflowed signed duration 1m",
+            @r#"failed to parse "PT1m9223372036854775807s" as an ISO 8601 duration string: accumulated `SignedDuration` of `1m` overflowed when adding 9223372036854775807 of unit second"#,
         );
         insta::assert_snapshot!(
             p(b"PT2562047788015215.6h"),
-            @"failed to parse ISO 8601 duration string into `SignedDuration`: adding fractional duration 36m from unit hour to 2562047788015215h overflowed signed duration limits",
+            @r#"failed to parse "PT2562047788015215.6h" as an ISO 8601 duration string: accumulated `SignedDuration` of `2562047788015215h` overflowed when adding 0.600000000 of unit hour"#,
+        );
+    }
+
+    #[test]
+    fn ok_unsigned_duration() {
+        let p = |input: &[u8]| {
+            SpanParser::new().parse_unsigned_duration(input).unwrap()
+        };
+
+        insta::assert_debug_snapshot!(p(b"PT0s"), @"0ns");
+        insta::assert_debug_snapshot!(p(b"PT0.000000001s"), @"1ns");
+        insta::assert_debug_snapshot!(p(b"PT1s"), @"1s");
+        insta::assert_debug_snapshot!(p(b"+PT1s"), @"1s");
+        insta::assert_debug_snapshot!(p(b"PT59s"), @"59s");
+        insta::assert_debug_snapshot!(p(b"PT60s"), @"60s");
+        insta::assert_debug_snapshot!(p(b"PT1m"), @"60s");
+        insta::assert_debug_snapshot!(p(b"PT1m0.000000001s"), @"60.000000001s");
+        insta::assert_debug_snapshot!(p(b"PT1.25m"), @"75s");
+        insta::assert_debug_snapshot!(p(b"PT1h"), @"3600s");
+        insta::assert_debug_snapshot!(p(b"PT1h0.000000001s"), @"3600.000000001s");
+        insta::assert_debug_snapshot!(p(b"PT1.25h"), @"4500s");
+
+        insta::assert_debug_snapshot!(p(b"PT2562047788015215h30m7.999999999s"), @"9223372036854775807.999999999s");
+        insta::assert_debug_snapshot!(p(b"PT5124095576030431H15.999999999S"), @"18446744073709551615.999999999s");
+
+        insta::assert_debug_snapshot!(p(b"PT9223372036854775807S"), @"9223372036854775807s");
+        insta::assert_debug_snapshot!(p(b"PT9223372036854775808S"), @"9223372036854775808s");
+        insta::assert_debug_snapshot!(p(b"PT18446744073709551615S"), @"18446744073709551615s");
+        insta::assert_debug_snapshot!(p(b"PT1M18446744073709551555S"), @"18446744073709551615s");
+    }
+
+    #[test]
+    fn err_unsigned_duration() {
+        #[track_caller]
+        fn p(input: &[u8]) -> crate::Error {
+            SpanParser::new().parse_unsigned_duration(input).unwrap_err()
+        }
+
+        insta::assert_snapshot!(
+            p(b"-PT1S"),
+            @r#"failed to parse "-PT1S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+        );
+        insta::assert_snapshot!(
+            p(b"-PT0S"),
+            @r#"failed to parse "-PT0S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+        );
+
+        insta::assert_snapshot!(
+            p(b"P0d"),
+            @r#"failed to parse "P0d" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT0d"),
+            @r#"failed to parse "PT0d" as an ISO 8601 duration string: expected to find time unit designator suffix (H, M or S), but found "d" instead"#,
+        );
+        insta::assert_snapshot!(
+            p(b"P0dT1s"),
+            @r#"failed to parse "P0dT1s" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+        );
+
+        insta::assert_snapshot!(
+            p(b""),
+            @r#"failed to parse "" as an ISO 8601 duration string: expected to find duration beginning with 'P' or 'p', but found end of input"#,
+        );
+        insta::assert_snapshot!(
+            p(b"P"),
+            @r#"failed to parse "P" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT"),
+            @r#"failed to parse "PT" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PT", but did not find any time units"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PTs"),
+            @r#"failed to parse "PTs" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PTs", but did not find any time units"#,
+        );
+
+        insta::assert_snapshot!(
+            p(b"PT1s1m"),
+            @r#"failed to parse "PT1s1m" as an ISO 8601 duration string: found value 1 with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT1s1h"),
+            @r#"failed to parse "PT1s1h" as an ISO 8601 duration string: found value 1 with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT1m1h"),
+            @r#"failed to parse "PT1m1h" as an ISO 8601 duration string: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
+        );
+
+        insta::assert_snapshot!(
+            p(b"-PT9223372036854775809S"),
+            @r#"failed to parse "-PT9223372036854775809S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT18446744073709551616S"),
+            @r#"failed to parse "PT18446744073709551616S" as an ISO 8601 duration string: number `18446744073709551616` too big to parse into 64-bit integer"#,
+        );
+
+        insta::assert_snapshot!(
+            p(b"PT5124095576030431H16.999999999S"),
+            @r#"failed to parse "PT5124095576030431H16.999999999S" as an ISO 8601 duration string: accumulated `std::time::Duration` of `18446744073709551600s` overflowed when adding 16 of unit second"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT1M18446744073709551556S"),
+            @r#"failed to parse "PT1M18446744073709551556S" as an ISO 8601 duration string: accumulated `std::time::Duration` of `60s` overflowed when adding 18446744073709551556 of unit second"#,
+        );
+        insta::assert_snapshot!(
+            p(b"PT5124095576030431.5H"),
+            @r#"failed to parse "PT5124095576030431.5H" as an ISO 8601 duration string: accumulated `std::time::Duration` of `18446744073709551600s` overflowed when adding 0.500000000 of unit hour"#,
         );
     }
 
     #[test]
     fn ok_temporal_duration_basic() {
-        let p =
-            |input| SpanParser::new().parse_temporal_duration(input).unwrap();
+        let p = |input: &[u8]| SpanParser::new().parse_span(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"P5d"), @r###"
-        Parsed {
-            value: 5d,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"-P5d"), @r###"
-        Parsed {
-            value: 5d ago,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"+P5d"), @r###"
-        Parsed {
-            value: 5d,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"P5DT1s"), @r###"
-        Parsed {
-            value: 5d 1s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1S"), @r###"
-        Parsed {
-            value: 1s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT0S"), @r###"
-        Parsed {
-            value: 0s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"P0Y"), @r###"
-        Parsed {
-            value: 0s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"P1Y1M1W1DT1H1M1S"), @r###"
-        Parsed {
-            value: 1y 1mo 1w 1d 1h 1m 1s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"P1y1m1w1dT1h1m1s"), @r###"
-        Parsed {
-            value: 1y 1mo 1w 1d 1h 1m 1s,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"P5d"), @"5d");
+        insta::assert_debug_snapshot!(p(b"-P5d"), @"5d ago");
+        insta::assert_debug_snapshot!(p(b"+P5d"), @"5d");
+        insta::assert_debug_snapshot!(p(b"P5DT1s"), @"5d 1s");
+        insta::assert_debug_snapshot!(p(b"PT1S"), @"1s");
+        insta::assert_debug_snapshot!(p(b"PT0S"), @"0s");
+        insta::assert_debug_snapshot!(p(b"P0Y"), @"0s");
+        insta::assert_debug_snapshot!(p(b"P1Y1M1W1DT1H1M1S"), @"1y 1mo 1w 1d 1h 1m 1s");
+        insta::assert_debug_snapshot!(p(b"P1y1m1w1dT1h1m1s"), @"1y 1mo 1w 1d 1h 1m 1s");
     }
 
     #[test]
     fn ok_temporal_duration_fractional() {
-        let p =
-            |input| SpanParser::new().parse_temporal_duration(input).unwrap();
+        let p = |input: &[u8]| SpanParser::new().parse_span(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"PT0.5h"), @r###"
-        Parsed {
-            value: 30m,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT0.123456789h"), @r###"
-        Parsed {
-            value: 7m 24s 444ms 440µs 400ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1.123456789h"), @r###"
-        Parsed {
-            value: 1h 7m 24s 444ms 440µs 400ns,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"PT0.5h"), @"30m");
+        insta::assert_debug_snapshot!(p(b"PT0.123456789h"), @"7m 24s 444ms 440µs 400ns");
+        insta::assert_debug_snapshot!(p(b"PT1.123456789h"), @"1h 7m 24s 444ms 440µs 400ns");
 
-        insta::assert_debug_snapshot!(p(b"PT0.5m"), @r###"
-        Parsed {
-            value: 30s,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT0.123456789m"), @r###"
-        Parsed {
-            value: 7s 407ms 407µs 340ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1.123456789m"), @r###"
-        Parsed {
-            value: 1m 7s 407ms 407µs 340ns,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"PT0.5m"), @"30s");
+        insta::assert_debug_snapshot!(p(b"PT0.123456789m"), @"7s 407ms 407µs 340ns");
+        insta::assert_debug_snapshot!(p(b"PT1.123456789m"), @"1m 7s 407ms 407µs 340ns");
 
-        insta::assert_debug_snapshot!(p(b"PT0.5s"), @r###"
-        Parsed {
-            value: 500ms,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT0.123456789s"), @r###"
-        Parsed {
-            value: 123ms 456µs 789ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT1.123456789s"), @r###"
-        Parsed {
-            value: 1s 123ms 456µs 789ns,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"PT0.5s"), @"500ms");
+        insta::assert_debug_snapshot!(p(b"PT0.123456789s"), @"123ms 456µs 789ns");
+        insta::assert_debug_snapshot!(p(b"PT1.123456789s"), @"1s 123ms 456µs 789ns");
 
         // The tests below all have a whole second value that exceeds the
         // maximum allowed seconds in a span. But they should still parse
         // correctly by spilling over into milliseconds, microseconds and
         // nanoseconds.
-        insta::assert_debug_snapshot!(p(b"PT1902545624836.854775807s"), @r###"
-        Parsed {
-            value: 631107417600s 631107417600000ms 631107417600000000µs 9223372036854775807ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"PT175307616h10518456960m640330789636.854775807s"), @r###"
-        Parsed {
-            value: 175307616h 10518456960m 631107417600s 9223372036854ms 775µs 807ns,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"-PT1902545624836.854775807s"), @r###"
-        Parsed {
-            value: 631107417600s 631107417600000ms 631107417600000000µs 9223372036854775807ns ago,
-            input: "",
-        }
-        "###);
-        insta::assert_debug_snapshot!(p(b"-PT175307616h10518456960m640330789636.854775807s"), @r###"
-        Parsed {
-            value: 175307616h 10518456960m 631107417600s 9223372036854ms 775µs 807ns ago,
-            input: "",
-        }
-        "###);
+        insta::assert_debug_snapshot!(p(b"PT1902545624836.854775807s"), @"631107417600s 631107417600000ms 631107417600000000µs 9223372036854775807ns");
+        insta::assert_debug_snapshot!(p(b"PT175307616h10518456960m640330789636.854775807s"), @"175307616h 10518456960m 631107417600s 9223372036854ms 775µs 807ns");
+        insta::assert_debug_snapshot!(p(b"-PT1902545624836.854775807s"), @"631107417600s 631107417600000ms 631107417600000000µs 9223372036854775807ns ago");
+        insta::assert_debug_snapshot!(p(b"-PT175307616h10518456960m640330789636.854775807s"), @"175307616h 10518456960m 631107417600s 9223372036854ms 775µs 807ns ago");
     }
 
     #[test]
     fn ok_temporal_duration_unbalanced() {
-        let p =
-            |input| SpanParser::new().parse_temporal_duration(input).unwrap();
+        let p = |input: &[u8]| SpanParser::new().parse_span(input).unwrap();
 
         insta::assert_debug_snapshot!(
-            p(b"PT175307616h10518456960m1774446656760s"), @r###"
-        Parsed {
-            value: 175307616h 10518456960m 631107417600s 631107417600000ms 512231821560000000µs,
-            input: "",
-        }
-        "###);
+            p(b"PT175307616h10518456960m1774446656760s"), @"175307616h 10518456960m 631107417600s 631107417600000ms 512231821560000000µs");
         insta::assert_debug_snapshot!(
-            p(b"Pt843517082H"), @r###"
-        Parsed {
-            value: 175307616h 10518456960m 631107417600s 631107417600000ms 512231824800000000µs,
-            input: "",
-        }
-        "###);
+            p(b"Pt843517082H"), @"175307616h 10518456960m 631107417600s 631107417600000ms 512231824800000000µs");
         insta::assert_debug_snapshot!(
-            p(b"Pt843517081H"), @r###"
-        Parsed {
-            value: 175307616h 10518456960m 631107417600s 631107417600000ms 512231821200000000µs,
-            input: "",
-        }
-        "###);
+            p(b"Pt843517081H"), @"175307616h 10518456960m 631107417600s 631107417600000ms 512231821200000000µs");
     }
 
     #[test]

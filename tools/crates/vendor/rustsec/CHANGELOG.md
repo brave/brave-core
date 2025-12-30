@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.30.2 (2025-02-28)
+
+### Fixed
+
+ - Upgraded to `tame-index` v0.18.1 to fix an incompatibility with Rust 1.85 and later ([#1333])
+
+[#1333]: https://github.com/RustSec/rustsec/pull/1333
+
 ## 0.30.1 (2025-01-18)
 
 ### Added

@@ -1,15 +1,16 @@
 //! Core deserialization logic that deserializes toml content to [`Value`]
 
 use crate::{
+    Span,
     error::{Error, ErrorKind},
     tokens::{Error as TokenError, Token, Tokenizer},
     value::{self, Key, Value, ValueInner},
-    Span,
 };
 use smallvec::SmallVec;
 use std::{
     borrow::Cow,
-    collections::{btree_map::Entry, BTreeMap},
+    collections::{BTreeMap, btree_map::Entry},
+    ops::Range,
 };
 
 type DeStr<'de> = Cow<'de, str>;
@@ -20,28 +21,23 @@ type InlineVec<T> = SmallVec<[T; 5]>;
 pub fn parse(s: &str) -> Result<Value<'_>, Error> {
     let mut de = Deserializer::new(s);
 
-    let mut tables = de.tables()?;
-    let table_indices = build_table_indices(&tables);
-    let table_pindices = build_table_pindices(&tables);
-
-    let root_ctx = Ctx {
-        depth: 0,
-        cur: 0,
-        cur_parent: 0,
-        table_indices: &table_indices,
-        table_pindices: &table_pindices,
+    let raw_tables = de.tables()?;
+    let mut ctx = DeserializeCtx {
+        table_indices: &build_table_indices(&raw_tables),
+        table_pindices: &build_table_pindices(&raw_tables),
+        raw_tables,
         de: &de,
-        values: None,
-        max: tables.len(),
     };
+    let root = ctx.deserialize_entry(
+        DeserializeTableIdx {
+            table_idx: 0,
+            depth: 0,
+            idx_range: 0..ctx.raw_tables.len(),
+        },
+        Vec::new(),
+    )?;
 
-    let mut root = value::Table::new();
-    deserialize_table(root_ctx, &mut tables, &mut root)?;
-
-    Ok(Value::with_span(
-        ValueInner::Table(root),
-        Span::new(0, s.len()),
-    ))
+    Ok(Value::with_span(root, Span::new(0, s.len())))
 }
 
 struct Deserializer<'a> {
@@ -49,154 +45,233 @@ struct Deserializer<'a> {
     tokens: Tokenizer<'a>,
 }
 
-struct Ctx<'de, 'b> {
-    depth: usize,
-    cur: usize,
-    cur_parent: usize,
-    max: usize,
+struct DeserializeCtx<'de, 'b> {
+    raw_tables: Vec<Table<'de>>,
+    // maps table headers to a list of tables with that exact header
+    // (the list contains indices into `raw_tables` and is ordered)
     table_indices: &'b BTreeMap<InlineVec<DeStr<'de>>, Vec<usize>>,
+    // maps table headers to a list of all subtables
+    // (the list contains indices into `raw_tables` and is ordered)
     table_pindices: &'b BTreeMap<InlineVec<DeStr<'de>>, Vec<usize>>,
     de: &'b Deserializer<'de>,
-    values: Option<Vec<TablePair<'de>>>,
-    //array: bool,
 }
+// specifies the table/array that is currently being deserialized, namely the
+// table/array with the header `raw_tables[table_idx].header[0..depth]`
+struct DeserializeTableIdx {
+    // index of the first occurence of the desired header (even as a prefix)
+    table_idx: usize,
+    depth: usize,
+    // range of `raw_tables` indices to consider, used to isolate subtables of
+    // different array entries
+    idx_range: Range<usize>,
+}
+impl DeserializeTableIdx {
+    fn get_header<'de>(&self, raw_tables: &[Table<'de>]) -> InlineVec<DeStr<'de>> {
+        if self.depth == 0 {
+            return InlineVec::new();
+        }
 
-impl<'de, 'b> Ctx<'de, 'b> {
-    #[inline]
-    fn error(&self, start: usize, end: Option<usize>, kind: ErrorKind) -> Error {
-        self.de.error(start, end, kind)
+        raw_tables[self.table_idx].header[0..self.depth]
+            .iter()
+            .map(|key| key.name.clone())
+            .collect()
     }
 }
+impl<'de, 'b> DeserializeCtx<'de, 'b> {
+    // deserialize the table/array given by `table_idx`
+    fn deserialize_entry(
+        &mut self,
+        table_idx: DeserializeTableIdx,
+        // values defined via dotted keys should be passed on to the corresponding subtable
+        additional_values: Vec<TablePair<'de>>,
+    ) -> Result<value::ValueInner<'de>, Error> {
+        let current_header = table_idx.get_header(&self.raw_tables);
+        let matching_tables = self.get_matching_tables(&current_header, &table_idx.idx_range);
 
-fn deserialize_table<'de, 'b>(
-    mut ctx: Ctx<'de, 'b>,
-    tables: &'b mut [Table<'de>],
-    table: &mut value::Table<'de>,
-) -> Result<usize, Error> {
-    while ctx.cur_parent < ctx.max && ctx.cur < ctx.max {
-        if let Some(values) = ctx.values.take() {
-            for (key, val) in values {
-                table_insert(table, key, val, ctx.de)?;
-            }
-        }
+        let is_array = matching_tables
+            .iter()
+            .all(|idx| self.raw_tables[*idx].array)
+            && !matching_tables.is_empty();
 
-        let next_table = {
-            let prefix_stripped: InlineVec<_> = tables[ctx.cur_parent].header[..ctx.depth]
-                .iter()
-                .map(|v| v.name.clone())
-                .collect::<InlineVec<_>>();
-            ctx.table_pindices
-                .get(&prefix_stripped)
-                .and_then(|entries| {
-                    let start = entries.binary_search(&ctx.cur).unwrap_or_else(|v| v);
-                    if start == entries.len() || entries[start] < ctx.cur {
-                        return None;
-                    }
-                    entries[start..].iter().find_map(|i| {
-                        let i = *i;
-                        (i < ctx.max && tables[i].values.is_some()).then_some(i)
-                    })
-                })
-        };
-
-        let Some(pos) = next_table else {
-            break;
-        };
-
-        ctx.cur = pos;
-
-        // Test to see if we're duplicating our parent's table, and if so
-        // then this is an error in the toml format
-        if ctx.cur_parent != pos {
-            let cur = &tables[pos];
-            let parent = &tables[ctx.cur_parent];
-            if parent.header == cur.header {
-                let name = cur.header.iter().fold(String::new(), |mut s, k| {
-                    if !s.is_empty() {
-                        s.push('.');
-                    }
-                    s.push_str(&k.name);
-                    s
-                });
-
-                let first = Span::new(parent.at, parent.end);
-
-                return Err(ctx.error(
-                    cur.at,
-                    Some(cur.end),
-                    ErrorKind::DuplicateTable { name, first },
+        if is_array {
+            // catch invalid cases like:
+            //   [a.b]
+            //   [[a]]
+            if table_idx.table_idx < matching_tables[0] {
+                let array_tbl = &self.raw_tables[matching_tables[0]];
+                return Err(self.de.error(
+                    array_tbl.at,
+                    Some(array_tbl.end),
+                    ErrorKind::RedefineAsArray,
                 ));
             }
+            assert!(additional_values.is_empty());
 
-            // If we're here we know we should share the same prefix, and if
-            // the longer table was defined first then we want to narrow
-            // down our parent's length if possible to ensure that we catch
-            // duplicate tables defined afterwards.
-            let parent_len = parent.header.len();
-            let cur_len = cur.header.len();
-            if cur_len < parent_len {
-                ctx.cur_parent = pos;
+            let mut array = value::Array::new();
+            for (i, array_entry_idx) in matching_tables.iter().copied().enumerate() {
+                let entry_range_end = matching_tables
+                    .get(i + 1)
+                    .copied()
+                    .unwrap_or(table_idx.idx_range.end);
+
+                let span = Self::get_table_span(&self.raw_tables[array_entry_idx]);
+                let values = self.raw_tables[array_entry_idx].values.take().unwrap();
+                let array_entry = self.deserialize_as_table(
+                    &current_header,
+                    array_entry_idx..entry_range_end,
+                    values.values.into_iter(),
+                )?;
+                array.push(Value::with_span(ValueInner::Table(array_entry), span));
             }
-        }
-
-        let ttable = &mut tables[pos];
-
-        // If we're not yet at the appropriate depth for this table then we
-        // just next the next portion of its header and then continue
-        // decoding.
-        if ctx.depth != ttable.header.len() {
-            let key = ttable.header[ctx.depth].clone();
-            if let Some((k, _)) = table.get_key_value(&key) {
-                return Err(ctx.error(
-                    key.span.start,
-                    Some(key.span.end),
-                    ErrorKind::DuplicateKey {
-                        key: key.name.to_string(),
-                        first: k.span,
+            Ok(ValueInner::Array(array))
+        } else {
+            if matching_tables.len() > 1 {
+                let first_tbl = &self.raw_tables[matching_tables[0]];
+                let second_tbl = &self.raw_tables[matching_tables[1]];
+                return Err(self.de.error(
+                    second_tbl.at,
+                    Some(second_tbl.end),
+                    ErrorKind::DuplicateTable {
+                        name: current_header.last().unwrap().to_string(),
+                        first: Span::new(first_tbl.at, first_tbl.end),
                     },
                 ));
             }
 
-            let array = ttable.array && ctx.depth == ttable.header.len() - 1;
-            ctx.cur += 1;
+            let values = matching_tables
+                .first()
+                .map(|idx| {
+                    self.raw_tables[*idx]
+                        .values
+                        .take()
+                        .unwrap()
+                        .values
+                        .into_iter()
+                })
+                .unwrap_or_default()
+                .chain(additional_values);
+            let subtable =
+                self.deserialize_as_table(&current_header, table_idx.idx_range, values)?;
 
-            let cctx = Ctx {
-                depth: ctx.depth + if array { 0 } else { 1 },
-                max: ctx.max,
-                cur: 0,
-                cur_parent: pos,
-                table_indices: ctx.table_indices,
-                table_pindices: ctx.table_pindices,
-                de: ctx.de,
-                values: None, //array.then(|| ttable.values.take().unwrap()),
-            };
+            Ok(ValueInner::Table(subtable))
+        }
+    }
+    fn deserialize_as_table(
+        &mut self,
+        header: &[DeStr<'de>],
+        range: Range<usize>,
+        values: impl Iterator<Item = TablePair<'de>>,
+    ) -> Result<value::Table<'de>, Error> {
+        let mut table = value::Table::new();
+        let mut dotted_keys_map = BTreeMap::new();
 
-            let value = if array {
-                let mut arr = Vec::new();
-                deserialize_array(cctx, tables, &mut arr)?;
-                ValueInner::Array(arr)
-            } else {
-                let mut tab = value::Table::new();
-                deserialize_table(cctx, tables, &mut tab)?;
-                ValueInner::Table(tab)
-            };
-
-            table.insert(key, Value::new(value));
-            continue;
+        for (key, val) in values {
+            match val.e {
+                E::DottedTable(mut tbl_vals) => {
+                    tbl_vals.span = Some(Span::new(val.start, val.end));
+                    dotted_keys_map.insert(key, tbl_vals);
+                }
+                _ => table_insert(&mut table, key, val, self.de)?,
+            }
         }
 
-        // Rule out cases like:
-        //
-        //      [[foo.bar]]
-        //      [[foo]]
-        if ttable.array {
-            return Err(ctx.error(ttable.at, Some(ttable.end), ErrorKind::RedefineAsArray));
+        let subtables = self.get_subtables(header, &range);
+        for &subtable_idx in subtables {
+            if self.raw_tables[subtable_idx].values.is_none() {
+                continue;
+            }
+
+            let subtable_name = &self.raw_tables[subtable_idx].header[header.len()];
+
+            let dotted_entries = match dotted_keys_map.remove_entry(subtable_name) {
+                // Detect redefinitions of tables created via dotted keys, as
+                // these are considered errors, e.g:
+                //   apple.color = "red"
+                //   [apple]  # INVALID
+                // However adding subtables is allowed:
+                //   apple.color = "red"
+                //   [apple.texture]  # VALID
+                Some((previous_key, _))
+                    if self.raw_tables[subtable_idx].header.len() == header.len() + 1 =>
+                {
+                    return Err(self.de.error(
+                        subtable_name.span.start,
+                        Some(subtable_name.span.end),
+                        ErrorKind::DuplicateKey {
+                            key: subtable_name.to_string(),
+                            first: previous_key.span,
+                        },
+                    ));
+                }
+                Some((_, dotted_entries)) => dotted_entries.values,
+                None => Vec::new(),
+            };
+
+            match table.entry(subtable_name.clone()) {
+                Entry::Vacant(vac) => {
+                    let subtable_span = Self::get_table_span(&self.raw_tables[subtable_idx]);
+                    let subtable_idx = DeserializeTableIdx {
+                        table_idx: subtable_idx,
+                        depth: header.len() + 1,
+                        idx_range: range.clone(),
+                    };
+                    let entry = self.deserialize_entry(subtable_idx, dotted_entries)?;
+                    vac.insert(Value::with_span(entry, subtable_span));
+                }
+                Entry::Occupied(occ) => {
+                    return Err(self.de.error(
+                        subtable_name.span.start,
+                        Some(subtable_name.span.end),
+                        ErrorKind::DuplicateKey {
+                            key: subtable_name.to_string(),
+                            first: occ.key().span,
+                        },
+                    ));
+                }
+            };
         }
 
-        ctx.values = ttable.values.take();
+        for (key, val) in dotted_keys_map {
+            let val_span = val.span.unwrap();
+            let val = Val {
+                e: E::DottedTable(val),
+                start: val_span.start,
+                end: val_span.end,
+            };
+            table_insert(&mut table, key, val, self.de)?;
+        }
+
+        Ok(table)
     }
 
-    Ok(ctx.cur_parent)
+    fn get_matching_tables(&self, header: &[DeStr<'de>], range: &Range<usize>) -> &'b [usize] {
+        let matching_tables = self
+            .table_indices
+            .get(header)
+            .map(Vec::as_slice)
+            .unwrap_or_default();
+        Self::get_subslice_in_range(matching_tables, range)
+    }
+    fn get_subtables(&self, header: &[DeStr<'de>], range: &Range<usize>) -> &'b [usize] {
+        let subtables = self
+            .table_pindices
+            .get(header)
+            .map(Vec::as_slice)
+            .unwrap_or_default();
+        Self::get_subslice_in_range(subtables, range)
+    }
+    fn get_subslice_in_range<'a>(slice: &'a [usize], range: &Range<usize>) -> &'a [usize] {
+        let start_idx = slice.partition_point(|idx| *idx < range.start);
+        let end_idx = slice.partition_point(|idx| *idx < range.end);
+        &slice[start_idx..end_idx]
+    }
+
+    fn get_table_span(ttable: &Table<'de>) -> Span {
+        ttable.values.as_ref().and_then(|v| v.span).map_or_else(
+            || Span::new(ttable.at, ttable.end),
+            |span| Span::new(ttable.at.min(span.start), ttable.end.max(span.end)),
+        )
+    }
 }
 
 fn to_value<'de>(val: Val<'de>, de: &Deserializer<'de>) -> Result<Value<'de>, Error> {
@@ -215,7 +290,7 @@ fn to_value<'de>(val: Val<'de>, de: &Deserializer<'de>) -> Result<Value<'de>, Er
         E::DottedTable(tab) | E::InlineTable(tab) => {
             let mut ntable = value::Table::new();
 
-            for (k, v) in tab {
+            for (k, v) in tab.values {
                 table_insert(&mut ntable, k, v, de)?;
             }
 
@@ -248,68 +323,6 @@ fn table_insert<'de>(
     }
 }
 
-fn deserialize_array<'de, 'b>(
-    mut ctx: Ctx<'de, 'b>,
-    tables: &'b mut [Table<'de>],
-    arr: &mut Vec<value::Value<'de>>,
-) -> Result<usize, Error> {
-    // if let Some(values) = ctx.values.take() {
-    //     for (key, val) in values {
-    //         //printc!(&ctx, "{} => {val:?}", key.name);
-    //         arr.push(to_value(val, ctx.de)?);
-    //     }
-    // }
-
-    while ctx.cur_parent < ctx.max {
-        let header_stripped = tables[ctx.cur_parent]
-            .header
-            .iter()
-            .map(|v| v.name.clone())
-            .collect::<InlineVec<_>>();
-        let start_idx = ctx.cur_parent + 1;
-        let next = ctx
-            .table_indices
-            .get(&header_stripped)
-            .and_then(|entries| {
-                let start = entries.binary_search(&start_idx).unwrap_or_else(|v| v);
-                if start == entries.len() || entries[start] < start_idx {
-                    return None;
-                }
-                entries[start..]
-                    .iter()
-                    .filter_map(|i| if *i < ctx.max { Some(*i) } else { None })
-                    .map(|i| (i, &tables[i]))
-                    .find(|(_, table)| table.array)
-                    .map(|p| p.0)
-            })
-            .unwrap_or(ctx.max);
-
-        let actx = Ctx {
-            values: Some(
-                tables[ctx.cur_parent]
-                    .values
-                    .take()
-                    .expect("no array values"),
-            ),
-            max: next,
-            depth: ctx.depth + 1,
-            cur: 0,
-            cur_parent: ctx.cur_parent,
-            table_indices: ctx.table_indices,
-            table_pindices: ctx.table_pindices,
-            de: ctx.de,
-        };
-
-        let mut table = value::Table::new();
-        deserialize_table(actx, tables, &mut table)?;
-        arr.push(Value::new(ValueInner::Table(table)));
-
-        ctx.cur_parent = next;
-    }
-
-    Ok(ctx.cur_parent)
-}
-
 // Builds a datastructure that allows for efficient sublinear lookups. The
 // returned BTreeMap contains a mapping from table header (like [a.b.c]) to list
 // of tables with that precise name. The tables are being identified by their
@@ -333,9 +346,10 @@ fn build_table_indices<'de>(tables: &[Table<'de>]) -> BTreeMap<InlineVec<DeStr<'
 
 // Builds a datastructure that allows for efficient sublinear lookups. The
 // returned BTreeMap contains a mapping from table header (like [a.b.c]) to list
-// of tables whose name at least starts with the specified name. So searching
-// for [a.b] would give both [a.b.c.d] as well as [a.b.e]. The tables are being
-// identified by their index in the passed slice.
+// of tables whose name starts with the specified name and is strictly longer.
+// So searching for [a.b] would give both [a.b.c.d] as well as [a.b.e], but not
+// [a.b] itself. The tables are being identified by their index in the passed
+// slice.
 //
 // A list is used for two reasons: First, the implementation also stores arrays
 // in the same data structure and any top level array of size 2 or greater
@@ -353,7 +367,7 @@ fn build_table_pindices<'de>(tables: &[Table<'de>]) -> BTreeMap<InlineVec<DeStr<
             .iter()
             .map(|v| v.name.clone())
             .collect::<InlineVec<_>>();
-        for len in 0..=header.len() {
+        for len in 0..header.len() {
             res.entry(header[..len].into())
                 .or_insert_with(Vec::new)
                 .push(i);
@@ -362,20 +376,27 @@ fn build_table_pindices<'de>(tables: &[Table<'de>]) -> BTreeMap<InlineVec<DeStr<
     res
 }
 
-// fn headers_equal(hdr_a: &[Key<'_>], hdr_b: &[Key<'_>]) -> bool {
-//     if hdr_a.len() != hdr_b.len() {
-//         return false;
-//     }
-//     hdr_a.iter().zip(hdr_b.iter()).all(|(h1, h2)| h1.1 == h2.1)
-// }
-
-#[derive(Debug)]
 struct Table<'de> {
     at: usize,
     end: usize,
     header: InlineVec<Key<'de>>,
-    values: Option<Vec<TablePair<'de>>>,
+    values: Option<TableValues<'de>>,
     array: bool,
+}
+
+struct TableValues<'de> {
+    values: Vec<TablePair<'de>>,
+    span: Option<Span>,
+}
+
+#[allow(clippy::derivable_impls)]
+impl Default for TableValues<'_> {
+    fn default() -> Self {
+        Self {
+            values: Vec::new(),
+            span: None,
+        }
+    }
 }
 
 impl<'a> Deserializer<'a> {
@@ -411,18 +432,34 @@ impl<'a> Deserializer<'a> {
                         at,
                         end,
                         header: InlineVec::new(),
-                        values: Some(Vec::new()),
+                        values: Some(TableValues::default()),
                         array,
                     };
                     while let Some(part) = header.next().map_err(|e| self.token_error(e))? {
                         cur_table.header.push(part);
                     }
+                    cur_table.end = header.tokens.current();
                 }
-                Line::KeyValue(key, value) => {
-                    if cur_table.values.is_none() {
-                        cur_table.values = Some(Vec::new());
+                Line::KeyValue {
+                    key,
+                    value,
+                    at,
+                    end,
+                } => {
+                    let table_values = cur_table.values.get_or_insert_with(|| TableValues {
+                        values: Vec::new(),
+                        span: None,
+                    });
+                    self.add_dotted_key(key, value, table_values)?;
+                    match table_values.span {
+                        Some(ref mut span) => {
+                            span.start = span.start.min(at);
+                            span.end = span.end.max(end);
+                        }
+                        None => {
+                            table_values.span = Some(Span::new(at, end));
+                        }
                     }
-                    self.add_dotted_key(key, value, cur_table.values.as_mut().unwrap())?;
                 }
             }
         }
@@ -467,18 +504,25 @@ impl<'a> Deserializer<'a> {
     }
 
     fn key_value(&mut self) -> Result<Line<'a>, Error> {
+        let start = self.tokens.current();
         let key = self.dotted_key()?;
         self.eat_whitespace();
         self.expect(Token::Equals)?;
         self.eat_whitespace();
 
         let value = self.value()?;
+        let end = self.tokens.current();
         self.eat_whitespace();
         if !self.eat_comment()? {
             self.eat_newline_or_eof()?;
         }
 
-        Ok(Line::KeyValue(key, value))
+        Ok(Line::KeyValue {
+            key,
+            value,
+            at: start,
+            end,
+        })
     }
 
     fn value(&mut self) -> Result<Val<'a>, Error> {
@@ -689,7 +733,7 @@ impl<'a> Deserializer<'a> {
                             start,
                             Some(start + s.len()),
                             ErrorKind::InvalidNumber,
-                        ))
+                        ));
                     }
                 }
             } else {
@@ -730,8 +774,8 @@ impl<'a> Deserializer<'a> {
 
     // TODO(#140): shouldn't buffer up this entire table in memory, it'd be
     // great to defer parsing everything until later.
-    fn inline_table(&mut self) -> Result<(Span, Vec<TablePair<'a>>), Error> {
-        let mut ret = Vec::new();
+    fn inline_table(&mut self) -> Result<(Span, TableValues<'a>), Error> {
+        let mut ret = TableValues::default();
         self.eat_whitespace();
         if let Some(span) = self.eat_spanned(Token::RightBrace)? {
             return Ok((span, ret));
@@ -810,21 +854,22 @@ impl<'a> Deserializer<'a> {
     /// # Parameters
     ///
     /// * `key_parts`: Each segment of the dotted key, e.g. `part.one` maps to
-    ///                `vec![Cow::Borrowed("part"), Cow::Borrowed("one")].`
+    ///   `vec![Cow::Borrowed("part"), Cow::Borrowed("one")].`
     /// * `value`: The parsed value.
     /// * `values`: The `Vec` to store the value in.
     fn add_dotted_key(
         &self,
         mut key_parts: Vec<Key<'a>>,
         value: Val<'a>,
-        values: &mut Vec<TablePair<'a>>,
+        values: &mut TableValues<'a>,
     ) -> Result<(), Error> {
         let key = key_parts.remove(0);
         if key_parts.is_empty() {
-            values.push((key, value));
+            values.values.push((key, value));
             return Ok(());
         }
         match values
+            .values
             .iter_mut()
             .find(|&&mut (ref k, _)| k.name == key.name)
         {
@@ -848,19 +893,19 @@ impl<'a> Deserializer<'a> {
         }
         // The start/end value is somewhat misleading here.
         let table_values = Val {
-            e: E::DottedTable(Vec::new()),
+            e: E::DottedTable(TableValues::default()),
             start: value.start,
             end: value.end,
         };
-        values.push((key, table_values));
-        let last_i = values.len() - 1;
+        values.values.push((key, table_values));
+        let last_i = values.values.len() - 1;
         if let (
             _,
             Val {
                 e: E::DottedTable(ref mut v),
                 ..
             },
-        ) = values[last_i]
+        ) = values.values[last_i]
         {
             self.add_dotted_key(key_parts, value, v)?;
         }
@@ -977,60 +1022,6 @@ impl<'a> Deserializer<'a> {
     }
 }
 
-// impl Error {
-//     pub(crate) fn line_col(&self) -> Option<(usize, usize)> {
-//         self.line.map(|line| (line, self.col))
-//     }
-
-//     fn from_kind(at: Option<usize>, kind: ErrorKind) -> Self {
-//         Error {
-//             kind,
-//             line: None,
-//             col: 0,
-//             at,
-//             message: String::new(),
-//             key: Vec::new(),
-//         }
-//     }
-
-//     fn custom(at: Option<usize>, s: String) -> Self {
-//         Error {
-//             kind: ErrorKind::Custom,
-//             line: None,
-//             col: 0,
-//             at,
-//             message: s,
-//             key: Vec::new(),
-//         }
-//     }
-
-//     pub(crate) fn add_key_context(&mut self, key: &str) {
-//         self.key.insert(0, key.to_string());
-//     }
-
-//     fn fix_offset<F>(&mut self, f: F)
-//     where
-//         F: FnOnce() -> Option<usize>,
-//     {
-//         // An existing offset is always better positioned than anything we might
-//         // want to add later.
-//         if self.at.is_none() {
-//             self.at = f();
-//         }
-//     }
-
-//     fn fix_linecol<F>(&mut self, f: F)
-//     where
-//         F: FnOnce(usize) -> (usize, usize),
-//     {
-//         if let Some(at) = self.at {
-//             let (line, col) = f(at);
-//             self.line = Some(line);
-//             self.col = col;
-//         }
-//     }
-// }
-
 impl std::convert::From<Error> for std::io::Error {
     fn from(e: Error) -> Self {
         std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string())
@@ -1044,7 +1035,12 @@ enum Line<'a> {
         header: Header<'a>,
         array: bool,
     },
-    KeyValue(Vec<Key<'a>>, Val<'a>),
+    KeyValue {
+        at: usize,
+        end: usize,
+        key: Vec<Key<'a>>,
+        value: Val<'a>,
+    },
 }
 
 struct Header<'a> {
@@ -1084,25 +1080,23 @@ impl<'a> Header<'a> {
     }
 }
 
-#[derive(Debug)]
 struct Val<'a> {
     e: E<'a>,
     start: usize,
     end: usize,
 }
 
-#[derive(Debug)]
 enum E<'a> {
     Integer(i64),
     Float(f64),
     Boolean(bool),
     String(DeStr<'a>),
     Array(Vec<Val<'a>>),
-    InlineTable(Vec<TablePair<'a>>),
-    DottedTable(Vec<TablePair<'a>>),
+    InlineTable(TableValues<'a>),
+    DottedTable(TableValues<'a>),
 }
 
-impl<'a> E<'a> {
+impl E<'_> {
     #[allow(dead_code)]
     fn type_name(&self) -> &'static str {
         match *self {
