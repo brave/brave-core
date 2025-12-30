@@ -79,6 +79,7 @@ import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-
 import {
   useAccountFromAddressQuery,
   useGetCombinedTokensListQuery,
+  useReceiveAddressQuery,
 } from '../../../../common/slices/api.slice.extra'
 
 const hasDecimalsOverflow = (
@@ -148,14 +149,17 @@ export const useSwap = () => {
   const { account: fromAccount } = useAccountFromAddressQuery(
     fromAccountIdFromParams,
   )
+  const toAccountIdFromParams = query.get('toAccountId') ?? undefined
   const { account: toAccount } = useAccountFromAddressQuery(
-    query.get('toAddress') ?? undefined,
+    toAccountIdFromParams,
   )
-  // TODO: deprecate toAccountId in favour of toAddress + toCoin
-  const toAccountId = toAccount?.accountId
-  const toCoinFromParams = query.get('toCoin') ?? undefined
-  const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
-  const toAddress = query.get('toAddress') ?? undefined
+  const toAccountId = toAccount?.accountId ?? undefined
+  // For UTXO-based accounts, the address field is empty, so we need to use
+  // useReceiveAddressQuery to get the actual receive address for the toAccountId.
+  const {
+    receiveAddress: toAccountAddress,
+    isFetchingAddress: isFetchingToAccountAddress,
+  } = useReceiveAddressQuery(toAccountId)
   const fromContractOrSymbolFromParams = query.get('fromToken') ?? undefined
   const fromChainIdFromParams = query.get('fromChainId') ?? undefined
 
@@ -217,14 +221,15 @@ export const useSwap = () => {
   }, [supportedNetworks, fromChainIdFromParams])
 
   const toNetwork = useMemo(() => {
-    if (!supportedNetworks?.length || !toCoin) {
+    if (!supportedNetworks?.length || !toAccountId) {
       return
     }
     return supportedNetworks.find(
       (network) =>
-        network.chainId === query.get('toChainId') && network.coin === toCoin,
+        network.chainId === query.get('toChainId')
+        && network.coin === toAccountId.coin,
     )
-  }, [supportedNetworks, toCoin, query])
+  }, [supportedNetworks, toAccountId, query])
 
   const fromToken = useMemo(() => {
     if (!fromContractOrSymbolFromParams || !fromNetwork) {
@@ -485,6 +490,14 @@ export const useSwap = () => {
         return
       }
 
+      // For UTXO accounts (like BTC), wait for the receive address to be fetched
+      const needsAddressResolution =
+        !params.toAccountId.address
+        && (isFetchingToAccountAddress || !toAccountAddress)
+      if (needsAddressResolution) {
+        return
+      }
+
       const controller = new AbortController()
       setAbortController(controller)
       setIsFetchingQuote(true)
@@ -503,7 +516,11 @@ export const useSwap = () => {
                   .format()
               : '',
           fromToken: params.fromToken.contractAddress,
-          toAccountId: params.toAccountId,
+          toAccountId: params.toAccountId && {
+            ...params.toAccountId,
+            // Use fetched address for UTXO accounts where address field is empty
+            address: params.toAccountId.address || toAccountAddress || '',
+          },
           toChainId: params.toToken.chainId,
           toAmount:
             params.editingFromOrToAmount === 'to' && params.toAmount
@@ -702,6 +719,8 @@ export const useSwap = () => {
     [
       fromAccount,
       toAccountId,
+      toAccountAddress,
+      isFetchingToAccountAddress,
       fromNetwork,
       fromAmount,
       toAmount,
@@ -771,7 +790,7 @@ export const useSwap = () => {
     if (
       !isBridge
       && (fromAccount.accountId.coin !== toToken.coin
-        || toCoin !== fromToken.coin)
+        || toAccountId?.coin !== fromToken.coin)
     ) {
       history.replace(WalletRoutes.Swap)
     } else {
@@ -780,8 +799,7 @@ export const useSwap = () => {
           fromToken: toToken,
           fromAccount: toAccount,
           toToken: fromToken,
-          toAddress: fromAccount.accountId.address,
-          toCoin: fromToken.coin,
+          toAccountId: fromAccount.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
@@ -792,7 +810,7 @@ export const useSwap = () => {
     toAccount,
     fromToken,
     toToken,
-    toCoin,
+    toAccountId,
     handleOnSetFromAmount,
     history,
     isBridge,
@@ -819,8 +837,7 @@ export const useSwap = () => {
           fromToken,
           fromAccount,
           toToken: token,
-          toAddress: account?.accountId.address,
-          toCoin: token.coin,
+          toAccountId: account?.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
@@ -865,8 +882,7 @@ export const useSwap = () => {
             fromToken: token,
             fromAccount: account,
             toToken,
-            toAddress,
-            toCoin,
+            toAccountId,
             routeType: 'bridge',
           }),
         )
@@ -886,8 +902,7 @@ export const useSwap = () => {
             fromToken: token,
             fromAccount: account,
             toToken,
-            toAddress,
-            toCoin,
+            toAccountId,
             routeType: 'swap',
           }),
         )
@@ -905,7 +920,7 @@ export const useSwap = () => {
       setToAmount('')
       reset()
     },
-    [toToken, reset, history, toAddress, toCoin, isBridge],
+    [toToken, reset, history, toAccountId, isBridge],
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -936,8 +951,7 @@ export const useSwap = () => {
           fromToken,
           fromAccount,
           toToken: toToken,
-          toAddress: address,
-          toCoin: toToken.coin,
+          toAccountId: account?.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )

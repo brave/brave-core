@@ -23,6 +23,7 @@ import {
   useSendBtcTransactionMutation,
   useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
+import { useReceiveAddressQuery } from '../../../../common/slices/api.slice.extra'
 
 export function useGate3(params: SwapParams) {
   const {
@@ -35,6 +36,13 @@ export function useGate3(params: SwapParams) {
     toAmount,
     slippageTolerance,
   } = params
+
+  // For UTXO-based accounts, the address field is empty, so we need to use
+  // useReceiveAddressQuery to get the actual receive address for the toAccountId.
+  const {
+    receiveAddress: toAccountAddress,
+    isFetchingAddress: isFetchingToAccountAddress,
+  } = useReceiveAddressQuery(toAccountId)
 
   // Mutations
   const [sendEvmTransaction] = useSendEvmTransactionMutation()
@@ -76,6 +84,10 @@ export function useGate3(params: SwapParams) {
         return
       }
 
+      if (isFetchingToAccountAddress || !toAccountAddress) {
+        return
+      }
+
       // If the route requires a firm quote, we need to fetch the transaction
       // from the backend. Otherwise, we can use the transaction params
       // embedded in the route.
@@ -94,7 +106,10 @@ export function useGate3(params: SwapParams) {
                       .multiplyByDecimals(fromToken.decimals)
                       .format(),
                   fromToken: fromToken.contractAddress,
-                  toAccountId,
+                  toAccountId: {
+                    ...toAccountId,
+                    address: toAccountAddress,
+                  },
                   toChainId: toToken.chainId,
                   toAmount:
                     toAmount
@@ -238,6 +253,7 @@ export function useGate3(params: SwapParams) {
       sendBtcTransaction,
       slippageTolerance,
       toAccountId,
+      toAccountAddress,
       toAmount,
       toToken,
     ],
