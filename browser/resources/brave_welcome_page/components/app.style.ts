@@ -330,6 +330,12 @@ export const style = scoped.css`
     border-radius: ${radius.xl};
     cursor: pointer;
     animation: fadeIn 0.25s ease-out;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  }
+
+  .browser-selected-header.exiting {
+    opacity: 0;
+    transform: scale(0.98);
   }
 
   .browser-selected-header h3 {
@@ -390,6 +396,191 @@ export const style = scoped.css`
 
   .import-option-item:last-child {
     border-bottom: none;
+  }
+
+  /* Import progress state styles */
+  .import-option-item.importing-state {
+    cursor: default;
+    gap: ${spacing.xl};
+  }
+
+  .import-status-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .import-status-icon leo-progressring {
+    --leo-progressring-size: 24px;
+  }
+
+  .import-status-icon leo-icon {
+    --leo-icon-size: 24px;
+  }
+
+  .import-status-icon .status-complete {
+    --leo-icon-color: ${color.systemfeedback.successIcon};
+  }
+
+  .import-item-label {
+    flex: 1;
+    font: ${font.default.regular};
+    color: ${color.text.primary};
+    opacity: 0.9;
+  }
+
+  .import-item-status {
+    font: ${font.default.regular};
+    color: ${color.text.tertiary};
+    text-align: right;
+  }
+
+  /* Browser transfer header - shown during import */
+  .browser-transfer-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${spacing['2Xl']};
+    padding: ${spacing['2Xl']} ${spacing['3Xl']};
+    background: ${color.material.regular};
+    border-radius: ${radius.xl};
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .browser-transfer-header .browser-item-icon {
+    width: 40px;
+    height: 40px;
+    animation: browserIconSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes browserIconSlideIn {
+    from {
+      transform: translateX(-80px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .browser-transfer-header .browser-item-icon leo-icon {
+    --leo-icon-size: 40px;
+  }
+
+  .transfer-arrows {
+    display: flex;
+    align-items: center;
+    animation: transferElementsFadeIn 0.4s ease-out 0.15s both;
+  }
+
+  @keyframes transferElementsFadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .transfer-arrows leo-icon {
+    --leo-icon-size: 24px;
+    --leo-icon-color: ${color.icon.default};
+  }
+
+  .transfer-arrows .arrow-1 {
+    opacity: 0.5;
+    animation: arrowPulse 1.5s ease-in-out infinite 0.6s;
+  }
+
+  .transfer-arrows .arrow-2 {
+    opacity: 0.75;
+    animation: arrowPulse 1.5s ease-in-out infinite 0.8s;
+  }
+
+  .transfer-arrows .arrow-3 {
+    opacity: 1;
+    animation: arrowPulse 1.5s ease-in-out infinite 1s;
+  }
+
+  @keyframes arrowPulse {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .brave-icon-with-spinner {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    animation: braveIconFadeIn 0.4s ease-out 0.25s both;
+  }
+
+  @keyframes braveIconFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .brave-icon-with-spinner > leo-icon {
+    --leo-icon-size: 40px;
+  }
+
+  .transfer-spinner {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: ${color.container.background};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08);
+    animation: spinnerFadeIn 0.3s ease-out 0.5s both;
+  }
+
+  @keyframes spinnerFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .transfer-spinner leo-progressring {
+    --leo-progressring-size: 24px;
+  }
+
+  .transfer-complete {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: ${color.container.background};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08);
+    animation: spinnerFadeIn 0.3s ease-out both;
+  }
+
+  .transfer-complete leo-icon {
+    --leo-icon-size: 24px;
+    --leo-icon-color: ${color.systemfeedback.successIcon};
   }
 
   /* Privacy Cards Styles */
@@ -537,6 +728,10 @@ export const style = scoped.css`
 
     .main-button {
       order: -1;
+    }
+
+    .privacy-card-icon {
+      display: none;
     }
   }
 `
