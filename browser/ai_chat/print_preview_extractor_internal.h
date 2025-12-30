@@ -38,8 +38,6 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
 namespace ai_chat {
 
-using CaptureImagesCallback = PrintPreviewExtractor::CaptureImagesCallback;
-
 class PreviewPageImageExtractor {
  public:
   PreviewPageImageExtractor();

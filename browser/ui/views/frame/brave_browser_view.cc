@@ -655,7 +655,7 @@ void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
 }
 
 void BraveBrowserView::OnAcceleratorsChanged(
-    const commands::Accelerators& changed) {
+    const commands::AcceleratorPrefManager::Accelerators& changed) {
   DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
   auto* focus_manager = GetFocusManager();
