@@ -113,6 +113,7 @@ export default function FullScreen() {
     const handleClick = (e: MouseEvent) => {
       if (!e.composedPath().includes(asideRef.current!)) {
         aiChatContext.toggleSidebar()
+        e.stopPropagation()
       }
     }
 
