@@ -57,6 +57,7 @@ class BraveTabContainer : public TabContainerImpl {
   void SetTabSlotVisibility() override;
   void InvalidateIdealBounds() override;
   void Layout(PassKey) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
