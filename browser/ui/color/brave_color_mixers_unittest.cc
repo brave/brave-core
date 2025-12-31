@@ -35,4 +35,6 @@ TEST_F(BraveColorMixersTest, ColorOverrideTest) {
   EXPECT_EQ(color_provider().GetColor(kColorOmniboxIconHover),
             SkColorSetA(color_provider().GetColor(kColorOmniboxText),
                         std::ceil(0.10f * 255.0f)));
+  EXPECT_EQ(color_provider().GetColor(kColorOmniboxSecurityChipText),
+            color_provider().GetColor(kColorOmniboxSecurityChipDangerous));
 }
