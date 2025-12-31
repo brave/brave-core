@@ -368,7 +368,29 @@ fn encode_tx_inputs(inputs: &[CxxSerializableTxInput]) -> CborValue {
 }
 
 fn encode_tx_output_tokens(tokens: &Vec<CxxSerializableTxOutputToken>) -> CborValue {
-    // Build the multiasset map for tokens (policy_id => { name => amount }).
+    fn asset_map_to_cbor(assets: &BTreeMap<&[u8], u64>) -> CborValue {
+        let assets_cbor_list = assets
+            .iter()
+            .map(|(name, amount)| {
+                (CborValue::Bytes(name.to_vec()), CborValue::Integer((*amount).into()))
+            })
+            .collect();
+
+        CborValue::Map(assets_cbor_list)
+    }
+
+    fn policies_map_to_cbor(multiasset: &BTreeMap<&[u8], BTreeMap<&[u8], u64>>) -> CborValue {
+        let cbor_value_list = multiasset
+            .iter()
+            .map(|(policy_id, assets)| {
+                (CborValue::Bytes(policy_id.to_vec()), asset_map_to_cbor(&assets))
+            })
+            .collect();
+
+        CborValue::Map(cbor_value_list)
+    }
+
+    // Build the multiasset map for tokens (policy_id -> (name -> amount)).
     use std::collections::BTreeMap;
     let mut multiasset: BTreeMap<&[u8], BTreeMap<&[u8], u64>> = BTreeMap::new();
     for token in tokens.iter() {
@@ -380,29 +402,7 @@ fn encode_tx_output_tokens(tokens: &Vec<CxxSerializableTxOutputToken>) -> CborVa
     }
 
     // Build the CBOR map for the sorted multiasset.
-    let multiasset_val = CborValue::Map(
-        multiasset
-            .iter()
-            .map(|(policy_id, assets)| {
-                (
-                    CborValue::Bytes(policy_id.to_vec()),
-                    CborValue::Map(
-                        assets
-                            .iter()
-                            .map(|(name, amount)| {
-                                (
-                                    CborValue::Bytes(name.to_vec()),
-                                    CborValue::Integer((*amount).into()),
-                                )
-                            })
-                            .collect(),
-                    ),
-                )
-            })
-            .collect(),
-    );
-
-    multiasset_val
+    policies_map_to_cbor(&multiasset)
 }
 
 fn encode_tx_output(output: &CxxSerializableTxOutput) -> CborValue {
@@ -599,52 +599,49 @@ fn extract_inputs(
 }
 
 fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputToken>, Error> {
-    let mut tokens: Vec<CxxSerializableTxOutputToken> = Vec::new();
+    // Parse (name -> amount) map.
+    fn process_asset_map(asset_map_val: &CborValue) -> Result<Vec<(Vec<u8>, u64)>, Error> {
+        let CborValue::Map(asset_map) = asset_map_val else {
+            return Err(Error::InvalidOutputFormat);
+        };
 
-    match &multiasset {
-        CborValue::Map(token_map) => {
-            for (policy_id_val, asset_map_val) in token_map {
-                // Each policy_id_val: Bytes(28)
-                let policy_id: [u8; CARDANO_SCRIPT_HASH_SIZE] = match policy_id_val {
-                    CborValue::Bytes(bytes) if bytes.len() == CARDANO_SCRIPT_HASH_SIZE => {
-                        bytes.clone().try_into().map_err(|_| Error::InvalidOutputFormat)?
+        return asset_map
+            .iter()
+            .map(|(asset_name_val, amount_val)| {
+                let asset_name = match asset_name_val {
+                    CborValue::Bytes(bytes) => bytes.clone(),
+                    _ => return Err(Error::InvalidOutputFormat),
+                };
+                let token_amount: u64 = match amount_val {
+                    CborValue::Integer(n) => {
+                        (*n).try_into().map_err(|_| Error::InvalidOutputFormat)?
                     }
                     _ => return Err(Error::InvalidOutputFormat),
                 };
-                // Each asset_map_val: Map<Bytes,name> -> Integer(amount)
-                match asset_map_val {
-                    CborValue::Map(asset_map) => {
-                        for (asset_name_val, amount_val) in asset_map {
-                            let asset_name = match asset_name_val {
-                                CborValue::Bytes(bytes) => {
-                                    if bytes.is_empty() {
-                                        return Err(Error::InvalidOutputFormat);
-                                    }
-                                    bytes.clone()
-                                }
-                                _ => return Err(Error::InvalidOutputFormat),
-                            };
-                            let token_amount: u64 = match amount_val {
-                                CborValue::Integer(n) => {
-                                    (*n).try_into().map_err(|_| Error::InvalidOutputFormat)?
-                                }
-                                _ => return Err(Error::InvalidOutputFormat),
-                            };
-                            tokens.push(CxxSerializableTxOutputToken {
-                                token_id: {
-                                    let mut combined = policy_id.to_vec();
-                                    combined.extend_from_slice(&asset_name);
-                                    combined
-                                },
-                                amount: token_amount,
-                            });
-                        }
-                    }
-                    _ => return Err(Error::InvalidOutputFormat),
-                }
-            }
+                Ok((asset_name, token_amount))
+            })
+            .collect();
+    }
+
+    // Parse multiasset map (policy_id -> (name -> amount)).
+    let CborValue::Map(token_map) = &multiasset else {
+        return Err(Error::InvalidOutputFormat);
+    };
+
+    let mut tokens: Vec<CxxSerializableTxOutputToken> = Vec::new();
+
+    for (policy_id_val, asset_map_val) in token_map {
+        let policy_id: Vec<u8> = match policy_id_val {
+            CborValue::Bytes(bytes) if bytes.len() == CARDANO_SCRIPT_HASH_SIZE => bytes.clone(),
+            _ => return Err(Error::InvalidOutputFormat),
+        };
+        let pairs = process_asset_map(asset_map_val)?;
+        for (asset_name, token_amount) in pairs {
+            tokens.push(CxxSerializableTxOutputToken {
+                token_id: [policy_id.as_slice(), asset_name.as_slice()].concat(),
+                amount: token_amount,
+            });
         }
-        _ => return Err(Error::InvalidOutputFormat),
     }
 
     Ok(tokens)
