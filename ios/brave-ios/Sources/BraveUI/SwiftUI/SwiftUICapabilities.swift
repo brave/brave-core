@@ -11,7 +11,7 @@ public enum SwiftUICapabilities {
   /// Determines if Liquid Glass is enabled on iOS 26.1+
   public static var isLiquidGlassEnabled: Bool {
     #if compiler(>=6.2.1)
-    if #available(iOS 26.1, *) {
+    if #available(iOS 26, *) {
       let isCompatabilityModeEnabled =
         Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
       if isCompatabilityModeEnabled {
