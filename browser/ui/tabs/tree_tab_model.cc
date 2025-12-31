@@ -13,7 +13,8 @@ TreeTabModel::~TreeTabModel() = default;
 
 const tabs::TreeTabNode* TreeTabModel::GetNode(
     const tree_tab::TreeTabNodeId& id) const {
-  return tree_tab_nodes_.contains(id) ? tree_tab_nodes_.at(id) : nullptr;
+  auto iter = tree_tab_nodes_.find(id);
+  return iter == tree_tab_nodes_.end() ? nullptr : iter->second;
 }
 
 int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
@@ -48,13 +49,14 @@ void TreeTabModel::AddTreeTabNode(const tabs::TreeTabNode& node) {
 }
 
 void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
-  if (!tree_tab_nodes_.contains(id)) {
+  auto iter = tree_tab_nodes_.find(id);
+  if (iter == tree_tab_nodes_.end()) {
     return;
   }
 
   will_remove_tree_tab_node_callback_list_.Notify(id);
 
-  tree_tab_nodes_.erase(id);
+  tree_tab_nodes_.erase(iter);
 }
 
 base::WeakPtr<TreeTabModel> TreeTabModel::GetWeakPtr() {
