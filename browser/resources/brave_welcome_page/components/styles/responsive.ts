@@ -14,8 +14,8 @@ export const responsiveStyles = `
     }
 
     .content-area > .brave-logo-container {
-      top: ${spacing['2Xl']};
-      left: ${spacing['2Xl']};
+      top: ${spacing['4Xl']};
+      left: ${spacing['4Xl']};
     }
 
     .content {
@@ -25,15 +25,17 @@ export const responsiveStyles = `
     .left-content {
       max-width: 100%;
       width: 100%;
-      padding: ${spacing['2Xl']};
-      padding-top: calc(${spacing['2Xl']} + 52px + ${spacing['2Xl']});
+      padding: ${spacing['4Xl']};
+      padding-top: calc(${spacing['4Xl']} + 52px + ${spacing['4Xl']});
     }
 
     .right-content {
+    min-width: auto;
       max-width: 100%;
       width: 100%;
-      padding: ${spacing['2Xl']};
-      overflow: hidden;
+      padding: ${spacing['4Xl']};
+      overflow: scroll;
+      align-items:start;
     }
 
     .right-content.welcome-hero {
@@ -68,26 +70,6 @@ export const responsiveStyles = `
 
     .color-swatch {
       flex: 0 0 auto;
-    }
-
-    .footer {
-      flex-direction: column;
-      gap: ${spacing['m']};
-      padding: ${spacing['xl']};
-    }
-
-    .footer-left,
-    .footer-right {
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .footer-right {
-      order: -1;
-    }
-
-    .main-button {
-      order: -1;
     }
 
     .privacy-card-icon {

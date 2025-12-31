@@ -18,7 +18,7 @@ export function StepWelcomeContent({}: StepContentProps) {
           <p>Experience the web without being watched. Brave shields you from trackers, ads, and fingerprinting, all automatically.</p>
         </div>
       </div>
-      <div className="right-content welcome-hero">
+      <div className="right-content">
         <img src={welcomeImage} alt="Welcome to Brave" className="hero-image" />
       </div>
     </div>
