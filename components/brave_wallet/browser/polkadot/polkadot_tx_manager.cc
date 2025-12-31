@@ -8,19 +8,17 @@
 #include <utility>
 
 #include "base/notimplemented.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -65,28 +63,6 @@ void PolkadotTxManager::ApproveTransaction(
                               mojom::ProviderError::kInternalError),
                           "Not implemented");
 }
-
-namespace {
-
-// TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
-// off of `const std::string&`.
-std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
-ParsePolkadotAccount(const std::string& input) {
-  auto ss58_address = Ss58Address::Decode(input);
-  if (ss58_address) {
-    return ss58_address->public_key;
-  }
-
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  if (base::HexStringToSpan(input, pubkey) ||
-      PrefixedHexStringToFixed(input, pubkey)) {
-    return pubkey;
-  }
-
-  return std::nullopt;
-}
-
-}  // namespace
 
 void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
