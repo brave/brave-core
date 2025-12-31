@@ -2019,9 +2019,11 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
     }
   )");
 
+  base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(callback, Run(IsTruthy(true), IsTruthy(false),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
@@ -2029,7 +2031,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
                                mojom::kSolanaMainnet, "USDC",
                                mojom::SwapProvider::kNearIntents),
       callback.Get());
-  task_environment_.RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
@@ -2041,6 +2043,7 @@ TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
   )";
   SetErrorInterceptor(error);
 
+  base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
 
   EXPECT_CALL(callback,
@@ -2050,7 +2053,8 @@ TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
                       mojom::Gate3SwapError::New(
                           "Provider NEAR_INTENTS does not support this swap",
                           mojom::Gate3SwapErrorKind::kUnknown))),
-                  ""));
+                  ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
@@ -2058,7 +2062,7 @@ TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
                                mojom::kSolanaMainnet, "USDC",
                                mojom::SwapProvider::kNearIntents),
       callback.Get());
-  task_environment_.RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
@@ -2138,19 +2142,20 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
       mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
       mojom::SwapProvider::kNearIntents);
 
+  base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
   EXPECT_CALL(callback,
               Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Transaction(
                       mojom::TransactionParamsUnion::NewEvmTransactionParams(
                           std::move(expected_evm_params)))),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
           std::move(quote_params)),
       callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  run_loop.Run();
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
@@ -2167,6 +2172,7 @@ TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
       mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
       mojom::SwapProvider::kNearIntents);
 
+  base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
 
   EXPECT_CALL(callback,
@@ -2175,14 +2181,14 @@ TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
                       mojom::Gate3SwapError::New(
                           "Insufficient liquidity",
                           mojom::Gate3SwapErrorKind::kInsufficientLiquidity))),
-                  ""));
+                  ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
           std::move(quote_params)),
       callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  run_loop.Run();
 }
 
 }  // namespace brave_wallet
