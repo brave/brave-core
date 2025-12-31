@@ -30,6 +30,26 @@ struct SearchView: View {
     .init(format: "name CONTAINS[c] %@", query)
   }
 
+  /// Determines if Liquid Glass is enabled
+  private var isLiquidGlassEnabled: Bool {
+    #if compiler(>=6.2.1)  // Xcode 26.1
+    if #available(iOS 26.1, *) {
+      let isCompatabilityModeEnabled =
+        Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
+      if isCompatabilityModeEnabled {
+        let key = "com.apple.Swi\("ftUI.IgnoreSolar")iumOptOut"
+        return UserDefaults.standard.bool(forKey: key)
+      }
+    }
+    #endif
+    return false
+  }
+
+  /// Returns the appropriate toolbar placement based on Liquid Glass state
+  private var searchBarPlacement: ToolbarItemPlacement {
+    isLiquidGlassEnabled ? .automatic : .principal
+  }
+
   init(
     folders: [PlaylistFolder],
     selectedItemID: Binding<PlaylistItem.ID?>,
@@ -86,10 +106,9 @@ struct SearchView: View {
           SearchUnavailableView(query: query)
         }
       }
-      .navigationTitle(Strings.Playlist.searchTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItemGroup(placement: .principal) {
+        ToolbarItemGroup(placement: searchBarPlacement) {
           SearchBar(
             text: $query,
             placeholder: Strings.Playlist.searchTitle,
