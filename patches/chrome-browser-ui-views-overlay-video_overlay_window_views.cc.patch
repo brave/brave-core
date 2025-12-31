@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index eb7e9f8d400b709a597e2f61a01fb88e66b0bd38..29143355c6da9db43b2a6e506cba6f9e2190c52e 100644
+index 3d9673db6bf535d3bc9518e7981ba8e84f4485bc..9a2dcb155b8018f7c661818efec8e2641a8ceb3a 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -353,7 +353,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
@@ -7,7 +7,7 @@ index eb7e9f8d400b709a597e2f61a01fb88e66b0bd38..29143355c6da9db43b2a6e506cba6f9e
    // doesn't initialize the object fully.
    auto overlay_window =
 -      base::WrapUnique(new VideoOverlayWindowViews(controller));
-+      Use2024UI() ? base::WrapUnique(new VideoOverlayWindowViews(controller)) : std::make_unique<BraveVideoOverlayWindowViews>(controller);
++      std::make_unique<BraveVideoOverlayWindowViews>(controller);
  
    overlay_window->SetColorModeOverride(ui::ColorProviderKey::ColorMode::kDark);
  
