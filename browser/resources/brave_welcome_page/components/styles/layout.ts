@@ -39,6 +39,8 @@ export const layoutStyles = `
     display: flex;
     width: 100%;
     flex: 1;
+    min-height: 0;
+    max-height: 100%;
   }
 
   .left-content {
@@ -47,6 +49,8 @@ export const layoutStyles = `
     padding: ${spacing['4Xl']};
     /* Add top padding to account for the absolutely positioned logo */
     padding-top: calc(${spacing['4Xl']} + 52px + ${spacing['4Xl']});
+    max-height: 100%;
+    overflow: auto;
   }
 
   .brave-logo-container {
@@ -63,12 +67,14 @@ export const layoutStyles = `
   }
 
   .right-content {
-    max-width: 700px;
+    min-width: 700px;
     width: 60%;
     padding: ${spacing['4Xl']};
     display: flex;
     align-items: center;
     justify-content: center;
+    max-height: 100%;
+    overflow: auto;
   }
 
   /* Welcome page hero image */
@@ -82,7 +88,7 @@ export const layoutStyles = `
   .hero-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
   }
 

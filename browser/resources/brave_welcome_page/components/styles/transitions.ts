@@ -26,6 +26,8 @@ export const transitionStyles = `
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-height: 0;
+    overflow: hidden;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }

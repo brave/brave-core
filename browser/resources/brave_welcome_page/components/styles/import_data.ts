@@ -20,6 +20,25 @@ export const importDataStyles = `
     border-radius: ${radius.xl};
     overflow: hidden;
     width: 100%;
+    position: relative;
+  }
+
+  .browser-dropdown::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: linear-gradient(to top, ${color.material.thick}, transparent);
+    pointer-events: none;
+    border-radius: 0 0 ${radius.xl} ${radius.xl};
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .browser-dropdown.scrolled-to-bottom::after {
+    opacity: 0;
   }
 
   .browser-dropdown.entering {

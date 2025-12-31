@@ -179,7 +179,16 @@ export function StepImportDataContent({}: StepContentProps) {
 
   const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
   const [displayedBrowser, setDisplayedBrowser] = React.useState<BrowserProfile | null>(selectedBrowser)
+  const [isAtScrollBottom, setIsAtScrollBottom] = React.useState(false)
   const prevIsImporting = React.useRef(isImporting)
+  const dropdownListRef = React.useRef<HTMLDivElement>(null)
+
+  // Handle scroll detection for hiding gradient at bottom
+  const handleDropdownScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement
+    const isAtBottom = target.scrollHeight - target.scrollTop - target.clientHeight < 1
+    setIsAtScrollBottom(isAtBottom)
+  }, [])
 
   // Handle transition when import starts - trigger morph animation
   React.useEffect(() => {
@@ -304,7 +313,7 @@ export function StepImportDataContent({}: StepContentProps) {
             <div className="browser-selector-wrapper">
               {/* Browser dropdown list */}
               {showDropdown && (
-                <div className={`browser-dropdown ${isExitingDropdown ? 'exiting' : ''} ${isEnteringDropdown ? 'entering' : ''}`}>
+                <div className={`browser-dropdown ${isExitingDropdown ? 'exiting' : ''} ${isEnteringDropdown ? 'entering' : ''} ${isAtScrollBottom ? 'scrolled-to-bottom' : ''}`}>
                   <div className="browser-dropdown-header">
                     <div className="browser-icons-grid">
                       <Icon name="chromerelease-color" />
@@ -314,7 +323,11 @@ export function StepImportDataContent({}: StepContentProps) {
                     </div>
                     <h3>Select your previous browser</h3>
                   </div>
-                  <div className="browser-dropdown-list">
+                  <div 
+                    className="browser-dropdown-list"
+                    ref={dropdownListRef}
+                    onScroll={handleDropdownScroll}
+                  >
                     {browserProfiles.map((browser, index) => (
                       <div
                         key={index}
