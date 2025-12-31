@@ -42,6 +42,7 @@ class BraveTabStrip : public TabStrip {
       const std::optional<std::u16string>& title) override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
+  bool CanPaintThrobberToLayer() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
