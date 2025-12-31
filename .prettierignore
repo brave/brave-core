@@ -78,8 +78,6 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/security_interstitials/
 /components/signin/
 /components/test/
-/components/translate/
-/components/variations/
 
 # Ignore some folders that still need to be formatted
 /ui/webui/resources/
