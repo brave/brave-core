@@ -30,24 +30,9 @@ struct SearchView: View {
     .init(format: "name CONTAINS[c] %@", query)
   }
 
-  /// Determines if Liquid Glass is enabled
-  private var isLiquidGlassEnabled: Bool {
-    #if compiler(>=6.2.1)  // Xcode 26.1
-    if #available(iOS 26.1, *) {
-      let isCompatabilityModeEnabled =
-        Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
-      if isCompatabilityModeEnabled {
-        let key = "com.apple.Swi\("ftUI.IgnoreSolar")iumOptOut"
-        return UserDefaults.standard.bool(forKey: key)
-      }
-    }
-    #endif
-    return false
-  }
-
   /// Returns the appropriate toolbar placement based on Liquid Glass state
   private var searchBarPlacement: ToolbarItemPlacement {
-    isLiquidGlassEnabled ? .automatic : .principal
+    SwiftUICapabilities.isLiquidGlassEnabled ? .automatic : .principal
   }
 
   init(
