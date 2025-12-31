@@ -334,6 +334,18 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   InvalidateLayout();
 }
 
+void BraveTabContainer::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    TabContainerImpl::OnBoundsChanged(previous_bounds);
+    return;
+  }
+
+  ClampScrollOffset();
+
+  TabContainerImpl::OnBoundsChanged(previous_bounds);
+}
+
 void BraveTabContainer::PaintBoundingBoxForSplitTabs(gfx::Canvas& canvas) {
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
   // Cache unique ids to avoid paiting same split tab twice.
@@ -1086,7 +1098,7 @@ void BraveTabContainer::SetScrollOffset(int offset) {
   // When offset changes, relayout tabs even when size doesn't change.
   scroll_offset_ = offset;
   last_layout_size_ = std::nullopt;
-  InvalidateLayout();
+  CompleteAnimationAndLayout();
 }
 
 int BraveTabContainer::GetMaxScrollOffset() const {
