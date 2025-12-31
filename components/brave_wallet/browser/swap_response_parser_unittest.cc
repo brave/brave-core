@@ -3010,7 +3010,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
               "value": "0",
               "splTokenMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
               "splTokenAmount": "1000000",
-              "decimals": "6"
+              "decimals": "6",
+              "versionedTransaction": null
             },
             "bitcoin": null
           },

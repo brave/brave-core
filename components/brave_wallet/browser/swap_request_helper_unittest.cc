@@ -1708,7 +1708,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsErc20ToSpl) {
       "swapType": "EXACT_INPUT",
       "amount": "1000000",
       "slippagePercentage": "0.5",
-      "provider": "NEAR_INTENTS"
+      "provider": "NEAR_INTENTS",
+      "routePriority": "CHEAPEST"
     }
   )");
   EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
@@ -1750,7 +1751,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsNativeSolToNativeBtc) {
       "swapType": "EXACT_INPUT",
       "amount": "1000000000",
       "slippagePercentage": "1.0",
-      "provider": "NEAR_INTENTS"
+      "provider": "NEAR_INTENTS",
+      "routePriority": "CHEAPEST"
     }
   )");
   EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
@@ -1792,7 +1794,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsNativeBtcToNativeEth) {
       "swapType": "EXACT_INPUT",
       "amount": "100000",
       "slippagePercentage": "0.5",
-      "provider": "NEAR_INTENTS"
+      "provider": "NEAR_INTENTS",
+      "routePriority": "CHEAPEST"
     }
   )");
   EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
@@ -1835,7 +1838,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsErc20ToErc20) {
       "swapType": "EXACT_INPUT",
       "amount": "1000000",
       "slippagePercentage": "0.5",
-      "provider": "NEAR_INTENTS"
+      "provider": "NEAR_INTENTS",
+      "routePriority": "CHEAPEST"
     }
   )");
   EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
