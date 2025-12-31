@@ -356,6 +356,20 @@ void TxService::AddUnapprovedCardanoTransaction(
 void TxService::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::DOT);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
   GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(std::move(params),
                                                            std::move(callback));
 }

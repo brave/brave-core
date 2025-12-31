@@ -25,11 +25,13 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -57,27 +59,32 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+
+    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
+        *keyring_service_, *network_manager_, shared_url_loader_factory_);
+
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, &profile_prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
+        json_rpc_service_.get(), nullptr, nullptr, nullptr,
+        polkadot_wallet_service_.get(), *keyring_service_, &profile_prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
 
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateImpl>(*keyring_service_);
 
-    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_, shared_url_loader_factory_);
-
     polkadot_tx_manager_ = std::make_unique<PolkadotTxManager>(
         *tx_service_, *polkadot_wallet_service_, *keyring_service_,
         *tx_service_->GetDelegateForTesting(), *account_resolver_delegate_);
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    polkadot_account_ =
-        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
-    ASSERT_TRUE(polkadot_account_);
+
+    polkadot_mainnet_account_ = keyring_service_->AddAccountSync(
+        mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+        "mainnet_account");
+    polkadot_testnet_account_ = keyring_service_->AddAccountSync(
+        mojom::CoinType::DOT, mojom::KeyringId::kPolkadotTestnet,
+        "testnet_account");
 
     UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
@@ -104,7 +111,8 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
   base::test::ScopedFeatureList feature_list_;
-  mojom::AccountInfoPtr polkadot_account_;
+  mojom::AccountInfoPtr polkadot_mainnet_account_;
+  mojom::AccountInfoPtr polkadot_testnet_account_;
 
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -185,16 +193,11 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     // Normal happy path flow of well-formatted data into an accepted unapproved
     // transaction committed to storage.
 
-    auto account_id = mojom::AccountId::New();
-    account_id->coin = mojom::CoinType::DOT;
-    account_id->keyring_id = mojom::KeyringId::kPolkadotMainnet;
-    account_id->kind = mojom::AccountKind::kDerived;
-    account_id->address = "test_address";
-
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, std::move(account_id), kBob, 1234, false);
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob, 1234,
+        false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -215,16 +218,11 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
   {
     // Provide an invalid destination address to the backend.
 
-    auto account_id = mojom::AccountId::New();
-    account_id->coin = mojom::CoinType::DOT;
-    account_id->keyring_id = mojom::KeyringId::kPolkadotMainnet;
-    account_id->kind = mojom::AccountKind::kDerived;
-    account_id->address = "test_address";
-
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, std::move(account_id), "0x1234", 1234, false);
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
+        1234, false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -245,16 +243,11 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
   {
     // Provide an invalid chain_id to the backend (i.e. not Polkadot).
 
-    auto account_id = mojom::AccountId::New();
-    account_id->coin = mojom::CoinType::DOT;
-    account_id->keyring_id = mojom::KeyringId::kPolkadotMainnet;
-    account_id->kind = mojom::AccountKind::kDerived;
-    account_id->address = "test_address";
-
     std::string chain_id = mojom::kZCashTestnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, std::move(account_id), kBob, 1234, false);
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob, 1234,
+        false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -264,6 +257,34 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
               EXPECT_FALSE(success);
               EXPECT_TRUE(tx_meta_id.empty());
               EXPECT_EQ(err_str, WalletInternalErrorMessage());
+
+              quit_closure.Run();
+            },
+            task_environment_.QuitClosure()));
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Provide an invalid account id (test account resolution failure).
+
+    std::string chain_id = mojom::kPolkadotMainnet;
+
+    auto account_id = polkadot_mainnet_account_->account_id->Clone();
+    account_id->address = "invalid_address";
+
+    auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+        chain_id, std::move(account_id), kBob, 1234, false);
+
+    tx_service_->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params),
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, bool success,
+               const std::string& tx_meta_id, const std::string& err_str) {
+              EXPECT_FALSE(success);
+              EXPECT_TRUE(tx_meta_id.empty());
+              EXPECT_EQ(err_str, l10n_util::GetStringUTF8(
+                                     IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
 
               quit_closure.Run();
             },
@@ -305,16 +326,11 @@ TEST_F(PolkadotTxManagerUnitTest,
       "error": "Polkadot",
       "id": 1 })");
 
-  auto account_id = mojom::AccountId::New();
-  account_id->coin = mojom::CoinType::DOT;
-  account_id->keyring_id = mojom::KeyringId::kPolkadotMainnet;
-  account_id->kind = mojom::AccountKind::kDerived;
-  account_id->address = "test_address";
-
   std::string chain_id = mojom::kPolkadotMainnet;
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, std::move(account_id), kBob, 1234, false);
+      chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob, 1234,
+      false);
 
   polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params),
