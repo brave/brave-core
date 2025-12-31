@@ -760,7 +760,7 @@ export const transactionEndpoints = ({
             data: { success: false },
           }
         } catch (error) {
-          return { error: 'Failed to send ADA transaction' }
+          return { error: 'Failed to send DOT transaction' }
         }
       },
       invalidatesTags: (res, err, arg) =>
