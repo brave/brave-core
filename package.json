@@ -121,7 +121,7 @@
     "@types/redux-logger": "3.0.9",
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "6.4.0",
-    "acorn": "8.0.5",
+    "acorn": "8.15.0",
     "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
     "chalk": "4.1.2",
