@@ -180,7 +180,7 @@
     "teamcity-service-messages": "0.1.14",
     "terser": "5.16.2",
     "timers-browserify": "2.0.12",
-    "ts-jest": "28.0.8",
+    "ts-jest": "29.4.6",
     "ts-loader": "9.5.2",
     "tsx": "4.19.2",
     "typesafe-actions": "2.2.0",
