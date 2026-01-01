@@ -213,7 +213,7 @@
     "core-js": "3.33.3",
     "darkreader": "4.9.87",
     "date-fns": "2.28.0",
-    "jszip": "3.8.0",
+    "jszip": "3.10.1",
     "page-metadata-parser": "1.1.4",
     "prettier-bytes": "1.0.4",
     "qr-image": "3.2.0",
