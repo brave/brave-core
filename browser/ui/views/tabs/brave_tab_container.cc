@@ -1152,9 +1152,30 @@ int BraveTabContainer::GetMaxScrollOffset() const {
   auto [first_tab, last_tab] = find_visible_unpinned_tabs();
   int total_height = 0;
   if (is_tab_visible(first_tab) && is_tab_visible(last_tab)) {
-    // from first unpinned tab's top to last unpinned tab's bottom
-    total_height += tabs_view_model_.ideal_bounds(last_tab).bottom() -
-                    tabs_view_model_.ideal_bounds(first_tab).y();
+    // We might have collapsed groups before first visible unpinned tab or after
+    // last visible unpinned tab.
+    int first_visible_slot_view_y =
+        tabs_view_model_.ideal_bounds(first_tab).y();
+    int last_visible_slot_view_bottom =
+        tabs_view_model_.ideal_bounds(last_tab).bottom();
+    for (auto& [_, group_views] : group_views_) {
+      auto [leading_view, trailing_view] =
+          group_views->GetLeadingTrailingGroupViews();
+      if (!leading_view || !trailing_view) {
+        // These views could be nullptr if the group is invisible.
+        continue;
+      }
+
+      auto bounds = group_views->GetBounds();
+      if (bounds.y() < first_visible_slot_view_y) {
+        first_visible_slot_view_y = bounds.y();
+      }
+      if (bounds.bottom() > last_visible_slot_view_bottom) {
+        last_visible_slot_view_bottom = bounds.bottom();
+      }
+    }
+    // from first visible slot view's top to last visible slot view's bottom
+    total_height += last_visible_slot_view_bottom - first_visible_slot_view_y;
   } else {
     CHECK(!is_tab_visible(first_tab) && !is_tab_visible(last_tab));
 
