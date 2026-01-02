@@ -135,6 +135,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            LayoutAfterFirstTabCreation);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, LayoutSanity);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
