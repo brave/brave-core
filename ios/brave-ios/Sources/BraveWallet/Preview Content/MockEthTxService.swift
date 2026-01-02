@@ -60,6 +60,13 @@ class MockTxService: BraveWalletTxService {
     completion(true, "txMetaId", "")
   }
 
+  func addUnapprovedPolkadotTransaction(
+    params: BraveWallet.NewPolkadotTransactionParams,
+    completion: @escaping (Bool, String, String) -> Void
+  ) {
+    completion(true, "txMetaId", "")
+  }
+
   func rejectTransaction(
     coinType: BraveWallet.CoinType,
     chainId: String,
