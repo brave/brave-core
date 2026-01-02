@@ -129,7 +129,7 @@ class SidebarContainerView : public sidebar::Sidebar,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
+  void OnTabWillBeRemoved(tabs::TabInterface* tab, int index) override;
 
   void UpdateActiveItemState();
 
