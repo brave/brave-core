@@ -615,9 +615,16 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
   result.Set("destinationTokenAddress", params->to_token);
   result.Set("recipient", params->to_account_id->address);
 
-  result.Set("swapType", "EXACT_INPUT");
-  // amount refers to source or destination based on swapType.
-  result.Set("amount", params->from_amount);
+  if (!params->from_amount.empty() && params->to_amount.empty()) {
+    result.Set("swapType", "EXACT_INPUT");
+    result.Set("amount", params->from_amount);
+  } else if (params->from_amount.empty() && !params->to_amount.empty()) {
+    result.Set("swapType", "EXACT_OUTPUT");
+    result.Set("amount", params->to_amount);
+  } else {
+    return std::nullopt;
+  }
+
   result.Set("slippagePercentage", params->slippage_percentage);
 
   auto provider = EncodeProvider(params->provider);

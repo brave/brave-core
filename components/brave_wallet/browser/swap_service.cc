@@ -329,7 +329,8 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 // If the provider is set to kAuto, the method will attempt to fetch a quote
 // based on the following priority:
 //   P1. LiFi, Jupiter
-//   P2. 0x, Squid
+//   P2. 0x, Near Intents
+//   P3. Squid
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
@@ -344,11 +345,14 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                           !params->from_amount.empty();
   auto has_squid_support = IsNetworkSupportedBySquid(params->from_chain_id) &&
                            IsNetworkSupportedBySquid(params->to_chain_id);
+
+  // Near Intents support criteria:
+  // - From and to chains must be supported
+  // - One of the amounts must be empty but not both
   auto has_near_intents_support =
       IsNetworkSupportedByNearIntents(params->from_chain_id) &&
       IsNetworkSupportedByNearIntents(params->to_chain_id) &&
-      // NearIntents does not support ExactOut swaps yet.
-      !params->from_amount.empty();
+      (params->from_amount.empty() != params->to_amount.empty());
 
   // If the provider is set to Auto, Solana swaps are served via Jupiter.
   if ((params->provider == mojom::SwapProvider::kJupiter ||
@@ -415,6 +419,29 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
+  if ((params->provider == mojom::SwapProvider::kNearIntents ||
+       params->provider == mojom::SwapProvider::kAuto) &&
+      has_near_intents_support) {
+    auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+    if (!encoded_params) {
+      std::move(callback).Run(
+          nullptr, nullptr, nullptr,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      return;
+    }
+
+    auto internal_callback =
+        base::BindOnce(&SwapService::OnGetGate3Quote,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+    api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod,
+                                GetGate3QuoteURL(/*is_firm=*/false),
+                                *encoded_params, "application/json",
+                                std::move(internal_callback), GetHeaders(), {},
+                                std::move(conversion_callback));
+    return;
+  }
+
   if ((params->provider == mojom::SwapProvider::kSquid ||
        params->provider == mojom::SwapProvider::kAuto) &&
       has_squid_support) {
@@ -436,29 +463,6 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
         net::HttpRequestHeaders::kPostMethod, GetSquidURL(), *encoded_params,
         "application/json", std::move(internal_callback), GetHeaders(), {},
         std::move(conversion_callback));
-    return;
-  }
-
-  if ((params->provider == mojom::SwapProvider::kNearIntents ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_near_intents_support) {
-    auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto internal_callback =
-        base::BindOnce(&SwapService::OnGetGate3Quote,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-    api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod,
-                                GetGate3QuoteURL(/*is_firm=*/false),
-                                *encoded_params, "application/json",
-                                std::move(internal_callback), GetHeaders(), {},
-                                std::move(conversion_callback));
     return;
   }
 
