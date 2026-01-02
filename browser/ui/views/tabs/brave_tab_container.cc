@@ -1176,7 +1176,7 @@ int BraveTabContainer::GetMaxScrollOffset() const {
   if (pinned_tab_count > 0) {
     // Exclude pinned tabs area
     visible_height -=
-        GetTabAtModelIndex(pinned_tab_count - 1)->bounds().bottom();
+        tabs_view_model_.ideal_bounds(pinned_tab_count - 1).bottom();
     visible_height -= tabs::kMarginForVerticalTabContainers;
   }
 
@@ -1253,6 +1253,7 @@ void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
   // So we need to update insets here as well.
   TabContainerImpl::MoveTab(from_model_index, to_model_index);
   GetTabAtModelIndex(to_model_index)->UpdateInsets();
+  ClampScrollOffset();
 }
 
 BEGIN_METADATA(BraveTabContainer)
