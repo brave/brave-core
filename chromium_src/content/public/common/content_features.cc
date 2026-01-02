@@ -17,7 +17,6 @@ BASE_FEATURE(kIdleDetection,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kCookieDeprecationFacilitatedTesting, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDevToolsPrivacyUI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},

@@ -1989,8 +1989,7 @@
 # adding an unnecessary second wait that never completes.
 -All/ContextMenuBrowserTest.OpenLinkInProfileEntryPresent/LinkPreview*
 
-# These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
-# or TrackingProtectionOnboarding.
+# These tests fail because of disabled TrackingProtectionOnboarding.
 -AdHeuristicTPCDBrowserTestHeuristicsGrant.CookieAllowed
 -AdHeuristicTPCDBrowserTestMetadataGrant.CookieAllowed
 -AdHeuristicTPCDBrowserTestSkipHeuristicsGrant.CookieBlocked
