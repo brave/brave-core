@@ -154,12 +154,37 @@ export const useSwap = () => {
     toAccountIdFromParams,
   )
   const toAccountId = toAccount?.accountId ?? undefined
-  // For UTXO-based accounts, the address field is empty, so we need to use
-  // useReceiveAddressQuery to get the actual receive address for the toAccountId.
+
+  // For UTXO-based accounts, the address field in the accountId is empty,
+  // so we need to use useReceiveAddressQuery to get the actual receive address.
   const {
     receiveAddress: toAccountAddress,
     isFetchingAddress: isFetchingToAccountAddress,
   } = useReceiveAddressQuery(toAccountId)
+  const {
+    receiveAddress: fromAccountAddress,
+    isFetchingAddress: isFetchingFromAccountAddress,
+  } = useReceiveAddressQuery(fromAccount?.accountId)
+  const needsAddressResolution = useMemo(() => {
+    const needsToAddressResolution =
+      toAccountId
+      && !toAccountId.address
+      && (isFetchingToAccountAddress || !toAccountAddress)
+
+    const needsFromAddressResolution =
+      fromAccount
+      && !fromAccount.accountId.address
+      && (isFetchingFromAccountAddress || !fromAccountAddress)
+
+    return needsToAddressResolution || needsFromAddressResolution
+  }, [
+    toAccountId,
+    toAccountAddress,
+    isFetchingToAccountAddress,
+    fromAccount,
+    fromAccountAddress,
+    isFetchingFromAccountAddress,
+  ])
   const fromContractOrSymbolFromParams = query.get('fromToken') ?? undefined
   const fromChainIdFromParams = query.get('fromChainId') ?? undefined
 
@@ -367,6 +392,9 @@ export const useSwap = () => {
       toToken,
       toAmount: editingFromOrToAmount === 'to' ? toAmount : '',
       slippageTolerance,
+      fromAccountAddress,
+      toAccountAddress,
+      needsAddressResolution,
     }
   }, [
     fromNetwork,
@@ -378,6 +406,9 @@ export const useSwap = () => {
     toToken,
     toAmount,
     slippageTolerance,
+    fromAccountAddress,
+    toAccountAddress,
+    needsAddressResolution,
   ])
 
   const needsAccountSelected =
@@ -490,10 +521,8 @@ export const useSwap = () => {
         return
       }
 
-      // For UTXO accounts (like BTC), wait for the receive address to be fetched
-      const needsAddressResolution =
-        !params.toAccountId.address
-        && (isFetchingToAccountAddress || !toAccountAddress)
+      // For UTXO accounts (like BTC), wait for the receive addresses to be
+      // fetched.
       if (needsAddressResolution) {
         return
       }
@@ -507,7 +536,11 @@ export const useSwap = () => {
       let quoteResponse
       try {
         quoteResponse = await generateSwapQuote({
-          fromAccountId: fromAccount.accountId,
+          fromAccountId: {
+            ...fromAccount.accountId,
+            // Use fetched address for UTXO accounts where address field is empty
+            address: fromAccount.accountId.address || fromAccountAddress || '',
+          },
           fromChainId: params.fromToken.chainId,
           fromAmount:
             params.editingFromOrToAmount === 'from' && params.fromAmount
@@ -718,9 +751,10 @@ export const useSwap = () => {
     },
     [
       fromAccount,
+      fromAccountAddress,
       toAccountId,
       toAccountAddress,
-      isFetchingToAccountAddress,
+      needsAddressResolution,
       fromNetwork,
       fromAmount,
       toAmount,
@@ -1446,6 +1480,9 @@ export const useSwap = () => {
       // of a new quote is in progress.
       || isFetchingQuote
       || isSubmittingSwap
+      // For UTXO accounts (like BTC), wait for the receive addresses to be
+      // fetched.
+      || needsAddressResolution
       // If quote is not set, there's nothing to create the swap with, so Swap
       // button must be disabled.
       || quoteUnion === undefined
@@ -1477,6 +1514,7 @@ export const useSwap = () => {
     fromAccount,
     toNetwork,
     isFetchingQuote,
+    needsAddressResolution,
     quoteUnion,
     fromToken,
     toToken,

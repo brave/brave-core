@@ -23,7 +23,6 @@ import {
   useSendBtcTransactionMutation,
   useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
-import { useReceiveAddressQuery } from '../../../../common/slices/api.slice.extra'
 
 export function useGate3(params: SwapParams) {
   const {
@@ -35,14 +34,10 @@ export function useGate3(params: SwapParams) {
     toToken,
     toAmount,
     slippageTolerance,
+    fromAccountAddress,
+    toAccountAddress,
+    needsAddressResolution,
   } = params
-
-  // For UTXO-based accounts, the address field is empty, so we need to use
-  // useReceiveAddressQuery to get the actual receive address for the toAccountId.
-  const {
-    receiveAddress: toAccountAddress,
-    isFetchingAddress: isFetchingToAccountAddress,
-  } = useReceiveAddressQuery(toAccountId)
 
   // Mutations
   const [sendEvmTransaction] = useSendEvmTransactionMutation()
@@ -84,7 +79,9 @@ export function useGate3(params: SwapParams) {
         return
       }
 
-      if (isFetchingToAccountAddress || !toAccountAddress) {
+      // For UTXO accounts (like BTC), wait for the receive addresses to be
+      // fetched.
+      if (needsAddressResolution) {
         return
       }
 
@@ -98,7 +95,13 @@ export function useGate3(params: SwapParams) {
             toMojoUnion(
               {
                 gate3TransactionParams: {
-                  fromAccountId: fromAccount.accountId,
+                  fromAccountId: {
+                    ...fromAccount.accountId,
+                    // Use fetched address for UTXO accounts where address field
+                    // is empty
+                    address:
+                      fromAccount.accountId.address || fromAccountAddress || '',
+                  },
                   fromChainId: fromToken.chainId,
                   fromAmount:
                     fromAmount
@@ -108,7 +111,9 @@ export function useGate3(params: SwapParams) {
                   fromToken: fromToken.contractAddress,
                   toAccountId: {
                     ...toAccountId,
-                    address: toAccountAddress,
+                    // Use fetched address for UTXO accounts where address field
+                    // is empty
+                    address: toAccountId.address || toAccountAddress || '',
                   },
                   toChainId: toToken.chainId,
                   toAmount:
@@ -242,10 +247,12 @@ export function useGate3(params: SwapParams) {
     },
     [
       fromAccount,
+      fromAccountAddress,
       fromAmount,
       fromNetwork,
       fromToken,
       generateSwapTransaction,
+      needsAddressResolution,
       sendEvmTransaction,
       sendSolTransaction,
       sendSPLTransfer,

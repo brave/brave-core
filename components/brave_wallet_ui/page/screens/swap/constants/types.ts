@@ -91,6 +91,18 @@ export type SwapParams = {
    * format for Jupiter and 0x swap providers.
    */
   slippageTolerance: string
+
+  /**
+   * For UTXO-based accounts, the address field in the accountId is empty,
+   * so the receive addresses are resolved separately and passed here.
+   */
+  fromAccountAddress?: string
+  toAccountAddress?: string
+
+  /**
+   * Whether the receive addresses are still being resolved for UTXO accounts.
+   */
+  needsAddressResolution?: boolean
 }
 
 export type SwapParamsOverrides = {
