@@ -352,3 +352,7 @@ package = "zcash_primitives"
 [patch.crates-io.zcash_client_backend_v0_12]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
 package = "zcash_client_backend"
+
+[patch.crates-io.zmij_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zmij-v1"
+package = "zmij"
