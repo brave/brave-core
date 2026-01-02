@@ -28,7 +28,7 @@ inline constexpr const size_t kPolkadotBlockHashSize = 32;
 // TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
 // off of `const std::string&`.
 std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
-ParsePolkadotAccount(const std::string& input);
+ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix);
 
 }  // namespace brave_wallet
 

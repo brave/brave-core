@@ -87,7 +87,8 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
     return std::move(callback).Run(false, "", chain_metadata.error());
   }
 
-  auto recipient = ParsePolkadotAccount(params->to);
+  auto recipient =
+      ParsePolkadotAccount(params->to, chain_metadata->GetSs58Prefix());
   if (!recipient) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }

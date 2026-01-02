@@ -49,6 +49,10 @@ PolkadotChainMetadata::PolkadotChainMetadata(
     ::rust::Box<CxxPolkadotChainMetadata> chain_metadata)
     : chain_metadata_(std::move(chain_metadata)) {}
 
+uint16_t PolkadotChainMetadata::GetSs58Prefix() const {
+  return get_ss58_prefix(*chain_metadata_);
+}
+
 PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
     base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     uint128_t send_amount)

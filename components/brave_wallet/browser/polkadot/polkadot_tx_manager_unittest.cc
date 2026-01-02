@@ -162,6 +162,9 @@ namespace {
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
+inline constexpr const char kBobSS58[] =
+    "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
+
 }  // namespace
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
@@ -231,7 +234,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBobSS58,
         mojom::uint128::New(0xffffffffffffffff, 0xffffffffffffffff), false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
@@ -266,6 +269,32 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
+        mojom::uint128::New(0, 1234), false);
+
+    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params),
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, bool success,
+               const std::string& tx_meta_id, const std::string& err_str) {
+              EXPECT_FALSE(success);
+              EXPECT_TRUE(tx_meta_id.empty());
+              EXPECT_EQ(err_str, WalletInternalErrorMessage());
+
+              quit_closure.Run();
+            },
+            task_environment_.QuitClosure()));
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Provide an incompatible ss58-based address.
+
+    std::string chain_id = mojom::kPolkadotMainnet;
+
+    auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+        chain_id, polkadot_mainnet_account_->account_id->Clone(),
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
         mojom::uint128::New(0, 1234), false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(

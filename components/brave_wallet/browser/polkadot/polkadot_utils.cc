@@ -12,9 +12,12 @@
 namespace brave_wallet {
 
 std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
-ParsePolkadotAccount(const std::string& input) {
+ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
   auto ss58_address = Ss58Address::Decode(input);
   if (ss58_address) {
+    if (ss58_address->prefix != ss58_prefix) {
+      return std::nullopt;
+    }
     return ss58_address->public_key;
   }
 
