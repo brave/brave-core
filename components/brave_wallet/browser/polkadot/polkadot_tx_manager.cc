@@ -96,9 +96,11 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
-  PolkadotTxMeta tx_metadata(
-      params->from, chain_metadata.value(),
-      PolkadotUnsignedTransfer(*recipient, params->amount));
+  base::StrictNumeric<uint128_t> send_amount =
+      (uint128_t{params->amount->high} << 64) | uint128_t{params->amount->low};
+
+  PolkadotTxMeta tx_metadata(params->from, chain_metadata.value(),
+                             PolkadotUnsignedTransfer(*recipient, send_amount));
 
   tx_metadata.set_id(TxMeta::GenerateMetaID());
   tx_metadata.set_origin(

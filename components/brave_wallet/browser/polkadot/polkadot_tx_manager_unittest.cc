@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/grit/brave_components_strings.h"
@@ -136,7 +137,7 @@ TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
   auto tx_data_union = mojom::TxDataUnion::NewPolkadotTxData(
-      mojom::PolkadotTxdata::New("", 0, false, 0));
+      mojom::PolkadotTxdata::New("", mojom::uint128::New(0, 0), false, 0));
 
   auto account_id = mojom::AccountId::New();
   account_id->coin = mojom::CoinType::DOT;
@@ -196,21 +197,64 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob, 1234,
-        false);
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
+        mojom::uint128::New(0, 1234), false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
         base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool success,
-               const std::string& tx_meta_id, const std::string& err_str) {
+            [](base::RepeatingClosure quit_closure, TxService* tx_service,
+               bool success, const std::string& tx_meta_id,
+               const std::string& err_str) {
               EXPECT_TRUE(success);
               EXPECT_FALSE(tx_meta_id.empty());
               EXPECT_EQ(err_str, "");
 
+              const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
+              const auto* tx = txs.Find(tx_meta_id);
+              EXPECT_TRUE(tx);
+
+              EXPECT_EQ(
+                  *tx->GetDict().FindString("extrinsic"),
+                  R"(98040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)");
+
               quit_closure.Run();
             },
-            task_environment_.QuitClosure()));
+            task_environment_.QuitClosure(), tx_service_.get()));
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Send a u128::MAX.
+
+    std::string chain_id = mojom::kPolkadotMainnet;
+
+    auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
+        mojom::uint128::New(0xffffffffffffffff, 0xffffffffffffffff), false);
+
+    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params),
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, TxService* tx_service,
+               bool success, const std::string& tx_meta_id,
+               const std::string& err_str) {
+              EXPECT_TRUE(success);
+              EXPECT_FALSE(tx_meta_id.empty());
+              EXPECT_EQ(err_str, "");
+
+              const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
+              const auto* tx = txs.Find(tx_meta_id);
+              EXPECT_TRUE(tx);
+
+              EXPECT_EQ(
+                  *tx->GetDict().FindString("extrinsic"),
+                  R"(d4040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4833ffffffffffffffffffffffffffffffff)");
+
+              quit_closure.Run();
+            },
+            task_environment_.QuitClosure(), tx_service_.get()));
 
     task_environment_.RunUntilQuit();
   }
@@ -222,7 +266,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
-        1234, false);
+        mojom::uint128::New(0, 1234), false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -246,8 +290,8 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     std::string chain_id = mojom::kZCashTestnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob, 1234,
-        false);
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
+        mojom::uint128::New(0, 1234), false);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -274,7 +318,8 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     account_id->address = "invalid_address";
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, std::move(account_id), kBob, 1234, false);
+        chain_id, std::move(account_id), kBob, mojom::uint128::New(0, 1234),
+        false);
 
     tx_service_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -329,8 +374,8 @@ TEST_F(PolkadotTxManagerUnitTest,
   std::string chain_id = mojom::kPolkadotMainnet;
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob, 1234,
-      false);
+      chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob,
+      mojom::uint128::New(0, 1234), false);
 
   polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params),

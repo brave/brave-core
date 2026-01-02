@@ -2602,7 +2602,7 @@ struct CardanoTxData {
 
 struct PolkadotTxdata {
   string to;
-  uint64 amount;
+  uint128 amount;
   bool sending_max_amount;
   uint64 fee;
 };
@@ -2723,7 +2723,7 @@ struct NewPolkadotTransactionParams {
   string chain_id;
   AccountId from;
   string to;
-  uint64 amount;
+  uint128 amount;
   bool sending_max_amount;
 };
 

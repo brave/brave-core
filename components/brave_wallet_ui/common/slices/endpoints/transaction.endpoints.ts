@@ -60,6 +60,7 @@ import {
   signLedgerBitcoinTransaction,
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
+import { bigIntToUint128 } from '../../../utils/polkadot-utils'
 
 interface ProcessSignSolTransactionsRequestPayload {
   approved: boolean
@@ -745,7 +746,7 @@ export const transactionEndpoints = ({
             chainId: payload.network.chainId,
             from: payload.fromAccount.accountId,
             to: payload.to,
-            amount: BigInt(payload.value),
+            amount: bigIntToUint128(BigInt(payload.value)),
             sendingMaxAmount: payload.sendingMaxAmount,
           }
 
