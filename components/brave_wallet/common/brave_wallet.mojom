@@ -595,7 +595,7 @@ union SwapTransactionUnion {
   ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
   SquidTransactionUnion squid_transaction;
-  TransactionParamsUnion gate3_transaction;
+  Gate3SwapTransactionParamsUnion gate3_transaction;
 };
 
 enum Gate3SwapErrorKind {
@@ -630,7 +630,7 @@ struct Gate3SwapRouteStep {
   Gate3SwapTool tool;
 };
 
-struct Gate3EvmTransactionParams {
+struct Gate3SwapEvmTransactionParams {
   ChainId chain;
   string from;
   string to;
@@ -638,7 +638,7 @@ struct Gate3EvmTransactionParams {
   string data;
 };
 
-struct Gate3SolanaTransactionParams {
+struct Gate3SwapSolanaTransactionParams {
   ChainId chain;
   string from;
   string to;
@@ -649,17 +649,17 @@ struct Gate3SolanaTransactionParams {
   string? versioned_transaction;
 };
 
-struct Gate3BitcoinTransactionParams {
+struct Gate3SwapBitcoinTransactionParams {
   ChainId chain;
   string to;
   string value;
   string refund_to;
 };
 
-union TransactionParamsUnion {
-  Gate3EvmTransactionParams evm_transaction_params;
-  Gate3SolanaTransactionParams solana_transaction_params;
-  Gate3BitcoinTransactionParams bitcoin_transaction_params;
+union Gate3SwapTransactionParamsUnion {
+  Gate3SwapEvmTransactionParams evm_transaction_params;
+  Gate3SwapSolanaTransactionParams solana_transaction_params;
+  Gate3SwapBitcoinTransactionParams bitcoin_transaction_params;
 };
 
 struct Gate3SwapRoute {
@@ -694,7 +694,7 @@ struct Gate3SwapRoute {
   // Quote expiration time (Unix timestamp in seconds); may be unset.
   string? expires_at;
 
-  TransactionParamsUnion? transaction_params;
+  Gate3SwapTransactionParamsUnion? transaction_params;
 
   bool has_post_submit_hook;
   bool requires_token_allowance;

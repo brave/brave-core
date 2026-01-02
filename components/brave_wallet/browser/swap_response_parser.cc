@@ -1278,7 +1278,7 @@ mojom::Gate3SwapRouteStepPtr ParseRouteStep(
   return result;
 }
 
-mojom::TransactionParamsUnionPtr ParseTransactionParams(
+mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     const base::Value& value) {
   if (value.is_none()) {
     return nullptr;
@@ -1294,7 +1294,7 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
   if (const auto* evm_value = dict.Find("evm");
       evm_value && !evm_value->is_none()) {
     auto evm_params =
-        swap_responses::Gate3EvmTransactionParams::FromValue(*evm_value);
+        swap_responses::Gate3SwapEvmTransactionParams::FromValue(*evm_value);
     if (!evm_params) {
       return nullptr;
     }
@@ -1302,13 +1302,13 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
     if (!chain) {
       return nullptr;
     }
-    auto evm_result = mojom::Gate3EvmTransactionParams::New();
+    auto evm_result = mojom::Gate3SwapEvmTransactionParams::New();
     evm_result->chain = std::move(chain);
     evm_result->from = evm_params->from;
     evm_result->to = evm_params->to;
     evm_result->value = evm_params->value;
     evm_result->data = evm_params->data;
-    return mojom::TransactionParamsUnion::NewEvmTransactionParams(
+    return mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
         std::move(evm_result));
   }
 
@@ -1316,7 +1316,8 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
   if (const auto* solana_value = dict.Find("solana");
       solana_value && !solana_value->is_none()) {
     auto solana_params =
-        swap_responses::Gate3SolanaTransactionParams::FromValue(*solana_value);
+        swap_responses::Gate3SwapSolanaTransactionParams::FromValue(
+            *solana_value);
     if (!solana_params) {
       return nullptr;
     }
@@ -1324,7 +1325,7 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
     if (!chain) {
       return nullptr;
     }
-    auto solana_result = mojom::Gate3SolanaTransactionParams::New();
+    auto solana_result = mojom::Gate3SwapSolanaTransactionParams::New();
     solana_result->chain = std::move(chain);
     solana_result->from = solana_params->from;
     solana_result->to = solana_params->to;
@@ -1339,7 +1340,7 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
     solana_result->versioned_transaction =
         ParseNullableString(solana_params->versioned_transaction);
 
-    return mojom::TransactionParamsUnion::NewSolanaTransactionParams(
+    return mojom::Gate3SwapTransactionParamsUnion::NewSolanaTransactionParams(
         std::move(solana_result));
   }
 
@@ -1347,7 +1348,8 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
   if (const auto* btc_value = dict.Find("bitcoin");
       btc_value && !btc_value->is_none()) {
     auto btc_params =
-        swap_responses::Gate3BitcoinTransactionParams::FromValue(*btc_value);
+        swap_responses::Gate3SwapBitcoinTransactionParams::FromValue(
+            *btc_value);
     if (!btc_params) {
       return nullptr;
     }
@@ -1355,12 +1357,12 @@ mojom::TransactionParamsUnionPtr ParseTransactionParams(
     if (!chain) {
       return nullptr;
     }
-    auto btc_result = mojom::Gate3BitcoinTransactionParams::New();
+    auto btc_result = mojom::Gate3SwapBitcoinTransactionParams::New();
     btc_result->chain = std::move(chain);
     btc_result->to = btc_params->to;
     btc_result->value = btc_params->value;
     btc_result->refund_to = btc_params->refund_to;
-    return mojom::TransactionParamsUnion::NewBitcoinTransactionParams(
+    return mojom::Gate3SwapTransactionParamsUnion::NewBitcoinTransactionParams(
         std::move(btc_result));
   }
 

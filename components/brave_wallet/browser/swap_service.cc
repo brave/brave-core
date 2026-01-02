@@ -310,8 +310,9 @@ GURL SwapService::GetSquidURL() {
 
 // static
 GURL SwapService::GetGate3QuoteURL(bool is_firm) {
-  return GURL(kGate3URL).Resolve(is_firm ? "/api/swap/v1/quote/firm"
-                                         : "/api/swap/v1/quote/indicative");
+  return GURL("http://localhost:8000")
+      .Resolve(is_firm ? "/api/swap/v1/quote/firm"
+                       : "/api/swap/v1/quote/indicative");
 }
 
 void SwapService::IsSwapSupported(const std::string& chain_id,

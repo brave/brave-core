@@ -391,7 +391,7 @@ namespace swap_responses {
     DOMString chainId;
   };
 
-  dictionary Gate3EvmTransactionParams {
+  dictionary Gate3SwapEvmTransactionParams {
     Gate3ChainSpec chain;
     DOMString from;
     DOMString to;
@@ -399,7 +399,7 @@ namespace swap_responses {
     DOMString data;
   };
 
-  dictionary Gate3SolanaTransactionParams {
+  dictionary Gate3SwapSolanaTransactionParams {
     Gate3ChainSpec chain;
     DOMString from;
     DOMString to;
@@ -412,7 +412,7 @@ namespace swap_responses {
     any versionedTransaction;
   };
 
-  dictionary Gate3BitcoinTransactionParams {
+  dictionary Gate3SwapBitcoinTransactionParams {
     Gate3ChainSpec chain;
     DOMString to;
     DOMString value;
@@ -461,15 +461,15 @@ namespace swap_responses {
     any expiresAt;
 
     // Nullable union field of the following structs:
-    //  - Gate3EvmTransactionParams
-    //  - Gate3SolanaTransactionParams
-    //  - Gate3BitcoinTransactionParams
+    //  - Gate3SwapEvmTransactionParams
+    //  - Gate3SwapSolanaTransactionParams
+    //  - Gate3SwapBitcoinTransactionParams
     //
     // Schema:
     //  {
-    //    evm: Gate3EvmTransactionParams  or null
-    //    solana: Gate3SolanaTransactionParams or null
-    //    bitcoin: Gate3BitcoinTransactionParams or null
+    //    evm: Gate3SwapEvmTransactionParams  or null
+    //    solana: Gate3SwapSolanaTransactionParams or null
+    //    bitcoin: Gate3SwapBitcoinTransactionParams or null
     //  }
     any transactionParams;
 

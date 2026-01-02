@@ -167,7 +167,7 @@ export function useGate3(params: SwapParams) {
       return undefined
 
       async function sendTransaction(
-        transactionParams: BraveWallet.TransactionParamsUnion,
+        transactionParams: BraveWallet.Gate3SwapTransactionParamsUnion,
       ) {
         if (transactionParams.evmTransactionParams) {
           const { data, to, value } = transactionParams.evmTransactionParams

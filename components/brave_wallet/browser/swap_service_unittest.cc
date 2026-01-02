@@ -2129,7 +2129,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
     }
   )");
 
-  auto expected_evm_params = mojom::Gate3EvmTransactionParams::New();
+  auto expected_evm_params = mojom::Gate3SwapEvmTransactionParams::New();
   expected_evm_params->chain =
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId);
   expected_evm_params->from = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
@@ -2144,11 +2144,12 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
 
   base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Transaction(
-                      mojom::TransactionParamsUnion::NewEvmTransactionParams(
-                          std::move(expected_evm_params)))),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Transaction(
+              mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
+                  std::move(expected_evm_params)))),
+          EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
       .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetTransaction(
