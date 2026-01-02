@@ -729,6 +729,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
   mixer[kColorOmniboxSecurityChipDangerousBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxSecurityChipText] = {kColorOmniboxSecurityChipDangerous};
 }
 
 void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
@@ -749,6 +750,7 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   // We don't use bg color for location icon view.
   mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
   mixer[kColorOmniboxSecurityChipDangerousBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxSecurityChipText] = {kColorOmniboxSecurityChipDangerous};
 
 #if defined(TOOLKIT_VIEWS)
   if (!base::FeatureList::IsEnabled(
