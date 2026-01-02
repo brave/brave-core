@@ -64,6 +64,7 @@
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
@@ -446,6 +447,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   // The default state is kExpanded, so reset animation state to 1.0.
   width_animation_.Reset(1.0);
 
+  region_view_container_ = AddChildView(std::make_unique<views::View>());
+  region_view_container_->SetLayoutManager(
+      std::make_unique<views::FillLayout>());
+
   header_view_ = AddChildView(std::make_unique<HeaderView>(
       base::BindRepeating(&BraveVerticalTabStripRegionView::ToggleState,
                           base::Unretained(this)),
@@ -781,7 +786,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
-  if (original_region_view_->parent() != this) {
+  if (original_region_view_->parent() != region_view_container_) {
     // When original_region_view_ is not a child of this view, it means that
     // the vertical tab strip is not visible.
     return;
@@ -800,14 +805,14 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       kSeparatorHeight - header_view_->height();
   const int contents_view_preferred_height =
       tab_strip()->GetPreferredSize().height();
-  original_region_view_->SetBoundsRect(gfx::Rect(
+  region_view_container_->SetBoundsRect(gfx::Rect(
       header_view_->bounds().bottom_left(),
       gfx::Size(
           contents_bounds.width(),
           std::min(contents_view_max_height, contents_view_preferred_height))));
 
   gfx::Rect separator_bounds(
-      original_region_view_->bounds().bottom_left(),
+      region_view_container_->bounds().bottom_left(),
       gfx::Size(contents_bounds.width(), kSeparatorHeight));
   separator_bounds.Inset(
       gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
@@ -854,14 +859,18 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
       tab_strip_region_view_original_index_ =
           original_parent_of_region_view_->GetIndexOf(original_region_view_);
       original_parent_of_region_view_->RemoveChildView(original_region_view_);
-      AddChildView(original_region_view_.get());
+      region_view_container_->AddChildView(original_region_view_.get());
+
+      // Resize area can be overlapped with tabs.
+      // To make it grabbable, it should be top-most view.
+      ReorderChildView(resize_area_, children().size() - 1);
     }
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   } else {
     if (Contains(original_region_view_)) {
-      RemoveChildView(original_region_view_);
+      region_view_container_->RemoveChildView(original_region_view_.get());
       CHECK(tab_strip_region_view_original_index_.has_value());
       original_parent_of_region_view_->AddChildViewAt(
           original_region_view_.get(), *tab_strip_region_view_original_index_);
