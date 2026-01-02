@@ -15,18 +15,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
      base::FEATURE_ENABLED_BY_DEFAULT},
 
     {kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
-#if BUILDFLAG(IS_ANDROID)
-    // This override is intended to prevent failed CHECK crash at debug builds
-    // at `ProfileImpl::OnLocaleReady` on Android. When crash happens the
-    // identity manager is previously created with these call stack:
-    //   IdentityManagerFactory::GetForProfile(Profile*)
-    //   ...
-    //   HostContentSettingsMapFactory::GetForProfile(content::BrowserContext*)
-    //   (anonymous namespace)::RecordInitialP3AValues(Profile*)
-    //   BraveProfileManager::InitProfileUserPrefs(Profile*)
-    {kDelayOnProfileCreatedForFullBrowserTransition,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-#endif  // BUILDFLAG(IS_ANDROID)
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
     // Google has asked embedders not to enforce these pins:
     // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ

@@ -88,9 +88,8 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   auto* browser = browser_view->browser();
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->browser_window_features()
-          ->side_panel_ui()
-          ->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+  if (browser->browser_window_features()->side_panel_ui()->GetCurrentEntryId(
+          SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 
@@ -104,7 +103,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   params.source_contents = active_tab;
   params.disposition = WindowOpenDisposition::CURRENT_TAB;
 
-  params.window_action = NavigateParams::NO_ACTION;
+  params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;
 
   Navigate(&params);

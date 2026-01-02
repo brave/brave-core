@@ -559,7 +559,9 @@ template("create_dist_template") {
 if (should_generate_symbols) {
   create_dist_template("create_brave_symbols_dist") {
     if (is_android) {
-      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
+      # TODO(https://github.com/brave/brave-browser/issues/51200)
+      # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
+      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-mono-$target_cpu-symbols-$target_android_output_format.zip"
     } else {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
     }

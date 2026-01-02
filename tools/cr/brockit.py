@@ -1714,7 +1714,7 @@ class Rebase(Task):
             elif '`gnrt` run for Chromium ' in line:
                 gnrt.append(
                     line if not gnrt else line.replace('pick', 'squash'))
-            elif line.endswith('] IWYU fixes'):
+            elif '] IWYU fixes.' in line:
                 iwyu.append(
                     line if not iwyu else line.replace('pick', 'squash'))
             else:

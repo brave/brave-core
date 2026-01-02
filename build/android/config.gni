@@ -63,7 +63,6 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//brave/ui/android:base_java",
-  "//third_party/android_deps:com_android_support_support_annotations_java",
   "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",

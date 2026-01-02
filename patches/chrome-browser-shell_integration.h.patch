@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
-index 182627c051bbeb538de2736f400010b8b4eef8aa..ff4f96ff66dfb83726e066875000923872c2eb65 100644
+index 93a9a2ecc8f7158afbe1a93157e87505619efb29..308207bd4ee376a7dc5bd6ec3fad2410f4ece6f7 100644
 --- a/chrome/browser/shell_integration.h
 +++ b/chrome/browser/shell_integration.h
-@@ -279,6 +279,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
+@@ -293,6 +293,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
  
    static void DisableSetAsDefaultForTesting();
  

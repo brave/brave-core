@@ -35,14 +35,21 @@ struct ControllableCloseButtonState final {
   bool showing_close_button = false;
 };
 
-#define kMinimumContentsWidthForCloseButtons \
-  kMinimumContentsWidthForCloseButtons = 55; \
-  friend class ::BraveTabTest;               \
-  friend class ::BraveTab;                   \
+#define kMinimumContentsWidthForCloseButtons      \
+  kMinimumContentsWidthForCloseButtons = 55;      \
+  bool IsTabMuteIndicatorNotClickable() override; \
+  friend class ::BraveTabTest;                    \
+  friend class ::BraveTab;                        \
   static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
 
 #define GetWidthOfLargestSelectableRegion \
   virtual GetWidthOfLargestSelectableRegion
+
+// Add a method to resets tab_style_views_ so that it can have correct style for
+// orientation.
+#define UpdateInsets()                                     \
+  ResetTabStyle(std::unique_ptr<TabStyleViews> new_style); \
+  void UpdateInsets()
 
 #define SetData virtual SetData
 #define ActiveStateChanged virtual ActiveStateChanged
@@ -60,6 +67,7 @@ struct ControllableCloseButtonState final {
 #undef UpdateIconVisibility
 #undef GetGroupColor
 #undef ActiveStateChanged
+#undef UpdateInsets
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
 #undef SetData

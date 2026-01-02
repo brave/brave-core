@@ -14,9 +14,11 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -45,11 +47,18 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
-  if (brave_rewards::RewardsServiceFactory::GetForProfile(
-          browser->GetProfile())) {
+  auto* profile = browser->GetProfile();
+  if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
     rewards_panel_coordinator_ =
         std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
   }
+
+  // Replace the original tab menu model delegate with our own.
+  tab_menu_model_delegate_ =
+      std::make_unique<brave::BraveBrowserTabMenuModelDelegate>(
+          browser->GetSessionID(), profile, app_browser_controller_.get(),
+          tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile),
+          browser);
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(

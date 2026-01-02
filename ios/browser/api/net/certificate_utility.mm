@@ -112,7 +112,7 @@ namespace {
 
   std::uint8_t data[32] = {0};
   bssl::der::Input spki = extended_cert->tbs().spki_tlv;
-  SHA256(spki.UnsafeData(), spki.Length(), data);
+  SHA256(spki.data(), spki.size(), data);
 
   return [NSData dataWithBytes:data length:sizeof(data) / sizeof(data[0])];
 }

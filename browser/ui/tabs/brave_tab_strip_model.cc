@@ -122,6 +122,13 @@ std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
   return TabStripModel::GetIndicesForCommand(tab_index);
 }
 
+bool BraveTabStripModel::GetAllTabsMuted(
+    const std::vector<int>& indices) const {
+  return std::all_of(indices.begin(), indices.end(), [this](int index) {
+    return GetWebContentsAt(index)->IsAudioMuted();
+  });
+}
+
 void BraveTabStripModel::CloseTabs(base::span<int> indices,
                                    uint32_t close_types) {
   std::vector<content::WebContents*> contentses;

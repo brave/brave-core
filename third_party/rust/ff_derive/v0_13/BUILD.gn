@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zkcrypto/ff"
   cargo_pkg_version = "0.13.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/addchain/v0_2:lib",
     "//brave/third_party/rust/cfg_if/v1:lib",

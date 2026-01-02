@@ -28,7 +28,6 @@ class MenuRunner;
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
-class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
 class BraveVerticalTabStripRegionView : public views::View,
@@ -173,9 +172,6 @@ class BraveVerticalTabStripRegionView : public views::View,
                                 bool include_border,
                                 bool ignore_animation) const;
 
-  // Returns valid object only when the related flag is enabled.
-  TabStripScrollContainer* GetTabStripScrollContainer();
-
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
   void OnMenuClosed();
@@ -194,7 +190,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   raw_ptr<HeaderView> header_view_ = nullptr;
-  raw_ptr<views::View> contents_view_ = nullptr;
 
   // Separator between tabs and new tab button.
   raw_ptr<views::View> separator_ = nullptr;

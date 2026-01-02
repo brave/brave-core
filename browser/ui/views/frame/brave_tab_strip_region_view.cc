@@ -20,15 +20,28 @@
 BraveTabStripRegionView::~BraveTabStripRegionView() = default;
 
 void BraveTabStripRegionView::Layout(PassKey) {
-  UpdateTabStripMargin();
-  LayoutSuperclass<TabStripRegionView>(this);
-
-  // Ensure that the new tab button is positioned after the last tab, with the
-  // correct amount of padding.
-  if (new_tab_button_) {
-    new_tab_button_->SetX(tab_strip_container_->bounds().right() +
-                          GetLayoutConstant(TAB_STRIP_PADDING));
+  auto* widget = GetWidget();
+  if (!widget || widget->IsClosed()) {
+    return;
   }
+
+  UpdateTabStripMargin();
+
+  if (!tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+    LayoutSuperclass<TabStripRegionView>(this);
+
+    // Ensure that the new tab button is positioned after the last tab, with the
+    // correct amount of padding.
+    if (new_tab_button_) {
+      new_tab_button_->SetX(tab_strip_container_->bounds().right() +
+                            GetLayoutConstant(TAB_STRIP_PADDING));
+    }
+    return;
+  }
+
+  // in vertical tabs mode, we make tab strip's height is the same with this
+  // view's height to avoid extra gaps.
+  tab_strip_container_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
 }
 
 void BraveTabStripRegionView::UpdateTabStripMargin() {

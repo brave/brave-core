@@ -106,21 +106,39 @@ SecureDnsConfig::ManagementMode MaybeOverrideForcedManagementMode(
   return management_mode;
 }
 
+std::vector<net::IPEndPoint> MaybeOverrideFallbackDohNameservers(
+    net::SecureDnsMode secure_dns_mode,
+    PrefService* local_state,
+    SecureDnsConfig::ManagementMode management_mode,
+    bool is_managed,
+    std::vector<net::IPEndPoint> fallback_doh_nameservers) {
+  if (ShouldOverride(secure_dns_mode, local_state, management_mode,
+                     is_managed)) {
+    return std::vector<net::IPEndPoint>();
+  }
+
+  return fallback_doh_nameservers;
+}
+
 }  // namespace
 
 #define SecureDnsConfig(SECURE_DNS_MODE, SECURE_DOH_CONFIG,                    \
-                        FORCED_MANAGEMENT_MODE)                                \
+                        FORCED_MANAGEMENT_MODE, FALLBACK_DOH_NAMESERVERS)      \
   SecureDnsConfig(                                                             \
       MaybeOverrideDnsMode(SECURE_DNS_MODE, local_state_,                      \
                            FORCED_MANAGEMENT_MODE, is_managed),                \
       MaybeOverrideDnsConfig(SECURE_DNS_MODE, SECURE_DOH_CONFIG, local_state_, \
                              FORCED_MANAGEMENT_MODE, is_managed),              \
       MaybeOverrideForcedManagementMode(SECURE_DNS_MODE, local_state_,         \
-                                        FORCED_MANAGEMENT_MODE, is_managed))
+                                        FORCED_MANAGEMENT_MODE, is_managed),   \
+      MaybeOverrideFallbackDohNameservers(SECURE_DNS_MODE, local_state_,       \
+                                          FORCED_MANAGEMENT_MODE, is_managed,  \
+                                          FALLBACK_DOH_NAMESERVERS))
 
 #define ConfigureStubHostResolver(                                             \
     INSECURE_DNS_CLIENT_ENABLED, HAPPY_EYEBALLS_V3_ENABLED, SECURE_DNS_MODE,   \
-    DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED)                       \
+    DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED,                       \
+    FALLBACK_DOH_NAMESERVERS)                                                  \
   ConfigureStubHostResolver(                                                   \
       MaybeOverrideDnsClientEnabled(SECURE_DNS_MODE,                           \
                                     INSECURE_DNS_CLIENT_ENABLED, local_state_, \
@@ -131,7 +149,11 @@ SecureDnsConfig::ManagementMode MaybeOverrideForcedManagementMode(
       MaybeOverrideDnsConfig(SECURE_DNS_MODE, DNS_OVER_HTTPS_CONFIG,           \
                              local_state_, forced_management_mode,             \
                              is_managed),                                      \
-      ADDITIONAL_DNS_TYPES_ENABLED)
+      ADDITIONAL_DNS_TYPES_ENABLED,                                            \
+      MaybeOverrideFallbackDohNameservers(SECURE_DNS_MODE, local_state_,       \
+                                          forced_management_mode, is_managed,  \
+                                          FALLBACK_DOH_NAMESERVERS))
+
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #include <chrome/browser/net/stub_resolver_config_reader.cc>
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)

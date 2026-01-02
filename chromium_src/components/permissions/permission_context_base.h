@@ -88,8 +88,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
                          bool is_final_decision,
                          const PermissionRequestData& request_data) override;
   void CleanUpRequest(content::WebContents* web_contents,
-                      const PermissionRequestID& id,
-                      bool embedded_permission_element_initiated) override;
+                      const PermissionRequestID& id) override;
 
   base::RepeatingCallback<PermissionLifetimeManager*(content::BrowserContext*)>
       permission_lifetime_manager_factory_;

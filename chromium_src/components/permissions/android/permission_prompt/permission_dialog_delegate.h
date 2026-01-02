@@ -8,6 +8,7 @@
 
 // Forward includes to avoid redefine of Create term
 #include "base/task/cancelable_task_tracker.h"
+#include "components/permissions/permission_util.h"
 #include "content/public/browser/web_contents_observer.h"
 
 namespace permissions {

@@ -13,21 +13,10 @@
 # to have FOLDERID_OneDrive entry in the registry making this test fail.
 -PathServiceTest.Get
 
-# Tests below this point have not been diagnosed or had issues created yet.
--EnterpriseReportingPrivateG\etContextInfoOSFirewallTest.*
--ExtensionServiceTest.*
--LayoutProviderTest.*
--PlatformStateStoreWinTest.*
--RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerCheckIsDisabled
--RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerSettingsIsDisabled
--RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordsManagerSubPageIsDisabled
--WebAppShortcutWinTest.*
-
-# These fail due to CHECK in ResourceBundle::GetLocalizedStringImpl because:
-# "If this happens in a browser test running on Windows, it may "
-# "be that dead-code elimination stripped out the code that uses the"
-# " resource, causing the resource to be stripped out because the "
-# "resource is not used by chrome.dll"
+# These fail due to CHECK in ResourceBundle::GetLocalizedStringImpl because: "If
+# this happens in a browser test running on Windows, it may be that dead-code
+# elimination stripped out the code that uses the resource, causing the resource
+# to be stripped out because the resource is not used by chrome.dll"
 -BrowserFeaturePromoController2xViewsTest.BodyTextSubstitution_MultipleStrings/V20
 -BrowserFeaturePromoController2xViewsTest.BodyTextSubstitution_MultipleStrings/V25
 -BrowserFeaturePromoController2xViewsTest.ScreenreaderTextSubstitution_MultipleStrings/V20
@@ -39,3 +28,12 @@
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/AppMenuIconControllerTest.UpgradeNotification/2
 -All/AppMenuIconControllerTest.UpgradeNotification/3
+-EnterpriseReportingPrivateG\etContextInfoOSFirewallTest.*
+-ExtensionServiceTest.*
+-LayoutProviderTest.*
+-PlatformStateStoreWinTest.*
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerCheckIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerSettingsIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordsManagerSubPageIsDisabled
+-ShellIntegrationWinTest.*
+-WebAppShortcutWinTest.*

@@ -53,10 +53,13 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -567,8 +570,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
   panel_ui->Close(SidePanelEntry::PanelType::kContent);
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+                .has_value();
+  }));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -577,10 +582,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
 
   // Open panel w/o entry id.
   panel_ui->Toggle();
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+        .has_value();
+  }));
   // Check bookmark panel is not opened again as it's deleted item.
-  EXPECT_NE(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_NE(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 // Test sidebar's initial horizontal option is set properly.
@@ -672,25 +680,22 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
-  auto* main_container = browser_view->main_container();
+
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
   auto* screen = display::Screen::Get();
 
-  // We assume main container is outer-most view for contents.
-  // Its width should be same with browser view.
-  // This test verifies mouse hover test based on that assumption.
-  EXPECT_EQ(browser_view->width(), main_container->width());
+  auto contents_area_view_rect =
+      browser_view->GetBoundingBoxInScreenForMouseOverHandling();
+  EXPECT_EQ(browser_view->width(), contents_area_view_rect.width());
 
   // Check sidebar is not shown.
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on right side.
-  auto main_container_rect = main_container->GetLocalBounds();
-  gfx::Point mouse_position = main_container_rect.top_right();
+  gfx::Point mouse_position = contents_area_view_rect.top_right();
   mouse_position.Offset(-2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -704,10 +709,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
-  // main_container_rect = main_container->GetLocalBounds();
-  mouse_position = main_container_rect.origin();
+  mouse_position = contents_area_view_rect.origin();
   mouse_position.Offset(2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -719,8 +722,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Check with the space between window border and contents.
   // We have that space with rounded corners.
   // When mouse moves into that space, sidebar should be visible.
-  mouse_position = main_container_rect.origin();
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  mouse_position = contents_area_view_rect.origin();
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -1122,7 +1124,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
-  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
+  EXPECT_FALSE(
+      !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -1133,7 +1136,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
@@ -1183,19 +1187,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kCustomizeChrome;
   }));
 
   // Global panel should be set when activate tab at 1.
   tab_model()->ActivateTabAt(1);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 }
 
@@ -1328,10 +1335,12 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
     // Wait till browser has active panel.
-    WaitUntil(base::BindLambdaForTesting(
-        [&]() { return !!panel_ui->GetCurrentEntryId(); }));
+    WaitUntil(base::BindLambdaForTesting([&]() {
+      return !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+    }));
 
-    EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+    EXPECT_EQ(SidePanelEntryId::kChatUI,
+              panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
@@ -1502,21 +1511,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);
   SimulateSidebarItemClickAt(tab_specific_item_index.value());
-  EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kChatUI,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(GetSidePanel()->GetVisible());
   // Tab Specific panel should be open when Tab 1 is active
   EXPECT_EQ(model()->active_index(), tab_specific_item_index);
 
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
@@ -1615,6 +1627,43 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
   private_prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarContainerDoesNotObserveToolbarHeightEntry) {
+  // This test verifies that SidebarContainerView doesn't observe
+  // SidePanelEntry with kToolbar type, as it only observes kContent type
+  // entries per AddSidePanelEntryObservation() implementation.
+
+  auto* sidebar_container = GetSidebarContainerView();
+
+  // Get the tab registry and create a kToolbar type entry
+  auto* registry = browser()
+                       ->GetActiveTabInterface()
+                       ->GetTabFeatures()
+                       ->side_panel_registry();
+  ASSERT_TRUE(registry);
+
+  // Create a kToolbar type SidePanelEntry
+  std::unique_ptr<SidePanelEntry> toolbar_entry =
+      std::make_unique<SidePanelEntry>(
+          SidePanelEntry::PanelType::kToolbar,
+          SidePanelEntry::Key(SidePanelEntry::Id::kAboutThisSite),
+          base::BindRepeating([](SidePanelEntryScope&) {
+            return std::make_unique<views::View>();
+          }),
+          /*default_content_width_callback=*/base::NullCallback());
+
+  auto* toolbar_entry_ptr = toolbar_entry.get();
+  registry->Register(std::move(toolbar_entry));
+
+  // Show the toolbar entry
+  auto* coordinator = browser()->GetFeatures().side_panel_coordinator();
+  coordinator->SetNoDelaysForTesting(true);
+  coordinator->Show(SidePanelEntry::Id::kAboutThisSite);
+
+  // Verify that SidebarContainerView is NOT observing the kToolbar entry.
+  EXPECT_FALSE(toolbar_entry_ptr->IsBeingObservedBy(sidebar_container));
 }
 
 }  // namespace sidebar

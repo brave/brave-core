@@ -10,20 +10,24 @@
 #include "base/functional/callback.h"
 #include "chrome/common/buildflags.h"
 
+class BrowserWindowFeatures;
+using BraveBrowserWindowFeatures = BrowserWindowFeatures;
+
 #define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
 #define Init virtual Init
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 #define InitPostWindowConstruction virtual InitPostWindowConstruction
-#define TearDownPreBrowserWindowDestruction \
-  virtual TearDownPreBrowserWindowDestruction
+#define TearDownPreBrowserWindowDestruction(...)            \
+  virtual TearDownPreBrowserWindowDestruction(__VA_ARGS__); \
+  friend BraveBrowserWindowFeatures
 
 #include <chrome/browser/ui/browser_window/public/browser_window_features.h>  // IWYU pragma: export
 
+#undef TearDownPreBrowserWindowDestruction
 #undef InitPostWindowConstruction
 #undef InitPostBrowserViewConstruction
 #undef Init
 #undef BrowserWindowFeatures
-#undef TearDownPreBrowserWindowDestruction
 
 #include "brave/browser/ui/browser_window/public/browser_window_features.h"
 

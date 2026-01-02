@@ -6,15 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OVERLAY_VIDEO_OVERLAY_WINDOW_VIEWS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OVERLAY_VIDEO_OVERLAY_WINDOW_VIEWS_H_
 
-class BraveBackToTabLabelButton;
-
 #define SetUpViews                           \
   SetUpViews_Unused();                       \
   friend class BraveVideoOverlayWindowViews; \
   virtual void SetUpViews
 
 #define OnUpdateControlsBounds virtual OnUpdateControlsBounds
-#define BackToTabLabelButton BraveBackToTabLabelButton
 #define ControlsHitTestContainsPoint virtual ControlsHitTestContainsPoint
 #define IsTrustedForMediaPlayback virtual IsTrustedForMediaPlayback
 
@@ -22,7 +19,6 @@ class BraveBackToTabLabelButton;
 
 #undef IsTrustedForMediaPlayback
 #undef ControlsHitTestContainsPoint
-#undef BackToTabLabelButton
 #undef OnUpdateControlsBounds
 #undef SetUpViews
 

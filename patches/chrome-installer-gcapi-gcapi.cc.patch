@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/gcapi/gcapi.cc b/chrome/installer/gcapi/gcapi.cc
-index b418979309d15d592d1b905b532ef1ca861db5ff..c4b2b1f327c6ef7685ecde617d7aac59add79282 100644
+index ab230259c5df1c1b6955ed4c5bf20082475e3fe5..6b59cfbf0ae6eb3e30d87bdd78e2f7c39bdf3bbf 100644
 --- a/chrome/installer/gcapi/gcapi.cc
 +++ b/chrome/installer/gcapi/gcapi.cc
-@@ -63,6 +63,16 @@ using Microsoft::WRL::ComPtr;
+@@ -59,6 +59,16 @@ using Microsoft::WRL::ComPtr;
  
  namespace {
  
@@ -19,7 +19,7 @@ index b418979309d15d592d1b905b532ef1ca861db5ff..c4b2b1f327c6ef7685ecde617d7aac59
  const wchar_t kGCAPITempKey[] = L"Software\\Google\\GCAPITemp";
  
  const wchar_t kChromeRegVersion[] = L"pv";
-@@ -72,6 +82,7 @@ const wchar_t kNoChromeOfferUntil[] =
+@@ -68,6 +78,7 @@ const wchar_t kNoChromeOfferUntil[] =
  const wchar_t kC1FPendingKey[] = L"Software\\Google\\Common\\Rlz\\Events\\C";
  const wchar_t kC1FSentKey[] =
      L"Software\\Google\\Common\\Rlz\\StatefulEvents\\C";

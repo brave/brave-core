@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_CONTAINER_IMPL_H_
 
 #include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
 
 #define ExitTabClosingMode        \
   UnUsed() {}                     \
@@ -17,9 +18,13 @@
 #define GetTargetBoundsForClosingTab virtual GetTargetBoundsForClosingTab
 #define StartInsertTabAnimation virtual StartInsertTabAnimation
 #define ShouldTabBeVisible virtual ShouldTabBeVisible
+#define IsPointInTab virtual IsPointInTab
+#define UpdateIdealBounds virtual UpdateIdealBounds
 
 #include <chrome/browser/ui/views/tabs/tab_container_impl.h>  // IWYU pragma: export
 
+#undef UpdateIdealBounds
+#undef IsPointInTab
 #undef ShouldTabBeVisible
 #undef StartInsertTabAnimation
 #undef GetTargetBoundsForClosingTab

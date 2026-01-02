@@ -90,6 +90,12 @@ class BraveBrowserView : public BrowserView,
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
 
+  // Returns the bounding rectangle, in screen coordinates, used to detect
+  // mouse-over events that control sidebar visibility. The bounds of a
+  // specific view are used here so that sidebar show/hide behavior is
+  // consistently tied to that view's on-screen region.
+  gfx::Rect GetBoundingBoxInScreenForMouseOverHandling() const;
+
   void ShowBraveVPNBubble(bool show_select = false);
   void CreateWalletBubble();
   void CreateApproveWalletBubble();

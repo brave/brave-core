@@ -30,6 +30,8 @@ cargo_crate("buildrs_support") {
   cargo_pkg_repository = "https://github.com/SergioBenitez/version_check"
   cargo_pkg_version = "0.9.4"
 
+  allow_unsafe = false
+
   rustenv = []
   rustflags = []
 

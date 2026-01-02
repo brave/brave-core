@@ -45,7 +45,7 @@ class BraveTabStrip : public TabStrip {
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
 
-  void UpdateTabContainer();
+  void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
@@ -54,7 +54,6 @@ class BraveTabStrip : public TabStrip {
 
   // TabStrip overrides:
   bool ShouldDrawStrokes() const override;
-  void Layout(PassKey) override;
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;

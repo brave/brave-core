@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/certificate/models/brave_certificate_rdns_sequence.h"
 
+#include "base/strings/string_view_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/apple/foundation_util.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
@@ -36,7 +37,8 @@
     _organization = brave::vector_to_ns(rdns.organization_names);
     _organizationalUnit = brave::vector_to_ns(rdns.organization_unit_names);
     _commonName = base::SysUTF8ToNSString(rdns.common_name);
-    _userId = base::SysUTF8ToNSString(uniqueId.bytes().AsString());
+    _userId = base::SysUTF8ToNSString(
+        std::string(base::as_string_view(uniqueId.bytes())));
   }
   return self;
 }

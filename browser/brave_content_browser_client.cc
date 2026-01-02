@@ -1452,7 +1452,8 @@ bool BraveContentBrowserClient::IsJitDisabledForSite(
     const GURL& site_url) {
   // When v8-jitless-mode flag is enabled, V8 optimizer
   // settings should disable JIT completely, not just optimizations
-  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) &&
+  if (!AreV8OptimizationsEnabledForSite(browser_context, std::nullopt,
+                                        site_url) &&
       base::FeatureList::IsEnabled(features::kBraveV8JitlessMode)) {
     return true;
   }

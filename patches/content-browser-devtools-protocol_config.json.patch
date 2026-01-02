@@ -1,10 +1,10 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index 388a0b48e05321352179b92b374eea74a60bfb54..8a2074968d1c61e5dae78f745c35cf4a7dd15b16 100644
+index b1e7f9e855483c4fcf88e6376ec30b5b1293eabd..b4e345440059f3542695927e2c37e2b5f7021eb7 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
-@@ -132,7 +132,7 @@
-                   "getIPProtectionProxyStatus",
-                   "setIPProtectionProxyBypassEnabled"
+@@ -130,7 +130,7 @@
+                   "enableReportingApi",
+                   "setCookieControls"
                  ],
 -                "include_events": ["requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
 +                "include_events": ["requestAdblockInfoReceived", "requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],

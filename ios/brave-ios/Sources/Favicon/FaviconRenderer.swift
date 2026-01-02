@@ -18,12 +18,6 @@ public class FaviconRenderer {
         sizeInPoints: .desiredLargest,
         minSizeInPoints: .desiredMedium  // 32x32
       ) { _, attributes in
-
-        // If the completion block was called with the `default` image, do nothing
-        if attributes.usesDefaultImage {
-          return
-        }
-
         continuation.resume(returning: attributes)
       }
     }
