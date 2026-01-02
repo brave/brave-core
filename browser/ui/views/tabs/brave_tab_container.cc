@@ -464,6 +464,8 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
 
   TabContainerImpl::CompleteAnimationAndLayout();
 
+  UpdateClipPathForSlotViews();
+
   // Should force tabs to layout as they might not change bounds, which makes
   // insets not updated.
   std::ranges::for_each(children(), &views::View::DeprecatedLayoutImmediately);
@@ -539,32 +541,10 @@ void BraveTabContainer::Layout(PassKey) {
   LayoutSuperclass<TabContainerImpl>(this);
 
   // After superclass layout, update clip path based on scroll_offset
-  const int pinned_tabs_area_bottom = GetPinnedTabsAreaBottom();
-  int tab_count = GetTabCount();
-  for (int i = 0; i < tab_count; ++i) {
-    Tab* tab = GetTabAtModelIndex(i);
-    CHECK(tab);
-    if (tab->dragging() || tab->data().pinned) {
-      // Make sure there's no clip path for dragging or pinned tabs
-      tab->SetClipPath({});
-      continue;
-    }
-
-    UpdateClipPathForChildren(tab, pinned_tabs_area_bottom);
-  }
-
-  // Also move group views by scroll_offset
-  for (auto& [_, group_views] : group_views_) {
-    for (auto* view : std::initializer_list<views::View*>{
-             group_views->header(), group_views->underline(),
-             group_views->highlight(), group_views->drag_underline()}) {
-      UpdateClipPathForChildren(view, pinned_tabs_area_bottom);
-    }
-  }
+  SetTabSlotVisibility();
+  UpdateClipPathForSlotViews();
 
   last_layout_size_ = size();
-
-  SetTabSlotVisibility();
 }
 
 void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
@@ -1101,6 +1081,72 @@ void BraveTabContainer::SetScrollOffset(int offset) {
   CompleteAnimationAndLayout();
 }
 
+std::pair<TabSlotView*, TabSlotView*>
+BraveTabContainer::FindVisibleUnpinnedSlotViews() const {
+  auto is_slot_visible = [this](TabSlotView* view) {
+    if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
+      Tab* tab = static_cast<Tab*>(view);
+      // Skip pinned tabs
+      if (tab->data().pinned) {
+        return false;
+      }
+
+      // Tabs in collapsed group are not visible
+      if (auto group = tab->group()) {
+        return !controller_->IsGroupCollapsed(*group);
+      }
+
+      return true;
+    }
+
+    // Group header is always visible
+    return true;
+  };
+
+  std::vector<TabSlotView*> slot_views = layout_helper_->GetTabSlotViews();
+  TabSlotView* first_visible = nullptr;
+  TabSlotView* last_visible = nullptr;
+
+  // Find first visible unpinned slot view
+  // is_slot_visible already checks if the slot is unpinned
+  for (TabSlotView* view : slot_views) {
+    if (is_slot_visible(view)) {
+      first_visible = view;
+      break;
+    }
+  }
+
+  // Find last visible unpinned slot view
+  // is_slot_visible already checks if the slot is unpinned
+  for (auto it = slot_views.rbegin(); it != slot_views.rend(); ++it) {
+    TabSlotView* view = *it;
+    if (is_slot_visible(view)) {
+      last_visible = view;
+      break;
+    }
+  }
+
+  return std::make_pair(first_visible, last_visible);
+}
+
+gfx::Rect BraveTabContainer::GetIdealBoundsOf(TabSlotView* slot_view) const {
+  if (slot_view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
+    Tab* tab = static_cast<Tab*>(slot_view);
+    std::optional<int> model_index = GetModelIndexOf(tab);
+    if (model_index.has_value()) {
+      return tabs_view_model_.ideal_bounds(model_index.value());
+    }
+  } else {
+    // Group header
+    TabGroupHeader* group_header = static_cast<TabGroupHeader*>(slot_view);
+    if (group_header->group().has_value()) {
+      return layout_helper_->group_header_ideal_bounds().at(
+          group_header->group().value());
+    }
+  }
+  return gfx::Rect();
+}
+
 int BraveTabContainer::GetMaxScrollOffset() const {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
@@ -1114,77 +1160,14 @@ int BraveTabContainer::GetMaxScrollOffset() const {
     return 0;
   }
 
-  // Clamp offset to non-negative and not beyond max scroll
-  auto is_tab_visible = [this, pinned_tab_count, tab_count](int index) {
-    if (index < pinned_tab_count || index >= tab_count) {
-      return false;
-    }
-
-    if (auto group = GetTabAtModelIndex(index)->group()) {
-      // Tabs in collapsed group are not visible
-      return !controller_->IsGroupCollapsed(*group);
-    }
-
-    return true;
-  };
-
-  auto find_visible_unpinned_tabs = [&is_tab_visible, pinned_tab_count,
-                                     tab_count]() {
-    int first_unpinned_tab_index = pinned_tab_count;
-    int last_unpinned_tab_index = tab_count - 1;
-    // Iterate through until we have visible unpinned tabs.
-    while (!is_tab_visible(first_unpinned_tab_index) ||
-           !is_tab_visible(last_unpinned_tab_index)) {
-      if (!is_tab_visible(first_unpinned_tab_index)) {
-        first_unpinned_tab_index++;
-      }
-
-      if (!is_tab_visible(last_unpinned_tab_index)) {
-        last_unpinned_tab_index--;
-      }
-
-      if (first_unpinned_tab_index >= last_unpinned_tab_index) {
-        break;
-      }
-    }
-    return std::make_pair(first_unpinned_tab_index, last_unpinned_tab_index);
-  };
-  auto [first_tab, last_tab] = find_visible_unpinned_tabs();
+  auto [first_slot_view, last_slot_view] = FindVisibleUnpinnedSlotViews();
   int total_height = 0;
-  if (is_tab_visible(first_tab) && is_tab_visible(last_tab)) {
-    // We might have collapsed groups before first visible unpinned tab or after
-    // last visible unpinned tab.
-    int first_visible_slot_view_y =
-        tabs_view_model_.ideal_bounds(first_tab).y();
-    int last_visible_slot_view_bottom =
-        tabs_view_model_.ideal_bounds(last_tab).bottom();
-    for (auto& [_, group_views] : group_views_) {
-      auto [leading_view, trailing_view] =
-          group_views->GetLeadingTrailingGroupViews();
-      if (!leading_view || !trailing_view) {
-        // These views could be nullptr if the group is invisible.
-        continue;
-      }
+  CHECK(first_slot_view && last_slot_view);
 
-      auto bounds = group_views->GetBounds();
-      if (bounds.y() < first_visible_slot_view_y) {
-        first_visible_slot_view_y = bounds.y();
-      }
-      if (bounds.bottom() > last_visible_slot_view_bottom) {
-        last_visible_slot_view_bottom = bounds.bottom();
-      }
-    }
-    // from first visible slot view's top to last visible slot view's bottom
-    total_height += last_visible_slot_view_bottom - first_visible_slot_view_y;
-  } else {
-    CHECK(!is_tab_visible(first_tab) && !is_tab_visible(last_tab));
+  const gfx::Rect first_bounds = GetIdealBoundsOf(first_slot_view);
+  const gfx::Rect last_bounds = GetIdealBoundsOf(last_slot_view);
 
-    // In this case, all tabs are collapsed. In this case, the total height
-    // would be group views height
-    for (auto& [_, group_views] : group_views_) {
-      total_height = std::max(total_height, group_views->GetBounds().height());
-    }
-  }
+  total_height += std::max(0, last_bounds.bottom() - first_bounds.y());
 
   // Add margins
   total_height += 2 * tabs::kMarginForVerticalTabContainers;
@@ -1203,6 +1186,31 @@ int BraveTabContainer::GetMaxScrollOffset() const {
 void BraveTabContainer::ClampScrollOffset() {
   if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     SetScrollOffset(std::clamp(scroll_offset_, 0, GetMaxScrollOffset()));
+  }
+}
+
+void BraveTabContainer::UpdateClipPathForSlotViews() {
+  const int pinned_tabs_area_bottom = GetPinnedTabsAreaBottom();
+  int tab_count = GetTabCount();
+  for (int i = 0; i < tab_count; ++i) {
+    Tab* tab = GetTabAtModelIndex(i);
+    CHECK(tab);
+    if (tab->dragging() || tab->data().pinned) {
+      // Make sure there's no clip path for dragging or pinned tabs
+      tab->SetClipPath({});
+      continue;
+    }
+
+    UpdateClipPathForChildren(tab, pinned_tabs_area_bottom);
+  }
+
+  // Also move group views by scroll_offset
+  for (auto& [_, group_views] : group_views_) {
+    for (auto* view : std::initializer_list<views::View*>{
+             group_views->header(), group_views->underline(),
+             group_views->highlight(), group_views->drag_underline()}) {
+      UpdateClipPathForChildren(view, pinned_tabs_area_bottom);
+    }
   }
 }
 
