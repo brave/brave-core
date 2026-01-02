@@ -161,11 +161,10 @@ void BraveWalletServiceDelegateImpl::OnTabStripModelChanged(
   FireActiveOriginChanged();
 }
 
-void BraveWalletServiceDelegateImpl::TabChangedAt(
-    content::WebContents* contents,
-    int index,
-    TabChangeType change_type) {
-  if (!contents || contents != GetActiveWebContents()) {
+void BraveWalletServiceDelegateImpl::OnTabChangedAt(tabs::TabInterface* tab,
+                                                    int index,
+                                                    TabChangeType change_type) {
+  if (!tab || tab->GetContents() != GetActiveWebContents()) {
     return;
   }
 
