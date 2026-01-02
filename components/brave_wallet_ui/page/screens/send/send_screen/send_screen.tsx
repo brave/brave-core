@@ -560,6 +560,7 @@ export const SendScreen = React.memo(() => {
     sendSPLTransfer,
     sendZecTransaction,
     sendCardanoTransaction,
+    sendPolkadotTransaction,
   ])
 
   const handleFromAssetValueChange = React.useCallback(
