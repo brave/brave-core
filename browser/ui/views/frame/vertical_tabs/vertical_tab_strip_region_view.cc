@@ -824,6 +824,10 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
           original_parent_of_region_view_->GetIndexOf(original_region_view_);
       original_parent_of_region_view_->RemoveChildView(original_region_view_);
       AddChildView(original_region_view_.get());
+
+      // Resize area can be overlapped with tabs.
+      // To make it grabbable, it should be top-most view.
+      ReorderChildView(resize_area_, children().size() - 1);
     }
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
