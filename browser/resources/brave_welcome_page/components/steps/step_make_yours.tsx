@@ -15,11 +15,12 @@ import wallpaperDark from '../img/bg-dark.jpg'
 
 interface MockBrowserWindowVariantProps {
   themeClass: string
+  colorStyles: React.CSSProperties
 }
 
-function MockBrowserWindowHorizontal({ themeClass }: MockBrowserWindowVariantProps) {
+function MockBrowserWindowHorizontal({ themeClass, colorStyles }: MockBrowserWindowVariantProps) {
   return (
-    <div className={`browser-chrome ${themeClass}`}>
+    <div className={`browser-chrome ${themeClass}`} style={colorStyles}>
       {/* Tab Bar */}
       <div className="browser-tabbar">
         <div className="browser-tabs">
@@ -93,9 +94,9 @@ function MockBrowserWindowHorizontal({ themeClass }: MockBrowserWindowVariantPro
   )
 }
 
-function MockBrowserWindowVertical({ themeClass }: MockBrowserWindowVariantProps) {
+function MockBrowserWindowVertical({ themeClass, colorStyles }: MockBrowserWindowVariantProps) {
   return (
-    <div className={`browser-chrome vertical ${themeClass}`}>
+    <div className={`browser-chrome vertical ${themeClass}`} style={colorStyles}>
       {/* Address Bar (at top for vertical layout) */}
       <div className="browser-addressbar">
         <div className="addressbar-actions">
@@ -176,15 +177,17 @@ function MockBrowserWindowVertical({ themeClass }: MockBrowserWindowVariantProps
 interface MockBrowserWindowProps {
   layout: 'horizontal' | 'vertical'
   effectiveTheme: 'light' | 'dark'
+  colorOption: ColorOption
 }
 
-function MockBrowserWindow({ layout, effectiveTheme }: MockBrowserWindowProps) {
+function MockBrowserWindow({ layout, effectiveTheme, colorOption }: MockBrowserWindowProps) {
   const themeClass = `preview-theme-${effectiveTheme}`
+  const colorStyles = generateThemedColors(colorOption, effectiveTheme === 'dark')
   
   if (layout === 'vertical') {
-    return <MockBrowserWindowVertical themeClass={themeClass} />
+    return <MockBrowserWindowVertical themeClass={themeClass} colorStyles={colorStyles} />
   }
-  return <MockBrowserWindowHorizontal themeClass={themeClass} />
+  return <MockBrowserWindowHorizontal themeClass={themeClass} colorStyles={colorStyles} />
 }
 
 type TabLayout = 'horizontal' | 'vertical'
@@ -195,6 +198,101 @@ interface ColorOption {
   color1: string  
   color2: string  
   color3: string  
+}
+
+// Helper to convert hex to HSL
+function hexToHSL(hex: string): { h: number; s: number; l: number } {
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  let h = 0
+  let s = 0
+  const l = (max + min) / 2
+
+  if (max !== min) {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
+      case g: h = ((b - r) / d + 2) / 6; break
+      case b: h = ((r - g) / d + 4) / 6; break
+    }
+  }
+
+  return { h: h * 360, s: s * 100, l: l * 100 }
+}
+
+// Helper to convert HSL to hex
+function hslToHex(h: number, s: number, l: number): string {
+  s /= 100
+  l /= 100
+  const a = s * Math.min(l, 1 - l)
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
+    return Math.round(255 * color).toString(16).padStart(2, '0')
+  }
+  return `#${f(0)}${f(8)}${f(4)}`
+}
+
+// ============================================
+// THEME CONFIGURATION - Tweak these values!
+// ============================================
+
+// Saturation multiplier (0-1): higher = more colorful
+const LIGHT_MODE_SATURATION = 0.9  // Light mode saturation
+const DARK_MODE_SATURATION = 0.4   // Dark mode saturation
+
+// Light mode luminosity: higher values = lighter (0-100)
+const LIGHT_MODE_LUMINOSITY = {
+  base: 90,           // Base luminosity for light mode
+  bgOffset: 4,        // bg = base + offset (brighter)
+  highlightOffset: -2, // highlight = base + offset
+  tabbarOffset: -4,   // tabbar = base + offset (darker)
+}
+
+// Dark mode luminosity: lower values = darker (0-100)
+const DARK_MODE_LUMINOSITY = {
+  base: 13,           // Base luminosity for dark mode
+  bgOffset: 0,        // bg = base + offset (reference)
+  highlightOffset: 6, // highlight = base + offset (lighter)
+  tabbarOffset: -4,   // tabbar = base + offset (darker)
+}
+// ============================================
+
+// Generate themed colors from a color option
+function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSSProperties {
+  // For default, use neutral colors (no tinting)
+  if (colorOpt.id === 'default') {
+    return {}
+  }
+
+  // Get the hue from the accent color (color3)
+  const hsl = hexToHSL(colorOpt.color3)
+  const hue = hsl.h
+  // Use similar saturation to the original color but capped for subtlety
+  const maxSat = Math.min(hsl.s, 25)
+
+  if (isDark) {
+    const { base, bgOffset, highlightOffset, tabbarOffset } = DARK_MODE_LUMINOSITY
+    const sat = maxSat * DARK_MODE_SATURATION
+    return {
+      '--preview-bg': hslToHex(hue, sat, base + bgOffset),
+      '--preview-bg-highlight': hslToHex(hue, sat * 1.2, base + highlightOffset),
+      '--preview-tabbar-bg': hslToHex(hue, sat * 0.8, base + tabbarOffset),
+    } as React.CSSProperties
+  } else {
+    const { base, bgOffset, highlightOffset, tabbarOffset } = LIGHT_MODE_LUMINOSITY
+    const sat = maxSat * LIGHT_MODE_SATURATION
+    return {
+      '--preview-bg': hslToHex(hue, sat, base + bgOffset),
+      '--preview-bg-highlight': hslToHex(hue, sat * 1.2, base + highlightOffset),
+      '--preview-tabbar-bg': hslToHex(hue, sat, base + tabbarOffset),
+    } as React.CSSProperties
+  }
 }
 
 const colorOptions: ColorOption[] = [
@@ -283,7 +381,11 @@ export function StepMakeYoursContent({}: StepContentProps) {
                 className={`mock-window-wallpaper-image ${effectiveTheme === 'dark' ? 'wallpaper-visible' : 'wallpaper-hidden'}`} 
               />
             </div>
-            <MockBrowserWindow layout={tabLayout} effectiveTheme={effectiveTheme} />
+            <MockBrowserWindow 
+              layout={tabLayout} 
+              effectiveTheme={effectiveTheme} 
+              colorOption={colorOptions.find(c => c.id === selectedColor) || colorOptions[0]}
+            />
           </div>
 
           {/* Options */}
