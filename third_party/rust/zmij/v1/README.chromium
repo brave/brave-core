@@ -1,0 +1,9 @@
+Name: zmij
+URL: https://crates.io/crates/zmij
+Version: 1.0.12
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A double-to-string conversion algorithm based on Schubfach and yy
