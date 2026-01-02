@@ -74,11 +74,16 @@
 #else
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
+#include "chrome/browser/ui/views/desktop_capture/desktop_media_picker_views.h"
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
+#include "chrome/browser/media/webrtc/display_media_access_handler.h"
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
@@ -272,6 +277,14 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kLocationProviderManager,
 #endif
       &features::kTabstripComboButton,
+#if !BUILDFLAG(IS_ANDROID)
+      &kDesktopMediaPickerMultiLineTitle,
+#endif
+  // We are following upstream's field trial with this feature and they only
+  // enabled it on desktop platforms.
+#if BUILDFLAG(ENABLE_SCREEN_CAPTURE) && !BUILDFLAG(IS_ANDROID)
+      &kDisplayMediaRejectLongDomains,
+#endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
