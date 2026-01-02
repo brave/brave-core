@@ -1,28 +1,33 @@
 diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
-index bccce42ac9d7e21362ef815bdfdc46dbe24bee51..285c5654a7ebb7a50cf25916ed215681240bbc52 100755
+index bccce42ac9d7e21362ef815bdfdc46dbe24bee51..8b31eb22cff12c20636af7971446d32bb7275077 100755
 --- a/base/win/embedded_i18n/create_string_rc.py
 +++ b/base/win/embedded_i18n/create_string_rc.py
-@@ -388,7 +388,13 @@ Extra input files:
-     # Read the source (en-US) string from the .grd file.
+@@ -95,6 +95,7 @@ class GrdHandler(sax.handler.ContentHandler):
+     sax.handler.ContentHandler.__init__(self)
+     self.messages = collections.defaultdict(dict)
+     self.referenced_xtb_files = []
++    self.referenced_part_files = []
+     self.__id_set = string_id_set
+     self.__message_name = None
+     self.__element_stack = []
+@@ -116,6 +117,8 @@ class GrdHandler(sax.handler.ContentHandler):
+       parent = self.__element_stack[-2]
+       if parent == 'translations':
+         self.__OnAddXtbFile(attrs.getValue('path'))
++    elif name == 'part':
++      self.referenced_part_files.append(attrs.getValue('file'))
+ 
+   def endElement(self, name):
+     popped = self.__element_stack.pop()
+@@ -389,6 +392,11 @@ Extra input files:
      grd_handler = GrdHandler(self.string_id_set)
      sax_parser.setContentHandler(grd_handler)
--    sax_parser.parse(grd_file)
-+    # A base name is calculated from grd_file so that's why we don't
-+    # just change that from chrome/installer/util/BUILD.gn
-+    if "chromium_strings" in grd_file:
-+      sax_parser.parse("../../chrome/app/brave_strings.grd")
-+    else:
-+      sax_parser.parse(grd_file)
-+
+     sax_parser.parse(grd_file)
++    # Parse any <part> file includes to extract their messages too
++    grd_dir = os.path.dirname(grd_file)
++    for part_file in grd_handler.referenced_part_files:
++      part_path = os.path.join(grd_dir, part_file)
++      sax_parser.parse(part_path)
      source_strings = grd_handler.messages
  
      grd_file_path = os.path.dirname(grd_file)
-@@ -617,7 +623,7 @@ def main():
-         'specific strings were given.')
-     valid_brands = [b for b in
-       next(iter(mode_specific_strings.values())).keys()]
--    if not brand in valid_brands:
-+    if not brand in valid_brands and False:
-       parser.error('A brand was specified (' + brand + ') but it is not '
-         'a valid brand [' + ', '.join(valid_brands) + '].')
-   elif mode_specific_strings:
