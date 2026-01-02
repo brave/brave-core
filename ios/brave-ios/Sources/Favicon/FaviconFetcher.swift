@@ -121,6 +121,14 @@ public class FaviconFetcher {
       return favicon
     }
 
+    // We stored favicons using `url.domain` before.
+    // Now we are using the full url.
+    // Try to fetch with url.domain if favicon has not yet
+    // updated with the full url.
+    if let favicon = await getFromCache(for: url.domainURL) {
+      return favicon
+    }
+
     // When we search for a domain in the URL bar,
     // it automatically makes the scheme `http`
     // Even if the website loads/redirects as `https`
@@ -140,9 +148,8 @@ public class FaviconFetcher {
   /// Updates the Favicon in the cache with the specified icon if any, otherwise removes the favicon from the cache.
   public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) async {
     guard let favicon, !favicon.isMonogramImage else {
-      let cachedURL = cacheURL(for: url)
-      SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
-      SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
+      SDImageCache.shared.memoryCache.removeObject(forKey: url.absoluteString)
+      SDImageCache.shared.diskCache.removeData(forKey: url.absoluteString)
       return
     }
 
@@ -151,53 +158,42 @@ public class FaviconFetcher {
 
   /// Delete the favicon from disk and memory cache for the given URL
   public static func deleteCache(for url: URL) async {
-    let cachedURL = cacheURL(for: url)
-    SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
-    SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
-  }
-
-  private static func cacheURL(for url: URL) -> URL {
-    // Some websites still only have a favicon for the FULL url including the fragmented parts
-    // But they won't have a favicon for their domain
-    // In this case, we want to store the favicon for the entire domain regardless of query parameters or fragmented parts
-    // Example: `https://app.uniswap.org/` has no favicon, but `https://app.uniswap.org/#/swap?chain=mainnet` does.
-    return url.domainURL
+    SDImageCache.shared.memoryCache.removeObject(forKey: url.absoluteString)
+    SDImageCache.shared.diskCache.removeData(forKey: url.absoluteString)
   }
 
   private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) async {
     // Do not cache non-persistent icons to disk
     if persistent {
       do {
-        let cachedURL = cacheURL(for: url)
-        SDImageCache.shared.memoryCache.setObject(favicon, forKey: cachedURL.absoluteString)
+        SDImageCache.shared.memoryCache.setObject(favicon, forKey: url.absoluteString)
         SDImageCache.shared.diskCache.setData(
           try JSONEncoder().encode(favicon),
-          forKey: cachedURL.absoluteString
+          forKey: url.absoluteString
         )
       } catch {
         Logger.module.error("Error Caching Favicon: \(error)")
       }
     } else {
       // Cache non-persistent icons to memory only
-      SDImageCache.shared.memoryCache.setObject(favicon, forKey: cacheURL(for: url).absoluteString)
+      SDImageCache.shared.memoryCache.setObject(favicon, forKey: url.absoluteString)
     }
   }
 
   private static func getFromCache(for url: URL) async -> Favicon? {
-    let cachedURL = cacheURL(for: url)
-    if let favicon = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString)
+    if let favicon = SDImageCache.shared.memoryCache.object(forKey: url.absoluteString)
       as? Favicon
     {
       return favicon
     }
 
-    guard let data = SDImageCache.shared.diskCache.data(forKey: cachedURL.absoluteString) else {
+    guard let data = SDImageCache.shared.diskCache.data(forKey: url.absoluteString) else {
       return nil
     }
 
     do {
       let favicon = try JSONDecoder().decode(Favicon.self, from: data)
-      SDImageCache.shared.memoryCache.setObject(favicon, forKey: cachedURL.absoluteString)
+      SDImageCache.shared.memoryCache.setObject(favicon, forKey: url.absoluteString)
       return favicon
     } catch {
       Logger.module.error("Error Decoding Favicon: \(error)")
