@@ -53,12 +53,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 #endif
 
  protected:
-  void TabChangedAt(content::WebContents* contents,
-                    int index,
-                    TabChangeType change) override;
-  void TabPinnedStateChanged(TabStripModel* tab_strip_model,
-                             content::WebContents* contents,
-                             int index) override;
+  void OnTabChangedAt(tabs::TabInterface* tab,
+                      int index,
+                      TabChangeType change_type) override;
+  void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,

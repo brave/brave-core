@@ -127,18 +127,17 @@ BraveBrowserCommandController::BraveBrowserCommandController(
 
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
-void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
-                                                 int index,
-                                                 TabChangeType type) {
+void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
+                                                   int index,
+                                                   TabChangeType change_type) {
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicateTabs(&*browser_));
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
 }
 
-void BraveBrowserCommandController::TabPinnedStateChanged(
-    TabStripModel* tab_strip_model,
-    content::WebContents* contents,
+void BraveBrowserCommandController::OnTabPinnedStateChanged(
+    tabs::TabInterface* tab,
     int index) {
   UpdateCommandsForPin();
 }
