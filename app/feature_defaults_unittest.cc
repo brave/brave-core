@@ -146,7 +146,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
-      &features::kCookieDeprecationFacilitatedTesting,
       &features::kDevToolsAiCodeCompletion,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
