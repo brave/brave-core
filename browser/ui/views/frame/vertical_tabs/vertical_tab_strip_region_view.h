@@ -191,6 +191,14 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   raw_ptr<HeaderView> header_view_ = nullptr;
 
+  // Reportedly, when we add the TabStripRegionView to
+  // VerticalTabStripRegionView directly, context menu on Omnibox is not working
+  // specifically on Windows. In order to fix this, we wrap the
+  // TabStripRegionView with a container view. We're not sure why this is the
+  // case, but this seems to fix the issue.
+  // https://github.com/brave/brave-browser/issues/51719
+  raw_ptr<views::View> region_view_container_ = nullptr;
+
   // Separator between tabs and new tab button.
   raw_ptr<views::View> separator_ = nullptr;
 
