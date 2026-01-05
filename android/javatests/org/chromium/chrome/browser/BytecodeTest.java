@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.MenuItem;
@@ -1860,6 +1861,7 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
+                        PersistableBundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
