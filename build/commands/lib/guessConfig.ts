@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config'
+import os from 'os'
 import path from 'path/posix'
 import fs from 'fs'
 
@@ -30,12 +31,21 @@ config.update({
 let outputPath = config.outputDir
 
 function getBuildOutputPathList() {
-  return buildConfigs.flatMap((config) => [
-    path.resolve(__dirname, `../../../../out/${config}`),
-    ...extraArchitectures.map((arch) =>
-      path.resolve(__dirname, `../../../../out/${config}_${arch}`),
-    ),
-  ])
+  if (os.platform() === 'win32') {
+    return buildConfigs.flatMap((config) => [
+      path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}`),
+      ...extraArchitectures.map((arch) =>
+        path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}_${arch}`),
+      ),
+    ])
+  } else {
+    return buildConfigs.flatMap((config) => [
+      path.resolve(__dirname, `../../../../out/${config}`),
+      ...extraArchitectures.map((arch) =>
+        path.resolve(__dirname, `../../../../out/${config}_${arch}`),
+      ),
+    ])
+  }
 }
 
 if (fs.existsSync(outputPath)) {
