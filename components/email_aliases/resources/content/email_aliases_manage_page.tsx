@@ -28,10 +28,7 @@ const PageCol = styled(Col)`
 `
 
 const BraveAccountSignIn = () => {
-  const ref = React.useRef(null)
-  return React.createElement('settings-brave-account-row', {
-    ref,
-  })
+  return React.createElement('settings-brave-account-row')
 }
 
 export const ManagePage = ({
