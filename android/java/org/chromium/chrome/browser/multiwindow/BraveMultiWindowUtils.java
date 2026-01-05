@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedIns
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 
+import java.util.Collections;
 import java.util.List;
 
 @NullMarked
@@ -107,8 +108,9 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                             multiInstanceManagerApi31.getInstanceInfo(PersistedInstanceType.ANY);
                     if (allInstances != null && allInstances.size() > 1) {
                         for (int i = 1; i < allInstances.size(); i++) {
-                            multiInstanceManagerApi31.closeWindow(
-                                    allInstances.get(i).instanceId, allInstances.get(i).taskId);
+                            multiInstanceManagerApi31.closeWindows(
+                                    Collections.singletonList(allInstances.get(i).instanceId),
+                                    allInstances.get(i).taskId);
                         }
                     }
                 }
