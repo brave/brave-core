@@ -8,7 +8,7 @@ import type * as CommandsMojo from 'gen/brave/components/commands/common/command
 import styled from 'styled-components'
 import Keys from './Keys'
 import ConfigureShortcut from './ConfigureShortcut'
-import { commandsApi } from '../commands'
+import { getCommandsApi } from '../commands'
 import { stringToKeys } from '../utils/accelerator'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
@@ -65,7 +65,7 @@ function Accelerator({
           size="small"
           kind="plain-faint"
           onClick={() =>
-            commandsApi.unassignAcceleratorFromCommand(commandId, accelerator.codes)
+            getCommandsApi().unassignAcceleratorFromCommand(commandId, accelerator.codes)
           }
         >
           <Icon name="remove-circle-outline" />
@@ -93,7 +93,7 @@ export default function Command({
         <Button
           size="small"
           kind="plain-faint"
-          onClick={() => commandsApi.actions.commands.resetAcceleratorsForCommand(command.id)}
+          onClick={() => getCommandsApi().actions.commands.resetAcceleratorsForCommand(command.id)}
         >
           {getLocale(S.SHORTCUTS_PAGE_RESET_COMMAND)}
         </Button>
@@ -110,7 +110,7 @@ export default function Command({
         <ConfigureShortcut
           onChange={(info) => {
             setAdding(false)
-            commandsApi.assignAcceleratorToCommand(command.id, info.codes)
+            getCommandsApi().assignAcceleratorToCommand(command.id, info.codes)
           }}
           onCancel={() => {
             setAdding(false)
