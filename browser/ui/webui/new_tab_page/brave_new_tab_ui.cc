@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
@@ -139,6 +140,9 @@ BraveNewTabUI::BraveNewTabUI(
                      false
 #endif
   );
+
+  source->AddBoolean("isBraveOriginBranded",
+                     BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 
   web_ui->AddMessageHandler(base::WrapUnique(
       BraveNewTabMessageHandler::Create(source, profile, was_restored)));
