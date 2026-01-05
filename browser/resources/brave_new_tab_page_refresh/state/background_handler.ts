@@ -6,7 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '../lib/state_store'
+import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 import { preloadedBackgrounds } from './background_images/preloaded'
 import { BackgroundState, BackgroundActions } from './background_state'
