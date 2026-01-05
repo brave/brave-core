@@ -127,6 +127,7 @@ source_set("unit_tests") {
     "//brave/components/variations:buildflags",
     "//chrome/browser",
     "//chrome/browser/devtools",
+    "//chrome/browser/media/webrtc",
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
