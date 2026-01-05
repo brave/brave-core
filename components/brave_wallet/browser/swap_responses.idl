@@ -397,19 +397,25 @@ namespace swap_responses {
     DOMString to;
     DOMString value;
     DOMString data;
+
+    any gasLimit;
+    any gasPrice;
   };
 
   dictionary Gate3SwapSolanaTransactionParams {
     Gate3ChainSpec chain;
     DOMString from;
     DOMString to;
-    DOMString value;
+    DOMString lamports;
 
     any splTokenMint;
     any splTokenAmount;
     any decimals;
 
     any versionedTransaction;
+
+    any computeUnitLimit;
+    any computeUnitPrice;
   };
 
   dictionary Gate3SwapBitcoinTransactionParams {
@@ -443,6 +449,12 @@ namespace swap_responses {
     Gate3SwapTool tool;
   };
 
+  dictionary Gate3SwapNetworkFee {
+    DOMString amount;
+    DOMString decimals;
+    DOMString symbol;
+  };
+
   dictionary Gate3SwapRoute {
     DOMString id;
     Gate3Provider provider;
@@ -455,6 +467,9 @@ namespace swap_responses {
 
     any estimatedTime;
     any priceImpact;
+
+    any networkFee;
+    boolean gasless;
 
     any depositAddress;
     any depositMemo;

@@ -466,9 +466,14 @@ export function getGate3QuoteOptions({
       ? new Amount(route.priceImpact).times(100).toAbsoluteValue()
       : fiatDiffRatio.times(100).toAbsoluteValue()
 
-    // For now, we don't have gas cost info from Gate3
-    // Use a zero network fee as placeholder
-    const networkFee = Amount.zero()
+    // Use network fee from route if available, otherwise zero
+    // If gasless is true, network fees are sponsored/waived
+    const networkFee =
+      route.gasless || !route.networkFee
+        ? Amount.zero()
+        : new Amount(route.networkFee.amount).divideByDecimals(
+            route.networkFee.decimals,
+          )
 
     return {
       fromAmount,

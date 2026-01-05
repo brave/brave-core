@@ -191,7 +191,7 @@ export function useGate3(params: SwapParams) {
         if (transactionParams.solanaTransactionParams) {
           const {
             to,
-            value,
+            lamports,
             splTokenMint,
             splTokenAmount,
             decimals,
@@ -227,7 +227,7 @@ export function useGate3(params: SwapParams) {
             network: fromNetwork!,
             fromAccount: fromAccount!,
             to,
-            value: new Amount(value).toHex(),
+            value: new Amount(lamports).toHex(),
           })
           return
         }

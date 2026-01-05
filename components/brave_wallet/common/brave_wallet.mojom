@@ -636,17 +636,21 @@ struct Gate3SwapEvmTransactionParams {
   string to;
   string value;
   string data;
+  string? gas_limit;
+  string? gas_price;
 };
 
 struct Gate3SwapSolanaTransactionParams {
   ChainId chain;
   string from;
   string to;
-  string value;
+  string lamports;
   string? spl_token_mint;
   string? spl_token_amount;
   string? decimals;
   string? versioned_transaction;
+  string? compute_unit_limit;
+  string? compute_unit_price;
 };
 
 struct Gate3SwapBitcoinTransactionParams {
@@ -660,6 +664,12 @@ union Gate3SwapTransactionParamsUnion {
   Gate3SwapEvmTransactionParams evm_transaction_params;
   Gate3SwapSolanaTransactionParams solana_transaction_params;
   Gate3SwapBitcoinTransactionParams bitcoin_transaction_params;
+};
+
+struct Gate3SwapNetworkFee {
+  string amount;
+  int32 decimals;
+  string symbol;
 };
 
 struct Gate3SwapRoute {
@@ -678,12 +688,19 @@ struct Gate3SwapRoute {
   // Minimum destination amount after slippage in smallest unit
   string destination_amount_min;
 
-  // Estimated time for swap completion in seconds
+  // Estimated time for swap completion in seconds (0 indicates atomic swap)
   string? estimated_time;
 
   // Price impact percentage (negative value indicates loss due to
   // slippage/fees)
   string? price_impact;
+
+  // Total estimated network fee for the swap route
+  Gate3SwapNetworkFee? network_fee;
+
+  // Whether this route operates in gasless mode (network fees are
+  // sponsored/waived)
+  bool gasless;
 
   // Address to deposit funds (may not be available for indicative quotes)
   string? deposit_address;

@@ -1308,6 +1308,8 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     evm_result->to = evm_params->to;
     evm_result->value = evm_params->value;
     evm_result->data = evm_params->data;
+    evm_result->gas_limit = ParseNullableString(evm_params->gas_limit);
+    evm_result->gas_price = ParseNullableString(evm_params->gas_price);
     return mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
         std::move(evm_result));
   }
@@ -1329,7 +1331,7 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     solana_result->chain = std::move(chain);
     solana_result->from = solana_params->from;
     solana_result->to = solana_params->to;
-    solana_result->value = solana_params->value;
+    solana_result->lamports = solana_params->lamports;
 
     solana_result->spl_token_mint =
         ParseNullableString(solana_params->spl_token_mint);
@@ -1339,6 +1341,11 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
 
     solana_result->versioned_transaction =
         ParseNullableString(solana_params->versioned_transaction);
+
+    solana_result->compute_unit_limit =
+        ParseNullableString(solana_params->compute_unit_limit);
+    solana_result->compute_unit_price =
+        ParseNullableString(solana_params->compute_unit_price);
 
     return mojom::Gate3SwapTransactionParamsUnion::NewSolanaTransactionParams(
         std::move(solana_result));
@@ -1369,6 +1376,23 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
   return nullptr;
 }
 
+mojom::Gate3SwapNetworkFeePtr ParseNetworkFee(
+    const swap_responses::Gate3SwapNetworkFee& value) {
+  auto result = mojom::Gate3SwapNetworkFee::New();
+  result->amount = value.amount;
+
+  // Convert string decimals to int32
+  int32_t decimals = 0;
+  if (base::StringToInt(value.decimals, &decimals)) {
+    result->decimals = decimals;
+  } else {
+    return nullptr;
+  }
+
+  result->symbol = value.symbol;
+  return result;
+}
+
 mojom::Gate3SwapRoutePtr ParseRoute(
     const swap_responses::Gate3SwapRoute& value) {
   auto provider = ParseProvider(value.provider);
@@ -1393,6 +1417,20 @@ mojom::Gate3SwapRoutePtr ParseRoute(
   result->destination_amount_min = value.destination_amount_min;
   result->estimated_time = ParseNullableString(value.estimated_time);
   result->price_impact = ParseNullableString(value.price_impact);
+
+  if (!value.network_fee.is_none()) {
+    auto network_fee_value =
+        swap_responses::Gate3SwapNetworkFee::FromValue(value.network_fee);
+    if (network_fee_value) {
+      result->network_fee = ParseNetworkFee(*network_fee_value);
+    } else {
+      // Log if parsing failed but network_fee was present
+      LOG(ERROR) << "Failed to parse Gate3SwapNetworkFee from value: "
+                 << value.network_fee;
+    }
+  }
+
+  result->gasless = value.gasless;
   result->deposit_address = ParseNullableString(value.deposit_address);
   result->deposit_memo = ParseNullableString(value.deposit_memo);
   result->expires_at = ParseNullableString(value.expires_at);
