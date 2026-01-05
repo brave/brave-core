@@ -93,13 +93,21 @@ class EphemeralStorageService : public KeyedService {
   friend EphemeralStorageQaBrowserTest;
   friend permissions::PermissionLifetimeManagerBrowserTest;
 
+  void RunForgetfulStorageCleaning(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config,
+      bool shields_disabled_on_one_of_hosts,
+      bool forgetful_storage_cleanup_enabled,
+      bool first_party_storage_cleanup_enforced);
+
   void FirstPartyStorageAreaInUse(
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config);
   bool FirstPartyStorageAreaNotInUse(
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config,
-      bool shields_disabled_on_one_of_hosts);
+      bool shields_disabled_on_one_of_hosts,
+      bool forgetful_storage_cleanup_enabled);
 
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
