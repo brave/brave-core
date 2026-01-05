@@ -11,6 +11,7 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -34,6 +35,10 @@ using ::testing::Eq;
 using ::testing::Optional;
 
 namespace sidebar {
+
+TEST(SidebarTest, FeaturesTest) {
+  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kSidebarV2));
+}
 
 class MockSidebarModelObserver : public SidebarModel::Observer {
  public:

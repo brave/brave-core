@@ -13,6 +13,8 @@ assert(toolkit_views)
 
 source_set("sidebar") {
   sources = [
+    "features.cc",
+    "features.h",
     "sidebar.h",
     "sidebar_controller.cc",
     "sidebar_controller.h",

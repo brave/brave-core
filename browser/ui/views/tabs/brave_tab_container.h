@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -57,6 +58,7 @@ class BraveTabContainer : public TabContainerImpl {
   void SetTabSlotVisibility() override;
   void InvalidateIdealBounds() override;
   void Layout(PassKey) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
@@ -144,12 +146,24 @@ class BraveTabContainer : public TabContainerImpl {
   // Returns the maximum scroll offset for unpinned tabs.
   int GetMaxScrollOffset() const;
 
+  // Returns the first and last visible unpinned slot views (tabs or group
+  // headers). Returns {nullptr, nullptr} when no visible unpinned slot views
+  // exist.
+  std::pair<TabSlotView*, TabSlotView*> FindVisibleUnpinnedSlotViews() const;
+
+  // Returns the ideal bounds for the given slot view (tab or group header).
+  gfx::Rect GetIdealBoundsOf(TabSlotView* slot_view) const;
+
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
   // Used to sets the clip path for child views (tabs, group views and etc).
   void UpdateClipPathForChildren(views::View* view,
                                  int pinned_tabs_area_bottom);
+
+  // Updates clip path for all slot views (tabs and group views) based on
+  // scroll_offset.
+  void UpdateClipPathForSlotViews();
 
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);

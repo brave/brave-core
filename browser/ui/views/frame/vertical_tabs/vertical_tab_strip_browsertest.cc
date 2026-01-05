@@ -544,6 +544,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
         << "Region view bounds: " << region_view_bounds.ToString()
         << " vs. Tab bounds: " << tab_bounds.ToString();
   }
+
+  // Check resize area is top-most view.
+  auto resize_area_index = region_view->GetIndexOf(region_view->resize_area_);
+  EXPECT_TRUE(resize_area_index.has_value() &&
+              resize_area_index == region_view->children().size() - 1);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,

@@ -90,6 +90,17 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
               BraveVerticalTabStripRegionView::State::kCollapsed);
 }
 
+bool BraveTabStrip::CanPaintThrobberToLayer() const {
+  if (!ShouldShowVerticalTabs()) {
+    return TabStrip::CanPaintThrobberToLayer();
+  }
+
+  // Don't allow throbber to be painted to layer. Vertical tabs are scrollable,
+  // and a tab could be out of the viewport. Otherwise, throbber would be
+  // painted even when the tab is not in the viewport.
+  return false;
+}
+
 bool BraveTabStrip::ShouldDrawStrokes() const {
   if (ShouldShowVerticalTabs()) {
     // Prevent root view from drawing lines. For vertical tabs stroke , we

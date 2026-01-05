@@ -113,12 +113,21 @@ export default function FullScreen() {
     const handleClick = (e: MouseEvent) => {
       if (!e.composedPath().includes(asideRef.current!)) {
         aiChatContext.toggleSidebar()
+        e.stopPropagation()
       }
     }
 
+    // When the window loses focus (i.e. from iframe click) we should close the side bar.
+    const handleBlur = () => {
+      aiChatContext.toggleSidebar()
+    }
+
     document.addEventListener('click', handleClick, { capture: true })
-    return () =>
+    window.addEventListener('blur', handleBlur)
+    return () => {
       document.removeEventListener('click', handleClick, { capture: true })
+      window.removeEventListener('blur', handleBlur)
+    }
   }, [aiChatContext.showSidebar, isSmall])
 
   return (
