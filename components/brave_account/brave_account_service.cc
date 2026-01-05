@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/notimplemented.h"
@@ -104,9 +103,7 @@ BraveAccountService::BraveAccountService(
     : BraveAccountService(pref_service,
                           std::move(url_loader_factory),
                           base::BindRepeating(&OSCrypt::EncryptString),
-                          base::BindRepeating(&OSCrypt::DecryptString),
-                          std::make_unique<base::OneShotTimer>(),
-                          std::make_unique<base::OneShotTimer>()) {}
+                          base::BindRepeating(&OSCrypt::DecryptString)) {}
 
 BraveAccountService::~BraveAccountService() = default;
 
@@ -119,21 +116,15 @@ BraveAccountService::BraveAccountService(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     OSCryptCallback encrypt_callback,
-    OSCryptCallback decrypt_callback,
-    std::unique_ptr<base::OneShotTimer> verify_result_timer,
-    std::unique_ptr<base::OneShotTimer> auth_validate_timer)
+    OSCryptCallback decrypt_callback)
     : pref_service_(pref_service),
       url_loader_factory_(std::move(url_loader_factory)),
       encrypt_callback_(std::move(encrypt_callback)),
-      decrypt_callback_(std::move(decrypt_callback)),
-      verify_result_timer_(std::move(verify_result_timer)),
-      auth_validate_timer_(std::move(auth_validate_timer)) {
+      decrypt_callback_(std::move(decrypt_callback)) {
   CHECK(pref_service_);
   CHECK(url_loader_factory_);
   CHECK(encrypt_callback_);
   CHECK(decrypt_callback_);
-  CHECK(verify_result_timer_);
-  CHECK(auth_validate_timer_);
 
   pref_verification_token_.Init(
       prefs::kBraveAccountVerificationToken, pref_service,
@@ -328,7 +319,7 @@ void BraveAccountService::OnRegisterFinalize(
 
 void BraveAccountService::OnVerificationTokenChanged() {
   if (pref_verification_token_.GetValue().empty()) {
-    return CHECK_DEREF(verify_result_timer_.get()).Stop();
+    return verify_result_timer_.Stop();
   }
 
   ScheduleVerifyResult();
@@ -337,11 +328,10 @@ void BraveAccountService::OnVerificationTokenChanged() {
 void BraveAccountService::ScheduleVerifyResult(
     base::TimeDelta delay,
     RequestHandle current_verify_result_request) {
-  CHECK_DEREF(verify_result_timer_.get())
-      .Start(FROM_HERE, delay,
-             base::BindOnce(&BraveAccountService::VerifyResult,
-                            base::Unretained(this),
-                            std::move(current_verify_result_request)));
+  verify_result_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&BraveAccountService::VerifyResult, base::Unretained(this),
+                     std::move(current_verify_result_request)));
 }
 
 void BraveAccountService::VerifyResult(
@@ -507,7 +497,7 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
 void BraveAccountService::OnAuthenticationTokenChanged() {
   if (pref_authentication_token_.GetValue().empty()) {
     pref_service_->ClearPref(prefs::kBraveAccountEmailAddress);
-    return CHECK_DEREF(auth_validate_timer_.get()).Stop();
+    return auth_validate_timer_.Stop();
   }
 
   ScheduleAuthValidate();
@@ -516,11 +506,10 @@ void BraveAccountService::OnAuthenticationTokenChanged() {
 void BraveAccountService::ScheduleAuthValidate(
     base::TimeDelta delay,
     RequestHandle current_auth_validate_request) {
-  CHECK_DEREF(auth_validate_timer_.get())
-      .Start(FROM_HERE, delay,
-             base::BindOnce(&BraveAccountService::AuthValidate,
-                            base::Unretained(this),
-                            std::move(current_auth_validate_request)));
+  auth_validate_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&BraveAccountService::AuthValidate, base::Unretained(this),
+                     std::move(current_auth_validate_request)));
 }
 
 void BraveAccountService::AuthValidate(

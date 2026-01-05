@@ -52,17 +52,14 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
-    auto verify_result_timer = std::make_unique<base::OneShotTimer>();
-    verify_result_timer_ = verify_result_timer.get();
-    auto auth_validate_timer = std::make_unique<base::OneShotTimer>();
-    auth_validate_timer_ = auth_validate_timer.get();
     brave_account_service_ = base::WrapUnique(new BraveAccountService(
         &pref_service_, test_url_loader_factory_.GetSafeWeakWrapper(),
         base::BindRepeating(&BraveAccountServiceTest::Encrypt,
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
-                            base::Unretained(this)),
-        std::move(verify_result_timer), std::move(auth_validate_timer)));
+                            base::Unretained(this))));
+    verify_result_timer_ = &brave_account_service_->verify_result_timer_;
+    auth_validate_timer_ = &brave_account_service_->auth_validate_timer_;
   }
 
   void RunTestCase() {

@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
-#include <memory>
-#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
@@ -63,9 +61,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       PrefService* pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
-      OSCryptCallback decrypt_callback,
-      std::unique_ptr<base::OneShotTimer> verify_result_timer,
-      std::unique_ptr<base::OneShotTimer> auth_validate_timer);
+      OSCryptCallback decrypt_callback);
 
   void RegisterInitialize(const std::string& email,
                           const std::string& blinded_message,
@@ -135,8 +131,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   StringPrefMember pref_verification_token_;
   StringPrefMember pref_authentication_token_;
-  std::unique_ptr<base::OneShotTimer> verify_result_timer_;
-  std::unique_ptr<base::OneShotTimer> auth_validate_timer_;
+  base::OneShotTimer verify_result_timer_;
+  base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 
