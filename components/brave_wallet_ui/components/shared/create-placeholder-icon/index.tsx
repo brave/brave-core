@@ -21,7 +21,13 @@ import {
 import { isNativeAsset } from '../../../utils/asset-utils'
 
 // Styled components
-import { AssetIconSizes, IconWrapper, PlaceholderText } from './style'
+import {
+  AssetIconSizes,
+  IconWrapper,
+  PlaceholderText,
+  NFTPlaceholderWrapper,
+  NFTPlacholderIcon,
+} from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
@@ -54,12 +60,11 @@ export function withPlaceholderIcon<
   P extends {
     icon?: string
   } & JSX.IntrinsicAttributes,
-  PROPS_FOR_FUNCTION = Omit<P, 'icon' | 'onLoad'>,
+  PROPS_FOR_FUNCTION = Omit<P, 'icon' | 'onLoad' | 'onError'>,
 >(
-  // ignore "onLoad" prop differences since it is not used
-  WrappedComponent: React.ComponentType<
-    PROPS_FOR_FUNCTION & { icon?: string | undefined }
-  >,
+  // ignore "onLoad" and "onError" prop differences
+  // since they are handled internally
+  WrappedComponent: React.ComponentType<PROPS_FOR_FUNCTION & { icon?: string }>,
   config: Config,
 ): (props: Props & PROPS_FOR_FUNCTION) => JSX.Element | null {
   const { size, marginLeft, marginRight } = config
@@ -67,7 +72,15 @@ export function withPlaceholderIcon<
   return function (funcProps: Props & PROPS_FOR_FUNCTION) {
     const { asset, ...wrappedComponentProps } = funcProps
 
+    // state
+    const [imageLoadFailed, setImageLoadFailed] = React.useState(false)
+
     const isNative = asset && isNativeAsset(asset)
+
+    // Reset imageLoadFailed when the asset changes
+    React.useEffect(() => {
+      setImageLoadFailed(false)
+    }, [asset?.logo, asset?.contractAddress])
 
     const nativeAssetLogo =
       isNative && asset ? makeNativeAssetLogo(asset.symbol, asset.chainId) : ''
@@ -102,7 +115,8 @@ export function withPlaceholderIcon<
     }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
 
     const needsPlaceholder =
-      (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
+      (tokenImageURL === '' || !isValidIcon || imageLoadFailed)
+      && nativeAssetLogo === ''
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
@@ -115,9 +129,10 @@ export function withPlaceholderIcon<
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
     const remoteImage = React.useMemo(() => {
-      // If the token is a non-fungible token, return the token image URL
+      // If the token is a non-fungible token and the wrapped component is
+      // NftIcon, return the token image URL.
       // chrome-untrusted://image?url=... will be applied in nft_script.ts.
-      if (isNonFungibleToken) {
+      if (isNonFungibleToken && WrappedComponent.name === 'NftIcon') {
         return tokenImageURL
       }
       if (isRemoteURL) {
@@ -134,6 +149,18 @@ export function withPlaceholderIcon<
     }
 
     const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : tokenImageURL)
+
+    if (needsPlaceholder && isNonFungibleToken) {
+      return (
+        <NFTPlaceholderWrapper
+          marginLeft={marginLeft ?? 0}
+          marginRight={marginRight ?? 0}
+          size={size}
+        >
+          <NFTPlacholderIcon />
+        </NFTPlaceholderWrapper>
+      )
+    }
 
     if (needsPlaceholder || !icon) {
       return (
@@ -163,6 +190,7 @@ export function withPlaceholderIcon<
             icon?: undefined
           })}
           icon={isStorybook ? tokenImageURL : icon}
+          onError={() => setImageLoadFailed(true)}
         />
       </IconWrapper>
     )

@@ -218,8 +218,10 @@ export const style = scoped.css`
     }
   }
 
-  &:hover .menu-button {
-    opacity: 1;
-    visibility: visible;
+  &:hover, :has(:popover-open) {
+    .menu-button {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 `
