@@ -63,13 +63,13 @@ struct UrpService {
       completion(nil, .pingDisabledByUser)
       return
     }
-    
+
     guard let refCode = refCode else {
       Logger.module.debug("No referral code provided, skipping URP lookup.")
       completion(nil, .endpointError)
       return
     }
-    
+
     guard var endPoint = URL(string: host) else {
       completion(nil, .endpointError)
       return
@@ -78,7 +78,7 @@ struct UrpService {
     var params = [
       UrpService.ParamKeys.api: apiKey,
       UrpService.ParamKeys.referralCode: refCode,
-      UrpService.ParamKeys.platform: "ios"
+      UrpService.ParamKeys.platform: "ios",
     ]
     endPoint.append(pathComponents: "promo", "initialize", "nonua")
 
