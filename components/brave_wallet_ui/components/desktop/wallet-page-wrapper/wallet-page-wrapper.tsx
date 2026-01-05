@@ -29,9 +29,6 @@ import {
   LayoutCardWrapper,
   ContainerCard,
   StaticBackground,
-  BackgroundGradientWrapper,
-  BackgroundGradientTopLayer,
-  BackgroundGradientBottomLayer,
   BlockForHeight,
   FeatureRequestButtonWrapper,
   CardHeaderWrapper,
@@ -150,12 +147,6 @@ export const WalletPageWrapper = (props: Props) => {
   return (
     <>
       <StaticBackground />
-      {!isMobileOrPanel && (
-        <BackgroundGradientWrapper>
-          <BackgroundGradientTopLayer />
-          <BackgroundGradientBottomLayer />
-        </BackgroundGradientWrapper>
-      )}
       <Wrapper
         noPadding={noPadding}
         noTopPosition={isMobileOrPanel}
