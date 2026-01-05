@@ -95,6 +95,7 @@ export default React.forwardRef<HTMLDivElement, EditableProps>(
           }
         }}
         data-editor
+        data-test-id='leo-input'
         autoFocus
         data-placeholder={placeholder}
         className={styles.editable}
