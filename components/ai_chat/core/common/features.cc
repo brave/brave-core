@@ -17,17 +17,9 @@ namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat, base::FEATURE_ENABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
-#if BUILDFLAG(IS_IOS)
-    &kAIChat, "default_model", "chat-basic"};
-#else
     &kAIChat, "default_model", "chat-automatic"};
-#endif
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
-#if BUILDFLAG(IS_IOS)
-    &kAIChat, "default_premium_model", kClaudeSonnetModelKey};
-#else
     &kAIChat, "default_premium_model", "chat-automatic"};
-#endif
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
     &kAIChat, "default_vision_model", kClaudeHaikuModelKey};
 const base::FeatureParam<std::string> kAIModelsPremiumVisionDefaultKey{
@@ -77,8 +69,7 @@ bool IsAIChatFirstEnabled() {
 
 BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAIChatAgentProfile,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatAgentProfileEnabled() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -96,8 +87,7 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled() {
       features::kAIChatGlobalSidePanelEverywhere);
 }
 
-BASE_FEATURE(kCustomSiteDistillerScripts,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kCustomSiteDistillerScripts, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsCustomSiteDistillerScriptsEnabled() {
   return base::FeatureList::IsEnabled(features::kCustomSiteDistillerScripts);
@@ -110,8 +100,7 @@ bool IsContextMenuRewriteInPlaceEnabled() {
   return base::FeatureList::IsEnabled(features::kContextMenuRewriteInPlace);
 }
 
-BASE_FEATURE(kAllowPrivateIPs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAllowPrivateIPs, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAllowPrivateIPsEnabled() {
   return base::FeatureList::IsEnabled(features::kAllowPrivateIPs);
@@ -128,8 +117,7 @@ bool IsOpenAIChatFromBraveSearchEnabled() {
   return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
 }
 
-BASE_FEATURE(kPageContextEnabledInitially,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kPageContextEnabledInitially, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsPageContextEnabledInitially() {
   return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
