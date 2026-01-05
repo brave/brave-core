@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -120,6 +121,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             boolean initializeUiWithIncognitoColors,
             @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState,
+            @Nullable PersistableBundle persistentState,
             @Nullable MultiInstanceManager multiInstanceManager,
             @NonNull ObservableSupplier<Integer> overviewColorSupplier,
             @NonNull ObservableSupplier<ManualFillingComponent> manualFillingComponentSupplier,
@@ -172,6 +174,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 initializeUiWithIncognitoColors,
                 backPressManager,
                 savedInstanceState,
+                persistentState,
                 multiInstanceManager,
                 overviewColorSupplier,
                 manualFillingComponentSupplier,
