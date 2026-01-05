@@ -12,6 +12,8 @@ import {
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from './api'
 
+let instance: ChannelsCachingWrapper | null = null
+
 export class ChannelsCachingWrapper
   extends EntityCachingWrapper<Channel>
   implements ChannelsListenerInterface {
@@ -29,6 +31,13 @@ export class ChannelsCachingWrapper
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
+  }
+
+  static getInstance() {
+    if (!instance) {
+      instance = new this()
+    }
+    return instance
   }
 
   setChannelSubscribed(locale: string, channelId: string, subscribed: boolean) {

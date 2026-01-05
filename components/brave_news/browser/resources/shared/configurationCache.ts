@@ -13,6 +13,8 @@ import getBraveNewsController from './api'
 
 import { CachingWrapper } from '$web-common/mojomCache'
 
+let instance: ConfigurationCachingWrapper | null = null
+
 export class ConfigurationCachingWrapper
   extends CachingWrapper<Configuration>
   implements ConfigurationListenerInterface {
@@ -34,6 +36,13 @@ export class ConfigurationCachingWrapper
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
+  }
+
+  static getInstance() {
+    if (!instance) {
+      instance = new this()
+    }
+    return instance
   }
 
   get value() {

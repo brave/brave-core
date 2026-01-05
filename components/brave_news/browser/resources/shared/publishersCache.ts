@@ -14,6 +14,8 @@ import getBraveNewsController, { isDirectFeed } from './api'
 
 import { EntityCachingWrapper } from '$web-common/mojomCache'
 
+let instance: PublishersCachingWrapper | null = null
+
 export class PublishersCachingWrapper
   extends EntityCachingWrapper<Publisher>
   implements PublishersListenerInterface {
@@ -31,6 +33,13 @@ export class PublishersCachingWrapper
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
+  }
+
+  static getInstance() {
+    if (!instance) {
+      instance = new this()
+    }
+    return instance
   }
 
   setPublisherFollowed(publisherId: string, enabled: boolean) {
