@@ -29,6 +29,7 @@ import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -75,7 +76,9 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
             if (selector != null && selector.getTotalTabCount() == 0) {
-                closeWindow(mInstanceId, CloseWindowAppSource.NO_TABS_IN_WINDOW);
+                closeWindows(
+                        Collections.singletonList(mInstanceId),
+                        CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
             if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
