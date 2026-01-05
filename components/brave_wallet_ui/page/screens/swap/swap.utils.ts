@@ -463,7 +463,7 @@ export function getGate3QuoteOptions({
     const fiatDiff = toAmountFiat.minus(fromAmountFiat)
     const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
     const impact = route.priceImpact
-      ? new Amount(route.priceImpact).times(100).toAbsoluteValue()
+      ? new Amount(route.priceImpact).toAbsoluteValue()
       : fiatDiffRatio.times(100).toAbsoluteValue()
 
     // Use network fee from route if available, otherwise zero
