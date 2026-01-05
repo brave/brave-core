@@ -1,7 +1,11 @@
-use crate::bstr::{BStr, BString};
-use crate::{config, Repository};
-use gix_status::index_as_worktree::traits::{CompareBlobs, SubmoduleStatus};
 use std::sync::atomic::AtomicBool;
+
+use gix_status::index_as_worktree::traits::{CompareBlobs, SubmoduleStatus};
+
+use crate::{
+    bstr::{BStr, BString},
+    config, Repository,
+};
 
 /// The error returned by [Repository::index_worktree_status()].
 #[derive(Debug, thiserror::Error)]
@@ -103,23 +107,15 @@ impl Repository {
         E: std::error::Error + Send + Sync + 'static,
     {
         let _span = gix_trace::coarse!("gix::index_worktree_status");
-        let workdir = self.work_dir().ok_or(Error::MissingWorkDir)?;
+        let workdir = self.workdir().ok_or(Error::MissingWorkDir)?;
         let attrs_and_excludes = self.attributes(
             index,
             crate::worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
             crate::worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
             None,
         )?;
-        let pathspec = crate::Pathspec::new(
-            self,
-            options
-                .dirwalk_options
-                .as_ref()
-                .map_or(false, |opts| opts.empty_patterns_match_prefix),
-            patterns,
-            true, /* inherit ignore case */
-            || Ok(attrs_and_excludes.clone()),
-        )?;
+        let pathspec =
+            self.index_worktree_status_pathspec::<Error>(patterns, index, options.dirwalk_options.as_ref())?;
 
         let cwd = self.current_dir();
         let git_dir_realpath = crate::path::realpath_opts(self.git_dir(), cwd, crate::path::realpath::MAX_SYMLINKS)?;
@@ -167,6 +163,31 @@ impl Repository {
         )?;
         Ok(out)
     }
+
+    pub(super) fn index_worktree_status_pathspec<E>(
+        &self,
+        patterns: impl IntoIterator<Item = impl AsRef<BStr>>,
+        index: &gix_index::State,
+        options: Option<&crate::dirwalk::Options>,
+    ) -> Result<crate::Pathspec<'_>, E>
+    where
+        E: From<crate::repository::attributes::Error> + From<crate::pathspec::init::Error>,
+    {
+        let empty_patterns_match_prefix = options.is_some_and(|opts| opts.empty_patterns_match_prefix);
+        let attrs_and_excludes = self.attributes(
+            index,
+            crate::worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
+            crate::worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
+            None,
+        )?;
+        Ok(crate::Pathspec::new(
+            self,
+            empty_patterns_match_prefix,
+            patterns,
+            true, /* inherit ignore case */
+            move || Ok(attrs_and_excludes.inner),
+        )?)
+    }
 }
 
 /// An implementation of a trait to use with [`Repository::index_worktree_status()`] to compute the submodule status
@@ -182,13 +203,16 @@ pub struct BuiltinSubmoduleStatus {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 mod submodule_status {
-    use crate::bstr;
-    use crate::bstr::BStr;
-    use crate::status::index_worktree::BuiltinSubmoduleStatus;
-    use crate::status::Submodule;
     use std::borrow::Cow;
+
+    use crate::config::cache::util::ApplyLeniency;
+    use crate::{
+        bstr,
+        bstr::BStr,
+        config,
+        status::{index_worktree::BuiltinSubmoduleStatus, Submodule},
+    };
 
     impl BuiltinSubmoduleStatus {
         /// Create a new instance from a `repo` and a `mode` to control how the submodule status will be obtained.
@@ -197,13 +221,14 @@ mod submodule_status {
             mode: Submodule,
         ) -> Result<Self, crate::submodule::modules::Error> {
             let local_repo = repo.to_thread_local();
-            let submodule_paths = match local_repo.submodules()? {
-                Some(sm) => {
+            let submodule_paths = match local_repo.submodules() {
+                Ok(Some(sm)) => {
                     let mut v: Vec<_> = sm.filter_map(|sm| sm.path().ok().map(Cow::into_owned)).collect();
                     v.sort();
                     v
                 }
-                None => Vec::new(),
+                Ok(None) => Vec::new(),
+                Err(err) => return Err(err),
             };
             Ok(Self {
                 mode,
@@ -224,6 +249,8 @@ mod submodule_status {
         SubmoduleStatus(#[from] crate::submodule::status::Error),
         #[error(transparent)]
         IgnoreConfig(#[from] crate::submodule::config::Error),
+        #[error(transparent)]
+        DiffSubmoduleIgnoreConfig(#[from] config::key::GenericErrorWithValue),
     }
 
     impl gix_status::index_as_worktree::traits::SubmoduleStatus for BuiltinSubmoduleStatus {
@@ -248,11 +275,26 @@ mod submodule_status {
             let Ok(Some(mut submodules)) = repo.submodules() else {
                 return Ok(None);
             };
-            let Some(sm) = submodules.find(|sm| sm.path().map_or(false, |path| path == rela_path)) else {
+            let Some(sm) = submodules.find(|sm| sm.path().is_ok_and(|path| path == rela_path)) else {
                 return Ok(None);
             };
             let (ignore, check_dirty) = match self.mode {
-                Submodule::AsConfigured { check_dirty } => (sm.ignore()?.unwrap_or_default(), check_dirty),
+                Submodule::AsConfigured { check_dirty } => {
+                    // diff.ignoreSubmodules is the global setting, and if it exists, it overrides the submodule's own ignore setting.
+                    let global_ignore = repo
+                        .config_snapshot()
+                        .string(&config::tree::Diff::IGNORE_SUBMODULES)
+                        .map(|value| config::tree::Diff::IGNORE_SUBMODULES.try_into_ignore(value))
+                        .transpose()
+                        .with_leniency(repo.config.lenient_config)?;
+                    if let Some(ignore) = global_ignore {
+                        (ignore, check_dirty)
+                    } else {
+                        // If no global ignore is set, use the submodule's ignore setting.
+                        let ignore = sm.ignore()?.unwrap_or_default();
+                        (ignore, check_dirty)
+                    }
+                }
                 Submodule::Given { ignore, check_dirty } => (ignore, check_dirty),
             };
             let status = sm.status(ignore, check_dirty)?;
@@ -273,7 +315,7 @@ mod submodule_status {
 ///
 /// ### Index Changes
 ///
-/// Changes to the index are collected and it's possible to write the index back using [iter::Outcome::write_changes()].
+/// Changes to the index are collected and it's possible to write the index back using [Outcome::write_changes()](crate::status::Outcome).
 /// Note that these changes are not observable, they will always be kept.
 ///
 /// ### Parallel Operation
@@ -288,124 +330,113 @@ mod submodule_status {
 /// to interrupt unless [`status::Platform::should_interrupt_*()`](crate::status::Platform::should_interrupt_shared()) was
 /// configured.
 pub struct Iter {
-    #[cfg(feature = "parallel")]
-    #[allow(clippy::type_complexity)]
-    rx_and_join: Option<(
-        std::sync::mpsc::Receiver<iter::Item>,
-        std::thread::JoinHandle<Result<iter::Outcome, crate::status::index_worktree::Error>>,
-    )>,
-    #[cfg(feature = "parallel")]
-    should_interrupt: crate::status::OwnedOrStaticAtomicBool,
-    /// Without parallelization, the iterator has to buffer all changes in advance.
-    #[cfg(not(feature = "parallel"))]
-    items: std::vec::IntoIter<iter::Item>,
-    /// The outcome of the operation, only available once the operation has ended.
-    out: Option<iter::Outcome>,
-    /// The set of `(entry_index, change)` we extracted in order to potentially write back the index with the changes applied.
-    changes: Vec<(usize, iter::ApplyChange)>,
+    inner: crate::status::Iter,
+}
+
+/// The item produced by the iterator
+#[derive(Clone, PartialEq, Debug)]
+pub enum Item {
+    /// A tracked file was modified, and index-specific information is passed.
+    Modification {
+        /// The entry with modifications.
+        entry: gix_index::Entry,
+        /// The index of the `entry` for lookup in [`gix_index::State::entries()`] - useful to look at neighbors.
+        entry_index: usize,
+        /// The repository-relative path of the entry.
+        rela_path: BString,
+        /// The computed status of the entry.
+        status: gix_status::index_as_worktree::EntryStatus<(), crate::submodule::Status>,
+    },
+    /// An entry returned by the directory walk, without any relation to the index.
+    ///
+    /// This can happen if ignored files are returned as well, or if rename-tracking is disabled.
+    DirectoryContents {
+        /// The entry found during the disk traversal.
+        entry: gix_dir::Entry,
+        /// `collapsed_directory_status` is `Some(dir_status)` if this `entry` was part of a directory with the given
+        /// `dir_status` that wasn't the same as the one of `entry` and if [gix_dir::walk::Options::emit_collapsed] was
+        /// [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
+        /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
+        collapsed_directory_status: Option<gix_dir::entry::Status>,
+    },
+    /// The rewrite tracking discovered a match between a deleted and added file, and considers them equal enough,
+    /// depending on the tracker settings.
+    ///
+    /// Note that the source of the rewrite is always the index as it detects the absence of entries, something that
+    /// can't be done during a directory walk.
+    Rewrite {
+        /// The source of the rewrite operation.
+        source: RewriteSource,
+        /// The untracked entry found during the disk traversal, the destination of the rewrite.
+        ///
+        /// Note that its [`rela_path`](gix_dir::EntryRef::rela_path) is the destination of the rewrite, and the current
+        /// location of the entry.
+        dirwalk_entry: gix_dir::Entry,
+        /// `collapsed_directory_status` is `Some(dir_status)` if this `dirwalk_entry` was part of a directory with the given
+        /// `dir_status` that wasn't the same as the one of `dirwalk_entry` and if [gix_dir::walk::Options::emit_collapsed] was
+        /// [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
+        /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
+        dirwalk_entry_collapsed_directory_status: Option<gix_dir::entry::Status>,
+        /// The object id as it would appear if the entry was written to the object database, specifically hashed in order to determine equality.
+        /// Note that it doesn't (necessarily) exist in the object database, and may be [null](gix_hash::ObjectId::null) if no hashing
+        /// was performed.
+        dirwalk_entry_id: gix_hash::ObjectId,
+        /// It's `None` if the 'source.id' is equal to `dirwalk_entry_id`, as identity made an actual diff computation unnecessary.
+        /// Otherwise, and if enabled, it's `Some(stats)` to indicate how similar both entries were.
+        diff: Option<gix_diff::blob::DiffLineStats>,
+        /// If true, this rewrite is created by copy, and 'source.id' is pointing to its source.
+        /// Otherwise, it's a rename, and 'source.id' points to a deleted object,
+        /// as renames are tracked as deletions and additions of the same or similar content.
+        copy: bool,
+    },
+}
+
+/// Either an index entry for renames or another directory entry in case of copies.
+#[derive(Clone, PartialEq, Debug)]
+pub enum RewriteSource {
+    /// The source originates in the index and is detected as missing in the working tree.
+    /// This can also happen for copies.
+    RewriteFromIndex {
+        /// The entry that is the source of the rewrite, which means it was removed on disk,
+        /// equivalent to [Change::Removed](gix_status::index_as_worktree::Change::Removed).
+        ///
+        /// Note that the [entry-id](gix_index::Entry::id) is the content-id of the source of the rewrite.
+        source_entry: gix_index::Entry,
+        /// The index of the `source_entry` for lookup in [`gix_index::State::entries()`] - useful to look at neighbors.
+        source_entry_index: usize,
+        /// The repository-relative path of the `source_entry`.
+        source_rela_path: BString,
+        /// The computed status of the `source_entry`.
+        source_status: gix_status::index_as_worktree::EntryStatus<(), crate::submodule::Status>,
+    },
+    /// This source originates in the directory tree and is always the source of copies.
+    CopyFromDirectoryEntry {
+        /// The source of the copy operation, which is also an entry of the directory walk.
+        ///
+        /// Note that its [`rela_path`](gix_dir::EntryRef::rela_path) is the source of the rewrite.
+        source_dirwalk_entry: gix_dir::Entry,
+        /// `collapsed_directory_status` is `Some(dir_status)` if this `source_dirwalk_entry` was part of a directory with the given
+        /// `dir_status` that wasn't the same as the one of `source_dirwalk_entry` and
+        /// if [gix_dir::walk::Options::emit_collapsed] was [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
+        /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
+        source_dirwalk_entry_collapsed_directory_status: Option<gix_dir::entry::Status>,
+        /// The object id as it would appear if the entry was written to the object database.
+        /// It's the same as [`dirwalk_entry_id`](Item::Rewrite), or `diff` is `Some(_)` to indicate that the copy
+        /// was determined by similarity, not by content equality.
+        source_dirwalk_entry_id: gix_hash::ObjectId,
+    },
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod iter {
-    use crate::bstr::{BStr, BString};
-    use crate::config::cache::util::ApplyLeniencyDefault;
-    use crate::status::index_worktree::{iter, BuiltinSubmoduleStatus};
-    use crate::status::{index_worktree, Platform};
-    use crate::worktree::IndexPersistedOrInMemory;
     use gix_status::index_as_worktree::{Change, EntryStatus};
-
     pub use gix_status::index_as_worktree_with_renames::Summary;
 
-    pub(super) enum ApplyChange {
-        SetSizeToZero,
-        NewStat(crate::index::entry::Stat),
-    }
-
-    /// The data the thread sends over to the receiving iterator.
-    pub struct Outcome {
-        /// The outcome of the index-to-worktree comparison operation.
-        pub index_worktree: gix_status::index_as_worktree_with_renames::Outcome,
-        /// The index that was used for the operation.
-        pub index: crate::worktree::IndexPersistedOrInMemory,
-        skip_hash: bool,
-        changes: Option<Vec<(usize, iter::ApplyChange)>>,
-    }
-
-    impl Outcome {
-        /// Returns `true` if the index has received currently unapplied changes that *should* be written back.
-        ///
-        /// If they are not written back, subsequent `status` operations will take longer to complete, whereas the
-        /// additional work can be prevented by writing the changes back to the index.
-        pub fn has_changes(&self) -> bool {
-            self.changes.as_ref().map_or(false, |changes| !changes.is_empty())
-        }
-
-        /// Write the changes if there are any back to the index file.
-        /// This can only be done once as the changes are consumed in the process, if there were any.
-        pub fn write_changes(&mut self) -> Option<Result<(), gix_index::file::write::Error>> {
-            let _span = gix_features::trace::coarse!("gix::status::index_worktree::iter::Outcome::write_changes()");
-            let changes = self.changes.take()?;
-            let mut index = match &self.index {
-                IndexPersistedOrInMemory::Persisted(persisted) => (***persisted).clone(),
-                IndexPersistedOrInMemory::InMemory(index) => index.clone(),
-            };
-
-            let entries = index.entries_mut();
-            for (entry_index, change) in changes {
-                let entry = &mut entries[entry_index];
-                match change {
-                    ApplyChange::SetSizeToZero => {
-                        entry.stat.size = 0;
-                    }
-                    ApplyChange::NewStat(new_stat) => {
-                        entry.stat = new_stat;
-                    }
-                }
-            }
-
-            Some(index.write(crate::index::write::Options {
-                extensions: Default::default(),
-                skip_hash: self.skip_hash,
-            }))
-        }
-    }
-
-    /// Either an index entry for renames or another directory entry in case of copies.
-    #[derive(Clone, PartialEq, Debug)]
-    pub enum RewriteSource {
-        /// The source originates in the index and is detected as missing in the working tree.
-        /// This can also happen for copies.
-        RewriteFromIndex {
-            /// The entry that is the source of the rewrite, which means it was removed on disk,
-            /// equivalent to [Change::Removed].
-            ///
-            /// Note that the [entry-id](gix_index::Entry::id) is the content-id of the source of the rewrite.
-            source_entry: gix_index::Entry,
-            /// The index of the `source_entry` for lookup in [`gix_index::State::entries()`] - useful to look at neighbors.
-            source_entry_index: usize,
-            /// The repository-relative path of the `source_entry`.
-            source_rela_path: BString,
-            /// The computed status of the `source_entry`.
-            source_status: gix_status::index_as_worktree::EntryStatus<(), crate::submodule::Status>,
-        },
-        /// This source originates in the directory tree and is always the source of copies.
-        CopyFromDirectoryEntry {
-            /// The source of the copy operation, which is also an entry of the directory walk.
-            ///
-            /// Note that its [`rela_path`](gix_dir::EntryRef::rela_path) is the source of the rewrite.
-            source_dirwalk_entry: gix_dir::Entry,
-            /// `collapsed_directory_status` is `Some(dir_status)` if this `source_dirwalk_entry` was part of a directory with the given
-            /// `dir_status` that wasn't the same as the one of `source_dirwalk_entry` and
-            /// if [gix_dir::walk::Options::emit_collapsed] was [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
-            /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
-            source_dirwalk_entry_collapsed_directory_status: Option<gix_dir::entry::Status>,
-            /// The object id as it would appear if the entry was written to the object database.
-            /// It's the same as [`dirwalk_entry_id`](Item::Rewrite), or `diff` is `Some(_)` to indicate that the copy
-            /// was determined by similarity, not by content equality.
-            source_dirwalk_entry_id: gix_hash::ObjectId,
-        },
-    }
+    use super::{Item, RewriteSource};
+    use crate::{
+        bstr::{BStr, BString},
+        status::{index_worktree, Platform},
+    };
 
     /// Access
     impl RewriteSource {
@@ -450,62 +481,6 @@ pub mod iter {
         }
     }
 
-    /// The item produced by the iterator
-    #[derive(Clone, PartialEq, Debug)]
-    pub enum Item {
-        /// A tracked file was modified, and index-specific information is passed.
-        Modification {
-            /// The entry with modifications.
-            entry: gix_index::Entry,
-            /// The index of the `entry` for lookup in [`gix_index::State::entries()`] - useful to look at neighbors.
-            entry_index: usize,
-            /// The repository-relative path of the entry.
-            rela_path: BString,
-            /// The computed status of the entry.
-            status: gix_status::index_as_worktree::EntryStatus<(), SubmoduleStatus>,
-        },
-        /// An entry returned by the directory walk, without any relation to the index.
-        ///
-        /// This can happen if ignored files are returned as well, or if rename-tracking is disabled.
-        DirectoryContents {
-            /// The entry found during the disk traversal.
-            entry: gix_dir::Entry,
-            /// `collapsed_directory_status` is `Some(dir_status)` if this `entry` was part of a directory with the given
-            /// `dir_status` that wasn't the same as the one of `entry` and if [gix_dir::walk::Options::emit_collapsed] was
-            /// [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
-            /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
-            collapsed_directory_status: Option<gix_dir::entry::Status>,
-        },
-        /// The rewrite tracking discovered a match between a deleted and added file, and considers them equal enough,
-        /// depending on the tracker settings.
-        ///
-        /// Note that the source of the rewrite is always the index as it detects the absence of entries, something that
-        /// can't be done during a directory walk.
-        Rewrite {
-            /// The source of the rewrite operation.
-            source: RewriteSource,
-            /// The untracked entry found during the disk traversal, the destination of the rewrite.
-            ///
-            /// Note that its [`rela_path`](gix_dir::EntryRef::rela_path) is the destination of the rewrite, and the current
-            /// location of the entry.
-            dirwalk_entry: gix_dir::Entry,
-            /// `collapsed_directory_status` is `Some(dir_status)` if this `dirwalk_entry` was part of a directory with the given
-            /// `dir_status` that wasn't the same as the one of `dirwalk_entry` and if [gix_dir::walk::Options::emit_collapsed] was
-            /// [CollapsedEntriesEmissionMode::OnStatusMismatch](gix_dir::walk::CollapsedEntriesEmissionMode::OnStatusMismatch).
-            /// It will also be `Some(dir_status)` if that option was [CollapsedEntriesEmissionMode::All](gix_dir::walk::CollapsedEntriesEmissionMode::All).
-            dirwalk_entry_collapsed_directory_status: Option<gix_dir::entry::Status>,
-            /// The object id after the rename, specifically hashed in order to determine equality.
-            dirwalk_entry_id: gix_hash::ObjectId,
-            /// It's `None` if the 'source.id' is equal to `dirwalk_entry_id`, as identity made an actual diff computation unnecessary.
-            /// Otherwise, and if enabled, it's `Some(stats)` to indicate how similar both entries were.
-            diff: Option<gix_diff::blob::DiffLineStats>,
-            /// If true, this rewrite is created by copy, and 'source.id' is pointing to its source.
-            /// Otherwise, it's a rename, and 'source.id' points to a deleted object,
-            /// as renames are tracked as deletions and additions of the same or similar content.
-            copy: bool,
-        },
-    }
-
     impl Item {
         /// Return a simplified summary of the item as digest of its status, or `None` if this item is
         /// created from the directory walk and is *not untracked*, or if it is merely to communicate
@@ -514,10 +489,10 @@ pub mod iter {
             use gix_status::index_as_worktree_with_renames::Summary::*;
             Some(match self {
                 Item::Modification { status, .. } => match status {
-                    EntryStatus::Conflict(_) => Conflict,
+                    EntryStatus::Conflict { .. } => Conflict,
                     EntryStatus::Change(change) => match change {
                         Change::Removed => Removed,
-                        Change::Type => TypeChange,
+                        Change::Type { .. } => TypeChange,
                         Change::Modification { .. } | Change::SubmoduleModification(_) => Modified,
                     },
                     EntryStatus::NeedsUpdate(_) => return None,
@@ -593,26 +568,8 @@ pub mod iter {
 
     type SubmoduleStatus = crate::submodule::Status;
 
-    /// The error returned by [Platform::into_index_worktree_iter()](crate::status::Platform::into_index_worktree_iter()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Index(#[from] crate::worktree::open_index::Error),
-        #[error("Failed to spawn producer thread")]
-        #[cfg(feature = "parallel")]
-        SpawnThread(#[source] std::io::Error),
-        #[error(transparent)]
-        #[cfg(not(feature = "parallel"))]
-        IndexWorktreeStatus(#[from] crate::status::index_worktree::Error),
-        #[error(transparent)]
-        ConfigSkipHash(#[from] crate::config::boolean::Error),
-        #[error(transparent)]
-        PrepareSubmodules(#[from] crate::submodule::modules::Error),
-    }
-
     /// Lifecycle
-    impl<'repo, Progress> Platform<'repo, Progress>
+    impl<Progress> Platform<'_, Progress>
     where
         Progress: gix_features::progress::Progress,
     {
@@ -622,105 +579,14 @@ pub mod iter {
         ///     - Optional patterns to use to limit the paths to look at. If empty, all paths are considered.
         #[doc(alias = "diff_index_to_workdir", alias = "git2")]
         pub fn into_index_worktree_iter(
-            self,
+            mut self,
             patterns: impl IntoIterator<Item = BString>,
-        ) -> Result<index_worktree::Iter, Error> {
-            let index = match self.index {
-                None => IndexPersistedOrInMemory::Persisted(self.repo.index_or_empty()?),
-                Some(index) => index,
-            };
-
-            let skip_hash = self
-                .repo
-                .config
-                .resolved
-                .boolean(crate::config::tree::Index::SKIP_HASH)
-                .map(|res| crate::config::tree::Index::SKIP_HASH.enrich_error(res))
-                .transpose()
-                .with_lenient_default(self.repo.config.lenient_config)?
-                .unwrap_or_default();
-            let should_interrupt = self.should_interrupt.clone().unwrap_or_default();
-            let submodule = BuiltinSubmoduleStatus::new(self.repo.clone().into_sync(), self.submodules)?;
-            #[cfg(feature = "parallel")]
-            {
-                let (tx, rx) = std::sync::mpsc::channel();
-                let mut collect = Collect { tx };
-                let patterns: Vec<_> = patterns.into_iter().collect();
-                let join = std::thread::Builder::new()
-                    .name("gix::status::index_worktree::iter::producer".into())
-                    .spawn({
-                        let repo = self.repo.clone().into_sync();
-                        let options = self.index_worktree_options;
-                        let should_interrupt = should_interrupt.clone();
-                        let mut progress = self.progress;
-                        move || -> Result<_, crate::status::index_worktree::Error> {
-                            let repo = repo.to_thread_local();
-                            let out = repo.index_worktree_status(
-                                &index,
-                                patterns,
-                                &mut collect,
-                                gix_status::index_as_worktree::traits::FastEq,
-                                submodule,
-                                &mut progress,
-                                &should_interrupt,
-                                options,
-                            )?;
-                            Ok(Outcome {
-                                index_worktree: out,
-                                index,
-                                changes: None,
-                                skip_hash,
-                            })
-                        }
-                    })
-                    .map_err(Error::SpawnThread)?;
-
-                Ok(super::Iter {
-                    rx_and_join: Some((rx, join)),
-                    should_interrupt,
-                    changes: Vec::new(),
-                    out: None,
-                })
-            }
-            #[cfg(not(feature = "parallel"))]
-            {
-                let mut collect = Collect { items: Vec::new() };
-
-                let repo = self.repo.clone().into_sync();
-                let options = self.index_worktree_options;
-                let mut progress = self.progress;
-                let repo = repo.to_thread_local();
-                let out = repo.index_worktree_status(
-                    &index,
-                    patterns,
-                    &mut collect,
-                    gix_status::index_as_worktree::traits::FastEq,
-                    submodule,
-                    &mut progress,
-                    &should_interrupt,
-                    options,
-                )?;
-                let mut out = Outcome {
-                    index_worktree: out,
-                    index,
-                    changes: None,
-                    skip_hash,
-                };
-                let mut iter = super::Iter {
-                    items: Vec::new().into_iter(),
-                    changes: Vec::new(),
-                    out: None,
-                };
-                let items = collect
-                    .items
-                    .into_iter()
-                    .filter_map(|item| iter.maybe_keep_index_change(item))
-                    .collect::<Vec<_>>();
-                out.changes = (!iter.changes.is_empty()).then(|| std::mem::take(&mut iter.changes));
-                iter.items = items.into_iter();
-                iter.out = Some(out);
-                Ok(iter)
-            }
+        ) -> Result<index_worktree::Iter, crate::status::into_iter::Error> {
+            // deactivate the tree-iteration
+            self.head_tree = None;
+            Ok(index_worktree::Iter {
+                inner: self.into_iter(patterns)?,
+            })
         }
     }
 
@@ -728,107 +594,32 @@ pub mod iter {
         type Item = Result<Item, index_worktree::Error>;
 
         fn next(&mut self) -> Option<Self::Item> {
-            #[cfg(feature = "parallel")]
-            loop {
-                let (rx, _join) = self.rx_and_join.as_ref()?;
-                match rx.recv().ok() {
-                    Some(item) => {
-                        if let Some(item) = self.maybe_keep_index_change(item) {
-                            break Some(Ok(item));
-                        }
-                        continue;
+            self.inner.next().map(|res| {
+                res.map(|item| match item {
+                    crate::status::Item::IndexWorktree(item) => item,
+                    crate::status::Item::TreeIndex(_) => unreachable!("BUG: we deactivated this kind of traversal"),
+                })
+                .map_err(|err| match err {
+                    crate::status::iter::Error::IndexWorktree(err) => err,
+                    crate::status::iter::Error::TreeIndex(_) => {
+                        unreachable!("BUG: we deactivated this kind of traversal")
                     }
-                    None => {
-                        let (_rx, handle) = self.rx_and_join.take()?;
-                        break match handle.join().expect("no panic") {
-                            Ok(mut out) => {
-                                out.changes = Some(std::mem::take(&mut self.changes));
-                                self.out = Some(out);
-                                None
-                            }
-                            Err(err) => Some(Err(err)),
-                        };
-                    }
-                }
-            }
-            #[cfg(not(feature = "parallel"))]
-            self.items.next().map(Ok)
+                })
+            })
         }
     }
 
     /// Access
     impl super::Iter {
         /// Return the outcome of the iteration, or `None` if the iterator isn't fully consumed.
-        pub fn outcome_mut(&mut self) -> Option<&mut Outcome> {
-            self.out.as_mut()
+        pub fn outcome_mut(&mut self) -> Option<&mut crate::status::Outcome> {
+            self.inner.out.as_mut()
         }
 
         /// Turn the iterator into the iteration outcome, which is `None` on error or if the iteration
         /// isn't complete.
-        pub fn into_outcome(mut self) -> Option<Outcome> {
-            self.out.take()
-        }
-    }
-
-    impl super::Iter {
-        fn maybe_keep_index_change(&mut self, item: Item) -> Option<Item> {
-            let change = match item {
-                Item::Modification {
-                    status: gix_status::index_as_worktree::EntryStatus::NeedsUpdate(stat),
-                    entry_index,
-                    ..
-                } => (entry_index, ApplyChange::NewStat(stat)),
-                Item::Modification {
-                    status:
-                        gix_status::index_as_worktree::EntryStatus::Change(
-                            gix_status::index_as_worktree::Change::Modification {
-                                set_entry_stat_size_zero,
-                                ..
-                            },
-                        ),
-                    entry_index,
-                    ..
-                } if set_entry_stat_size_zero => (entry_index, ApplyChange::SetSizeToZero),
-                _ => return Some(item),
-            };
-
-            self.changes.push(change);
-            None
-        }
-    }
-
-    #[cfg(feature = "parallel")]
-    impl Drop for super::Iter {
-        fn drop(&mut self) {
-            crate::util::parallel_iter_drop(self.rx_and_join.take(), &self.should_interrupt);
-        }
-    }
-
-    struct Collect {
-        #[cfg(feature = "parallel")]
-        tx: std::sync::mpsc::Sender<Item>,
-        #[cfg(not(feature = "parallel"))]
-        items: Vec<Item>,
-    }
-
-    impl<'index> gix_status::index_as_worktree_with_renames::VisitEntry<'index> for Collect {
-        type ContentChange = <gix_status::index_as_worktree::traits::FastEq as gix_status::index_as_worktree::traits::CompareBlobs>::Output;
-        type SubmoduleStatus =
-            <BuiltinSubmoduleStatus as gix_status::index_as_worktree::traits::SubmoduleStatus>::Output;
-
-        fn visit_entry(
-            &mut self,
-            entry: gix_status::index_as_worktree_with_renames::Entry<
-                'index,
-                Self::ContentChange,
-                Self::SubmoduleStatus,
-            >,
-        ) {
-            // NOTE: we assume that the receiver triggers interruption so the operation will stop if the receiver is down.
-            #[cfg(feature = "parallel")]
-            self.tx.send(entry.into()).ok();
-            #[cfg(not(feature = "parallel"))]
-            self.items.push(entry.into());
+        pub fn into_outcome(mut self) -> Option<crate::status::Outcome> {
+            self.inner.out.take()
         }
     }
 }

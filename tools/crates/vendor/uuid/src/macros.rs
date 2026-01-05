@@ -86,3 +86,33 @@ define_uuid_macro! {
 ///
 /// [uuid::Uuid]: https://docs.rs/uuid/*/uuid/struct.Uuid.html
 }
+
+// Internal macros
+
+// These `transmute` macros are a stepping stone towards `zerocopy` integration.
+// When the `zerocopy` feature is enabled, which it is in CI, the transmutes are
+// checked by it
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(not(all(uuid_unstable, feature = "zerocopy")))]
+macro_rules! unsafe_transmute_ref(
+    ($e:expr) => { unsafe { core::mem::transmute::<&_, &_>($e) } }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(all(uuid_unstable, feature = "zerocopy"))]
+macro_rules! unsafe_transmute_ref(
+    ($e:expr) => { zerocopy::transmute_ref!($e) }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(not(all(uuid_unstable, feature = "zerocopy")))]
+macro_rules! unsafe_transmute(
+    ($e:expr) => { unsafe { core::mem::transmute::<_, _>($e) } }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(all(uuid_unstable, feature = "zerocopy"))]
+macro_rules! unsafe_transmute(
+    ($e:expr) => { zerocopy::transmute!($e) }
+);

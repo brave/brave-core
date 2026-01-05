@@ -394,10 +394,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_LABEL},
       {"searchSuggestDesc",
        IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_DESC},
-      {"otherSearchEnginesControlLabel",
-       IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL},
-      {"otherSearchEnginesControlDesc",
-       IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC},
       {"normalSearchEnginesSiteSearchEngineHeading",
        IDS_SETTINGS_NORMAL_PROFILE_SEARCH_ENGINE_HEADING},
       {"privateSearchEnginesSiteSearchEngineHeading",
@@ -1276,10 +1272,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
-
-  html_source->AddBoolean(
-      "braveTalkDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
 
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",

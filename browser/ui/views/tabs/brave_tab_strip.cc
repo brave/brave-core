@@ -90,6 +90,17 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
               BraveVerticalTabStripRegionView::State::kCollapsed);
 }
 
+bool BraveTabStrip::CanPaintThrobberToLayer() const {
+  if (!ShouldShowVerticalTabs()) {
+    return TabStrip::CanPaintThrobberToLayer();
+  }
+
+  // Don't allow throbber to be painted to layer. Vertical tabs are scrollable,
+  // and a tab could be out of the viewport. Otherwise, throbber would be
+  // painted even when the tab is not in the viewport.
+  return false;
+}
+
 bool BraveTabStrip::ShouldDrawStrokes() const {
   if (ShouldShowVerticalTabs()) {
     // Prevent root view from drawing lines. For vertical tabs stroke , we
@@ -243,6 +254,26 @@ void BraveTabStrip::EnterTabRenameModeAt(int index) {
   static_cast<BraveTab*>(tab)->EnterRenameMode();
 }
 
+bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
+  // Basically we don't want to layout pinned tabs in grid when vertical tabs
+  // are floating. Otherwise, pinned tabs would jump to the top of tab strip
+  // when mouse hovers over the pinned tabs, and requires extra mouse movement
+  // to reach the desired tab.
+  bool should_layout_pinned_tabs_in_grid = !IsVerticalTabsFloating();
+
+  if (!should_layout_pinned_tabs_in_grid &&
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
+    // Even when in floating mode, we layout pinned tabs in a grid when
+    // "Hide Completely When Collapsed" is enabled. In this case, pinned tabs
+    // are not visible at all, so we don't need to care about the jumping issue.
+    should_layout_pinned_tabs_in_grid =
+        controller_->GetProfile()->GetPrefs()->GetBoolean(
+            brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+  }
+
+  return should_layout_pinned_tabs_in_grid;
+}
+
 void BraveTabStrip::UpdateOrientation() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowser();
@@ -265,8 +296,6 @@ void BraveTabStrip::UpdateOrientation() {
     SetAvailableWidthCallback(base::NullCallback());
   }
 
-  static_cast<BraveTabContainer*>(&tab_container_.get())
-      ->SetUnpinnedTabScrollEnabled(using_vertical_tabs);
   hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
 
   if (const auto active_index = GetActiveIndex(); active_index) {

@@ -9,7 +9,6 @@ use crate::types::AesMode;
 use crate::{aes_ctr, result::ZipError};
 use constant_time_eq::constant_time_eq;
 use hmac::{Hmac, Mac};
-use rand::RngCore;
 use sha1::Sha1;
 use std::io::{self, Error, ErrorKind, Read, Write};
 use zeroize::{Zeroize, Zeroizing};
@@ -237,7 +236,7 @@ impl<W: Write> AesWriter<W> {
         let mut encrypted_file_header = Vec::with_capacity(salt_length + 2);
 
         let mut salt = vec![0; salt_length];
-        rand::thread_rng().fill_bytes(&mut salt);
+        getrandom::fill(&mut salt)?;
         encrypted_file_header.write_all(&salt)?;
 
         // Derive a key from the password and salt.  The length depends on the aes key length

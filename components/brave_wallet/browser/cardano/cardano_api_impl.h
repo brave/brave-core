@@ -86,7 +86,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
 
   void OnSignTransactionRequestProcessed(
       CardanoTxDecoder::DecodedTx decoded_tx,
-      std::vector<mojom::CardanoKeyIdPtr> payment_key_ids,
+      base::flat_set<mojom::CardanoKeyIdPtr> payment_key_ids,
       SignTxCallback callback,
       bool approved,
       const std::optional<std::string>& error);
@@ -94,7 +94,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   mojom::SignCardanoTransactionRequestPtr MakeSignCardanoTransactionRequest(
       const CardanoTxDecoder::DecodedTx& decoded_tx,
       const cardano_rpc::UnspentOutputs& utxos);
-  std::vector<mojom::CardanoKeyIdPtr> GetPaymentKeyIds(
+  base::flat_set<mojom::CardanoKeyIdPtr> GetPaymentKeyIds(
       const CardanoTxDecoder::SerializableTx& tx,
       const cardano_rpc::UnspentOutputs& utxos,
       bool partial_sign);

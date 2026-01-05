@@ -8,16 +8,16 @@ use core::fmt;
 pub struct InvalidVariant;
 
 impl fmt::Display for InvalidVariant {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "value was not a valid variant")
     }
 }
 
-#[cfg(feature = "std")]
-#[allow(clippy::std_instead_of_core)]
-impl std::error::Error for InvalidVariant {}
+impl core::error::Error for InvalidVariant {}
 
 impl From<InvalidVariant> for crate::Error {
+    #[inline]
     fn from(err: InvalidVariant) -> Self {
         Self::InvalidVariant(err)
     }
@@ -26,6 +26,7 @@ impl From<InvalidVariant> for crate::Error {
 impl TryFrom<crate::Error> for InvalidVariant {
     type Error = crate::error::DifferentVariant;
 
+    #[inline]
     fn try_from(err: crate::Error) -> Result<Self, Self::Error> {
         match err {
             crate::Error::InvalidVariant(err) => Ok(err),

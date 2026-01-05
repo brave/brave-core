@@ -58,7 +58,7 @@ public struct BraveFilledButtonStyle: ButtonStyle {
       .frame(minHeight: size.minHeight)
       .opacity(configuration.isPressed ? 0.7 : 1.0)
       .font(size.font)
-      .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
+      .foregroundColor(Color(braveSystemName: isEnabled ? .schemesOnPrimary : .textDisabled))
       .padding(size.padding)
       .background(
         Group {

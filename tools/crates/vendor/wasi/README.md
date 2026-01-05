@@ -14,144 +14,81 @@
   </p>
 </div>
 
-This crate contains bindings for [WASI](https://github.com/WebAssembly/WASI)
-APIs for the worlds:
+This crate contains API bindings for [WASI](https://github.com/WebAssembly/WASI)
+system calls in Rust, and currently reflects the `wasi_snapshot_preview1`
+module. This crate is quite low-level and provides conceptually a "system call"
+interface. In most settings, it's better to use the Rust standard library, which
+has WASI support.
 
-* [`wasi:cli/command`]
-* [`wasi:http/proxy`]
-
-This crate is procedurally generated from [WIT] files using [`wit-bindgen`].
-
-[`wasi:cli/command`]: https://github.com/WebAssembly/wasi-cli
-[`wasi:http/proxy`]: https://github.com/WebAssembly/wasi-http
-[WIT]: https://component-model.bytecodealliance.org/design/wit.html
-[`wit-bindgen`]: https://github.com/bytecodealliance/wit-bindgen
-[components]: https://component-model.bytecodealliance.org/
-[`wasm-tools`]: https://github.com/bytecodealliance/wasm-tools
+The `wasi` crate is also entirely procedurally generated from the `*.witx` files
+describing the WASI apis. While some conveniences are provided the bindings here
+are intentionally low-level!
 
 # Usage
 
-Depending on this crate can be done by adding it to your dependencies:
+First you can depend on this crate via `Cargo.toml`:
 
-```sh
-$ cargo add wasi
+```toml
+[dependencies]
+wasi = "0.8.0"
 ```
 
 Next you can use the APIs in the root of the module like so:
 
 ```rust
 fn main() {
-    let stdout = wasi::cli::stdout::get_stdout();
-    stdout.blocking_write_and_flush(b"Hello, world!\n").unwrap();
+    let stdout = 1;
+    let message = "Hello, World!\n";
+    let data = [wasi::Ciovec {
+        buf: message.as_ptr(),
+        buf_len: message.len(),
+    }];
+    wasi::fd_write(stdout, &data).unwrap();
 }
 ```
 
-This crate is intended to target [components] but today you need to go through
-the intermediate build step of a core WebAssembly module using the `wasm32-wasip1`
-target:
+Next you can use a tool like [`cargo
+wasi`](https://github.com/bytecodealliance/cargo-wasi) to compile and run your
+project:
+
+To compile Rust projects to wasm using WASI, use the `wasm32-wasi` target,
+like this:
 
 ```
-$ cargo build --target wasm32-wasip1
+$ cargo wasi run
+   Compiling wasi v0.8.0+wasi-snapshot-preview1
+   Compiling wut v0.1.0 (/code)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.34s
+     Running `/.cargo/bin/cargo-wasi target/wasm32-wasi/debug/wut.wasm`
+     Running `target/wasm32-wasi/debug/wut.wasm`
+Hello, World!
 ```
-
-Next you'll want an "adapter" to convert the Rust standard library's usage of
-`wasi_snapshot_preview1` to the component model. An example adapter can be found
-from [Wasmtime's release page](https://github.com/bytecodealliance/wasmtime/releases/download/v17.0.0/wasi_snapshot_preview1.command.wasm).
-
-```
-$ curl -LO https://github.com/bytecodealliance/wasmtime/releases/download/v17.0.0/wasi_snapshot_preview1.command.wasm
-```
-
-Next to create a component you'll use the [`wasm-tools`] CLI to create a
-component:
-
-```
-$ cargo install wasm-tools
-$ wasm-tools component new target/wasm32-wasip1/debug/foo.wasm \
-    --adapt ./wasi_snapshot_preview1.command.wasm \
-    -o component.wasm
-```
-
-And finally the component can be run by a runtime that has Component Model
-support, such as [Wasmtime]:
-
-```
-$ wasmtime run component.wasm
-Hello, world!
-```
-
-[Wasmtime]: https://github.com/bytecodealliance/wasmtime
-
-# WASIp2 vs WASIp1
-
-In January 2024 the WASI subgroup published WASI 0.2.0, colloquially known as
-"WASIp2". Around the same time the subgroup additionally decided to name the
-previous iteration of WASI as "WASIp1", historically known as "WASI preview1".
-This now-historical snapshot of WASI was defined with an entirely different set
-of primitives and worked very differently. This crate now targets WASIp2 and no
-longer targets WASIp1.
-
-## Support for WASIp1
-
-The last version of the `wasi` crate to support WASIp1 was the
-[0.11.0+wasi-snapshot-preview1
-version](https://crates.io/crates/wasi/0.11.0+wasi-snapshot-preview1). This
-version of the crate supported all WASIp1 APIs. WASIp1 was historically defined
-with `*.witx` files and used a bindings generator called `witx-bindgen`.
-
-## Should I use WASIp1 or WASIp2?
-
-This is a bit of a nuanced question/answer but the short answer is to probably
-use the 0.11.0 release of `wasi` for now if you're unsure.
-
-The longer-form answer of this is that it depends on the Rust targets that you
-want to support. Rust WebAssembly targets include:
-
-* `wasm32-unknown-unknown` - do not use this crate because this target indicates
-  that WASI is not desired.
-* `wasm32-wasip1` - this target has been present in Rust for quite some time and
-  was previously known as `wasm32-wasi`. For this target you probably want the
-  0.11.0 track of this crate.
-* `wasm32-wasip2` - this target is a recent addition to rustc (as of the time of
-  this writing it's not merged yet into rustc). This is what the 0.12.0 version
-  of the crate is intended for.
-
-Note that if you use `wasm32-wasip1` it's not necessarily guaranteed you want
-0.11.0 of this crate. If your users are producing components then you probably
-want 0.12.0 instead. If you don't know what your users are producing then you
-should probably stick with 0.11.0.
-
-Long story short, it's a bit complicated. We're in a transition period from
-WASIp1 to WASIp2 and things aren't going to be perfect every step of the way, so
-understanding is appreciated!
 
 # Development
 
-The bulk of the `wasi` crate is generated by the [`wit-bindgen`] tool. The
-`src/bindings.rs` file can be regenerated with:
+The bulk of the `wasi` crate is generated by the `witx-bindgen` tool, which lives at
+`crates/witx-bindgen` and is part of the cargo workspace.
+
+The `src/lib_generated.rs` file can be re-generated with the following
+command:
 
 ```
-$ ./ci/regenerate.sh
+cargo run -p witx-bindgen -- crates/witx-bindgen/WASI/phases/snapshot/witx/wasi_snapshot_preview1.witx > src/lib_generated.rs
 ```
 
-WASI definitions are located in the `wit` directory of this repository.
-Currently they're copied from upstream repositories but are hoped to be better
-managed in the future.
+Note that this uses the WASI standard repository as a submodule. If you do not
+have this submodule present in your source tree, run:
+```
+git submodule update --init
+```
 
 # License
 
-This project is triple licenced under the Apache 2/ Apache 2 with LLVM exceptions/ MIT licences. The reasoning for this is:
-- Apache 2/ MIT is common in the rust ecosystem.
-- Apache 2/ MIT is used in the rust standard library, and some of this code may be migrated there.
-- Some of this code may be used in compiler output, and the Apache 2 with LLVM exceptions licence is useful for this.
-
-For more details see
-- [Apache 2 Licence](LICENSE-APACHE)
-- [Apache 2 Licence with LLVM exceptions](LICENSE-Apache-2.0_WITH_LLVM-exception)
-- [MIT Licence](LICENSE-MIT)
+This project is licensed under the Apache 2.0 license with the LLVM exception.
+See [LICENSE](LICENSE) for more details.
 
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in this project by you, as defined in the Apache 2/ Apache 2 with LLVM exceptions/ MIT licenses,
+for inclusion in this project by you, as defined in the Apache-2.0 license,
 shall be licensed as above, without any additional terms or conditions.

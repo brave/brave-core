@@ -669,7 +669,8 @@ public class BrowserViewController: UIViewController {
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.updateStatusBarOverlayColor()
-          self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+          self.bottomBarKeyboardBackground.backgroundColor =
+            self.privateBrowsingManager.browserColors.chromeBackground
           self.setNeedsStatusBarAppearanceUpdate()
         }
       }
@@ -940,7 +941,8 @@ public class BrowserViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateStatusBarOverlayColor()
-        self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+        self.bottomBarKeyboardBackground.backgroundColor =
+          self.privateBrowsingManager.browserColors.chromeBackground
         self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
       })
 
@@ -2310,10 +2312,25 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
     recordCreateTabAction(location: .toolbar)
-    openBlankNewTab(
-      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-      isPrivate: isPrivate
-    )
+    // if user is switching from regular to private browsing, pin is required
+    if !privateBrowsingManager.isPrivateBrowsing,
+      isPrivate,
+      Preferences.Privacy.privateBrowsingLock.value
+    {
+      self.askForLocalAuthentication { [weak self] success, error in
+        if success {
+          self?.openBlankNewTab(
+            attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+            isPrivate: isPrivate
+          )
+        }
+      }
+    } else {
+      self.openBlankNewTab(
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+        isPrivate: isPrivate
+      )
+    }
   }
 
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {

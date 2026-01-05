@@ -10,14 +10,22 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
+edition = "2021"
+rust-version = "1.65.0"
 name = "bzip2"
-version = "0.4.4"
-authors = ["Alex Crichton <alex@alexcrichton.com>"]
+version = "0.5.2"
+build = false
+publish = true
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Bindings to libbzip2 for bzip2 compression and decompression exposed as
 Reader/Writer streams.
 """
-homepage = "https://github.com/alexcrichton/bzip2-rs"
+homepage = "https://github.com/trifectatechfoundation/bzip2-rs"
 documentation = "https://docs.rs/bzip2"
 readme = "README.md"
 keywords = [
@@ -28,43 +36,40 @@ categories = [
     "compression",
     "api-bindings",
 ]
-license = "MIT/Apache-2.0"
-repository = "https://github.com/alexcrichton/bzip2-rs"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/trifectatechfoundation/bzip2-rs"
+
+[features]
+default = ["dep:bzip2-sys"]
+libbz2-rs-sys = [
+    "dep:libbz2-rs-sys",
+    "bzip2-sys?/__disabled",
+]
+static = ["bzip2-sys?/static"]
+
+[lib]
+name = "bzip2"
+path = "src/lib.rs"
 
 [dependencies.bzip2-sys]
-version = "0.1.11"
-
-[dependencies.futures]
-version = "0.1"
+version = "0.1.13"
 optional = true
 
-[dependencies.libc]
-version = "0.2"
-
-[dependencies.tokio-io]
-version = "0.1"
+[dependencies.libbz2-rs-sys]
+version = "0.1.3"
+features = [
+    "rust-allocator",
+    "semver-prefix",
+]
 optional = true
+default-features = false
 
 [dev-dependencies.partial-io]
-version = "0.3"
-features = ["quickcheck"]
+version = "0.5.4"
+features = ["quickcheck1"]
 
 [dev-dependencies.quickcheck]
 version = "1.0"
 
-[dev-dependencies.quickcheck6]
-version = "0.6"
-package = "quickcheck"
-
 [dev-dependencies.rand]
-version = "0.8"
-
-[dev-dependencies.tokio-core]
-version = "0.1"
-
-[features]
-static = ["bzip2-sys/static"]
-tokio = [
-    "tokio-io",
-    "futures",
-]
+version = "0.9"

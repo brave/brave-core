@@ -51,19 +51,28 @@ where
 
     /// Returns the next note.
     pub fn next(&mut self) -> read::Result<Option<Note<'data, Elf>>> {
-        let mut data = self.data;
-        if data.is_empty() {
+        if self.data.is_empty() {
             return Ok(None);
         }
 
-        let header = data
+        let result = self.parse().map(Some);
+        if result.is_err() {
+            self.data = Bytes(&[]);
+        }
+        result
+    }
+
+    fn parse(&mut self) -> read::Result<Note<'data, Elf>> {
+        let header = self
+            .data
             .read_at::<Elf::NoteHeader>(0)
             .read_error("ELF note is too short")?;
 
         // The name has no alignment requirement.
         let offset = mem::size_of::<Elf::NoteHeader>();
         let namesz = header.n_namesz(self.endian) as usize;
-        let name = data
+        let name = self
+            .data
             .read_bytes_at(offset, namesz)
             .read_error("Invalid ELF note namesz")?
             .0;
@@ -71,19 +80,27 @@ where
         // The descriptor must be aligned.
         let offset = util::align(offset + namesz, self.align);
         let descsz = header.n_descsz(self.endian) as usize;
-        let desc = data
+        let desc = self
+            .data
             .read_bytes_at(offset, descsz)
             .read_error("Invalid ELF note descsz")?
             .0;
 
         // The next note (if any) must be aligned.
         let offset = util::align(offset + descsz, self.align);
-        if data.skip(offset).is_err() {
-            data = Bytes(&[]);
+        if self.data.skip(offset).is_err() {
+            self.data = Bytes(&[]);
         }
-        self.data = data;
 
-        Ok(Some(Note { header, name, desc }))
+        Ok(Note { header, name, desc })
+    }
+}
+
+impl<'data, Elf: FileHeader> Iterator for NoteIterator<'data, Elf> {
+    type Item = read::Result<Note<'data, Elf>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next().transpose()
     }
 }
 
@@ -224,20 +241,34 @@ pub struct GnuPropertyIterator<'data, Endian: endian::Endian> {
 impl<'data, Endian: endian::Endian> GnuPropertyIterator<'data, Endian> {
     /// Returns the next property.
     pub fn next(&mut self) -> read::Result<Option<GnuProperty<'data>>> {
-        let mut data = self.data;
-        if data.is_empty() {
+        if self.data.is_empty() {
             return Ok(None);
         }
 
+        let result = self.parse().map(Some);
+        if result.is_err() {
+            self.data = Bytes(&[]);
+        }
+        result
+    }
+
+    fn parse(&mut self) -> read::Result<GnuProperty<'data>> {
         (|| -> Result<_, ()> {
-            let pr_type = data.read_at::<U32<Endian>>(0)?.get(self.endian);
-            let pr_datasz = data.read_at::<U32<Endian>>(4)?.get(self.endian) as usize;
-            let pr_data = data.read_bytes_at(8, pr_datasz)?.0;
-            data.skip(util::align(8 + pr_datasz, self.align))?;
-            self.data = data;
-            Ok(Some(GnuProperty { pr_type, pr_data }))
+            let pr_type = self.data.read_at::<U32<Endian>>(0)?.get(self.endian);
+            let pr_datasz = self.data.read_at::<U32<Endian>>(4)?.get(self.endian) as usize;
+            let pr_data = self.data.read_bytes_at(8, pr_datasz)?.0;
+            self.data.skip(util::align(8 + pr_datasz, self.align))?;
+            Ok(GnuProperty { pr_type, pr_data })
         })()
         .read_error("Invalid ELF GNU property")
+    }
+}
+
+impl<'data, Endian: endian::Endian> Iterator for GnuPropertyIterator<'data, Endian> {
+    type Item = read::Result<GnuProperty<'data>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next().transpose()
     }
 }
 

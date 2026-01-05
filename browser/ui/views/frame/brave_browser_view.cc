@@ -26,7 +26,9 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
@@ -169,10 +171,10 @@ void BraveBrowserView::SetDownloadConfirmReturnForTesting(bool allow) {
   g_download_confirm_return_allow_for_testing = allow;
 }
 
-class BraveBrowserView::SidebarOnMouseOverEventHandler
+class BraveBrowserView::BrowserWindowMouseEventHandler
     : public ui::EventObserver {
  public:
-  explicit SidebarOnMouseOverEventHandler(BraveBrowserView* browser_view)
+  explicit BrowserWindowMouseEventHandler(BraveBrowserView* browser_view)
       : browser_view_(browser_view) {
     auto* widget = browser_view_->GetWidget();
     CHECK(widget && widget->GetNativeWindow());
@@ -180,18 +182,18 @@ class BraveBrowserView::SidebarOnMouseOverEventHandler
         this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
   }
 
-  ~SidebarOnMouseOverEventHandler() override = default;
+  ~BrowserWindowMouseEventHandler() override = default;
 
-  SidebarOnMouseOverEventHandler(const SidebarOnMouseOverEventHandler&) =
+  BrowserWindowMouseEventHandler(const BrowserWindowMouseEventHandler&) =
       delete;
-  SidebarOnMouseOverEventHandler& operator=(
-      const SidebarOnMouseOverEventHandler&) = delete;
+  BrowserWindowMouseEventHandler& operator=(
+      const BrowserWindowMouseEventHandler&) = delete;
 
  private:
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
     if (event.type() == ui::EventType::kMouseMoved) {
-      browser_view_->HandleSidebarOnMouseOverMouseEvent(*event.AsMouseEvent());
+      browser_view_->HandleBrowserWindowMouseEvent(*event.AsMouseEvent());
       return;
     }
   }
@@ -292,13 +294,13 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  const int active_tab_index = model->active_index();
-
-  if (active_tab_index == TabStripModel::kNoTab) {
+  if (TabStripModel::kNoTab == model->active_index()) {
     return false;
   }
 
-  return model->IsActiveTabSplit();
+  // Use rounded corners when browser view shows split view.
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
@@ -525,8 +527,8 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return GetBraveMultiContentsView()
-        ->GetActiveContentsContainerView()
+    return BraveContentsContainerView::From(
+               GetBraveMultiContentsView()->GetActiveContentsContainerView())
         ->reader_mode_toolbar();
   }
 
@@ -574,8 +576,8 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     // Need to update inactive split tabs' reader mode toolbar because
     // it's also visible.
-    auto* contents_container =
-        GetBraveMultiContentsView()->GetInactiveContentsContainerView();
+    auto* contents_container = BraveContentsContainerView::From(
+        GetBraveMultiContentsView()->GetInactiveContentsContainerView());
     auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
     reader_mode_toolbar->SetVisible(
         is_distilled(contents_container->contents_view()->web_contents()));
@@ -590,6 +592,11 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #else
   BrowserView::ShowUpdateChromeDialog();
 #endif
+}
+
+gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
+  CHECK(contents_background_view_);
+  return contents_background_view_->GetBoundsInScreen();
 }
 
 bool BraveBrowserView::HasSelectedURL() const {
@@ -648,7 +655,7 @@ void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
 }
 
 void BraveBrowserView::OnAcceleratorsChanged(
-    const commands::Accelerators& changed) {
+    const commands::AcceleratorPrefManager::Accelerators& changed) {
   DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
   auto* focus_manager = GetFocusManager();
@@ -710,8 +717,8 @@ void BraveBrowserView::CloseWalletBubble() {
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
 
-  sidebar_on_mouse_over_event_handler_ =
-      std::make_unique<SidebarOnMouseOverEventHandler>(this);
+  browser_window_mouse_event_handler_ =
+      std::make_unique<BrowserWindowMouseEventHandler>(this);
 
   // we must call all new views once BraveBrowserView is added to widget
 
@@ -855,10 +862,39 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
       << "This method is supposed to be called only for the active web "
          "contents";
 
+  // In BrowserView::MaybeUpdateDevtools(), there is assumption that
+  // split tab is active when MultiContentsView shows split view now.
+  // But, it could not when web panel is active and split view is opened
+  // together. Early return to avoid crash from that.
+  if (IsWebPanelContents(web_contents) && IsInSplitView()) {
+    return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
+        GetActiveContentsContainerView(), web_contents, false);
+  }
+
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
 
   UpdateWebViewRoundedCorners();
   return result;
+}
+
+bool BraveBrowserView::MaybeUpdateSplitView(
+    content::WebContents* web_contents) {
+  if (!multi_contents_view_) {
+    return BrowserView::MaybeUpdateSplitView(web_contents);
+  }
+
+  // Don't need to update split view state if |web_contents| is web panel.
+  // In BrowserView::MaybeUpdateSplitView(), there is assumption that
+  // split tab is active when MultiContentsView shows split view now.
+  // But, it could not when web panel is active and split view is opened
+  // together. Early return to avoid crash from that. If |web_contents| is not
+  // related with split tab, don't need to call base class' method.
+  if (IsWebPanelContents(web_contents) &&
+      multi_contents_view_->IsInSplitView()) {
+    return false;
+  }
+
+  return BrowserView::MaybeUpdateSplitView(web_contents);
 }
 
 void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
@@ -898,7 +934,9 @@ void BraveBrowserView::UpdateContentsShadowVisibility() {
   // Fixed by hiding contents shadow when split view is active.
   // As split view has another border around contents, we don't need
   // contents shadow.
-  if (browser()->tab_strip_model()->IsActiveTabSplit()) {
+  if (browser()->tab_strip_model()->IsActiveTabSplit() ||
+      (sidebar::IsWebPanelFeatureEnabled() &&
+       GetBraveMultiContentsView()->IsWebPanelVisible())) {
     show_contents_shadow = false;
   }
 
@@ -991,9 +1029,12 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
-  UpdateRoundedCornersUI();
-
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  // Update UI after active tab changing is handled because
+  // ShouldUseBraveWebViewRoundedCornersForContents() check split view UI for
+  // rounded corners.
+  UpdateRoundedCornersUI();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
@@ -1090,17 +1131,40 @@ void BraveBrowserView::StopListeningFullscreenChanges() {
   }
 }
 
-void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
+void BraveBrowserView::HandleBrowserWindowMouseEvent(
     const ui::MouseEvent& event) {
   CHECK(event.type() == ui::EventType::kMouseMoved);
 
+  // Use GetCursorScreenPoint() to get current mouse position in screen.
+  // event.root_location_f() could not give in screen coordinate in some
+  // situation.
+  const gfx::PointF point_in_screen(
+      display::Screen::Get()->GetCursorScreenPoint());
+
   if (sidebar_container_view_) {
-    // Use GetCursorScreenPoint() to get current mouse position in screen.
-    // event.root_location_f() could not give in screen coordinate in some
-    // situation.
-    sidebar_container_view_->ShowSidebarOnMouseOver(
-        gfx::PointF(display::Screen::Get()->GetCursorScreenPoint()));
+    sidebar_container_view_->ShowSidebarOnMouseOver(point_in_screen);
   }
+
+  if (vertical_tab_strip_widget_delegate_view_ &&
+      tabs::utils::ShouldShowVerticalTabs(browser())) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->ShowVerticalTabStripOnMouseOver(point_in_screen);
+  }
+}
+
+bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
+  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
+    return false;
+  }
+
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    if (auto* web_panel_controller =
+            sidebar_controller->GetWebPanelController()) {
+      return web_panel_controller->panel_contents() == contents;
+    }
+  }
+
+  return false;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

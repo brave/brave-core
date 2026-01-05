@@ -4,15 +4,15 @@
 
 #[cfg(linux_kernel)]
 use {
+    crate::backend::c,
     crate::fd::AsFd,
-    crate::{backend, io, ioctl},
-    backend::c,
+    crate::{backend, ffi, io, ioctl},
 };
 
 use bitflags::bitflags;
 
 #[cfg(all(linux_kernel, not(any(target_arch = "sparc", target_arch = "sparc64"))))]
-use crate::fd::{AsRawFd, BorrowedFd};
+use crate::fd::{AsRawFd as _, BorrowedFd};
 
 /// `ioctl(fd, BLKSSZGET)`—Returns the logical block size of a block device.
 ///
@@ -23,9 +23,9 @@ use crate::fd::{AsRawFd, BorrowedFd};
 #[inline]
 #[doc(alias = "BLKSSZGET")]
 pub fn ioctl_blksszget<Fd: AsFd>(fd: Fd) -> io::Result<u32> {
-    // SAFETY: `BLZSSZGET` is a getter opcode that gets a u32.
+    // SAFETY: `BLZSSZGET` is a getter opcode that gets a `u32`.
     unsafe {
-        let ctl = ioctl::Getter::<ioctl::BadOpcode<{ c::BLKSSZGET }>, c::c_uint>::new();
+        let ctl = ioctl::Getter::<{ c::BLKSSZGET }, c::c_uint>::new();
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -35,9 +35,9 @@ pub fn ioctl_blksszget<Fd: AsFd>(fd: Fd) -> io::Result<u32> {
 #[inline]
 #[doc(alias = "BLKPBSZGET")]
 pub fn ioctl_blkpbszget<Fd: AsFd>(fd: Fd) -> io::Result<u32> {
-    // SAFETY: `BLKPBSZGET` is a getter opcode that gets a u32.
+    // SAFETY: `BLKPBSZGET` is a getter opcode that gets a `u32`.
     unsafe {
-        let ctl = ioctl::Getter::<ioctl::BadOpcode<{ c::BLKPBSZGET }>, c::c_uint>::new();
+        let ctl = ioctl::Getter::<{ c::BLKPBSZGET }, c::c_uint>::new();
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -58,15 +58,13 @@ pub fn ioctl_ficlone<Fd: AsFd, SrcFd: AsFd>(fd: Fd, src_fd: SrcFd) -> io::Result
 }
 
 /// `ioctl(fd, EXT4_IOC_RESIZE_FS, blocks)`—Resize ext4 filesystem on fd.
-#[cfg(linux_kernel)]
+#[cfg(linux_raw_dep)]
 #[inline]
 #[doc(alias = "EXT4_IOC_RESIZE_FS")]
 pub fn ext4_ioc_resize_fs<Fd: AsFd>(fd: Fd, blocks: u64) -> io::Result<()> {
     // SAFETY: `EXT4_IOC_RESIZE_FS` is a pointer setter opcode.
     unsafe {
-        let ctl = ioctl::Setter::<ioctl::BadOpcode<{ backend::fs::EXT4_IOC_RESIZE_FS }>, u64>::new(
-            blocks,
-        );
+        let ctl = ioctl::Setter::<{ backend::fs::EXT4_IOC_RESIZE_FS }, u64>::new(blocks);
         ioctl::ioctl(fd, ctl)
     }
 }
@@ -79,7 +77,10 @@ unsafe impl ioctl::Ioctl for Ficlone<'_> {
     type Output = ();
 
     const IS_MUTATING: bool = false;
-    const OPCODE: ioctl::Opcode = ioctl::Opcode::old(c::FICLONE as ioctl::RawOpcode);
+
+    fn opcode(&self) -> ioctl::Opcode {
+        c::FICLONE as ioctl::Opcode
+    }
 
     fn as_ptr(&mut self) -> *mut c::c_void {
         self.0.as_raw_fd() as *mut c::c_void
@@ -93,12 +94,14 @@ unsafe impl ioctl::Ioctl for Ficlone<'_> {
     }
 }
 
-#[cfg(linux_kernel)]
+#[cfg(linux_raw_dep)]
 bitflags! {
     /// `FS_*` constants for use with [`ioctl_getflags`].
     ///
     /// [`ioctl_getflags`]: crate::fs::ioctl::ioctl_getflags
-    pub struct IFlags: c::c_uint {
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+    pub struct IFlags: ffi::c_uint {
         /// `FS_APPEND_FL`
         const APPEND = linux_raw_sys::general::FS_APPEND_FL;
         /// `FS_COMPR_FL`
@@ -133,15 +136,15 @@ bitflags! {
 /// `ioctl(fd, FS_IOC_GETFLAGS)`—Returns the [inode flags] attributes
 ///
 /// [inode flags]: https://man7.org/linux/man-pages/man2/ioctl_iflags.2.html
-#[cfg(linux_kernel)]
+#[cfg(linux_raw_dep)]
 #[inline]
 #[doc(alias = "FS_IOC_GETFLAGS")]
 pub fn ioctl_getflags<Fd: AsFd>(fd: Fd) -> io::Result<IFlags> {
     unsafe {
         #[cfg(target_pointer_width = "32")]
-        let ctl = ioctl::Getter::<ioctl::BadOpcode<{ c::FS_IOC32_GETFLAGS }>, u32>::new();
+        let ctl = ioctl::Getter::<{ c::FS_IOC32_GETFLAGS }, u32>::new();
         #[cfg(target_pointer_width = "64")]
-        let ctl = ioctl::Getter::<ioctl::BadOpcode<{ c::FS_IOC_GETFLAGS }>, u32>::new();
+        let ctl = ioctl::Getter::<{ c::FS_IOC_GETFLAGS }, u32>::new();
 
         ioctl::ioctl(fd, ctl).map(IFlags::from_bits_retain)
     }
@@ -150,17 +153,16 @@ pub fn ioctl_getflags<Fd: AsFd>(fd: Fd) -> io::Result<IFlags> {
 /// `ioctl(fd, FS_IOC_SETFLAGS)`—Modify the [inode flags] attributes
 ///
 /// [inode flags]: https://man7.org/linux/man-pages/man2/ioctl_iflags.2.html
-#[cfg(linux_kernel)]
+#[cfg(linux_raw_dep)]
 #[inline]
 #[doc(alias = "FS_IOC_SETFLAGS")]
 pub fn ioctl_setflags<Fd: AsFd>(fd: Fd, flags: IFlags) -> io::Result<()> {
     unsafe {
         #[cfg(target_pointer_width = "32")]
-        let ctl =
-            ioctl::Setter::<ioctl::BadOpcode<{ c::FS_IOC32_SETFLAGS }>, u32>::new(flags.bits());
+        let ctl = ioctl::Setter::<{ c::FS_IOC32_SETFLAGS }, u32>::new(flags.bits());
 
         #[cfg(target_pointer_width = "64")]
-        let ctl = ioctl::Setter::<ioctl::BadOpcode<{ c::FS_IOC_SETFLAGS }>, u32>::new(flags.bits());
+        let ctl = ioctl::Setter::<{ c::FS_IOC_SETFLAGS }, u32>::new(flags.bits());
 
         ioctl::ioctl(fd, ctl)
     }

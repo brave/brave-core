@@ -1,7 +1,4 @@
-use crate::{
-    extension::{Link, Signature},
-    util::split_at_pos,
-};
+use crate::extension::{Link, Signature};
 
 /// The signature of the link extension.
 pub const SIGNATURE: Signature = *b"link";
@@ -16,7 +13,6 @@ pub struct Bitmaps {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod decode {
 
     /// The error returned when decoding link extensions.
@@ -40,7 +36,8 @@ pub mod decode {
 }
 
 pub(crate) fn decode(data: &[u8], object_hash: gix_hash::Kind) -> Result<Link, decode::Error> {
-    let (id, data) = split_at_pos(data, object_hash.len_in_bytes())
+    let (id, data) = data
+        .split_at_checked(object_hash.len_in_bytes())
         .ok_or(decode::Error::Corrupt(
             "link extension too short to read share index checksum",
         ))

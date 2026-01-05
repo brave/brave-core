@@ -108,6 +108,7 @@ fn is_rndr_available() -> bool {
     }
 }
 
+#[inline]
 pub fn inner_u32() -> Result<u32, Error> {
     if !is_rndr_available() {
         return Err(Error::RNDR_NOT_AVAILABLE);
@@ -117,6 +118,7 @@ pub fn inner_u32() -> Result<u32, Error> {
     res.map(truncate).ok_or(Error::RNDR_FAILURE)
 }
 
+#[inline]
 pub fn inner_u64() -> Result<u64, Error> {
     if !is_rndr_available() {
         return Err(Error::RNDR_NOT_AVAILABLE);
@@ -126,6 +128,7 @@ pub fn inner_u64() -> Result<u64, Error> {
     res.ok_or(Error::RNDR_FAILURE)
 }
 
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
     if !is_rndr_available() {
         return Err(Error::RNDR_NOT_AVAILABLE);

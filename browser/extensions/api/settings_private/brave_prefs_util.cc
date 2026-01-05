@@ -11,6 +11,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -33,8 +34,11 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
-#include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -119,10 +123,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_rewards::prefs::kShowLocationBarButton] =
       settings_api::PrefType::kBoolean;
 
-  // Search engine prefs
-  (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
-      settings_api::PrefType::kBoolean;
-
   // autofill prefs
   (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
       settings_api::PrefType::kBoolean;
@@ -186,8 +186,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kNewTabPageShowStats] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowRewards] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNewTabPageShowBraveTalk] =
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  (*s_brave_allowlist)[brave_talk::prefs::kNewTabPageShowBraveTalk] =
       settings_api::PrefType::kBoolean;
+#endif
   (*s_brave_allowlist)[kNewTabPageShowBraveVPN] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =

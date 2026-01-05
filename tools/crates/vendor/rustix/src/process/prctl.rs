@@ -6,14 +6,14 @@
 #![allow(unsafe_code)]
 
 use core::mem::size_of;
+use core::num::NonZeroI32;
 use core::ptr::{null, null_mut, NonNull};
 
 use bitflags::bitflags;
 
-use crate::backend::c::{c_int, c_uint, c_void};
 use crate::backend::prctl::syscalls;
-use crate::fd::{AsRawFd, BorrowedFd};
-use crate::ffi::CStr;
+use crate::fd::{AsRawFd as _, BorrowedFd, RawFd};
+use crate::ffi::{c_int, c_uint, c_void, CStr};
 use crate::io;
 use crate::prctl::*;
 use crate::process::{Pid, RawPid};
@@ -37,7 +37,18 @@ const PR_GET_PDEATHSIG: c_int = 2;
 #[inline]
 #[doc(alias = "PR_GET_PDEATHSIG")]
 pub fn parent_process_death_signal() -> io::Result<Option<Signal>> {
-    unsafe { prctl_get_at_arg2_optional::<c_int>(PR_GET_PDEATHSIG) }.map(Signal::from_raw)
+    let raw = unsafe { prctl_get_at_arg2_optional::<c_int>(PR_GET_PDEATHSIG)? };
+    if let Some(non_zero) = NonZeroI32::new(raw) {
+        // SAFETY: The only way to get a libc-reserved signal number in
+        // here would be to do something equivalent to
+        // `set_parent_process_death_signal`, but that would have required
+        // using a `Signal` with a libc-reserved value.
+        Ok(Some(unsafe {
+            Signal::from_raw_nonzero_unchecked(non_zero)
+        }))
+    } else {
+        Ok(None)
+    }
 }
 
 const PR_SET_PDEATHSIG: c_int = 1;
@@ -53,7 +64,7 @@ const PR_SET_PDEATHSIG: c_int = 1;
 #[inline]
 #[doc(alias = "PR_SET_PDEATHSIG")]
 pub fn set_parent_process_death_signal(signal: Option<Signal>) -> io::Result<()> {
-    let signal = signal.map_or(0_usize, |signal| signal as usize);
+    let signal = signal.map_or(0_usize, |signal| signal.as_raw() as usize);
     unsafe { prctl_2args(PR_SET_PDEATHSIG, signal as *mut _) }.map(|_r| ())
 }
 
@@ -437,7 +448,7 @@ const PR_TSC_SIGSEGV: u32 = 2;
 pub enum TimeStampCounterReadability {
     /// Allow the use of the timestamp counter.
     Readable = PR_TSC_ENABLE,
-    /// Throw a [`Signal::Segv`] signal instead of reading the TSC.
+    /// Throw a [`Signal::SEGV`] signal instead of reading the TSC.
     RaiseSIGSEGV = PR_TSC_SIGSEGV,
 }
 
@@ -754,7 +765,7 @@ pub struct PrctlMmMap {
     pub auxv_size: u32,
     /// File descriptor of executable file that was used to create this
     /// process.
-    pub exe_fd: u32,
+    pub exe_fd: RawFd,
 }
 
 /// Provides one-shot access to all the addresses by passing in a
@@ -976,7 +987,7 @@ bitflags! {
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
     pub struct SpeculationFeatureState: u32 {
         /// Mitigation can be controlled per thread by
-        /// `PR_SET_SPECULATION_CTRL`.
+        /// [`control_speculative_feature`].
         const PRCTL = 1_u32 << 0;
         /// The speculation feature is enabled, mitigation is disabled.
         const ENABLE = 1_u32 << 1;
@@ -996,7 +1007,7 @@ bitflags! {
 /// # References
 ///  - [`prctl(PR_GET_SPECULATION_CTRL,…)`]
 ///
-/// [`prctl(PR_GET_SPECULATION_CTRL,…)`]: https://www.kernel.org/doc/html/v6.10/userspace-api/spec_ctrl.html
+/// [`prctl(PR_GET_SPECULATION_CTRL,…)`]: https://www.kernel.org/doc/html/v6.13/userspace-api/spec_ctrl.html
 #[inline]
 #[doc(alias = "PR_GET_SPECULATION_CTRL")]
 pub fn speculative_feature_state(
@@ -1013,7 +1024,7 @@ const PR_SET_SPECULATION_CTRL: c_int = 53;
 /// # References
 ///  - [`prctl(PR_SET_SPECULATION_CTRL,…)`]
 ///
-/// [`prctl(PR_SET_SPECULATION_CTRL,…)`]: https://www.kernel.org/doc/html/v6.10/userspace-api/spec_ctrl.html
+/// [`prctl(PR_SET_SPECULATION_CTRL,…)`]: https://www.kernel.org/doc/html/v6.13/userspace-api/spec_ctrl.html
 #[inline]
 #[doc(alias = "PR_SET_SPECULATION_CTRL")]
 pub fn control_speculative_feature(
@@ -1069,9 +1080,10 @@ const PR_PAC_GET_ENABLED_KEYS: c_int = 61;
 /// # References
 ///  - [`prctl(PR_PAC_GET_ENABLED_KEYS,…)`]
 ///
-/// [`prctl(PR_PAC_GET_ENABLED_KEYS,…)`]: https://www.kernel.org/doc/html/v6.10/arch/arm64/pointer-authentication.html
+/// [`prctl(PR_PAC_GET_ENABLED_KEYS,…)`]: https://www.kernel.org/doc/html/v6.13/arch/arm64/pointer-authentication.html
 #[inline]
 #[doc(alias = "PR_PAC_GET_ENABLED_KEYS")]
+#[cfg(linux_raw_dep)]
 pub fn enabled_pointer_authentication_keys() -> io::Result<PointerAuthenticationKeys> {
     let r = unsafe { prctl_1arg(PR_PAC_GET_ENABLED_KEYS)? } as c_uint;
     PointerAuthenticationKeys::from_bits(r).ok_or(io::Errno::RANGE)
@@ -1089,11 +1101,14 @@ const PR_PAC_SET_ENABLED_KEYS: c_int = 60;
 /// Please ensure the conditions necessary to safely call this function, as
 /// detailed in the references above.
 ///
-/// [`prctl(PR_PAC_SET_ENABLED_KEYS,…)`]: https://www.kernel.org/doc/html/v6.10/arch/arm64/pointer-authentication.html
+/// [`prctl(PR_PAC_SET_ENABLED_KEYS,…)`]: https://www.kernel.org/doc/html/v6.13/arch/arm64/pointer-authentication.html
 #[inline]
 #[doc(alias = "PR_PAC_SET_ENABLED_KEYS")]
-pub unsafe fn configure_pointer_authentication_keys(
-    config: impl Iterator<Item = (PointerAuthenticationKeys, bool)>,
+#[cfg(linux_raw_dep)]
+pub unsafe fn configure_pointer_authentication_keys<
+    Config: Iterator<Item = (PointerAuthenticationKeys, bool)>,
+>(
+    config: Config,
 ) -> io::Result<()> {
     let mut affected_keys: u32 = 0;
     let mut enabled_keys: u32 = 0;

@@ -30,6 +30,7 @@ pub fn invoke(helper: &mut crate::Program, action: &Action) -> Result {
             Ok(Some(Outcome {
                 username: ctx.username,
                 password: ctx.password,
+                oauth_refresh_token: ctx.oauth_refresh_token,
                 quit: ctx.quit.unwrap_or(false),
                 next: NextAction {
                     previous_output: stdout.into(),

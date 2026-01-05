@@ -49,6 +49,9 @@
 //! * `serde` provides a `Serialize` and `Deserialize` implementation for
 //!   [`TinyVec`] and [`ArrayVec`] types, provided the inner item also has an
 //!   implementation.
+//! * `borsh` provides a `BorshSerialize` and `BorshDeserialize` implementation
+//!   for [`TinyVec`] and [`ArrayVec`] types, provided the inner item also has
+//!   an implementation.
 //!
 //! ## API
 //! The general goal of the crate is that, as much as possible, the vecs here
@@ -60,15 +63,6 @@
 //! The vecs here also have a few additional methods that aren't on the `Vec`
 //! type. In this case, the names tend to be fairly long so that they are
 //! unlikely to clash with any future methods added to `Vec`.
-//!
-//! ## Stability
-//! * The `1.0` series of the crate works with Rustc `1.34.0` or later, though
-//!   you still need to have Rustc `1.36.0` to use the `alloc` feature.
-//! * The `2.0` version of the crate is planned for some time after the
-//!   `min_const_generics` stuff becomes stable. This would greatly raise the
-//!   minimum rust version and also allow us to totally eliminate the need for
-//!   the `Array` trait. The actual usage of the crate is not expected to break
-//!   significantly in this transition.
 
 #[allow(unused_imports)]
 use core::{

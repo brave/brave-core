@@ -1,17 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
+# project.
 # ====================================================================
 #
 # This module implements support for ARMv8 AES instructions. The
@@ -53,8 +58,6 @@ open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
 $prefix="aes_hw";
 
 $code=<<___;
-#include <ring-core/arm_arch.h>
-
 #if __ARM_MAX_ARCH__>=7
 .text
 ___
@@ -102,11 +105,6 @@ $code.=<<___	if ($flavour =~ /64/);
 	add	x29,sp,#0
 ___
 $code.=<<___;
-	mov	$ptr,#-1
-	cmp	$inp,#0
-	b.eq	.Lenc_key_abort
-	cmp	$out,#0
-	b.eq	.Lenc_key_abort
 	mov	$ptr,#-2
 	cmp	$bits,#128
 	b.lt	.Lenc_key_abort
@@ -237,51 +235,6 @@ $code.=<<___;
 	ret
 .size	${prefix}_set_encrypt_key,.-${prefix}_set_encrypt_key
 ___
-}}}
-{{{
-sub gen_block () {
-my $dir = shift;
-my ($e,$mc) = $dir eq "en" ? ("e","mc") : ("d","imc");
-my ($inp,$out,$key)=map("x$_",(0..2));
-my $rounds="w3";
-my ($rndkey0,$rndkey1,$inout)=map("q$_",(0..3));
-
-$code.=<<___;
-.globl	${prefix}_${dir}crypt
-.type	${prefix}_${dir}crypt,%function
-.align	5
-${prefix}_${dir}crypt:
-	AARCH64_VALID_CALL_TARGET
-	ldr	$rounds,[$key,#240]
-	vld1.32	{$rndkey0},[$key],#16
-	vld1.8	{$inout},[$inp]
-	sub	$rounds,$rounds,#2
-	vld1.32	{$rndkey1},[$key],#16
-
-.Loop_${dir}c:
-	aes$e	$inout,$rndkey0
-	aes$mc	$inout,$inout
-	vld1.32	{$rndkey0},[$key],#16
-	subs	$rounds,$rounds,#2
-	aes$e	$inout,$rndkey1
-	aes$mc	$inout,$inout
-	vld1.32	{$rndkey1},[$key],#16
-	b.gt	.Loop_${dir}c
-
-	aes$e	$inout,$rndkey0
-	aes$mc	$inout,$inout
-	vld1.32	{$rndkey0},[$key]
-	aes$e	$inout,$rndkey1
-	veor	$inout,$inout,$rndkey0
-
-	vst1.8	{$inout},[$out]
-	ret
-.size	${prefix}_${dir}crypt,.-${prefix}_${dir}crypt
-___
-}
-&gen_block("en");
-# Decryption removed in *ring*.
-# &gen_block("de");
 }}}
 {{{
 my ($inp,$out,$len,$key,$ivp)=map("x$_",(0..4));

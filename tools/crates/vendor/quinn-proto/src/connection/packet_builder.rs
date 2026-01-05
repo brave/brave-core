@@ -1,14 +1,13 @@
-use std::cmp;
-
 use bytes::Bytes;
 use rand::Rng;
-use tracing::{trace, trace_span};
+use tracing::{debug, trace, trace_span};
 
-use super::{spaces::SentPacket, Connection, SentFrames};
+use super::{Connection, SentFrames, spaces::SentPacket};
 use crate::{
+    ConnectionId, Instant, TransportError, TransportErrorCode,
+    connection::ConnectionSide,
     frame::{self, Close},
-    packet::{Header, InitialHeader, LongType, PacketNumber, PartialEncode, SpaceId, FIXED_BIT},
-    ConnectionId, Instant, TransportError, TransportErrorCode, INITIAL_MTU,
+    packet::{FIXED_BIT, Header, InitialHeader, LongType, PacketNumber, PartialEncode, SpaceId},
 };
 
 pub(super) struct PacketBuilder {
@@ -38,7 +37,7 @@ impl PacketBuilder {
         space_id: SpaceId,
         dst_cid: ConnectionId,
         buffer: &mut Vec<u8>,
-        mut buffer_capacity: usize,
+        buffer_capacity: usize,
         datagram_start: usize,
         ack_eliciting: bool,
         conn: &mut Connection,
@@ -48,7 +47,8 @@ impl PacketBuilder {
         let sent_with_keys = conn.spaces[space_id].sent_with_keys;
         if space_id == SpaceId::Data {
             if sent_with_keys >= conn.key_phase_size {
-                conn.initiate_key_update();
+                debug!("routine key update due to phase exhaustion");
+                conn.force_key_update();
             }
         } else {
             let confidentiality_limit = conn.spaces[space_id]
@@ -79,13 +79,6 @@ impl PacketBuilder {
         }
 
         let space = &mut conn.spaces[space_id];
-
-        if space.loss_probes != 0 {
-            space.loss_probes -= 1;
-            // Clamp the packet size to at most the minimum MTU to ensure that loss probes can get
-            // through and enable recovery even if the path MTU has shrank unexpectedly.
-            buffer_capacity = cmp::min(buffer_capacity, datagram_start + usize::from(INITIAL_MTU));
-        }
         let exact_number = match space_id {
             SpaceId::Data => conn.packet_number_filter.allocate(&mut conn.rng, space),
             _ => space.get_tx_number(),
@@ -101,7 +94,7 @@ impl PacketBuilder {
                 spin: if conn.spin_enabled {
                     conn.spin
                 } else {
-                    conn.rng.gen()
+                    conn.rng.random()
                 },
                 key_phase: conn.key_phase,
             },
@@ -122,13 +115,16 @@ impl PacketBuilder {
             SpaceId::Initial => Header::Initial(InitialHeader {
                 src_cid: conn.handshake_cid,
                 dst_cid,
-                token: conn.retry_token.clone(),
+                token: match &conn.side {
+                    ConnectionSide::Client { token, .. } => token.clone(),
+                    ConnectionSide::Server { .. } => Bytes::new(),
+                },
                 number,
                 version,
             }),
         };
         let partial_encode = header.encode(buffer);
-        if conn.peer_params.grease_quic_bit && conn.rng.gen() {
+        if conn.peer_params.grease_quic_bit && conn.rng.random() {
             buffer[partial_encode.start] ^= FIXED_BIT;
         }
 
@@ -195,7 +191,7 @@ impl PacketBuilder {
         let ack_eliciting = self.ack_eliciting;
         let exact_number = self.exact_number;
         let space_id = self.space;
-        let (size, padded) = self.finish(conn, buffer);
+        let (size, padded) = self.finish(conn, now, buffer);
         let sent = match sent {
             Some(sent) => sent,
             None => return,
@@ -207,6 +203,7 @@ impl PacketBuilder {
         };
 
         let packet = SentPacket {
+            path_generation: conn.path.generation(),
             largest_acked: sent.largest_acked,
             time_sent: now,
             size,
@@ -233,7 +230,12 @@ impl PacketBuilder {
     }
 
     /// Encrypt packet, returning the length of the packet and whether padding was added
-    pub(super) fn finish(self, conn: &mut Connection, buffer: &mut Vec<u8>) -> (usize, bool) {
+    pub(super) fn finish(
+        self,
+        conn: &mut Connection,
+        now: Instant,
+        buffer: &mut Vec<u8>,
+    ) -> (usize, bool) {
         let pad = buffer.len() < self.min_size;
         if pad {
             trace!("PADDING * {}", self.min_size - buffer.len());
@@ -265,6 +267,16 @@ impl PacketBuilder {
             Some((self.exact_number, packet_crypto)),
         );
 
-        (buffer.len() - encode_start, pad)
+        let len = buffer.len() - encode_start;
+        conn.config.qlog_sink.emit_packet_sent(
+            self.exact_number,
+            len,
+            self.space,
+            self.space == SpaceId::Data && conn.spaces[SpaceId::Data].crypto.is_none(),
+            now,
+            conn.orig_rem_cid,
+        );
+
+        (len, pad)
     }
 }

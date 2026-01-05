@@ -508,7 +508,7 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
       std::move(outputs));
 }
 
-std::vector<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(
+base::flat_set<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(
     const CardanoTxDecoder::SerializableTx& tx,
     const cardano_rpc::UnspentOutputs& utxos,
     bool partial_sign) {
@@ -523,7 +523,7 @@ std::vector<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(
     return {};
   }
 
-  std::vector<mojom::CardanoKeyIdPtr> payment_key_ids;
+  base::flat_set<mojom::CardanoKeyIdPtr> payment_key_ids;
 
   for (const auto& input : tx.tx_body.inputs) {
     if (auto utxo = FindUtxoByOutpoint(utxos, input)) {
@@ -532,7 +532,7 @@ std::vector<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(
         return {};
       }
       // Save key id for further signing.
-      payment_key_ids.push_back(std::move(payment_key_id->second));
+      payment_key_ids.insert(std::move(payment_key_id->second));
 
     } else if (!partial_sign) {
       // This is full sign, but an unknown utxo so we don't know how to sign it.
@@ -545,7 +545,7 @@ std::vector<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(
 
 void CardanoApiImpl::OnSignTransactionRequestProcessed(
     CardanoTxDecoder::DecodedTx decoded_tx,
-    std::vector<mojom::CardanoKeyIdPtr> payment_key_ids,
+    base::flat_set<mojom::CardanoKeyIdPtr> payment_key_ids,
     SignTxCallback callback,
     bool approved,
     const std::optional<std::string>& error) {

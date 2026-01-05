@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -142,7 +142,7 @@ fn unwrap_key__<'a>(
         .map_err(|error::Unspecified| error::KeyRejected::invalid_encoding())?;
 
     // Ignore any attributes that are present.
-    if input.peek(der::Tag::ContextSpecificConstructed0 as u8) {
+    if input.peek(der::Tag::ContextSpecificConstructed0.into()) {
         let _ = der::expect_tag_and_get_value(input, der::Tag::ContextSpecificConstructed0)
             .map_err(|error::Unspecified| error::KeyRejected::invalid_encoding())?;
     }
@@ -153,17 +153,18 @@ fn unwrap_key__<'a>(
         }
 
         const INCORRECT_LEGACY: der::Tag = der::Tag::ContextSpecificConstructed1;
-        let result =
-            if options.accept_legacy_ed25519_public_key_tag && input.peek(INCORRECT_LEGACY as u8) {
-                der::nested(
-                    input,
-                    INCORRECT_LEGACY,
-                    error::Unspecified,
-                    der::bit_string_with_no_unused_bits,
-                )
-            } else {
-                der::bit_string_tagged_with_no_unused_bits(der::Tag::ContextSpecific1, input)
-            };
+        let result = if options.accept_legacy_ed25519_public_key_tag
+            && input.peek(INCORRECT_LEGACY.into())
+        {
+            der::nested(
+                input,
+                INCORRECT_LEGACY,
+                error::Unspecified,
+                der::bit_string_with_no_unused_bits,
+            )
+        } else {
+            der::bit_string_tagged_with_no_unused_bits(der::Tag::ContextSpecific1, input)
+        };
         let public_key =
             result.map_err(|error::Unspecified| error::KeyRejected::invalid_encoding())?;
         Some(public_key)

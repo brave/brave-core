@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/common/extensions/api/api_sources.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -11,10 +12,11 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 json_features("api_features") {
   feature_type = "APIFeature"
   method_name = "AddBraveAPIFeatures"
-  sources = [
-    "_api_features.json",
-    "_brave_talk_api_features.json",
-  ]
+  sources = [ "_api_features.json" ]
+
+  if (enable_brave_talk) {
+    sources += [ "_brave_talk_api_features.json" ]
+  }
 }
 
 json_features("manifest_features") {

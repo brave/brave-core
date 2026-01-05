@@ -267,3 +267,12 @@ fn reader_to_writer() {
 
     assert_eq!(clear, &decompressed_buffer[..]);
 }
+
+#[test]
+fn test_finish_empty_encoder() {
+    use std::io::Write;
+    let mut enc = Encoder::new(Vec::new(), 0).unwrap();
+    enc.do_finish().unwrap();
+    enc.write_all(b"this should not work").unwrap_err();
+    enc.finish().unwrap();
+}

@@ -3,7 +3,7 @@ use std::ops::Range;
 use crate::{
     decode::{self, header},
     entry,
-    util::{read_u32, split_at_byte_exclusive, split_at_pos, var_int},
+    util::{read_u32, split_at_byte_exclusive, var_int},
     Entry, Version,
 };
 
@@ -64,9 +64,7 @@ pub fn chunk<'a>(
         .ok_or(decode::Error::Entry { index: idx })?;
 
         data = remaining;
-        if entry.mode.is_sparse() {
-            is_sparse = true;
-        }
+        is_sparse |= entry.mode.is_sparse();
         // TODO: entries are actually in an intrusive collection, with path as key. Could be set for us. This affects 'ignore_case' which we
         //       also don't yet handle but probably could, maybe even smartly with the collection.
         //       For now it's unclear to me how they access the index, they could iterate quickly, and have fast access by path.
@@ -96,7 +94,7 @@ fn load_one<'a>(
     let (uid, data) = read_u32(data)?;
     let (gid, data) = read_u32(data)?;
     let (size, data) = read_u32(data)?;
-    let (hash, data) = split_at_pos(data, hash_len)?;
+    let (hash, data) = data.split_at_checked(hash_len)?;
     let (flags, data) = read_u16(data)?;
     let flags = entry::at_rest::Flags::from_bits_retain(flags);
     let (flags, data) = if flags.contains(entry::at_rest::Flags::EXTENDED) {
@@ -130,7 +128,7 @@ fn load_one<'a>(
             split_at_byte_exclusive(data, 0)?
         } else {
             let path_len = (flags.bits() & entry::Flags::PATH_LEN.bits()) as usize;
-            let (path, data) = split_at_pos(data, path_len)?;
+            let (path, data) = data.split_at_checked(path_len)?;
             (path, skip_padding(data, first_byte_of_entry))
         };
 
@@ -179,5 +177,6 @@ fn skip_padding(data: &[u8], first_byte_of_entry: usize) -> &[u8] {
 
 #[inline]
 fn read_u16(data: &[u8]) -> Option<(u16, &[u8])> {
-    split_at_pos(data, 2).map(|(num, data)| (u16::from_be_bytes(num.try_into().unwrap()), data))
+    data.split_at_checked(2)
+        .map(|(num, data)| (u16::from_be_bytes(num.try_into().unwrap()), data))
 }

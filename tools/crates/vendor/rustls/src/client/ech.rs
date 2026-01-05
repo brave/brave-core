@@ -5,30 +5,30 @@ use alloc::vec::Vec;
 use pki_types::{DnsName, EchConfigListBytes, ServerName};
 use subtle::ConstantTimeEq;
 
+use crate::CipherSuite::TLS_EMPTY_RENEGOTIATION_INFO_SCSV;
 use crate::client::tls13;
+use crate::crypto::SecureRandom;
 use crate::crypto::hash::Hash;
 use crate::crypto::hpke::{EncapsulatedSecret, Hpke, HpkePublicKey, HpkeSealer, HpkeSuite};
-use crate::crypto::SecureRandom;
 use crate::hash_hs::{HandshakeHash, HandshakeHashBuffer};
 use crate::log::{debug, trace, warn};
 use crate::msgs::base::{Payload, PayloadU16};
 use crate::msgs::codec::{Codec, Reader};
 use crate::msgs::enums::{ExtensionType, HpkeKem};
 use crate::msgs::handshake::{
-    ClientExtension, ClientHelloPayload, EchConfigContents, EchConfigPayload, Encoding,
+    ClientExtensions, ClientHelloPayload, EchConfigContents, EchConfigPayload, Encoding,
     EncryptedClientHello, EncryptedClientHelloOuter, HandshakeMessagePayload, HandshakePayload,
     HelloRetryRequest, HpkeKeyConfig, HpkeSymmetricCipherSuite, PresharedKeyBinder,
-    PresharedKeyOffer, Random, ServerHelloPayload,
+    PresharedKeyOffer, Random, ServerHelloPayload, ServerNamePayload,
 };
 use crate::msgs::message::{Message, MessagePayload};
 use crate::msgs::persist;
 use crate::msgs::persist::Retrieved;
 use crate::tls13::key_schedule::{
-    server_ech_hrr_confirmation_secret, KeyScheduleEarly, KeyScheduleHandshakeStart,
+    KeyScheduleEarly, KeyScheduleHandshakeStart, server_ech_hrr_confirmation_secret,
 };
-use crate::CipherSuite::TLS_EMPTY_RENEGOTIATION_INFO_SCSV;
 use crate::{
-    AlertDescription, CommonState, EncryptedClientHelloError, Error, HandshakeType,
+    AlertDescription, ClientConfig, CommonState, EncryptedClientHelloError, Error,
     PeerIncompatible, PeerMisbehaved, ProtocolVersion, Tls13CipherSuite,
 };
 
@@ -93,9 +93,9 @@ impl EchConfig {
     /// One of the provided ECH configurations must be compatible with the HPKE provider's supported
     /// suites or an error will be returned.
     ///
-    /// See the [ech-client.rs] example for a complete example of fetching ECH configs from DNS.
+    /// See the [`ech-client.rs`] example for a complete example of fetching ECH configs from DNS.
     ///
-    /// [ech-client.rs]: https://github.com/rustls/rustls/blob/main/examples/src/bin/ech-client.rs
+    /// [`ech-client.rs`]: https://github.com/rustls/rustls/blob/main/examples/src/bin/ech-client.rs
     pub fn new(
         ech_config_list: EchConfigListBytes<'_>,
         hpke_suites: &[&'static dyn Hpke],
@@ -107,7 +107,7 @@ impl EchConfig {
 
         // Note: we name the index var _i because if the log feature is disabled
         //       it is unused.
-        #[cfg_attr(not(feature = "std"), allow(clippy::unused_enumerate_index))]
+        #[cfg_attr(not(feature = "logging"), allow(clippy::unused_enumerate_index))]
         for (_i, config) in ech_configs.iter().enumerate() {
             let contents = match config {
                 EchConfigPayload::V18(contents) => contents,
@@ -157,6 +157,22 @@ impl EchConfig {
         Err(EncryptedClientHelloError::NoCompatibleConfig.into())
     }
 
+    pub(super) fn state(
+        &self,
+        server_name: ServerName<'static>,
+        config: &ClientConfig,
+    ) -> Result<EchState, Error> {
+        EchState::new(
+            self,
+            server_name.clone(),
+            config
+                .client_auth_cert_resolver
+                .has_certs(),
+            config.provider.secure_random,
+            config.enable_sni,
+        )
+    }
+
     /// Compute the HPKE `SetupBaseS` `info` parameter for this ECH configuration.
     ///
     /// See <https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-17#section-6.1>.
@@ -202,7 +218,7 @@ impl EchGreaseConfig {
         secure_random: &'static dyn SecureRandom,
         inner_name: ServerName<'static>,
         outer_hello: &ClientHelloPayload,
-    ) -> Result<ClientExtension, Error> {
+    ) -> Result<EncryptedClientHello, Error> {
         trace!("Preparing GREASE ECH extension");
 
         // Pick a random config id.
@@ -219,7 +235,7 @@ impl EchGreaseConfig {
                     key_config: HpkeKeyConfig {
                         config_id: config_id[0],
                         kem_id: HpkeKem::DHKEM_P256_HKDF_SHA256,
-                        public_key: PayloadU16(self.placeholder_key.0.clone()),
+                        public_key: PayloadU16::new(self.placeholder_key.0.clone()),
                         symmetric_cipher_suites: vec![suite.sym],
                     },
                     maximum_name_length: 0,
@@ -251,14 +267,12 @@ impl EchGreaseConfig {
         secure_random.fill(&mut payload)?;
 
         // Return the GREASE extension.
-        Ok(ClientExtension::EncryptedClientHello(
-            EncryptedClientHello::Outer(EncryptedClientHelloOuter {
-                cipher_suite: suite.sym,
-                config_id: config_id[0],
-                enc: PayloadU16(grease_state.enc.0),
-                payload: PayloadU16::new(payload),
-            }),
-        ))
+        Ok(EncryptedClientHello::Outer(EncryptedClientHelloOuter {
+            cipher_suite: suite.sym,
+            config_id: config_id[0],
+            enc: PayloadU16::new(grease_state.enc.0),
+            payload: PayloadU16::new(payload),
+        }))
     }
 }
 
@@ -398,29 +412,26 @@ impl EchState {
             false => self.enc.0.clone(),
         };
 
-        fn outer_hello_ext(ctx: &EchState, enc: Vec<u8>, payload: Vec<u8>) -> ClientExtension {
-            ClientExtension::EncryptedClientHello(EncryptedClientHello::Outer(
-                EncryptedClientHelloOuter {
-                    cipher_suite: ctx.cipher_suite,
-                    config_id: ctx.config_id,
-                    enc: PayloadU16::new(enc),
-                    payload: PayloadU16::new(payload),
-                },
-            ))
+        fn outer_hello_ext(ctx: &EchState, enc: Vec<u8>, payload: Vec<u8>) -> EncryptedClientHello {
+            EncryptedClientHello::Outer(EncryptedClientHelloOuter {
+                cipher_suite: ctx.cipher_suite,
+                config_id: ctx.config_id,
+                enc: PayloadU16::new(enc),
+                payload: PayloadU16::new(payload),
+            })
         }
 
         // The outer handshake is not permitted to resume a session. If we're resuming in the
         // inner handshake we remove the PSK extension from the outer hello, replacing it
         // with a GREASE PSK to implement the "ClientHello Malleability Mitigation" mentioned
         // in 10.12.3.
-        if let Some(ClientExtension::PresharedKey(psk_offer)) = outer_hello.extensions.last_mut() {
+        if let Some(psk_offer) = outer_hello.preshared_key_offer.as_mut() {
             self.grease_psk(psk_offer)?;
         }
 
         // To compute the encoded AAD we add a placeholder extension with an empty payload.
-        outer_hello
-            .extensions
-            .push(outer_hello_ext(self, enc.clone(), vec![0; payload_len]));
+        outer_hello.encrypted_client_hello =
+            Some(outer_hello_ext(self, enc.clone(), vec![0; payload_len]));
 
         // Next we compute the proper extension payload.
         let payload = self
@@ -428,10 +439,7 @@ impl EchState {
             .seal(&outer_hello.get_encoding(), &encoded_inner_hello)?;
 
         // And then we replace the placeholder extension with the real one.
-        outer_hello.extensions.pop();
-        outer_hello
-            .extensions
-            .push(outer_hello_ext(self, enc, payload));
+        outer_hello.encrypted_client_hello = Some(outer_hello_ext(self, enc, payload));
 
         Ok(outer_hello)
     }
@@ -441,6 +449,7 @@ impl EchState {
         self,
         ks: &mut KeyScheduleHandshakeStart,
         server_hello: &ServerHelloPayload,
+        server_hello_encoded: &Payload<'_>,
         hash: &'static dyn Hash,
     ) -> Result<Option<EchAccepted>, Error> {
         // Start the inner transcript hash now that we know the hash algorithm to use.
@@ -452,8 +461,10 @@ impl EchState {
         // We need to preserve the original inner_transcript to use if this confirmation succeeds.
         let mut confirmation_transcript = inner_transcript.clone();
 
-        // Add the server hello confirmation - this differs from the standard server hello encoding.
-        confirmation_transcript.add_message(&Self::server_hello_conf(server_hello));
+        // Add the server hello confirmation - this is computed by altering the received
+        // encoding rather than reencoding it.
+        confirmation_transcript
+            .add_message(&Self::server_hello_conf(server_hello, server_hello_encoded));
 
         // Derive a confirmation secret from the inner hello random and the confirmation transcript.
         let derived = ks.server_ech_confirmation_secret(
@@ -488,18 +499,18 @@ impl EchState {
         common: &mut CommonState,
     ) -> Result<bool, Error> {
         // The client checks for the "encrypted_client_hello" extension.
-        let ech_conf = match hrr.ech() {
+        let ech_conf = match &hrr.encrypted_client_hello {
             // If none is found, the server has implicitly rejected ECH.
             None => return Ok(false),
             // Otherwise, if it has a length other than 8, the client aborts the
             // handshake with a "decode_error" alert.
-            Some(ech_conf) if ech_conf.len() != 8 => {
+            Some(ech_conf) if ech_conf.bytes().len() != 8 => {
                 return Err({
                     common.send_fatal_alert(
                         AlertDescription::DecodeError,
                         PeerMisbehaved::IllegalHelloRetryRequestWithInvalidEch,
                     )
-                })
+                });
             }
             Some(ech_conf) => ech_conf,
         };
@@ -518,7 +529,7 @@ impl EchState {
             confirmation_transcript.current_hash(),
         );
 
-        match ConstantTimeEq::ct_eq(derived.as_ref(), ech_conf).into() {
+        match ConstantTimeEq::ct_eq(derived.as_ref(), ech_conf.bytes()).into() {
             true => {
                 trace!("ECH accepted by server in hello retry request");
                 Ok(true)
@@ -562,7 +573,7 @@ impl EchState {
             compression_methods: outer_hello.compression_methods.clone(),
 
             // We will build up the included extensions ourselves.
-            extensions: vec![],
+            extensions: Box::new(ClientExtensions::default()),
 
             // Set the inner hello random to the one we generated when creating the ECH state.
             // We hold on to the inner_hello_random in the ECH state to use later for confirming
@@ -580,13 +591,11 @@ impl EchState {
                 .collect(),
         };
 
+        inner_hello.order_seed = outer_hello.order_seed;
+
         // The inner hello will always have an inner variant of the ECH extension added.
         // See Section 6.1 rule 4.
-        inner_hello
-            .extensions
-            .push(ClientExtension::EncryptedClientHello(
-                EncryptedClientHello::Inner,
-            ));
+        inner_hello.encrypted_client_hello = Some(EncryptedClientHello::Inner);
 
         let inner_sni = match &self.inner_name {
             // The inner hello only gets a SNI value if enable_sni is true and the inner name
@@ -600,14 +609,14 @@ impl EchState {
         // 2. Add the extension to the inner hello as-is.
         // 3. Compress the extension, by collecting it into a list of to-be-compressed
         //    extensions we'll handle separately.
-        let mut compressed_exts = Vec::with_capacity(outer_hello.extensions.len());
-        let mut compressed_ext_types = Vec::with_capacity(outer_hello.extensions.len());
-        for ext in &outer_hello.extensions {
+        let outer_extensions = outer_hello.used_extensions_in_encoding_order();
+        let mut compressed_exts = Vec::with_capacity(outer_extensions.len());
+        for ext in outer_extensions {
             // Some outer hello extensions are only useful in the context where a TLS 1.3
             // connection allows TLS 1.2. This isn't the case for ECH so we skip adding them
             // to the inner hello.
             if matches!(
-                ext.ext_type(),
+                ext,
                 ExtensionType::ExtendedMasterSecret
                     | ExtensionType::SessionTicket
                     | ExtensionType::ECPointFormats
@@ -615,12 +624,10 @@ impl EchState {
                 continue;
             }
 
-            if ext.ext_type() == ExtensionType::ServerName {
+            if ext == ExtensionType::ServerName {
                 // We may want to replace the outer hello SNI with our own inner hello specific SNI.
                 if let Some(sni_value) = inner_sni {
-                    inner_hello
-                        .extensions
-                        .push(ClientExtension::make_sni(&sni_value.borrow()));
+                    inner_hello.server_name = Some(ServerNamePayload::from(sni_value));
                 }
                 // We don't want to add, or compress, the SNI from the outer hello.
                 continue;
@@ -628,44 +635,25 @@ impl EchState {
 
             // Compressed extensions need to be put aside to include in one contiguous block.
             // Uncompressed extensions get added directly to the inner hello.
-            if ext.ext_type().ech_compress() {
-                compressed_exts.push(ext.clone());
-                compressed_ext_types.push(ext.ext_type());
-            } else {
-                inner_hello.extensions.push(ext.clone());
+            if ext.ech_compress() {
+                compressed_exts.push(ext);
             }
+
+            inner_hello.clone_one(outer_hello, ext);
         }
 
         // We've added all the uncompressed extensions. Now we need to add the contiguous
-        // block of to-be-compressed extensions. Where we do this depends on whether the
-        // last uncompressed extension is a PSK for resumption. In this case we must
-        // add the to-be-compressed extensions _before_ the PSK.
-        let compressed_exts_index =
-            if let Some(ClientExtension::PresharedKey(_)) = inner_hello.extensions.last() {
-                inner_hello.extensions.len() - 1
-            } else {
-                inner_hello.extensions.len()
-            };
-        inner_hello.extensions.splice(
-            compressed_exts_index..compressed_exts_index,
-            compressed_exts,
-        );
+        // block of to-be-compressed extensions.
+        inner_hello.contiguous_extensions = compressed_exts.clone();
 
         // Note which extensions we're sending in the inner hello. This may differ from
         // the outer hello (e.g. the inner hello may omit SNI while the outer hello will
         // always have the ECH cover name in SNI).
-        self.sent_extensions = inner_hello
-            .extensions
-            .iter()
-            .map(|ext| ext.ext_type())
-            .collect();
+        self.sent_extensions = inner_hello.collect_used();
 
         // If we're resuming, we need to update the PSK binder in the inner hello.
         if let Some(resuming) = resuming.as_ref() {
-            let mut chp = HandshakeMessagePayload {
-                typ: HandshakeType::ClientHello,
-                payload: HandshakePayload::ClientHello(inner_hello),
-            };
+            let mut chp = HandshakeMessagePayload(HandshakePayload::ClientHello(inner_hello));
 
             // Retain the early key schedule we get from processing the binder.
             self.early_data_key_schedule = Some(tls13::fill_in_psk_binder(
@@ -676,19 +664,19 @@ impl EchState {
 
             // fill_in_psk_binder works on an owned HandshakeMessagePayload, so we need to
             // extract our inner hello back out of it to retain ownership.
-            inner_hello = match chp.payload {
+            inner_hello = match chp.0 {
                 HandshakePayload::ClientHello(chp) => chp,
                 // Safety: we construct the HMP above and know its type unconditionally.
                 _ => unreachable!(),
             };
         }
 
-        trace!("ECH Inner Hello: {:#?}", inner_hello);
+        trace!("ECH Inner Hello: {inner_hello:#?}");
 
         // Encode the inner hello according to the rules required for ECH. This differs
         // from the standard encoding in several ways. Notably this is where we will
         // replace the block of contiguous to-be-compressed extensions with a marker.
-        let mut encoded_hello = inner_hello.ech_inner_encoding(compressed_ext_types);
+        let mut encoded_hello = inner_hello.ech_inner_encoding(compressed_exts);
 
         // Calculate padding
         // max_name_len = L
@@ -731,10 +719,9 @@ impl EchState {
                 // (retryreq == None means we're in the "initial ClientHello" case)
                 None => ProtocolVersion::TLSv1_0,
             },
-            payload: MessagePayload::handshake(HandshakeMessagePayload {
-                typ: HandshakeType::ClientHello,
-                payload: HandshakePayload::ClientHello(inner_hello),
-            }),
+            payload: MessagePayload::handshake(HandshakeMessagePayload(
+                HandshakePayload::ClientHello(inner_hello),
+            )),
         };
 
         // Update the inner transcript buffer with the inner hello message.
@@ -776,18 +763,35 @@ impl EchState {
         Ok(())
     }
 
-    fn server_hello_conf(server_hello: &ServerHelloPayload) -> Message<'_> {
-        Self::ech_conf_message(HandshakeMessagePayload {
-            typ: HandshakeType::ServerHello,
-            payload: HandshakePayload::ServerHello(server_hello.clone()),
-        })
+    fn server_hello_conf(
+        server_hello: &ServerHelloPayload,
+        server_hello_encoded: &Payload<'_>,
+    ) -> Message<'static> {
+        // The confirmation is computed over the server hello, which has had
+        // its `random` field altered to zero the final 8 bytes.
+        //
+        // nb. we don't require that we can round-trip a `ServerHelloPayload`, to
+        // allow for efficiency in its in-memory representation.  That means
+        // we operate here on the received encoding, as the confirmation needs
+        // to be computed on that.
+        let mut encoded = server_hello_encoded.clone().into_vec();
+        encoded[SERVER_HELLO_ECH_CONFIRMATION_SPAN].fill(0x00);
+
+        Message {
+            version: ProtocolVersion::TLSv1_3,
+            payload: MessagePayload::Handshake {
+                encoded: Payload::Owned(encoded),
+                parsed: HandshakeMessagePayload(HandshakePayload::ServerHello(
+                    server_hello.clone(),
+                )),
+            },
+        }
     }
 
     fn hello_retry_request_conf(retry_req: &HelloRetryRequest) -> Message<'_> {
-        Self::ech_conf_message(HandshakeMessagePayload {
-            typ: HandshakeType::HelloRetryRequest,
-            payload: HandshakePayload::HelloRetryRequest(retry_req.clone()),
-        })
+        Self::ech_conf_message(HandshakeMessagePayload(
+            HandshakePayload::HelloRetryRequest(retry_req.clone()),
+        ))
     }
 
     fn ech_conf_message(hmp: HandshakeMessagePayload<'_>) -> Message<'_> {
@@ -802,6 +806,16 @@ impl EchState {
         }
     }
 }
+
+/// The last eight bytes of the ServerHello's random, taken from a Handshake message containing it.
+///
+/// This has:
+/// - a HandshakeType (1 byte),
+/// - an exterior length (3 bytes),
+/// - the legacy_version (2 bytes), and
+/// - the balance of the random field (24 bytes).
+const SERVER_HELLO_ECH_CONFIRMATION_SPAN: core::ops::Range<usize> =
+    (1 + 3 + 2 + 24)..(1 + 3 + 2 + 32);
 
 /// Returned from EchState::check_acceptance when the server has accepted the ECH offer.
 ///
@@ -820,4 +834,66 @@ pub(crate) fn fatal_alert_required(
         AlertDescription::EncryptedClientHelloRequired,
         PeerIncompatible::ServerRejectedEncryptedClientHello(retry_configs),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::enums::CipherSuite;
+    use crate::msgs::handshake::{Random, ServerExtensions, SessionId};
+
+    use super::*;
+
+    #[test]
+    fn server_hello_conf_alters_server_hello_random() {
+        let server_hello = ServerHelloPayload {
+            legacy_version: ProtocolVersion::TLSv1_2,
+            random: Random([0xffu8; 32]),
+            session_id: SessionId::empty(),
+            cipher_suite: CipherSuite::TLS13_AES_256_GCM_SHA384,
+            compression_method: crate::msgs::enums::Compression::Null,
+            extensions: Box::new(ServerExtensions::default()),
+        };
+        let message = Message {
+            version: ProtocolVersion::TLSv1_3,
+            payload: MessagePayload::handshake(HandshakeMessagePayload(
+                HandshakePayload::ServerHello(server_hello.clone()),
+            )),
+        };
+        let Message {
+            payload:
+                MessagePayload::Handshake {
+                    encoded: server_hello_encoded_before,
+                    ..
+                },
+            ..
+        } = &message
+        else {
+            unreachable!("ServerHello is a handshake message");
+        };
+
+        let message = EchState::server_hello_conf(&server_hello, server_hello_encoded_before);
+
+        let Message {
+            payload:
+                MessagePayload::Handshake {
+                    encoded: server_hello_encoded_after,
+                    ..
+                },
+            ..
+        } = &message
+        else {
+            unreachable!("ServerHello is a handshake message");
+        };
+
+        assert_eq!(
+            std::format!("{server_hello_encoded_before:x?}"),
+            "020000280303ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001302000000",
+            "beforehand eight bytes at end of Random should be 0xff here ^^^^^^^^^^^^^^^^            "
+        );
+        assert_eq!(
+            std::format!("{server_hello_encoded_after:x?}"),
+            "020000280303ffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000001302000000",
+            "                          afterwards those bytes are zeroed ^^^^^^^^^^^^^^^^            "
+        );
+    }
 }

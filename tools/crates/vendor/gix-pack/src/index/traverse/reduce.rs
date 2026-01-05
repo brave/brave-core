@@ -63,7 +63,7 @@ where
     }
 }
 
-impl<'a, P, E> parallel::Reduce for Reducer<'a, P, E>
+impl<P, E> parallel::Reduce for Reducer<'_, P, E>
 where
     P: Progress,
     E: std::error::Error + Send + Sync + 'static,
@@ -122,7 +122,7 @@ where
             self.entries_seen,
             elapsed_s,
             objects_per_second,
-            gix_features::progress::bytesize::ByteSize(self.stats.average.object_size * objects_per_second as u64)
+            gix_features::progress::bytesize::ByteSize(self.stats.average.object_size * u64::from(objects_per_second))
         ));
         Ok(self.stats)
     }

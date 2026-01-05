@@ -1,11 +1,10 @@
 use std::{
     future::Future,
     pin::Pin,
-    task::{Context, Poll},
+    task::{ready, Context, Poll},
 };
 
 use futures_io::{AsyncBufRead, AsyncRead};
-use futures_lite::ready;
 
 use crate::{decode, read::ProgressAction, BandRef, PacketLineRef, StreamingPeekableIter, TextRef, U16_HEX_BYTES};
 
@@ -23,7 +22,7 @@ where
     cap: usize,
 }
 
-impl<'a, T, F> Drop for WithSidebands<'a, T, F>
+impl<T, F> Drop for WithSidebands<'_, T, F>
 where
     T: AsyncRead,
 {
@@ -70,7 +69,7 @@ enum State<'a, T> {
 /// to a thread possibly.
 // TODO: Is it possible to declare it as it should be?
 #[allow(unsafe_code, clippy::non_send_fields_in_send_ty)]
-unsafe impl<'a, T> Send for State<'a, T> where T: Send {}
+unsafe impl<T> Send for State<'_, T> where T: Send {}
 
 impl<'a, T, F> WithSidebands<'a, T, F>
 where
@@ -106,7 +105,7 @@ where
             parent
                 .as_mut()
                 .expect("parent is always available if we are idle")
-                .reset_with(delimiters)
+                .reset_with(delimiters);
         }
     }
 
@@ -175,12 +174,13 @@ where
     }
 }
 
+#[allow(dead_code)]
 pub struct ReadDataLineFuture<'a, 'b, T: AsyncRead, F> {
     parent: &'b mut WithSidebands<'a, T, F>,
     buf: &'b mut Vec<u8>,
 }
 
-impl<'a, 'b, T, F> Future for ReadDataLineFuture<'a, 'b, T, F>
+impl<T, F> Future for ReadDataLineFuture<'_, '_, T, F>
 where
     T: AsyncRead + Unpin,
     F: FnMut(bool, &[u8]) -> ProgressAction + Unpin,
@@ -207,7 +207,7 @@ pub struct ReadLineFuture<'a, 'b, T: AsyncRead, F> {
     buf: &'b mut String,
 }
 
-impl<'a, 'b, T, F> Future for ReadLineFuture<'a, 'b, T, F>
+impl<T, F> Future for ReadLineFuture<'_, '_, T, F>
 where
     T: AsyncRead + Unpin,
     F: FnMut(bool, &[u8]) -> ProgressAction + Unpin,
@@ -220,8 +220,7 @@ where
             "we don't support partial buffers right now - read-line must be used consistently"
         );
         let Self { buf, parent } = &mut *self;
-        let line = std::str::from_utf8(ready!(Pin::new(parent).poll_fill_buf(cx))?)
-            .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
+        let line = std::str::from_utf8(ready!(Pin::new(parent).poll_fill_buf(cx))?).map_err(std::io::Error::other)?;
         buf.clear();
         buf.push_str(line);
         let bytes = line.len();
@@ -230,7 +229,7 @@ where
     }
 }
 
-impl<'a, T, F> AsyncBufRead for WithSidebands<'a, T, F>
+impl<T, F> AsyncBufRead for WithSidebands<'_, T, F>
 where
     T: AsyncRead + Unpin,
     F: FnMut(bool, &[u8]) -> ProgressAction + Unpin,
@@ -273,15 +272,13 @@ where
                             };
 
                             let line = match line {
-                                Some(line) => line?.map_err(|err| io::Error::new(io::ErrorKind::Other, err))?,
+                                Some(line) => line?.map_err(io::Error::other)?,
                                 None => break (0, 0),
                             };
 
                             match this.handle_progress.as_mut() {
                                 Some(handle_progress) => {
-                                    let band = line
-                                        .decode_band()
-                                        .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+                                    let band = line.decode_band().map_err(io::Error::other)?;
                                     const ENCODED_BAND: usize = 1;
                                     match band {
                                         BandRef::Data(d) => {
@@ -295,33 +292,26 @@ where
                                             match handle_progress(false, text) {
                                                 ProgressAction::Continue => {}
                                                 ProgressAction::Interrupt => {
-                                                    return Poll::Ready(Err(io::Error::new(
-                                                        std::io::ErrorKind::Other,
-                                                        "interrupted by user",
-                                                    )))
+                                                    return Poll::Ready(Err(io::Error::other("interrupted by user")))
                                                 }
-                                            };
+                                            }
                                         }
                                         BandRef::Error(d) => {
                                             let text = TextRef::from(d).0;
                                             match handle_progress(true, text) {
                                                 ProgressAction::Continue => {}
                                                 ProgressAction::Interrupt => {
-                                                    return Poll::Ready(Err(io::Error::new(
-                                                        io::ErrorKind::Other,
-                                                        "interrupted by user",
-                                                    )))
+                                                    return Poll::Ready(Err(io::Error::other("interrupted by user")))
                                                 }
-                                            };
+                                            }
                                         }
-                                    };
+                                    }
                                 }
                                 None => {
                                     break match line.as_slice() {
                                         Some(d) => (U16_HEX_BYTES, d.len()),
                                         None => {
-                                            return Poll::Ready(Err(io::Error::new(
-                                                io::ErrorKind::UnexpectedEof,
+                                            return Poll::Ready(Err(io::Error::other(
                                                 "encountered non-data line in a data-line only context",
                                             )))
                                         }
@@ -348,7 +338,7 @@ where
     }
 }
 
-impl<'a, T, F> AsyncRead for WithSidebands<'a, T, F>
+impl<T, F> AsyncRead for WithSidebands<'_, T, F>
 where
     T: AsyncRead + Unpin,
     F: FnMut(bool, &[u8]) -> ProgressAction + Unpin,

@@ -12,7 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::der::{self, DerIterator, FromDer, CONSTRUCTED, CONTEXT_SPECIFIC};
+use crate::der::{self, CONSTRUCTED, CONTEXT_SPECIFIC, DerIterator, FromDer};
 use crate::error::{DerTypeId, Error};
 use crate::subject_name::GeneralName;
 
@@ -22,7 +22,7 @@ pub(crate) struct Extension<'a> {
     pub(crate) value: untrusted::Input<'a>,
 }
 
-impl<'a> Extension<'a> {
+impl Extension<'_> {
     pub(crate) fn unsupported(&self) -> Result<(), Error> {
         match self.critical {
             true => Err(Error::UnsupportedCriticalExtension),

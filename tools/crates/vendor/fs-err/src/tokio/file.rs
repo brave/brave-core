@@ -9,6 +9,8 @@ use tokio::fs;
 use tokio::fs::File as TokioFile;
 use tokio::io::{AsyncRead, AsyncSeek, AsyncWrite, ReadBuf};
 
+use super::OpenOptions;
+
 /// Wrapper around [`tokio::fs::File`] which adds more helpful
 /// information to all errors.
 #[derive(Debug)]
@@ -39,6 +41,24 @@ impl File {
             Ok(f) => Ok(File::from_parts(f, path)),
             Err(err) => Err(Error::build(err, ErrorKind::CreateFile, &path)),
         }
+    }
+
+    /// Opens a file in read-write mode.
+    ///
+    /// Wrapper for [`tokio::fs::File::create_new`].
+    pub async fn create_new(path: impl Into<PathBuf>) -> Result<Self, io::Error> {
+        let path = path.into();
+        match fs::File::create_new(&path).await {
+            Ok(file) => Ok(File::from_parts(file, path)),
+            Err(err) => Err(Error::build(err, ErrorKind::CreateFile, path)),
+        }
+    }
+
+    /// Returns a new `OpenOptions` object.
+    ///
+    /// Wrapper for [`tokio::fs::File::options`].
+    pub fn options() -> OpenOptions {
+        OpenOptions::new()
     }
 
     /// Converts a [`crate::File`] to a [`tokio::fs::File`].

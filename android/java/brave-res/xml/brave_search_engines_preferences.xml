@@ -34,11 +34,6 @@
         android:persistent="false"
         android:order="5"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave.other_search_engines_enabled"
-        android:order="7"
-        android:title="@string/index_other_search_engines_title"
-        android:summary="@string/index_other_search_engines_text" />
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="send_web_discovery"
         android:order="8"
         android:title="@string/send_web_discovery_title"

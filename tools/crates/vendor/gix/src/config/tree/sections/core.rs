@@ -58,7 +58,7 @@ impl Core {
     /// The `core.worktree` key.
     pub const WORKTREE: keys::Any = keys::Any::new("worktree", &config::Tree::CORE)
         .with_environment_override("GIT_WORK_TREE")
-        .with_deviation("Overriding the worktree with environment variables is supported using `ThreadSafeRepository::open_with_environment_overrides()");
+        .with_deviation("Command-line overrides also work, and they act lie an environment override. If set in the git configuration file, relative paths are relative to it.");
     /// The `core.askPass` key.
     pub const ASKPASS: keys::Executable = keys::Executable::new_executable("askPass", &config::Tree::CORE)
         .with_environment_override("GIT_ASKPASS")
@@ -441,17 +441,6 @@ mod abbrev {
 
 mod validate {
     use crate::{bstr::BStr, config::tree::keys};
-
-    pub struct LockTimeout;
-    impl keys::Validate for LockTimeout {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-            let value = gix_config::Integer::try_from(value)?
-                .to_decimal()
-                .ok_or_else(|| format!("integer {value} cannot be represented as integer"));
-            super::Core::FILES_REF_LOCK_TIMEOUT.try_into_lock_timeout(Ok(value?))?;
-            Ok(())
-        }
-    }
 
     pub struct Disambiguate;
     impl keys::Validate for Disambiguate {

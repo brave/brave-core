@@ -156,10 +156,6 @@ public class DAU {
 
       // This preference is used to calculate whether user used the app in this month and/or day.
       Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
-
-      DispatchQueue.main.async { [self] in
-        braveCoreStats?.notifyPingSent()
-      }
     }
 
     task.resume()
@@ -270,14 +266,9 @@ public class DAU {
   }
 
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
-    var queryItems: [URLQueryItem] = []
-    queryItems.append(
-      contentsOf: braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
-    )
-    queryItems.append(
+    return [
       .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
-    )
-    return queryItems
+    ]
   }
 
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {

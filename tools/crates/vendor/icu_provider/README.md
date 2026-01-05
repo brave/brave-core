@@ -2,7 +2,7 @@
 
 <!-- cargo-rdme start -->
 
-`icu_provider` is one of the [`ICU4X`] components.
+`icu_provider` is one of the `ICU4X` components.
 
 Unicode's experience with ICU4X's parent projects, ICU4C and ICU4J, led the team to realize
 that data management is the most critical aspect of deploying internationalization, and that it requires
@@ -12,20 +12,11 @@ different business and technological needs of customers.
 
 `icu_provider` defines traits and structs for transmitting data through the ICU4X locale
 data pipeline. The primary trait is [`DataProvider`]. It is parameterized by a
-[`KeyedDataMarker`], which contains the data type and a [`DataKey`]. It has one method,
-[`DataProvider::load`], which transforms a [`DataRequest`]
-into a [`DataResponse`].
+[`DataMarker`], which is the type-system-level data identifier. [`DataProvider`] has a single method,
+[`DataProvider::load`], which transforms a [`DataRequest`] into a [`DataResponse`].
 
-- [`DataKey`] is a fixed identifier for the data type, such as `"plurals/cardinal@1"`.
-- [`DataRequest`] contains additional annotations to choose a specific variant of the key,
-  such as a locale.
+- [`DataRequest`] contains selectors to choose a specific variant of the marker, such as a locale.
 - [`DataResponse`] contains the data if the request was successful.
-
-In addition, there are three other traits which are widely implemented:
-
-- [`AnyProvider`] returns data as `dyn Any` trait objects.
-- [`BufferProvider`] returns data as `[u8]` buffers.
-- [`DynamicDataProvider`] returns structured data but is not specific to a key.
 
 The most common types required for this crate are included via the prelude:
 
@@ -33,30 +24,18 @@ The most common types required for this crate are included via the prelude:
 use icu_provider::prelude::*;
 ```
 
-### Types of Data Providers
+### Dynamic Data Providers
 
-All nontrivial data providers can fit into one of two classes.
+If the type system cannot be leveraged to load data (such as when dynamically loading from I/O),
+there's another form of the [`DataProvider`]: [`DynamicDataProvider`]. While [`DataProvider`] is parametrized
+on the type-system level by a [`DataMarker`] (which are distinct types implementing this trait),
+[`DynamicDataProvider`]s are parametrized at runtime by a [`DataMarkerInfo`] struct, which essentially is the runtime
+representation of the [`DataMarker`] type.
 
-1. [`AnyProvider`]: Those whose data originates as structured Rust objects
-2. [`BufferProvider`]: Those whose data originates as unstructured `[u8]` buffers
+The [`DynamicDataProvider`] is still type-level parametrized by the type that it loads, and there are two
+implementations that should be called out
 
-**✨ Key Insight:** A given data provider is generally *either* an [`AnyProvider`] *or* a
-[`BufferProvider`]. Which type depends on the data source, and it is not generally possible
-to convert one to the other.
-
-See also [crate::constructors].
-
-#### AnyProvider
-
-These providers are able to return structured data cast into `dyn Any` trait objects. Users
-can call [`as_downcasting()`] to get an object implementing [`DataProvider`] by downcasting
-the trait objects.
-
-Examples of AnyProviders:
-
-- [`DatagenProvider`] reads structured data from CLDR source files and returns ICU4X data structs.
-- [`AnyPayloadProvider`] wraps a specific data struct and returns it.
-- The `BakedDataProvider` which encodes structured data directly in Rust source
+- [`DynamicDataProvider<BufferMarker>`], a.k.a. [`BufferProvider`](buf::BufferProvider) returns data as `[u8]` buffers.
 
 #### BufferProvider
 
@@ -83,37 +62,20 @@ This crate also contains a concrete provider for demonstration purposes:
 ### Types and Lifetimes
 
 Types compatible with [`Yokeable`] can be passed through the data provider, so long as they are
-associated with a marker type implementing [`DataMarker`].
+associated with a marker type implementing [`DynamicDataMarker`].
 
 Data structs should generally have one lifetime argument: `'data`. This lifetime allows data
 structs to borrow zero-copy data.
 
-### Data generation API
-
-*This functionality is enabled with the "datagen" Cargo feature*
-
-The [`datagen`] module contains several APIs for data generation. See [`icu_datagen`] for the reference
-data generation implementation.
-
-[`ICU4X`]: ../icu/index.html
-[`DataProvider`]: data_provider::DataProvider
-[`DataKey`]: key::DataKey
-[`DataLocale`]: request::DataLocale
-[`IterableDynamicDataProvider`]: datagen::IterableDynamicDataProvider
-[`IterableDataProvider`]: datagen::IterableDataProvider
-[`AnyPayloadProvider`]: ../icu_provider_adapters/any_payload/struct.AnyPayloadProvider.html
+[`FixedProvider`]: https://docs.rs/icu_provider_adapters/latest/fixed/any_payload/struct.FixedProvider.html
 [`HelloWorldProvider`]: hello_world::HelloWorldProvider
-[`AnyProvider`]: any::AnyProvider
 [`Yokeable`]: yoke::Yokeable
-[`impl_dynamic_data_provider!`]: impl_dynamic_data_provider
-[`icu_provider_adapters`]: ../icu_provider_adapters/index.html
-[`DatagenProvider`]: ../icu_datagen/struct.DatagenProvider.html
-[`as_downcasting()`]: AsDowncastingAnyProvider::as_downcasting
-[`as_deserializing()`]: AsDeserializingBufferProvider::as_deserializing
-[`CldrJsonDataProvider`]: ../icu_datagen/cldr/struct.CldrJsonDataProvider.html
-[`FsDataProvider`]: ../icu_provider_fs/struct.FsDataProvider.html
-[`BlobDataProvider`]: ../icu_provider_blob/struct.BlobDataProvider.html
-[`icu_datagen`]: ../icu_datagen/index.html
+[`impl_dynamic_data_provider!`]: dynutil::impl_dynamic_data_provider
+[`icu_provider_adapters`]: https://docs.rs/icu_provider_adapters/latest/icu_provider_adapters/index.html
+[`SourceDataProvider`]: https://docs.rs/icu_provider_source/latest/icu_provider_source/struct.SourceDataProvider.html
+[`as_deserializing()`]: buf::AsDeserializingBufferProvider::as_deserializing
+[`FsDataProvider`]: https://docs.rs/icu_provider_fs/latest/icu_provider_fs/struct.FsDataProvider.html
+[`BlobDataProvider`]: https://docs.rs/icu_provider_blob/latest/icu_provider_blob/struct.BlobDataProvider.html
 
 <!-- cargo-rdme end -->
 

@@ -1,6 +1,6 @@
+use std::{borrow::Cow, path::Path};
+
 use bstr::{BStr, ByteSlice};
-use std::borrow::Cow;
-use std::path::Path;
 
 use crate::{MagicSignature, Pattern, Search};
 

@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+
+assert(enable_brave_talk)
+
+source_set("brave_talk") {
+  sources = [
+    "brave_talk_pref_names_bridge.h",
+    "brave_talk_pref_names_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_talk",
+  ]
+}

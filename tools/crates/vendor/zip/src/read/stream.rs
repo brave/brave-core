@@ -1,12 +1,13 @@
-use std::fs;
-use std::io::{self, Read};
-use std::path::{Path, PathBuf};
-
 use super::{
-    central_header_to_zip_file_inner, read_zipfile_from_stream, ZipCentralEntryBlock, ZipError,
+    central_header_to_zip_file_inner, make_symlink, read_zipfile_from_stream, ZipCentralEntryBlock,
     ZipFile, ZipFileData, ZipResult,
 };
 use crate::spec::FixedSizeBlock;
+use indexmap::IndexMap;
+use std::fs;
+use std::fs::create_dir_all;
+use std::io::{self, Read};
+use std::path::{Path, PathBuf};
 
 /// Stream decoder for zip.
 #[derive(Debug)]
@@ -57,21 +58,25 @@ impl<R: Read> ZipStreamReader<R> {
     /// Extraction is not atomic; If an error is encountered, some of the files
     /// may be left on disk.
     pub fn extract<P: AsRef<Path>>(self, directory: P) -> ZipResult<()> {
-        struct Extractor<'a>(&'a Path);
-        impl ZipStreamVisitor for Extractor<'_> {
+        create_dir_all(&directory)?;
+        let directory = directory.as_ref().canonicalize()?;
+        struct Extractor(PathBuf, IndexMap<Box<str>, ()>);
+        impl ZipStreamVisitor for Extractor {
             fn visit_file(&mut self, file: &mut ZipFile<'_>) -> ZipResult<()> {
-                let filepath = file
-                    .enclosed_name()
-                    .ok_or(ZipError::InvalidArchive("Invalid file path"))?;
+                self.1.insert(file.name().into(), ());
+                let mut outpath = self.0.clone();
+                file.safe_prepare_path(&self.0, &mut outpath, None::<&(_, fn(&Path) -> bool)>)?;
 
-                let outpath = self.0.join(filepath);
+                if file.is_symlink() {
+                    let mut target = Vec::with_capacity(file.size() as usize);
+                    file.read_to_end(&mut target)?;
+                    make_symlink(&outpath, &target, &self.1)?;
+                    return Ok(());
+                }
 
                 if file.is_dir() {
                     fs::create_dir_all(&outpath)?;
                 } else {
-                    if let Some(p) = outpath.parent() {
-                        fs::create_dir_all(p)?;
-                    }
                     let mut outfile = fs::File::create(&outpath)?;
                     io::copy(file, &mut outfile)?;
                 }
@@ -86,6 +91,7 @@ impl<R: Read> ZipStreamReader<R> {
             ) -> ZipResult<()> {
                 #[cfg(unix)]
                 {
+                    use super::ZipError;
                     let filepath = metadata
                         .enclosed_name()
                         .ok_or(ZipError::InvalidArchive("Invalid file path"))?;
@@ -102,7 +108,7 @@ impl<R: Read> ZipStreamReader<R> {
             }
         }
 
-        self.visit(&mut Extractor(directory.as_ref()))
+        self.visit(&mut Extractor(directory, IndexMap::new()))
     }
 }
 
@@ -203,8 +209,13 @@ impl ZipStreamFileMetadata {
 
 #[cfg(test)]
 mod test {
+    use tempfile::TempDir;
+
     use super::*;
+    use crate::write::SimpleFileOptions;
+    use crate::ZipWriter;
     use std::collections::BTreeSet;
+    use std::io::Cursor;
 
     struct DummyVisitor;
     impl ZipStreamVisitor for DummyVisitor {
@@ -359,5 +370,35 @@ mod test {
         )))
         .visit(&mut DummyVisitor)
         .unwrap_err();
+    }
+
+    /// Symlinks being extracted shouldn't be followed out of the destination directory.
+    #[test]
+    fn test_cannot_symlink_outside_destination() -> ZipResult<()> {
+        use std::fs::create_dir;
+
+        let mut writer = ZipWriter::new(Cursor::new(Vec::new()));
+        writer.add_symlink("symlink/", "../dest-sibling/", SimpleFileOptions::default())?;
+        writer.start_file("symlink/dest-file", SimpleFileOptions::default())?;
+        let reader = ZipStreamReader::new(writer.finish()?);
+        let dest_parent = TempDir::with_prefix("stream__cannot_symlink_outside_destination")?;
+        let dest_sibling = dest_parent.path().join("dest-sibling");
+        create_dir(&dest_sibling)?;
+        let dest = dest_parent.path().join("dest");
+        create_dir(&dest)?;
+        assert!(reader.extract(dest).is_err());
+        assert!(!dest_sibling.join("dest-file").exists());
+        Ok(())
+    }
+
+    #[test]
+    fn test_can_create_destination() -> ZipResult<()> {
+        let mut v = Vec::new();
+        v.extend_from_slice(include_bytes!("../../tests/data/mimetype.zip"));
+        let reader = ZipStreamReader::new(v.as_slice());
+        let dest = TempDir::with_prefix("stream_test_can_create_destination").unwrap();
+        reader.extract(&dest)?;
+        assert!(dest.path().join("mimetype").exists());
+        Ok(())
     }
 }

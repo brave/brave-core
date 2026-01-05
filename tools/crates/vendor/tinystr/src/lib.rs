@@ -52,7 +52,7 @@
 //! [`ICU4X`]: ../icu/index.html
 
 // https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
-#![cfg_attr(not(any(test, feature = "std")), no_std)]
+#![cfg_attr(not(any(test, doc)), no_std)]
 #![cfg_attr(
     not(test),
     deny(
@@ -62,6 +62,7 @@
         clippy::panic,
         clippy::exhaustive_structs,
         clippy::exhaustive_enums,
+        clippy::trivially_copy_pass_by_ref,
         missing_debug_implementations,
     )
 )]
@@ -83,11 +84,11 @@ mod databake;
 #[cfg(feature = "zerovec")]
 mod ule;
 
-#[cfg(any(feature = "serde", feature = "alloc"))]
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
 pub use ascii::TinyAsciiStr;
-pub use error::TinyStrError;
+pub use error::ParseError;
 pub use unvalidated::UnvalidatedTinyAsciiStr;
 
 /// These are temporary compatability reexports that will be removed
@@ -111,8 +112,3 @@ fn test_size() {
         core::mem::size_of::<Option<TinyStr8>>()
     );
 }
-// /// Allows unit tests to use the macro
-// #[cfg(test)]
-// mod tinystr {
-//     pub use super::{TinyAsciiStr, TinyStrError};
-// }

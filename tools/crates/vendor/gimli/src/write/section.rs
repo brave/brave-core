@@ -120,10 +120,46 @@ impl<W: Writer + Clone> Sections<W> {
 }
 
 impl<W: Writer> Sections<W> {
+    /// Get the section with the given `id`.
+    pub fn get(&self, id: SectionId) -> Option<&W> {
+        match id {
+            SectionId::DebugAbbrev => Some(&self.debug_abbrev.0),
+            SectionId::DebugInfo => Some(&self.debug_info.0),
+            SectionId::DebugLine => Some(&self.debug_line.0),
+            SectionId::DebugLineStr => Some(&self.debug_line_str.0),
+            SectionId::DebugRanges => Some(&self.debug_ranges.0),
+            SectionId::DebugRngLists => Some(&self.debug_rnglists.0),
+            SectionId::DebugLoc => Some(&self.debug_loc.0),
+            SectionId::DebugLocLists => Some(&self.debug_loclists.0),
+            SectionId::DebugStr => Some(&self.debug_str.0),
+            SectionId::DebugFrame => Some(&self.debug_frame.0),
+            SectionId::EhFrame => Some(&self.eh_frame.0),
+            _ => None,
+        }
+    }
+
+    /// Get the section with the given `id`.
+    pub fn get_mut(&mut self, id: SectionId) -> Option<&mut W> {
+        match id {
+            SectionId::DebugAbbrev => Some(&mut self.debug_abbrev.0),
+            SectionId::DebugInfo => Some(&mut self.debug_info.0),
+            SectionId::DebugLine => Some(&mut self.debug_line.0),
+            SectionId::DebugLineStr => Some(&mut self.debug_line_str.0),
+            SectionId::DebugRanges => Some(&mut self.debug_ranges.0),
+            SectionId::DebugRngLists => Some(&mut self.debug_rnglists.0),
+            SectionId::DebugLoc => Some(&mut self.debug_loc.0),
+            SectionId::DebugLocLists => Some(&mut self.debug_loclists.0),
+            SectionId::DebugStr => Some(&mut self.debug_str.0),
+            SectionId::DebugFrame => Some(&mut self.debug_frame.0),
+            SectionId::EhFrame => Some(&mut self.eh_frame.0),
+            _ => None,
+        }
+    }
+
     /// For each section, call `f` once with a shared reference.
-    pub fn for_each<F, E>(&self, mut f: F) -> result::Result<(), E>
+    pub fn for_each<'a, F, E>(&'a self, mut f: F) -> result::Result<(), E>
     where
-        F: FnMut(SectionId, &W) -> result::Result<(), E>,
+        F: FnMut(SectionId, &'a W) -> result::Result<(), E>,
     {
         macro_rules! f {
             ($s:expr) => {
@@ -146,9 +182,9 @@ impl<W: Writer> Sections<W> {
     }
 
     /// For each section, call `f` once with a mutable reference.
-    pub fn for_each_mut<F, E>(&mut self, mut f: F) -> result::Result<(), E>
+    pub fn for_each_mut<'a, F, E>(&'a mut self, mut f: F) -> result::Result<(), E>
     where
-        F: FnMut(SectionId, &mut W) -> result::Result<(), E>,
+        F: FnMut(SectionId, &'a mut W) -> result::Result<(), E>,
     {
         macro_rules! f {
             ($s:expr) => {
@@ -168,5 +204,24 @@ impl<W: Writer> Sections<W> {
         f!(self.debug_frame)?;
         f!(self.eh_frame)?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+#[cfg(feature = "read")]
+mod tests {
+    use super::*;
+    use crate::{read, write::EndianVec, Endianity};
+
+    impl<E: Endianity> Sections<EndianVec<E>> {
+        pub(crate) fn read(&self, endian: E) -> read::Dwarf<read::EndianSlice<'_, E>> {
+            read::Dwarf::load(|section_id| -> read::Result<_> {
+                Ok(read::EndianSlice::new(
+                    self.get(section_id).map(|w| w.slice()).unwrap_or_default(),
+                    endian,
+                ))
+            })
+            .unwrap()
+        }
     }
 }

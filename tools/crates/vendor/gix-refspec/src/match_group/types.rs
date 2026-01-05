@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use bstr::{BStr, BString};
+use bstr::BStr;
 use gix_hash::oid;
 
 use crate::RefSpecRef;
@@ -12,15 +12,36 @@ pub struct MatchGroup<'a> {
     pub specs: Vec<RefSpecRef<'a>>,
 }
 
-/// The outcome of any matching operation of a [`MatchGroup`].
 ///
-/// It's used to validate and process the contained [mappings][Mapping].
-#[derive(Debug, Clone)]
-pub struct Outcome<'spec, 'item> {
-    /// The match group that produced this outcome.
-    pub group: MatchGroup<'spec>,
-    /// The mappings derived from matching [items][Item].
-    pub mappings: Vec<Mapping<'item, 'spec>>,
+pub mod match_lhs {
+    use crate::{match_group::Mapping, MatchGroup};
+
+    /// The outcome of any matching operation of a [`MatchGroup`].
+    ///
+    /// It's used to validate and process the contained [mappings](Mapping).
+    #[derive(Debug, Clone)]
+    pub struct Outcome<'spec, 'item> {
+        /// The match group that produced this outcome.
+        pub group: MatchGroup<'spec>,
+        /// The mappings derived from matching [items](crate::match_group::Item).
+        pub mappings: Vec<Mapping<'item, 'spec>>,
+    }
+}
+
+///
+pub mod match_rhs {
+    use crate::{match_group::Mapping, MatchGroup};
+
+    /// The outcome of any matching operation of a [`MatchGroup`].
+    ///
+    /// It's used to validate and process the contained [mappings](Mapping).
+    #[derive(Debug, Clone)]
+    pub struct Outcome<'spec, 'item> {
+        /// The match group that produced this outcome.
+        pub group: MatchGroup<'spec>,
+        /// The mappings derived from matching [items](crate::match_group::Item).
+        pub mappings: Vec<Mapping<'spec, 'item>>,
+    }
 }
 
 /// An item to match, input to various matching operations.
@@ -34,13 +55,13 @@ pub struct Item<'a> {
     pub object: Option<&'a oid>,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-/// The source (or left-hand) side of a mapping, which references its name.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+/// The source (or left-hand) side of a mapping.
 pub enum SourceRef<'a> {
     /// A full reference name, which is expected to be valid.
     ///
     /// Validity, however, is not enforced here.
-    FullName(&'a BStr),
+    FullName(Cow<'a, BStr>),
     /// The name of an object that is expected to exist on the remote side.
     /// Note that it might not be advertised by the remote but part of the object graph,
     /// and thus gets sent in the pack. The server is expected to fail unless the desired
@@ -49,37 +70,26 @@ pub enum SourceRef<'a> {
 }
 
 impl SourceRef<'_> {
-    /// Create a fully owned instance from this one.
-    pub fn to_owned(&self) -> Source {
+    /// Create a fully owned instance by consuming this one.
+    pub fn into_owned(self) -> Source {
         match self {
-            SourceRef::ObjectId(id) => Source::ObjectId(*id),
-            SourceRef::FullName(name) => Source::FullName((*name).to_owned()),
+            SourceRef::ObjectId(id) => Source::ObjectId(id),
+            SourceRef::FullName(name) => Source::FullName(name.into_owned().into()),
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-/// The source (or left-hand) side of a mapping, which owns its name.
-pub enum Source {
-    /// A full reference name, which is expected to be valid.
-    ///
-    /// Validity, however, is not enforced here.
-    FullName(BString),
-    /// The name of an object that is expected to exist on the remote side.
-    /// Note that it might not be advertised by the remote but part of the object graph,
-    /// and thus gets sent in the pack. The server is expected to fail unless the desired
-    /// object is present but at some time it is merely a request by the user.
-    ObjectId(gix_hash::ObjectId),
-}
-
-impl std::fmt::Display for Source {
+impl std::fmt::Display for SourceRef<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Source::FullName(name) => name.fmt(f),
-            Source::ObjectId(id) => id.fmt(f),
+            SourceRef::FullName(name) => name.fmt(f),
+            SourceRef::ObjectId(id) => id.fmt(f),
         }
     }
 }
+
+/// The source (or left-hand) side of a mapping, which owns its name.
+pub type Source = SourceRef<'static>;
 
 /// A mapping from a remote to a local refs for fetches or local to remote refs for pushes.
 ///

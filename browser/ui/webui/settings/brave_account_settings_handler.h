@@ -12,6 +12,7 @@
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace content {
 class WebUI;
@@ -23,7 +24,9 @@ class BraveAccountRowHandler;
 
 class BraveAccountSettingsHandler : public mojom::RowHandlerFactory {
  public:
-  explicit BraveAccountSettingsHandler(content::WebUI* web_ui);
+  BraveAccountSettingsHandler(
+      content::WebUI* web_ui,
+      mojo::PendingReceiver<mojom::RowHandlerFactory> pending_receiver);
 
   BraveAccountSettingsHandler(const BraveAccountSettingsHandler&) = delete;
   BraveAccountSettingsHandler& operator=(const BraveAccountSettingsHandler&) =
@@ -38,6 +41,7 @@ class BraveAccountSettingsHandler : public mojom::RowHandlerFactory {
 
   const raw_ptr<content::WebUI> web_ui_;
   std::unique_ptr<BraveAccountRowHandler> row_handler_;
+  mojo::Receiver<mojom::RowHandlerFactory> receiver_;
 };
 
 }  // namespace brave_account

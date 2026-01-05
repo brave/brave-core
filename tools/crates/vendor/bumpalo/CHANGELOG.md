@@ -28,6 +28,69 @@ Released YYYY-MM-DD.
 
 --------------------------------------------------------------------------------
 
+## 3.19.1
+
+Released 2025-12-16.
+
+### Changed
+
+* Annotated `bumpalo::collections::String::from_str_in` as `#[inline]`.
+
+### Fixed
+
+* Fixed compilation failures with the latest nightly Rust when enabling the
+  unstable `allocator_api` feature.
+
+--------------------------------------------------------------------------------
+
+## 3.19.0
+
+Released 2025-06-24.
+
+### Added
+
+* Added `bumpalo::collections::Vec::retain_mut`, similar to
+  `std::vec::Vec::retain_mut`.
+
+--------------------------------------------------------------------------------
+
+## 3.18.1
+
+Released 2025-06-05.
+
+### Removed
+
+* Removed the `allocator-api2` version bump from 3.18.0, as it was not actually
+  semver compatible.
+
+--------------------------------------------------------------------------------
+
+## 3.18.0 (yanked)
+
+Released 2025-06-05.
+
+### Added
+
+* Added support for enforcing a minimum alignment on all allocations inside a
+  `Bump` arena, which can provide speed ups when allocating objects whose
+  alignment is less than or equal to that minimum.
+* Added `serde` serialization support for `bumpalo::collections::String`.
+* Added some missing fallible slice allocation function variants.
+
+### Changed
+
+* Replaced `extend_from_slice` implementation with a formally-verified version
+  that is also faster and more-optimizable for LLVM.
+* Updated `allocator-api2` support to version `0.3.*`.
+
+### Fixed
+
+* Fixed a bug where the `allocated_bytes` metrics helper was accidentally
+  including the size of `bumpalo`'s footer, rather than just reporting the
+  user-allocated bytes.
+
+--------------------------------------------------------------------------------
+
 ## 3.17.0
 
 Released 2025-01-28.

@@ -30,6 +30,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -157,6 +158,7 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
       continue;
     }
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     // If browser window has tab that loads brave talk, brave talk panel icon
     // will use colored one for normal state also.
     if (item.built_in_item_type ==
@@ -167,6 +169,7 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
                                 ->DoesBrowserHaveOpenedTabForItem(item));
       continue;
     }
+#endif
 
     UpdateItemViewStateAt(item_index, item_index == active_index);
   }
@@ -524,7 +527,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   // web panel is not a side panel that's handled by SidePanelCoordinator.
   // It'll be loaded into another contents view in MultiContentsView.
-  if (item_model.is_web_panel_type()) {
+  if (sidebar::IsWebPanelFeatureEnabled() && item_model.is_web_panel_type()) {
     controller->ActivateItemAt(index);
     return;
   }
@@ -575,8 +578,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
   switch (type) {
     case sidebar::SidebarItem::BuiltInItemType::kWallet:
       return get_image_model(kLeoProductBraveWalletIcon, state);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     case sidebar::SidebarItem::BuiltInItemType::kBraveTalk:
       return get_image_model(kLeoProductBraveTalkIcon, state);
+#endif
     case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
       return get_image_model(kLeoProductBookmarksIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kReadingList:

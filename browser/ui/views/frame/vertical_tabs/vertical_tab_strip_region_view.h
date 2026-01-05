@@ -91,6 +91,10 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ListenFullscreenChanges();
   void StopListeningFullscreenChanges();
 
+  // Show vertical tab strip when mouse moves around the hot corner
+  // when it's completely hidden.
+  void ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
+
   // views::View:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
@@ -100,7 +104,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
-  void AddedToWidget() override;
 
   // views::ResizeAreaDelegate
   void OnResize(int resize_amount, bool done_resizing) override;
@@ -123,7 +126,6 @@ class BraveVerticalTabStripRegionView : public views::View,
       ui::mojom::MenuSourceType source_type) override;
 
   class HeaderView;
-  class MouseWatcher;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -133,6 +135,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            LayoutAfterFirstTabCreation);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, LayoutSanity);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
@@ -160,7 +163,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   bool IsFloatingEnabledForBrowserFullscreen() const;
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();
-  void OnMouseExited();
   void OnMouseEntered();
   void OnMousePressedInTree();
   void UpdateBubbleArrow();
@@ -190,7 +192,14 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   raw_ptr<HeaderView> header_view_ = nullptr;
-  raw_ptr<views::View> contents_view_ = nullptr;
+
+  // Reportedly, when we add the TabStripRegionView to
+  // VerticalTabStripRegionView directly, context menu on Omnibox is not working
+  // specifically on Windows. In order to fix this, we wrap the
+  // TabStripRegionView with a container view. We're not sure why this is the
+  // case, but this seems to fix the issue.
+  // https://github.com/brave/brave-browser/issues/51719
+  raw_ptr<views::View> region_view_container_ = nullptr;
 
   // Separator between tabs and new tab button.
   raw_ptr<views::View> separator_ = nullptr;
@@ -226,8 +235,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
-
-  std::unique_ptr<MouseWatcher> mouse_watcher_;
 
 #if BUILDFLAG(IS_MAC)
   BooleanPrefMember show_toolbar_on_fullscreen_pref_;

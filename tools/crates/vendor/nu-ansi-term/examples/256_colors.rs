@@ -1,4 +1,3 @@
-extern crate nu_ansi_term;
 use nu_ansi_term::Color;
 
 // This example prints out the 256 colors.
@@ -10,6 +9,9 @@ use nu_ansi_term::Color;
 // - 232 to 255 are shades of grey.
 
 fn main() {
+    #[cfg(all(windows, feature = "std"))]
+    nu_ansi_term::enable_ansi_support().unwrap();
+
     // First two lines
     for c in 0..8 {
         glow(c, c != 0);

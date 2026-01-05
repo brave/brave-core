@@ -24,8 +24,6 @@ and the executable will be in `target/release/zopfli`.
 
 This should work on stable or beta Rust.
 
-You can also run `make zopfli`, which will run `cargo build` and then symlink `target/release/zopfli` to just `zopfli` in the project root; this is what the C library does and it was useful for scripting purposes during the rewrite process to keep the command and resulting artifacts the same.
-
 ## Running the tests
 
 There are some unit tests, mostly around the boundary package merge algorithm implementation in katajainen.rs, and a property-based test for compression reversibility. These tests can be run with:
@@ -39,7 +37,3 @@ Golden master tests, to check that compressed files are exactly the same as the 
 ```
 $ ./test/run.sh
 ```
-
-and then checking that git reports no changes to the files in `test/results`.
-
-Or you can run `make test`, which will run `cargo test` followed by `./test/run.sh`; it will fail if there are any mismatches.

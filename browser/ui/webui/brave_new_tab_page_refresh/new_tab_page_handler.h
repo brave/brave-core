@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/update_observer.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -157,9 +158,11 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void SetShowShieldsStats(bool show_shields_stats,
                            SetShowShieldsStatsCallback callback) override;
   void GetShieldsStats(GetShieldsStatsCallback callback) override;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   void GetShowTalkWidget(GetShowTalkWidgetCallback callback) override;
   void SetShowTalkWidget(bool show_talk_widget,
                          SetShowTalkWidgetCallback callback) override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
   void GetShowRewardsWidget(GetShowRewardsWidgetCallback callback) override;
   void SetShowRewardsWidget(bool show_rewards_widget,
                             SetShowRewardsWidgetCallback callback) override;

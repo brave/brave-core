@@ -20,6 +20,10 @@ FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 
 class BraveContentsContainerView;
 
+namespace views {
+class WebView;
+}  // namespace views
+
 class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
@@ -32,14 +36,21 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
-  void SetWebPanelVisible(bool visible);
+  void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
   void SetWebPanelOnLeft(bool left);
 
-  BraveContentsContainerView* GetActiveContentsContainerView();
-  BraveContentsContainerView* GetInactiveContentsContainerView();
+  void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
+
+  // MultiContentsView:
+  // Give web panel's ContentsContainerView/ContentsWebView if
+  // |is_web_panel_active_| is true.
+  ContentsContainerView* GetActiveContentsContainerView() const override;
+  ContentsWebView* GetActiveContentsView() const override;
+  ContentsContainerView* GetContentsContainerViewFor(
+      content::WebContents* web_contents) const override;
 
  private:
   friend class SideBySideEnabledBrowserTest;
@@ -54,6 +65,10 @@ class BraveMultiContentsView : public MultiContentsView {
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ResetResizeArea() override;
+  void UpdateContentsBorderAndOverlay() override;
+  void OnWebContentsFocused(views::WebView* web_view) override;
+  void ExecuteOnEachVisibleContentsView(
+      base::RepeatingCallback<void(ContentsWebView*)> callback) override;
 
   int GetWebPanelWidth() const;
 
@@ -64,6 +79,9 @@ class BraveMultiContentsView : public MultiContentsView {
 
   int web_panel_width_ = 0;
   bool web_panel_on_left_ = false;
+
+  // true when web panel is activated.
+  bool is_web_panel_active_ = false;
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
 };

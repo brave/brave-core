@@ -13,14 +13,14 @@ const SHUFFLE_MASK: u128 = 0x020a0700_0c01030e_050f0d08_06090b04_u128;
 //const SHUFFLE_MASK: u128 = 0x040A0700_030E0106_0D050F08_020B0C09_u128;
 
 #[inline(always)]
-#[cfg(feature = "folded_multiply")]
+#[cfg(folded_multiply)]
 pub(crate) const fn folded_multiply(s: u64, by: u64) -> u64 {
     let result = (s as u128).wrapping_mul(by as u128);
     ((result & 0xffff_ffff_ffff_ffff) as u64) ^ ((result >> 64) as u64)
 }
 
 #[inline(always)]
-#[cfg(not(feature = "folded_multiply"))]
+#[cfg(not(folded_multiply))]
 pub(crate) const fn folded_multiply(s: u64, by: u64) -> u64 {
     let b1 = s.wrapping_mul(by.swap_bytes());
     let b2 = s.swap_bytes().wrapping_mul(!by);
@@ -364,9 +364,11 @@ mod test {
 
     #[test]
     fn test_add_length() {
-        let mut enc = (u64::MAX as u128) << 64 | 50;
+        let enc : [u64; 2] = [50, u64::MAX];
+        let mut enc : u128 = enc.convert();
         add_in_length(&mut enc, u64::MAX);
-        assert_eq!(enc >> 64, u64::MAX as u128);
-        assert_eq!(enc as u64, 49);
+        let enc : [u64; 2] = enc.convert();
+        assert_eq!(enc[1], u64::MAX);
+        assert_eq!(enc[0], 49);
     }
 }

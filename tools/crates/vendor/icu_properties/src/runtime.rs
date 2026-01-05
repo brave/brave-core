@@ -11,350 +11,566 @@
 //! For regex engines, [`crate::sets::load_for_ecma262_unstable()`] is a convenient API for working
 //! with properties at runtime tailored for the use case of ECMA262-compatible regex engines.
 
+use crate::provider::*;
+use crate::CodePointSetData;
 #[cfg(doc)]
-use super::{maps, script, GeneralCategory, GeneralCategoryGroup, Script};
+use crate::{
+    props::{GeneralCategory, GeneralCategoryGroup, Script},
+    script, CodePointMapData, PropertyParser,
+};
+use icu_provider::prelude::*;
 
-/// This type can represent any Unicode property.
+/// This type can represent any binary Unicode property.
 ///
 /// This is intended to be used in situations where the exact unicode property needed is
 /// only known at runtime, for example in regex engines.
 ///
 /// The values are intended to be identical to ICU4C's UProperty enum
-#[allow(clippy::exhaustive_structs)] // newtype
+#[non_exhaustive]
+#[allow(missing_docs)]
+#[allow(dead_code)]
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
-pub struct UnicodeProperty(pub u32);
-
-#[allow(non_upper_case_globals)]
-#[allow(unused)] // experimental, may be made public later
-impl UnicodeProperty {
-    /// Binary property `Alphabetic`
-    pub const Alphabetic: Self = UnicodeProperty(0);
-    /// Binary property `ASCII_Hex_Digit`
-    pub const AsciiHexDigit: Self = UnicodeProperty(1);
-    /// Binary property `Bidi_Control`
-    pub const BidiControl: Self = UnicodeProperty(2);
-    /// Binary property `Bidi_Mirrored`
-    pub const BidiMirrored: Self = UnicodeProperty(3);
-    /// Binary property `Dash`
-    pub const Dash: Self = UnicodeProperty(4);
-    /// Binary property `Default_Ignorable_Code_Point`
-    pub const DefaultIgnorableCodePoint: Self = UnicodeProperty(5);
-    /// Binary property `Deprecated`
-    pub const Deprecated: Self = UnicodeProperty(6);
-    /// Binary property `Diacritic`
-    pub const Diacritic: Self = UnicodeProperty(7);
-    /// Binary property `Extender`
-    pub const Extender: Self = UnicodeProperty(8);
-    /// Binary property `Full_Composition_Exclusion`
-    pub const FullCompositionExclusion: Self = UnicodeProperty(9);
-    /// Binary property `Grapheme_Base`
-    pub const GraphemeBase: Self = UnicodeProperty(10);
-    /// Binary property `Grapheme_Extend`
-    pub const GraphemeExtend: Self = UnicodeProperty(11);
-    /// Binary property `Grapheme_Link`
-    pub const GraphemeLink: Self = UnicodeProperty(12);
-    /// Binary property `Hex_Digit`
-    pub const HexDigit: Self = UnicodeProperty(13);
-    /// Binary property `Hyphen`
-    pub const Hyphen: Self = UnicodeProperty(14);
-    /// Binary property `ID_Continue`
-    pub const IdContinue: Self = UnicodeProperty(15);
-    /// Binary property `ID_Start`
-    pub const IdStart: Self = UnicodeProperty(16);
-    /// Binary property `Ideographic`
-    pub const Ideographic: Self = UnicodeProperty(17);
-    /// Binary property `IDS_Binary_Operator`
-    pub const IdsBinaryOperator: Self = UnicodeProperty(18);
-    /// Binary property `IDS_Trinary_Operator`
-    pub const IdsTrinaryOperator: Self = UnicodeProperty(19);
-    /// Binary property `Join_Control`
-    pub const JoinControl: Self = UnicodeProperty(20);
-    /// Binary property `Logical_Order_Exception`
-    pub const LogicalOrderException: Self = UnicodeProperty(21);
-    /// Binary property `Lowercase`
-    pub const Lowercase: Self = UnicodeProperty(22);
-    /// Binary property `Math`
-    pub const Math: Self = UnicodeProperty(23);
-    /// Binary property `Noncharacter_Code_Point`
-    pub const NoncharacterCodePoint: Self = UnicodeProperty(24);
-    /// Binary property `Quotation_Mark`
-    pub const QuotationMark: Self = UnicodeProperty(25);
-    /// Binary property `Radical`
-    pub const Radical: Self = UnicodeProperty(26);
-    /// Binary property `Soft_Dotted`
-    pub const SoftDotted: Self = UnicodeProperty(27);
-    /// Binary property `Terminal_Punctuation`
-    pub const TerminalPunctuation: Self = UnicodeProperty(28);
-    /// Binary property `Unified_Ideograph`
-    pub const UnifiedIdeograph: Self = UnicodeProperty(29);
-    /// Binary property `Uppercase`
-    pub const Uppercase: Self = UnicodeProperty(30);
-    /// Binary property `White_Space`
-    pub const WhiteSpace: Self = UnicodeProperty(31);
-    /// Binary property `XID_Continue`
-    pub const XidContinue: Self = UnicodeProperty(32);
-    /// Binary property `XID_Start`
-    pub const XidStart: Self = UnicodeProperty(33);
-    /// Binary property `Case_Sensitive`
-    pub const CaseSensitive: Self = UnicodeProperty(34);
-    /// Binary property `Sentence_Terminal`
-    pub const SentenceTerminal: Self = UnicodeProperty(35);
-    /// Binary property `Variation_Selector`
-    pub const VariationSelector: Self = UnicodeProperty(36);
-    /// Binary property `NFD_Inert`
-    pub const NfdInert: Self = UnicodeProperty(37);
-    /// Binary property `NFKD_Inert`
-    pub const NfkdInert: Self = UnicodeProperty(38);
-    /// Binary property `NFC_Inert`
-    pub const NfcInert: Self = UnicodeProperty(39);
-    /// Binary property `NFKC_Inert`
-    pub const NfkcInert: Self = UnicodeProperty(40);
-    /// Binary property `Segment_Starter`
-    pub const SegmentStarter: Self = UnicodeProperty(41);
-    /// Binary property `Pattern_Syntax`
-    pub const PatternSyntax: Self = UnicodeProperty(42);
-    /// Binary property `Pattern_White_Space`
-    pub const PatternWhiteSpace: Self = UnicodeProperty(43);
-    /// Binary property `alnum`
-    pub const Alnum: Self = UnicodeProperty(44);
-    /// Binary property `blank`
-    pub const Blank: Self = UnicodeProperty(45);
-    /// Binary property `graph`
-    pub const Graph: Self = UnicodeProperty(46);
-    /// Binary property `print`
-    pub const Print: Self = UnicodeProperty(47);
-    /// Binary property `xdigit`
-    pub const XDigit: Self = UnicodeProperty(48);
-    /// Binary property `Cased`
-    pub const Cased: Self = UnicodeProperty(49);
-    /// Binary property `Case_Ignorable`
-    pub const CaseIgnorable: Self = UnicodeProperty(50);
-    /// Binary property `Changes_When_Lowercased`
-    pub const ChangesWhenLowercased: Self = UnicodeProperty(51);
-    /// Binary property `Changes_When_Uppercased`
-    pub const ChangesWhenUppercased: Self = UnicodeProperty(52);
-    /// Binary property `Changes_When_Titlecased`
-    pub const ChangesWhenTitlecased: Self = UnicodeProperty(53);
-    /// Binary property `Changes_When_Casefolded`
-    pub const ChangesWhenCasefolded: Self = UnicodeProperty(54);
-    /// Binary property `Changes_When_Casemapped`
-    pub const ChangesWhenCasemapped: Self = UnicodeProperty(55);
-    /// Binary property `Changes_When_NFKC_Casefolded`
-    pub const ChangesWhenNfkcCasefolded: Self = UnicodeProperty(56);
-    /// Binary property `Emoji`
-    pub const Emoji: Self = UnicodeProperty(57);
-    /// Binary property `Emoji_Presentation`
-    pub const EmojiPresentation: Self = UnicodeProperty(58);
-    /// Binary property `Emoji_Modifier`
-    pub const EmojiModifier: Self = UnicodeProperty(59);
-    /// Binary property `Emoji_Modifier_Base`
-    pub const EmojiModifierBase: Self = UnicodeProperty(60);
-    /// Binary property `Emoji_Component`
-    pub const EmojiComponent: Self = UnicodeProperty(61);
-    /// Binary property `Regional_Indicator`
-    pub const RegionalIndicator: Self = UnicodeProperty(62);
-    /// Binary property `Prepended_Concatenation_Mark`
-    pub const PrependedConcatenationMark: Self = UnicodeProperty(63);
-    /// Binary property `Extended_Pictographic`
-    pub const ExtendedPictographic: Self = UnicodeProperty(64);
-    /// Binary property `Basic_Emoji`
-    pub const BasicEmoji: Self = UnicodeProperty(65);
-    /// Binary property `Emoji_Keycap_Sequence`
-    pub const EmojiKeycapSequence: Self = UnicodeProperty(66);
-    /// Binary property `RGI_Emoji_Modifier_Sequence`
-    pub const RgiEmojiModifierSequence: Self = UnicodeProperty(67);
-    /// Binary property `RGI_Emoji_Flag_Sequence`
-    pub const RgiEmojiFlagSequence: Self = UnicodeProperty(68);
-    /// Binary property `RGI_Emoji_Tag_Sequence`
-    pub const RgiEmojiTagSequence: Self = UnicodeProperty(69);
-    /// Binary property `RGI_Emoji_ZWJ_Sequence`
-    pub const RgiEmojiZWJSequence: Self = UnicodeProperty(70);
-    /// Binary property `RGI_Emoji`
-    pub const RgiEmoji: Self = UnicodeProperty(71);
-
-    const BINARY_MAX: Self = Self::RgiEmoji;
-
-    /// Enumerated property `Bidi_Class`
-    pub const BidiClass: Self = UnicodeProperty(0x1000);
-    /// Enumerated property `Block`
-    pub const Block: Self = UnicodeProperty(0x1001);
-    /// Enumerated property `Canonical_Combining_Class`
-    pub const CombiningClass: Self = UnicodeProperty(0x1002);
-    /// Enumerated property `Decomposition_Type`
-    pub const DecompositionType: Self = UnicodeProperty(0x1003);
-    /// Enumerated property `East_Asian_Width`
-    pub const EastAsianWidth: Self = UnicodeProperty(0x1004);
-    /// Enumerated property `General_Category`
-    pub const GeneralCategory: Self = UnicodeProperty(0x1005);
-    /// Enumerated property `Joining_Group`
-    pub const JoiningGroup: Self = UnicodeProperty(0x1006);
-    /// Enumerated property `Joining_Type`
-    pub const JoiningType: Self = UnicodeProperty(0x1007);
-    /// Enumerated property `Line_Break`
-    pub const LineBreak: Self = UnicodeProperty(0x1008);
-    /// Enumerated property `Numeric_Type`
-    pub const NumericType: Self = UnicodeProperty(0x1009);
-    /// Enumerated property `Script`
-    pub const Script: Self = UnicodeProperty(0x100A);
-    /// Enumerated property `Hangul_Syllable_Type`
-    pub const HangulSyllableType: Self = UnicodeProperty(0x100B);
-    /// Enumerated property `NFD_Quick_Check`
-    pub const NFDQuickCheck: Self = UnicodeProperty(0x100C);
-    /// Enumerated property `NFKD_Quick_Check`
-    pub const NFKDQuickCheck: Self = UnicodeProperty(0x100D);
-    /// Enumerated property `NFC_Quick_Check`
-    pub const NFCQuickCheck: Self = UnicodeProperty(0x100E);
-    /// Enumerated property `NFKC_Quick_Check`
-    pub const NFKCQuickCheck: Self = UnicodeProperty(0x100F);
-    /// Enumerated property `Lead_Canonical_Combining_Class`
-    pub const LeadCanonicalCombiningClass: Self = UnicodeProperty(0x1010);
-    /// Enumerated property `Trail_Canonical_Combining_Class`
-    pub const TrailCanonicalCombiningClass: Self = UnicodeProperty(0x1011);
-    /// Enumerated property `Grapheme_Cluster_Break`
-    pub const GraphemeClusterBreak: Self = UnicodeProperty(0x1012);
-    /// Enumerated property `Sentence_Break`
-    pub const SentenceBreak: Self = UnicodeProperty(0x1013);
-    /// Enumerated property `Word_Break`
-    pub const WordBreak: Self = UnicodeProperty(0x1014);
-    /// Enumerated property `Bidi_Paired_Bracket_Type`
-    pub const BidiPairedBracketType: Self = UnicodeProperty(0x1015);
-    /// Enumerated property `Indic_Positional_Category`
-    pub const IndicPositionalCategory: Self = UnicodeProperty(0x1016);
-    /// Enumerated property `Indic_Syllabic_Category`
-    pub const IndicSyllabicCategory: Self = UnicodeProperty(0x1017);
-    /// Enumerated property `Vertical_Orientation`
-    pub const VerticalOrientation: Self = UnicodeProperty(0x1018);
-
-    const ENUMERATED_MAX: Self = Self::VerticalOrientation;
-
-    /// Mask property `General_Category_Mask`
-    pub const GeneralCategoryMask: Self = UnicodeProperty(0x2000);
-
-    /// Double property `Numeric_Value`
-    pub const NumericValue: Self = UnicodeProperty(0x3000);
-
-    /// String property `Age`
-    pub const Age: Self = UnicodeProperty(0x4000);
-    /// String property `Bidi_Mirroring_Glyph`
-    pub const BidiMirroringGlyph: Self = UnicodeProperty(0x4001);
-    /// String property `Case_Folding`
-    pub const CaseFolding: Self = UnicodeProperty(0x4002);
-    /// String property `ISO_Comment`
-    pub const ISOComment: Self = UnicodeProperty(0x4003);
-    /// String property `Lowercase_Mapping`
-    pub const LowercaseMapping: Self = UnicodeProperty(0x4004);
-    /// String property `Name`
-    pub const Name: Self = UnicodeProperty(0x4005);
-    /// String property `Simple_Case_Folding`
-    pub const SimpleCaseFolding: Self = UnicodeProperty(0x4006);
-    /// String property `Simple_Lowercase_Mapping`
-    pub const SimpleLowercaseMapping: Self = UnicodeProperty(0x4007);
-    /// String property `Simple_Titlecase_Mapping`
-    pub const SimpleTitlecaseMapping: Self = UnicodeProperty(0x4008);
-    /// String property `Simple_Uppercase_Mapping`
-    pub const SimpleUppercaseMapping: Self = UnicodeProperty(0x4009);
-    /// String property `Titlecase_Mapping`
-    pub const TitlecaseMapping: Self = UnicodeProperty(0x400A);
-    /// String property `Unicode_1_Name`
-    pub const Unicode1_Name: Self = UnicodeProperty(0x400B);
-    /// String property `Uppercase_Mapping`
-    pub const UppercaseMapping: Self = UnicodeProperty(0x400C);
-    /// String property `Bidi_Paired_Bracket`
-    pub const BidiPairedBracket: Self = UnicodeProperty(0x400D);
-
-    const STRING_MAX: Self = Self::BidiPairedBracket;
-
-    /// Misc property `Script_Extensions`
-    pub const ScriptExtensions: Self = UnicodeProperty(0x7000);
+enum BinaryProperty {
+    Alnum = 44,
+    Alphabetic = 0,
+    AsciiHexDigit = 1,
+    BidiControl = 2,
+    BidiMirrored = 3,
+    Blank = 45,
+    Cased = 49,
+    CaseIgnorable = 50,
+    CaseSensitive = 34,
+    ChangesWhenCasefolded = 54,
+    ChangesWhenCasemapped = 55,
+    ChangesWhenLowercased = 51,
+    ChangesWhenNfkcCasefolded = 56,
+    ChangesWhenTitlecased = 53,
+    ChangesWhenUppercased = 52,
+    Dash = 4,
+    DefaultIgnorableCodePoint = 5,
+    Deprecated = 6,
+    Diacritic = 7,
+    Emoji = 57,
+    EmojiComponent = 61,
+    EmojiModifier = 59,
+    EmojiModifierBase = 60,
+    EmojiPresentation = 58,
+    ExtendedPictographic = 64,
+    Extender = 8,
+    FullCompositionExclusion = 9,
+    Graph = 46,
+    GraphemeBase = 10,
+    GraphemeExtend = 11,
+    GraphemeLink = 12,
+    HexDigit = 13,
+    Hyphen = 14,
+    IdCompatMathContinue = 65,
+    IdCompatMathStart = 66,
+    IdContinue = 15,
+    Ideographic = 17,
+    IdsBinaryOperator = 18,
+    IdStart = 16,
+    IdsTrinaryOperator = 19,
+    IdsUnaryOperator = 67,
+    JoinControl = 20,
+    LogicalOrderException = 21,
+    Lowercase = 22,
+    Math = 23,
+    ModifierCombiningMark = 68,
+    NfcInert = 39,
+    NfdInert = 37,
+    NfkcInert = 40,
+    NfkdInert = 38,
+    NoncharacterCodePoint = 24,
+    PatternSyntax = 42,
+    PatternWhiteSpace = 43,
+    PrependedConcatenationMark = 63,
+    Print = 47,
+    QuotationMark = 25,
+    Radical = 26,
+    RegionalIndicator = 62,
+    SegmentStarter = 41,
+    SentenceTerminal = 35,
+    SoftDotted = 27,
+    TerminalPunctuation = 28,
+    UnifiedIdeograph = 29,
+    Uppercase = 30,
+    VariationSelector = 36,
+    WhiteSpace = 31,
+    Xdigit = 48,
+    XidContinue = 32,
+    XidStart = 33,
 }
 
-#[allow(unused)] // experimental, may be made public later
-impl UnicodeProperty {
-    /// Given a property name (long, short, or alias), returns the corresponding [`UnicodeProperty`]
-    /// value for it provided it belongs to the [subset relevant for ECMA262 regexes][subset]
+/// This type can represent any binary property over strings.
+///
+/// This is intended to be used in situations where the exact unicode property needed is
+/// only known at runtime, for example in regex engines.
+///
+/// The values are intended to be identical to ICU4C's UProperty enum
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum StringBinaryProperty {
+    BasicEmoji = 65,
+    EmojiKeycapSequence = 66,
+    RgiEmoji = 71,
+    RgiEmojiFlagSequence = 68,
+    RgiEmojiModifierSequence = 67,
+    RgiEmojiTagSequence = 69,
+    RgiEmojiZWJSequence = 70,
+}
+
+/// This type can represent any enumerated Unicode property.
+///
+/// This is intended to be used in situations where the exact unicode property needed is
+/// only known at runtime, for example in regex engines.
+///
+/// The values are intended to be identical to ICU4C's UProperty enum
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum EnumeratedProperty {
+    BidiClass = 0x1000,
+    BidiPairedBracketType = 0x1015,
+    Block = 0x1001,
+    CombiningClass = 0x1002,
+    DecompositionType = 0x1003,
+    EastAsianWidth = 0x1004,
+    GeneralCategory = 0x1005,
+    GraphemeClusterBreak = 0x1012,
+    HangulSyllableType = 0x100B,
+    IndicConjunctBreak = 0x101A,
+    IndicPositionalCategory = 0x1016,
+    IndicSyllabicCategory = 0x1017,
+    JoiningGroup = 0x1006,
+    JoiningType = 0x1007,
+    LeadCanonicalCombiningClass = 0x1010,
+    LineBreak = 0x1008,
+    NFCQuickCheck = 0x100E,
+    NFDQuickCheck = 0x100C,
+    NFKCQuickCheck = 0x100F,
+    NFKDQuickCheck = 0x100D,
+    NumericType = 0x1009,
+    Script = 0x100A,
+    SentenceBreak = 0x1013,
+    TrailCanonicalCombiningClass = 0x1011,
+    VerticalOrientation = 0x1018,
+    WordBreak = 0x1014,
+}
+
+/// This type can represent any Unicode mask property.
+///
+/// This is intended to be used in situations where the exact unicode property needed is
+/// only known at runtime, for example in regex engines.
+///
+/// The values are intended to be identical to ICU4C's UProperty enum
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum MaskProperty {
+    GeneralCategoryMask = 0x2000,
+}
+
+/// This type can represent any numeric Unicode property.
+///
+/// This is intended to be used in situations where the exact unicode property needed is
+/// only known at runtime, for example in regex engines.
+///
+/// The values are intended to be identical to ICU4C's UProperty enum
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum NumericProperty {
+    NumericValue = 0x3000,
+}
+
+/// This type can represent any Unicode string property.
+///
+/// This is intended to be used in situations where the exact unicode property needed is
+/// only known at runtime, for example in regex engines.
+///
+/// The values are intended to be identical to ICU4C's UProperty enum
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum StringProperty {
+    Age = 0x4000,
+    BidiMirroringGlyph = 0x4001,
+    BidiPairedBracket = 0x400D,
+    CaseFolding = 0x4002,
+    ISOComment = 0x4003,
+    LowercaseMapping = 0x4004,
+    Name = 0x4005,
+    SimpleCaseFolding = 0x4006,
+    SimpleLowercaseMapping = 0x4007,
+    SimpleTitlecaseMapping = 0x4008,
+    SimpleUppercaseMapping = 0x4009,
+    TitlecaseMapping = 0x400A,
+    Unicode1Name = 0x400B,
+    UppercaseMapping = 0x400C,
+}
+
+#[non_exhaustive]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[allow(dead_code)]
+#[allow(missing_docs)]
+enum MiscProperty {
+    ScriptExtensions = 0x7000,
+}
+
+impl CodePointSetData {
+    /// Returns a type capable of looking up values for a property specified as a string, as long as it is a
+    /// [binary property listed in ECMA-262][ecma], using strict matching on the names in the spec.
     ///
-    /// Returns none if the name does not match any of the names in this subset. Performs
-    /// strict matching of names.
+    /// This handles every property required by ECMA-262 `/u` regular expressions, except for:
     ///
-    /// If using this to implement an ECMA262-compliant regex engine, please note these caveats:
-    ///
-    /// - This only returns binary and enumerated properties, as well as [`Self::ScriptExtensions`].
-    ///   Lookup can be performed sufficiently with [`Self::load_ecma262_binary_property_unstable()`],
-    ///   [`maps::load_general_category()`], [`maps::load_script()`]  and [`script::load_script_with_extensions_unstable()`].
-    /// - This does not handle the `Any`, `Assigned`, or `ASCII` pseudoproperties, since they are not
-    ///   defined as properties.
+    /// - `Script` and `General_Category`: handle these directly using property values parsed via
+    ///   [`PropertyParser<GeneralCategory>`] and [`PropertyParser<Script>`]
+    ///   if necessary.
+    /// - `Script_Extensions`: handle this directly using APIs from [`crate::script::ScriptWithExtensions`]
+    /// - `General_Category` mask values: Handle this alongside `General_Category` using [`GeneralCategoryGroup`],
+    ///   using property values parsed via [`PropertyParser<GeneralCategory>`] if necessary
+    /// - `Assigned`, `All`, and `ASCII` pseudoproperties: Handle these using their equivalent sets:
     ///    - `Any` can be expressed as the range `[\u{0}-\u{10FFFF}]`
     ///    - `Assigned` can be expressed as the inverse of the set `gc=Cn` (i.e., `\P{gc=Cn}`).
     ///    - `ASCII` can be expressed as the range `[\u{0}-\u{7F}]`
-    /// - ECMA262 regexes transparently allow `General_Category_Mask` values for `GeneralCategory`.
-    ///   This method does not return [`Self::GeneralCategoryMask`], and instead relies on the caller to use mask-related lookup
-    ///   functions where necessary.
-    /// - ECMA262 regexes allow treating `General_Category` (and `gcm`) values as binary properties,
-    ///   e.g. you can do things like `\p{Lu}` as shortform for `\p{gc=Lu}`. This method does not do so
-    ///   since these are property values, not properties, but you can use
-    ///   [`GeneralCategory::get_name_to_enum_mapper()`] or  [`GeneralCategoryGroup::get_name_to_enum_mapper()`]
-    ///   to handle this.
+    /// - `General_Category` property values can themselves be treated like properties using a shorthand in ECMA262,
+    ///   simply create the corresponding `GeneralCategory` set.
     ///
+    /// ✨ *Enabled with the `compiled_data` Cargo feature.*
     ///
-    /// [subset]: https://tc39.es/ecma262/#table-nonbinary-unicode-properties
-    pub fn parse_ecma262_name(name: &str) -> Option<Self> {
-        let prop = match name {
-            "General_Category" | "gc" => Self::GeneralCategory,
-            "Script" | "sc" => Self::Script,
-            "Script_Extensions" | "scx" => Self::ScriptExtensions,
-            "ASCII_Hex_Digit" | "AHex" => Self::AsciiHexDigit,
-            "Alphabetic" | "Alpha" => Self::Alphabetic,
-            "Bidi_Control" | "Bidi_C" => Self::BidiControl,
-            "Bidi_Mirrored" | "Bidi_M" => Self::BidiMirrored,
-            "Case_Ignorable" | "CI" => Self::CaseIgnorable,
-            "Cased" => Self::Cased,
-            "Changes_When_Casefolded" | "CWCF" => Self::ChangesWhenCasefolded,
-            "Changes_When_Casemapped" | "CWCM" => Self::ChangesWhenCasemapped,
-            "Changes_When_Lowercased" | "CWL" => Self::ChangesWhenLowercased,
-            "Changes_When_NFKC_Casefolded" | "CWKCF" => Self::ChangesWhenNfkcCasefolded,
-            "Changes_When_Titlecased" | "CWT" => Self::ChangesWhenTitlecased,
-            "Changes_When_Uppercased" | "CWU" => Self::ChangesWhenUppercased,
-            "Dash" => Self::Dash,
-            "Default_Ignorable_Code_Point" | "DI" => Self::DefaultIgnorableCodePoint,
-            "Deprecated" | "Dep" => Self::Deprecated,
-            "Diacritic" | "Dia" => Self::Diacritic,
-            "Emoji" => Self::Emoji,
-            "Emoji_Component" | "EComp" => Self::EmojiComponent,
-            "Emoji_Modifier" | "EMod" => Self::EmojiModifier,
-            "Emoji_Modifier_Base" | "EBase" => Self::EmojiModifierBase,
-            "Emoji_Presentation" | "EPres" => Self::EmojiPresentation,
-            "Extended_Pictographic" | "ExtPict" => Self::ExtendedPictographic,
-            "Extender" | "Ext" => Self::Extender,
-            "Grapheme_Base" | "Gr_Base" => Self::GraphemeBase,
-            "Grapheme_Extend" | "Gr_Ext" => Self::GraphemeExtend,
-            "Hex_Digit" | "Hex" => Self::HexDigit,
-            "IDS_Binary_Operator" | "IDSB" => Self::IdsBinaryOperator,
-            "IDS_Trinary_Operator" | "IDST" => Self::IdsTrinaryOperator,
-            "ID_Continue" | "IDC" => Self::IdContinue,
-            "ID_Start" | "IDS" => Self::IdStart,
-            "Ideographic" | "Ideo" => Self::Ideographic,
-            "Join_Control" | "Join_C" => Self::JoinControl,
-            "Logical_Order_Exception" | "LOE" => Self::LogicalOrderException,
-            "Lowercase" | "Lower" => Self::Lowercase,
-            "Math" => Self::Math,
-            "Noncharacter_Code_Point" | "NChar" => Self::NoncharacterCodePoint,
-            "Pattern_Syntax" | "Pat_Syn" => Self::PatternSyntax,
-            "Pattern_White_Space" | "Pat_WS" => Self::PatternWhiteSpace,
-            "Quotation_Mark" | "QMark" => Self::QuotationMark,
-            "Radical" => Self::Radical,
-            "Regional_Indicator" | "RI" => Self::RegionalIndicator,
-            "Sentence_Terminal" | "STerm" => Self::SentenceTerminal,
-            "Soft_Dotted" | "SD" => Self::SoftDotted,
-            "Terminal_Punctuation" | "Term" => Self::TerminalPunctuation,
-            "Unified_Ideograph" | "UIdeo" => Self::UnifiedIdeograph,
-            "Uppercase" | "Upper" => Self::Uppercase,
-            "Variation_Selector" | "VS" => Self::VariationSelector,
-            "White_Space" | "space" => Self::WhiteSpace,
-            "XID_Continue" | "XIDC" => Self::XidContinue,
-            "XID_Start" | "XIDS" => Self::XidStart,
+    /// [📚 Help choosing a constructor](icu_provider::constructors)
+    ///
+    /// ```
+    /// use icu::properties::CodePointSetData;
+    ///
+    /// let emoji = CodePointSetData::new_for_ecma262(b"Emoji")
+    ///     .expect("is an ECMA-262 property");
+    ///
+    /// assert!(emoji.contains('🔥')); // U+1F525 FIRE
+    /// assert!(!emoji.contains('V'));
+    /// ```
+    ///
+    /// [ecma]: https://tc39.es/ecma262/#table-binary-unicode-properties
+    #[cfg(feature = "compiled_data")]
+    pub fn new_for_ecma262(prop: &[u8]) -> Option<crate::CodePointSetDataBorrowed<'static>> {
+        use crate::props::*;
+        Some(match prop {
+            AsciiHexDigit::NAME | AsciiHexDigit::SHORT_NAME => Self::new::<AsciiHexDigit>(),
+            Alphabetic::NAME | Alphabetic::SHORT_NAME => Self::new::<Alphabetic>(),
+            BidiControl::NAME | BidiControl::SHORT_NAME => Self::new::<BidiControl>(),
+            BidiMirrored::NAME | BidiMirrored::SHORT_NAME => Self::new::<BidiMirrored>(),
+            CaseIgnorable::NAME | CaseIgnorable::SHORT_NAME => Self::new::<CaseIgnorable>(),
+            #[allow(unreachable_patterns)] // no short name
+            Cased::NAME | Cased::SHORT_NAME => Self::new::<Cased>(),
+            ChangesWhenCasefolded::NAME | ChangesWhenCasefolded::SHORT_NAME => {
+                Self::new::<ChangesWhenCasefolded>()
+            }
+            ChangesWhenCasemapped::NAME | ChangesWhenCasemapped::SHORT_NAME => {
+                Self::new::<ChangesWhenCasemapped>()
+            }
+            ChangesWhenLowercased::NAME | ChangesWhenLowercased::SHORT_NAME => {
+                Self::new::<ChangesWhenLowercased>()
+            }
+            ChangesWhenNfkcCasefolded::NAME | ChangesWhenNfkcCasefolded::SHORT_NAME => {
+                Self::new::<ChangesWhenNfkcCasefolded>()
+            }
+            ChangesWhenTitlecased::NAME | ChangesWhenTitlecased::SHORT_NAME => {
+                Self::new::<ChangesWhenTitlecased>()
+            }
+            ChangesWhenUppercased::NAME | ChangesWhenUppercased::SHORT_NAME => {
+                Self::new::<ChangesWhenUppercased>()
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Dash::NAME | Dash::SHORT_NAME => Self::new::<Dash>(),
+            DefaultIgnorableCodePoint::NAME | DefaultIgnorableCodePoint::SHORT_NAME => {
+                Self::new::<DefaultIgnorableCodePoint>()
+            }
+            Deprecated::NAME | Deprecated::SHORT_NAME => Self::new::<Deprecated>(),
+            Diacritic::NAME | Diacritic::SHORT_NAME => Self::new::<Diacritic>(),
+            #[allow(unreachable_patterns)] // no short name
+            Emoji::NAME | Emoji::SHORT_NAME => Self::new::<Emoji>(),
+            EmojiComponent::NAME | EmojiComponent::SHORT_NAME => Self::new::<EmojiComponent>(),
+            EmojiModifier::NAME | EmojiModifier::SHORT_NAME => Self::new::<EmojiModifier>(),
+            EmojiModifierBase::NAME | EmojiModifierBase::SHORT_NAME => {
+                Self::new::<EmojiModifierBase>()
+            }
+            EmojiPresentation::NAME | EmojiPresentation::SHORT_NAME => {
+                Self::new::<EmojiPresentation>()
+            }
+            ExtendedPictographic::NAME | ExtendedPictographic::SHORT_NAME => {
+                Self::new::<ExtendedPictographic>()
+            }
+            Extender::NAME | Extender::SHORT_NAME => Self::new::<Extender>(),
+            GraphemeBase::NAME | GraphemeBase::SHORT_NAME => Self::new::<GraphemeBase>(),
+            GraphemeExtend::NAME | GraphemeExtend::SHORT_NAME => Self::new::<GraphemeExtend>(),
+            HexDigit::NAME | HexDigit::SHORT_NAME => Self::new::<HexDigit>(),
+            IdsBinaryOperator::NAME | IdsBinaryOperator::SHORT_NAME => {
+                Self::new::<IdsBinaryOperator>()
+            }
+            IdsTrinaryOperator::NAME | IdsTrinaryOperator::SHORT_NAME => {
+                Self::new::<IdsTrinaryOperator>()
+            }
+            IdContinue::NAME | IdContinue::SHORT_NAME => Self::new::<IdContinue>(),
+            IdStart::NAME | IdStart::SHORT_NAME => Self::new::<IdStart>(),
+            Ideographic::NAME | Ideographic::SHORT_NAME => Self::new::<Ideographic>(),
+            JoinControl::NAME | JoinControl::SHORT_NAME => Self::new::<JoinControl>(),
+            LogicalOrderException::NAME | LogicalOrderException::SHORT_NAME => {
+                Self::new::<LogicalOrderException>()
+            }
+            Lowercase::NAME | Lowercase::SHORT_NAME => Self::new::<Lowercase>(),
+            #[allow(unreachable_patterns)] // no short name
+            Math::NAME | Math::SHORT_NAME => Self::new::<Math>(),
+            NoncharacterCodePoint::NAME | NoncharacterCodePoint::SHORT_NAME => {
+                Self::new::<NoncharacterCodePoint>()
+            }
+            PatternSyntax::NAME | PatternSyntax::SHORT_NAME => Self::new::<PatternSyntax>(),
+            PatternWhiteSpace::NAME | PatternWhiteSpace::SHORT_NAME => {
+                Self::new::<PatternWhiteSpace>()
+            }
+            QuotationMark::NAME | QuotationMark::SHORT_NAME => Self::new::<QuotationMark>(),
+            #[allow(unreachable_patterns)] // no short name
+            Radical::NAME | Radical::SHORT_NAME => Self::new::<Radical>(),
+            RegionalIndicator::NAME | RegionalIndicator::SHORT_NAME => {
+                Self::new::<RegionalIndicator>()
+            }
+            SentenceTerminal::NAME | SentenceTerminal::SHORT_NAME => {
+                Self::new::<SentenceTerminal>()
+            }
+            SoftDotted::NAME | SoftDotted::SHORT_NAME => Self::new::<SoftDotted>(),
+            TerminalPunctuation::NAME | TerminalPunctuation::SHORT_NAME => {
+                Self::new::<TerminalPunctuation>()
+            }
+            UnifiedIdeograph::NAME | UnifiedIdeograph::SHORT_NAME => {
+                Self::new::<UnifiedIdeograph>()
+            }
+            Uppercase::NAME | Uppercase::SHORT_NAME => Self::new::<Uppercase>(),
+            VariationSelector::NAME | VariationSelector::SHORT_NAME => {
+                Self::new::<VariationSelector>()
+            }
+            WhiteSpace::NAME | WhiteSpace::SHORT_NAME => Self::new::<WhiteSpace>(),
+            XidContinue::NAME | XidContinue::SHORT_NAME => Self::new::<XidContinue>(),
+            XidStart::NAME | XidStart::SHORT_NAME => Self::new::<XidStart>(),
+            // Not an ECMA-262 property
             _ => return None,
-        };
+        })
+    }
 
-        Some(prop)
+    icu_provider::gen_buffer_data_constructors!(
+        (prop: &[u8]) -> result: Option<Result<Self, DataError>>,
+        functions: [
+            new_for_ecma262: skip,
+            try_new_for_ecma262_with_buffer_provider,
+            try_new_for_ecma262_unstable,
+            Self,
+        ]
+    );
+
+    #[doc = icu_provider::gen_buffer_unstable_docs!(UNSTABLE, Self::new_for_ecma262)]
+    pub fn try_new_for_ecma262_unstable<P>(
+        provider: &P,
+        prop: &[u8],
+    ) -> Option<Result<Self, DataError>>
+    where
+        P: ?Sized
+            + DataProvider<PropertyBinaryAsciiHexDigitV1>
+            + DataProvider<PropertyBinaryAlphabeticV1>
+            + DataProvider<PropertyBinaryBidiControlV1>
+            + DataProvider<PropertyBinaryBidiMirroredV1>
+            + DataProvider<PropertyBinaryCaseIgnorableV1>
+            + DataProvider<PropertyBinaryCasedV1>
+            + DataProvider<PropertyBinaryChangesWhenCasefoldedV1>
+            + DataProvider<PropertyBinaryChangesWhenCasemappedV1>
+            + DataProvider<PropertyBinaryChangesWhenLowercasedV1>
+            + DataProvider<PropertyBinaryChangesWhenNfkcCasefoldedV1>
+            + DataProvider<PropertyBinaryChangesWhenTitlecasedV1>
+            + DataProvider<PropertyBinaryChangesWhenUppercasedV1>
+            + DataProvider<PropertyBinaryDashV1>
+            + DataProvider<PropertyBinaryDefaultIgnorableCodePointV1>
+            + DataProvider<PropertyBinaryDeprecatedV1>
+            + DataProvider<PropertyBinaryDiacriticV1>
+            + DataProvider<PropertyBinaryEmojiV1>
+            + DataProvider<PropertyBinaryEmojiComponentV1>
+            + DataProvider<PropertyBinaryEmojiModifierV1>
+            + DataProvider<PropertyBinaryEmojiModifierBaseV1>
+            + DataProvider<PropertyBinaryEmojiPresentationV1>
+            + DataProvider<PropertyBinaryExtendedPictographicV1>
+            + DataProvider<PropertyBinaryExtenderV1>
+            + DataProvider<PropertyBinaryGraphemeBaseV1>
+            + DataProvider<PropertyBinaryGraphemeExtendV1>
+            + DataProvider<PropertyBinaryHexDigitV1>
+            + DataProvider<PropertyBinaryIdsBinaryOperatorV1>
+            + DataProvider<PropertyBinaryIdsTrinaryOperatorV1>
+            + DataProvider<PropertyBinaryIdContinueV1>
+            + DataProvider<PropertyBinaryIdStartV1>
+            + DataProvider<PropertyBinaryIdeographicV1>
+            + DataProvider<PropertyBinaryJoinControlV1>
+            + DataProvider<PropertyBinaryLogicalOrderExceptionV1>
+            + DataProvider<PropertyBinaryLowercaseV1>
+            + DataProvider<PropertyBinaryMathV1>
+            + DataProvider<PropertyBinaryNoncharacterCodePointV1>
+            + DataProvider<PropertyBinaryPatternSyntaxV1>
+            + DataProvider<PropertyBinaryPatternWhiteSpaceV1>
+            + DataProvider<PropertyBinaryQuotationMarkV1>
+            + DataProvider<PropertyBinaryRadicalV1>
+            + DataProvider<PropertyBinaryRegionalIndicatorV1>
+            + DataProvider<PropertyBinarySentenceTerminalV1>
+            + DataProvider<PropertyBinarySoftDottedV1>
+            + DataProvider<PropertyBinaryTerminalPunctuationV1>
+            + DataProvider<PropertyBinaryUnifiedIdeographV1>
+            + DataProvider<PropertyBinaryUppercaseV1>
+            + DataProvider<PropertyBinaryVariationSelectorV1>
+            + DataProvider<PropertyBinaryWhiteSpaceV1>
+            + DataProvider<PropertyBinaryXidContinueV1>
+            + DataProvider<PropertyBinaryXidStartV1>,
+    {
+        use crate::props::*;
+        Some(match prop {
+            AsciiHexDigit::NAME | AsciiHexDigit::SHORT_NAME => {
+                Self::try_new_unstable::<AsciiHexDigit>(provider)
+            }
+            Alphabetic::NAME | Alphabetic::SHORT_NAME => {
+                Self::try_new_unstable::<Alphabetic>(provider)
+            }
+            BidiControl::NAME | BidiControl::SHORT_NAME => {
+                Self::try_new_unstable::<BidiControl>(provider)
+            }
+            BidiMirrored::NAME | BidiMirrored::SHORT_NAME => {
+                Self::try_new_unstable::<BidiMirrored>(provider)
+            }
+            CaseIgnorable::NAME | CaseIgnorable::SHORT_NAME => {
+                Self::try_new_unstable::<CaseIgnorable>(provider)
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Cased::NAME | Cased::SHORT_NAME => Self::try_new_unstable::<Cased>(provider),
+            ChangesWhenCasefolded::NAME | ChangesWhenCasefolded::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenCasefolded>(provider)
+            }
+            ChangesWhenCasemapped::NAME | ChangesWhenCasemapped::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenCasemapped>(provider)
+            }
+            ChangesWhenLowercased::NAME | ChangesWhenLowercased::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenLowercased>(provider)
+            }
+            ChangesWhenNfkcCasefolded::NAME | ChangesWhenNfkcCasefolded::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenNfkcCasefolded>(provider)
+            }
+            ChangesWhenTitlecased::NAME | ChangesWhenTitlecased::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenTitlecased>(provider)
+            }
+            ChangesWhenUppercased::NAME | ChangesWhenUppercased::SHORT_NAME => {
+                Self::try_new_unstable::<ChangesWhenUppercased>(provider)
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Dash::NAME | Dash::SHORT_NAME => Self::try_new_unstable::<Dash>(provider),
+            DefaultIgnorableCodePoint::NAME | DefaultIgnorableCodePoint::SHORT_NAME => {
+                Self::try_new_unstable::<DefaultIgnorableCodePoint>(provider)
+            }
+            Deprecated::NAME | Deprecated::SHORT_NAME => {
+                Self::try_new_unstable::<Deprecated>(provider)
+            }
+            Diacritic::NAME | Diacritic::SHORT_NAME => {
+                Self::try_new_unstable::<Diacritic>(provider)
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Emoji::NAME | Emoji::SHORT_NAME => Self::try_new_unstable::<Emoji>(provider),
+            EmojiComponent::NAME | EmojiComponent::SHORT_NAME => {
+                Self::try_new_unstable::<EmojiComponent>(provider)
+            }
+            EmojiModifier::NAME | EmojiModifier::SHORT_NAME => {
+                Self::try_new_unstable::<EmojiModifier>(provider)
+            }
+            EmojiModifierBase::NAME | EmojiModifierBase::SHORT_NAME => {
+                Self::try_new_unstable::<EmojiModifierBase>(provider)
+            }
+            EmojiPresentation::NAME | EmojiPresentation::SHORT_NAME => {
+                Self::try_new_unstable::<EmojiPresentation>(provider)
+            }
+            ExtendedPictographic::NAME | ExtendedPictographic::SHORT_NAME => {
+                Self::try_new_unstable::<ExtendedPictographic>(provider)
+            }
+            Extender::NAME | Extender::SHORT_NAME => Self::try_new_unstable::<Extender>(provider),
+            GraphemeBase::NAME | GraphemeBase::SHORT_NAME => {
+                Self::try_new_unstable::<GraphemeBase>(provider)
+            }
+            GraphemeExtend::NAME | GraphemeExtend::SHORT_NAME => {
+                Self::try_new_unstable::<GraphemeExtend>(provider)
+            }
+            HexDigit::NAME | HexDigit::SHORT_NAME => Self::try_new_unstable::<HexDigit>(provider),
+            IdsBinaryOperator::NAME | IdsBinaryOperator::SHORT_NAME => {
+                Self::try_new_unstable::<IdsBinaryOperator>(provider)
+            }
+            IdsTrinaryOperator::NAME | IdsTrinaryOperator::SHORT_NAME => {
+                Self::try_new_unstable::<IdsTrinaryOperator>(provider)
+            }
+            IdContinue::NAME | IdContinue::SHORT_NAME => {
+                Self::try_new_unstable::<IdContinue>(provider)
+            }
+            IdStart::NAME | IdStart::SHORT_NAME => Self::try_new_unstable::<IdStart>(provider),
+            Ideographic::NAME | Ideographic::SHORT_NAME => {
+                Self::try_new_unstable::<Ideographic>(provider)
+            }
+            JoinControl::NAME | JoinControl::SHORT_NAME => {
+                Self::try_new_unstable::<JoinControl>(provider)
+            }
+            LogicalOrderException::NAME | LogicalOrderException::SHORT_NAME => {
+                Self::try_new_unstable::<LogicalOrderException>(provider)
+            }
+            Lowercase::NAME | Lowercase::SHORT_NAME => {
+                Self::try_new_unstable::<Lowercase>(provider)
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Math::NAME | Math::SHORT_NAME => Self::try_new_unstable::<Math>(provider),
+            NoncharacterCodePoint::NAME | NoncharacterCodePoint::SHORT_NAME => {
+                Self::try_new_unstable::<NoncharacterCodePoint>(provider)
+            }
+            PatternSyntax::NAME | PatternSyntax::SHORT_NAME => {
+                Self::try_new_unstable::<PatternSyntax>(provider)
+            }
+            PatternWhiteSpace::NAME | PatternWhiteSpace::SHORT_NAME => {
+                Self::try_new_unstable::<PatternWhiteSpace>(provider)
+            }
+            QuotationMark::NAME | QuotationMark::SHORT_NAME => {
+                Self::try_new_unstable::<QuotationMark>(provider)
+            }
+            #[allow(unreachable_patterns)] // no short name
+            Radical::NAME | Radical::SHORT_NAME => Self::try_new_unstable::<Radical>(provider),
+            RegionalIndicator::NAME | RegionalIndicator::SHORT_NAME => {
+                Self::try_new_unstable::<RegionalIndicator>(provider)
+            }
+            SentenceTerminal::NAME | SentenceTerminal::SHORT_NAME => {
+                Self::try_new_unstable::<SentenceTerminal>(provider)
+            }
+            SoftDotted::NAME | SoftDotted::SHORT_NAME => {
+                Self::try_new_unstable::<SoftDotted>(provider)
+            }
+            TerminalPunctuation::NAME | TerminalPunctuation::SHORT_NAME => {
+                Self::try_new_unstable::<TerminalPunctuation>(provider)
+            }
+            UnifiedIdeograph::NAME | UnifiedIdeograph::SHORT_NAME => {
+                Self::try_new_unstable::<UnifiedIdeograph>(provider)
+            }
+            Uppercase::NAME | Uppercase::SHORT_NAME => {
+                Self::try_new_unstable::<Uppercase>(provider)
+            }
+            VariationSelector::NAME | VariationSelector::SHORT_NAME => {
+                Self::try_new_unstable::<VariationSelector>(provider)
+            }
+            WhiteSpace::NAME | WhiteSpace::SHORT_NAME => {
+                Self::try_new_unstable::<WhiteSpace>(provider)
+            }
+            XidContinue::NAME | XidContinue::SHORT_NAME => {
+                Self::try_new_unstable::<XidContinue>(provider)
+            }
+            XidStart::NAME | XidStart::SHORT_NAME => Self::try_new_unstable::<XidStart>(provider),
+            // Not an ECMA-262 property
+            _ => return None,
+        })
     }
 }

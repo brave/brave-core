@@ -28,47 +28,13 @@
 //!
 //! # `HeaderMap`
 //!
-//! `HeaderMap` is a map structure of header names highly optimized for use
-//! cases common with HTTP. It is a [multimap] structure, where each header name
-//! may have multiple associated header values. Given this, some of the APIs
-//! diverge from [`HashMap`].
+//! The [`HeaderMap`] type is a specialized
+//! [multimap](<https://en.wikipedia.org/wiki/Multimap>) structure for storing
+//! header names and values. It is designed specifically for efficient
+//! manipulation of HTTP headers. It supports multiple values per header name
+//! and provides specialized APIs for insertion, retrieval, and iteration.
 //!
-//! ## Overview
-//!
-//! Just like `HashMap` in Rust's stdlib, `HeaderMap` is based on [Robin Hood
-//! hashing]. This algorithm tends to reduce the worst case search times in the
-//! table and enables high load factors without seriously affecting performance.
-//! Internally, keys and values are stored in vectors. As such, each insertion
-//! will not incur allocation overhead. However, once the underlying vector
-//! storage is full, a larger vector must be allocated and all values copied.
-//!
-//! ## Deterministic ordering
-//!
-//! Unlike Rust's `HashMap`, values in `HeaderMap` are deterministically
-//! ordered. Roughly, values are ordered by insertion. This means that a
-//! function that deterministically operates on a header map can rely on the
-//! iteration order to remain consistent across processes and platforms.
-//!
-//! ## Adaptive hashing
-//!
-//! `HeaderMap` uses an adaptive hashing strategy in order to efficiently handle
-//! most common cases. All standard headers have statically computed hash values
-//! which removes the need to perform any hashing of these headers at runtime.
-//! The default hash function emphasizes performance over robustness. However,
-//! `HeaderMap` detects high collision rates and switches to a secure hash
-//! function in those events. The threshold is set such that only denial of
-//! service attacks should trigger it.
-//!
-//! ## Limitations
-//!
-//! `HeaderMap` can store a maximum of 32,768 headers (header name / value
-//! pairs). Attempting to insert more will result in a panic.
-//!
-//! [`HeaderName`]: struct.HeaderName.html
-//! [`HeaderMap`]: struct.HeaderMap.html
-//! [multimap]: https://en.wikipedia.org/wiki/Multimap
-//! [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
-//! [Robin Hood hashing]: https://en.wikipedia.org/wiki/Hash_table#Robin_Hood_hashing
+//! [*See also the `HeaderMap` type.*](HeaderMap)
 
 mod map;
 mod name;

@@ -17,6 +17,7 @@
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -45,6 +46,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 namespace policy {
@@ -157,11 +162,13 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
         // Brave Talk preferences
-        {kBraveTalkDisabledByPolicy,
+        {brave_talk::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+#endif
 
         // Web Discovery preferences
         {kWebDiscoveryEnabled,

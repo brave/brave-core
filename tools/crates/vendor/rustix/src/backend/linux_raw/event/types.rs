@@ -1,4 +1,4 @@
-use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
 
 bitflags! {
@@ -7,7 +7,7 @@ bitflags! {
     /// [`eventfd`]: crate::event::eventfd
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct EventfdFlags: c::c_uint {
+    pub struct EventfdFlags: ffi::c_uint {
         /// `EFD_CLOEXEC`
         const CLOEXEC = linux_raw_sys::general::EFD_CLOEXEC;
         /// `EFD_NONBLOCK`

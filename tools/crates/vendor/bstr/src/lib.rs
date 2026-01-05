@@ -393,7 +393,7 @@ and Unicode support.
 
 // #![cfg_attr(not(any(feature = "std", test)), no_std)]
 #![no_std]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(any(test, feature = "std"))]
 extern crate std;

@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.74.1"
 name = "quinn-udp"
-version = "0.5.9"
+version = "0.5.14"
 build = "build.rs"
 autolib = false
 autobins = false
@@ -32,6 +32,15 @@ repository = "https://github.com/quinn-rs/quinn"
 
 [package.metadata.docs.rs]
 all-features = true
+
+[features]
+default = [
+    "tracing",
+    "log",
+]
+direct-log = ["dep:log"]
+fast-apple-datapath = []
+log = ["tracing/log"]
 
 [lib]
 name = "quinn_udp"
@@ -54,9 +63,6 @@ version = "0.2.158"
 version = "0.4"
 optional = true
 
-[dependencies.socket2]
-version = "0.5"
-
 [dependencies.tracing]
 version = "0.1.10"
 features = ["std"]
@@ -64,7 +70,7 @@ optional = true
 default-features = false
 
 [dev-dependencies.criterion]
-version = "0.5"
+version = "0.7"
 features = ["async_tokio"]
 default-features = false
 
@@ -80,20 +86,14 @@ features = [
 [build-dependencies.cfg_aliases]
 version = "0.2"
 
-[features]
-default = [
-    "tracing",
-    "log",
-]
-direct-log = ["dep:log"]
-fast-apple-datapath = []
-log = ["tracing/log"]
+[target.'cfg(not(all(target_family = "wasm", target_os = "unknown")))'.dependencies.socket2]
+version = ">=0.5, <0.7"
 
 [target."cfg(windows)".dependencies.once_cell]
 version = "1.19"
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = ">=0.52, <=0.59"
+version = ">=0.52, <=0.60"
 features = [
     "Win32_Foundation",
     "Win32_System_IO",

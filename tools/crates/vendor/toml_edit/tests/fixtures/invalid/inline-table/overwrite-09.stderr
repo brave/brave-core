@@ -1,5 +1,0 @@
-TOML parse error at line 5, column 1
-  |
-5 | nested.inline-t.nest = 2
-  | ^
-duplicate key `nested`

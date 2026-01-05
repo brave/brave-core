@@ -25,10 +25,15 @@ public:
   Str &operator=(const Str &) & noexcept;
 
   explicit operator std::string() const;
+#if __cplusplus >= 201703L
+  explicit operator std::string_view() const;
+#endif
 
   // Note: no null terminator.
   const char *data() const noexcept;
+  // Length in bytes.
   size_t size() const noexcept;
+  // Length in bytes, same as size().
   size_t length() const noexcept;
   bool empty() const noexcept;
 

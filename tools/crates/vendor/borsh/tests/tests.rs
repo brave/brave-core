@@ -38,7 +38,6 @@ mod roundtrip {
     mod test_vecs;
     mod test_tuple;
     mod test_primitives;
-    #[cfg(feature = "std")]
     mod test_ip_addr;
     mod test_nonzero_integers;
     mod test_range;
@@ -52,6 +51,8 @@ mod roundtrip {
     mod test_cells;
     #[cfg(feature = "rc")]
     mod test_rc;
+    #[cfg(feature = "indexmap")]
+    mod test_indexmap;
 
     #[cfg(feature = "derive")]
     mod requires_derive_category {

@@ -12,9 +12,10 @@
 [package]
 edition = "2021"
 name = "redox_syscall"
-version = "0.5.8"
+version = "0.6.0"
 authors = ["Jeremy Soller <jackpot51@gmail.com>"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -24,6 +25,15 @@ documentation = "https://docs.rs/redox_syscall"
 readme = "README.md"
 license = "MIT"
 repository = "https://gitlab.redox-os.org/redox-os/syscall"
+
+[features]
+default = ["userspace"]
+rustc-dep-of-std = [
+    "core",
+    "bitflags/rustc-dep-of-std",
+]
+std = []
+userspace = []
 
 [lib]
 name = "syscall"
@@ -36,15 +46,6 @@ version = "2.4"
 version = "1.0.0"
 optional = true
 package = "rustc-std-workspace-core"
-
-[features]
-default = ["userspace"]
-rustc-dep-of-std = [
-    "core",
-    "bitflags/rustc-dep-of-std",
-]
-std = []
-userspace = []
 
 [target."cfg(loom)".dev-dependencies.loom]
 version = "0.7"

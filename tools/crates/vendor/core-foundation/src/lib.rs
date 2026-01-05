@@ -53,15 +53,24 @@ macro_rules! declare_TCFType {
         $(#[$doc:meta])*
         $ty:ident, $raw:ident
     ) => {
-        $(#[$doc])*
-        pub struct $ty($raw);
+        declare_TCFType!($(#[$doc])* $ty<>, $raw);
+    };
 
-        impl Drop for $ty {
+    (
+        $(#[$doc:meta])*
+        $ty:ident<$($p:ident $(: $bound:path)*),*>, $raw:ident
+    ) => {
+        $(#[$doc])*
+        pub struct $ty<$($p $(: $bound)*),*>($raw, $(::std::marker::PhantomData<$p>),*);
+
+        #[allow(unused_imports)]
+        impl<$($p $(: $bound)*),*> Drop for $ty<$($p),*> {
             fn drop(&mut self) {
+                use $crate::base::TCFType;
                 unsafe { $crate::base::CFRelease(self.as_CFTypeRef()) }
             }
         }
-    }
+    };
 }
 
 /// Provide an implementation of the [`TCFType`] trait for the Rust
@@ -82,6 +91,7 @@ macro_rules! impl_TCFType {
         impl<$($p $(: $bound)*),*> $crate::base::TCFType for $ty<$($p),*> {
             type Ref = $ty_ref;
 
+            #[allow(non_snake_case)]
             #[inline]
             fn as_concrete_TypeRef(&self) -> $ty_ref {
                 self.0
@@ -90,10 +100,11 @@ macro_rules! impl_TCFType {
             #[inline]
             unsafe fn wrap_under_get_rule(reference: $ty_ref) -> Self {
                 assert!(!reference.is_null(), "Attempted to create a NULL object.");
-                let reference = $crate::base::CFRetain(reference as *const ::std::os::raw::c_void) as $ty_ref;
+                let reference = $crate::base::CFRetain(reference as *const ::core::ffi::c_void) as $ty_ref;
                 $crate::base::TCFType::wrap_under_create_rule(reference)
             }
 
+            #[allow(non_snake_case)]
             #[inline]
             fn as_CFTypeRef(&self) -> $crate::base::CFTypeRef {
                 self.as_concrete_TypeRef() as $crate::base::CFTypeRef
@@ -115,40 +126,47 @@ macro_rules! impl_TCFType {
             }
         }
 
-        impl Clone for $ty {
+        #[allow(unused_imports)]
+        impl<$($p $(: $bound)*),*> Clone for $ty<$($p),*> {
             #[inline]
-            fn clone(&self) -> $ty {
+            fn clone(&self) -> Self {
+                use $crate::base::TCFType;
                 unsafe {
                     $ty::wrap_under_get_rule(self.0)
                 }
             }
         }
 
-        impl PartialEq for $ty {
+        #[allow(unused_imports)]
+        impl<$($p $(: $bound)*),*> PartialEq for $ty<$($p),*> {
             #[inline]
-            fn eq(&self, other: &$ty) -> bool {
+            fn eq(&self, other: &Self) -> bool {
+                use $crate::base::TCFType;
                 self.as_CFType().eq(&other.as_CFType())
             }
         }
 
-        impl Eq for $ty { }
+        impl<$($p $(: $bound)*),*> Eq for $ty<$($p),*> { }
 
-        unsafe impl<'a> $crate::base::ToVoid<$ty> for &'a $ty {
-            fn to_void(&self) -> *const ::std::os::raw::c_void {
-                use $crate::base::TCFTypeRef;
+        #[allow(unused_imports)]
+        unsafe impl<'a, $($p $(: $bound)*),*> $crate::base::ToVoid<$ty<$($p),*>> for &'a $ty<$($p),*> {
+            fn to_void(&self) -> *const ::core::ffi::c_void {
+                use $crate::base::{TCFType, TCFTypeRef};
                 self.as_concrete_TypeRef().as_void_ptr()
             }
         }
 
-        unsafe impl $crate::base::ToVoid<$ty> for $ty {
-            fn to_void(&self) -> *const ::std::os::raw::c_void {
-                use $crate::base::TCFTypeRef;
+        #[allow(unused_imports)]
+        unsafe impl<$($p $(: $bound)*),*> $crate::base::ToVoid<$ty<$($p),*>> for $ty<$($p),*> {
+            fn to_void(&self) -> *const ::core::ffi::c_void {
+                use $crate::base::{TCFType, TCFTypeRef};
                 self.as_concrete_TypeRef().as_void_ptr()
             }
         }
 
-        unsafe impl $crate::base::ToVoid<$ty> for $ty_ref {
-            fn to_void(&self) -> *const ::std::os::raw::c_void {
+        #[allow(unused_imports)]
+        unsafe impl<$($p $(: $bound)*),*> $crate::base::ToVoid<$ty<$($p),*>> for $ty_ref {
+            fn to_void(&self) -> *const ::core::ffi::c_void {
                 use $crate::base::TCFTypeRef;
                 self.as_void_ptr()
             }
@@ -178,8 +196,10 @@ macro_rules! impl_CFTypeDescription {
         impl_CFTypeDescription!($ty<>);
     };
     ($ty:ident<$($p:ident $(: $bound:path)*),*>) => {
+        #[allow(unused_imports)]
         impl<$($p $(: $bound)*),*> ::std::fmt::Debug for $ty<$($p),*> {
             fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                use $crate::base::TCFType;
                 self.as_CFType().fmt(f)
             }
         }
@@ -189,9 +209,12 @@ macro_rules! impl_CFTypeDescription {
 #[macro_export]
 macro_rules! impl_CFComparison {
     ($ty:ident, $compare:ident) => {
-        impl PartialOrd for $ty {
+        impl_CFComparison!($ty<>, $compare);
+    };
+    ($ty:ident<$($p:ident $(: $bound:path)*),*>, $compare:ident) => {
+        impl<$($p $(: $bound)*),*> PartialOrd for $ty<$($p),*> {
             #[inline]
-            fn partial_cmp(&self, other: &$ty) -> Option<::std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &$ty<$($p),*>) -> Option<::std::cmp::Ordering> {
                 unsafe {
                     Some(
                         $compare(
@@ -205,9 +228,9 @@ macro_rules! impl_CFComparison {
             }
         }
 
-        impl Ord for $ty {
+        impl<$($p $(: $bound)*),*> Ord for $ty<$($p),*> {
             #[inline]
-            fn cmp(&self, other: &$ty) -> ::std::cmp::Ordering {
+            fn cmp(&self, other: &$ty<$($p),*>) -> ::std::cmp::Ordering {
                 self.partial_cmp(other).unwrap()
             }
         }

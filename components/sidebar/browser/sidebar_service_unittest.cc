@@ -17,6 +17,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -30,6 +31,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
@@ -42,7 +47,9 @@ namespace {
 
 constexpr sidebar::SidebarItem::BuiltInItemType
     kDefaultBuiltInItemTypesForTest[] = {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
         sidebar::SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
         sidebar::SidebarItem::BuiltInItemType::kWallet,
 #endif
@@ -211,8 +218,11 @@ class SidebarServiceTest : public testing::Test {
   void SetUp() override {
     SidebarService::RegisterProfilePrefs(
         prefs_.registry(), SidebarService::ShowSidebarOption::kShowAlways);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     // Register the Brave Talk policy preference that SidebarService now checks
-    prefs_.registry()->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
+    prefs_.registry()->RegisterBooleanPref(brave_talk::prefs::kDisabledByPolicy,
+                                           false);
+#endif
   }
   void TearDown() override { ResetService(); }
 
@@ -297,33 +307,39 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 TEST_F(SidebarServiceTest, MoveItem) {
   InitService();
 
-  // Add one more item to test with 5 items.
+  // Add one more item to test.
   SidebarItem new_item = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
-  EXPECT_EQ(GetDefaultItemCount() + 1, service_->items().size());
+  const size_t items_count = service_->items().size();
+  EXPECT_EQ(GetDefaultItemCount() + 1, items_count);
+  ASSERT_GE(items_count, 3u) << "Need at least 3 items to test MoveItem";
 
-  // Move item at 0 to index 2.
+  // Use dynamic indices based on actual item count.
+  const size_t last_idx = items_count - 1;
+  const size_t mid_idx = items_count / 2;
+
+  // Move item at 0 to middle index.
   SidebarItem item = service_->items()[0];
-  EXPECT_CALL(observer_, OnItemMoved(item, 0, 2)).Times(1);
-  service_->MoveItem(0, 2);
+  EXPECT_CALL(observer_, OnItemMoved(item, 0, mid_idx)).Times(1);
+  service_->MoveItem(0, mid_idx);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(item.url, service_->items()[2].url);
+  EXPECT_EQ(item.url, service_->items()[mid_idx].url);
 
-  // Move item at 0 to index 3.
+  // Move item at 0 to last index.
   item = service_->items()[0];
-  service_->MoveItem(0, 3);
-  EXPECT_EQ(item.url, service_->items()[3].url);
+  service_->MoveItem(0, last_idx);
+  EXPECT_EQ(item.url, service_->items()[last_idx].url);
 
-  // Move item at 3 to index 0.
-  item = service_->items()[3];
-  service_->MoveItem(3, 0);
+  // Move item at last index to 0.
+  item = service_->items()[last_idx];
+  service_->MoveItem(last_idx, 0);
   EXPECT_EQ(item.url, service_->items()[0].url);
 
-  // Move item at 2 to index 1.
-  item = service_->items()[2];
-  service_->MoveItem(2, 1);
+  // Move item at mid to 1.
+  item = service_->items()[mid_idx];
+  service_->MoveItem(mid_idx, 1);
   EXPECT_EQ(item.url, service_->items()[1].url);
 }
 
@@ -560,7 +576,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   }
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET) && BUILDFLAG(ENABLE_BRAVE_TALK)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   // Make prefs already have old-style builtin items before service
   // initialization.
@@ -606,7 +622,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   auto talk_item = *talk_iter;
   EXPECT_EQ(talk_item.url, kBraveTalkURL);
 }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET) && BUILDFLAG(ENABLE_BRAVE_TALK)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
@@ -811,6 +827,7 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
                               &SidebarItem::built_in_item_type));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   // Make prefs already have builtin items before service initialization.
   // And it has old url in old pref format (storing built-in items).
@@ -855,6 +872,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   EXPECT_EQ(expected_count, service_->items().size());
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
   // Make prefs already have builtin items before service initialization.
@@ -1034,18 +1052,20 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
   EXPECT_EQ(GetDefaultItemCount(), service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
-  EXPECT_TRUE(
-      ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
+  EXPECT_TRUE(ValidateBuiltInTypesOrdering({
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+      SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-                                    SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kWallet,
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                                    SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kChatUI,
 #endif
-                                    SidebarItem::BuiltInItemType::kBookmarks,
-                                    SidebarItem::BuiltInItemType::kReadingList,
-                                    SidebarItem::BuiltInItemType::kHistory,
-                                    SidebarItem::BuiltInItemType::kPlaylist}));
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kHistory,
+      SidebarItem::BuiltInItemType::kPlaylist}));
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
@@ -1064,7 +1084,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 #endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
       SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
   };
 
   auto expected_count = sidebar_items->size();
@@ -1076,6 +1098,11 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 
 #if !BUILDFLAG(ENABLE_BRAVE_WALLET)
   // JSON includes kWallet, but it won't be loaded when Wallet is disabled
+  expected_count--;
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_TALK)
+  // JSON includes kBraveTalk, but it won't be loaded when Talk is disabled
   expected_count--;
 #endif
 
@@ -1094,7 +1121,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   CHECK(sidebar_items);
 
   std::vector items = {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
       SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -1107,6 +1136,11 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 
 #if !BUILDFLAG(ENABLE_AI_CHAT)
   // JSON includes kChatUI, but it won't be loaded when AI Chat is disabled
+  expected_count--;
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_TALK)
+  // JSON includes kBraveTalk, but it won't be loaded when Talk is disabled
   expected_count--;
 #endif
 
@@ -1126,7 +1160,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   CHECK(sidebar_items);
 
   std::vector items = {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
       SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
       SidebarItem::BuiltInItemType::kBookmarks,
 #if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
@@ -1145,6 +1181,11 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
 
 #if !BUILDFLAG(ENABLE_BRAVE_WALLET)
   // JSON includes kWallet, but it won't be loaded when Wallet is disabled
+  expected_count--;
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_TALK)
+  // JSON includes kBraveTalk, but it won't be loaded when Talk is disabled
   expected_count--;
 #endif
 

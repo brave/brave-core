@@ -1,0 +1,81 @@
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+
+name: CI
+jobs:
+  lint:
+    name: Lint
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: "clippy, rustfmt"
+      - uses: Swatinem/rust-cache@v2
+
+      # make sure all code has been formatted with rustfmt
+      - name: check rustfmt
+        run: cargo fmt -- --check --color always
+
+      # run clippy to verify we have no warnings
+      - run: cargo fetch
+      - name: cargo clippy
+        # Unfortunately we can't use --all-features since that would enable request and curl for gix which is not allowed
+        run: cargo clippy --all-targets --features __internal_all -- -D warnings
+      - name: sigh
+        run: cargo clippy --all-targets --features gix-curl,sparse,local-builder -- -D warnings
+
+  test:
+    name: Test
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+        features: ["--features git", "--features sparse", "--features local-builder,sparse"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo fetch
+      - name: cargo test build
+        run: cargo build --tests ${{ matrix.features }}
+      - name: cargo test
+        run: cargo test ${{ matrix.features }}
+      - name: Test connection reuse
+        if: ${{ matrix.features == '--features sparse' }}
+        run: |
+          cargo run --manifest-path tests/connect/Cargo.toml
+
+  deny-check:
+    name: cargo-deny
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+
+  publish-check:
+    name: Publish Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo fetch
+      - name: cargo publish check
+        run: cargo publish --dry-run
+
+  test_success:
+    runs-on: ubuntu-22.04
+    needs: [lint, test, publish-check, deny-check]
+    steps:
+      - run: echo "All test jobs passed"
+      

@@ -36,7 +36,6 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     private static final String TAG = "AskPlayStoreRating";
     private static final int DIALOG_DISMISS_DELAY_MS = 500;
     private ReviewManager mReviewManager;
-    private ReviewInfo mReviewInfo;
     private boolean mIsFromSettings;
     private Context mContext;
 
@@ -88,11 +87,6 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         if (mReviewManager == null) {
             mReviewManager = ReviewManagerFactory.create(mContext);
         }
-        try {
-            requestReviewFlow();
-        } catch (NullPointerException e) {
-            Log.e(TAG, "In-App requestReviewFlow exception");
-        }
 
         final View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
@@ -138,51 +132,52 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         rateNotNowButton.setOnClickListener((v) -> dismiss());
     }
 
-    private void requestReviewFlow() {
-        if (mReviewManager != null) {
-            Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
-            request.addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    mReviewInfo = task.getResult();
-                } else {
-                    // There was some problem
-                    Log.e(TAG, "In-App review error " + task.getException());
-                }
-            });
-        }
-    }
-
     private void launchReviewFlow() {
-        if (mReviewManager != null && mReviewInfo != null && mContext instanceof Activity) {
-            try {
-                // We can get the ReviewInfo object
-                Task<Void> flow = mReviewManager.launchReviewFlow((Activity) mContext, mReviewInfo);
-                flow.addOnCompleteListener(
-                        task1 -> {
-                            if (!task1.isSuccessful() && task1.getException() != null) {
-                                // Handle failures in the review flow. Fall back to opening Play
-                                // Store directly if the review flow fails for any reason.
-                                Exception exception = task1.getException();
-                                Log.e(
-                                        TAG,
-                                        "Review flow failed: " + exception.getMessage(),
-                                        exception);
-                                RateUtils.getInstance().openPlaystore(mContext);
-                            }
-                            // The flow has finished. The API does not indicate whether the user
-                            // reviewed or not, or even whether the review dialog was shown.
-                            // Thus, no matter the result, we continue our app flow.
-                        });
-            } catch (RuntimeException e) {
-                // Catch BadParcelableException wrapped in RuntimeException that can occur when
-                // PlayCoreDialogWrapperActivity tries to deserialize ReviewInfo from Intent extras.
-                // Fall back to opening Play Store directly.
-                Log.e(TAG, "Failed to launch review flow: " + e.getMessage(), e);
-                RateUtils.getInstance().openPlaystore(mContext);
-            }
-        } else {
-            // if case fails then open play store app page
+        if (mReviewManager == null || !(mContext instanceof Activity)) {
             RateUtils.getInstance().openPlaystore(mContext);
+            return;
         }
+
+        // Request a fresh ReviewInfo right before launching. According to Google's official
+        // documentation (https://developer.android.com/guide/playcore/in-app-review),
+        // ReviewInfo objects are valid for a limited time and should be requested shortly
+        // before launching the review flow to ensure validity.
+        Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
+        request.addOnCompleteListener(
+                task -> {
+                    if (!task.isSuccessful()) {
+                        // If requestReviewFlow fails, fall back to opening Play Store directly
+                        Log.e(TAG, "Failed to request review flow: " + task.getException());
+                        RateUtils.getInstance().openPlaystore(mContext);
+                        return;
+                    }
+                    ReviewInfo reviewInfo = task.getResult();
+                    if (reviewInfo == null) {
+                        Log.e(TAG, "ReviewInfo is null, falling back to Play Store");
+                        RateUtils.getInstance().openPlaystore(mContext);
+                        return;
+                    }
+
+                    // Launch review flow with fresh ReviewInfo
+                    Task<Void> flow =
+                            mReviewManager.launchReviewFlow((Activity) mContext, reviewInfo);
+                    flow.addOnCompleteListener(
+                            task1 -> {
+                                if (!task1.isSuccessful() && task1.getException() != null) {
+                                    // Handle failures reported back through the Task API.
+                                    // Note: This won't catch crashes in Play Store's activity
+                                    // (like BadParcelableException), but will catch other failures.
+                                    Exception exception = task1.getException();
+                                    Log.e(
+                                            TAG,
+                                            "Review flow failed: " + exception.getMessage(),
+                                            exception);
+                                    RateUtils.getInstance().openPlaystore(mContext);
+                                }
+                                // The flow has finished. The API does not indicate whether the user
+                                // reviewed or not, or even whether the review dialog was shown.
+                                // Thus, no matter the result, we continue our app flow.
+                            });
+                });
     }
 }

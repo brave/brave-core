@@ -99,6 +99,8 @@ impl ExtraFieldMagic {
 ///
 ///```
 /// # fn main() -> Result<(), zip::result::ZipError> {
+/// # #[cfg(target_pointer_width = "64")]
+/// # {
 /// use std::io::{self, Cursor, prelude::*};
 /// use std::error::Error;
 /// use zip::{ZipWriter, write::SimpleFileOptions};
@@ -129,6 +131,7 @@ impl ExtraFieldMagic {
 /// zip.start_file("zero.dat", options)?;
 /// // This succeeds because we specified that it could be a large file.
 /// assert!(zip.write_all(&big_buf[..]).is_ok());
+/// # }
 /// # Ok(())
 /// # }
 ///```

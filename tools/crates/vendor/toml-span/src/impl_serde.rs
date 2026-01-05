@@ -3,12 +3,12 @@
 //! Provides [`serde::Serialize`] support for [`Value`] and [`Spanned`]
 
 use crate::{
-    value::{Value, ValueInner},
     Spanned,
+    value::{Value, ValueInner},
 };
 use serde::ser::{SerializeMap, SerializeSeq};
 
-impl<'de> serde::Serialize for Value<'de> {
+impl serde::Serialize for Value<'_> {
     fn serialize<S>(&self, ser: S) -> Result<S::Ok, S::Error>
     where
         S: serde::Serializer,

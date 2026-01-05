@@ -21,7 +21,7 @@ impl Stat {
             check_stat, use_nsec, ..
         }: Options,
     ) -> bool {
-        match timestamp.unix_seconds().cmp(&(self.mtime.secs as i64)) {
+        match timestamp.unix_seconds().cmp(&i64::from(self.mtime.secs)) {
             Ordering::Less => true,
             Ordering::Equal if use_nsec && check_stat => timestamp.nanoseconds() <= self.mtime.nsecs,
             Ordering::Equal => true,
@@ -75,7 +75,14 @@ impl Stat {
         }
     }
 
-    /// Creates stat information from the result of `symlink_metadata`.
+    /// Creates stat information from file metadata.
+    ///
+    /// The information passed to this function should originate from a function like
+    /// `symlink_metadata`/`lstat` or `File::metadata`/`fstat`.
+    ///
+    /// The data are adjusted for use in the index, using default values of fields that are not
+    /// meaningful on the target operating system or that are unavailable, and truncating data
+    /// where doing so does not lose essential information for keeping track of file status.
     pub fn from_fs(stat: &crate::fs::Metadata) -> Result<Stat, SystemTimeError> {
         let mtime = stat.modified().unwrap_or(std::time::UNIX_EPOCH);
         let ctime = stat.created().unwrap_or(std::time::UNIX_EPOCH);
@@ -88,7 +95,7 @@ impl Stat {
             ino: 0,
             uid: 0,
             gid: 0,
-            // truncation to 32 bits is on purpose (git does the same).
+            // Truncation to 32 bits is on purpose (git does the same).
             size: stat.len() as u32,
         };
         #[cfg(not(windows))]
@@ -96,15 +103,14 @@ impl Stat {
             Stat {
                 mtime: mtime.try_into().unwrap_or_default(),
                 ctime: ctime.try_into().unwrap_or_default(),
-                // truncating to 32 bits is fine here because
-                // that's what the linux syscalls returns
-                // just rust upcasts to 64 bits for some reason?
-                // numbers this large are impractical anyway (that's a lot of hard-drives).
+                // Truncating the device and inode numbers to 32 bits should be fine even on
+                // targets where they are represented as 64 bits, since we do not use them
+                // precisely for tracking changes and we do not map them back to the inode.
                 dev: stat.dev() as u32,
                 ino: stat.ino() as u32,
                 uid: stat.uid(),
                 gid: stat.gid(),
-                // truncation to 32 bits is on purpose (git does the same).
+                // Truncation to 32 bits is on purpose (git does the same).
                 size: stat.len() as u32,
             }
         };

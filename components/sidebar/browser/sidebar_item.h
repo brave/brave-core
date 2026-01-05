@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/common/features.h"
 #include "url/gurl.h"
 
@@ -18,25 +19,33 @@ struct SidebarItem {
     kTypeWeb,
   };
 
-  // Do not reorder or remove items, as underlying values are used as id of
-  // items.
+  // Underlying values are used as id of items. Use explicit values so
+  // conditionally compiled items don't shift others.
   enum class BuiltInItemType {
     kNone = 0,
-    kBraveTalk,
-    kWallet,
-    kBookmarks,
-    kReadingList,
-    kHistory,
-    kPlaylist,
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    kBraveTalk = 1,
+#endif
+    kWallet = 2,
+    kBookmarks = 3,
+    kReadingList = 4,
+    kHistory = 5,
+    kPlaylist = 6,
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    kChatUI,
-    // When adding new item, dont' forget to update kBuiltInItemLast.
-    kBuiltInItemLast = kChatUI,
-#else
-    // When adding new item, dont' forget to update kBuiltInItemLast.
-    kBuiltInItemLast = kPlaylist,
+    kChatUI = 7,
 #endif
   };
+
+  // Count of built-in items based on enabled features.
+  static constexpr size_t kBuiltInItemsCount =
+      5  // kWallet, kBookmarks, kReadingList, kHistory, kPlaylist
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      + 1  // kChatUI
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+      + 1  // kBraveTalk
+#endif
+      ;
 
   static SidebarItem Create(const std::u16string& title,
                             Type type,

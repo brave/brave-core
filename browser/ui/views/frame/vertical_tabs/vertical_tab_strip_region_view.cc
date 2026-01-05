@@ -62,8 +62,6 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/resize_area.h"
-#include "ui/views/controls/scroll_view.h"
-#include "ui/views/event_monitor.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
@@ -323,27 +321,6 @@ END_METADATA
 
 }  // namespace
 
-class VerticalTabStripScrollContentsView : public views::View {
-  METADATA_HEADER(VerticalTabStripScrollContentsView, views::View)
- public:
-  VerticalTabStripScrollContentsView() {
-    SetLayoutManager(std::make_unique<views::FillLayout>());
-  }
-  ~VerticalTabStripScrollContentsView() override = default;
-
-  // views::View:
-  void ChildPreferredSizeChanged(views::View* child) override {
-    PreferredSizeChanged();
-  }
-
-  void OnPaintBackground(gfx::Canvas* canvas) override {
-    canvas->DrawColor(GetColorProvider()->GetColor(kColorToolbar));
-  }
-};
-
-BEGIN_METADATA(VerticalTabStripScrollContentsView)
-END_METADATA
-
 class BraveVerticalTabStripRegionView::HeaderView : public views::View {
   METADATA_HEADER(HeaderView, views::View)
  public:
@@ -421,41 +398,6 @@ using HeaderView = BraveVerticalTabStripRegionView::HeaderView;
 BEGIN_METADATA(HeaderView)
 END_METADATA
 
-// Double checks mouse hovered state. When there's border around the region view
-// or window resizable area the mouse enter/exit event might not be correct.
-// Thus, observes mouse events that passes the window.
-class BraveVerticalTabStripRegionView::MouseWatcher : public ui::EventObserver {
- public:
-  explicit MouseWatcher(BraveVerticalTabStripRegionView* region_view)
-      : region_view_(region_view),
-        event_monitor_(views::EventMonitor::CreateWindowMonitor(
-            this,
-            region_view_->GetWidget()->GetNativeWindow(),
-            {ui::EventType::kMousePressed, ui::EventType::kMouseEntered,
-             ui::EventType::kMouseExited})) {}
-
-  // ui::EventObserver:
-  void OnEvent(const ui::Event& event) override {
-    switch (event.type()) {
-      case ui::EventType::kMouseEntered:
-        region_view_->OnMouseEntered();
-        break;
-      case ui::EventType::kMousePressed:
-        region_view_->OnMousePressedInTree();
-        break;
-      case ui::EventType::kMouseExited:
-        region_view_->OnMouseExited();
-        break;
-      default:
-        break;
-    }
-  }
-
- private:
-  raw_ptr<BraveVerticalTabStripRegionView> region_view_;
-  std::unique_ptr<views::EventMonitor> event_monitor_;
-};
-
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
@@ -469,12 +411,14 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   // The default state is kExpanded, so reset animation state to 1.0.
   width_animation_.Reset(1.0);
 
+  region_view_container_ = AddChildView(std::make_unique<views::View>());
+  region_view_container_->SetLayoutManager(
+      std::make_unique<views::FillLayout>());
+
   header_view_ = AddChildView(std::make_unique<HeaderView>(
       base::BindRepeating(&BraveVerticalTabStripRegionView::ToggleState,
                           base::Unretained(this)),
       this, browser_));
-  contents_view_ =
-      AddChildView(std::make_unique<VerticalTabStripScrollContentsView>());
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
@@ -811,8 +755,12 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
-  // As we have to update ScrollView's viewport size and its contents size,
-  // laying out children manually will be more handy.
+  if (original_region_view_->parent() != region_view_container_) {
+    // When original_region_view_ is not a child of this view, it means that
+    // the vertical tab strip is not visible.
+    return;
+  }
+
   const auto contents_bounds = GetContentsBounds();
 
   const gfx::Size header_size{contents_bounds.width(),
@@ -826,14 +774,14 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       kSeparatorHeight - header_view_->height();
   const int contents_view_preferred_height =
       tab_strip()->GetPreferredSize().height();
-  contents_view_->SetBoundsRect(gfx::Rect(
+  region_view_container_->SetBoundsRect(gfx::Rect(
       header_view_->bounds().bottom_left(),
       gfx::Size(
           contents_bounds.width(),
           std::min(contents_view_max_height, contents_view_preferred_height))));
 
   gfx::Rect separator_bounds(
-      contents_view_->bounds().bottom_left(),
+      region_view_container_->bounds().bottom_left(),
       gfx::Size(contents_bounds.width(), kSeparatorHeight));
   separator_bounds.Inset(
       gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
@@ -880,14 +828,18 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
       tab_strip_region_view_original_index_ =
           original_parent_of_region_view_->GetIndexOf(original_region_view_);
       original_parent_of_region_view_->RemoveChildView(original_region_view_);
-      contents_view_->AddChildView(original_region_view_.get());
+      region_view_container_->AddChildView(original_region_view_.get());
+
+      // Resize area can be overlapped with tabs.
+      // To make it grabbable, it should be top-most view.
+      ReorderChildView(resize_area_, children().size() - 1);
     }
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   } else {
     if (Contains(original_region_view_)) {
-      contents_view_->RemoveChildView(original_region_view_);
+      region_view_container_->RemoveChildView(original_region_view_.get());
       CHECK(tab_strip_region_view_original_index_.has_value());
       original_parent_of_region_view_->AddChildViewAt(
           original_region_view_.get(), *tab_strip_region_view_original_index_);
@@ -911,10 +863,6 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
 
 void BraveVerticalTabStripRegionView::OnMouseExited(
     const ui::MouseEvent& event) {
-  OnMouseExited();
-}
-
-void BraveVerticalTabStripRegionView::OnMouseExited() {
   DCHECK(GetWidget())
       << "As widget is the event sink, this is expected to be true.";
   if (GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
@@ -946,6 +894,35 @@ void BraveVerticalTabStripRegionView::OnMouseEntered() {
 
   mouse_exit_timer_.Stop();
   ScheduleFloatingModeTimer();
+}
+
+void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
+    const gfx::PointF& point_in_screen) {
+  if (!IsFloatingVerticalTabsEnabled()) {
+    return;
+  }
+
+  // If already expanded, no need to show on mouse over.
+  if (state_ == State::kExpanded || state_ == State::kFloating) {
+    return;
+  }
+
+  gfx::RectF mouse_event_detect_bounds(
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_))
+          ->GetBoundingBoxInScreenForMouseOverHandling());
+
+  constexpr int kHotCornerWidth = 7;
+  const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
+  if (*vertical_tab_on_right_) {
+    mouse_event_detect_bounds.Inset(gfx::InsetsF::TLBR(0, inset, 0, 0));
+  } else {
+    mouse_event_detect_bounds.Inset(gfx::InsetsF::TLBR(0, 0, 0, inset));
+  }
+
+  if (mouse_event_detect_bounds.Contains(point_in_screen)) {
+    OnMouseEntered();
+    return;
+  }
 }
 
 void BraveVerticalTabStripRegionView::OnMousePressedInTree() {
@@ -981,11 +958,6 @@ void BraveVerticalTabStripRegionView::OnBoundsChanged(
       tab_strip()->tab_container_->CompleteAnimationAndLayout();
     }
   }
-}
-
-void BraveVerticalTabStripRegionView::AddedToWidget() {
-  View::AddedToWidget();
-  mouse_watcher_ = std::make_unique<MouseWatcher>(this);
 }
 
 void BraveVerticalTabStripRegionView::OnResize(int resize_amount,
@@ -1160,13 +1132,17 @@ void BraveVerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged() {
 void BraveVerticalTabStripRegionView::
     OnHideComopletelyWhenCollapsedPrefChanged() {
   OnFloatingModePrefChanged();
-  PreferredSizeChanged();
   if (state_ == State::kCollapsed) {
     // When setting is turned on/off, we should make sure vertical tab strip is
     // getting hidden/shown.
     SetVisible(
         !tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_));
   }
+
+  // Call after setting visibility as region view's visibility is referred when
+  // updating widget bounds at
+  // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
+  PreferredSizeChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnExpandedWidthPrefChanged() {
@@ -1209,14 +1185,11 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
     if (IsFloatingEnabledForBrowserFullscreen()) {
       // In this case, vertical tab strip should be invisible but show up when
       // mouse hovers.
-      // there's no border visible, so 2px is enough.
-      return 2;
+      return 0;
     }
 
     if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
-      // Typical window frame border is 8px, so we can use 4px as vertical tab
-      // space only takes inner 4px.
-      return 4;
+      return 0;
     }
 
     return tabs::kVerticalTabMinWidth +
@@ -1225,9 +1198,21 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
   };
 
   if (!ignore_animation && width_animation_.is_animating()) {
-    return gfx::Tween::IntValueBetween(width_animation_.GetCurrentValue(),
-                                       calculate_collapsed_width(),
-                                       calculate_expanded_width());
+    int width = gfx::Tween::IntValueBetween(width_animation_.GetCurrentValue(),
+                                            calculate_collapsed_width(),
+                                            calculate_expanded_width());
+#if BUILDFLAG(IS_MAC)
+    // When region view's width is zero, widget gets hidden by
+    // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
+    // Then, width animation seems not working properly on macOS.
+    // To avoid widget getting hidden, we set a minimum width when
+    // animation goes for showing.
+    constexpr int kMinShowWidth = 3;
+    if (width_animation_.IsShowing() && width < kMinShowWidth) {
+      width = kMinShowWidth;
+    }
+#endif
+    return width;
   }
 
   if (state == State::kExpanded || state == State::kFloating) {

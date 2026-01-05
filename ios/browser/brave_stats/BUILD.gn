@@ -12,6 +12,7 @@ source_set("brave_stats") {
   ]
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//components/prefs",
   ]

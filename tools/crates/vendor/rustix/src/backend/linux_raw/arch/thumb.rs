@@ -5,7 +5,7 @@
 //! into r7 inside the inline asm.
 
 use crate::backend::reg::{
-    ArgReg, FromAsm, RetReg, SyscallNumber, ToAsm, A0, A1, A2, A3, A4, A5, R0,
+    ArgReg, FromAsm, RetReg, SyscallNumber, ToAsm as _, A0, A1, A2, A3, A4, A5, R0,
 };
 use core::arch::asm;
 
@@ -65,6 +65,7 @@ pub(in crate::backend) unsafe fn syscall1_noreturn(nr: SyscallNumber<'_>, a0: Ar
     asm!(
         "mov r7, {nr}",
         "svc 0",
+        "udf #16",
         nr = in(reg) nr.to_asm(),
         in("r0") a0.to_asm(),
         options(nostack, noreturn)

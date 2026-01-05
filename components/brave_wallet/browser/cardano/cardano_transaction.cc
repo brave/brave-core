@@ -464,6 +464,14 @@ void CardanoTransaction::ClearInputs() {
   inputs_.clear();
 }
 
+base::flat_set<CardanoAddress> CardanoTransaction::GetInputAddresses() const {
+  base::flat_set<CardanoAddress> input_addresses;
+  for (auto& input : inputs()) {
+    input_addresses.insert(input.utxo_address);
+  }
+  return input_addresses;
+}
+
 void CardanoTransaction::SetWitnesses(std::vector<TxWitness> witnesses) {
   witnesses_ = std::move(witnesses);
 }

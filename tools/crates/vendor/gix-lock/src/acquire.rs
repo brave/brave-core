@@ -14,7 +14,7 @@ pub enum Fail {
     /// Fail after the first unsuccessful attempt of obtaining a lock.
     #[default]
     Immediately,
-    /// Retry after failure with exponentially longer sleep times to block the current thread.
+    /// Retry after failure with quadratically longer sleep times to block the current thread.
     /// Fail once the given duration is exceeded, similar to [Fail::Immediately]
     AfterDurationWithBackoff(Duration),
 }
@@ -176,7 +176,7 @@ fn lock_with_mode<T>(
     match mode {
         Fail::Immediately => try_lock(&lock_path, directory, cleanup),
         Fail::AfterDurationWithBackoff(time) => {
-            for wait in backoff::Exponential::default_with_random().until_no_remaining(time) {
+            for wait in backoff::Quadratic::default_with_random().until_no_remaining(time) {
                 attempts += 1;
                 match try_lock(&lock_path, directory, cleanup.clone()) {
                     Ok(v) => return Ok((lock_path, v)),

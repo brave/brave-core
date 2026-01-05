@@ -1036,7 +1036,7 @@ impl<'n> Pieces<'n> {
     /// Converts this `Pieces` into an "owned" value whose lifetime is
     /// `'static`.
     ///
-    /// Ths "owned" value in this context refers to the time zone annotation
+    /// The "owned" value in this context refers to the time zone annotation
     /// name, if present. For example, `Canada/Yukon` in
     /// `2025-01-03T07:55-07[Canada/Yukon]`. When parsing into a `Pieces`,
     /// the time zone annotation name is borrowed. But callers may find it more

@@ -9,15 +9,12 @@ use crate::backend::c;
 use crate::backend::conv::ret_pid_t;
 use crate::backend::conv::{borrowed_fd, ret};
 use crate::fd::BorrowedFd;
-#[cfg(all(feature = "alloc", feature = "procfs"))]
+#[cfg(feature = "alloc")]
 #[cfg(not(any(target_os = "fuchsia", target_os = "wasi")))]
 use crate::ffi::CStr;
 #[cfg(any(
     not(target_os = "espidf"),
-    all(
-        feature = "procfs",
-        not(any(target_os = "fuchsia", target_os = "wasi"))
-    )
+    not(any(target_os = "fuchsia", target_os = "wasi"))
 ))]
 use core::mem::MaybeUninit;
 #[cfg(not(target_os = "wasi"))]
@@ -105,7 +102,7 @@ pub(crate) fn tcgetattr(fd: BorrowedFd<'_>) -> io::Result<Termios> {
         let mut result = MaybeUninit::<Termios>::uninit();
 
         // `result` is a `Termios` which starts with the same layout as
-        // `libc::termios`, so we can cast the pointer.
+        // `c::termios`, so we can cast the pointer.
         ret(c::tcgetattr(borrowed_fd(fd), result.as_mut_ptr().cast()))?;
 
         Ok(result.assume_init())
@@ -353,12 +350,12 @@ pub(crate) fn tcgetsid(fd: BorrowedFd<'_>) -> io::Result<Pid> {
     }
 }
 
-#[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "wasi")))]
 pub(crate) fn tcsetwinsize(fd: BorrowedFd<'_>, winsize: Winsize) -> io::Result<()> {
     unsafe { ret(c::ioctl(borrowed_fd(fd), c::TIOCSWINSZ, &winsize)) }
 }
 
-#[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "wasi")))]
 pub(crate) fn tcgetwinsize(fd: BorrowedFd<'_>) -> io::Result<Winsize> {
     unsafe {
         let mut buf = MaybeUninit::<Winsize>::uninit();
@@ -496,7 +493,20 @@ pub(crate) fn set_input_speed(termios: &mut Termios, arbitrary_speed: u32) -> io
 #[cfg(not(any(target_os = "espidf", target_os = "nto", target_os = "wasi")))]
 #[inline]
 pub(crate) fn cfmakeraw(termios: &mut Termios) {
-    unsafe { c::cfmakeraw(as_mut_ptr(termios).cast()) }
+    unsafe {
+        // On AIX, cfmakeraw() has a return type of 'int' instead of 'void'.
+        // If the argument 'termios' is NULL, it returns -1; otherwise, it returns 0.
+        // We believe it is safe to ignore the return value.
+        #[cfg(target_os = "aix")]
+        {
+            let _ = c::cfmakeraw(as_mut_ptr(termios).cast());
+        }
+
+        #[cfg(not(target_os = "aix"))]
+        {
+            c::cfmakeraw(as_mut_ptr(termios).cast());
+        }
+    }
 }
 
 pub(crate) fn isatty(fd: BorrowedFd<'_>) -> bool {
@@ -508,7 +518,7 @@ pub(crate) fn isatty(fd: BorrowedFd<'_>) -> bool {
     unsafe { c::isatty(borrowed_fd(fd)) != 0 }
 }
 
-#[cfg(all(feature = "alloc", feature = "procfs"))]
+#[cfg(feature = "alloc")]
 #[cfg(not(any(target_os = "fuchsia", target_os = "wasi")))]
 pub(crate) fn ttyname(dirfd: BorrowedFd<'_>, buf: &mut [MaybeUninit<u8>]) -> io::Result<usize> {
     unsafe {

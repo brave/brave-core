@@ -1,0 +1,21 @@
+framework = "CoreImage"
+crate = "objc2-core-image"
+required-crates = ["objc2", "objc2-foundation"]
+undesired-default-dependencies = ["objc2-open-gl", "objc2-open-gl-es"] # OpenGL is deprecated
+custom-lib-rs = true
+macos = "10.11"
+maccatalyst = "13.0"
+ios = "5.0"
+tvos = "9.0"
+visionos = "1.0"
+
+external.MLModel.module = "CoreML.MLModel"
+external.__IOSurface.module = "IOSurface.IOSurfaceRef"
+
+# Both a protocol and a class, so we use Swift's naming scheme
+protocol.CIFilter.renamed = "CIFilterProtocol"
+
+# Needs AVFoundation (cyclical)
+class.CIImage.categories.AVDepthData.skipped = true
+class.CIImage.categories.AVPortraitEffectsMatte.skipped = true
+class.CIImage.categories.AVSemanticSegmentationMatte.skipped = true

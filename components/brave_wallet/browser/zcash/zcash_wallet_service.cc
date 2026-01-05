@@ -443,10 +443,26 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
         return base::ok(mojom::ZCashTxType::kOrchardToOrchard);
       }
 
+      // Check for known accounts.
+      const auto& account_infos = keyring_service_->GetAllAccountInfos();
+      for (const auto& account_info : account_infos) {
+        if (account_info->account_id->keyring_id != account_id->keyring_id) {
+          continue;
+        }
+        auto zcash_account_info =
+            keyring_service_->GetZCashAccountInfo(account_info->account_id);
+        if (zcash_account_info->next_transparent_receive_address
+                ->address_string == addr) {
+          return base::ok(mojom::ZCashTxType::kUnshielding);
+        }
+      }
+
+      // Just validate that address is transparent correct address.
       // If not Orchard, check if it's a transparent address (Orchard to
       // Transparent)
       auto transparent_validation_result =
           ValidateTransparentRecipientAddress(testnet, addr);
+
       if (transparent_validation_result.has_value()) {
         return base::ok(mojom::ZCashTxType::kOrchardToTransparent);
       }
@@ -469,7 +485,12 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
       return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
     }
   }
+
 #endif
+  if (use_shielded_pool) {
+    return base::unexpected(mojom::ZCashAddressError::kInvalidSenderType);
+  }
+
   auto validation_result = ValidateTransparentRecipientAddress(testnet, addr);
   if (validation_result.has_value()) {
     return base::ok(mojom::ZCashTxType::kTransparentToTransparent);

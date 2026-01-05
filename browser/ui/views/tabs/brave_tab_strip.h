@@ -24,6 +24,8 @@ class BraveTabStrip : public TabStrip {
 
   void EnterTabRenameModeAt(int index);
 
+  bool ShouldShowPinnedTabsInGrid() const;
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
@@ -40,6 +42,7 @@ class BraveTabStrip : public TabStrip {
       const std::optional<std::u16string>& title) override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
+  bool CanPaintThrobberToLayer() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);

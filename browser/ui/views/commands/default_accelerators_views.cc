@@ -18,9 +18,11 @@
 
 namespace commands {
 
-std::pair<Accelerators, base::flat_set<ui::Accelerator>>
+std::pair<AcceleratorPrefManager::Accelerators, base::flat_set<ui::Accelerator>>
 GetDefaultAccelerators() {
-  std::pair<Accelerators, base::flat_set<ui::Accelerator>> result;
+  std::pair<AcceleratorPrefManager::Accelerators,
+            base::flat_set<ui::Accelerator>>
+      result;
   auto& [defaults, system_commands] = result;
 
   auto add_to_accelerators = [&defaults](const AcceleratorMapping& mapping) {

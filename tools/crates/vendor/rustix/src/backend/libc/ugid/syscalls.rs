@@ -1,12 +1,12 @@
 use crate::backend::c;
-use crate::ugid::{Gid, Uid};
+use crate::ugid::{Gid, RawGid, RawUid, Uid};
 
 #[cfg(not(target_os = "wasi"))]
 #[inline]
 #[must_use]
 pub(crate) fn getuid() -> Uid {
     unsafe {
-        let uid = c::getuid();
+        let uid = c::getuid() as RawUid;
         Uid::from_raw(uid)
     }
 }
@@ -16,7 +16,7 @@ pub(crate) fn getuid() -> Uid {
 #[must_use]
 pub(crate) fn geteuid() -> Uid {
     unsafe {
-        let uid = c::geteuid();
+        let uid = c::geteuid() as RawUid;
         Uid::from_raw(uid)
     }
 }
@@ -26,7 +26,7 @@ pub(crate) fn geteuid() -> Uid {
 #[must_use]
 pub(crate) fn getgid() -> Gid {
     unsafe {
-        let gid = c::getgid();
+        let gid = c::getgid() as RawGid;
         Gid::from_raw(gid)
     }
 }
@@ -36,7 +36,7 @@ pub(crate) fn getgid() -> Gid {
 #[must_use]
 pub(crate) fn getegid() -> Gid {
     unsafe {
-        let gid = c::getegid();
+        let gid = c::getegid() as RawGid;
         Gid::from_raw(gid)
     }
 }

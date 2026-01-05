@@ -6,6 +6,7 @@ use std::path::Path;
 ///
 /// This type is immutable.
 #[cfg_attr(docsrs, doc(cfg(feature = "osv-export")))]
+#[derive(Clone, Copy)]
 pub struct GitPath<'a> {
     repo: &'a Repository,
     path: &'a Path,
@@ -24,10 +25,9 @@ impl<'a> GitPath<'a> {
         }
 
         if !repo.has_relative_path(path) {
-            Err(format_err!(
+            Err(Error::new(
                 ErrorKind::Repo,
-                "HEAD commit does not contain path '{}'",
-                path.display()
+                format!("HEAD commit does not contain path '{}'", path.display()),
             ))
         } else {
             Ok(GitPath { repo, path })

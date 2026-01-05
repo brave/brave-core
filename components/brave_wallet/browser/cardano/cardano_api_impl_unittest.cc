@@ -183,6 +183,20 @@ class CardanoApiImplTest : public testing::Test {
 
     {
       test_rpc_service()->AddUtxo(
+          input_address_1->address_string,
+          "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925",
+          "10", "5000000");
+
+      CardanoTransaction::TxInput input;
+      input.utxo_outpoint.txid = test::HexToArray<32>(
+          "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
+      input.utxo_outpoint.index = 10;
+      input.utxo_value = 5000000;
+      tx.AddInput(std::move(input));
+    }
+
+    {
+      test_rpc_service()->AddUtxo(
           input_address_2->address_string,
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925",
           "1", "34451133");
@@ -1444,12 +1458,15 @@ TEST_F(CardanoApiImplTest, SignTx) {
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
-  EXPECT_EQ(request->inputs.size(), 2u);
+  EXPECT_EQ(request->inputs.size(), 3u);
   EXPECT_EQ(request->inputs[0]->address, addr1);
   EXPECT_EQ(request->inputs[0]->value, 34451133u);
 
   EXPECT_EQ(request->inputs[1]->address, addr2);
   EXPECT_EQ(request->inputs[1]->value, 34451133u);
+
+  EXPECT_EQ(request->inputs[2]->address, addr1);
+  EXPECT_EQ(request->inputs[2]->value, 5000000u);
 
   EXPECT_EQ(request->outputs.size(), 3u);
   EXPECT_EQ(request->outputs[0]->address,
@@ -1617,24 +1634,31 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
-  EXPECT_EQ(request->inputs.size(), 3u);
-  EXPECT_EQ(request->inputs[0]->address, addr1);
-  EXPECT_EQ(request->inputs[0]->value, 34451133u);
+  EXPECT_EQ(request->inputs.size(), 4u);
+
+  EXPECT_EQ(request->inputs[0]->address, "");
+  EXPECT_EQ(request->inputs[0]->value, 0u);
   EXPECT_EQ(request->inputs[0]->outpoint_txid,
-            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+            "3737373737373737373737373737373737373737373737373737373737373737");
   EXPECT_EQ(request->inputs[0]->outpoint_index, 0u);
 
-  EXPECT_EQ(request->inputs[1]->address, addr2);
+  EXPECT_EQ(request->inputs[1]->address, addr1);
   EXPECT_EQ(request->inputs[1]->value, 34451133u);
   EXPECT_EQ(request->inputs[1]->outpoint_txid,
             "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[1]->outpoint_index, 1u);
+  EXPECT_EQ(request->inputs[1]->outpoint_index, 0u);
 
-  EXPECT_EQ(request->inputs[2]->address, "");
-  EXPECT_EQ(request->inputs[2]->value, 0u);
+  EXPECT_EQ(request->inputs[2]->address, addr2);
+  EXPECT_EQ(request->inputs[2]->value, 34451133u);
   EXPECT_EQ(request->inputs[2]->outpoint_txid,
-            "3737373737373737373737373737373737373737373737373737373737373737");
-  EXPECT_EQ(request->inputs[2]->outpoint_index, 0u);
+            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+  EXPECT_EQ(request->inputs[2]->outpoint_index, 1u);
+
+  EXPECT_EQ(request->inputs[3]->address, addr1);
+  EXPECT_EQ(request->inputs[3]->value, 5000000u);
+  EXPECT_EQ(request->inputs[3]->outpoint_txid,
+            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+  EXPECT_EQ(request->inputs[3]->outpoint_index, 10u);
 
   EXPECT_EQ(request->outputs.size(), 3u);
   EXPECT_EQ(request->outputs[0]->address,

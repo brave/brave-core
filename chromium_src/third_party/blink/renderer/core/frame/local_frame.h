@@ -35,11 +35,16 @@ class PageGraph;
   link_preview_triggerer_;      \
   ForwardDeclaredMember<PageGraph> page_graph_
 
+#define IsSameOrigin(...)    \
+  IsSameOrigin(__VA_ARGS__); \
+  url::Origin origin_for_clear_window_name_check_
+
 #include <third_party/blink/renderer/core/frame/local_frame.h>  // IWYU pragma: export
 
 #undef link_preview_triggerer_
 #undef PerformSpellCheck
 #undef ScriptEnabled
 #undef CopyImageAtViewportPoint
+#undef IsSameOrigin
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_FRAME_H_

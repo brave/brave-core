@@ -25,6 +25,7 @@ rust_library(
     deps = [
         ":impl",
         "//:cxx",
+        "@crates.io//:serde",
     ],
 )
 
@@ -37,6 +38,7 @@ cc_library(
         ":module/source",
     ],
     hdrs = ["ffi/tests.h"],
+    linkstatic = True,
     deps = [
         ":bridge/include",
         ":module/include",

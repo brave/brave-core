@@ -9,6 +9,9 @@ use crate::{
     PathIdMapping,
 };
 
+/// Specify how to parse ignore patterns.
+pub use gix_ignore::search::Ignore as ParseIgnore;
+
 /// Decide where to read `.gitignore` files from.
 #[derive(Default, Debug, Clone, Copy)]
 pub enum Source {
@@ -55,11 +58,14 @@ impl Ignore {
     ///
     /// The `exclude_file_name_for_directories` is an optional override for the filename to use when checking per-directory
     /// ignore files within the repository, defaults to`.gitignore`.
+    ///
+    /// `parse` controls how to parse ignore files.
     pub fn new(
         overrides: IgnoreMatchGroup,
         globals: IgnoreMatchGroup,
         exclude_file_name_for_directories: Option<&BStr>,
         source: Source,
+        parse: gix_ignore::search::Ignore,
     ) -> Self {
         Ignore {
             overrides,
@@ -69,6 +75,7 @@ impl Ignore {
             exclude_file_name_for_directories: exclude_file_name_for_directories
                 .map_or_else(|| ".gitignore".into(), ToOwned::to_owned),
             source,
+            parse,
         }
     }
 }
@@ -180,15 +187,15 @@ impl Ignore {
                     Ok(idx) => {
                         let ignore_blob = objects
                             .find_blob(&id_mappings[idx].1, buf)
-                            .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
+                            .map_err(std::io::Error::other)?;
                         let ignore_path = gix_path::from_bstring(ignore_path_relative.into_owned());
                         self.stack
-                            .add_patterns_buffer(ignore_blob.data, ignore_path, Some(Path::new("")));
+                            .add_patterns_buffer(ignore_blob.data, ignore_path, Some(Path::new("")), self.parse);
                         stats.patterns_buffers += 1;
                     }
                     Err(_) => {
                         // Need one stack level per component so push and pop matches.
-                        self.stack.patterns.push(Default::default())
+                        self.stack.patterns.push(Default::default());
                     }
                 }
             }
@@ -200,6 +207,7 @@ impl Ignore {
                     follow_symlinks,
                     Some(root),
                     buf,
+                    self.parse,
                 )?;
                 stats.pattern_files += usize::from(added);
                 stats.tried_pattern_files += 1;
@@ -208,15 +216,19 @@ impl Ignore {
                         Ok(idx) => {
                             let ignore_blob = objects
                                 .find_blob(&id_mappings[idx].1, buf)
-                                .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
+                                .map_err(std::io::Error::other)?;
                             let ignore_path = gix_path::from_bstring(ignore_path_relative.into_owned());
-                            self.stack
-                                .add_patterns_buffer(ignore_blob.data, ignore_path, Some(Path::new("")));
+                            self.stack.add_patterns_buffer(
+                                ignore_blob.data,
+                                ignore_path,
+                                Some(Path::new("")),
+                                self.parse,
+                            );
                             stats.patterns_buffers += 1;
                         }
                         Err(_) => {
                             // Need one stack level per component so push and pop matches.
-                            self.stack.patterns.push(Default::default())
+                            self.stack.patterns.push(Default::default());
                         }
                     }
                 }

@@ -49,7 +49,7 @@ fn parse_header<R: Reader>(input: &mut R) -> Result<ListsHeader> {
         return Err(Error::UnknownVersion(u64::from(version)));
     }
 
-    let address_size = input.read_u8()?;
+    let address_size = input.read_address_size()?;
     let segment_selector_size = input.read_u8()?;
     if segment_selector_size != 0 {
         return Err(Error::UnsupportedSegmentSize);

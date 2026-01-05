@@ -1,10 +1,8 @@
 use bstr::{BStr, BString, ByteSlice};
 use gix_glob::pattern::Case;
 
-use crate::search::MatchKind;
-use crate::search::MatchKind::*;
 use crate::{
-    search::{Match, Spec},
+    search::{Match, MatchKind, MatchKind::*, Spec},
     MagicSignature, Pattern, Search, SearchMode,
 };
 
@@ -49,7 +47,7 @@ impl Search {
         let basename_not_important = None;
         if relative_path
             .get(..self.common_prefix_len)
-            .map_or(true, |rela_path_prefix| rela_path_prefix != self.common_prefix())
+            .is_none_or(|rela_path_prefix| rela_path_prefix != self.common_prefix())
         {
             return None;
         }
@@ -144,9 +142,10 @@ impl Search {
             return true;
         }
         let common_prefix_len = self.common_prefix_len.min(relative_path.len());
-        if relative_path.get(..common_prefix_len).map_or(true, |rela_path_prefix| {
-            rela_path_prefix != self.common_prefix()[..common_prefix_len]
-        }) {
+        if relative_path
+            .get(..common_prefix_len)
+            .is_none_or(|rela_path_prefix| rela_path_prefix != self.common_prefix()[..common_prefix_len])
+        {
             return false;
         }
         for mapping in &self.patterns {
@@ -205,9 +204,10 @@ impl Search {
             return true;
         }
         let common_prefix_len = self.common_prefix_len.min(relative_path.len());
-        if relative_path.get(..common_prefix_len).map_or(true, |rela_path_prefix| {
-            rela_path_prefix != self.common_prefix()[..common_prefix_len]
-        }) {
+        if relative_path
+            .get(..common_prefix_len)
+            .is_none_or(|rela_path_prefix| rela_path_prefix != self.common_prefix()[..common_prefix_len])
+        {
             return false;
         }
         for mapping in &self.patterns {

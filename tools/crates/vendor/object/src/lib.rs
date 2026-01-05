@@ -31,6 +31,11 @@
 //!
 //! The [`mod@write#modules`] submodules define helpers for writing the raw structs.
 //!
+//! ## Build API
+//!
+//! The [`mod@build`] submodules define helpers for building object files, either from
+//! scratch or by modifying existing files.
+//!
 //! ## Shared definitions
 //!
 //! The crate provides a number of definitions that are used by both the read and write
@@ -41,19 +46,6 @@
 #![deny(missing_debug_implementations)]
 #![no_std]
 #![warn(rust_2018_idioms)]
-// Style.
-#![allow(clippy::collapsible_if)]
-#![allow(clippy::comparison_chain)]
-#![allow(clippy::manual_flatten)]
-#![allow(clippy::match_like_matches_macro)]
-#![allow(clippy::single_match)]
-#![allow(clippy::type_complexity)]
-// Occurs due to fallible iteration.
-#![allow(clippy::should_implement_trait)]
-// Unit errors are converted to other types by callers.
-#![allow(clippy::result_unit_err)]
-// Worse readability sometimes.
-#![allow(clippy::collapsible_else_if)]
 
 #[cfg(feature = "cargo-all")]
 compile_error!("'--all-features' is not supported; use '--features all' instead");
@@ -86,6 +78,9 @@ pub use read::*;
 
 #[cfg(feature = "write_core")]
 pub mod write;
+
+#[cfg(feature = "build_core")]
+pub mod build;
 
 #[cfg(feature = "archive")]
 pub mod archive;

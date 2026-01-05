@@ -4,7 +4,7 @@
 
 use criterion::{black_box, BenchmarkId, Criterion};
 
-use icu_normalizer::{ComposingNormalizer, DecomposingNormalizer};
+use icu_normalizer::{ComposingNormalizerBorrowed, DecomposingNormalizerBorrowed};
 
 struct BenchDataContent {
     pub file_name: String,
@@ -28,10 +28,10 @@ fn strip_headers(content: &str) -> String {
 }
 
 fn normalizer_bench_data() -> [BenchDataContent; 15] {
-    let nfc_normalizer: ComposingNormalizer = ComposingNormalizer::new_nfc();
-    let nfd_normalizer: DecomposingNormalizer = DecomposingNormalizer::new_nfd();
-    let nfkc_normalizer: ComposingNormalizer = ComposingNormalizer::new_nfkc();
-    let nfkd_normalizer: DecomposingNormalizer = DecomposingNormalizer::new_nfkd();
+    let nfc_normalizer = ComposingNormalizerBorrowed::new_nfc();
+    let nfd_normalizer = DecomposingNormalizerBorrowed::new_nfd();
+    let nfkc_normalizer = ComposingNormalizerBorrowed::new_nfkc();
+    let nfkd_normalizer = DecomposingNormalizerBorrowed::new_nfkd();
 
     let content_latin: (&str, &str) = (
         "TestNames_Latin",
@@ -115,10 +115,10 @@ fn normalizer_bench_data() -> [BenchDataContent; 15] {
         let nfkd = &nfkd_normalizer.normalize(raw_content);
         BenchDataContent {
             file_name: file_name.to_owned(),
-            nfc: nfc.to_owned(),
-            nfd: nfd.to_owned(),
-            nfkc: nfkc.to_owned(),
-            nfkd: nfkd.to_owned(),
+            nfc: nfc.to_string(),
+            nfd: nfd.to_string(),
+            nfkc: nfkc.to_string(),
+            nfkd: nfkd.to_string(),
             nfc_u16: nfc.encode_utf16().collect(),
             nfd_u16: nfd.encode_utf16().collect(),
             nfkc_u16: nfkc.encode_utf16().collect(),
@@ -127,18 +127,18 @@ fn normalizer_bench_data() -> [BenchDataContent; 15] {
     })
 }
 
-fn function_under_bench(normalizer: &ComposingNormalizer, text: &str) {
+fn function_under_bench(normalizer: &ComposingNormalizerBorrowed, text: &str) {
     normalizer.normalize(text);
 }
 
-fn function_under_bench_utf16(normalizer: &ComposingNormalizer, text: &[u16]) {
+fn function_under_bench_utf16(normalizer: &ComposingNormalizerBorrowed, text: &[u16]) {
     normalizer.normalize_utf16(text);
 }
 
 pub fn criterion_benchmark(criterion: &mut Criterion) {
     let group_name = "composing_normalizer_nfc";
 
-    let normalizer_under_bench: ComposingNormalizer = ComposingNormalizer::new_nfc();
+    let normalizer_under_bench = ComposingNormalizerBorrowed::new_nfc();
 
     let mut group = criterion.benchmark_group(group_name);
 

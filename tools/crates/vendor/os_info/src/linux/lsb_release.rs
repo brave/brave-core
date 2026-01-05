@@ -17,13 +17,23 @@ pub fn get() -> Option<Info> {
 
     let os_type = match release.distribution.as_ref().map(String::as_ref) {
         Some("Alpaquita") => Type::Alpaquita,
+        Some("ALT Linux") => Type::ALTLinux,
         Some("Amazon") | Some("AmazonAMI") => Type::Amazon,
+        Some("AOSC") => Type::AOSC,
         Some("Arch") => Type::Arch,
         Some("Artix") => Type::Artix,
         Some("Bluefin") => Type::Bluefin,
         Some("cachyos") => Type::CachyOS,
         Some("CentOS") => Type::CentOS,
-        Some("Debian") => Type::Debian,
+        Some("Debian") => {
+            // Check if it's actually Raspberry Pi OS
+            if std::path::Path::new("/etc/rpi-issue").exists() {
+                Type::Raspbian
+            } else {
+                Type::Debian
+            }
+        }
+        Some("Elementary") => Type::Elementary,
         Some("EndeavourOS") => Type::EndeavourOS,
         Some("Fedora") | Some("Fedora Linux") => Type::Fedora,
         Some("Garuda") => Type::Garuda,
@@ -31,7 +41,7 @@ pub fn get() -> Option<Info> {
         Some("Kali") => Type::Kali,
         Some("Linuxmint") => Type::Mint,
         Some("MaboxLinux") => Type::Mabox,
-        Some("ManjaroLinux") => Type::Manjaro,
+        Some("ManjaroLinux") | Some("Manjaro-ARM") => Type::Manjaro,
         Some("Mariner") => Type::Mariner,
         Some("NixOS") => Type::NixOS,
         Some("NobaraLinux") => Type::Nobara,
@@ -40,6 +50,7 @@ pub fn get() -> Option<Info> {
         Some("openEuler") => Type::openEuler,
         Some("openSUSE") => Type::openSUSE,
         Some("OracleServer") => Type::OracleLinux,
+        Some("Pika") => Type::PikaOS,
         Some("Pop") => Type::Pop,
         Some("Raspbian") => Type::Raspbian,
         Some("RedHatEnterprise") | Some("RedHatEnterpriseServer") => Type::RedHatEnterprise,
@@ -48,7 +59,9 @@ pub fn get() -> Option<Info> {
         Some("Ubuntu") => Type::Ubuntu,
         Some("UltramarineLinux") => Type::Ultramarine,
         Some("VoidLinux") => Type::Void,
-        _ => Type::Linux,
+        Some("Zorin") => Type::Zorin,
+        // Return None here so file_release::get is then used.
+        _ => return None,
     };
 
     Some(Info {
@@ -126,6 +139,22 @@ mod tests {
         assert_eq!(parse_results.distribution, Some("Alpaquita".to_string()));
         assert_eq!(parse_results.version, Some("23".to_string()));
         assert_eq!(parse_results.codename, None);
+    }
+
+    #[test]
+    fn altlinux() {
+        let parse_results = parse(alt_file());
+        assert_eq!(parse_results.distribution, Some("ALT".to_string()));
+        assert_eq!(parse_results.version, Some("n/a".to_string()));
+        assert_eq!(parse_results.codename, Some("Salvia".to_string()));
+    }
+
+    #[test]
+    fn aosc() {
+        let parse_results = parse(aosc_file());
+        assert_eq!(parse_results.distribution, Some("AOSC".to_string()));
+        assert_eq!(parse_results.version, Some("12.3.1".to_string()));
+        assert_eq!(parse_results.codename, Some("localhost".to_string()));
     }
 
     #[test]
@@ -317,6 +346,14 @@ mod tests {
     }
 
     #[test]
+    fn manjaro_arm() {
+        let parse_results = parse(manjaro_arm_24_04());
+        assert_eq!(parse_results.distribution, Some("Manjaro-ARM".to_string()));
+        assert_eq!(parse_results.version, Some("24.04".to_string()));
+        assert_eq!(parse_results.codename, None);
+    }
+
+    #[test]
     fn mariner() {
         let parse_results = parse(mariner_file());
         assert_eq!(parse_results.distribution, Some("Mariner".to_string()));
@@ -365,6 +402,13 @@ mod tests {
         assert_eq!(parse_results.version, Some("rolling".to_string()));
     }
 
+    #[test]
+    fn pikaos() {
+        let parse_results = parse(pikaos_file());
+        assert_eq!(parse_results.distribution, Some("Pika".to_string()));
+        assert_eq!(parse_results.version, Some("4".to_string()));
+    }
+
     fn file() -> &'static str {
         "\nDistributor ID:	Debian\n\
          Description:	Debian GNU/Linux 7.8 (wheezy)\n\
@@ -378,6 +422,20 @@ mod tests {
         Description:    BellSoft Alpaquita Linux Stream 23 (musl)\n\
         Release:        23\n\
         Codename:       n/a"
+    }
+
+    fn alt_file() -> &'static str {
+        "\nDistributor ID: ALT\n\
+        Description:    ALT p11 Starterkit (Salvia)\n\
+        Release:        n/a\n\
+        Codename:       Salvia"
+    }
+
+    fn aosc_file() -> &'static str {
+        "\nDistributor ID: AOSC OS\n\
+        Description:    AOSC OS\n\
+        Release:        12.3.1\n\
+        Codename:       localhost"
     }
 
     fn arch_file() -> &'static str {
@@ -579,6 +637,15 @@ mod tests {
         "
     }
 
+    fn manjaro_arm_24_04() -> &'static str {
+        "LSB Version:    n/a\n\
+        Distributor ID: Manjaro-ARM\n\
+        Description:    Manjaro ARM Linux\n\
+        Release:        24.04\n\
+        Codename:       n/a\n\
+        "
+    }
+
     fn mariner_file() -> &'static str {
         "LSB Version:    n/a\n\
         Distributor ID: Mariner\n\
@@ -620,6 +687,14 @@ mod tests {
          Description:	 CachyOS\n\
          Release:	     rolling\n\
          Codename:	     n/a\n\
+         "
+    }
+
+    fn pikaos_file() -> &'static str {
+        "Distributor ID: Pika
+         Description:    PikaOS 4
+         Release:        4
+         Codename:       nest
          "
     }
 }

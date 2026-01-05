@@ -14,24 +14,24 @@
 
 #![allow(unsafe_code)]
 
-use crate::backend::c;
 use crate::fd::{AsFd, BorrowedFd};
+use crate::ffi as c;
 use crate::io::Result;
 
-#[cfg(any(linux_kernel, bsd))]
+#[cfg(any(linux_kernel, bsd, target_os = "redox"))]
 use core::mem;
 
 pub use patterns::*;
 
 mod patterns;
 
-#[cfg(linux_kernel)]
+#[cfg(any(linux_kernel, target_os = "redox"))]
 mod linux;
 
 #[cfg(bsd)]
 mod bsd;
 
-#[cfg(linux_kernel)]
+#[cfg(any(linux_kernel, target_os = "redox"))]
 use linux as platform;
 
 #[cfg(bsd)]
@@ -58,11 +58,16 @@ use bsd as platform;
 ///
 /// # Safety
 ///
-/// While [`Ioctl`] takes much of the unsafety out of `ioctl` calls, it is
-/// still unsafe to call this code with arbitrary device drivers, as it is up
-/// to the device driver to implement the `ioctl` call correctly. It is on the
-/// onus of the protocol between the user and the driver to ensure that the
-/// `ioctl` call is safe to make.
+/// While [`Ioctl`] takes much of the unsafety out of `ioctl` calls, callers
+/// must still ensure that the opcode value, operand type, and data access
+/// correctly reflect what's in the device driver servicing the call. `ioctl`
+/// calls form a protocol between the userspace `ioctl` callers and the device
+/// drivers in the kernel, and safety depends on both sides agreeing and
+/// upholding the expectations of the other.
+///
+/// And, `ioctl` calls can read and write arbitrary memory and have arbitrary
+/// side effects. Callers must ensure that any memory accesses and side effects
+/// are compatible with Rust language invariants.
 ///
 /// # References
 ///  - [Linux]
@@ -85,7 +90,7 @@ use bsd as platform;
 #[inline]
 pub unsafe fn ioctl<F: AsFd, I: Ioctl>(fd: F, mut ioctl: I) -> Result<I::Output> {
     let fd = fd.as_fd();
-    let request = I::OPCODE.raw();
+    let request = ioctl.opcode();
     let arg = ioctl.as_ptr();
 
     // SAFETY: The variant of `Ioctl` asserts that this is a valid IOCTL call
@@ -101,17 +106,13 @@ pub unsafe fn ioctl<F: AsFd, I: Ioctl>(fd: F, mut ioctl: I) -> Result<I::Output>
     I::output_from_ptr(output, arg)
 }
 
-unsafe fn _ioctl(
-    fd: BorrowedFd<'_>,
-    request: RawOpcode,
-    arg: *mut c::c_void,
-) -> Result<IoctlOutput> {
+unsafe fn _ioctl(fd: BorrowedFd<'_>, request: Opcode, arg: *mut c::c_void) -> Result<IoctlOutput> {
     crate::backend::io::syscalls::ioctl(fd, request, arg)
 }
 
 unsafe fn _ioctl_readonly(
     fd: BorrowedFd<'_>,
-    request: RawOpcode,
+    request: Opcode,
     arg: *mut c::c_void,
 ) -> Result<IoctlOutput> {
     crate::backend::io::syscalls::ioctl_readonly(fd, request, arg)
@@ -134,27 +135,21 @@ unsafe fn _ioctl_readonly(
 ///
 /// By implementing this trait, you guarantee that:
 ///
-/// - The `ioctl` call expects the input provided by `as_ptr` and produces the
-///   output as indicated by `output`.
-/// - That `output_from_ptr` can safely take the pointer from `as_ptr` and cast
-///   it to the correct type, *only* after the `ioctl` call.
-/// - That `OPCODE` uniquely identifies the `ioctl` call.
-/// - That, for whatever platforms you are targeting, the `ioctl` call is safe
-///   to make.
-/// - If `IS_MUTATING` is false, that no userspace data will be modified by the
-///   `ioctl` call.
+///  - The `ioctl` call expects the input provided by `as_ptr` and produces the
+///    output as indicated by `output`.
+///  - That `output_from_ptr` can safely take the pointer from `as_ptr` and
+///    cast it to the correct type, *only* after the `ioctl` call.
+///  - That the return value of `opcode` uniquely identifies the `ioctl` call.
+///  - That, for whatever platforms you are targeting, the `ioctl` call is safe
+///    to make.
+///  - If `IS_MUTATING` is false, that no userspace data will be modified by
+///    the `ioctl` call.
 pub unsafe trait Ioctl {
     /// The type of the output data.
     ///
     /// Given a pointer, one should be able to construct an instance of this
     /// type.
     type Output;
-
-    /// The opcode used by this `ioctl` command.
-    ///
-    /// There are different types of opcode depending on the operation. See
-    /// documentation for the [`Opcode`] struct for more information.
-    const OPCODE: Opcode;
 
     /// Does the `ioctl` mutate any data in the userspace?
     ///
@@ -168,6 +163,12 @@ pub unsafe trait Ioctl {
     /// any data in the userspace. Undefined behavior may occur if this is set
     /// to `false` when it should be `true`.
     const IS_MUTATING: bool;
+
+    /// Get the opcode used by this `ioctl` command.
+    ///
+    /// There are different types of opcode depending on the operation. See
+    /// documentation for [`opcode`] for more information.
+    fn opcode(&self) -> Opcode;
 
     /// Get a pointer to the data to be passed to the `ioctl` command.
     ///
@@ -188,100 +189,84 @@ pub unsafe trait Ioctl {
     ) -> Result<Self::Output>;
 }
 
-/// The opcode used by an `Ioctl`.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Opcode {
-    /// The raw opcode.
-    raw: RawOpcode,
-}
-
-impl Opcode {
-    /// Create a new old `Opcode` from a raw opcode.
-    ///
-    /// Rather than being a composition of several attributes, old opcodes are
-    /// just numbers. In general most drivers follow stricter conventions, but
-    /// older drivers may still use this strategy.
-    #[inline]
-    pub const fn old(raw: RawOpcode) -> Self {
-        Self { raw }
-    }
+/// Const functions for computing opcode values.
+///
+/// Linux's headers define macros such as `_IO`, `_IOR`, `_IOW`, and `_IOWR`
+/// for defining ioctl values in a structured way that encode whether they
+/// are reading and/or writing, and other information about the ioctl. The
+/// functions in this module correspond to those macros.
+///
+/// If you're writing a driver and defining your own ioctl numbers, it's
+/// recommended to use these functions to compute them.
+#[cfg(any(linux_kernel, bsd, target_os = "redox"))]
+pub mod opcode {
+    use super::*;
 
     /// Create a new opcode from a direction, group, number, and size.
     ///
     /// This corresponds to the C macro `_IOC(direction, group, number, size)`
-    #[cfg(any(linux_kernel, bsd))]
+    #[doc(alias = "_IOC")]
     #[inline]
     pub const fn from_components(
         direction: Direction,
         group: u8,
         number: u8,
         data_size: usize,
-    ) -> Self {
-        assert!(
-            data_size <= RawOpcode::MAX as usize,
-            "data size is too large"
-        );
+    ) -> Opcode {
+        assert!(data_size <= Opcode::MAX as usize, "data size is too large");
 
-        Self::old(platform::compose_opcode(
+        platform::compose_opcode(
             direction,
-            group as RawOpcode,
-            number as RawOpcode,
-            data_size as RawOpcode,
-        ))
+            group as Opcode,
+            number as Opcode,
+            data_size as Opcode,
+        )
     }
 
-    /// Create a new non-mutating opcode from a group, a number, and the type
-    /// of data.
+    /// Create a new opcode from a group, a number, that uses no data.
     ///
-    /// This corresponds to the C macro `_IO(group, number)` when `T` is zero
-    /// sized.
-    #[cfg(any(linux_kernel, bsd))]
+    /// This corresponds to the C macro `_IO(group, number)`.
+    #[doc(alias = "_IO")]
     #[inline]
-    pub const fn none<T>(group: u8, number: u8) -> Self {
-        Self::from_components(Direction::None, group, number, mem::size_of::<T>())
+    pub const fn none(group: u8, number: u8) -> Opcode {
+        from_components(Direction::None, group, number, 0)
     }
 
     /// Create a new reading opcode from a group, a number and the type of
     /// data.
     ///
     /// This corresponds to the C macro `_IOR(group, number, T)`.
-    #[cfg(any(linux_kernel, bsd))]
+    #[doc(alias = "_IOR")]
     #[inline]
-    pub const fn read<T>(group: u8, number: u8) -> Self {
-        Self::from_components(Direction::Read, group, number, mem::size_of::<T>())
+    pub const fn read<T>(group: u8, number: u8) -> Opcode {
+        from_components(Direction::Read, group, number, mem::size_of::<T>())
     }
 
     /// Create a new writing opcode from a group, a number and the type of
     /// data.
     ///
     /// This corresponds to the C macro `_IOW(group, number, T)`.
-    #[cfg(any(linux_kernel, bsd))]
+    #[doc(alias = "_IOW")]
     #[inline]
-    pub const fn write<T>(group: u8, number: u8) -> Self {
-        Self::from_components(Direction::Write, group, number, mem::size_of::<T>())
+    pub const fn write<T>(group: u8, number: u8) -> Opcode {
+        from_components(Direction::Write, group, number, mem::size_of::<T>())
     }
 
     /// Create a new reading and writing opcode from a group, a number and the
     /// type of data.
     ///
     /// This corresponds to the C macro `_IOWR(group, number, T)`.
-    #[cfg(any(linux_kernel, bsd))]
+    #[doc(alias = "_IOWR")]
     #[inline]
-    pub const fn read_write<T>(group: u8, number: u8) -> Self {
-        Self::from_components(Direction::ReadWrite, group, number, mem::size_of::<T>())
-    }
-
-    /// Get the raw opcode.
-    #[inline]
-    pub fn raw(self) -> RawOpcode {
-        self.raw
+    pub const fn read_write<T>(group: u8, number: u8) -> Opcode {
+        from_components(Direction::ReadWrite, group, number, mem::size_of::<T>())
     }
 }
 
 /// The direction that an `ioctl` is going.
 ///
-/// Note that this is relative to userspace. `Read` means reading data from the
-/// kernel, and write means the kernel writing data to userspace.
+/// The direction is relative to userspace: `Read` means reading data from the
+/// kernel, and `Write` means the kernel writing data to userspace.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Direction {
     /// None of the above.
@@ -301,11 +286,11 @@ pub enum Direction {
 pub type IoctlOutput = c::c_int;
 
 /// The type used by the `ioctl` to signify the command.
-pub type RawOpcode = _RawOpcode;
+pub type Opcode = _Opcode;
 
 // Under raw Linux, this is an `unsigned int`.
 #[cfg(linux_raw)]
-type _RawOpcode = c::c_uint;
+type _Opcode = c::c_uint;
 
 // On libc Linux with GNU libc or uclibc, this is an `unsigned long`.
 #[cfg(all(
@@ -313,7 +298,7 @@ type _RawOpcode = c::c_uint;
     target_os = "linux",
     any(target_env = "gnu", target_env = "uclibc")
 ))]
-type _RawOpcode = c::c_ulong;
+type _Opcode = c::c_ulong;
 
 // Musl uses `c_int`.
 #[cfg(all(
@@ -322,11 +307,11 @@ type _RawOpcode = c::c_ulong;
     not(target_env = "gnu"),
     not(target_env = "uclibc")
 ))]
-type _RawOpcode = c::c_int;
+type _Opcode = c::c_int;
 
 // Android uses `c_int`.
 #[cfg(all(not(linux_raw), target_os = "android"))]
-type _RawOpcode = c::c_int;
+type _Opcode = c::c_int;
 
 // BSD, Haiku, Hurd, Redox, and Vita use `unsigned long`.
 #[cfg(any(
@@ -337,23 +322,55 @@ type _RawOpcode = c::c_int;
     target_os = "hurd",
     target_os = "vita"
 ))]
-type _RawOpcode = c::c_ulong;
+type _Opcode = c::c_ulong;
 
 // AIX, Emscripten, Fuchsia, Solaris, and WASI use a `int`.
 #[cfg(any(
     solarish,
     target_os = "aix",
+    target_os = "cygwin",
     target_os = "fuchsia",
     target_os = "emscripten",
+    target_os = "nto",
     target_os = "wasi",
-    target_os = "nto"
 ))]
-type _RawOpcode = c::c_int;
+type _Opcode = c::c_int;
 
 // ESP-IDF uses a `c_uint`.
 #[cfg(target_os = "espidf")]
-type _RawOpcode = c::c_uint;
+type _Opcode = c::c_uint;
 
 // Windows has `ioctlsocket`, which uses `i32`.
 #[cfg(windows)]
-type _RawOpcode = i32;
+type _Opcode = i32;
+
+#[cfg(linux_raw_dep)]
+#[cfg(not(any(target_arch = "sparc", target_arch = "sparc64")))]
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_opcode_funcs() {
+        // `TUNGETDEVNETNS` is defined as `_IO('T', 227)`.
+        assert_eq!(
+            linux_raw_sys::ioctl::TUNGETDEVNETNS as Opcode,
+            opcode::none(b'T', 227)
+        );
+        // `FS_IOC_GETVERSION` is defined as `_IOR('v', 1, long)`.
+        assert_eq!(
+            linux_raw_sys::ioctl::FS_IOC_GETVERSION as Opcode,
+            opcode::read::<c::c_long>(b'v', 1)
+        );
+        // `TUNSETNOCSUM` is defined as `_IOW('T', 200, int)`.
+        assert_eq!(
+            linux_raw_sys::ioctl::TUNSETNOCSUM as Opcode,
+            opcode::write::<c::c_int>(b'T', 200)
+        );
+        // `FIFREEZE` is defined as `_IOWR('X', 119, int)`.
+        assert_eq!(
+            linux_raw_sys::ioctl::FIFREEZE as Opcode,
+            opcode::read_write::<c::c_int>(b'X', 119)
+        );
+    }
+}

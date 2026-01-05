@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -96,8 +97,10 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url) {
   if (url == GURL(chrome::kChromeUIBookmarksURL))
     return GURL(chrome::kChromeUIBookmarksSidePanelURL);
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   if (url.host() == kBraveTalkHost)
     return GURL(kBraveTalkURL);
+#endif
 
   if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost) {
     return GURL(kBraveUIWalletPageURL);
@@ -147,8 +150,10 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
 #endif
     case BuiltInItemType::kWallet:
       [[fallthrough]];
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     case BuiltInItemType::kBraveTalk:
       [[fallthrough]];
+#endif
     case BuiltInItemType::kHistory:
       [[fallthrough]];
     case BuiltInItemType::kNone:

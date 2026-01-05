@@ -11,8 +11,10 @@
 
 namespace brave_account {
 
-BraveAccountSettingsHandler::BraveAccountSettingsHandler(content::WebUI* web_ui)
-    : web_ui_(web_ui) {}
+BraveAccountSettingsHandler::BraveAccountSettingsHandler(
+    content::WebUI* web_ui,
+    mojo::PendingReceiver<mojom::RowHandlerFactory> pending_receiver)
+    : web_ui_(web_ui), receiver_(this, std::move(pending_receiver)) {}
 
 BraveAccountSettingsHandler::~BraveAccountSettingsHandler() = default;
 

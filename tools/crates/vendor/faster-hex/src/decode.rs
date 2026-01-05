@@ -211,14 +211,14 @@ pub unsafe fn hex_check_sse_with_case(mut src: &[u8], check_case: CheckCase) -> 
 
 /// Hex decode src into dst.
 /// The length of src must be even, and it's allowed to decode a zero length src.
-/// The length of dst must be src.len() / 2.
+/// The length of dst must be at least src.len() / 2.
 pub fn hex_decode(src: &[u8], dst: &mut [u8]) -> Result<(), Error> {
     hex_decode_with_case(src, dst, CheckCase::None)
 }
 
 /// Hex decode src into dst.
 /// The length of src must be even, and it's allowed to decode a zero length src.
-/// The length of dst must be src.len() / 2.
+/// The length of dst must be at least src.len() / 2.
 /// when check_case is CheckCase::Lower, the hex string must be lower case.
 /// when check_case is CheckCase::Upper, the hex string must be upper case.
 /// when check_case is CheckCase::None, the hex string can be lower case or upper case.
@@ -313,21 +313,36 @@ mod tests {
     };
     use proptest::proptest;
 
+    #[cfg(not(feature = "alloc"))]
+    const CAPACITY: usize = 128;
+
     fn _test_decode_fallback(s: &String) {
         let len = s.as_bytes().len();
         let mut dst = Vec::with_capacity(len);
         dst.resize(len, 0);
 
+        #[cfg(feature = "alloc")]
         let hex_string = hex_string(s.as_bytes());
+        #[cfg(not(feature = "alloc"))]
+        let hex_string = hex_string::<CAPACITY>(s.as_bytes());
 
         hex_decode_fallback(hex_string.as_bytes(), &mut dst);
 
         assert_eq!(&dst[..], s.as_bytes());
     }
 
+    #[cfg(feature = "alloc")]
     proptest! {
         #[test]
         fn test_decode_fallback(ref s in ".+") {
+            _test_decode_fallback(s);
+        }
+    }
+
+    #[cfg(not(feature = "alloc"))]
+    proptest! {
+        #[test]
+        fn test_decode_fallback(ref s in ".{1,16}") {
             _test_decode_fallback(s);
         }
     }

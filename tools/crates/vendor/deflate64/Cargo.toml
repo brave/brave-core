@@ -12,13 +12,19 @@
 [package]
 edition = "2021"
 name = "deflate64"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["anatawa12 <anatawa12@icloud.com>"]
+build = false
 exclude = [
     ".github/**",
     "tests/**",
     "test-assets/**",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Deflate64 implementation based on .NET's implementation"
 homepage = "https://github.com/anatawa12/deflate64-rs#readme"
 readme = "README.md"
@@ -30,6 +36,10 @@ keywords = [
 categories = ["compression"]
 license = "MIT"
 repository = "https://github.com/anatawa12/deflate64-rs"
+
+[lib]
+name = "deflate64"
+path = "src/lib.rs"
 
 [dependencies]
 

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
@@ -16,6 +17,10 @@ mojom("mojom") {
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_vpn/common/mojom",
   ]
+  enabled_features = []
+  if (enable_brave_talk) {
+    enabled_features += [ "enable_brave_talk" ]
+  }
 }
 
 source_set("brave_new_tab_page_refresh") {
@@ -52,6 +57,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/core/mojom:webui",
     "//brave/components/brave_search_conversion",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
@@ -81,6 +87,10 @@ source_set("brave_new_tab_page_refresh") {
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
     ]
+  }
+
+  if (enable_brave_talk) {
+    deps += [ "//brave/components/brave_talk" ]
   }
 }
 

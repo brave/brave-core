@@ -71,7 +71,7 @@ impl Source {
                     .transpose()
                     .ok()
                     .flatten()
-                    .map_or(false, |b| b.0)
+                    .is_some_and(|b| b.0)
                 {
                     None
                 } else {
@@ -84,7 +84,7 @@ impl Source {
                     .transpose()
                     .ok()
                     .flatten()
-                    .map_or(false, |b| b.0)
+                    .is_some_and(|b| b.0)
                 {
                     None
                 } else {
@@ -100,11 +100,21 @@ impl Source {
             User => env_var("GIT_CONFIG_GLOBAL")
                 .map(|global_override| PathBuf::from(global_override).into())
                 .or_else(|| {
-                    env_var("HOME").map(|home| {
-                        let mut p = PathBuf::from(home);
-                        p.push(".gitconfig");
-                        p.into()
-                    })
+                    env_var("HOME")
+                        .map(PathBuf::from)
+                        .or_else(|| {
+                            if cfg!(windows) {
+                                // On Windows, HOME is rarely set, and we generally need something more.
+                                std::env::home_dir()
+                            } else {
+                                // Git also only tries the env var on unix, and so do we
+                                None
+                            }
+                        })
+                        .map(|mut p| {
+                            p.push(".gitconfig");
+                            p.into()
+                        })
                 }),
             Local => Some(Path::new("config").into()),
             Worktree => Some(Path::new("config.worktree").into()),

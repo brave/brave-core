@@ -1,3 +1,20 @@
+# 1.4.0 (November 24, 2025)
+
+- Add `StatusCode::EARLY_HINTS` constant for 103 Early Hints.
+- Make `StatusCode::from_u16` now a `const fn`.
+- Make `Authority::from_static` now a `const fn`.
+- Make `PathAndQuery::from_static` now a `const fn`.
+- MSRV increased to 1.57 (allows legible const fn panic messages).
+
+# 1.3.1 (March 11, 2025)
+
+* Fix validation that all characters are UTF-8 in URI path and query.
+
+# 1.3.0 (March 11, 2025)
+
+* Allow most UTF-8 characters in URI path and query.
+* Fix `HeaderMap::reserve()` to allocate sufficient capacity.
+
 # 1.2.0 (December 3, 2024)
 
 * Add `StatusCode::TOO_EARLY` constant for 425 status.

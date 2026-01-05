@@ -113,7 +113,7 @@ impl Stack {
     /// Provide access to cached information for that `relative` path via the returned platform.
     pub fn at_path(
         &mut self,
-        relative: impl AsRef<Path>,
+        relative: impl ToNormalPathComponents,
         mode: Option<gix_index::entry::Mode>,
         objects: &dyn gix_object::Find,
     ) -> std::io::Result<Platform<'_>> {
@@ -127,8 +127,7 @@ impl Stack {
             case: self.case,
             statistics: &mut self.statistics,
         };
-        self.stack
-            .make_relative_path_current(relative.as_ref(), &mut delegate)?;
+        self.stack.make_relative_path_current(relative, &mut delegate)?;
         Ok(Platform {
             parent: self,
             is_dir: mode_is_dir(mode),
@@ -148,15 +147,8 @@ impl Stack {
         objects: &dyn gix_object::Find,
     ) -> std::io::Result<Platform<'_>> {
         let relative = relative.into();
-        let relative_path = gix_path::try_from_bstr(relative).map_err(|_err| {
-            std::io::Error::new(
-                std::io::ErrorKind::Other,
-                format!("The path \"{relative}\" contained invalid UTF-8 and could not be turned into a path"),
-            )
-        })?;
-
         self.at_path(
-            relative_path,
+            relative,
             mode.or_else(|| relative.ends_with_str("/").then_some(gix_index::entry::Mode::DIR)),
             objects,
         )
@@ -208,11 +200,10 @@ impl Stack {
 }
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod delegate;
 use delegate::StackDelegate;
+use gix_fs::stack::ToNormalPathComponents;
 
 mod platform;
 ///
-#[allow(clippy::empty_docs)]
 pub mod state;

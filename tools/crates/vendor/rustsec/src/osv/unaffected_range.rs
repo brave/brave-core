@@ -64,9 +64,9 @@ impl UnaffectedRange {
         if start.less_or_equal(&end) {
             Ok(UnaffectedRange { start, end })
         } else {
-            Err(format_err!(
+            Err(Error::new(
                 BadParam,
-                "Invalid range: start must be <= end; if equal, both bounds must be inclusive"
+                "Invalid range: start must be <= end; if equal, both bounds must be inclusive",
             ))
         }
     }
@@ -168,14 +168,20 @@ impl TryFrom<&semver::VersionReq> for UnaffectedRange {
                 }
                 Op::Exact => {
                     if input.comparators.len() != 1 {
-                        fail!(BadParam, "Selectors that define an exact version (e.g. '=1.0') must be alone in their range");
+                        fail!(
+                            BadParam,
+                            "Selectors that define an exact version (e.g. '=1.0') must be alone in their range"
+                        );
                     }
                     start = Bound::Inclusive(comp_to_ver(comparator));
                     end = Bound::Inclusive(comp_to_ver(comparator));
                 }
                 Op::Caret => {
                     if input.comparators.len() != 1 {
-                        fail!(BadParam, "Selectors that define both the upper and lower bound (e.g. '^1.0') must be alone in their range");
+                        fail!(
+                            BadParam,
+                            "Selectors that define both the upper and lower bound (e.g. '^1.0') must be alone in their range"
+                        );
                     }
                     let start_version = comp_to_ver(comparator);
                     let mut end_version = if start_version.major == 0 {
@@ -201,7 +207,10 @@ impl TryFrom<&semver::VersionReq> for UnaffectedRange {
                 }
                 Op::Tilde => {
                     if input.comparators.len() != 1 {
-                        fail!(BadParam, "Selectors that define both the upper and lower bound (e.g. '~1.0') must be alone in their range");
+                        fail!(
+                            BadParam,
+                            "Selectors that define both the upper and lower bound (e.g. '~1.0') must be alone in their range"
+                        );
                     }
                     let start_version = comp_to_ver(comparator);
                     let major = comparator.major;

@@ -4,10 +4,10 @@
 #![warn(rust_2018_idioms, unused_qualifications)]
 
 use cargo_lock::{
-    dependency::graph::EdgeDirection,
-    dependency::Tree,
-    package::{self},
     Dependency, Lockfile, Package, ResolveVersion, Version,
+    dependency::Tree,
+    dependency::graph::EdgeDirection,
+    package::{self},
 };
 use gumdrop::Options;
 use petgraph::graph::NodeIndex;

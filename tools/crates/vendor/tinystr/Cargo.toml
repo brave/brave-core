@@ -11,10 +11,11 @@
 
 [package]
 edition = "2021"
-rust-version = "1.67"
+rust-version = "1.82"
 name = "tinystr"
-version = "0.7.6"
+version = "0.8.2"
 authors = ["The ICU4X Project Developers"]
+build = false
 include = [
     "data/**/*",
     "src/**/*",
@@ -24,7 +25,13 @@ include = [
     "Cargo.toml",
     "LICENSE",
     "README.md",
+    "build.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A small ASCII-only bounded length string representation."
 readme = "README.md"
 keywords = [
@@ -38,46 +45,56 @@ categories = ["data-structures"]
 license = "Unicode-3.0"
 repository = "https://github.com/unicode-org/icu4x"
 
-[package.metadata.cargo-all-features]
-denylist = ["bench"]
+[package.metadata.workspaces]
+independent = true
 
 [package.metadata.docs.rs]
 all-features = true
 
-[package.metadata.workspaces]
-independent = true
+[features]
+alloc = [
+    "serde_core?/alloc",
+    "zerovec?/alloc",
+]
+databake = ["dep:databake"]
+default = ["alloc"]
+serde = ["dep:serde_core"]
+std = []
+zerovec = ["dep:zerovec"]
 
 [lib]
+name = "tinystr"
+path = "src/lib.rs"
 bench = false
 
 [[test]]
 name = "serde"
+path = "tests/serde.rs"
 required-features = ["serde"]
 
 [[bench]]
-name = "overview"
+name = "construct"
+path = "benches/construct.rs"
 harness = false
 
 [[bench]]
-name = "construct"
+name = "overview"
+path = "benches/overview.rs"
 harness = false
-required-features = ["bench"]
 
 [[bench]]
 name = "read"
+path = "benches/read.rs"
 harness = false
-required-features = ["bench"]
 
 [[bench]]
 name = "serde"
+path = "benches/serde.rs"
 harness = false
-required-features = [
-    "bench",
-    "serde",
-]
+required-features = ["serde"]
 
 [dependencies.databake]
-version = "0.1.8"
+version = "0.2.0"
 optional = true
 default-features = false
 
@@ -85,14 +102,13 @@ default-features = false
 version = "0.2.3"
 default-features = false
 
-[dependencies.serde]
-version = "1.0.110"
-features = ["alloc"]
+[dependencies.serde_core]
+version = "1.0.220"
 optional = true
 default-features = false
 
 [dependencies.zerovec]
-version = "0.10.2"
+version = "0.11.3"
 optional = true
 default-features = false
 
@@ -100,22 +116,17 @@ default-features = false
 version = "1.3.1"
 
 [dev-dependencies.postcard]
-version = "1.0.1"
+version = "1.0.3"
 features = ["use-std"]
 default-features = false
 
 [dev-dependencies.rand]
-version = "0.8"
+version = "0.9"
+features = ["small_rng"]
 
 [dev-dependencies.serde_json]
 version = "1.0.45"
 features = ["alloc"]
 
-[features]
-alloc = []
-bench = []
-default = ["alloc"]
-std = []
-
-[target."cfg(not(target_arch = \"wasm32\"))".dev-dependencies.criterion]
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies.criterion]
 version = "0.5.0"

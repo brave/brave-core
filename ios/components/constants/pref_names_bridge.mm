@@ -8,8 +8,5 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/pref_names.h"
 
-NSString* const kBraveTalkDisabledByPolicyPrefName =
-    base::SysUTF8ToNSString(kBraveTalkDisabledByPolicy);
-
 NSString* const kStatsReportingEnabledPrefName =
     base::SysUTF8ToNSString(kStatsReportingEnabled);
