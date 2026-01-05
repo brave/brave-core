@@ -266,7 +266,7 @@ class DAUTests: XCTestCase {
     let dateForTest = Date(timeIntervalSince1970: 1_736_139_600)
 
     // Making sure gregorian year is showing
-    let yearString = Date().mondayOfCurrentWeekFormatted?.truncate(length: 4, trailing: "")
+    let yearString = dateForTest.mondayOfCurrentWeekFormatted?.truncate(length: 4, trailing: "")
     let year = Int(yearString!)!
 
     XCTAssertEqual(year, 2025)
