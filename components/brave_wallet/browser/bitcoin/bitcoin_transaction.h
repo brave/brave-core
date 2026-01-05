@@ -80,7 +80,6 @@ class BitcoinTransaction {
     }
 
     void AddInput(BitcoinTransaction::TxInput input);
-    void AddInputs(std::vector<BitcoinTransaction::TxInput> inputs);
 
     uint64_t total_amount() const { return total_amount_; }
 
