@@ -5,7 +5,7 @@
 
 import { font, typography } from '@brave/leo/tokens/css/variables'
 import { Introduction } from './email_aliases_introduction'
-import { MainView } from './email_aliases_main_view'
+import { AliasList } from './email_aliases_list'
 import * as React from 'react'
 import Col from './styles/Col'
 import styled from 'styled-components'
@@ -47,9 +47,9 @@ export const ManagePage = ({
     <Introduction />
     <BraveAccountSignIn />
     {authState.status === AuthenticationStatus.kAuthenticated && (
-      <MainView
-        authState={authState}
-        aliasesState={aliasesState}
+      <AliasList
+        aliases={aliasesState}
+        authEmail={authState.email}
         emailAliasesService={emailAliasesService}
       />
     )}
