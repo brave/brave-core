@@ -296,7 +296,7 @@ function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSS
 }
 
 const colorOptions: ColorOption[] = [
-  { id: 'default', color1: '#FFFFFF', color2: '#D7DBFF', color3: '#4C54D2' },
+  { id: 'default', color1: '#E3E3E3', color2: '#C7C7C7', color3: '#4C54D2' },
   { id: 'purple', color1: '#D7DBFF', color2: '#BBC1FF', color3: '#8B8FD6' },
   { id: 'teal', color1: '#CDE3E5', color2: '#AEC3C6', color3: '#5A7A7D' },
   { id: 'cyan', color1: '#B3E6EF', color2: '#77D4E4', color3: '#007A8C' },
