@@ -575,9 +575,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   browser_view()->tabstrip()->StopAnimating();
 
   // When first tab is added, height should have tab's height plus top & bottom
-  // margin.
+  // margin and separator's height as both pinned and unpinned tabs are used.
   contents_view_height +=
-      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
+      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2) +
+      tabs::kPinnedUnpinnedSeparatorHeight;
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return region_view->original_region_view_->height() == contents_view_height;
   }));
@@ -627,6 +628,35 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             brave_tab_container->GetScrollBarMode());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       BraveTabContainerSeparator) {
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  AppendTab(browser());
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
+
+  auto* tab_strip = browser_view()->tabstrip();
+  EXPECT_EQ(
+      tab_strip->tab_at(0)->bounds().bottom() + tabs::kVerticalTabsSpacing,
+      brave_tab_container->separator_->bounds().y());
+
+  model->SetTabPinned(0, false);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {

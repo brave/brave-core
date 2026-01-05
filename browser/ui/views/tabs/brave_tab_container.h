@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
@@ -82,6 +83,9 @@ class BraveTabContainer : public TabContainerImpl {
   void HandleDragExited() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           BraveTabContainerSeparator);
+
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
@@ -175,6 +179,10 @@ class BraveTabContainer : public TabContainerImpl {
   // was handled.
   bool HandleVerticalScroll(int y_offset);
 
+  // Updates the separator visibility and position between pinned and unpinned
+  // tabs.
+  void UpdatePinnedUnpinnedSeparator();
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContextBase> drag_context_;
@@ -199,6 +207,9 @@ class BraveTabContainer : public TabContainerImpl {
   // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
   // value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
+
+  // Separator view between pinned and unpinned tabs
+  raw_ptr<views::View> separator_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
