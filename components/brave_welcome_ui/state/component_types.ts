@@ -15,6 +15,7 @@ export enum ViewType {
   ImportFailed,
   HelpImprove,
   HelpWDP,
+  Finished, // Brave Origin: skip HelpWDP/HelpImprove and finish
 }
 
 export enum BrowserType {

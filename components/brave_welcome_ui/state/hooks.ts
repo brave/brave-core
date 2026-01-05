@@ -82,9 +82,21 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
   const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
   const states = React.useMemo(() => {
-    const isWebDiscoveryEnabledManaged = loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
-    // Skip HelpWDP if web discovery is managed
-    const nextAfterImport = isWebDiscoveryEnabledManaged ? ViewType.HelpImprove : ViewType.HelpWDP
+    const isWebDiscoveryEnabledManaged =
+        loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
+    const isBraveOriginBranded =
+        loadTimeData.getBoolean('isBraveOriginBranded')
+
+    // Brave Origin: skip HelpWDP and HelpImprove entirely
+    // Otherwise: skip HelpWDP only if web discovery is managed
+    let nextAfterImport: ViewType
+    if (isBraveOriginBranded) {
+      nextAfterImport = ViewType.Finished
+    } else if (isWebDiscoveryEnabledManaged) {
+      nextAfterImport = ViewType.HelpImprove
+    } else {
+      nextAfterImport = ViewType.HelpWDP
+    }
 
     return {
       [ViewType.DefaultBrowser]: {  // The initial state view
@@ -95,7 +107,9 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         forward: nextAfterImport
       },
       [ViewType.ImportSelectBrowser]: {
-        forward: currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
+        forward: currentSelectedBrowserProfiles &&
+            currentSelectedBrowserProfiles.length > 1 ?
+            ViewType.ImportSelectProfile : ViewType.ImportInProgress,
         skip: nextAfterImport,
       },
       [ViewType.ImportSelectProfile]: {
@@ -117,6 +131,9 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
       },
       [ViewType.HelpImprove]: {
         forward: ViewType.HelpImprove   // The end state view
+      },
+      [ViewType.Finished]: {
+        forward: ViewType.Finished   // The end state view for Brave Origin
       },
     }
   }, [browserProfiles, currentSelectedBrowserProfiles])
