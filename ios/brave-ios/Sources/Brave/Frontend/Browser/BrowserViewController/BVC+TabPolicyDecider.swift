@@ -759,7 +759,7 @@ extension BrowserViewController {
       tab.isExternalAppAlertSuppressed = false
     }
 
-    tab.externalAppURLDomain = tab.visibleURL?.baseDomain
+    tab.externalAppURLDomain = tab.lastCommittedURL?.baseDomain
 
     // Do not try to present over existing warning
     if let tabData = tab.browserData,
@@ -782,7 +782,7 @@ extension BrowserViewController {
         let displayHost =
           "\(origin.scheme)://\(origin.host):\(origin.port)"
         alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-      } else if let displayHost = tab.visibleURL?.withoutWWW.host {
+      } else if let displayHost = tab.lastCommittedURL?.withoutWWW.host {
         alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
       }
     }
