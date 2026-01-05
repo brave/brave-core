@@ -31,6 +31,7 @@ namespace brave_account {
 using endpoint_client::Client;
 using endpoint_client::RequestCancelability;
 using endpoint_client::RequestHandle;
+using endpoint_client::SetBearerToken;
 using endpoint_client::WithHeaders;
 using endpoints::AuthValidate;
 using endpoints::ErrorBody;
@@ -183,9 +184,8 @@ void BraveAccountService::RegisterFinalize(
   }
 
   auto request = MakeRequest<WithHeaders<PasswordFinalize::Request>>();
+  SetBearerToken(request, verification_token);
   request.serialized_record = serialized_record;
-  request.headers.SetHeader("Authorization",
-                            base::StrCat({"Bearer ", verification_token}));
   Client<PasswordFinalize>::Send(
       url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
@@ -233,9 +233,8 @@ void BraveAccountService::LoginFinalize(
   }
 
   auto request = MakeRequest<WithHeaders<LoginFinalize::Request>>();
+  SetBearerToken(request, login_token);
   request.client_mac = client_mac;
-  request.headers.SetHeader("Authorization",
-                            base::StrCat({"Bearer ", login_token}));
   Client<endpoints::LoginFinalize>::Send(
       url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnLoginFinalize,
@@ -361,9 +360,8 @@ void BraveAccountService::VerifyResult(
   }
 
   auto request = MakeRequest<WithHeaders<VerifyResult::Request>>();
+  SetBearerToken(request, verification_token);
   request.wait = false;
-  request.headers.SetHeader("Authorization",
-                            base::StrCat({"Bearer ", verification_token}));
   current_verify_result_request =
       Client<endpoints::VerifyResult>::Send<RequestCancelability::kCancelable>(
           url_loader_factory_, std::move(request),
@@ -541,8 +539,7 @@ void BraveAccountService::AuthValidate(
   }
 
   auto request = MakeRequest<WithHeaders<AuthValidate::Request>>();
-  request.headers.SetHeader("Authorization",
-                            base::StrCat({"Bearer ", authentication_token}));
+  SetBearerToken(request, authentication_token);
   current_auth_validate_request =
       Client<endpoints::AuthValidate>::Send<RequestCancelability::kCancelable>(
           url_loader_factory_, std::move(request),

@@ -10,9 +10,13 @@
 
 namespace brave_account {
 
-inline constexpr base::TimeDelta kWatchdogInterval = base::Seconds(15);
 inline constexpr base::TimeDelta kVerifyResultPollInterval = base::Seconds(5);
 inline constexpr base::TimeDelta kAuthValidatePollInterval = base::Minutes(2);
+
+// If a polling request (VerifyResult or AuthValidate) doesn't complete within
+// this interval, it will be canceled and retried to prevent hung requests from
+// stopping the periodic polling indefinitely.
+inline constexpr base::TimeDelta kWatchdogInterval = base::Seconds(15);
 
 }  // namespace brave_account
 
