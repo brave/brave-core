@@ -772,8 +772,11 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       contents_bounds.height() - tabs::kMarginForVerticalTabContainers -
       kNewTabButtonHeight - tabs::kMarginForVerticalTabContainers -
       kSeparatorHeight - header_view_->height();
+  // Using tab_container_'s preferred height because tab_strip's preferred
+  // height could be 0 in tests.
   const int contents_view_preferred_height =
-      tab_strip()->GetPreferredSize().height();
+      tab_strip()->tab_container_->GetPreferredSize().height();
+
   region_view_container_->SetBoundsRect(gfx::Rect(
       header_view_->bounds().bottom_left(),
       gfx::Size(

@@ -42,6 +42,24 @@ class BraveTabContainer : public TabContainerImpl {
   // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
   views::ScrollView::ScrollBarMode GetScrollBarMode() const;
 
+  // Returns the current scroll offset for unpinned tabs. Exposed for testing.
+  int GetScrollOffsetForTesting() const;
+
+  // Returns the maximum scroll offset for unpinned tabs. Exposed for testing.
+  int GetMaxScrollOffsetForTesting() const;
+
+  // Returns the bottom y-coordinate of the pinned tabs area. Exposed for
+  // testing.
+  int GetPinnedTabsAreaBottomForTesting() const;
+
+  // Returns the first and last visible unpinned slot views (tabs or group
+  // headers). Exposed for testing.
+  std::pair<TabSlotView*, TabSlotView*> GetVisibleUnpinnedSlotViewsForTesting()
+      const;
+
+  // Sets the scroll offset for unpinned tabs. Exposed for testing.
+  void SetScrollOffsetForTesting(int offset);
+
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;

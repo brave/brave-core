@@ -15,6 +15,7 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
+#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -1138,6 +1139,12 @@ BraveTabContainer::FindVisibleUnpinnedSlotViews() const {
         return false;
       }
 
+      // Skip closing tabs. Closing tabs are visible but should not be
+      // considered when calculating the max scroll offset.
+      if (tab->closing()) {
+        return false;
+      }
+
       // Tabs in collapsed group are not visible
       if (auto group = tab->group()) {
         return !controller_->IsGroupCollapsed(*group);
@@ -1194,6 +1201,27 @@ gfx::Rect BraveTabContainer::GetIdealBoundsOf(TabSlotView* slot_view) const {
   return gfx::Rect();
 }
 
+int BraveTabContainer::GetScrollOffsetForTesting() const {
+  return scroll_offset_;
+}
+
+int BraveTabContainer::GetMaxScrollOffsetForTesting() const {
+  return GetMaxScrollOffset();
+}
+
+int BraveTabContainer::GetPinnedTabsAreaBottomForTesting() const {
+  return GetPinnedTabsAreaBottom();
+}
+
+std::pair<TabSlotView*, TabSlotView*>
+BraveTabContainer::GetVisibleUnpinnedSlotViewsForTesting() const {
+  return FindVisibleUnpinnedSlotViews();
+}
+
+void BraveTabContainer::SetScrollOffsetForTesting(int offset) {
+  SetScrollOffset(offset);
+}
+
 int BraveTabContainer::GetMaxScrollOffset() const {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
@@ -1224,6 +1252,8 @@ int BraveTabContainer::GetMaxScrollOffset() const {
     // Exclude pinned tabs area
     visible_height -=
         tabs_view_model_.ideal_bounds(pinned_tab_count - 1).bottom();
+    visible_height -= tabs::kMarginForVerticalTabContainers;
+    visible_height -= tabs::kPinnedUnpinnedSeparatorHeight;
     visible_height -= tabs::kMarginForVerticalTabContainers;
   }
 
