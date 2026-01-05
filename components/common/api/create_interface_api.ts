@@ -508,6 +508,8 @@ export function createInterfaceApi<
       // }
     } else if ('mutation' in endpointDef) {
       const { mutation, ...mutationOptions } = endpointDef
+      const { onMutate } = endpointDef
+
       type MArgs = ArgsOf<typeof name> | never
       type MData = DataOf<typeof name>
 
@@ -516,6 +518,8 @@ export function createInterfaceApi<
 
       // mutate(...args): call the underlying mutation function
       const mutator = async (...args: MArgs): Promise<MData> => {
+        // Note: We need to call the mutator before we run the mutation.
+        await onMutate?.(args)
         const data = await mutation(...args)
         return data
       }
