@@ -419,7 +419,7 @@ program
   .option(
     '--ios_simulator_version <simulator_version>',
     'ios version for simulator',
-    '26.0',
+    '26.2',
   ) // should match ios_deployment_target
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
