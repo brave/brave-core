@@ -79,6 +79,11 @@ export const Box = styled.div`
       height: auto;
     }
   }
+
+  &.brave-origin .view-logo-box {
+    top: calc(-70px);
+    left: calc(50% - 80px);
+  }
 `
 
 export const ActionBox = styled.div`

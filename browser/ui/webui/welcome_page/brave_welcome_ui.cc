@@ -19,6 +19,7 @@
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/browser/ui/webui/welcome_page/welcome_dom_handler.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
@@ -178,6 +179,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
                          metrics::prefs::kMetricsReportingEnabled));
   source->AddBoolean("isP3AEnabledManaged",
                      local_state->IsManagedPreference(p3a::kP3AEnabled));
+  source->AddBoolean("isBraveOriginBranded",
+                     BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 
   profile->GetPrefs()->SetBoolean(
       brave::welcome_ui::prefs::kHasSeenBraveWelcomePage, true);
