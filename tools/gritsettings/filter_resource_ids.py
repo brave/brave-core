@@ -13,7 +13,7 @@
 import argparse
 import re
 
-filter_values = ['glic', 'ash', 'chromeos']
+filter_values = ['ash', 'chromeos']
 start_pattern = [r'^{}\/'.format(val) for val in filter_values]
 other_pattern = [r'\/{}\/'.format(val) for val in filter_values]
 patterns = '|'.join(start_pattern + other_pattern)
