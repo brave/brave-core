@@ -287,6 +287,7 @@ void BraveTabContainer::RemoveTab(int index, bool was_active) {
 
   TabContainerImpl::RemoveTab(index, was_active);
   ClampScrollOffset();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
@@ -536,6 +537,7 @@ void BraveTabContainer::InvalidateIdealBounds() {
   }
 
   TabContainerImpl::InvalidateIdealBounds();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::Layout(PassKey) {
@@ -1267,6 +1269,7 @@ void BraveTabContainer::SetTabPinned(int model_index, TabPinned pinned) {
   TabContainerImpl::SetTabPinned(model_index, pinned);
 
   GetTabAtModelIndex(model_index)->UpdateInsets();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
@@ -1275,6 +1278,7 @@ void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
   TabContainerImpl::MoveTab(from_model_index, to_model_index);
   GetTabAtModelIndex(to_model_index)->UpdateInsets();
   ClampScrollOffset();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {

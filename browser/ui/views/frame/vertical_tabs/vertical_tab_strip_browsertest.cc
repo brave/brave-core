@@ -657,6 +657,37 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   model->SetTabPinned(0, false);
   browser_view()->tabstrip()->StopAnimating();
   EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  // Add enough pinned tabs to move separator bounds by creating unpinned tab
+  // and pinning it. Check separator bounds is updated properly after pinning
+  // new tab.
+  for (int i = 0; i < 20; i++) {
+    AppendTab(browser());
+    model->SetTabPinned(model->count() - 1, true);
+    browser_view()->tabstrip()->StopAnimating();
+    EXPECT_EQ(tab_strip->tab_at(model->IndexOfFirstNonPinnedTab() - 1)
+                      ->bounds()
+                      .bottom() +
+                  tabs::kVerticalTabsSpacing,
+              brave_tab_container->separator_->bounds().y());
+  }
+
+  // Check separator bounds by unpinning all tabs.
+  const int tab_count = model->count();
+  for (int i = 0; i < tab_count; i++) {
+    model->SetTabPinned(i, false);
+    browser_view()->tabstrip()->StopAnimating();
+
+    const int first_unpinned_tab_index = model->IndexOfFirstNonPinnedTab();
+    if (first_unpinned_tab_index == 0) {
+      EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+    } else {
+      EXPECT_EQ(
+          tab_strip->tab_at(first_unpinned_tab_index - 1)->bounds().bottom() +
+              tabs::kVerticalTabsSpacing,
+          brave_tab_container->separator_->bounds().y());
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
