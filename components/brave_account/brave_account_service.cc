@@ -550,6 +550,11 @@ void BraveAccountService::OnAuthValidate(AuthValidate::Response response) {
 
   if (!email.empty()) {
     pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
+  } else if (const auto status_code = response.status_code.value_or(-1);
+             status_code >= 400 && status_code < 500) {
+    // Clear the auth token (and stop polling) to prevent
+    // presenting invalid state to the user and issuing invalid requests.
+    return pref_service_->ClearPref(prefs::kBraveAccountAuthenticationToken);
   }
 
   // Replace watchdog timer with the normal cadence.
