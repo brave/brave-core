@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -36,9 +37,12 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
       host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
           web_contents->GetBrowserContext())),
       cookie_settings_(CookieSettingsFactory::GetForProfile(
+          Profile::FromBrowserContext(web_contents->GetBrowserContext()))),
+      brave_shields_settings_(BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
+  brave_shields_settings_->AddObserver(this);
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
@@ -67,6 +71,7 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup() {
 }
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
+  brave_shields_settings_->RemoveObserver(this);
   provisional_tld_ephemeral_lifetimes_.clear();
   tld_ephemeral_lifetime_.reset();
 
@@ -125,6 +130,15 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
   }
   UpdateShieldsState(new_url);
+}
+
+void EphemeralStorageTabHelper::OnAutoShredModeChanged(
+    brave_shields::mojom::AutoShredMode mode,
+    const GURL& url) {
+  if (!host_content_settings_map_ || !tld_ephemeral_lifetime_) {
+    return;
+  }
+  tld_ephemeral_lifetime_->SetAutoShredModeOnHost(mode, url);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(

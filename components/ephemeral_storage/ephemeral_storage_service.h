@@ -27,6 +27,7 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 
 class EphemeralStorageBrowserTest;
 class EphemeralStorageQaBrowserTest;
@@ -87,6 +88,8 @@ class EphemeralStorageService : public KeyedService {
       const GURL& url,
       const content::StoragePartitionConfig& storage_partition_config,
       const bool enforced_by_user);
+
+    void SetAutoShredModeOnHost(brave_shields::mojom::AutoShredMode mode, const std::string& ephemeral_domain, const content::StoragePartitionConfig& storage_partition_config);
 
  private:
   friend EphemeralStorageBrowserTest;

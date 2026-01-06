@@ -47,16 +47,16 @@ class ApplicationStateObserver
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 #if BUILDFLAG(IS_ANDROID)
-  void TriggerCurrentStateNotification();
+  void TriggerCurrentAppStateNotification();
 #endif
 
  private:
 #if BUILDFLAG(IS_ANDROID)
-  void OnApplicationStateChange(base::android::ApplicationState state);
+  void OnApplicationStateChange(base::android::ApplicationState new_state);
   
   std::unique_ptr<base::android::ApplicationStatusListener>
       app_status_listener_;
-  base::android::ApplicationState last_state_{base::android::APPLICATION_STATE_UNKNOWN};
+  base::android::ApplicationState current_state_{base::android::APPLICATION_STATE_UNKNOWN};
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

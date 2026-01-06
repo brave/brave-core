@@ -185,10 +185,13 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
   DCHECK(callback);
   LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback";
   first_window_opened_callback_ = std::move(callback);
-#if BUILDFLAG(IS_ANDROID)
-  application_state_observer_->TriggerCurrentStateNotification();
-#endif
 }
+
+#if BUILDFLAG(IS_ANDROID)
+  void BraveEphemeralStorageServiceDelegate::TriggerCurrentAppStateNotification() {
+    application_state_observer_->TriggerCurrentAppStateNotification();
+  }
+#endif
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
   LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive";

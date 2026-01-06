@@ -46,26 +46,27 @@ void ApplicationStateObserver::RemoveObserver(Observer* observer) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-void ApplicationStateObserver::TriggerCurrentStateNotification() {
+void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
   // Call OnApplicationStateChange once to handle current state
   OnApplicationStateChange(
       base::android::ApplicationStatusListener::GetState());
   LOG(INFO) << "[SHRED] ApplicationStateObserver binded last_state: "
-            << last_state_;
+            << current_state_;
 }
 
 void ApplicationStateObserver::OnApplicationStateChange(
-    base::android::ApplicationState state) {
-LOG(INFO) << "[SHRED] Application state changed: " << state;
-  if (state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+    base::android::ApplicationState new_state) {
+LOG(INFO) << "[SHRED] Application state called new_state:" << new_state << " current_state_: " << current_state_;
+
+  if (new_state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     LOG(INFO) << "[SHRED] Application state changed #100";
     if (!has_notified_active_) {
         LOG(INFO) << "[SHRED] Application state changed #200";
       NotifyApplicationBecameActive();
       has_notified_active_ = true;
     }
-  } else if (last_state_ != state &&
-             last_state_ ==
+  } else if (current_state_ != new_state &&
+             current_state_ ==
                  base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     LOG(INFO) << "[SHRED] Application state changed #300";
     NotifyApplicationBecameInactive();
@@ -73,7 +74,7 @@ LOG(INFO) << "[SHRED] Application state changed: " << state;
   }
 
   LOG(INFO) << "[SHRED] Application state changed #400";
-  last_state_ = state;
+  current_state_ = new_state;
 }
 #endif
 

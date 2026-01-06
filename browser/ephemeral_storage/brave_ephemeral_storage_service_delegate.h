@@ -46,7 +46,9 @@ class BraveEphemeralStorageServiceDelegate : public ApplicationStateObserver::Ob
       const std::string& ephemeral_domain) override;
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const override;
-
+#if BUILDFLAG(IS_ANDROID)
+  void TriggerCurrentAppStateNotification() override;
+#endif
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;

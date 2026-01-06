@@ -29,6 +29,14 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
+void BraveShieldsSettingsService::AddObserver(BraveShieldsSettingsServiceObserver* observer) {
+  observer_list_.AddObserver(observer);
+}
+
+void BraveShieldsSettingsService::RemoveObserver(BraveShieldsSettingsServiceObserver* observer) {
+  observer_list_.RemoveObserver(observer);
+}
+
 void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
                                                          const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
@@ -223,6 +231,10 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
   host_content_settings_map_->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+
+  for (auto& observer : observer_list_) {
+    observer.OnAutoShredModeChanged(mode, url);
+  }
 }
 
 mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
