@@ -83,44 +83,6 @@ TEST_F(EmailAliasesServiceTest, Auth) {
   auth.SetAuthEmail({});
   EXPECT_EQ(auth.GetAuthEmail(), "");
   EXPECT_EQ(auth.CheckAndGetAuthToken(), "");
-
-  auth.SetAuthEmail("test@domain.com");
-  auth.SetAuthToken("token");
-
-  /*
-  {
-    // set the same email
-    prefs_.SetString(std::string_view path, std::string_view value)
-    prefs_.SetDict(
-        prefs::kAuth,
-        base::Value::Dict()
-            .Set("email", "test@domain.com")
-            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
-    EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
-    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
-  }
-
-  {
-    // set new email
-    prefs_.SetDict(
-        prefs::kAuth,
-        base::Value::Dict()
-            .Set("email", "new@domain.com")
-            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
-    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
-    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
-  }
-  {
-    // token becomes invalid
-    auth.SetAuthToken("token");
-    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
-    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
-    prefs_.SetDict(prefs::kAuth, base::Value::Dict()
-                                     .Set("email", "new@domain.com")
-                                     .Set("token", "invalid"));
-    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
-    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
-  }*/
 }
 
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
