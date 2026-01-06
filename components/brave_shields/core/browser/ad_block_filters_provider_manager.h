@@ -40,8 +40,11 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       const AdBlockFiltersProviderManager&) = delete;
 
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   void LoadFiltersForEngine(
       bool is_for_default_engine,
@@ -59,11 +62,22 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   std::string GetNameForDebugging() override;
 
  private:
+  void OnParseFilters(
+      base::OnceCallback<
+          void(const std::vector<unsigned char>& verified_engine_dat)> cb,
+      std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
+          on_metadata_cbs,
+      const std::vector<unsigned char>& verified_engine_dat,
+      const std::vector<filter_set::mojom::FilterListMetadataPtr> metadata);
   void FinishCombinating(
       base::OnceCallback<
           void(const std::vector<unsigned char>& verified_engine_dat)> cb,
       uint64_t flow_id,
-      std::vector<std::tuple<std::vector<unsigned char>, uint8_t>> results);
+      std::vector<
+          std::tuple<std::vector<unsigned char>,
+                     uint8_t,
+                     base::OnceCallback<void(adblock::FilterListMetadata)>>>
+          results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;

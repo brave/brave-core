@@ -33,8 +33,11 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
 
   // AdBlockFiltersProvider
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   std::string GetNameForDebugging() override;
 

@@ -108,8 +108,10 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
 }
 
 void AdBlockCustomFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)>)> cb) {
   const uint64_t flow_id = base::RandUint64();
   TRACE_EVENT("brave.adblock", "AdBlockCustomFiltersProvider::LoadFilters",
               perfetto::TerminatingFlow::ProcessScoped(flow_id));
@@ -122,7 +124,8 @@ void AdBlockCustomFiltersProvider::LoadFilters(
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(std::move(cb), buffer, kCustomFiltersPermissionLevel));
+      base::BindOnce(std::move(cb), buffer, kCustomFiltersPermissionLevel,
+                     base::DoNothing()));
 }
 
 }  // namespace brave_shields

@@ -50,10 +50,13 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 }
 
 void TestFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-  std::move(cb).Run(buffer, permission_mask_);
+  std::move(cb).Run(buffer, permission_mask_, base::DoNothing());
 }
 
 void TestFiltersProvider::Initialize() {

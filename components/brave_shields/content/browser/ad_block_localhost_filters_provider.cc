@@ -39,8 +39,11 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto buffer = std::vector<unsigned char>(std::begin(kLocalhostBadfilters),
@@ -48,7 +51,8 @@ void AdBlockLocalhostFiltersProvider::LoadFilters(
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), buffer, UINT8_MAX));
+      FROM_HERE,
+      base::BindOnce(std::move(cb), buffer, UINT8_MAX, base::DoNothing()));
 }
 
 }  // namespace brave_shields

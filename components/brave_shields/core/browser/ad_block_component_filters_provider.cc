@@ -27,11 +27,13 @@ namespace {
 
 // static
 void OnReadDATFileData(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb,
+    base::OnceCallback<void(
+        std::vector<unsigned char> filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)> cb,
     uint8_t permission_mask,
     DATFileDataBuffer buffer) {
-  std::move(cb).Run(buffer, permission_mask);
+  std::move(cb).Run(buffer, permission_mask, base::DoNothing());
 }
 
 }  // namespace
@@ -117,8 +119,11 @@ base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
 }
 
 void AdBlockComponentFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   base::FilePath list_file_path = GetFilterSetPath();
 
   const auto flow = perfetto::Flow::ProcessScoped(base::RandUint64());
@@ -128,7 +133,8 @@ void AdBlockComponentFiltersProvider::LoadFilters(
   if (list_file_path.empty()) {
     // If the path is not ready yet, provide an empty list immediately. An
     // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(std::vector<unsigned char>(), permission_mask_);
+    std::move(cb).Run(std::vector<unsigned char>(), permission_mask_,
+                      base::DoNothing());
     return;
   }
 

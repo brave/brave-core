@@ -11,6 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 
 namespace brave_shields {
 
@@ -29,8 +30,11 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
   void RegisterAsSourceProvider(AdBlockFiltersProviderManager* manager);
 
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   void Initialize();
   bool IsInitialized() const override;

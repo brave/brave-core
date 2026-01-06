@@ -12,10 +12,16 @@ struct FilterListInput {
   uint8 permission_mask;
 };
 
+struct FilterListMetadata {
+  string? homepage;
+  string? title;
+  uint16? expires_hours;
+};
+
 // Utility process interface exposed to the browser process. Allows for
 // sandboxing when parsing adblock filters.
 [ServiceSandbox=sandbox.mojom.Sandbox.kService]
 interface UtilParseFilterSet {
-  // TODO return metadata also
-  ParseFilters(array<FilterListInput> filters) => (array<uint8> verified_engine_dat);
+  ParseFilters(array<FilterListInput> filters) =>
+    (array<uint8> verified_engine_dat, array<FilterListMetadata> metadata);
 };
