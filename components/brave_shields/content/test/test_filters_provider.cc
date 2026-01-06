@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -50,10 +51,13 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 }
 
 void TestFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-  std::move(cb).Run(buffer, permission_mask_);
+  std::move(cb).Run(std::move(buffer), permission_mask_, base::DoNothing());
 }
 
 void TestFiltersProvider::Initialize() {

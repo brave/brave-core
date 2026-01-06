@@ -24,11 +24,27 @@ void FilterParsingService::ParseFilters(
   auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
       adblock::new_filter_set());
 
+  std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
+      metadata;
   for (const auto& filter_list : filters) {
-    auto metadata = (*filter_set)
-                        ->add_filter_list_with_permissions(
-                            filter_list->filters, filter_list->permission_mask);
-    // TODO collect and return metadata
+    auto this_metadata =
+        (*filter_set)
+            ->add_filter_list_with_permissions(filter_list->filters,
+                                               filter_list->permission_mask);
+    auto mojom_metadata =
+        adblock_filter_list_parser::mojom::FilterListMetadata::New();
+    if (this_metadata.result_kind == adblock::ResultKind::Success) {
+      if (this_metadata.value.title.has_value) {
+        mojom_metadata->title = this_metadata.value.title.value.c_str();
+      }
+      if (this_metadata.value.homepage.has_value) {
+        mojom_metadata->homepage = this_metadata.value.homepage.value.c_str();
+      }
+      if (this_metadata.value.expires_hours.has_value) {
+        mojom_metadata->expires_hours = this_metadata.value.expires_hours.value;
+      }
+    }
+    metadata.push_back(std::move(mojom_metadata));
   }
 
   auto e = adblock::engine_from_filter_set(std::move(*filter_set));
@@ -41,7 +57,7 @@ void FilterParsingService::ParseFilters(
   const auto dat = e.value->serialize();
   std::vector<unsigned char> output_dat = base::ToVector(dat);
 
-  std::move(callback).Run(output_dat);
+  std::move(callback).Run(std::move(output_dat), std::move(metadata));
 }
 
 }  // namespace brave_shields

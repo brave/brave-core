@@ -14,7 +14,7 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/services/brave_shields/mojom/filter_set.mojom.h"
+#include "brave/components/services/brave_shields/mojom/adblock_filter_list_parser.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -33,15 +33,19 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
   explicit AdBlockFiltersProviderManager(
-      mojo::Remote<filter_set::mojom::UtilParseFilterSet> filter_set_service);
+      mojo::Remote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
+          list_parser_service);
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
       const AdBlockFiltersProviderManager&) = delete;
 
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   void LoadFiltersForEngine(
       bool is_for_default_engine,
@@ -59,18 +63,31 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   std::string GetNameForDebugging() override;
 
  private:
+  void OnParseFilters(
+      base::OnceCallback<
+          void(const std::vector<unsigned char> verified_engine_dat)> cb,
+      std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
+          on_metadata_cbs,
+      const std::vector<unsigned char>& verified_engine_dat,
+      const std::vector<
+          adblock_filter_list_parser::mojom::FilterListMetadataPtr> metadata);
   void FinishCombinating(
       base::OnceCallback<
           void(const std::vector<unsigned char> verified_engine_dat)> cb,
       uint64_t flow_id,
-      std::vector<std::tuple<std::vector<unsigned char>, uint8_t>> results);
+      std::vector<
+          std::tuple<std::vector<unsigned char>,
+                     uint8_t,
+                     base::OnceCallback<void(adblock::FilterListMetadata)>>>
+          results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
 
   base::CancelableTaskTracker task_tracker_;
 
-  mojo::Remote<filter_set::mojom::UtilParseFilterSet> filter_set_service_;
+  mojo::Remote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
+      list_parser_service_;
 
   base::WeakPtrFactory<AdBlockFiltersProviderManager> weak_factory_{this};
 };

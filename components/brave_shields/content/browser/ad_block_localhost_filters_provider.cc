@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/to_vector.h"
+#include "base/functional/callback_helpers.h"
 #include "base/task/single_thread_task_runner.h"
 
 namespace brave_shields {
@@ -40,8 +41,11 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilters(
-    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                            uint8_t permission_mask)> cb) {
+    base::OnceCallback<
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto buffer = base::ToVector(
@@ -49,7 +53,8 @@ void AdBlockLocalhostFiltersProvider::LoadFilters(
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), buffer, UINT8_MAX));
+      FROM_HERE, base::BindOnce(std::move(cb), std::move(buffer), UINT8_MAX,
+                                base::DoNothing()));
 }
 
 }  // namespace brave_shields

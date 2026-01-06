@@ -61,8 +61,11 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   base::FilePath GetFilterSetPath();
 
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.

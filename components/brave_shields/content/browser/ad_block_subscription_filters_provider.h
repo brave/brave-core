@@ -40,15 +40,21 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
   ~AdBlockSubscriptionFiltersProvider() override;
 
   void LoadFilters(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)>) override;
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
+      override;
 
   void OnListAvailable();
 
  private:
   void OnDATFileDataReady(
-      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
-                              uint8_t permission_mask)> cb,
+      base::OnceCallback<void(
+          std::vector<unsigned char> filter_buffer,
+          uint8_t permission_mask,
+          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+          cb,
       const perfetto::Flow& flow,
       const DATFileDataBuffer& dat_buf);
 
