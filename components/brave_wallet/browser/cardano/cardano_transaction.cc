@@ -93,6 +93,68 @@ std::optional<std::array<uint8_t, SZ>> ReadHexByteArray(
   return result;
 }
 
+std::optional<std::vector<uint8_t>> ReadHexByteVector(
+    const base::Value::Dict& dict,
+    std::string_view key) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return std::nullopt;
+  }
+  std::vector<uint8_t> result = {};
+  if (!base::HexStringToBytes(*str, &result)) {
+    return std::nullopt;
+  }
+  return result;
+}
+
+base::Value::List TokensToValue(const cardano_rpc::Tokens& tokens) {
+  base::Value::List result;
+  for (auto& token : tokens) {
+    base::Value::Dict token_value;
+    token_value.Set("token_id", base::HexEncode(token.first));
+    token_value.Set("amount", base::NumberToString(token.second));
+    result.Append(std::move(token_value));
+  }
+  return result;
+}
+
+std::optional<cardano_rpc::Tokens> TokensFromValue(
+    const base::Value::List* tokens_list) {
+  if (!tokens_list) {
+    return std::nullopt;
+  }
+
+  cardano_rpc::Tokens result;
+
+  for (const auto& item : *tokens_list) {
+    if (!item.is_dict()) {
+      return std::nullopt;
+    }
+
+    const base::Value::Dict& token_value = item.GetDict();
+
+    cardano_rpc::TokenId token_id;
+
+    if (!base::OptionalUnwrapTo(ReadHexByteVector(token_value, "token_id"),
+                                token_id)) {
+      return std::nullopt;
+    }
+    // Fixed size policy id and non-empty name.
+    if (token_id.size() < kCardanoScriptHashSize + 1u) {
+      return std::nullopt;
+    }
+
+    uint64_t token_amount = 0;
+    if (!base::OptionalUnwrapTo(ReadUint64String(token_value, "amount"),
+                                token_amount)) {
+      return std::nullopt;
+    }
+    result[token_id] = token_amount;
+  }
+
+  return result;
+}
+
 }  // namespace
 
 CardanoTransaction::CardanoTransaction() = default;
@@ -166,6 +228,7 @@ base::Value::Dict CardanoTransaction::TxInput::ToValue() const {
   dict.Set("utxo_address", utxo_address.ToString());
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
   dict.Set("utxo_value", base::NumberToString(utxo_value));
+  dict.Set("utxo_tokens", TokensToValue(utxo_tokens));
 
   return dict;
 }
@@ -190,6 +253,11 @@ CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
     return std::nullopt;
   }
 
+  if (!base::OptionalUnwrapTo(TokensFromValue(value.FindList("utxo_tokens")),
+                              result.utxo_tokens)) {
+    return std::nullopt;
+  }
+
   return result;
 }
 
@@ -202,6 +270,7 @@ CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
   result.utxo_value = utxo.lovelace_amount;
+  result.utxo_tokens = utxo.tokens;
 
   return result;
 }
@@ -285,6 +354,7 @@ base::Value::Dict CardanoTransaction::TxOutput::ToValue() const {
                                                  : kChangeOuputType);
   dict.Set("address", address.ToString());
   dict.Set("amount", base::NumberToString(amount));
+  dict.Set("tokens", TokensToValue(tokens));
 
   return dict;
 }
@@ -314,6 +384,11 @@ CardanoTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
     return std::nullopt;
   }
 
+  if (!base::OptionalUnwrapTo(TokensFromValue(value.FindList("tokens")),
+                              result.tokens)) {
+    return std::nullopt;
+  }
+
   return result;
 }
 
@@ -323,6 +398,13 @@ CardanoTransaction::TxOutput::ToSerializableTxOutput() const {
 
   result.address_bytes = address.ToCborBytes();
   result.amount = amount;
+
+  result.tokens.reserve(tokens.size());
+  for (const auto& token : tokens) {
+    auto& token_result = result.tokens.emplace_back();
+    token_result.token_id = token.first;
+    token_result.amount = token.second;
+  }
 
   return result;
 }
@@ -432,6 +514,16 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
   return result;
 }
 
+void CardanoTransaction::SetupChangeOutput(CardanoAddress change_address) {
+  CHECK(!ChangeOutput());
+  CardanoTransaction::TxOutput change_output;
+  change_output.type = CardanoTransaction::TxOutputType::kChange;
+  change_output.amount = 0;
+  change_output.address = std::move(change_address);
+
+  AddOutput(std::move(change_output));
+}
+
 base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalInputsAmount()
     const {
   base::CheckedNumeric<uint64_t> result = 0;
@@ -446,6 +538,38 @@ base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalOutputsAmount()
   base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& output : outputs_) {
     result += output.amount;
+  }
+  return result;
+}
+
+std::optional<cardano_rpc::Tokens>
+CardanoTransaction::GetTotalInputTokensAmount() const {
+  cardano_rpc::Tokens result;
+  for (auto& input : inputs_) {
+    for (auto& token : input.utxo_tokens) {
+      uint64_t new_token_sum = 0;
+      if (!base::CheckAdd(result[token.first], token.second)
+               .AssignIfValid(&new_token_sum)) {
+        return std::nullopt;
+      }
+      result[token.first] = new_token_sum;
+    }
+  }
+  return result;
+}
+
+std::optional<cardano_rpc::Tokens>
+CardanoTransaction::GetTotalOutputTokensAmount() const {
+  cardano_rpc::Tokens result;
+  for (auto& output : outputs_) {
+    for (auto& token : output.tokens) {
+      uint64_t new_token_sum = 0;
+      if (!base::CheckAdd(result[token.first], token.second)
+               .AssignIfValid(&new_token_sum)) {
+        return std::nullopt;
+      }
+      result[token.first] = new_token_sum;
+    }
   }
   return result;
 }
@@ -528,6 +652,27 @@ CardanoTransaction::TxOutput* CardanoTransaction::ChangeOutput() {
     }
   }
   return nullptr;
+}
+
+bool CardanoTransaction::EnsureTokensInChangeOutput() {
+  auto input_tokens = GetTotalInputTokensAmount();
+  if (!input_tokens) {
+    return false;
+  }
+
+  if (input_tokens->empty()) {
+    return true;
+  }
+
+  // Fail here as we must send tokens to change output, but there is no such
+  // output.
+  if (!ChangeOutput()) {
+    return false;
+  }
+
+  ChangeOutput()->tokens = std::move(*input_tokens);
+
+  return true;
 }
 
 void CardanoTransaction::ArrangeTransactionForTesting() {

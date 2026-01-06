@@ -13,6 +13,7 @@
 #include <utility>
 
 #include "base/containers/extend.h"
+#include "base/containers/span.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -28,6 +29,14 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 
 namespace brave_wallet {
+
+cardano_rpc::TokenId GetMockTokenId(std::string_view name) {
+  cardano_rpc::TokenId result;
+  result.resize(28, name[0]);  // Fill policy_id with the first character of the
+                               // name for simplicity.
+  base::Extend(result, base::as_byte_span(name));
+  return result;
+}
 
 CardanoTestRpcServer::CardanoTestRpcServer(
     CardanoWalletService& cardano_wallet_service)

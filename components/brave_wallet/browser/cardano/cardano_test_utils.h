@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
@@ -31,6 +32,8 @@ inline constexpr char kMockCardanoAddress2[] =
 
 inline constexpr char kMockCardanoTxid[] =
     "7e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29";
+
+cardano_rpc::TokenId GetMockTokenId(std::string_view name);
 
 class CardanoTestRpcServer {
  public:
