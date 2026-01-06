@@ -501,8 +501,6 @@ export enum WalletRoutes {
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:assetId?',
-  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/:assetId/purchase',
 
   // deposit funds
   DepositFundsPageStart = '/crypto/deposit-funds',
@@ -781,14 +779,6 @@ export enum CoinTypesMap {
   ZEC = BraveWallet.CoinType.ZEC,
   ADA = BraveWallet.CoinType.ADA,
   DOT = BraveWallet.CoinType.DOT,
-}
-
-export type BuyOption = {
-  id: BraveWallet.OnRampProvider
-  icon: string
-  name: string
-  description: string
-  actionText: string
 }
 
 export type OriginInfo = {

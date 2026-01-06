@@ -264,13 +264,6 @@ export const checkIfTokenNeedsNetworkIcon = (
   )
 }
 
-/**
- * Evaluates support for stripe
- * @returns Boolean indicating stripe support
- */
-export const isStripeSupported = () =>
-  navigator.language.toLowerCase() === 'en-us'
-
 const idWithHashRegexp = new RegExp(/#(\d+)$/)
 const idWithSpaceRegexp = new RegExp(/ (\d+)$/)
 

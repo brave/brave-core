@@ -71,6 +71,12 @@ import {
 } from '../../../components/shared/style'
 import { Description, Title } from '../onboarding/onboarding.style'
 import {
+  FilterTokenRow, //
+} from '../../../components/desktop/views/portfolio/style'
+import {
+  ControlsWrapper,
+  SegmentedControl,
+  AddressText,
   AddressTextLabel,
   TokenListWrapper,
   QRCodeContainer,
@@ -79,14 +85,6 @@ import {
   SearchWrapper,
   SelectAssetWrapper,
   SearchAndDropdownWrapper,
-} from './fund-wallet.style'
-import {
-  FilterTokenRow, //
-} from '../../../components/desktop/views/portfolio/style'
-import {
-  ControlsWrapper,
-  SegmentedControl,
-  AddressText,
 } from './deposit-funds.style'
 
 // components
