@@ -2640,6 +2640,7 @@
 -ChromeRenderProcessHostTest.*
 -ChromeRenderProcessHostTestWithCommandLine.*
 -ChromeSignInWebViewTest.ClosingChromeSignInShouldNotCrash/InnerWebContents
+-ChromeSignInWebViewTest.DeclarativeNetRequestRulesNotMatched/InnerWebContents
 -ChromeSignInWebViewTest.NoFindInPageForUnattachedGuest/InnerWebContents
 -ChromeSignInWebViewTest.TestWebRequestOnlyDispatchToEmbedder/InnerWebContents
 -ChromeSitePerProcessTest.*
