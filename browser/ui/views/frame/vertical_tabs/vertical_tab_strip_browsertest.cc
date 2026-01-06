@@ -567,9 +567,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   browser_view()->tabstrip()->StopAnimating();
 
   // When first tab is added, height should have tab's height plus top & bottom
-  // margin.
+  // margin and separator's height as both pinned and unpinned tabs are used.
   contents_view_height +=
-      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
+      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2) +
+      tabs::kPinnedUnpinnedSeparatorHeight;
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return region_view->original_region_view_->height() == contents_view_height;
   }));
@@ -619,6 +620,66 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             brave_tab_container->GetScrollBarMode());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       BraveTabContainerSeparator) {
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  AppendTab(browser());
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
+
+  auto* tab_strip = browser_view()->tabstrip();
+  EXPECT_EQ(
+      tab_strip->tab_at(0)->bounds().bottom() + tabs::kVerticalTabsSpacing,
+      brave_tab_container->separator_->bounds().y());
+
+  model->SetTabPinned(0, false);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  // Add enough pinned tabs to move separator bounds by creating unpinned tab
+  // and pinning it. Check separator bounds is updated properly after pinning
+  // new tab.
+  for (int i = 0; i < 20; i++) {
+    AppendTab(browser());
+    model->SetTabPinned(model->count() - 1, true);
+    browser_view()->tabstrip()->StopAnimating();
+    EXPECT_EQ(tab_strip->tab_at(model->IndexOfFirstNonPinnedTab() - 1)
+                      ->bounds()
+                      .bottom() +
+                  tabs::kVerticalTabsSpacing,
+              brave_tab_container->separator_->bounds().y());
+  }
+
+  // Check separator bounds by unpinning all tabs.
+  const int tab_count = model->count();
+  for (int i = 0; i < tab_count; i++) {
+    model->SetTabPinned(i, false);
+    browser_view()->tabstrip()->StopAnimating();
+
+    const int first_unpinned_tab_index = model->IndexOfFirstNonPinnedTab();
+    if (first_unpinned_tab_index == 0) {
+      EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+    } else {
+      EXPECT_EQ(
+          tab_strip->tab_at(first_unpinned_tab_index - 1)->bounds().bottom() +
+              tabs::kVerticalTabsSpacing,
+          brave_tab_container->separator_->bounds().y());
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {

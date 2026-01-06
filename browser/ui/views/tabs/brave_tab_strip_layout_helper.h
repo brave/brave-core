@@ -30,6 +30,7 @@ inline constexpr int kVerticalTabHeight = 32;
 inline constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 inline constexpr int kVerticalTabsSpacing = 4;
 inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
+inline constexpr int kPinnedUnpinnedSeparatorHeight = 1;
 
 int GetTabCornerRadius(const Tab& tab);
 
