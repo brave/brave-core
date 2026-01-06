@@ -7,10 +7,6 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
-import TopLayerLight from './assets/top_layer_light.svg'
-import BottomLayerLight from './assets/bottom_layer_light.svg'
-import TopLayerDark from './assets/top_layer_dark.svg'
-import BottomLayerDark from './assets/bottom_layer_dark.svg'
 import LinesLight from './assets/portfolio_lines_background_light.png'
 import LinesDark from './assets/portfolio_lines_background_dark.png'
 import ConnectionDotsBackground from './assets/connection_dots_background.svg'
@@ -229,44 +225,6 @@ export const StaticBackground = styled.div`
   left: 0px;
   right: 0px;
   background-color: ${leo.color.page.background};
-`
-
-export const BackgroundGradientWrapper = styled.div`
-  position: fixed;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  opacity: 0.3;
-  background-color: ${leo.color.primary[10]};
-`
-
-export const BackgroundGradientTopLayer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${TopLayerLight});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: absolute;
-  z-index: 4;
-  @media (prefers-color-scheme: dark) {
-    background-image: url(${TopLayerDark});
-  }
-`
-
-export const BackgroundGradientBottomLayer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${BottomLayerLight});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: absolute;
-  z-index: 5;
-  @media (prefers-color-scheme: dark) {
-    background-image: url(${BottomLayerDark});
-  }
 `
 
 export const BlockForHeight = styled.div`
