@@ -10,7 +10,6 @@ import SwiftUI
 public enum SwiftUICapabilities {
   /// Determines if Liquid Glass is enabled on iOS 26.1+
   public static var isLiquidGlassEnabled: Bool {
-    #if compiler(>=6.2.1)
     if #available(iOS 26, *) {
       let isCompatabilityModeEnabled =
         Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
@@ -18,8 +17,8 @@ public enum SwiftUICapabilities {
         let key = "com.apple.Swi\("ftUI.IgnoreSolar")iumOptOut"
         return UserDefaults.standard.bool(forKey: key)
       }
+      return true
     }
-    #endif
     return false
   }
 }
