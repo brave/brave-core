@@ -59,7 +59,7 @@ void MaybeRestoreCustomTitleForTab(
 
 content::WebContents* AddRestoredTab(
     Browser* browser,
-    const std::vector<sessions::SerializedNavigationEntry>& navigations,
+    base::span<const SerializedNavigationEntry> navigations,
     int tab_index,
     int selected_navigation,
     const std::string& extension_app_id,
@@ -86,7 +86,7 @@ content::WebContents* AddRestoredTab(
 
 content::WebContents* ReplaceRestoredTab(
     Browser* browser,
-    const std::vector<sessions::SerializedNavigationEntry>& navigations,
+    base::span<const SerializedNavigationEntry> navigations,
     int selected_navigation,
     const std::string& extension_app_id,
     content::SessionStorageNamespace* session_storage_namespace,
