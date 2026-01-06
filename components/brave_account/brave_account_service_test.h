@@ -33,6 +33,7 @@
 
 namespace brave_account {
 
+struct AuthValidateTestCase;
 struct CancelRegistrationTestCase;
 struct LoginFinalizeTestCase;
 struct LoginInitializeTestCase;
@@ -51,15 +52,14 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
-    auto verify_result_timer = std::make_unique<base::OneShotTimer>();
-    verify_result_timer_ = verify_result_timer.get();
     brave_account_service_ = base::WrapUnique(new BraveAccountService(
         &pref_service_, test_url_loader_factory_.GetSafeWeakWrapper(),
         base::BindRepeating(&BraveAccountServiceTest::Encrypt,
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
-                            base::Unretained(this)),
-        std::move(verify_result_timer)));
+                            base::Unretained(this))));
+    verify_result_timer_ = &brave_account_service_->verify_result_timer_;
+    auth_validate_timer_ = &brave_account_service_->auth_validate_timer_;
   }
 
   void RunTestCase() {
@@ -97,6 +97,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     } else if constexpr (std::is_same_v<TestCase, VerifyResultTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     *verify_result_timer_);
+    } else if constexpr (std::is_same_v<TestCase, AuthValidateTestCase>) {
+      TestCase::Run(test_case, pref_service_, task_environment_,
+                    *auth_validate_timer_);
     } else if constexpr (std::is_same_v<TestCase, CancelRegistrationTestCase> ||
                          std::is_same_v<TestCase, LogOutTestCase>) {
       TestCase::Run(test_case, pref_service_,
@@ -129,6 +132,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<BraveAccountService> brave_account_service_;
   raw_ptr<base::OneShotTimer> verify_result_timer_;
+  raw_ptr<base::OneShotTimer> auth_validate_timer_;
 };
 
 }  // namespace brave_account

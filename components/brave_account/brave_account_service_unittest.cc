@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_service_test.h"
+#include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
@@ -30,6 +31,7 @@
 
 namespace brave_account {
 
+using endpoints::AuthValidate;
 using endpoints::LoginFinalize;
 using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
@@ -990,6 +992,223 @@ INSTANTIATE_TEST_SUITE_P(
                     VerifyResultUnauthorized(),
                     VerifyResultInternalServerError()),
     BraveAccountServiceScheduleVerifyResultTest::kNameGenerator);
+
+struct AuthValidateTestCase {
+  using Endpoint = AuthValidate;
+  using EndpointResponse = Endpoint::Response;
+
+  static void Run(const AuthValidateTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
+                  base::OneShotTimer& auth_validate_timer) {
+    pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
+                           test_case.encrypted_authentication_token);
+
+    task_environment.FastForwardBy(kAuthValidatePollInterval -
+                                   base::Seconds(1));
+
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountEmailAddress),
+              test_case.expected_email);
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountAuthenticationToken),
+              test_case.expected_authentication_token);
+    if (test_case.expected_auth_validate_timer_delay.is_zero()) {
+      EXPECT_FALSE(auth_validate_timer.IsRunning());
+    } else {
+      EXPECT_TRUE(auth_validate_timer.IsRunning());
+      EXPECT_EQ(auth_validate_timer.GetCurrentDelay(),
+                test_case.expected_auth_validate_timer_delay);
+    }
+  }
+
+  std::string test_name;
+  std::string encrypted_authentication_token;
+  bool fail_decryption;
+  std::optional<EndpointResponse> endpoint_response;
+  std::string expected_email;
+  std::string expected_authentication_token;
+  base::TimeDelta expected_auth_validate_timer_delay;
+};
+
+namespace {
+
+const AuthValidateTestCase* AuthValidateAuthenticationTokenEmpty() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateAuthenticationTokenEmpty({
+          .test_name = "auth_validate_authentication_token_empty",
+          .encrypted_authentication_token = "",
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .expected_email = "",
+          .expected_authentication_token = "",
+          .expected_auth_validate_timer_delay = {},
+      });
+  return kAuthValidateAuthenticationTokenEmpty.get();
+}
+
+const AuthValidateTestCase* AuthValidateAuthenticationTokenFailedToDecrypt() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateAuthenticationTokenFailedToDecrypt({
+          .test_name = "auth_validate_authentication_token_failed_to_decrypt",
+          .encrypted_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .fail_decryption = true,
+          .endpoint_response = {},  // not used
+          .expected_email = "",
+          .expected_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .expected_auth_validate_timer_delay = {},
+      });
+  return kAuthValidateAuthenticationTokenFailedToDecrypt.get();
+}
+
+const AuthValidateTestCase* AuthValidateSuccessNoBody() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateSuccessNoBody({
+          .test_name = "auth_validate_success_no_body",
+          .encrypted_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body = {}}},
+          .expected_email = "",
+          .expected_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
+      });
+  return kAuthValidateSuccessNoBody.get();
+}
+
+const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateSuccessEmailEmpty({
+          .test_name = "auth_validate_success_email_empty",
+          .encrypted_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       AuthValidate::Response::SuccessBody body;
+                                       body.email = "";
+                                       return body;
+                                     }()}},
+          .expected_email = "",
+          .expected_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
+      });
+  return kAuthValidateSuccessEmailEmpty.get();
+}
+
+const AuthValidateTestCase* AuthValidateSuccess() {
+  static const base::NoDestructor<AuthValidateTestCase> kAuthValidateSuccess({
+      .test_name = "auth_validate_success",
+      .encrypted_authentication_token =
+          base::Base64Encode("encrypted_authentication_token"),
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_OK,
+                             .body =
+                                 [] {
+                                   AuthValidate::Response::SuccessBody body;
+                                   body.email = "email";
+                                   return body;
+                                 }()}},
+      .expected_email = "email",
+      .expected_authentication_token =
+          base::Base64Encode("encrypted_authentication_token"),
+      .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
+  });
+  return kAuthValidateSuccess.get();
+}
+
+const AuthValidateTestCase* AuthValidateUnauthorized() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateUnauthorized({
+          .test_name = "auth_validate_unauthorized",
+          .encrypted_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   AuthValidate::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .expected_email = "",
+          .expected_authentication_token = "",
+          .expected_auth_validate_timer_delay = {},
+      });
+  return kAuthValidateUnauthorized.get();
+}
+
+const AuthValidateTestCase* AuthValidateForbidden() {
+  static const base::NoDestructor<AuthValidateTestCase> kAuthValidateForbidden({
+      .test_name = "auth_validate_forbidden",
+      .encrypted_authentication_token =
+          base::Base64Encode("encrypted_authentication_token"),
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_FORBIDDEN,
+                             .body = base::unexpected([] {
+                               AuthValidate::Response::ErrorBody body;
+                               body.code = base::Value(14007);
+                               return body;
+                             }())}},
+      .expected_email = "",
+      .expected_authentication_token = "",
+      .expected_auth_validate_timer_delay = {},
+  });
+  return kAuthValidateForbidden.get();
+}
+
+const AuthValidateTestCase* AuthValidateInternalServerError() {
+  static const base::NoDestructor<AuthValidateTestCase>
+      kAuthValidateInternalServerError({
+          .test_name = "auth_validate_internal_server_error",
+          .encrypted_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   AuthValidate::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .expected_email = "",
+          .expected_authentication_token =
+              base::Base64Encode("encrypted_authentication_token"),
+          .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
+      });
+  return kAuthValidateInternalServerError.get();
+}
+
+using BraveAccountServiceScheduleAuthValidateTest =
+    BraveAccountServiceTest<AuthValidateTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceScheduleAuthValidateTest,
+       HandlesAuthValidateOutcomes) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceScheduleAuthValidateTest,
+    testing::Values(AuthValidateAuthenticationTokenEmpty(),
+                    AuthValidateAuthenticationTokenFailedToDecrypt(),
+                    AuthValidateSuccessNoBody(),
+                    AuthValidateSuccessEmailEmpty(),
+                    AuthValidateSuccess(),
+                    AuthValidateUnauthorized(),
+                    AuthValidateForbidden(),
+                    AuthValidateInternalServerError()),
+    BraveAccountServiceScheduleAuthValidateTest::kNameGenerator);
 
 struct CancelRegistrationTestCase {
   static void Run(const CancelRegistrationTestCase& test_case,
