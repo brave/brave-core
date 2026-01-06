@@ -26,7 +26,7 @@ TEST_F(FlagsStateTest, ShowDefaultState) {
   flags_state_->GetFlagFeatureEntries(&flags_storage_, kGeneralAccessFlagsOnly,
                                       supported_entries, unsupported_entries,
                                       base::BindRepeating(&SkipFeatureEntry));
-  ASSERT_EQ(11u, supported_entries.size());
+  ASSERT_EQ(13u, supported_entries.size());
 
   auto check_default_option_description =
       [&](std::string_view name, std::string_view expected_description) {
