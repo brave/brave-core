@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
 
+#include <string_view>
+
+#include "base/check.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_account/endpoint_client/is_request.h"
 #include "brave/components/brave_account/endpoint_client/is_response.h"
 #include "net/http/http_request_headers.h"
@@ -33,6 +37,15 @@ template <detail::IsResponse T>
 struct WithHeaders<T> : T {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
+
+// Helper function to set the Authorization header with a Bearer token.
+// The bearer_token must be non-empty.
+template <detail::IsRequest T>
+void SetBearerToken(WithHeaders<T>& request, std::string_view bearer_token) {
+  CHECK(!bearer_token.empty());
+  request.headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
+                            base::StrCat({"Bearer ", bearer_token}));
+}
 
 }  // namespace brave_account::endpoint_client
 

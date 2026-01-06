@@ -53,11 +53,32 @@ CardanoTxDecoder::SerializableTxInput FromRust(
   return result;
 }
 
+CxxSerializableTxOutputToken ToRust(
+    const CardanoTxDecoder::SerializableTxOutputToken& output) {
+  CxxSerializableTxOutputToken result;
+  result.token_id = ToRust(output.token_id);
+  result.amount = output.amount;
+  return result;
+}
+
+CardanoTxDecoder::SerializableTxOutputToken FromRust(
+    const CxxSerializableTxOutputToken& output) {
+  CardanoTxDecoder::SerializableTxOutputToken result;
+  result.token_id = FromRust(output.token_id);
+  result.amount = output.amount;
+  return result;
+}
+
 CxxSerializableTxOutput ToRust(
     const CardanoTxDecoder::SerializableTxOutput& output) {
   CxxSerializableTxOutput result;
   result.addr = ToRust(output.address_bytes);
   result.amount = output.amount;
+
+  result.tokens.reserve(output.tokens.size());
+  for (const auto& token : output.tokens) {
+    result.tokens.push_back(ToRust(token));
+  }
   return result;
 }
 
@@ -67,6 +88,11 @@ CardanoTxDecoder::SerializableTxOutput FromRust(
 
   result.address_bytes = FromRust(output.addr);
   result.amount = output.amount;
+
+  result.tokens.reserve(output.tokens.size());
+  for (const auto& token : output.tokens) {
+    result.tokens.push_back(FromRust(token));
+  }
 
   return result;
 }
@@ -181,6 +207,21 @@ CardanoTxDecoder::SerializableTxInput::SerializableTxInput(
 CardanoTxDecoder::SerializableTxInput&
 CardanoTxDecoder::SerializableTxInput::operator=(
     CardanoTxDecoder::SerializableTxInput&&) = default;
+
+CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken() =
+    default;
+CardanoTxDecoder::SerializableTxOutputToken::~SerializableTxOutputToken() =
+    default;
+CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken(
+    const CardanoTxDecoder::SerializableTxOutputToken&) = default;
+CardanoTxDecoder::SerializableTxOutputToken&
+CardanoTxDecoder::SerializableTxOutputToken::operator=(
+    const CardanoTxDecoder::SerializableTxOutputToken&) = default;
+CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken(
+    CardanoTxDecoder::SerializableTxOutputToken&&) = default;
+CardanoTxDecoder::SerializableTxOutputToken&
+CardanoTxDecoder::SerializableTxOutputToken::operator=(
+    CardanoTxDecoder::SerializableTxOutputToken&&) = default;
 
 CardanoTxDecoder::SerializableTxOutput::SerializableTxOutput() = default;
 CardanoTxDecoder::SerializableTxOutput::~SerializableTxOutput() = default;

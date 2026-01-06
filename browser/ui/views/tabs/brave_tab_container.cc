@@ -51,6 +51,7 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/skbitmap_operations.h"
+#include "ui/views/background.h"
 #include "ui/views/view_utils.h"
 
 using BrowserRootView::DropIndex::GroupInclusion::kDontIncludeInGroup;
@@ -97,6 +98,11 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsShowScrollbar, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateScrollBarVisibility,
                           base::Unretained(this)));
+
+  // Create separator view between pinned and unpinned tabs
+  separator_ = AddChildView(std::make_unique<views::View>());
+  separator_->SetBackground(
+      views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
 
   UpdateLayoutOrientation();
 }
@@ -281,6 +287,7 @@ void BraveTabContainer::RemoveTab(int index, bool was_active) {
 
   TabContainerImpl::RemoveTab(index, was_active);
   ClampScrollOffset();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
@@ -465,6 +472,7 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
   TabContainerImpl::CompleteAnimationAndLayout();
 
   UpdateClipPathForSlotViews();
+  UpdatePinnedUnpinnedSeparator();
 
   // Should force tabs to layout as they might not change bounds, which makes
   // insets not updated.
@@ -501,6 +509,11 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
   for (const ZOrderableTabContainerElement& child : orderable_children) {
     child.view()->Paint(paint_info);
   }
+
+  // Paint the separator after all tabs so it appears on top
+  if (separator_ && separator_->GetVisible()) {
+    separator_->Paint(paint_info);
+  }
 }
 
 void BraveTabContainer::SetTabSlotVisibility() {
@@ -524,6 +537,7 @@ void BraveTabContainer::InvalidateIdealBounds() {
   }
 
   TabContainerImpl::InvalidateIdealBounds();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::Layout(PassKey) {
@@ -543,6 +557,7 @@ void BraveTabContainer::Layout(PassKey) {
   // After superclass layout, update clip path based on scroll_offset
   SetTabSlotVisibility();
   UpdateClipPathForSlotViews();
+  UpdatePinnedUnpinnedSeparator();
 
   last_layout_size_ = size();
 }
@@ -1053,7 +1068,7 @@ void BraveTabContainer::UpdateTabsBorderInSplitTab(
 }
 
 int BraveTabContainer::GetPinnedTabsAreaBottom() const {
-  const auto pinned_tab_count = layout_helper_->GetPinnedTabCount();
+  const int pinned_tab_count = layout_helper_->GetPinnedTabCount();
   if (pinned_tab_count == 0) {
     return 0;
   }
@@ -1061,8 +1076,16 @@ int BraveTabContainer::GetPinnedTabsAreaBottom() const {
   // Note that we should use ideal bounds instead of current bounds of the
   // last pinned tab because the pinned tab could be being dragged over
   // unpinned tab area.
-  return GetIdealBounds(pinned_tab_count - 1).bottom() +
-         tabs::kMarginForVerticalTabContainers;
+  int bottom = GetIdealBounds(pinned_tab_count - 1).bottom() +
+               tabs::kMarginForVerticalTabContainers;
+
+  // Add separator height if we have both pinned and unpinned tabs
+  if (pinned_tab_count < GetTabCount()) {
+    bottom += tabs::kPinnedUnpinnedSeparatorHeight +
+              tabs::kMarginForVerticalTabContainers;
+  }
+
+  return bottom;
 }
 
 void BraveTabContainer::SetScrollOffset(int offset) {
@@ -1246,6 +1269,7 @@ void BraveTabContainer::SetTabPinned(int model_index, TabPinned pinned) {
   TabContainerImpl::SetTabPinned(model_index, pinned);
 
   GetTabAtModelIndex(model_index)->UpdateInsets();
+  UpdatePinnedUnpinnedSeparator();
 }
 
 void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
@@ -1254,6 +1278,41 @@ void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
   TabContainerImpl::MoveTab(from_model_index, to_model_index);
   GetTabAtModelIndex(to_model_index)->UpdateInsets();
   ClampScrollOffset();
+  UpdatePinnedUnpinnedSeparator();
+}
+
+void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {
+  // Can be called during the base class' ctor.
+  if (!separator_) {
+    return;
+  }
+
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    separator_->SetVisible(false);
+    return;
+  }
+
+  const int pinned_tab_count = layout_helper_->GetPinnedTabCount();
+  const int total_tab_count = GetTabCount();
+
+  // Only show separator if we have both pinned and unpinned tabs
+  if (pinned_tab_count == 0 || pinned_tab_count == total_tab_count) {
+    separator_->SetVisible(false);
+    return;
+  }
+
+  // Position separator between pinned and unpinned tabs
+  // GetPinnedTabsAreaBottom() gives the start of unpinned tabs.
+  const int separator_y =
+      GetPinnedTabsAreaBottom() - (tabs::kMarginForVerticalTabContainers +
+                                   tabs::kPinnedUnpinnedSeparatorHeight);
+  gfx::Rect separator_bounds(0, separator_y, width(),
+                             tabs::kPinnedUnpinnedSeparatorHeight);
+  separator_bounds.Inset(
+      gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
+  separator_->SetBoundsRect(separator_bounds);
+  separator_->SetVisible(true);
 }
 
 BEGIN_METADATA(BraveTabContainer)

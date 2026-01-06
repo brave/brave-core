@@ -12,6 +12,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet::cardano_rpc {
@@ -22,6 +23,9 @@ struct Block;
 struct UnspentOutput;
 struct Transaction;
 }  // namespace blockfrost_api
+
+using TokenId = std::vector<uint8_t>;  // 28-bytes policy_id and non-empty name.
+using Tokens = base::flat_map<TokenId, uint64_t>;
 
 // Adapter of Blockfrost's EpochParameters struct for wallet's use.
 struct EpochParameters {
@@ -49,12 +53,20 @@ struct Block {
 
 // Adapter of Blockfrost's UnspentOutput struct for wallet's use.
 struct UnspentOutput {
-  bool operator==(const UnspentOutput& other) const = default;
+  UnspentOutput();
+  UnspentOutput(const UnspentOutput&);
+  UnspentOutput(UnspentOutput&&);
+  UnspentOutput& operator=(const UnspentOutput&);
+  UnspentOutput& operator=(UnspentOutput&&);
+  ~UnspentOutput();
 
-  CardanoAddress address_to;
+  bool operator<=>(const UnspentOutput& other) const = default;
+
   std::array<uint8_t, 32> tx_hash = {};
   uint32_t output_index = 0;
   uint64_t lovelace_amount = 0;
+  Tokens tokens;
+  CardanoAddress address_to;
 
   static std::optional<UnspentOutput> FromBlockfrostApiValue(
       CardanoAddress address_to,
