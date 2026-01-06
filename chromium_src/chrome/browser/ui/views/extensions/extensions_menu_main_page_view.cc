@@ -16,7 +16,7 @@
         base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
                             base::Unretained(menu_handler_), extension_id));   \
     item->Update(entry_state);                                                 \
-    menu_items_->AddChildViewAt(std::move(item), index);                       \
+    menu_entries_->AddChildViewAt(std::move(item), index);                     \
     return;                                                                    \
   }
 
