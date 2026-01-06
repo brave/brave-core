@@ -96,12 +96,6 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GEMMA" desc="AI Chat intro message for the gemma model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Gemma 3 12B, a model created by Google DeepMind to be performant and applicable to many use cases. Gemma is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_R1" desc="AI Chat intro message for the deepseek-r1 model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. DeepSeek R1 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_NEAR_DEEPSEEK_V3_1" desc="AI Chat intro message for the deepseek-v3.1 model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek V3.1, a model created by DeepSeek to be performant and applicable to many use cases. DeepSeek V3.1 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
@@ -571,13 +565,7 @@
     Search • Vision • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model" formatter_data="webui=AiChat">
-    Fast • Search
-  </message>
-  <message name="IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE" desc="A description for gemma model" formatter_data="webui=AiChat">
-    Search • Vision
-  </message>
-  <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model" formatter_data="webui=AiChat">
-    Search • Thinking
+    Fast • Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_NEAR_DEEPSEEK_V3_1_SUBTITLE" desc="A description for deepseek-v3.1 model" formatter_data="webui=AiChat">
     Verifiably Private With NEAR AI TEE
@@ -604,7 +592,7 @@
     Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE" desc="A description for qwen-3-235b model" formatter_data="webui=AiChat">
-    Search
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE" desc="A description for deepseek-v3-1 model" formatter_data="webui=AiChat">
     Search
