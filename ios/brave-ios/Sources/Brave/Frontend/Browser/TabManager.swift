@@ -383,8 +383,15 @@ class TabManager: NSObject {
       selectedTab?.createWebView()
     }
 
+    // A tab is a zombie if it has a SessionTab entry but no visible URL and isn't loading.
+    // So only restore zombie tabs that actually need restoration and do not restore tabs
+    // that are currently loading or have a pending navigation
+    // as they may have a visibleURL of nil temporarily before navigation commits.
+    // Also check if the tab's webview has a URL, which ia an indicator of a pending navigation.
     if let selectedTab = selectedTab,
-      selectedTab.visibleURL == nil
+      selectedTab.visibleURL == nil,
+      !selectedTab.isLoading,
+      SessionTab.from(tabId: selectedTab.id) != nil
     {
       selectedTab.setVirtualURL(selectedTab.visibleURL ?? TabManager.ntpInteralURL)
       restoreTab(selectedTab)
