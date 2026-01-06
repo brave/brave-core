@@ -336,11 +336,12 @@ function getRemovedGRDParts(mapping) {
 
 // Helper function to extract messages content from a GRD and write as GRDP,
 // and also generate shell GRD files for both brave and brave_origin.
+// xtbPathReplacement: { from: /pattern/, to: 'string' } or null
 function convertGrdToGrdpAndShells(
   grdPath,
   grdpPath,
   shellGrdPaths,
-  replaceXtbPaths = false,
+  xtbPathReplacement = null,
 ) {
   const grdContent = fs.readFileSync(grdPath, 'utf8')
   const grd = new JSDOM(grdContent, { contentType: 'text/xml' })
@@ -388,16 +389,14 @@ function convertGrdToGrdpAndShells(
     .map((attr) => `${attr.name}="${attr.value}"`)
     .join(' ')
 
-  // Process outputs - replace chromium_strings with brave_strings in filenames
-  let outputsHtml = outputsElement.outerHTML
-    .replace(/chromium_strings/g, 'brave_strings')
-    .replace(/\/>/g, ' />')
+  // Process outputs
+  let outputsHtml = outputsElement.outerHTML.replace(/\/>/g, ' />')
 
   let translationsHtml = translationsElement.outerHTML.replace(/\/>/g, ' />')
-  if (replaceXtbPaths) {
+  if (xtbPathReplacement) {
     translationsHtml = translationsHtml.replace(
-      /chromium_strings/g,
-      'brave_strings',
+      xtbPathReplacement.from,
+      xtbPathReplacement.to,
     )
   }
 
@@ -564,12 +563,14 @@ const l10nUtil = {
 
     // Handle special cases that generate GRDP + multiple shell GRDs
     // brave_strings: chromium_strings.grd -> brave_strings_main.grdp + GRDs
+    // Both shell GRDs (brave_strings.grd and brave_origin_strings.grd) share
+    // the same brave_strings_*.xtb translation files.
     console.log('Processing brave_strings (GRDP + shell GRDs)...')
     convertGrdToGrdpAndShells(
       chromiumStringsPath,
       braveStringsMainPath,
       [braveStringsPath, braveOriginStringsPath],
-      true,
+      { from: /chromium_strings/g, to: 'brave_strings' },
     )
 
     // components_brave_strings: components_chromium_strings.grd -> GRDP + GRDs
