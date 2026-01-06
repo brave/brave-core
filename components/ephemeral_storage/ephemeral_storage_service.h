@@ -89,8 +89,6 @@ class EphemeralStorageService : public KeyedService {
       const content::StoragePartitionConfig& storage_partition_config,
       const bool enforced_by_user);
 
-    void SetAutoShredModeOnHost(brave_shields::mojom::AutoShredMode mode, const std::string& ephemeral_domain, const content::StoragePartitionConfig& storage_partition_config);
-
  private:
   friend EphemeralStorageBrowserTest;
   friend EphemeralStorageQaBrowserTest;
@@ -131,7 +129,8 @@ class EphemeralStorageService : public KeyedService {
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
-  void OnAppBecomeInactiveHandler();
+
+  void FinishStorageCleanupOnBecomeActive(const std::vector<std::string>& ephemeral_domains);
 
   size_t FireCleanupTimersForTesting();
 

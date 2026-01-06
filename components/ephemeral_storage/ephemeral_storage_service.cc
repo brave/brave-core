@@ -149,11 +149,12 @@ EphemeralStorageService::EphemeralStorageService(
   }
 
   if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShredFeature) &&
-      !context_->IsOffTheRecord()) {
-    delegate_->RegisterOnAppBecomeInactiveCallback(
-        base::BindRepeating(&EphemeralStorageService::OnAppBecomeInactiveHandler,
-                           weak_ptr_factory_.GetWeakPtr()));
+          net::features::kBraveForgetFirstPartyStorage) &&
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    delegate_->RegisterOnBecomeActiveCallback(base::BindOnce(
+        &EphemeralStorageService::FinishStorageCleanupOnBecomeActive,
+        weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -266,35 +267,35 @@ bool EphemeralStorageService::IsDefaultCookieSetting(const GURL& url) const {
 void EphemeralStorageService::TLDEphemeralLifetimeCreated(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig& storage_partition_config) {
-  LOG(INFO) << "[SHRED] TLDEphemeralLifetimeCreated for domain: "
-            << ephemeral_domain << " "
-            << storage_partition_config
-            << " List:" << (prefs_->GetList(kFirstPartyStorageOriginsToCleanup))
-            ;
+  // LOG(INFO) << "[SHRED] TLDEphemeralLifetimeCreated for domain: "
+  //           << ephemeral_domain << " "
+  //           << storage_partition_config
+  //           << " List:" << (prefs_->GetList(kFirstPartyStorageOriginsToCleanup))
+  //           ;
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+  // const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
 
-  //TODO for case when we have APP_EXIT mode we need to append to cleanup list here if it is not there yet.
-  auto auto_shred_mode = GetAutoShredMode(host_content_settings_map_, url);
-  const auto value =
-      GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
-  if (auto_shred_mode.has_value() &&
-      auto_shred_mode.value() ==
-          brave_shields::mojom::AutoShredMode::APP_EXIT) {
-    LOG(INFO) << "[SHRED] TLDEphemeralLifetimeCreated for domain: "
-              << ephemeral_domain
-              << " - appending to cleanup list due to APP_EXIT auto shred mode."
-              << " List:"
-              << (prefs_->GetList(kFirstPartyStorageOriginsToCleanup));
+  // //TODO for case when we have APP_EXIT mode we need to append to cleanup list here if it is not there yet.
+  // auto auto_shred_mode = GetAutoShredMode(host_content_settings_map_, url);
+  // const auto value =
+  //     GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
+  // if (auto_shred_mode.has_value() &&
+  //     auto_shred_mode.value() ==
+  //         brave_shields::mojom::AutoShredMode::APP_EXIT) {
+  //   LOG(INFO) << "[SHRED] TLDEphemeralLifetimeCreated for domain: "
+  //             << ephemeral_domain
+  //             << " - appending to cleanup list due to APP_EXIT auto shred mode."
+  //             << " List:"
+  //             << (prefs_->GetList(kFirstPartyStorageOriginsToCleanup));
 
-    AppendFirstPartyStorageOriginsToCleanup(context_, prefs_, url,
-                                            storage_partition_config, true);
-  } else {
+  //   AppendFirstPartyStorageOriginsToCleanup(context_, prefs_, url,
+  //                                           storage_partition_config, true);
+  // } else {
     tld_ephemeral_areas_to_cleanup_.erase(key);
     FirstPartyStorageAreaInUse(ephemeral_domain, storage_partition_config);
-  }
+  // }
 #if BUILDFLAG(IS_ANDROID)
   delegate_->TriggerCurrentAppStateNotification();
 #endif
@@ -335,58 +336,17 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     return;
   }
 
-  if (auto_shred_mode.has_value() &&
-      auto_shred_mode.value() ==
-          brave_shields::mojom::AutoShredMode::APP_EXIT) {
-    LOG(INFO) << "[SHRED] TLDEphemeralLifetimeDestroyed for domain: "
-              << ephemeral_domain
-              << " - skipping cleanup due to APP_EXIT auto shred mode.";
-    // AppendFirstPartyStorageOriginsToCleanup(context_, prefs_, url,
-    //                                         storage_partition_config);
-    return;
-  }
-
   const bool forgetful_storage_cleanup_enabled =
       (!auto_shred_mode.has_value() &&
        host_content_settings_map_->GetContentSetting(
            url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) ==
            CONTENT_SETTING_BLOCK) ||
-      (auto_shred_mode.has_value() &&
-       auto_shred_mode.value() ==
-           brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED);
+      auto_shred_mode.has_value();
 
   RunForgetfulStorageCleaning(ephemeral_domain, storage_partition_config,
                               shields_disabled_on_one_of_hosts,
                               forgetful_storage_cleanup_enabled,
                               first_party_storage_cleanup_enforced);
-}
-
-void EphemeralStorageService::SetAutoShredModeOnHost(
-    brave_shields::mojom::AutoShredMode mode,
-    const std::string& ephemeral_domain,
-    const content::StoragePartitionConfig& storage_partition_config) {
-  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
-  LOG(INFO) << "[SHRED] SetAutoShredModeOnHost for url: "
-            << url.spec() << " mode: " << static_cast<int>(mode) << " List:" << prefs_->GetList(kFirstPartyStorageOriginsToCleanup).DebugString();
-  if (mode != brave_shields::mojom::AutoShredMode::APP_EXIT) {
-    const base::Value value_to_cleanup =
-        GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
-    ScopedListPrefUpdate pref_update(prefs_,
-                                     kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(value_to_cleanup);
-
-    // Make sure to cancel the scheduled cleanup for this area.
-    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(
-        value_to_cleanup);
-
-    LOG(INFO) << "[SHRED] SetAutoShredModeOnHost Cleaning up first party storage area on mode change: " << value_to_cleanup;
-    return;
-  }
-
-  LOG(INFO) << "[SHRED] SetAutoShredModeOnHost try to append to cleanup list: "
-            << GetFirstPartyStorageValueToCleanup(url, storage_partition_config).DebugString();
-  AppendFirstPartyStorageOriginsToCleanup(context_, prefs_, url,
-                                          storage_partition_config, true);
 }
 
 void EphemeralStorageService::RunForgetfulStorageCleaning(
@@ -403,6 +363,31 @@ void EphemeralStorageService::RunForgetfulStorageCleaning(
                                     shields_disabled_on_one_of_hosts,
                                     forgetful_storage_cleanup_enabled) ||
       first_party_storage_cleanup_enforced;
+  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+  auto auto_shred_mode = GetAutoShredMode(
+      host_content_settings_map_, url);
+
+LOG(INFO) << "[SHRED] Scheduling cleanup for domain: "
+          << ephemeral_domain
+          << " cleanup_tld_ephemeral_area: " << cleanup_tld_ephemeral_area
+          << " cleanup_first_party_storage_area: " << cleanup_first_party_storage_area
+          << " first_party_storage_cleanup_enforced:" << first_party_storage_cleanup_enforced
+          << " kBraveEphemeralStorageKeepAlive: " << base::FeatureList::IsEnabled( 
+              net::features::kBraveEphemeralStorageKeepAlive)
+          << " auto_shred_mode:" << (auto_shred_mode.has_value()
+                    ? static_cast<int>(auto_shred_mode.value())
+                    : -1)
+          ;
+  // For case when cleanup is initiated by app becomed inactive or closed
+  if(first_party_storage_cleanup_enforced && auto_shred_mode.has_value() &&
+     auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::APP_EXIT) {
+    LOG(INFO) << "[SHRED] TLDEphemeralLifetimeDestroyed for domain: "
+              << ephemeral_domain
+              << " - scheduling immediate cleanup due to APP_EXIT auto shred mode.";
+    CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
+                            cleanup_first_party_storage_area);
+    return;
+  }
 
   if (first_party_storage_cleanup_enforced ||
       base::FeatureList::IsEnabled(
@@ -451,7 +436,7 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
 
   const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
   delegate_->PrepareTabsForFirstPartyStorageCleanup(
-      std::move(ephemeral_domain));
+      {std::move(ephemeral_domain)});
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
@@ -568,6 +553,18 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
           weak_ptr_factory_.GetWeakPtr()));
 }
 
+void EphemeralStorageService::FinishStorageCleanupOnBecomeActive(const std::vector<std::string>& ephemeral_domains) {
+  for(const auto& domain : ephemeral_domains) {
+    const GURL url(GetFirstPartyStorageURL(domain));
+    const content::StoragePartitionConfig storage_partition_config =
+        content::StoragePartitionConfig::CreateDefault(context_);
+    const TLDEphemeralAreaKey key(domain, storage_partition_config);
+    LOG(INFO) << "[SHRED] FinishStorageCleanupOnBecomeActive for domain: "
+              << domain;
+    CleanupTLDEphemeralArea(key, true, true);
+  }
+}
+
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
@@ -597,48 +594,6 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
         {std::string(url.host()), storage_partition_config});
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
-}
-
-void EphemeralStorageService::OnAppBecomeInactiveHandler() {
-  auto cleanup_list =
-      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
-
-      LOG(INFO) << "[SHRED] OnAppBecomeInactiveHandler - Starting cleanup of first party storage areas on app close. List: "
-                << cleanup_list.DebugString();
-  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-  for (const auto& url_to_cleanup : cleanup_list) {
-    const auto url_and_storage_partition_config =
-        GetFirstPartyStorageURLAndStoragePartitionConfig(url_to_cleanup,
-                                                         context_);
-    const auto& [url, storage_partition_config] =
-        *url_and_storage_partition_config;
-
-    if (!url_and_storage_partition_config) {
-      continue;
-    }
-    if (!url.is_valid()) {
-      continue;
-    }
-
-    auto auto_shred_mode = GetAutoShredMode(
-      host_content_settings_map_, url);
-    if (auto_shred_mode.has_value() &&
-        auto_shred_mode.value() !=
-            brave_shields::mojom::AutoShredMode::APP_EXIT) {
-      continue;
-    }
-
-    const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
-    delegate_->PrepareTabsForFirstPartyStorageCleanup(std::move(ephemeral_domain));
-    LOG(INFO) << "[SHRED] OnAppBecomeInactiveHandler - cleanup due to APP_EXIT auto shred mode for url: "
-              << url.spec();
-    pref_update->EraseValue(url_to_cleanup);
-
-    LOG(INFO) << "[SHRED] OnAppBecomeInactiveHandler - Cleaning up first party storage area on startup: " << url_to_cleanup << " url_and_storage_partition_config:" << url_and_storage_partition_config.has_value();
-
-    delegate_->CleanupFirstPartyStorageArea(
-        {std::string(url.host()), storage_partition_config});
-  }
 }
 
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {

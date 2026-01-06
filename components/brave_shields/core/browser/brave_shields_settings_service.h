@@ -21,12 +21,6 @@ namespace brave_shields {
 
 class BraveShieldsSettingsService : public KeyedService {
  public:
-
- class BraveShieldsSettingsServiceObserver : public base::CheckedObserver {
-  public:
-   virtual void OnAutoShredModeChanged(mojom::AutoShredMode mode, const GURL& url) {}
- };
-
   explicit BraveShieldsSettingsService(
       HostContentSettingsMap& host_content_settings_map,
       PrefService* local_state = nullptr,
@@ -64,6 +58,7 @@ class BraveShieldsSettingsService : public KeyedService {
 
   void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
   mojom::AutoShredMode GetAutoShredMode(const GURL& url);
+  std::vector<std::string> GetUrlsWithAutoShredMode(mojom::AutoShredMode mode);
 
   bool IsJsBlockingEnforced(const GURL& url);
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingOverriddenData(
@@ -71,16 +66,11 @@ class BraveShieldsSettingsService : public KeyedService {
 
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const;
 
-  void AddObserver(BraveShieldsSettingsServiceObserver* observer);
-  void RemoveObserver(BraveShieldsSettingsServiceObserver* observer);
-
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED
   raw_ptr<PrefService> local_state_;    // NOT OWNED
   raw_ptr<PrefService> profile_prefs_;  // NOT OWNED
-  base::ObserverList<BraveShieldsSettingsServiceObserver> observer_list_;
-
 };
 
 }  // namespace brave_shields

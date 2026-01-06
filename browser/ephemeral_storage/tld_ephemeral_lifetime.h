@@ -16,7 +16,6 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 
 namespace content {
 
@@ -58,7 +57,6 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
   void SetShieldsStateOnHost(std::string_view host, bool enabled);
-  void SetAutoShredModeOnHost(brave_shields::mojom::AutoShredMode mode, const GURL& url);
   void EnforceFirstPartyStorageCleanup();
 
  private:

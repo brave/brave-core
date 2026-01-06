@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/containers/flat_set.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
@@ -21,7 +20,6 @@
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
 namespace content {
 class BrowserContext;
@@ -37,8 +35,7 @@ namespace ephemeral_storage {
 // this storage is cleared.
 class EphemeralStorageTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<EphemeralStorageTabHelper>,
-      public brave_shields::BraveShieldsSettingsService::BraveShieldsSettingsServiceObserver {
+      public content::WebContentsUserData<EphemeralStorageTabHelper> {
  public:
   explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
   ~EphemeralStorageTabHelper() override;
@@ -69,15 +66,12 @@ class EphemeralStorageTabHelper
 
   void UpdateShieldsState(const GURL& url);
 
-  void OnAutoShredModeChanged(brave_shields::mojom::AutoShredMode mode, const GURL& url) override;
-
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
       provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
-  const raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 

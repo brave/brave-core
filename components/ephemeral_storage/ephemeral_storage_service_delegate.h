@@ -26,9 +26,9 @@ class EphemeralStorageServiceDelegate {
   virtual void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) = 0;
-  virtual void RegisterOnAppBecomeInactiveCallback(base::RepeatingClosure callback) = 0;
+  virtual void RegisterOnBecomeActiveCallback(base::OnceCallback<void(const std::vector<std::string>&)> callback) = 0;
   virtual void PrepareTabsForFirstPartyStorageCleanup(
-      const std::string& ephemeral_domain) = 0;
+      const std::vector<std::string>& ephemeral_domain) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const = 0;
 #if BUILDFLAG(IS_ANDROID)

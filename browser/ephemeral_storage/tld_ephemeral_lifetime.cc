@@ -83,9 +83,4 @@ void TLDEphemeralLifetime::SetShieldsStateOnHost(std::string_view host,
   shields_state_on_hosts_[host] = enabled;
 }
 
-void TLDEphemeralLifetime::SetAutoShredModeOnHost(brave_shields::mojom::AutoShredMode mode, const GURL& url) {
-  if (ephemeral_storage_service_) {
-    ephemeral_storage_service_->SetAutoShredModeOnHost(mode, key_.storage_domain, key_.storage_partition_config);
-  }
-}
 }  // namespace ephemeral_storage

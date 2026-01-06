@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
@@ -35,6 +36,7 @@
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
+#include "base/containers/contains.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser.h"
@@ -51,7 +53,7 @@
 namespace {
 
 bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
-                                           const std::string& etldplusone) {
+                                           const std::vector<std::string>& etldplusone) {
   if (tab_handle == tabs::TabHandle::Null()) {
     return false;
   }
@@ -67,7 +69,7 @@ bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
 
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (tab_tld.empty() || tab_tld != etldplusone) {
+  if (tab_tld.empty() ||  !base::Contains(etldplusone, tab_tld)) {
     return false;
   }
   if (auto* ephemeral_storage_tab_helper =
@@ -173,8 +175,6 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   filter_builder->AddRegisterableDomain(key.first);
   filter_builder->SetStoragePartitionConfig(key.second);
 
-  LOG(INFO) << "[SHRED] Cleaning up first party storage area on startup: " << key.first;
-
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
@@ -183,13 +183,13 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
     base::OnceClosure callback) {
   DCHECK(callback);
-  LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback";
   first_window_opened_callback_ = std::move(callback);
 }
 
-void BraveEphemeralStorageServiceDelegate::RegisterOnAppBecomeInactiveCallback(base::RepeatingClosure callback) {
+void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(base::OnceCallback<void(const std::vector<std::string>&)> callback) {
   DCHECK(callback);
-  on_app_become_inactive_callback_ = std::move(callback);
+  LOG(INFO) << "[SHRED] Registered on become active callback";
+  on_become_active_callback_ = std::move(callback);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -199,22 +199,28 @@ void BraveEphemeralStorageServiceDelegate::RegisterOnAppBecomeInactiveCallback(b
 #endif
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
-  LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive";
+  LOG(INFO) << "[SHRED] Application became active";
+  if(on_become_active_callback_) {
+    LOG(INFO) << "[SHRED] Calling on_become_active_callback_";
+    std::move(on_become_active_callback_).Run(
+        shields_settings_service_->GetUrlsWithAutoShredMode(
+            brave_shields::mojom::AutoShredMode::APP_EXIT));
+  }
+  
   if (first_window_opened_callback_) {
-    LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive callback run";
     std::move(first_window_opened_callback_).Run();
   }
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
-  if(on_app_become_inactive_callback_) {
-    on_app_become_inactive_callback_.Run();
-  }
+  const auto urls = shields_settings_service_->GetUrlsWithAutoShredMode(
+      brave_shields::mojom::AutoShredMode::APP_EXIT);
+  PrepareTabsForFirstPartyStorageCleanup(urls);
 }
 
 void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
-        const std::string& ephemeral_domain) {
+        const std::vector<std::string>& ephemeral_domain) {
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 

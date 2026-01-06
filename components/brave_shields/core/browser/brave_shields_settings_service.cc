@@ -29,14 +29,6 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
-void BraveShieldsSettingsService::AddObserver(BraveShieldsSettingsServiceObserver* observer) {
-  observer_list_.AddObserver(observer);
-}
-
-void BraveShieldsSettingsService::RemoveObserver(BraveShieldsSettingsServiceObserver* observer) {
-  observer_list_.RemoveObserver(observer);
-}
-
 void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
                                                          const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
@@ -231,10 +223,6 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
   host_content_settings_map_->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
-
-  for (auto& observer : observer_list_) {
-    observer.OnAutoShredModeChanged(mode, url);
-  }
 }
 
 mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
@@ -242,6 +230,34 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
   return AutoShredSetting::FromValue(
       host_content_settings_map_->GetWebsiteSetting(
           url, GURL(), AutoShredSetting::kContentSettingsType));
+}
+
+std::vector<std::string> BraveShieldsSettingsService::GetUrlsWithAutoShredMode(
+    mojom::AutoShredMode mode) {
+  std::vector<std::string> result;
+
+  ContentSettingsForOneType all_auto_shred_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          AutoShredSetting::kContentSettingsType);
+
+  for (const auto& setting : all_auto_shred_settings) {
+    if (!setting.primary_pattern.IsValid()) {
+      continue;
+    }
+
+    auto setting_mode = AutoShredSetting::FromValue(setting.setting_value);
+    if (setting_mode != mode) {
+      continue;
+    }
+
+    GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
+    if (pattern_url.is_valid() &&
+        !IsShieldsDisabledOnAnyHostMatchingDomainOf(pattern_url)) {
+      result.push_back(net::URLToEphemeralStorageDomain(pattern_url));
+    }
+  }
+
+  return result;
 }
 
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
