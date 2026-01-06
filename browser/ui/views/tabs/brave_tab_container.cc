@@ -1299,9 +1299,10 @@ void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {
   }
 
   // Position separator between pinned and unpinned tabs
-  const gfx::Rect last_pinned_bounds = GetIdealBounds(pinned_tab_count - 1);
+  // GetPinnedTabsAreaBottom() gives the start of unpinned tabs.
   const int separator_y =
-      last_pinned_bounds.bottom() + tabs::kVerticalTabsSpacing;
+      GetPinnedTabsAreaBottom() - (tabs::kMarginForVerticalTabContainers +
+                                   tabs::kPinnedUnpinnedSeparatorHeight);
   gfx::Rect separator_bounds(0, separator_y, width(),
                              tabs::kPinnedUnpinnedSeparatorHeight);
   separator_bounds.Inset(

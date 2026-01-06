@@ -139,8 +139,10 @@ class BraveTabContainer : public TabContainerImpl {
 
   void UpdateTabsBorderInSplitTab(const std::vector<int>& indices);
 
-  // Returns the bottom y-coordinate of the pinned tabs area.
-  // This is used to visible rect of unpinned tabs.
+  // Returns the bottom y-coordinate of the pinned tabs area, including the
+  // separator between pinned and unpinned tabs if both exist. This represents
+  // the top boundary where unpinned tabs begin and is used to calculate the
+  // visible rect of unpinned tabs.
   int GetPinnedTabsAreaBottom() const;
 
   // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
