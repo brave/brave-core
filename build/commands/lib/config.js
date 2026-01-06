@@ -224,6 +224,7 @@ const Config = function () {
   this.notary_user = getEnvConfig(['notary_user'])
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
+  this.isBraveOriginBranded = getEnvConfig(['is_brave_origin_branded']) || false
   this.git_cache_path = getEnvConfig(['git_cache_path'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
@@ -471,6 +472,12 @@ Config.prototype.buildArgs = function () {
 
   if (this.targetOS !== 'ios') {
     args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
+    if (this.isBraveOriginBranded) {
+      args['import("//brave/build/args/brave_origin/branding_defaults.gni")'] =
+        null
+    } else {
+      args['import("//brave/build/args/branding_defaults.gni")'] = null
+    }
   } else {
     args['import("//brave/build/args/ios_defaults.gni")'] = null
   }
