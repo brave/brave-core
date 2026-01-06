@@ -187,6 +187,11 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
   first_window_opened_callback_ = std::move(callback);
 }
 
+void BraveEphemeralStorageServiceDelegate::RegisterOnAppBecomeInactiveCallback(base::RepeatingClosure callback) {
+  DCHECK(callback);
+  on_app_become_inactive_callback_ = std::move(callback);
+}
+
 #if BUILDFLAG(IS_ANDROID)
   void BraveEphemeralStorageServiceDelegate::TriggerCurrentAppStateNotification() {
     application_state_observer_->TriggerCurrentAppStateNotification();
@@ -202,8 +207,9 @@ void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
-  // Handle application becoming inactive if needed
-  LOG(INFO) << "[SHRED] Application became inactive";
+  if(on_app_become_inactive_callback_) {
+    on_app_become_inactive_callback_.Run();
+  }
 }
 
 void BraveEphemeralStorageServiceDelegate::

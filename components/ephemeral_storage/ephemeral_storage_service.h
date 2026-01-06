@@ -131,6 +131,7 @@ class EphemeralStorageService : public KeyedService {
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
+  void OnAppBecomeInactiveHandler();
 
   size_t FireCleanupTimersForTesting();
 

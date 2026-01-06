@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"
 
@@ -24,8 +25,8 @@ class EphemeralStorageServiceDelegate {
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
   virtual void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
-  virtual void RegisterFirstWindowOpenedCallback(
-      base::OnceClosure callback) = 0;
+  virtual void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) = 0;
+  virtual void RegisterOnAppBecomeInactiveCallback(base::RepeatingClosure callback) = 0;
   virtual void PrepareTabsForFirstPartyStorageCleanup(
       const std::string& ephemeral_domain) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
