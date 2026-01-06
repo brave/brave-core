@@ -27,13 +27,13 @@ const VerifyResultTestCase* SuccessAuthTokenIsNull() {
       {.test_name = "success_auth_token_is_null",
        .http_status_code = net::HTTP_OK,
        .raw_response_body = R"({ "authToken": null,
-                                 "email": "email",
                                  "service": "accounts",
                                  "verified": false })",
        .expected_response = {
            .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              VerifyResult::Response::SuccessBody body;
              body.auth_token = base::Value();
+             body.email = std::nullopt;
              return body;
            }()}});
   return kSuccessAuthTokenIsNull.get();
@@ -52,6 +52,7 @@ const VerifyResultTestCase* SuccessAuthTokenIsNotNull() {
                .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
                  VerifyResult::Response::SuccessBody body;
                  body.auth_token = base::Value("34c375d933e3c");
+                 body.email = "email";
                  return body;
                }()}});
   return kSuccessAuthTokenIsNotNull.get();

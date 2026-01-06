@@ -28,11 +28,13 @@ const LoginFinalizeTestCase* Success() {
   static const base::NoDestructor<LoginFinalizeTestCase> kSuccess(
       {.test_name = "success",
        .http_status_code = net::HTTP_OK,
-       .raw_response_body = R"({ "authToken": "eyJhbGciOiJFUz" })",
+       .raw_response_body = R"({ "authToken": "eyJhbGciOiJFUz",
+                                 "email": "email" })",
        .expected_response = {
            .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              LoginFinalize::Response::SuccessBody body;
              body.auth_token = "eyJhbGciOiJFUz";
+             body.email = "email";
              return body;
            }()}});
 

@@ -364,20 +364,20 @@ void BraveAccountService::VerifyResult(
 }
 
 void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
-  const auto authentication_token =
+  const auto [authentication_token, email] =
       response.body
           ? std::move(*response.body)
                 .transform([](auto success_body) {
-                  if (auto* auth_token = success_body.auth_token.GetIfString();
-                      !auth_token || auth_token->empty()) {
-                    return std::string();
-                  }
-                  return std::move(success_body.auth_token).TakeString();
+                  return std::pair(
+                      success_body.auth_token.GetIfString()
+                          ? std::move(success_body.auth_token).TakeString()
+                          : "",
+                      std::move(success_body.email).value_or(""));
                 })
-                .value_or("")
-          : "";
+                .value_or({})
+          : std::pair<std::string, std::string>{};
 
-  if (!authentication_token.empty()) {
+  if (!authentication_token.empty() && !email.empty()) {
     // We stop polling regardless of encryption success,
     // since the auth token is transient on the server
     // and cannot be retrieved again.
@@ -387,6 +387,7 @@ void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
     if (const auto encrypted_authentication_token =
             Encrypt(authentication_token);
         !encrypted_authentication_token.empty()) {
+      pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
       pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
                                encrypted_authentication_token);
     }
@@ -472,7 +473,7 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
           .and_then([&](auto success_body)
                         -> base::expected<mojom::LoginFinalizeResultPtr,
                                           mojom::LoginErrorPtr> {
-            if (success_body.auth_token.empty()) {
+            if (success_body.auth_token.empty() || success_body.email.empty()) {
               return base::unexpected(
                   mojom::LoginError::New(status_code, std::nullopt));
             }
@@ -485,6 +486,8 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
                   mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed));
             }
 
+            pref_service_->SetString(prefs::kBraveAccountEmailAddress,
+                                     success_body.email);
             pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
                                      encrypted_authentication_token);
 
