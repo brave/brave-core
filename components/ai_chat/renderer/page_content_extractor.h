@@ -75,6 +75,9 @@ class PageContentExtractor
       mojom::PageContentExtractor::ExtractPageContentCallback callback,
       const std::optional<std::string>& content);
 
+  // Extract DOM structure as JSON for filter generation
+  std::string ExtractDOMStructure();
+
   // RenderFrameObserver implementation:
   void OnDestruct() override;
 

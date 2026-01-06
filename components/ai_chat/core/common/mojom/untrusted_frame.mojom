@@ -72,6 +72,10 @@ interface UntrustedConversationHandler {
   // user_result: true if user approved, false if denied.
   ProcessPermissionChallenge(string tool_use_id, bool user_result);
 
+  // Create a custom cosmetic filter from AI-generated filter data.
+  // The markdown_response contains the full AI response with filter code and metadata.
+  CreateCustomFilter(string markdown_response) => (bool success, string? error);
+
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
 };

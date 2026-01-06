@@ -1147,9 +1147,23 @@ void ConversationHandler::ProcessPermissionChallenge(
   // need to distinguish between different permission challenges. If that
   // changes then we can add relevant parameters to this method.
   tool_ptr->UserPermissionGranted(tool_use_id);
+}
 
-  // Continue with tool execution
-  MaybeRespondToNextToolUseRequest();
+void ConversationHandler::CreateCustomFilter(
+    const std::string& markdown_response,
+    CreateCustomFilterCallback callback) {
+  DVLOG(1) << __func__;
+
+  // For now, return not implemented. Full implementation would:
+  // 1. Get domain from associated content
+  // 2. Call custom_filter_impl_ callback if available
+  // 3. Return result to UI
+  //
+  // This requires wiring through ai_chat_service_factory to provide
+  // the browser-layer callback that accesses AdBlock services.
+
+  std::move(callback).Run(
+      false, "Custom filter creation not yet fully implemented");
 }
 
 void ConversationHandler::AddToConversationHistory(

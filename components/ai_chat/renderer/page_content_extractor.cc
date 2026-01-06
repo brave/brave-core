@@ -36,8 +36,11 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
+#include "v8/include/v8-context.h"
+#include "v8/include/v8-function.h"
 #include "v8/include/v8-isolate.h"
 #include "v8/include/v8-local-handle.h"
+#include "v8/include/v8-primitive.h"
 
 namespace ai_chat {
 
@@ -204,6 +207,135 @@ void PageContentExtractor::BindReceiver(
   receiver_.Bind(std::move(receiver));
 }
 
+std::string PageContentExtractor::ExtractDOMStructure() {
+  blink::WebLocalFrame* main_frame = render_frame()->GetWebFrame();
+  if (!main_frame) {
+    return "[]";
+  }
+
+  blink::WebDocument document = main_frame->GetDocument();
+  if (document.IsNull()) {
+    return "[]";
+  }
+
+  // JavaScript to extract DOM structure
+  constexpr char16_t kDOMExtractionScript[] = uR"JS(
+    (function() {
+      const maxNodes = 100;
+      const maxDepth = 5;
+      const maxTextLength = 100;
+      let nodeCount = 0;
+
+      function extractNode(element, depth) {
+        if (nodeCount >= maxNodes || depth >= maxDepth) {
+          return null;
+        }
+
+        // Skip hidden elements
+        const style = window.getComputedStyle(element);
+        if (style.display === 'none' || style.visibility === 'hidden') {
+          return null;
+        }
+
+        nodeCount++;
+
+        const node = {
+          tag: element.tagName.toLowerCase(),
+          classes: Array.from(element.classList),
+          id: element.id || '',
+          text: ''
+        };
+
+        // Get text content (first N characters)
+        let text = element.textContent || '';
+        text = text.trim().replace(/\s+/g, ' ');
+        if (text.length > maxTextLength) {
+          text = text.substring(0, maxTextLength) + '...';
+        }
+        node.text = text;
+
+        return node;
+      }
+
+      function traverseDOM(element, depth) {
+        const nodes = [];
+        const node = extractNode(element, depth);
+
+        if (node) {
+          nodes.push(node);
+        }
+
+        if (nodeCount >= maxNodes || depth >= maxDepth) {
+          return nodes;
+        }
+
+        // Traverse children
+        for (let i = 0; i < element.children.length && nodeCount < maxNodes; i++) {
+          nodes.push(...traverseDOM(element.children[i], depth + 1));
+        }
+
+        return nodes;
+      }
+
+      const body = document.body;
+      if (!body) {
+        return [];
+      }
+
+      return traverseDOM(body, 0);
+    })();
+  )JS";
+
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::HandleScope handle_scope(isolate);
+  blink::WebScriptSource source =
+      blink::WebScriptSource(blink::WebString::FromUTF16(kDOMExtractionScript));
+
+  // Execute synchronously
+  v8::Local<v8::Value> result = main_frame->ExecuteScriptAndReturnValue(source);
+
+  if (result.IsEmpty() || !result->IsArray()) {
+    return "[]";
+  }
+
+  // Convert V8 array to JSON string
+  v8::Local<v8::Context> context = main_frame->MainWorldScriptContext();
+  v8::Context::Scope context_scope(context);
+
+  v8::Local<v8::Object> json = context->Global()
+                                    ->Get(context, v8::String::NewFromUtf8(
+                                                       isolate, "JSON")
+                                                       .ToLocalChecked())
+                                    .ToLocalChecked()
+                                    .As<v8::Object>();
+
+  v8::Local<v8::Function> stringify =
+      json->Get(context, v8::String::NewFromUtf8(isolate, "stringify")
+                             .ToLocalChecked())
+          .ToLocalChecked()
+          .As<v8::Function>();
+
+  v8::Local<v8::Value> args[] = {result};
+  v8::Local<v8::Value> json_result =
+      stringify->Call(context, json, 1, args).ToLocalChecked();
+
+  if (json_result.IsEmpty() || !json_result->IsString()) {
+    return "[]";
+  }
+
+  v8::String::Utf8Value utf8(isolate, json_result);
+
+  // Validate size before string allocation (max 50KB)
+  // JavaScript limits to 100 nodes × ~500 bytes each ≈ 50KB worst case
+  constexpr size_t kMaxDOMStructureSize = 50000;
+  if (utf8.length() > kMaxDOMStructureSize) {
+    VLOG(1) << "DOM structure JSON too large: " << utf8.length() << " bytes";
+    return "[]";
+  }
+
+  return std::string(*utf8, utf8.length());
+}
+
 void PageContentExtractor::OnDistillResult(
     mojom::PageContentExtractor::ExtractPageContentCallback callback,
     const std::optional<std::string>& content) {
@@ -219,10 +351,19 @@ void PageContentExtractor::OnDistillResult(
     return;
   }
   VLOG(1) << "Got a distill result of character length: " << content->length();
+
   // Successful text extraction
   auto result = mojom::PageContent::New();
   result->type = std::move(mojom::PageContentType::Text);
   result->content = mojom::PageContentData::NewContent(content.value());
+
+  // Extract DOM structure for filter generation
+  std::string dom_structure = ExtractDOMStructure();
+  if (!dom_structure.empty() && dom_structure != "[]") {
+    result->dom_structure = dom_structure;
+    VLOG(1) << "Extracted DOM structure: " << dom_structure.length() << " chars";
+  }
+
   std::move(callback).Run(std::move(result));
 }
 

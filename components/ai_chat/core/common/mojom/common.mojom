@@ -50,6 +50,7 @@ enum ActionType {
   EXPAND,
   CONVERSATION_STARTER,
   SUGGESTION,
+  GENERATE_COSMETIC_FILTER,
 };
 
 // When adding or modifying category names, associated UI strings must also
@@ -267,6 +268,42 @@ struct ConversationTitleEvent {
   string title;
 };
 
+// Type of generated filter (CSS selector or JavaScript scriptlet)
+enum GeneratedFilterType {
+  CSS_SELECTOR,
+  SCRIPTLET
+};
+
+// Event containing AI-generated filter data for user preview
+struct GeneratedFilterEvent {
+  // Type of filter generated
+  GeneratedFilterType type;
+
+  // Domain the filter applies to
+  string domain;
+
+  // Generated code (CSS selector or JavaScript)
+  string code;
+
+  // Human-readable description of what the filter does
+  string description;
+
+  // AI's confidence score (0-100)
+  int32 confidence;
+
+  // AI's reasoning for this filter
+  string reasoning;
+
+  // Target elements that will be affected
+  array<string> target_elements;
+
+  // Complete filter rule to be applied
+  string filter_rule;
+
+  // Scriptlet name (if type is SCRIPTLET)
+  string? scriptlet_name;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -274,6 +311,7 @@ union ConversationEntryEvent {
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
   ToolUseEvent tool_use_event;
+  GeneratedFilterEvent generated_filter_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
