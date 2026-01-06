@@ -17,6 +17,7 @@ source_set("unit_tests") {
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/services/brave_shields/mojom",
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
