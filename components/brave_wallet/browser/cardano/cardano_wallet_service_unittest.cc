@@ -157,6 +157,14 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
   std::tie(balance, error) = balance_future.Take();
   EXPECT_FALSE(error);
   EXPECT_EQ(balance->total_balance, 100u + 200u);
+
+  // Lovelace balance still works.
+  cardano_wallet_service_->GetBalance(account_id(), std::nullopt,
+                                      balance_future.GetCallback());
+
+  std::tie(balance, error) = balance_future.Take();
+  EXPECT_FALSE(error);
+  EXPECT_EQ(balance->total_balance, 969750u + 2000000u + 7000000u);
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {
