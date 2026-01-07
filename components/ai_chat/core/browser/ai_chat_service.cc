@@ -649,7 +649,7 @@ void AIChatService::CreateSkill(const std::string& shortcut,
                                 const std::optional<std::string>& model) {
   prefs::AddSkillToPrefs(shortcut, prompt, model, *profile_prefs_);
   if (ai_chat_metrics_) {
-    ai_chat_metrics_->skills_metrics()->NotifySkillChange();
+    ai_chat_metrics_->EnsureSkillsMetrics()->NotifySkillChange();
   }
 }
 
@@ -663,7 +663,7 @@ void AIChatService::UpdateSkill(const std::string& id,
 void AIChatService::DeleteSkill(const std::string& id) {
   prefs::DeleteSkillFromPrefs(id, *profile_prefs_);
   if (ai_chat_metrics_) {
-    ai_chat_metrics_->skills_metrics()->NotifySkillChange();
+    ai_chat_metrics_->EnsureSkillsMetrics()->NotifySkillChange();
   }
 }
 
