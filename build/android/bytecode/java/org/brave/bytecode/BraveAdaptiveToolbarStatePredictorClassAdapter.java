@@ -12,6 +12,8 @@ public class BraveAdaptiveToolbarStatePredictorClassAdapter extends BraveClassVi
             "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor";
     static String sBraveAdaptiveToolbarStatePredictor =
             "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor";
+    static String sBraveAdaptiveToolbarStatePredictorDummySuper =
+            "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictorDummySuper";
 
     public BraveAdaptiveToolbarStatePredictorClassAdapter(ClassVisitor visitor) {
         super(visitor);
@@ -19,6 +21,18 @@ public class BraveAdaptiveToolbarStatePredictorClassAdapter extends BraveClassVi
         changeSuperName(sBraveAdaptiveToolbarStatePredictor, sAdaptiveToolbarStatePredictor);
 
         makePublicMethod(sAdaptiveToolbarStatePredictor, "isValidSegment");
+
+        // Upstream's version we redirect to our own implementation
+        changeMethodOwner(
+                sAdaptiveToolbarStatePredictor,
+                "isValidSegment",
+                sBraveAdaptiveToolbarStatePredictor);
+        // Our dummy super class we redirect to back the upstream version to be able to call it from
+        // our own implementation
+        changeMethodOwner(
+                sBraveAdaptiveToolbarStatePredictorDummySuper,
+                "isValidSegment",
+                sAdaptiveToolbarStatePredictor);
 
         redirectConstructor(sAdaptiveToolbarStatePredictor, sBraveAdaptiveToolbarStatePredictor);
     }
