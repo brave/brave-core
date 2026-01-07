@@ -29,10 +29,6 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactoryIOS {
   static BraveOriginService* GetForProfile(ProfileIOS* profile);
   static BraveOriginServiceFactory* GetInstance();
 
-  BraveOriginServiceFactory(const BraveOriginServiceFactory&) = delete;
-  BraveOriginServiceFactory& operator=(const BraveOriginServiceFactory&) =
-      delete;
-
   // Build browser-level policy definitions.
   // This is done in this layer because of all the dependencies needed
   // to gather this information.

@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("brave_origin") {
   sources = [
@@ -12,12 +15,13 @@ source_set("brave_origin") {
   ]
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common",
@@ -30,7 +34,16 @@ source_set("brave_origin") {
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
   ]
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/common" ]
+  }
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/browser:pref_names" ]
+  }
+  if (enable_brave_talk) {
+    deps += [ "//brave/components/brave_talk" ]
   }
 }

@@ -10,17 +10,15 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/ios/browser/policy/brave_simple_policy_map_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -28,6 +26,18 @@
 #include "ios/chrome/browser/policy/model/profile_policy_connector.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -63,17 +73,21 @@ constexpr auto kBraveOriginProfileMetadata =
              true,
              /*user_settable=*/false)},
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
         // Brave Wallet preferences
-        {brave_wallet::prefs::kDisabledByPolicy,
+        {brave_wallet::kBraveWalletDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+#endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
         // AI Chat preferences
         {ai_chat::prefs::kEnabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/false)},
+#endif
 
         // Brave News preferences
         {brave_news::prefs::kBraveNewsDisabledByPolicy,
@@ -89,17 +103,13 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
         // Brave Talk preferences
-        {kBraveTalkDisabledByPolicy,
+        {brave_talk::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
-
-        // Playlist preferences
-        {playlist::kPlaylistEnabledPref,
-         BraveOriginServiceFactory::BraveOriginPrefMetadata(
-             false,
-             /*user_settable=*/true)},
+#endif
     });
 
 }  // namespace
