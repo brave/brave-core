@@ -71,4 +71,34 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   EXPECT_FALSE(ParsePolkadotAccount("random string full of random words", 0));
 }
 
+TEST(PolkadotUtils, Uint128MojomConversions) {
+  // Zeroes.
+  EXPECT_EQ(Uint128ToMojom(0), mojom::uint128::New(0, 0));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, 0)), uint128_t{0});
+
+  auto uint64_max = std::numeric_limits<uint64_t>::max();
+  auto uint128_max = std::numeric_limits<uint128_t>::max();
+
+  // Low bits set.
+  EXPECT_EQ(Uint128ToMojom(uint64_max), mojom::uint128::New(0, uint64_max));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, uint64_max)),
+            uint128_t{uint64_max});
+
+  // High bits set.
+  EXPECT_EQ(Uint128ToMojom(uint128_t{uint64_max} << 64),
+            mojom::uint128::New(uint64_max, 0));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(uint64_max, 0)),
+            uint128_t{uint64_max} << 64);
+
+  // All bits set.
+  EXPECT_EQ(Uint128ToMojom(uint128_max),
+            mojom::uint128::New(uint64_max, uint64_max));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(uint64_max, uint64_max)),
+            uint128_max);
+
+  // Normal/sane value.
+  EXPECT_EQ(Uint128ToMojom(1234), mojom::uint128::New(0, 1234));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, 1234)), uint128_t{1234});
+}
+
 }  // namespace brave_wallet

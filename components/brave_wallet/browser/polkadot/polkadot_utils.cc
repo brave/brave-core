@@ -29,4 +29,13 @@ ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
 
   return std::nullopt;
 }
+
+mojom::uint128Ptr Uint128ToMojom(uint128_t x) {
+  return mojom::uint128::New(x >> 64, x & 0xffffffffffffffff);
+}
+
+uint128_t MojomToUint128(const mojom::uint128Ptr& x) {
+  return (uint128_t{x->high} << 64) | uint128_t{x->low};
+}
+
 }  // namespace brave_wallet
