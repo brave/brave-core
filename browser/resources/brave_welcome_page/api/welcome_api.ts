@@ -150,6 +150,39 @@ export function createWelcomeApi(init = defaultInit()) {
             api.getVerticalTabsEnabled.update(enabled)
           },
         },
+        getWebDiscoveryEnabled: {
+          response: (r) => r.enabled,
+          prefetchWithArgs: [],
+          placeholderData: false,
+        },
+        setWebDiscoveryEnabled: {
+          mutationResponse: () => {},
+          onMutate: ([enabled]: [boolean]) => {
+            api.getWebDiscoveryEnabled.update(enabled)
+          },
+        },
+        getP3AEnabled: {
+          response: (r) => r.enabled,
+          prefetchWithArgs: [],
+          placeholderData: false,
+        },
+        setP3AEnabled: {
+          mutationResponse: () => {},
+          onMutate: ([enabled]: [boolean]) => {
+            api.getP3AEnabled.update(enabled)
+          },
+        },
+        getCrashReportsEnabled: {
+          response: (r) => r.enabled,
+          prefetchWithArgs: [],
+          placeholderData: false,
+        },
+        setCrashReportsEnabled: {
+          mutationResponse: () => {},
+          onMutate: ([enabled]: [boolean]) => {
+            api.getCrashReportsEnabled.update(enabled)
+          },
+        },
       }),
       ...endpointsFor(themeColorPickerHandler, {
         getChromeColors: {
@@ -188,6 +221,15 @@ export function createWelcomeApi(init = defaultInit()) {
     },
     onVerticalTabsEnabledChanged: () => {
       api.getVerticalTabsEnabled.invalidate()
+    },
+    onWebDiscoveryEnabledChanged() {
+      api.getWebDiscoveryEnabled.invalidate()
+    },
+    onP3AEnabledChanged() {
+      api.getP3AEnabled.invalidate()
+    },
+    onCrashReportsEnabledChanged() {
+      api.getCrashReportsEnabled.invalidate()
     },
   })
 

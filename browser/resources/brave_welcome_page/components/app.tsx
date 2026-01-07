@@ -10,6 +10,8 @@ import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
 import { ImportStep } from './import_step'
 import { AppearanceStep } from './appearance_step'
+import { FeaturesStep } from './features_step'
+import { MetricsStep } from './metrics_step'
 
 import { style } from './app.style'
 
@@ -73,6 +75,20 @@ export function App() {
       case 'appearance':
         return (
           <AppearanceStep
+            onNext={stepForward}
+            onBack={stepBack}
+          />
+        )
+      case 'features':
+        return (
+          <FeaturesStep
+            onNext={stepForward}
+            onBack={stepBack}
+          />
+        )
+      case 'metrics':
+        return (
+          <MetricsStep
             onNext={stepForward}
             onBack={stepBack}
           />

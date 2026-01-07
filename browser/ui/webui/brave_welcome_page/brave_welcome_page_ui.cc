@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -60,7 +61,7 @@ void BraveWelcomePageUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<brave_welcome_page::WelcomePageHandler>(
       std::move(receiver), ThemeServiceFactory::GetForProfile(profile),
-      profile->GetPrefs());
+      profile->GetPrefs(), g_browser_process->local_state());
 }
 
 void BraveWelcomePageUI::BindInterface(

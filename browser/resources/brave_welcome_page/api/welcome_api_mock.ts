@@ -96,6 +96,12 @@ export function createWelcomeApiMock(): WelcomeApi {
         enabled: false,
       }),
       setVerticalTabsEnabled: async (enabled) => {},
+      getCrashReportsEnabled: async () => ({ enabled: true }),
+      setCrashReportsEnabled: async (enabled) => {},
+      getP3AEnabled: async () => ({ enabled: true }),
+      setP3AEnabled: async (enabled) => {},
+      getWebDiscoveryEnabled: async () => ({ enabled: true }),
+      setWebDiscoveryEnabled: async (enabled) => {},
     },
     bindWelcomePageHandler: (page) => {},
     themeColorPickerHandler: {

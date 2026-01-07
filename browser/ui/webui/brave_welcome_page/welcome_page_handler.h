@@ -26,7 +26,8 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
  public:
   WelcomePageHandler(mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
                      ThemeService* theme_service,
-                     PrefService* prefs);
+                     PrefService* prefs,
+                     PrefService* local_state);
 
   WelcomePageHandler(const WelcomePageHandler&) = delete;
   WelcomePageHandler& operator=(const WelcomePageHandler&) = delete;
@@ -41,12 +42,23 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   void GetVerticalTabsEnabled(GetVerticalTabsEnabledCallback callback) override;
   void SetVerticalTabsEnabled(bool enabled,
                               SetVerticalTabsEnabledCallback callback) override;
+  void GetWebDiscoveryEnabled(GetWebDiscoveryEnabledCallback callback) override;
+  void SetWebDiscoveryEnabled(bool enabled,
+                              SetWebDiscoveryEnabledCallback callback) override;
+  void GetP3AEnabled(GetP3AEnabledCallback callback) override;
+  void SetP3AEnabled(bool enabled, SetP3AEnabledCallback callback) override;
+  void GetCrashReportsEnabled(GetCrashReportsEnabledCallback callback) override;
+  void SetCrashReportsEnabled(bool enabled,
+                              SetCrashReportsEnabledCallback callback) override;
 
   // ThemeServiceObserver:
   void OnThemeChanged() override;
 
  private:
   void OnVerticalTabsEnabledChanged();
+  void OnWebDiscoveryEnabledChanged();
+  void OnP3AEnabledChanged();
+  void OnCrashReportsEnabledChanged();
 
   mojo::Receiver<mojom::WelcomePageHandler> receiver_;
   mojo::Remote<mojom::WelcomePage> page_;
