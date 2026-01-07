@@ -29,19 +29,23 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
   return (
     <>
       <ButtonMenu
-        className={styles.buttonMenu}
+        className={classnames({
+          [styles.buttonMenu]: true,
+          [styles.buttonMenuMobile]: conversationContext.isMobile,
+        })}
         isOpen={props.isOpen}
         onClose={props.onClose}
       >
         <Button
           fab
           slot='anchor-content'
-          size='tiny'
+          size={conversationContext.isMobile ? 'small' : 'tiny'}
           kind='plain-faint'
           onClick={props.onClick}
           className={classnames({
             [styles.moreButton]: true,
             [styles.moreButtonActive]: props.isOpen,
+            [styles.moreButtonMobile]: conversationContext.isMobile,
           })}
         >
           <Icon name='more-vertical' />
