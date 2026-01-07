@@ -367,20 +367,15 @@ copy("theme_files") {
   if (is_linux) {
     sources = [
       "$branding_dir/linux/product_logo_128_beta.png",
-      "$branding_dir/linux/product_logo_128_dev.png",
       "$branding_dir/linux/product_logo_128_development.png",
       "$branding_dir/linux/product_logo_128_nightly.png",
       "$branding_dir/linux/product_logo_24_beta.png",
-      "$branding_dir/linux/product_logo_24_dev.png",
       "$branding_dir/linux/product_logo_24_nightly.png",
       "$branding_dir/linux/product_logo_256_beta.png",
-      "$branding_dir/linux/product_logo_256_dev.png",
       "$branding_dir/linux/product_logo_256_nightly.png",
       "$branding_dir/linux/product_logo_48_beta.png",
-      "$branding_dir/linux/product_logo_48_dev.png",
       "$branding_dir/linux/product_logo_48_nightly.png",
       "$branding_dir/linux/product_logo_64_beta.png",
-      "$branding_dir/linux/product_logo_64_dev.png",
       "$branding_dir/linux/product_logo_64_nightly.png",
       "$branding_dir_100/linux/product_logo_16_beta.png",
       "$branding_dir_100/linux/product_logo_16_dev.png",
@@ -389,13 +384,28 @@ copy("theme_files") {
       "$branding_dir_100/linux/product_logo_32_dev.png",
       "$branding_dir_100/linux/product_logo_32_nightly.png",
     ]
+
+    # Dev channel resources only exist for brave, not brave_origin
+    if (branding_path_component == "brave") {
+      sources += [
+        "$branding_dir/linux/product_logo_128_dev.png",
+        "$branding_dir/linux/product_logo_24_dev.png",
+        "$branding_dir/linux/product_logo_256_dev.png",
+        "$branding_dir/linux/product_logo_48_dev.png",
+        "$branding_dir/linux/product_logo_64_dev.png",
+      ]
+    }
   } else {
     sources = [
       "$branding_dir/product_logo_128_beta.png",
-      "$branding_dir/product_logo_128_dev.png",
       "$branding_dir/product_logo_128_development.png",
       "$branding_dir/product_logo_128_nightly.png",
     ]
+
+    # Dev channel resources only exist for brave, not brave_origin
+    if (branding_path_component == "brave") {
+      sources += [ "$branding_dir/product_logo_128_dev.png" ]
+    }
   }
   outputs = [ "$root_out_dir/installer/theme/{{source_file_part}}" ]
 }
