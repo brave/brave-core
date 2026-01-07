@@ -7,9 +7,9 @@ import Foundation
 import SwiftUI
 
 /// Utility for checking SwiftUI capabilities and system features
-public enum SwiftUICapabilities {
-  /// Determines if Liquid Glass is enabled on iOS 26.1+
-  public static var isLiquidGlassEnabled: Bool {
+public enum LiquidGlassMode {
+  /// Determines if Liquid Glass is enabled on iOS 26+
+  public static var isEnabled: Bool {
     if #available(iOS 26, *) {
       let isCompatabilityModeEnabled =
         Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true

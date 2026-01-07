@@ -86,9 +86,10 @@ struct SearchView: View {
           SearchUnavailableView(query: query)
         }
       }
+      .navigationTitle(Strings.Playlist.searchTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        if #available(iOS 26.0, *), SwiftUICapabilities.isLiquidGlassEnabled {
+        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
           ToolbarItemGroup(placement: .automatic) {
             SearchBar(
               text: $query,
