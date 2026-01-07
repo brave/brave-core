@@ -14,12 +14,15 @@ const mockModels = [
     key: '1',
     displayName: 'Model One',
     visionSupport: false,
+    supportsTools: false,
+    isSuggestedModel: false,
+    isNearModel: false,
     options: {
       leoModelOptions: {
         name: 'model-one',
         displayMaker: 'Company',
         category: Mojom.ModelCategory.CHAT,
-        access: Mojom.ModelAccess.BASIC,
+        access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700,
       },
@@ -30,6 +33,9 @@ const mockModels = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
+    supportsTools: true,
+    isSuggestedModel: false,
+    isNearModel: false,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',

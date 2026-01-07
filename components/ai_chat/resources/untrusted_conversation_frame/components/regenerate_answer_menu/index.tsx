@@ -42,6 +42,23 @@ export function RegenerateAnswerMenu(props: Props) {
   const modelDisplayName =
     leoModels.find((model) => model.key === turnModelKey)?.displayName ?? ''
 
+  const freeModels = React.useMemo(() => {
+    return leoModels.filter(
+      (model) =>
+        model.options.leoModelOptions?.access
+        === Mojom.ModelAccess.BASIC_AND_PREMIUM,
+    )
+  }, [leoModels])
+
+  const premiumModels = React.useMemo(
+    () =>
+      leoModels.filter(
+        (model) =>
+          model.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM,
+      ),
+    [leoModels],
+  )
+
   const handleRegenerate = React.useCallback(
     (modelKey: string) => {
       if (!leoModels.some((model) => model.key === modelKey)) {
@@ -89,7 +106,16 @@ export function RegenerateAnswerMenu(props: Props) {
           />
         </div>
       </Button>
-      {leoModels.map((model) => (
+      {freeModels.map((model) => (
+        <ModelMenuItem
+          key={model.key}
+          model={model}
+          isCurrent={model.key === turnModelKey}
+          onClick={() => handleRegenerate(model.key)}
+          showPremiumLabel={!isPremiumUser}
+        />
+      ))}
+      {premiumModels.map((model) => (
         <ModelMenuItem
           key={model.key}
           model={model}
