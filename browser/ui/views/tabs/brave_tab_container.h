@@ -75,6 +75,8 @@ class BraveTabContainer : public TabContainerImpl {
                     std::optional<size_t> new_active_index) override;
   void SetTabPinned(int model_index, TabPinned pinned) override;
   void MoveTab(int from_model_index, int to_model_index) override;
+  void OnGroupContentsChanged(const tab_groups::TabGroupId& group) override;
+  void UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(

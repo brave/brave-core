@@ -529,6 +529,15 @@ void BraveTabContainer::SetTabSlotVisibility() {
   }
 
   TabContainerImpl::SetTabSlotVisibility();
+
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
+    // Even though TabContainerImpl::SetTabSlotVisibility() already updates the
+    // bounds of the group views for certain cases, we need to update them again
+    // https://github.com/brave/brave-browser/issues/51786#issuecomment-3716778522
+    for (auto& [_, group_views] : group_views_) {
+      group_views->UpdateBounds();
+    }
+  }
 }
 
 void BraveTabContainer::InvalidateIdealBounds() {
@@ -1294,6 +1303,51 @@ void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
   GetTabAtModelIndex(to_model_index)->UpdateInsets();
   ClampScrollOffset();
   UpdatePinnedUnpinnedSeparator();
+}
+
+void BraveTabContainer::OnGroupContentsChanged(
+    const tab_groups::TabGroupId& group) {
+  TabContainerImpl::OnGroupContentsChanged(group);
+
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return;
+  }
+
+  // Here, group bounds might have changed by
+  // TabContainerImpl::OnGroupContentsChanged(). We need to update the clip path
+  // for the group views.
+  auto& group_views = group_views_[group];
+  for (auto* view : std::initializer_list<views::View*>{
+           group_views->header(), group_views->underline(),
+           group_views->highlight(), group_views->drag_underline()}) {
+    UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
+  }
+}
+
+void BraveTabContainer::UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) {
+  TabContainerImpl::UpdateTabGroupVisuals(group_id);
+
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return;
+  }
+
+  // Here, group bounds might have changed by
+  // TabContainerImpl::UpdateTabGroupVisuals(). We need to update the clip path
+  // for the group views. Note that |group_views_| may not contain the
+  // |group_id| as per the upstream implementation.
+  auto group_views = group_views_.find(group_id);
+  if (group_views == group_views_.end()) {
+    return;
+  }
+
+  for (auto* view : std::initializer_list<views::View*>{
+           group_views->second->header(), group_views->second->underline(),
+           group_views->second->highlight(),
+           group_views->second->drag_underline()}) {
+    UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
+  }
 }
 
 void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {
