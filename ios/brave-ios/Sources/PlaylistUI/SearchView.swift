@@ -30,11 +30,6 @@ struct SearchView: View {
     .init(format: "name CONTAINS[c] %@", query)
   }
 
-  /// Returns the appropriate toolbar placement based on Liquid Glass state
-  private var searchBarPlacement: ToolbarItemPlacement {
-    SwiftUICapabilities.isLiquidGlassEnabled ? .automatic : .principal
-  }
-
   init(
     folders: [PlaylistFolder],
     selectedItemID: Binding<PlaylistItem.ID?>,
@@ -93,20 +88,39 @@ struct SearchView: View {
       }
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItemGroup(placement: searchBarPlacement) {
-          SearchBar(
-            text: $query,
-            placeholder: Strings.Playlist.searchTitle,
-            isFocused: $isSearchFocused
-          )
-        }
-        ToolbarItemGroup(placement: .confirmationAction) {
-          Button {
-            dismiss()
-          } label: {
-            Text(Strings.done)
+        if #available(iOS 26.0, *), SwiftUICapabilities.isLiquidGlassEnabled {
+          ToolbarItemGroup(placement: .automatic) {
+            SearchBar(
+              text: $query,
+              placeholder: Strings.Playlist.searchTitle,
+              isFocused: $isSearchFocused
+            )
           }
-          .tint(Color.white)
+          ToolbarSpacer(.fixed, placement: .automatic)
+          ToolbarItemGroup(placement: .confirmationAction) {
+            Button {
+              dismiss()
+            } label: {
+              Text(Strings.done)
+            }
+            .tint(Color.white)
+          }
+        } else {
+          ToolbarItemGroup(placement: .principal) {
+            SearchBar(
+              text: $query,
+              placeholder: Strings.Playlist.searchTitle,
+              isFocused: $isSearchFocused
+            )
+          }
+          ToolbarItemGroup(placement: .confirmationAction) {
+            Button {
+              dismiss()
+            } label: {
+              Text(Strings.done)
+            }
+            .tint(Color.white)
+          }
         }
       }
       .toolbarBackground(Color(braveSystemName: .neutral10), for: .navigationBar)
