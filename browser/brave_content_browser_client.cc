@@ -683,20 +683,6 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
-    registry.ForWebUI<VPNPanelUI>()
-        .Add<brave_vpn::mojom::PanelHandlerFactory>();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    registry.ForWebUI<playlist::PlaylistUI>()
-        .Add<playlist::mojom::PageHandlerFactory>();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
@@ -799,6 +785,25 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
+    content::WebUIBrowserInterfaceBrokerRegistry& registry) {
+  ChromeContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
+    registry.ForWebUI<VPNPanelUI>()
+        .Add<brave_vpn::mojom::PanelHandlerFactory>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    registry.ForWebUI<playlist::PlaylistUI>()
+        .Add<playlist::mojom::PageHandlerFactory>();
+  }
+#endif
 }
 
 std::optional<base::UnguessableToken>
