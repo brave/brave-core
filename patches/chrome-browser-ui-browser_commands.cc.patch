@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index aa732ca6d7774505751cc30f3d2deec4e3170191..bdd3b500ecfe668583d691f7997482c69664083d 100644
+index aa732ca6d7774505751cc30f3d2deec4e3170191..46d5ff3f414eacd7d640aa43f20c22365234e2f6 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -603,6 +603,7 @@ void ReloadInternal(BrowserWindowInterface* browser,
-           tab_strip_model->GetWebContentsAt(selected_index));
-     }
-   }
-+  BRAVE_RELOAD_INTERNAL
- 
-   base::UmaHistogramCounts100("TabStrip.Tab.ReloadCount",
-                               tabs_to_reload.size());
-@@ -1185,6 +1186,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1185,6 +1185,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();

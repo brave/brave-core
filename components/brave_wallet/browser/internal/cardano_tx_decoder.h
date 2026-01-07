@@ -17,6 +17,7 @@ namespace brave_wallet {
 
 inline constexpr uint32_t kCardanoTxHashSize = 32u;
 inline constexpr uint32_t kCardanoPubKeySize = 32u;
+inline constexpr uint32_t kCardanoScriptHashSize = 28u;
 inline constexpr uint32_t kCardanoSignatureSize = 64u;
 
 // Wrapper class for Cardano transaction decoding functionality
@@ -36,6 +37,18 @@ class CardanoTxDecoder {
     uint32_t index = 0;
   };
 
+  struct SerializableTxOutputToken {
+    SerializableTxOutputToken();
+    SerializableTxOutputToken(const SerializableTxOutputToken&);
+    SerializableTxOutputToken& operator=(const SerializableTxOutputToken&);
+    SerializableTxOutputToken(SerializableTxOutputToken&&);
+    SerializableTxOutputToken& operator=(SerializableTxOutputToken&&);
+    ~SerializableTxOutputToken();
+
+    std::vector<uint8_t> token_id;
+    uint64_t amount = 0u;
+  };
+
   struct SerializableTxOutput {
     SerializableTxOutput();
     SerializableTxOutput(const SerializableTxOutput&);
@@ -46,6 +59,7 @@ class CardanoTxDecoder {
 
     std::vector<uint8_t> address_bytes;
     uint64_t amount = 0u;
+    std::vector<SerializableTxOutputToken> tokens;
   };
 
   struct SerializableTxBody {
@@ -110,6 +124,10 @@ class CardanoTxDecoder {
 
   CardanoTxDecoder();
   ~CardanoTxDecoder();
+
+  // Do not use CBOR Tag for encoding some Cardano values. Need this for legacy
+  // tests.
+  static void SetUseSetTagForTesting(bool enable);
 
   // Returns CBOR encoded transaction.
   static std::optional<std::vector<uint8_t>> EncodeTransaction(

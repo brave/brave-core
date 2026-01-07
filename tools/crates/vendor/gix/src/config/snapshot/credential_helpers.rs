@@ -49,12 +49,16 @@ impl Snapshot<'_> {
 }
 
 pub(super) mod function {
-    use crate::bstr::{ByteSlice, ByteVec};
-    use crate::config::cache::util::ApplyLeniency;
-    use crate::config::credential_helpers::Error;
-    use crate::config::tree::gitoxide::Credentials;
-    use crate::config::tree::{credential, Core, Credential};
     use std::borrow::Cow;
+
+    use crate::{
+        bstr::{ByteSlice, ByteVec},
+        config::{
+            cache::util::ApplyLeniency,
+            credential_helpers::Error,
+            tree::{credential, gitoxide::Credentials, Core, Credential},
+        },
+    };
 
     /// Returns the configuration for all git-credential helpers from trusted configuration that apply
     /// to the given `url` along with an action preconfigured to invoke the cascade with to retrieve it.
@@ -90,7 +94,7 @@ pub(super) mod function {
         mut url: gix_url::Url,
         config: &gix_config::File<'_>,
         is_lenient_config: bool,
-        filter: &mut gix_config::file::MetadataFilter,
+        mut filter: impl FnMut(&gix_config::file::Metadata) -> bool,
         environment: crate::open::permissions::Environment,
         mut use_http_path: bool,
     ) -> Result<
@@ -105,7 +109,7 @@ pub(super) mod function {
         let url_had_user_initially = url.user().is_some();
         normalize(&mut url);
 
-        if let Some(credential_sections) = config.sections_by_name_and_filter("credential", filter) {
+        if let Some(credential_sections) = config.sections_by_name_and_filter("credential", &mut filter) {
             for section in credential_sections {
                 let section = match section.header().subsection_name() {
                     Some(pattern) => gix_url::parse(pattern).ok().and_then(|mut pattern| {
@@ -113,12 +117,14 @@ pub(super) mod function {
                         let is_http = matches!(pattern.scheme, gix_url::Scheme::Https | gix_url::Scheme::Http);
                         let scheme = &pattern.scheme;
                         let host = pattern.host();
-                        let ports = is_http
-                            .then(|| (pattern.port_or_default(), url.port_or_default()))
-                            .unwrap_or((pattern.port, url.port));
+                        let ports = if is_http {
+                            (pattern.port_or_default(), url.port_or_default())
+                        } else {
+                            (pattern.port, url.port)
+                        };
                         let path = (!(is_http && pattern.path_is_root())).then_some(&pattern.path);
 
-                        if !path.map_or(true, |path| path == &url.path) {
+                        if path.is_some_and(|path| path != &url.path) {
                             return None;
                         }
                         if pattern.user().is_some() && pattern.user() != url.user() {
@@ -181,7 +187,7 @@ pub(super) mod function {
             askpass: crate::config::cache::access::trusted_file_path(
                 config,
                 &Core::ASKPASS,
-                filter,
+                &mut filter,
                 is_lenient_config,
                 environment,
             )

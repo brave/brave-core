@@ -1,11 +1,10 @@
-#[allow(clippy::empty_docs)]
 ///
 pub mod from_tree {
     use std::collections::VecDeque;
 
     use bstr::{BStr, BString, ByteSlice, ByteVec};
-    use gix_object::{tree, tree::EntryKind, FindExt};
-    use gix_traverse::tree::{breadthfirst, visit::Action, Visit};
+    use gix_object::{tree, tree::EntryKind};
+    use gix_traverse::tree::{depthfirst, visit::Action, Visit};
 
     use crate::{
         entry::{Flags, Mode, Stat},
@@ -22,7 +21,7 @@ pub mod from_tree {
             source: gix_validate::path::component::Error,
         },
         #[error(transparent)]
-        Traversal(#[from] gix_traverse::tree::breadthfirst::Error),
+        Traversal(#[from] gix_traverse::tree::depthfirst::Error),
     }
 
     /// Initialization
@@ -59,12 +58,8 @@ pub mod from_tree {
             Find: gix_object::Find,
         {
             let _span = gix_features::trace::coarse!("gix_index::State::from_tree()");
-            let mut buf = Vec::new();
-            let root = objects
-                .find_tree_iter(tree, &mut buf)
-                .map_err(breadthfirst::Error::from)?;
             let mut delegate = CollectEntries::new(validate);
-            match breadthfirst(root, breadthfirst::State::default(), &objects, &mut delegate) {
+            match depthfirst(tree.to_owned(), depthfirst::State::default(), &objects, &mut delegate) {
                 Ok(()) => {}
                 Err(gix_traverse::tree::breadthfirst::Error::Cancelled) => {
                     let (path, err) = delegate
@@ -77,15 +72,17 @@ pub mod from_tree {
             }
 
             let CollectEntries {
-                mut entries,
+                entries,
                 path_backing,
                 path: _,
                 path_deque: _,
                 validate: _,
-                invalid_path: _,
+                invalid_path,
             } = delegate;
 
-            entries.sort_by(|a, b| Entry::cmp_filepaths(a.path_in(&path_backing), b.path_in(&path_backing)));
+            if let Some((path, err)) = invalid_path {
+                return Err(Error::InvalidComponent { path, source: err });
+            }
 
             Ok(State {
                 object_hash: tree.kind(),
@@ -127,13 +124,16 @@ pub mod from_tree {
         }
 
         fn push_element(&mut self, name: &BStr) {
+            if name.is_empty() {
+                return;
+            }
             if !self.path.is_empty() {
                 self.path.push(b'/');
             }
             self.path.push_str(name);
             if self.invalid_path.is_none() {
                 if let Err(err) = gix_validate::path::component(name, None, self.validate) {
-                    self.invalid_path = Some((self.path.clone(), err))
+                    self.invalid_path = Some((self.path.clone(), err));
                 }
             }
         }
@@ -183,6 +183,10 @@ pub mod from_tree {
     }
 
     impl Visit for CollectEntries {
+        fn pop_back_tracked_path_and_set_current(&mut self) {
+            self.path = self.path_deque.pop_back().unwrap_or_default();
+        }
+
         fn pop_front_tracked_path_and_set_current(&mut self) {
             self.path = self
                 .path_deque

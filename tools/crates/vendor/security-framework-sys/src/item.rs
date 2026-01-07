@@ -46,8 +46,14 @@ extern "C" {
     pub static kSecAttrTokenIDSecureEnclave: CFStringRef;
     #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecUseAuthenticationContext: CFStringRef;
-    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    #[cfg(any(feature = "OSX_10_11", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    pub static kSecUseAuthenticationUI: CFStringRef;
+    #[cfg(any(feature = "OSX_10_11", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    pub static kSecUseAuthenticationUISkip: CFStringRef;
+    #[cfg(any(feature = "OSX_10_9", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecAttrSynchronizable: CFStringRef;
+    #[cfg(any(feature = "OSX_10_9", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    pub static kSecAttrSynchronizableAny: CFStringRef;
 
     pub static kSecAttrKeySizeInBits: CFStringRef;
 

@@ -6,463 +6,16 @@
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_X86_64) && defined(__APPLE__)
 .text	
 
-
-
-.globl	_bn_mul_mont_gather5
-.private_extern _bn_mul_mont_gather5
-
-.p2align	6
-_bn_mul_mont_gather5:
-
-_CET_ENDBR
-	movl	%r9d,%r9d
-	movq	%rsp,%rax
-
-	testl	$7,%r9d
-	jnz	L$mul_enter
-	leaq	_OPENSSL_ia32cap_P(%rip),%r11
-	movl	8(%r11),%r11d
-	jmp	L$mul4x_enter
-
-.p2align	4
-L$mul_enter:
-	movd	8(%rsp),%xmm5
-	pushq	%rbx
-
-	pushq	%rbp
-
-	pushq	%r12
-
-	pushq	%r13
-
-	pushq	%r14
-
-	pushq	%r15
-
-
-	negq	%r9
-	movq	%rsp,%r11
-	leaq	-280(%rsp,%r9,8),%r10
-	negq	%r9
-	andq	$-1024,%r10
-
-
-
-
-
-
-
-
-
-	subq	%r10,%r11
-	andq	$-4096,%r11
-	leaq	(%r10,%r11,1),%rsp
-	movq	(%rsp),%r11
-	cmpq	%r10,%rsp
-	ja	L$mul_page_walk
-	jmp	L$mul_page_walk_done
-
-L$mul_page_walk:
-	leaq	-4096(%rsp),%rsp
-	movq	(%rsp),%r11
-	cmpq	%r10,%rsp
-	ja	L$mul_page_walk
-L$mul_page_walk_done:
-
-	leaq	L$inc(%rip),%r10
-	movq	%rax,8(%rsp,%r9,8)
-
-L$mul_body:
-
-	leaq	128(%rdx),%r12
-	movdqa	0(%r10),%xmm0
-	movdqa	16(%r10),%xmm1
-	leaq	24-112(%rsp,%r9,8),%r10
-	andq	$-16,%r10
-
-	pshufd	$0,%xmm5,%xmm5
-	movdqa	%xmm1,%xmm4
-	movdqa	%xmm1,%xmm2
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0
-.byte	0x67
-	movdqa	%xmm4,%xmm3
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1
-	movdqa	%xmm0,112(%r10)
-	movdqa	%xmm4,%xmm0
-
-	paddd	%xmm2,%xmm3
-	pcmpeqd	%xmm5,%xmm2
-	movdqa	%xmm1,128(%r10)
-	movdqa	%xmm4,%xmm1
-
-	paddd	%xmm3,%xmm0
-	pcmpeqd	%xmm5,%xmm3
-	movdqa	%xmm2,144(%r10)
-	movdqa	%xmm4,%xmm2
-
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0
-	movdqa	%xmm3,160(%r10)
-	movdqa	%xmm4,%xmm3
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1
-	movdqa	%xmm0,176(%r10)
-	movdqa	%xmm4,%xmm0
-
-	paddd	%xmm2,%xmm3
-	pcmpeqd	%xmm5,%xmm2
-	movdqa	%xmm1,192(%r10)
-	movdqa	%xmm4,%xmm1
-
-	paddd	%xmm3,%xmm0
-	pcmpeqd	%xmm5,%xmm3
-	movdqa	%xmm2,208(%r10)
-	movdqa	%xmm4,%xmm2
-
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0
-	movdqa	%xmm3,224(%r10)
-	movdqa	%xmm4,%xmm3
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1
-	movdqa	%xmm0,240(%r10)
-	movdqa	%xmm4,%xmm0
-
-	paddd	%xmm2,%xmm3
-	pcmpeqd	%xmm5,%xmm2
-	movdqa	%xmm1,256(%r10)
-	movdqa	%xmm4,%xmm1
-
-	paddd	%xmm3,%xmm0
-	pcmpeqd	%xmm5,%xmm3
-	movdqa	%xmm2,272(%r10)
-	movdqa	%xmm4,%xmm2
-
-	paddd	%xmm0,%xmm1
-	pcmpeqd	%xmm5,%xmm0
-	movdqa	%xmm3,288(%r10)
-	movdqa	%xmm4,%xmm3
-	paddd	%xmm1,%xmm2
-	pcmpeqd	%xmm5,%xmm1
-	movdqa	%xmm0,304(%r10)
-
-	paddd	%xmm2,%xmm3
-.byte	0x67
-	pcmpeqd	%xmm5,%xmm2
-	movdqa	%xmm1,320(%r10)
-
-	pcmpeqd	%xmm5,%xmm3
-	movdqa	%xmm2,336(%r10)
-	pand	64(%r12),%xmm0
-
-	pand	80(%r12),%xmm1
-	pand	96(%r12),%xmm2
-	movdqa	%xmm3,352(%r10)
-	pand	112(%r12),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-	movdqa	-128(%r12),%xmm4
-	movdqa	-112(%r12),%xmm5
-	movdqa	-96(%r12),%xmm2
-	pand	112(%r10),%xmm4
-	movdqa	-80(%r12),%xmm3
-	pand	128(%r10),%xmm5
-	por	%xmm4,%xmm0
-	pand	144(%r10),%xmm2
-	por	%xmm5,%xmm1
-	pand	160(%r10),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-	movdqa	-64(%r12),%xmm4
-	movdqa	-48(%r12),%xmm5
-	movdqa	-32(%r12),%xmm2
-	pand	176(%r10),%xmm4
-	movdqa	-16(%r12),%xmm3
-	pand	192(%r10),%xmm5
-	por	%xmm4,%xmm0
-	pand	208(%r10),%xmm2
-	por	%xmm5,%xmm1
-	pand	224(%r10),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-	movdqa	0(%r12),%xmm4
-	movdqa	16(%r12),%xmm5
-	movdqa	32(%r12),%xmm2
-	pand	240(%r10),%xmm4
-	movdqa	48(%r12),%xmm3
-	pand	256(%r10),%xmm5
-	por	%xmm4,%xmm0
-	pand	272(%r10),%xmm2
-	por	%xmm5,%xmm1
-	pand	288(%r10),%xmm3
-	por	%xmm2,%xmm0
-	por	%xmm3,%xmm1
-	por	%xmm1,%xmm0
-
-	pshufd	$0x4e,%xmm0,%xmm1
-	por	%xmm1,%xmm0
-	leaq	256(%r12),%r12
-.byte	102,72,15,126,195
-
-	movq	(%r8),%r8
-	movq	(%rsi),%rax
-
-	xorq	%r14,%r14
-	xorq	%r15,%r15
-
-	movq	%r8,%rbp
-	mulq	%rbx
-	movq	%rax,%r10
-	movq	(%rcx),%rax
-
-	imulq	%r10,%rbp
-	movq	%rdx,%r11
-
-	mulq	%rbp
-	addq	%rax,%r10
-	movq	8(%rsi),%rax
-	adcq	$0,%rdx
-	movq	%rdx,%r13
-
-	leaq	1(%r15),%r15
-	jmp	L$1st_enter
-
-.p2align	4
-L$1st:
-	addq	%rax,%r13
-	movq	(%rsi,%r15,8),%rax
-	adcq	$0,%rdx
-	addq	%r11,%r13
-	movq	%r10,%r11
-	adcq	$0,%rdx
-	movq	%r13,-16(%rsp,%r15,8)
-	movq	%rdx,%r13
-
-L$1st_enter:
-	mulq	%rbx
-	addq	%rax,%r11
-	movq	(%rcx,%r15,8),%rax
-	adcq	$0,%rdx
-	leaq	1(%r15),%r15
-	movq	%rdx,%r10
-
-	mulq	%rbp
-	cmpq	%r9,%r15
-	jne	L$1st
-
-
-	addq	%rax,%r13
-	adcq	$0,%rdx
-	addq	%r11,%r13
-	adcq	$0,%rdx
-	movq	%r13,-16(%rsp,%r9,8)
-	movq	%rdx,%r13
-	movq	%r10,%r11
-
-	xorq	%rdx,%rdx
-	addq	%r11,%r13
-	adcq	$0,%rdx
-	movq	%r13,-8(%rsp,%r9,8)
-	movq	%rdx,(%rsp,%r9,8)
-
-	leaq	1(%r14),%r14
-	jmp	L$outer
-.p2align	4
-L$outer:
-	leaq	24+128(%rsp,%r9,8),%rdx
-	andq	$-16,%rdx
-	pxor	%xmm4,%xmm4
-	pxor	%xmm5,%xmm5
-	movdqa	-128(%r12),%xmm0
-	movdqa	-112(%r12),%xmm1
-	movdqa	-96(%r12),%xmm2
-	movdqa	-80(%r12),%xmm3
-	pand	-128(%rdx),%xmm0
-	pand	-112(%rdx),%xmm1
-	por	%xmm0,%xmm4
-	pand	-96(%rdx),%xmm2
-	por	%xmm1,%xmm5
-	pand	-80(%rdx),%xmm3
-	por	%xmm2,%xmm4
-	por	%xmm3,%xmm5
-	movdqa	-64(%r12),%xmm0
-	movdqa	-48(%r12),%xmm1
-	movdqa	-32(%r12),%xmm2
-	movdqa	-16(%r12),%xmm3
-	pand	-64(%rdx),%xmm0
-	pand	-48(%rdx),%xmm1
-	por	%xmm0,%xmm4
-	pand	-32(%rdx),%xmm2
-	por	%xmm1,%xmm5
-	pand	-16(%rdx),%xmm3
-	por	%xmm2,%xmm4
-	por	%xmm3,%xmm5
-	movdqa	0(%r12),%xmm0
-	movdqa	16(%r12),%xmm1
-	movdqa	32(%r12),%xmm2
-	movdqa	48(%r12),%xmm3
-	pand	0(%rdx),%xmm0
-	pand	16(%rdx),%xmm1
-	por	%xmm0,%xmm4
-	pand	32(%rdx),%xmm2
-	por	%xmm1,%xmm5
-	pand	48(%rdx),%xmm3
-	por	%xmm2,%xmm4
-	por	%xmm3,%xmm5
-	movdqa	64(%r12),%xmm0
-	movdqa	80(%r12),%xmm1
-	movdqa	96(%r12),%xmm2
-	movdqa	112(%r12),%xmm3
-	pand	64(%rdx),%xmm0
-	pand	80(%rdx),%xmm1
-	por	%xmm0,%xmm4
-	pand	96(%rdx),%xmm2
-	por	%xmm1,%xmm5
-	pand	112(%rdx),%xmm3
-	por	%xmm2,%xmm4
-	por	%xmm3,%xmm5
-	por	%xmm5,%xmm4
-
-	pshufd	$0x4e,%xmm4,%xmm0
-	por	%xmm4,%xmm0
-	leaq	256(%r12),%r12
-
-	movq	(%rsi),%rax
-.byte	102,72,15,126,195
-
-	xorq	%r15,%r15
-	movq	%r8,%rbp
-	movq	(%rsp),%r10
-
-	mulq	%rbx
-	addq	%rax,%r10
-	movq	(%rcx),%rax
-	adcq	$0,%rdx
-
-	imulq	%r10,%rbp
-	movq	%rdx,%r11
-
-	mulq	%rbp
-	addq	%rax,%r10
-	movq	8(%rsi),%rax
-	adcq	$0,%rdx
-	movq	8(%rsp),%r10
-	movq	%rdx,%r13
-
-	leaq	1(%r15),%r15
-	jmp	L$inner_enter
-
-.p2align	4
-L$inner:
-	addq	%rax,%r13
-	movq	(%rsi,%r15,8),%rax
-	adcq	$0,%rdx
-	addq	%r10,%r13
-	movq	(%rsp,%r15,8),%r10
-	adcq	$0,%rdx
-	movq	%r13,-16(%rsp,%r15,8)
-	movq	%rdx,%r13
-
-L$inner_enter:
-	mulq	%rbx
-	addq	%rax,%r11
-	movq	(%rcx,%r15,8),%rax
-	adcq	$0,%rdx
-	addq	%r11,%r10
-	movq	%rdx,%r11
-	adcq	$0,%r11
-	leaq	1(%r15),%r15
-
-	mulq	%rbp
-	cmpq	%r9,%r15
-	jne	L$inner
-
-	addq	%rax,%r13
-	adcq	$0,%rdx
-	addq	%r10,%r13
-	movq	(%rsp,%r9,8),%r10
-	adcq	$0,%rdx
-	movq	%r13,-16(%rsp,%r9,8)
-	movq	%rdx,%r13
-
-	xorq	%rdx,%rdx
-	addq	%r11,%r13
-	adcq	$0,%rdx
-	addq	%r10,%r13
-	adcq	$0,%rdx
-	movq	%r13,-8(%rsp,%r9,8)
-	movq	%rdx,(%rsp,%r9,8)
-
-	leaq	1(%r14),%r14
-	cmpq	%r9,%r14
-	jb	L$outer
-
-	xorq	%r14,%r14
-	movq	(%rsp),%rax
-	leaq	(%rsp),%rsi
-	movq	%r9,%r15
-	jmp	L$sub
-.p2align	4
-L$sub:	sbbq	(%rcx,%r14,8),%rax
-	movq	%rax,(%rdi,%r14,8)
-	movq	8(%rsi,%r14,8),%rax
-	leaq	1(%r14),%r14
-	decq	%r15
-	jnz	L$sub
-
-	sbbq	$0,%rax
-	movq	$-1,%rbx
-	xorq	%rax,%rbx
-	xorq	%r14,%r14
-	movq	%r9,%r15
-
-L$copy:
-	movq	(%rdi,%r14,8),%rcx
-	movq	(%rsp,%r14,8),%rdx
-	andq	%rbx,%rcx
-	andq	%rax,%rdx
-	movq	%r14,(%rsp,%r14,8)
-	orq	%rcx,%rdx
-	movq	%rdx,(%rdi,%r14,8)
-	leaq	1(%r14),%r14
-	subq	$1,%r15
-	jnz	L$copy
-
-	movq	8(%rsp,%r9,8),%rsi
-
-	movq	$1,%rax
-
-	movq	-48(%rsi),%r15
-
-	movq	-40(%rsi),%r14
-
-	movq	-32(%rsi),%r13
-
-	movq	-24(%rsi),%r12
-
-	movq	-16(%rsi),%rbp
-
-	movq	-8(%rsi),%rbx
-
-	leaq	(%rsi),%rsp
-
-L$mul_epilogue:
-	ret
-
-
+.globl	_bn_mul4x_mont_gather5
+.private_extern _bn_mul4x_mont_gather5
 
 .p2align	5
-bn_mul4x_mont_gather5:
+_bn_mul4x_mont_gather5:
 
+_CET_ENDBR
 .byte	0x67
 	movq	%rsp,%rax
 
-L$mul4x_enter:
-	andl	$0x80108,%r11d
-	cmpl	$0x80108,%r11d
-	je	L$mulx4x_enter
 	pushq	%rbx
 
 	pushq	%rbp
@@ -478,6 +31,9 @@ L$mul4x_enter:
 L$mul4x_prologue:
 
 .byte	0x67
+
+
+
 	shll	$3,%r9d
 	leaq	(%r9,%r9,2),%r10
 	negq	%r9
@@ -1087,20 +643,15 @@ L$inner4x:
 	jmp	L$sqr4x_sub_entry
 
 
-.globl	_bn_power5
-.private_extern _bn_power5
+.globl	_bn_power5_nohw
+.private_extern _bn_power5_nohw
 
 .p2align	5
-_bn_power5:
+_bn_power5_nohw:
 
 _CET_ENDBR
 	movq	%rsp,%rax
 
-	leaq	_OPENSSL_ia32cap_P(%rip),%r11
-	movl	8(%r11),%r11d
-	andl	$0x80108,%r11d
-	cmpl	$0x80108,%r11d
-	je	L$powerx5_enter
 	pushq	%rbx
 
 	pushq	%rbp
@@ -1114,6 +665,9 @@ _CET_ENDBR
 	pushq	%r15
 
 L$power5_prologue:
+
+
+
 
 	shll	$3,%r9d
 	leal	(%r9,%r9,2),%r10d
@@ -2066,13 +1620,15 @@ L$sqr4x_sub_entry:
 	ret
 
 
+.globl	_bn_mulx4x_mont_gather5
+.private_extern _bn_mulx4x_mont_gather5
 
 .p2align	5
-bn_mulx4x_mont_gather5:
+_bn_mulx4x_mont_gather5:
 
+_CET_ENDBR
 	movq	%rsp,%rax
 
-L$mulx4x_enter:
 	pushq	%rbx
 
 	pushq	%rbp
@@ -2086,6 +1642,9 @@ L$mulx4x_enter:
 	pushq	%r15
 
 L$mulx4x_prologue:
+
+
+
 
 	shll	$3,%r9d
 	leaq	(%r9,%r9,2),%r10
@@ -2603,13 +2162,15 @@ L$mulx4x_inner:
 	jmp	L$sqrx4x_sub_entry
 
 
+.globl	_bn_powerx5
+.private_extern _bn_powerx5
 
 .p2align	5
-bn_powerx5:
+_bn_powerx5:
 
+_CET_ENDBR
 	movq	%rsp,%rax
 
-L$powerx5_enter:
 	pushq	%rbx
 
 	pushq	%rbp
@@ -2623,6 +2184,9 @@ L$powerx5_enter:
 	pushq	%r15
 
 L$powerx5_prologue:
+
+
+
 
 	shll	$3,%r9d
 	leaq	(%r9,%r9,2),%r10

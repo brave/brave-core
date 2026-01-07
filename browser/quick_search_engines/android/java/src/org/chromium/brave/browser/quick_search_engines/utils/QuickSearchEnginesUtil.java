@@ -280,6 +280,15 @@ public class QuickSearchEnginesUtil {
         TemplateUrl previousDSETemplateUrl =
                 BraveSearchEngineAdapter.getTemplateUrlByShortName(profile, getPreviousDSE(), null);
 
+        // If previous DSE is not found (e.g., it was deleted or no longer exists),
+        // skip adding it and just update the preference. The map will be updated
+        // in subsequent calls through the normal updateSearchEngines path.
+        if (previousDSETemplateUrl == null) {
+            // Store current DSE as previous for next time
+            setPreviousDSE(defaultSearchEngineTemplateUrl.getShortName());
+            return;
+        }
+
         // Create new ordered map and remove existing entries
         Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
         searchEnginesMap.remove(previousDSETemplateUrl.getKeyword());

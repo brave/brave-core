@@ -6,13 +6,13 @@ bitflags! {
     /// In-memory flags.
     ///
     /// Notably, not all of these will be persisted but can be used to aid all kinds of operations.
-    #[derive(Debug, Clone, Copy, Eq, PartialEq)]
+    #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
     pub struct Flags: u32 {
         // TODO: could we use the pathlen ourselves to save 8 bytes? And how to handle longer paths than that? 0 as sentinel maybe?
         /// The mask to obtain the length of the path associated with this entry, up to 4095 characters without extension.
         const PATH_LEN = 0x0fff;
         /// The mask to apply to obtain the stage number of an entry, encoding three value: 0 = base, 1 = ours, 2 = theirs.
-        const STAGE_MASK = 1<<12 | 1<<13;
+        const STAGE_MASK = (1<<12) | (1<<13);
         /// If set, additional bits need to be written to storage.
         const EXTENDED = 1<<14;
         /// If set, the entry be assumed to match with the version on the working tree, as a way to avoid `lstat()`  checks.
@@ -60,6 +60,11 @@ bitflags! {
 }
 
 impl Flags {
+    /// Create a new instance whose stage is set to `stage`.
+    pub fn from_stage(stage: Stage) -> Self {
+        Flags::from_bits((stage as u32) << 12).expect("stage can only be valid flags")
+    }
+
     /// Return the stage as extracted from the bits of this instance.
     pub fn stage(&self) -> Stage {
         match self.stage_raw() {
@@ -96,6 +101,12 @@ impl Flags {
     }
 }
 
+impl From<Stage> for Flags {
+    fn from(value: Stage) -> Self {
+        Flags::from_stage(value)
+    }
+}
+
 pub(crate) mod at_rest {
     use bitflags::bitflags;
 
@@ -115,7 +126,7 @@ pub(crate) mod at_rest {
 
     impl Flags {
         pub fn to_memory(self) -> super::Flags {
-            super::Flags::from_bits_retain(self.bits() as u32)
+            super::Flags::from_bits_retain(u32::from(self.bits()))
         }
     }
 
@@ -135,7 +146,7 @@ pub(crate) mod at_rest {
             )
         }
         pub fn to_flags(self) -> Option<super::Flags> {
-            super::Flags::from_bits((self.bits() as u32) << 16)
+            super::Flags::from_bits(u32::from(self.bits()) << 16)
         }
     }
 

@@ -34,29 +34,29 @@ pub fn complex_enum_generics() {
     assert_eq!(
         schema_map! {
         "Cucumber" => Definition::Struct {fields: Fields::Empty},
-        "ASalad<Cucumber>" => Definition::Struct{
+        "A__Salad<Cucumber>" => Definition::Struct{
             fields: Fields::UnnamedFields(vec!["Tomatoes".to_string(), "Cucumber".to_string(), "Oil".to_string()])
         },
-        "ABacon" => Definition::Struct {fields: Fields::Empty},
+        "A__Bacon" => Definition::Struct {fields: Fields::Empty},
         "Oil" => Definition::Struct {fields: Fields::Empty},
         "A<Cucumber, Wrapper>" => Definition::Enum {
             tag_width: 1,
             variants: vec![
-                (0, "Bacon".to_string(), "ABacon".to_string()),
-                (1, "Eggs".to_string(), "AEggs".to_string()),
-                (2, "Salad".to_string(), "ASalad<Cucumber>".to_string()),
-                (3, "Sausage".to_string(), "ASausage<Wrapper>".to_string())
+                (0, "Bacon".to_string(), "A__Bacon".to_string()),
+                (1, "Eggs".to_string(), "A__Eggs".to_string()),
+                (2, "Salad".to_string(), "A__Salad<Cucumber>".to_string()),
+                (3, "Sausage".to_string(), "A__Sausage<Wrapper>".to_string())
             ]
         },
         "Wrapper" => Definition::Struct {fields: Fields::Empty},
         "Tomatoes" => Definition::Struct {fields: Fields::Empty},
-        "ASausage<Wrapper>" => Definition::Struct {
+        "A__Sausage<Wrapper>" => Definition::Struct {
             fields: Fields::NamedFields(vec![
             ("wrapper".to_string(), "Wrapper".to_string()),
             ("filling".to_string(), "Filling".to_string())
             ])
         },
-        "AEggs" => Definition::Struct {fields: Fields::Empty},
+        "A__Eggs" => Definition::Struct {fields: Fields::Empty},
         "Filling" => Definition::Struct {fields: Fields::Empty}
         },
         defs
@@ -104,27 +104,27 @@ pub fn complex_enum_generics2() {
             "A<Cucumber, Wrapper<String>>" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                    (0, "Bacon".to_string(), "ABacon".to_string()),
-                    (1, "Eggs".to_string(), "AEggs".to_string()),
-                    (2, "Salad".to_string(), "ASalad<Cucumber>".to_string()),
-                    (3, "Sausage".to_string(), "ASausage<Wrapper<String>>".to_string())
+                    (0, "Bacon".to_string(), "A__Bacon".to_string()),
+                    (1, "Eggs".to_string(), "A__Eggs".to_string()),
+                    (2, "Salad".to_string(), "A__Salad<Cucumber>".to_string()),
+                    (3, "Sausage".to_string(), "A__Sausage<Wrapper<String>>".to_string())
                 ]
             },
             "A<String, String>" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                    (0, "Bacon".to_string(), "ABacon".to_string()),
-                    (1, "Eggs".to_string(), "AEggs".to_string()),
-                    (2, "Salad".to_string(), "ASalad<String>".to_string()),
-                    (3, "Sausage".to_string(), "ASausage<String>".to_string())
+                    (0, "Bacon".to_string(), "A__Bacon".to_string()),
+                    (1, "Eggs".to_string(), "A__Eggs".to_string()),
+                    (2, "Salad".to_string(), "A__Salad<String>".to_string()),
+                    (3, "Sausage".to_string(), "A__Sausage<String>".to_string())
                 ]
             },
-        "ABacon" => Definition::Struct {fields: Fields::Empty},
-        "AEggs" => Definition::Struct {fields: Fields::Empty},
-        "ASalad<Cucumber>" => Definition::Struct {fields: Fields::UnnamedFields(vec!["Tomatoes".to_string(), "Cucumber".to_string(), "Oil<u64, String>".to_string()])},
-        "ASalad<String>" => Definition::Struct { fields: Fields::UnnamedFields( vec!["Tomatoes".to_string(), "String".to_string(), "Oil<u64, String>".to_string() ])},
-        "ASausage<Wrapper<String>>" => Definition::Struct {fields: Fields::NamedFields(vec![("wrapper".to_string(), "Wrapper<String>".to_string()), ("filling".to_string(), "Filling".to_string())])},
-        "ASausage<String>" => Definition::Struct{ fields: Fields::NamedFields(vec![("wrapper".to_string(), "String".to_string()), ("filling".to_string(), "Filling".to_string())])},
+        "A__Bacon" => Definition::Struct {fields: Fields::Empty},
+        "A__Eggs" => Definition::Struct {fields: Fields::Empty},
+        "A__Salad<Cucumber>" => Definition::Struct {fields: Fields::UnnamedFields(vec!["Tomatoes".to_string(), "Cucumber".to_string(), "Oil<u64, String>".to_string()])},
+        "A__Salad<String>" => Definition::Struct { fields: Fields::UnnamedFields( vec!["Tomatoes".to_string(), "String".to_string(), "Oil<u64, String>".to_string() ])},
+        "A__Sausage<Wrapper<String>>" => Definition::Struct {fields: Fields::NamedFields(vec![("wrapper".to_string(), "Wrapper<String>".to_string()), ("filling".to_string(), "Filling".to_string())])},
+        "A__Sausage<String>" => Definition::Struct{ fields: Fields::NamedFields(vec![("wrapper".to_string(), "String".to_string()), ("filling".to_string(), "Filling".to_string())])},
         "Cucumber" => Definition::Struct {fields: Fields::Empty},
         "Filling" => Definition::Struct {fields: Fields::Empty},
             "HashMap<u64, String>" => Definition::Sequence {
@@ -168,16 +168,16 @@ fn common_map_associated() -> BTreeMap<String, Definition> {
         "EnumParametrized<String, u32, i8, u16>" => Definition::Enum {
             tag_width: 1,
             variants: vec![
-                (0, "B".to_string(), "EnumParametrizedB<u32, i8, u16>".to_string()),
-                (1, "C".to_string(), "EnumParametrizedC<String>".to_string())
+                (0, "B".to_string(), "EnumParametrized__B<u32, i8, u16>".to_string()),
+                (1, "C".to_string(), "EnumParametrized__C<String>".to_string())
             ]
         },
-        "EnumParametrizedB<u32, i8, u16>" => Definition::Struct { fields: Fields::NamedFields(vec![
+        "EnumParametrized__B<u32, i8, u16>" => Definition::Struct { fields: Fields::NamedFields(vec![
             ("x".to_string(), "BTreeMap<u32, u16>".to_string()),
             ("y".to_string(), "String".to_string()),
             ("z".to_string(), "i8".to_string())
         ])},
-        "EnumParametrizedC<String>" => Definition::Struct{ fields: Fields::UnnamedFields(vec!["String".to_string(), "u16".to_string()])},
+        "EnumParametrized__C<String>" => Definition::Struct{ fields: Fields::UnnamedFields(vec!["String".to_string(), "u16".to_string()])},
         "BTreeMap<u32, u16>" => Definition::Sequence {
             length_width: Definition::DEFAULT_LENGTH_WIDTH,
             length_range: Definition::DEFAULT_LENGTH_RANGE,

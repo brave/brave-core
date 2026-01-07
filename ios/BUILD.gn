@@ -9,6 +9,7 @@ import("//brave/build/ios/create_xcframework.gni")
 import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/components/ai_chat/ios/browser/headers.gni")
 import("//brave/components/brave_shields/ios/browser/headers.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/debounce/ios/browser/headers.gni")
 import("//brave/components/url_sanitizer/ios/browser/headers.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
@@ -162,6 +163,11 @@ brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
 brave_core_public_headers += browser_api_profile_public_headers
 brave_core_public_headers += brave_ios_web_view_public_headers
+
+if (enable_brave_talk) {
+  brave_core_public_headers +=
+      [ "//brave/ios/browser/brave_talk/brave_talk_pref_names_bridge.h" ]
+}
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"

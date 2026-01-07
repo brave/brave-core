@@ -4,8 +4,6 @@
 #include <ring-core/asm_base.h>
 
 #if !defined(OPENSSL_NO_ASM) && defined(OPENSSL_AARCH64) && defined(__ELF__)
-#include <ring-core/arm_arch.h>
-
 #if __ARM_MAX_ARCH__>=7
 .text
 .arch	armv8-a+crypto
@@ -28,11 +26,6 @@ aes_hw_set_encrypt_key:
 	AARCH64_VALID_CALL_TARGET
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
-	mov	x3,#-1
-	cmp	x0,#0
-	b.eq	.Lenc_key_abort
-	cmp	x2,#0
-	b.eq	.Lenc_key_abort
 	mov	x3,#-2
 	cmp	w1,#128
 	b.lt	.Lenc_key_abort
@@ -155,37 +148,6 @@ aes_hw_set_encrypt_key:
 	ldr	x29,[sp],#16
 	ret
 .size	aes_hw_set_encrypt_key,.-aes_hw_set_encrypt_key
-.globl	aes_hw_encrypt
-.hidden	aes_hw_encrypt
-.type	aes_hw_encrypt,%function
-.align	5
-aes_hw_encrypt:
-	AARCH64_VALID_CALL_TARGET
-	ldr	w3,[x2,#240]
-	ld1	{v0.4s},[x2],#16
-	ld1	{v2.16b},[x0]
-	sub	w3,w3,#2
-	ld1	{v1.4s},[x2],#16
-
-.Loop_enc:
-	aese	v2.16b,v0.16b
-	aesmc	v2.16b,v2.16b
-	ld1	{v0.4s},[x2],#16
-	subs	w3,w3,#2
-	aese	v2.16b,v1.16b
-	aesmc	v2.16b,v2.16b
-	ld1	{v1.4s},[x2],#16
-	b.gt	.Loop_enc
-
-	aese	v2.16b,v0.16b
-	aesmc	v2.16b,v2.16b
-	ld1	{v0.4s},[x2]
-	aese	v2.16b,v1.16b
-	eor	v2.16b,v2.16b,v0.16b
-
-	st1	{v2.16b},[x1]
-	ret
-.size	aes_hw_encrypt,.-aes_hw_encrypt
 .globl	aes_hw_ctr32_encrypt_blocks
 .hidden	aes_hw_ctr32_encrypt_blocks
 .type	aes_hw_ctr32_encrypt_blocks,%function

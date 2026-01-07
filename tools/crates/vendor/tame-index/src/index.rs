@@ -36,8 +36,14 @@ pub use crate::utils::flock::FileLock;
 pub struct IndexConfig {
     /// Pattern for creating download URLs. See [`Self::download_url`].
     pub dl: String,
+    #[serde(default)]
     /// Base URL for publishing, etc.
     pub api: Option<String>,
+    /// Indicates whether this is a private registry that requires all
+    /// operations to be authenticated including API requests, crate downloads
+    /// and sparse index updates.
+    #[serde(default, rename = "auth-required")]
+    pub auth_required: bool,
 }
 
 impl IndexConfig {
@@ -189,6 +195,7 @@ mod test {
         let crates_io = IndexConfig {
             dl: "https://crates.io/api/v1/crates".into(),
             api: Some("https://crates.io".into()),
+            auth_required: false,
         };
 
         assert_eq!(
@@ -215,6 +222,7 @@ mod test {
         let ic = IndexConfig {
             dl: "https://dl.cloudsmith.io/public/embark/deny/cargo/{crate}-{version}.crate".into(),
             api: Some("https://cargo.cloudsmith.io/embark/deny".into()),
+            auth_required: false,
         };
 
         assert_eq!(
@@ -242,6 +250,7 @@ mod test {
         let ic = IndexConfig {
             dl: "https://complex.io/ohhi/embark/rust/cargo/{lowerprefix}/{crate}/{crate}/{prefix}-{version}".into(),
             api: None,
+            auth_required: false,
         };
 
         assert_eq!(

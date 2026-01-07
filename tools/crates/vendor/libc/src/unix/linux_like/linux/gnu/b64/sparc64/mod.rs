@@ -1,11 +1,12 @@
 //! SPARC64-specific definitions for 64-bit linux-like values
 
 use crate::prelude::*;
-use crate::{off64_t, off_t, pthread_mutex_t};
+use crate::{
+    off64_t,
+    off_t,
+    pthread_mutex_t,
+};
 
-pub type c_long = i64;
-pub type c_ulong = u64;
-pub type c_char = i8;
 pub type wchar_t = i32;
 pub type nlink_t = u32;
 pub type blksize_t = i64;
@@ -14,11 +15,13 @@ pub type __u64 = c_ulonglong;
 pub type __s64 = c_longlong;
 
 s! {
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
         #[cfg(target_arch = "sparc64")]
-        __reserved0: c_int,
+        __reserved0: Padding<c_int>,
         pub sa_flags: c_int,
         pub sa_restorer: Option<extern "C" fn()>,
     }
@@ -68,7 +71,7 @@ s! {
         pub l_start: off64_t,
         pub l_len: off64_t,
         pub l_pid: crate::pid_t,
-        __reserved: c_short,
+        __reserved: Padding<c_short>,
     }
 
     pub struct stack_t {
@@ -79,14 +82,14 @@ s! {
 
     pub struct stat {
         pub st_dev: crate::dev_t,
-        __pad0: u64,
+        __pad0: Padding<u64>,
         pub st_ino: crate::ino_t,
         pub st_mode: crate::mode_t,
         pub st_nlink: crate::nlink_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        __pad1: u64,
+        __pad1: Padding<u64>,
         pub st_size: off_t,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt_t,
@@ -96,19 +99,19 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 2],
+        __unused: Padding<[c_long; 2]>,
     }
 
     pub struct stat64 {
         pub st_dev: crate::dev_t,
-        __pad0: u64,
+        __pad0: Padding<u64>,
         pub st_ino: crate::ino64_t,
         pub st_mode: crate::mode_t,
         pub st_nlink: crate::nlink_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        __pad2: c_int,
+        __pad2: Padding<c_int>,
         pub st_size: off64_t,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt64_t,
@@ -118,7 +121,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __reserved: [c_long; 2],
+        __reserved: Padding<[c_long; 2]>,
     }
 
     pub struct statfs64 {
@@ -177,10 +180,10 @@ s! {
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
-        __pad0: u16,
+        __pad0: Padding<u16>,
         pub __seq: c_ushort,
-        __unused1: c_ulonglong,
-        __unused2: c_ulonglong,
+        __unused1: Padding<c_ulonglong>,
+        __unused2: Padding<c_ulonglong>,
     }
 
     pub struct shmid_ds {
@@ -192,13 +195,12 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __reserved1: c_ulong,
-        __reserved2: c_ulong,
+        __reserved1: Padding<c_ulong>,
+        __reserved2: Padding<c_ulong>,
     }
 }
 
 s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct max_align_t {
         priv_: [i64; 4],
@@ -326,6 +328,7 @@ pub const SA_ONSTACK: c_int = 1;
 pub const SA_SIGINFO: c_int = 0x200;
 pub const SA_NOCLDWAIT: c_int = 0x100;
 
+pub const SIGEMT: c_int = 7;
 pub const SIGTTIN: c_int = 21;
 pub const SIGTTOU: c_int = 22;
 pub const SIGXCPU: c_int = 24;
@@ -711,6 +714,7 @@ pub const SYS_flistxattr: c_long = 180;
 pub const SYS_removexattr: c_long = 181;
 pub const SYS_lremovexattr: c_long = 182;
 pub const SYS_sigpending: c_long = 183;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 184;
 pub const SYS_setpgid: c_long = 185;
 pub const SYS_fremovexattr: c_long = 186;
@@ -748,8 +752,10 @@ pub const SYS_clone: c_long = 217;
 pub const SYS_ioprio_get: c_long = 218;
 pub const SYS_adjtimex: c_long = 219;
 pub const SYS_sigprocmask: c_long = 220;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 221;
 pub const SYS_delete_module: c_long = 222;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 223;
 pub const SYS_getpgid: c_long = 224;
 pub const SYS_bdflush: c_long = 225;

@@ -18,6 +18,7 @@ export interface Props {
   isConfirmButtonDisabled: boolean
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
+  isUnshieldingFunds?: boolean
 }
 
 export const ConfirmRejectButtons = (props: Props) => {
@@ -27,6 +28,7 @@ export const ConfirmRejectButtons = (props: Props) => {
     isConfirmButtonDisabled,
     isAccountSyncing,
     isShieldingFunds,
+    isUnshieldingFunds,
   } = props
 
   // State
@@ -66,7 +68,9 @@ export const ConfirmRejectButtons = (props: Props) => {
           ? getLocale('braveWalletSyncing')
           : isShieldingFunds
             ? getLocale('braveWalletShieldZEC')
-            : getLocale('braveWalletAllowSpendConfirmButton')}
+            : isUnshieldingFunds
+              ? getLocale('braveWalletUnshieldZEC')
+              : getLocale('braveWalletAllowSpendConfirmButton')}
       </Button>
     </Row>
   )

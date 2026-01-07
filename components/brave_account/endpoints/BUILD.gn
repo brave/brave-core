@@ -7,6 +7,7 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 source_set("endpoints") {
   sources = [
+    "auth_validate.h",
     "login_finalize.h",
     "login_init.h",
     "password_finalize.h",
@@ -23,6 +24,7 @@ source_set("endpoints") {
 
 generated_types("generated_api_types") {
   sources = [
+    "auth_validate_bodies.idl",
     "error_body.idl",
     "login_finalize_bodies.idl",
     "login_init_bodies.idl",
@@ -41,6 +43,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "auth_validate_unittest.cc",
     "endpoint_test.h",
     "login_finalize_unittest.cc",
     "login_init_unittest.cc",

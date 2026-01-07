@@ -1,9 +1,11 @@
-use super::mystd::ffi::{OsStr, OsString};
+use super::mystd::ffi::OsStr;
 use super::mystd::os::unix::ffi::OsStrExt;
-use super::mystd::str;
-use super::{gimli, Context, Endian, EndianSlice, Mapping, Path, Stash, Vec};
+use super::mystd::path::Path;
+use super::{gimli, Context, Endian, EndianSlice, Mapping, Stash};
 use alloc::sync::Arc;
+use alloc::vec::Vec;
 use core::ops::Deref;
+use core::str;
 use object::read::archive::ArchiveFile;
 use object::read::xcoff::{FileHeader, SectionHeader, XcoffFile, XcoffSymbol};
 use object::Object as _;
@@ -17,7 +19,7 @@ type Xcoff = object::xcoff::FileHeader32;
 type Xcoff = object::xcoff::FileHeader64;
 
 impl Mapping {
-    pub fn new(path: &Path, member_name: &OsString) -> Option<Mapping> {
+    pub fn new(path: &Path, member_name: &OsStr) -> Option<Mapping> {
         let map = super::mmap(path)?;
         Mapping::mk(map, |data, stash| {
             if member_name.is_empty() {
@@ -79,7 +81,7 @@ pub fn parse_xcoff(data: &[u8]) -> Option<Image> {
     }
 }
 
-pub fn parse_image(path: &Path, member_name: &OsString) -> Option<Image> {
+pub fn parse_image(path: &Path, member_name: &OsStr) -> Option<Image> {
     let map = super::mmap(path)?;
     let data = map.deref();
     if member_name.is_empty() {

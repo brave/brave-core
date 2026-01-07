@@ -1,0 +1,139 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '*' ]
+  merge_group:
+    types: [ checks_requested ]
+  workflow_dispatch: { }
+
+name: Continuous integration
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rust: 1.64.0  # MSRV
+            required_features: std
+          - rust: 1.81.0  # no_std MSRV
+          - rust: stable
+            features: unstable quickcheck rayon
+            test_all: --all
+          - rust: beta
+            test_all: --all
+          - rust: nightly
+            features: unstable quickcheck rayon
+            test_all: --all
+            bench: true
+    name: Tests (Rust ${{ matrix.rust }})
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.8
+      - name: Lock MSRV-compatible dependencies
+        if: matrix.rust == '1.64.0'
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
+        # Note that this uses the runner's pre-installed stable cargo
+        run: cargo generate-lockfile
+      - id: toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+
+      - name: Build with no features
+        run: cargo build --verbose --no-default-features --features "${{ matrix.required_features }}"
+      - name: Test with no features
+        run: cargo test --verbose --no-default-features --features "${{ matrix.required_features }}"
+
+      - name: Build with features "${{ matrix.features }}"
+        run: cargo build --verbose --features "${{ matrix.features }}" --features "${{ matrix.required_features }}"
+      - name: Test with features "${{ matrix.features }}"
+        run: cargo test ${{ matrix.test_all }} --verbose --features "${{ matrix.features }}" --features "${{ matrix.required_features }}"
+
+      - name: Build benchmarks
+        if: ${{ matrix.bench }}
+        run: |
+          cargo bench --verbose --no-run
+          cargo bench --verbose --no-run --all-features
+
+  check:
+    name: Lints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.8
+      - uses: extractions/setup-just@v3
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        run: just fmt
+
+      - name: Run clippy
+        # The benchmarks target require nightly,
+        # so we cannot use --all-targets here.
+        run: just clippy
+
+      - name: Build docs
+        run: cargo doc --no-deps --all-features
+        env:
+          RUSTDOCFLAGS: "-Dwarnings"
+
+  check-no-std:
+    name: Check no_std
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.8
+      - uses: extractions/setup-just@v3
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32v1-none
+
+      - name: Check
+        run: just check-no-std
+
+  fast-miri:
+    # This job runs on pull_request without the `S-run-thorough-ci-tests` label.
+    name: Unsoundness check fast
+    if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'S-run-thorough-ci-tests') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.8
+      - uses: extractions/setup-just@v3
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: nextest
+      # Exclude some tests from fast-miri, as they take very long to run. thorough-miri includes all tests without nextest.
+      - run: just miri-fast
+
+  thorough-miri:
+    # This job runs on push and pull_request with the `S-run-thorough-ci-tests` label.
+    name: Unsoundness check thorough
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'S-run-thorough-ci-tests')) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.8
+      - uses: extractions/setup-just@v3
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+      - run: just miri

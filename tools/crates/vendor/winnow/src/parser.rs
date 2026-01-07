@@ -47,6 +47,18 @@ use crate::stream::{Recover, Recoverable};
 /// - `&[u8]` and `&str`, see [`winnow::token::literal`][crate::token::literal]
 pub trait Parser<I, O, E> {
     /// Parse all of `input`, generating `O` from it
+    ///
+    /// This is intended for integrating your parser into the rest of your application.
+    ///
+    /// For one [`Parser`] to drive another [`Parser`] forward or for
+    /// [incremental parsing][StreamIsPartial], see instead [`Parser::parse_next`].
+    ///
+    /// This assumes the [`Parser`] intends to read all of `input` and will return an
+    /// [`eof`][crate::combinator::eof] error if it does not.
+    /// To ignore trailing `input`, combine your parser with a [`rest`][crate::token::rest]
+    /// (e.g. `(parser, rest).parse(input)`).
+    ///
+    /// See also the [tutorial][crate::_tutorial::chapter_6].
     #[inline]
     fn parse(&mut self, mut input: I) -> Result<O, ParseError<I, <E as ParserError<I>>::Inner>>
     where
@@ -76,9 +88,12 @@ pub trait Parser<I, O, E> {
 
     /// Take tokens from the [`Stream`], turning it into the output
     ///
-    /// This includes advancing the [`Stream`] to the next location.
+    /// This includes advancing the input [`Stream`] to the next location.
     ///
     /// On error, `input` will be left pointing at the error location.
+    ///
+    /// This is intended for a [`Parser`] to drive another [`Parser`] forward or for
+    /// [incremental parsing][StreamIsPartial]
     fn parse_next(&mut self, input: &mut I) -> Result<O, E>;
 
     /// Take tokens from the [`Stream`], turning it into the output
@@ -726,7 +741,7 @@ pub trait Parser<I, O, E> {
         Self: core::marker::Sized,
         G: FnMut(&O2) -> bool,
         I: Stream,
-        O: crate::lib::std::borrow::Borrow<O2>,
+        O: core::borrow::Borrow<O2>,
         O2: ?Sized,
         E: ParserError<I>,
     {
@@ -744,6 +759,29 @@ pub trait Parser<I, O, E> {
     ///
     /// This is used mainly to add user friendly information
     /// to errors when backtracking through a parse tree.
+    ///
+    /// See also [tutorial][crate::_tutorial::chapter_7].
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use winnow::prelude::*;
+    /// # use winnow::{error::ErrMode, Parser};
+    /// # use winnow::ascii::digit1;
+    /// # use winnow::error::StrContext;
+    /// # use winnow::error::StrContextValue;
+    /// # fn main() {
+    ///
+    /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
+    ///     digit1
+    ///       .context(StrContext::Expected(StrContextValue::Description("digit")))
+    ///       .parse_next(input)
+    /// }
+    ///
+    /// assert_eq!(parser.parse_peek("123456"), Ok(("", "123456")));
+    /// assert!(parser.parse_peek("abc").is_err());
+    /// # }
+    /// ```
     #[doc(alias = "labelled")]
     #[inline(always)]
     fn context<C>(self, context: C) -> impls::Context<Self, I, O, E, C>
@@ -752,7 +790,7 @@ pub trait Parser<I, O, E> {
         I: Stream,
         E: AddContext<I, C>,
         E: ParserError<I>,
-        C: Clone + crate::lib::std::fmt::Debug,
+        C: Clone + core::fmt::Debug,
     {
         impls::Context {
             parser: self,
@@ -760,6 +798,99 @@ pub trait Parser<I, O, E> {
             i: Default::default(),
             o: Default::default(),
             e: Default::default(),
+        }
+    }
+
+    /// If parsing fails, dynamically add context to the error
+    ///
+    /// This is used mainly to add user friendly information
+    /// to errors when backtracking through a parse tree.
+    ///
+    /// See also [tutorial][crate::_tutorial::chapter_7].
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use winnow::prelude::*;
+    /// # use winnow::{error::ErrMode, Parser};
+    /// # use winnow::ascii::digit1;
+    /// # use winnow::error::StrContext;
+    /// # use winnow::error::StrContextValue;
+    /// # fn main() {
+    ///
+    /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
+    ///     digit1
+    ///       .context_with(|| {
+    ///         "0123456789".chars().map(|c| StrContext::Expected(c.into()))
+    ///       })
+    ///       .parse_next(input)
+    /// }
+    ///
+    /// assert_eq!(parser.parse_peek("123456"), Ok(("", "123456")));
+    /// assert!(parser.parse_peek("abc").is_err());
+    /// # }
+    /// ```
+    #[doc(alias = "labelled")]
+    #[inline(always)]
+    fn context_with<F, C, FI>(self, context: F) -> impls::ContextWith<Self, I, O, E, F, C, FI>
+    where
+        Self: core::marker::Sized,
+        I: Stream,
+        E: AddContext<I, C>,
+        E: ParserError<I>,
+        F: Fn() -> FI + Clone,
+        C: core::fmt::Debug,
+        FI: Iterator<Item = C>,
+    {
+        impls::ContextWith {
+            parser: self,
+            context,
+            i: Default::default(),
+            o: Default::default(),
+            e: Default::default(),
+            c: Default::default(),
+            fi: Default::default(),
+        }
+    }
+
+    /// Maps a function over the error of a parser
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use winnow::prelude::*;
+    /// # use winnow::Parser;
+    /// # use winnow::Result;
+    /// # use winnow::ascii::digit1;
+    /// # use winnow::error::StrContext;
+    /// # use winnow::error::AddContext;
+    /// # use winnow::error::ContextError;
+    /// # fn main() {
+    ///
+    /// fn parser<'i>(input: &mut &'i str) -> Result<&'i str> {
+    ///     digit1.map_err(|mut e: ContextError| {
+    ///         e.extend("0123456789".chars().map(|c| StrContext::Expected(c.into())));
+    ///         e
+    ///     }).parse_next(input)
+    /// }
+    ///
+    /// assert_eq!(parser.parse_peek("123456"), Ok(("", "123456")));
+    /// assert!(parser.parse_peek("abc").is_err());
+    /// # }
+    /// ```
+    #[inline(always)]
+    fn map_err<G, E2>(self, map: G) -> impls::MapErr<Self, G, I, O, E, E2>
+    where
+        G: FnMut(E) -> E2,
+        Self: core::marker::Sized,
+    {
+        impls::MapErr {
+            parser: self,
+            map,
+            i: Default::default(),
+            o: Default::default(),
+            e: Default::default(),
+            e2: Default::default(),
         }
     }
 
@@ -1176,7 +1307,7 @@ impl_parser_for_tuples!(
 );
 
 #[cfg(feature = "alloc")]
-use crate::lib::std::boxed::Box;
+use alloc::boxed::Box;
 
 #[cfg(feature = "alloc")]
 impl<I, O, E> Parser<I, O, E> for Box<dyn Parser<I, O, E> + '_> {
@@ -1215,10 +1346,10 @@ where
     I: Stream,
     I: StreamIsPartial,
     R: FromRecoverableError<Recoverable<I, R>, E>,
-    R: crate::lib::std::fmt::Debug,
+    R: core::fmt::Debug,
     E: FromRecoverableError<Recoverable<I, R>, E>,
     E: ParserError<Recoverable<I, R>>,
-    E: crate::lib::std::fmt::Debug,
+    E: core::fmt::Debug,
 {
     fn recoverable_parse(&mut self, input: I) -> (I, Option<O>, Vec<R>) {
         debug_assert!(
@@ -1272,7 +1403,7 @@ mod tests {
     #[macro_export]
     macro_rules! assert_size (
     ($t:ty, $sz:expr) => (
-      assert!($crate::lib::std::mem::size_of::<$t>() <= $sz, "{} <= {} failed", $crate::lib::std::mem::size_of::<$t>(), $sz);
+      assert!(core::mem::size_of::<$t>() <= $sz, "{} <= {} failed", core::mem::size_of::<$t>(), $sz);
     );
   );
 

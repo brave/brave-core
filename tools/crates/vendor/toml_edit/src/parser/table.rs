@@ -19,13 +19,13 @@ pub(crate) const STD_TABLE_OPEN: u8 = b'[';
 const STD_TABLE_CLOSE: u8 = b']';
 // array-table-open  = %x5B.5B ws  ; [[ Double left square bracket
 const ARRAY_TABLE_OPEN: &[u8] = b"[[";
-// array-table-close = ws %x5D.5D  ; ]] Double right quare bracket
+// array-table-close = ws %x5D.5D  ; ]] Double right square bracket
 const ARRAY_TABLE_CLOSE: &[u8] = b"]]";
 
 // ;; Standard Table
 
 // std-table = std-table-open key *( table-key-sep key) std-table-close
-pub(crate) fn std_table<'s, 'i>(
+fn std_table<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {
@@ -50,7 +50,7 @@ pub(crate) fn std_table<'s, 'i>(
 // ;; Array Table
 
 // array-table = array-table-open key *( table-key-sep key) array-table-close
-pub(crate) fn array_table<'s, 'i>(
+fn array_table<'s, 'i>(
     state: &'s RefCell<ParseState>,
 ) -> impl ModalParser<Input<'i>, (), ContextError> + 's {
     move |i: &mut Input<'i>| {

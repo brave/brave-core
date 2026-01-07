@@ -94,6 +94,12 @@ class BraveBrowserView : public BrowserView,
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
 
+  // Returns the bounding rectangle, in screen coordinates, used to detect
+  // mouse-over events that control sidebar visibility. The bounds of a
+  // specific view are used here so that sidebar show/hide behavior is
+  // consistently tied to that view's on-screen region.
+  gfx::Rect GetBoundingBoxInScreenForMouseOverHandling() const;
+
   void ShowBraveVPNBubble(bool show_select = false);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void CreateWalletBubble();
@@ -130,6 +136,7 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
+  bool IsWebPanelContents(content::WebContents* contents) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -146,7 +153,8 @@ class BraveBrowserView : public BrowserView,
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // commands::AcceleratorService:
-  void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
+  void OnAcceleratorsChanged(
+      const commands::AcceleratorPrefManager::Accelerators& changed) override;
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
   void UpdateRoundedCornersUI();
@@ -159,7 +167,7 @@ class BraveBrowserView : public BrowserView,
 
  private:
   class TabCyclingEventHandler;
-  class SidebarOnMouseOverEventHandler;
+  class BrowserWindowMouseEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
   friend class VerticalTabStripDragAndDropBrowserTest;
@@ -179,6 +187,8 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,
                            ShouldBeInvisible);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,
+                           ShowVerticalTabOnMouseOverTest);
   FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
                            TabFullscreenStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
@@ -204,6 +214,7 @@ class BraveBrowserView : public BrowserView,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
+  bool MaybeUpdateSplitView(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
                                             bool visible) override;
@@ -211,7 +222,7 @@ class BraveBrowserView : public BrowserView,
   void HideSplitView() override;
   void ReparentTopContainerForEndOfImmersive() override;
 
-  void HandleSidebarOnMouseOverMouseEvent(const ui::MouseEvent& event);
+  void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   bool IsBraveWebViewRoundedCornersEnabled();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
@@ -263,8 +274,8 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
-  std::unique_ptr<SidebarOnMouseOverEventHandler>
-      sidebar_on_mouse_over_event_handler_;
+  std::unique_ptr<BrowserWindowMouseEventHandler>
+      browser_window_mouse_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
 
   PrefChangeRegistrar pref_change_registrar_;

@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 17
-  |
-1 | only-comma-1 = [,]
-  |                 ^
-invalid array
-expected `]`

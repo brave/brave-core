@@ -11,6 +11,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -50,12 +52,14 @@ TEST(CardanoTransaction, TxInput_Value) {
   input.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
   input.utxo_value = 555666777;
+  input.utxo_tokens[GetMockTokenId("foo")] = 12345u;
 
   auto parsed = input.FromValue(input.ToValue());
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed, input);
   EXPECT_EQ(parsed->utxo_address, input.utxo_address);
   EXPECT_EQ(parsed->utxo_outpoint, input.utxo_outpoint);
+  EXPECT_EQ(parsed->utxo_tokens, input.utxo_tokens);
 }
 
 TEST(CardanoTransaction, TxInput_FromRpcUtxo) {
@@ -119,6 +123,8 @@ TEST(CardanoTransaction, Value) {
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
   input1.utxo_value = 555666777;
+  input1.utxo_tokens[GetMockTokenId("foo")] = 12345u;
+  input1.utxo_tokens[GetMockTokenId("bar")] = 777u;
   tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2;
@@ -171,6 +177,19 @@ TEST(CardanoTransaction, Value) {
   EXPECT_EQ(parsed_no_fee->fee(), 555667277u);
 }
 
+TEST(CardanoTransaction, SetupChangeOutput) {
+  CardanoTransaction tx;
+
+  EXPECT_FALSE(tx.ChangeOutput());
+  tx.SetupChangeOutput(*CardanoAddress::FromString(kMockCardanoAddress1));
+  EXPECT_TRUE(tx.ChangeOutput());
+  EXPECT_EQ(tx.ChangeOutput()->address,
+            *CardanoAddress::FromString(kMockCardanoAddress1));
+  EXPECT_EQ(tx.ChangeOutput()->amount, 0u);
+  EXPECT_EQ(tx.ChangeOutput()->tokens, cardano_rpc::Tokens());
+  EXPECT_EQ(tx.ChangeOutput()->type, CardanoTransaction::TxOutputType::kChange);
+}
+
 TEST(CardanoTransaction, TotalInputsAmount) {
   CardanoTransaction tx;
   EXPECT_EQ(tx.GetTotalInputsAmount().ValueOrDie(), 0u);
@@ -221,6 +240,215 @@ TEST(CardanoTransaction, TotalOutputsAmount) {
   output3.amount = std::numeric_limits<uint64_t>::max();
   tx.AddOutput(std::move(output3));
   EXPECT_FALSE(tx.GetTotalOutputsAmount().IsValid());
+}
+
+TEST(CardanoTransaction, GetTotalInputTokensAmount) {
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  CardanoTransaction tx;
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->size(), 0u);
+
+  CardanoTransaction::TxInput input1;
+  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input1.utxo_outpoint.index = 123;
+  input1.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input1.utxo_value = 555666777;
+  tx.AddInput(input1);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->size(), 0u);
+
+  tx.ClearInputs();
+  input1.utxo_tokens[foo_token] = 4u;
+  tx.AddInput(input1);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->size(), 1u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(foo_token), 4u);
+
+  CardanoTransaction::TxInput input2;
+  input2.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input2.utxo_outpoint.index = 2;
+  input2.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input2.utxo_value = 2;
+  input2.utxo_tokens[bar_token] = 2'000'000'000'000u;
+  tx.AddInput(input2);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->size(), 2u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(foo_token), 4u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(bar_token), 2'000'000'000'000u);
+
+  CardanoTransaction::TxInput input3;
+  input3.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input3.utxo_outpoint.index = 8;
+  input3.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input3.utxo_value = 2;
+  input3.utxo_tokens[foo_token] = 1u;
+  input3.utxo_tokens[bar_token] = 2u;
+  input3.utxo_tokens[baz_token] = 3u;
+  tx.AddInput(input3);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->size(), 3u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(foo_token), 5u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(bar_token), 2'000'000'000'002u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(baz_token), 3u);
+
+  CardanoTransaction::TxInput input4;
+  input4.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input4.utxo_outpoint.index = 6;
+  input4.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input4.utxo_value = 2;
+  input4.utxo_tokens[baz_token] = std::numeric_limits<uint64_t>::max();
+  tx.AddInput(input4);
+  // Sum of baz tokens overflows.
+  EXPECT_FALSE(tx.GetTotalInputTokensAmount());
+}
+
+TEST(CardanoTransaction, GetTotalOutputTokensAmount) {
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  CardanoTransaction tx;
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 0u);
+
+  CardanoTransaction::TxOutput output1;
+  output1.address = *CardanoAddress::FromString(kAddress1);
+  output1.amount = 555666777;
+  tx.AddOutput(output1);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 0u);
+
+  tx.ClearInputs();
+  output1.tokens[foo_token] = 4u;
+  tx.AddOutput(output1);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 1u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(foo_token), 4u);
+
+  CardanoTransaction::TxOutput output2;
+  output2.address = *CardanoAddress::FromString(kAddress1);
+  output2.amount = 2;
+  output2.tokens[bar_token] = 2'000'000'000'000u;
+  tx.AddOutput(output2);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 2u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(foo_token), 4u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(bar_token), 2'000'000'000'000u);
+
+  CardanoTransaction::TxOutput output3;
+  output3.address = *CardanoAddress::FromString(kAddress1);
+  output3.amount = 2;
+  output3.tokens[foo_token] = 1u;
+  output3.tokens[bar_token] = 2u;
+  output3.tokens[baz_token] = 3u;
+  tx.AddOutput(output3);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 3u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(foo_token), 5u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(bar_token), 2'000'000'000'002u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(baz_token), 3u);
+
+  CardanoTransaction::TxOutput output4;
+  output4.address = *CardanoAddress::FromString(kAddress1);
+  output4.amount = 2;
+  output4.tokens[baz_token] = std::numeric_limits<uint64_t>::max();
+  tx.AddOutput(output4);
+  // Sum of baz tokens overflows.
+  EXPECT_FALSE(tx.GetTotalOutputTokensAmount());
+}
+
+TEST(CardanoTransaction, GetInputAddresses) {
+  CardanoTransaction tx;
+
+  CardanoTransaction::TxInput input1;
+  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input1.utxo_outpoint.index = 123;
+  base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
+  input1.utxo_value = 555666777;
+  tx.AddInput(std::move(input1));
+
+  CardanoTransaction::TxInput input2;
+  input2.utxo_address = *CardanoAddress::FromString(kAddress2);
+  input2.utxo_outpoint.index = 7;
+  base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
+  input2.utxo_value = 555;
+  tx.AddInput(std::move(input2));
+
+  CardanoTransaction::TxInput input3;
+  input3.utxo_address = *CardanoAddress::FromString(kAddress2);
+  input3.utxo_outpoint.index = 7;
+  base::HexStringToSpan(kTxid2, input3.utxo_outpoint.txid);
+  input3.utxo_value = std::numeric_limits<uint64_t>::max();
+  tx.AddInput(std::move(input3));
+
+  auto addresses = tx.GetInputAddresses();
+  EXPECT_THAT(tx.GetInputAddresses(),
+              testing::ElementsAre(*CardanoAddress::FromString(kAddress2),
+                                   *CardanoAddress::FromString(kAddress1)));
+}
+
+TEST(CardanoTransaction, EnsureTokensInChangeOutput) {
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  CardanoTransaction tx;
+
+  // No tokens.
+  EXPECT_TRUE(tx.EnsureTokensInChangeOutput());
+
+  CardanoTransaction::TxInput input1;
+  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input1.utxo_outpoint.index = 123;
+  input1.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input1.utxo_value = 555666777;
+  input1.utxo_tokens[foo_token] = 4u;
+  tx.AddInput(input1);
+
+  CardanoTransaction::TxInput input2;
+  input2.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input2.utxo_outpoint.index = 2;
+  input2.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input2.utxo_value = 2;
+  input2.utxo_tokens[bar_token] = 2'000'000'000'000u;
+  tx.AddInput(input2);
+
+  CardanoTransaction::TxInput input3;
+  input3.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input3.utxo_outpoint.index = 8;
+  input3.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input3.utxo_value = 2;
+  input3.utxo_tokens[foo_token] = 1u;
+  input3.utxo_tokens[bar_token] = 2u;
+  input3.utxo_tokens[baz_token] = 3u;
+  tx.AddInput(input3);
+
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(foo_token), 5u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(bar_token), 2'000'000'000'002u);
+  EXPECT_EQ(tx.GetTotalInputTokensAmount()->at(baz_token), 3u);
+
+  // No change output.
+  EXPECT_FALSE(tx.EnsureTokensInChangeOutput());
+  tx.SetupChangeOutput(*CardanoAddress::FromString(kAddress2));
+
+  EXPECT_EQ(tx.ChangeOutput()->tokens.size(), 0u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 0u);
+
+  EXPECT_TRUE(tx.EnsureTokensInChangeOutput());
+
+  EXPECT_EQ(tx.ChangeOutput()->tokens.size(), 3u);
+  EXPECT_EQ(tx.ChangeOutput()->tokens.at(foo_token), 5u);
+  EXPECT_EQ(tx.ChangeOutput()->tokens.at(bar_token), 2'000'000'000'002u);
+  EXPECT_EQ(tx.ChangeOutput()->tokens.at(baz_token), 3u);
+
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->size(), 3u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(foo_token), 5u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(bar_token), 2'000'000'000'002u);
+  EXPECT_EQ(tx.GetTotalOutputTokensAmount()->at(baz_token), 3u);
+
+  CardanoTransaction::TxInput input4;
+  input4.utxo_outpoint.index = 14;
+  input4.utxo_outpoint.txid = test::HexToArray<32>(kTxid1);
+  input4.utxo_address = *CardanoAddress::FromString(kAddress1);
+  input4.utxo_value = 2;
+  input4.utxo_tokens[baz_token] = std::numeric_limits<uint64_t>::max();
+  tx.AddInput(input4);
+
+  // Sum of baz tokens overflows.
+  EXPECT_FALSE(tx.EnsureTokensInChangeOutput());
 }
 
 }  // namespace brave_wallet

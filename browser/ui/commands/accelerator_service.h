@@ -25,17 +25,16 @@ class PrefService;
 
 namespace commands {
 
-using Accelerators = AcceleratorPrefManager::Accelerators;
-
 class AcceleratorService : public mojom::CommandsService, public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnAcceleratorsChanged(const Accelerators& changed) = 0;
+    virtual void OnAcceleratorsChanged(
+        const AcceleratorPrefManager::Accelerators& changed) = 0;
   };
 
   AcceleratorService(PrefService* pref_service,
-                     Accelerators default_accelerators,
+                     AcceleratorPrefManager::Accelerators default_accelerators,
                      base::flat_set<ui::Accelerator> system_managed);
   AcceleratorService(const AcceleratorService&) = delete;
   AcceleratorService& operator=(const AcceleratorService&) = delete;
@@ -60,7 +59,7 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  const Accelerators& GetAcceleratorsForTesting();
+  const AcceleratorPrefManager::Accelerators& GetAcceleratorsForTesting();
   mojom::CommandPtr GetCommandForTesting(int command_id);
 
   // KeyedService:
@@ -83,12 +82,13 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   bool IsCommandDisabledByPolicy(int command_id) const;
 
   // Filters out commands that are disabled by policy.
-  Accelerators FilterCommandsByPolicy(const Accelerators& commands) const;
+  AcceleratorPrefManager::Accelerators FilterCommandsByPolicy(
+      const AcceleratorPrefManager::Accelerators& commands) const;
 
   raw_ptr<PrefService> pref_service_;
   AcceleratorPrefManager pref_manager_;
-  Accelerators accelerators_;
-  Accelerators default_accelerators_;
+  AcceleratorPrefManager::Accelerators accelerators_;
+  AcceleratorPrefManager::Accelerators default_accelerators_;
 
   // Some accelerators are managed by the system - we need to make sure we don't
   // register these (which can result in double handling) or allow them to be

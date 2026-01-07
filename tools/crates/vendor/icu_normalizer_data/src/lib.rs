@@ -4,7 +4,7 @@
 
 //! Data for the `icu_normalizer` crate
 //!
-//! This data was generated with CLDR version 45.0.0, ICU version icu4x/2024-05-16/75.x, and
+//! This data was generated with CLDR version 48.0.0, ICU version release-78.1rc, and
 //! LSTM segmenter version v0.1.0.
 
 #![no_std]
@@ -12,6 +12,6 @@
 #![doc(html_no_source)]
 
 #[cfg(icu4x_custom_data)]
-include!(concat!(core::env!("ICU4X_DATA_DIR"), "/macros.rs"));
+include!(concat!(core::env!("ICU4X_DATA_DIR"), "/mod.rs"));
 #[cfg(not(icu4x_custom_data))]
-include!("../data/macros.rs");
+include!("../data/mod.rs");

@@ -8,14 +8,14 @@ pub struct HStringBuilder(*mut HStringHeader);
 
 impl HStringBuilder {
     /// Creates a preallocated `HSTRING` value.
-    pub fn new(len: usize) -> Result<Self> {
-        let header = HStringHeader::alloc(len.try_into()?)?;
+    pub fn new(len: usize) -> Self {
+        let header = HStringHeader::alloc(len.try_into().unwrap());
 
         if len > 0 {
             unsafe { core::ptr::write_bytes((*header).data, 0, len) };
         }
 
-        Ok(Self(header))
+        Self(header)
     }
 
     /// Shortens the string by removing any trailing 0 characters.
@@ -33,6 +33,17 @@ impl HStringBuilder {
                 }
                 self.0 = core::ptr::null_mut();
             }
+        }
+    }
+
+    /// Allows the `HSTRING` to be constructed from bytes.
+    pub fn as_bytes_mut(&mut self) -> &mut [u8] {
+        if let Some(header) = self.as_header() {
+            unsafe {
+                core::slice::from_raw_parts_mut(header.data as *mut _, header.len as usize * 2)
+            }
+        } else {
+            &mut []
         }
     }
 
@@ -85,5 +96,15 @@ impl Drop for HStringBuilder {
         unsafe {
             HStringHeader::free(self.0);
         }
+    }
+}
+
+impl core::fmt::Debug for HStringBuilder {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        write!(
+            f,
+            "\"{}\"",
+            Decode(|| core::char::decode_utf16(self.iter().cloned()))
+        )
     }
 }

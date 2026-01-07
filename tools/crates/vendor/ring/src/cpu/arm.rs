@@ -1,24 +1,22 @@
-// Copyright 2016-2021 Brian Smith.
+// Copyright 2016-2024 Brian Smith.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-#![cfg_attr(
-    not(any(target_arch = "aarch64", target_arch = "arm")),
-    allow(dead_code)
-)]
+use super::CAPS_STATIC;
 
-#[cfg(any(target_arch = "arm", target_arch = "aarch64"))]
 mod abi_assumptions {
+    use core::mem::size_of;
+
     // TODO: Support ARM64_32; see
     // https://github.com/briansmith/ring/issues/1832#issuecomment-1892928147. This also requires
     // replacing all `cfg(target_pointer_width)` logic for non-pointer/reference things
@@ -27,9 +25,8 @@ mod abi_assumptions {
     const _ASSUMED_POINTER_SIZE: usize = 8;
     #[cfg(target_arch = "arm")]
     const _ASSUMED_POINTER_SIZE: usize = 4;
-    const _ASSUMED_USIZE_SIZE: () = assert!(core::mem::size_of::<usize>() == _ASSUMED_POINTER_SIZE);
-    const _ASSUMED_REF_SIZE: () =
-        assert!(core::mem::size_of::<&'static u8>() == _ASSUMED_POINTER_SIZE);
+    const _ASSUMED_USIZE_SIZE: () = assert!(size_of::<usize>() == _ASSUMED_POINTER_SIZE);
+    const _ASSUMED_REF_SIZE: () = assert!(size_of::<&'static u8>() == _ASSUMED_POINTER_SIZE);
 
     // To support big-endian, we'd need to make several changes as described in
     // https://github.com/briansmith/ring/issues/1832.
@@ -44,340 +41,152 @@ mod abi_assumptions {
 // what target features are supported, so rely only on static feature
 // detection.
 
-#[cfg(all(
-    any(target_os = "android", target_os = "linux"),
-    any(target_arch = "aarch64", target_arch = "arm"),
-    not(target_env = "uclibc")
-))]
-fn detect_features() -> u32 {
-    use libc::c_ulong;
-
-    // XXX: The `libc` crate doesn't provide `libc::getauxval` consistently
-    // across all Android/Linux targets, e.g. musl.
-    extern "C" {
-        fn getauxval(type_: c_ulong) -> c_ulong;
-    }
-
-    const AT_HWCAP: c_ulong = 16;
-
-    #[cfg(target_arch = "aarch64")]
-    const HWCAP_NEON: c_ulong = 1 << 1;
-
-    #[cfg(target_arch = "arm")]
-    const HWCAP_NEON: c_ulong = 1 << 12;
-
-    let caps = unsafe { getauxval(AT_HWCAP) };
-
-    // We assume NEON is available on AARCH64 because it is a required
-    // feature.
-    #[cfg(target_arch = "aarch64")]
-    debug_assert!(caps & HWCAP_NEON == HWCAP_NEON);
-
-    let mut features = 0;
-
-    // OpenSSL and BoringSSL don't enable any other features if NEON isn't
-    // available.
-    if caps & HWCAP_NEON == HWCAP_NEON {
-        features = NEON.mask;
-
-        #[cfg(target_arch = "aarch64")]
-        const OFFSET: c_ulong = 3;
-
-        #[cfg(target_arch = "arm")]
-        const OFFSET: c_ulong = 0;
-
-        #[cfg(target_arch = "arm")]
-        let caps = {
-            const AT_HWCAP2: c_ulong = 26;
-            unsafe { getauxval(AT_HWCAP2) }
-        };
-
-        const HWCAP_AES: c_ulong = 1 << 0 + OFFSET;
-        const HWCAP_PMULL: c_ulong = 1 << 1 + OFFSET;
-        const HWCAP_SHA2: c_ulong = 1 << 3 + OFFSET;
-
-        if caps & HWCAP_AES == HWCAP_AES {
-            features |= AES.mask;
-        }
-        if caps & HWCAP_PMULL == HWCAP_PMULL {
-            features |= PMULL.mask;
-        }
-        if caps & HWCAP_SHA2 == HWCAP_SHA2 {
-            features |= SHA256.mask;
+cfg_if::cfg_if! {
+    if #[cfg(all(all(target_arch = "aarch64", target_endian = "little"),
+                 any(target_os = "ios", target_os = "macos", target_os = "tvos", target_os = "visionos", target_os = "watchos")))] {
+        mod darwin;
+        use darwin as detect;
+    } else if #[cfg(all(all(target_arch = "aarch64", target_endian = "little"), target_os = "fuchsia"))] {
+        mod fuchsia;
+        use fuchsia as detect;
+    } else if #[cfg(any(target_os = "android", target_os = "linux"))] {
+        mod linux;
+        use linux as detect;
+    } else if #[cfg(all(all(target_arch = "aarch64", target_endian = "little"), target_os = "windows"))] {
+        mod windows;
+        use windows as detect;
+    } else {
+        mod detect {
+            pub const FORCE_DYNAMIC_DETECTION: u32 = 0;
+            pub fn detect_features() -> u32 { 0 }
         }
     }
-
-    features
 }
 
-#[cfg(all(target_os = "fuchsia", target_arch = "aarch64"))]
-fn detect_features() -> u32 {
-    type zx_status_t = i32;
+impl_get_feature! {
+    features: [
+        // TODO(MSRV): 32-bit ARM doesn't have `target_feature = "neon"` yet.
+        { ("aarch64", "arm") => Neon },
 
-    #[link(name = "zircon")]
-    extern "C" {
-        fn zx_system_get_features(kind: u32, features: *mut u32) -> zx_status_t;
-    }
+        // TODO(MSRV): There is no "pmull" feature listed from
+        // `rustc --print cfg --target=aarch64-apple-darwin`. Originally ARMv8 tied
+        // PMULL detection into AES detection, but later versions split it; see
+        // https://developer.arm.com/downloads/-/exploration-tools/feature-names-for-a-profile
+        // "Features introduced prior to 2020." Change this to use "pmull" when
+        // that is supported.
+        { ("aarch64") => PMull },
 
-    const ZX_OK: i32 = 0;
-    const ZX_FEATURE_KIND_CPU: u32 = 0;
-    const ZX_ARM64_FEATURE_ISA_ASIMD: u32 = 1 << 2;
-    const ZX_ARM64_FEATURE_ISA_AES: u32 = 1 << 3;
-    const ZX_ARM64_FEATURE_ISA_PMULL: u32 = 1 << 4;
-    const ZX_ARM64_FEATURE_ISA_SHA2: u32 = 1 << 6;
+        { ("aarch64") => Aes },
 
-    let mut caps = 0;
-    let rc = unsafe { zx_system_get_features(ZX_FEATURE_KIND_CPU, &mut caps) };
+        { ("aarch64") => Sha256 },
 
-    let mut features = 0;
+        // Keep in sync with `ARMV8_SHA512`.
 
-    // OpenSSL and BoringSSL don't enable any other features if NEON isn't
-    // available.
-    if rc == ZX_OK && (caps & ZX_ARM64_FEATURE_ISA_ASIMD == ZX_ARM64_FEATURE_ISA_ASIMD) {
-        features = NEON.mask;
-
-        if caps & ZX_ARM64_FEATURE_ISA_AES == ZX_ARM64_FEATURE_ISA_AES {
-            features |= AES.mask;
-        }
-        if caps & ZX_ARM64_FEATURE_ISA_PMULL == ZX_ARM64_FEATURE_ISA_PMULL {
-            features |= PMULL.mask;
-        }
-        if caps & ZX_ARM64_FEATURE_ISA_SHA2 == ZX_ARM64_FEATURE_ISA_SHA2 {
-            features |= 1 << 4;
-        }
-    }
-
-    features
+        // "sha3" is overloaded for both SHA-3 and SHA-512.
+        { ("aarch64") => Sha512 },
+    ],
 }
 
-#[cfg(all(target_os = "windows", target_arch = "aarch64"))]
-fn detect_features() -> u32 {
-    // We do not need to check for the presence of NEON, as Armv8-A always has it
-    const _ASSERT_NEON_DETECTED: () = assert!((ARMCAP_STATIC & NEON.mask) == NEON.mask);
-    let mut features = ARMCAP_STATIC;
-
-    let result = unsafe {
-        windows_sys::Win32::System::Threading::IsProcessorFeaturePresent(
-            windows_sys::Win32::System::Threading::PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE,
-        )
+pub(super) mod featureflags {
+    pub(in super::super) use super::detect::FORCE_DYNAMIC_DETECTION;
+    use super::*;
+    use crate::{
+        cpu,
+        polyfill::{once_cell::race, usize_from_u32},
     };
+    use core::num::NonZeroUsize;
+    #[cfg(all(target_arch = "arm", target_endian = "little"))]
+    use core::sync::atomic::{AtomicU32, Ordering};
 
-    if result != 0 {
-        // These are all covered by one call in Windows
-        features |= AES.mask;
-        features |= PMULL.mask;
-        features |= SHA256.mask;
-    }
+    pub(in super::super) fn get_or_init() -> cpu::Features {
+        fn init() -> NonZeroUsize {
+            let detected = detect::detect_features();
+            let filtered = (if cfg!(feature = "unstable-testing-arm-no-hw") {
+                !Neon::mask()
+            } else {
+                0
+            }) | (if cfg!(feature = "unstable-testing-arm-no-neon") {
+                Neon::mask()
+            } else {
+                0
+            });
+            let detected = detected & !filtered;
+            let merged = CAPS_STATIC | detected;
 
-    features
-}
-
-#[cfg(all(
-    any(target_arch = "aarch64", target_arch = "arm"),
-    not(any(
-        target_os = "android",
-        target_os = "fuchsia",
-        all(target_os = "linux", not(target_env = "uclibc")),
-        target_os = "windows"
-    ))
-))]
-fn detect_features() -> u32 {
-    0
-}
-
-macro_rules! features {
-    {
-        $(
-            $target_feature_name:expr => $name:ident {
-                mask: $mask:expr,
+            #[cfg(all(
+                target_arch = "arm",
+                target_endian = "little",
+                target_has_atomic = "32"
+            ))]
+            if (merged & Neon::mask()) == Neon::mask() {
+                // `neon_available` is declared as `alignas(4) uint32_t` in the C code.
+                // AtomicU32 is `#[repr(C, align(4))]`.
+                prefixed_extern! {
+                    static neon_available: AtomicU32;
+                }
+                // SAFETY: The C code only reads `neon_available`, and its
+                // reads are synchronized through the `OnceNonZeroUsize`
+                // Acquire/Release semantics as we ensure we have a
+                // `cpu::Features` instance before calling into the C code.
+                let p = unsafe { &neon_available };
+                p.store(1, Ordering::Relaxed);
             }
-        ),+
-        , // trailing comma is required.
-    } => {
-        $(
-            #[allow(dead_code)]
-            pub(crate) const $name: Feature = Feature {
-                mask: $mask,
-            };
-        )+
 
-        const ARMCAP_STATIC: u32 = 0
-            $(
-                | (
-                    if cfg!(all(any(target_arch = "aarch64", target_arch = "arm"),
-                                target_feature = $target_feature_name)) {
-                        $name.mask
-                    } else {
-                        0
-                    }
-                )
-            )+;
-
-        #[cfg(all(test, any(target_arch = "arm", target_arch = "aarch64")))]
-        const ALL_FEATURES: [Feature; 4] = [
-            $(
-                $name
-            ),+
-        ];
-    }
-}
-
-pub(crate) struct Feature {
-    mask: u32,
-}
-
-impl Feature {
-    #[inline(always)]
-    pub fn available(&self, _: super::Features) -> bool {
-        if self.mask == self.mask & ARMCAP_STATIC {
-            return true;
+            let merged = usize_from_u32(merged) | (1 << (Shift::Initialized as u32));
+            NonZeroUsize::new(merged).unwrap() // Can't fail because we just set a bit.
         }
 
-        #[cfg(all(
-            any(
-                target_os = "android",
-                target_os = "fuchsia",
-                all(target_os = "linux", not(target_env = "uclibc")),
-                target_os = "windows"
-            ),
-            any(target_arch = "arm", target_arch = "aarch64")
-        ))]
-        {
-            // SAFETY: See `OPENSSL_armcap_P`'s safety documentation.
-            if self.mask == self.mask & unsafe { OPENSSL_armcap_P } {
-                return true;
-            }
-        }
+        // SAFETY: This is the only caller. Any concurrent reading doesn't
+        // affect the safety of the writing.
+        let _: NonZeroUsize = FEATURES.get_or_init(init);
 
-        false
+        // SAFETY: We initialized the CPU features as required.
+        unsafe { cpu::Features::new_after_feature_flags_written_and_synced_unchecked() }
     }
-}
 
-// Assumes all target feature names are the same for ARM and AAarch64.
-features! {
-    // Keep in sync with `ARMV7_NEON`.
-    "neon" => NEON {
-        mask: 1 << 0,
-    },
+    pub(in super::super) fn get(_cpu_features: cpu::Features) -> u32 {
+        // SAFETY: Since only `get_or_init()` could have created
+        // `_cpu_features`, and it only does so after `FEATURES.get_or_init()`,
+        // we know we are reading from `FEATURES` after initializing it.
+        //
+        // Also, 0 means "no features detected" to users, which is designed to
+        // be a safe configuration.
+        let features = FEATURES.get().map(NonZeroUsize::get).unwrap_or(0);
 
-    // Keep in sync with `ARMV8_AES`.
-    "aes" => AES {
-        mask: 1 << 2,
-    },
+        // The truncation is lossless, as we set the value with a u32.
+        #[allow(clippy::cast_possible_truncation)]
+        let features = features as u32;
 
-    // Keep in sync with `ARMV8_SHA256`.
-    "sha2" => SHA256 {
-        mask: 1 << 4,
-    },
+        features
+    }
 
-    // Keep in sync with `ARMV8_PMULL`.
-    //
+    static FEATURES: race::OnceNonZeroUsize = race::OnceNonZeroUsize::new();
+
     // TODO(MSRV): There is no "pmull" feature listed from
     // `rustc --print cfg --target=aarch64-apple-darwin`. Originally ARMv8 tied
     // PMULL detection into AES detection, but later versions split it; see
     // https://developer.arm.com/downloads/-/exploration-tools/feature-names-for-a-profile
     // "Features introduced prior to 2020." Change this to use "pmull" when
     // that is supported.
-    "aes" => PMULL {
-        mask: 1 << 5,
-    },
+    //
+    // "sha3" is overloaded for both SHA-3 and SHA-512.
+    #[cfg(all(target_arch = "aarch64", target_endian = "little"))]
+    #[rustfmt::skip]
+    pub(in super::super) const STATIC_DETECTED: u32 = 0
+        | (if cfg!(target_feature = "neon") { Neon::mask() } else { 0 })
+        | (if cfg!(target_feature = "aes") { Aes::mask() } else { 0 })
+        | (if cfg!(target_feature = "aes") { PMull::mask() } else { 0 })
+        | (if cfg!(target_feature = "sha2") { Sha256::mask() } else { 0 })
+        | (if cfg!(target_feature = "sha3") { Sha512::mask() } else { 0 })
+        ;
+
+    // TODO(MSRV): 32-bit ARM doesn't support any static feature detection yet.
+    #[cfg(all(target_arch = "arm", target_endian = "little"))]
+    pub(in super::super) const STATIC_DETECTED: u32 = 0;
 }
 
-// SAFETY:
-// - This may only be called from within `cpu::features()` and only while it is initializing its
-//   `INIT`.
-// - See the safety invariants of `OPENSSL_armcap_P` below.
-#[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
-pub unsafe fn init_global_shared_with_assembly() {
-    let detected = detect_features();
-    let filtered = (if cfg!(feature = "unstable-testing-arm-no-hw") {
-        AES.mask | SHA256.mask | PMULL.mask
-    } else {
-        0
-    }) | (if cfg!(feature = "unstable-testing-arm-no-neon") {
-        NEON.mask
-    } else {
-        0
-    });
-    let detected = detected & !filtered;
-    OPENSSL_armcap_P = ARMCAP_STATIC | detected;
-}
-
-// Some non-Rust code still checks this even when it is statically known
-// the given feature is available, so we have to ensure that this is
-// initialized properly. Keep this in sync with the initialization in
-// BoringSSL's crypto.c.
-//
-// TODO: This should have "hidden" visibility but we don't have a way of
-// controlling that yet: https://github.com/rust-lang/rust/issues/73958.
-//
-// SAFETY:
-// - Rust code only accesses this through `cpu::Features`, which acts as a witness that
-//   `cpu::features()` was called to initialize this.
-// - Some assembly language functions access `OPENSSL_armcap_P` directly. Callers of those functions
-//   must obtain a `cpu::Features` before calling them.
-// - An instance of `cpu::Features` is a witness that this was initialized.
-// - The initialization of the `INIT` in `cpu::features()` initializes this, and that `OnceCell`
-//   implements acquire/release semantics that allow all the otherwise-apparently-unsynchronized
-//   access.
-// - `OPENSSL_armcap_P` must always be a superset of `ARMCAP_STATIC`.
-// TODO: Remove all the direct accesses of this from assembly language code, and then replace this
-// with a `OnceCell<u32>` that will provide all the necessary safety guarantees.
-#[cfg(any(target_arch = "arm", target_arch = "aarch64"))]
-prefixed_extern! {
-    static mut OPENSSL_armcap_P: u32;
-}
-
-// MSRV: Enforce 1.61.0 on some aarch64-* targets (aarch64-apple-*, in particular) prior to. Earlier
-// versions of Rust before did not report the AAarch64 CPU features correctly for these targets.
-// Cargo.toml specifies `rust-version` but versions before Rust 1.56 don't know about it.
-//
-// ```
-// $ rustc +1.61.0 --print cfg --target=aarch64-apple-ios | grep -E "neon|aes|sha|pmull"
-// target_feature="aes"
-// target_feature="neon"
-// target_feature="sha2"
-// $ rustc +1.61.0 --print cfg --target=aarch64-apple-darwin | grep -E "neon|aes|sha|pmull"
-// target_feature="aes"
-// target_feature="neon"
-// target_feature="sha2"
-// target_feature="sha3"
-// ```
 #[allow(clippy::assertions_on_constants)]
-const _AARCH64_HAS_NEON: () =
-    assert!(((ARMCAP_STATIC & NEON.mask) == NEON.mask) || !cfg!(target_arch = "aarch64"));
-#[allow(clippy::assertions_on_constants)]
-const _AARCH64_APPLE_FEATURES: u32 = NEON.mask | AES.mask | SHA256.mask | PMULL.mask;
-#[allow(clippy::assertions_on_constants)]
-const _AARCH64_APPLE_TARGETS_EXPECTED_FEATURES: () = assert!(
-    ((ARMCAP_STATIC & _AARCH64_APPLE_FEATURES) == _AARCH64_APPLE_FEATURES)
-        || !cfg!(all(target_arch = "aarch64", target_vendor = "apple"))
+const _AARCH64_HAS_NEON: () = assert!(
+    ((CAPS_STATIC & Neon::mask()) == Neon::mask())
+        || !cfg!(all(target_arch = "aarch64", target_endian = "little"))
 );
-
-#[cfg(all(test, any(target_arch = "arm", target_arch = "aarch64")))]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_mask_abi() {
-        assert_eq!(NEON.mask, 1);
-        assert_eq!(AES.mask, 4);
-        assert_eq!(SHA256.mask, 16);
-        assert_eq!(PMULL.mask, 32);
-    }
-
-    #[test]
-    fn test_armcap_static_is_subset_of_armcap_dynamic() {
-        // Ensure `OPENSSL_armcap_P` is initialized.
-        let cpu = crate::cpu::features();
-
-        let armcap_dynamic = unsafe { OPENSSL_armcap_P };
-        assert_eq!(armcap_dynamic & ARMCAP_STATIC, ARMCAP_STATIC);
-
-        ALL_FEATURES.iter().for_each(|feature| {
-            if (ARMCAP_STATIC & feature.mask) != 0 {
-                assert!(feature.available(cpu));
-            }
-        })
-    }
-}

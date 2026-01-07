@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -40,6 +41,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -97,8 +102,8 @@ mojom::CommandPtr ToMojoCommand(
 }
 
 base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
-    const Accelerators& commands,
-    const Accelerators& default_commands,
+    const AcceleratorPrefManager::Accelerators& commands,
+    const AcceleratorPrefManager::Accelerators& default_commands,
     const base::flat_set<ui::Accelerator>& unmodifiable) {
   base::flat_map<int, mojom::CommandPtr> result;
   for (const auto& [command_id, accelerators] : commands) {
@@ -116,7 +121,7 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
 
 AcceleratorService::AcceleratorService(
     PrefService* pref_service,
-    Accelerators default_accelerators,
+    AcceleratorPrefManager::Accelerators default_accelerators,
     base::flat_set<ui::Accelerator> system_managed)
     : pref_service_(pref_service),
       pref_manager_(pref_service, commands::GetCommands()),
@@ -143,8 +148,8 @@ void AcceleratorService::Initialize() {
 void AcceleratorService::UpdateDefaultAccelerators() {
   const auto& system_managed = system_managed_;
   auto old_defaults = pref_manager_.GetDefaultAccelerators();
-  Accelerators added;
-  Accelerators removed;
+  AcceleratorPrefManager::Accelerators added;
+  AcceleratorPrefManager::Accelerators removed;
 
   // Handle new accelerators, and removed accelerators.
   for (const auto& [command_id, new_accelerators] : default_accelerators_) {
@@ -285,7 +290,7 @@ void AcceleratorService::AddCommandsListener(
 }
 
 void AcceleratorService::AddObserver(Observer* observer) {
-  Accelerators changed;
+  AcceleratorPrefManager::Accelerators changed;
   observers_.AddObserver(observer);
   const auto& system_managed = system_managed_;
   for (const auto& [command_id, accelerators] : accelerators_) {
@@ -306,7 +311,8 @@ void AcceleratorService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-const Accelerators& AcceleratorService::GetAcceleratorsForTesting() {
+const AcceleratorPrefManager::Accelerators&
+AcceleratorService::GetAcceleratorsForTesting() {
   return accelerators_;
 }
 
@@ -325,7 +331,8 @@ std::vector<int> AcceleratorService::AssignAccelerator(
     int command_id,
     const ui::Accelerator& accelerator) {
   std::vector<int> modified_commands = {command_id};
-  Accelerators& default_accelerators = default_accelerators_;
+  AcceleratorPrefManager::Accelerators& default_accelerators =
+      default_accelerators_;
   auto& system_managed = system_managed_;
 
   // Find any other commands with this accelerator and remove it from them.
@@ -361,7 +368,7 @@ void AcceleratorService::UnassignAccelerator(
 
 void AcceleratorService::NotifyCommandsChanged(
     const std::vector<int>& modified_ids) {
-  Accelerators changed;
+  AcceleratorPrefManager::Accelerators changed;
   auto event = mojom::CommandsEvent::New();
   const auto& system_managed = system_managed_;
 
@@ -404,7 +411,11 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
       return pref_service_->GetBoolean(
           brave_news::prefs::kBraveNewsDisabledByPolicy);
     case IDC_SHOW_BRAVE_TALK:
-      return pref_service_->GetBoolean(kBraveTalkDisabledByPolicy);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+      return pref_service_->GetBoolean(brave_talk::prefs::kDisabledByPolicy);
+#else
+      return true;  // Talk not compiled in, always disabled
+#endif
     case IDC_SHOW_BRAVE_VPN_PANEL:
     case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
     case IDC_TOGGLE_BRAVE_VPN_TRAY_ICON:
@@ -460,9 +471,9 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
   }
 }
 
-Accelerators AcceleratorService::FilterCommandsByPolicy(
-    const Accelerators& commands) const {
-  Accelerators filtered_commands;
+AcceleratorPrefManager::Accelerators AcceleratorService::FilterCommandsByPolicy(
+    const AcceleratorPrefManager::Accelerators& commands) const {
+  AcceleratorPrefManager::Accelerators filtered_commands;
   for (const auto& [command_id, accelerators] : commands) {
     if (!IsCommandDisabledByPolicy(command_id)) {
       filtered_commands[command_id] = accelerators;

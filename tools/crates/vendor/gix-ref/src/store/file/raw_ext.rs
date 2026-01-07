@@ -1,12 +1,13 @@
 use std::collections::BTreeSet;
 
+use gix_hash::ObjectId;
+
 use crate::{
     packed, peel,
     raw::Reference,
     store_impl::{file, file::log},
     Target,
 };
-use gix_hash::ObjectId;
 
 pub trait Sealed {}
 impl Sealed for crate::Reference {}
@@ -25,7 +26,23 @@ pub trait ReferenceExt: Sealed {
     ///
     /// This is useful to learn where this reference is ultimately pointing to after following all symbolic
     /// refs and all annotated tags to the first non-tag object.
+    #[deprecated = "Use `peel_to_id()` instead"]
     fn peel_to_id_in_place(
+        &mut self,
+        store: &file::Store,
+        objects: &dyn gix_object::Find,
+    ) -> Result<ObjectId, peel::to_id::Error>;
+
+    /// Follow all symbolic targets this reference might point to and peel the underlying object
+    /// to the end of the tag-chain, returning the first non-tag object the annotated tag points to,
+    /// using `objects` to access them and `store` to lookup symbolic references.
+    ///
+    /// This is useful to learn where this reference is ultimately pointing to after following all symbolic
+    /// refs and all annotated tags to the first non-tag object.
+    ///
+    /// Note that this method mutates `self` in place if it does not already point to a
+    /// non-symbolic object.
+    fn peel_to_id(
         &mut self,
         store: &file::Store,
         objects: &dyn gix_object::Find,
@@ -33,7 +50,17 @@ pub trait ReferenceExt: Sealed {
 
     /// Like [`ReferenceExt::peel_to_id_in_place()`], but with support for a known stable `packed` buffer
     /// to use for resolving symbolic links.
+    #[deprecated = "Use `peel_to_id_packed()` instead"]
     fn peel_to_id_in_place_packed(
+        &mut self,
+        store: &file::Store,
+        objects: &dyn gix_object::Find,
+        packed: Option<&packed::Buffer>,
+    ) -> Result<ObjectId, peel::to_id::Error>;
+
+    /// Like [`ReferenceExt::peel_to_id()`], but with support for a known stable `packed` buffer to
+    /// use for resolving symbolic links.
+    fn peel_to_id_packed(
         &mut self,
         store: &file::Store,
         objects: &dyn gix_object::Find,
@@ -42,7 +69,16 @@ pub trait ReferenceExt: Sealed {
 
     /// Like [`ReferenceExt::follow()`], but follows all symbolic references while gracefully handling loops,
     /// altering this instance in place.
+    #[deprecated = "Use `follow_to_object_packed()` instead"]
     fn follow_to_object_in_place_packed(
+        &mut self,
+        store: &file::Store,
+        packed: Option<&packed::Buffer>,
+    ) -> Result<ObjectId, peel::to_object::Error>;
+
+    /// Like [`ReferenceExt::follow()`], but follows all symbolic references while gracefully handling loops,
+    /// altering this instance in place.
+    fn follow_to_object_packed(
         &mut self,
         store: &file::Store,
         packed: Option<&packed::Buffer>,
@@ -84,15 +120,32 @@ impl ReferenceExt for Reference {
         store: &file::Store,
         objects: &dyn gix_object::Find,
     ) -> Result<ObjectId, peel::to_id::Error> {
+        self.peel_to_id(store, objects)
+    }
+
+    fn peel_to_id(
+        &mut self,
+        store: &file::Store,
+        objects: &dyn gix_object::Find,
+    ) -> Result<ObjectId, peel::to_id::Error> {
         let packed = store.assure_packed_refs_uptodate().map_err(|err| {
             peel::to_id::Error::FollowToObject(peel::to_object::Error::Follow(file::find::existing::Error::Find(
                 file::find::Error::PackedOpen(err),
             )))
         })?;
-        self.peel_to_id_in_place_packed(store, objects, packed.as_ref().map(|b| &***b))
+        self.peel_to_id_packed(store, objects, packed.as_ref().map(|b| &***b))
     }
 
     fn peel_to_id_in_place_packed(
+        &mut self,
+        store: &file::Store,
+        objects: &dyn gix_object::Find,
+        packed: Option<&packed::Buffer>,
+    ) -> Result<ObjectId, peel::to_id::Error> {
+        self.peel_to_id_packed(store, objects, packed)
+    }
+
+    fn peel_to_id_packed(
         &mut self,
         store: &file::Store,
         objects: &dyn gix_object::Find,
@@ -104,7 +157,7 @@ impl ReferenceExt for Reference {
                 Ok(peeled)
             }
             None => {
-                let mut oid = self.follow_to_object_in_place_packed(store, packed)?;
+                let mut oid = self.follow_to_object_packed(store, packed)?;
                 let mut buf = Vec::new();
                 let peeled_id = loop {
                     let gix_object::Data { kind, data } =
@@ -124,7 +177,7 @@ impl ReferenceExt for Reference {
                             })?;
                         }
                         _ => break oid,
-                    };
+                    }
                 };
                 self.peeled = Some(peeled_id);
                 self.target = Target::Object(peeled_id);
@@ -134,6 +187,14 @@ impl ReferenceExt for Reference {
     }
 
     fn follow_to_object_in_place_packed(
+        &mut self,
+        store: &file::Store,
+        packed: Option<&packed::Buffer>,
+    ) -> Result<ObjectId, peel::to_object::Error> {
+        self.follow_to_object_packed(store, packed)
+    }
+
+    fn follow_to_object_packed(
         &mut self,
         store: &file::Store,
         packed: Option<&packed::Buffer>,

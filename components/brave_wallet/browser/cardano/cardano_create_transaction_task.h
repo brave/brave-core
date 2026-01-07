@@ -48,7 +48,6 @@ class CardanoCreateTransactionTask {
 
  private:
   CardanoTransaction::TxOutput CreateTargetOutput();
-  CardanoTransaction::TxOutput CreateChangeOutput();
 
   cardano_rpc::CardanoRpc* GetCardanoRpc();
 
@@ -74,7 +73,7 @@ class CardanoCreateTransactionTask {
   bool sending_max_amount_ = false;
 
   CardanoTransaction transaction_;
-  mojom::CardanoAddressPtr change_address_;
+  std::optional<CardanoAddress> change_address_;
 
   std::optional<cardano_rpc::EpochParameters> latest_epoch_parameters_;
   std::optional<cardano_rpc::Block> latest_block_;

@@ -360,22 +360,28 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  registry->RegisterTimePref(brave_wallet::kBraveWalletPingReportedUnlockTime,
-                             base::Time());
-#endif
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 08/2023
   registry->RegisterBooleanPref(kThresholdCheckMade, false);
   registry->RegisterStringPref(kThresholdQuery, std::string());
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Deprecated 12/2025
+  registry->RegisterTimePref(
+      brave_wallet::kBraveWalletPingReportedUnlockTimeDeprecated, base::Time());
+#endif
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // Added 08/2023
   local_state->ClearPref(kThresholdCheckMade);
   local_state->ClearPref(kThresholdQuery);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Deprecated 12/2025
+  local_state->ClearPref(
+      brave_wallet::kBraveWalletPingReportedUnlockTimeDeprecated);
+#endif
 }
 
 }  // namespace brave_stats

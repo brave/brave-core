@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Operating system version.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub enum Version {
     /// Unknown version.
     Unknown,

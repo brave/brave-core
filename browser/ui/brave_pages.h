@@ -8,6 +8,8 @@
 
 #include <string_view>
 
+#include "brave/components/brave_talk/buildflags/buildflags.h"
+
 class Browser;
 
 namespace brave {
@@ -24,7 +26,9 @@ void ShowWalletSettings(Browser* browser);
 void ShowSync(Browser* browser);
 void ShowBraveNewsConfigure(Browser* browser);
 void ShowShortcutsPage(Browser* browser);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
 void ShowBraveTalk(Browser* browser);
+#endif
 void ShowFullpageChat(Browser* browser);
 
 void ShowAppsPage(Browser* browser);

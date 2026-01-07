@@ -5,18 +5,19 @@
 //! ```no_run
 //! # #[cfg(feature = "net")]
 //! # fn main() -> std::io::Result<()> {
+//! use rustix::buffer::spare_capacity;
 //! use rustix::event::epoll;
 //! use rustix::fd::AsFd;
 //! use rustix::io::{ioctl_fionbio, read, write};
 //! use rustix::net::{
-//!     accept, bind_v4, listen, socket, AddressFamily, Ipv4Addr, SocketAddrV4, SocketType,
+//!     accept, bind, listen, socket, AddressFamily, Ipv4Addr, SocketAddrV4, SocketType,
 //! };
 //! use std::collections::HashMap;
 //! use std::os::unix::io::AsRawFd;
 //!
 //! // Create a socket and listen on it.
 //! let listen_sock = socket(AddressFamily::INET, SocketType::STREAM, None)?;
-//! bind_v4(&listen_sock, &SocketAddrV4::new(Ipv4Addr::LOCALHOST, 0))?;
+//! bind(&listen_sock, &SocketAddrV4::new(Ipv4Addr::LOCALHOST, 0))?;
 //! listen(&listen_sock, 1)?;
 //!
 //! // Create an epoll object. Using `Owning` here means the epoll object will
@@ -36,10 +37,10 @@
 //! let mut sockets = HashMap::new();
 //!
 //! // Process events.
-//! let mut event_list = epoll::EventVec::with_capacity(4);
+//! let mut event_list = Vec::with_capacity(4);
 //! loop {
-//!     epoll::wait(&epoll, &mut event_list, -1)?;
-//!     for event in &event_list {
+//!     epoll::wait(&epoll, spare_capacity(&mut event_list), None)?;
+//!     for event in event_list.drain(..) {
 //!         let target = event.data;
 //!         if target.u64() == 1 {
 //!             // Accept a new connection, set it to non-blocking, and
@@ -73,17 +74,14 @@
 #![allow(unused_qualifications)]
 
 use super::epoll;
-#[cfg(feature = "alloc")]
-use crate::backend::c;
 pub use crate::backend::event::epoll::*;
 use crate::backend::event::syscalls;
+use crate::buffer::Buffer;
 use crate::fd::{AsFd, OwnedFd};
 use crate::io;
-#[cfg(feature = "alloc")]
-use alloc::vec::Vec;
+use crate::timespec::Timespec;
 use core::ffi::c_void;
 use core::hash::{Hash, Hasher};
-use core::slice;
 
 /// `epoll_create1(flags)`—Creates a new epoll object.
 ///
@@ -108,11 +106,11 @@ pub fn create(flags: epoll::CreateFlags) -> io::Result<OwnedFd> {
 /// This registers interest in any of the events set in `event_flags` occurring
 /// on the file descriptor associated with `data`.
 ///
-/// Note that `close`ing a file descriptor does not necessarily unregister
-/// interest which can lead to spurious events being returned from
-/// [`epoll::wait`]. If a file descriptor is an `Arc<dyn SystemResource>`, then
-/// `epoll` can be thought to maintain a `Weak<dyn SystemResource>` to the file
-/// descriptor. Check the [faq] for details.
+/// `close`ing a file descriptor does not necessarily unregister interest which
+/// can lead to spurious events being returned from [`epoll::wait`]. If a file
+/// descriptor is an `Arc<dyn SystemResource>`, then `epoll` can be thought to
+/// maintain a `Weak<dyn SystemResource>` to the file descriptor. Check the
+/// [faq] for details.
 ///
 /// # References
 ///  - [Linux]
@@ -123,9 +121,9 @@ pub fn create(flags: epoll::CreateFlags) -> io::Result<OwnedFd> {
 /// [faq]: https://man7.org/linux/man-pages/man7/epoll.7.html#:~:text=Will%20closing%20a%20file%20descriptor%20cause%20it%20to%20be%20removed%20from%20all%0A%20%20%20%20%20%20%20%20%20%20epoll%20interest%20lists%3F
 #[doc(alias = "epoll_ctl")]
 #[inline]
-pub fn add(
-    epoll: impl AsFd,
-    source: impl AsFd,
+pub fn add<EpollFd: AsFd, SourceFd: AsFd>(
+    epoll: EpollFd,
+    source: SourceFd,
     data: epoll::EventData,
     event_flags: epoll::EventFlags,
 ) -> io::Result<()> {
@@ -154,9 +152,9 @@ pub fn add(
 /// [illumos]: https://www.illumos.org/man/3C/epoll_ctl
 #[doc(alias = "epoll_ctl")]
 #[inline]
-pub fn modify(
-    epoll: impl AsFd,
-    source: impl AsFd,
+pub fn modify<EpollFd: AsFd, SourceFd: AsFd>(
+    epoll: EpollFd,
+    source: SourceFd,
     data: epoll::EventData,
     event_flags: epoll::EventFlags,
 ) -> io::Result<()> {
@@ -183,15 +181,20 @@ pub fn modify(
 /// [illumos]: https://www.illumos.org/man/3C/epoll_ctl
 #[doc(alias = "epoll_ctl")]
 #[inline]
-pub fn delete(epoll: impl AsFd, source: impl AsFd) -> io::Result<()> {
+pub fn delete<EpollFd: AsFd, SourceFd: AsFd>(epoll: EpollFd, source: SourceFd) -> io::Result<()> {
     syscalls::epoll_del(epoll.as_fd(), source.as_fd())
 }
 
 /// `epoll_wait(self, events, timeout)`—Waits for registered events of
 /// interest.
 ///
-/// For each event of interest, an element is written to `events`. On
-/// success, this returns the number of written elements.
+/// For each event of interest, an element is written to `events`.
+///
+/// Linux versions older than 5.11 (those that don't support `epoll_pwait2`)
+/// don't support timeouts greater than `c_int::MAX` milliseconds; if an
+/// unsupported timeout is passed, this function fails with
+/// [`io::Errno::INVAL`]. Enable the "linux_5_11" feature to enable the full
+/// range of timeouts.
 ///
 /// # References
 ///  - [Linux]
@@ -199,45 +202,17 @@ pub fn delete(epoll: impl AsFd, source: impl AsFd) -> io::Result<()> {
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/epoll_wait.2.html
 /// [illumos]: https://www.illumos.org/man/3C/epoll_wait
-#[cfg(feature = "alloc")]
-#[cfg_attr(docsrs, doc(cfg(feature = "alloc"), alias = "epoll_wait"))]
+#[doc(alias = "epoll_wait")]
 #[inline]
-pub fn wait(epoll: impl AsFd, event_list: &mut EventVec, timeout: c::c_int) -> io::Result<()> {
-    // SAFETY: We're calling `epoll_wait` via FFI and we know how it
-    // behaves.
-    unsafe {
-        event_list.events.clear();
-        let nfds = syscalls::epoll_wait(
-            epoll.as_fd(),
-            event_list.events.spare_capacity_mut(),
-            timeout,
-        )?;
-        event_list.events.set_len(nfds);
-    }
-
-    Ok(())
-}
-
-/// An iterator over the [`epoll::Event`]s in an [`epoll::EventVec`].
-pub struct Iter<'a> {
-    /// Use `Copied` to copy the struct, since `Event` is `packed` on some
-    /// platforms, and it's common for users to directly destructure it, which
-    /// would lead to errors about forming references to packed fields.
-    iter: core::iter::Copied<slice::Iter<'a, Event>>,
-}
-
-impl<'a> Iterator for Iter<'a> {
-    type Item = epoll::Event;
-
-    #[inline]
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter.next()
-    }
-
-    #[inline]
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        self.iter.size_hint()
-    }
+pub fn wait<EpollFd: AsFd, Buf: Buffer<Event>>(
+    epoll: EpollFd,
+    mut event_list: Buf,
+    timeout: Option<&Timespec>,
+) -> io::Result<Buf::Output> {
+    // SAFETY: `epoll_wait` behaves.
+    let nfds = unsafe { syscalls::epoll_wait(epoll.as_fd(), event_list.parts_mut(), timeout)? };
+    // SAFETY: `epoll_wait` behaves.
+    unsafe { Ok(event_list.assume_init(nfds)) }
 }
 
 /// A record of an event that occurred.
@@ -258,11 +233,11 @@ impl<'a> Iterator for Iter<'a> {
     ),
     repr(packed)
 )]
-#[derive(Copy, Clone, Eq, PartialEq, Hash)]
 #[cfg_attr(
     all(solarish, any(target_arch = "x86", target_arch = "x86_64")),
     repr(packed(4))
 )]
+#[derive(Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Event {
     /// Which specific event(s) occurred.
     pub flags: EventFlags,
@@ -355,103 +330,10 @@ struct SixtyFourBitPointer {
     _padding: u32,
 }
 
-/// A vector of `epoll::Event`s, plus context for interpreting them.
-#[cfg(feature = "alloc")]
-pub struct EventVec {
-    events: Vec<Event>,
-}
-
-#[cfg(feature = "alloc")]
-impl EventVec {
-    /// Constructs an `epoll::EventVec` from raw pointer, length, and capacity.
-    ///
-    /// # Safety
-    ///
-    /// This function calls [`Vec::from_raw_parts`] with its arguments.
-    ///
-    /// [`Vec::from_raw_parts`]: https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.from_raw_parts
-    #[inline]
-    pub unsafe fn from_raw_parts(ptr: *mut Event, len: usize, capacity: usize) -> Self {
-        Self {
-            events: Vec::from_raw_parts(ptr, len, capacity),
-        }
-    }
-
-    /// Constructs an `epoll::EventVec` with memory for `capacity`
-    /// `epoll::Event`s.
-    #[inline]
-    pub fn with_capacity(capacity: usize) -> Self {
-        Self {
-            events: Vec::with_capacity(capacity),
-        }
-    }
-
-    /// Returns the current `epoll::Event` capacity of this `epoll::EventVec`.
-    #[inline]
-    pub fn capacity(&self) -> usize {
-        self.events.capacity()
-    }
-
-    /// Reserves enough memory for at least `additional` more `epoll::Event`s.
-    #[inline]
-    pub fn reserve(&mut self, additional: usize) {
-        self.events.reserve(additional);
-    }
-
-    /// Reserves enough memory for exactly `additional` more `epoll::Event`s.
-    #[inline]
-    pub fn reserve_exact(&mut self, additional: usize) {
-        self.events.reserve_exact(additional);
-    }
-
-    /// Clears all the `epoll::Events` out of this `epoll::EventVec`.
-    #[inline]
-    pub fn clear(&mut self) {
-        self.events.clear();
-    }
-
-    /// Shrinks the capacity of this `epoll::EventVec` as much as possible.
-    #[inline]
-    pub fn shrink_to_fit(&mut self) {
-        self.events.shrink_to_fit();
-    }
-
-    /// Returns an iterator over the `epoll::Event`s in this `epoll::EventVec`.
-    #[inline]
-    pub fn iter(&self) -> Iter<'_> {
-        Iter {
-            iter: self.events.iter().copied(),
-        }
-    }
-
-    /// Returns the number of `epoll::Event`s logically contained in this
-    /// `epoll::EventVec`.
-    #[inline]
-    pub fn len(&mut self) -> usize {
-        self.events.len()
-    }
-
-    /// Tests whether this `epoll::EventVec` is logically empty.
-    #[inline]
-    pub fn is_empty(&mut self) -> bool {
-        self.events.is_empty()
-    }
-}
-
-#[cfg(feature = "alloc")]
-impl<'a> IntoIterator for &'a EventVec {
-    type IntoIter = Iter<'a>;
-    type Item = epoll::Event;
-
-    #[inline]
-    fn into_iter(self) -> Self::IntoIter {
-        self.iter()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::backend::c;
 
     #[test]
     fn test_epoll_layouts() {

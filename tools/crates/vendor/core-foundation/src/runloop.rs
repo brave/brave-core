@@ -195,8 +195,8 @@ mod test {
     use super::*;
     use crate::base::Boolean;
     use crate::date::{CFAbsoluteTime, CFDate};
+    use core::ffi::c_void;
     use std::mem;
-    use std::os::raw::c_void;
     use std::ptr::null_mut;
     use std::sync::mpsc;
     use std::thread::spawn;

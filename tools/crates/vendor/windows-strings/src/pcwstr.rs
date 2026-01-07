@@ -32,10 +32,10 @@ impl PCWSTR {
     ///
     /// The `PCWSTR`'s pointer needs to be valid for reads up until and including the next `\0`.
     pub unsafe fn len(&self) -> usize {
-        extern "C" {
+        unsafe extern "C" {
             fn wcslen(s: *const u16) -> usize;
         }
-        wcslen(self.0)
+        unsafe { wcslen(self.0) }
     }
 
     /// Returns `true` if the string length is zero, and `false` otherwise.
@@ -44,7 +44,7 @@ impl PCWSTR {
     ///
     /// The `PCWSTR`'s pointer needs to be valid for reads up until and including the next `\0`.
     pub unsafe fn is_empty(&self) -> bool {
-        self.len() == 0
+        unsafe { self.len() == 0 }
     }
 
     /// String data without the trailing 0
@@ -53,7 +53,7 @@ impl PCWSTR {
     ///
     /// The `PCWSTR`'s pointer needs to be valid for reads up until and including the next `\0`.
     pub unsafe fn as_wide(&self) -> &[u16] {
-        core::slice::from_raw_parts(self.0, self.len())
+        unsafe { core::slice::from_raw_parts(self.0, self.len()) }
     }
 
     /// Copy the `PCWSTR` into a Rust `String`.
@@ -62,7 +62,7 @@ impl PCWSTR {
     ///
     /// See the safety information for `PCWSTR::as_wide`.
     pub unsafe fn to_string(&self) -> core::result::Result<String, alloc::string::FromUtf16Error> {
-        String::from_utf16(self.as_wide())
+        unsafe { String::from_utf16(self.as_wide()) }
     }
 
     /// Copy the `PCWSTR` into an `HSTRING`.
@@ -70,8 +70,8 @@ impl PCWSTR {
     /// # Safety
     ///
     /// See the safety information for `PCWSTR::as_wide`.
-    pub unsafe fn to_hstring(&self) -> Result<HSTRING> {
-        HSTRING::from_wide(self.as_wide())
+    pub unsafe fn to_hstring(&self) -> HSTRING {
+        unsafe { HSTRING::from_wide(self.as_wide()) }
     }
 
     /// Allow this string to be displayed.
@@ -80,6 +80,18 @@ impl PCWSTR {
     ///
     /// See the safety information for `PCWSTR::as_wide`.
     pub unsafe fn display(&self) -> impl core::fmt::Display + '_ {
-        Decode(move || core::char::decode_utf16(self.as_wide().iter().cloned()))
+        unsafe { Decode(move || core::char::decode_utf16(self.as_wide().iter().cloned())) }
+    }
+}
+
+impl Default for PCWSTR {
+    fn default() -> Self {
+        Self::null()
+    }
+}
+
+impl AsRef<Self> for PCWSTR {
+    fn as_ref(&self) -> &Self {
+        self
     }
 }

@@ -32,8 +32,8 @@
 //! 1. Resolve deprecation messages
 //! 1. Commit
 //! 1. Run `cargo add winnow@0.5`
-//! 1. Ensure everything compiles and tests pass, ignoring deprecation messages (see [migration
-//!     notes](https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md#050---2023-07-13))
+//! 1. Ensure everything compiles and tests pass, ignoring deprecation messages
+//!    (see [migration notes](https://github.com/winnow-rs/winnow/blob/main/CHANGELOG.md#050---2023-07-13))
 //! 1. Commit
 //! 1. Resolve deprecation messages
 //! 1. Commit

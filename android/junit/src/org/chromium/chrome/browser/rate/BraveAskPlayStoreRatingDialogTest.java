@@ -104,7 +104,7 @@ public class BraveAskPlayStoreRatingDialogTest {
         assertNotNull("Dialog should be created", dialog);
         fragment.setupDialog(dialog, 0);
 
-        // Process async Task callbacks from requestReviewFlow to ensure mReviewInfo is set
+        // Process async Task callbacks from setupDialog
         ShadowLooper.idleMainLooper();
 
         // Find the "Rate Now" button from the dialog's content view

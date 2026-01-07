@@ -319,7 +319,7 @@ impl AsciiDenyList {
             bits |= 1u128 << b;
             i += 1;
         }
-        AsciiDenyList { bits }
+        Self { bits }
     }
 
     /// No ASCII deny list. This corresponds to _UseSTD3ASCIIRules=false_.
@@ -332,14 +332,14 @@ impl AsciiDenyList {
     /// but it's more efficient to use `AsciiDenyList` than post-processing,
     /// because the internals of this crate can optimize away checks in
     /// certain cases.
-    pub const EMPTY: AsciiDenyList = AsciiDenyList::new(false, "");
+    pub const EMPTY: Self = Self::new(false, "");
 
     /// The STD3 deny list. This corresponds to _UseSTD3ASCIIRules=true_.
     ///
     /// Note that this deny list rejects the underscore, which occurs in
     /// pseudo-hosts used by various TXT record-based protocols, and also
     /// characters that may occurs in non-DNS naming, such as NetBIOS.
-    pub const STD3: AsciiDenyList = AsciiDenyList { bits: ldh_mask() };
+    pub const STD3: Self = Self { bits: ldh_mask() };
 
     /// [Forbidden domain code point](https://url.spec.whatwg.org/#forbidden-domain-code-point) from the WHATWG URL Standard.
     ///
@@ -348,7 +348,7 @@ impl AsciiDenyList {
     /// Note that this deny list rejects IPv6 addresses, so (as in URL
     /// parsing) you need to check for IPv6 addresses first and not
     /// put them through UTS 46 processing.
-    pub const URL: AsciiDenyList = AsciiDenyList::new(true, "%#/:<>?@[\\]^|");
+    pub const URL: Self = Self::new(true, "%#/:<>?@[\\]^|");
 }
 
 /// The _CheckHyphens_ mode.
@@ -434,7 +434,7 @@ pub enum ProcessingError {
 
 impl From<core::fmt::Error> for ProcessingError {
     fn from(_: core::fmt::Error) -> Self {
-        ProcessingError::SinkError
+        Self::SinkError
     }
 }
 
@@ -531,9 +531,24 @@ impl Uts46 {
         hyphens: Hyphens,
         dns_length: DnsLength,
     ) -> Result<Cow<'a, str>, crate::Errors> {
+        self.to_ascii_from_cow(
+            Cow::Borrowed(domain_name),
+            ascii_deny_list,
+            hyphens,
+            dns_length,
+        )
+    }
+
+    pub(crate) fn to_ascii_from_cow<'a>(
+        &self,
+        domain_name: Cow<'a, [u8]>,
+        ascii_deny_list: AsciiDenyList,
+        hyphens: Hyphens,
+        dns_length: DnsLength,
+    ) -> Result<Cow<'a, str>, crate::Errors> {
         let mut s = String::new();
         match self.process(
-            domain_name,
+            &domain_name,
             ascii_deny_list,
             hyphens,
             ErrorPolicy::FailFast,
@@ -541,9 +556,12 @@ impl Uts46 {
             &mut s,
             None,
         ) {
-            // SAFETY: `ProcessingSuccess::Passthrough` asserts that `domain_name` is ASCII.
             Ok(ProcessingSuccess::Passthrough) => {
-                let cow = Cow::Borrowed(unsafe { core::str::from_utf8_unchecked(domain_name) });
+                // SAFETY: `ProcessingSuccess::Passthrough` asserts that `domain_name` is ASCII.
+                let cow = match domain_name {
+                    Cow::Borrowed(v) => Cow::Borrowed(unsafe { core::str::from_utf8_unchecked(v) }),
+                    Cow::Owned(v) => Cow::Owned(unsafe { String::from_utf8_unchecked(v) }),
+                };
                 if dns_length != DnsLength::Ignore
                     && !verify_dns_length(&cow, dns_length == DnsLength::VerifyAllowRootDot)
                 {

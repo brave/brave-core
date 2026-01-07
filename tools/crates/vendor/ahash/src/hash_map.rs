@@ -51,13 +51,13 @@ impl<K, V> Into<HashMap<K, V, crate::RandomState>> for AHashMap<K, V> {
 }
 
 impl<K, V> AHashMap<K, V, RandomState> {
-    /// This crates a hashmap using [RandomState::new] which obtains its keys from [RandomSource].
+    /// This creates a hashmap using [RandomState::new] which obtains its keys from [RandomSource].
     /// See the documentation in [RandomSource] for notes about key strength.
     pub fn new() -> Self {
         AHashMap(HashMap::with_hasher(RandomState::new()))
     }
 
-    /// This crates a hashmap with the specified capacity using [RandomState::new].
+    /// This creates a hashmap with the specified capacity using [RandomState::new].
     /// See the documentation in [RandomSource] for notes about key strength.
     pub fn with_capacity(capacity: usize) -> Self {
         AHashMap(HashMap::with_capacity_and_hasher(capacity, RandomState::new()))
@@ -348,7 +348,7 @@ impl<K, V> FromIterator<(K, V)> for AHashMap<K, V, RandomState>
 where
     K: Eq + Hash,
 {
-    /// This crates a hashmap from the provided iterator using [RandomState::new].
+    /// This creates a hashmap from the provided iterator using [RandomState::new].
     /// See the documentation in [RandomSource] for notes about key strength.
     fn from_iter<T: IntoIterator<Item = (K, V)>>(iter: T) -> Self {
         let mut inner = HashMap::with_hasher(RandomState::new());
@@ -404,7 +404,7 @@ where
     }
 }
 
-/// NOTE: For safety this trait impl is only available available if either of the flags `runtime-rng` (on by default) or
+/// NOTE: For safety this trait impl is only available if either of the flags `runtime-rng` (on by default) or
 /// `compile-time-rng` are enabled. This is to prevent weakly keyed maps from being accidentally created. Instead one of
 /// constructors for [RandomState] must be used.
 #[cfg(any(feature = "compile-time-rng", feature = "runtime-rng", feature = "no-rng"))]

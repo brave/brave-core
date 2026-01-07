@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -56,6 +57,10 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
+
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
@@ -93,8 +98,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
-    {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    {policy::key::kBraveTalkDisabled, brave_talk::prefs::kDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     {policy::key::kBraveSpeedreaderEnabled, speedreader::kSpeedreaderEnabled,
      base::Value::Type::BOOLEAN},

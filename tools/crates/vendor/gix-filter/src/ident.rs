@@ -40,6 +40,19 @@ pub fn undo(src: &[u8], buf: &mut Vec<u8>) -> Result<bool, std::collections::Try
     Ok(initialized)
 }
 
+///
+pub mod apply {
+    /// The error produced by [`super::apply()`].
+    #[derive(Debug, thiserror::Error)]
+    #[allow(missing_docs)]
+    pub enum Error {
+        #[error("Could not allocate buffer")]
+        OutOfMemory(#[from] std::collections::TryReserveError),
+        #[error("Could not hash blob")]
+        Hasher(#[from] gix_hash::hasher::Error),
+    }
+}
+
 /// Substitute all occurrences of `$Id$` with `$Id: <hexsha-of-input>$` if present in `src` and write all changes to `buf`,
 /// with `object_hash` being used accordingly. Return `true` if `buf` was written to or `false` if no change was made
 /// (as there was nothing to do).
@@ -48,18 +61,14 @@ pub fn undo(src: &[u8], buf: &mut Vec<u8>) -> Result<bool, std::collections::Try
 ///
 /// `Git` also tries to cleanup 'stray' substituted `$Id: <hex>$`, but we don't do that, sticking exactly to what ought to be done.
 /// The respective code is up to 16 years old and one might assume that `git` by now handles checking and checkout filters correctly.
-pub fn apply(
-    src: &[u8],
-    object_hash: gix_hash::Kind,
-    buf: &mut Vec<u8>,
-) -> Result<bool, std::collections::TryReserveError> {
+pub fn apply(src: &[u8], object_hash: gix_hash::Kind, buf: &mut Vec<u8>) -> Result<bool, apply::Error> {
     const HASH_LEN: usize = ": ".len() + gix_hash::Kind::longest().len_in_hex();
     let mut id = None;
     let mut ofs = 0;
     while let Some(pos) = src[ofs..].find(b"$Id$") {
         let id = match id {
             None => {
-                let new_id = gix_object::compute_hash(object_hash, gix_object::Kind::Blob, src);
+                let new_id = gix_object::compute_hash(object_hash, gix_object::Kind::Blob, src)?;
                 id = new_id.into();
                 clear_and_set_capacity(buf, src.len() + HASH_LEN)?; // pre-allocate for one ID
                 new_id

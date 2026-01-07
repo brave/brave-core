@@ -1,11 +1,67 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](https://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.16.1](https://github.com/rust-lang/hashbrown/compare/v0.16.0...v0.16.1) - 2025-11-20
+
+### Added
+
+- Added `HashTable` methods related to the raw bucket index (#657)
+- Added `VacantEntryRef::insert_with_key` (#579)
+
+### Changed
+
+- Removed specialization for `Copy` types (#662)
+- The `get_many_mut` family of methods have been renamed to `get_disjoint_mut`
+  to match the standard library. The old names are still present for now, but
+  deprecated. (#648)
+- Recognize and use over-sized allocations when using custom allocators. (#523)
+- Depend on `serde_core` instead of `serde`. (#649)
+- Optimized `collect` on rayon parallel iterators. (#652) 
+
+## [0.16.0](https://github.com/rust-lang/hashbrown/compare/v0.15.5...v0.16.0) - 2025-08-28
+
+### Changed
+
+- Bump foldhash, the default hasher, to 0.2.0.
+- Replaced `DefaultHashBuilder` with a newtype wrapper around `foldhash` instead
+  of re-exporting it directly.
+
+## [0.15.5](https://github.com/rust-lang/hashbrown/compare/v0.15.4...v0.15.5) - 2025-08-07
+
+### Added
+
+- Added `Entry::or_default_entry` and `Entry::or_insert_entry`.
+
+### Changed
+
+- Re-implemented likely/unlikely with `#[cold]`
+
+## [0.15.4](https://github.com/rust-lang/hashbrown/compare/v0.15.3...v0.15.4) - 2025-06-05
+
+### Changed
+
+- Removed optional dependency on compiler-builtins. This only affects building as part of `std`.
+
+## [0.15.3](https://github.com/rust-lang/hashbrown/compare/v0.15.2...v0.15.3) - 2025-04-29
+
+### Added
+
+- SIMD implementation for LoongArch (#592, requires nightly)
+
+### Changed
+
+- Optimized insertion path by avoiding an unnecessary `match_empty` (#607)
+- Increased minimum table size for small types (#615)
+- Dropped FnMut trait bounds from `ExtractIf` data structures (#616)
+- Relaxed constraint in `hash_map::EntryRef` insertion methods `K: From<&Q>` to &Q: `Into<K>` (#611)
+- Added allocator template argument for `rustc_iter` (#605)
+- The `allocator-api2/nightly` feature is no longer enabled by `hashbrown/nightly` (#606)
 
 ## [v0.15.2] - 2024-11-14
 

@@ -1,47 +1,40 @@
-macro_rules! quote {
-    () => (::proc_macro::TokenStream::new());
+macro_rules! quote_ {
+    () => (proc_macro::TokenStream::new());
     ($($x:tt)*) => {{
-        let mut ts = ::proc_macro::TokenStream::new();
+        use proc_macro::*;
+        let mut ts = TokenStream::new();
         let ts_mut = &mut ts;
         quote_inner!(ts_mut $($x)*);
         ts
     }};
 }
 
-#[cfg(any(feature = "formatting", feature = "parsing"))]
 macro_rules! quote_append {
     ($ts:ident $($x:tt)*) => {{
+        use proc_macro::*;
         quote_inner!($ts $($x)*);
     }};
 }
 
 macro_rules! quote_group {
-    ({ $($x:tt)* }) => {
-        ::proc_macro::TokenTree::Group(::proc_macro::Group::new(
-            ::proc_macro::Delimiter::Brace,
-            quote!($($x)*)
+    ({ $($x:tt)* }) => {{
+        use proc_macro::*;
+        TokenTree::Group(Group::new(
+            Delimiter::Brace,
+            quote_!($($x)*)
         ))
-    };
+    }};
 }
 
 macro_rules! sym {
     ($ts:ident $x:tt $y:tt) => {
         $ts.extend([
-            ::proc_macro::TokenTree::from(::proc_macro::Punct::new(
-                $x,
-                ::proc_macro::Spacing::Joint,
-            )),
-            ::proc_macro::TokenTree::from(::proc_macro::Punct::new(
-                $y,
-                ::proc_macro::Spacing::Alone,
-            )),
+            TokenTree::from(Punct::new($x, Spacing::Joint)),
+            TokenTree::from(Punct::new($y, Spacing::Alone)),
         ]);
     };
     ($ts:ident $x:tt) => {
-        $ts.extend([::proc_macro::TokenTree::from(::proc_macro::Punct::new(
-            $x,
-            ::proc_macro::Spacing::Alone,
-        ))]);
+        $ts.extend([TokenTree::from(Punct::new($x, Spacing::Alone))]);
     };
 }
 
@@ -70,32 +63,46 @@ macro_rules! quote_inner {
 
     // Identifier
     ($ts:ident $i:ident $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::from(::proc_macro::Ident::new(
+        $ts.extend([TokenTree::from(Ident::new(
             &stringify!($i),
-            ::proc_macro::Span::mixed_site(),
+            Span::mixed_site(),
         ))]);
         quote_inner!($ts $($tail)*);
     };
 
     // Literal
     ($ts:ident 0 $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::from(::proc_macro::Literal::usize_unsuffixed(0))]);
+        $ts.extend([TokenTree::from(Literal::usize_unsuffixed(0))]);
         quote_inner!($ts $($tail)*);
     };
     ($ts:ident $l:literal $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::from(::proc_macro::Literal::string(&$l))]);
+        $ts.extend([TokenTree::from(Literal::string(&$l))]);
         quote_inner!($ts $($tail)*);
     };
 
     // Lifetime
     ($ts:ident $l:lifetime $($tail:tt)*) => {
         $ts.extend([
-            ::proc_macro::TokenTree::from(
-                ::proc_macro::Punct::new('\'', ::proc_macro::Spacing::Joint)
+            TokenTree::from(
+                Punct::new('\'', Spacing::Joint)
             ),
-            ::proc_macro::TokenTree::from(::proc_macro::Ident::new(
+            TokenTree::from(Ident::new(
                 stringify!($l).trim_start_matches(|c| c == '\''),
-                ::proc_macro::Span::mixed_site(),
+                Span::mixed_site(),
+            )),
+        ]);
+        quote_inner!($ts $($tail)*);
+    };
+
+    // Attribute
+    ($ts:ident #[$($inner:tt)*] $($tail:tt)*) => {
+        $ts.extend([
+            TokenTree::from(
+                Punct::new('#', Spacing::Alone)
+            ),
+            TokenTree::Group(Group::new(
+                Delimiter::Bracket,
+                quote_!($($inner)*)
             )),
         ]);
         quote_inner!($ts $($tail)*);
@@ -103,23 +110,23 @@ macro_rules! quote_inner {
 
     // Groups
     ($ts:ident ($($inner:tt)*) $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
-            ::proc_macro::Delimiter::Parenthesis,
-            quote!($($inner)*)
+        $ts.extend([TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            quote_!($($inner)*)
         ))]);
         quote_inner!($ts $($tail)*);
     };
     ($ts:ident [$($inner:tt)*] $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
-            ::proc_macro::Delimiter::Bracket,
-            quote!($($inner)*)
+        $ts.extend([TokenTree::Group(Group::new(
+            Delimiter::Bracket,
+            quote_!($($inner)*)
         ))]);
         quote_inner!($ts $($tail)*);
     };
     ($ts:ident {$($inner:tt)*} $($tail:tt)*) => {
-        $ts.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
-            ::proc_macro::Delimiter::Brace,
-            quote!($($inner)*)
+        $ts.extend([TokenTree::Group(Group::new(
+            Delimiter::Brace,
+            quote_!($($inner)*)
         ))]);
         quote_inner!($ts $($tail)*);
     };

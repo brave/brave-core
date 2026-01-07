@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/numerics/checked_math.h"
 #include "base/values.h"
@@ -57,7 +58,8 @@ class CardanoTransaction {
 
     CardanoAddress utxo_address;
     Outpoint utxo_outpoint;
-    uint64_t utxo_value = 0;
+    uint64_t utxo_value = 0u;
+    cardano_rpc::Tokens utxo_tokens;
   };
 
   // Transaction witness. Matches a TxInput within transaction based on its
@@ -100,6 +102,7 @@ class CardanoTransaction {
     TxOutputType type = TxOutputType::kTarget;
     CardanoAddress address;
     uint64_t amount = 0;
+    cardano_rpc::Tokens tokens;
   };
 
   CardanoTransaction();
@@ -114,11 +117,20 @@ class CardanoTransaction {
   static std::optional<CardanoTransaction> FromValue(
       const base::Value::Dict& value);
 
+  // Adds change output.
+  void SetupChangeOutput(CardanoAddress change_address);
+
   // Sum of all inputs' amounts.
   base::CheckedNumeric<uint64_t> GetTotalInputsAmount() const;
 
   // Sum of all outputs' amounts.
   base::CheckedNumeric<uint64_t> GetTotalOutputsAmount() const;
+
+  // Sum of all inputs' token amounts.
+  std::optional<cardano_rpc::Tokens> GetTotalInputTokensAmount() const;
+
+  // Sum of all outputs' token amounts.
+  std::optional<cardano_rpc::Tokens> GetTotalOutputTokensAmount() const;
 
   const CardanoAddress& to() const { return to_; }
   void set_to(CardanoAddress to) { to_ = std::move(to); }
@@ -138,6 +150,7 @@ class CardanoTransaction {
   void AddInput(TxInput input);
   void AddInputs(std::vector<TxInput> input);
   void ClearInputs();
+  base::flat_set<CardanoAddress> GetInputAddresses() const;
 
   const std::vector<TxWitness>& witnesses() const { return witnesses_; }
   void SetWitnesses(std::vector<TxWitness> witnesses);
@@ -152,6 +165,9 @@ class CardanoTransaction {
   TxOutput* TargetOutput();
   TxOutput* ChangeOutput();
 
+  // Adjust change output so all input tokens are also sent to change output.
+  bool EnsureTokensInChangeOutput();
+
   uint32_t invalid_after() const { return invalid_after_; }
   void set_invalid_after(uint32_t invalid_after) {
     invalid_after_ = invalid_after;
@@ -165,6 +181,8 @@ class CardanoTransaction {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest, ValidateAmounts);
+  FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest,
+                           ValidateAmountsWithTokens);
 
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;

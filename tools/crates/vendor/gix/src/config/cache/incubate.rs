@@ -1,8 +1,10 @@
 #![allow(clippy::result_large_err)]
 
 use super::{util, Error};
-use crate::config::cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue};
-use crate::config::tree::{gitoxide, Core, Extensions};
+use crate::config::{
+    cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue},
+    tree::{gitoxide, Core, Extensions},
+};
 
 /// A utility to deal with the cyclic dependency between the ref store and the configuration. The ref-store needs the
 /// object hash kind, and the configuration needs the current branch name to resolve conditional includes with `onbranch`.
@@ -11,7 +13,7 @@ pub(crate) struct StageOne {
     pub buf: Vec<u8>,
 
     pub is_bare: bool,
-    pub lossy: Option<bool>,
+    pub lossy: bool,
     pub object_hash: gix_hash::Kind,
     pub reflog: Option<gix_ref::store::WriteReflog>,
     pub precompose_unicode: bool,
@@ -24,7 +26,7 @@ impl StageOne {
         common_dir: &std::path::Path,
         git_dir: &std::path::Path,
         git_dir_trust: gix_sec::Trust,
-        lossy: Option<bool>,
+        lossy: bool,
         lenient: bool,
     ) -> Result<Self, Error> {
         let mut buf = Vec::with_capacity(512);
@@ -72,7 +74,7 @@ impl StageOne {
                 lenient,
             )?;
             config.append(worktree_config);
-        };
+        }
         let precompose_unicode = config
             .boolean(&Core::PRECOMPOSE_UNICODE)
             .map(|v| Core::PRECOMPOSE_UNICODE.enrich_error(v))
@@ -109,7 +111,7 @@ fn load_config(
     buf: &mut Vec<u8>,
     source: gix_config::Source,
     git_dir_trust: gix_sec::Trust,
-    lossy: Option<bool>,
+    lossy: bool,
     lenient: bool,
 ) -> Result<gix_config::File<'static>, Error> {
     let metadata = gix_config::file::Metadata::from(source)
@@ -144,7 +146,7 @@ fn load_config(
         } else {
             return Err(err);
         }
-    };
+    }
 
     let config = gix_config::File::from_bytes_owned(
         buf,

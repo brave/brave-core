@@ -23,10 +23,10 @@ use crate::map2d::ZeroMap2dCursor;
 /// use zerovec::maps::ZeroMap2dBorrowed;
 ///
 /// // Example byte buffer representing the map { 1: {2: "three" } }
-/// let BINCODE_BYTES: &[u8; 51] = &[
+/// let BINCODE_BYTES: &[u8; 47] = &[
 ///     2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0,
-///     0, 0, 0, 0, 0, 0, 2, 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 116,
-///     104, 114, 101, 101,
+///     0, 0, 0, 0, 0, 0, 2, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 0, 116, 104, 114,
+///     101, 101,
 /// ];
 ///
 /// // Deserializing to ZeroMap2d requires no heap allocations.
@@ -218,8 +218,8 @@ where
     /// map.insert(&1, "one", "foo");
     /// map.insert(&2, "two", "bar");
     /// let borrowed = map.as_borrowed();
-    /// assert!(matches!(borrowed.get0(&1), Some(_)));
-    /// assert!(matches!(borrowed.get0(&3), None));
+    /// assert!(borrowed.get0(&1).is_some());
+    /// assert!(borrowed.get0(&3).is_none());
     /// ```
     #[inline]
     pub fn get0<'l>(&'l self, key0: &K0) -> Option<ZeroMap2dCursor<'a, 'a, K0, K1, V>> {
@@ -236,8 +236,8 @@ where
     /// map.insert(&1, "one", "foo");
     /// map.insert(&2, "two", "bar");
     /// let borrowed = map.as_borrowed();
-    /// assert!(matches!(borrowed.get0_by(|probe| probe.cmp(&1)), Some(_)));
-    /// assert!(matches!(borrowed.get0_by(|probe| probe.cmp(&3)), None));
+    /// assert!(borrowed.get0_by(|probe| probe.cmp(&1)).is_some());
+    /// assert!(borrowed.get0_by(|probe| probe.cmp(&3)).is_none());
     /// ```
     pub fn get0_by<'l>(
         &'l self,
@@ -274,7 +274,7 @@ where
     V: ?Sized,
 {
     /// Produce an ordered iterator over keys0
-    pub fn iter0<'l>(&'l self) -> impl Iterator<Item = ZeroMap2dCursor<'a, 'a, K0, K1, V>> + '_ {
+    pub fn iter0<'l>(&'l self) -> impl Iterator<Item = ZeroMap2dCursor<'a, 'a, K0, K1, V>> + 'l {
         (0..self.keys0.zvl_len()).map(move |idx| ZeroMap2dCursor::from_borrowed(self, idx))
     }
 }

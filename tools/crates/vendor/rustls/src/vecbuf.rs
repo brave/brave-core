@@ -113,6 +113,13 @@ impl ChunkVecBuffer {
 
         Ok(())
     }
+
+    /// Inspect the first chunk from this object.
+    pub(crate) fn peek(&self) -> Option<&[u8]> {
+        self.chunks
+            .front()
+            .map(|ch| ch.as_slice())
+    }
 }
 
 #[cfg(feature = "std")]
@@ -193,8 +200,21 @@ impl ChunkVecBuffer {
             prefix = 0;
         }
         let len = cmp::min(bufs.len(), self.chunks.len());
-        let used = wr.write_vectored(&bufs[..len])?;
-        assert!(used <= self.len(), "illegal write_vectored return value");
+        let bufs = &bufs[..len];
+        let used = wr.write_vectored(bufs)?;
+        let available_bytes = bufs.iter().map(|ch| ch.len()).sum();
+
+        if used > available_bytes {
+            // This is really unrecoverable, since the amount of data written
+            // is now unknown.  Consume all the potentially-written data in
+            // case the caller ignores the error.
+            // See <https://github.com/rustls/rustls/issues/2316> for background.
+            self.consume(available_bytes);
+            return Err(io::Error::new(
+                io::ErrorKind::Other,
+                std::format!("illegal write_vectored return value ({used} > {available_bytes})"),
+            ));
+        }
         self.consume(used);
         Ok(used)
     }

@@ -6,42 +6,44 @@
 // This file may not be copied, modified, or distributed except according to
 // those terms.
 
+// See comment in `include.rs` for why we disable the prelude.
+#![no_implicit_prelude]
 #![allow(warnings)]
 
-use {static_assertions::assert_impl_all, zerocopy::Unaligned};
+include!("include.rs");
 
 // An enum is `Unaligned` if:
 // - No `repr(align(N > 1))`
 // - `repr(u8)` or `repr(i8)`
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(u8)]
 enum Foo {
     A,
 }
 
-assert_impl_all!(Foo: Unaligned);
+util_assert_impl_all!(Foo: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(i8)]
 enum Bar {
     A,
 }
 
-assert_impl_all!(Bar: Unaligned);
+util_assert_impl_all!(Bar: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(u8, align(1))]
 enum Baz {
     A,
 }
 
-assert_impl_all!(Baz: Unaligned);
+util_assert_impl_all!(Baz: imp::Unaligned);
 
-#[derive(Unaligned)]
+#[derive(imp::Unaligned)]
 #[repr(i8, align(1))]
 enum Blah {
     B,
 }
 
-assert_impl_all!(Blah: Unaligned);
+util_assert_impl_all!(Blah: imp::Unaligned);

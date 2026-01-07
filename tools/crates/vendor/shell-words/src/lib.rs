@@ -258,7 +258,7 @@ fn escape_style(s: &str) -> EscapeStyle {
                 special = true;
             }
             '|' | '&' | ';' | '<' | '>' | '(' | ')' | '$' | '`' | '\\' | '"' | ' ' | '\t' | '*'
-            | '?' | '[' | '#' | '˜' | '=' | '%' => {
+            | '?' | '[' | '#' | '~' | '=' | '%' => {
                 special = true;
             }
             _ => continue,
@@ -479,6 +479,7 @@ mod tests {
         assert_eq!(quote("abc"), "abc");
         assert_eq!(quote("a \n  b"), "'a \n  b'");
         assert_eq!(quote("X'\nY"), "'X'\\''\nY'");
+        assert_eq!(quote("~root"), "'~root'");
     }
 
     #[test]

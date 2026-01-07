@@ -4,7 +4,7 @@ use std::{
     thread,
 };
 
-use bencher::{benchmark_group, benchmark_main, Bencher};
+use bencher::{Bencher, benchmark_group, benchmark_main};
 use rustls::pki_types::{CertificateDer, PrivatePkcs8KeyDer};
 use tokio::runtime::{Builder, Runtime};
 use tracing::error_span;
@@ -79,7 +79,7 @@ struct Context {
 impl Context {
     fn new() -> Self {
         let cert = rcgen::generate_simple_self_signed(vec!["localhost".into()]).unwrap();
-        let key = PrivatePkcs8KeyDer::from(cert.key_pair.serialize_der());
+        let key = PrivatePkcs8KeyDer::from(cert.signing_key.serialize_der());
         let cert = CertificateDer::from(cert.cert);
 
         let mut server_config =

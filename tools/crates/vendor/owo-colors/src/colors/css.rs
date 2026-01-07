@@ -20,6 +20,8 @@ macro_rules! css_color_types {
 
         use dynamic::CssColors;
 
+        impl crate::private::Sealed for CssColors {}
+
         impl crate::DynColor for CssColors {
             fn fmt_ansi_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 let color = match self {

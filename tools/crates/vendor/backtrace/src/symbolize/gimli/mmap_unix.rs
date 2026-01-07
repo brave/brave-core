@@ -15,15 +15,17 @@ pub struct Mmap {
 }
 
 impl Mmap {
-    pub unsafe fn map(file: &File, len: usize) -> Option<Mmap> {
-        let ptr = mmap64(
-            ptr::null_mut(),
-            len,
-            libc::PROT_READ,
-            libc::MAP_PRIVATE,
-            file.as_raw_fd(),
-            0,
-        );
+    pub unsafe fn map(file: &File, len: usize, offset: u64) -> Option<Mmap> {
+        let ptr = unsafe {
+            mmap64(
+                ptr::null_mut(),
+                len,
+                libc::PROT_READ,
+                libc::MAP_PRIVATE,
+                file.as_raw_fd(),
+                offset.try_into().ok()?,
+            )
+        };
         if ptr == libc::MAP_FAILED {
             return None;
         }

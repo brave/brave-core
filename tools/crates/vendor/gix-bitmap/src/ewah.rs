@@ -25,9 +25,11 @@ pub fn decode(data: &[u8]) -> Result<(Vec, &[u8]), decode::Error> {
     // NOTE: git does this by copying all bytes first, and then it will change the endianness in a separate loop.
     //       Maybe it's faster, but we can't do it without unsafe. Let's leave it to the optimizer and maybe
     //       one day somebody will find out that it's worth it to use unsafe here.
-    let (mut bits, data) = decode::split_at_pos(data, len * std::mem::size_of::<u64>()).ok_or(Error::Corrupt {
-        message: "eof while reading bit data",
-    })?;
+    let (mut bits, data) = data
+        .split_at_checked(len * std::mem::size_of::<u64>())
+        .ok_or(Error::Corrupt {
+            message: "eof while reading bit data",
+        })?;
     let mut buf = std::vec::Vec::<u64>::with_capacity(len);
     for _ in 0..len {
         let (bit_num, rest) = bits.split_at(std::mem::size_of::<u64>());

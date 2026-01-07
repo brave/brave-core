@@ -1,5 +1,8 @@
+#![feature(test)]
+extern crate test;
+
 use crc::*;
-use criterion::{black_box, criterion_group, criterion_main, Criterion, Throughput};
+use test::{black_box, Bencher};
 
 pub const BLUETOOTH: Crc<u8> = Crc::<u8>::new(&CRC_8_BLUETOOTH);
 pub const BLUETOOTH_SLICE16: Crc<u8, Table<16>> = Crc::<u8, Table<16>>::new(&CRC_8_BLUETOOTH);
@@ -25,90 +28,150 @@ pub const DARC_NOLOOKUP: Crc<u128, NoTable> = Crc::<u128, NoTable>::new(&CRC_82_
 
 static KB: usize = 1024;
 
+// Baseline benchmark
 fn baseline(data: &[u8]) -> usize {
     data.iter()
         .fold(0usize, |acc, v| acc.wrapping_add(*v as usize))
 }
 
-fn checksum(c: &mut Criterion) {
+#[bench]
+fn bench_baseline(b: &mut Bencher) {
     let size = 16 * KB;
     let bytes = vec![0u8; size];
-
-    c.benchmark_group("baseline")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("baseline", |b| b.iter(|| baseline(black_box(&bytes))));
-
-    c.benchmark_group("crc8")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("default", |b| {
-            b.iter(|| BLUETOOTH.checksum(black_box(&bytes)))
-        })
-        .bench_function("nolookup", |b| {
-            b.iter(|| BLUETOOTH_NOLOOKUP.checksum(black_box(&bytes)))
-        })
-        .bench_function("bytewise", |b| {
-            b.iter(|| BLUETOOTH_BYTEWISE.checksum(black_box(&bytes)))
-        })
-        .bench_function("slice16", |b| {
-            b.iter(|| BLUETOOTH_SLICE16.checksum(black_box(&bytes)))
-        });
-
-    c.benchmark_group("crc16")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("default", |b| b.iter(|| X25.checksum(black_box(&bytes))))
-        .bench_function("nolookup", |b| {
-            b.iter(|| X25_NOLOOKUP.checksum(black_box(&bytes)))
-        })
-        .bench_function("bytewise", |b| {
-            b.iter(|| X25_BYTEWISE.checksum(black_box(&bytes)))
-        })
-        .bench_function("slice16", |b| {
-            b.iter(|| X25_SLICE16.checksum(black_box(&bytes)))
-        });
-
-    c.benchmark_group("crc32")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("default", |b| b.iter(|| ISCSI.checksum(black_box(&bytes))))
-        .bench_function("nolookup", |b| {
-            b.iter(|| ISCSI_NOLOOKUP.checksum(black_box(&bytes)))
-        })
-        .bench_function("bytewise", |b| {
-            b.iter(|| ISCSI_BYTEWISE.checksum(black_box(&bytes)))
-        })
-        .bench_function("slice16", |b| {
-            b.iter(|| ISCSI_SLICE16.checksum(black_box(&bytes)))
-        });
-
-    c.benchmark_group("crc64")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("default", |b| b.iter(|| ECMA.checksum(black_box(&bytes))))
-        .bench_function("nolookup", |b| {
-            b.iter(|| ECMA_NOLOOKUP.checksum(black_box(&bytes)))
-        })
-        .bench_function("bytewise", |b| {
-            b.iter(|| ECMA_BYTEWISE.checksum(black_box(&bytes)))
-        })
-        .bench_function("slice16", |b| {
-            b.iter(|| ECMA_SLICE16.checksum(black_box(&bytes)))
-        });
-
-    c.benchmark_group("crc82")
-        .throughput(Throughput::Bytes(size as u64))
-        .bench_function("default", |b| b.iter(|| DARC.checksum(black_box(&bytes))))
-        .bench_function("nolookup", |b| {
-            b.iter(|| DARC_NOLOOKUP.checksum(black_box(&bytes)))
-        })
-        .bench_function("bytewise", |b| {
-            b.iter(|| DARC_BYTEWISE.checksum(black_box(&bytes)))
-        })
-        .bench_function("slice16", |b| {
-            b.iter(|| DARC_SLICE16.checksum(black_box(&bytes)))
-        });
-
-    c.benchmark_group("checksum")
-        .bench_function("crc8", |b| b.iter(|| BLUETOOTH.checksum(black_box(&bytes))))
-        .bench_function("crc40", |b| b.iter(|| GSM_40.checksum(black_box(&bytes))));
+    b.bytes = size as u64;
+    b.iter(|| baseline(black_box(&bytes)));
 }
 
-criterion_group!(checksum_benches, checksum);
-criterion_main!(checksum_benches);
+// CRC-8 benchmarks
+#[bench]
+fn bench_crc8_nolookup(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| BLUETOOTH_NOLOOKUP.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc8_bytewise(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| BLUETOOTH_BYTEWISE.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc8_slice16(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| BLUETOOTH_SLICE16.checksum(black_box(&bytes)));
+}
+
+// CRC-16 benchmarks
+#[bench]
+fn bench_crc16_nolookup(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| X25_NOLOOKUP.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc16_bytewise(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| X25_BYTEWISE.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc16_slice16(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| X25_SLICE16.checksum(black_box(&bytes)));
+}
+
+// CRC-32 benchmarks
+#[bench]
+fn bench_crc32_nolookup(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ISCSI_NOLOOKUP.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc32_bytewise(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ISCSI_BYTEWISE.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc32_slice16(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ISCSI_SLICE16.checksum(black_box(&bytes)));
+}
+
+// CRC-64 benchmarks
+#[bench]
+fn bench_crc64_nolookup(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ECMA_NOLOOKUP.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc64_bytewise(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ECMA_BYTEWISE.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc64_slice16(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| ECMA_SLICE16.checksum(black_box(&bytes)));
+}
+
+// CRC-82 benchmarks
+#[bench]
+fn bench_crc82_nolookup(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| DARC_NOLOOKUP.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc82_bytewise(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| DARC_BYTEWISE.checksum(black_box(&bytes)));
+}
+
+#[bench]
+fn bench_crc82_slice16(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| DARC_SLICE16.checksum(black_box(&bytes)));
+}
+
+// Miscellaneous benchmarks
+#[bench]
+fn bench_crc40(b: &mut Bencher) {
+    let size = 16 * KB;
+    let bytes = vec![0u8; size];
+    b.bytes = size as u64;
+    b.iter(|| GSM_40.checksum(black_box(&bytes)));
+}

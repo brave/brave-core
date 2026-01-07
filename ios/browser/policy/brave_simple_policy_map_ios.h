@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -17,6 +18,10 @@
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -40,11 +45,13 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
         brave_rewards::prefs::kDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     {
         policy::key::kBraveTalkDisabled,
-        kBraveTalkDisabledByPolicy,
+        brave_talk::prefs::kDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
+#endif
     {
         policy::key::kBraveNewsDisabled,
         brave_news::prefs::kBraveNewsDisabledByPolicy,

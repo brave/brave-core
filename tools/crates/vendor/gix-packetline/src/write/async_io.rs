@@ -1,7 +1,7 @@
 use std::{
     io,
     pin::Pin,
-    task::{Context, Poll},
+    task::{ready, Context, Poll},
 };
 
 use futures_io::AsyncWrite;
@@ -52,7 +52,7 @@ impl<T> Writer<T> {
     /// If called, each call to [`write()`][io::Write::write()] will write the input as text, appending a trailing newline
     /// if needed before writing.
     pub fn enable_text_mode(&mut self) {
-        self.inner.suffix = &[b'\n'];
+        self.inner.suffix = b"\n";
     }
 }
 
@@ -63,17 +63,16 @@ impl<T: AsyncWrite + Unpin> AsyncWrite for Writer<T> {
             match this.state {
                 State::Idle => {
                     if buf.is_empty() {
-                        return Poll::Ready(Err(io::Error::new(
-                            io::ErrorKind::Other,
+                        return Poll::Ready(Err(io::Error::other(
                             "empty packet lines are not permitted as '0004' is invalid",
                         )));
                     }
-                    *this.state = State::WriteData(0)
+                    *this.state = State::WriteData(0);
                 }
                 State::WriteData(written) => {
                     while *written != buf.len() {
                         let data = &buf[*written..*written + (buf.len() - *written).min(MAX_DATA_LEN)];
-                        let n = futures_lite::ready!(this.inner.as_mut().poll_write(cx, data))?;
+                        let n = ready!(this.inner.as_mut().poll_write(cx, data))?;
                         if n == 0 {
                             return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
                         }

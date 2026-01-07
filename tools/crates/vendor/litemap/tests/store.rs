@@ -136,6 +136,22 @@ impl<A> std::iter::FromIterator<A> for VecWithDefaults<A> {
 
 impl<K, V> StoreFromIterator<K, V> for VecWithDefaults<(K, V)> {}
 
+impl<K: Ord, V> StoreBulkMut<K, V> for VecWithDefaults<(K, V)> {
+    fn lm_retain<F>(&mut self, predicate: F)
+    where
+        F: FnMut(&K, &V) -> bool,
+    {
+        self.0.lm_retain(predicate)
+    }
+
+    fn lm_extend<I>(&mut self, other: I)
+    where
+        I: IntoIterator<Item = (K, V)>,
+    {
+        self.0.lm_extend(other)
+    }
+}
+
 #[test]
 fn test_default_impl() {
     check_store_full::<VecWithDefaults<(u32, u64)>>();

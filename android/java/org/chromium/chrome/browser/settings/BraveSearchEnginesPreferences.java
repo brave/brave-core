@@ -32,14 +32,12 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
-    private static final String PREF_ADD_OPEN_SEARCH_ENGINES = "brave.other_search_engines_enabled";
     private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
 
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
     private ChromeSwitchPreference mShowAutocompleteInAddressBar;
     private ChromeSwitchPreference mSearchSuggestions;
-    private ChromeSwitchPreference mAddOpenSearchEngines;
     private @Nullable ChromeSwitchPreference mSendWebDiscovery;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
@@ -140,14 +138,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                     UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         }
 
-        mAddOpenSearchEngines =
-                (ChromeSwitchPreference) findPreference(PREF_ADD_OPEN_SEARCH_ENGINES);
-        if (mAddOpenSearchEngines != null) {
-            mAddOpenSearchEngines.setOnPreferenceChangeListener(this);
-            mAddOpenSearchEngines.setChecked(
-                    UserPrefs.get(getProfile()).getBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES));
-        }
-
         if (BraveConfig.WEB_DISCOVERY_ENABLED) {
             // Check if web discovery is managed by policy
             boolean isWebDiscoveryManaged =
@@ -185,9 +175,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             mSearchSuggestions.setVisible(autocompleteEnabled);
             UserPrefs.get(getProfile())
                     .setBoolean(BravePref.AUTOCOMPLETE_ENABLED, autocompleteEnabled);
-        } else if (PREF_ADD_OPEN_SEARCH_ENGINES.equals(key)) {
-            UserPrefs.get(getProfile())
-                    .setBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES, (boolean) newValue);
         } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
             UserPrefs.get(getProfile())
                     .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED, (boolean) newValue);

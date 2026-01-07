@@ -1,6 +1,4 @@
-// Copyright 2015 The Rust Project Developers. See the COPYRIGHT
-// file at the top-level directory of this distribution and at
-// http://rust-lang.org/COPYRIGHT.
+// Copyright 2015 The Rust Project Developers.
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
 // http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
@@ -20,7 +18,7 @@ use crate::Builder;
 #[cfg(doc)]
 use crate::env;
 
-/// Create a new temporary directory.
+/// Create a new temporary directory. Also see [`tempdir_in`].
 ///
 /// The `tempdir` function creates a directory in the file system and returns a
 /// [`TempDir`]. The directory will be automatically deleted when the `TempDir`'s
@@ -67,7 +65,7 @@ pub fn tempdir() -> io::Result<TempDir> {
     TempDir::new()
 }
 
-/// Create a new temporary directory in a specific directory.
+/// Create a new temporary directory in a specific directory. Also see [`tempdir`].
 ///
 /// The `tempdir_in` function creates a directory in the specified directory
 /// and returns a [`TempDir`].
@@ -182,7 +180,7 @@ pub fn tempdir_in<P: AsRef<Path>>(dir: P) -> io::Result<TempDir> {
 /// [`std::process::exit()`]: http://doc.rust-lang.org/std/process/fn.exit.html
 pub struct TempDir {
     path: Box<Path>,
-    keep: bool,
+    disable_cleanup: bool,
 }
 
 impl TempDir {
@@ -382,10 +380,20 @@ impl TempDir {
         self.path.as_ref()
     }
 
+    /// Deprecated alias for [`TempDir::keep`].
+    #[must_use]
+    #[deprecated = "use TempDir::keep()"]
+    pub fn into_path(self) -> PathBuf {
+        self.keep()
+    }
+
     /// Persist the temporary directory to disk, returning the [`PathBuf`] where it is located.
     ///
     /// This consumes the [`TempDir`] without deleting directory on the filesystem, meaning that
     /// the directory will no longer be automatically deleted.
+    ///
+    /// If you want to disable automatic cleanup of the temporary directory in-place, keeping the
+    /// `TempDir` as-is, use [`TempDir::disable_cleanup`] instead.
     ///
     /// [`TempDir`]: struct.TempDir.html
     /// [`PathBuf`]: http://doc.rust-lang.org/std/path/struct.PathBuf.html
@@ -400,20 +408,26 @@ impl TempDir {
     ///
     /// // Persist the temporary directory to disk,
     /// // getting the path where it is.
-    /// let tmp_path = tmp_dir.into_path();
+    /// let tmp_path = tmp_dir.keep();
     ///
     /// // Delete the temporary directory ourselves.
     /// fs::remove_dir_all(tmp_path)?;
     /// # Ok::<(), std::io::Error>(())
     /// ```
     #[must_use]
-    pub fn into_path(self) -> PathBuf {
-        // Prevent the Drop impl from being called.
-        let mut this = mem::ManuallyDrop::new(self);
+    pub fn keep(mut self) -> PathBuf {
+        self.disable_cleanup(true);
+        mem::replace(&mut self.path, PathBuf::new().into_boxed_path()).into()
+    }
 
-        // replace this.path with an empty Box, since an empty Box does not
-        // allocate any heap memory.
-        mem::replace(&mut this.path, PathBuf::new().into_boxed_path()).into()
+    /// Disable cleanup of the temporary directory. If `disable_cleanup` is `true`, the temporary
+    /// directory will not be deleted when this `TempDir` is dropped. This method is equivalent to
+    /// calling [`Builder::disable_cleanup`] when creating the `TempDir`.
+    ///
+    /// **NOTE:** this method is primarily useful for testing/debugging. If you want to simply turn
+    /// a temporary directory into a non-temporary directory, prefer [`TempDir::keep`].
+    pub fn disable_cleanup(&mut self, disable_cleanup: bool) {
+        self.disable_cleanup = disable_cleanup
     }
 
     /// Closes and removes the temporary directory, returning a `Result`.
@@ -483,7 +497,7 @@ impl fmt::Debug for TempDir {
 
 impl Drop for TempDir {
     fn drop(&mut self) {
-        if !self.keep {
+        if !self.disable_cleanup {
             let _ = remove_dir_all(self.path());
         }
     }
@@ -492,9 +506,9 @@ impl Drop for TempDir {
 pub(crate) fn create(
     path: PathBuf,
     permissions: Option<&std::fs::Permissions>,
-    keep: bool,
+    disable_cleanup: bool,
 ) -> io::Result<TempDir> {
-    imp::create(path, permissions, keep)
+    imp::create(path, permissions, disable_cleanup)
 }
 
 mod imp;

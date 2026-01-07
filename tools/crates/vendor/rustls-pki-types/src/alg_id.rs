@@ -8,6 +8,55 @@ use core::ops::Deref;
 
 // See src/data/README.md.
 
+/// AlgorithmIdentifier for `id-ml-dsa-44`.
+///
+/// This is:
+///
+/// ```text
+/// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.17 }
+/// ```
+///
+/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+pub const ML_DSA_44: AlgorithmIdentifier =
+    AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-44.der"));
+
+/// AlgorithmIdentifier for `id-ml-dsa-65`.
+///
+/// This is:
+///
+/// ```text
+/// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.18 }
+/// ```
+///
+/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+pub const ML_DSA_65: AlgorithmIdentifier =
+    AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-65.der"));
+
+/// AlgorithmIdentifier for `id-ml-dsa-87`.
+///
+/// This is:
+///
+/// ```text
+/// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.19 }
+/// ```
+///
+/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+pub const ML_DSA_87: AlgorithmIdentifier =
+    AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-87.der"));
+
+/// AlgorithmIdentifier for `id-ecPublicKey` with named curve `secp256k1`.
+///
+/// This is:
+///
+/// ```text
+/// # ecPublicKey
+/// OBJECT_IDENTIFIER { 1.2.840.10045.2.1 }
+/// # secp256k1
+/// OBJECT_IDENTIFIER { 1.3.132.0.10 }
+/// ```
+pub const ECDSA_P256K1: AlgorithmIdentifier =
+    AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ecdsa-p256k1.der"));
+
 /// AlgorithmIdentifier for `id-ecPublicKey` with named curve `secp256r1`.
 ///
 /// This is:
@@ -270,6 +319,17 @@ pub const RSA_PSS_SHA512: AlgorithmIdentifier =
 /// ```
 pub const ED25519: AlgorithmIdentifier =
     AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ed25519.der"));
+
+/// AlgorithmIdentifier for `ED448`.
+///
+/// This is:
+///
+/// ```text
+/// # ed448
+/// OBJECT_IDENTIFIER { 1.3.101.113 }
+/// ```
+pub const ED448: AlgorithmIdentifier =
+    AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ed448.der"));
 
 /// A DER encoding of the PKIX AlgorithmIdentifier type:
 ///

@@ -11,20 +11,16 @@ pub(crate) mod cache {
 }
 pub use errors::{conversion, find, write};
 ///
-#[allow(clippy::empty_docs)]
 pub mod blob;
 ///
-#[allow(clippy::empty_docs)]
 pub mod commit;
 mod impls;
 pub mod peel;
 mod tag;
 ///
-#[allow(clippy::empty_docs)]
 pub mod tree;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod try_into {
     #[derive(thiserror::Error, Debug)]
     #[allow(missing_docs)]
@@ -146,7 +142,7 @@ impl<'repo> Object<'repo> {
     }
 }
 
-impl<'repo> Object<'repo> {
+impl Object<'_> {
     /// Create an owned instance of this object, copying our data in the process.
     pub fn detached(&self) -> ObjectDetached {
         ObjectDetached {

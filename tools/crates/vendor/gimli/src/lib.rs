@@ -9,22 +9,22 @@
 //! Cargo features that can be enabled with `gimli`:
 //!
 //! * `std`: Enabled by default. Use the `std` library. Disabling this feature
-//! allows using `gimli` in embedded environments that do not have access to
-//! `std`. Note that even when `std` is disabled, `gimli` still requires an
-//! implementation of the `alloc` crate.
+//!   allows using `gimli` in embedded environments that do not have access to
+//!   `std`. Note that even when `std` is disabled, `gimli` still requires an
+//!   implementation of the `alloc` crate.
 //!
 //! * `read`: Enabled by default. Enables the `read` module. Use of `std` is
-//! optional.
+//!   optional.
 //!
 //! * `write`: Enabled by default. Enables the `write` module. Always uses
-//! the `std` library.
+//!   the `std` library.
 #![deny(missing_docs)]
 #![deny(missing_debug_implementations)]
 // Selectively enable rust 2018 warnings
 #![warn(bare_trait_objects)]
 #![warn(unused_extern_crates)]
 #![warn(ellipsis_inclusive_range_patterns)]
-//#![warn(elided_lifetimes_in_paths)]
+#![warn(elided_lifetimes_in_paths)]
 #![warn(explicit_outlives_requirements)]
 // Style.
 #![allow(clippy::bool_to_int_with_if)]
@@ -33,6 +33,7 @@
 #![allow(clippy::manual_range_contains)]
 #![allow(clippy::needless_late_init)]
 #![allow(clippy::too_many_arguments)]
+#![allow(clippy::needless_lifetimes)]
 // False positives with `fallible_iterator`.
 #![allow(clippy::should_implement_trait)]
 // False positives.

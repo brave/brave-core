@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.73"
+edition = "2024"
+rust-version = "1.85"
 name = "cargo-lock"
-version = "10.1.0"
+version = "11.0.0"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
 build = false
 autolib = false
@@ -33,6 +33,7 @@ keywords = [
 categories = ["parser-implementations"]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/rustsec/rustsec"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = ["dependency-tree"]
@@ -40,6 +41,13 @@ rustdoc-args = [
     "--cfg",
     "docsrs",
 ]
+
+[features]
+cli = [
+    "gumdrop",
+    "dependency-tree",
+]
+dependency-tree = ["petgraph"]
 
 [lib]
 name = "cargo_lock"
@@ -59,7 +67,7 @@ version = "0.8"
 optional = true
 
 [dependencies.petgraph]
-version = "0.6"
+version = "0.8.2"
 optional = true
 
 [dependencies.semver]
@@ -71,14 +79,7 @@ version = "1"
 features = ["serde_derive"]
 
 [dependencies.toml]
-version = "0.8"
+version = "0.9"
 
 [dependencies.url]
 version = "2"
-
-[features]
-cli = [
-    "gumdrop",
-    "dependency-tree",
-]
-dependency-tree = ["petgraph"]

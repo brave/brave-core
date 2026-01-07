@@ -15,7 +15,7 @@
 namespace commands {
 
 // Gets the default list of accelerators.
-std::pair<Accelerators, base::flat_set<ui::Accelerator>>
+std::pair<AcceleratorPrefManager::Accelerators, base::flat_set<ui::Accelerator>>
 GetDefaultAccelerators();
 
 }  // namespace commands

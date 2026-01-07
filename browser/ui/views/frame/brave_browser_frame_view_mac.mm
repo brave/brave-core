@@ -83,7 +83,8 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
 
 bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {
   return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-      browser_view()->browser());
+             browser_view()->browser()) &&
+         !browser_view()->IsFullscreen();
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {

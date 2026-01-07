@@ -1,3 +1,27 @@
+# 0.4.12 (August 5, 2025)
+
+* Fix default limits on max stored reset streams and duration to more reasonable values.
+
+# 0.4.11 (June 30, 2025)
+
+* Fix client to not return an error when a clean shutdown otherwise doesn't get a TLS close_notify, which some servers don't bother sending.
+
+# 0.4.10 (May 5, 2025)
+
+* Fix `is_end_stream()` to return true only when ended cleanly, not when errored.
+
+# 0.4.9 (April 14, 2025)
+
+* Add `sever::Connection::has_streams()` method to check for active streams.
+
+# 0.4.8 (February 18, 2025)
+
+* Fix handling implicit stream resets at the more correct time.
+* Fix window size decrements of send-closed streams.
+* Fix reclaiming of reserved capacity when streams are closed.
+* Fix to no longer call `poll_flush` after `poll_shutdown`.
+* Fix busy loop in task when poll_shutdown returns pending.
+
 # 0.4.7 (November 19, 2024)
 
 * Fix treating HEADERS frames with a non-zero content-length but END_STREAM flag as malformed.

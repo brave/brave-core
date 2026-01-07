@@ -51,6 +51,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/display/screen.h"
+#include "ui/display/test/test_screen.h"
+#include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
@@ -532,11 +535,20 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
   // Test if every tabs are laid out inside tab strip region -------------------
   // This is a regression test for
   // https://github.com/brave/brave-browser/issues/28084
+  const auto region_view_bounds =
+      GetBoundsInScreen(region_view, region_view->GetLocalBounds());
   for (int i = 0; i < model->count(); i++) {
     auto* tab = GetTabAt(browser(), i);
-    EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
-                    .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
+    const auto tab_bounds = GetBoundsInScreen(tab, tab->GetLocalBounds());
+    EXPECT_TRUE(region_view_bounds.Contains(tab_bounds))
+        << "Region view bounds: " << region_view_bounds.ToString()
+        << " vs. Tab bounds: " << tab_bounds.ToString();
   }
+
+  // Check resize area is top-most view.
+  auto resize_area_index = region_view->GetIndexOf(region_view->resize_area_);
+  EXPECT_TRUE(resize_area_index.has_value() &&
+              resize_area_index == region_view->children().size() - 1);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
@@ -558,16 +570,17 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   browser_view()->tabstrip()->StopAnimating();
 
-  int contents_view_height = region_view->contents_view_->height();
+  int contents_view_height = region_view->original_region_view_->height();
   AppendTab(browser());
   browser_view()->tabstrip()->StopAnimating();
 
   // When first tab is added, height should have tab's height plus top & bottom
-  // margin.
+  // margin and separator's height as both pinned and unpinned tabs are used.
   contents_view_height +=
-      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
+      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2) +
+      tabs::kPinnedUnpinnedSeparatorHeight;
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->contents_view_->height() == contents_view_height;
+    return region_view->original_region_view_->height() == contents_view_height;
   }));
 
   AppendTab(browser());
@@ -578,7 +591,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->contents_view_->height() == contents_view_height;
+    return region_view->original_region_view_->height() == contents_view_height;
   }));
 }
 
@@ -615,6 +628,66 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             brave_tab_container->GetScrollBarMode());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       BraveTabContainerSeparator) {
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  AppendTab(browser());
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
+
+  auto* tab_strip = browser_view()->tabstrip();
+  EXPECT_EQ(
+      tab_strip->tab_at(0)->bounds().bottom() + tabs::kVerticalTabsSpacing,
+      brave_tab_container->separator_->bounds().y());
+
+  model->SetTabPinned(0, false);
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+
+  // Add enough pinned tabs to move separator bounds by creating unpinned tab
+  // and pinning it. Check separator bounds is updated properly after pinning
+  // new tab.
+  for (int i = 0; i < 20; i++) {
+    AppendTab(browser());
+    model->SetTabPinned(model->count() - 1, true);
+    browser_view()->tabstrip()->StopAnimating();
+    EXPECT_EQ(tab_strip->tab_at(model->IndexOfFirstNonPinnedTab() - 1)
+                      ->bounds()
+                      .bottom() +
+                  tabs::kVerticalTabsSpacing,
+              brave_tab_container->separator_->bounds().y());
+  }
+
+  // Check separator bounds by unpinning all tabs.
+  const int tab_count = model->count();
+  for (int i = 0; i < tab_count; i++) {
+    model->SetTabPinned(i, false);
+    browser_view()->tabstrip()->StopAnimating();
+
+    const int first_unpinned_tab_index = model->IndexOfFirstNonPinnedTab();
+    if (first_unpinned_tab_index == 0) {
+      EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
+    } else {
+      EXPECT_EQ(
+          tab_strip->tab_at(first_unpinned_tab_index - 1)->bounds().bottom() +
+              tabs::kVerticalTabsSpacing,
+          brave_tab_container->separator_->bounds().y());
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
@@ -1214,8 +1287,15 @@ class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
     SetHideCompletelyWhenCollapsed(true);
   }
 
+  ui::MouseEvent GetDummyEvent() {
+    return ui::MouseEvent(ui::EventType::kMouseMoved, gfx::PointF(),
+                          gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
+  display::test::TestScreen screen{/*create_display=*/true,
+                                   /*register_screen=*/true};
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
@@ -1315,4 +1395,68 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   ASSERT_FALSE(region_view->GetVisible());
   SetHideCompletelyWhenCollapsed(false);
   EXPECT_TRUE(region_view->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
+                       ShowVerticalTabOnMouseOverTest) {
+  auto scoped_mode = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  ToggleVerticalTabStrip();
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  auto* vertical_tab_widget = region_view->GetWidget();
+
+  // Collapse the region view so it's hidden completely.
+  SetHideCompletelyWhenCollapsed(true);
+  region_view->ToggleState();
+  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+  EXPECT_FALSE(region_view->GetVisible());
+  EXPECT_FALSE(region_view->GetVisible());
+
+  auto contents_area_view_rect =
+      browser_view()->GetBoundingBoxInScreenForMouseOverHandling();
+  EXPECT_EQ(browser_view()->width(), contents_area_view_rect.width());
+
+  // Check region view is not visible.
+  EXPECT_FALSE(region_view->GetVisible());
+
+  auto* screen = display::Screen::Get();
+
+  // Set mouse position inside hot corner area to check region view is shown
+  // with that mouse position.
+  gfx::Point mouse_position = contents_area_view_rect.origin();
+  mouse_position.Offset(2, 2);
+  screen->SetCursorScreenPointForTesting(mouse_position);
+  browser_view()->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  EXPECT_TRUE(vertical_tab_widget->IsVisible());
+  EXPECT_TRUE(region_view->GetVisible());
+
+  // Completely hide again to test mouse position outside hot corner area.
+  region_view->ToggleState();
+  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+  EXPECT_TRUE(vertical_tab_widget->IsVisible());
+  EXPECT_TRUE(region_view->GetVisible());
+
+  region_view->ToggleState();
+  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+  EXPECT_FALSE(vertical_tab_widget->IsVisible());
+  EXPECT_FALSE(region_view->GetVisible());
+
+  // Set mouse position outside of hot corner area to check region view is not
+  // shown with that mouse position.
+  mouse_position = contents_area_view_rect.origin();
+  mouse_position.Offset(10, 2);
+  screen->SetCursorScreenPointForTesting(mouse_position);
+  browser_view()->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  EXPECT_FALSE(vertical_tab_widget->IsVisible());
+  EXPECT_FALSE(region_view->GetVisible());
 }

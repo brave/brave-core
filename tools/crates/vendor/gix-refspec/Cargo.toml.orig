@@ -1,0 +1,27 @@
+lints.workspace = true
+
+[package]
+name = "gix-refspec"
+version = "0.32.0"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project for parsing and representing refspecs"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*", "README.md"]
+rust-version = "1.82"
+
+[lib]
+doctest = false
+
+[dependencies]
+gix-revision = { version = "^0.36.0", path = "../gix-revision", default-features = false }
+gix-validate = { version = "^0.10.1", path = "../gix-validate" }
+gix-hash = { version = "^0.20.0", path = "../gix-hash" }
+
+bstr = { version = "1.12.0", default-features = false, features = ["std"] }
+thiserror = "2.0.17"
+smallvec = "1.15.1"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }

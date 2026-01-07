@@ -3,7 +3,7 @@
 /*
 Atomic load/store implementation on RISC-V.
 
-This is for RISC-V targets without atomic CAS. (rustc doesn't provide atomics
+This is for RISC-V targets without A extension. (pre-1.76 rustc doesn't provide atomics
 at all on such targets. https://github.com/rust-lang/rust/pull/114499)
 
 Also, optionally provides RMW implementation when Zaamo extension or force-amo feature is enabled.
@@ -15,11 +15,11 @@ https://github.com/taiki-e/atomic-maybe-uninit/blob/HEAD/src/arch/README.md#risc
 Refs:
 - RISC-V Instruction Set Manual
   "Zaamo" Extension for Atomic Memory Operations
-  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-8b9dc50-2024-08-30/src/a-st-ext.adoc#zaamo-extension-for-atomic-memory-operations
+  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-56e76be-2025-08-26/src/a-st-ext.adoc#zaamo-extension-for-atomic-memory-operations
   "Zabha" Extension for Byte and Halfword Atomic Memory Operations
-  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-8b9dc50-2024-08-30/src/zabha.adoc
+  https://github.com/riscv/riscv-isa-manual/blob/riscv-isa-release-56e76be-2025-08-26/src/zabha.adoc
 - RISC-V Atomics ABI Specification
-  https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/draft-20240829-13bfa9f54634cb60d86b9b333e109f077805b4b3/riscv-atomic.adoc
+  https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/draft-20250812-301374e92976e298e676e7129a6212926b2299ce/riscv-atomic.adoc
 - atomic-maybe-uninit
   https://github.com/taiki-e/atomic-maybe-uninit
 
@@ -70,8 +70,9 @@ macro_rules! w {
     portable_atomic_target_feature = "zaamo",
 ))]
 macro_rules! atomic_rmw_amo_ext {
+    // Use +a also for zaamo because `option arch +zaamo` requires LLVM 19.
+    // https://github.com/llvm/llvm-project/commit/8be079cdddfd628d356d9ddb5ab397ea95fb1030
     ("w") => {
-        // Use +a also for zaamo because `option arch +zaamo` requires LLVM 19 https://github.com/llvm/llvm-project/commit/8be079cdddfd628d356d9ddb5ab397ea95fb1030
         "+a"
     };
     ("d") => {
@@ -91,8 +92,8 @@ macro_rules! atomic_rmw_amo_ext {
     portable_atomic_target_feature = "zaamo",
 ))]
 macro_rules! atomic_rmw_amo {
-    ($op:ident, $dst:ident, $val:ident, $order:ident, $size:tt) => {{
-        let out;
+    ($op:ident, $dst:ident, $val:ident $(as $cast:ty)?, $order:ident, $size:tt) => {{
+        let out $(: $cast)?;
         macro_rules! op {
             ($asm_order:tt) => {
                 // SAFETY: The user guaranteed that the AMO instruction is available in this
@@ -101,7 +102,7 @@ macro_rules! atomic_rmw_amo {
                 // The caller of this macro must guarantee the validity of the pointer.
                 asm!(
                     ".option push",
-                    // https://github.com/riscv-non-isa/riscv-asm-manual/blob/ad0de8c004e29c9a7ac33cfd054f4d4f9392f2fb/src/asm-manual.adoc#arch
+                    // https://github.com/riscv-non-isa/riscv-asm-manual/blob/v0.0.1/src/asm-manual.adoc#arch
                     // LLVM supports `.option arch` directive on LLVM 17+.
                     // https://github.com/llvm/llvm-project/commit/9e8ed3403c191ab9c4903e8eeb8f732ff8a43cb4
                     // Note that `.insn <value>` directive requires LLVM 19.
@@ -110,7 +111,7 @@ macro_rules! atomic_rmw_amo {
                     concat!("amo", stringify!($op), ".", $size, $asm_order, " {out}, {val}, 0({dst})"), // atomic { _x = *dst; *dst = op(_x, val); out = _x }
                     ".option pop",
                     dst = in(reg) ptr_reg!($dst),
-                    val = in(reg) $val,
+                    val = in(reg) $val $(as $cast)?,
                     out = lateout(reg) out,
                     options(nostack, preserves_flags),
                 )
@@ -178,7 +179,7 @@ macro_rules! srlw {
 }
 
 macro_rules! atomic_load_store {
-    ($([$($generics:tt)*])? $atomic_type:ident, $value_type:ty, $size:tt) => {
+    ($([$($generics:tt)*])? $atomic_type:ident, $value_type:ty $(as $cast:ty)?, $size:tt) => {
         #[repr(transparent)]
         pub(crate) struct $atomic_type $(<$($generics)*>)? {
             v: UnsafeCell<$value_type>,
@@ -217,7 +218,7 @@ macro_rules! atomic_load_store {
                 // SAFETY: any data races are prevented by atomic intrinsics and the raw
                 // pointer passed in is valid because we got it from a reference.
                 unsafe {
-                    let out;
+                    let out $(: $cast)?;
                     macro_rules! atomic_load {
                         ($acquire:tt, $release:tt) => {
                             asm!(
@@ -236,7 +237,7 @@ macro_rules! atomic_load_store {
                         Ordering::SeqCst => atomic_load!("fence r, rw", "fence rw, rw"),
                         _ => unreachable!(),
                     }
-                    out
+                    out $(as $cast as $value_type)?
                 }
             }
 
@@ -255,7 +256,7 @@ macro_rules! atomic_load_store {
                                 concat!("s", $size, " {val}, 0({dst})"), // atomic { *dst = val }
                                 $acquire,                                // fence
                                 dst = in(reg) ptr_reg!(dst),
-                                val = in(reg) val,
+                                val = in(reg) val $(as $cast)?,
                                 options(nostack, preserves_flags),
                             )
                         };
@@ -274,8 +275,8 @@ macro_rules! atomic_load_store {
 }
 
 macro_rules! atomic_ptr {
-    ($([$($generics:tt)*])? $atomic_type:ident, $value_type:ty, $size:tt) => {
-        atomic_load_store!($([$($generics)*])? $atomic_type, $value_type, $size);
+    ($([$($generics:tt)*])? $atomic_type:ident, $value_type:ty $(as $cast:ty)?, $size:tt) => {
+        atomic_load_store!($([$($generics)*])? $atomic_type, $value_type $(as $cast)?, $size);
         #[cfg(any(
             test,
             portable_atomic_force_amo,
@@ -288,7 +289,10 @@ macro_rules! atomic_ptr {
                 let dst = self.v.get();
                 // SAFETY: any data races are prevented by atomic intrinsics and the raw
                 // pointer passed in is valid because we got it from a reference.
-                unsafe { atomic_rmw_amo!(swap, dst, val, order, $size) }
+                unsafe {
+                    atomic_rmw_amo!(swap, dst, val $(as $cast)?, order, $size)
+                        $(as $cast as $value_type)?
+                }
             }
         }
     };
@@ -563,13 +567,13 @@ atomic!(AtomicIsize, isize, "w", max, min);
 #[cfg(target_pointer_width = "32")]
 atomic!(AtomicUsize, usize, "w", maxu, minu);
 #[cfg(target_pointer_width = "32")]
-atomic_ptr!([T] AtomicPtr, *mut T, "w");
+atomic_ptr!([T] AtomicPtr, *mut T as *mut u8, "w");
 #[cfg(target_pointer_width = "64")]
 atomic!(AtomicIsize, isize, "d", max, min);
 #[cfg(target_pointer_width = "64")]
 atomic!(AtomicUsize, usize, "d", maxu, minu);
 #[cfg(target_pointer_width = "64")]
-atomic_ptr!([T] AtomicPtr, *mut T, "d");
+atomic_ptr!([T] AtomicPtr, *mut T as *mut u8, "d");
 
 #[cfg(test)]
 mod tests {
@@ -756,6 +760,7 @@ mod tests {
             use crate::tests::helper::{self, *};
             ::quickcheck::quickcheck! {
                 fn quickcheck_fetch_and(x: $int_type, y: $int_type) -> bool {
+                    let mut rng = fastrand::Rng::new();
                     for &order in &helper::SWAP_ORDERINGS {
                         for base in [0, !0] {
                             let mut arr = Align16([
@@ -770,7 +775,7 @@ mod tests {
                                 <$atomic_type>::new(base),
                                 <$atomic_type>::new(base),
                             ]);
-                            let a_idx = fastrand::usize(3..=6);
+                            let a_idx = rng.usize(3..=6);
                             arr.0[a_idx] = <$atomic_type>::new(x);
                             let a = &arr.0[a_idx];
                             assert_eq!(a.fetch_and(y, order), x);
@@ -796,6 +801,7 @@ mod tests {
                     true
                 }
                 fn quickcheck_fetch_or(x: $int_type, y: $int_type) -> bool {
+                    let mut rng = fastrand::Rng::new();
                     for &order in &helper::SWAP_ORDERINGS {
                         for base in [0, !0] {
                             let mut arr = Align16([
@@ -810,7 +816,7 @@ mod tests {
                                 <$atomic_type>::new(base),
                                 <$atomic_type>::new(base),
                             ]);
-                            let a_idx = fastrand::usize(3..=6);
+                            let a_idx = rng.usize(3..=6);
                             arr.0[a_idx] = <$atomic_type>::new(x);
                             let a = &arr.0[a_idx];
                             assert_eq!(a.fetch_or(y, order), x);
@@ -836,6 +842,7 @@ mod tests {
                     true
                 }
                 fn quickcheck_fetch_xor(x: $int_type, y: $int_type) -> bool {
+                    let mut rng = fastrand::Rng::new();
                     for &order in &helper::SWAP_ORDERINGS {
                         for base in [0, !0] {
                             let mut arr = Align16([
@@ -850,7 +857,7 @@ mod tests {
                                 <$atomic_type>::new(base),
                                 <$atomic_type>::new(base),
                             ]);
-                            let a_idx = fastrand::usize(3..=6);
+                            let a_idx = rng.usize(3..=6);
                             arr.0[a_idx] = <$atomic_type>::new(x);
                             let a = &arr.0[a_idx];
                             assert_eq!(a.fetch_xor(y, order), x);
@@ -876,6 +883,7 @@ mod tests {
                     true
                 }
                 fn quickcheck_fetch_not(x: $int_type) -> bool {
+                    let mut rng = fastrand::Rng::new();
                     for &order in &helper::SWAP_ORDERINGS {
                         for base in [0, !0] {
                             let mut arr = Align16([
@@ -890,7 +898,7 @@ mod tests {
                                 <$atomic_type>::new(base),
                                 <$atomic_type>::new(base),
                             ]);
-                            let a_idx = fastrand::usize(3..=6);
+                            let a_idx = rng.usize(3..=6);
                             arr.0[a_idx] = <$atomic_type>::new(x);
                             let a = &arr.0[a_idx];
                             assert_eq!(a.fetch_not(order), x);

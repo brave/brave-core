@@ -1,4 +1,5 @@
-windows_targets::link!("mi.dll" "cdecl" fn MI_Application_InitializeV1(flags : u32, applicationid : *const u16, extendederror : *mut *mut MI_Instance, application : *mut MI_Application) -> MI_Result);
+windows_link::link!("mi.dll" "C" fn MI_Application_InitializeV1(flags : u32, applicationid : *const u16, extendederror : *mut *mut MI_Instance, application : *mut MI_Application) -> MI_Result);
+pub type CIMTYPE_ENUMERATION = i32;
 pub const CIM_BOOLEAN: CIMTYPE_ENUMERATION = 11i32;
 pub const CIM_CHAR16: CIMTYPE_ENUMERATION = 103i32;
 pub const CIM_DATETIME: CIMTYPE_ENUMERATION = 101i32;
@@ -19,8 +20,78 @@ pub const CIM_UINT32: CIMTYPE_ENUMERATION = 19i32;
 pub const CIM_UINT64: CIMTYPE_ENUMERATION = 21i32;
 pub const CIM_UINT8: CIMTYPE_ENUMERATION = 17i32;
 pub const MI_ARRAY: MI_Type = 16i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Application {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_ApplicationFT,
+}
+impl Default for MI_Application {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ApplicationFT {
+    pub Close: isize,
+    pub NewSession: isize,
+    pub NewHostedProvider: isize,
+    pub NewInstance: isize,
+    pub NewDestinationOptions: isize,
+    pub NewOperationOptions: isize,
+    pub NewSubscriptionDeliveryOptions: isize,
+    pub NewSerializer: isize,
+    pub NewDeserializer: isize,
+    pub NewInstanceFromClass: isize,
+    pub NewClass: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Array {
+    pub data: *mut core::ffi::c_void,
+    pub size: u32,
+}
+impl Default for MI_Array {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ArrayField {
+    pub value: MI_Array,
+    pub exists: u8,
+    pub flags: u8,
+}
 pub const MI_BOOLEAN: MI_Type = 0i32;
 pub const MI_BOOLEANA: MI_Type = 16i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_BooleanA {
+    pub data: *mut u8,
+    pub size: u32,
+}
+impl Default for MI_BooleanA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_BooleanAField {
+    pub value: MI_BooleanA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_BooleanField {
+    pub value: u8,
+    pub exists: u8,
+    pub flags: u8,
+}
 pub const MI_CALLBACKMODE_IGNORE: MI_CallbackMode = 2i32;
 pub const MI_CALLBACKMODE_INQUIRE: MI_CallbackMode = 1i32;
 pub const MI_CALLBACKMODE_REPORT: MI_CallbackMode = 0i32;
@@ -28,8 +99,677 @@ pub const MI_CALL_VERSION: u32 = 1u32;
 pub const MI_CHAR16: MI_Type = 11i32;
 pub const MI_CHAR16A: MI_Type = 27i32;
 pub const MI_CHAR_TYPE: u32 = 2u32;
+pub type MI_CallbackMode = i32;
+pub type MI_CancelCallback = Option<unsafe extern "system" fn(reason: MI_CancellationReason, callbackdata: *const core::ffi::c_void)>;
+pub type MI_CancellationReason = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Char16A {
+    pub data: *mut u16,
+    pub size: u32,
+}
+impl Default for MI_Char16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Char16AField {
+    pub value: MI_Char16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Char16Field {
+    pub value: u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Class {
+    pub ft: *const MI_ClassFT,
+    pub classDecl: *const MI_ClassDecl,
+    pub namespaceName: *const u16,
+    pub serverName: *const u16,
+    pub reserved: [isize; 4],
+}
+impl Default for MI_Class {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ClassDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+    pub properties: *const *const MI_PropertyDecl,
+    pub numProperties: u32,
+    pub size: u32,
+    pub superClass: *const u16,
+    pub superClassDecl: *const MI_ClassDecl,
+    pub methods: *const *const MI_MethodDecl,
+    pub numMethods: u32,
+    pub schema: *const MI_SchemaDecl,
+    pub providerFT: *const MI_ProviderFT,
+    pub owningClass: *mut MI_Class,
+}
+impl Default for MI_ClassDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ClassFT {
+    pub GetClassNameA: isize,
+    pub GetNameSpace: isize,
+    pub GetServerName: isize,
+    pub GetElementCount: isize,
+    pub GetElement: isize,
+    pub GetElementAt: isize,
+    pub GetClassQualifierSet: isize,
+    pub GetMethodCount: isize,
+    pub GetMethodAt: isize,
+    pub GetMethod: isize,
+    pub GetParentClassName: isize,
+    pub GetParentClass: isize,
+    pub Delete: isize,
+    pub Clone: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ClientFT_V1 {
+    pub applicationFT: *const MI_ApplicationFT,
+    pub sessionFT: *const MI_SessionFT,
+    pub operationFT: *const MI_OperationFT,
+    pub hostedProviderFT: *const MI_HostedProviderFT,
+    pub serializerFT: *const MI_SerializerFT,
+    pub deserializerFT: *const MI_DeserializerFT,
+    pub subscribeDeliveryOptionsFT: *const MI_SubscriptionDeliveryOptionsFT,
+    pub destinationOptionsFT: *const MI_DestinationOptionsFT,
+    pub operationOptionsFT: *const MI_OperationOptionsFT,
+    pub utilitiesFT: *const MI_UtilitiesFT,
+}
+impl Default for MI_ClientFT_V1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstBooleanA {
+    pub data: *const u8,
+    pub size: u32,
+}
+impl Default for MI_ConstBooleanA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstBooleanAField {
+    pub value: MI_ConstBooleanA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstBooleanField {
+    pub value: u8,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstChar16A {
+    pub data: *const u16,
+    pub size: u32,
+}
+impl Default for MI_ConstChar16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstChar16AField {
+    pub value: MI_ConstChar16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstChar16Field {
+    pub value: u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstDatetimeA {
+    pub data: *const MI_Datetime,
+    pub size: u32,
+}
+impl Default for MI_ConstDatetimeA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstDatetimeAField {
+    pub value: MI_ConstDatetimeA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstDatetimeField {
+    pub value: MI_Datetime,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_ConstDatetimeField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstInstanceA {
+    pub data: *const *const MI_Instance,
+    pub size: u32,
+}
+impl Default for MI_ConstInstanceA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstInstanceAField {
+    pub value: MI_ConstInstanceA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstInstanceField {
+    pub value: *const MI_Instance,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_ConstInstanceField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstReal32A {
+    pub data: *const f32,
+    pub size: u32,
+}
+impl Default for MI_ConstReal32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstReal32AField {
+    pub value: MI_ConstReal32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstReal32Field {
+    pub value: f32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstReal64A {
+    pub data: *const f64,
+    pub size: u32,
+}
+impl Default for MI_ConstReal64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstReal64AField {
+    pub value: MI_ConstReal64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstReal64Field {
+    pub value: f64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstReferenceA {
+    pub data: *const *const MI_Instance,
+    pub size: u32,
+}
+impl Default for MI_ConstReferenceA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstReferenceAField {
+    pub value: MI_ConstReferenceA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstReferenceField {
+    pub value: *const MI_Instance,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_ConstReferenceField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstSint16A {
+    pub data: *const i16,
+    pub size: u32,
+}
+impl Default for MI_ConstSint16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint16AField {
+    pub value: MI_ConstSint16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint16Field {
+    pub value: i16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstSint32A {
+    pub data: *const i32,
+    pub size: u32,
+}
+impl Default for MI_ConstSint32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint32AField {
+    pub value: MI_ConstSint32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint32Field {
+    pub value: i32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstSint64A {
+    pub data: *const i64,
+    pub size: u32,
+}
+impl Default for MI_ConstSint64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint64AField {
+    pub value: MI_ConstSint64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint64Field {
+    pub value: i64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstSint8A {
+    pub data: *const i8,
+    pub size: u32,
+}
+impl Default for MI_ConstSint8A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint8AField {
+    pub value: MI_ConstSint8A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstSint8Field {
+    pub value: i8,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstStringA {
+    pub data: *const *const u16,
+    pub size: u32,
+}
+impl Default for MI_ConstStringA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstStringAField {
+    pub value: MI_ConstStringA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstStringField {
+    pub value: *const u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_ConstStringField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstUint16A {
+    pub data: *const u16,
+    pub size: u32,
+}
+impl Default for MI_ConstUint16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint16AField {
+    pub value: MI_ConstUint16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint16Field {
+    pub value: u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstUint32A {
+    pub data: *const u32,
+    pub size: u32,
+}
+impl Default for MI_ConstUint32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint32AField {
+    pub value: MI_ConstUint32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint32Field {
+    pub value: u32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstUint64A {
+    pub data: *const u64,
+    pub size: u32,
+}
+impl Default for MI_ConstUint64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint64AField {
+    pub value: MI_ConstUint64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint64Field {
+    pub value: u64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ConstUint8A {
+    pub data: *const u8,
+    pub size: u32,
+}
+impl Default for MI_ConstUint8A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint8AField {
+    pub value: MI_ConstUint8A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ConstUint8Field {
+    pub value: u8,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Context {
+    pub ft: *const MI_ContextFT,
+    pub reserved: [isize; 3],
+}
+impl Default for MI_Context {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ContextFT {
+    pub PostResult: isize,
+    pub PostInstance: isize,
+    pub PostIndication: isize,
+    pub ConstructInstance: isize,
+    pub ConstructParameters: isize,
+    pub NewInstance: isize,
+    pub NewDynamicInstance: isize,
+    pub NewParameters: isize,
+    pub Canceled: isize,
+    pub GetLocale: isize,
+    pub RegisterCancel: isize,
+    pub RequestUnload: isize,
+    pub RefuseUnload: isize,
+    pub GetLocalSession: isize,
+    pub SetStringOption: isize,
+    pub GetStringOption: isize,
+    pub GetNumberOption: isize,
+    pub GetCustomOption: isize,
+    pub GetCustomOptionCount: isize,
+    pub GetCustomOptionAt: isize,
+    pub WriteMessage: isize,
+    pub WriteProgress: isize,
+    pub WriteStreamParameter: isize,
+    pub WriteCimError: isize,
+    pub PromptUser: isize,
+    pub ShouldProcess: isize,
+    pub ShouldContinue: isize,
+    pub PostError: isize,
+    pub PostCimError: isize,
+    pub WriteError: isize,
+}
 pub const MI_DATETIME: MI_Type = 12i32;
 pub const MI_DATETIMEA: MI_Type = 28i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Datetime {
+    pub isTimestamp: u32,
+    pub u: MI_Datetime_0,
+}
+impl Default for MI_Datetime {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union MI_Datetime_0 {
+    pub timestamp: MI_Timestamp,
+    pub interval: MI_Interval,
+}
+impl Default for MI_Datetime_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_DatetimeA {
+    pub data: *mut MI_Datetime,
+    pub size: u32,
+}
+impl Default for MI_DatetimeA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_DatetimeAField {
+    pub value: MI_DatetimeA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_DatetimeField {
+    pub value: MI_Datetime,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_DatetimeField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Deserializer {
+    pub reserved1: u64,
+    pub reserved2: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_DeserializerFT {
+    pub Close: isize,
+    pub DeserializeClass: isize,
+    pub Class_GetClassName: isize,
+    pub Class_GetParentClassName: isize,
+    pub DeserializeInstance: isize,
+    pub Instance_GetClassName: isize,
+}
+pub type MI_Deserializer_ClassObjectNeeded = Option<unsafe extern "system" fn(context: *const core::ffi::c_void, servername: *const u16, namespacename: *const u16, classname: *const u16, requestedclassobject: *mut *mut MI_Class) -> MI_Result>;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_DestinationOptions {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_DestinationOptionsFT,
+}
+impl Default for MI_DestinationOptions {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_DestinationOptionsFT {
+    pub Delete: isize,
+    pub SetString: isize,
+    pub SetNumber: isize,
+    pub AddCredentials: isize,
+    pub GetString: isize,
+    pub GetNumber: isize,
+    pub GetOptionCount: isize,
+    pub GetOptionAt: isize,
+    pub GetOption: isize,
+    pub GetCredentialsCount: isize,
+    pub GetCredentialsAt: isize,
+    pub GetCredentialsPasswordAt: isize,
+    pub Clone: isize,
+    pub SetInterval: isize,
+    pub GetInterval: isize,
+}
+pub type MI_DestinationOptions_ImpersonationType = i32;
 pub const MI_DestinationOptions_ImpersonationType_Default: MI_DestinationOptions_ImpersonationType = 0i32;
 pub const MI_DestinationOptions_ImpersonationType_Delegate: MI_DestinationOptions_ImpersonationType = 4i32;
 pub const MI_DestinationOptions_ImpersonationType_Identify: MI_DestinationOptions_ImpersonationType = 2i32;
@@ -67,6 +807,7 @@ pub const MI_ERRORCATEGORY_RESOURCE_UNAVAILABLE: MI_ErrorCategory = 21i32;
 pub const MI_ERRORCATEGORY_SECURITY_ERROR: MI_ErrorCategory = 25i32;
 pub const MI_ERRORCATEGORY_SYNTAX_ERROR: MI_ErrorCategory = 16i32;
 pub const MI_ERRORCATEGORY_WRITE_ERROR: MI_ErrorCategory = 23i32;
+pub type MI_ErrorCategory = i32;
 pub const MI_FLAG_ABSTRACT: u32 = 131072u32;
 pub const MI_FLAG_ADOPT: u32 = 2147483648u32;
 pub const MI_FLAG_ANY: u32 = 127u32;
@@ -96,12 +837,146 @@ pub const MI_FLAG_TERMINAL: u32 = 262144u32;
 pub const MI_FLAG_TOSUBCLASS: u32 = 1024u32;
 pub const MI_FLAG_TRANSLATABLE: u32 = 2048u32;
 pub const MI_FLAG_VERSION: u32 = 469762048u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_FeatureDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+}
+impl Default for MI_FeatureDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Filter {
+    pub ft: *const MI_FilterFT,
+    pub reserved: [isize; 3],
+}
+impl Default for MI_Filter {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_FilterFT {
+    pub Evaluate: isize,
+    pub GetExpression: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_HostedProvider {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_HostedProviderFT,
+}
+impl Default for MI_HostedProvider {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_HostedProviderFT {
+    pub Close: isize,
+    pub GetApplication: isize,
+}
 pub const MI_INSTANCE: MI_Type = 15i32;
 pub const MI_INSTANCEA: MI_Type = 31i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Instance {
+    pub ft: *const MI_InstanceFT,
+    pub classDecl: *const MI_ClassDecl,
+    pub serverName: *const u16,
+    pub nameSpace: *const u16,
+    pub reserved: [isize; 4],
+}
+impl Default for MI_Instance {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_InstanceA {
+    pub data: *mut *mut MI_Instance,
+    pub size: u32,
+}
+impl Default for MI_InstanceA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_InstanceAField {
+    pub value: MI_InstanceA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_InstanceExFT {
+    pub parent: MI_InstanceFT,
+    pub Normalize: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_InstanceFT {
+    pub Clone: isize,
+    pub Destruct: isize,
+    pub Delete: isize,
+    pub IsA: isize,
+    pub GetClassNameA: isize,
+    pub SetNameSpace: isize,
+    pub GetNameSpace: isize,
+    pub GetElementCount: isize,
+    pub AddElement: isize,
+    pub SetElement: isize,
+    pub SetElementAt: isize,
+    pub GetElement: isize,
+    pub GetElementAt: isize,
+    pub ClearElement: isize,
+    pub ClearElementAt: isize,
+    pub GetServerName: isize,
+    pub SetServerName: isize,
+    pub GetClass: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_InstanceField {
+    pub value: *mut MI_Instance,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_InstanceField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Interval {
+    pub days: u32,
+    pub hours: u32,
+    pub minutes: u32,
+    pub seconds: u32,
+    pub microseconds: u32,
+    pub __padding1: u32,
+    pub __padding2: u32,
+    pub __padding3: u32,
+}
 pub const MI_LOCALE_TYPE_CLOSEST_DATA: MI_LocaleType = 3i32;
 pub const MI_LOCALE_TYPE_CLOSEST_UI: MI_LocaleType = 2i32;
 pub const MI_LOCALE_TYPE_REQUESTED_DATA: MI_LocaleType = 1i32;
 pub const MI_LOCALE_TYPE_REQUESTED_UI: MI_LocaleType = 0i32;
+pub type MI_LocaleType = i32;
 pub const MI_MAX_LOCALE_SIZE: u32 = 128u32;
 pub const MI_MODULE_FLAG_BOOLEANS: u32 = 16u32;
 pub const MI_MODULE_FLAG_CPLUSPLUS: u32 = 32u32;
@@ -111,6 +986,50 @@ pub const MI_MODULE_FLAG_LOCALIZED: u32 = 64u32;
 pub const MI_MODULE_FLAG_MAPPING_STRINGS: u32 = 8u32;
 pub const MI_MODULE_FLAG_STANDARD_QUALIFIERS: u32 = 1u32;
 pub const MI_MODULE_FLAG_VALUES: u32 = 4u32;
+pub type MI_MainFunction = Option<unsafe extern "system" fn(server: *mut MI_Server) -> *mut MI_Module>;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_MethodDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+    pub parameters: *const *const MI_ParameterDecl,
+    pub numParameters: u32,
+    pub size: u32,
+    pub returnType: u32,
+    pub origin: *const u16,
+    pub propagator: *const u16,
+    pub schema: *const MI_SchemaDecl,
+    pub function: MI_MethodDecl_Invoke,
+}
+impl Default for MI_MethodDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MI_MethodDecl_Invoke = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, methodname: *const u16, instancename: *const MI_Instance, parameters: *const MI_Instance)>;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Module {
+    pub version: u32,
+    pub generatorVersion: u32,
+    pub flags: u32,
+    pub charSize: u32,
+    pub schemaDecl: *mut MI_SchemaDecl,
+    pub Load: MI_Module_Load,
+    pub Unload: MI_Module_Unload,
+    pub dynamicProviderFT: *const MI_ProviderFT,
+}
+impl Default for MI_Module {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MI_Module_Load = Option<unsafe extern "system" fn(self_: *mut *mut MI_Module_Self, context: *const MI_Context)>;
+pub type MI_Module_Self = isize;
+pub type MI_Module_Unload = Option<unsafe extern "system" fn(self_: *const MI_Module_Self, context: *const MI_Context)>;
 pub const MI_OPERATIONFLAGS_BASIC_RTTI: u32 = 2u32;
 pub const MI_OPERATIONFLAGS_DEFAULT_RTTI: u32 = 0u32;
 pub const MI_OPERATIONFLAGS_EXPENSIVE_PROPERTIES: u32 = 64u32;
@@ -122,14 +1041,272 @@ pub const MI_OPERATIONFLAGS_POLYMORPHISM_DEEP_BASE_PROPS_ONLY: u32 = 384u32;
 pub const MI_OPERATIONFLAGS_POLYMORPHISM_SHALLOW: u32 = 128u32;
 pub const MI_OPERATIONFLAGS_REPORT_OPERATION_STARTED: u32 = 512u32;
 pub const MI_OPERATIONFLAGS_STANDARD_RTTI: u32 = 2048u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ObjectDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+    pub properties: *const *const MI_PropertyDecl,
+    pub numProperties: u32,
+    pub size: u32,
+}
+impl Default for MI_ObjectDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Operation {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_OperationFT,
+}
+impl Default for MI_Operation {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MI_OperationCallback_Class = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, classresult: *const MI_Class, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
+pub type MI_OperationCallback_Indication = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, bookmark: *const u16, machineid: *const u16, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
+pub type MI_OperationCallback_Instance = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
+pub type MI_OperationCallback_PromptUser = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, message: *const u16, prompttype: MI_PromptType, promptuserresult: isize)>;
+pub type MI_OperationCallback_ResponseType = i32;
 pub const MI_OperationCallback_ResponseType_No: MI_OperationCallback_ResponseType = 0i32;
 pub const MI_OperationCallback_ResponseType_NoToAll: MI_OperationCallback_ResponseType = 2i32;
 pub const MI_OperationCallback_ResponseType_Yes: MI_OperationCallback_ResponseType = 1i32;
 pub const MI_OperationCallback_ResponseType_YesToAll: MI_OperationCallback_ResponseType = 3i32;
+pub type MI_OperationCallback_StreamedParameter = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, parametername: *const u16, resulttype: MI_Type, result: *const MI_Value, resultacknowledgement: isize)>;
+pub type MI_OperationCallback_WriteError = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, writeerrorresult: isize)>;
+pub type MI_OperationCallback_WriteMessage = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, channel: u32, message: *const u16)>;
+pub type MI_OperationCallback_WriteProgress = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, activity: *const u16, currentoperation: *const u16, statusdescription: *const u16, percentagecomplete: u32, secondsremaining: u32)>;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_OperationCallbacks {
+    pub callbackContext: *mut core::ffi::c_void,
+    pub promptUser: MI_OperationCallback_PromptUser,
+    pub writeError: MI_OperationCallback_WriteError,
+    pub writeMessage: MI_OperationCallback_WriteMessage,
+    pub writeProgress: MI_OperationCallback_WriteProgress,
+    pub instanceResult: MI_OperationCallback_Instance,
+    pub indicationResult: MI_OperationCallback_Indication,
+    pub classResult: MI_OperationCallback_Class,
+    pub streamedParameterResult: MI_OperationCallback_StreamedParameter,
+}
+impl Default for MI_OperationCallbacks {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_OperationFT {
+    pub Close: isize,
+    pub Cancel: isize,
+    pub GetSession: isize,
+    pub GetInstance: isize,
+    pub GetIndication: isize,
+    pub GetClass: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_OperationOptions {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_OperationOptionsFT,
+}
+impl Default for MI_OperationOptions {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_OperationOptionsFT {
+    pub Delete: isize,
+    pub SetString: isize,
+    pub SetNumber: isize,
+    pub SetCustomOption: isize,
+    pub GetString: isize,
+    pub GetNumber: isize,
+    pub GetOptionCount: isize,
+    pub GetOptionAt: isize,
+    pub GetOption: isize,
+    pub GetEnabledChannels: isize,
+    pub Clone: isize,
+    pub SetInterval: isize,
+    pub GetInterval: isize,
+}
 pub const MI_PROMPTTYPE_CRITICAL: MI_PromptType = 1i32;
 pub const MI_PROMPTTYPE_NORMAL: MI_PromptType = 0i32;
 pub const MI_PROVIDER_ARCHITECTURE_32BIT: MI_ProviderArchitecture = 0i32;
 pub const MI_PROVIDER_ARCHITECTURE_64BIT: MI_ProviderArchitecture = 1i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ParameterDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+    pub r#type: u32,
+    pub className: *const u16,
+    pub subscript: u32,
+    pub offset: u32,
+}
+impl Default for MI_ParameterDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ParameterSet {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_ParameterSetFT,
+}
+impl Default for MI_ParameterSet {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ParameterSetFT {
+    pub GetMethodReturnType: isize,
+    pub GetParameterCount: isize,
+    pub GetParameterAt: isize,
+    pub GetParameter: isize,
+}
+pub type MI_PromptType = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_PropertyDecl {
+    pub flags: u32,
+    pub code: u32,
+    pub name: *const u16,
+    pub qualifiers: *const *const MI_Qualifier,
+    pub numQualifiers: u32,
+    pub r#type: u32,
+    pub className: *const u16,
+    pub subscript: u32,
+    pub offset: u32,
+    pub origin: *const u16,
+    pub propagator: *const u16,
+    pub value: *const core::ffi::c_void,
+}
+impl Default for MI_PropertyDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_PropertySet {
+    pub ft: *const MI_PropertySetFT,
+    pub reserved: [isize; 3],
+}
+impl Default for MI_PropertySet {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_PropertySetFT {
+    pub GetElementCount: isize,
+    pub ContainsElement: isize,
+    pub AddElement: isize,
+    pub GetElementAt: isize,
+    pub Clear: isize,
+    pub Destruct: isize,
+    pub Delete: isize,
+    pub Clone: isize,
+}
+pub type MI_ProviderArchitecture = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ProviderFT {
+    pub Load: MI_ProviderFT_Load,
+    pub Unload: MI_ProviderFT_Unload,
+    pub GetInstance: MI_ProviderFT_GetInstance,
+    pub EnumerateInstances: MI_ProviderFT_EnumerateInstances,
+    pub CreateInstance: MI_ProviderFT_CreateInstance,
+    pub ModifyInstance: MI_ProviderFT_ModifyInstance,
+    pub DeleteInstance: MI_ProviderFT_DeleteInstance,
+    pub AssociatorInstances: MI_ProviderFT_AssociatorInstances,
+    pub ReferenceInstances: MI_ProviderFT_ReferenceInstances,
+    pub EnableIndications: MI_ProviderFT_EnableIndications,
+    pub DisableIndications: MI_ProviderFT_DisableIndications,
+    pub Subscribe: MI_ProviderFT_Subscribe,
+    pub Unsubscribe: MI_ProviderFT_Unsubscribe,
+    pub Invoke: MI_ProviderFT_Invoke,
+}
+pub type MI_ProviderFT_AssociatorInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, resultclass: *const u16, role: *const u16, resultrole: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
+pub type MI_ProviderFT_CreateInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, newinstance: *const MI_Instance)>;
+pub type MI_ProviderFT_DeleteInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance)>;
+pub type MI_ProviderFT_DisableIndications = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, indicationscontext: *const MI_Context, namespace: *const u16, classname: *const u16)>;
+pub type MI_ProviderFT_EnableIndications = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, indicationscontext: *const MI_Context, namespace: *const u16, classname: *const u16)>;
+pub type MI_ProviderFT_EnumerateInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
+pub type MI_ProviderFT_GetInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, propertyset: *const MI_PropertySet)>;
+pub type MI_ProviderFT_Invoke = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, methodname: *const u16, instancename: *const MI_Instance, inputparameters: *const MI_Instance)>;
+pub type MI_ProviderFT_Load = Option<unsafe extern "system" fn(self_: *mut *mut core::ffi::c_void, selfmodule: *const MI_Module_Self, context: *const MI_Context)>;
+pub type MI_ProviderFT_ModifyInstance = Option<unsafe extern "system" fn(self_: *mut core::ffi::c_void, context: *mut MI_Context, namespace: *const u16, classname: *const u16, modifiedinstance: *const MI_Instance, propertyset: *const MI_PropertySet)>;
+pub type MI_ProviderFT_ReferenceInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, role: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
+pub type MI_ProviderFT_Subscribe = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, filter: *const MI_Filter, bookmark: *const u16, subscriptionid: u64, subscriptionself: *mut *mut core::ffi::c_void)>;
+pub type MI_ProviderFT_Unload = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context)>;
+pub type MI_ProviderFT_Unsubscribe = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, subscriptionid: u64, subscriptionself: *const core::ffi::c_void)>;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Qualifier {
+    pub name: *const u16,
+    pub r#type: u32,
+    pub flavor: u32,
+    pub value: *const core::ffi::c_void,
+}
+impl Default for MI_Qualifier {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_QualifierDecl {
+    pub name: *const u16,
+    pub r#type: u32,
+    pub scope: u32,
+    pub flavor: u32,
+    pub subscript: u32,
+    pub value: *const core::ffi::c_void,
+}
+impl Default for MI_QualifierDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_QualifierSet {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_QualifierSetFT,
+}
+impl Default for MI_QualifierSet {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_QualifierSetFT {
+    pub GetQualifierCount: isize,
+    pub GetQualifierAt: isize,
+    pub GetQualifier: isize,
+}
 pub const MI_REAL32: MI_Type = 9i32;
 pub const MI_REAL32A: MI_Type = 25i32;
 pub const MI_REAL64: MI_Type = 10i32;
@@ -167,6 +1344,87 @@ pub const MI_RESULT_QUERY_LANGUAGE_NOT_SUPPORTED: MI_Result = 14i32;
 pub const MI_RESULT_SERVER_IS_SHUTTING_DOWN: MI_Result = 28i32;
 pub const MI_RESULT_SERVER_LIMITS_EXCEEDED: MI_Result = 27i32;
 pub const MI_RESULT_TYPE_MISMATCH: MI_Result = 13i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Real32A {
+    pub data: *mut f32,
+    pub size: u32,
+}
+impl Default for MI_Real32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Real32AField {
+    pub value: MI_Real32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Real32Field {
+    pub value: f32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Real64A {
+    pub data: *mut f64,
+    pub size: u32,
+}
+impl Default for MI_Real64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Real64AField {
+    pub value: MI_Real64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Real64Field {
+    pub value: f64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ReferenceA {
+    pub data: *mut *mut MI_Instance,
+    pub size: u32,
+}
+impl Default for MI_ReferenceA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ReferenceAField {
+    pub value: MI_ReferenceA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_ReferenceField {
+    pub value: *mut MI_Instance,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_ReferenceField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MI_Result = i32;
 pub const MI_SERIALIZER_FLAGS_CLASS_DEEP: u32 = 1u32;
 pub const MI_SERIALIZER_FLAGS_INSTANCE_WITH_CLASS: u32 = 1u32;
 pub const MI_SINT16: MI_Type = 4i32;
@@ -181,8 +1439,274 @@ pub const MI_STRING: MI_Type = 13i32;
 pub const MI_STRINGA: MI_Type = 29i32;
 pub const MI_SUBSCRIBE_BOOKMARK_NEWEST: windows_sys::core::PCWSTR = windows_sys::core::w!("MI_SUBSCRIBE_BOOKMARK_NEWEST");
 pub const MI_SUBSCRIBE_BOOKMARK_OLDEST: windows_sys::core::PCWSTR = windows_sys::core::w!("MI_SUBSCRIBE_BOOKMARK_OLDEST");
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_SchemaDecl {
+    pub qualifierDecls: *const *const MI_QualifierDecl,
+    pub numQualifierDecls: u32,
+    pub classDecls: *const *const MI_ClassDecl,
+    pub numClassDecls: u32,
+}
+impl Default for MI_SchemaDecl {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Serializer {
+    pub reserved1: u64,
+    pub reserved2: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_SerializerFT {
+    pub Close: isize,
+    pub SerializeClass: isize,
+    pub SerializeInstance: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Server {
+    pub serverFT: *const MI_ServerFT,
+    pub contextFT: *const MI_ContextFT,
+    pub instanceFT: *const MI_InstanceFT,
+    pub propertySetFT: *const MI_PropertySetFT,
+    pub filterFT: *const MI_FilterFT,
+}
+impl Default for MI_Server {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_ServerFT {
+    pub GetVersion: isize,
+    pub GetSystemName: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Session {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_SessionFT,
+}
+impl Default for MI_Session {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_SessionCallbacks {
+    pub callbackContext: *mut core::ffi::c_void,
+    pub writeMessage: isize,
+    pub writeError: isize,
+}
+impl Default for MI_SessionCallbacks {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_SessionFT {
+    pub Close: isize,
+    pub GetApplication: isize,
+    pub GetInstance: isize,
+    pub ModifyInstance: isize,
+    pub CreateInstance: isize,
+    pub DeleteInstance: isize,
+    pub Invoke: isize,
+    pub EnumerateInstances: isize,
+    pub QueryInstances: isize,
+    pub AssociatorInstances: isize,
+    pub ReferenceInstances: isize,
+    pub Subscribe: isize,
+    pub GetClass: isize,
+    pub EnumerateClasses: isize,
+    pub TestConnection: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Sint16A {
+    pub data: *mut i16,
+    pub size: u32,
+}
+impl Default for MI_Sint16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint16AField {
+    pub value: MI_Sint16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint16Field {
+    pub value: i16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Sint32A {
+    pub data: *mut i32,
+    pub size: u32,
+}
+impl Default for MI_Sint32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint32AField {
+    pub value: MI_Sint32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint32Field {
+    pub value: i32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Sint64A {
+    pub data: *mut i64,
+    pub size: u32,
+}
+impl Default for MI_Sint64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint64AField {
+    pub value: MI_Sint64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint64Field {
+    pub value: i64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Sint8A {
+    pub data: *mut i8,
+    pub size: u32,
+}
+impl Default for MI_Sint8A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint8AField {
+    pub value: MI_Sint8A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Sint8Field {
+    pub value: i8,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_StringA {
+    pub data: *mut *mut u16,
+    pub size: u32,
+}
+impl Default for MI_StringA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_StringAField {
+    pub value: MI_StringA,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_StringField {
+    pub value: *mut u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+impl Default for MI_StringField {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_SubscriptionDeliveryOptions {
+    pub reserved1: u64,
+    pub reserved2: isize,
+    pub ft: *const MI_SubscriptionDeliveryOptionsFT,
+}
+impl Default for MI_SubscriptionDeliveryOptions {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_SubscriptionDeliveryOptionsFT {
+    pub SetString: isize,
+    pub SetNumber: isize,
+    pub SetDateTime: isize,
+    pub SetInterval: isize,
+    pub AddCredentials: isize,
+    pub Delete: isize,
+    pub GetString: isize,
+    pub GetNumber: isize,
+    pub GetDateTime: isize,
+    pub GetInterval: isize,
+    pub GetOptionCount: isize,
+    pub GetOptionAt: isize,
+    pub GetOption: isize,
+    pub GetCredentialsCount: isize,
+    pub GetCredentialsAt: isize,
+    pub GetCredentialsPasswordAt: isize,
+    pub Clone: isize,
+}
+pub type MI_SubscriptionDeliveryType = i32;
 pub const MI_SubscriptionDeliveryType_Pull: MI_SubscriptionDeliveryType = 1i32;
 pub const MI_SubscriptionDeliveryType_Push: MI_SubscriptionDeliveryType = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Timestamp {
+    pub year: u32,
+    pub month: u32,
+    pub day: u32,
+    pub hour: u32,
+    pub minute: u32,
+    pub second: u32,
+    pub microseconds: u32,
+    pub utc: i32,
+}
+pub type MI_Type = i32;
 pub const MI_UINT16: MI_Type = 3i32;
 pub const MI_UINT16A: MI_Type = 19i32;
 pub const MI_UINT32: MI_Type = 5i32;
@@ -191,9 +1715,354 @@ pub const MI_UINT64: MI_Type = 7i32;
 pub const MI_UINT64A: MI_Type = 23i32;
 pub const MI_UINT8: MI_Type = 1i32;
 pub const MI_UINT8A: MI_Type = 17i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Uint16A {
+    pub data: *mut u16,
+    pub size: u32,
+}
+impl Default for MI_Uint16A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint16AField {
+    pub value: MI_Uint16A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint16Field {
+    pub value: u16,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Uint32A {
+    pub data: *mut u32,
+    pub size: u32,
+}
+impl Default for MI_Uint32A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint32AField {
+    pub value: MI_Uint32A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint32Field {
+    pub value: u32,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Uint64A {
+    pub data: *mut u64,
+    pub size: u32,
+}
+impl Default for MI_Uint64A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint64AField {
+    pub value: MI_Uint64A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint64Field {
+    pub value: u64,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_Uint8A {
+    pub data: *mut u8,
+    pub size: u32,
+}
+impl Default for MI_Uint8A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint8AField {
+    pub value: MI_Uint8A,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_Uint8Field {
+    pub value: u8,
+    pub exists: u8,
+    pub flags: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_UserCredentials {
+    pub authenticationType: *const u16,
+    pub credentials: MI_UserCredentials_0,
+}
+impl Default for MI_UserCredentials {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union MI_UserCredentials_0 {
+    pub usernamePassword: MI_UsernamePasswordCreds,
+    pub certificateThumbprint: *const u16,
+}
+impl Default for MI_UserCredentials_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MI_UsernamePasswordCreds {
+    pub domain: *const u16,
+    pub username: *const u16,
+    pub password: *const u16,
+}
+impl Default for MI_UsernamePasswordCreds {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MI_UtilitiesFT {
+    pub MapErrorToMiErrorCategory: isize,
+    pub CimErrorFromErrorCode: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union MI_Value {
+    pub boolean: u8,
+    pub uint8: u8,
+    pub sint8: i8,
+    pub uint16: u16,
+    pub sint16: i16,
+    pub uint32: u32,
+    pub sint32: i32,
+    pub uint64: u64,
+    pub sint64: i64,
+    pub real32: f32,
+    pub real64: f64,
+    pub char16: u16,
+    pub datetime: MI_Datetime,
+    pub string: *mut u16,
+    pub instance: *mut MI_Instance,
+    pub reference: *mut MI_Instance,
+    pub booleana: MI_BooleanA,
+    pub uint8a: MI_Uint8A,
+    pub sint8a: MI_Sint8A,
+    pub uint16a: MI_Uint16A,
+    pub sint16a: MI_Sint16A,
+    pub uint32a: MI_Uint32A,
+    pub sint32a: MI_Sint32A,
+    pub uint64a: MI_Uint64A,
+    pub sint64a: MI_Sint64A,
+    pub real32a: MI_Real32A,
+    pub real64a: MI_Real64A,
+    pub char16a: MI_Char16A,
+    pub datetimea: MI_DatetimeA,
+    pub stringa: MI_StringA,
+    pub referencea: MI_ReferenceA,
+    pub instancea: MI_InstanceA,
+    pub array: MI_Array,
+}
+impl Default for MI_Value {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const MI_WRITEMESSAGE_CHANNEL_DEBUG: u32 = 2u32;
 pub const MI_WRITEMESSAGE_CHANNEL_VERBOSE: u32 = 1u32;
 pub const MI_WRITEMESSAGE_CHANNEL_WARNING: u32 = 0u32;
+pub const MofCompiler: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x6daf9757_2e37_11d2_aec9_00c04fb68820);
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemAnalysisMatrix {
+    pub m_uVersion: u32,
+    pub m_uMatrixType: u32,
+    pub m_pszProperty: windows_sys::core::PCWSTR,
+    pub m_uPropertyType: u32,
+    pub m_uEntries: u32,
+    pub m_pValues: *mut *mut core::ffi::c_void,
+    pub m_pbTruthTable: *mut windows_sys::core::BOOL,
+}
+impl Default for SWbemAnalysisMatrix {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemAnalysisMatrixList {
+    pub m_uVersion: u32,
+    pub m_uMatrixType: u32,
+    pub m_uNumMatrices: u32,
+    pub m_pMatrices: *mut SWbemAnalysisMatrix,
+}
+impl Default for SWbemAnalysisMatrixList {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemAssocQueryInf {
+    pub m_uVersion: u32,
+    pub m_uAnalysisType: u32,
+    pub m_uFeatureMask: u32,
+    pub m_pPath: *mut core::ffi::c_void,
+    pub m_pszPath: windows_sys::core::PWSTR,
+    pub m_pszQueryText: windows_sys::core::PWSTR,
+    pub m_pszResultClass: windows_sys::core::PWSTR,
+    pub m_pszAssocClass: windows_sys::core::PWSTR,
+    pub m_pszRole: windows_sys::core::PWSTR,
+    pub m_pszResultRole: windows_sys::core::PWSTR,
+    pub m_pszRequiredQualifier: windows_sys::core::PWSTR,
+    pub m_pszRequiredAssocQualifier: windows_sys::core::PWSTR,
+}
+impl Default for SWbemAssocQueryInf {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const SWbemDateTime: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x47dfbe54_cf76_11d3_b38f_00105a1f473a);
+pub const SWbemEventSource: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d58_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemLastError: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc2feeeac_cfcd_11d1_8b05_00600806d9b6);
+pub const SWbemLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x76a64158_cb41_11d1_8b02_00600806d9b6);
+pub const SWbemMethod: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5b_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemMethodSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5a_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemNamedValue: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d60_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemNamedValueSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9aed384e_ce8b_11d1_8b05_00600806d9b6);
+pub const SWbemObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d62_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemObjectEx: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xd6bdafb2_9435_491f_bb87_6aa0f0bc31a2);
+pub const SWbemObjectPath: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x5791bc26_ce9c_11d1_97bf_0000f81e849c);
+pub const SWbemObjectSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d61_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemPrivilege: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x26ee67bc_5804_11d2_8b4a_00600806d9b6);
+pub const SWbemPrivilegeSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x26ee67be_5804_11d2_8b4a_00600806d9b6);
+pub const SWbemProperty: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5d_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemPropertySet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5c_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemQualifier: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5f_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemQualifierSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5e_21ae_11d2_8b33_00600806d9b6);
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemQueryQualifiedName {
+    pub m_uVersion: u32,
+    pub m_uTokenType: u32,
+    pub m_uNameListSize: u32,
+    pub m_ppszNameList: *const windows_sys::core::PCWSTR,
+    pub m_bArraysUsed: windows_sys::core::BOOL,
+    pub m_pbArrayElUsed: *mut windows_sys::core::BOOL,
+    pub m_puArrayIndex: *mut u32,
+}
+impl Default for SWbemQueryQualifiedName {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub const SWbemRefreshableItem: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8c6854bc_de4b_11d3_b390_00105a1f473a);
+pub const SWbemRefresher: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xd269bf5c_d9c1_11d3_b38f_00105a1f473a);
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SWbemRpnConst {
+    pub m_pszStrVal: windows_sys::core::PCWSTR,
+    pub m_bBoolVal: windows_sys::core::BOOL,
+    pub m_lLongVal: i32,
+    pub m_uLongVal: u32,
+    pub m_dblVal: f64,
+    pub m_lVal64: i64,
+    pub m_uVal64: i64,
+}
+impl Default for SWbemRpnConst {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemRpnEncodedQuery {
+    pub m_uVersion: u32,
+    pub m_uTokenType: u32,
+    pub m_uParsedFeatureMask: u64,
+    pub m_uDetectedArraySize: u32,
+    pub m_puDetectedFeatures: *mut u32,
+    pub m_uSelectListSize: u32,
+    pub m_ppSelectList: *mut *mut SWbemQueryQualifiedName,
+    pub m_uFromTargetType: u32,
+    pub m_pszOptionalFromPath: windows_sys::core::PCWSTR,
+    pub m_uFromListSize: u32,
+    pub m_ppszFromList: *const windows_sys::core::PCWSTR,
+    pub m_uWhereClauseSize: u32,
+    pub m_ppRpnWhereClause: *mut *mut SWbemRpnQueryToken,
+    pub m_dblWithinPolling: f64,
+    pub m_dblWithinWindow: f64,
+    pub m_uOrderByListSize: u32,
+    pub m_ppszOrderByList: *const windows_sys::core::PCWSTR,
+    pub m_uOrderDirectionEl: *mut u32,
+}
+impl Default for SWbemRpnEncodedQuery {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SWbemRpnQueryToken {
+    pub m_uVersion: u32,
+    pub m_uTokenType: u32,
+    pub m_uSubexpressionShape: u32,
+    pub m_uOperator: u32,
+    pub m_pRightIdent: *mut SWbemQueryQualifiedName,
+    pub m_pLeftIdent: *mut SWbemQueryQualifiedName,
+    pub m_uConstApparentType: u32,
+    pub m_Const: SWbemRpnConst,
+    pub m_uConst2ApparentType: u32,
+    pub m_Const2: SWbemRpnConst,
+    pub m_pszRightFunc: windows_sys::core::PCWSTR,
+    pub m_pszLeftFunc: windows_sys::core::PCWSTR,
+}
+impl Default for SWbemRpnQueryToken {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SWbemRpnTokenList {
+    pub m_uVersion: u32,
+    pub m_uTokenType: u32,
+    pub m_uNumTokens: u32,
+}
+pub const SWbemSecurity: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xb54d66e9_2287_11d2_8b33_00600806d9b6);
+pub const SWbemServices: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d63_21ae_11d2_8b33_00600806d9b6);
+pub const SWbemServicesEx: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x62e522dc_8cf3_40a8_8b2e_37d595651e40);
+pub const SWbemSink: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x75718c9a_f029_11d1_a1ac_00c04fb6c223);
+pub const UnsecuredApartment: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x49bd2028_1523_11d1_ad79_00c04fd8fdff);
 pub const WBEMESS_E_AUTHZ_NOT_PRIVILEGED: WBEMSTATUS = -2147213309i32;
 pub const WBEMESS_E_REGISTRATION_TOO_BROAD: WBEMSTATUS = -2147213311i32;
 pub const WBEMESS_E_REGISTRATION_TOO_PRECISE: WBEMSTATUS = -2147213310i32;
@@ -276,6 +2145,8 @@ pub const WBEMPATH_INFO_WMI_PATH: WBEM_PATH_STATUS_FLAG = 65536i32;
 pub const WBEMPATH_QUOTEDTEXT: WBEM_GET_KEY_FLAGS = 2i32;
 pub const WBEMPATH_TEXT: WBEM_GET_KEY_FLAGS = 1i32;
 pub const WBEMPATH_TREAT_SINGLE_IDENT_AS_NS: WBEM_PATH_CREATE_FLAG = 8i32;
+pub type WBEMSTATUS = i32;
+pub type WBEMSTATUS_FORMAT = i32;
 pub const WBEMSTATUS_FORMAT_NEWLINE: WBEMSTATUS_FORMAT = 0i32;
 pub const WBEMSTATUS_FORMAT_NO_NEWLINE: WBEMSTATUS_FORMAT = 1i32;
 pub const WBEMS_DISPID_COMPLETED: u32 = 2u32;
@@ -285,8 +2156,26 @@ pub const WBEMS_DISPID_OBJECT_PUT: u32 = 4u32;
 pub const WBEMS_DISPID_OBJECT_READY: u32 = 1u32;
 pub const WBEMS_DISPID_PROGRESS: u32 = 3u32;
 pub const WBEM_AUTHENTICATION_METHOD_MASK: WBEM_LOGIN_TYPE = 15i32;
+pub type WBEM_BACKUP_RESTORE_FLAGS = i32;
+pub type WBEM_BATCH_TYPE = i32;
+pub type WBEM_CHANGE_FLAG_TYPE = i32;
+pub type WBEM_COMPARISON_FLAG = i32;
 pub const WBEM_COMPARISON_INCLUDE_ALL: WBEM_COMPARISON_FLAG = 0i32;
+pub type WBEM_COMPILER_OPTIONS = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct WBEM_COMPILE_STATUS_INFO {
+    pub lPhaseError: i32,
+    pub hRes: windows_sys::core::HRESULT,
+    pub ObjectNum: i32,
+    pub FirstLine: i32,
+    pub LastLine: i32,
+    pub dwOutFlags: u32,
+}
+pub type WBEM_CONDITION_FLAG_TYPE = i32;
+pub type WBEM_CONNECT_OPTIONS = i32;
 pub const WBEM_ENABLE: WBEM_SECURITY_FLAGS = 1i32;
+pub type WBEM_EXTRA_RETURN_CODES = i32;
 pub const WBEM_E_ACCESS_DENIED: WBEMSTATUS = -2147217405i32;
 pub const WBEM_E_AGGREGATING_BY_OBJECT: WBEMSTATUS = -2147217315i32;
 pub const WBEM_E_ALREADY_EXISTS: WBEMSTATUS = -2147217383i32;
@@ -501,10 +2390,20 @@ pub const WBEM_FLAVOR_ORIGIN_LOCAL: WBEM_FLAVOR_TYPE = 0i32;
 pub const WBEM_FLAVOR_ORIGIN_PROPAGATED: WBEM_FLAVOR_TYPE = 32i32;
 pub const WBEM_FLAVOR_ORIGIN_SYSTEM: WBEM_FLAVOR_TYPE = 64i32;
 pub const WBEM_FLAVOR_OVERRIDABLE: WBEM_FLAVOR_TYPE = 0i32;
+pub type WBEM_FLAVOR_TYPE = i32;
 pub const WBEM_FULL_WRITE_REP: WBEM_SECURITY_FLAGS = 4i32;
+pub type WBEM_GENERIC_FLAG_TYPE = i32;
 pub const WBEM_GENUS_CLASS: WBEM_GENUS_TYPE = 1i32;
 pub const WBEM_GENUS_INSTANCE: WBEM_GENUS_TYPE = 2i32;
+pub type WBEM_GENUS_TYPE = i32;
+pub type WBEM_GET_KEY_FLAGS = i32;
+pub type WBEM_GET_TEXT_FLAGS = i32;
 pub const WBEM_INFINITE: i32 = -1i32;
+pub type WBEM_INFORMATION_FLAG_TYPE = i32;
+pub type WBEM_LIMITATION_FLAG_TYPE = i32;
+pub type WBEM_LIMITS = i32;
+pub type WBEM_LOCKING_FLAG_TYPE = i32;
+pub type WBEM_LOGIN_TYPE = i32;
 pub const WBEM_MASK_CLASS_CONDITION: WBEM_CONDITION_FLAG_TYPE = 768i32;
 pub const WBEM_MASK_CONDITION_ORIGIN: WBEM_CONDITION_FLAG_TYPE = 112i32;
 pub const WBEM_MASK_PRIMARY_CONDITION: WBEM_CONDITION_FLAG_TYPE = 3i32;
@@ -519,6 +2418,12 @@ pub const WBEM_METHOD_EXECUTE: WBEM_SECURITY_FLAGS = 2i32;
 pub const WBEM_NO_ERROR: WBEMSTATUS = 0i32;
 pub const WBEM_NO_WAIT: i32 = 0i32;
 pub const WBEM_PARTIAL_WRITE_REP: WBEM_SECURITY_FLAGS = 8i32;
+pub type WBEM_PATH_CREATE_FLAG = i32;
+pub type WBEM_PATH_STATUS_FLAG = i32;
+pub type WBEM_PROVIDER_FLAGS = i32;
+pub type WBEM_PROVIDER_REQUIREMENTS_TYPE = i32;
+pub type WBEM_QUERY_FLAG_TYPE = i32;
+pub type WBEM_REFRESHER_FLAGS = i32;
 pub const WBEM_REMOTE_ACCESS: WBEM_SECURITY_FLAGS = 32i32;
 pub const WBEM_REQUIREMENTS_RECHECK_SUBSCRIPTIONS: WBEM_PROVIDER_REQUIREMENTS_TYPE = 2i32;
 pub const WBEM_REQUIREMENTS_START_POSTFILTER: WBEM_PROVIDER_REQUIREMENTS_TYPE = 0i32;
@@ -527,6 +2432,8 @@ pub const WBEM_RETURN_IMMEDIATELY: WBEM_GENERIC_FLAG_TYPE = 16i32;
 pub const WBEM_RETURN_WHEN_COMPLETE: WBEM_GENERIC_FLAG_TYPE = 0i32;
 pub const WBEM_RIGHT_PUBLISH: WBEM_SECURITY_FLAGS = 128i32;
 pub const WBEM_RIGHT_SUBSCRIBE: WBEM_SECURITY_FLAGS = 64i32;
+pub type WBEM_SECURITY_FLAGS = i32;
+pub type WBEM_SHUTDOWN_FLAGS = i32;
 pub const WBEM_SHUTDOWN_OS: WBEM_SHUTDOWN_FLAGS = 3i32;
 pub const WBEM_SHUTDOWN_UNLOAD_COMPONENT: WBEM_SHUTDOWN_FLAGS = 1i32;
 pub const WBEM_SHUTDOWN_WMI: WBEM_SHUTDOWN_FLAGS = 2i32;
@@ -538,6 +2445,7 @@ pub const WBEM_STATUS_LOGGING_INFORMATION_PROVIDER: WBEM_STATUS_TYPE = 512i32;
 pub const WBEM_STATUS_LOGGING_INFORMATION_REPOSITORY: WBEM_STATUS_TYPE = 2048i32;
 pub const WBEM_STATUS_PROGRESS: WBEM_STATUS_TYPE = 2i32;
 pub const WBEM_STATUS_REQUIREMENTS: WBEM_STATUS_TYPE = 1i32;
+pub type WBEM_STATUS_TYPE = i32;
 pub const WBEM_S_ACCESS_DENIED: WBEMSTATUS = 262153i32;
 pub const WBEM_S_ALREADY_EXISTS: WBEMSTATUS = 262145i32;
 pub const WBEM_S_DIFFERENT: WBEMSTATUS = 262147i32;
@@ -556,16 +2464,21 @@ pub const WBEM_S_SAME: WBEMSTATUS = 0i32;
 pub const WBEM_S_SOURCE_NOT_AVAILABLE: WBEMSTATUS = 262167i32;
 pub const WBEM_S_SUBJECT_TO_SDS: WBEM_EXTRA_RETURN_CODES = 274435i32;
 pub const WBEM_S_TIMEDOUT: WBEMSTATUS = 262148i32;
+pub type WBEM_TEXT_FLAG_TYPE = i32;
+pub type WBEM_UNSECAPP_FLAG_TYPE = i32;
 pub const WBEM_WRITE_PROVIDER: WBEM_SECURITY_FLAGS = 16i32;
+pub const WMIExtension: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf0975afe_5c7f_11d2_8b74_00104b2afb41);
 pub const WMIQ_ANALYSIS_ASSOC_QUERY: WMIQ_ANALYSIS_TYPE = 2i32;
 pub const WMIQ_ANALYSIS_PROP_ANALYSIS_MATRIX: WMIQ_ANALYSIS_TYPE = 3i32;
 pub const WMIQ_ANALYSIS_QUERY_TEXT: WMIQ_ANALYSIS_TYPE = 4i32;
 pub const WMIQ_ANALYSIS_RESERVED: WMIQ_ANALYSIS_TYPE = 134217728i32;
 pub const WMIQ_ANALYSIS_RPN_SEQUENCE: WMIQ_ANALYSIS_TYPE = 1i32;
+pub type WMIQ_ANALYSIS_TYPE = i32;
 pub const WMIQ_ASSOCQ_ASSOCCLASS: WMIQ_ASSOCQ_FLAGS = 8i32;
 pub const WMIQ_ASSOCQ_ASSOCIATORS: WMIQ_ASSOCQ_FLAGS = 1i32;
 pub const WMIQ_ASSOCQ_CLASSDEFSONLY: WMIQ_ASSOCQ_FLAGS = 256i32;
 pub const WMIQ_ASSOCQ_CLASSREFSONLY: WMIQ_ASSOCQ_FLAGS = 2048i32;
+pub type WMIQ_ASSOCQ_FLAGS = i32;
 pub const WMIQ_ASSOCQ_KEYSONLY: WMIQ_ASSOCQ_FLAGS = 512i32;
 pub const WMIQ_ASSOCQ_REFERENCES: WMIQ_ASSOCQ_FLAGS = 2i32;
 pub const WMIQ_ASSOCQ_REQUIREDASSOCQUALIFIER: WMIQ_ASSOCQ_FLAGS = 128i32;
@@ -574,6 +2487,7 @@ pub const WMIQ_ASSOCQ_RESULTCLASS: WMIQ_ASSOCQ_FLAGS = 4i32;
 pub const WMIQ_ASSOCQ_RESULTROLE: WMIQ_ASSOCQ_FLAGS = 32i32;
 pub const WMIQ_ASSOCQ_ROLE: WMIQ_ASSOCQ_FLAGS = 16i32;
 pub const WMIQ_ASSOCQ_SCHEMAONLY: WMIQ_ASSOCQ_FLAGS = 1024i32;
+pub type WMIQ_LANGUAGE_FEATURES = i32;
 pub const WMIQ_LF10_COMPEX_SUBEXPRESSIONS: WMIQ_LANGUAGE_FEATURES = 10i32;
 pub const WMIQ_LF11_ALIASING: WMIQ_LANGUAGE_FEATURES = 11i32;
 pub const WMIQ_LF12_GROUP_BY_HAVING: WMIQ_LANGUAGE_FEATURES = 12i32;
@@ -618,6 +2532,7 @@ pub const WMIQ_LF_LAST: WMIQ_LANGUAGE_FEATURES = 40i32;
 pub const WMIQ_RPNF_ARRAY_ACCESS_USED: WMIQ_RPNF_FEATURE = 8192i32;
 pub const WMIQ_RPNF_COUNT_STAR: WMIQ_RPNF_FEATURE = 64i32;
 pub const WMIQ_RPNF_EQUALITY_TESTS_ONLY: WMIQ_RPNF_FEATURE = 32i32;
+pub type WMIQ_RPNF_FEATURE = i32;
 pub const WMIQ_RPNF_FEATURE_SELECT_STAR: WMIQ_RPNF_FEATURE = 16i32;
 pub const WMIQ_RPNF_GROUP_BY_HAVING: WMIQ_RPNF_FEATURE = 4096i32;
 pub const WMIQ_RPNF_ISA_USED: WMIQ_RPNF_FEATURE = 2048i32;
@@ -660,8 +2575,10 @@ pub const WMIQ_RPN_RIGHT_FUNCTION: WMIQ_RPN_TOKEN_FLAGS = 64i32;
 pub const WMIQ_RPN_RIGHT_PROPERTY_NAME: WMIQ_RPN_TOKEN_FLAGS = 2i32;
 pub const WMIQ_RPN_TOKEN_AND: WMIQ_RPN_TOKEN_FLAGS = 2i32;
 pub const WMIQ_RPN_TOKEN_EXPRESSION: WMIQ_RPN_TOKEN_FLAGS = 1i32;
+pub type WMIQ_RPN_TOKEN_FLAGS = i32;
 pub const WMIQ_RPN_TOKEN_NOT: WMIQ_RPN_TOKEN_FLAGS = 4i32;
 pub const WMIQ_RPN_TOKEN_OR: WMIQ_RPN_TOKEN_FLAGS = 3i32;
+pub type WMI_OBJ_TEXT = i32;
 pub const WMI_OBJ_TEXT_CIM_DTD_2_0: WMI_OBJ_TEXT = 1i32;
 pub const WMI_OBJ_TEXT_LAST: WMI_OBJ_TEXT = 13i32;
 pub const WMI_OBJ_TEXT_WMI_DTD_2_0: WMI_OBJ_TEXT = 2i32;
@@ -675,6 +2592,37 @@ pub const WMI_OBJ_TEXT_WMI_EXT6: WMI_OBJ_TEXT = 8i32;
 pub const WMI_OBJ_TEXT_WMI_EXT7: WMI_OBJ_TEXT = 9i32;
 pub const WMI_OBJ_TEXT_WMI_EXT8: WMI_OBJ_TEXT = 10i32;
 pub const WMI_OBJ_TEXT_WMI_EXT9: WMI_OBJ_TEXT = 11i32;
+pub const WbemAdministrativeLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcb8555cc_9128_11d1_ad9b_00c04fd8fdff);
+pub const WbemAuthenticatedLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcd184336_9128_11d1_ad9b_00c04fd8fdff);
+pub type WbemAuthenticationLevelEnum = i32;
+pub const WbemBackupRestore: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc49e32c6_bc8b_11d2_85d4_00105a1f8304);
+pub type WbemChangeFlagEnum = i32;
+pub type WbemCimtypeEnum = i32;
+pub const WbemClassObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9a653086_174f_11d2_b5f9_00104b703efd);
+pub type WbemComparisonFlagEnum = i32;
+pub type WbemConnectOptionsEnum = i32;
+pub const WbemContext: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x674b6698_ee92_11d0_ad71_00c04fd8fdff);
+pub const WbemDCOMTransport: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf7ce2e13_8c90_11d1_9e7b_00c04fc324a8);
+pub const WbemDecoupledBasicEventProvider: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf5f75737_2843_4f22_933d_c76a97cda62f);
+pub const WbemDecoupledRegistrar: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x4cfc7932_0f9d_4bef_9c32_8ea2a6b56fcb);
+pub const WbemDefPath: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcf4cc405_e2c5_4ddd_b3ce_5e7582d8c9fa);
+pub type WbemErrorEnum = i32;
+pub type WbemFlagEnum = i32;
+pub type WbemImpersonationLevelEnum = i32;
+pub const WbemLevel1Login: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8bc3f05e_d86b_11d0_a075_00c04fb68820);
+pub const WbemLocalAddrRes: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xa1044801_8f7e_11d1_9e7c_00c04fc324a8);
+pub const WbemLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x4590f811_1d3a_11d0_891f_00aa004b2e24);
+pub type WbemObjectTextFormatEnum = i32;
+pub const WbemObjectTextSrc: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8d1c559d_84f0_4bb3_a7d5_56a7435a9ba6);
+pub type WbemPrivilegeEnum = i32;
+pub const WbemQuery: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xeac8a024_21e2_4523_ad73_a71a0aa2f56a);
+pub type WbemQueryFlagEnum = i32;
+pub const WbemRefresher: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc71566f2_561e_11d1_ad87_00c04fd8fdff);
+pub const WbemStatusCodeText: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xeb87e1bd_3233_11d2_aec9_00c04fb68820);
+pub type WbemTextFlagEnum = i32;
+pub type WbemTimeout = i32;
+pub const WbemUnauthenticatedLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x443e7b79_de31_11d2_b340_00104bcc4b4a);
+pub const WbemUninitializedClassObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x7a0227f6_7108_11d1_ad90_00c04fd8fdff);
 pub const wbemAuthenticationLevelCall: WbemAuthenticationLevelEnum = 3i32;
 pub const wbemAuthenticationLevelConnect: WbemAuthenticationLevelEnum = 2i32;
 pub const wbemAuthenticationLevelDefault: WbemAuthenticationLevelEnum = 0i32;
@@ -895,1541 +2843,3 @@ pub const wbemQueryFlagPrototype: WbemQueryFlagEnum = 2i32;
 pub const wbemQueryFlagShallow: WbemQueryFlagEnum = 1i32;
 pub const wbemTextFlagNoFlavors: WbemTextFlagEnum = 1i32;
 pub const wbemTimeoutInfinite: WbemTimeout = -1i32;
-pub type CIMTYPE_ENUMERATION = i32;
-pub type MI_CallbackMode = i32;
-pub type MI_CancellationReason = i32;
-pub type MI_DestinationOptions_ImpersonationType = i32;
-pub type MI_ErrorCategory = i32;
-pub type MI_LocaleType = i32;
-pub type MI_OperationCallback_ResponseType = i32;
-pub type MI_PromptType = i32;
-pub type MI_ProviderArchitecture = i32;
-pub type MI_Result = i32;
-pub type MI_SubscriptionDeliveryType = i32;
-pub type MI_Type = i32;
-pub type WBEMSTATUS = i32;
-pub type WBEMSTATUS_FORMAT = i32;
-pub type WBEM_BACKUP_RESTORE_FLAGS = i32;
-pub type WBEM_BATCH_TYPE = i32;
-pub type WBEM_CHANGE_FLAG_TYPE = i32;
-pub type WBEM_COMPARISON_FLAG = i32;
-pub type WBEM_COMPILER_OPTIONS = i32;
-pub type WBEM_CONDITION_FLAG_TYPE = i32;
-pub type WBEM_CONNECT_OPTIONS = i32;
-pub type WBEM_EXTRA_RETURN_CODES = i32;
-pub type WBEM_FLAVOR_TYPE = i32;
-pub type WBEM_GENERIC_FLAG_TYPE = i32;
-pub type WBEM_GENUS_TYPE = i32;
-pub type WBEM_GET_KEY_FLAGS = i32;
-pub type WBEM_GET_TEXT_FLAGS = i32;
-pub type WBEM_INFORMATION_FLAG_TYPE = i32;
-pub type WBEM_LIMITATION_FLAG_TYPE = i32;
-pub type WBEM_LIMITS = i32;
-pub type WBEM_LOCKING_FLAG_TYPE = i32;
-pub type WBEM_LOGIN_TYPE = i32;
-pub type WBEM_PATH_CREATE_FLAG = i32;
-pub type WBEM_PATH_STATUS_FLAG = i32;
-pub type WBEM_PROVIDER_FLAGS = i32;
-pub type WBEM_PROVIDER_REQUIREMENTS_TYPE = i32;
-pub type WBEM_QUERY_FLAG_TYPE = i32;
-pub type WBEM_REFRESHER_FLAGS = i32;
-pub type WBEM_SECURITY_FLAGS = i32;
-pub type WBEM_SHUTDOWN_FLAGS = i32;
-pub type WBEM_STATUS_TYPE = i32;
-pub type WBEM_TEXT_FLAG_TYPE = i32;
-pub type WBEM_UNSECAPP_FLAG_TYPE = i32;
-pub type WMIQ_ANALYSIS_TYPE = i32;
-pub type WMIQ_ASSOCQ_FLAGS = i32;
-pub type WMIQ_LANGUAGE_FEATURES = i32;
-pub type WMIQ_RPNF_FEATURE = i32;
-pub type WMIQ_RPN_TOKEN_FLAGS = i32;
-pub type WMI_OBJ_TEXT = i32;
-pub type WbemAuthenticationLevelEnum = i32;
-pub type WbemChangeFlagEnum = i32;
-pub type WbemCimtypeEnum = i32;
-pub type WbemComparisonFlagEnum = i32;
-pub type WbemConnectOptionsEnum = i32;
-pub type WbemErrorEnum = i32;
-pub type WbemFlagEnum = i32;
-pub type WbemImpersonationLevelEnum = i32;
-pub type WbemObjectTextFormatEnum = i32;
-pub type WbemPrivilegeEnum = i32;
-pub type WbemQueryFlagEnum = i32;
-pub type WbemTextFlagEnum = i32;
-pub type WbemTimeout = i32;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Application {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_ApplicationFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ApplicationFT {
-    pub Close: isize,
-    pub NewSession: isize,
-    pub NewHostedProvider: isize,
-    pub NewInstance: isize,
-    pub NewDestinationOptions: isize,
-    pub NewOperationOptions: isize,
-    pub NewSubscriptionDeliveryOptions: isize,
-    pub NewSerializer: isize,
-    pub NewDeserializer: isize,
-    pub NewInstanceFromClass: isize,
-    pub NewClass: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Array {
-    pub data: *mut core::ffi::c_void,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ArrayField {
-    pub value: MI_Array,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_BooleanA {
-    pub data: *mut u8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_BooleanAField {
-    pub value: MI_BooleanA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_BooleanField {
-    pub value: u8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Char16A {
-    pub data: *mut u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Char16AField {
-    pub value: MI_Char16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Char16Field {
-    pub value: u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Class {
-    pub ft: *const MI_ClassFT,
-    pub classDecl: *const MI_ClassDecl,
-    pub namespaceName: *const u16,
-    pub serverName: *const u16,
-    pub reserved: [isize; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ClassDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-    pub properties: *const *const MI_PropertyDecl,
-    pub numProperties: u32,
-    pub size: u32,
-    pub superClass: *const u16,
-    pub superClassDecl: *const MI_ClassDecl,
-    pub methods: *const *const MI_MethodDecl,
-    pub numMethods: u32,
-    pub schema: *const MI_SchemaDecl,
-    pub providerFT: *const MI_ProviderFT,
-    pub owningClass: *mut MI_Class,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ClassFT {
-    pub GetClassNameA: isize,
-    pub GetNameSpace: isize,
-    pub GetServerName: isize,
-    pub GetElementCount: isize,
-    pub GetElement: isize,
-    pub GetElementAt: isize,
-    pub GetClassQualifierSet: isize,
-    pub GetMethodCount: isize,
-    pub GetMethodAt: isize,
-    pub GetMethod: isize,
-    pub GetParentClassName: isize,
-    pub GetParentClass: isize,
-    pub Delete: isize,
-    pub Clone: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ClientFT_V1 {
-    pub applicationFT: *const MI_ApplicationFT,
-    pub sessionFT: *const MI_SessionFT,
-    pub operationFT: *const MI_OperationFT,
-    pub hostedProviderFT: *const MI_HostedProviderFT,
-    pub serializerFT: *const MI_SerializerFT,
-    pub deserializerFT: *const MI_DeserializerFT,
-    pub subscribeDeliveryOptionsFT: *const MI_SubscriptionDeliveryOptionsFT,
-    pub destinationOptionsFT: *const MI_DestinationOptionsFT,
-    pub operationOptionsFT: *const MI_OperationOptionsFT,
-    pub utilitiesFT: *const MI_UtilitiesFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstBooleanA {
-    pub data: *const u8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstBooleanAField {
-    pub value: MI_ConstBooleanA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstBooleanField {
-    pub value: u8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstChar16A {
-    pub data: *const u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstChar16AField {
-    pub value: MI_ConstChar16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstChar16Field {
-    pub value: u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstDatetimeA {
-    pub data: *const MI_Datetime,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstDatetimeAField {
-    pub value: MI_ConstDatetimeA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstDatetimeField {
-    pub value: MI_Datetime,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstInstanceA {
-    pub data: *const *const MI_Instance,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstInstanceAField {
-    pub value: MI_ConstInstanceA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstInstanceField {
-    pub value: *const MI_Instance,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal32A {
-    pub data: *const f32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal32AField {
-    pub value: MI_ConstReal32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal32Field {
-    pub value: f32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal64A {
-    pub data: *const f64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal64AField {
-    pub value: MI_ConstReal64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReal64Field {
-    pub value: f64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReferenceA {
-    pub data: *const *const MI_Instance,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReferenceAField {
-    pub value: MI_ConstReferenceA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstReferenceField {
-    pub value: *const MI_Instance,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint16A {
-    pub data: *const i16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint16AField {
-    pub value: MI_ConstSint16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint16Field {
-    pub value: i16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint32A {
-    pub data: *const i32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint32AField {
-    pub value: MI_ConstSint32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint32Field {
-    pub value: i32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint64A {
-    pub data: *const i64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint64AField {
-    pub value: MI_ConstSint64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint64Field {
-    pub value: i64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint8A {
-    pub data: *const i8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint8AField {
-    pub value: MI_ConstSint8A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstSint8Field {
-    pub value: i8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstStringA {
-    pub data: *const *const u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstStringAField {
-    pub value: MI_ConstStringA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstStringField {
-    pub value: *const u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint16A {
-    pub data: *const u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint16AField {
-    pub value: MI_ConstUint16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint16Field {
-    pub value: u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint32A {
-    pub data: *const u32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint32AField {
-    pub value: MI_ConstUint32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint32Field {
-    pub value: u32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint64A {
-    pub data: *const u64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint64AField {
-    pub value: MI_ConstUint64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint64Field {
-    pub value: u64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint8A {
-    pub data: *const u8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint8AField {
-    pub value: MI_ConstUint8A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ConstUint8Field {
-    pub value: u8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Context {
-    pub ft: *const MI_ContextFT,
-    pub reserved: [isize; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ContextFT {
-    pub PostResult: isize,
-    pub PostInstance: isize,
-    pub PostIndication: isize,
-    pub ConstructInstance: isize,
-    pub ConstructParameters: isize,
-    pub NewInstance: isize,
-    pub NewDynamicInstance: isize,
-    pub NewParameters: isize,
-    pub Canceled: isize,
-    pub GetLocale: isize,
-    pub RegisterCancel: isize,
-    pub RequestUnload: isize,
-    pub RefuseUnload: isize,
-    pub GetLocalSession: isize,
-    pub SetStringOption: isize,
-    pub GetStringOption: isize,
-    pub GetNumberOption: isize,
-    pub GetCustomOption: isize,
-    pub GetCustomOptionCount: isize,
-    pub GetCustomOptionAt: isize,
-    pub WriteMessage: isize,
-    pub WriteProgress: isize,
-    pub WriteStreamParameter: isize,
-    pub WriteCimError: isize,
-    pub PromptUser: isize,
-    pub ShouldProcess: isize,
-    pub ShouldContinue: isize,
-    pub PostError: isize,
-    pub PostCimError: isize,
-    pub WriteError: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Datetime {
-    pub isTimestamp: u32,
-    pub u: MI_Datetime_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union MI_Datetime_0 {
-    pub timestamp: MI_Timestamp,
-    pub interval: MI_Interval,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DatetimeA {
-    pub data: *mut MI_Datetime,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DatetimeAField {
-    pub value: MI_DatetimeA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DatetimeField {
-    pub value: MI_Datetime,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Deserializer {
-    pub reserved1: u64,
-    pub reserved2: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DeserializerFT {
-    pub Close: isize,
-    pub DeserializeClass: isize,
-    pub Class_GetClassName: isize,
-    pub Class_GetParentClassName: isize,
-    pub DeserializeInstance: isize,
-    pub Instance_GetClassName: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DestinationOptions {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_DestinationOptionsFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_DestinationOptionsFT {
-    pub Delete: isize,
-    pub SetString: isize,
-    pub SetNumber: isize,
-    pub AddCredentials: isize,
-    pub GetString: isize,
-    pub GetNumber: isize,
-    pub GetOptionCount: isize,
-    pub GetOptionAt: isize,
-    pub GetOption: isize,
-    pub GetCredentialsCount: isize,
-    pub GetCredentialsAt: isize,
-    pub GetCredentialsPasswordAt: isize,
-    pub Clone: isize,
-    pub SetInterval: isize,
-    pub GetInterval: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_FeatureDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Filter {
-    pub ft: *const MI_FilterFT,
-    pub reserved: [isize; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_FilterFT {
-    pub Evaluate: isize,
-    pub GetExpression: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_HostedProvider {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_HostedProviderFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_HostedProviderFT {
-    pub Close: isize,
-    pub GetApplication: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Instance {
-    pub ft: *const MI_InstanceFT,
-    pub classDecl: *const MI_ClassDecl,
-    pub serverName: *const u16,
-    pub nameSpace: *const u16,
-    pub reserved: [isize; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_InstanceA {
-    pub data: *mut *mut MI_Instance,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_InstanceAField {
-    pub value: MI_InstanceA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_InstanceExFT {
-    pub parent: MI_InstanceFT,
-    pub Normalize: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_InstanceFT {
-    pub Clone: isize,
-    pub Destruct: isize,
-    pub Delete: isize,
-    pub IsA: isize,
-    pub GetClassNameA: isize,
-    pub SetNameSpace: isize,
-    pub GetNameSpace: isize,
-    pub GetElementCount: isize,
-    pub AddElement: isize,
-    pub SetElement: isize,
-    pub SetElementAt: isize,
-    pub GetElement: isize,
-    pub GetElementAt: isize,
-    pub ClearElement: isize,
-    pub ClearElementAt: isize,
-    pub GetServerName: isize,
-    pub SetServerName: isize,
-    pub GetClass: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_InstanceField {
-    pub value: *mut MI_Instance,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Interval {
-    pub days: u32,
-    pub hours: u32,
-    pub minutes: u32,
-    pub seconds: u32,
-    pub microseconds: u32,
-    pub __padding1: u32,
-    pub __padding2: u32,
-    pub __padding3: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_MethodDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-    pub parameters: *const *const MI_ParameterDecl,
-    pub numParameters: u32,
-    pub size: u32,
-    pub returnType: u32,
-    pub origin: *const u16,
-    pub propagator: *const u16,
-    pub schema: *const MI_SchemaDecl,
-    pub function: MI_MethodDecl_Invoke,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Module {
-    pub version: u32,
-    pub generatorVersion: u32,
-    pub flags: u32,
-    pub charSize: u32,
-    pub schemaDecl: *mut MI_SchemaDecl,
-    pub Load: MI_Module_Load,
-    pub Unload: MI_Module_Unload,
-    pub dynamicProviderFT: *const MI_ProviderFT,
-}
-pub type MI_Module_Self = isize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ObjectDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-    pub properties: *const *const MI_PropertyDecl,
-    pub numProperties: u32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Operation {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_OperationFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_OperationCallbacks {
-    pub callbackContext: *mut core::ffi::c_void,
-    pub promptUser: MI_OperationCallback_PromptUser,
-    pub writeError: MI_OperationCallback_WriteError,
-    pub writeMessage: MI_OperationCallback_WriteMessage,
-    pub writeProgress: MI_OperationCallback_WriteProgress,
-    pub instanceResult: MI_OperationCallback_Instance,
-    pub indicationResult: MI_OperationCallback_Indication,
-    pub classResult: MI_OperationCallback_Class,
-    pub streamedParameterResult: MI_OperationCallback_StreamedParameter,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_OperationFT {
-    pub Close: isize,
-    pub Cancel: isize,
-    pub GetSession: isize,
-    pub GetInstance: isize,
-    pub GetIndication: isize,
-    pub GetClass: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_OperationOptions {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_OperationOptionsFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_OperationOptionsFT {
-    pub Delete: isize,
-    pub SetString: isize,
-    pub SetNumber: isize,
-    pub SetCustomOption: isize,
-    pub GetString: isize,
-    pub GetNumber: isize,
-    pub GetOptionCount: isize,
-    pub GetOptionAt: isize,
-    pub GetOption: isize,
-    pub GetEnabledChannels: isize,
-    pub Clone: isize,
-    pub SetInterval: isize,
-    pub GetInterval: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ParameterDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-    pub r#type: u32,
-    pub className: *const u16,
-    pub subscript: u32,
-    pub offset: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ParameterSet {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_ParameterSetFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ParameterSetFT {
-    pub GetMethodReturnType: isize,
-    pub GetParameterCount: isize,
-    pub GetParameterAt: isize,
-    pub GetParameter: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_PropertyDecl {
-    pub flags: u32,
-    pub code: u32,
-    pub name: *const u16,
-    pub qualifiers: *const *const MI_Qualifier,
-    pub numQualifiers: u32,
-    pub r#type: u32,
-    pub className: *const u16,
-    pub subscript: u32,
-    pub offset: u32,
-    pub origin: *const u16,
-    pub propagator: *const u16,
-    pub value: *const core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_PropertySet {
-    pub ft: *const MI_PropertySetFT,
-    pub reserved: [isize; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_PropertySetFT {
-    pub GetElementCount: isize,
-    pub ContainsElement: isize,
-    pub AddElement: isize,
-    pub GetElementAt: isize,
-    pub Clear: isize,
-    pub Destruct: isize,
-    pub Delete: isize,
-    pub Clone: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ProviderFT {
-    pub Load: MI_ProviderFT_Load,
-    pub Unload: MI_ProviderFT_Unload,
-    pub GetInstance: MI_ProviderFT_GetInstance,
-    pub EnumerateInstances: MI_ProviderFT_EnumerateInstances,
-    pub CreateInstance: MI_ProviderFT_CreateInstance,
-    pub ModifyInstance: MI_ProviderFT_ModifyInstance,
-    pub DeleteInstance: MI_ProviderFT_DeleteInstance,
-    pub AssociatorInstances: MI_ProviderFT_AssociatorInstances,
-    pub ReferenceInstances: MI_ProviderFT_ReferenceInstances,
-    pub EnableIndications: MI_ProviderFT_EnableIndications,
-    pub DisableIndications: MI_ProviderFT_DisableIndications,
-    pub Subscribe: MI_ProviderFT_Subscribe,
-    pub Unsubscribe: MI_ProviderFT_Unsubscribe,
-    pub Invoke: MI_ProviderFT_Invoke,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Qualifier {
-    pub name: *const u16,
-    pub r#type: u32,
-    pub flavor: u32,
-    pub value: *const core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_QualifierDecl {
-    pub name: *const u16,
-    pub r#type: u32,
-    pub scope: u32,
-    pub flavor: u32,
-    pub subscript: u32,
-    pub value: *const core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_QualifierSet {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_QualifierSetFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_QualifierSetFT {
-    pub GetQualifierCount: isize,
-    pub GetQualifierAt: isize,
-    pub GetQualifier: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real32A {
-    pub data: *mut f32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real32AField {
-    pub value: MI_Real32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real32Field {
-    pub value: f32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real64A {
-    pub data: *mut f64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real64AField {
-    pub value: MI_Real64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Real64Field {
-    pub value: f64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ReferenceA {
-    pub data: *mut *mut MI_Instance,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ReferenceAField {
-    pub value: MI_ReferenceA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ReferenceField {
-    pub value: *mut MI_Instance,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SchemaDecl {
-    pub qualifierDecls: *const *const MI_QualifierDecl,
-    pub numQualifierDecls: u32,
-    pub classDecls: *const *const MI_ClassDecl,
-    pub numClassDecls: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Serializer {
-    pub reserved1: u64,
-    pub reserved2: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SerializerFT {
-    pub Close: isize,
-    pub SerializeClass: isize,
-    pub SerializeInstance: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Server {
-    pub serverFT: *const MI_ServerFT,
-    pub contextFT: *const MI_ContextFT,
-    pub instanceFT: *const MI_InstanceFT,
-    pub propertySetFT: *const MI_PropertySetFT,
-    pub filterFT: *const MI_FilterFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_ServerFT {
-    pub GetVersion: isize,
-    pub GetSystemName: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Session {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_SessionFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SessionCallbacks {
-    pub callbackContext: *mut core::ffi::c_void,
-    pub writeMessage: isize,
-    pub writeError: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SessionFT {
-    pub Close: isize,
-    pub GetApplication: isize,
-    pub GetInstance: isize,
-    pub ModifyInstance: isize,
-    pub CreateInstance: isize,
-    pub DeleteInstance: isize,
-    pub Invoke: isize,
-    pub EnumerateInstances: isize,
-    pub QueryInstances: isize,
-    pub AssociatorInstances: isize,
-    pub ReferenceInstances: isize,
-    pub Subscribe: isize,
-    pub GetClass: isize,
-    pub EnumerateClasses: isize,
-    pub TestConnection: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint16A {
-    pub data: *mut i16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint16AField {
-    pub value: MI_Sint16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint16Field {
-    pub value: i16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint32A {
-    pub data: *mut i32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint32AField {
-    pub value: MI_Sint32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint32Field {
-    pub value: i32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint64A {
-    pub data: *mut i64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint64AField {
-    pub value: MI_Sint64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint64Field {
-    pub value: i64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint8A {
-    pub data: *mut i8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint8AField {
-    pub value: MI_Sint8A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Sint8Field {
-    pub value: i8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_StringA {
-    pub data: *mut *mut u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_StringAField {
-    pub value: MI_StringA,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_StringField {
-    pub value: *mut u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SubscriptionDeliveryOptions {
-    pub reserved1: u64,
-    pub reserved2: isize,
-    pub ft: *const MI_SubscriptionDeliveryOptionsFT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_SubscriptionDeliveryOptionsFT {
-    pub SetString: isize,
-    pub SetNumber: isize,
-    pub SetDateTime: isize,
-    pub SetInterval: isize,
-    pub AddCredentials: isize,
-    pub Delete: isize,
-    pub GetString: isize,
-    pub GetNumber: isize,
-    pub GetDateTime: isize,
-    pub GetInterval: isize,
-    pub GetOptionCount: isize,
-    pub GetOptionAt: isize,
-    pub GetOption: isize,
-    pub GetCredentialsCount: isize,
-    pub GetCredentialsAt: isize,
-    pub GetCredentialsPasswordAt: isize,
-    pub Clone: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Timestamp {
-    pub year: u32,
-    pub month: u32,
-    pub day: u32,
-    pub hour: u32,
-    pub minute: u32,
-    pub second: u32,
-    pub microseconds: u32,
-    pub utc: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint16A {
-    pub data: *mut u16,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint16AField {
-    pub value: MI_Uint16A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint16Field {
-    pub value: u16,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint32A {
-    pub data: *mut u32,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint32AField {
-    pub value: MI_Uint32A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint32Field {
-    pub value: u32,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint64A {
-    pub data: *mut u64,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint64AField {
-    pub value: MI_Uint64A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint64Field {
-    pub value: u64,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint8A {
-    pub data: *mut u8,
-    pub size: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint8AField {
-    pub value: MI_Uint8A,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_Uint8Field {
-    pub value: u8,
-    pub exists: u8,
-    pub flags: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_UserCredentials {
-    pub authenticationType: *const u16,
-    pub credentials: MI_UserCredentials_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union MI_UserCredentials_0 {
-    pub usernamePassword: MI_UsernamePasswordCreds,
-    pub certificateThumbprint: *const u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_UsernamePasswordCreds {
-    pub domain: *const u16,
-    pub username: *const u16,
-    pub password: *const u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MI_UtilitiesFT {
-    pub MapErrorToMiErrorCategory: isize,
-    pub CimErrorFromErrorCode: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union MI_Value {
-    pub boolean: u8,
-    pub uint8: u8,
-    pub sint8: i8,
-    pub uint16: u16,
-    pub sint16: i16,
-    pub uint32: u32,
-    pub sint32: i32,
-    pub uint64: u64,
-    pub sint64: i64,
-    pub real32: f32,
-    pub real64: f64,
-    pub char16: u16,
-    pub datetime: MI_Datetime,
-    pub string: *mut u16,
-    pub instance: *mut MI_Instance,
-    pub reference: *mut MI_Instance,
-    pub booleana: MI_BooleanA,
-    pub uint8a: MI_Uint8A,
-    pub sint8a: MI_Sint8A,
-    pub uint16a: MI_Uint16A,
-    pub sint16a: MI_Sint16A,
-    pub uint32a: MI_Uint32A,
-    pub sint32a: MI_Sint32A,
-    pub uint64a: MI_Uint64A,
-    pub sint64a: MI_Sint64A,
-    pub real32a: MI_Real32A,
-    pub real64a: MI_Real64A,
-    pub char16a: MI_Char16A,
-    pub datetimea: MI_DatetimeA,
-    pub stringa: MI_StringA,
-    pub referencea: MI_ReferenceA,
-    pub instancea: MI_InstanceA,
-    pub array: MI_Array,
-}
-pub const MofCompiler: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x6daf9757_2e37_11d2_aec9_00c04fb68820);
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemAnalysisMatrix {
-    pub m_uVersion: u32,
-    pub m_uMatrixType: u32,
-    pub m_pszProperty: windows_sys::core::PCWSTR,
-    pub m_uPropertyType: u32,
-    pub m_uEntries: u32,
-    pub m_pValues: *mut *mut core::ffi::c_void,
-    pub m_pbTruthTable: *mut super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemAnalysisMatrixList {
-    pub m_uVersion: u32,
-    pub m_uMatrixType: u32,
-    pub m_uNumMatrices: u32,
-    pub m_pMatrices: *mut SWbemAnalysisMatrix,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemAssocQueryInf {
-    pub m_uVersion: u32,
-    pub m_uAnalysisType: u32,
-    pub m_uFeatureMask: u32,
-    pub m_pPath: *mut core::ffi::c_void,
-    pub m_pszPath: windows_sys::core::PWSTR,
-    pub m_pszQueryText: windows_sys::core::PWSTR,
-    pub m_pszResultClass: windows_sys::core::PWSTR,
-    pub m_pszAssocClass: windows_sys::core::PWSTR,
-    pub m_pszRole: windows_sys::core::PWSTR,
-    pub m_pszResultRole: windows_sys::core::PWSTR,
-    pub m_pszRequiredQualifier: windows_sys::core::PWSTR,
-    pub m_pszRequiredAssocQualifier: windows_sys::core::PWSTR,
-}
-pub const SWbemDateTime: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x47dfbe54_cf76_11d3_b38f_00105a1f473a);
-pub const SWbemEventSource: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d58_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemLastError: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc2feeeac_cfcd_11d1_8b05_00600806d9b6);
-pub const SWbemLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x76a64158_cb41_11d1_8b02_00600806d9b6);
-pub const SWbemMethod: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5b_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemMethodSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5a_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemNamedValue: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d60_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemNamedValueSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9aed384e_ce8b_11d1_8b05_00600806d9b6);
-pub const SWbemObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d62_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemObjectEx: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xd6bdafb2_9435_491f_bb87_6aa0f0bc31a2);
-pub const SWbemObjectPath: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x5791bc26_ce9c_11d1_97bf_0000f81e849c);
-pub const SWbemObjectSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d61_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemPrivilege: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x26ee67bc_5804_11d2_8b4a_00600806d9b6);
-pub const SWbemPrivilegeSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x26ee67be_5804_11d2_8b4a_00600806d9b6);
-pub const SWbemProperty: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5d_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemPropertySet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5c_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemQualifier: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5f_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemQualifierSet: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d5e_21ae_11d2_8b33_00600806d9b6);
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemQueryQualifiedName {
-    pub m_uVersion: u32,
-    pub m_uTokenType: u32,
-    pub m_uNameListSize: u32,
-    pub m_ppszNameList: *const windows_sys::core::PCWSTR,
-    pub m_bArraysUsed: super::super::Foundation::BOOL,
-    pub m_pbArrayElUsed: *mut super::super::Foundation::BOOL,
-    pub m_puArrayIndex: *mut u32,
-}
-pub const SWbemRefreshableItem: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8c6854bc_de4b_11d3_b390_00105a1f473a);
-pub const SWbemRefresher: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xd269bf5c_d9c1_11d3_b38f_00105a1f473a);
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SWbemRpnConst {
-    pub m_pszStrVal: windows_sys::core::PCWSTR,
-    pub m_bBoolVal: super::super::Foundation::BOOL,
-    pub m_lLongVal: i32,
-    pub m_uLongVal: u32,
-    pub m_dblVal: f64,
-    pub m_lVal64: i64,
-    pub m_uVal64: i64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemRpnEncodedQuery {
-    pub m_uVersion: u32,
-    pub m_uTokenType: u32,
-    pub m_uParsedFeatureMask: u64,
-    pub m_uDetectedArraySize: u32,
-    pub m_puDetectedFeatures: *mut u32,
-    pub m_uSelectListSize: u32,
-    pub m_ppSelectList: *mut *mut SWbemQueryQualifiedName,
-    pub m_uFromTargetType: u32,
-    pub m_pszOptionalFromPath: windows_sys::core::PCWSTR,
-    pub m_uFromListSize: u32,
-    pub m_ppszFromList: *const windows_sys::core::PCWSTR,
-    pub m_uWhereClauseSize: u32,
-    pub m_ppRpnWhereClause: *mut *mut SWbemRpnQueryToken,
-    pub m_dblWithinPolling: f64,
-    pub m_dblWithinWindow: f64,
-    pub m_uOrderByListSize: u32,
-    pub m_ppszOrderByList: *const windows_sys::core::PCWSTR,
-    pub m_uOrderDirectionEl: *mut u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemRpnQueryToken {
-    pub m_uVersion: u32,
-    pub m_uTokenType: u32,
-    pub m_uSubexpressionShape: u32,
-    pub m_uOperator: u32,
-    pub m_pRightIdent: *mut SWbemQueryQualifiedName,
-    pub m_pLeftIdent: *mut SWbemQueryQualifiedName,
-    pub m_uConstApparentType: u32,
-    pub m_Const: SWbemRpnConst,
-    pub m_uConst2ApparentType: u32,
-    pub m_Const2: SWbemRpnConst,
-    pub m_pszRightFunc: windows_sys::core::PCWSTR,
-    pub m_pszLeftFunc: windows_sys::core::PCWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SWbemRpnTokenList {
-    pub m_uVersion: u32,
-    pub m_uTokenType: u32,
-    pub m_uNumTokens: u32,
-}
-pub const SWbemSecurity: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xb54d66e9_2287_11d2_8b33_00600806d9b6);
-pub const SWbemServices: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x04b83d63_21ae_11d2_8b33_00600806d9b6);
-pub const SWbemServicesEx: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x62e522dc_8cf3_40a8_8b2e_37d595651e40);
-pub const SWbemSink: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x75718c9a_f029_11d1_a1ac_00c04fb6c223);
-pub const UnsecuredApartment: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x49bd2028_1523_11d1_ad79_00c04fd8fdff);
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WBEM_COMPILE_STATUS_INFO {
-    pub lPhaseError: i32,
-    pub hRes: windows_sys::core::HRESULT,
-    pub ObjectNum: i32,
-    pub FirstLine: i32,
-    pub LastLine: i32,
-    pub dwOutFlags: u32,
-}
-pub const WMIExtension: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf0975afe_5c7f_11d2_8b74_00104b2afb41);
-pub const WbemAdministrativeLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcb8555cc_9128_11d1_ad9b_00c04fd8fdff);
-pub const WbemAuthenticatedLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcd184336_9128_11d1_ad9b_00c04fd8fdff);
-pub const WbemBackupRestore: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc49e32c6_bc8b_11d2_85d4_00105a1f8304);
-pub const WbemClassObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9a653086_174f_11d2_b5f9_00104b703efd);
-pub const WbemContext: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x674b6698_ee92_11d0_ad71_00c04fd8fdff);
-pub const WbemDCOMTransport: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf7ce2e13_8c90_11d1_9e7b_00c04fc324a8);
-pub const WbemDecoupledBasicEventProvider: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf5f75737_2843_4f22_933d_c76a97cda62f);
-pub const WbemDecoupledRegistrar: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x4cfc7932_0f9d_4bef_9c32_8ea2a6b56fcb);
-pub const WbemDefPath: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xcf4cc405_e2c5_4ddd_b3ce_5e7582d8c9fa);
-pub const WbemLevel1Login: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8bc3f05e_d86b_11d0_a075_00c04fb68820);
-pub const WbemLocalAddrRes: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xa1044801_8f7e_11d1_9e7c_00c04fc324a8);
-pub const WbemLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x4590f811_1d3a_11d0_891f_00aa004b2e24);
-pub const WbemObjectTextSrc: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x8d1c559d_84f0_4bb3_a7d5_56a7435a9ba6);
-pub const WbemQuery: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xeac8a024_21e2_4523_ad73_a71a0aa2f56a);
-pub const WbemRefresher: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xc71566f2_561e_11d1_ad87_00c04fd8fdff);
-pub const WbemStatusCodeText: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xeb87e1bd_3233_11d2_aec9_00c04fb68820);
-pub const WbemUnauthenticatedLocator: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x443e7b79_de31_11d2_b340_00104bcc4b4a);
-pub const WbemUninitializedClassObject: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x7a0227f6_7108_11d1_ad90_00c04fd8fdff);
-pub type MI_CancelCallback = Option<unsafe extern "system" fn(reason: MI_CancellationReason, callbackdata: *const core::ffi::c_void)>;
-pub type MI_Deserializer_ClassObjectNeeded = Option<unsafe extern "system" fn(context: *const core::ffi::c_void, servername: *const u16, namespacename: *const u16, classname: *const u16, requestedclassobject: *mut *mut MI_Class) -> MI_Result>;
-pub type MI_MainFunction = Option<unsafe extern "system" fn(server: *mut MI_Server) -> *mut MI_Module>;
-pub type MI_MethodDecl_Invoke = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, methodname: *const u16, instancename: *const MI_Instance, parameters: *const MI_Instance)>;
-pub type MI_Module_Load = Option<unsafe extern "system" fn(self_: *mut *mut MI_Module_Self, context: *const MI_Context)>;
-pub type MI_Module_Unload = Option<unsafe extern "system" fn(self_: *const MI_Module_Self, context: *const MI_Context)>;
-pub type MI_OperationCallback_Class = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, classresult: *const MI_Class, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
-pub type MI_OperationCallback_Indication = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, bookmark: *const u16, machineid: *const u16, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
-pub type MI_OperationCallback_Instance = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, moreresults: u8, resultcode: MI_Result, errorstring: *const u16, errordetails: *const MI_Instance, resultacknowledgement: isize)>;
-pub type MI_OperationCallback_PromptUser = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, message: *const u16, prompttype: MI_PromptType, promptuserresult: isize)>;
-pub type MI_OperationCallback_StreamedParameter = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, parametername: *const u16, resulttype: MI_Type, result: *const MI_Value, resultacknowledgement: isize)>;
-pub type MI_OperationCallback_WriteError = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, instance: *const MI_Instance, writeerrorresult: isize)>;
-pub type MI_OperationCallback_WriteMessage = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, channel: u32, message: *const u16)>;
-pub type MI_OperationCallback_WriteProgress = Option<unsafe extern "system" fn(operation: *const MI_Operation, callbackcontext: *const core::ffi::c_void, activity: *const u16, currentoperation: *const u16, statusdescription: *const u16, percentagecomplete: u32, secondsremaining: u32)>;
-pub type MI_ProviderFT_AssociatorInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, resultclass: *const u16, role: *const u16, resultrole: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
-pub type MI_ProviderFT_CreateInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, newinstance: *const MI_Instance)>;
-pub type MI_ProviderFT_DeleteInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance)>;
-pub type MI_ProviderFT_DisableIndications = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, indicationscontext: *const MI_Context, namespace: *const u16, classname: *const u16)>;
-pub type MI_ProviderFT_EnableIndications = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, indicationscontext: *const MI_Context, namespace: *const u16, classname: *const u16)>;
-pub type MI_ProviderFT_EnumerateInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
-pub type MI_ProviderFT_GetInstance = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, propertyset: *const MI_PropertySet)>;
-pub type MI_ProviderFT_Invoke = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, methodname: *const u16, instancename: *const MI_Instance, inputparameters: *const MI_Instance)>;
-pub type MI_ProviderFT_Load = Option<unsafe extern "system" fn(self_: *mut *mut core::ffi::c_void, selfmodule: *const MI_Module_Self, context: *const MI_Context)>;
-pub type MI_ProviderFT_ModifyInstance = Option<unsafe extern "system" fn(self_: *mut core::ffi::c_void, context: *mut MI_Context, namespace: *const u16, classname: *const u16, modifiedinstance: *const MI_Instance, propertyset: *const MI_PropertySet)>;
-pub type MI_ProviderFT_ReferenceInstances = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, instancename: *const MI_Instance, role: *const u16, propertyset: *const MI_PropertySet, keysonly: u8, filter: *const MI_Filter)>;
-pub type MI_ProviderFT_Subscribe = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, filter: *const MI_Filter, bookmark: *const u16, subscriptionid: u64, subscriptionself: *mut *mut core::ffi::c_void)>;
-pub type MI_ProviderFT_Unload = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context)>;
-pub type MI_ProviderFT_Unsubscribe = Option<unsafe extern "system" fn(self_: *const core::ffi::c_void, context: *const MI_Context, namespace: *const u16, classname: *const u16, subscriptionid: u64, subscriptionself: *const core::ffi::c_void)>;

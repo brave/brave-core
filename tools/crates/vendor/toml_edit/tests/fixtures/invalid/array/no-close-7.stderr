@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 30
-  |
-1 | no-close-7 = [{ key = 42} #]
-  |                              ^
-invalid array
-expected `]`

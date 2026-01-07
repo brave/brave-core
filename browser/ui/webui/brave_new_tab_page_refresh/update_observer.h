@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
@@ -28,7 +29,9 @@ class UpdateObserver {
     kTopSites,
     kClock,
     kShieldsStats,
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     kTalk,
+#endif
     kRewards,
     kVPN
   };

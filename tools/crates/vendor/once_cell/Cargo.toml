@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.65"
 name = "once_cell"
-version = "1.20.3"
+version = "1.21.3"
 authors = ["Aleksey Kladov <aleksey.kladov@gmail.com>"]
 build = false
 exclude = [
@@ -44,6 +44,20 @@ repository = "https://github.com/matklad/once_cell"
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--generate-link-to-definition"]
+
+[features]
+alloc = ["race"]
+atomic-polyfill = ["critical-section"]
+critical-section = [
+    "dep:critical-section",
+    "portable-atomic",
+]
+default = ["std"]
+parking_lot = ["dep:parking_lot_core"]
+portable-atomic = ["dep:portable-atomic"]
+race = []
+std = ["alloc"]
+unstable = []
 
 [lib]
 name = "once_cell"
@@ -103,17 +117,3 @@ features = ["std"]
 
 [dev-dependencies.regex]
 version = "1.10.6"
-
-[features]
-alloc = ["race"]
-atomic-polyfill = ["critical-section"]
-critical-section = [
-    "dep:critical-section",
-    "portable-atomic",
-]
-default = ["std"]
-parking_lot = ["dep:parking_lot_core"]
-portable-atomic = ["dep:portable-atomic"]
-race = []
-std = ["alloc"]
-unstable = []

@@ -44,19 +44,19 @@ bitflags! {
         #[cfg(linux_kernel)]
         const GROWSDOWN = bitcast!(c::PROT_GROWSDOWN);
         /// `PROT_SEM`
-        #[cfg(linux_kernel)]
+        #[cfg(linux_raw_dep)]
         const SEM = linux_raw_sys::general::PROT_SEM;
         /// `PROT_BTI`
-        #[cfg(all(linux_kernel, target_arch = "aarch64"))]
+        #[cfg(all(linux_raw_dep, target_arch = "aarch64"))]
         const BTI = linux_raw_sys::general::PROT_BTI;
         /// `PROT_MTE`
-        #[cfg(all(linux_kernel, target_arch = "aarch64"))]
+        #[cfg(all(linux_raw_dep, target_arch = "aarch64"))]
         const MTE = linux_raw_sys::general::PROT_MTE;
         /// `PROT_SAO`
-        #[cfg(all(linux_kernel, any(target_arch = "powerpc", target_arch = "powerpc64")))]
+        #[cfg(all(linux_raw_dep, any(target_arch = "powerpc", target_arch = "powerpc64")))]
         const SAO = linux_raw_sys::general::PROT_SAO;
         /// `PROT_ADI`
-        #[cfg(all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")))]
+        #[cfg(all(linux_raw_dep, any(target_arch = "sparc", target_arch = "sparc64")))]
         const ADI = linux_raw_sys::general::PROT_ADI;
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
@@ -82,6 +82,7 @@ bitflags! {
             solarish,
             target_os = "aix",
             target_os = "android",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -97,6 +98,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "nto",
@@ -111,6 +113,7 @@ bitflags! {
             solarish,
             target_os = "aix",
             target_os = "android",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -124,6 +127,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "nto",
@@ -135,6 +139,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "nto",
@@ -147,6 +152,7 @@ bitflags! {
             solarish,
             target_os = "aix",
             target_os = "android",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -161,6 +167,7 @@ bitflags! {
             solarish,
             target_os = "aix",
             target_os = "android",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -174,6 +181,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "nto",
@@ -200,6 +208,7 @@ bitflags! {
             bsd,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "nto",
@@ -211,6 +220,7 @@ bitflags! {
             apple,
             solarish,
             target_os = "aix",
+            target_os = "cygwin",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "redox",
@@ -225,6 +235,7 @@ bitflags! {
             solarish,
             target_os = "aix",
             target_os = "android",
+            target_os = "cygwin",
             target_os = "emscripten",
             target_os = "fuchsia",
             target_os = "haiku",
@@ -234,14 +245,14 @@ bitflags! {
             all(
                 linux_kernel,
                 any(target_arch = "mips", target_arch = "mips32r6", target_arch = "mips64", target_arch = "mips64r6"),
-            )
+            ),
         )))]
         const SYNC = bitcast!(c::MAP_SYNC);
         /// `MAP_UNINITIALIZED`
         #[cfg(any())]
         const UNINITIALIZED = bitcast!(c::MAP_UNINITIALIZED);
         /// `MAP_DROPPABLE`
-        #[cfg(linux_kernel)]
+        #[cfg(all(linux_kernel, not(target_os = "android")))]
         const DROPPABLE = bitcast!(c::MAP_DROPPABLE);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
@@ -479,15 +490,15 @@ bitflags! {
         /// created. `MCL_ONFAULT` must be used with either `MCL_CURRENT` or
         /// `MCL_FUTURE` or both.
         #[cfg(linux_kernel)]
-        const ONFAULT = bitcast!(libc::MCL_ONFAULT);
+        const ONFAULT = bitcast!(c::MCL_ONFAULT);
         /// Lock all pages which will become mapped into the address space of
         /// the process in the future. These could be, for instance, new pages
         /// required by a growing heap and stack as well as new memory-mapped
         /// files or shared memory regions.
-        const FUTURE = bitcast!(libc::MCL_FUTURE);
+        const FUTURE = bitcast!(c::MCL_FUTURE);
         /// Lock all pages which are currently mapped into the address space of
         /// the process.
-        const CURRENT = bitcast!(libc::MCL_CURRENT);
+        const CURRENT = bitcast!(c::MCL_CURRENT);
 
         /// <https://docs.rs/bitflags/*/bitflags/#externally-defined-flags>
         const _ = !0;

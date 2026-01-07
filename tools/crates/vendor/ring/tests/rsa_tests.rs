@@ -4,14 +4,15 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+#![allow(missing_docs)]
 #![cfg(feature = "alloc")]
 
 use ring::{
@@ -19,8 +20,9 @@ use ring::{
     io::der,
     rand, rsa,
     signature::{self, KeyPair},
-    test, test_file,
 };
+#[allow(deprecated)]
+use ring::{test, test_file};
 
 #[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
 use wasm_bindgen_test::{wasm_bindgen_test as test, wasm_bindgen_test_configure};
@@ -118,6 +120,7 @@ fn test_signature_rsa_pss_sign() {
             let salt = test_case.consume_bytes("Salt");
             let expected = test_case.consume_bytes("Sig");
 
+            #[allow(deprecated)]
             let rng = test::rand::FixedSliceRandom { bytes: &salt };
 
             let mut actual = vec![0u8; key_pair.public().modulus_len()];

@@ -14,10 +14,11 @@ export function createNewTabHandler(
 ): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
+  const talkFeatureEnabled = loadTimeData.getBoolean('talkFeatureEnabled')
 
   store.update({
     newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
-    talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled'),
+    talkFeatureEnabled,
   })
 
   async function updateClockPrefs() {
@@ -39,22 +40,36 @@ export function createNewTabHandler(
   }
 
   async function updateTalkPrefs() {
-    const { showTalkWidget } = await handler.getShowTalkWidget()
-    store.update({ showTalkWidget })
+    if (talkFeatureEnabled && 'getShowTalkWidget' in handler) {
+      // Cast needed because getShowTalkWidget is conditionally enabled via
+      // buildflag.
+      const { showTalkWidget } = await (handler as any).getShowTalkWidget()
+      store.update({ showTalkWidget })
+    }
   }
 
-  newTabProxy.addListeners({
+  const listeners: any = {
     onClockStateUpdated: debounce(updateClockPrefs, 10),
     onShieldsStatsUpdated: debounce(updateShieldsStats, 10),
-    onTalkStateUpdated: debounce(updateTalkPrefs, 10),
-  })
+  }
+
+  if (
+    talkFeatureEnabled
+    && 'onTalkStateUpdated' in newTabProxy.callbackRouter
+  ) {
+    listeners.onTalkStateUpdated = debounce(updateTalkPrefs, 10)
+  }
+
+  newTabProxy.addListeners(listeners)
 
   async function loadData() {
-    await Promise.all([
-      updateClockPrefs(),
-      updateShieldsStats(),
-      updateTalkPrefs(),
-    ])
+    const promises = [updateClockPrefs(), updateShieldsStats()]
+
+    if (talkFeatureEnabled) {
+      promises.push(updateTalkPrefs())
+    }
+
+    await Promise.all(promises)
 
     store.update({ initialized: true })
   }
@@ -75,7 +90,11 @@ export function createNewTabHandler(
     },
 
     setShowTalkWidget(showTalkWidget) {
-      handler.setShowTalkWidget(showTalkWidget)
+      if (talkFeatureEnabled && 'setShowTalkWidget' in handler) {
+        // Cast needed because setShowTalkWidget is conditionally enabled via
+        // buildflag.
+        ;(handler as any).setShowTalkWidget(showTalkWidget)
+      }
     },
   }
 }

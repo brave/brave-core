@@ -25,9 +25,11 @@ namespace {
 constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
 constexpr int kFeeSearchMaxIterations = 10;
 
+// Setup empty witness set based on number of different addresses corresponding
+// to inputs.
 void SetupDummyWitnessSet(CardanoTransaction& tx) {
-  tx.SetWitnesses(
-      std::vector<CardanoTransaction::TxWitness>(tx.inputs().size()));
+  tx.SetWitnesses(std::vector<CardanoTransaction::TxWitness>(
+      tx.GetInputAddresses().size()));
 }
 
 }  // namespace
@@ -144,14 +146,19 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     const cardano_rpc::EpochParameters& epoch_parameters) {
   CardanoTransaction result = base_tx;
 
-  base::CheckedNumeric<uint64_t> total_inputs_amount =
+  base::CheckedNumeric<uint64_t> spendable_amount =
       result.GetTotalInputsAmount();
+  if (result.sending_max_amount() && result.ChangeOutput()) {
+    CHECK_GT(result.ChangeOutput()->amount, 0u);
+    // We are sending max amount but have change output for tokens. This output
+    // has minimal ADA value set so we need to subtract it from spendable
+    // amount.
+    spendable_amount =
+        base::CheckSub(spendable_amount, result.ChangeOutput()->amount);
+  }
 
   // These values are not supposed to be set before.
   CHECK_EQ(result.fee(), 0u);
-  if (result.ChangeOutput()) {
-    CHECK_EQ(result.ChangeOutput()->amount, 0u);
-  }
   if (result.sending_max_amount()) {
     CHECK_EQ(result.TargetOutput()->amount, 0u);
   }
@@ -161,6 +168,11 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   // result transaction could be encoded to its final size and we can calculate
   // correct fee for it.
   SetupDummyWitnessSet(result);
+
+  // We must move all tokens from inputs into change output.
+  if (!result.EnsureTokensInChangeOutput()) {
+    return std::nullopt;
+  }
 
   // This is starting fee based on minimum size of tx as fee and outputs are 0.
   if (auto start_fee = CardanoTransactionSerializer::CalcMinTransactionFee(
@@ -173,12 +185,12 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   for (int i = 0; i < kFeeSearchMaxIterations; i++) {
     // Adjust outputs based on current tx fee.
     if (result.sending_max_amount()) {
-      if (!base::CheckSub(total_inputs_amount, result.fee())
+      if (!base::CheckSub(spendable_amount, result.fee())
                .AssignIfValid(&result.TargetOutput()->amount)) {
         return std::nullopt;
       }
     } else if (result.ChangeOutput()) {
-      if (!base::CheckSub(total_inputs_amount, result.fee(),
+      if (!base::CheckSub(spendable_amount, result.fee(),
                           result.TargetOutput()->amount)
                .AssignIfValid(&result.ChangeOutput()->amount)) {
         return std::nullopt;
@@ -225,7 +237,8 @@ bool CardanoTransactionSerializer::ValidateAmounts(
       base::CheckAdd(tx.GetTotalOutputsAmount(), tx.fee());
 
   return inputs.IsValid() && outputs.IsValid() &&
-         inputs.ValueOrDie() == outputs.ValueOrDie();
+         inputs.ValueOrDie() == outputs.ValueOrDie() &&
+         tx.GetTotalInputTokensAmount() == tx.GetTotalOutputTokensAmount();
 }
 
 }  // namespace brave_wallet

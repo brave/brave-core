@@ -3,7 +3,7 @@
 use crate::{
     config::AuditConfig, error::display_err_with_source, prelude::*, presenter::Presenter,
 };
-use rustsec::{registry, report, Error, ErrorKind, Lockfile, Warning, WarningKind};
+use rustsec::{Error, ErrorKind, Lockfile, Warning, WarningKind, registry, report};
 
 use rustsec::binary_scanning::BinaryFormat;
 
@@ -64,7 +64,11 @@ impl Auditor {
             // If we don't print the message, `cargo audit` would just hang with no explanation.
             if let Err(e) = &result {
                 if e.kind() == ErrorKind::LockTimeout {
-                    status_warn!("directory {} is locked, waiting for up to {} seconds for it to become available", advisory_db_path.display(), DEFAULT_LOCK_TIMEOUT.as_secs());
+                    status_warn!(
+                        "directory {} is locked, waiting for up to {} seconds for it to become available",
+                        advisory_db_path.display(),
+                        DEFAULT_LOCK_TIMEOUT.as_secs()
+                    );
                     result = rustsec::repository::git::Repository::fetch(
                         advisory_db_url,
                         &advisory_db_path,
@@ -114,14 +118,18 @@ impl Auditor {
                     status_ok!("Updating", "crates.io index");
                 }
 
-                let mut result = registry::CachedIndex::fetch(None, Duration::from_secs(0));
+                let mut result = registry::CachedIndex::fetch(Duration::from_secs(0));
 
                 // If the directory is locked, print a message and wait for it to become unlocked.
                 // If we don't print the message, `cargo audit` would just hang with no explanation.
                 if let Err(e) = &result {
                     if e.kind() == ErrorKind::LockTimeout {
-                        status_warn!("directory {} is locked, waiting for up to {} seconds for it to become available", advisory_db_path.display(), DEFAULT_LOCK_TIMEOUT.as_secs());
-                        result = registry::CachedIndex::fetch(None, DEFAULT_LOCK_TIMEOUT);
+                        status_warn!(
+                            "directory {} is locked, waiting for up to {} seconds for it to become available",
+                            advisory_db_path.display(),
+                            DEFAULT_LOCK_TIMEOUT.as_secs()
+                        );
+                        result = registry::CachedIndex::fetch(DEFAULT_LOCK_TIMEOUT);
                     }
                 }
 
@@ -142,7 +150,11 @@ impl Auditor {
                 // If we don't print the message, `cargo audit` would just hang with no explanation.
                 if let Err(e) = &result {
                     if e.kind() == ErrorKind::LockTimeout {
-                        status_warn!("directory {} is locked, waiting for up to {} seconds for it to become available", advisory_db_path.display(), DEFAULT_LOCK_TIMEOUT.as_secs());
+                        status_warn!(
+                            "directory {} is locked, waiting for up to {} seconds for it to become available",
+                            advisory_db_path.display(),
+                            DEFAULT_LOCK_TIMEOUT.as_secs()
+                        );
                         result = registry::CachedIndex::open(DEFAULT_LOCK_TIMEOUT)
                     }
                 }
@@ -179,7 +191,7 @@ impl Auditor {
                     ErrorKind::NotFound,
                     format!("Couldn't load {}", lockfile_path.display()),
                     e,
-                ))
+                ));
             }
         };
 
@@ -243,7 +255,7 @@ impl Auditor {
             }
             None => Err(Error::new(
                 ErrorKind::Parse,
-                &"No dependency information found! Is this a Rust executable built with cargo?",
+                "No dependency information found! Is this a Rust executable built with cargo?",
             )),
         }
     }

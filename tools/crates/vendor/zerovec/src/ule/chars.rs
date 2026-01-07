@@ -24,7 +24,7 @@ use core::convert::TryFrom;
 ///
 /// let c1 = '𑄃';
 /// let ule = c1.to_unaligned();
-/// assert_eq!(CharULE::as_byte_slice(&[ule]), &[0x03, 0x11, 0x01]);
+/// assert_eq!(CharULE::slice_as_bytes(&[ule]), &[0x03, 0x11, 0x01]);
 /// let c2 = char::from_unaligned(ule);
 /// assert_eq!(c1, c2);
 /// ```
@@ -35,7 +35,7 @@ use core::convert::TryFrom;
 /// use zerovec::ule::{CharULE, ULE};
 ///
 /// let bytes: &[u8] = &[0xFF, 0xFF, 0xFF, 0xFF];
-/// CharULE::parse_byte_slice(bytes).expect_err("Invalid bytes");
+/// CharULE::parse_bytes_to_slice(bytes).expect_err("Invalid bytes");
 /// ```
 #[repr(transparent)]
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
@@ -52,6 +52,17 @@ impl CharULE {
         Self([u0, u1, u2])
     }
 
+    /// Converts this [`CharULE`] to a [`char`]. This is equivalent to calling
+    /// [`AsULE::from_unaligned`]
+    ///
+    /// See the type-level documentation for [`CharULE`] for more information.
+    #[inline]
+    pub fn to_char(self) -> char {
+        let [b0, b1, b2] = self.0;
+        // Safe because the bytes of CharULE are defined to represent a valid Unicode scalar value.
+        unsafe { char::from_u32_unchecked(u32::from_le_bytes([b0, b1, b2, 0])) }
+    }
+
     impl_ule_from_array!(char, CharULE, Self([0; 3]));
 }
 
@@ -60,23 +71,23 @@ impl CharULE {
 //     (achieved by `#[repr(transparent)]` on a type that satisfies this invariant)
 //  2. CharULE is aligned to 1 byte.
 //     (achieved by `#[repr(transparent)]` on a type that satisfies this invariant)
-//  3. The impl of validate_byte_slice() returns an error if any byte is not valid.
-//  4. The impl of validate_byte_slice() returns an error if there are extra bytes.
+//  3. The impl of validate_bytes() returns an error if any byte is not valid.
+//  4. The impl of validate_bytes() returns an error if there are extra bytes.
 //  5. The other ULE methods use the default impl.
 //  6. CharULE byte equality is semantic equality
 unsafe impl ULE for CharULE {
     #[inline]
-    fn validate_byte_slice(bytes: &[u8]) -> Result<(), ZeroVecError> {
+    fn validate_bytes(bytes: &[u8]) -> Result<(), UleError> {
         if bytes.len() % 3 != 0 {
-            return Err(ZeroVecError::length::<Self>(bytes.len()));
+            return Err(UleError::length::<Self>(bytes.len()));
         }
         // Validate the bytes
         for chunk in bytes.chunks_exact(3) {
             // TODO: Use slice::as_chunks() when stabilized
-            #[allow(clippy::indexing_slicing)]
+            #[expect(clippy::indexing_slicing)]
             // Won't panic because the chunks are always 3 bytes long
             let u = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], 0]);
-            char::try_from(u).map_err(|_| ZeroVecError::parse::<Self>())?;
+            char::try_from(u).map_err(|_| UleError::parse::<Self>())?;
         }
         Ok(())
     }
@@ -92,15 +103,7 @@ impl AsULE for char {
 
     #[inline]
     fn from_unaligned(unaligned: Self::ULE) -> Self {
-        // Safe because the bytes of CharULE are defined to represent a valid Unicode scalar value.
-        unsafe {
-            Self::from_u32_unchecked(u32::from_le_bytes([
-                unaligned.0[0],
-                unaligned.0[1],
-                unaligned.0[2],
-                0,
-            ]))
-        }
+        unaligned.to_char()
     }
 }
 
@@ -125,7 +128,7 @@ mod test {
         const CHARS: [char; 2] = ['a', '🙃'];
         const CHARS_ULE: [CharULE; 2] = CharULE::from_array(CHARS);
         assert_eq!(
-            CharULE::as_byte_slice(&CHARS_ULE),
+            CharULE::slice_as_bytes(&CHARS_ULE),
             &[0x61, 0x00, 0x00, 0x43, 0xF6, 0x01]
         );
     }
@@ -134,7 +137,7 @@ mod test {
     fn test_from_array_zst() {
         const CHARS: [char; 0] = [];
         const CHARS_ULE: [CharULE; 0] = CharULE::from_array(CHARS);
-        let bytes = CharULE::as_byte_slice(&CHARS_ULE);
+        let bytes = CharULE::slice_as_bytes(&CHARS_ULE);
         let empty: &[u8] = &[];
         assert_eq!(bytes, empty);
     }
@@ -144,10 +147,10 @@ mod test {
         // 1-byte, 2-byte, 3-byte, and two 4-byte character in UTF-8 (not as relevant in UTF-32)
         let chars = ['w', 'ω', '文', '𑄃', '🙃'];
         let char_ules: Vec<CharULE> = chars.iter().copied().map(char::to_unaligned).collect();
-        let char_bytes: &[u8] = CharULE::as_byte_slice(&char_ules);
+        let char_bytes: &[u8] = CharULE::slice_as_bytes(&char_ules);
 
         // Check parsing
-        let parsed_ules: &[CharULE] = CharULE::parse_byte_slice(char_bytes).unwrap();
+        let parsed_ules: &[CharULE] = CharULE::parse_bytes_to_slice(char_bytes).unwrap();
         assert_eq!(char_ules, parsed_ules);
         let parsed_chars: Vec<char> = parsed_ules
             .iter()
@@ -172,8 +175,8 @@ mod test {
             .copied()
             .map(<u32 as AsULE>::to_unaligned)
             .collect();
-        let u32_bytes: &[u8] = RawBytesULE::<4>::as_byte_slice(&u32_ules);
-        let parsed_ules_result = CharULE::parse_byte_slice(u32_bytes);
+        let u32_bytes: &[u8] = RawBytesULE::<4>::slice_as_bytes(&u32_ules);
+        let parsed_ules_result = CharULE::parse_bytes_to_slice(u32_bytes);
         assert!(parsed_ules_result.is_err());
 
         // 0x20FFFF is out of range for a char
@@ -183,8 +186,8 @@ mod test {
             .copied()
             .map(<u32 as AsULE>::to_unaligned)
             .collect();
-        let u32_bytes: &[u8] = RawBytesULE::<4>::as_byte_slice(&u32_ules);
-        let parsed_ules_result = CharULE::parse_byte_slice(u32_bytes);
+        let u32_bytes: &[u8] = RawBytesULE::<4>::slice_as_bytes(&u32_ules);
+        let parsed_ules_result = CharULE::parse_bytes_to_slice(u32_bytes);
         assert!(parsed_ules_result.is_err());
     }
 }

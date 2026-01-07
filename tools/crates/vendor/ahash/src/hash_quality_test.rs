@@ -70,8 +70,8 @@ fn test_no_full_collisions<T: Hasher>(gen_hash: impl Fn() -> T) {
     gen_combinations(&options, 7, Vec::new(), &mut combinations);
     let mut map: HashMap<u64, Vec<u8>> = HashMap::new();
     for combination in combinations {
-        use zerocopy::AsBytes;
-        let array = combination.as_slice().as_bytes().to_vec();
+        use zerocopy::IntoBytes;
+        let array = combination.as_bytes().to_vec();
         let mut hasher = gen_hash();
         hasher.write(&array);
         let hash = hasher.finish();
@@ -407,7 +407,7 @@ mod fallback_tests {
     #[test]
     fn fallback_keys_affect_every_byte() {
         //For fallback second key is not used in every hash.
-        #[cfg(all(not(feature = "specialize"), feature = "folded_multiply"))]
+        #[cfg(all(not(specialize), folded_multiply))]
         test_keys_affect_every_byte(0, |a, b| AHasher::new_with_keys(a ^ b, a));
         test_keys_affect_every_byte("", |a, b| AHasher::new_with_keys(a ^ b, a));
         test_keys_affect_every_byte((0, 0), |a, b| AHasher::new_with_keys(a ^ b, a));
@@ -441,7 +441,7 @@ mod fallback_tests {
 ///Basic sanity tests of the cypto properties of aHash.
 #[cfg(any(
     all(any(target_arch = "x86", target_arch = "x86_64"), target_feature = "aes", not(miri)),
-    all(target_arch = "aarch64", target_feature = "aes", not(miri)),
+    all(feature = "nightly-arm-aes", target_arch = "aarch64", target_feature = "aes", not(miri)),
     all(feature = "nightly-arm-aes", target_arch = "arm", target_feature = "aes", not(miri)),
 ))]
 #[cfg(test)]
@@ -504,7 +504,7 @@ mod aes_tests {
 
     #[test]
     fn aes_keys_affect_every_byte() {
-        #[cfg(not(feature = "specialize"))]
+        #[cfg(not(specialize))]
         test_keys_affect_every_byte(0, AHasher::test_with_keys);
         test_keys_affect_every_byte("", AHasher::test_with_keys);
         test_keys_affect_every_byte((0, 0), AHasher::test_with_keys);

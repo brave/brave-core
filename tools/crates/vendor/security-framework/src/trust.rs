@@ -1,13 +1,14 @@
 //! Trust evaluation support.
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::array::CFArray;
 #[cfg(target_os = "macos")]
 use core_foundation::array::CFArrayRef;
 use core_foundation::base::TCFType;
 use core_foundation::data::CFData;
 use core_foundation::date::CFDate;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation_sys::base::{Boolean, CFIndex};
 
+use security_framework_sys::base::{errSecNotTrusted, errSecTrustSettingDeny};
 use security_framework_sys::trust::*;
 use std::ptr;
 
@@ -23,26 +24,20 @@ use core_foundation::error::{CFError, CFErrorRef};
 pub struct TrustResult(SecTrustResultType);
 
 impl TrustResult {
-    /// An invalid setting or result.
-    pub const INVALID: Self = Self(kSecTrustResultInvalid);
-
-    /// You may proceed.
-    pub const PROCEED: Self = Self(kSecTrustResultProceed);
-
     /// Indicates a denial by the user, do not proceed.
     pub const DENY: Self = Self(kSecTrustResultDeny);
-
-    /// The certificate is implicitly trusted.
-    pub const UNSPECIFIED: Self = Self(kSecTrustResultUnspecified);
-
-    /// Indicates a trust policy failure that the user can override.
-    pub const RECOVERABLE_TRUST_FAILURE: Self = Self(kSecTrustResultRecoverableTrustFailure);
-
     /// Indicates a trust policy failure that the user cannot override.
     pub const FATAL_TRUST_FAILURE: Self = Self(kSecTrustResultFatalTrustFailure);
-
+    /// An invalid setting or result.
+    pub const INVALID: Self = Self(kSecTrustResultInvalid);
     /// An error not related to trust validation.
     pub const OTHER_ERROR: Self = Self(kSecTrustResultOtherError);
+    /// You may proceed.
+    pub const PROCEED: Self = Self(kSecTrustResultProceed);
+    /// Indicates a trust policy failure that the user can override.
+    pub const RECOVERABLE_TRUST_FAILURE: Self = Self(kSecTrustResultRecoverableTrustFailure);
+    /// The certificate is implicitly trusted.
+    pub const UNSPECIFIED: Self = Self(kSecTrustResultUnspecified);
 }
 
 impl TrustResult {
@@ -228,23 +223,47 @@ impl SecTrust {
         }
     }
 
-    /// Evaluates trust. Requires macOS 10.14 or iOS, otherwise it just calls `evaluate()`
+    /// Evaluates trust. Requires macOS 10.14 (checked at runtime) or iOS,
+    /// otherwise it just calls `evaluate()`.
     pub fn evaluate_with_error(&self) -> Result<(), CFError> {
+        // Here, we statically know the symbol is available.
         #[cfg(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
-        unsafe {
+        let fnptr = Some(SecTrustEvaluateWithError);
+
+        // On older platforms, we try to look it up dynamically.
+        #[cfg(not(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos")))]
+        let fnptr = {
+            // SAFETY: The C-string is correct.
+            let fnptr = unsafe { libc::dlsym(libc::RTLD_DEFAULT, b"SecTrustEvaluateWithError\0".as_ptr().cast()) };
+            // SAFETY: The function pointer either has the given signature, or
+            // is NULL when the symbol is not available - which is valid to
+            // transmute to `Option<fn()>`, see:
+            // https://doc.rust-lang.org/std/option/index.html#representation
+            unsafe {
+                core::mem::transmute::<
+                    *const std::os::raw::c_void,
+                    Option<unsafe extern "C" fn(SecTrustRef, *mut CFErrorRef) -> bool>,
+                >(fnptr)
+            }
+        };
+
+        // Try to use `SecTrustEvaluateWithError` if available.
+        if let Some(fnptr) = fnptr {
             let mut error: CFErrorRef = ::std::ptr::null_mut();
-            if !SecTrustEvaluateWithError(self.0, &mut error) {
+            // SAFETY: The given pointers are valid.
+            let result = unsafe { fnptr(self.0, &mut error) };
+            if !result {
                 assert!(!error.is_null());
-                let error = CFError::wrap_under_create_rule(error);
+                // SAFETY: `SecTrustEvaluateWithError` expects us to release
+                // the error.
+                let error = unsafe { CFError::wrap_under_create_rule(error) };
                 return Err(error);
             }
             Ok(())
-        }
-        #[cfg(not(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos")))]
-        #[allow(deprecated)]
-        {
-            use security_framework_sys::base::{errSecNotTrusted, errSecTrustSettingDeny};
-
+        } else {
+            // Otherwise, fall back to SecTrustEvaluate. This has the same
+            // semantics, though error codes are worse.
+            #[allow(deprecated)]
             let code = match self.evaluate() {
                 Ok(res) if res.success() => return Ok(()),
                 Ok(TrustResult::DENY) => errSecTrustSettingDeny,
@@ -283,12 +302,10 @@ impl SecTrust {
     }
 }
 
-#[cfg(not(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos")))]
 extern "C" {
     fn CFErrorCreate(allocator: core_foundation_sys::base::CFAllocatorRef, domain: core_foundation_sys::string::CFStringRef, code: CFIndex, userInfo: core_foundation_sys::dictionary::CFDictionaryRef) -> CFErrorRef;
 }
 
-#[cfg(not(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos")))]
 fn cferror_from_osstatus(code: core_foundation_sys::base::OSStatus) -> CFError {
     unsafe {
         let error = CFErrorCreate(ptr::null_mut(), core_foundation_sys::error::kCFErrorDomainOSStatus, code as _, ptr::null_mut());
@@ -357,7 +374,7 @@ mod test {
         let cert = certificate();
         let ssl_policy = SecPolicy::create_ssl(SslProtocolSide::CLIENT, Some("certifi.io"));
 
-        let trust = SecTrust::create_with_certificates(&[cert.clone()], &[ssl_policy.clone()]).unwrap();
+        let trust = SecTrust::create_with_certificates(std::slice::from_ref(&cert), std::slice::from_ref(&ssl_policy)).unwrap();
         trust.evaluate().unwrap();
         assert!(trust.certificate_at_index(1).is_none());
 

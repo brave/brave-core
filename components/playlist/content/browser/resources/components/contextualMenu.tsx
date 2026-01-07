@@ -59,34 +59,35 @@ export default function ContextualMenuAnchorButton ({
   }, [visible])
 
   return (
-    <StyledButtonMenu
-      visible={visible}
-      onChange={({ isOpen }) => {
-        if (isOpen) onShowMenu?.()
-        setOpen(isOpen)
-      }}
-      onClose={() => onDismissMenu?.()}
-      isOpen={open}
-    >
-      <StyledButton kind='plain-faint' size='small' slot='anchor-content'>
-        <Icon name='more-horizontal' />
-      </StyledButton>
-      {items
-        .filter((i) => i)
-        .map((i) => (
-          <leo-menu-item
-            key={i!.name}
-            onClick={(e) => {
-              e.stopPropagation()
-              i!.onClick()
-            }}
-          >
-            <StyledRow>
-              <span>{i!.name}</span>
-              <Icon name={i!.iconName} />
-            </StyledRow>
-          </leo-menu-item>
-        ))}
-    </StyledButtonMenu>
+    <div onClick={(e) => e.stopPropagation()}>
+      <StyledButtonMenu
+        visible={visible}
+        onChange={({ isOpen }) => {
+          if (isOpen) onShowMenu?.()
+          setOpen(isOpen)
+        }}
+        onClose={() => onDismissMenu?.()}
+        isOpen={open}
+      >
+        <StyledButton kind='plain-faint' size='small' slot='anchor-content'>
+          <Icon name='more-horizontal' />
+        </StyledButton>
+        {items
+          .filter((i) => i)
+          .map((i) => (
+            <leo-menu-item
+              key={i!.name}
+              onClick={(e) => {
+                i!.onClick()
+              }}
+            >
+              <StyledRow>
+                <span>{i!.name}</span>
+                <Icon name={i!.iconName} />
+              </StyledRow>
+            </leo-menu-item>
+          ))}
+      </StyledButtonMenu>
+    </div>
   )
 }

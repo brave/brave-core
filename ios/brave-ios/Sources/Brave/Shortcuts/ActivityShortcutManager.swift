@@ -150,21 +150,33 @@ public class ActivityShortcutManager: NSObject {
   }
 
   private func handleActivityDetails(type: ActivityType, using bvc: BrowserViewController) {
+    let openExternalNewTab: (Bool, Bool) -> Void = { isPrivate, attemptLocationFieldFocus in
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: attemptLocationFieldFocus,
+        isPrivate: isPrivate,
+        isExternal: true
+      )
+      bvc.popToBVC()
+    }
+
     switch type {
     case .newTab:
-      bvc.openBlankNewTab(
-        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
-        isExternal: true
+      openExternalNewTab(
+        bvc.privateBrowsingManager.isPrivateBrowsing,
+        Preferences.General.openKeyboardOnNTPSelection.value
       )
-      bvc.popToBVC()
     case .newPrivateTab:
-      bvc.openBlankNewTab(
-        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-        isPrivate: true,
-        isExternal: true
-      )
-      bvc.popToBVC()
+      if Preferences.Privacy.lockWithPasscode.value {
+        openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+      } else if Preferences.Privacy.privateBrowsingLock.value {
+        guard let windowProtection = bvc.windowProtection else { return }
+        bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) { success, _ in
+          guard success else { return }
+          openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+        }
+      } else {
+        openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+      }
     case .openBookmarks:
       bvc.popToBVC()
       bvc.navigationHelper.openBookmarks()
@@ -175,12 +187,7 @@ public class ActivityShortcutManager: NSObject {
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
       // need to stay in NTP for Brave VPN flow
-      bvc.openBlankNewTab(
-        attemptLocationFieldFocus: false,
-        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
-        isExternal: true
-      )
-      bvc.popToBVC()
+      openExternalNewTab(bvc.privateBrowsingManager.isPrivateBrowsing, false)
 
       switch BraveVPN.vpnState {
       case .notPurchased, .expired:
@@ -198,8 +205,7 @@ public class ActivityShortcutManager: NSObject {
 
       if Preferences.BraveNews.isEnabled.value {
         // need to stay in NTP for Brave News
-        bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
-        bvc.popToBVC()
+        openExternalNewTab(false, false)
 
         guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
           return

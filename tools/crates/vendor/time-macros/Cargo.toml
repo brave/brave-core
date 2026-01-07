@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.67.1"
+rust-version = "1.81.0"
 name = "time-macros"
-version = "0.2.19"
+version = "0.2.24"
 authors = [
     "Jacob Pratt <open-source@jhpratt.dev>",
     "Time contributors",
@@ -42,6 +42,12 @@ repository = "https://github.com/time-rs/time"
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
 
+[features]
+formatting = []
+large-dates = []
+parsing = []
+serde = []
+
 [lib]
 name = "time_macros"
 path = "src/lib.rs"
@@ -51,16 +57,11 @@ proc-macro = true
 version = "0.1.0"
 
 [dependencies.time-core]
-version = "=0.1.2"
-
-[features]
-formatting = []
-large-dates = []
-parsing = []
-serde = []
+version = "=0.1.6"
 
 [lints.clippy]
 alloc-instead-of-core = "deny"
+as-underscore = "warn"
 dbg-macro = "warn"
 decimal-literal-representation = "warn"
 explicit-auto-deref = "warn"
@@ -85,6 +86,10 @@ use-debug = "warn"
 level = "warn"
 priority = -1
 
+[lints.clippy.incompatible-msrv]
+level = "allow"
+priority = 1
+
 [lints.clippy.nursery]
 level = "warn"
 priority = -1
@@ -94,6 +99,10 @@ level = "allow"
 priority = 1
 
 [lints.clippy.redundant-pub-crate]
+level = "allow"
+priority = 1
+
+[lints.clippy.uninhabited-references]
 level = "allow"
 priority = 1
 

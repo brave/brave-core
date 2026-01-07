@@ -6,12 +6,13 @@ use bstr::BString;
 pub use imara_diff::*;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod pipeline;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod platform;
+
+pub mod unified_diff;
+pub use unified_diff::impls::UnifiedDiff;
 
 /// Information about the diff performed to detect similarity.
 #[derive(Debug, Default, Clone, Copy, PartialEq, PartialOrd)]
@@ -112,7 +113,7 @@ pub struct Platform {
     pub attr_stack: gix_worktree::Stack,
 
     /// The way we convert resources into diffable states.
-    filter_mode: pipeline::Mode,
+    pub filter_mode: pipeline::Mode,
     /// A continuously growing cache keeping ready-for-diff blobs by their path in the worktree,
     /// as that is what affects their final diff-able state.
     ///

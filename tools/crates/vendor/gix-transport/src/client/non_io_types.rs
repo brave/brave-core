@@ -76,7 +76,7 @@ pub(crate) mod connect {
                     #[cfg(feature = "blocking-client")]
                     if let Some(err) = err.downcast_ref::<crate::client::git::connect::Error>() {
                         return err.is_spurious();
-                    };
+                    }
                     if let Some(err) = err.downcast_ref::<crate::client::Error>() {
                         return err.is_spurious();
                     }
@@ -112,6 +112,8 @@ mod error {
     #[derive(thiserror::Error, Debug)]
     #[allow(missing_docs)]
     pub enum Error {
+        #[error("A request was performed without performing the handshake first")]
+        MissingHandshake,
         #[error("An IO error occurred when talking to the server")]
         Io(#[from] std::io::Error),
         #[error("Capabilities could not be parsed")]

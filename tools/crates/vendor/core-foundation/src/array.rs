@@ -10,12 +10,12 @@
 //! Heterogeneous immutable arrays.
 
 use crate::ConcreteCFType;
+use core::ffi::c_void;
 pub use core_foundation_sys::array::*;
 pub use core_foundation_sys::base::CFIndex;
 use core_foundation_sys::base::{kCFAllocatorDefault, CFRelease, CFTypeRef};
 use std::marker::PhantomData;
 use std::mem;
-use std::os::raw::c_void;
 use std::ptr;
 
 use crate::base::{CFIndexConvertible, CFRange, TCFType};
@@ -50,7 +50,7 @@ impl<'a, T: FromVoid> Iterator for CFArrayIterator<'a, T> {
     }
 }
 
-impl<'a, T: FromVoid> ExactSizeIterator for CFArrayIterator<'a, T> {
+impl<T: FromVoid> ExactSizeIterator for CFArrayIterator<'_, T> {
     fn len(&self) -> usize {
         (self.array.len() - self.index) as usize
     }

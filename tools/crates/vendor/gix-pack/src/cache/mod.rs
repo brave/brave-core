@@ -28,7 +28,7 @@ impl DecodeEntry for Never {
 
 impl<T: DecodeEntry + ?Sized> DecodeEntry for Box<T> {
     fn put(&mut self, pack_id: u32, offset: u64, data: &[u8], kind: Kind, compressed_size: usize) {
-        self.deref_mut().put(pack_id, offset, data, kind, compressed_size)
+        self.deref_mut().put(pack_id, offset, data, kind, compressed_size);
     }
 
     fn get(&mut self, pack_id: u32, offset: u64, out: &mut Vec<u8>) -> Option<(Kind, usize)> {
@@ -52,7 +52,6 @@ pub mod lru;
 pub mod object;
 
 ///
-#[allow(clippy::empty_docs)]
 pub(crate) mod delta;
 
 /// Replaces content of the given `Vec` with the slice. The vec will have the same length

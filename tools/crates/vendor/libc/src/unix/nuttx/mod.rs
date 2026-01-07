@@ -1,13 +1,15 @@
-pub use crate::arch::c_char_def as c_char;
 use crate::prelude::*;
-use crate::{in6_addr, in_addr_t, timespec, DIR};
+use crate::{
+    in6_addr,
+    in_addr_t,
+    timespec,
+    DIR,
+};
 
 pub type nlink_t = u16;
 pub type ino_t = u16;
 pub type blkcnt_t = u64;
 pub type blksize_t = i16;
-pub type c_long = isize;
-pub type c_ulong = usize;
 pub type cc_t = u8;
 pub type clock_t = i64;
 pub type dev_t = i32;
@@ -35,7 +37,7 @@ s! {
         pub st_dev: dev_t,
         pub st_ino: ino_t,
         pub st_mode: mode_t,
-        pub st_nlink: u64,
+        pub st_nlink: nlink_t,
         pub st_uid: u32,
         pub st_gid: u32,
         pub st_rdev: dev_t,
@@ -45,7 +47,7 @@ s! {
         pub st_ctim: timespec,
         pub st_blksize: blksize_t,
         pub st_blocks: i64,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct sockaddr {
@@ -55,12 +57,13 @@ s! {
 
     pub struct passwd {
         pub pw_name: *const c_char,
+        pub pw_passwd: *const c_char,
         pub pw_uid: u32,
         pub pw_gid: u32,
         pub pw_gecos: *const c_char,
         pub pw_dir: *const c_char,
         pub pw_shell: *const c_char,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct sem_t {
@@ -115,7 +118,7 @@ s! {
         pub int_p_cs_precedes: i8,
         pub int_p_sep_by_space: i8,
         pub int_p_sign_posn: i8,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct tm {
@@ -129,8 +132,8 @@ s! {
         pub tm_yday: i32,
         pub tm_isdst: i32,
         pub tm_gmtoff: isize,
-        pub tm_zone: *const i8,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        pub tm_zone: *const c_char,
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct addrinfo {
@@ -142,7 +145,7 @@ s! {
         pub ai_addr: *mut sockaddr,
         pub ai_canonname: *mut c_char,
         pub ai_next: *mut addrinfo,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct pthread_rwlock_t {
@@ -161,12 +164,12 @@ s! {
         pub f_fsid: usize,
         pub f_flag: usize,
         pub f_namemax: usize,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct dirent {
         pub d_type: u8,
-        pub d_name: [i8; __NAME_MAX__ + 1],
+        pub d_name: [c_char; __NAME_MAX__ + 1],
     }
 
     pub struct fd_set {
@@ -182,7 +185,7 @@ s! {
         pub sa_mask: sigset_t,
         pub sa_flags: i32,
         pub sa_user: usize,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct termios {
@@ -192,7 +195,7 @@ s! {
         pub c_lflag: tcflag_t,
         pub c_cc: [cc_t; 12],
         pub c_speed: speed_t,
-        __reserved: [usize; __DEFAULT_RESERVED_SIZE__],
+        __reserved: Padding<[usize; __DEFAULT_RESERVED_SIZE__]>,
     }
 
     pub struct in_addr {
@@ -233,11 +236,6 @@ s! {
         pub ipv6mr_multiaddr: in6_addr,
         pub ipv6mr_interface: u32,
     }
-
-    pub struct timeval {
-        pub tv_sec: time_t,
-        pub tv_usec: suseconds_t,
-    }
 }
 
 // Reserved two pointer size for reserved area for some structures.
@@ -248,6 +246,7 @@ s! {
 // for example, struct passwd, https://pubs.opengroup.org/onlinepubs/009695399/basedefs/pwd.h.html,
 // POSIX only defines following fields in struct passwd:
 // char    *pw_name   User's login name.
+// char    *pw_passwd Encrypted password.
 // uid_t    pw_uid    Numerical user ID.
 // gid_t    pw_gid    Numerical group ID.
 // char    *pw_dir    Initial working directory.
@@ -275,7 +274,7 @@ pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
 };
 
 // dlfcn.h
-pub const RTLD_DEFAULT: *mut c_void = 0 as *mut c_void;
+pub const RTLD_DEFAULT: *mut c_void = ptr::null_mut();
 
 // stdlib.h
 pub const EXIT_SUCCESS: i32 = 0;
@@ -510,15 +509,43 @@ pub const TCP_NODELAY: i32 = 0x10;
 pub const FIONBIO: i32 = 0x30a;
 
 // unistd.h
-pub const STDIN_FILENO: i32 = 0;
-pub const STDOUT_FILENO: i32 = 1;
-pub const STDERR_FILENO: i32 = 2;
 pub const _SC_PAGESIZE: i32 = 0x36;
 pub const _SC_THREAD_STACK_MIN: i32 = 0x58;
 pub const _SC_GETPW_R_SIZE_MAX: i32 = 0x25;
 
 // signal.h
-pub const SIGPIPE: i32 = 13;
+pub const SIGHUP: c_int = 1;
+pub const SIGINT: c_int = 2;
+pub const SIGQUIT: c_int = 3;
+pub const SIGILL: c_int = 4;
+pub const SIGTRAP: c_int = 5;
+pub const SIGABRT: c_int = 6;
+pub const SIGBUS: c_int = 7;
+pub const SIGFPE: c_int = 8;
+pub const SIGKILL: c_int = 9;
+pub const SIGUSR1: c_int = 10;
+pub const SIGSEGV: c_int = 11;
+pub const SIGUSR2: c_int = 12;
+pub const SIGPIPE: c_int = 13;
+pub const SIGALRM: c_int = 14;
+pub const SIGTERM: c_int = 15;
+pub const SIGSTKFLT: c_int = 16;
+pub const SIGCHLD: c_int = 17;
+pub const SIGCONT: c_int = 18;
+pub const SIGSTOP: c_int = 19;
+pub const SIGTSTP: c_int = 20;
+pub const SIGTTIN: c_int = 21;
+pub const SIGTTOU: c_int = 22;
+pub const SIGURG: c_int = 23;
+pub const SIGXCPU: c_int = 24;
+pub const SIGXFSZ: c_int = 25;
+pub const SIGVTALRM: c_int = 26;
+pub const SIGPROF: c_int = 27;
+pub const SIGWINCH: c_int = 28;
+pub const SIGIO: c_int = 29;
+pub const SIGPOLL: c_int = SIGIO;
+pub const SIGPWR: c_int = 30;
+pub const SIGSYS: c_int = 31;
 
 // pthread.h
 pub const PTHREAD_MUTEX_NORMAL: i32 = 0;
@@ -535,6 +562,7 @@ pub const IP_ADD_MEMBERSHIP: i32 = 0x14;
 pub const IP_DROP_MEMBERSHIP: i32 = 0x15;
 
 extern "C" {
+    pub fn __errno() -> *mut c_int;
     pub fn bind(sockfd: i32, addr: *const sockaddr, addrlen: socklen_t) -> i32;
     pub fn ioctl(fd: i32, request: i32, ...) -> i32;
     pub fn dirfd(dirp: *mut DIR) -> i32;
@@ -557,8 +585,9 @@ extern "C" {
     pub fn clock_gettime(clockid: clockid_t, tp: *mut timespec) -> i32;
     pub fn futimens(fd: i32, times: *const timespec) -> i32;
     pub fn pthread_condattr_setclock(attr: *mut pthread_condattr_t, clock_id: clockid_t) -> i32;
-    pub fn pthread_set_name_np(thread: pthread_t, name: *const c_char) -> i32;
     pub fn pthread_setname_np(thread: pthread_t, name: *const c_char) -> i32;
     pub fn pthread_getname_np(thread: pthread_t, name: *mut c_char, len: usize) -> i32;
     pub fn getrandom(buf: *mut c_void, buflen: usize, flags: u32) -> isize;
+    pub fn arc4random() -> u32;
+    pub fn arc4random_buf(bytes: *mut c_void, nbytes: usize);
 }

@@ -19,6 +19,7 @@ use super::{Bitness, Type, Version};
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct Info {
     /// Operating system type. See `Type` for details.
     pub(crate) os_type: Type,
@@ -212,8 +213,10 @@ mod tests {
             Type::Redox,
             Type::Alpaquita,
             Type::Alpine,
+            Type::ALTLinux,
             Type::Amazon,
             Type::Android,
+            Type::AOSC,
             Type::Arch,
             Type::Artix,
             Type::Bluefin,
@@ -235,6 +238,7 @@ mod tests {
             Type::openEuler,
             Type::openSUSE,
             Type::OracleLinux,
+            Type::PikaOS,
             Type::Pop,
             Type::Redhat,
             Type::RedHatEnterprise,
@@ -281,6 +285,14 @@ mod tests {
                     ..Default::default()
                 },
                 "Linux 2.3.4 [unknown bitness]",
+            ),
+            (
+                Info {
+                    os_type: Type::AOSC,
+                    version: Version::Semantic(12, 1, 3),
+                    ..Default::default()
+                },
+                "AOSC OS 12.1.3 [unknown bitness]",
             ),
             (
                 Info {

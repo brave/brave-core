@@ -13,8 +13,8 @@ fn symtab_shndx() {
 
     for i in 0..0x10000 {
         let name = format!("func{}", i).into_bytes();
-        let (section, offset) =
-            object.add_subsection(write::StandardSection::Text, &name, &[0xcc], 1);
+        let section = object.add_subsection(write::StandardSection::Text, &name);
+        let offset = object.append_section_data(section, &[0xcc], 1);
         object.add_symbol(write::Symbol {
             name,
             value: offset,
@@ -34,12 +34,26 @@ fn symtab_shndx() {
     assert_eq!(object.format(), BinaryFormat::Elf);
     assert_eq!(object.architecture(), Architecture::X86_64);
 
-    for symbol in object.symbols().skip(1) {
+    for symbol in object.symbols() {
         assert_eq!(
             symbol.section(),
             SymbolSection::Section(SectionIndex(symbol.index().0))
         );
     }
+}
+
+#[test]
+fn empty_symtab() {
+    let object = write::Object::new(BinaryFormat::Elf, Architecture::X86_64, Endianness::Little);
+    let bytes = object.write().unwrap();
+
+    let object = read::File::parse(&*bytes).unwrap();
+    assert_eq!(object.format(), BinaryFormat::Elf);
+    assert_eq!(object.architecture(), Architecture::X86_64);
+    let symtab = object.section_by_name(".symtab").unwrap();
+    assert_eq!(symtab.size(), 24);
+    let strtab = object.section_by_name(".strtab").unwrap();
+    assert_eq!(strtab.size(), 1);
 }
 
 #[test]
@@ -62,7 +76,6 @@ fn aligned_sections() {
     assert_eq!(object.architecture(), Architecture::X86_64);
 
     let mut sections = object.sections();
-    let _ = sections.next().unwrap();
 
     let section = sections.next().unwrap();
     assert_eq!(section.name(), Ok(".text"));
@@ -88,7 +101,7 @@ fn compression_zlib() {
     ch.ch_addralign.set(LE, 1);
 
     let mut buf = Vec::new();
-    buf.write(object::bytes_of(&ch)).unwrap();
+    buf.write_all(object::bytes_of(&ch)).unwrap();
     let mut encoder = flate2::write::ZlibEncoder::new(buf, flate2::Compression::default());
     encoder.write_all(data).unwrap();
     let compressed = encoder.finish().unwrap();
@@ -163,24 +176,24 @@ fn note() {
     let mut buffer = Vec::new();
 
     buffer
-        .write(object::bytes_of(&elf::NoteHeader32 {
+        .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
             n_type: U32::new(endian, 1),
         }))
         .unwrap();
-    buffer.write(b"name1\0\0\0").unwrap();
-    buffer.write(b"descriptor\0\0").unwrap();
+    buffer.write_all(b"name1\0\0\0").unwrap();
+    buffer.write_all(b"descriptor\0\0").unwrap();
 
     buffer
-        .write(object::bytes_of(&elf::NoteHeader32 {
+        .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
             n_type: U32::new(endian, 2),
         }))
         .unwrap();
-    buffer.write(b"name2\0\0\0").unwrap();
-    buffer.write(b"descriptor\0\0").unwrap();
+    buffer.write_all(b"name2\0\0\0").unwrap();
+    buffer.write_all(b"descriptor\0\0").unwrap();
 
     let section = object.add_section(Vec::new(), b".note4".to_vec(), SectionKind::Note);
     object.section_mut(section).set_data(buffer, 4);
@@ -189,24 +202,24 @@ fn note() {
     let mut buffer = Vec::new();
 
     buffer
-        .write(object::bytes_of(&elf::NoteHeader32 {
+        .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
             n_type: U32::new(endian, 1),
         }))
         .unwrap();
-    buffer.write(b"name1\0\0\0\0\0\0\0").unwrap();
-    buffer.write(b"descriptor\0\0\0\0\0\0").unwrap();
+    buffer.write_all(b"name1\0\0\0\0\0\0\0").unwrap();
+    buffer.write_all(b"descriptor\0\0\0\0\0\0").unwrap();
 
     buffer
-        .write(object::bytes_of(&elf::NoteHeader32 {
+        .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 4),
             n_descsz: U32::new(endian, 11),
             n_type: U32::new(endian, 2),
         }))
         .unwrap();
-    buffer.write(b"abc\0").unwrap();
-    buffer.write(b"descriptor\0\0\0\0\0\0").unwrap();
+    buffer.write_all(b"abc\0").unwrap();
+    buffer.write_all(b"descriptor\0\0\0\0\0\0").unwrap();
 
     let section = object.add_section(Vec::new(), b".note8".to_vec(), SectionKind::Note);
     object.section_mut(section).set_data(buffer, 8);

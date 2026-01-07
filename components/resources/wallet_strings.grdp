@@ -149,6 +149,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
   <message name="IDS_BRAVE_WALLET_SORT_BY" desc="Sort by button label">Sort by</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
@@ -743,7 +744,9 @@
   <message name="IDS_BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK" desc="Transaction intent Swapping or Bridging on network description"><ph name="SWAPPING_OR_BRIDGING"><ex>Swapping</ex>$1</ph> on <ph name="NETWORK"><ex>Solana Mainnet Beta</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT_ON_NETWORK" desc="Transaction intent error attempting to Swap or Bride on network description">There was an error attempting to <ph name="SWAP_OR_BRIDGE"><ex>swap</ex>$1</ph> on <ph name="NETWORK"><ex>Solana Mainnet Beta</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_AMOUNT" desc="Transaction intent shielding amount description">Shielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_UNSHIELDING_AMOUNT" desc="Transaction intent unshielding amount description">Unshielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_SHIELDED" desc="Transaction intent amount has been shielded description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been shielded</message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_UNSHIELDED" desc="Transaction intent amount has been unshielded description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been unshielded</message>
   <message name="IDS_BRAVE_WALLET_PENDING_TRANSACTIONS" desc="Transaction complete panel, amount of transactions still pending.">
     {PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
@@ -1230,10 +1233,14 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_IS_SYNCING" desc="Account is syncing label">Account is syncing</message>
   <message name="IDS_BRAVE_WALLET_SYNCING" desc="Syncing label">Syncing</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SHIELD" desc="Review shield button label">Review shield</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_UNSHIELD" desc="Review unshield button label">Review unshield</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING" desc="Shielding label">Shielding</message>
+  <message name="IDS_BRAVE_WALLET_UNSHIELDING" desc="Unshielding label">Unshielding</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ZEC" desc="Shield ZEC button label">Shield ZEC</message>
+  <message name="IDS_BRAVE_WALLET_UNSHIELD_ZEC" desc="Unshield ZEC button label">Unshield ZEC</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_FUNDS" desc="Shield funds button label">Shield funds</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Shielding funds alert description">You are sending funds from your transparent account to your shielded account.</message>
+  <message name="IDS_BRAVE_WALLET_UNSHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Unshielding funds alert description">You are sending funds from your shielded account to your transparent account.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explanation that simulation of a transaction has failed">Transaction preview failed.</message>
   <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>

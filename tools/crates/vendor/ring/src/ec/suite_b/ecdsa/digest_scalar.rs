@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -42,41 +42,40 @@ use crate::{digest, ec::suite_b::ops::*};
 /// right will give a value less than 2**255, which is less than `n`. The
 /// analogous argument applies for P-384. However, it does *not* apply in
 /// general; for example, it doesn't apply to P-521.
-pub fn digest_scalar(ops: &ScalarOps, msg: digest::Digest) -> Scalar {
-    digest_scalar_(ops, msg.as_ref())
+pub(super) fn digest_scalar(n: &Modulus<N>, msg: digest::Digest) -> Scalar {
+    digest_scalar_(n, msg.as_ref())
 }
 
 #[cfg(test)]
-pub(crate) fn digest_bytes_scalar(ops: &ScalarOps, digest: &[u8]) -> Scalar {
-    digest_scalar_(ops, digest)
+pub(super) fn digest_bytes_scalar(n: &Modulus<N>, digest: &[u8]) -> Scalar {
+    digest_scalar_(n, digest)
 }
 
 // This is a separate function solely so that we can test specific digest
 // values like all-zero values and values larger than `n`.
-fn digest_scalar_(ops: &ScalarOps, digest: &[u8]) -> Scalar {
-    let len = ops.scalar_bytes_len();
+fn digest_scalar_(n: &Modulus<N>, digest: &[u8]) -> Scalar {
+    let len = n.bytes_len();
     let digest = if digest.len() > len {
         &digest[..len]
     } else {
         digest
     };
 
-    scalar_parse_big_endian_partially_reduced_variable_consttime(
-        ops.common,
-        untrusted::Input::from(digest),
-    )
-    .unwrap()
+    scalar_parse_big_endian_partially_reduced_variable_consttime(n, untrusted::Input::from(digest))
+        .unwrap()
 }
 
 #[cfg(test)]
 mod tests {
     use super::digest_bytes_scalar;
-    use crate::{digest, ec::suite_b::ops::*, limb, test};
+    use crate::testutil as test;
+    use crate::{cpu, digest, ec::suite_b::ops::*, limb};
 
     #[test]
     fn test() {
+        let cpu = cpu::features();
         test::run(
-            test_file!("ecdsa_digest_scalar_tests.txt"),
+            test_vector_file!("ecdsa_digest_scalar_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -94,18 +93,20 @@ mod tests {
                         panic!("Unsupported curve+digest: {}+{}", curve_name, digest_name);
                     }
                 };
+                let n = &ops.scalar_ops.scalar_modulus(cpu);
 
                 assert_eq!(input.len(), digest_alg.output_len());
                 assert_eq!(output.len(), ops.scalar_ops.scalar_bytes_len());
+                assert_eq!(output.len(), n.bytes_len());
 
                 let expected = scalar_parse_big_endian_variable(
-                    ops.public_key_ops.common,
+                    n,
                     limb::AllowZero::Yes,
                     untrusted::Input::from(&output),
                 )
                 .unwrap();
 
-                let actual = digest_bytes_scalar(ops.scalar_ops, &input);
+                let actual = digest_bytes_scalar(n, &input);
                 assert_eq!(
                     ops.scalar_ops.leak_limbs(&actual),
                     ops.scalar_ops.leak_limbs(&expected)

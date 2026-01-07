@@ -3,13 +3,13 @@ use core::marker::PhantomData;
 
 use pki_types::{CertificateDer, PrivateKeyDer};
 
+use super::{ResolvesServerCert, ServerConfig, handy};
 use crate::builder::{ConfigBuilder, WantsVerifier};
 use crate::error::Error;
-use crate::server::{handy, ResolvesServerCert, ServerConfig};
-use crate::sign::CertifiedKey;
+use crate::sign::{CertifiedKey, SingleCertAndKey};
 use crate::sync::Arc;
 use crate::verify::{ClientCertVerifier, NoClientAuth};
-use crate::{compress, versions, InconsistentKeys, NoKeyLog};
+use crate::{NoKeyLog, compress, versions};
 
 impl ConfigBuilder<ServerConfig, WantsVerifier> {
     /// Choose how to verify client certificates.
@@ -67,20 +67,8 @@ impl ConfigBuilder<ServerConfig, WantsServerCert> {
         cert_chain: Vec<CertificateDer<'static>>,
         key_der: PrivateKeyDer<'static>,
     ) -> Result<ServerConfig, Error> {
-        let private_key = self
-            .provider
-            .key_provider
-            .load_private_key(key_der)?;
-
-        let certified_key = CertifiedKey::new(cert_chain, private_key);
-        match certified_key.keys_match() {
-            // Don't treat unknown consistency as an error
-            Ok(()) | Err(Error::InconsistentKeys(InconsistentKeys::Unknown)) => (),
-            Err(err) => return Err(err),
-        }
-
-        let resolver = handy::AlwaysResolvesChain::new(certified_key);
-        Ok(self.with_cert_resolver(Arc::new(resolver)))
+        let certified_key = CertifiedKey::from_der(cert_chain, key_der, self.crypto_provider())?;
+        Ok(self.with_cert_resolver(Arc::new(SingleCertAndKey::from(certified_key))))
     }
 
     /// Sets a single certificate chain, matching private key and optional OCSP
@@ -102,20 +90,12 @@ impl ConfigBuilder<ServerConfig, WantsServerCert> {
         key_der: PrivateKeyDer<'static>,
         ocsp: Vec<u8>,
     ) -> Result<ServerConfig, Error> {
-        let private_key = self
-            .provider
-            .key_provider
-            .load_private_key(key_der)?;
-
-        let certified_key = CertifiedKey::new(cert_chain, private_key);
-        match certified_key.keys_match() {
-            // Don't treat unknown consistency as an error
-            Ok(()) | Err(Error::InconsistentKeys(InconsistentKeys::Unknown)) => (),
-            Err(err) => return Err(err),
+        let mut certified_key =
+            CertifiedKey::from_der(cert_chain, key_der, self.crypto_provider())?;
+        if !ocsp.is_empty() {
+            certified_key.ocsp = Some(ocsp);
         }
-
-        let resolver = handy::AlwaysResolvesChain::new_with_extras(certified_key, ocsp);
-        Ok(self.with_cert_resolver(Arc::new(resolver)))
+        Ok(self.with_cert_resolver(Arc::new(SingleCertAndKey::from(certified_key))))
     }
 
     /// Sets a custom [`ResolvesServerCert`].

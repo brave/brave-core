@@ -62,6 +62,9 @@ impl Recorder {
     }
 
     fn push_element(&mut self, name: &BStr) {
+        if name.is_empty() {
+            return;
+        }
         if !self.path.is_empty() {
             self.path.push(b'/');
         }
@@ -92,6 +95,12 @@ impl Recorder {
 }
 
 impl Visit for Recorder {
+    fn pop_back_tracked_path_and_set_current(&mut self) {
+        if let Some(Location::Path) = self.location {
+            self.path = self.path_deque.pop_back().unwrap_or_default();
+        }
+    }
+
     fn pop_front_tracked_path_and_set_current(&mut self) {
         if let Some(Location::Path) = self.location {
             self.path = self
@@ -123,7 +132,7 @@ impl Visit for Recorder {
 
     fn pop_path_component(&mut self) {
         if let Some(Location::Path) = self.location {
-            self.pop_element()
+            self.pop_element();
         }
     }
 

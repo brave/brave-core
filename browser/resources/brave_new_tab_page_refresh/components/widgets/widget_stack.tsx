@@ -57,12 +57,14 @@ export function WidgetStack(props: Props) {
   }, [
     props.tabs,
     showTalkWidget,
+    talkFeatureEnabled,
     rewardsFeatureEnabled,
     showRewardsWidget,
     vpnFeatureEnabled,
     showVpnWidget,
     showShieldsStats,
     showNews,
+    newsFeatureEnabled,
   ])
 
   function renderTabButton(tab: TabName) {

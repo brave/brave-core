@@ -6,24 +6,15 @@ use std::iter;
 /// `Chain` is an iterator that joins `b` after `a` in one continuous iterator.
 /// This struct is created by the [`chain()`] method on [`ParallelIterator`]
 ///
-/// [`chain()`]: trait.ParallelIterator.html#method.chain
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`chain()`]: ParallelIterator::chain()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Debug, Clone)]
-pub struct Chain<A, B>
-where
-    A: ParallelIterator,
-    B: ParallelIterator<Item = A::Item>,
-{
+pub struct Chain<A, B> {
     a: A,
     b: B,
 }
 
-impl<A, B> Chain<A, B>
-where
-    A: ParallelIterator,
-    B: ParallelIterator<Item = A::Item>,
-{
+impl<A, B> Chain<A, B> {
     /// Creates a new `Chain` iterator.
     pub(super) fn new(a: A, b: B) -> Self {
         Chain { a, b }
@@ -142,7 +133,7 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 struct ChainProducer<A, B>
 where
@@ -216,9 +207,9 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Wrapper for Chain to implement ExactSizeIterator
+// ////////////////////////////////////////////////////////////////////////
 
+/// Wrapper for `Chain` to implement `ExactSizeIterator`
 struct ChainSeq<A, B> {
     chain: iter::Chain<A, B>,
 }

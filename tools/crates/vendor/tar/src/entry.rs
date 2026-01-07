@@ -603,7 +603,7 @@ impl<'a> EntryFields<'a> {
                 ::std::os::windows::fs::symlink_file(src, dst)
             }
 
-            #[cfg(unix)]
+            #[cfg(all(unix, not(target_arch = "wasm32")))]
             fn symlink(src: &Path, dst: &Path) -> io::Result<()> {
                 ::std::os::unix::fs::symlink(src, dst)
             }
@@ -729,7 +729,7 @@ impl<'a> EntryFields<'a> {
             })
         }
 
-        #[cfg(unix)]
+        #[cfg(all(unix, not(target_arch = "wasm32")))]
         fn _set_ownerships(
             dst: &Path,
             f: &Option<&mut std::fs::File>,
@@ -800,7 +800,7 @@ impl<'a> EntryFields<'a> {
             })
         }
 
-        #[cfg(unix)]
+        #[cfg(all(unix, not(target_arch = "wasm32")))]
         fn _set_perms(
             dst: &Path,
             f: Option<&mut std::fs::File>,
@@ -856,7 +856,7 @@ impl<'a> EntryFields<'a> {
             Err(io::Error::new(io::ErrorKind::Other, "Not implemented"))
         }
 
-        #[cfg(all(unix, feature = "xattr"))]
+        #[cfg(all(unix, not(target_arch = "wasm32"), feature = "xattr"))]
         fn set_xattrs(me: &mut EntryFields, dst: &Path) -> io::Result<()> {
             use std::ffi::OsStr;
             use std::os::unix::prelude::*;

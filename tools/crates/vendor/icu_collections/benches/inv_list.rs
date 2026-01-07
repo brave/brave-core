@@ -8,12 +8,13 @@ use std::char;
 
 fn uniset_bench(c: &mut Criterion) {
     let best_ex = [0x41, 0x46];
-    let best_sample = CodePointInversionList::try_from_inversion_list_slice(&best_ex).unwrap();
+    let best_sample = CodePointInversionList::try_from_u32_inversion_list_slice(&best_ex).unwrap();
     let worst_ex: Vec<u32> = (0x0..((char::MAX as u32) + 1)).collect();
-    let worst_sample = CodePointInversionList::try_from_inversion_list_slice(&worst_ex).unwrap();
+    let worst_sample =
+        CodePointInversionList::try_from_u32_inversion_list_slice(&worst_ex).unwrap();
 
     c.bench_function("uniset/overview", |b| {
-        #[allow(clippy::suspicious_map)]
+        #[expect(clippy::suspicious_map)]
         b.iter(|| {
             best_sample
                 .iter_chars()
@@ -25,17 +26,16 @@ fn uniset_bench(c: &mut Criterion) {
                 .count();
             best_sample
                 .iter_chars()
-                .map(|ch| best_sample.contains_range(&('A'..ch)))
+                .map(|ch| best_sample.contains_range('A'..ch))
                 .count();
             worst_sample
                 .iter_chars()
                 .take(100)
-                .map(|ch| worst_sample.contains_range(&(char::from_u32(0x0).unwrap()..ch)))
+                .map(|ch| worst_sample.contains_range(char::from_u32(0x0).unwrap()..ch))
                 .count();
         })
     });
 
-    #[cfg(feature = "bench")]
     {
         let mut group = c.benchmark_group("uniset/contains");
         group.bench_with_input("best", &best_sample, |b, sample| {
@@ -48,18 +48,14 @@ fn uniset_bench(c: &mut Criterion) {
 
         let mut group = c.benchmark_group("uniset/contains_range");
         group.bench_with_input("best", &best_sample, |b, sample| {
-            b.iter(|| {
-                sample
-                    .iter_chars()
-                    .map(|ch| sample.contains_range(&('A'..ch)))
-            })
+            b.iter(|| sample.iter_chars().map(|ch| sample.contains_range('A'..ch)))
         });
         group.bench_with_input("worst", &worst_sample, |b, sample| {
             b.iter(|| {
                 sample
                     .iter_chars()
                     .take(100)
-                    .map(|ch| sample.contains_range(&(char::from_u32(0x0).unwrap()..ch)))
+                    .map(|ch| sample.contains_range(char::from_u32(0x0).unwrap()..ch))
             })
         });
         group.finish();

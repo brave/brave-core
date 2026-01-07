@@ -1,6 +1,6 @@
 //! Keychain support.
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::base::{Boolean, TCFType};
+use core_foundation::{declare_TCFType, impl_TCFType};
 use security_framework_sys::base::{errSecSuccess, SecKeychainRef};
 use security_framework_sys::keychain::*;
 use std::ffi::CString;
@@ -51,8 +51,9 @@ impl SecKeychain {
     pub fn open<P: AsRef<Path>>(path: P) -> Result<Self> {
         let path_name = [
             path.as_ref().as_os_str().as_bytes(),
-            std::slice::from_ref(&0)
-        ].concat();
+            std::slice::from_ref(&0),
+        ]
+        .concat();
 
         unsafe {
             let mut keychain = ptr::null_mut();
@@ -97,10 +98,10 @@ impl SecKeychain {
     pub fn disable_user_interaction() -> Result<KeychainUserInteractionLock> {
         let code = unsafe { SecKeychainSetUserInteractionAllowed(0u8) };
 
-        if code != errSecSuccess {
-            Err(Error::from_code(code))
-        } else {
+        if code == errSecSuccess {
             Ok(KeychainUserInteractionLock)
+        } else {
+            Err(Error::from_code(code))
         }
     }
 
@@ -111,10 +112,10 @@ impl SecKeychain {
         let mut state: Boolean = 0;
         let code = unsafe { SecKeychainGetUserInteractionAllowed(&mut state) };
 
-        if code != errSecSuccess {
-            Err(Error::from_code(code))
-        } else {
+        if code == errSecSuccess {
             Ok(state != 0)
+        } else {
+            Err(Error::from_code(code))
         }
     }
 }
@@ -201,7 +202,7 @@ impl KeychainSettings {
             version: SEC_KEYCHAIN_SETTINGS_VERS1,
             lockOnSleep: 0,
             useLockInterval: 0,
-            lockInterval: i32::max_value() as u32,
+            lockInterval: i32::MAX as u32,
         })
     }
 
@@ -218,15 +219,12 @@ impl KeychainSettings {
     ///
     /// Defaults to `None`.
     pub fn set_lock_interval(&mut self, lock_interval: Option<u32>) {
-        match lock_interval {
-            Some(lock_interval) => {
-                self.0.useLockInterval = 1;
-                self.0.lockInterval = lock_interval;
-            },
-            None => {
-                self.0.useLockInterval = 0;
-                self.0.lockInterval = i32::max_value() as u32;
-            },
+        if let Some(lock_interval) = lock_interval {
+            self.0.useLockInterval = 1;
+            self.0.lockInterval = lock_interval;
+        } else {
+            self.0.useLockInterval = 0;
+            self.0.lockInterval = i32::MAX as u32;
         }
     }
 }

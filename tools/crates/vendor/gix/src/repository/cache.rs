@@ -24,7 +24,7 @@ impl crate::Repository {
     /// Use this method to avoid overwriting any existing value while assuring better performance in case no value is set.
     pub fn object_cache_size_if_unset(&mut self, bytes: usize) {
         if !self.objects.has_object_cache() {
-            self.object_cache_size(bytes)
+            self.object_cache_size(bytes);
         }
     }
 
@@ -37,5 +37,16 @@ impl crate::Repository {
         let num_tracked = index.entries().len();
         let ten_mb_for_every_10k_files = (num_tracked as f32 / 10_000.0) * (10 * 1024 * 1024) as f32;
         (ten_mb_for_every_10k_files as usize).max(4 * 1024)
+    }
+}
+
+/// Handling of InMemory object writing
+impl crate::Repository {
+    /// When writing objects, keep them in memory instead of writing them to disk.
+    /// This makes any change to the object database non-persisting, while keeping the view
+    /// to the object database consistent for this instance.
+    pub fn with_object_memory(mut self) -> Self {
+        self.objects.enable_object_memory();
+        self
     }
 }

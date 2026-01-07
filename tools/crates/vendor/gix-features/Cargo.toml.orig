@@ -1,0 +1,128 @@
+lints.workspace = true
+
+[package]
+name = "gix-features"
+description = "A crate to integrate various capabilities using compile-time feature flags"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+version = "0.44.1"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.82"
+include = ["src/**/*", "LICENSE-*"]
+
+[lib]
+doctest = false
+test = false
+
+[features]
+
+default = []
+## Provide traits and utilities for providing progress information. These can then be rendered
+## using facilities of the `prodash` crate.
+progress = ["prodash"]
+## Provide human-readable numbers as well as easier to read byte units for progress bars.
+progress-unit-human-numbers = ["prodash?/unit-human"]
+## Provide human readable byte units for progress bars.
+progress-unit-bytes = ["dep:bytesize", "prodash?/unit-bytes"]
+
+## Provide utilities suitable for working with the `std::fs::read_dir()`.
+fs-read-dir = ["dep:gix-utils"]
+
+## Implement `tracing` with `tracing-core`, which provides applications with valuable performance details if they opt-in to it.
+##
+## Note that this may have overhead as well, thus instrumentations should be used stategically, only providing coarse tracing by default and adding details
+## only where needed while marking them with the appropriate level.
+tracing = ["gix-trace/tracing"]
+
+## If enabled, detailed tracing is also emitted, which can greatly increase insights but at a cost.
+tracing-detail = ["gix-trace/tracing-detail"]
+
+## Use scoped threads and channels to parallelize common workloads on multiple objects. If enabled, it is used everywhere
+## where it makes sense.
+## As caches are likely to be used and instantiated per thread, more memory will be used on top of the costs for threads.
+## The `threading` module will contain thread-safe primitives for shared ownership and mutation, otherwise these will be their single threaded counterparts.
+## This way, single-threaded applications don't have to pay for threaded primitives.
+parallel = ["dep:crossbeam-channel", "dep:parking_lot"]
+## If enabled, OnceCell will be made available for interior mutability either in sync or unsync forms.
+## Note: This still uses once_cell because std::sync::OnceLock::get_or_try_init() is not yet stable.
+once_cell = ["dep:once_cell"]
+## Makes facilities of the `walkdir` crate partially available.
+## In conjunction with the **parallel** feature, directory walking will be parallel instead behind a compatible interface.
+walkdir = ["dep:walkdir", "dep:gix-path", "dep:gix-utils"]
+#* an in-memory unidirectional pipe using `bytes` as efficient transfer mechanism.
+io-pipe = ["dep:bytes"]
+## provide a proven and fast `crc32` implementation.
+crc32 = ["dep:crc32fast"]
+
+## Enable the usage of zlib-related utilities to compress or decompress data.
+## This enables and uses the high-performance `zlib-rs` backend.
+zlib = ["dep:libz-rs-sys", "dep:thiserror"]
+
+#! ### Other
+
+## Count cache hits and misses and print that debug information on drop.
+## Caches implement this by default, which costs nothing unless this feature is enabled
+cache-efficiency-debug = []
+
+[[test]]
+name = "parallel"
+path = "tests/parallel_threaded.rs"
+required-features = ["parallel"]
+
+[[test]]
+name = "multi-threaded"
+path = "tests/parallel_shared_threaded.rs"
+required-features = ["parallel"]
+
+[[test]]
+name = "single-threaded"
+path = "tests/parallel_shared.rs"
+
+[[test]]
+name = "pipe"
+path = "tests/pipe.rs"
+required-features = ["io-pipe"]
+
+[dependencies]
+gix-trace = { version = "^0.1.15", path = "../gix-trace" }
+
+# for walkdir
+gix-path = { version = "^0.10.21", path = "../gix-path", optional = true }
+gix-utils = { version = "^0.3.1", path = "../gix-utils", optional = true }
+
+# 'parallel' feature
+crossbeam-channel = { version = "0.5.15", optional = true }
+parking_lot = { version = "0.12.4", default-features = false, optional = true }
+
+walkdir = { version = "2.3.2", optional = true } # used when parallel is off
+
+# hashing
+crc32fast = { version = "1.5.0", optional = true }
+
+# progress
+prodash = { version = "30.0.1", optional = true }
+bytesize = { version = "2.1.0", optional = true }
+
+# pipe
+bytes = { version = "1.0.0", optional = true }
+
+# zlib module
+libz-rs-sys = { version = "0.5.2", optional = true }
+thiserror = { version = "2.0.17", optional = true }
+
+# Note: once_cell is kept for OnceCell type because std::sync::OnceLock::get_or_try_init() is not yet stable.
+# Once it's stabilized (tracking issue #109737), we can remove this dependency.
+once_cell = { version = "1.21.3", optional = true }
+
+document-features = { version = "0.2.0", optional = true }
+
+[target.'cfg(unix)'.dependencies]
+libc = { version = "0.2.176" }
+
+[dev-dependencies]
+bstr = { version = "1.12.0", default-features = false }
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]

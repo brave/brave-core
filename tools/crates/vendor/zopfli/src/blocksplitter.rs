@@ -89,7 +89,7 @@ fn find_largest_splittable_block(
 
     let mut last = 0;
 
-    for &item in splitpoints.iter() {
+    for &item in splitpoints {
         if done[last] == 0 && item - last > longest {
             found = Some((last, item));
             longest = item - last;
@@ -136,12 +136,12 @@ fn print_block_split_points(lz77: &Lz77Store, lz77splitpoints: &[usize]) {
         "block split points: {} (hex: {})",
         splitpoints
             .iter()
-            .map(|&sp| format!("{}", sp))
+            .map(|&sp| format!("{sp}"))
             .collect::<Vec<_>>()
             .join(" "),
         splitpoints
             .iter()
-            .map(|&sp| format!("{:x}", sp))
+            .map(|&sp| format!("{sp:x}"))
             .collect::<Vec<_>>()
             .join(" ")
     );
@@ -160,7 +160,7 @@ pub fn blocksplit_lz77(lz77: &Lz77Store, maxblocks: u16, splitpoints: &mut Vec<u
     let mut lstart = 0;
     let mut lend = lz77.size();
 
-    while maxblocks != 0 && numblocks < maxblocks as u32 {
+    while maxblocks != 0 && numblocks < u32::from(maxblocks) {
         debug_assert!(lstart < lend);
         let find_minimum_result = find_minimum(
             |i| estimate_cost(lz77, lstart, i) + estimate_cost(lz77, i, lend),
@@ -179,7 +179,7 @@ pub fn blocksplit_lz77(lz77: &Lz77Store, maxblocks: u16, splitpoints: &mut Vec<u
             done[lstart] = 1;
         } else {
             splitpoints.push(llpos);
-            splitpoints.sort();
+            splitpoints.sort_unstable();
             numblocks += 1;
         }
 

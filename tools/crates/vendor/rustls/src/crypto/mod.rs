@@ -5,21 +5,21 @@ use core::fmt::Debug;
 use pki_types::PrivateKeyDer;
 use zeroize::Zeroize;
 
+#[cfg(all(doc, feature = "tls12"))]
+use crate::Tls12CipherSuite;
 use crate::msgs::ffdhe_groups::FfdheGroup;
 use crate::sign::SigningKey;
 use crate::sync::Arc;
 pub use crate::webpki::{
-    verify_tls12_signature, verify_tls13_signature, verify_tls13_signature_with_raw_key,
-    WebPkiSupportedAlgorithms,
+    WebPkiSupportedAlgorithms, verify_tls12_signature, verify_tls13_signature,
+    verify_tls13_signature_with_raw_key,
 };
-#[cfg(all(doc, feature = "tls12"))]
-use crate::Tls12CipherSuite;
 #[cfg(doc)]
 use crate::{
-    client, crypto, server, sign, ClientConfig, ConfigBuilder, ServerConfig, SupportedCipherSuite,
-    Tls13CipherSuite,
+    ClientConfig, ConfigBuilder, ServerConfig, SupportedCipherSuite, Tls13CipherSuite, client,
+    crypto, server, sign,
 };
-use crate::{suites, Error, NamedGroup, ProtocolVersion, SupportedProtocolVersion};
+use crate::{Error, NamedGroup, ProtocolVersion, SupportedProtocolVersion, suites};
 
 /// *ring* based CryptoProvider.
 #[cfg(feature = "ring")]
@@ -61,7 +61,7 @@ pub use crate::suites::CipherSuiteCommon;
 /// This crate comes with two built-in options, provided as
 /// `CryptoProvider` structures:
 ///
-/// - [`crypto::aws_lc_rs::default_provider`]: (behind the `aws_lc_rs` feature,
+/// - [`crypto::aws_lc_rs::default_provider`]: (behind the `aws_lc_rs` crate feature,
 ///   which is enabled by default).  This provider uses the [aws-lc-rs](https://github.com/aws/aws-lc-rs)
 ///   crate.  The `fips` crate feature makes this option use FIPS140-3-approved cryptography.
 /// - [`crypto::ring::default_provider`]: (behind the `ring` crate feature, which
@@ -110,17 +110,17 @@ pub use crate::suites::CipherSuiteCommon;
 ///
 /// # Making a custom `CryptoProvider`
 ///
-/// Your goal will be to populate a [`crypto::CryptoProvider`] struct instance.
+/// Your goal will be to populate an instance of this `CryptoProvider` struct.
 ///
 /// ## Which elements are required?
 ///
-/// There is no requirement that the individual elements (`SupportedCipherSuite`, `SupportedKxGroup`,
-/// `SigningKey`, etc.) come from the same crate.  It is allowed and expected that uninteresting
+/// There is no requirement that the individual elements ([`SupportedCipherSuite`], [`SupportedKxGroup`],
+/// [`SigningKey`], etc.) come from the same crate.  It is allowed and expected that uninteresting
 /// elements would be delegated back to one of the default providers (statically) or a parent
 /// provider (dynamically).
 ///
 /// For example, if we want to make a provider that just overrides key loading in the config builder
-/// API ([`ConfigBuilder::with_single_cert`] etc.), it might look like this:
+/// API (with [`ConfigBuilder::with_single_cert`], etc.), it might look like this:
 ///
 /// ```
 /// # #[cfg(feature = "aws_lc_rs")] {
@@ -160,8 +160,8 @@ pub use crate::suites::CipherSuiteCommon;
 ///
 /// # Example code
 ///
-/// See [provider-example/] for a full client and server example that uses
-/// cryptography from the [rust-crypto] and [dalek-cryptography] projects.
+/// See custom [`provider-example/`] for a full client and server example that uses
+/// cryptography from the [`RustCrypto`] and [`dalek-cryptography`] projects.
 ///
 /// ```shell
 /// $ cargo run --example client | head -3
@@ -171,9 +171,9 @@ pub use crate::suites::CipherSuiteCommon;
 /// Content-Length: 19899
 /// ```
 ///
-/// [provider-example/]: https://github.com/rustls/rustls/tree/main/provider-example/
-/// [rust-crypto]: https://github.com/rustcrypto
-/// [dalek-cryptography]: https://github.com/dalek-cryptography
+/// [`provider-example/`]: https://github.com/rustls/rustls/tree/main/provider-example/
+/// [`RustCrypto`]: https://github.com/RustCrypto
+/// [`dalek-cryptography`]: https://github.com/dalek-cryptography
 ///
 /// # FIPS-approved cryptography
 /// The `fips` crate feature enables use of the `aws-lc-rs` crate in FIPS mode.
@@ -212,7 +212,7 @@ pub struct CryptoProvider {
     /// Source of cryptographically secure random numbers.
     pub secure_random: &'static dyn SecureRandom,
 
-    /// Provider for loading private [SigningKey]s from [PrivateKeyDer].
+    /// Provider for loading private [`SigningKey`]s from [`PrivateKeyDer`].
     pub key_provider: &'static dyn KeyProvider,
 }
 
@@ -246,7 +246,11 @@ impl CryptoProvider {
         }
 
         let provider = Self::from_crate_features()
-            .expect("no process-level CryptoProvider available -- call CryptoProvider::install_default() before this point");
+            .expect(r###"
+Could not automatically determine the process-level CryptoProvider from Rustls crate features.
+Call CryptoProvider::install_default() before this point to select a provider manually, or make sure exactly one of the 'aws-lc-rs' and 'ring' features is enabled.
+See the documentation of the CryptoProvider type for more information.
+            "###);
         // Ignore the error resulting from us losing a race, and accept the outcome.
         let _ = provider.install_default();
         Self::get_default().unwrap()
@@ -323,7 +327,7 @@ pub trait SecureRandom: Send + Sync + Debug {
     }
 }
 
-/// A mechanism for loading private [SigningKey]s from [PrivateKeyDer].
+/// A mechanism for loading private [`SigningKey`]s from [`PrivateKeyDer`].
 ///
 /// This trait is intended to be used with private key material that is sourced from DER,
 /// such as a private-key that may be present on-disk. It is not intended to be used with
@@ -686,8 +690,8 @@ impl From<Vec<u8>> for SharedSecret {
 ///     .with_no_client_auth();
 /// # }
 /// ```
-#[cfg(all(feature = "aws_lc_rs", any(feature = "fips", docsrs)))]
-#[cfg_attr(docsrs, doc(cfg(feature = "fips")))]
+#[cfg(all(feature = "aws_lc_rs", any(feature = "fips", rustls_docsrs)))]
+#[cfg_attr(rustls_docsrs, doc(cfg(feature = "fips")))]
 pub fn default_fips_provider() -> CryptoProvider {
     aws_lc_rs::default_provider()
 }

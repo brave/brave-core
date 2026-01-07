@@ -8,8 +8,13 @@
 //! Licensed under the same terms as the `cargo-lock` crate: Apache 2.0 + MIT
 
 use crate::error::{Error, Result};
-use serde::{de, ser, Deserialize, Serialize};
-use std::{fmt, str::FromStr};
+use serde::{Deserialize, Serialize, de, ser};
+use std::{
+    cmp::{Ord, Ordering},
+    fmt,
+    hash::Hash,
+    str::FromStr,
+};
 use url::Url;
 
 #[cfg(any(unix, windows))]
@@ -20,11 +25,8 @@ pub const CRATES_IO_INDEX: &str = "https://github.com/rust-lang/crates.io-index"
 /// Location of the crates.io sparse HTTP index
 pub const CRATES_IO_SPARSE_INDEX: &str = "sparse+https://index.crates.io/";
 
-/// Default branch name
-pub const DEFAULT_BRANCH: &str = "master";
-
 /// Unique identifier for a source of packages.
-#[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[derive(Clone, Debug)]
 pub struct SourceId {
     /// The source URL.
     url: Url,
@@ -39,30 +41,6 @@ pub struct SourceId {
     name: Option<String>,
 }
 
-/// The possible kinds of code source.
-#[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
-#[non_exhaustive]
-pub enum SourceKind {
-    /// A git repository.
-    Git(GitReference),
-
-    /// A local path..
-    Path,
-
-    /// A remote registry.
-    Registry,
-
-    /// A sparse registry.
-    SparseRegistry,
-
-    /// A local filesystem-based registry.
-    LocalRegistry,
-
-    /// A directory-based registry.
-    #[cfg(any(unix, windows))]
-    Directory,
-}
-
 impl SourceId {
     /// Creates a `SourceId` object from the kind and URL.
     fn new(kind: SourceKind, url: Url) -> Result<Self> {
@@ -72,36 +50,6 @@ impl SourceId {
             precise: None,
             name: None,
         })
-    }
-
-    /// SourceIds with git references used in package.source fields are subtly
-    /// different than those in parenthesized source URLs that appear in disambiguated
-    /// entries of package.dependencies: the former have the form ?rev=ABBREV#FULLHASH
-    /// whereas the latter have the form ?rev=FULLHASH. This method changes the former
-    /// into the latter, and is used in `impl From<&Package> for Dependency`.
-    pub fn normalize_git_source_for_dependency(&self) -> Self {
-        if let SourceKind::Git(GitReference::Rev(_abbrev)) = &self.kind {
-            if let Some(full) = &self.precise {
-                let mut url = self.url.clone();
-                url.set_fragment(None);
-                return Self {
-                    kind: SourceKind::Git(GitReference::Rev(full.clone())),
-                    precise: None,
-                    url,
-                    name: self.name.clone(),
-                };
-            }
-        } else if let SourceKind::Git(reference) = &self.kind {
-            if self.precise.is_some() {
-                return Self {
-                    kind: SourceKind::Git(reference.clone()),
-                    precise: None,
-                    url: self.url.clone(),
-                    name: self.name.clone(),
-                };
-            }
-        }
-        self.clone()
     }
 
     /// Parses a source URL and returns the corresponding ID.
@@ -124,7 +72,7 @@ impl SourceId {
         match kind {
             "git" => {
                 let mut url = url.into_url()?;
-                let mut reference = GitReference::Branch(DEFAULT_BRANCH.to_string());
+                let mut reference = GitReference::DefaultBranch;
                 for (k, v) in url.query_pairs() {
                     match &k[..] {
                         // Map older 'ref' to branch.
@@ -250,7 +198,7 @@ impl SourceId {
 
     /// Gets the Git reference if this is a git source, otherwise `None`.
     pub fn git_reference(&self) -> Option<&GitReference> {
-        if let SourceKind::Git(ref s) = self.kind {
+        if let SourceKind::Git(s) = &self.kind {
             Some(s)
         } else {
             None
@@ -278,80 +226,66 @@ impl SourceId {
     }
 }
 
-impl Default for SourceId {
-    fn default() -> SourceId {
-        SourceId::for_registry(&CRATES_IO_INDEX.into_url().unwrap()).unwrap()
-    }
-}
-
-impl FromStr for SourceId {
-    type Err = Error;
-
-    fn from_str(s: &str) -> Result<Self> {
-        Self::from_url(s)
-    }
-}
-
-impl fmt::Display for SourceId {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.as_url(false).fmt(f)
-    }
-}
-
-/// A `Display`able view into a `SourceId` that will write it as a url
-pub(crate) struct SourceIdAsUrl<'a> {
-    id: &'a SourceId,
-    encoded: bool,
-}
-
-impl<'a> fmt::Display for SourceIdAsUrl<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.id {
-            SourceId {
-                kind: SourceKind::Path,
-                ref url,
-                ..
-            } => write!(f, "path+{url}"),
-            SourceId {
-                kind: SourceKind::Git(ref reference),
-                ref url,
-                ref precise,
-                ..
-            } => {
-                write!(f, "git+{url}")?;
-                // TODO: set it to true when the default is lockfile v4,
-                if let Some(pretty) = reference.pretty_ref(self.encoded) {
-                    write!(f, "?{pretty}")?;
-                }
-                if let Some(precise) = precise.as_ref() {
-                    write!(f, "#{precise}")?;
-                }
-                Ok(())
-            }
-            SourceId {
-                kind: SourceKind::Registry,
-                ref url,
-                ..
-            } => write!(f, "registry+{url}"),
-            SourceId {
-                kind: SourceKind::SparseRegistry,
-                ref url,
-                ..
-            } => write!(f, "sparse+{url}"),
-            SourceId {
-                kind: SourceKind::LocalRegistry,
-                ref url,
-                ..
-            } => write!(f, "local-registry+{url}"),
-            #[cfg(any(unix, windows))]
-            SourceId {
-                kind: SourceKind::Directory,
-                ref url,
-                ..
-            } => write!(f, "directory+{url}"),
+/// We've seen a number of subtle ways that dependency references (in `package.dependencies`)
+/// can differ from the corresponding `package.source` field for git dependencies.
+/// This `Ord` impl (which is used when storing `SourceId`s in a `BTreeMap`) tries to
+/// account for these differences and treat them as equal.
+///
+/// The `package.source` field for a git dependency includes both the `tag`, `branch` or `rev`
+/// (in a query string) used to fetch the dependency, as well as the full commit hash (in the
+/// fragment), but the `package.dependencies` entry does not include the full commit hash.
+///
+/// Additionally, when the `rev` is specified for a dependency using a longer hash, the `rev`
+/// used in the `package.source` may be an abbreviated hash.
+impl Ord for SourceId {
+    fn cmp(&self, other: &Self) -> Ordering {
+        match self.url.cmp(&other.url) {
+            Ordering::Equal => {}
+            non_eq => return non_eq,
         }
+
+        match self.name.cmp(&other.name) {
+            Ordering::Equal => {}
+            non_eq => return non_eq,
+        }
+
+        // Some special handling for git sources follows...
+        match (&self.kind, &other.kind) {
+            (SourceKind::Git(s), SourceKind::Git(o)) => (s, o),
+            (a, b) => return a.cmp(b),
+        };
+
+        if let (Some(s), Some(o)) = (&self.precise, &other.precise) {
+            // If the git hash is the same, we consider the sources equal
+            return s.cmp(o);
+        }
+
+        Ordering::Equal
     }
 }
+
+impl PartialOrd for SourceId {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Hash for SourceId {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.url.hash(state);
+        self.kind.hash(state);
+        self.precise.hash(state);
+        self.name.hash(state);
+    }
+}
+
+impl PartialEq for SourceId {
+    fn eq(&self, other: &Self) -> bool {
+        self.cmp(other) == Ordering::Equal
+    }
+}
+
+impl Eq for SourceId {}
 
 impl Serialize for SourceId {
     fn serialize<S: ser::Serializer>(&self, s: S) -> std::result::Result<S::Ok, S::Error> {
@@ -370,9 +304,111 @@ impl<'de> Deserialize<'de> for SourceId {
     }
 }
 
+impl FromStr for SourceId {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        Self::from_url(s)
+    }
+}
+
+impl fmt::Display for SourceId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.as_url(false).fmt(f)
+    }
+}
+
+impl Default for SourceId {
+    fn default() -> SourceId {
+        SourceId::for_registry(&CRATES_IO_INDEX.into_url().unwrap()).unwrap()
+    }
+}
+
+/// The possible kinds of code source.
+#[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[non_exhaustive]
+pub enum SourceKind {
+    /// A git repository.
+    Git(GitReference),
+
+    /// A local path..
+    Path,
+
+    /// A remote registry.
+    Registry,
+
+    /// A sparse registry.
+    SparseRegistry,
+
+    /// A local filesystem-based registry.
+    LocalRegistry,
+
+    /// A directory-based registry.
+    #[cfg(any(unix, windows))]
+    Directory,
+}
+
+/// A `Display`able view into a `SourceId` that will write it as a url
+pub(crate) struct SourceIdAsUrl<'a> {
+    id: &'a SourceId,
+    encoded: bool,
+}
+
+impl fmt::Display for SourceIdAsUrl<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match &self.id {
+            SourceId {
+                kind: SourceKind::Path,
+                url,
+                ..
+            } => write!(f, "path+{url}"),
+            SourceId {
+                kind: SourceKind::Git(reference),
+                url,
+                precise,
+                ..
+            } => {
+                write!(f, "git+{url}")?;
+                // TODO: set it to true when the default is lockfile v4,
+                if let Some(pretty) = reference.pretty_ref(self.encoded) {
+                    write!(f, "?{pretty}")?;
+                }
+                if let Some(precise) = precise.as_ref() {
+                    write!(f, "#{precise}")?;
+                }
+                Ok(())
+            }
+            SourceId {
+                kind: SourceKind::Registry,
+                url,
+                ..
+            } => write!(f, "registry+{url}"),
+            SourceId {
+                kind: SourceKind::SparseRegistry,
+                url,
+                ..
+            } => write!(f, "sparse+{url}"),
+            SourceId {
+                kind: SourceKind::LocalRegistry,
+                url,
+                ..
+            } => write!(f, "local-registry+{url}"),
+            #[cfg(any(unix, windows))]
+            SourceId {
+                kind: SourceKind::Directory,
+                url,
+                ..
+            } => write!(f, "directory+{url}"),
+        }
+    }
+}
+
 /// Information to find a specific commit in a Git repository.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum GitReference {
+    /// The default branch of the repository, the reference named `HEAD`.
+    DefaultBranch,
+
     /// From a tag.
     Tag(String),
 
@@ -388,7 +424,7 @@ impl GitReference {
     /// the head of the default branch
     pub fn pretty_ref(&self, url_encoded: bool) -> Option<PrettyRef<'_>> {
         match self {
-            GitReference::Branch(ref s) if *s == DEFAULT_BRANCH => None,
+            Self::DefaultBranch => None,
             _ => Some(PrettyRef {
                 inner: self,
                 url_encoded,
@@ -403,9 +439,10 @@ pub struct PrettyRef<'a> {
     url_encoded: bool,
 }
 
-impl<'a> fmt::Display for PrettyRef<'a> {
+impl fmt::Display for PrettyRef<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let value: &str = match self.inner {
+            GitReference::DefaultBranch => return Ok(()),
             GitReference::Branch(s) => {
                 write!(f, "branch=")?;
                 s
@@ -436,14 +473,14 @@ trait IntoUrl {
     fn into_url(self) -> Result<Url>;
 }
 
-impl<'a> IntoUrl for &'a str {
+impl IntoUrl for &str {
     fn into_url(self) -> Result<Url> {
         Url::parse(self).map_err(|s| Error::Parse(format!("invalid url `{self}`: {s}")))
     }
 }
 
 #[cfg(any(unix, windows))]
-impl<'a> IntoUrl for &'a Path {
+impl IntoUrl for &Path {
     fn into_url(self) -> Result<Url> {
         Url::from_file_path(self)
             .map_err(|_| Error::Parse(format!("invalid path url `{}`", self.display())))
@@ -457,8 +494,10 @@ mod tests {
     #[test]
     fn identifies_crates_io() {
         assert!(SourceId::default().is_default_registry());
-        assert!(SourceId::from_url(super::CRATES_IO_SPARSE_INDEX)
-            .expect("failed to parse sparse URL")
-            .is_default_registry());
+        assert!(
+            SourceId::from_url(super::CRATES_IO_SPARSE_INDEX)
+                .expect("failed to parse sparse URL")
+                .is_default_registry()
+        );
     }
 }

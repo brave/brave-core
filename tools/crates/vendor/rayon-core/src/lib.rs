@@ -2,36 +2,29 @@
 //!
 //! These APIs have been mirrored in the Rayon crate and it is recommended to use these from there.
 //!
-//! [`join`] is used to take two closures and potentially run them in parallel.
+//! [`join()`] is used to take two closures and potentially run them in parallel.
 //!   - It will run in parallel if task B gets stolen before task A can finish.
 //!   - It will run sequentially if task A finishes before task B is stolen and can continue on task B.
 //!
-//! [`scope`] creates a scope in which you can run any number of parallel tasks.
+//! [`scope()`] creates a scope in which you can run any number of parallel tasks.
 //! These tasks can spawn nested tasks and scopes, but given the nature of work stealing, the order of execution can not be guaranteed.
 //! The scope will exist until all tasks spawned within the scope have been completed.
 //!
-//! [`spawn`] add a task into the 'static' or 'global' scope, or a local scope created by the [`scope()`] function.
+//! [`spawn()`] add a task into the 'static' or 'global' scope, or a local scope created by the [`scope()`] function.
 //!
 //! [`ThreadPool`] can be used to create your own thread pools (using [`ThreadPoolBuilder`]) or to customize the global one.
-//! Tasks spawned within the pool (using [`install()`], [`join()`], etc.) will be added to a deque,
-//! where it becomes available for work stealing from other threads in the local threadpool.
+//! Tasks spawned within the pool (using [`install()`][tpinstall], [`join()`][tpjoin], etc.) will be added to a deque,
+//! where it becomes available for work stealing from other threads in the local thread pool.
 //!
-//! [`join`]: fn.join.html
-//! [`scope`]: fn.scope.html
-//! [`scope()`]: fn.scope.html
-//! [`spawn`]: fn.spawn.html
-//! [`ThreadPool`]: struct.threadpool.html
-//! [`install()`]: struct.ThreadPool.html#method.install
-//! [`spawn()`]: struct.ThreadPool.html#method.spawn
-//! [`join()`]: struct.ThreadPool.html#method.join
-//! [`ThreadPoolBuilder`]: struct.ThreadPoolBuilder.html
+//! [tpinstall]: ThreadPool::install()
+//! [tpjoin]: ThreadPool::join()
 //!
 //! # Global fallback when threading is unsupported
 //!
 //! Rayon uses `std` APIs for threading, but some targets have incomplete implementations that
 //! always return `Unsupported` errors. The WebAssembly `wasm32-unknown-unknown` and `wasm32-wasi`
 //! targets are notable examples of this. Rather than panicking on the unsupported error when
-//! creating the implicit global threadpool, Rayon configures a fallback mode instead.
+//! creating the implicit global thread pool, Rayon configures a fallback mode instead.
 //!
 //! This fallback mode mostly functions as if it were using a single-threaded "pool", like setting
 //! `RAYON_NUM_THREADS=1`. For example, `join` will execute its two closures sequentially, since
@@ -45,8 +38,8 @@
 //!
 //! # Restricting multiple versions
 //!
-//! In order to ensure proper coordination between threadpools, and especially
-//! to make sure there's only one global threadpool, `rayon-core` is actively
+//! In order to ensure proper coordination between thread pools, and especially
+//! to make sure there's only one global thread pool, `rayon-core` is actively
 //! restricted from building multiple versions of itself into a single target.
 //! You may see a build error like this in violation:
 //!
@@ -111,7 +104,7 @@ use wasm_sync as sync;
 
 use self::registry::{CustomSpawn, DefaultSpawn, ThreadSpawn};
 
-/// Returns the maximum number of threads that Rayon supports in a single thread-pool.
+/// Returns the maximum number of threads that Rayon supports in a single thread pool.
 ///
 /// If a higher thread count is requested by calling `ThreadPoolBuilder::num_threads` or by setting
 /// the `RAYON_NUM_THREADS` environment variable, then it will be reduced to this maximum.
@@ -123,10 +116,10 @@ pub fn max_num_threads() -> usize {
 }
 
 /// Returns the number of threads in the current registry. If this
-/// code is executing within a Rayon thread-pool, then this will be
-/// the number of threads for the thread-pool of the current
+/// code is executing within a Rayon thread pool, then this will be
+/// the number of threads for the thread pool of the current
 /// thread. Otherwise, it will be the number of threads for the global
-/// thread-pool.
+/// thread pool.
 ///
 /// This can be useful when trying to judge how many times to split
 /// parallel work (the parallel iterator traits use this value
@@ -134,12 +127,12 @@ pub fn max_num_threads() -> usize {
 ///
 /// # Future compatibility note
 ///
-/// Note that unless this thread-pool was created with a
+/// Note that unless this thread pool was created with a
 /// builder that specifies the number of threads, then this
 /// number may vary over time in future versions (see [the
 /// `num_threads()` method for details][snt]).
 ///
-/// [snt]: struct.ThreadPoolBuilder.html#method.num_threads
+/// [snt]: ThreadPoolBuilder::num_threads
 pub fn current_num_threads() -> usize {
     crate::registry::Registry::current_num_threads()
 }
@@ -161,20 +154,19 @@ enum ErrorKind {
 /// ## Creating a ThreadPool
 /// The following creates a thread pool with 22 threads.
 ///
-/// ```rust
+/// ```ignore-wasm
 /// # use rayon_core as rayon;
 /// let pool = rayon::ThreadPoolBuilder::new().num_threads(22).build().unwrap();
 /// ```
 ///
 /// To instead configure the global thread pool, use [`build_global()`]:
 ///
-/// ```rust
+/// ```ignore-wasm
 /// # use rayon_core as rayon;
 /// rayon::ThreadPoolBuilder::new().num_threads(22).build_global().unwrap();
 /// ```
 ///
-/// [`ThreadPool`]: struct.ThreadPool.html
-/// [`build_global()`]: struct.ThreadPoolBuilder.html#method.build_global
+/// [`build_global()`]: Self::build_global()
 pub struct ThreadPoolBuilder<S = DefaultSpawn> {
     /// The number of threads in the rayon thread pool.
     /// If zero will use the RAYON_NUM_THREADS environment variable.
@@ -194,10 +186,10 @@ pub struct ThreadPoolBuilder<S = DefaultSpawn> {
     /// The stack size for the created worker threads
     stack_size: Option<usize>,
 
-    /// Closure invoked on worker thread start.
+    /// Closure invoked on worker-thread start.
     start_handler: Option<Box<StartHandler>>,
 
-    /// Closure invoked on worker thread exit.
+    /// Closure invoked on worker-thread exit.
     exit_handler: Option<Box<ExitHandler>>,
 
     /// Closure invoked to spawn threads.
@@ -210,15 +202,13 @@ pub struct ThreadPoolBuilder<S = DefaultSpawn> {
 }
 
 /// Contains the rayon thread pool configuration. Use [`ThreadPoolBuilder`] instead.
-///
-/// [`ThreadPoolBuilder`]: struct.ThreadPoolBuilder.html
 #[deprecated(note = "Use `ThreadPoolBuilder`")]
 #[derive(Default)]
 pub struct Configuration {
     builder: ThreadPoolBuilder,
 }
 
-/// The type for a panic handling closure. Note that this same closure
+/// The type for a panic-handling closure. Note that this same closure
 /// may be invoked multiple times in parallel.
 type PanicHandler = dyn Fn(Box<dyn Any + Send>) + Send + Sync;
 
@@ -228,7 +218,7 @@ type PanicHandler = dyn Fn(Box<dyn Any + Send>) + Send + Sync;
 type StartHandler = dyn Fn(usize) + Send + Sync;
 
 /// The type for a closure that gets invoked when a thread exits. The
-/// closure is passed the index of the thread on which is is invoked.
+/// closure is passed the index of the thread on which it is invoked.
 /// Note that this same closure may be invoked multiple times in parallel.
 type ExitHandler = dyn Fn(usize) + Send + Sync;
 
@@ -295,17 +285,17 @@ impl ThreadPoolBuilder {
     /// Creates a scoped `ThreadPool` initialized using this configuration.
     ///
     /// This is a convenience function for building a pool using [`std::thread::scope`]
-    /// to spawn threads in a [`spawn_handler`](#method.spawn_handler).
+    /// to spawn threads in a [`spawn_handler`].
     /// The threads in this pool will start by calling `wrapper`, which should
     /// do initialization and continue by calling `ThreadBuilder::run()`.
     ///
-    /// [`std::thread::scope`]: https://doc.rust-lang.org/std/thread/fn.scope.html
+    /// [`spawn_handler`]: Self::spawn_handler()
     ///
     /// # Examples
     ///
     /// A scoped pool may be useful in combination with scoped thread-local variables.
     ///
-    /// ```
+    /// ```ignore-wasm
     /// # use rayon_core as rayon;
     ///
     /// scoped_tls::scoped_thread_local!(static POOL_DATA: Vec<i32>);
@@ -367,7 +357,7 @@ impl<S> ThreadPoolBuilder<S> {
     ///
     /// A minimal spawn handler just needs to call `run()` from an independent thread.
     ///
-    /// ```
+    /// ```ignore-wasm
     /// # use rayon_core as rayon;
     /// fn main() -> Result<(), rayon::ThreadPoolBuildError> {
     ///     let pool = rayon::ThreadPoolBuilder::new()
@@ -385,7 +375,7 @@ impl<S> ThreadPoolBuilder<S> {
     /// The default spawn handler sets the name and stack size if given, and propagates
     /// any errors from the thread builder.
     ///
-    /// ```
+    /// ```ignore-wasm
     /// # use rayon_core as rayon;
     /// fn main() -> Result<(), rayon::ThreadPoolBuildError> {
     ///     let pool = rayon::ThreadPoolBuilder::new()
@@ -409,12 +399,12 @@ impl<S> ThreadPoolBuilder<S> {
     ///
     /// This can also be used for a pool of scoped threads like [`crossbeam::scope`],
     /// or [`std::thread::scope`] introduced in Rust 1.63, which is encapsulated in
-    /// [`build_scoped`](#method.build_scoped).
+    /// [`build_scoped`].
     ///
     /// [`crossbeam::scope`]: https://docs.rs/crossbeam/0.8/crossbeam/fn.scope.html
-    /// [`std::thread::scope`]: https://doc.rust-lang.org/std/thread/fn.scope.html
+    /// [`build_scoped`]: Self::build_scoped()
     ///
-    /// ```
+    /// ```ignore-wasm
     /// # use rayon_core as rayon;
     /// fn main() -> Result<(), rayon::ThreadPoolBuildError> {
     ///     std::thread::scope(|scope| {
@@ -511,10 +501,10 @@ impl<S> ThreadPoolBuilder<S> {
         self
     }
 
-    /// Sets the number of threads to be used in the rayon threadpool.
+    /// Sets the number of threads to be used in the rayon thread pool.
     ///
     /// If you specify a non-zero number of threads using this
-    /// function, then the resulting thread-pools are guaranteed to
+    /// function, then the resulting thread pools are guaranteed to
     /// start at most this number of threads.
     ///
     /// If `num_threads` is 0, or you do not call this function, then
@@ -547,12 +537,12 @@ impl<S> ThreadPoolBuilder<S> {
     /// rayon, the spawn and exit handlers do not run for that thread.
     ///
     /// Note that the current thread won't run the main work-stealing loop, so jobs spawned into
-    /// the thread-pool will generally not be picked up automatically by this thread unless you
+    /// the thread pool will generally not be picked up automatically by this thread unless you
     /// yield to rayon in some way, like via [`yield_now()`], [`yield_local()`], or [`scope()`].
     ///
-    /// # Local thread-pools
+    /// # Local thread pools
     ///
-    /// Using this in a local thread-pool means the registry will be leaked. In future versions
+    /// Using this in a local thread pool means the registry will be leaked. In future versions
     /// there might be a way of cleaning up the current-thread state.
     pub fn use_current_thread(mut self) -> Self {
         self.use_current_thread = true;
@@ -623,8 +613,7 @@ impl<S> ThreadPoolBuilder<S> {
     /// and in the future its effect may be removed. Consider using
     /// [`scope_fifo()`] for a similar effect.
     ///
-    /// [RFC #1]: https://github.com/rayon-rs/rfcs/blob/master/accepted/rfc0001-scope-scheduling.md
-    /// [`scope_fifo()`]: fn.scope_fifo.html
+    /// [RFC #1]: https://github.com/rayon-rs/rfcs/blob/main/accepted/rfc0001-scope-scheduling.md
     #[deprecated(note = "use `scope_fifo` and `spawn_fifo` for similar effect")]
     pub fn breadth_first(mut self) -> Self {
         self.breadth_first = true;

@@ -8,8 +8,10 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
@@ -29,10 +31,6 @@ class BraveTabContainer : public TabContainerImpl {
                     TabDragContextBase* drag_context,
                     TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
-
-  // Enables or disables scrolling in the tab container for pinned tabs
-  void SetUnpinnedTabScrollEnabled(bool enabled);
-  bool IsUnpinnedTabScrollEnabled() const;
 
   // Calling this will freeze this view's layout. When the returned closure
   // runs, layout will be unlocked and run immediately.
@@ -61,9 +59,11 @@ class BraveTabContainer : public TabContainerImpl {
   void SetTabSlotVisibility() override;
   void InvalidateIdealBounds() override;
   void Layout(PassKey) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
+  bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
   void OnScrollEvent(ui::ScrollEvent* event) override;
   views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
   bool IsPointInTab(Tab* tab,
@@ -83,6 +83,9 @@ class BraveTabContainer : public TabContainerImpl {
   void HandleDragExited() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           BraveTabContainerSeparator);
+
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
@@ -136,8 +139,10 @@ class BraveTabContainer : public TabContainerImpl {
 
   void UpdateTabsBorderInSplitTab(const std::vector<int>& indices);
 
-  // Returns the bottom y-coordinate of the pinned tabs area.
-  // This is used to visible rect of unpinned tabs.
+  // Returns the bottom y-coordinate of the pinned tabs area, including the
+  // separator between pinned and unpinned tabs if both exist. This represents
+  // the top boundary where unpinned tabs begin and is used to calculate the
+  // visible rect of unpinned tabs.
   int GetPinnedTabsAreaBottom() const;
 
   // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
@@ -147,6 +152,14 @@ class BraveTabContainer : public TabContainerImpl {
   // Returns the maximum scroll offset for unpinned tabs.
   int GetMaxScrollOffset() const;
 
+  // Returns the first and last visible unpinned slot views (tabs or group
+  // headers). Returns {nullptr, nullptr} when no visible unpinned slot views
+  // exist.
+  std::pair<TabSlotView*, TabSlotView*> FindVisibleUnpinnedSlotViews() const;
+
+  // Returns the ideal bounds for the given slot view (tab or group header).
+  gfx::Rect GetIdealBoundsOf(TabSlotView* slot_view) const;
+
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
@@ -154,11 +167,23 @@ class BraveTabContainer : public TabContainerImpl {
   void UpdateClipPathForChildren(views::View* view,
                                  int pinned_tabs_area_bottom);
 
+  // Updates clip path for all slot views (tabs and group views) based on
+  // scroll_offset.
+  void UpdateClipPathForSlotViews();
+
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);
 
   // Show or hide scrollbar based on the preference
   void UpdateScrollBarVisibility();
+
+  // Handles vertical scroll input for unpinned tabs. Returns true if the scroll
+  // was handled.
+  bool HandleVerticalScroll(int y_offset);
+
+  // Updates the separator visibility and position between pinned and unpinned
+  // tabs.
+  void UpdatePinnedUnpinnedSeparator();
 
   base::flat_set<Tab*> closing_tabs_;
 
@@ -184,7 +209,9 @@ class BraveTabContainer : public TabContainerImpl {
   // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
   // value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
-  bool unpinned_tab_scroll_enabled_ = false;
+
+  // Separator view between pinned and unpinned tabs
+  raw_ptr<views::View> separator_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
