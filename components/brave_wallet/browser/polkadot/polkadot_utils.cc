@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -21,9 +20,17 @@ ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
     return ss58_address->public_key;
   }
 
+  // Note: Avoid using PrefixedHexStringToFixed here because it accepts hex
+  // strings of the form: 0x123 which is undesireable when being used as a
+  // recipient address of funds.
+  std::string_view str = input;
+  str = base::RemovePrefix(str, "0x").value_or({});
+  if (str.empty()) {
+    return std::nullopt;
+  }
+
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  if (base::HexStringToSpan(input, pubkey) ||
-      PrefixedHexStringToFixed(input, pubkey)) {
+  if (base::HexStringToSpan(str, pubkey)) {
     return pubkey;
   }
 

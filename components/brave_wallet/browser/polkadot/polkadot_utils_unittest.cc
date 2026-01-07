@@ -27,19 +27,17 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
                     .value()),
             "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
 
-  EXPECT_EQ(base::HexEncodeLower(
-                ParsePolkadotAccount("8eaf04151687736326c9fea17e25fc5287613693c"
-                                     "912909cb226aa4794f26a48",
-                                     0)
-                    .value()),
-            "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  EXPECT_EQ(
+      base::HexEncodeLower(
+          ParsePolkadotAccount(
+              R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
+              0)
+              .value()),
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
 
-  EXPECT_EQ(base::HexEncodeLower(
-                ParsePolkadotAccount("0x8eaf04151687736326c9fea17e25fc528761369"
-                                     "3c912909cb226aa4794f26a48",
-                                     0)
-                    .value()),
-            "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  // Address isn't 0x-prefixed
+  EXPECT_FALSE(ParsePolkadotAccount(
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0));
 
   // Invalid ss58 prefix.
   EXPECT_FALSE(ParsePolkadotAccount(
@@ -51,18 +49,17 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   EXPECT_FALSE(ParsePolkadotAccount(
       "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42));
   EXPECT_FALSE(ParsePolkadotAccount(
-      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234",
+      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234",
       0));
-  EXPECT_FALSE(
-      ParsePolkadotAccount("0x8eaf04151687736326c9fea17e25fc5287613693c912909cb"
-                           "226aa4794f26a481234",
-                           42));
+  EXPECT_FALSE(ParsePolkadotAccount(
+      R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
+      42));
 
   // Address is too short.
   EXPECT_FALSE(ParsePolkadotAccount(
       "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42));
   EXPECT_FALSE(ParsePolkadotAccount(
-      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0));
+      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0));
   EXPECT_FALSE(ParsePolkadotAccount(
       "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0));
   EXPECT_FALSE(ParsePolkadotAccount("", 0));
