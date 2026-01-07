@@ -6,6 +6,5 @@
 export { StepWelcomeContent, StepWelcomeFooter } from './step_welcome'
 export { StepImportDataContent, StepImportDataFooter, ImportDataProvider } from './step_import_data'
 export { StepMakeYoursContent, StepMakeYoursFooter } from './step_make_yours'
-export { StepBraveSearchContent, StepBraveSearchFooter } from './step_brave_search'
 export { StepCompleteContent, StepCompleteFooter } from './step_complete'
 

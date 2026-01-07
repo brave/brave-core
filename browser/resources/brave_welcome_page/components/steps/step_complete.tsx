@@ -9,7 +9,7 @@ import Checkbox from '@brave/leo/react/checkbox'
 
 import { StepContentProps, StepFooterProps } from '../types'
 
-import crashReportsIcon from '../img/crash-reports.svg'
+import wdpIcon from '../img/wdp.svg'
 import setDefaultIcon from '../img/set-default.svg'
 import p3aIcon from '../img/p3a.svg'
 // TODO: Replace these placeholder imports with actual SVG icons
@@ -26,10 +26,10 @@ interface PrivacyOption {
 
 const privacyOptions: PrivacyOption[] = [
   {
-    id: 'crash-reports',
-    title: 'Send crash reports',
-    subtitle: 'Send anonymous diagnostic reports if you experience a crash or freeze.',
-    icon: crashReportsIcon,
+    id: 'wdp',
+    title: 'Help Brave Search grow',
+    subtitle: 'Opt into the Web Discovery Project to help grow the index and improve search results.',
+    icon: wdpIcon,
     iconColor: '#f98354'
   },
   {
