@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+import { Feature } from '../api/welcome_api'
 import { useWelcomeApi } from '../api/welcome_api_context'
 
 // A feature that can be displayed on the features step.
@@ -39,30 +40,44 @@ export function useProductFeatures(): ProductFeatures {
   const rewardsAvailable = api.useRewardsFeatureEnabledData()
   const vpnAvailable = api.useVpnFeatureEnabledData()
 
+  const visibility = api.useGetFeatureVisibilityData()
+
   return React.useMemo(() => {
+    function visibilitySetter(feature: Feature) {
+      return (visible: boolean) => {
+        api.setFeatureVisible([feature, visible])
+      }
+    }
     return {
       aiChat: {
         available: aiChatAvailable,
-        visible: false,
-        setVisible: () => {},
+        visible: visibility.aiChat,
+        setVisible: visibilitySetter(Feature.kAIChat),
       },
       wallet: {
         available: walletAvailable,
-        visible: false,
-        setVisible: () => {},
+        visible: visibility.wallet,
+        setVisible: visibilitySetter(Feature.kWallet),
       },
       rewards: {
         available: rewardsAvailable,
-        visible: false,
-        setVisible: () => {},
+        visible: visibility.rewards,
+        setVisible: visibilitySetter(Feature.kRewards),
       },
       vpn: {
         available: vpnAvailable,
-        visible: false,
-        setVisible: () => {},
+        visible: visibility.vpn,
+        setVisible: visibilitySetter(Feature.kVPN),
       },
     }
-  }, [api, aiChatAvailable, walletAvailable, rewardsAvailable, vpnAvailable])
+  }, [
+    api,
+    aiChatAvailable,
+    walletAvailable,
+    rewardsAvailable,
+    vpnAvailable,
+    visibility,
+  ])
 }
 
 // Returns whether any feature can be displayed on the feature step.

@@ -10,6 +10,8 @@ import {
   createWelcomeApi,
   ChromeColor,
   ColorScheme,
+  FeatureVisibility,
+  featureVisibilityKeys,
   ImportDataStatus,
   Theme,
 } from '../api/welcome_api'
@@ -80,6 +82,13 @@ export function createWelcomeApiMock(): WelcomeApi {
   let theme = createMockTheme()
   let themeColorPickerClient: ThemeColorPickerClientInterface | null = null
 
+  const featureVisibility: FeatureVisibility = {
+    aiChat: true,
+    wallet: true,
+    rewards: true,
+    vpn: true,
+  }
+
   const pushTheme = (next: Partial<Theme>) => {
     theme = { ...theme, ...next }
     themeColorPickerClient?.setTheme(theme)
@@ -96,6 +105,12 @@ export function createWelcomeApiMock(): WelcomeApi {
         enabled: false,
       }),
       setVerticalTabsEnabled: async (enabled) => {},
+      getFeatureVisibility: async () => ({
+        visibility: { ...featureVisibility },
+      }),
+      setFeatureVisible: async (feature, visible) => {
+        featureVisibility[featureVisibilityKeys[feature]] = visible
+      },
       setCrashReportsEnabled: async (enabled) => {},
       setP3AEnabled: async (enabled) => {},
       setWebDiscoveryEnabled: async (enabled) => {},

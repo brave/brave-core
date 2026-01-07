@@ -5,12 +5,14 @@
 
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -50,6 +52,7 @@ ThemeService::BrowserColorScheme ToBrowserColorScheme(
 
 WelcomePageHandler::WelcomePageHandler(
     mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
+    const base::flat_set<mojom::Feature>& available_features,
     ThemeService* theme_service,
     PrefService* prefs,
     PrefService* local_state)
@@ -64,6 +67,16 @@ WelcomePageHandler::WelcomePageHandler(
       brave_tabs::kVerticalTabsEnabled,
       base::BindRepeating(&WelcomePageHandler::OnVerticalTabsEnabledChanged,
                           base::Unretained(this)));
+
+  for (auto feature : available_features) {
+    for (std::string_view pref_name : GetFeatureVisibilityPrefs(feature)) {
+      feature_visibility_prefs_[feature].push_back(pref_name);
+      pref_change_registrar_.Add(
+          pref_name,
+          base::BindRepeating(&WelcomePageHandler::OnFeatureVisibilityChanged,
+                              base::Unretained(this)));
+    }
+  }
 }
 
 WelcomePageHandler::~WelcomePageHandler() = default;
@@ -96,6 +109,28 @@ void WelcomePageHandler::SetVerticalTabsEnabled(
     SetVerticalTabsEnabledCallback callback) {
   pref_change_registrar_.prefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
                                              enabled);
+  std::move(callback).Run();
+}
+
+void WelcomePageHandler::GetFeatureVisibility(
+    GetFeatureVisibilityCallback callback) {
+  auto visibility = mojom::FeatureVisibility::New();
+  visibility->ai_chat = IsFeatureVisible(mojom::Feature::kAIChat);
+  visibility->wallet = IsFeatureVisible(mojom::Feature::kWallet);
+  visibility->rewards = IsFeatureVisible(mojom::Feature::kRewards);
+  visibility->vpn = IsFeatureVisible(mojom::Feature::kVPN);
+  std::move(callback).Run(std::move(visibility));
+}
+
+void WelcomePageHandler::SetFeatureVisible(mojom::Feature feature,
+                                           bool visible,
+                                           SetFeatureVisibleCallback callback) {
+  auto iter = feature_visibility_prefs_.find(feature);
+  if (iter != feature_visibility_prefs_.end()) {
+    for (std::string_view pref_name : iter->second) {
+      pref_change_registrar_.prefs()->SetBoolean(pref_name, visible);
+    }
+  }
   std::move(callback).Run();
 }
 
@@ -132,6 +167,23 @@ void WelcomePageHandler::OnVerticalTabsEnabledChanged() {
   if (page_) {
     page_->OnVerticalTabsEnabledChanged();
   }
+}
+
+void WelcomePageHandler::OnFeatureVisibilityChanged() {
+  if (page_) {
+    page_->OnFeatureVisibilityChanged();
+  }
+}
+
+bool WelcomePageHandler::IsFeatureVisible(mojom::Feature feature) const {
+  auto iter = feature_visibility_prefs_.find(feature);
+  if (iter == feature_visibility_prefs_.end()) {
+    return false;
+  }
+  auto* prefs = pref_change_registrar_.prefs();
+  return std::ranges::any_of(iter->second, [prefs](std::string_view pref_name) {
+    return prefs->GetBoolean(pref_name);
+  });
 }
 
 }  // namespace brave_welcome_page

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/flat_set.h"
 #include "brave/browser/resources/brave_welcome_page/grit/brave_welcome_page_generated_map.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
@@ -92,8 +93,9 @@ void BraveWelcomePageUI::BindInterface(
         receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<brave_welcome_page::WelcomePageHandler>(
-      std::move(receiver), ThemeServiceFactory::GetForProfile(profile),
-      profile->GetPrefs(), g_browser_process->local_state());
+      std::move(receiver), brave_welcome_page::GetAvailableFeatures(profile),
+      ThemeServiceFactory::GetForProfile(profile), profile->GetPrefs(),
+      g_browser_process->local_state());
 }
 
 void BraveWelcomePageUI::BindInterface(
