@@ -44,20 +44,13 @@ public class BraveSnackbarView extends SnackbarView {
 
     public BraveSnackbarView(
             Activity activity,
-            View.OnClickListener listener,
+            SnackbarManager manager,
             Snackbar snackbar,
             ViewGroup parentView,
             @Nullable WindowAndroid windowAndroid,
             @Nullable EdgeToEdgeController edgeToEdgeSupplier,
             boolean isTablet) {
-        super(
-                activity,
-                listener,
-                snackbar,
-                parentView,
-                windowAndroid,
-                edgeToEdgeSupplier,
-                isTablet);
+        super(activity, manager, snackbar, parentView, windowAndroid, edgeToEdgeSupplier, isTablet);
     }
 
     /**
