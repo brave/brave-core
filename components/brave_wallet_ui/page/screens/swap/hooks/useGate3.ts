@@ -139,7 +139,8 @@ export function useGate3(params: SwapParams) {
             ),
           ).unwrap()
         } catch (e) {
-          console.log(`Error getting Gate3 swap transaction: ${e}`)
+          console.error(`Error getting Gate3 swap transaction: ${e}`)
+          return makeGate3Error(`Error getting Gate3 swap transaction: ${e}`)
         }
 
         if (transactionResponse?.error) {
@@ -147,7 +148,7 @@ export function useGate3(params: SwapParams) {
         }
 
         if (!transactionResponse?.response?.gate3Transaction) {
-          return
+          return makeGate3Error('No transaction returned from Gate3')
         }
 
         const transactionParams = transactionResponse.response.gate3Transaction
@@ -156,6 +157,7 @@ export function useGate3(params: SwapParams) {
           await sendTransaction(transactionParams)
         } catch (e) {
           console.error(`Error creating Gate3 transaction: ${e}`)
+          return makeGate3Error(`Error creating Gate3 transaction: ${e}`)
         }
 
         return undefined
@@ -164,16 +166,30 @@ export function useGate3(params: SwapParams) {
       // Use the transaction params from the route directly
       if (!route.transactionParams) {
         console.error('Gate3: No transaction params in route')
-        return
+        return makeGate3Error('No transaction params in route')
       }
 
       try {
         await sendTransaction(route.transactionParams)
       } catch (e) {
         console.error(`Error creating Gate3 transaction: ${e}`)
+        return makeGate3Error(`Error creating Gate3 transaction: ${e}`)
       }
 
       return undefined
+
+      function makeGate3Error(message: string): BraveWallet.SwapErrorUnion {
+        return {
+          jupiterError: undefined,
+          zeroExError: undefined,
+          lifiError: undefined,
+          squidError: undefined,
+          gate3Error: {
+            message,
+            kind: BraveWallet.Gate3SwapErrorKind.kUnknown,
+          },
+        }
+      }
 
       async function sendTransaction(
         transactionParams: BraveWallet.Gate3SwapTransactionParamsUnion,
