@@ -128,7 +128,7 @@ struct SearchView: View {
     .onAppear {
       isSearchFocused = true
     }
-    .onChange(of: query) { query in
+    .onChange(of: query) {
       queryResults.nsPredicate = queryPredicate
     }
   }
