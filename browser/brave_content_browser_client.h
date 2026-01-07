@@ -55,6 +55,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   void RegisterTrustedWebUIInterfaceBrokers(
       content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
+  void RegisterUntrustedWebUIInterfaceBrokers(
+      content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
 
   bool HandleExternalProtocol(
       const GURL& url,
