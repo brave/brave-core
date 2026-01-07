@@ -25,10 +25,14 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.tabbed_mode") {
-    sources = [ "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java",
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java",
+    ]
 
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tab_group_suggestion:toolbar_java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
     ]
   }
