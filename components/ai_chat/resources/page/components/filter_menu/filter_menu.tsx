@@ -156,7 +156,6 @@ export default function FilterMenu<T>(props: Props<T>) {
         return false
       }}
       placement='top-start'
-      widthIsMaxWidth
     >
       {props.header}
       {filtered.map((category) => {
