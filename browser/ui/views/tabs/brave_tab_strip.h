@@ -70,12 +70,6 @@ class BraveTabStrip : public TabStrip {
 
   TabContainer* GetTabContainerForTesting();
 
-  // TabStrip overrides:
-  bool ShouldDrawStrokes() const override;
-
-  // Exposed for testing.
-  static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
-
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
 
