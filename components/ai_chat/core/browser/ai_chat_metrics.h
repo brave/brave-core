@@ -152,6 +152,8 @@ class AIChatMetrics : public mojom::Metrics,
     return tab_focus_metrics_.get();
   }
 
+  SkillsMetrics* skills_metrics() { return EnsureSkillsMetrics(); }
+
   void RecordEnabled(
       bool is_enabled,
       bool is_new_user,
@@ -211,6 +213,8 @@ class AIChatMetrics : public mojom::Metrics,
   void MaybeReportFirstChatPrompts(bool new_prompt_made);
   void RecordContextSource(ConversationHandlerForMetrics* handler,
                            mojom::ConversationTurnPtr& entry);
+
+  SkillsMetrics* EnsureSkillsMetrics();
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
