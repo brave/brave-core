@@ -45,7 +45,7 @@ class BraveEphemeralStorageServiceDelegate : public ApplicationStateObserver::Ob
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
   void RegisterOnBecomeActiveCallback(base::OnceCallback<void(const std::vector<std::string>&)> callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
-      const std::vector<std::string>& ephemeral_domain) override;
+      const std::vector<std::string>& ephemeral_domains) override;
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const override;
 #if BUILDFLAG(IS_ANDROID)
