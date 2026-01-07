@@ -194,15 +194,23 @@ export function useGate3(params: SwapParams) {
       async function sendTransaction(
         transactionParams: BraveWallet.Gate3SwapTransactionParamsUnion,
       ) {
+        if (!fromNetwork) {
+          return makeGate3Error('Source network not found')
+        }
+
+        if (!fromAccount) {
+          return makeGate3Error('Source account not found')
+        }
+
         if (transactionParams.evmTransactionParams) {
           const { data, to, value } = transactionParams.evmTransactionParams
 
           await sendEvmTransaction({
-            fromAccount: fromAccount!,
+            fromAccount,
             to,
             value: new Amount(value).toHex(),
             data: hexStrToNumberArray(data),
-            network: fromNetwork!,
+            network: fromNetwork,
             gasLimit: new Amount(21000).toHex(),
           })
           return
@@ -220,8 +228,8 @@ export function useGate3(params: SwapParams) {
 
           if (versionedTransaction) {
             await sendSolanaSerializedTransaction({
-              chainId: fromNetwork!.chainId,
-              accountId: fromAccount!.accountId,
+              chainId: fromNetwork.chainId,
+              accountId: fromAccount.accountId,
               txType: BraveWallet.TransactionType.SolanaSwap,
               encodedTransaction: versionedTransaction,
             })
@@ -231,8 +239,8 @@ export function useGate3(params: SwapParams) {
           // For SPL token transfers
           if (splTokenMint && splTokenAmount && decimals) {
             await sendSPLTransfer({
-              network: fromNetwork!,
-              fromAccount: fromAccount!,
+              network: fromNetwork,
+              fromAccount,
               to,
               value: new Amount(splTokenAmount).toHex(),
               splTokenMintAddress: splTokenMint,
@@ -244,8 +252,8 @@ export function useGate3(params: SwapParams) {
 
           // For native SOL transfers
           await sendSolTransaction({
-            network: fromNetwork!,
-            fromAccount: fromAccount!,
+            network: fromNetwork,
+            fromAccount,
             to,
             value: new Amount(lamports).toHex(),
           })
@@ -256,8 +264,8 @@ export function useGate3(params: SwapParams) {
           const { to, value } = transactionParams.bitcoinTransactionParams
 
           await sendBtcTransaction({
-            network: fromNetwork!,
-            fromAccount: fromAccount!,
+            network: fromNetwork,
+            fromAccount,
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
@@ -269,8 +277,8 @@ export function useGate3(params: SwapParams) {
           const { to, value } = transactionParams.cardanoTransactionParams
 
           await sendCardanoTransaction({
-            network: fromNetwork!,
-            fromAccount: fromAccount!,
+            network: fromNetwork,
+            fromAccount,
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
@@ -282,16 +290,17 @@ export function useGate3(params: SwapParams) {
           const { to, value } = transactionParams.zcashTransactionParams
 
           await sendZecTransaction({
-            network: fromNetwork!,
-            fromAccount: fromAccount!,
+            network: fromNetwork,
+            fromAccount,
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
             useShieldedPool: false,
             memo: undefined,
           })
-          return
         }
+
+        return makeGate3Error('No transaction params found')
       }
     },
     [
