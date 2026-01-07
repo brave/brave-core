@@ -1,0 +1,193 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {
+  WelcomeApi,
+  ColorScheme,
+  ChromeColor,
+  Theme,
+  ThemeColorPickerEventSource,
+  createWelcomeApi,
+} from '../api/welcome_api'
+
+const mockChromeColors: ChromeColor[] = [
+  {
+    name: 'Blue',
+    seed: { value: 0xff0b57d0 },
+    background: { value: 0xffd3e3fd },
+    foreground: { value: 0xff0b57d0 },
+    base: { value: 0xffc7c7c7 },
+    variant: 1 as ChromeColor['variant'],
+  },
+  {
+    name: 'Aqua',
+    seed: { value: 0xff00639b },
+    background: { value: 0xffc2e7ff },
+    foreground: { value: 0xff00639b },
+    base: { value: 0xffc7c7c7 },
+    variant: 1 as ChromeColor['variant'],
+  },
+  {
+    name: 'Green',
+    seed: { value: 0xff146c2e },
+    background: { value: 0xffc4eed0 },
+    foreground: { value: 0xff146c2e },
+    base: { value: 0xffc7c7c7 },
+    variant: 1 as ChromeColor['variant'],
+  },
+  {
+    name: 'Rose',
+    seed: { value: 0xffbf0049 },
+    background: { value: 0xffffd9e2 },
+    foreground: { value: 0xffbf0049 },
+    base: { value: 0xffc7c7c7 },
+    variant: 1 as ChromeColor['variant'],
+  },
+  {
+    name: 'Purple',
+    seed: { value: 0xff6750a4 },
+    background: { value: 0xffe9ddff },
+    foreground: { value: 0xff6750a4 },
+    base: { value: 0xffc7c7c7 },
+    variant: 1 as ChromeColor['variant'],
+  },
+]
+
+// Starts on the grey baseline so the grey swatch shows as selected by default,
+// matching the only baseline Brave exposes in the theme color picker.
+function createMockTheme(): Theme {
+  return {
+    hasBackgroundImage: false,
+    hasThirdPartyTheme: false,
+    backgroundImageMainColor: null,
+    isDarkMode: false,
+    seedColor: { value: 0 },
+    seedColorHue: 0,
+    backgroundColor: { value: 0xffffffff },
+    foregroundColor: { value: 0xffe3e3e3 },
+    colorPickerIconColor: { value: 0xff3c3c3c },
+    colorsManagedByPolicy: false,
+    isGreyBaseline: true,
+    browserColorVariant: 1 as Theme['browserColorVariant'],
+    followDeviceTheme: false,
+  }
+}
+
+export function createWelcomeApiMock(): WelcomeApi {
+  let theme = createMockTheme()
+  let themeListeners:
+    | Parameters<ThemeColorPickerEventSource['addListeners']>[0]
+    | null = null
+
+  const pushTheme = (next: Partial<Theme>) => {
+    theme = { ...theme, ...next }
+    themeListeners?.setTheme?.(theme)
+  }
+
+  const api = createWelcomeApi({
+    welcomePageHandler: {
+      setWelcomePage(page) {},
+      getColorScheme: async () => ({
+        colorScheme: ColorScheme.kSystem,
+      }),
+      setColorScheme: async (colorScheme) => {},
+      getVerticalTabsEnabled: async () => ({
+        enabled: false,
+      }),
+      setVerticalTabsEnabled: async (enabled) => {},
+    },
+    welcomePageEventSource: {
+      addListeners: (listeners) => () => {},
+    },
+    themeColorPickerHandler: {
+      getChromeColors: async () => ({ colors: mockChromeColors }),
+      updateTheme: () => {
+        themeListeners?.setTheme?.(theme)
+      },
+      setDefaultColor: () => {
+        pushTheme({
+          seedColor: { value: 0 },
+          foregroundColor: null,
+          isGreyBaseline: false,
+        })
+      },
+      setGreyDefaultColor: () => {
+        pushTheme({
+          foregroundColor: { value: 0xffe3e3e3 },
+          isGreyBaseline: true,
+        })
+      },
+      setSeedColor: (seedColor, browserColorVariant) => {
+        pushTheme({
+          seedColor,
+          browserColorVariant,
+          foregroundColor: seedColor,
+          isGreyBaseline: false,
+        })
+      },
+      setSeedColorFromHue: () => {},
+      removeBackgroundImage: () => {},
+    },
+    themeColorPickerEventSource: {
+      addListeners: (listeners) => {
+        themeListeners = listeners
+        return () => {
+          themeListeners = null
+        }
+      },
+    },
+    messages: {
+      async getDefaultBrowserInfo() {
+        return {
+          canBeDefault: true,
+          isDefault: false,
+          isDisabledByPolicy: false,
+          isUnknownError: false,
+        }
+      },
+      async getBrowserProfilesForImport() {
+        return [
+          {
+            index: 0,
+            name: 'Google Chrome Person 1',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+          {
+            index: 1,
+            name: 'Google Chrome Person 2',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+          {
+            index: 0,
+            name: 'Microsoft Edge',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+        ]
+      },
+      setAsDefaultBrowser() {},
+      importData(profileIndex, types) {},
+    },
+  })
+
+  return api
+}
