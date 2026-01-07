@@ -2151,6 +2151,21 @@ public class BytecodeTest {
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
+                        Context.class,
+                        ActivityLifecycleDispatcher.class,
+                        Supplier.class,
+                        Supplier.class,
+                        ObservableSupplier.class,
+                        ActivityTabProvider.class,
+                        Runnable.class,
+                        Supplier.class,
+                        Supplier.class,
+                        Supplier.class,
+                        ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
                         "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
                         Tab.class,
@@ -2760,6 +2775,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior"));
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",

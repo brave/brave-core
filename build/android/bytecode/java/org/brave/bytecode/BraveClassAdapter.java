@@ -128,6 +128,7 @@ public class BraveClassAdapter {
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherPaneBaseClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
+        chain = new BraveTabbedAdaptiveToolbarBehaviorClassAdapter(chain);
         chain = new BraveTabbedNavigationBarColorControllerBaseClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);
         chain = new BraveTabCollectionTabModelImplClassAdapter(chain);
