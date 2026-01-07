@@ -42,6 +42,7 @@ import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -169,6 +170,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_education:buildflags",
   "//brave/components/brave_new_tab_ui:mojom",
   "//brave/components/brave_news/common:mojom",
+  "//brave/components/brave_news/common/buildflags",
   "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_policy",
@@ -336,7 +338,6 @@ if (!is_android) {
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
-    "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/ui/webui/brave_welcome_page",
     "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/regional_capabilities",
@@ -346,6 +347,10 @@ if (!is_android) {
     "//components/feed/mojom:mojo_bindings",
     "//components/regional_capabilities",
   ]
+  if (enable_brave_news) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
+  }
 }
 
 if (enable_brave_education) {

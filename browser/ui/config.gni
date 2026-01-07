@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
@@ -20,10 +21,13 @@ if (!is_android) {
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/webui/brave_education",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
-    "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/ui/webui/side_panel/customize_chrome",
     "//brave/browser/ui/tabs:tab_strip",
   ]
+  if (enable_brave_news) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
+  }
 }
 if (is_android) {
   brave_ui_allow_circular_includes_from +=

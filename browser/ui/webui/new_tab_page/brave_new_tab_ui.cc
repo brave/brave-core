@@ -11,7 +11,6 @@
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
@@ -24,8 +23,7 @@
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -56,6 +54,12 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -118,6 +122,7 @@ BraveNewTabUI::BraveNewTabUI(
                          prefs::kNtpCustomBackgroundDict));
 
   // Let frontend know about feature flags
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_news::features::kBraveNewsCardPeekFeature));
@@ -125,6 +130,10 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddBoolean(
       "featureFlagBraveNewsFeedV2Enabled",
       base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate));
+#else
+  source->AddBoolean("featureFlagBraveNewsPromptEnabled", false);
+  source->AddBoolean("featureFlagBraveNewsFeedV2Enabled", false);
+#endif
 
   source->AddBoolean(
       "featureFlagSearchWidget",
@@ -176,6 +185,7 @@ BraveNewTabUI::BraveNewTabUI(
 
 BraveNewTabUI::~BraveNewTabUI() = default;
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
 void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
@@ -187,6 +197,7 @@ void BraveNewTabUI::BindInterface(
     brave_news_controller->Bind(std::move(receiver));
   }
 }
+#endif
 
 void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>

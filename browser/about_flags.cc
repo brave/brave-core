@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
-#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -27,6 +27,7 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/local_ai/common/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -57,7 +58,9 @@
 #include "brave/components/ai_rewriter/common/features.h"
 #endif
 
-#include "brave/components/local_ai/common/features.h"
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
@@ -259,6 +262,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
@@ -276,6 +280,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
       })
+#else
+#define BRAVE_NEWS_FEATURE_ENTRIES
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #define PLAYLIST_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                          \

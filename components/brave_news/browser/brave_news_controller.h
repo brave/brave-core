@@ -22,6 +22,7 @@
 #include "brave/components/brave_news/browser/initialization_promise.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -34,6 +35,8 @@
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
 class PrefService;
 

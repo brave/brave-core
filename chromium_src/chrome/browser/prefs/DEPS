@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/brave_adaptive_captcha/prefs_util.h",
   "+brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h",
   "+brave/components/brave_news/browser/brave_news_p3a.h",
+  "+brave/components/brave_news/common/buildflags",
   "+brave/components/brave_news/common/p3a_pref_names.h",
   "+brave/components/brave_news/common/pref_names.h",
   "+brave/components/brave_search_conversion/p3a.h",

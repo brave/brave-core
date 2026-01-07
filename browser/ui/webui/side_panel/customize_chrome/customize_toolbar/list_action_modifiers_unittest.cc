@@ -11,7 +11,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -46,6 +46,10 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 using ActionId = side_panel::customize_chrome::mojom::ActionId;
 
@@ -369,8 +373,10 @@ TEST_F(ListActionModifiersUnitTest,
 #endif
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   ASSERT_TRUE(
       !prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif
 
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       *web_contents_, GetBasicActions());
@@ -390,7 +396,12 @@ TEST_F(ListActionModifiersUnitTest,
           EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
           EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
-          EqId(ActionId::kShowReward), EqId(ActionId::kShowBraveNews)));
+          EqId(ActionId::kShowReward)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+              ,
+          EqId(ActionId::kShowBraveNews)
+#endif
+              ));
 }
 
 TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
@@ -413,8 +424,10 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
   // added
   prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
                           base::Value(true));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Disables brave news to ensure it doesn't affect the result
   prefs()->SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+#endif
 
   ASSERT_TRUE(
       prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
@@ -430,6 +443,7 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
   EXPECT_EQ(it, categories.end());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
 TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_BraveNews) {
   // Create a vector of categories
   std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories;
@@ -468,3 +482,4 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_BraveNews) {
   // disabled
   EXPECT_EQ(it, categories.end());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)

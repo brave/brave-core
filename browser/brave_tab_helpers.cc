@@ -15,7 +15,6 @@
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -24,6 +23,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -109,6 +109,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #endif
 
 namespace brave {
@@ -200,7 +204,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
 
 #if defined(TOOLKIT_VIEWS)
   OnboardingTabHelper::MaybeCreateForWebContents(web_contents);
