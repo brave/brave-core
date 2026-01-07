@@ -160,6 +160,8 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/history/brave_history_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
@@ -258,6 +260,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/commands/common/features.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
+#include "ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/ai_chat/utils.h"
 #endif
@@ -732,6 +735,10 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif
           .Add<
               ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
+
+  registry.ForWebUI<BraveWelcomePageUI>()
+      .Add<brave_welcome_page::mojom::WelcomePageHandler>()
+      .Add<theme_color_picker::mojom::ThemeColorPickerHandlerFactory>();
 
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()
