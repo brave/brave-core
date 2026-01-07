@@ -2908,7 +2908,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
           "gasless": false,
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
-          "expiresAt": "2025-12-30T11:26:07.371000Z",
+          "expiresAt": "1767810375",
           "transactionParams": {
             "evm": {
               "chain": {
@@ -2949,7 +2949,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
   EXPECT_EQ(*route->deposit_address,
             "0x16a0FdeB69D821753440dFA092316F54eF95E967");
   ASSERT_TRUE(route->expires_at.has_value());
-  EXPECT_EQ(*route->expires_at, "2025-12-30T11:26:07.371000Z");
+  EXPECT_EQ(*route->expires_at, "1767810375");
 
   // Verify network fee
   ASSERT_TRUE(route->network_fee);
@@ -3021,7 +3021,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
           "gasless": false,
           "depositAddress": "DepositAddress123",
           "depositMemo": null,
-          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "expiresAt": "1767810375",
           "transactionParams": {
             "evm": null,
             "solana": {
@@ -3128,7 +3128,7 @@ TEST(SwapResponseParserUnitTest,
           "gasless": false,
           "depositAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "depositMemo": null,
-          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "expiresAt": "1767810375",
           "transactionParams": {
             "evm": null,
             "solana": null,
@@ -3216,7 +3216,7 @@ TEST(SwapResponseParserUnitTest,
           "gasless": false,
           "depositAddress": "addr1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "depositMemo": null,
-          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "expiresAt": "1767810375",
           "transactionParams": {
             "evm": null,
             "solana": null,
@@ -3303,7 +3303,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
           "gasless": false,
           "depositAddress": "t1dJj1rGjG7GjG7GjG7GjG7GjG7GjG7GjG7G",
           "depositMemo": null,
-          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "expiresAt": "1767810375",
           "transactionParams": {
             "evm": null,
             "solana": null,
