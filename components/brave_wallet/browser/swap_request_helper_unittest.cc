@@ -1859,6 +1859,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAllCoinTypes) {
       {mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84, "BTC"},
       {mojom::CoinType::FIL, mojom::KeyringId::kFilecoin, "FIL"},
       {mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet, "ZEC"},
+      {mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet, "ADA"},
+      {mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet, "DOT"},
   };
 
   for (const auto& test_case : test_cases) {
