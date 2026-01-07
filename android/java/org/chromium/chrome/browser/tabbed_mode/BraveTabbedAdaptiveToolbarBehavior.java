@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  */
 @NullMarked
 public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBehavior {
-    static Set<Integer> BRAVE_BUTTONS =
+    static Set<Integer> sBraveButtons =
             Set.of(
                     AdaptiveToolbarButtonVariant.BOOKMARKS,
                     AdaptiveToolbarButtonVariant.HISTORY,
@@ -80,12 +80,12 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
     }
 
     private void maybeAddBraveButtonVariants() {
-        for (int braveButton : BRAVE_BUTTONS) {
+        for (int braveButton : sBraveButtons) {
             if (AdaptiveToolbarBehavior.sValidButtons.contains(braveButton)) {
                 // Already contains at least one Brave button, nothing to do.
                 return;
             }
         }
-        AdaptiveToolbarBehavior.sValidButtons.addAll(BRAVE_BUTTONS);
+        AdaptiveToolbarBehavior.sValidButtons.addAll(sBraveButtons);
     }
 }
