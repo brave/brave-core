@@ -11,7 +11,6 @@ import { PanelActions } from '../panel/actions'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'
-import { BraveWallet } from '../constants/types'
 
 // utils
 import getAPIProxy from '../common/async/bridge'
@@ -48,11 +47,8 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
 }
 
 export function navigateToConnectHardwareWallet(
-  panelHandler: BraveWallet.PanelHandlerRemote,
   store: Pick<Store, 'dispatch' | 'getState'>,
 ) {
-  panelHandler.setCloseOnDeactivate(false)
-
   const selectedPanel: string | undefined =
     store.getState()?.panel?.selectedPanel
 

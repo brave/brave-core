@@ -130,11 +130,6 @@ void WalletPanelUI::BindInterface(
       profile->GetPrefs());
 }
 
-void WalletPanelUI::SetDeactivationCallback(
-    base::RepeatingCallback<void(bool)> deactivation_callback) {
-  deactivation_callback_ = std::move(deactivation_callback);
-}
-
 void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
@@ -179,8 +174,7 @@ void WalletPanelUI::CreatePanelHandler(
   CHECK(profile);
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), this, active_web_contents_,
-      std::move(deactivation_callback_));
+      std::move(panel_receiver), this, active_web_contents_);
 
   if (auto* wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(

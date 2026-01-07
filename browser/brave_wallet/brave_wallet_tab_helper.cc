@@ -187,13 +187,6 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-void BraveWalletTabHelper::SetCloseOnDeactivate(bool close) {
-  if (wallet_bubble_manager_delegate_) {
-    wallet_bubble_manager_delegate_->CloseOnDeactivate(close);
-  }
-  close_on_deactivate_for_testing_ = close;
-}
-
 void BraveWalletTabHelper::ShowBubble() {
   if (skip_delegate_for_testing_) {
     is_showing_bubble_for_testing_ = true;
