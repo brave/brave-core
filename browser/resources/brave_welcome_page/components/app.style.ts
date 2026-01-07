@@ -38,7 +38,7 @@ export const style = scoped.css`
 
 style.passthrough.css`
   & {
-    font: ${font.large.regular};
+    font: ${font.default.regular};
     color: ${color.text.primary};
   }
 
@@ -94,6 +94,7 @@ style.passthrough.css`
   }
 
   .step-text {
+    font: ${font.large.regular};
     display: flex;
     flex-direction: column;
     gap: ${spacing['2Xl']};

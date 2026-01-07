@@ -34,4 +34,13 @@ interface WelcomePageHandler {
   // Gets or sets whether vertical tabs are enabled.
   GetVerticalTabsEnabled() => (bool enabled);
   SetVerticalTabsEnabled(bool enabled) => ();
+
+  // Sets whether the Web Discovery Project is enabled.
+  SetWebDiscoveryEnabled(bool enabled) => ();
+
+  // Sets whether P3A (anonymous product analytics) is enabled.
+  SetP3AEnabled(bool enabled) => ();
+
+  // Sets whether crash reporting is enabled.
+  SetCrashReportsEnabled(bool enabled) => ();
 };
