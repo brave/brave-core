@@ -10,6 +10,7 @@
 #include "brave/browser/resources/brave_welcome_page/grit/brave_welcome_page_generated_map.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/components/constants/pref_names.h"
@@ -72,6 +73,16 @@ BraveWelcomePageUI::BraveWelcomePageUI(content::WebUI* web_ui)
 #endif  // BUILDFLAG(ENABLE_WEB_DISCOVERY)
   source->AddBoolean("webDiscoveryFeatureEnabled",
                      BUILDFLAG(ENABLE_WEB_DISCOVERY));
+
+  using brave_welcome_page::mojom::Feature;
+  auto features = brave_welcome_page::GetAvailableFeatures(profile);
+  source->AddBoolean("aiChatFeatureEnabled",
+                     features.contains(Feature::kAIChat));
+  source->AddBoolean("walletFeatureEnabled",
+                     features.contains(Feature::kWallet));
+  source->AddBoolean("rewardsFeatureEnabled",
+                     features.contains(Feature::kRewards));
+  source->AddBoolean("vpnFeatureEnabled", features.contains(Feature::kVPN));
 }
 
 BraveWelcomePageUI::~BraveWelcomePageUI() = default;

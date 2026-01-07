@@ -12,6 +12,14 @@ enum ColorScheme {
   kDark,
 };
 
+// A browser feature that can be displayed to the user on the welcome page.
+enum Feature {
+  kAIChat,
+  kWallet,
+  kRewards,
+  kVPN,
+};
+
 // WebUI-side handler for notifications from the browser.
 interface WelcomePage {
   // Called when the current browser theme scheme has changed.

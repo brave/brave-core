@@ -199,6 +199,10 @@ export function createWelcomeApiMock(): WelcomeApi {
     isP3APrefManaged: false,
     isWebDiscoveryPrefManaged: false,
     webDiscoveryFeatureEnabled: true,
+    aiChatFeatureEnabled: true,
+    walletFeatureEnabled: true,
+    rewardsFeatureEnabled: true,
+    vpnFeatureEnabled: true,
   })
 
   return api

@@ -79,6 +79,10 @@ interface ApiInit {
   isP3APrefManaged: boolean
   isWebDiscoveryPrefManaged: boolean
   webDiscoveryFeatureEnabled: boolean
+  aiChatFeatureEnabled: boolean
+  walletFeatureEnabled: boolean
+  rewardsFeatureEnabled: boolean
+  vpnFeatureEnabled: boolean
 }
 
 function defaultInit(): ApiInit {
@@ -134,6 +138,10 @@ function defaultInit(): ApiInit {
     webDiscoveryFeatureEnabled: loadTimeData.getBoolean(
       'webDiscoveryFeatureEnabled',
     ),
+    aiChatFeatureEnabled: loadTimeData.getBoolean('aiChatFeatureEnabled'),
+    walletFeatureEnabled: loadTimeData.getBoolean('walletFeatureEnabled'),
+    rewardsFeatureEnabled: loadTimeData.getBoolean('rewardsFeatureEnabled'),
+    vpnFeatureEnabled: loadTimeData.getBoolean('vpnFeatureEnabled'),
   }
 }
 
@@ -193,6 +201,10 @@ export function createWelcomeApi(init = defaultInit()) {
       isP3APrefManaged: state(init.isP3APrefManaged),
       isWebDiscoveryPrefManaged: state(init.isWebDiscoveryPrefManaged),
       webDiscoveryFeatureEnabled: state(init.webDiscoveryFeatureEnabled),
+      aiChatFeatureEnabled: state(init.aiChatFeatureEnabled),
+      walletFeatureEnabled: state(init.walletFeatureEnabled),
+      rewardsFeatureEnabled: state(init.rewardsFeatureEnabled),
+      vpnFeatureEnabled: state(init.vpnFeatureEnabled),
     },
 
     actions: {
