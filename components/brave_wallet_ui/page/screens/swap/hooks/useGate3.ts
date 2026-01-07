@@ -314,6 +314,7 @@ export function useGate3(params: SwapParams) {
       sendEvmTransaction,
       sendSolTransaction,
       sendSPLTransfer,
+      sendSolanaSerializedTransaction,
       sendBtcTransaction,
       sendCardanoTransaction,
       sendZecTransaction,
