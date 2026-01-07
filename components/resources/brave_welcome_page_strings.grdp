@@ -1,3 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+
+  <message name="IDS_WELCOME_PAGE_BACK_BUTTON_LABEL" desc="Label for back button" formatter_data="webui=BraveWelcomePage">
+    Back
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_GET_STARTED_BUTTON_LABEL" desc="Label for get started button on welcome step" formatter_data="webui=BraveWelcomePage">
+    Get started
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_BUTTON_LABEL" desc="Label for import button" formatter_data="webui=BraveWelcomePage">
+    Import
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TEXT1" desc="First paragraph text on import step" formatter_data="webui=BraveWelcomePage">
+    Import everything from your old browser and make the transition seamless.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TEXT2" desc="Second paragraph text on import step" formatter_data="webui=BraveWelcomePage">
+    You can also do this later in Brave's settings.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TITLE" desc="Title for import step" formatter_data="webui=BraveWelcomePage">
+    Bring along your old browser content
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_NEXT_BUTTON_LABEL" desc="Label for next button" formatter_data="webui=BraveWelcomePage">
+    Next
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_SKIP_BUTTON_LABEL" desc="Label for skip button" formatter_data="webui=BraveWelcomePage">
+    Skip
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_WELCOME_STEP_TEXT" desc="Text on welcome step" formatter_data="webui=BraveWelcomePage">
+    Experience the web without being watched. Brave shields you from trackers, ads, and fingerprinting, all automatically.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_WELCOME_STEP_TITLE" desc="Title for welcome step" formatter_data="webui=BraveWelcomePage">
+    Get ready for the best browsing experience
+  </message>
+
 </grit-part>
