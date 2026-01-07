@@ -6,13 +6,31 @@
 import {
   ColorScheme,
   WelcomePageHandler,
+  WelcomePageInterface,
+  WelcomePageReceiver,
+  WelcomePageRemote,
   WelcomePageHandlerInterface,
 } from 'gen/brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.m.js'
 
-import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
-import { createInterfaceApi, state } from '$web-common/api'
+import {
+  Theme,
+  ChromeColor,
+  ThemeColorPickerHandlerInterface,
+  ThemeColorPickerClientInterface,
+} from 'chrome://resources/cr_components/theme_color_picker/theme_color_picker.mojom-webui.js'
 
-export { ColorScheme }
+import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
+import { ThemeColorPickerProxy } from './theme_color_picker_proxy'
+import {
+  createInterfaceApi,
+  endpointsFor,
+  eventsFor,
+  state,
+} from '$web-common/api'
+
+export { ColorScheme, Theme, ChromeColor }
+
+export type SkColor = ChromeColor['seed']
 
 // Type returned from requestDefaultBrowserState message.
 export interface DefaultBrowserInfo {
@@ -50,8 +68,34 @@ export interface BrowserProfile {
 // The current import status.
 export type ImportDataStatus = '' | 'in-progress' | 'succeeded'
 
+interface EventSource<T> {
+  addListeners: (listeners: Partial<T>) => () => void
+}
+
+function eventSourceFromRouter<T>(router: any): EventSource<T> {
+  return {
+    addListeners(listeners) {
+      const ids: number[] = []
+      for (const [key, val] of Object.entries(listeners)) {
+        ids.push(router[key].addListener(val))
+      }
+      return () => {
+        for (const id of ids) {
+          router.removeListener(id)
+        }
+      }
+    },
+  }
+}
+
+export type ThemeColorPickerEventSource =
+  EventSource<ThemeColorPickerClientInterface>
+
 interface ApiInit {
   welcomePageHandler: WelcomePageHandlerInterface
+  getWelcomePageRemote?: (page: WelcomePageInterface) => WelcomePageRemote
+  themeColorPickerHandler: ThemeColorPickerHandlerInterface
+  themeColorPickerEventSource: ThemeColorPickerEventSource
   messages: {
     getDefaultBrowserInfo: () => Promise<DefaultBrowserInfo>
     getBrowserProfilesForImport: () => Promise<BrowserProfile[]>
@@ -62,8 +106,16 @@ interface ApiInit {
 }
 
 function defaultInit(): ApiInit {
+  const themeColorPickerProxy = ThemeColorPickerProxy.getInstance()
   return {
     welcomePageHandler: WelcomePageHandler.getRemote(),
+    getWelcomePageRemote: (page) => {
+      return new WelcomePageReceiver(page).$.bindNewPipeAndPassRemote()
+    },
+    themeColorPickerHandler: themeColorPickerProxy.handler,
+    themeColorPickerEventSource: eventSourceFromRouter(
+      themeColorPickerProxy.callbackRouter,
+    ),
     messages: {
       getDefaultBrowserInfo() {
         return sendWithPromise('requestDefaultBrowserState')
@@ -94,8 +146,45 @@ function defaultInit(): ApiInit {
 }
 
 export function createWelcomeApi(init = defaultInit()) {
+  const {
+    welcomePageHandler,
+    themeColorPickerHandler,
+    themeColorPickerEventSource,
+  } = init
+
   const api = createInterfaceApi({
     endpoints: {
+      ...endpointsFor(themeColorPickerHandler, {
+        getChromeColors: {
+          response: (r) => r.colors,
+          placeholderData: [] as ChromeColor[],
+        },
+      }),
+      theme: state<Theme | undefined>(),
+      ...endpointsFor(welcomePageHandler, {
+        getColorScheme: {
+          response: (r) => r.colorScheme,
+          prefetchWithArgs: [],
+          placeholderData: ColorScheme.kSystem,
+        },
+        setColorScheme: {
+          mutationResponse: () => {},
+          onMutate: ([colorScheme]: [ColorScheme]) => {
+            api.getColorScheme.update(colorScheme)
+          },
+        },
+        getVerticalTabsEnabled: {
+          response: (r) => r.enabled,
+          prefetchWithArgs: [],
+          placeholderData: false,
+        },
+        setVerticalTabsEnabled: {
+          mutationResponse: () => {},
+          onMutate: ([enabled]: [boolean]) => {
+            api.getVerticalTabsEnabled.update(enabled)
+          },
+        },
+      }),
       getDefaultBrowserState: {
         query: () => init.messages.getDefaultBrowserInfo(),
       },
@@ -105,11 +194,49 @@ export function createWelcomeApi(init = defaultInit()) {
       importDataStatus: state<ImportDataStatus>(''),
     },
 
+    events: {
+      ...eventsFor(
+        WelcomePageInterface,
+        {
+          onColorSchemeChanged() {
+            api.getColorScheme.invalidate()
+          },
+          onVerticalTabsEnabledChanged() {
+            api.getVerticalTabsEnabled.invalidate()
+          },
+        },
+        (observer) => {
+          if (init.getWelcomePageRemote) {
+            welcomePageHandler.setWelcomePage(
+              init.getWelcomePageRemote(observer),
+            )
+          }
+        },
+      ),
+    },
+
     actions: {
       setAsDefaultBrowser: init.messages.setAsDefaultBrowser,
       importData: init.messages.importData,
+      setThemeColor: (
+        seed: ChromeColor['seed'],
+        variant: ChromeColor['variant'],
+      ) => {
+        themeColorPickerHandler.setSeedColor(seed, variant)
+      },
+      setGreyThemeColor: () => {
+        themeColorPickerHandler.setGreyDefaultColor()
+      },
     },
   })
+
+  themeColorPickerEventSource.addListeners({
+    setTheme(theme) {
+      api.theme.update(theme)
+    },
+  })
+
+  themeColorPickerHandler.updateTheme()
 
   init.messages.addImportStatusListener((status) => {
     switch (status) {
@@ -117,19 +244,6 @@ export function createWelcomeApi(init = defaultInit()) {
         api.importDataStatus.update(status)
         break
       case 'succeeded':
-        if (api.importDataStatus.current() === 'in-progress') {
-          api.importDataStatus.update('succeeded')
-        }
-        break
-    }
-  })
-
-  addWebUiListener('brave-import-data-status-changed', (status: any) => {
-    switch (String(status?.event ?? '')) {
-      case 'ImportStarted':
-        api.importDataStatus.update('in-progress')
-        break
-      case 'ImportEnded':
         if (api.importDataStatus.current() === 'in-progress') {
           api.importDataStatus.update('succeeded')
         }

@@ -15,6 +15,7 @@ transpile_web_ui("resources") {
   deps = [
     "//brave/browser/ui/webui/brave_welcome_page:mojom_js",
     "//brave/components/resources:strings",
+    "//ui/webui/resources/cr_components/theme_color_picker:mojom",
   ]
 }
 

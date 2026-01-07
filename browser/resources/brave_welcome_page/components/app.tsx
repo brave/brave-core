@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -9,6 +9,7 @@ import { useStepList } from './use_step_list'
 import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
 import { ImportStep } from './import_step'
+import { AppearanceStep } from './appearance_step'
 
 import { style } from './app.style'
 
@@ -65,6 +66,13 @@ export function App() {
       case 'import':
         return (
           <ImportStep
+            onNext={stepForward}
+            onBack={stepBack}
+          />
+        )
+      case 'appearance':
+        return (
+          <AppearanceStep
             onNext={stepForward}
             onBack={stepBack}
           />

@@ -49,6 +49,54 @@
     Bring along your old browser content
   </message>
 
+  <message name="IDS_WELCOME_PAGE_SKIP_BUTTON_LABEL" desc="Label for skip button" formatter_data="webui=BraveWelcomePage">
+    Skip
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_LEARN_MORE_LINK_LABEL" desc="Label for a link to more information about a product or feature" formatter_data="webui=BraveWelcomePage">
+    Learn more.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_APPEARANCE_STEP_TITLE" desc="Title for appearance step" formatter_data="webui=BraveWelcomePage">
+    Make Brave yours
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_APPEARANCE_STEP_TEXT" desc="Text on appearance step" formatter_data="webui=BraveWelcomePage">
+    Personalize your browsing experience with your preferred tab layout and color modes.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_LABEL" desc="Label for the tab layout setting" formatter_data="webui=BraveWelcomePage">
+    Tab layout
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_HORIZONTAL_LABEL" desc="Label for the horizontal tab layout option" formatter_data="webui=BraveWelcomePage">
+    Horizontal
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_VERTICAL_LABEL" desc="Label for the vertical tab layout option" formatter_data="webui=BraveWelcomePage">
+    Vertical
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_LABEL" desc="Label for the theme setting" formatter_data="webui=BraveWelcomePage">
+    Theme
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_SYSTEM_LABEL" desc="Label for the option that matches the system theme" formatter_data="webui=BraveWelcomePage">
+    Device
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_LIGHT_LABEL" desc="Label for the light theme option" formatter_data="webui=BraveWelcomePage">
+    Light
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_DARK_LABEL" desc="Label for the dark theme option" formatter_data="webui=BraveWelcomePage">
+    Dark
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_GREY_COLOR_LABEL" desc="Accessible label for the grey theme color swatch" formatter_data="webui=BraveWelcomePage">
+    Grey default color
+  </message>
+
   <message name="IDS_WELCOME_PAGE_SELECT_BROWSER_TITLE" desc="Title prompting the user to select their previous browser" formatter_data="webui=BraveWelcomePage">
     Select your previous browser
   </message>
@@ -87,6 +135,78 @@
 
   <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_SEARCH" desc="Name of the search engines import type" formatter_data="webui=BraveWelcomePage">
     Search engines
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_FEATURES_STEP_TITLE" desc="Title for the feature selection step" formatter_data="webui=BraveWelcomePage">
+    Make Brave yours
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_FEATURES_STEP_TEXT" desc="Text on the feature selection step" formatter_data="webui=BraveWelcomePage">
+    Select the features you want enabled by default in the browser. You can always enable or disable these later in Settings.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_LEO_AI_TITLE" desc="Title of the Leo AI product card" formatter_data="webui=BraveWelcomePage">
+    Leo AI
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_LEO_AI_DESCRIPTION" desc="Description of the Leo AI product card" formatter_data="webui=BraveWelcomePage">
+    The smart AI assistant built right into your browser. Ask questions, summarize pages, create new content, and more. Privately.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WEB3_WALLET_TITLE" desc="Title of the Web3 wallet product card" formatter_data="webui=BraveWelcomePage">
+    Web3 wallet
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WEB3_WALLET_DESCRIPTION" desc="Description of the Web3 wallet product card" formatter_data="webui=BraveWelcomePage">
+    The secure, built-in crypto wallet that supercharges your browser for Web3.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_REWARDS_TITLE" desc="Title of the Brave Rewards product card" formatter_data="webui=BraveWelcomePage">
+    Rewards
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_REWARDS_DESCRIPTION" desc="Description of the Brave Rewards product card" formatter_data="webui=BraveWelcomePage">
+    Support content creators and earn tokens for ads you see in Brave.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TITLE" desc="Title for the metrics opt-in step" formatter_data="webui=BraveWelcomePage">
+    Build a better web with us
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WDP_TITLE" desc="Title of the Web Discovery Project opt-in card" formatter_data="webui=BraveWelcomePage">
+    Help Brave Search grow
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WDP_DESCRIPTION" desc="Description of the Web Discovery Project opt-in card" formatter_data="webui=BraveWelcomePage">
+    Opt into the Web Discovery Project to help grow the index and improve search results.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_P3A_TITLE" desc="Title of the privacy-preserving product analytics opt-in card" formatter_data="webui=BraveWelcomePage">
+    Help us make the browser better
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_P3A_DESCRIPTION" desc="Description of the privacy-preserving product analytics opt-in card" formatter_data="webui=BraveWelcomePage">
+    Share private &amp; anonymous product insights.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_CRASH_REPORTS_TITLE" desc="Title of the crash reports opt-in card" formatter_data="webui=BraveWelcomePage">
+    Send crash reports
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_CRASH_REPORTS_DESCRIPTION" desc="Description of the crash reports opt-in card" formatter_data="webui=BraveWelcomePage">
+    Send diagnostic reports if you experience a crash or freeze.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TEXT1" desc="First paragraph on the metrics opt-in step" formatter_data="webui=BraveWelcomePage">
+    Help Brave be better and create better products by enabling these private metrics. We promise to protect your privacy in everything we do.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TEXT2" desc="Second paragraph on the metrics opt-in step. $1 wraps a link to the privacy settings page and $2 wraps a link to the privacy policy." formatter_data="webui=BraveWelcomePage">
+    You can change these choices at any time in Brave at <ph name="SETTINGS_LINK">$1</ph>. Read our full <ph name="PRIVACY_POLICY_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_END">/$2</ph>.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_START_BROWSING_BUTTON_LABEL" desc="Label for the button that completes onboarding and starts browsing" formatter_data="webui=BraveWelcomePage">
+    Start browsing
   </message>
 
 </grit-part>

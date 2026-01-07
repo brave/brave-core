@@ -476,7 +476,10 @@ leo_icons_sources = [
   "support.svg",
   "swap-horizontal.svg",
   "swap-vertical.svg",
+  "theme-dark.svg",
   "theme-darker.svg",
+  "theme-light.svg",
+  "theme-system.svg",
   "themes.svg",
   "thumb-down.svg",
   "thumb-up.svg",
@@ -517,6 +520,7 @@ leo_icons_sources = [
   "window-tab-close.svg",
   "window-tab-new.svg",
   "window-tab.svg",
+  "window-tabs-horizontal.svg",
   "window-tabs-vertical-expanded.svg",
   "window-tabs.svg",
   "window.svg",
@@ -605,7 +609,6 @@ if (enable_speedreader) {
     "readermode-serif.svg",
     "rewind-outline.svg",
     "speed.svg",
-    "theme-system.svg",
   ]
 }
 
