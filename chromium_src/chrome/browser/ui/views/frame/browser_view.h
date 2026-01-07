@@ -31,6 +31,7 @@
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
 #define MaybeUpdateSplitView virtual MaybeUpdateSplitView
 #define GetTabStripVisible virtual GetTabStripVisible
+#define FullscreenStateChanged virtual FullscreenStateChanged
 
 #define GetTabSearchBubbleHost     \
   GetTabSearchBubbleHost_Unused(); \
@@ -60,6 +61,7 @@
 #endif
 
 #undef GetTabSearchBubbleHost
+#undef FullscreenStateChanged
 #undef GetTabStripVisible
 #undef MaybeUpdateSplitView
 #undef MaybeUpdateDevtools
