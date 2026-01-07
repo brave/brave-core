@@ -1,0 +1,37 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_welcome_page.mojom;
+
+// The browser color scheme selected by the user.
+enum ColorScheme {
+  kSystem,
+  kLight,
+  kDark,
+};
+
+// WebUI-side handler for notifications from the browser.
+interface WelcomePage {
+  // Called when the current browser color scheme has changed.
+  OnColorSchemeChanged();
+
+  // Called when the vertical tabs enabled state has changed.
+  OnVerticalTabsEnabledChanged();
+};
+
+// Browser-side handler for requests from the welcome page WebUI.
+interface WelcomePageHandler {
+  // Sets the WelcomePage remote interface that will receive notifications from
+  // the browser.
+  SetWelcomePage(pending_remote<WelcomePage> page);
+
+  // Gets or sets the current browser color scheme.
+  GetColorScheme() => (ColorScheme color_scheme);
+  SetColorScheme(ColorScheme color_scheme) => ();
+
+  // Gets or sets whether vertical tabs are enabled.
+  GetVerticalTabsEnabled() => (bool enabled);
+  SetVerticalTabsEnabled(bool enabled) => ();
+};

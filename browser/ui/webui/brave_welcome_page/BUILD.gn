@@ -3,22 +3,38 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
+
 assert(!is_android)
+
+mojom("mojom") {
+  sources = [ "brave_welcome_page.mojom" ]
+}
 
 source_set("brave_welcome_page") {
   sources = [
     "brave_welcome_page_ui.cc",
     "brave_welcome_page_ui.h",
+    "welcome_page_handler.cc",
+    "welcome_page_handler.h",
   ]
 
   deps = [
+    ":mojom",
+    "//base",
     "//brave/browser/resources/brave_welcome_page:generated_resources",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search/background",
+    "//chrome/browser/themes",
     "//chrome/browser/ui/webui:webui_util",
+    "//components/prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
     "//ui/webui",
+    "//ui/webui/resources/cr_components/theme_color_picker:mojom",
   ]
 }

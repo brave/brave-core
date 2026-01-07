@@ -413,6 +413,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_welcome_page",
+    "//brave/browser/ui/webui/brave_welcome_page:mojom",
     "//brave/browser/workspaces",
     "//brave/browser/workspaces:impl",
     "//brave/ui/webui/brave_color_change_listener",

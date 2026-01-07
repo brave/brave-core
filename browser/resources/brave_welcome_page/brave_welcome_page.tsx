@@ -8,7 +8,12 @@ import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { App } from './components/app'
+import { WelcomeApiProvider } from './api/welcome_api_context'
 
 setIconBasePath('chrome://resources/brave-icons')
 
-createRoot(document.getElementById('root')!).render(<App />)
+createRoot(document.getElementById('root')!).render(
+  <WelcomeApiProvider>
+    <App />
+  </WelcomeApiProvider>,
+)

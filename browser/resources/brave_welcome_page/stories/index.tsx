@@ -6,15 +6,19 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 
+import { createWelcomeApiMock } from './welcome_api_mock'
+import { WelcomeApiProvider } from '../api/welcome_api_context'
 import { App } from '../components/app'
 
 interface StorybookAppProps {}
 
 function StorybookApp(props: StorybookAppProps) {
   return (
-    <div style={{ position: 'absolute', inset: 0 }}>
-      <App />
-    </div>
+    <WelcomeApiProvider api={createWelcomeApiMock()}>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <App />
+      </div>
+    </WelcomeApiProvider>
   )
 }
 
@@ -23,4 +27,4 @@ export default {
   component: StorybookApp,
 } satisfies Meta<typeof StorybookApp>
 
-export const NewTabPage: StoryObj<typeof StorybookApp> = {}
+export const WelcomePage: StoryObj<typeof StorybookApp> = {}
