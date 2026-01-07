@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_WELCOME_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_WELCOME_PAGE_HANDLER_H_
 
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
 #include "chrome/browser/themes/theme_service_observer.h"
@@ -26,7 +27,8 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
  public:
   WelcomePageHandler(mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
                      ThemeService* theme_service,
-                     PrefService* prefs);
+                     PrefService* prefs,
+                     PrefService* local_state);
 
   WelcomePageHandler(const WelcomePageHandler&) = delete;
   WelcomePageHandler& operator=(const WelcomePageHandler&) = delete;
@@ -41,6 +43,11 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   void GetVerticalTabsEnabled(GetVerticalTabsEnabledCallback callback) override;
   void SetVerticalTabsEnabled(bool enabled,
                               SetVerticalTabsEnabledCallback callback) override;
+  void SetWebDiscoveryEnabled(bool enabled,
+                              SetWebDiscoveryEnabledCallback callback) override;
+  void SetP3AEnabled(bool enabled, SetP3AEnabledCallback callback) override;
+  void SetCrashReportsEnabled(bool enabled,
+                              SetCrashReportsEnabledCallback callback) override;
 
   // ThemeServiceObserver:
   void OnThemeChanged() override;
@@ -55,7 +62,7 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
       theme_service_observation_{this};
 
   PrefChangeRegistrar pref_change_registrar_;
-  PrefChangeRegistrar local_state_change_registrar_;
+  raw_ref<PrefService> local_state_;
 };
 
 }  // namespace brave_welcome_page
