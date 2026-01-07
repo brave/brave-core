@@ -55,7 +55,6 @@ source_set("ios_web_webui_inttests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/ios/web/test:packed_resources",
     "//brave/ios/web/test:resources",
     "//brave/ios/web/webui",
     "//ios/web/public/test",
