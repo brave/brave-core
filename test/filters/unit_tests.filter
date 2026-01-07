@@ -648,6 +648,7 @@
 # patched to include that registration code.
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
 -OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
+-OmniboxEditModelPopupTest.OnCurrentMatchChangedResetsSelectionBeforeAccessingMatches
 -OmniboxEditModelTest.*
 
 # These tests fail because we disable uploading these event logs
@@ -661,7 +662,10 @@
 # These tests fail because ContextualTasksContextService cannot be created
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
+-ContextualSearchboxHandlerTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+-EntryPointEligibilityManagerTest.AreEntryPointsEligible_True
+-EntryPointEligibilityManagerTest.NotifyEntryPointEligibilityChanged
 -PageEmbeddingsServiceTest.*
 
 # These tests fail because we disable
@@ -683,6 +687,9 @@
 -ActionChipGeneratorTest.*
 -ActionChipGeneratorTests/*.*/*
 -ActionChipGeneratorWithNoRecentTabTest.GenerateStaticChipsWhenHistorySyncIsOptOut
+
+# These tests fail because we don't show the history sync promo
+-BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/SignedIn
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
