@@ -171,7 +171,6 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
-LOG(INFO) << "[SHRED] Test #100";
   // No callbacks should be called while the keepalive is active.
   {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
@@ -181,12 +180,10 @@ LOG(INFO) << "[SHRED] Test #100";
     task_environment_.FastForwardBy(base::Seconds(10));
   }
 
-LOG(INFO) << "[SHRED] Test #200";
   // Reopen tld ephemeral lifetime while the keepalive is active.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
 
-LOG(INFO) << "[SHRED] Test #300";
   // Again, no callbacks should be called while the keepalive is active.
   {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
@@ -196,7 +193,6 @@ LOG(INFO) << "[SHRED] Test #300";
     task_environment_.FastForwardBy(base::Seconds(20));
   }
 
-LOG(INFO) << "[SHRED] Test #400";
   // Callbacks should be called after the timeout (10+20=30 seconds).
   {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
@@ -206,7 +202,6 @@ LOG(INFO) << "[SHRED] Test #400";
     EXPECT_CALL(*mock_delegate_, CleanupTLDEphemeralArea(key));
     task_environment_.FastForwardBy(base::Seconds(10));
   }
-LOG(INFO) << "[SHRED] Test #500";
 }
 
 TEST_F(EphemeralStorageServiceTest,

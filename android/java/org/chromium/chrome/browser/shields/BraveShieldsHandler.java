@@ -823,6 +823,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsManualShredItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    hideBraveShieldsMenu();
                     try {
                         BraveActivity.getBraveActivity().shredSiteData();
                     } catch (BraveActivity.BraveActivityNotFoundException e) {

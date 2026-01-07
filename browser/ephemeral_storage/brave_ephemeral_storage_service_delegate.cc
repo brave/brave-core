@@ -188,7 +188,6 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
 
 void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(base::OnceCallback<void(const std::vector<std::string>&)> callback) {
   DCHECK(callback);
-  LOG(INFO) << "[SHRED] Registered on become active callback";
   on_become_active_callback_ = std::move(callback);
 }
 
@@ -199,9 +198,7 @@ void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(base::
 #endif
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
-  LOG(INFO) << "[SHRED] Application became active";
   if(on_become_active_callback_) {
-    LOG(INFO) << "[SHRED] Calling on_become_active_callback_";
     std::move(on_become_active_callback_).Run(
         shields_settings_service_->GetUrlsWithAutoShredMode(
             brave_shields::mojom::AutoShredMode::APP_EXIT));
