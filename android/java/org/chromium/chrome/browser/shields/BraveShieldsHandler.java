@@ -998,11 +998,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 });
     }
 
-    private void setupAutoShredOptionsLayout() {
-        mShredSiteDataLayout.setVisibility(View.GONE);
-        mAutoShredOptionsLayout.setVisibility(View.VISIBLE);
-    }
-
     private void setUpSwitchLayouts() {
         LinearLayout upgradeHttpsLayout =
                 mSecondaryLayout.findViewById(R.id.brave_shields_upgrade_https_id);
