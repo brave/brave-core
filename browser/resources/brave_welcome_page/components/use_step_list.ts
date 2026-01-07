@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { useImportableProfiles } from './use_importable_profiles'
 
-const baseSteps = ['welcome', 'import'] as const
+const baseSteps = ['welcome', 'import', 'appearance'] as const
 
 export type Step = (typeof baseSteps)[number]
 
