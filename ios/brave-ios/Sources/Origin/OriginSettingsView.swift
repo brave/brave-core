@@ -3,50 +3,52 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import DesignSystem
 import Strings
 import SwiftUI
 
 public struct OriginSettingsView: View {
-  public init() {
+  private let viewModel: OriginSettingsViewModel
+
+  public init(service: any BraveOriginService) {
+    viewModel = .init(service: service)
   }
 
   public var body: some View {
+    @Bindable var viewModel: OriginSettingsViewModel = self.viewModel
     Form {
       Section {
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isRewardsDisabled.inversed) {
           Label(Strings.Origin.rewardsLabel, braveSystemImage: "leo.product.bat-outline")
         }
       } header: {
         Text(Strings.Origin.adsHeader)
       }
       Section {
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isP3AEnabled) {
           Label(Strings.Origin.privacyPreservingAnalyticsLabel, braveSystemImage: "leo.bar.chart")
         }
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isStatsPingEnabled) {
           Label(Strings.Origin.statisticsReportingLabel, braveSystemImage: "leo.bar.chart")
         }
       } header: {
         Text(Strings.Origin.analyticsHeader)
       }
       Section {
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isAIChatEnabled) {
           Label(Strings.Origin.leoAILabel, braveSystemImage: "leo.product.brave-leo")
         }
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isNewsDisabled.inversed) {
           Label(Strings.Origin.newsLabel, braveSystemImage: "leo.product.brave-news")
         }
-        Toggle(isOn: .constant(false)) {
-          Label(Strings.Origin.playlistLabel, braveSystemImage: "leo.product.playlist")
-        }
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isTalkDisabled.inversed) {
           Label(Strings.Origin.talkLabel, braveSystemImage: "leo.product.brave-talk")
         }
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isVPNDisabled.inversed) {
           Label(Strings.Origin.vpnLabel, braveSystemImage: "leo.product.vpn")
         }
-        Toggle(isOn: .constant(false)) {
+        Toggle(isOn: $viewModel.isWalletDisabled.inversed) {
           Label(Strings.Origin.walletLabel, braveSystemImage: "leo.product.brave-wallet")
         }
       } header: {
@@ -70,10 +72,32 @@ public struct OriginSettingsView: View {
   }
 }
 
+extension Bool {
+  // Inverses the boolean value, for use in a Binding<Bool> such as when a toggle enables a feature
+  // when toggled on, but the pref/policy is stored as disabled = true
+  fileprivate var inversed: Bool {
+    get { !self }
+    set { self = !newValue }
+  }
+}
+
 #if DEBUG
+private class MockOriginService: BraveOriginService {
+  private var values: [BraveOriginPolicyKey: Bool] = [:]
+  func isPolicyControlled(byBraveOrigin policyKey: BraveOriginPolicyKey) -> Bool {
+    return false
+  }
+  func setPolicyValue(_ policyKey: BraveOriginPolicyKey, value: Bool) -> Bool {
+    values[policyKey] = value
+    return true
+  }
+  func getPolicyValue(_ policyKey: BraveOriginPolicyKey) -> NSNumber? {
+    values[policyKey].map(NSNumber.init)
+  }
+}
 #Preview {
   NavigationStack {
-    OriginSettingsView()
+    OriginSettingsView(service: MockOriginService())
   }
 }
 #endif
