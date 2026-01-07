@@ -27,13 +27,14 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * Brave-specific {@link TabbedAdaptiveToolbarBehavior} that allows Brave-only toolbar variants to be
- * selected by segmentation.
+ * Brave-specific {@link TabbedAdaptiveToolbarBehavior} that allows Brave-only toolbar variants to
+ * be selected by segmentation.
  */
 @NullMarked
 public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBehavior {
-    Set<Integer> BRAVE_BUTTONS =
-            Set.of(AdaptiveToolbarButtonVariant.BOOKMARKS,
+    static Set<Integer> BRAVE_BUTTONS =
+            Set.of(
+                    AdaptiveToolbarButtonVariant.BOOKMARKS,
                     AdaptiveToolbarButtonVariant.HISTORY,
                     AdaptiveToolbarButtonVariant.DOWNLOADS,
                     AdaptiveToolbarButtonVariant.LEO,
@@ -85,6 +86,6 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 return;
             }
         }
-        AdaptiveToolbarBehavior.sValidButtons.addAll(BRAVE_BUTTONS);        
+        AdaptiveToolbarBehavior.sValidButtons.addAll(BRAVE_BUTTONS);
     }
 }

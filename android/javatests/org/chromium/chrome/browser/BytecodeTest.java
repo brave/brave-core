@@ -2152,7 +2152,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior",
-                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
                         Context.class,
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
@@ -2777,7 +2777,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior"));
         Assert.assertTrue(
                 checkSuperName(

@@ -20,6 +20,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -27,7 +28,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.StripVisibilityState;
-import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.Arrays;
@@ -77,9 +77,7 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
 
     @Test
     public void resultFilter_returnsBraveVariantWhenDefaultIsUnknown() {
-        int result =
-                mBehavior.resultFilter(
-                        Arrays.asList(AdaptiveToolbarButtonVariant.BOOKMARKS));
+        int result = mBehavior.resultFilter(Arrays.asList(AdaptiveToolbarButtonVariant.BOOKMARKS));
 
         assertEquals(AdaptiveToolbarButtonVariant.BOOKMARKS, result);
     }

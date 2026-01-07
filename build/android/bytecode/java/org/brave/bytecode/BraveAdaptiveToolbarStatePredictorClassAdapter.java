@@ -13,7 +13,7 @@ public class BraveAdaptiveToolbarStatePredictorClassAdapter extends BraveClassVi
     static String sBraveAdaptiveToolbarStatePredictor =
             "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor";
     static String sBraveAdaptiveToolbarStatePredictorDummySuper =
-            "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictorDummySuper";
+            "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictorDummySuper"; // presubmit: ignore-long-line
 
     public BraveAdaptiveToolbarStatePredictorClassAdapter(ClassVisitor visitor) {
         super(visitor);

@@ -16,7 +16,6 @@ public class BraveTabbedAdaptiveToolbarBehaviorClassAdapter extends BraveClassVi
     public BraveTabbedAdaptiveToolbarBehaviorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(
-                sTabbedAdaptiveToolbarBehavior, sBraveTabbedAdaptiveToolbarBehavior);
+        redirectConstructor(sTabbedAdaptiveToolbarBehavior, sBraveTabbedAdaptiveToolbarBehavior);
     }
 }
