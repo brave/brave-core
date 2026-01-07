@@ -556,21 +556,26 @@ std::optional<std::string> EncodeCoinType(mojom::CoinType coin) {
 
 std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
   switch (provider) {
-    case mojom::SwapProvider::kAuto:
-      return "AUTO";
-    case mojom::SwapProvider::kLiFi:
-      return "LIFI";
-    case mojom::SwapProvider::kZeroEx:
-      return "ZERO_EX";
-    case mojom::SwapProvider::kJupiter:
-      return "JUPITER";
-    case mojom::SwapProvider::kSquid:
-      return "SQUID";
+    // TODO(onyb): enable these providers when they are supported by Gate3.
+    // Since Near Intents is the only provider supported by Gate3 at the moment,
+    // we return NEAR_INTENTS in all cases for now.
+    //
+    // case mojom::SwapProvider::kAuto:
+    //   return "AUTO";
+    // case mojom::SwapProvider::kLiFi:
+    //   return "LIFI";
+    // case mojom::SwapProvider::kZeroEx:
+    //   return "ZERO_EX";
+    // case mojom::SwapProvider::kJupiter:
+    //   return "JUPITER";
+    // case mojom::SwapProvider::kSquid:
+    //   return "SQUID";
     case mojom::SwapProvider::kNearIntents:
       return "NEAR_INTENTS";
 
     default:
-      return std::nullopt;
+      // return std::nullopt;
+      return "NEAR_INTENTS";
   }
 }
 
