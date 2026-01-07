@@ -690,6 +690,21 @@ bool BraveTabContainer::IsPointInTab(
   return tab->clip_path().contains(gfx::PointToSkPoint(point_in_tab_coords));
 }
 
+void BraveTabContainer::AnimateToIdealBounds() {
+  TabContainerImpl::AnimateToIdealBounds();
+
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return;
+  }
+
+  // We need to update the visibility of the tab slot views after the animation
+  // is kicked off. TabContainerImpl::AnimateToIdealBounds() calls
+  // UpdateIdealBounds() but it doesn't call SetTabSlotVisibility().
+  // https://github.com/brave/brave-browser/issues/51781
+  SetTabSlotVisibility();
+}
+
 void BraveTabContainer::UpdateIdealBounds() {
   TabContainerImpl::UpdateIdealBounds();
 

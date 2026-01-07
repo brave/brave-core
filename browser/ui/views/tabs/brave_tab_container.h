@@ -68,6 +68,7 @@ class BraveTabContainer : public TabContainerImpl {
   views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
   bool IsPointInTab(Tab* tab,
                     const gfx::Point& point_in_tabstrip_coords) override;
+  void AnimateToIdealBounds() override;
   void UpdateIdealBounds() override;
   void OnTabSlotAnimationProgressed(TabSlotView* view) override;
   void SetActiveTab(std::optional<size_t> prev_active_index,
