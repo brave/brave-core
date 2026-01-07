@@ -532,8 +532,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
 
   if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     // Even though TabContainerImpl::SetTabSlotVisibility() already updates the
-    // bounds of the group views for certain cases,, we need to update them
-    // again
+    // bounds of the group views for certain cases, we need to update them again
     // https://github.com/brave/brave-browser/issues/51786#issuecomment-3716778522
     for (auto& [_, group_views] : group_views_) {
       group_views->UpdateBounds();
