@@ -289,8 +289,6 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
   if (!first_party_storage_cleanup_enforced && auto_shred_mode.has_value() &&
       (auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::NEVER ||
       auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::APP_EXIT)) {
-    LOG(INFO) << "[SHRED] TLDEphemeralLifetimeDestroyed for domain: " << ephemeral_domain
-              << " - skipping cleanup due to AutoShred mode";
     return;
   }
 

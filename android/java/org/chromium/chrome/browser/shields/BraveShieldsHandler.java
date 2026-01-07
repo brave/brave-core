@@ -790,8 +790,32 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    private void updateBraveShieldsAutoShredSiteDataSubText(String autoShredSettingOption ) {
+        LinearLayout braveShieldsAutoShredItemLayout
+                = mShredSiteDataLayout.findViewById(R.id.brave_shields_auto_shred_site_data_layout_id);
+        TextView braveShieldsAutoShredSiteDataSubText = braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_text_sub_text);
+        if(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER)) {
+            braveShieldsAutoShredSiteDataSubText.setText(R.string.brave_shields_auto_shred_never_mode_text);
+            braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+        } else if(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED)) {
+            braveShieldsAutoShredSiteDataSubText.setText(R.string.brave_shields_auto_shred_site_tab_closed_mode_text);
+            braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+        } else if(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT)) {
+            braveShieldsAutoShredSiteDataSubText.setText(R.string.brave_shields_auto_shred_app_close_mode_text);
+            braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+        } else {
+            braveShieldsAutoShredSiteDataSubText.setVisibility(View.GONE);
+        }
+    }
+
     private void setupShredSiteDataLayout() {
         LinearLayout secondaryShredSiteDataLayout = mSecondaryLayout.findViewById(R.id.brave_shields_secondary_shred_site_data_layout_id);
+        if(!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+            secondaryShredSiteDataLayout.setVisibility(View.GONE);
+            return;
+        }
+        secondaryShredSiteDataLayout.setVisibility(View.VISIBLE);
+
         secondaryShredSiteDataLayout.setBackground(null);
 
         ImageView secondaryShredSiteDataShieldsIcon = secondaryShredSiteDataLayout.findViewById(R.id.toggle_favicon);
@@ -799,7 +823,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             secondaryShredSiteDataShieldsIcon.setColorFilter(
                     mContext.getColor(R.color.default_icon_color_baseline));
         TextView secondaryShredSiteDataText = secondaryShredSiteDataLayout.findViewById(R.id.toggle_text);
-            secondaryShredSiteDataText.setText("Shred Site Data 1");
+            secondaryShredSiteDataText.setText(R.string.brave_shields_shred_sites_data_text);
 
         secondaryShredSiteDataLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -857,7 +881,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     
         // Autoshred menu item's text
         TextView braveShieldsAutoShredSiteDataText = braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_text);
-            braveShieldsAutoShredSiteDataText.setText("Auto shred");
+            braveShieldsAutoShredSiteDataText.setText(R.string.brave_shields_auto_shred_sites_data_text);
+        updateBraveShieldsAutoShredSiteDataSubText(autoShredSettingOption);
 
         ImageView braveShieldsAutoShredSiteDataShieldsIcon = braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_favicon);
             braveShieldsAutoShredSiteDataShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
@@ -866,9 +891,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         // Auto shred options layout
         TextView autoShredOptionTitle = mAutoShredOptionsLayout.findViewById(R.id.option_title);
-            autoShredOptionTitle.setText("Auto Shred");
+            autoShredOptionTitle.setText(R.string.brave_shields_auto_shred_sites_data_text);
         TextView autoShredOptionText = mAutoShredOptionsLayout.findViewById(R.id.option_text);
-            autoShredOptionText.setText("Site tabs closed");
+            autoShredOptionText.setVisibility(View.GONE);
         ImageView mAutoShredOptionsBackButton = mAutoShredOptionsLayout.findViewById(R.id.back_button);
             mAutoShredOptionsBackButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -878,13 +903,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 }
             });
         RadioButton autoShredOption1 = mAutoShredOptionsLayout.findViewById(R.id.option1);
-            autoShredOption1.setText("Never");
+            autoShredOption1.setText(R.string.brave_shields_auto_shred_never_mode_text);
             autoShredOption1.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER));
         RadioButton autoShredOption2 = mAutoShredOptionsLayout.findViewById(R.id.option2);
-            autoShredOption2.setText("Site tab closed");
+            autoShredOption2.setText(R.string.brave_shields_auto_shred_site_tab_closed_mode_text);
             autoShredOption2.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED));
         RadioButton autoShredOption3 = mAutoShredOptionsLayout.findViewById(R.id.option3);
-            autoShredOption3.setText("App close");
+            autoShredOption3.setText(R.string.brave_shields_auto_shred_app_close_mode_text);
             autoShredOption3.setChecked(autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT));
         Button autoShredDoneButton = mAutoShredOptionsLayout.findViewById(R.id.done_button);
             autoShredDoneButton.setOnClickListener(mDoneClickListener);
@@ -904,14 +929,17 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                      BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                              BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER,
                                              false);
+                                    updateBraveShieldsAutoShredSiteDataSubText(BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER);
                                 } else if (checkedId == R.id.option2) {
                                     BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                              BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED,
                                              false);
+                                    updateBraveShieldsAutoShredSiteDataSubText(BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED);
                                 } else if (checkedId == R.id.option3) {
                                     BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                              BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA, BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT,
                                              false);
+                                    updateBraveShieldsAutoShredSiteDataSubText(BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT);
                                 }
                                 if (null != mMenuObserver) {
                                     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
@@ -941,7 +969,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         LinearLayout forgetFirstPartyStorageLayout =
                 mSecondaryLayout.findViewById(R.id.brave_shields_forget_first_party_storage_id);
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE)) {
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE) &&
+                !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
             TextView forgetFirstPartyStorageText =
                     forgetFirstPartyStorageLayout.findViewById(R.id.brave_shields_switch_text);
             forgetFirstPartyStorageText.setText(R.string.brave_forget_first_party_storage_switch);

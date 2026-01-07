@@ -27,7 +27,7 @@ public class BraveShieldsContentSettings {
     public static final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
     public static final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
     public static final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
-            "forgetFirstPartyStorage"; // TODO should be removed
+            "forgetFirstPartyStorage";
     public static final String RESOURCE_IDENTIFIER_SHRED_SITE_DATA = "shredSiteData";
     public static final String RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE =
             "allowElementBlockerInPrivate";

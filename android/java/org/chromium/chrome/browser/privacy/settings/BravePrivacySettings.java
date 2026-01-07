@@ -355,7 +355,8 @@ public class BravePrivacySettings extends PrivacySettings {
                 (ChromeSwitchPreference) findPreference(PREF_FORGET_FIRST_PARTY_STORAGE);
         mForgetFirstPartyStoragePref.setOnPreferenceChangeListener(this);
         boolean forgetFirstPartyStorageIsEnabled =
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE);
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE) &&
+                        !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
         mForgetFirstPartyStoragePref.setVisible(forgetFirstPartyStorageIsEnabled);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)) {

@@ -40,7 +40,7 @@
             android:maxLines="2"
             android:ellipsize="start"
             android:textColor="@color/shield_title_color"
-            android:text="Shred Site Data"
+            android:text="@string/brave_shields_shred_sites_data_text"
             />
 
     </LinearLayout>
@@ -106,7 +106,7 @@
 		    android:fontFamily="sans-serif"
 		    android:layout_gravity="center_vertical"
             android:textColor="@color/shield_text_color"
-            android:text="Manual shred"/>
+            android:text="@string/brave_shields_shred_sites_data_now_text"/>
     </LinearLayout>
 
 </LinearLayout>
