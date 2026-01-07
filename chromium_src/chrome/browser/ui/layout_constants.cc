@@ -95,19 +95,13 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
 }  // namespace
 
 // Forward declaration
-int GetLayoutConstant_ChromiumImpl(LayoutConstant constant);
 gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
 
-#define LayoutConstant LayoutConstant constant) {                            \
-    const std::optional<int> braveOption = GetBraveLayoutConstant(constant); \
-    if (braveOption) {                                                       \
-      return braveOption.value();                                            \
-    }                                                                        \
-                                                                             \
-    return GetLayoutConstant_ChromiumImpl(constant);                         \
-  }                                                                          \
-                                                                             \
-  int GetLayoutConstant_ChromiumImpl(LayoutConstant
+#define BRAVE_LAYOUT_CONSTANTS_GET_LAYOUT_CONSTANT                          \
+  const std::optional<int> brave_option = GetBraveLayoutConstant(constant); \
+  if (brave_option) {                                                       \
+    return brave_option.value();                                            \
+  }
 
 #define LayoutInset LayoutInset inset) {           \
     const std::optional<gfx::Insets> braveOption = \
@@ -123,7 +117,7 @@ gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
 
 #include <chrome/browser/ui/layout_constants.cc>
 #undef LayoutInset
-#undef LayoutConstant
+#undef BRAVE_LAYOUT_CONSTANTS_GET_LAYOUT_CONSTANT
 
 namespace tabs {
 
