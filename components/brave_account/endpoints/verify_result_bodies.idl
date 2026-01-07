@@ -12,5 +12,6 @@ namespace endpoints {
   dictionary VerifyResultSuccessBody {
     // DOMString, or null, but must always be present
     any authToken;
+    DOMString? email;
   };
 };

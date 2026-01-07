@@ -87,11 +87,16 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     }
 
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
-                  std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
-                  std::is_same_v<TestCase, LoginInitializeTestCase> ||
-                  std::is_same_v<TestCase, LoginFinalizeTestCase>) {
+                  std::is_same_v<TestCase, LoginInitializeTestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
       TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
+                    future.GetCallback());
+      EXPECT_EQ(future.Take(), test_case.mojo_expected);
+    } else if constexpr (std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
+                         std::is_same_v<TestCase, LoginFinalizeTestCase>) {
+      base::test::TestFuture<typename TestCase::MojoExpected> future;
+      TestCase::Run(test_case, pref_service_,
+                    CHECK_DEREF(brave_account_service_.get()),
                     future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);
     } else if constexpr (std::is_same_v<TestCase, VerifyResultTestCase>) {
