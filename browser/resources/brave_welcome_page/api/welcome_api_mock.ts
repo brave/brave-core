@@ -3,7 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { WelcomeApi, createWelcomeApi, ImportDataStatus } from './welcome_api'
+import {
+  WelcomeApi,
+  createWelcomeApi,
+  ColorScheme,
+  ImportDataStatus,
+} from './welcome_api'
 
 export function createWelcomeApiMock(): WelcomeApi {
   let onImportStatusChange: ((status: ImportDataStatus) => void) | null = null
@@ -11,6 +16,14 @@ export function createWelcomeApiMock(): WelcomeApi {
   const api = createWelcomeApi({
     welcomePageHandler: {
       setWelcomePage(page) {},
+      getColorScheme: async () => ({
+        colorScheme: ColorScheme.kSystem,
+      }),
+      setColorScheme: async (colorScheme) => {},
+      getVerticalTabsEnabled: async () => ({
+        enabled: false,
+      }),
+      setVerticalTabsEnabled: async (enabled) => {},
     },
     messages: {
       async getDefaultBrowserInfo() {
