@@ -259,6 +259,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/commands/common/features.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
+#include "ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/ai_chat/utils.h"
 #endif
@@ -778,7 +779,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
 
   registry.ForWebUI<BraveWelcomePageUI>()
-      .Add<brave_welcome_page::mojom::WelcomePageHandler>();
+      .Add<brave_welcome_page::mojom::WelcomePageHandler>()
+      .Add<theme_color_picker::mojom::ThemeColorPickerHandlerFactory>();
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (base::FeatureList::IsEnabled(

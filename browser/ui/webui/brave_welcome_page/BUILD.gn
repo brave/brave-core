@@ -19,16 +19,24 @@ source_set("brave_welcome_page") {
     "welcome_page_handler.h",
   ]
 
-  public_deps = [ ":mojom" ]
+  public_deps = [
+    ":mojom",
+    "//chrome/browser/themes",
+    "//components/prefs",
+    "//ui/webui/resources/cr_components/theme_color_picker:mojom",
+  ]
 
   deps = [
     "//base",
     "//brave/browser/resources/brave_welcome_page:generated_resources",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search/background",
     "//chrome/browser/ui/webui:webui_util",
+    "//chrome/browser/ui/webui/cr_components/theme_color_picker:impl",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//ui/webui",

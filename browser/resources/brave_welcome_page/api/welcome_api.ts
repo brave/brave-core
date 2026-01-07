@@ -4,12 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  ColorScheme,
   WelcomePageHandler,
   WelcomePageHandlerInterface,
 } from 'gen/brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.m.js'
 
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 import { createInterfaceApi, state } from '$web-common/api'
+
+export { ColorScheme }
 
 // Type returned from requestDefaultBrowserState message.
 export interface DefaultBrowserInfo {
