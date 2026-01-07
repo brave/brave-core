@@ -93,12 +93,13 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
                        is_temporary_chat, max_associated_content_length_,
                        [this](std::string& input) { SanitizeInput(input); });
 
-  // Override model_name to be used if model_key existed, used when
-  // regenerating answer.
+  // Override model_name to be used if model_key existed for last human turn,
+  // used when regenerating answer.
   std::optional<std::string> model_name = std::nullopt;
-  if (conversation_history.back()->model_key) {
-    model_name = model_service_->GetLeoModelNameByKey(
-        *conversation_history.back()->model_key);
+  const auto& last_entry = conversation_history.back();
+  if (last_entry->character_type == mojom::CharacterType::HUMAN &&
+      last_entry->model_key) {
+    model_name = model_service_->GetLeoModelNameByKey(*last_entry->model_key);
   }
 
   api_->PerformRequest(std::move(messages), selected_language,
