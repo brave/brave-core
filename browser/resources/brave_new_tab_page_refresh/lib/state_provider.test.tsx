@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render, screen, act } from '@testing-library/react'
 
 import { createStateProvider } from './state_provider'
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 
 interface TestState {
   count: number
@@ -23,8 +23,9 @@ interface TestActions {
   setName(name: string): void
 }
 
-function createHandler(store: StateStore<TestState>): TestActions {
-  return {
+function createTestState() {
+  const store = createStateStore(defaultState())
+  const actions: TestActions = {
     increment() {
       store.update((s) => ({ count: s.count + 1 }))
     },
@@ -32,6 +33,7 @@ function createHandler(store: StateStore<TestState>): TestActions {
       store.update({ name })
     },
   }
+  return { store, actions }
 }
 
 function flushMicrotasks() {
@@ -41,9 +43,9 @@ function flushMicrotasks() {
 describe('createStateProvider', () => {
   describe('Provider', () => {
     it('renders children', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
       render(
-        <TestProvider>
+        <TestProvider value={createTestState()}>
           <div data-testid='child'>Hello</div>
         </TestProvider>,
       )
@@ -51,9 +53,12 @@ describe('createStateProvider', () => {
     })
 
     it('exposes store to window.appState when name prop is provided', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
       render(
-        <TestProvider name='test'>
+        <TestProvider
+          name='test'
+          value={createTestState()}
+        >
           <div />
         </TestProvider>,
       )
@@ -64,7 +69,7 @@ describe('createStateProvider', () => {
 
   describe('useState', () => {
     it('returns the mapped state value', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
 
       function TestComponent() {
         const count = TestProvider.useState((s) => s.count)
@@ -72,7 +77,7 @@ describe('createStateProvider', () => {
       }
 
       render(
-        <TestProvider>
+        <TestProvider value={createTestState()}>
           <TestComponent />
         </TestProvider>,
       )
@@ -80,7 +85,7 @@ describe('createStateProvider', () => {
     })
 
     it('updates when state changes', async () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
 
       function TestComponent() {
         const count = TestProvider.useState((s) => s.count)
@@ -96,7 +101,7 @@ describe('createStateProvider', () => {
       }
 
       render(
-        <TestProvider>
+        <TestProvider value={createTestState()}>
           <TestComponent />
         </TestProvider>,
       )
@@ -108,7 +113,7 @@ describe('createStateProvider', () => {
     })
 
     it('throws when used outside provider', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
 
       function TestComponent() {
         TestProvider.useState((s) => s.count)
@@ -123,7 +128,7 @@ describe('createStateProvider', () => {
 
   describe('useActions', () => {
     it('returns the actions object', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
       let capturedActions: TestActions | null = null
 
       function TestComponent() {
@@ -132,7 +137,7 @@ describe('createStateProvider', () => {
       }
 
       render(
-        <TestProvider>
+        <TestProvider value={createTestState()}>
           <TestComponent />
         </TestProvider>,
       )
@@ -143,7 +148,7 @@ describe('createStateProvider', () => {
     })
 
     it('throws when used outside provider', () => {
-      const TestProvider = createStateProvider(defaultState(), createHandler)
+      const TestProvider = createStateProvider<TestState, TestActions>()
 
       function TestComponent() {
         TestProvider.useActions()

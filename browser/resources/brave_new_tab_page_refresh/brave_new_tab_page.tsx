@@ -15,18 +15,43 @@ import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
 import { NewsProvider } from './context/news_context'
 
+import { createNewTabState } from './state/webui_new_tab_state'
+import { createBackgroundState } from './state/webui_background_state'
+import { createSearchState } from './state/webui_search_state'
+import { createTopSitesState } from './state/webui_top_sites_state'
+import { createVpnState } from './state/webui_vpn_state'
+import { createRewardsState } from './state/webui_rewards_state'
+
 import { App } from './components/app'
 
 setIconBasePath('chrome://resources/brave-icons')
 
 function AppProvider(props: { children: React.ReactNode }) {
   return (
-    <NewTabProvider name='newTab'>
-      <BackgroundProvider name='background'>
-        <SearchProvider name='search'>
-          <TopSitesProvider name='topSites'>
-            <VpnProvider name='vpn'>
-              <RewardsProvider name='rewards'>
+    <NewTabProvider
+      name='newTab'
+      value={createNewTabState()}
+    >
+      <BackgroundProvider
+        name='background'
+        value={createBackgroundState()}
+      >
+        <SearchProvider
+          name='search'
+          value={createSearchState()}
+        >
+          <TopSitesProvider
+            name='topSites'
+            value={createTopSitesState()}
+          >
+            <VpnProvider
+              name='vpn'
+              value={createVpnState()}
+            >
+              <RewardsProvider
+                name='rewards'
+                value={createRewardsState()}
+              >
                 <NewsProvider>{props.children}</NewsProvider>
               </RewardsProvider>
             </VpnProvider>

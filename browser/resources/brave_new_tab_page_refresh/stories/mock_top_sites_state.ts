@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 
 import {
-  TopSitesState,
   TopSitesActions,
   TopSite,
   TopSitesListKind,
+  defaultTopSitesState,
 } from '../state/top_sites_state'
 
-export function createTopSitesHandler(
-  store: StateStore<TopSitesState>,
-): TopSitesActions {
+export function createTopSitesState() {
+  const store = createStateStore(defaultTopSitesState())
   let lastRemovedSite: TopSite | null = null
 
   store.update({
@@ -40,7 +39,7 @@ export function createTopSitesHandler(
     }),
   })
 
-  return {
+  const actions: TopSitesActions = {
     setShowTopSites(showTopSites) {
       store.update({ showTopSites })
     },
@@ -108,4 +107,6 @@ export function createTopSitesHandler(
       })
     },
   }
+
+  return { store, actions }
 }

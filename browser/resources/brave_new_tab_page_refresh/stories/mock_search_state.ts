@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 import {
-  SearchState,
   SearchActions,
+  defaultSearchState,
   defaultSearchActions,
 } from '../state/search_state'
 
-export function createSearchHandler(
-  store: StateStore<SearchState>,
-): SearchActions {
+export function createSearchState() {
+  const store = createStateStore(defaultSearchState())
+
   store.update({
     initialized: true,
 
@@ -44,7 +44,7 @@ export function createSearchHandler(
     enabledSearchEngines: new Set(['search.brave.com', 'google.com']),
   })
 
-  return {
+  const actions: SearchActions = {
     ...defaultSearchActions(),
 
     setShowSearchBox(showSearchBox) {
@@ -120,4 +120,6 @@ export function createSearchHandler(
       store.update({ searchMatches: [] })
     },
   }
+
+  return { store, actions }
 }

@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultTopSitesState } from '../state/top_sites_state'
-import { createTopSitesHandler } from '../state/top_sites_handler'
+import { TopSitesState, TopSitesActions } from '../state/top_sites_state'
 import { createStateProvider } from '../lib/state_provider'
 
-export const TopSitesProvider = createStateProvider(
-  defaultTopSitesState(),
-  createTopSitesHandler,
-)
+export const TopSitesProvider = createStateProvider<
+  TopSitesState,
+  TopSitesActions
+>()
 
 export const useTopSitesState = TopSitesProvider.useState
 export const useTopSitesActions = TopSitesProvider.useActions

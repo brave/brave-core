@@ -3,16 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 
 import {
-  VpnState,
   VpnActions,
+  defaultVpnState,
   defaultVpnActions,
   ConnectionState,
 } from '../state/vpn_state'
 
-export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
+export function createVpnState() {
+  const store = createStateStore(defaultVpnState())
+
   store.update({
     initialized: true,
     vpnFeatureEnabled: true,
@@ -35,7 +37,7 @@ export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
     },
   })
 
-  return {
+  const actions: VpnActions = {
     ...defaultVpnActions(),
 
     setShowVpnWidget(showVpnWidget) {
@@ -54,4 +56,6 @@ export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
       })
     },
   }
+
+  return { store, actions }
 }

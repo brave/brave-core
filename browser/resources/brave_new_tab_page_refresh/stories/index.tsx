@@ -15,12 +15,12 @@ import { TopSitesProvider } from '../context/top_sites_context'
 import { VpnProvider } from '../context/vpn_context'
 import { RewardsProvider } from '../context/rewards_context'
 
-import { createNewTabHandler } from './new_tab_handler'
-import { createBackgroundHandler } from './background_handler'
-import { createRewardsHandler } from './rewards_handler'
-import { createSearchHandler } from './search_handler'
-import { createTopSitesHandler } from './top_sites_handler'
-import { createVpnHandler } from './vpn_handler'
+import { createNewTabState } from './mock_new_tab_state'
+import { createBackgroundState } from './mock_background_state'
+import { createRewardsState } from './mock_rewards_state'
+import { createSearchState } from './mock_search_state'
+import { createTopSitesState } from './mock_top_sites_state'
+import { createVpnState } from './mock_vpn_state'
 
 import { StorybookArgs } from './storybook_args'
 
@@ -28,14 +28,12 @@ import { App } from '../components/app'
 
 function StorybookApp(props: StorybookArgs) {
   return (
-    <NewTabProvider createHandler={createNewTabHandler}>
-      <BackgroundProvider
-        createHandler={(s) => createBackgroundHandler(s, props)}
-      >
-        <SearchProvider createHandler={createSearchHandler}>
-          <TopSitesProvider createHandler={createTopSitesHandler}>
-            <VpnProvider createHandler={createVpnHandler}>
-              <RewardsProvider createHandler={createRewardsHandler}>
+    <NewTabProvider value={createNewTabState()}>
+      <BackgroundProvider value={createBackgroundState(props)}>
+        <SearchProvider value={createSearchState()}>
+          <TopSitesProvider value={createTopSitesState()}>
+            <VpnProvider value={createVpnState()}>
+              <RewardsProvider value={createRewardsState()}>
                 <div style={{ position: 'absolute', inset: 0 }}>
                   <App />
                 </div>

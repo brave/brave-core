@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 
 import {
-  RewardsState,
   RewardsActions,
+  defaultRewardsState,
   defaultRewardsActions,
 } from '../state/rewards_state'
 
-export function createRewardsHandler(
-  store: StateStore<RewardsState>,
-): RewardsActions {
+export function createRewardsState() {
+  const store = createStateStore(defaultRewardsState())
+
   store.update({
     initialized: true,
     rewardsFeatureEnabled: true,
@@ -37,11 +37,13 @@ export function createRewardsHandler(
     store.update({ rewardsBalance: 1.204 })
   }, 2000)
 
-  return {
+  const actions: RewardsActions = {
     ...defaultRewardsActions(),
 
     setShowRewardsWidget(showRewardsWidget) {
       store.update({ showRewardsWidget })
     },
   }
+
+  return { store, actions }
 }

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { StateStore, createStateStore } from '$web-common/state_store'
+import { StateStore } from '$web-common/state_store'
 
 /**
  * Creates a React context provider component for managing application state.
@@ -13,10 +13,6 @@ import { StateStore, createStateStore } from '$web-common/state_store'
  * attached as static methods for accessing state and actions within the
  * provider tree.
  *
- * @param initialState - The initial state object for the store.
- * @param createHandler - A function that receives the state store and returns
- *   an action handler. Action handlers typically call `store.update()` to
- *   modify state.
  * @returns A Provider component with attached `useState` and `useActions`
  *   hooks.
  *
@@ -37,8 +33,9 @@ import { StateStore, createStateStore } from '$web-common/state_store'
  *   setName(name: string): void
  * }
  *
- * function createHandler(store: StateStore<AppState>): AppActions {
- *   return {
+ * function createAppState() {
+ *   const store = createStateStore(defaultState())
+ *   const actions: AppActions = {
  *     increment() {
  *       store.update((s) => ({ count: s.count + 1 }))
  *     },
@@ -46,14 +43,12 @@ import { StateStore, createStateStore } from '$web-common/state_store'
  *       store.update({ name })
  *     },
  *   }
+ *   return { store, actions }
  * }
  *
  * // 2. Create the provider:
  *
- * export const AppStateProvider = createStateProvider(
- *   defaultState(),
- *   createHandler
- * )
+ * export const AppStateProvider = createStateProvider<AppState, AppActions>()
  *
  * // Export hooks for convenience:
  *
@@ -65,7 +60,7 @@ import { StateStore, createStateStore } from '$web-common/state_store'
  *
  * function App() {
  *   return (
- *     <AppStateProvider name='myApp'>
+ *     <AppStateProvider name='myApp' value={createAppState()}>
  *       <MyComponent />
  *     </AppStateProvider>
  *   )
@@ -88,10 +83,7 @@ import { StateStore, createStateStore } from '$web-common/state_store'
  *   )
  * }
  */
-export function createStateProvider<State, Actions>(
-  initialState: State,
-  createHandler: (store: StateStore<State>) => Actions,
-) {
+export function createStateProvider<State, Actions>() {
   interface ContextValue {
     store: StateStore<State>
     actions: Actions
@@ -125,24 +117,20 @@ export function createStateProvider<State, Actions>(
 
   interface ProviderProps {
     name?: string
-    createHandler?: (store: StateStore<State>) => Actions
+    value: ContextValue
     children: React.ReactNode
   }
 
   function Provider(props: ProviderProps) {
-    const value = React.useMemo(() => {
-      const store = createStateStore(initialState)
-      const actions = (props.createHandler ?? createHandler)(store)
-      return { store, actions }
-    }, [props.createHandler])
+    const { name, value, children } = props
 
     React.useEffect(() => {
-      if (props.name) {
-        exposeState(props.name, value.store)
+      if (name) {
+        exposeState(name, value.store)
       }
-    }, [props.name, value])
+    }, [name, value])
 
-    return React.createElement(context.Provider, { value }, props.children)
+    return React.createElement(context.Provider, { value }, children)
   }
 
   Provider.useState = useState

@@ -6,16 +6,15 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import {
-  TopSitesState,
   TopSitesActions,
   TopSitesListKind,
+  defaultTopSitesState,
 } from './top_sites_state'
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 
-export function createTopSitesHandler(
-  store: StateStore<TopSitesState>,
-): TopSitesActions {
+export function createTopSitesState() {
+  const store = createStateStore(defaultTopSitesState())
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   let lastExcludedMostVisitedSite = ''
@@ -63,7 +62,7 @@ export function createTopSitesHandler(
 
   loadData()
 
-  return {
+  const actions: TopSitesActions = {
     setShowTopSites(showTopSites) {
       handler.setShowTopSites(showTopSites)
     },
@@ -117,4 +116,6 @@ export function createTopSitesHandler(
       })
     },
   }
+
+  return { store, actions }
 }

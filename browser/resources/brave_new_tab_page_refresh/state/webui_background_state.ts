@@ -6,14 +6,13 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '$web-common/state_store'
+import { createStateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 import { preloadedBackgrounds } from './background_images/preloaded'
-import { BackgroundState, BackgroundActions } from './background_state'
+import { BackgroundActions, defaultBackgroundState } from './background_state'
 
-export function createBackgroundHandler(
-  store: StateStore<BackgroundState>,
-): BackgroundActions {
+export function createBackgroundState() {
+  const store = createStateStore(defaultBackgroundState())
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   const sponsoredRichMediaAdEventHandler =
@@ -86,7 +85,7 @@ export function createBackgroundHandler(
 
   loadData()
 
-  return {
+  const actions: BackgroundActions = {
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
       handler.setBackgroundsEnabled(enabled)
@@ -144,6 +143,8 @@ export function createBackgroundHandler(
       )
     },
   }
+
+  return { store, actions }
 }
 
 function nextRotateIndex() {

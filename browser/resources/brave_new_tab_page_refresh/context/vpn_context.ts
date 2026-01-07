@@ -3,14 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultVpnState } from '../state/vpn_state'
-import { createVpnHandler } from '../state/vpn_handler'
+import { VpnState, VpnActions } from '../state/vpn_state'
 import { createStateProvider } from '../lib/state_provider'
 
-export const VpnProvider = createStateProvider(
-  defaultVpnState(),
-  createVpnHandler,
-)
+export const VpnProvider = createStateProvider<VpnState, VpnActions>()
 
 export const useVpnState = VpnProvider.useState
 export const useVpnActions = VpnProvider.useActions
