@@ -40,9 +40,9 @@ class ApplicationStateObserver
   ApplicationStateObserver& operator=(const ApplicationStateObserver&) = delete;
   ~ApplicationStateObserver()
 #if !BUILDFLAG(IS_ANDROID)
-  override
+      override
 #endif
-    ;
+      ;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -53,10 +53,11 @@ class ApplicationStateObserver
  private:
 #if BUILDFLAG(IS_ANDROID)
   void OnApplicationStateChange(base::android::ApplicationState new_state);
-  
+
   std::unique_ptr<base::android::ApplicationStatusListener>
       app_status_listener_;
-  base::android::ApplicationState current_state_{base::android::APPLICATION_STATE_UNKNOWN};
+  base::android::ApplicationState current_state_{
+      base::android::APPLICATION_STATE_UNKNOWN};
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

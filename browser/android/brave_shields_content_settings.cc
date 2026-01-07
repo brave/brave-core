@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -25,7 +26,6 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "url/gurl.h"
-#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 
 namespace chrome {
 namespace android {
@@ -336,9 +336,10 @@ void JNI_BraveShieldsContentSettings_SetAutoShredMode(
     jint mode,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-std::optional<brave_shields::mojom::AutoShredMode> maybe_mode = 
-    brave_shields::traits::SettingTraits<brave_shields::mojom::AutoShredMode>::From(mode);
-    CHECK(maybe_mode.has_value());
+  std::optional<brave_shields::mojom::AutoShredMode> maybe_mode =
+      brave_shields::traits::SettingTraits<
+          brave_shields::mojom::AutoShredMode>::From(mode);
+  CHECK(maybe_mode.has_value());
 
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(
@@ -358,9 +359,9 @@ jint JNI_BraveShieldsContentSettings_GetAutoShredMode(
   const auto mode = brave_shields_settings->GetAutoShredMode(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
-  return brave_shields::traits::SettingTraits<brave_shields::mojom::AutoShredMode>::To(mode);
+  return brave_shields::traits::SettingTraits<
+      brave_shields::mojom::AutoShredMode>::To(mode);
 }
-
 
 }  // namespace android
 }  // namespace chrome

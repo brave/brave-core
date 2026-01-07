@@ -20,6 +20,7 @@
 #include "base/timer/timer.h"
 #include "base/unguessable_token.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -27,7 +28,6 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 
 class EphemeralStorageBrowserTest;
 class EphemeralStorageQaBrowserTest;
@@ -130,7 +130,8 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
-  void FinishStorageCleanupOnBecomeActive(const std::vector<std::string>& ephemeral_domains);
+  void FinishStorageCleanupOnBecomeActive(
+      const std::vector<std::string>& ephemeral_domains);
 
   size_t FireCleanupTimersForTesting();
 

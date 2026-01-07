@@ -135,15 +135,23 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
-            BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(
-                    DEFAULT.equals(settingOption) ? BLOCK_THIRDPARTY_RESOURCE : settingOption, host,
-                    profile);
-            BraveShieldsContentSettingsJni.get().setAdControlType(
-                    BLOCK_THIRDPARTY_RESOURCE.equals(settingOption) ? DEFAULT : settingOption, host,
-                    profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setCosmeticFilteringControlType(
+                            DEFAULT.equals(settingOption)
+                                    ? BLOCK_THIRDPARTY_RESOURCE
+                                    : settingOption,
+                            host,
+                            profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setAdControlType(
+                            BLOCK_THIRDPARTY_RESOURCE.equals(settingOption)
+                                    ? DEFAULT
+                                    : settingOption,
+                            host,
+                            profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_SHRED_SITE_DATA)) {
-            BraveShieldsContentSettingsJni.get().setAutoShredMode(
-                    Integer.parseInt(settingOption), host, profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setAutoShredMode(Integer.parseInt(settingOption), host, profile);
         }
     }
 
@@ -347,6 +355,7 @@ public class BraveShieldsContentSettings {
         void setAllowElementBlockerInPrivateModeEnabled(boolean enabled);
 
         void setAutoShredMode(int mode, String url, Profile profile);
+
         int getAutoShredMode(String url, Profile profile);
     }
 }

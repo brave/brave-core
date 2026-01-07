@@ -5,3 +5,8 @@ include_rules = [
   "!brave/components/brave_component_updater/browser/local_data_files_service.h",
   "!brave/components/brave_component_updater/browser/local_data_files_observer.h",
 ]
+specific_include_rules = {
+  "ephemeral_storage_service_unittest\.cc": [
+    "+brave/components/content_settings/core/common/content_settings_util.h",
+  ],
+}

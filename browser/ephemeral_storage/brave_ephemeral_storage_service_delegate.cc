@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -36,7 +37,6 @@
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
-#include "base/containers/contains.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser.h"
@@ -52,8 +52,9 @@
 
 namespace {
 
-bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
-                                           const std::vector<std::string>& etldplusones) {
+bool PrepareTabForFirstPartyStorageCleanup(
+    tabs::TabHandle tab_handle,
+    const std::vector<std::string>& etldplusones) {
   if (tab_handle == tabs::TabHandle::Null()) {
     return false;
   }
@@ -69,7 +70,7 @@ bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
 
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (tab_tld.empty() ||  !base::Contains(etldplusones, tab_tld)) {
+  if (tab_tld.empty() || !base::Contains(etldplusones, tab_tld)) {
     return false;
   }
   if (auto* ephemeral_storage_tab_helper =
@@ -186,24 +187,26 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
   first_window_opened_callback_ = std::move(callback);
 }
 
-void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(base::OnceCallback<void(const std::vector<std::string>&)> callback) {
+void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(
+    base::OnceCallback<void(const std::vector<std::string>&)> callback) {
   DCHECK(callback);
   on_become_active_callback_ = std::move(callback);
 }
 
 #if BUILDFLAG(IS_ANDROID)
-  void BraveEphemeralStorageServiceDelegate::TriggerCurrentAppStateNotification() {
-    application_state_observer_->TriggerCurrentAppStateNotification();
-  }
+void BraveEphemeralStorageServiceDelegate::
+    TriggerCurrentAppStateNotification() {
+  application_state_observer_->TriggerCurrentAppStateNotification();
+}
 #endif
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
-  if(on_become_active_callback_) {
-    std::move(on_become_active_callback_).Run(
-        shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
+  if (on_become_active_callback_) {
+    std::move(on_become_active_callback_)
+        .Run(shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
             brave_shields::mojom::AutoShredMode::APP_EXIT));
   }
-  
+
   if (first_window_opened_callback_) {
     std::move(first_window_opened_callback_).Run();
   }

@@ -232,7 +232,8 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
-std::vector<std::string> BraveShieldsSettingsService::GetEphemeralDomainsForAutoShredMode(
+std::vector<std::string>
+BraveShieldsSettingsService::GetEphemeralDomainsForAutoShredMode(
     mojom::AutoShredMode mode) {
   std::vector<std::string> result;
 
