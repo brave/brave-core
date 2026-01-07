@@ -89,20 +89,39 @@ struct SearchView: View {
       .navigationTitle(Strings.Playlist.searchTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItemGroup(placement: .principal) {
-          SearchBar(
-            text: $query,
-            placeholder: Strings.Playlist.searchTitle,
-            isFocused: $isSearchFocused
-          )
-        }
-        ToolbarItemGroup(placement: .confirmationAction) {
-          Button {
-            dismiss()
-          } label: {
-            Text(Strings.done)
+        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+          ToolbarItemGroup(placement: .automatic) {
+            SearchBar(
+              text: $query,
+              placeholder: Strings.Playlist.searchTitle,
+              isFocused: $isSearchFocused
+            )
           }
-          .tint(Color.white)
+          ToolbarSpacer(.fixed, placement: .automatic)
+          ToolbarItemGroup(placement: .confirmationAction) {
+            Button {
+              dismiss()
+            } label: {
+              Text(Strings.done)
+            }
+            .tint(Color.white)
+          }
+        } else {
+          ToolbarItemGroup(placement: .principal) {
+            SearchBar(
+              text: $query,
+              placeholder: Strings.Playlist.searchTitle,
+              isFocused: $isSearchFocused
+            )
+          }
+          ToolbarItemGroup(placement: .confirmationAction) {
+            Button {
+              dismiss()
+            } label: {
+              Text(Strings.done)
+            }
+            .tint(Color.white)
+          }
         }
       }
       .toolbarBackground(Color(braveSystemName: .neutral10), for: .navigationBar)
@@ -110,7 +129,7 @@ struct SearchView: View {
     .onAppear {
       isSearchFocused = true
     }
-    .onChange(of: query) { query in
+    .onChange(of: query) {
       queryResults.nsPredicate = queryPredicate
     }
   }
