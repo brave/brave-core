@@ -587,6 +587,7 @@ export class MockedWalletApiProxy {
             jupiterTransaction: undefined,
             lifiTransaction: undefined,
             squidTransaction: undefined,
+            gate3Transaction: undefined,
           },
           errorString: '',
         }
@@ -605,6 +606,7 @@ export class MockedWalletApiProxy {
           jupiterQuote: undefined,
           lifiQuote: undefined,
           squidQuote: undefined,
+          gate3Quote: undefined,
         },
         fees: {
           feeParam: '0.00875',

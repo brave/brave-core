@@ -21,6 +21,8 @@ import {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendBtcTransactionMutation,
+  useSendCardanoTransactionMutation,
+  useSendZecTransactionMutation,
   useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
 
@@ -46,6 +48,8 @@ export function useGate3(params: SwapParams) {
   const [sendSolanaSerializedTransaction] =
     useSendSolanaSerializedTransactionMutation()
   const [sendBtcTransaction] = useSendBtcTransactionMutation()
+  const [sendCardanoTransaction] = useSendCardanoTransactionMutation()
+  const [sendZecTransaction] = useSendZecTransactionMutation()
   const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
 
   const exchange = useCallback(
@@ -242,6 +246,35 @@ export function useGate3(params: SwapParams) {
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
           })
+          return
+        }
+
+        if (transactionParams.cardanoTransactionParams) {
+          const { to, value } = transactionParams.cardanoTransactionParams
+
+          await sendCardanoTransaction({
+            network: fromNetwork!,
+            fromAccount: fromAccount!,
+            to,
+            value: new Amount(value).toHex(),
+            sendingMaxAmount: false,
+          })
+          return
+        }
+
+        if (transactionParams.zcashTransactionParams) {
+          const { to, value } = transactionParams.zcashTransactionParams
+
+          await sendZecTransaction({
+            network: fromNetwork!,
+            fromAccount: fromAccount!,
+            to,
+            value: new Amount(value).toHex(),
+            sendingMaxAmount: false,
+            useShieldedPool: false,
+            memo: undefined,
+          })
+          return
         }
       }
     },
@@ -257,6 +290,8 @@ export function useGate3(params: SwapParams) {
       sendSolTransaction,
       sendSPLTransfer,
       sendBtcTransaction,
+      sendCardanoTransaction,
+      sendZecTransaction,
       slippageTolerance,
       toAccountId,
       toAccountAddress,

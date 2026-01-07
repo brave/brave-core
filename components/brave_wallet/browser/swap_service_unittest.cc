@@ -2007,6 +2007,8 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
           "destinationAmountMin": "710876",
           "estimatedTime": 42,
           "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
           "depositAddress": null,
           "depositMemo": null,
           "expiresAt": null,
@@ -2104,6 +2106,8 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
           "destinationAmountMin": "710915",
           "estimatedTime": 42,
           "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
           "expiresAt": "2025-12-30T11:26:07.371000Z",
@@ -2116,10 +2120,14 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
               "from": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
-              "data": "0xdeadbeef"
+              "data": "0xdeadbeef",
+              "gasLimit": null,
+              "gasPrice": null
             },
             "solana": null,
-            "bitcoin": null
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": null
           },
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,

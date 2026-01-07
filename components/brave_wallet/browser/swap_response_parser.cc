@@ -1232,6 +1232,9 @@ std::optional<mojom::CoinType> ParseCoinType(const std::string& value) {
   if (upper_value == "ZEC") {
     return mojom::CoinType::ZEC;
   }
+  if (upper_value == "ADA") {
+    return mojom::CoinType::ADA;
+  }
   return std::nullopt;
 }
 
@@ -1371,6 +1374,50 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     btc_result->refund_to = btc_params->refund_to;
     return mojom::Gate3SwapTransactionParamsUnion::NewBitcoinTransactionParams(
         std::move(btc_result));
+  }
+
+  // Check for Cardano transaction params
+  if (const auto* cardano_value = dict.Find("cardano");
+      cardano_value && !cardano_value->is_none()) {
+    auto cardano_params =
+        swap_responses::Gate3SwapCardanoTransactionParams::FromValue(
+            *cardano_value);
+    if (!cardano_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(cardano_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto cardano_result = mojom::Gate3SwapCardanoTransactionParams::New();
+    cardano_result->chain = std::move(chain);
+    cardano_result->to = cardano_params->to;
+    cardano_result->value = cardano_params->value;
+    cardano_result->refund_to = cardano_params->refund_to;
+    return mojom::Gate3SwapTransactionParamsUnion::NewCardanoTransactionParams(
+        std::move(cardano_result));
+  }
+
+  // Check for ZCash transaction params
+  if (const auto* zcash_value = dict.Find("zcash");
+      zcash_value && !zcash_value->is_none()) {
+    auto zcash_params =
+        swap_responses::Gate3SwapZCashTransactionParams::FromValue(
+            *zcash_value);
+    if (!zcash_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(zcash_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto zcash_result = mojom::Gate3SwapZCashTransactionParams::New();
+    zcash_result->chain = std::move(chain);
+    zcash_result->to = zcash_params->to;
+    zcash_result->value = zcash_params->value;
+    zcash_result->refund_to = zcash_params->refund_to;
+    return mojom::Gate3SwapTransactionParamsUnion::NewZcashTransactionParams(
+        std::move(zcash_result));
   }
 
   return nullptr;

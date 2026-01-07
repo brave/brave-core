@@ -660,10 +660,26 @@ struct Gate3SwapBitcoinTransactionParams {
   string refund_to;
 };
 
+struct Gate3SwapCardanoTransactionParams {
+  ChainId chain;
+  string to;
+  string value;
+  string refund_to;
+};
+
+struct Gate3SwapZCashTransactionParams {
+  ChainId chain;
+  string to;
+  string value;
+  string refund_to;
+};
+
 union Gate3SwapTransactionParamsUnion {
   Gate3SwapEvmTransactionParams evm_transaction_params;
   Gate3SwapSolanaTransactionParams solana_transaction_params;
   Gate3SwapBitcoinTransactionParams bitcoin_transaction_params;
+  Gate3SwapCardanoTransactionParams cardano_transaction_params;
+  Gate3SwapZCashTransactionParams zcash_transaction_params;
 };
 
 struct Gate3SwapNetworkFee {

@@ -2794,6 +2794,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
           "destinationAmountMin": "710876",
           "estimatedTime": "42",
           "priceImpact": "-28.561424569827942",
+          "networkFee": null,
+          "gasless": false,
           "depositAddress": null,
           "depositMemo": null,
           "expiresAt": null,
@@ -2898,6 +2900,12 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
           "destinationAmountMin": "710915",
           "estimatedTime": "42",
           "priceImpact": "-28.551420568227304",
+          "networkFee": {
+            "amount": "21000000000000",
+            "decimals": "18",
+            "symbol": "ETH"
+          },
+          "gasless": false,
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
           "expiresAt": "2025-12-30T11:26:07.371000Z",
@@ -2910,10 +2918,14 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
               "from": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
-              "data": "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54ef95e96700000000000000000000000000000000000000000000000000000000000f4240"
+              "data": "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54ef95e96700000000000000000000000000000000000000000000000000000000000f4240",
+              "gasLimit": null,
+              "gasPrice": null
             },
             "solana": null,
-            "bitcoin": null
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": null
           },
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
@@ -2938,6 +2950,12 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
             "0x16a0FdeB69D821753440dFA092316F54eF95E967");
   ASSERT_TRUE(route->expires_at.has_value());
   EXPECT_EQ(*route->expires_at, "2025-12-30T11:26:07.371000Z");
+
+  // Verify network fee
+  ASSERT_TRUE(route->network_fee);
+  EXPECT_EQ(route->network_fee->amount, "21000000000000");
+  EXPECT_EQ(route->network_fee->decimals, 18);
+  EXPECT_EQ(route->network_fee->symbol, "ETH");
 
   // Verify EVM transaction params
   ASSERT_TRUE(route->transaction_params);
@@ -2995,6 +3013,12 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
           "destinationAmountMin": "980000",
           "estimatedTime": "60",
           "priceImpact": "-1.5",
+          "networkFee": {
+            "amount": "5000",
+            "decimals": "9",
+            "symbol": "SOL"
+          },
+          "gasless": false,
           "depositAddress": "DepositAddress123",
           "depositMemo": null,
           "expiresAt": "2025-12-31T00:00:00.000Z",
@@ -3007,13 +3031,17 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
               },
               "from": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
               "to": "DepositAddress123",
-              "value": "0",
+              "lamports": "0",
               "splTokenMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
               "splTokenAmount": "1000000",
               "decimals": "6",
-              "versionedTransaction": null
+              "versionedTransaction": null,
+              "computeUnitLimit": null,
+              "computeUnitPrice": null
             },
-            "bitcoin": null
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": null
           },
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
@@ -3030,6 +3058,12 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
   const auto& route = quote->routes[0];
   EXPECT_EQ(route->id, "ni_sol_test");
 
+  // Verify network fee
+  ASSERT_TRUE(route->network_fee);
+  EXPECT_EQ(route->network_fee->amount, "5000");
+  EXPECT_EQ(route->network_fee->decimals, 9);
+  EXPECT_EQ(route->network_fee->symbol, "SOL");
+
   // Verify Solana transaction params
   ASSERT_TRUE(route->transaction_params);
   ASSERT_TRUE(route->transaction_params->is_solana_transaction_params());
@@ -3040,7 +3074,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
   EXPECT_EQ(sol_params->chain->chain_id, "0x65");
   EXPECT_EQ(sol_params->from, "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
   EXPECT_EQ(sol_params->to, "DepositAddress123");
-  EXPECT_EQ(sol_params->value, "0");
+  EXPECT_EQ(sol_params->lamports, "0");
   ASSERT_TRUE(sol_params->spl_token_mint.has_value());
   EXPECT_EQ(*sol_params->spl_token_mint,
             "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
@@ -3090,6 +3124,8 @@ TEST(SwapResponseParserUnitTest,
           "destinationAmountMin": "49500000000000000",
           "estimatedTime": "600",
           "priceImpact": "-0.5",
+          "networkFee": null,
+          "gasless": false,
           "depositAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "depositMemo": null,
           "expiresAt": "2025-12-31T00:00:00.000Z",
@@ -3104,7 +3140,9 @@ TEST(SwapResponseParserUnitTest,
               "to": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
               "value": "100000",
               "refundTo": "bc1sender123456789"
-            }
+            },
+            "cardano": null,
+            "zcash": null
           },
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
@@ -3132,6 +3170,181 @@ TEST(SwapResponseParserUnitTest,
   EXPECT_EQ(btc_params->to, "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh");
   EXPECT_EQ(btc_params->value, "100000");
   EXPECT_EQ(btc_params->refund_to, "bc1sender123456789");
+}
+
+TEST(SwapResponseParserUnitTest,
+     ParseGate3QuoteResponseWithCardanoTransaction) {
+  // Firm quote response with Cardano transaction params
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_ada_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ADA",
+                "chainId": "cardano_mainnet",
+                "contractAddress": null,
+                "symbol": "ADA",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                "symbol": "ETH",
+                "decimals": "18",
+                "logo": null
+              },
+              "destinationAmount": "50000000000000000",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "50000000000000000",
+          "destinationAmountMin": "49500000000000000",
+          "estimatedTime": "600",
+          "priceImpact": "-0.5",
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": "addr1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "depositMemo": null,
+          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "transactionParams": {
+            "evm": null,
+            "solana": null,
+            "bitcoin": null,
+            "cardano": {
+              "chain": {
+                "coin": "ADA",
+                "chainId": "cardano_mainnet"
+              },
+              "to": "addr1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+              "value": "1000000",
+              "refundTo": "addr1sender123456789"
+            },
+            "zcash": null
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_ada_test");
+
+  // Verify Cardano transaction params
+  ASSERT_TRUE(route->transaction_params);
+  ASSERT_TRUE(route->transaction_params->is_cardano_transaction_params());
+
+  const auto& cardano_params =
+      route->transaction_params->get_cardano_transaction_params();
+  EXPECT_EQ(cardano_params->chain->coin, mojom::CoinType::ADA);
+  EXPECT_EQ(cardano_params->chain->chain_id, "cardano_mainnet");
+  EXPECT_EQ(cardano_params->to, "addr1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh");
+  EXPECT_EQ(cardano_params->value, "1000000");
+  EXPECT_EQ(cardano_params->refund_to, "addr1sender123456789");
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
+  // Firm quote response with ZCash transaction params
+  std::string json(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_zec_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ZEC",
+                "chainId": "zcash_mainnet",
+                "contractAddress": null,
+                "symbol": "ZEC",
+                "decimals": "8",
+                "logo": null
+              },
+              "sourceAmount": "10000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                "symbol": "ETH",
+                "decimals": "18",
+                "logo": null
+              },
+              "destinationAmount": "50000000000000000",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "10000000",
+          "destinationAmount": "50000000000000000",
+          "destinationAmountMin": "49500000000000000",
+          "estimatedTime": "600",
+          "priceImpact": "-0.5",
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": "t1dJj1rGjG7GjG7GjG7GjG7GjG7GjG7GjG7G",
+          "depositMemo": null,
+          "expiresAt": "2025-12-31T00:00:00.000Z",
+          "transactionParams": {
+            "evm": null,
+            "solana": null,
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": {
+              "chain": {
+                "coin": "ZEC",
+                "chainId": "zcash_mainnet"
+              },
+              "to": "t1dJj1rGjG7GjG7GjG7GjG7GjG7GjG7GjG7G",
+              "value": "10000000",
+              "refundTo": "t1sender123456789"
+            }
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto quote = gate3::ParseQuoteResponse(ParseJson(json));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1u);
+
+  const auto& route = quote->routes[0];
+  EXPECT_EQ(route->id, "ni_zec_test");
+
+  // Verify ZCash transaction params
+  ASSERT_TRUE(route->transaction_params);
+  ASSERT_TRUE(route->transaction_params->is_zcash_transaction_params());
+
+  const auto& zcash_params =
+      route->transaction_params->get_zcash_transaction_params();
+  EXPECT_EQ(zcash_params->chain->coin, mojom::CoinType::ZEC);
+  EXPECT_EQ(zcash_params->chain->chain_id, "zcash_mainnet");
+  EXPECT_EQ(zcash_params->to, "t1dJj1rGjG7GjG7GjG7GjG7GjG7GjG7GjG7G");
+  EXPECT_EQ(zcash_params->value, "10000000");
+  EXPECT_EQ(zcash_params->refund_to, "t1sender123456789");
 }
 
 TEST(SwapResponseParserUnitTest, ParseGate3ErrorResponse) {
