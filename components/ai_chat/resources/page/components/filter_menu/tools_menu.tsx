@@ -22,6 +22,7 @@ type ToolsMenuProps = {
   handleClick: (type: ExtendedActionEntry) => void
   handleEditClick: (skill: Skill) => void
   handleNewSkillClick: () => void
+  handleAutoSelect?: (entry: ExtendedActionEntry) => void
 } & Pick<
   Props<ExtendedActionEntry>,
   'categories' | 'isOpen' | 'setIsOpen' | 'query'
@@ -46,6 +47,19 @@ function matchesQuery(query: FuzzyFinder, entry: ExtendedActionEntry) {
 }
 
 export default function ToolsMenu(props: ToolsMenuProps) {
+  const isAutoSelectRef = React.useRef(false)
+
+  function handleClick(item: ExtendedActionEntry) {
+    if (isAutoSelectRef.current) {
+      isAutoSelectRef.current = false
+      if (props.handleAutoSelect) {
+        props.handleAutoSelect(item)
+        return
+      }
+    }
+    props.handleClick(item)
+  }
+
   return (
     <FilterMenu
       categories={props.categories}
@@ -53,6 +67,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
       setIsOpen={props.setIsOpen}
       query={props.query}
       matchesQuery={matchesQuery}
+      onAutoSelect={() => (isAutoSelectRef.current = true)}
       noMatchesMessage={
         <div className={styles.toolsNoMatches}>
           {getLocale(S.CHAT_UI_TOOLS_MENU_NO_SKILLS_FOUND)}
@@ -79,7 +94,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
         return (
           <leo-menu-item
             key={isActionEntry ? item.details!.type : item.shortcut}
-            onClick={() => props.handleClick(item)}
+            onClick={() => handleClick(item)}
           >
             <div className={styles.toolsMenuItemContent}>
               <MatchedText
