@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { useBraveNews } from '../../../../components/brave_news/browser/resources/shared/Context'
 
 import { useNewTabState } from '../context/new_tab_context'
@@ -31,7 +32,7 @@ export function useWidgetLayoutReady() {
 }
 
 function useBraveNewsInitialized() {
-  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+  const newsFeatureEnabled = loadTimeData.getBoolean('newsFeatureEnabled')
   if (!newsFeatureEnabled) {
     return true
   }

@@ -5,13 +5,47 @@
 
 import * as React from 'react'
 
-import { BraveNewsContextProvider } from '../../../../components/brave_news/browser/resources/shared/Context'
-import { useNewTabState } from './new_tab_context'
+import { loadTimeData } from '$web-common/loadTimeData'
 
-export function NewsProvider(props: { children: React.ReactNode }) {
-  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+const newsFeatureEnabled = loadTimeData.getBoolean('newsFeatureEnabled')
+
+type ProviderComponent = React.ComponentType<{ children: React.ReactNode }>
+
+// Cache the loaded provider at module level
+let cachedProvider: ProviderComponent | null = null
+let loadPromise: Promise<ProviderComponent | null> | null = null
+
+function loadProvider(): Promise<ProviderComponent | null> {
   if (!newsFeatureEnabled) {
-    return <>{props.children}</>
+    return Promise.resolve(null)
   }
-  return <BraveNewsContextProvider>{props.children}</BraveNewsContextProvider>
+  if (!loadPromise) {
+    loadPromise = import(
+      '../../../../components/brave_news/browser/resources/shared/Context'
+    ).then((m) => {
+      cachedProvider = m.BraveNewsContextProvider
+      return cachedProvider
+    })
+  }
+  return loadPromise
+}
+
+export function NewsProvider(props: React.PropsWithChildren) {
+  const [Provider, setProvider] = React.useState<ProviderComponent | null>(
+    cachedProvider,
+  )
+
+  React.useEffect(() => {
+    if (!Provider && newsFeatureEnabled) {
+      loadProvider().then((p) => {
+        if (p) setProvider(() => p)
+      })
+    }
+  }, [Provider])
+
+  if (Provider) {
+    return <Provider>{props.children}</Provider>
+  }
+
+  return <>{props.children}</>
 }
