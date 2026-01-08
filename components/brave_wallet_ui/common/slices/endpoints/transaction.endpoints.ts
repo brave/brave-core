@@ -758,7 +758,7 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success: false },
+            data: { success },
           }
         } catch (error) {
           return { error: 'Failed to send DOT transaction' }
