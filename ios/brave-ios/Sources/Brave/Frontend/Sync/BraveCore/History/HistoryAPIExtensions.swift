@@ -60,10 +60,8 @@ extension BraveHistoryAPI {
 
     DispatchQueue.main.async {
       self.removeAll {
-        Domain.deleteNonBookmarkedAndClearSiteVisits {
-          screenTimeHistory?.deleteAllHistory()
-          completion()
-        }
+        screenTimeHistory?.deleteAllHistory()
+        completion()
       }
     }
   }

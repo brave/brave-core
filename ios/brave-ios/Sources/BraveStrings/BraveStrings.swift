@@ -2728,6 +2728,13 @@ extension Strings {
     value: "Saved Logins",
     comment: "Settings item for clearing passwords and login data"
   )
+  public static let siteAndShieldsSettings = NSLocalizedString(
+    "SavedLogins",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Site and Shields Settings",
+    comment: "Settings item for clearing site-specific settings and shields settings."
+  )
   public static let downloadedFiles = NSLocalizedString(
     "DownloadedFiles",
     tableName: "BraveShared",
