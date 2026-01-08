@@ -151,7 +151,7 @@ void PromotionButtonView::AnimationProgressed(const gfx::Animation* animation) {
 }
 
 float PromotionButtonView::GetCornerRadius() const {
-  return GetLayoutConstant(LOCATION_BAR_CHILD_CORNER_RADIUS);
+  return GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);
 }
 
 void PromotionButtonView::UpdateBackgroundAndBorders() {

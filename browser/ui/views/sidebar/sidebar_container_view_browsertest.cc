@@ -58,7 +58,7 @@ IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
   EXPECT_TRUE(sidebar());
   EXPECT_TRUE(toolbar_button());
   EXPECT_TRUE(toolbar_button()->GetVisible());
-  EXPECT_EQ(GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT),
+  EXPECT_EQ(GetLayoutConstant(LayoutConstant::kToolbarButtonHeight),
             toolbar_button()->height());
 }
 
