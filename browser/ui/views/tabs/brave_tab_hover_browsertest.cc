@@ -51,17 +51,19 @@ class BraveTabHoverTest : public InProcessBrowserTest {
   }
 
   TabHoverCardBubbleView* hover_card() {
-    return tabstrip()->hover_card_controller_->hover_card_;
+    return horizontal_tab_strip_for_testing()
+        ->hover_card_controller_->hover_card_;
   }
 
-  TabStrip* tabstrip() {
+  TabStrip* horizontal_tab_strip_for_testing() {
     auto* browser_view = static_cast<BrowserView*>(browser()->window());
-    return browser_view->tabstrip();
+    return browser_view->horizontal_tab_strip_for_testing();
   }
 
   Tab* active_tab() {
     TabStripModel* tab_strip_model = browser()->tab_strip_model();
-    return tabstrip()->tab_at(tab_strip_model->active_index());
+    return horizontal_tab_strip_for_testing()->tab_at(
+        tab_strip_model->active_index());
   }
 
   void HoverOverTab(Tab* tab) {
@@ -71,8 +73,8 @@ class BraveTabHoverTest : public InProcessBrowserTest {
     // Additionally, triggering the test with
     // GetFocusManager()->SetFocusedView(tab) is flakey, and fails semi
     // regularly. Thus, we have to trigger the hover directly.
-    tabstrip()->UpdateHoverCard(tab,
-                                TabSlotController::HoverCardUpdateType::kHover);
+    horizontal_tab_strip_for_testing()->UpdateHoverCard(
+        tab, TabSlotController::HoverCardUpdateType::kHover);
   }
 
  private:
@@ -90,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.visible_url = GURL("https://card.com");
   data.title = u"Hello World";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(0), .data = data});
-  tabstrip()->AddTabsAt(data_list);
+  horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
@@ -103,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.visible_url = GURL("https://card-with-preview.com");
   data.title = u"Foo Bar";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(1), .data = data});
-  tabstrip()->AddTabsAt(data_list);
+  horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
@@ -117,8 +119,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.visible_url = GURL("https://tooltip.com");
   data.title = u"Baf Baz";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(2), .data = data});
-  tabstrip()->AddTabsAt(data_list);
-  EXPECT_EQ(0, tabstrip()->GetActiveIndex());
+  horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
+  EXPECT_EQ(0, horizontal_tab_strip_for_testing()->GetActiveIndex());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
