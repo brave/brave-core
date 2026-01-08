@@ -263,49 +263,6 @@ export class MockedWalletApiProxy {
       ?? this.signCardanoTransactionRequests
   }
 
-  assetsRatioService: Partial<
-    InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
-  > = {
-    getBuyUrlV1: async (
-      provider,
-      chainId,
-      address,
-      symbol,
-      amount,
-      currencyCode,
-    ) => {
-      if (
-        !provider
-        || !chainId
-        || !address
-        || !symbol
-        || !amount
-        || !currencyCode
-      ) {
-        return {
-          url: '',
-          error: 'missing param(s)',
-        }
-      }
-      return {
-        url: `provider=${
-          provider //
-        }&chainId=${
-          chainId //
-        }&address=${
-          address //
-        }&symbol=${
-          symbol //
-        }&amount=${
-          amount //
-        }&currencyCode=${
-          currencyCode //
-        }`,
-        error: null,
-      }
-    },
-  }
-
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
