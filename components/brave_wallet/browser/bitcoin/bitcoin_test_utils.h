@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
@@ -100,6 +101,8 @@ class BitcoinTestRpcServer {
   }
 
   const std::string& captured_raw_tx() { return captured_raw_tx_; }
+
+  void SetFeeEstimatesForTesting(const base::Value& fee_estimates);
 
  protected:
   void RequestInterceptor(const network::ResourceRequest& request);

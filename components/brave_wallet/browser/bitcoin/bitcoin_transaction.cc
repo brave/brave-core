@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -223,6 +224,13 @@ BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
     return std::nullopt;
   }
 
+  // Enforce a conservative upper bound for witness stack serialization to
+  // reject obviously invalid or abusive inputs. Standard script element limit
+  // is 520 bytes; we apply the same ceiling to the serialized witness.
+  if (result.witness.size() > 520) {
+    return std::nullopt;
+  }
+
   if (!ReadOptionalHexByteArrayTo(value, "raw_outpoint_tx",
                                   result.raw_outpoint_tx)) {
     return std::nullopt;
@@ -275,14 +283,18 @@ BitcoinTransaction::TxInputGroup& BitcoinTransaction::TxInputGroup::operator=(
 
 void BitcoinTransaction::TxInputGroup::AddInput(
     BitcoinTransaction::TxInput input) {
-  total_amount_ += input.utxo_value;
+  base::CheckedNumeric<uint64_t> new_total = total_amount_;
+  new_total += input.utxo_value;
+  total_amount_ = new_total.ValueOrDie();
   inputs_.push_back(std::move(input));
 }
 
 void BitcoinTransaction::TxInputGroup::AddInputs(
     std::vector<BitcoinTransaction::TxInput> inputs) {
-  for (auto& input : inputs_) {
-    total_amount_ += input.utxo_value;
+  for (auto& input : inputs) {
+    base::CheckedNumeric<uint64_t> new_total = total_amount_;
+    new_total += input.utxo_value;
+    total_amount_ = new_total.ValueOrDie();
     inputs_.push_back(std::move(input));
   }
 }

@@ -72,6 +72,22 @@ TEST(BitcoinTransaction, TxInput_Value) {
   ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
+TEST(BitcoinTransaction, TxInput_ValueRejectsOversizeWitness) {
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = kAddress1;
+  input.utxo_outpoint.index = 321;
+  base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
+  input.utxo_value = 42;
+
+  // Witness element intentionally exceeds the standard 520-byte script element
+  // limit used by Bitcoin consensus rules. The current implementation accepts
+  // it without validation; this test codifies the desired rejection.
+  input.witness.assign(600, 0xAA);
+
+  auto parsed = input.FromValue(input.ToValue());
+  EXPECT_FALSE(parsed);
+}
+
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
   const std::string rpc_utxo_json = R"(
     {
@@ -224,6 +240,26 @@ TEST(BitcoinTransaction, TotalInputsAmount) {
   input2.utxo_value = 555;
   tx.AddInput(std::move(input2));
   EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
+}
+
+TEST(BitcoinTransaction, TxInputGroupAddInputsAccumulatesTotal) {
+  // Ensures grouping inputs correctly sums total_amount_, preventing under-fee
+  // coin selection that could lead to unsafe transactions.
+  BitcoinTransaction::TxInputGroup group;
+
+  BitcoinTransaction::TxInput input1;
+  input1.utxo_value = 100;
+  BitcoinTransaction::TxInput input2;
+  input2.utxo_value = 200;
+
+  std::vector<BitcoinTransaction::TxInput> inputs;
+  inputs.push_back(std::move(input1));
+  inputs.push_back(std::move(input2));
+
+  group.AddInputs(std::move(inputs));
+
+  ASSERT_EQ(group.inputs().size(), 2u);
+  EXPECT_EQ(group.total_amount(), 300u);
 }
 
 TEST(BitcoinTransaction, TotalOutputsAmount) {
