@@ -665,11 +665,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const handleOnBack = React.useCallback(() => {
       // Clears route params if an account is not selected
       // and user clicks back.
-      if (needsAccount) {
+      if (needsAccount || accountsForPendingSelectedAsset.length === 0) {
         clearParams()
       }
       setPendingSelectedAssetState(undefined)
-    }, [clearParams, needsAccount])
+    }, [clearParams, needsAccount, accountsForPendingSelectedAsset.length])
 
     // Computed & Memos
     const emptyTokensList =
@@ -756,6 +756,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 : undefined
             }
             onSelectAccount={handleSelectAccount}
+            onCancel={handleOnBack}
           />
         </PopupModal>
       )
@@ -871,6 +872,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                     : undefined
                 }
                 onSelectAccount={handleSelectAccount}
+                onCancel={handleOnBack}
               />
             )}
           </BottomSheet>
