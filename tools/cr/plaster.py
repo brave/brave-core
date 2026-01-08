@@ -269,7 +269,8 @@ class PlasterFile:
                 flags = substitution.get('re_flags', [])
 
                 if description is None:
-                    raise ValueError(f'No description specified in {info.source}')
+                    raise ValueError(
+                        f'No description specified in {info.source}')
 
                 if re_pattern is not None and pattern is not None:
                     raise ValueError(
@@ -278,7 +279,8 @@ class PlasterFile:
 
                 if re_pattern is None:
                     if pattern is None:
-                        raise ValueError(f'No pattern specified in {info.source}')
+                        raise ValueError(
+                            f'No pattern specified in {info.source}')
                     re_pattern = re.escape(pattern)
 
                 if replace is None:
@@ -292,7 +294,8 @@ class PlasterFile:
                         re_flags |= getattr(re, flag)
                     else:
                         raise ValueError(
-                            f'Invalid re flag specified: {flag} in {info.source}')
+                            f'Invalid re flag specified: {flag} in {info.source}'
+                        )
 
                 contents, num_changes = re.subn(
                     re_pattern,
@@ -311,10 +314,11 @@ class PlasterFile:
                         f'{expected_count}) in {self.path}')
 
         except re.error as e:
-            errors.append(f'Invalid regex {e} in {self.path}')
+            errors.append(f'Invalid regex: {e} in {self.path}')
 
         if errors:
-            print(f'\n\nThere were errors attempting to apply the patches:', file=sys.stderr)
+            print(f'\n\nThere were errors attempting to apply the patches:',
+                  file=sys.stderr)
             for error in errors:
                 print(f'{error}', file=sys.stderr)
             sys.exit(1)

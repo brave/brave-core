@@ -398,11 +398,12 @@ class PlasterTest(unittest.TestCase):
 
                 plaster_file = plaster.PlasterFile(plaster_path)
                 stderr = io.StringIO()
-                with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
+                with patch('sys.stderr',
+                           stderr), patch('sys.exit') as mock_exit:
                     plaster_file.apply()
                     mock_exit.assert_called_once_with(1)
                     output = stderr.getvalue()
-                    self.assertIn('Invalid regex', output)
+                    self.assertIn('Invalid regex:', output)
                     self.assertIn(str(plaster_path), output)
 
     def test_pattern_validation_failures(self):
