@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "crypto/kdf.h"
+#include "crypto/process_bound_string.h"
 #include "crypto/random.h"
 
 namespace brave_wallet {
@@ -37,6 +38,8 @@ inline constexpr char const kPolkadotTestnet[] =
 inline constexpr char const kPolkadotMainnet[] =
     "\x20"
     "polkadot";
+
+using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 }  // namespace
 
@@ -132,6 +135,9 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   }
 
   auto pkcs8_key = EnsureKeyPair(account_index).GetExportKeyPkcs8();
+  SecureVector pkcs8_key_secure(pkcs8_key.begin(), pkcs8_key.end());
+  crypto::internal::SecureZeroBuffer(pkcs8_key);
+
   std::string address = GetAddress(account_index, kSubstratePrefix);
 
   // Substrate/Polkadot standard parameters: n=32768, r=8, p=1.
@@ -166,10 +172,13 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   }
 
   // Encrypt message.
-  auto encrypt_result = XSalsaPolyEncrypt(pkcs8_key, *derived_key, nonce_bytes);
+  auto encrypt_result = XSalsaPolyEncrypt(base::as_byte_span(pkcs8_key_secure),
+                                          *derived_key, nonce_bytes);
   if (!encrypt_result.has_value()) {
     return std::nullopt;
   }
+  // Zeroize derived key.
+  crypto::internal::SecureZeroBuffer(*derived_key);
 
   // Encode in polkadot-js format: scryptToU8a(salt, params) + nonce +
   // encrypted. scryptToU8a encodes: salt (32 bytes) + n (4 bytes LE) + r
