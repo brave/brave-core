@@ -1980,7 +1980,8 @@ public class BytecodeTest {
                         Profile.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",
