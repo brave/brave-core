@@ -128,6 +128,8 @@
 -MaterialNewTabPageColorMixerTest.*
 
 # These tests fail because we disable kFirstPartySets.
+-FirstPartySetsPolicyServicePrefTest.*
+-PageInfoRelatedWebsiteSetsTest.ShowAutograntedRWSPermissions
 -RelatedWebsiteSetsSourceTest.RWS
 -RelatedWebsiteSetsSourceTest.RWS_Empty
 -RelatedWebsiteSetsSourceTest.SubsetsAreSorted
@@ -241,6 +243,7 @@
 -IsolatedWebAppURLLoaderFactoryTest.*
 
 # These tests fail because we disable Isolated Web Apps
+-IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
 # These tests fail because IdentityManager's primary account has no kSignin
@@ -271,6 +274,7 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
 -EnclaveManagerTest.PrimaryUserChange
+-EnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
 -ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
 -ExtensionLocalDataBatchUploaderTest.LocalDataDescriptionOnlyReturnsUploadableExtensions
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigration
@@ -284,8 +288,11 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
+-ShowPromoTest.ShouldShowSyncPromoSyncEnabled
+-ShowPromoTest.ShowExtensionSyncPromoWithoutFeatureFlag
 -ShowPromoTest.ShowPromoWithNoAccount
 -ShowPromoTest.ShowPromoWithSignedInAccount
+-ShowPromoTest.ShowSyncPromoWithSignedInAccount
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
@@ -302,6 +309,11 @@
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
+-All/LastDownloadFinderTest.AddProfileAfterStarting/1
+-All/LastDownloadFinderTest.NonBinaryOnly/1
+-All/LastDownloadFinderTest.SimpleEndToEnd/1
+-BundledSettingsMetricsProviderUnitTest.EnhancedBundle_SafeBrowsingMetrics
+-BundledSettingsMetricsProviderUnitTest.StandardBundle_SafeBrowsingMetrics
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
 -ChromeEnterpriseRealTimeUrlLookupServiceTest.TestStartLookup_EnhancedProtectionRequestWithReferringAppInfo
@@ -319,12 +331,16 @@
 -ClientSideDetectionHostTest.*
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTracker*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
+-DeveloperPrivateApiUnitTest.ExtensionUpdatedEventOnAllowlistWarningChange
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
+-ExtensionDataCollectionTest.CollectExtensionDataWithExtension
+-ExtensionDataCollectionTest.CollectsLastInstalledExtension
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
+-GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
 -GeneratedSafeBrowsingPrefTest.ManagementState
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
@@ -335,8 +351,11 @@
 -NotificationTelemetryServiceTest.NonEmptyTelemetryStoreAtConstruction/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -NotificationTelemetryServiceTest.ServiceWorkerSubscriptionRecordsServiceWorkerBehavior/*
+-PhishyInteractionTrackerTest.CheckPhishyUserInteractionClientReport
 -SafeBrowsingPrefChangeHandlerTest.ToastSuppressedForTailoredSecurityChange
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
+-SafeBrowsingServiceEnhancedSecurityBundleMigrationTest.MigrationOccursOnce
+-SafeBrowsingServiceEnhancedSecurityBundleMigrationTest.SetsMigrationToastStateToPending
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
@@ -432,6 +451,7 @@
 -All/RevokedPermissionsServiceTest.RevokedPermissionsServiceTest/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/1
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/3
+-DisruptiveNotificationPermissionsManagerRevocationTest.RevocationPermissionUKMMetrics
 -SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
@@ -505,6 +525,7 @@
 
 # These tests time out because the CreateProfile method calls
 # mock_time_task_runner_->FastForwardUntilNoTasksRemain() which never returns.
+-All/IncidentReportingServiceTest.*
 -IncidentReportingServiceTest.*
 
 # This test times out because TaskEnvironment::FastForwardBy never returns.
@@ -693,6 +714,9 @@
 
 # These tests fail because we don't show the history sync promo
 -BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/SignedIn
+
+# This test fails because we disable kDestroyProfileOnBrowserClose feature.
+-BookmarkDictImporterTest.FailsIfProfileIsDestroyed
 
 # These tests fail because we add IPH features but do not add associated UMA
 # histogram/actions XML entries (which are not needed for Brave since we don't
