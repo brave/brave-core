@@ -115,7 +115,9 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     // Shrink height more if it's overlapped.
     if (path_type != TabStyle::PathType::kHitTest) {
       aligned_bounds.Inset(gfx::InsetsF::TLBR(
-          0, 0, GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP) * scale, 0));
+          0, 0,
+          GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) * scale,
+          0));
     }
 
     // For hit testing, expand the rectangle so that the visual margins around
@@ -249,11 +251,12 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
     // vertical tab, use it as bottom inset in a tab as it's hidden by
     // overlapping.
     return insets +
-           gfx::Insets::TLBR(0, 0,
-                             ShouldShowVerticalTabs()
-                                 ? 0
-                                 : GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
-                             0);
+           gfx::Insets::TLBR(
+               0, 0,
+               ShouldShowVerticalTabs()
+                   ? 0
+                   : GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
+               0);
   }
 
   return TabStyleViewsImpl::GetContentsInsets();

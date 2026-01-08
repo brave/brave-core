@@ -30,12 +30,12 @@
                alert_indicator_button_->width() + after_title_padding;
 
 // `UpdateIconVisibility` currently has an early return when the tab view's
-// height is less than `GetLayoutConstant(TAB_HEIGHT)`. Unfortunately, when in
-// vertical tabs mode this will prevent the favicon and close button from
-// appearing. As a workaround, use `tabs::kVerticalTabHeight` instead of
-// TAB_HEIGHT when in vertical tabs mode.
+// height is less than `GetLayoutConstant(LayoutConstant::kTabHeight)`.
+// Unfortunately, when in vertical tabs mode this will prevent the favicon and
+// close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
+// instead of LayoutConstant::kTabHeight when in vertical tabs mode.
 #define GetLayoutConstant(COMPONENT)                                      \
-  ((COMPONENT == TAB_HEIGHT &&                                            \
+  ((COMPONENT == LayoutConstant::kTabHeight &&                            \
     tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) \
        ? tabs::kVerticalTabHeight                                         \
        : GetLayoutConstant(COMPONENT))

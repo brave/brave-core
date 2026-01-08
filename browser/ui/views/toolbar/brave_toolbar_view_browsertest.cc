@@ -484,7 +484,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
             container->GetIndexOf(app_menu).value() - 1ul);
 
   // Check avatar button's size.
-  const int avatar_size = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT);
+  const int avatar_size =
+      GetLayoutConstant(LayoutConstant::kToolbarButtonHeight);
   EXPECT_EQ(gfx::Size(avatar_size, avatar_size), avatar->size());
 }
 
