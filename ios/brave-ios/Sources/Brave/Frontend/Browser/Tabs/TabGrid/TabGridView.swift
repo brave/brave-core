@@ -423,43 +423,62 @@ struct TabGridView: View {
   }
 
   var footerBar: some View {
-    HStack {
-      Menu {
-        if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
-          Section {
-            Button {
-              destinationSheet = .privateTabsSettings
-            } label: {
-              Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
-            }
-          }
-        }
-        Section {
-          if !viewModel.tabs.isEmpty {
-            Button {
-              withAnimation {
-                editMode = .active
+    ZStack {
+      // HStack with More and Done buttons leading and trailing edges respectively, separated by spacer
+      HStack {
+        Menu {
+          if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
+            Section {
+              Button {
+                destinationSheet = .privateTabsSettings
+              } label: {
+                Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
               }
-            } label: {
-              Label(
-                Strings.TabGrid.selectTabsButtonTitle,
-                braveSystemImage: "leo.check.circle-outline"
-              )
-            }
-            Button(role: .destructive) {
-              viewModel.closeAllTabs()
-              dismiss()
-            } label: {
-              Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
             }
           }
+          Section {
+            if !viewModel.tabs.isEmpty {
+              Button {
+                withAnimation {
+                  editMode = .active
+                }
+              } label: {
+                Label(
+                  Strings.TabGrid.selectTabsButtonTitle,
+                  braveSystemImage: "leo.check.circle-outline"
+                )
+              }
+              Button(role: .destructive) {
+                viewModel.closeAllTabs()
+                dismiss()
+              } label: {
+                Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+              }
+            }
+          }
+        } label: {
+          Text(Strings.TabGrid.moreMenuButtonTitle)
+            .padding(4)
         }
-      } label: {
-        Text(Strings.TabGrid.moreMenuButtonTitle)
-          .padding(4)
+        .menuOrder(.fixed)
+
+        Spacer()
+
+        Button {
+          if viewModel.tabs.isEmpty {
+            viewModel.addTab()
+          }
+          dismiss()
+        } label: {
+          Text(Strings.done)
+            .padding(4)
+        }
+        .keyboardShortcut(.defaultAction)
       }
-      .menuOrder(.fixed)
-      Spacer()
+      .foregroundStyle(Color(braveSystemName: .textSecondary))
+      .fontWeight(.medium)
+
+      // Plus button centered on top of the HStack
       Button {
         viewModel.addTab()
         // Let the tab show up in the collection view first
@@ -482,22 +501,9 @@ struct TabGridView: View {
       }
       .keyboardShortcut("t", modifiers: [.command])
       .buttonStyle(.plain)
-      Spacer()
-      Button {
-        if viewModel.tabs.isEmpty {
-          viewModel.addTab()
-        }
-        dismiss()
-      } label: {
-        Text(Strings.done)
-          .padding(4)
-      }
-      .keyboardShortcut(.defaultAction)
     }
-    .foregroundStyle(Color(braveSystemName: .textSecondary))
-    .fontWeight(.medium)
-    .padding(.horizontal, 16)
-    .padding(.vertical, 8)
+    .padding(.horizontal, 8)
+    .padding(.vertical, 0)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
