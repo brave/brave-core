@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ai_chat/code_execution_tool.h"
+#include "brave/browser/ai_chat/tools/code_execution_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "content/public/browser/browser_context.h"
