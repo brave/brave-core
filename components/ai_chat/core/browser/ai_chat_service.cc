@@ -115,6 +115,7 @@ AIChatService::AIChatService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string,
     base::FilePath profile_path,
+    std::unique_ptr<CodeSandbox> code_sandbox,
     std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories)
     : model_service_(model_service),
       tab_tracker_service_(tab_tracker_service),
@@ -127,6 +128,7 @@ AIChatService::AIChatService(
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
       tool_provider_factories_(std::move(tool_provider_factories)),
+      code_sandbox_(std::move(code_sandbox)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
 
@@ -1291,7 +1293,8 @@ AIChatService::CreateToolProvidersForNewConversation() {
 
   // Basic set of tools that we can provide
   tool_providers.push_back(std::make_unique<ConversationToolProvider>(
-      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
+      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr,
+      code_sandbox_.get()));
 
   return tool_providers;
 }

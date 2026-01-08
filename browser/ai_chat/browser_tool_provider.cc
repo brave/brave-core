@@ -5,37 +5,27 @@
 
 #include "brave/browser/ai_chat/browser_tool_provider.h"
 
-#include <memory>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ai_chat/code_execution_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "content/public/browser/browser_context.h"
 
 namespace ai_chat {
 
-BrowserToolProvider::BrowserToolProvider(
-    content::BrowserContext* browser_context) {
-  CreateTools(browser_context);
+BrowserToolProvider::BrowserToolProvider() {
+  CreateTools();
 }
 
 BrowserToolProvider::~BrowserToolProvider() = default;
 
 std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
-  if (code_execution_tool_) {
-    tool_ptrs.push_back(code_execution_tool_->GetWeakPtr());
-  }
+  // TODO(petemill): Return some tools
   return tool_ptrs;
 }
 
-void BrowserToolProvider::CreateTools(
-    content::BrowserContext* browser_context) {
-  if (features::IsCodeExecutionToolEnabled()) {
-    code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
-  }
+void BrowserToolProvider::CreateTools() {
+  // TODO(petemill): Construct some tools and own them
 }
 
 }  // namespace ai_chat

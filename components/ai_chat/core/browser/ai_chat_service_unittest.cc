@@ -295,7 +295,8 @@ class AIChatServiceUnitTest : public testing::Test,
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), tab_tracker_service_.get(),
         std::move(credential_manager), &prefs_, nullptr, os_crypt_.get(),
-        shared_url_loader_factory_, "", temp_directory_.GetPath());
+        shared_url_loader_factory_, "", temp_directory_.GetPath(),
+        /*code_sandbox=*/nullptr);
 
     client_ =
         std::make_unique<NiceMock<MockServiceClient>>(ai_chat_service_.get());

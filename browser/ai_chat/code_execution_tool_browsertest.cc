@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/code_execution_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/code_execution_tool.h"
 
 #include <memory>
 #include <string>
@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/values.h"
+#include "brave/browser/ai_chat/code_sandbox_impl.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -38,12 +39,14 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
         &AIChatCodeExecutionToolBrowserTest::HandleTestRequest,
         base::Unretained(this)));
     ASSERT_TRUE(http_server_.Start());
-    tool_ = std::make_unique<CodeExecutionTool>(browser()->profile());
-    tool_->SetExecutionTimeLimitForTesting(base::Seconds(30));
+    code_sandbox_ = std::make_unique<CodeSandboxImpl>(browser()->profile());
+    code_sandbox_->SetExecutionTimeLimitForTesting(base::Seconds(30));
+    tool_ = std::make_unique<CodeExecutionTool>(code_sandbox_.get());
   }
 
   void TearDownOnMainThread() override {
     tool_.reset();
+    code_sandbox_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -74,6 +77,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  std::unique_ptr<CodeSandboxImpl> code_sandbox_;
   std::unique_ptr<CodeExecutionTool> tool_;
 
  private:
@@ -144,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
-  tool_->SetExecutionTimeLimitForTesting(base::Seconds(2));
+  code_sandbox_->SetExecutionTimeLimitForTesting(base::Seconds(2));
 
   std::string script = R"(
     await new Promise(resolve => setTimeout(resolve, 5000));

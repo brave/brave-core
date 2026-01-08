@@ -28,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/code_sandbox.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
@@ -55,6 +56,7 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
+class CodeSandbox;
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
@@ -83,6 +85,7 @@ class AIChatService : public KeyedService,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string,
       base::FilePath profile_path,
+      std::unique_ptr<CodeSandbox> code_sandbox,
       // Factories of ToolProviders from other layers
       std::vector<std::unique_ptr<ToolProviderFactory>>
           tool_provider_factories = {});
@@ -357,6 +360,9 @@ class AIChatService : public KeyedService,
 
   // Memory tool that is available and shared across all conversations.
   std::unique_ptr<MemoryStorageTool> memory_tool_;
+
+  // Code sandbox implementation provided by the browser layer.
+  std::unique_ptr<CodeSandbox> code_sandbox_;
 
   base::FilePath profile_path_;
 

@@ -20,7 +20,7 @@ BrowserToolProviderFactory::BrowserToolProviderFactory(
 BrowserToolProviderFactory::~BrowserToolProviderFactory() = default;
 
 std::unique_ptr<ToolProvider> BrowserToolProviderFactory::CreateToolProvider() {
-  return std::make_unique<BrowserToolProvider>(browser_context_);
+  return std::make_unique<BrowserToolProvider>();
 }
 
 }  // namespace ai_chat

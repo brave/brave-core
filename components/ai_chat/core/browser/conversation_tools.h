@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_TOOLS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_TOOLS_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -14,9 +15,13 @@
 
 namespace ai_chat {
 
+class CodeExecutionTool;
+class CodeSandbox;
+
 class ConversationToolProvider : public ToolProvider {
  public:
-  explicit ConversationToolProvider(base::WeakPtr<Tool> memory_storage_tool);
+  ConversationToolProvider(base::WeakPtr<Tool> memory_storage_tool,
+                           CodeSandbox* code_sandbox);
   ~ConversationToolProvider() override;
 
   ConversationToolProvider(const ConversationToolProvider&) = delete;
@@ -32,6 +37,8 @@ class ConversationToolProvider : public ToolProvider {
   // mid-loop because it doesn't have any async operations and will send a
   // response right away in UseTool.
   base::WeakPtr<Tool> memory_storage_tool_;
+
+  std::unique_ptr<CodeExecutionTool> code_execution_tool_;
 };
 
 }  // namespace ai_chat

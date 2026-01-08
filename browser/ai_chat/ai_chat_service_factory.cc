@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
+#include "brave/browser/ai_chat/code_sandbox_impl.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -112,6 +113,12 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   tool_provider_factories.push_back(
       std::make_unique<BrowserToolProviderFactory>(context));
 
+  // Create code sandbox implementation if code execution tool is enabled
+  std::unique_ptr<CodeSandbox> code_sandbox;
+  if (features::IsCodeExecutionToolEnabled()) {
+    code_sandbox = std::make_unique<CodeSandboxImpl>(context);
+  }
+
   auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
       TabTrackerServiceFactory::GetForBrowserContext(context),
@@ -121,7 +128,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       version_info::GetChannelString(chrome::GetChannel()), context->GetPath(),
-      std::move(tool_provider_factories));
+      std::move(code_sandbox), std::move(tool_provider_factories));
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   // This configuration is not part of the AIChatService constructor because it

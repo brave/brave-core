@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/ai_chat/core/browser/tools/code_execution_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -160,8 +161,13 @@ const std::vector<Tool*>& StaticTools() {
 }  // namespace
 
 ConversationToolProvider::ConversationToolProvider(
-    base::WeakPtr<Tool> memory_storage_tool)
-    : memory_storage_tool_(memory_storage_tool) {}
+    base::WeakPtr<Tool> memory_storage_tool,
+    CodeSandbox* code_sandbox)
+    : memory_storage_tool_(memory_storage_tool) {
+  if (code_sandbox) {
+    code_execution_tool_ = std::make_unique<CodeExecutionTool>(code_sandbox);
+  }
+}
 
 ConversationToolProvider::~ConversationToolProvider() = default;
 
@@ -173,6 +179,10 @@ std::vector<base::WeakPtr<Tool>> ConversationToolProvider::GetTools() {
 
   if (memory_storage_tool_) {
     tools.push_back(memory_storage_tool_);
+  }
+
+  if (code_execution_tool_) {
+    tools.push_back(code_execution_tool_->GetWeakPtr());
   }
 
   return tools;
