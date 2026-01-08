@@ -5,7 +5,7 @@
 
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { AccountState } from '../brave_account_row.mojom-webui.js'
+import { AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { SettingsBraveAccountRow } from './brave_account_row.js'
 
@@ -35,12 +35,12 @@ const createFirstRow = (
 
 export function getHtml(this: SettingsBraveAccountRow) {
   const stateHtml: Record<
-    AccountState,
+    AccountStateFieldTags,
     () => ReturnType<typeof html>
   > = {
-    [AccountState.kLoggedIn]: () => createFirstRow(
-      'John Doe',
-      'johndoe@gmail.com',
+    [AccountStateFieldTags.LOGGED_IN]: () => createFirstRow(
+      loadTimeData.getString('braveAccountLoggedInRowTitle'),
+      this.state!.loggedIn!.email,
       html`
         <leo-button kind="outline"
                     size="small"
@@ -49,7 +49,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
         </leo-button>
       `
     ),
-    [AccountState.kVerification]: () => html`
+    [AccountStateFieldTags.VERIFICATION]: () => html`
       ${createFirstRow(
         loadTimeData.getString('braveAccountVerificationRowTitle'),
         [
@@ -72,7 +72,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
         </leo-button>
       </div>
     `,
-    [AccountState.kLoggedOut]: () => createFirstRow(
+    [AccountStateFieldTags.LOGGED_OUT]: () => createFirstRow(
       loadTimeData.getString('braveAccountLoggedOutRowTitle'),
       loadTimeData.getString('braveAccountLoggedOutRowDescription'),
       html`
@@ -87,6 +87,8 @@ export function getHtml(this: SettingsBraveAccountRow) {
 
   return html`
     <div class="row-container">
-      ${this.state === undefined ? nothing : stateHtml[this.state]()}
+      ${this.state === undefined
+        ? nothing
+        : stateHtml[whichAccountState(this.state)]()}
     </div>`
 }

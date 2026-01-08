@@ -5,10 +5,18 @@
 
 module brave_account.mojom;
 
-enum AccountState {
-  kLoggedOut,
-  kVerification,
-  kLoggedIn,
+struct LoggedOutState {};
+
+struct VerificationState {};
+
+struct LoggedInState {
+  string email;
+};
+
+union AccountState {
+  LoggedOutState logged_out;
+  VerificationState verification;
+  LoggedInState logged_in;
 };
 
 interface RowClient {

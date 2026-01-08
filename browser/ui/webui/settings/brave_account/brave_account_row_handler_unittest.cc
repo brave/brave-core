@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/no_destructor.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_account/features.h"
@@ -32,7 +33,7 @@ namespace {
 
 class MockRowClient : public mojom::RowClient {
  public:
-  MOCK_METHOD(void, UpdateState, (mojom::AccountState), (override));
+  MOCK_METHOD(void, UpdateState, (mojom::AccountStatePtr), (override));
 
   mojo::PendingRemote<mojom::RowClient> BindNewPipeAndPassRemote() {
     return receiver_.BindNewPipeAndPassRemote();
@@ -45,10 +46,10 @@ class MockRowClient : public mojom::RowClient {
 };
 
 template <typename T>
-class BraveAccountRowHandlerTest : public testing::TestWithParam<T> {
+class BraveAccountRowHandlerTest : public testing::TestWithParam<const T*> {
  public:
   static constexpr auto kNameGenerator = [](const auto& info) {
-    return info.param.test_name;
+    return CHECK_DEREF(info.param).test_name;
   };
 
   BraveAccountRowHandlerTest()
@@ -89,16 +90,57 @@ struct GetAccountStateTestCase {
   std::string test_name;
   std::string verification_token;
   std::string authentication_token;
-  mojom::AccountState expected_state;
+  mojom::AccountStatePtr expected_state;
 };
 
-}  // namespace
+const GetAccountStateTestCase* LoggedOut() {
+  static const base::NoDestructor<GetAccountStateTestCase> kLoggedOut(
+      {.test_name = "LoggedOut",
+       .verification_token = "",
+       .authentication_token = "",
+       .expected_state =
+           mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New())});
+  return kLoggedOut.get();
+}
+
+const GetAccountStateTestCase* Verification() {
+  static const base::NoDestructor<GetAccountStateTestCase> kVerification(
+      {.test_name = "Verification",
+       .verification_token = "verification_token",
+       .authentication_token = "",
+       .expected_state = mojom::AccountState::NewVerification(
+           mojom::VerificationState::New())});
+  return kVerification.get();
+}
+
+const GetAccountStateTestCase* LoggedIn() {
+  static const base::NoDestructor<GetAccountStateTestCase> kLoggedIn(
+      {.test_name = "LoggedIn",
+       .verification_token = "",
+       .authentication_token = "authentication_token",
+       .expected_state = mojom::AccountState::NewLoggedIn(
+           mojom::LoggedInState::New("email"))});
+  return kLoggedIn.get();
+}
+
+const GetAccountStateTestCase* LoggedInTakesPrecedenceOverVerification() {
+  static const base::NoDestructor<GetAccountStateTestCase>
+      kLoggedInTakesPrecedenceOverVerification(
+          {.test_name = "LoggedInTakesPrecedenceOverVerification",
+           .verification_token = "verification_token",
+           .authentication_token = "authentication_token",
+           .expected_state = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email"))});
+  return kLoggedInTakesPrecedenceOverVerification.get();
+}
 
 using BraveAccountRowHandlerGetAccountStateTest =
     BraveAccountRowHandlerTest<GetAccountStateTestCase>;
 
+}  // namespace
+
 TEST_P(BraveAccountRowHandlerGetAccountStateTest, GetAccountState) {
-  const auto& test_case = GetParam();
+  const auto& test_case = CHECK_DEREF(GetParam());
 
   if (!test_case.verification_token.empty()) {
     prefs().SetString(prefs::kBraveAccountVerificationToken,
@@ -106,13 +148,14 @@ TEST_P(BraveAccountRowHandlerGetAccountStateTest, GetAccountState) {
   }
 
   if (!test_case.authentication_token.empty()) {
+    prefs().SetString(prefs::kBraveAccountEmailAddress, "email");
     prefs().SetString(prefs::kBraveAccountAuthenticationToken,
                       test_case.authentication_token);
   }
 
   CreateHandler();
 
-  base::test::TestFuture<mojom::AccountState> future;
+  base::test::TestFuture<mojom::AccountStatePtr> future;
   row_handler()->GetAccountState(future.GetCallback());
   EXPECT_EQ(future.Get(), test_case.expected_state);
 }
@@ -120,49 +163,104 @@ TEST_P(BraveAccountRowHandlerGetAccountStateTest, GetAccountState) {
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountRowHandlerTest,
     BraveAccountRowHandlerGetAccountStateTest,
-    testing::Values(
-        GetAccountStateTestCase{"LoggedOut", "", "",
-                                mojom::AccountState::kLoggedOut},
-        GetAccountStateTestCase{"Verification", "verification_token", "",
-                                mojom::AccountState::kVerification},
-        GetAccountStateTestCase{"LoggedIn", "", "authentication_token",
-                                mojom::AccountState::kLoggedIn},
-        GetAccountStateTestCase{"LoggedInTakesPrecedenceOverVerification",
-                                "verification_token", "authentication_token",
-                                mojom::AccountState::kLoggedIn}),
+    testing::Values(LoggedOut(),
+                    Verification(),
+                    LoggedIn(),
+                    LoggedInTakesPrecedenceOverVerification()),
     BraveAccountRowHandlerGetAccountStateTest::kNameGenerator);
 
 namespace {
 
 enum class StateAction {
-  kSetVerificationToken,
-  kSetAuthenticationToken,
-  kClearAuthenticationToken,
+  kSwitchToVerification,
+  kSwitchToLoggedIn,
+  kSwitchToLoggedOut,
+  kUpdateEmailAddress,
 };
+
+MATCHER_P(AccountStateEq, expected, "") {
+  // calls mojo::StructPtr<>::Equals()
+  return arg == expected.get();
+}
 
 struct OnPrefChangedTestCase {
   std::string test_name;
-  mojom::AccountState from;
+  mojom::AccountStatePtr from;
   StateAction action;
-  mojom::AccountState to;
+  mojom::AccountStatePtr to;
 };
 
-}  // namespace
+const OnPrefChangedTestCase* LoggedOutToVerification() {
+  static const base::NoDestructor<OnPrefChangedTestCase>
+      kLoggedOutToVerification({.test_name = "LoggedOutToVerification",
+                                .from = mojom::AccountState::NewLoggedOut(
+                                    mojom::LoggedOutState::New()),
+                                .action = StateAction::kSwitchToVerification,
+                                .to = mojom::AccountState::NewVerification(
+                                    mojom::VerificationState::New())});
+  return kLoggedOutToVerification.get();
+}
+
+const OnPrefChangedTestCase* VerificationToLoggedIn() {
+  static const base::NoDestructor<OnPrefChangedTestCase>
+      kVerificationToLoggedIn({.test_name = "VerificationToLoggedIn",
+                               .from = mojom::AccountState::NewVerification(
+                                   mojom::VerificationState::New()),
+                               .action = StateAction::kSwitchToLoggedIn,
+                               .to = mojom::AccountState::NewLoggedIn(
+                                   mojom::LoggedInState::New("email"))});
+  return kVerificationToLoggedIn.get();
+}
+
+const OnPrefChangedTestCase* LoggedInToLoggedOut() {
+  static const base::NoDestructor<OnPrefChangedTestCase> kLoggedInToLoggedOut(
+      {.test_name = "LoggedInToLoggedOut",
+       .from =
+           mojom::AccountState::NewLoggedIn(mojom::LoggedInState::New("email")),
+       .action = StateAction::kSwitchToLoggedOut,
+       .to = mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New())});
+  return kLoggedInToLoggedOut.get();
+}
+
+const OnPrefChangedTestCase* LoggedOutToLoggedIn() {
+  static const base::NoDestructor<OnPrefChangedTestCase> kLoggedOutToLoggedIn(
+      {.test_name = "LoggedOutToLoggedIn",
+       .from = mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New()),
+       .action = StateAction::kSwitchToLoggedIn,
+       .to = mojom::AccountState::NewLoggedIn(
+           mojom::LoggedInState::New("email"))});
+  return kLoggedOutToLoggedIn.get();
+}
+
+const OnPrefChangedTestCase* LoggedInToLoggedInEmailChange() {
+  static const base::NoDestructor<OnPrefChangedTestCase>
+      kLoggedInToLoggedInEmailChange(
+          {.test_name = "LoggedInToLoggedInEmailChange",
+           .from = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email")),
+           .action = StateAction::kUpdateEmailAddress,
+           .to = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("new_email"))});
+  return kLoggedInToLoggedInEmailChange.get();
+}
 
 using BraveAccountRowHandlerOnPrefChangedTest =
     BraveAccountRowHandlerTest<OnPrefChangedTestCase>;
 
-TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
-  const auto& test_case = GetParam();
+}  // namespace
 
-  switch (test_case.from) {
-    case mojom::AccountState::kLoggedOut:
+TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
+  const auto& test_case = CHECK_DEREF(GetParam());
+
+  switch (test_case.from->which()) {
+    case mojom::AccountState::Tag::kLoggedOut:
       break;
-    case mojom::AccountState::kVerification:
+    case mojom::AccountState::Tag::kVerification:
       prefs().SetString(prefs::kBraveAccountVerificationToken,
                         "verification_token");
       break;
-    case mojom::AccountState::kLoggedIn:
+    case mojom::AccountState::Tag::kLoggedIn:
+      prefs().SetString(prefs::kBraveAccountEmailAddress, "email");
       prefs().SetString(prefs::kBraveAccountAuthenticationToken,
                         "authentication_token");
       break;
@@ -170,19 +268,34 @@ TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
 
   CreateHandler();
 
-  EXPECT_CALL(row_client(), UpdateState(test_case.to)).Times(1);
+  // When switching to LoggedIn, the email is set first,
+  // which triggers OnPrefChanged() but does not change the state
+  // — the auth token update is what actually does.
+  if (test_case.action == StateAction::kSwitchToLoggedIn) {
+    EXPECT_CALL(row_client(),
+                UpdateState(AccountStateEq(testing::ByRef(test_case.from))))
+        .Times(1);
+  }
+
+  EXPECT_CALL(row_client(),
+              UpdateState(AccountStateEq(testing::ByRef(test_case.to))))
+      .Times(1);
 
   switch (test_case.action) {
-    case StateAction::kSetVerificationToken:
+    case StateAction::kSwitchToVerification:
       prefs().SetString(prefs::kBraveAccountVerificationToken,
                         "verification_token");
       break;
-    case StateAction::kSetAuthenticationToken:
+    case StateAction::kSwitchToLoggedIn:
+      prefs().SetString(prefs::kBraveAccountEmailAddress, "email");
       prefs().SetString(prefs::kBraveAccountAuthenticationToken,
                         "authentication_token");
       break;
-    case StateAction::kClearAuthenticationToken:
+    case StateAction::kSwitchToLoggedOut:
       prefs().ClearPref(prefs::kBraveAccountAuthenticationToken);
+      break;
+    case StateAction::kUpdateEmailAddress:
+      prefs().SetString(prefs::kBraveAccountEmailAddress, "new_email");
       break;
   }
 
@@ -192,22 +305,11 @@ TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountRowHandlerTest,
     BraveAccountRowHandlerOnPrefChangedTest,
-    testing::Values(OnPrefChangedTestCase{"LoggedOutToVerification",
-                                          mojom::AccountState::kLoggedOut,
-                                          StateAction::kSetVerificationToken,
-                                          mojom::AccountState::kVerification},
-                    OnPrefChangedTestCase{"VerificationToLoggedIn",
-                                          mojom::AccountState::kVerification,
-                                          StateAction::kSetAuthenticationToken,
-                                          mojom::AccountState::kLoggedIn},
-                    OnPrefChangedTestCase{
-                        "LoggedInToLoggedOut", mojom::AccountState::kLoggedIn,
-                        StateAction::kClearAuthenticationToken,
-                        mojom::AccountState::kLoggedOut},
-                    OnPrefChangedTestCase{"LoggedOutToLoggedIn",
-                                          mojom::AccountState::kLoggedOut,
-                                          StateAction::kSetAuthenticationToken,
-                                          mojom::AccountState::kLoggedIn}),
+    testing::Values(LoggedOutToVerification(),
+                    VerificationToLoggedIn(),
+                    LoggedInToLoggedOut(),
+                    LoggedOutToLoggedIn(),
+                    LoggedInToLoggedInEmailChange()),
     BraveAccountRowHandlerOnPrefChangedTest::kNameGenerator);
 
 }  // namespace brave_account
