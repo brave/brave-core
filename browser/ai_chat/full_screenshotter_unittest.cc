@@ -193,11 +193,6 @@ class MockPaintPreviewCompositorService
         base::OnTaskRunnerDeleter(task_runner_));
   }
 
-  void OnMemoryPressure(
-      base::MemoryPressureLevel memory_pressure_level) override {
-    // no-op.
-  }
-
   bool HasActiveClients() const override { NOTREACHED(); }
 
   void SetDisconnectHandler(base::OnceClosure disconnect_handler) override {
