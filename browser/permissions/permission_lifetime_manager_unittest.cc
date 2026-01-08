@@ -34,6 +34,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 using content_settings::WebsiteSettingsInfo;
 using content_settings::WebsiteSettingsRegistry;
 using testing::_;
@@ -378,6 +382,13 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
 }
 
 TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
@@ -488,6 +499,13 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
 }
 
 TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
