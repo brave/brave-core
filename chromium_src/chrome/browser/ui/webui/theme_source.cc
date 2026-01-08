@@ -4,14 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Unlike Chromium we also load the ThemeSource in the system profile, where the
-// ThemeService is |nullptr|. We add an empty `if (!theme_service)` and put the
-// rest of the if block from upstream in the else block so it doesn't get
-// executed when the ThemeService doesn't exist.
-#define BRAVE_THEME_SOURCE_CHECK_THEME_SERVICE_EXISTS \
-  if (!theme_service) {                               \
-    CHECK(profile_->IsSystemProfile());               \
-  } else  // NOLINT(readability/braces)
+// ThemeService is |nullptr|.
+#define BRAVE_THEME_SOURCE_SEND_COLORS_CSS \
+  if (!theme_service) {                    \
+    CHECK(profile_->IsSystemProfile());    \
+    std::move(callback).Run(nullptr);      \
+    return;                                \
+  }
 
 #include <chrome/browser/ui/webui/theme_source.cc>
 
-#undef BRAVE_THEME_SOURCE_CHECK_THEME_SERVICE_EXISTS
+#undef BRAVE_THEME_SOURCE_SEND_COLORS_CSS

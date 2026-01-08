@@ -1849,6 +1849,7 @@
 -LensOverlayControllerBrowserFullscreenDisabled.*
 -LensOverlayControllerBrowserWithPixelsTest.*
 -LensOverlayControllerContextualFeaturesDisabledTest.*
+-LensOverlayControllerContextualTasksBrowserTest.*
 -LensOverlayControllerInnerHtmlEnabledSmallByteLimitTest.*
 -LensOverlayControllerInnerHtmlEnabledTest.*
 -LensOverlayControllerInnerHtmlWithInnerTextAndApc.*
@@ -2503,6 +2504,7 @@
 -ThirdPartyNTPBrowserTest.*
 
 # These tests fail because we disable kAimEnabled.
+-All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/*
 -ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
 -ChromeAimEligibilityServiceCacheBrowserTest.RequestFromCache
 -ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
@@ -2709,6 +2711,7 @@
 -ChromeRenderProcessHostTest.*
 -ChromeRenderProcessHostTestWithCommandLine.*
 -ChromeSignInWebViewTest.ClosingChromeSignInShouldNotCrash/InnerWebContents
+-ChromeSignInWebViewTest.DeclarativeNetRequestRulesNotMatched/InnerWebContents
 -ChromeSignInWebViewTest.NoFindInPageForUnattachedGuest/InnerWebContents
 -ChromeSignInWebViewTest.TestWebRequestOnlyDispatchToEmbedder/InnerWebContents
 -ChromeSitePerProcessTest.*
@@ -3114,6 +3117,8 @@
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CreateLocalProfile
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CreateLocalProfile.*
+-ProfilePickerOpenAllProfilesButtonExperimentBrowserTest.OpenAllProfilesAfterSimulatingButtonClick
+-ProfilePickerWithReducedFrictionRemoveSigninBrowserTest.CreateLocalProfileWithoutSigninStep
 -ProfilePickerWithReducedFrictionSkipCustomizationBrowserTest.CreateLocalProfileWithoutCustomizationStep
 -ProfileSigninConfirmationHelperBrowserTest.*
 -ProfileThemeUpdateServiceBrowserTest.*

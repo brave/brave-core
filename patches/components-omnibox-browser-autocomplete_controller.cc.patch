@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 93eb1dc6353f8be7bf3aa1166d912846967ceebe..cfbe41e275b14502242c09500a5352d3d79d1194 100644
+index e86e0c580ca927227b550c80679aa115022b0783..f844bdaf688494c5f5ece3b9d76c9b9942e5ec67 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -1248,6 +1248,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
+@@ -1249,6 +1249,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
          base::MakeRefCounted<SearchProvider>(provider_client_.get(), this);
      search_provider_ = search_provider.get();
      providers_.push_back(std::move(search_provider));
@@ -10,11 +10,11 @@ index 93eb1dc6353f8be7bf3aa1166d912846967ceebe..cfbe41e275b14502242c09500a5352d3
    }
    // Providers run in the order they're added.  Add `HistoryURLProvider` after
    // `SearchProvider` because:
-@@ -1520,6 +1521,7 @@ void AutocompleteController::UpdateResult(UpdateType update_type,
+@@ -1521,6 +1522,7 @@ void AutocompleteController::UpdateResult(UpdateType update_type,
      StartStopTimer();
    }
  
 +  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
    PostProcessMatches();
  
-   bool default_match_changed = CheckWhetherDefaultMatchChanged(
+   const bool is_lens_enabled = autocomplete_provider_client()->IsLensEnabled();
