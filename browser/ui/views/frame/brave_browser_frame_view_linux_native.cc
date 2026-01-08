@@ -68,10 +68,10 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   // In order to lay out window caption buttons over toolbar, we should set
   // height as tall as button's on toolbar
   DrawFrameButtonParams params{
-      .top_area_height = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT) +
-                         GetLayoutInsets(TOOLBAR_BUTTON).height() +
-                         GetTopAreaHeight() -
-                         layout()->FrameEdgeInsets(!IsMaximized()).top(),
+      .top_area_height =
+          GetLayoutConstant(LayoutConstant::kToolbarButtonHeight) +
+          GetLayoutInsets(TOOLBAR_BUTTON).height() + GetTopAreaHeight() -
+          layout()->FrameEdgeInsets(!IsMaximized()).top(),
       .maximized = IsMaximized(),
       .active = ShouldPaintAsActive()};
 
