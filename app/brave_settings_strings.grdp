@@ -180,6 +180,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_ALWAYS_HIDE_TAB_CLOSE_BUTTON" desc="The label for always hiding tab close button" formatter_data="webui=BraveSettings">
     Always hide tab close button
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_MIDDLE_CLICK_CLOSE_TAB" desc="The label for allowing middle button click to close tabs" formatter_data="webui=BraveSettings">
+    Allow middle button click to close tabs
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
     Auto expand on hover when minimized
   </message>

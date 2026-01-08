@@ -348,6 +348,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kAlwaysHideTabCloseButton] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kMiddleClickCloseTabEnabled] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(IS_WIN)
