@@ -73,6 +73,7 @@ source_set("ui") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser/contextual_search",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/ui:browser_navigator_params_headers",
