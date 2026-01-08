@@ -28,6 +28,7 @@
 
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
 #define GetTabStripVisible virtual GetTabStripVisible
+#define FullscreenStateChanged virtual FullscreenStateChanged
 
 #define GetTabSearchBubbleHost     \
   GetTabSearchBubbleHost_Unused(); \
@@ -57,6 +58,7 @@
 #endif
 
 #undef GetTabSearchBubbleHost
+#undef FullscreenStateChanged
 #undef GetTabStripVisible
 #undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
