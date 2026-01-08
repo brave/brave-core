@@ -34,8 +34,9 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // Ensure that the new tab button is positioned after the last tab, with the
     // correct amount of padding.
     if (new_tab_button_) {
-      new_tab_button_->SetX(tab_strip_container_->bounds().right() +
-                            GetLayoutConstant(TAB_STRIP_PADDING));
+      new_tab_button_->SetX(
+          tab_strip_container_->bounds().right() +
+          GetLayoutConstant(LayoutConstant::kTabStripPadding));
     }
     return;
   }
