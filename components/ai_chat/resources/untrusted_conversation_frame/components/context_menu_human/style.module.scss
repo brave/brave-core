@@ -15,8 +15,16 @@
   }
 }
 
+.buttonMenuMobile {
+  margin-top: 0;
+}
+
 .moreButton {
   color: var(--leo-color-icon-secondary);
+}
+
+.moreButtonMobile {
+  --leo-button-padding: var(--leo-spacing-l);
 }
 
 .moreButtonActive {
