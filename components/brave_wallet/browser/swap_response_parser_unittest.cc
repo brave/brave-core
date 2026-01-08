@@ -2799,6 +2799,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
           "depositAddress": null,
           "depositMemo": null,
           "expiresAt": null,
+          "slippagePercentage": "0.5",
           "transactionParams": null,
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
@@ -2909,6 +2910,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
           "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": {
               "chain": {
@@ -3022,6 +3024,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
           "depositAddress": "DepositAddress123",
           "depositMemo": null,
           "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": null,
             "solana": {
@@ -3129,6 +3132,7 @@ TEST(SwapResponseParserUnitTest,
           "depositAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "depositMemo": null,
           "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": null,
             "solana": null,
@@ -3217,6 +3221,7 @@ TEST(SwapResponseParserUnitTest,
           "depositAddress": "addr1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "depositMemo": null,
           "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": null,
             "solana": null,
@@ -3304,6 +3309,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
           "depositAddress": "t1dJj1rGjG7GjG7GjG7GjG7GjG7GjG7GjG7G",
           "depositMemo": null,
           "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": null,
             "solana": null,

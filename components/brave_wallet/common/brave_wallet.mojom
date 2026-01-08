@@ -727,6 +727,8 @@ struct Gate3SwapRoute {
   // Quote expiration time (Unix timestamp in seconds); may be unset.
   string? expires_at;
 
+  string slippage_percentage;
+
   Gate3SwapTransactionParamsUnion? transaction_params;
 
   bool has_post_submit_hook;

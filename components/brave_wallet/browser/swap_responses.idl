@@ -488,6 +488,7 @@ namespace swap_responses {
     any depositAddress;
     any depositMemo;
     any expiresAt;
+    DOMString slippagePercentage;
 
     // Nullable union field of the following structs:
     //  - Gate3SwapEvmTransactionParams

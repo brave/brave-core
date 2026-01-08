@@ -1481,6 +1481,7 @@ mojom::Gate3SwapRoutePtr ParseRoute(
   result->deposit_address = ParseNullableString(value.deposit_address);
   result->deposit_memo = ParseNullableString(value.deposit_memo);
   result->expires_at = ParseNullableString(value.expires_at);
+  result->slippage_percentage = value.slippage_percentage;
 
   if (!value.transaction_params.is_none()) {
     auto transaction_params = ParseTransactionParams(value.transaction_params);

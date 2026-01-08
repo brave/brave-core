@@ -2012,6 +2012,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
           "depositAddress": null,
           "depositMemo": null,
           "expiresAt": null,
+          "slippagePercentage": "0.5",
           "transactionParams": null,
           "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
@@ -2111,6 +2112,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
           "expiresAt": "2025-12-30T11:26:07.371000Z",
+          "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": {
               "chain": {
