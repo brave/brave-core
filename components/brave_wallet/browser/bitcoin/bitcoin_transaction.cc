@@ -279,14 +279,6 @@ void BitcoinTransaction::TxInputGroup::AddInput(
   inputs_.push_back(std::move(input));
 }
 
-void BitcoinTransaction::TxInputGroup::AddInputs(
-    std::vector<BitcoinTransaction::TxInput> inputs) {
-  for (auto& input : inputs_) {
-    total_amount_ += input.utxo_value;
-    inputs_.push_back(std::move(input));
-  }
-}
-
 BitcoinTransaction::TxOutput::TxOutput() = default;
 BitcoinTransaction::TxOutput::~TxOutput() = default;
 BitcoinTransaction::TxOutput::TxOutput(
