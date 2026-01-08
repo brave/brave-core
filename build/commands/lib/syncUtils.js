@@ -43,20 +43,10 @@ function writeGclientConfig(
         name: 'src',
         url: config.chromiumRepo,
         custom_deps: {
-          // wasm_corpus has around 50k files, not used in the build.
-          'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
-          // chromium-variations .git takes ~4 GB, not used in the build.
-          'src/third_party/chromium-variations': null,
-          ...config.gclientCustomDeps,
+          ...config.chromiumCustomDeps,
         },
         custom_vars: {
-          'checkout_clang_coverage_tools': true,
-          'checkout_pgo_profiles': config.isBraveReleaseBuild(),
-          'download_reclient': true,
-          'reapi_address': config.reapiAddress,
-          'reapi_backend_config_path': config.reapiBackendConfigPath,
-          'reapi_instance': config.reapiInstance,
-          ...config.gclientCustomVars,
+          ...config.chromiumCustomVars,
         },
       },
     ],
@@ -81,17 +71,21 @@ function writeGclientConfig(
   let out = `# Auto-updated on each sync.
 #
 # Customize via brave/.env:
-#   - gclient_custom_deps: Override src solution's custom_deps (JSON object)
-#       Example: gclient_custom_deps={"src/third_party/some_dep": null}
-#   - gclient_custom_vars: Override src solution's custom_vars (JSON object)
-#       Example: gclient_custom_vars={"checkout_clangd": true}
-#   - gclient_global_vars: Override top-level .gclient variables (JSON object)
+#   - projects_chrome_custom_deps: Override chromium solution's custom_deps
+#       Example: projects_chrome_custom_deps={"src/third_party/some_dep": null}
+#   - projects_chrome_custom_vars: Override chromium solution's custom_vars
+#       Example: projects_chrome_custom_vars={"checkout_clangd": true}
+#   - gclient_global_vars: Override top-level .gclient variables
 #       Example: gclient_global_vars={"delete_unversioned_trees": true}
 #
-# Multiline values in brave/.env can be defined using single quotes:
-#   gclient_custom_vars='{
-#     "checkout_clangd": true,
-#     "checkout_clang_tidy": true
+# Key prefixes can be used to override specific values:
+#   projects_chrome_custom_vars_checkout_clangd=true
+#   gclient_global_vars_delete_unversioned_trees=true
+#
+# Multiline values can be defined using single quotes:
+#   projects_chrome_custom_vars='{
+#     "checkout_clang_tidy": true,
+#     "checkout_clangd": true
 #   }'
 #
 # Note: target_os and target_cpu persist unless set via CLI.

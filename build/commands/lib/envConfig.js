@@ -97,6 +97,33 @@ class EnvConfig {
   }
 
   /**
+   * Returns a merged object from .env files and package.json.
+   *
+   * @param {string[]} keyPath - Array of keys forming the path to the config
+   * value (e.g., ['projects', 'chrome', 'custom_deps'])
+   * @returns {Record<string, any>} The merged object
+   */
+  getMergedObject(keyPath) {
+    assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
+    const keyJoined = keyPath.join('_')
+
+    const dotenvConfigValue = this.#getDotenvConfig(keyJoined, 'Object') || {}
+    const packageConfigValue = this.#getPackageConfig(keyPath, 'Object') || {}
+
+    const mergedObject = { ...packageConfigValue, ...dotenvConfigValue }
+
+    for (const [key, value] of Object.entries(this.#dotenvConfig)) {
+      const keyPrefix = `${keyJoined}_`
+      if (key.startsWith(keyPrefix)) {
+        mergedObject[key.replace(keyPrefix, '')] =
+          EnvConfig.#parseJsonOrKeepString(value)
+      }
+    }
+
+    return mergedObject
+  }
+
+  /**
    * Returns the package version from package.json.
    *
    * @returns {string} The package version
@@ -146,11 +173,7 @@ class EnvConfig {
 
     // Parse as JSON or return a string if no default value is provided.
     if (expectedValueType === 'Undefined') {
-      try {
-        return JSON.parse(dotenvConfigValue)
-      } catch (e) {
-        return dotenvConfigValue
-      }
+      return EnvConfig.#parseJsonOrKeepString(dotenvConfigValue)
     }
 
     // Use the value as is if the expected value type is a string.
@@ -343,6 +366,22 @@ class EnvConfig {
     )
 
     return typeName
+  }
+
+  /**
+   * Parses a value as JSON or returns it as a string if it is not
+   * JSON-parseable.
+   *
+   * @param {*} value - The value to parse
+   * @returns {*} The parsed value or the original value if it is not
+   * JSON-parseable
+   */
+  static #parseJsonOrKeepString(value) {
+    try {
+      return JSON.parse(value)
+    } catch (e) {
+      return value
+    }
   }
 }
 
