@@ -311,4 +311,13 @@
   <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_SITE_INFO_LINK" desc="Link text for Site Info tab on Page Info bubble">
     Site Info
   </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_TEXT" desc="Text for the IPH bubble shown when Brave Shields has moved to Page Info.">
+    Brave Shields has a new home and design. It now integrates with site information for a one-stop experience.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_SCREENREADER_TEXT" desc="Screen reader text for the Brave Shields Page Info IPH bubble.">
+    Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.
+  </message>
+
 </grit-part>

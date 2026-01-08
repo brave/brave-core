@@ -694,6 +694,12 @@
 # These tests fail because we don't show the history sync promo
 -BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/SignedIn
 
+# These tests fail because we add IPH features but do not add associated UMA
+# histogram/actions XML entries (which are not needed for Brave since we don't
+# use Google's UMA for IPH metrics).
+-BrowserUserEducationServiceTest.CheckFeaturePromoActions
+-BrowserUserEducationServiceTest.CheckFeaturePromoHistograms
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata

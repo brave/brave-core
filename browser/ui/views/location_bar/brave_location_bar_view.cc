@@ -145,8 +145,7 @@ void BraveLocationBarView::Init() {
 
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     shields_page_info_controller_ =
-        std::make_unique<BraveShieldsPageInfoController>(
-            browser_->GetTabStripModel(), location_icon_view());
+        std::make_unique<BraveShieldsPageInfoController>(location_icon_view());
   }
 
   // brave action buttons
@@ -197,6 +196,10 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_news_action_icon_view_->Update();
   }
 #endif
+
+  if (shields_page_info_controller_) {
+    shields_page_info_controller_->UpdateWebContents(contents);
+  }
 
   LocationBarView::Update(contents);
 }
