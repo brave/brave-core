@@ -53,6 +53,10 @@
 #include "ui/base/clipboard/test/test_clipboard.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 // BraveSearchProviderTest -----------------------------------------------------
 
 namespace {
@@ -289,6 +293,13 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
 TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   struct {
     std::string input;
     const bool expect_to_send_to_default_provider;
