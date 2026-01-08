@@ -1225,6 +1225,8 @@ int BraveTabContainer::GetMaxScrollOffset() const {
     visible_height -=
         tabs_view_model_.ideal_bounds(pinned_tab_count - 1).bottom();
     visible_height -= tabs::kMarginForVerticalTabContainers;
+    visible_height -= tabs::kPinnedUnpinnedSeparatorHeight;
+    visible_height -= tabs::kMarginForVerticalTabContainers;
   }
 
   return std::max(0, total_height - visible_height);
