@@ -33,6 +33,11 @@ std::optional<std::string> EncodeTransactionParams(
 }  // namespace squid
 
 namespace gate3 {
+// Encode swap quote parameters into JSON format for Gate3 API quote requests.
+// Return the encoded JSON string on success, or std::nullopt if encoding
+// fails.
+//
+// See https://gate3.bsg.brave.com/docs for the underlying request format.
 std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
 }  // namespace gate3
 
