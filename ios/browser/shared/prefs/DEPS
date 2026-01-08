@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/ai_chat/core",
   "+brave/components/brave_account",
   "+brave/components/brave_ads/core/public",
+  "+brave/components/brave_origin",
   "+brave/components/brave_news/common",
   "+brave/components/brave_rewards/core",
   "+brave/components/brave_shields/core/browser",
