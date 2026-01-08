@@ -162,7 +162,8 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   }
 
   TabStrip* tab_strip() {
-    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
   BraveBrowserView* brave_browser_view() const {
@@ -520,7 +521,8 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   }
 
   TabStrip* tab_strip() {
-    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
  private:
