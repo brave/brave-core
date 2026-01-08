@@ -362,6 +362,49 @@ class PlasterTest(unittest.TestCase):
                   test_file_chromium).read_text()
         self.assertEqual(result, 'Content with CHROMIUM and Brave words.')
 
+    def test_invalid_regex_fails(self):
+        """Test that invalid regex patterns cause sys.exit(1) with error output."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_invalid_regex.idl')
+
+        # Write and commit file
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_invalid_regex.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Test various invalid regex patterns
+        invalid_patterns = [
+            '[',  # Unclosed bracket
+            '(?P<',  # Incomplete named group
+            '(?P<name',  # Incomplete named group
+            '*',  # Nothing to repeat
+            '(?',  # Incomplete group
+        ]
+
+        for invalid_pattern in invalid_patterns:
+            with self.subTest(pattern=invalid_pattern):
+                # Create a PlasterFile with invalid regex
+                plaster_path = plaster.PLASTER_FILES_PATH / (
+                    str(test_file_chromium) + '.toml')
+                plaster_path.parent.mkdir(parents=True, exist_ok=True)
+                plaster_path.write_text(f'''
+                  [[substitution]]
+                  description = 'Test invalid regex rejection'
+                  re_pattern = '{invalid_pattern}'
+                  replace = 'Brave'
+                ''')
+
+                plaster_file = plaster.PlasterFile(plaster_path)
+                stderr = io.StringIO()
+                with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
+                    plaster_file.apply()
+                    mock_exit.assert_called_once_with(1)
+                    output = stderr.getvalue()
+                    self.assertIn('Invalid regex', output)
+                    self.assertIn(str(plaster_path), output)
+
     def test_pattern_validation_failures(self):
         """Test various pattern validation failures."""
         test_file_chromium = Path(
@@ -536,7 +579,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result2, 'Text with {braces} and (parentheses).')
 
     def test_count_mismatch_fails(self):
-        """Test that count mismatch raises ValueError."""
+        """Test that count mismatch causes sys.exit(1) with error output."""
         # Test case: more matches than expected
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_file1.idl')
@@ -562,12 +605,13 @@ class PlasterTest(unittest.TestCase):
 
         # Should fail because there are 3 matches but count expects 2
         plaster_file = plaster.PlasterFile(plaster_path)
-        with self.assertRaises(ValueError) as context:
+        stderr = io.StringIO()
+        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
             plaster_file.apply()
-
-        self.assertIn('Unexpected number of matches (3 vs 2)',
-                      str(context.exception))
-        self.assertIn(str(test_file_chromium), str(context.exception))
+            mock_exit.assert_called_once_with(1)
+            output = stderr.getvalue()
+            self.assertIn('Unexpected number of matches (3 vs 2)', output)
+            self.assertIn(str(plaster_path), output)
 
     def test_default_count(self):
         """Test default count=1 behavior."""
@@ -621,12 +665,13 @@ class PlasterTest(unittest.TestCase):
 
         # Should fail because there are 2 matches but default expects 1
         plaster_file_incorrect = plaster.PlasterFile(plaster_path_incorrect)
-        with self.assertRaises(ValueError) as context:
+        stderr = io.StringIO()
+        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
             plaster_file_incorrect.apply()
-
-        self.assertIn('Unexpected number of matches (2 vs 1)',
-                      str(context.exception))
-        self.assertIn(str(test_file_incorrect), str(context.exception))
+            mock_exit.assert_called_once_with(1)
+            output = stderr.getvalue()
+            self.assertIn('Unexpected number of matches (2 vs 1)', output)
+            self.assertIn(str(plaster_path_incorrect), output)
 
     def test_count_zero_replaces_all(self):
         """
