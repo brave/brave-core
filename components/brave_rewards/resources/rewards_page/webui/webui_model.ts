@@ -16,7 +16,7 @@ import {
 import { AppModel, defaultModel } from '../lib/app_model'
 import { AppState, Notification, defaultState } from '../lib/app_state'
 import { RewardsPageProxy } from './rewards_page_proxy'
-import { createStateManager } from '../../shared/lib/state_manager'
+import { createStateStore } from '$web-common/state_store'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
 import { optional } from '../../shared/lib/optional'
 import * as mojom from './mojom'
@@ -63,15 +63,15 @@ function isValidWeb3URL(url: string) {
 }
 
 function createModelForUnsupportedRegion(): AppModel {
-  const stateManager = createStateManager<AppState>(defaultState())
-  stateManager.update({
+  const store = createStateStore<AppState>(defaultState())
+  store.update({
     loading: false,
     isUnsupportedRegion: true,
   })
   return {
     ...defaultModel(),
-    getState: stateManager.getState,
-    addListener: stateManager.addListener,
+    getState: store.getState,
+    addListener: store.addListener,
     openTab,
     getString(key) {
       return loadTimeData.getString(key)
@@ -88,7 +88,7 @@ export function createModel(): AppModel {
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
   const adsHistoryAdapter = createAdsHistoryAdapter()
-  const stateManager = createStateManager<AppState>(defaultState())
+  const store = createStateStore<AppState>(defaultState())
   const platform = normalizePlatform(loadTimeData.getString('platform'))
   const creatorParam = searchParams.get('creator') ?? ''
   const isAutoResizeBubble = loadTimeData.getBoolean('isAutoResizeBubble')
@@ -97,10 +97,10 @@ export function createModel(): AppModel {
 
   // Expose the state manager for devtools diagnostic purposes.
   Object.assign(self, {
-    [Symbol.for('stateManager')]: stateManager,
+    [Symbol.for('store')]: store,
   })
 
-  stateManager.update({
+  store.update({
     embedder: {
       isBubble,
       isAutoResizeBubble,
@@ -113,17 +113,17 @@ export function createModel(): AppModel {
 
   async function updatePaymentId() {
     const { paymentId } = await pageHandler.getRewardsPaymentId()
-    stateManager.update({ paymentId })
+    store.update({ paymentId })
   }
 
   async function updateCountryCode() {
     const { countryCode } = await pageHandler.getCountryCode()
-    stateManager.update({ countryCode })
+    store.update({ countryCode })
   }
 
   async function updateExternalWallet() {
     const { externalWallet } = await pageHandler.getExternalWallet()
-    stateManager.update({
+    store.update({
       externalWallet: externalWalletFromExtensionData(externalWallet),
     })
   }
@@ -137,12 +137,12 @@ export function createModel(): AppModel {
         providers.push(provider)
       }
     }
-    stateManager.update({ externalWalletProviders: providers })
+    store.update({ externalWalletProviders: providers })
   }
 
   async function updateBalance() {
     const { balance } = await pageHandler.getAvailableBalance()
-    stateManager.update({
+    store.update({
       balance: typeof balance === 'number' ? optional(balance) : optional(),
     })
   }
@@ -150,7 +150,7 @@ export function createModel(): AppModel {
   async function updateTosUpdateRequired() {
     const { updateRequired } =
       await pageHandler.getTermsOfServiceUpdateRequired()
-    stateManager.update({ tosUpdateRequired: updateRequired })
+    store.update({ tosUpdateRequired: updateRequired })
   }
 
   async function updateSelfCustodyProviderInvites() {
@@ -164,13 +164,13 @@ export function createModel(): AppModel {
       }
     }
 
-    stateManager.update({ selfCustodyProviderInvites })
+    store.update({ selfCustodyProviderInvites })
   }
 
   async function updateSelfCustodyInviteDismissed() {
     const { inviteDismissed } =
       await pageHandler.getSelfCustodyInviteDismissed()
-    stateManager.update({ selfCustodyInviteDismissed: inviteDismissed })
+    store.update({ selfCustodyInviteDismissed: inviteDismissed })
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/42702): Remove this
@@ -190,7 +190,7 @@ export function createModel(): AppModel {
 
     if (statement && settings) {
       const { adTypeSummaryThisMonth } = statement
-      stateManager.update({
+      store.update({
         adsInfo: {
           browserUpgradeRequired: settings.browserUpgradeRequired,
           isSupportedRegion: settings.isSupportedRegion,
@@ -213,18 +213,18 @@ export function createModel(): AppModel {
         },
       })
     } else {
-      stateManager.update({ adsInfo: null })
+      store.update({ adsInfo: null })
     }
   }
 
   async function updateRewardsParameters() {
     const { rewardsParameters } = await pageHandler.getRewardsParameters()
-    stateManager.update({ rewardsParameters })
+    store.update({ rewardsParameters })
   }
 
   async function updateRecurringContributions() {
     const { contributions } = await pageHandler.getRecurringContributions()
-    stateManager.update({
+    store.update({
       recurringContributions: contributions.map((item) => ({
         site: {
           id: item.id,
@@ -256,11 +256,11 @@ export function createModel(): AppModel {
     ])
 
     if (!publisherInfo) {
-      stateManager.update({ currentCreator: null })
+      store.update({ currentCreator: null })
       return
     }
 
-    stateManager.update({
+    store.update({
       currentCreator: {
         site: {
           id: publisherInfo.id,
@@ -297,7 +297,7 @@ export function createModel(): AppModel {
       }
     }
 
-    stateManager.update({ captchaInfo })
+    store.update({ captchaInfo })
   }
 
   async function updateNotifications() {
@@ -311,12 +311,12 @@ export function createModel(): AppModel {
         await pageHandler.clearRewardsNotification(item.id)
       }
     }
-    stateManager.update({ notifications: list })
+    store.update({ notifications: list })
   }
 
   async function updateCards() {
     const { cards } = await pageHandler.fetchUICards()
-    stateManager.update({ cards: cards || null })
+    store.update({ cards: cards || null })
   }
 
   async function loadData() {
@@ -343,7 +343,7 @@ export function createModel(): AppModel {
       inBackground(updateCards()),
     ])
 
-    stateManager.update({ loading: false })
+    store.update({ loading: false })
   }
 
   browserProxy.callbackRouter.onRewardsStateUpdated.addListener(
@@ -363,9 +363,9 @@ export function createModel(): AppModel {
         return
       }
       const now = Date.now()
-      const { openTime } = stateManager.getState()
+      const { openTime } = store.getState()
       if (now - openTime > 200) {
-        stateManager.update({ openTime: now })
+        store.update({ openTime: now })
         loadData()
       }
     })
@@ -374,9 +374,9 @@ export function createModel(): AppModel {
   loadData()
 
   return {
-    getState: stateManager.getState,
+    getState: store.getState,
 
-    addListener: stateManager.addListener,
+    addListener: store.addListener,
 
     onAppRendered() {
       pageHandler.onPageReady()
@@ -487,10 +487,10 @@ export function createModel(): AppModel {
     async setAdTypeEnabled(adType, enabled) {
       // Before sending the update request to the browser, update the local app
       // state in order to avoid any jitter with nala toggles.
-      const { adsInfo } = stateManager.getState()
+      const { adsInfo } = store.getState()
       if (adsInfo) {
         adsInfo.adsEnabled[adType] = enabled
-        stateManager.update({ adsInfo })
+        store.update({ adsInfo })
       }
       await pageHandler.setAdTypeEnabled(convertAdType(adType), enabled)
     },
@@ -544,12 +544,12 @@ export function createModel(): AppModel {
 
     async acceptTermsOfServiceUpdate() {
       await pageHandler.acceptTermsOfServiceUpdate()
-      stateManager.update({ tosUpdateRequired: false })
+      store.update({ tosUpdateRequired: false })
     },
 
     async dismissSelfCustodyInvite() {
       await pageHandler.dismissSelfCustodyInvite()
-      stateManager.update({ selfCustodyInviteDismissed: true })
+      store.update({ selfCustodyInviteDismissed: true })
     },
 
     async onCaptchaResult(success) {
@@ -560,8 +560,8 @@ export function createModel(): AppModel {
     },
 
     async clearNotification(id: string) {
-      stateManager.update({
-        notifications: stateManager.getState().notifications.filter((item) => {
+      store.update({
+        notifications: store.getState().notifications.filter((item) => {
           return item.id !== id
         }),
       })
