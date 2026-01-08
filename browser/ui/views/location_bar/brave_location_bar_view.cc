@@ -308,22 +308,24 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
   if (brave_actions_ && brave_actions_->GetVisible()) {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
     const int extra_width =
-        brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+        brave_actions_min +
+        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
     min_size.Enlarge(extra_width, 0);
   }
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_ &&
       brave_news_action_icon_view_->GetVisible()) {
     const int extra_width =
-        GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding) +
         brave_news_action_icon_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_ && onion_location_view_->GetVisible()) {
-    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
-                            onion_location_view_->GetMinimumSize().width();
+    const int extra_width =
+        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding) +
+        onion_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #endif

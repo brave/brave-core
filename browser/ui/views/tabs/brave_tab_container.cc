@@ -425,7 +425,8 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
     int vertical_margin = tab1->data().pinned ? 4 : 2;
     bounding_rects.Inset(gfx::Insets::TLBR(
         vertical_margin, tabs::kHorizontalTabInset,
-        vertical_margin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+        vertical_margin +
+            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
         tabs::kHorizontalTabInset));
   }
 

@@ -94,7 +94,7 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
       : BraveIconWithBadgeImageSource(
             size,
             std::move(get_color_provider_callback),
-            GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE),
+            GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
             kBraveActionLeftMarginExtra) {}
 
   void UseVerifiedIcon(bool verified_icon) {
@@ -425,7 +425,8 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   // Since the BAT icon has color the actual color value here is not relevant,
   // but |CreateVectorIcon| requires one.
   return gfx::CreateVectorIcon(
-      kBatIcon, GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE), kIconColor);
+      kBatIcon, GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
+      kIconColor);
 }
 
 std::pair<std::string, SkColor>
