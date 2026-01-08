@@ -5,7 +5,12 @@
 
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wheader-hygiene"
+
 #include <third_party/boringssl/src/crypto/curve25519/curve25519.cc>
+
+#pragma clang diagnostic pop
 
 #ifdef UNSAFE_BUFFERS_BUILD
 #pragma allow_unsafe_buffers
