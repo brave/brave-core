@@ -123,7 +123,7 @@ void PublishersController::GetPublisherForSite(
       subscriptions,
       base::BindOnce(
           [](base::WeakPtr<PublishersController> controller, GURL site_url,
-             GetPublisherCallback callback, Publishers publishers) {
+             GetPublisherCallback callback, const Publishers& publishers) {
             if (!controller) {
               return;
             }
@@ -177,14 +177,8 @@ void PublishersController::GetOrFetchPublishers(
                              // Either there was already data, or the fetch was
                              // complete (with success or error, so we would
                              // still check for valid data again, but it's fine
-                             // to just send the empty array). Provide data
-                             // clone for ownership outside of this class.
-                             Publishers clone;
-                             for (auto const& kv : controller->publishers_) {
-                               clone.insert_or_assign(kv.first,
-                                                      kv.second->Clone());
-                             }
-                             std::move(callback).Run(std::move(clone));
+                             // to just send the empty array).
+                             std::move(callback).Run(controller->publishers_);
                            },
                            weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
                        wait_for_current_update);
@@ -223,7 +217,7 @@ void PublishersController::GetLocale(
       base::BindOnce(
           [](base::WeakPtr<PublishersController> controller,
              mojom::BraveNewsController::GetLocaleCallback callback,
-             Publishers _) {
+             const Publishers& _) {
             if (!controller) {
               return;
             }

@@ -63,12 +63,11 @@ class FeedFetcher {
   // Steps for |FetchFeed|
   void OnFetchFeedFetchedPublishers(const SubscriptionsSnapshot& subscriptions,
                                     FetchFeedCallback callback,
-                                    Publishers publishers);
+                                    const Publishers& publishers);
   void OnFetchFeedFetchedFeed(std::string locale,
                               FetchFeedSourceCallback callback,
                               api_request_helper::APIRequestResult result);
   void OnFetchFeedFetchedAll(FetchFeedCallback callback,
-                             Publishers publishers,
                              std::vector<FeedSourceResult> results);
 
   // Steps for |IsUpdateAvailable|
@@ -76,7 +75,7 @@ class FeedFetcher {
       const SubscriptionsSnapshot& subscriptions,
       ETags etags,
       UpdateAvailableCallback callback,
-      Publishers publishers);
+      const Publishers& publishers);
   void OnIsUpdateAvailableFetchedHead(
       std::string current_etag,
       base::RepeatingCallback<void(bool)> has_update_callback,

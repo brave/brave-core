@@ -42,6 +42,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_news/common/types.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"

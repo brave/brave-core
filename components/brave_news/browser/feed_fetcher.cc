@@ -129,7 +129,7 @@ void FeedFetcher::FetchFeed(const SubscriptionsSnapshot& subscriptions,
 void FeedFetcher::OnFetchFeedFetchedPublishers(
     const SubscriptionsSnapshot& subscriptions,
     FetchFeedCallback callback,
-    Publishers publishers) {
+    const Publishers& publishers) {
   if (publishers.empty()) {
     LOG(ERROR) << "Brave News Publisher list was empty";
     std::move(callback).Run({}, {});
@@ -149,8 +149,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
   auto downloaded_callback = base::BarrierCallback<FeedSourceResult>(
       locales.size() + direct_publishers.size(),
       base::BindOnce(&FeedFetcher::OnFetchFeedFetchedAll,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(publishers)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (const auto& locale : locales) {
     GURL feed_url(GetFeedUrl(locale));
@@ -224,7 +223,6 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
 }
 
 void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
-                                        Publishers publishers,
                                         std::vector<FeedSourceResult> results) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&CombineFeedSourceResults, std::move(results)),
@@ -257,7 +255,7 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
     const SubscriptionsSnapshot& subscriptions,
     ETags etags,
     UpdateAvailableCallback callback,
-    Publishers publishers) {
+    const Publishers& publishers) {
   auto locales =
       GetMinimalLocalesSet(subscriptions.GetChannelLocales(), publishers);
   VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "

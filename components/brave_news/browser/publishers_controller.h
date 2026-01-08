@@ -22,7 +22,7 @@
 namespace brave_news {
 
 using GetPublishersCallback = base::OnceCallback<void(
-    absl::flat_hash_map<std::string, mojom::PublisherPtr>)>;
+    const absl::flat_hash_map<std::string, mojom::PublisherPtr>&)>;
 using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
 class SubscriptionsSnapshot;

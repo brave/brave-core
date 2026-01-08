@@ -87,7 +87,8 @@ void ChannelsController::GetAllChannels(
   publishers_controller_->GetOrFetchPublishers(
       subscriptions, base::BindOnce(
                          [](const SubscriptionsSnapshot& subscriptions,
-                            ChannelsCallback callback, Publishers publishers) {
+                            ChannelsCallback callback,
+                            const Publishers& publishers) {
                            std::move(callback).Run(GetChannelsFromPublishers(
                                publishers, subscriptions));
                          },
