@@ -556,9 +556,10 @@ std::optional<std::string> EncodeCoinType(mojom::CoinType coin) {
 
 std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
   switch (provider) {
-    // TODO(onyb): enable these providers when they are supported by Gate3.
-    // Since Near Intents is the only provider supported by Gate3 at the moment,
-    // we return NEAR_INTENTS in all cases for now.
+    // TODO(https://github.com/brave/brave-browser/issues/51851): Enable these
+    // providers when they are supported by Gate3. Since Near Intents is the
+    // only provider supported by Gate3 at the moment, we return NEAR_INTENTS
+    // in all cases for now.
     //
     // case mojom::SwapProvider::kAuto:
     //   return "AUTO";
