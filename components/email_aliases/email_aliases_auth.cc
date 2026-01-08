@@ -67,7 +67,8 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
                           base::Unretained(this)));
 
-  auth_email_ = "brave@account.com";
+  auth_email_ =
+      prefs_service->GetString(brave_account::prefs::kBraveAccountEmailAddress);
   is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
 }
 
