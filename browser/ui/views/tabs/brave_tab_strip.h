@@ -49,6 +49,10 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            BraveTabContainerSeparator);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           GetMaxScrollOffsetWithGroups);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
 
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;

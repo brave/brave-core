@@ -15,6 +15,7 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
+#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -1135,6 +1136,12 @@ BraveTabContainer::FindVisibleUnpinnedSlotViews() const {
       Tab* tab = static_cast<Tab*>(view);
       // Skip pinned tabs
       if (tab->data().pinned) {
+        return false;
+      }
+
+      // Skip closing tabs. Closing tabs are visible but should not be
+      // considered when calculating the max scroll offset.
+      if (tab->closing()) {
         return false;
       }
 
