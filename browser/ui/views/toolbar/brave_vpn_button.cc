@@ -245,7 +245,8 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   SetBackground(views::CreateRoundedRectBackground(bg_color, radius));
 
   constexpr gfx::Size kImageSizeWithBadge(22, 24);
-  const int button_size = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT);
+  const int button_size =
+      GetLayoutConstant(LayoutConstant::kToolbarButtonHeight);
   const auto size_diff =
       gfx::Size(button_size, button_size) - kImageSizeWithBadge;
 

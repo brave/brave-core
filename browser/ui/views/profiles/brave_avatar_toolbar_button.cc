@@ -142,7 +142,7 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
 }
 
 int BraveAvatarToolbarButton::GetIconSize() const {
-  return GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
+  return GetLayoutConstant(LayoutConstant::kLocationBarIconSize);
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {

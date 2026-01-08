@@ -59,9 +59,10 @@ TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
 TEST_F(BraveTabTest, TabHeightTest) {
   FakeTabSlotController tab_slot_controller;
   BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
-  tab.SetBoundsRect({0, 0, 100, GetLayoutConstant(TAB_STRIP_HEIGHT)});
+  tab.SetBoundsRect(
+      {0, 0, 100, GetLayoutConstant(LayoutConstant::kTabStripHeight)});
   EXPECT_EQ(tab.GetLocalBounds().height() -
-                GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+                GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
             tab.GetContentsBounds().height());
 
   SkPath mask = tab.tab_style_views()->GetPath(
@@ -75,19 +76,19 @@ TEST_F(BraveTabTest, TabHeightTest) {
   // Check outside of tab region.
   gfx::Rect rect(50, 0, 1, 1);
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) - 1);
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) - 1);
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
 
   // Check inside of tab region.
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING));
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_TRUE(mask_region.intersects(RectToSkIRect(rect)));
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) +
-             GetLayoutConstant(TAB_HEIGHT) - 1);
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+             GetLayoutConstant(LayoutConstant::kTabHeight) - 1);
   EXPECT_TRUE(mask_region.intersects(RectToSkIRect(rect)));
 
   // Check outside of tab region.
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) +
-             GetLayoutConstant(TAB_HEIGHT));
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+             GetLayoutConstant(LayoutConstant::kTabHeight));
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
 }
 
