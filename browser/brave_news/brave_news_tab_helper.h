@@ -92,8 +92,7 @@ class BraveNewsTabHelper
   explicit BraveNewsTabHelper(content::WebContents* contents);
 
   bool ShouldFindFeeds();
-  void OnReceivedNewPublishers(
-      base::flat_map<std::string, brave_news::mojom::PublisherPtr> publishers);
+  void OnReceivedNewPublishers(brave_news::MojomPublishers publishers);
   void AvailableFeedsChanged();
   void UpdatePageFeed();
 

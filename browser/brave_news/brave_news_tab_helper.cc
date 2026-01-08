@@ -250,7 +250,7 @@ bool BraveNewsTabHelper::ShouldFindFeeds() {
 }
 
 void BraveNewsTabHelper::OnReceivedNewPublishers(
-    base::flat_map<std::string, brave_news::mojom::PublisherPtr> publishers) {
+    brave_news::MojomPublishers publishers) {
   UpdatePageFeed();
   AvailableFeedsChanged();
 }

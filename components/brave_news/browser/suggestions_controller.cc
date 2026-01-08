@@ -27,6 +27,7 @@
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_news/common/types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
@@ -155,10 +156,14 @@ void SuggestionsController::GetSuggestedPublisherIds(
                 base::BindOnce(
                     [](base::WeakPtr<SuggestionsController> controller,
                        GetSuggestedPublisherIdsCallback callback,
-                       Publishers publishers) {
+                       const Publishers& publishers) {
                       if (!controller) {
                         return;
                       }
+
+                      // Clone publishers for use in nested callbacks
+                      Publishers publishers_copy = ClonePublishers(publishers);
+
                       controller->history_querier_->Run(base::BindOnce(
                           [](base::WeakPtr<SuggestionsController> controller,
                              Publishers publishers,
@@ -172,7 +177,7 @@ void SuggestionsController::GetSuggestedPublisherIds(
                                     publishers, results);
                             std::move(callback).Run(std::move(result));
                           },
-                          controller, std::move(publishers),
+                          controller, std::move(publishers_copy),
                           std::move(callback)));
                     },
                     controller, std::move(callback)));
@@ -294,7 +299,8 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                 subscriptions,
                 base::BindOnce(
                     [](base::WeakPtr<SuggestionsController> controller,
-                       const std::string& locale, Publishers publishers) {
+                       const std::string& locale,
+                       const Publishers& publishers) {
                       if (!controller) {
                         return;
                       }
