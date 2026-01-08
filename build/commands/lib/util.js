@@ -605,28 +605,53 @@ const util = {
 
     // Import args_generated.gni into args.gn.
     const argsGnFilePath = path.join(outputDir, 'args.gn')
-    const generatedArgsImportLine = `import("//${path
-      .relative(config.srcDir, generatedArgsFilePath)
-      .replace(/\\/g, '/')}")`
 
     // Check if the import statement from args_generated.gni is present in
     // args.gn, even if the user has made modifications. This import statement
     // can also be commented out, allowing the user to fully ignore generated
     // arguments.
     fs.ensureFileSync(argsGnFilePath)
-    const isArgsGnValid = fs
-      .readFileSync(argsGnFilePath, { encoding: 'utf-8' })
-      .includes(generatedArgsImportLine)
+    let argsGnContent = fs.readFileSync(argsGnFilePath, {
+      encoding: 'utf-8',
+    })
+
+    const wrapWithDefaultArgs = buildArgs.brave_version_major !== undefined
+    const isArgsGnValid = wrapWithDefaultArgs
+      ? argsGnContent.includes('default_args("args")')
+      : argsGnContent.includes(`import("args_generated.gni")`)
 
     if (!isArgsGnValid) {
-      const argsGnContent = [
+      const extraArgsLine = '# Put your extra args AFTER this line.'
+      // Keep everything after the extra args line.
+      const extraArgsLineIndex = argsGnContent.indexOf(extraArgsLine)
+      const extraArgsContent =
+        extraArgsLineIndex !== -1
+          ? argsGnContent.slice(extraArgsLineIndex).trim()
+          : extraArgsLine
+
+      const buildArgsLines = wrapWithDefaultArgs
+        ? [
+            'import("//brave/build/args/default_args.gni")',
+            '',
+            'default_args("args") {',
+            `  import("args_generated.gni")`,
+            '',
+            ...extraArgsContent.split('\n').map((line) => '  ' + line),
+            '}',
+            '',
+            `forward_variables_from(read_file("args.json", "json"), "*")`,
+          ]
+        : [`import("args_generated.gni")`, '', extraArgsContent]
+      argsGnContent = [
         "# This file is user-editable. It won't be overwritten as long as it imports",
-        '# args_generated.gni, even if the import statement is commented out.\n',
-        generatedArgsImportLine,
+        '# args_generated.gni, even if the import statement is commented out.',
         '',
-        '# Put your extra args AFTER this line.',
+        ...buildArgsLines,
+        '',
       ].join('\n')
-      fs.writeFileSync(argsGnFilePath, argsGnContent + '\n')
+    }
+
+    if (util.writeFileIfModified(argsGnFilePath, argsGnContent)) {
       Log.status(`${argsGnFilePath} has been updated`)
     }
 

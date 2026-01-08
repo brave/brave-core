@@ -30,27 +30,9 @@ const getEnvConfig = (keyPath, defaultValue = undefined) => {
   return envConfig.get(keyPath, defaultValue)
 }
 
-const readArgsGn = (srcDir, outputDir) => {
+const readArgsGn = (outputDir) => {
   const util = require('./util')
-  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
-
-  const script = `
-import sys
-import os
-sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
-import gn_helpers
-result = gn_helpers.ReadArgsGN('${outputDir}')
-import json
-print(json.dumps(result))
-`
-
-  const result = util.run('python3', ['-'], {
-    skipLogging: true,
-    input: script,
-    encoding: 'utf8',
-  })
-
-  return JSON.parse(result.stdout.toString().trim())
+  return util.readJSON(path.join(outputDir, 'args.json'))
 }
 
 const getDepotToolsDir = (rootDir) => {
@@ -366,17 +348,15 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
-    'import("//brave/build/args/brave_defaults.gni")': null,
+    target_os: this.targetOS,
+    target_cpu: this.targetArch,
     is_asan: this.isAsan(),
-    enable_full_stack_frames_for_profiling: this.isAsan(),
-    v8_enable_verify_heap: this.isAsan(),
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
     brave_channel: this.channel,
@@ -394,31 +374,12 @@ Config.prototype.buildArgs = function () {
     enable_update_notifications: this.isOfficialBuild(),
   }
 
-  if (this.targetOS !== 'ios') {
-    args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
-  } else {
-    args['import("//brave/build/args/ios_defaults.gni")'] = null
-  }
-  if (this.targetOS === 'android') {
-    args['import("//brave/build/args/android_defaults.gni")'] = null
-  }
-  if (this.targetOS !== 'ios' && this.targetOS !== 'android') {
-    args['import("//brave/build/args/desktop_defaults.gni")'] = null
-  }
-
   for (const key of this.forwardEnvArgsToGn) {
     args[key] = getEnvConfig([key])
   }
 
   if (this.isOfficialBuild()) {
     args.enable_updater = true
-  }
-
-  if (args.is_asan || args.is_ubsan || args.is_msan) {
-    // Temporarily disabling dcheck_always_on for sanitiser builds, as there
-    // are some serious reports coming back. It is necessary first to stabilise
-    // these sanitisers with this flag first before using the default.
-    args.dcheck_always_on = false
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -573,10 +534,6 @@ Config.prototype.buildArgs = function () {
   // if something goes wrong on CI builds.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios' && this.isCI) {
     args.devtools_skip_typecheck = false
-  }
-
-  if (this.targetOS) {
-    args.target_os = this.targetOS
   }
 
   if (this.targetOS === 'android') {
@@ -994,11 +951,16 @@ Config.prototype.updateInternal = function (options) {
 }
 
 Config.prototype.fromGnArgs = function (options) {
-  const gnArgs = readArgsGn(this.srcDir, options.C)
-  Log.warn(
-    '--no-gn-gen is experimental and only gn args that match command '
-      + 'line options will be processed',
-  )
+  if (!options.C) {
+    Log.error('-C directory is required when using --no-gn-gen')
+    process.exit(1)
+  } else {
+    Log.warn(
+      '--no-gn-gen is experimental and only gn args that match command '
+        + 'line options will be processed',
+    )
+  }
+  const gnArgs = readArgsGn(options.C)
   this.updateInternal(Object.assign({}, gnArgs, options))
   assert(!this.isCI)
 }
