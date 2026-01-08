@@ -16,6 +16,10 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 namespace brave_news {
 
 constexpr char kTopicsUrl[] =
@@ -223,6 +227,13 @@ class BraveNewsTopicsFetcherTest : public testing::Test {
 };
 
 TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, kTopicsNewsResponse,
                                    net::HTTP_OK);
@@ -275,6 +286,13 @@ TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
 }
 
 TEST_F(BraveNewsTopicsFetcherTest, NoResponseNoTopics) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   url_loader_factory().AddResponse(kTopicsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "",
@@ -283,6 +301,13 @@ TEST_F(BraveNewsTopicsFetcherTest, NoResponseNoTopics) {
 }
 
 TEST_F(BraveNewsTopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   url_loader_factory().AddResponse(kTopicsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
   url_loader_factory().AddResponse(kTopicsNewsUrl, kTopicsNewsResponse,
@@ -291,6 +316,13 @@ TEST_F(BraveNewsTopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
 }
 
 TEST_F(BraveNewsTopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
@@ -298,6 +330,13 @@ TEST_F(BraveNewsTopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
 }
 
 TEST_F(BraveNewsTopicsFetcherTest, TopicsWithInvalidArticles) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "foo", net::HTTP_OK);
   EXPECT_EQ(0u, GetTopics().size());

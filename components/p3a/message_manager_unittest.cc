@@ -36,6 +36,10 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 namespace p3a {
 
 namespace {
@@ -241,6 +245,13 @@ class P3AMessageManagerTest : public testing::Test,
 };
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
@@ -290,6 +301,13 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
 }
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
@@ -364,6 +382,13 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
 
 TEST_F(P3AMessageManagerTest,
        UpdateLogsAndSendConstellationInvalidClientRequest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
@@ -419,6 +444,13 @@ TEST_F(P3AMessageManagerTest,
 }
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   for (MetricLogType log_type : kAllMetricLogTypes) {
     interceptor_status_code_from_randomness_ = net::HTTP_OK;
     ResetInterceptorStores();
@@ -475,6 +507,13 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
 }
 
 TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpManager();
   for (MetricLogType log_type : kAllMetricLogTypes) {
     std::vector<std::string> test_histograms =
@@ -504,6 +543,13 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpManager();
   for (MetricLogType log_type : kAllMetricLogTypes) {
     std::vector<std::string> test_histograms =
@@ -533,6 +579,13 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpManager();
 
   message_manager_->Stop();
@@ -544,6 +597,13 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
 }
 
 TEST_F(P3AMessageManagerTest, ActivationDate) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpManager();
 
   MessageMetainfo meta;
@@ -620,6 +680,13 @@ TEST_F(P3AMessageManagerTest, ActivationDateCleanup) {
 }
 
 TEST_F(P3AMessageManagerTest, EphemeralMetricOnlySentOnce) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpManager();
 
   ResetInterceptorStores();
