@@ -1201,27 +1201,6 @@ gfx::Rect BraveTabContainer::GetIdealBoundsOf(TabSlotView* slot_view) const {
   return gfx::Rect();
 }
 
-int BraveTabContainer::GetScrollOffsetForTesting() const {
-  return scroll_offset_;
-}
-
-int BraveTabContainer::GetMaxScrollOffsetForTesting() const {
-  return GetMaxScrollOffset();
-}
-
-int BraveTabContainer::GetPinnedTabsAreaBottomForTesting() const {
-  return GetPinnedTabsAreaBottom();
-}
-
-std::pair<TabSlotView*, TabSlotView*>
-BraveTabContainer::GetVisibleUnpinnedSlotViewsForTesting() const {
-  return FindVisibleUnpinnedSlotViews();
-}
-
-void BraveTabContainer::SetScrollOffsetForTesting(int offset) {
-  SetScrollOffset(offset);
-}
-
 int BraveTabContainer::GetMaxScrollOffset() const {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {

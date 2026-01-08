@@ -1193,11 +1193,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
 
   // Pre-condition: With only one tab, max scroll offset should be 0
   ASSERT_EQ(1, model->count());
-  EXPECT_EQ(0, brave_tab_container->GetMaxScrollOffsetForTesting());
+  EXPECT_EQ(0, brave_tab_container->GetMaxScrollOffset());
 
   // Adding tabs until they hit the height of the tab strip. When they exceed
   // the height, max scroll offset should be greater than 0.
-  while (brave_tab_container->GetMaxScrollOffsetForTesting() <= 0) {
+  while (brave_tab_container->GetMaxScrollOffset() <= 0) {
     AppendTab(browser());
     browser_view()->tabstrip()->StopAnimating();
   }
@@ -1214,19 +1214,19 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
 
   auto available_height = [&]() {
     return brave_tab_container->height() -
-           brave_tab_container->GetPinnedTabsAreaBottomForTesting();
+           brave_tab_container->GetPinnedTabsAreaBottom();
   };
   EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+            brave_tab_container->GetMaxScrollOffset());
 
   // When adding foreground tabs, the current scroll offset should be updated
   // so that the new active tab is visible.
-  EXPECT_EQ(brave_tab_container->GetScrollOffsetForTesting(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
 
   // ## Pinning a tab test -----------------------------------------------------
   // Add a few more tabs for further testing
-  while (brave_tab_container->GetMaxScrollOffsetForTesting() <
+  while (brave_tab_container->GetMaxScrollOffset() <
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
     browser_view()->tabstrip()->StopAnimating();
@@ -1237,9 +1237,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
 
   // When pin a tab from the last, pinned tabs area should be updated.
   const int max_scroll_offset_before_pinning =
-      brave_tab_container->GetMaxScrollOffsetForTesting();
-  int scroll_offset_before_pinning =
-      brave_tab_container->GetScrollOffsetForTesting();
+      brave_tab_container->GetMaxScrollOffset();
+  int scroll_offset_before_pinning = brave_tab_container->scroll_offset_;
   ASSERT_EQ(max_scroll_offset_before_pinning, scroll_offset_before_pinning)
       << "As we added active tabs at the end, the scroll offset should be "
          "equal to the max scroll offset";
@@ -1247,7 +1246,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   model->SetTabPinned(model->count() - 1, true);
   browser_view()->tabstrip()->StopAnimating();
   ASSERT_EQ(1, model->IndexOfFirstNonPinnedTab());
-  EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottomForTesting(),
+  EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
             tabs::kVerticalTabHeight +
                 2 * tabs::kMarginForVerticalTabContainers +
                 tabs::kPinnedUnpinnedSeparatorHeight +
@@ -1256,41 +1255,38 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   // Also max scroll offset should be updated.
   EXPECT_EQ(max_scroll_offset_before_pinning - tabs::kVerticalTabHeight -
                 tabs::kVerticalTabsSpacing +
-                brave_tab_container->GetPinnedTabsAreaBottomForTesting(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+                brave_tab_container->GetPinnedTabsAreaBottom(),
+            brave_tab_container->GetMaxScrollOffset());
   EXPECT_EQ(unpinned_tabs_total_height(model->count() -
                                        model->IndexOfFirstNonPinnedTab()) -
                 available_height(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+            brave_tab_container->GetMaxScrollOffset());
 
   // Pin the last tab again, so that the max scroll offset could be smaller
-  scroll_offset_before_pinning =
-      brave_tab_container->GetScrollOffsetForTesting();
+  scroll_offset_before_pinning = brave_tab_container->scroll_offset_;
   model->SetTabPinned(model->count() - 1, true);
   browser_view()->tabstrip()->StopAnimating();
 
   // Then, current scroll offset should be clamped to the max scroll offset.
-  EXPECT_GT(scroll_offset_before_pinning,
-            brave_tab_container->GetScrollOffsetForTesting());
-  EXPECT_EQ(brave_tab_container->GetScrollOffsetForTesting(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+  EXPECT_GT(scroll_offset_before_pinning, brave_tab_container->scroll_offset_);
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
 
   // ## Unpin the tab
   model->SetTabPinned(0, false);
   model->SetTabPinned(0, false);
   browser_view()->tabstrip()->StopAnimating();
-  ASSERT_EQ(0, brave_tab_container->GetPinnedTabsAreaBottomForTesting());
+  ASSERT_EQ(0, brave_tab_container->GetPinnedTabsAreaBottom());
 
   // Max scroll offset should be restored after unpinning
   EXPECT_EQ(max_scroll_offset_before_pinning,
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+            brave_tab_container->GetMaxScrollOffset());
   EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+            brave_tab_container->GetMaxScrollOffset());
 
   // ## Removing a tab
   // Scroll offset should be updated
-  int scroll_offset_before_removing =
-      brave_tab_container->GetScrollOffsetForTesting();
+  int scroll_offset_before_removing = brave_tab_container->scroll_offset_;
   model->SelectLastTab();
   model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_USER_GESTURE);
   browser_view()->tabstrip()->StopAnimating();
@@ -1299,12 +1295,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
 
   // Max scroll offset should be updated
   EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+            brave_tab_container->GetMaxScrollOffset());
   // also the current scroll offset should be clamped to the max scroll offset.
-  EXPECT_GT(scroll_offset_before_removing,
-            brave_tab_container->GetScrollOffsetForTesting());
-  EXPECT_EQ(brave_tab_container->GetScrollOffsetForTesting(),
-            brave_tab_container->GetMaxScrollOffsetForTesting());
+  EXPECT_GT(scroll_offset_before_removing, brave_tab_container->scroll_offset_);
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
@@ -1322,7 +1317,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   browser_view()->tabstrip()->StopAnimating();
 
   // Add enough tabs to make the tab strip scrollable
-  while (brave_tab_container->GetMaxScrollOffsetForTesting() <=
+  while (brave_tab_container->GetMaxScrollOffset() <=
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
     browser_view()->tabstrip()->StopAnimating();
@@ -1333,13 +1328,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   ASSERT_GT(container_height, 40);
 
   const int pinned_tabs_area_bottom =
-      brave_tab_container->GetPinnedTabsAreaBottomForTesting();
+      brave_tab_container->GetPinnedTabsAreaBottom();
 
   ASSERT_GT(pinned_tabs_area_bottom, 0);
-  ASSERT_NE(brave_tab_container->GetScrollOffsetForTesting(), 0);
+  ASSERT_NE(brave_tab_container->scroll_offset_, 0);
 
   // Set scroll offset to 0 (top)
-  brave_tab_container->SetScrollOffsetForTesting(0);
+  brave_tab_container->SetScrollOffset(0);
   browser_view()->tabstrip()->StopAnimating();
 
   // Verify that UpdateClipPathForSlotViews() was called by checking clip paths
@@ -1379,8 +1374,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   }
 
   // Set scroll offset to maximum (bottom)
-  const int max_offset = brave_tab_container->GetMaxScrollOffsetForTesting();
-  brave_tab_container->SetScrollOffsetForTesting(max_offset);
+  const int max_offset = brave_tab_container->GetMaxScrollOffset();
+  brave_tab_container->SetScrollOffset(max_offset);
   browser_view()->tabstrip()->StopAnimating();
 
   // Verify clip paths are updated after scrolling to bottom
@@ -1433,7 +1428,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   browser_view()->tabstrip()->StopAnimating();
 
   // Create enough tabs to make the tab strip scrollable
-  while (brave_tab_container->GetMaxScrollOffsetForTesting() <=
+  while (brave_tab_container->GetMaxScrollOffset() <=
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
     browser_view()->tabstrip()->StopAnimating();
@@ -1441,15 +1436,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
     InvalidateAndRunLayoutForVerticalTabStrip();
   }
 
-  int last_max_scroll_offset =
-      brave_tab_container->GetMaxScrollOffsetForTesting();
+  int last_max_scroll_offset = brave_tab_container->GetMaxScrollOffset();
   tab_groups::TabGroupId group1 =
       AddTabToNewGroup(browser(), model->count() - 1);
-  EXPECT_GT(brave_tab_container->GetMaxScrollOffsetForTesting(),
-            last_max_scroll_offset)
+  EXPECT_GT(brave_tab_container->GetMaxScrollOffset(), last_max_scroll_offset)
       << "When adding a tab to a group, max scroll offset should increase, as "
          "group header should be visible";
-  last_max_scroll_offset = brave_tab_container->GetMaxScrollOffsetForTesting();
+  last_max_scroll_offset = brave_tab_container->GetMaxScrollOffset();
 
   // Collapse the group
   browser_view()->tabstrip()->controller()->ToggleTabGroupCollapsedState(
@@ -1457,7 +1450,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   ASSERT_TRUE(
       browser_view()->tabstrip()->controller()->IsGroupCollapsed(group1));
 
-  EXPECT_EQ(brave_tab_container->GetMaxScrollOffsetForTesting(),
+  EXPECT_EQ(brave_tab_container->GetMaxScrollOffset(),
             last_max_scroll_offset - tabs::kVerticalTabHeight -
                 tabs::kVerticalTabsSpacing)
       << "When collapsing a group, max scroll offset should decrease, by the "
@@ -1466,7 +1459,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   // Even though all tabs in the group are invisible, the group should be
   // considered as the last visible slot view.
   // https://github.com/brave/brave-browser/issues/51635#issuecomment-3702630411
-  EXPECT_EQ(brave_tab_container->GetVisibleUnpinnedSlotViewsForTesting()
+  EXPECT_EQ(brave_tab_container->FindVisibleUnpinnedSlotViews()
                 .second->GetTabSlotViewType(),
             TabSlotView::ViewType::kTabGroupHeader);
 }

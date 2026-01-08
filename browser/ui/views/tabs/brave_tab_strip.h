@@ -50,8 +50,6 @@ class BraveTabStrip : public TabStrip {
                            BraveTabContainerSeparator);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollOffset);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
-                           GetMaxScrollOffsetWithPinUnpinRegression);
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            GetMaxScrollOffsetWithGroups);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
 
