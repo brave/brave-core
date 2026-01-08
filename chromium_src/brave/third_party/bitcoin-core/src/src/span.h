@@ -6,17 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_BRAVE_THIRD_PARTY_BITCOIN_CORE_SRC_SRC_SPAN_H_
 #define BRAVE_CHROMIUM_SRC_BRAVE_THIRD_PARTY_BITCOIN_CORE_SRC_SRC_SPAN_H_
 
-// clang-format off
 #include <utility>
 
-// Allows passing lint check:
-// "Includes STL header(s) but does not reference std::.".
-namespace std::brave {
-template <typename T1, typename T2>
-using pair = ::std::pair<T1, T2>;
-}
+// There are no std:: uses in this source, however the underlying source is
+// missing a `<utility>` inclusion that is necessary when building with
+// clang modules.
 
-#include <brave/third_party/bitcoin-core/src/src/span.h> // IWYU pragma: export
-// clang-format on
+#include <brave/third_party/bitcoin-core/src/src/span.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_BRAVE_THIRD_PARTY_BITCOIN_CORE_SRC_SRC_SPAN_H_
