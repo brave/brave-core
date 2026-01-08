@@ -41,7 +41,7 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
       int tab_index) {
     auto* controller = static_cast<BraveBrowserTabStripController*>(
         BrowserView::GetBrowserViewForBrowser(browser())
-            ->tabstrip()
+            ->horizontal_tab_strip_for_testing()
             ->controller());
 
     auto context_menu_controller =
