@@ -124,7 +124,7 @@ def __adjust_filegroups(step_config, filegroups):
             llvm_build_linux_fg_names.append(new_name)
 
         input_deps = step_config.get("input_deps")
-        if not input_deps:
+        if input_deps == None:
             fail("step_config missing input_deps. Did upstream change?")
 
         for clang in ["clang", "clang++", "clang-cl"]:
