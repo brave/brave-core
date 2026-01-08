@@ -74,6 +74,7 @@
 }
 
 - (void)dealloc {
+  _service->DeleteConversations();
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE, base::BindOnce(
                      ^(decltype(_currentContent) current_content) {
@@ -83,6 +84,7 @@
 }
 
 - (void)createNewConversation {
+  _service->DeleteConversations();
   _currentConversation = _service->CreateConversationHandlerForContent(
       _currentContent->content_id(), _currentContent->GetWeakPtr());
   _conversationClient->ChangeConversation(_currentConversation.get());
