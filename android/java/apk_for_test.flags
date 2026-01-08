@@ -1092,3 +1092,11 @@
 -keep class org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarStatePredictor {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedAdaptiveToolbarBehavior {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAdaptiveToolbarBehavior {
+    <init>(...);
+}
