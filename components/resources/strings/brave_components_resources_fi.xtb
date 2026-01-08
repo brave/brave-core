@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Säilytä Cardano-varoja</translation>
 <translation id="4915057812371523845">Säilytä Cardano Testnet -varoja</translation>
 <translation id="5387140102951033657">Tukee Substrate-omaisuuksia Polkadotin reititysketjussa ja Substrate-paraketjuissa</translation>
+<translation id="5601177227092533167">Tukee Substrate-omaisuuksia Westendin reititysketjussa ja Substrate-paraketjuissa</translation>
 <translation id="8500387257977999003">Yksityinen avain <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Tuo</translation>
 <translation id="232925166623833246">Tuo laitteiston lompakosta</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">Virheellinen FIL-osoite</translation>
 <translation id="5522073372365069684">Osta Rampin kautta</translation>
 <translation id="6153197326949684688">Myy palveluntarjoajan <ph name="OFFRAMP_PROVIDER"/> kautta</translation>
-<translation id="7902920577183739843">Osta Sardinen kautta</translation>
 <translation id="3301984548406568819">Talous- ja tapahtumatietoja käsittelevät onramp-kumppanimme. Brave ei kerää tai pääse käsiksi tällaisiin tietoihin.</translation>
 <translation id="5795821518596541838">Maksutapahtumien yhteistyökumppani</translation>
 <translation id="1916136859742693273">Brave Wallet käyttää Meld.io-sivustoa, joka auttaa yhdistämään ja tuomaan esiin erilaisia kryptopalvelujen tarjoajia alueellasi. Jaamme tietoja Meld.ion kanssa tapahtuman suorittamiseksi, mukaan lukien lompakkosi osoite ja maakoodi. Lue lisätietoja Meldin käyttöehdoista.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Osta Linkin kautta</translation>
 <translation id="1932640759496708012">Osta Coinbase Pay:lla</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link by Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Osta kryptovaluuttaa Visalla tai Mastercardilla.</translation>
-<translation id="3648994606506382289">Helpoin, nopein ja halvin tapa ostaa kryptoa kortilla ja pankkisiirroilla.</translation>
 <translation id="3101839349578102016">Osta heti pankkitililläsi. Pienemmät maksut.</translation>
 <translation id="8280898387224328221">Maksa luottokortilla, pankkikortilla, pankkitilillä</translation>
 <translation id="2218174283683424104">Osta krypton luotettavimmalla nimellä.</translation>
@@ -1665,6 +1663,7 @@
 <translation id="8044899503464538266">Hidas</translation>
 <translation id="3569512916300900704">Keskiverto</translation>
 <translation id="7019805045859631636">Nopea</translation>
+<translation id="1345580220012169610">Arvioitu maksu</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
 <translation id="6778140392042462129">Vaihdot</translation>
 <translation id="6173494033320397682">Vain suora reitti</translation>
@@ -1718,6 +1717,9 @@
 <translation id="6276584161122912863">Kaasun hinta</translation>
 <translation id="6132197290665156212">Arvioitu verkkomaksu</translation>
 <translation id="1788636309517085411">Käytä oletusta</translation>
+<translation id="3968375068626660591">Tämä kaasumaksu korvaa alkuperäisen.</translation>
+<translation id="1661088862481901887">Tämä luo uuden tapahtuman, jossa on uusi kaasumaksu, joka korvaa ja peruuttaa odottavan tapahtuman. Peruutus voidaan yrittää vain, jos tapahtuma on yhä odottava verkossa.</translation>
+<translation id="5797060124625958778">Nopeuden prioriteetti</translation>
 <translation id="6213230117190778270">Vastaanota</translation>
 <translation id="6748108480210050150">Alkaen</translation>
 <translation id="4875290286426670462">Rajoittamattomasti <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@
 <translation id="5329136173514538969">Jakamattomat välilehdet</translation>
 <translation id="7595612919377246359">Vaihda välilehtien paikkoja</translation>
 <translation id="2367972762794486313">Näytä sovellukset</translation>
+<translation id="3468387898712904997">Uusi sähköpostialias</translation>
 <translation id="8591883849678260674">Katso alkuperäinen</translation>
 <translation id="1969654232209826429">min. luku</translation>
 <translation id="4101707289420716287">Poista Speedreader käytöstä</translation>
@@ -2184,11 +2187,23 @@
 <translation id="7127671672828944579">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 14B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Gemma 3 12B:hen, Google DeepMindin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Gemma on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu DeepSeek R1:een, DeepSeekin luomaan malliin, joka on suunniteltu syvien päätelmien tekemiseen. DeepSeek R1 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu DeepSeek V3.1:een, DeepSeekin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. DeepSeek V3.1 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hei, olen Leo. Olen Braven tekoälyavustaja. Käytän Claude Instant -mallia, jonka on kehittänyt Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant toimii Braven isännöimänä turvallisessa infrastruktuurissamme.<ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Sonnet -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Sonnet on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Llama 4 Scoutiin, Metan luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Llama 4 Scout on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Llama 4 Maverickiin, Metan luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Llama 4 Maverick on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT OSS 20B:hen, OpenAI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GPT OSS 20B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT OSS 120B:hen, OpenAI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GPT OSS 120B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Mistral Large -malliin, jonka on luonut Mistral ja joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Mistral Large on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Pixtral Large -malliin, jonka on luonut Mistral ja joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Pixtral Large on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 3 235B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen 3 235B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Deepseek V3.1:een, Deepseekin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Deepseek V3.1 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 3 Coder 480B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen 3 Coder 480B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Opus -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Opus on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Paikallinen</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Suositellut mallit</translation>
 <translation id="6568044140836233369">Näytä kaikki mallit</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2313,6 +2328,7 @@
 <translation id="8506027496671575183">Haku • Näkö • Työkalut</translation>
 <translation id="3213834013136637671">Haku • Näkö</translation>
 <translation id="7697693533305615127">Haku • Ajattelu</translation>
+<translation id="7465032796278724624">Todistetusti yksityinen NEAR AI TEE:n avulla</translation>
 <translation id="8782867266498869301">Malli vaihtuu dynaamisesti sellaiseksi, joka on paras kyseistä tehtävää varten</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
 <translation id="3754337604877048671">Esittelyssä Leo AI</translation>
@@ -2376,7 +2392,7 @@
 <translation id="8410199626695516952">Ok, en muista sitä</translation>
 <translation id="8419849467765474535">Muistin tallentaminen epäonnistui. Yritä uudelleen.</translation>
 <translation id="5517580030864973329">Verkkosivun siirtyminen uuteen osoitteeseen</translation>
-<translation id="8832457834975923266">Siirryttiin verkkosivulle <ph name="URL"/>.</translation>
+<translation id="9197920788851078696">Siirretään verkkosivu osoitteeseen <ph name="URL"/></translation>
 <translation id="5095252080770652994">Progress</translation>
 <translation id="8332385567036775056">Askeleet</translation>
 <translation id="4521931942079977149">Klikkaamalla sivua</translation>
@@ -2391,6 +2407,20 @@
 <translation id="4798146464408730445">Ei löytynyt taitoja. Luo uusi napsauttamalla "Uusi"-painiketta.</translation>
 <translation id="271033894570825754">Uusi</translation>
 <translation id="8266605059880650542">Merkitään muistiin joitakin sivua koskevia tietoja myöhempää käyttöä varten.</translation>
+<translation id="7049849063044248805">Agent-tila toimii mallien kanssa, jotka tukevat työkaluja. Yhteensopimattomat mallit eivät näy tässä luettelossa.</translation>
+<translation id="3397808797783614750">AI:n automaattinen verkkoselaus voi aiheuttaa haitallisia, ei-toivottuja seurauksia yksityisyydellesi, taloudellesi ja verkkoviestinnällesi. <ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Tietoturvavaroitus</translation>
+<translation id="6077070599873946984">Brave AI tarvitsee luvan kohteelle: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Toiminto havaittiin mahdollisesti poikkeavan pyynnöstäsi:</translation>
+<translation id="3927932062596804919">Estä</translation>
+<translation id="4569155249847375786">Vahvistettu</translation>
+<translation id="3240988198391588806">Agent-tila</translation>
+<translation id="538066983058750776">Tietoa Leo-profiilista</translation>
+<translation id="1577570612997320961">Tietojesi suojaamiseksi tämä erillinen Brave-profiili rajoittaa AI:n pääsyn selaustietoihisi. Leo AI:lla on täällä lisäoikeuksia vierailla sivustoilla ja olla vuorovaikutuksessa niiden kanssa, joten voit antaa sille tehtäviä ja selata yhdessä tuottavuutesi parantamiseksi.</translation>
+<translation id="648116453147783450">Tietosi ja istuntosi</translation>
+<translation id="3906161204878017619">Kun kirjaudut jollekin sivustolle tällä profiililla, Leo voi nähdä kyseisen sivun tiedot, jos se on auki, joko vieraillessaan sivustolla itse tai kun pyydät sitä tekemään jotain siellä.</translation>
+<translation id="5583803492921648196">Takaisin vaihtaminen</translation>
+<translation id="8068929004144221259">Voit siirtyä takaisin tavalliseen profiiliisi milloin tahansa päävalikosta tai työkalupalkin Leo-avatarista. Agent-tila avautuu aina tässä profiilissa.</translation>
 <translation id="3486480638399578250">Pidä henkilökohtainen sähköpostiosoitteesi yksityisenä</translation>
 <translation id="7765422154906712751">Luo ainutlaatuisia, satunnaisia osoitteita, jotka välittävät sähköpostit Brave-tilisi sähköpostiin ja jotka voidaan poistaa milloin tahansa. Estä mainostajia saamasta oikeaa sähköpostiosoitettasi.</translation>
 <translation id="5222676887888702881">Kirjaudu ulos</translation>
@@ -2513,6 +2543,12 @@
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="131231380815754440">Ota HTTPS käyttöön</translation>
 <translation id="4824468494729001999">Estä komentosarjat</translation>
+<translation id="5465091511225410553">(pakotettu)</translation>
+<translation id="8646614940337543907">(pakotettu laajennuksella)</translation>
+<translation id="3559821445144429594">(pakotettu käytännön mukana)</translation>
+<translation id="550374350047782149">(pakotettu sallittujen listalla)</translation>
+<translation id="68858161161918073">(pakotettu valvojalla)</translation>
+<translation id="5735057546627037489">(pakotettu PWA:lla)</translation>
 <translation id="3246600097575692802">Ota estetyt komentosarjat käyttöön</translation>
 <translation id="3603525299146223354">Seurannat ja mainokset</translation>
 <translation id="4448697385961650078">Estä seuraimet &amp; mainokset</translation>
@@ -2547,6 +2583,7 @@
       other {Brave-suojat esti {BLOCKED_COUNT} jäljitintä kohteessa <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Tarkastele Brave-suojia napsauttamalla Brave-kuvaketta.</translation>
+<translation id="542789539047208469">Sivustotiedot</translation>
 <translation id="6294662480095808915">Yksityisyys. Oletuksena.</translation>
 <translation id="4366423156486478559">Hanki Brave-suojaus jokaiselle napsauttamallesi linkille. Aseta Brave oletukseksi ja selaa. Yksityisesti.</translation>
 <translation id="3830912418080848377">Tuo asetukset</translation>
@@ -2683,5 +2720,6 @@ Muodostetaan sinulle yhteys!</translation>
     olemassa olevaan välilehteen</translation>
 <translation id="451189393813405346">Kysy Leolta</translation>
 <translation id="1602850501393095406">Paina ↑ korostaaksesi</translation>
+<translation id="8367705492654390392">Kysy mitä tahansa</translation>
 <translation id="8525248723479742219">Toista myöhemmin</translation>
 </translationbundle>

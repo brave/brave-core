@@ -337,6 +337,7 @@
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
 <translation id="1035309871698658326">عند استخدامها، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصل جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها.</translation>
 <translation id="3435896845095436175">تمكين</translation>
+<translation id="9082792303833649978">يتم إدارة هذا الإعداد من قبل المسؤول الخاص بك أو بواسطة سياسة Brave أخرى.</translation>
 <translation id="1940221956626514677">تخصيص شريط الأدوات</translation>
 <translation id="6501807887341963552">النسق والألوان</translation>
 <translation id="6724227215236550330">ستظهر كلمات المرور هنا. لاستيراد كلمات المرور إلى <ph name="BRAND"/> على هذا الجهاز، <ph name="BEGIN_LINK"/> اختر ملف CSV<ph name="END_LINK"/></translation>
@@ -380,6 +381,7 @@
 <translation id="2263346047290834619">استخدام علامة تبويب ثلاثية</translation>
 <translation id="5860254591544742609">عرض شريط العناوين</translation>
 <translation id="4691131445504068802">الإخفاء التام عند التصغير</translation>
+<translation id="6763346436728173884">إخفاء زر إغلاق علامة التبويب دائمًا</translation>
 <translation id="4909269867860362936">التوسيع التلقائي عند التمرير أثناء التصغير</translation>
 <translation id="3367129510799209147">وضع المرور فوق علامة التبويب</translation>
 <translation id="8925055964134259461">توسيع علامات التبويب الرأسية بشكل مستقل لكل نافذة</translation>
@@ -753,6 +755,7 @@
 <translation id="7141438739990875547">شبكات بيتكوين</translation>
 <translation id="1077567586443625607">شبكات Zcash</translation>
 <translation id="1177180573354712438">شبكات Cardano</translation>
+<translation id="3176794108951154148">شبكات Polkadot</translation>
 <translation id="3159419679550543837">عرض شبكات الاختبار</translation>
 <translation id="3215569562674795548">تحرير شبكة جديدة أو إضافتها</translation>
 <translation id="4418993400653250511">مُعرّف السلسلة</translation>

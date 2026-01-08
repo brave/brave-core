@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Cardano 자산 저장</translation>
 <translation id="4915057812371523845">Cardano Testnet 자산 저장</translation>
 <translation id="5387140102951033657">Polkadot 릴레이 체인과 Substrate 패러체인에서 Substrate 자산을 지원합니다</translation>
+<translation id="5601177227092533167">Westend 릴레이 체인과 Substrate 패러체인에서 Substrate 자산을 지원합니다</translation>
 <translation id="8500387257977999003">비공개 키 <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="232925166623833246">하드웨어 월렛에서 가져오기</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>로 판매</translation>
-<translation id="7902920577183739843">Sardine으로 구매</translation>
 <translation id="3301984548406568819">파이낸셜 및 트랜잭션 데이터는 온램프 파트너가 처리합니다. Brave는 이러한 데이터를 수집하거나 액세스할 수 없습니다.</translation>
 <translation id="5795821518596541838">트랜잭션 파트너</translation>
 <translation id="1916136859742693273">Brave 월렛은 Meld.io를 사용하여 해당 지역의 다양한 암호화폐 공급자를 모아서 표시합니다. 당사는 월렛 주소와 국가 코드를 비롯하여 트랜잭션을 완료하기 위해 Meld.io와 정보를 공유합니다. 자세한 내용은 Meld의 이용약관을 참조하시기 바랍니다.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Link로 구매</translation>
 <translation id="1932640759496708012">Coinbase Pay로 구매</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link by Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
-<translation id="3648994606506382289">카드와 은행 이체로 가장 쉽고 빠르며 저렴하게 암호화폐를 구입할 수 있는 방법입니다.</translation>
 <translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
 <translation id="8280898387224328221">신용카드, 직불카드, 은행계좌로 결제</translation>
 <translation id="2218174283683424104">가장 신뢰받는 거래소에서 암호화폐를 구입하세요.</translation>
@@ -1665,6 +1663,7 @@
 <translation id="8044899503464538266">느리게</translation>
 <translation id="3569512916300900704">평균</translation>
 <translation id="7019805045859631636">빠르게</translation>
+<translation id="1345580220012169610">예상 요금</translation>
 <translation id="632241521608275119">편차 허용치</translation>
 <translation id="6778140392042462129">거래소</translation>
 <translation id="6173494033320397682">다이렉트 라우팅만</translation>
@@ -1718,6 +1717,9 @@
 <translation id="6276584161122912863">가스 가격</translation>
 <translation id="6132197290665156212">예상 네트워크 요금</translation>
 <translation id="1788636309517085411">기본값 사용</translation>
+<translation id="3968375068626660591">이 가스 요금은 기존 요금을 대체합니다.</translation>
+<translation id="1661088862481901887">이 작업은 기존 거래를 취소 및 대체하기 위한 새 가스 요금으로 새 거래를 생성합니다. 거래가 아직 네트워크에서 보류 중일 때만 취소를 시도할 수 있습니다.</translation>
+<translation id="5797060124625958778">속도 우선순위</translation>
 <translation id="6213230117190778270">받기</translation>
 <translation id="6748108480210050150">보내는 이</translation>
 <translation id="4875290286426670462">무제한 <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@
 <translation id="5329136173514538969">탭 분할 해제</translation>
 <translation id="7595612919377246359">탭 위치 스왑</translation>
 <translation id="2367972762794486313">앱 표시</translation>
+<translation id="3468387898712904997">새 이메일 별명</translation>
 <translation id="8591883849678260674">원본 보기</translation>
 <translation id="1969654232209826429">읽기(분)</translation>
 <translation id="4101707289420716287">스피드리더 끄기</translation>
@@ -2184,11 +2187,23 @@
 <translation id="7127671672828944579">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Google에서 개발한 Gemma 3 12B 모델을 기반으로 구동됩니다. Gemma는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 심층적인 추론 작업을 수행하도록 DeepSeek에서 개발한 DeepSeek R1 모델을 기반으로 구동됩니다. DeepSeek R1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 DeepSeek에서 개발한 DeepSeek V3.1 모델을 기반으로 구동됩니다. DeepSeek V3.1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Meta에서 개발한 Llama 4 Scout 모델을 기반으로 구동됩니다. Llama 4 Scout는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Meta에서 개발한 Llama 4 Maverick 모델을 기반으로 구동됩니다. Llama 4 Maverick은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 OpenAI에서 개발한 GPT OSS 20B 모델을 기반으로 구동됩니다. GPT OSS 20B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 OpenAI에서 개발한 GPT OSS 120B 모델을 기반으로 구동됩니다. GPT OSS 120B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Mistral에서 개발한 Mistral Large 모델을 기반으로 구동됩니다. Mistral Large는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Mistral에서 개발한 Pixtral Large 모델을 기반으로 구동됩니다. Pixtral Large는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3 235B 모델을 기반으로 구동됩니다. Qwen 3 235B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Deepseek에서 개발한 Deepseek V3.1 모델을 기반으로 구동됩니다. Deepseek V3.1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3 Coder 480B 모델을 기반으로 구동됩니다. Qwen 3 Coder 480B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 대화문과 텍스트 처리 성능을 제공하기 위해 Anthropic에서 개발한 클로드 오퍼스 모델을 기반으로 구동됩니다. 클로드 오퍼스는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">프리미엄</translation>
 <translation id="5807427080183870259">로컬</translation>
+<translation id="830868413617744215">베타</translation>
 <translation id="631371844654031449">추천 모델</translation>
 <translation id="6568044140836233369">모든 모델 표시</translation>
 <translation id="6187065185557150870">채팅</translation>
@@ -2313,6 +2328,7 @@
 <translation id="8506027496671575183">검색 • 비전 • 도구</translation>
 <translation id="3213834013136637671">검색 • 비전</translation>
 <translation id="7697693533305615127">검색 • 사고</translation>
+<translation id="7465032796278724624">NEAR AI TEE로 입증 가능한 개인 정보 보호</translation>
 <translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
 <translation id="3965507912994218570">레오 설정</translation>
 <translation id="3754337604877048671">레오 AI 소개</translation>
@@ -2376,7 +2392,7 @@
 <translation id="8410199626695516952">알겠습니다, 이 부분은 기억하지 않겠습니다</translation>
 <translation id="8419849467765474535">메모리를 저장하지 못했습니다. 다시 시도하세요.</translation>
 <translation id="5517580030864973329">새 주소로 웹 페이지 이동하기</translation>
-<translation id="8832457834975923266"><ph name="URL"/>웹 페이지로 이동했습니다.</translation>
+<translation id="9197920788851078696"><ph name="URL"/> 웹 페이지로 이동 중</translation>
 <translation id="5095252080770652994">진행 상황</translation>
 <translation id="8332385567036775056">단계</translation>
 <translation id="4521931942079977149">페이지 클릭</translation>
@@ -2391,6 +2407,20 @@
 <translation id="4798146464408730445">스킬을 찾을 수 없습니다. '새로 만들기' 버튼을 클릭하여 새로 만드세요.</translation>
 <translation id="271033894570825754">신규</translation>
 <translation id="8266605059880650542">나중에 해당 페이지에 대한 몇 가지 정보를 기록해 두세요.</translation>
+<translation id="7049849063044248805">에이전트 모드는 도구 지원이 있는 모델과 함께 작동합니다. 호환되지 않는 모델은 목록에서 숨겨집니다.</translation>
+<translation id="3397808797783614750">AI가 자동으로 탐색하도록 허용하면 개인정보, 재정 및 온라인 통신과 관련하여 유해하거나 원치 않는 결과로 이어질 수 있습니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">보안 경고</translation>
+<translation id="6077070599873946984">Brave AI에서 다음 작업에 대한 권한이 필요합니다: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">해당 작업이 귀하의 요청과 일치하지 않을 가능성이 있습니다:</translation>
+<translation id="3927932062596804919">거부</translation>
+<translation id="4569155249847375786">확인됨</translation>
+<translation id="3240988198391588806">에이전트 모드</translation>
+<translation id="538066983058750776">레오 프로필 정보</translation>
+<translation id="1577570612997320961">이 격리된 Brave 프로필은 데이터 보호 차원에서 AI 액세스를 기본 브라우징 프로필로 제한합니다. 이곳에서 레오 AI는 사이트를 방문하고 상호작용할 수 있는 추가 권한을 가지고 있으니, 레오 AI와 함께 생산성이 얼마나 향상될 수 있는지 시험해 보시기 바랍니다.</translation>
+<translation id="648116453147783450">귀하의 데이터와 세션</translation>
+<translation id="3906161204878017619">이 프로필로 웹사이트에 로그인하면, 레오는 해당 사이트가 열려 있을 때 정보를 볼 수 있습니다. 이 기능은 레오가 스스로 사이트를 방문하거나 해당 사이트에서 작업을 요청받았을 때 사용됩니다.</translation>
+<translation id="5583803492921648196">프로필 전환</translation>
+<translation id="8068929004144221259">메인 메뉴 또는 툴바의 레오 avatar에서 일반 프로필로 언제든지 전환할 수 있습니다. 에이전트 모드에서는 항상 이 프로필이 열립니다.</translation>
 <translation id="3486480638399578250">개인 이메일 주소 비공개 유지</translation>
 <translation id="7765422154906712751">고유하고 랜덤한 주소를 생성하여 Brave 계정 이메일로 전달하고 언제든지 삭제할 수 있습니다. 실제 이메일 주소가 광고주에게 공개되거나 사용되지 않도록 보호합니다.</translation>
 <translation id="5222676887888702881">로그아웃</translation>
@@ -2513,6 +2543,12 @@
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="131231380815754440">HTTPS 활성화</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
+<translation id="5465091511225410553">(강제 적용됨)</translation>
+<translation id="8646614940337543907">(확장 프로그램에 의해 강제 적용됨)</translation>
+<translation id="3559821445144429594">(정책에 따라 강제 적용됨)</translation>
+<translation id="550374350047782149">(허용 목록에 따라 강제 적용됨)</translation>
+<translation id="68858161161918073">(감독자에 의해 강제 적용됨)</translation>
+<translation id="5735057546627037489">(PWA에 의해 강제 적용됨)</translation>
 <translation id="3246600097575692802">차단된 스크립트 활성화</translation>
 <translation id="3603525299146223354">트래커 및 광고</translation>
 <translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
@@ -2547,6 +2583,7 @@
       other {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 {BLOCKED_COUNT}개 차단함}
     }</translation>
 <translation id="2540598191934725677">Brave Shields를 보려면 Brave 아이콘을 클릭하세요.</translation>
+<translation id="542789539047208469">사이트 정보</translation>
 <translation id="6294662480095808915">프라이버시 보호가 기본.</translation>
 <translation id="4366423156486478559">클릭하는 모든 링크에서 Brave가 든든하게 보호해드립니다. Brave를 기본 브라우저로 설정하세요.</translation>
 <translation id="3830912418080848377">설정 가져오기</translation>
@@ -2683,5 +2720,6 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
     탭에서 열기</translation>
 <translation id="451189393813405346">레오에게 묻기</translation>
 <translation id="1602850501393095406">↑ 키를 눌러 강조 표시하세요</translation>
+<translation id="8367705492654390392">무엇이든 질문하세요</translation>
 <translation id="8525248723479742219">나중에 재생</translation>
 </translationbundle>

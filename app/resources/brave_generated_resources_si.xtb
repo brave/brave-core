@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">ආධික්‍ය ගන්න</translation>
 <translation id="1035309871698658326">විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ් වල මාතෘකා සහ ආරම්භය වර්ගීකරණය කිරීම සඳහා ස්වයංක්‍රීයව ලියෝ වෙත යවනු ඇත.</translation>
 <translation id="3435896845095436175">සබල කරන්න</translation>
+<translation id="9082792303833649978">මෙම සේයාරුව නඩත්තු කරන්නේ ඔබේ පරිපාලක හෝ වෙනත් Brave ප්‍රතිපත්තියක් මගින්ය.</translation>
 <translation id="1940221956626514677">මෙවලම් තීරුව අභිරුචිකරණය</translation>
 <translation id="6501807887341963552">පෙනුම සහ වර්ණ</translation>
 <translation id="6724227215236550330">මෙම උපාංගයේ <ph name="BRAND"/> වෙත මුරපද ආයාත කිරීමට CSV ගොනුවක් <ph name="BEGIN_LINK"/> තෝරන්න<ph name="END_LINK"/>.</translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ගස පටිති භාවිතා කරන්න</translation>
 <translation id="5860254591544742609">සිරැසි තීරුව පෙන්වන්න</translation>
 <translation id="4691131445504068802">කුඩා කර ඇති විට සම්පූර්ණයෙන් සැඟවෙන්න</translation>
+<translation id="6763346436728173884">ටැබ් වැසීමේ බොත්තම සැමවිටම සඟවන්න</translation>
 <translation id="4909269867860362936">කුඩා කර ඇති විට මසේ ඉහළ යාමේදී ස්වයංක්‍රියව විහිදෙන්න</translation>
 <translation id="3367129510799209147">පටිත්ත මතින් ප්‍රකාරය</translation>
 <translation id="8925055964134259461">සෑම කවුළුවක ස්වාධීනව සිරස් පටිති ස්වයංව විහිදෙන්න</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">බිට්කොයින් ජාල</translation>
 <translation id="1077567586443625607">Zcash ජාල</translation>
 <translation id="1177180573354712438">කාර්ඩානෝ ජාල</translation>
+<translation id="3176794108951154148">පොල්කඩාට් ජාල</translation>
 <translation id="3159419679550543837">අත්හදා බැලීමේ ජාල පෙන්වන්න</translation>
 <translation id="3215569562674795548">සංස්කරණය හෝ නව ජාලයක් එක් කරන්න</translation>
 <translation id="4418993400653250511">දාමයේ හැඳු.</translation>

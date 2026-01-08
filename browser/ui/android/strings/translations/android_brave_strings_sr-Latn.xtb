@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Kopiraj čist link</translation>
 <translation id="721490496276866468">Uvezi lozinke</translation>
 <translation id="8178175542325151321">Izaberite .csv datoteku koja sadrži vaše lozinke da biste ih uvezli u Brave upravljač lozinkama.</translation>
-<translation id="1177863135347784049">Prilagođeno</translation>
 <translation id="6112331814131703370">Blokiraj obaveštenja „Pređite na aplikaciju“</translation>
 <translation id="4744921452903670666">Recite nam šta mislite!</translation>
 <translation id="2524310205387880526">Ocenite Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Automatski unos na privatnim karticama</translation>
 <translation id="8685431198160039193">Sačuvane informacije mogu automatski biti unete u privatne kartice</translation>
 <translation id="6583902294974160967">Podrška</translation>
-<translation id="5713644099811900409">Nalog na Brave-u</translation>
-<translation id="4472575034687746823">Početak</translation>
 <translation id="1799030480311994998">Funkcije</translation>
 <translation id="1919345977826869612">Oglasi</translation>
 <translation id="2839742394543397416">Analitika</translation>
@@ -384,7 +381,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="717952606991220586">Nešto nije u redu. Probajte ponovo kasnije.</translation>
 <translation id="987264212798334818">Opšte</translation>
 <translation id="1116694919640316211">Osnovni podaci</translation>
-<translation id="7961015016161918242">Nikad</translation>
 <translation id="1275213816424141989">Možda kasnije</translation>
 <translation id="3624048886326677117">Blokiraj oglase i praćenje (agresivno)</translation>
 <translation id="7151914815476509258">Blokiraj oglase i praćenje (standardno)</translation>
@@ -569,7 +565,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="6697810017029555732">Poklapaju se!</translation>
 <translation id="5981303441790732480">Uvezite postojeći novčanik</translation>
 <translation id="9111102763498581341">Otključaj</translation>
-<translation id="6657585470893396449">Lozinka</translation>
 <translation id="7553242001898162573">Unesite lozinku</translation>
 <translation id="5619264711680220002">Biometrijsko otključavanje</translation>
 <translation id="9195657745688986798">Otključajte novčanik</translation>
@@ -734,6 +729,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="9091334651803050473">Iako to nije garancija, rudari će verovatno dati prioritet vašoj transakciji ako platite veću naknadu.</translation>
 <translation id="2941112035454246133">Malo</translation>
 <translation id="7304030187361489308">Puno</translation>
+<translation id="1177863135347784049">Prilagođeno</translation>
 <translation id="4853037749278079787">Maksimalna naknada: ~<ph name="FIAT_VALUE"/> USD (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Trenutna osnovna naknada: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Granica količine gasa</translation>
@@ -1054,31 +1050,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6393423486818299209">Koristite svog trenutnog provajdera ili Wikimedia DNS</translation>
 <translation id="3401384982562827787">Koristite svog trenutnog provajdera ili Cloudflare</translation>
 <translation id="8812367543786936496">Ako vaš trenutni provajder nije bezbedan, Brave koristi bezbedanog alternativnog provajdera DNS-a</translation>
-<translation id="5680678411439841197">grad</translation>
-<translation id="8185518433273977704">mesto</translation>
-<translation id="4528386452965343421">prefektura</translation>
-<translation id="1589122976691792535">region</translation>
-<translation id="2221292964468054123">država</translation>
-<translation id="3801482889636327368">organizacija</translation>
-<translation id="1425162721525518064">kompanija</translation>
-<translation id="7568794877555549044">zemlja</translation>
-<translation id="5982110855572850497">oznaka</translation>
-<translation id="6848689413353508904">kontejner</translation>
-<translation id="1496514951988037011">korisničko ime</translation>
-<translation id="6155129418108337061">prijava</translation>
-<translation id="4038523199754403233">identifikacioni broj</translation>
-<translation id="901834265349196618">imejl</translation>
-<translation id="3488199663160411179">ime</translation>
-<translation id="793994607260936590">ime</translation>
-<translation id="1782612111936779655">prezime</translation>
-<translation id="7628132737455466188">puno</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobilni</translation>
-<translation id="598301471034819706">adresa</translation>
-<translation id="5557821203571216370">stan</translation>
-<translation id="8051552210542030943">pin kod</translation>
-<translation id="5233247193491045452">poštanski broj</translation>
-<translation id="3300502432153878901">poštanski broj</translation>
 <translation id="1381108437654541567">Aktiviraj funkciju za više prozora</translation>
 <translation id="6167344249617630304">Otvorite 5 prozora u isto vreme i pomerite kartice s jednog prozora na drugi</translation>
 <translation id="1063948063403254568">Otkriveno je više prozora</translation>
@@ -1126,14 +1097,12 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="766635563210446220">Ne može se uvesti lozinke. Proverite <ph name="FILENAME"/> i uverite se da je ispravno formatirana. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">Ne može se uvesti lozinke. Veličina datoteke treba da bude manja od 1 MB.</translation>
 <translation id="5895244669404288318">{COUNT, plural,
-        one {}
         few {Ne mogu da uvezem lozinke. Možete da uvezete najviše <ph name="COUNT_MANY"/> lozinke istovremeno.}=1 {Nije moguće uneti lozinke. Možete uneti samo jednu lozinku istovremeno.}
         other {Ne mogu da uvezem lozinke. Možete da uvezete najviše <ph name="COUNT_MANY"/> lozinki istovremeno.}}</translation>
 <translation id="3748424433435232460">Lozinka za ovaj nalog je već sačuvana na ovom uređaju</translation>
 <translation id="6438475350605608554">Već uvozite lozinke u drugoj kartici</translation>
 <translation id="3482868954775580230">Nije moguće pročitati izabranu datoteku. <ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural,
-        one {}
         few {Uspešno uvezene <ph name="IMPORT_COUNT_MANY"/> lozinke.}=1 {Uspešno uvezena 1 lozinka.}
         other {Uspešno uvezeno <ph name="IMPORT_COUNT_MANY"/> lozinki.}}</translation>
 <translation id="4637949129057123593">Izvoz nije uspeo.</translation>
@@ -1158,6 +1127,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="7808889146555843082">Brisanjem ove lozinke nećete izbrisati nalog na <ph name="SITE"/>. Promenite lozinku ili izbrišite nalog na <ph name="SITE"/> da biste ga zaštitili od drugih.</translation>
 <translation id="2870560284913253234">Sajt</translation>
 <translation id="8503813439785031346">Korisničko ime</translation>
+<translation id="6657585470893396449">Lozinka</translation>
 <translation id="2278052315791335171">Brisanjem ove lozinke nećete izbrisati nalog na <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Otključajte da biste kopirali lozinku</translation>
 <translation id="5515439363601853141">Otključajte da biste pregledali lozinku</translation>

@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Lưu trữ tài sản Cardano</translation>
 <translation id="4915057812371523845">Lưu trữ tài sản Cardano</translation>
 <translation id="5387140102951033657">Hỗ trợ tài sản Substrate trên chuỗi chuyển tiếp Polkadot và chuỗi phụ Substrate</translation>
+<translation id="5601177227092533167">Hỗ trợ tài sản Substrate trên chuỗi chuyển tiếp Westend và chuỗi phụ Substrate</translation>
 <translation id="8500387257977999003">Khóa riêng tư <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="232925166623833246">Nhập từ ví phần cứng</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">Không phải là địa chỉ FIL hợp lệ</translation>
 <translation id="5522073372365069684">Mua bằng Ramp</translation>
 <translation id="6153197326949684688">Bán với <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Mua bằng Sardine</translation>
 <translation id="3301984548406568819">Dữ liệu tài chính và giao dịch được xử lý bởi các đối tác onramp của chúng tôi. Brave không thu thập hoặc có quyền truy cập vào dữ liệu đó.</translation>
 <translation id="5795821518596541838">Đối tác giao dịch</translation>
 <translation id="1916136859742693273">Brave Wallet sử dụng Meld.io để giúp tổng hợp và đưa ra các lựa chọn nhà cung cấp tiền điện tử khác nhau cho khu vực của bạn. Chúng tôi sẽ chia sẻ thông tin với Meld.io để hoàn tất giao dịch, bao gồm địa chỉ ví và mã quốc gia của bạn. Để biết thêm thông tin, vui lòng đọc điều khoản sử dụng của Meld.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Mua bằng Liên kết</translation>
 <translation id="1932640759496708012">Mua bằng Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Mua bằng Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
-<translation id="3648994606506382289">Cách dễ nhất, nhanh nhất và rẻ nhất để mua tiền điện tử bằng thẻ và chuyển khoản ngân hàng.</translation>
 <translation id="3101839349578102016">Mua ngay bằng tài khoản ngân hàng của bạn. Phí thấp hơn.</translation>
 <translation id="8280898387224328221">Thanh toán bằng thẻ tín dụng, thẻ ghi nợ, tài khoản ngân hàng</translation>
 <translation id="2218174283683424104">Mua với tên đáng tin cậy nhất trong tiền điện tử.</translation>
@@ -1665,6 +1663,7 @@
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Average</translation>
 <translation id="7019805045859631636">Nhanh</translation>
+<translation id="1345580220012169610">Phí ước tính</translation>
 <translation id="632241521608275119">Tỷ lệ trượt giá</translation>
 <translation id="6778140392042462129">Sàn giao dịch</translation>
 <translation id="6173494033320397682">Chỉ tuyến đường trực tiếp</translation>
@@ -1718,6 +1717,9 @@
 <translation id="6276584161122912863">Giá gas</translation>
 <translation id="6132197290665156212">Phí mạng ước tính</translation>
 <translation id="1788636309517085411">Sử dụng mặc định</translation>
+<translation id="3968375068626660591">Phí gas này sẽ thay thế phí ban đầu.</translation>
+<translation id="1661088862481901887">Thao tác này sẽ tạo một giao dịch mới với phí gas mới để ghi đè và huỷ giao dịch đang chờ xử lý. Chỉ có thể thử huỷ nếu giao dịch vẫn đang chờ trên mạng.</translation>
+<translation id="5797060124625958778">Ưu tiên tốc độ</translation>
 <translation id="6213230117190778270">Nhận</translation>
 <translation id="6748108480210050150">Từ</translation>
 <translation id="4875290286426670462">Không giới hạn <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@
 <translation id="5329136173514538969">Hủy tách tab</translation>
 <translation id="7595612919377246359">Hoán đổi vị trí tab</translation>
 <translation id="2367972762794486313">Hiển thị ứng dụng</translation>
+<translation id="3468387898712904997">Bí danh email mới</translation>
 <translation id="8591883849678260674">Xem bản gốc</translation>
 <translation id="1969654232209826429">phút đọc</translation>
 <translation id="4101707289420716287">Tắt Speedreader</translation>
@@ -2184,11 +2187,23 @@
 <translation id="7127671672828944579">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Gemma 3 12B, một mô hình được tạo ra bởi Google DeepMind để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Gemma được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi DeepSeek R1, một mô hình được tạo ra bởi DeepSeek để thực hiện các nhiệm vụ lý luận sâu. DeepSeek R1 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi DeepSeek V3.1, một mô hình được tạo ra bởi DeepSeek để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. DeepSeek V3.1 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Xin chào, tôi là Leo. Tôi là trợ lý AI của Brave. Tôi được cung cấp bởi Claude Instant, một mô hình do Anthropic phát triển để xử lý hội thoại và văn bản. Claude Instant được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật riêng.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Haiku, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Haiku được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Sonnet, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Sonnet được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Llama 4 Scout, một mô hình được tạo ra bởi Meta để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Llama 4 Scout được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Llama 4 Maverick, một mô hình được tạo ra bởi Meta để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Llama 4 Maverick được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT OSS 20B, một mô hình được tạo ra bởi OpenAI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GPT OSS 20B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT OSS 120B, một mô hình được tạo ra bởi OpenAI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GPT OSS 120B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Mistral Large, một mô hình được tạo ra bởi Mistral để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Mistral Large được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Pixtral Large, một mô hình được tạo ra bởi Mistral để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Pixtral Large được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3 235B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3 235B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Deepseek V3.1, một mô hình được tạo ra bởi Deepseek để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Deepseek V3.1 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3 Coder 480B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3 Coder 480B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Opus, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Opus được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Cục bộ</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Mô hình đề xuất</translation>
 <translation id="6568044140836233369">Hiển thị tất cả mô hình</translation>
 <translation id="6187065185557150870">Trò chuyện</translation>
@@ -2313,6 +2328,7 @@
 <translation id="8506027496671575183">Tìm kiếm • Thị giác • Công cụ</translation>
 <translation id="3213834013136637671">Tìm kiếm • Thị giác</translation>
 <translation id="7697693533305615127">Tìm kiếm • Suy nghĩ</translation>
+<translation id="7465032796278724624">Riêng tư có thể xác minh với NEAR AI TEE</translation>
 <translation id="8782867266498869301">Mô hình thay đổi động để sử dụng mô hình tốt nhất cho tác vụ</translation>
 <translation id="3965507912994218570">Cài đặt Leo</translation>
 <translation id="3754337604877048671">Giới thiệu Leo AI</translation>
@@ -2376,7 +2392,7 @@
 <translation id="8410199626695516952">Được, tôi sẽ không nhớ thông tin đó</translation>
 <translation id="8419849467765474535">Không thể lưu ký ức. Vui lòng thử lại.</translation>
 <translation id="5517580030864973329">Điều hướng trang web đến một địa chỉ mới</translation>
-<translation id="8832457834975923266">Điều hướng đến trang web <ph name="URL"/></translation>
+<translation id="9197920788851078696">Đang điều hướng đến trang web <ph name="URL"/></translation>
 <translation id="5095252080770652994">Tiến độ</translation>
 <translation id="8332385567036775056">Các bước</translation>
 <translation id="4521931942079977149">Nhấp vào trang</translation>
@@ -2391,6 +2407,20 @@
 <translation id="4798146464408730445">Không tìm thấy kỹ năng nào. Tạo một kỹ năng mới bằng cách nhấp vào nút "Mới".</translation>
 <translation id="271033894570825754">Mới</translation>
 <translation id="8266605059880650542">Ghi chép lại một số thông tin về trang web để sử dụng sau này.</translation>
+<translation id="7049849063044248805">Chế độ đại lý hoạt động với các mô hình hỗ trợ công cụ. Các mô hình không tương thích sẽ bị ẩn khỏi danh sách này.</translation>
+<translation id="3397808797783614750">Kích hoạt AI để tự động duyệt web thay cho bạn có thể dẫn đến hậu quả không mong muốn và gây hại cho quyền riêng tư, tài chính và giao tiếp trực tuyến của bạn. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Cảnh báo bảo mật</translation>
+<translation id="6077070599873946984">Brave AI cần quyền của bạn cho: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Hoạt động này được phát hiện là có khả năng không phù hợp với yêu cầu của bạn:</translation>
+<translation id="3927932062596804919">Từ chối</translation>
+<translation id="4569155249847375786">Đã xác minh</translation>
+<translation id="3240988198391588806">Chế độ đại lý</translation>
+<translation id="538066983058750776">Giới thiệu hồ sơ Leo</translation>
+<translation id="1577570612997320961">Để bảo vệ dữ liệu của bạn, hồ sơ Brave độc lập này giới hạn quyền truy cập AI vào hồ sơ duyệt chính của bạn. Leo AI có thêm quyền tại đây để truy cập và tương tác với các trang web, nhằm giúp bạn tăng hiệu suất khi giao tác và duyệt web cùng nhau.</translation>
+<translation id="648116453147783450">Dữ liệu và phiên của bạn</translation>
+<translation id="3906161204878017619">Khi bạn đăng nhập vào một trang web bằng hồ sơ này, Leo có thể xem thông tin trên trang nếu nó đang mở, kể cả khi Leo trực tiếp truy cập trang đó hoặc bạn yêu cầu thực hiện một hành động tại đó.</translation>
+<translation id="5583803492921648196">Chuyển về lại</translation>
+<translation id="8068929004144221259">Bạn có thể quay lại hồ sơ thông thường bất cứ lúc nào từ trình đơn chính hoặc avatar Leo trên thanh công cụ của bạn. Chế độ đại lý sẽ luôn mở trong hồ sơ này.</translation>
 <translation id="3486480638399578250">Giữ riêng tư địa chỉ email cá nhân của bạn</translation>
 <translation id="7765422154906712751">Tạo các địa chỉ ngẫu nhiên, duy nhất chuyển tiếp đến email tài khoản Brave của bạn và có thể được xóa bất cứ lúc nào. Giữ cho địa chỉ email thực tế của bạn không bị tiết lộ hoặc sử dụng bởi các nhà quảng cáo.</translation>
 <translation id="5222676887888702881">Đăng xuất</translation>
@@ -2513,6 +2543,12 @@
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="131231380815754440">Bật HTTPS</translation>
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
+<translation id="5465091511225410553">(ép buộc)</translation>
+<translation id="8646614940337543907">(ép buộc bởi phần mở rộng)</translation>
+<translation id="3559821445144429594">(ép buộc theo chính sách)</translation>
+<translation id="550374350047782149">(ép buộc theo danh sách cho phép)</translation>
+<translation id="68858161161918073">(ép buộc bởi giám sát viên)</translation>
+<translation id="5735057546627037489">(ép buộc bởi PWA)</translation>
 <translation id="3246600097575692802">Bật mã lệnh bị chặn</translation>
 <translation id="3603525299146223354">Trình theo dõi &amp; quảng cáo</translation>
 <translation id="4448697385961650078">Chặn trình theo dõi và quảng cáo</translation>
@@ -2547,6 +2583,7 @@
       other {Brave Khiên chặn {BLOCKED_COUNT} trình theo dõi trên <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Nhấp vào biểu tượng Brave để xem Brave Khiên.</translation>
+<translation id="542789539047208469">Thông tin site</translation>
 <translation id="6294662480095808915">Riêng tư. Theo mặc định.</translation>
 <translation id="4366423156486478559">Được Brave bảo vệ trên mỗi liên kết bạn nhấp vào. Chỉ cần đặt Brave làm mặc định và duyệt. Riêng tư.</translation>
 <translation id="3830912418080848377">Nhập khẩu Cài đặt</translation>
@@ -2683,5 +2720,6 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
     tab hiện có</translation>
 <translation id="451189393813405346">Hỏi Leo</translation>
 <translation id="1602850501393095406">Nhấn ↑ để làm nổi bật</translation>
+<translation id="8367705492654390392">Hỏi bất kỳ điều gì</translation>
 <translation id="8525248723479742219">Phát sau</translation>
 </translationbundle>

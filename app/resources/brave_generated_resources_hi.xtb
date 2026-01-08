@@ -337,6 +337,7 @@
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
 <translation id="1035309871698658326">खुला होने पर, यह शीर्षकों और सभी गैर-निजी टैब्स के मूल को श्रेणियों में बाँटने के लिए Leo को अपने-आप भेज देगी।</translation>
 <translation id="3435896845095436175">सक्षम करें</translation>
+<translation id="9082792303833649978">यह सेटिंग आपके व्यवस्थापक या किसी अन्य Brave नीति द्वारा नियंत्रित की जाती है।</translation>
 <translation id="1940221956626514677">टूलबार कस्टमाइज़ करें</translation>
 <translation id="6501807887341963552">थीम और रंग</translation>
 <translation id="6724227215236550330">सेव किए गए पासवर्ड यहाँ दिखेंगे। इस डिवाइस पर <ph name="BRAND"/> में पासवर्ड इंपोर्ट करने के लिए <ph name="BEGIN_LINK"/> कोई CSV फ़ाइल चुनें
@@ -414,6 +415,7 @@ Binance
 <translation id="2263346047290834619">ट्री टैब इस्तेमाल करें</translation>
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
 <translation id="4691131445504068802">मिनिमाइज़ करने पर पूरी तरह छिपाएँ</translation>
+<translation id="6763346436728173884">हमेशा टैब बंद करने वाला बटन छिपाएँ</translation>
 <translation id="4909269867860362936">मिनिमाइज़ होने पर होवर करने से स्वतः एक्सपैंड करें</translation>
 <translation id="3367129510799209147">टैब होवर मोड</translation>
 <translation id="8925055964134259461">हर विंडो में वर्टीकल टैब का स्वतः एक्सपैंड अलग-अलग करें</translation>
@@ -787,6 +789,7 @@ Binance
 <translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="1077567586443625607">Zcash नेटवर्क</translation>
 <translation id="1177180573354712438">Cardano नेटवर्क</translation>
+<translation id="3176794108951154148">Polkadot नेटवर्क</translation>
 <translation id="3159419679550543837">टेस्ट नेटवर्क दिखाएँ</translation>
 <translation id="3215569562674795548">बदलें या नए नेटवर्क जोड़ें</translation>
 <translation id="4418993400653250511">चेन की id</translation>

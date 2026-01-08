@@ -971,6 +971,7 @@
 <translation id="8459631690385393533">Lagre eiendeler fra Cardano</translation>
 <translation id="4915057812371523845">Lagre eiendeler fra Cardano Testnet</translation>
 <translation id="5387140102951033657">Støtter Substrate-aktiva på Polkadots relékjede og Substrate-parakjeder</translation>
+<translation id="5601177227092533167">Støtter Substrate-aktiva på Westends relékjede og Substrate-parakjeder</translation>
 <translation id="8500387257977999003">Privat nøkkel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="232925166623833246">Importer fra hardware-lommebok</translation>
@@ -1303,7 +1304,6 @@
 <translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
 <translation id="5522073372365069684">Kjøp med Ramp</translation>
 <translation id="6153197326949684688">Selg med <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Kjøp med Sardine</translation>
 <translation id="3301984548406568819">Finansielle opplysninger og transaksjonsopplysninger behandles av onramp-partnerne våre. Brave hverken samler inn eller har tilgang til slike data.</translation>
 <translation id="5795821518596541838">Transaksjonspartner</translation>
 <translation id="1916136859742693273">Brave Wallet bruker Meld.io til å samle og vise deg lister over kryptoleverandører i området ditt. Vi deler enkelte opplysninger med Meld.io for å gjennomføre transaksjoner. Dette inkluderer blant annet adressen og landskoden til lommeboken din. Du kan lese mer om dette i Melds bruksvilkår.</translation>
@@ -1329,12 +1329,10 @@
 <translation id="5973390321030037823">Kjøp med Link</translation>
 <translation id="1932640759496708012">Kjøp med Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Lenk med Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Kjøp krypto med Visa eller Mastercard.</translation>
-<translation id="3648994606506382289">Den enkleste, raskeste og billigste måten å kjøpe krypto på med kort og bankoverføringer.</translation>
 <translation id="3101839349578102016">Umiddelbart kjøp med bankkontoen din. Lavere avgifter.</translation>
 <translation id="8280898387224328221">Betal med kreditt, debet, bankkonto</translation>
 <translation id="2218174283683424104">Kjøp med det mest anerkjente navnet innen krypto</translation>
@@ -1666,6 +1664,7 @@
 <translation id="8044899503464538266">Lav</translation>
 <translation id="3569512916300900704">Gjennomsnitt</translation>
 <translation id="7019805045859631636">Høy</translation>
+<translation id="1345580220012169610">Anslått avgift</translation>
 <translation id="632241521608275119">Slingringstoleranse</translation>
 <translation id="6778140392042462129">Børser</translation>
 <translation id="6173494033320397682">Kun direkte ruter</translation>
@@ -1719,6 +1718,9 @@
 <translation id="6276584161122912863">Gas-pris</translation>
 <translation id="6132197290665156212">Anslått nettverksavgift</translation>
 <translation id="1788636309517085411">Bruk standard</translation>
+<translation id="3968375068626660591">Denne gas-avgiften vil erstatte den opprinnelige.</translation>
+<translation id="1661088862481901887">Dette vil opprette en ny transaksjon med en ny gas-avgift for å overstyre og kansellere den ventende transaksjonen. En kansellering kan bare forsøkes hvis transaksjonen fortsatt er ventende i nettverket.</translation>
+<translation id="5797060124625958778">Prioritet for hastighet</translation>
 <translation id="6213230117190778270">Motta</translation>
 <translation id="6748108480210050150">Fra</translation>
 <translation id="4875290286426670462">Ubegrenset <ph name="ASSET_SYMBOL"/></translation>
@@ -2119,6 +2121,7 @@
 <translation id="5329136173514538969">Udelte faner</translation>
 <translation id="7595612919377246359">Bytt faneposisjoner</translation>
 <translation id="2367972762794486313">Vis apper</translation>
+<translation id="3468387898712904997">Nytt e-postalias</translation>
 <translation id="8591883849678260674">Vis original</translation>
 <translation id="1969654232209826429">min. lest</translation>
 <translation id="4101707289420716287">Slå av Speedreader</translation>
@@ -2167,7 +2170,7 @@
 <translation id="4524675003624341892">Foreslå spørsmål …</translation>
 <translation id="4567071417854988869">Oppsummer denne videoen</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
-      one {}=1 {Lag en oppsummering av denne siden}
+      =1 {Lag en oppsummering av denne siden}
       other {Lag en oppsummering av disse sidene}
     }</translation>
 <translation id="7921782882718083488">Oppsummer denne siden</translation>
@@ -2185,11 +2188,23 @@
 <translation id="7127671672828944579">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 14B, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="2328524194917949829">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Gemma 3 12B, som er en ytelsesdyktig modell fra Google DeepMind med mange ulike bruksområder. Brave er vert for Gemma via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="634682910381645550">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av DeepSeek R1, som er en modell skapt av DeepSeek for å utføre komplekse resonneringsoppgaver. Brave er vert for DeepSeek R1 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="1021134081694325196">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av DeepSeek V3.1, som er en ytelsesdyktig modell fra DeepSeek med mange ulike bruksområder. Brave er vert for DeepSeek V3.1 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="8932568551552504373">Hei, jeg er Leo. Jeg er en AI-assistent fra Brave. Jeg drives av Claude Instant, en modell utviklet av Anthropic for samtale og tekstbehandling. Claude Instant hostes av Brave via vår egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Haiku, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Haiku via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="1778885220602472158">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Sonnet, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Sonnet via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="1058830842518828124">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Llama 4 Scout, som er en ytelsesdyktig modell fra Meta med mange ulike bruksområder. Brave er vert for Llama 4 Scout via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="6277330815126859513">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Llama 4 Maverick, som er en ytelsesdyktig modell fra Meta med mange ulike bruksområder. Brave er vert for Llama 4 Maverick via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="5833148755396048122">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT OSS 20B, som er en ytelsesdyktig modell fra OpenAI med mange ulike bruksområder. Brave er vert for GPT OSS 20B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="5414593137581221307">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT OSS 120B, som er en ytelsesdyktig modell fra OpenAI med mange ulike bruksområder. Brave er vert for GPT OSS 120B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="5037359072717016032">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Mistral Large, som er en ytelsesdyktig modell fra Mistral med mange ulike bruksområder. Brave er vert for Mistral Large via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="8947618429500471804">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Pixtral Large, som er en ytelsesdyktig modell fra Mistral med mange ulike bruksområder. Brave er vert for Pixtral Large via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="4026902371301997261">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 3 235B, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen 3 235B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="768541432895104346">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Deepseek V3.1, som er en ytelsesdyktig modell fra Deepseek med mange ulike bruksområder. Brave er vert for Deepseek V3.1 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="3767678495358551728">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 3 Coder 480B, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen 3 Coder 480B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="3369866806475938617">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Opus, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Opus via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Anbefalte modeller</translation>
 <translation id="6568044140836233369">Vis alle modeller</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2314,6 +2329,7 @@
 <translation id="8506027496671575183">Søk • Visjon • Verktøy</translation>
 <translation id="3213834013136637671">Søk • Visjon</translation>
 <translation id="7697693533305615127">Søk • Tenkning</translation>
+<translation id="7465032796278724624">Verifiserbart privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen endres dynamisk for å bruke den beste for oppgaven</translation>
 <translation id="3965507912994218570">Innstillinger for Leo</translation>
 <translation id="3754337604877048671">Introduserer Leo AI</translation>
@@ -2377,7 +2393,7 @@
 <translation id="8410199626695516952">Ok, jeg kommer ikke til å huske det</translation>
 <translation id="8419849467765474535">Kunne ikke lagre minnet. Prøv på nytt.</translation>
 <translation id="5517580030864973329">Navigerer nettsiden til en ny adresse</translation>
-<translation id="8832457834975923266">Navigerte nettsiden til <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navigerer nettsiden til <ph name="URL"/></translation>
 <translation id="5095252080770652994">Fremdrift</translation>
 <translation id="8332385567036775056">Trinn</translation>
 <translation id="4521931942079977149">Klikker på siden</translation>
@@ -2392,6 +2408,20 @@
 <translation id="4798146464408730445">Ingen ferdigheter funnet. Lag en ny ved å klikke på «Ny».</translation>
 <translation id="271033894570825754">Ny</translation>
 <translation id="8266605059880650542">Noterer informasjon til senere om siden</translation>
+<translation id="7049849063044248805">Agentmodus fungerer med modeller som har verktøystøtte. Ikke-kompatible modeller er skjult fra denne listen.</translation>
+<translation id="3397808797783614750">Å aktivere KI for å bla automatisk for deg kan føre til skadelige, utilsiktede konsekvenser for personvernet ditt, økonomien din og kommunikasjon på nett. <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Sikkerhetsadvarsel</translation>
+<translation id="6077070599873946984">Brave KI trenger tillatelse for: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Handlingene ble vurdert som potensielt ikke i tråd med forespørselen din:</translation>
+<translation id="3927932062596804919">Avslå</translation>
+<translation id="4569155249847375786">Bekreftet</translation>
+<translation id="3240988198391588806">Agentmodus</translation>
+<translation id="538066983058750776">Om Leo-profilen</translation>
+<translation id="1577570612997320961">For å beskytte dataene dine begrenser denne isolerte Brave-profilen KI-tilgang til hovedprofilen din for nettlesing. Leo KI har ekstra tillatelser her for å besøke og samhandle med nettsteder, slik at du kan prøve å gi den oppgaver og bla sammen for å øke produktiviteten.</translation>
+<translation id="648116453147783450">Dataene og øktene dine</translation>
+<translation id="3906161204878017619">Når du logger inn på et nettsted med denne profilen, kan Leo se informasjonen på det nettstedet hvis det er åpent, enten når den selv besøker nettstedet eller når du ber den om å gjøre noe der.</translation>
+<translation id="5583803492921648196">Bytter tilbake</translation>
+<translation id="8068929004144221259">Du kan når som helst bytte tilbake til den vanlige profilen din via hovedmenyen eller Leo-avataren på verktøylinjen. Agentmodus vil alltid åpnes i denne profilen.</translation>
 <translation id="3486480638399578250">Hold din personlige e-postadresse hemmelig</translation>
 <translation id="7765422154906712751">Lag unike, tilfeldige e-postadresser som videresender alle e-poster til e-postadressen som er knyttet til Brave-kontoen din. Aliasene kan slettes når som helst. Hindre at den ekte e-postadressen din deles eller brukes av annonsører.</translation>
 <translation id="5222676887888702881">Logg ut</translation>
@@ -2514,6 +2544,12 @@
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="131231380815754440">Aktiver HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
+<translation id="5465091511225410553">(håndhevet)</translation>
+<translation id="8646614940337543907">(håndhevet av utvidelse)</translation>
+<translation id="3559821445144429594">(håndhevet av policy)</translation>
+<translation id="550374350047782149">(håndhevet av tillatelsesliste)</translation>
+<translation id="68858161161918073">(håndhevet av veileder)</translation>
+<translation id="5735057546627037489">(håndhevet av PWA)</translation>
 <translation id="3246600097575692802">Aktiver blokkerte skript</translation>
 <translation id="3603525299146223354">Sporinger &amp; annonser</translation>
 <translation id="4448697385961650078">Blokker sporere og annonser</translation>
@@ -2548,6 +2584,7 @@
       other {Brave Shields har blokkert {BLOCKED_COUNT} sporere på <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Klikk på Brave-ikonet for å gå til Brave Shields.</translation>
+<translation id="542789539047208469">Nettstedsinfo</translation>
 <translation id="6294662480095808915">Personvern fra bunnen av.</translation>
 <translation id="4366423156486478559">Få Brave-beskyttelse for alle linker du klikker på. Bare angi Brave som standard, og surf i vei – helt privat.</translation>
 <translation id="3830912418080848377">Importer innstillinger</translation>
@@ -2684,5 +2721,6 @@ Trykk på Tab, og deretter på Enter for å bytte til den åpne fanen.</translat
 eksisterende fanen</translation>
 <translation id="451189393813405346">Spør Leo</translation>
 <translation id="1602850501393095406">Trykk ↑ for å fremheve</translation>
+<translation id="8367705492654390392">Spør om hva som helst</translation>
 <translation id="8525248723479742219">Spill senere</translation>
 </translationbundle>

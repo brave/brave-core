@@ -336,6 +336,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
 <translation id="1035309871698658326">När den öppnas kommer detta automatiskt att skicka titlar och ursprung för alla icke-privata flikar till Leo för att klassificera dem.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
+<translation id="9082792303833649978">Denna inställning hanteras av din administratör eller av en annan Brave-policy.</translation>
 <translation id="1940221956626514677">Anpassa verktygsfältet</translation>
 <translation id="6501807887341963552">Tema och färger</translation>
 <translation id="6724227215236550330">Sparade lösenord visas här. För att importera lösenord till <ph name="BRAND"/> på den här enheten, <ph name="BEGIN_LINK"/> välj en CSV-fil<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2263346047290834619">Använd trädflikar</translation>
 <translation id="5860254591544742609">Visa namnlist</translation>
 <translation id="4691131445504068802">Dölj helt när minimerad</translation>
+<translation id="6763346436728173884">Dölj alltid knappen för att stänga flik</translation>
 <translation id="4909269867860362936">Expandera automatiskt vid hovring när minimerad</translation>
 <translation id="3367129510799209147">Läge för hovring av flikar</translation>
 <translation id="8925055964134259461">Expandera vertikala flikar automatiskt oberoende per fönster</translation>
@@ -752,6 +754,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="7141438739990875547">Bitcoin-nätverk</translation>
 <translation id="1077567586443625607">Zcash-nätverk</translation>
 <translation id="1177180573354712438">Cardano-nätverk</translation>
+<translation id="3176794108951154148">Polkadot-nätverk</translation>
 <translation id="3159419679550543837">Visa testnätverk</translation>
 <translation id="3215569562674795548">Redigera eller lägg till ett nytt nätverk</translation>
 <translation id="4418993400653250511">Kedjans id</translation>

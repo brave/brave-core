@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
 <translation id="1035309871698658326">След отваряне заглавията и произхода на всички неповерителни раздели ще бъдат изпратени автоматично на Лио за класифициране.</translation>
 <translation id="3435896845095436175">Активиране</translation>
+<translation id="9082792303833649978">Тази настройка се управлява от вашия администратор или от друга политика на Brave.</translation>
 <translation id="1940221956626514677">Персонализиране на лентата с интрументи</translation>
 <translation id="6501807887341963552">Тема и цветове</translation>
 <translation id="6724227215236550330">Запаметените пароли ще се показват тук. За да импортираш пароли в <ph name="BRAND"/> на това устройство, <ph name="BEGIN_LINK"/> избери CSV файл<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">Използвай дървовидни раздели</translation>
 <translation id="5860254591544742609">Показване на заглавната лента</translation>
 <translation id="4691131445504068802">Скрий напълно, когато е минимизирано</translation>
+<translation id="6763346436728173884">Винаги скривай бутона за затваряне на раздели</translation>
 <translation id="4909269867860362936">Автоматично разширяване при посочване с курсора, когато е минимизирано</translation>
 <translation id="3367129510799209147">Режим на задържане на раздел</translation>
 <translation id="8925055964134259461">Разширяване на вертикалните раздели самостоятелно за всеки прозорец</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Мрежи на Bitcoin</translation>
 <translation id="1077567586443625607">Мрежи Zcash</translation>
 <translation id="1177180573354712438">Мрежи за Cardano</translation>
+<translation id="3176794108951154148">Мрежи на Polkadot</translation>
 <translation id="3159419679550543837">Показване на тестови мрежи</translation>
 <translation id="3215569562674795548">Редактиране или добавяне на нова мрежа</translation>
 <translation id="4418993400653250511">Идентификаторът на веригата</translation>
