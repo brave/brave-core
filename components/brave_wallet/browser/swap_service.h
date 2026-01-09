@@ -61,6 +61,7 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL GetLiFiTransactionURL();
   static GURL GetLiFiStatusURL(const std::string& tx_hash);
   static GURL GetSquidURL();
+  static GURL GetGate3QuoteURL(bool is_firm);
 
  private:
   void OnGetZeroExQuote(const std::string& chain_id,
@@ -83,6 +84,10 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void OnGetLiFiTransaction(GetTransactionCallback callback,
                             APIRequestResult api_request_result);
   void OnGetSquidTransaction(GetTransactionCallback callback,
+                             APIRequestResult api_request_result);
+  void OnGetGate3Quote(GetQuoteCallback callback,
+                       APIRequestResult api_request_result);
+  void OnGetGate3Transaction(GetTransactionCallback callback,
                              APIRequestResult api_request_result);
   void OnGetLiFiStatus(GetLiFiStatusCallback callback,
                        APIRequestResult api_request_result);

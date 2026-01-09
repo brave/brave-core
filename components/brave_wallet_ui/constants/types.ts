@@ -1066,6 +1066,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kZeroEx]: '0x',
   [BraveWallet.SwapProvider.kLiFi]: 'LI.FI',
   [BraveWallet.SwapProvider.kSquid]: 'Squid',
+  [BraveWallet.SwapProvider.kNearIntents]: 'NEAR Intents',
 }
 
 export const SupportedSwapProviders = [
@@ -1074,6 +1075,7 @@ export const SupportedSwapProviders = [
   BraveWallet.SwapProvider.kZeroEx,
   BraveWallet.SwapProvider.kLiFi,
   BraveWallet.SwapProvider.kSquid,
+  BraveWallet.SwapProvider.kNearIntents,
 ]
 
 export type StorybookTransactionTypes = 'Send' | 'Swap' | 'Bridge' | 'Approve'

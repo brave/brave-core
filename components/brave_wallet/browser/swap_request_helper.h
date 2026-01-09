@@ -32,6 +32,15 @@ std::optional<std::string> EncodeTransactionParams(
     mojom::SwapQuoteParamsPtr params);
 }  // namespace squid
 
+namespace gate3 {
+// Encode swap quote parameters into JSON format for Gate3 API quote requests.
+// Return the encoded JSON string on success, or std::nullopt if encoding
+// fails.
+//
+// See https://gate3.bsg.brave.com/docs for the underlying request format.
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
+}  // namespace gate3
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_REQUEST_HELPER_H_
