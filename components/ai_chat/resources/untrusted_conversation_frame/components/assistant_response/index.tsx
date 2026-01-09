@@ -87,6 +87,7 @@ function AssistantEvent(
   const context = useUntrustedConversationContext()
   const contentRef = React.useRef<HTMLDivElement>(null)
   const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const [animationKey, setAnimationKey] = React.useState(0)
 
   React.useEffect(() => {
     if (!wrapperRef.current || !contentRef.current) return
@@ -97,6 +98,13 @@ function AssistantEvent(
     // Animate to the actual height
     wrapperRef.current.style.maxHeight = `${contentHeight}px`
   })
+
+  // Reset animation whenever content changes during streaming
+  React.useEffect(() => {
+    if (isEntryInProgress && event.completionEvent?.completion) {
+      setAnimationKey((prev) => prev + 1)
+    }
+  }, [isEntryInProgress, event.completionEvent?.completion])
 
   const renderContent = () => {
     if (event.completionEvent) {
@@ -180,6 +188,7 @@ function AssistantEvent(
   return (
     <div
       ref={wrapperRef}
+      data-animation-key={animationKey}
       className={classnames(styles.assistantEventWrapper, {
         [styles.complete]: !isEntryInProgress,
         [styles.searching]: isSearching,
