@@ -44,11 +44,16 @@ import json
 print(json.dumps(result))
 `
 
-  const result = util.run('python3', ['-'], {
-    skipLogging: true,
-    input: script,
-    encoding: 'utf8',
-  })
+  const result = util.run(
+    'python3',
+    ['-'],
+    util.mergeWithDefault({
+      skipLogging: true,
+      stdio: 'pipe',
+      input: script,
+      encoding: 'utf8',
+    }),
+  )
 
   return JSON.parse(result.stdout.toString().trim())
 }
