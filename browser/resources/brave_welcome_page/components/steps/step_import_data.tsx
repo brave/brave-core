@@ -432,9 +432,9 @@ export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps
       </div>
       <div className="footer-right">
         {showImportingState ? (
-          <Button kind="plain-faint" size="large" onClick={resetImport} isDisabled={isImporting}>Reset</Button>
+          <Button kind="plain-faint" size="large" onClick={resetImport} isDisabled={isImporting}>Undo import</Button>
         ) : (
-          <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
+          <Button kind="plain-faint" size="large" onClick={onSkip}>Don't import</Button>
         )}
         <Button
           kind="filled"
