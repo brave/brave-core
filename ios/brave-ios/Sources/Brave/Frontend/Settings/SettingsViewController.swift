@@ -720,7 +720,10 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Origin.originProductName,
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: OriginSettingsView())
+            guard let service = BraveOriginServiceFactory.get(profile: braveCore.profile) else {
+              return
+            }
+            let controller = UIHostingController(rootView: OriginSettingsView(service: service))
             controller.title = Strings.Origin.originProductName  // Not Translated
             self.navigationController?.pushViewController(controller, animated: true)
           },
