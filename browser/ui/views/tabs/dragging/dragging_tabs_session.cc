@@ -77,8 +77,9 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
   // Pinned tabs cannot be grouped, so we only change the group membership of
   // unpinned tabs.
   std::vector<int> selected_unpinned;
-  for (size_t selected_index :
-       attached_model->selection_model().selected_indices()) {
+  for (size_t selected_index : attached_model->selection_model()
+                                   .GetListSelectionModel()
+                                   .selected_indices()) {
     if (!attached_model->IsTabPinned(selected_index)) {
       selected_unpinned.push_back(selected_index);
     }
