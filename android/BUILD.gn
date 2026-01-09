@@ -204,6 +204,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/bar_chart.xml",
     "java/brave-res/drawable/bat_ads_logo_button.xml",
     "java/brave-res/drawable/block_counter_background.xml",
+    "java/brave-res/drawable/blocked_item_default_bg.xml",
     "java/brave-res/drawable/blue_48_rounded_bg.xml",
     "java/brave-res/drawable/blue_rounded_notification_bg.xml",
     "java/brave-res/drawable/bookmark_menu_bg.xml",

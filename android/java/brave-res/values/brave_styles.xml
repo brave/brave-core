@@ -370,6 +370,12 @@
         <item name="android:textColor">@color/tab_text_unselected_color</item>
     </style>
 
+    <!-- Blocked item default icon text (single letter when no favicon) -->
+    <style name="TextAppearance.BraveBlockedItemIcon" parent="TextAppearance.TextSmall">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/shields_text_on_card</item>
+    </style>
+
     <!-- Suggestions tiles -->
     <style name="BraveSuggestionsTilesText"
            parent="TextAppearance.TextSmall.Secondary">

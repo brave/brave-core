@@ -122,8 +122,10 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.shields") {
     resources_package = "org.chromium.chrome.browser.shields"
-    sources =
-        [ "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelLayoutTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelDomainUtilsTest.java",
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelLayoutTest.java",
+    ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
