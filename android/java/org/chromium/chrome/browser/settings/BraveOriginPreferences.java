@@ -21,6 +21,7 @@ import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -126,9 +127,13 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (policyKey == null || mBraveOriginSettingsHandler == null) {
             return false;
         }
+        // For DISABLED policies, invert the value (checked = enabled = false policy value)
+        // For ENABLED policies, use the value as-is (checked = enabled = true policy value)
+        boolean policyValue =
+                BraveOriginSubscriptionPrefs.isPolicyInverted(policyKey) ? !isEnabled : isEnabled;
         mBraveOriginSettingsHandler.setPolicyValue(
                 policyKey,
-                isEnabled,
+                policyValue,
                 (success) -> {
                     if (!success) {
                         Log.e(TAG, "Failed to set policy value for " + policyKey);
@@ -170,8 +175,14 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 policyKey,
                 (value) -> {
                     if (value != null) {
-                        preference.setChecked(value);
-                        updateToggleDescription(preference, value);
+                        // For DISABLED policies, invert the value (!value)
+                        // For ENABLED policies, use the value as-is
+                        boolean checkedValue =
+                                BraveOriginSubscriptionPrefs.isPolicyInverted(policyKey)
+                                        ? !value
+                                        : value;
+                        preference.setChecked(checkedValue);
+                        updateToggleDescription(preference, checkedValue);
                     }
                 });
     }
