@@ -25,13 +25,11 @@ def normalize_channel(original_function, channel):
 
 # This override adds or modifies the following context values:
 # - PACKAGEANDCHANNEL: required by our templates (drops channel name for stable)
-# - USR_BIN_SYMLINK_NAME: required for docs (drops channel name for stable)
 # - VERSION/VERSIONFULL: drops MAJOR from the version string
 @override_utils.override_method(Installer)
 def initialize(self, original_method):
     original_method(self)
     self.context["PACKAGEANDCHANNEL"] = self.context["PACKAGE"]
-    self.context["USR_BIN_SYMLINK_NAME"] = self.context["PACKAGE"]
     self.context["VERSION"] = (f"{self.context['MINOR']}."
                                f"{self.context['BUILD']}."
                                f"{self.context['PATCH']}")
