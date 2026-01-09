@@ -179,3 +179,29 @@ export const removeCitationsWithMissingLinks = (
     return index >= 0 && index < citationLinks.length ? match : ''
   })
 }
+
+export function getToolCallArtifacts(
+  group: Mojom.ConversationTurn[],
+): Mojom.ToolCallArtifactContentBlock[] {
+  const artifacts: Mojom.ToolCallArtifactContentBlock[] = []
+
+  for (const entry of group) {
+    if (!entry.events) {
+      continue
+    }
+
+    for (const event of entry.events) {
+      if (!event.toolUseEvent?.output) {
+        continue
+      }
+
+      for (const contentBlock of event.toolUseEvent.output) {
+        if (contentBlock.toolCallArtifactContentBlock) {
+          artifacts.push(contentBlock.toolCallArtifactContentBlock)
+        }
+      }
+    }
+  }
+
+  return artifacts
+}
