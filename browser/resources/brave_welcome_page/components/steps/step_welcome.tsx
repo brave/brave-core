@@ -34,7 +34,7 @@ export function StepWelcomeFooter({ onNext, onBack, onSkip, isFirstStep }: StepF
         )}
       </div>
       <div className="footer-right">
-        <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
+        <Button kind="plain-faint" size="large" onClick={onSkip}>Maybe later</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
           Set Brave as default
         </Button>
