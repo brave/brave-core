@@ -564,7 +564,7 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
   for (const auto& fp_rule : rules) {
     const auto content_settings_value = ValueToContentSetting(fp_rule->value);
     auto auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER;
-    if (content_settings_value == CONTENT_SETTING_ALLOW) {
+    if (content_settings_value == CONTENT_SETTING_BLOCK) {
       auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
     }
 

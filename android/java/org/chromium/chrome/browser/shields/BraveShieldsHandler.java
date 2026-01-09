@@ -792,28 +792,52 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    private void updateSecondaryShredSiteDataText(String text) {
+        LinearLayout secondaryShredSiteDataLayout =
+                mSecondaryLayout.findViewById(
+                        R.id.brave_shields_secondary_shred_site_data_layout_id);
+        TextView secondaryShredSiteDataText =
+                secondaryShredSiteDataLayout.findViewById(R.id.toggle_text_sub_text);
+
+        secondaryShredSiteDataText.setText(
+                mContext.getResources()
+                        .getString(R.string.brave_shields_shred_sites_data_sub_text, text));
+        secondaryShredSiteDataText.setVisibility(text == null ? View.GONE : View.VISIBLE);
+    }
+
     private void updateBraveShieldsAutoShredSiteDataSubText(String autoShredSettingOption) {
         LinearLayout braveShieldsAutoShredItemLayout =
                 mShredSiteDataLayout.findViewById(
                         R.id.brave_shields_auto_shred_site_data_layout_id);
         TextView braveShieldsAutoShredSiteDataSubText =
                 braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_text_sub_text);
+
         if (autoShredSettingOption.equals(BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER)) {
             braveShieldsAutoShredSiteDataSubText.setText(
                     R.string.brave_shields_auto_shred_never_mode_text);
             braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+            updateSecondaryShredSiteDataText(null);
         } else if (autoShredSettingOption.equals(
                 BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED)) {
             braveShieldsAutoShredSiteDataSubText.setText(
                     R.string.brave_shields_auto_shred_site_tab_closed_mode_text);
             braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+
+            updateSecondaryShredSiteDataText(
+                    mContext.getResources()
+                            .getString(
+                                    R.string.brave_shields_auto_shred_site_tab_closed_mode_text));
         } else if (autoShredSettingOption.equals(
                 BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT)) {
             braveShieldsAutoShredSiteDataSubText.setText(
                     R.string.brave_shields_auto_shred_app_close_mode_text);
             braveShieldsAutoShredSiteDataSubText.setVisibility(View.VISIBLE);
+            updateSecondaryShredSiteDataText(
+                    mContext.getResources()
+                            .getString(R.string.brave_shields_auto_shred_app_close_mode_text));
         } else {
             braveShieldsAutoShredSiteDataSubText.setVisibility(View.GONE);
+            updateSecondaryShredSiteDataText(null);
         }
     }
 

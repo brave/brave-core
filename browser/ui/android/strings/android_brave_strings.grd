@@ -1459,6 +1459,9 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_TEXT" desc="Shields menu shred site's data item text.">
         Shred Site Data
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_SUB_TEXT" desc="Shields menu shred site's data item sub text.">
+        Auto shred: <ph name="AUTO_SHRED_MODE_TEXT">%1$s</ph>
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_NOW_TEXT" desc="Shields menu shred site's data now item text.">
         Shred Site Data Now
       </message>
@@ -1473,7 +1476,7 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
         App close
-      </message>
+      </message>   
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>
