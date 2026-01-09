@@ -502,7 +502,7 @@ export function StepMakeYoursFooter({ onNext, onBack, onSkip }: StepFooterProps)
         <Button kind="plain-faint" size="large" onClick={onBack}>Back</Button>
       </div>
       <div className="footer-right">
-        <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
+        <Button kind="plain-faint" size="large" onClick={onSkip}>Use defaults</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
           {hasChanges ? 'Apply and continue' : 'Continue'}
         </Button>
