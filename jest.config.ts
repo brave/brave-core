@@ -117,6 +117,7 @@ const jestConfig: Config = {
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!(bs58|base-x|@brave\\/brave-ui|@brave\\/leo)/)',
     // prevent jest from transforming itself
     // https://github.com/jestjs/jest/issues/9503#issuecomment-709041807
     '<rootDir>/node_modules/@babel',
