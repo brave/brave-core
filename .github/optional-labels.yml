@@ -3,7 +3,7 @@ CI/run-audit-deps:
     - any-glob-to-any-file:
       - DEPS
       - package.json
-      - package-lock.json
+      - pnpm-lock.yaml
       - script/audit_deps.py
       - "**/Cargo.toml"
       - "**/Cargo.lock"

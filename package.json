@@ -7,7 +7,7 @@
     "help": "node ./build/commands/scripts/commands.js --help",
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
-    "init": "cd ../../ && npm run --prefix src/brave sync -- --init",
+    "init": "cd ../../ && pnpm --prefix src/brave sync -- --init",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js build --target=create_dist",
     "sync": "node ./build/commands/scripts/sync.js",
@@ -21,7 +21,7 @@
     "update_patches": "node ./build/commands/scripts/commands.js update_patches",
     "apply_patches": "node ./build/commands/scripts/commands.js apply_patches",
     "start": "node ./build/commands/scripts/commands.js start",
-    "network-audit": "npm run test brave_network_audit_tests -- --ui-test-action-timeout=320000 --test-launcher-timeout=2200000",
+    "network-audit": "pnpm test brave_network_audit_tests -- --ui-test-action-timeout=320000 --test-launcher-timeout=2200000",
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
@@ -32,17 +32,17 @@
     "test": "node ./build/commands/scripts/commands.js test",
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
-    "tslint": "npm run eslint",
+    "tslint": "pnpm eslint",
     "eslint": "eslint ./components ./build",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
-    "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
+    "build-storybook": "pnpm build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",
     "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
-    "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
+    "test-python-scripts": "pnpm pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
     "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
@@ -72,6 +72,7 @@
     "node": ">=24.11.1 <25.0.0",
     "npm": ">=11.6.2"
   },
+  "packageManager": "pnpm@10.23.0",
   "homepage": "https:/github.com/brave/brave-core#readme",
   "config": {
     "projects": {
@@ -249,5 +250,23 @@
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
     "tiny-secp256k1": "1.1.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "blake-hash",
+      "bufferutil",
+      "core-js",
+      "esbuild",
+      "keccak",
+      "protobufjs",
+      "secp256k1",
+      "svelte-preprocess",
+      "tiny-secp256k1",
+      "usb",
+      "utf-8-validate"
+    ],
+    "peerDependencyRules": {
+      "autoInstallPeers": true
+    }
   }
 }

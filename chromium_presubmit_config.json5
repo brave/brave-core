@@ -71,6 +71,7 @@
     "win_build_output/",
     "ios/third_party/",
     "ui/webui/resources/wasm/vendor/",
+    "pnpm-lock\\.yaml",
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched
