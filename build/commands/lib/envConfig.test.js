@@ -255,6 +255,78 @@ describe('EnvConfig', () => {
     })
   })
 
+  describe('getMergedObject', () => {
+    let envConfig
+
+    beforeEach(() => {
+      mockFiles[packageJsonPath] = {
+        version: '1.2.3',
+        config: {
+          projects: {
+            chrome: {
+              custom_deps: {
+                'src/third_party/chromium-variations': null,
+              },
+              custom_vars: {
+                'checkout_clangd': true,
+              },
+            },
+          },
+        },
+      }
+      envConfig = new EnvConfig(configDir)
+    })
+
+    it('should return package.json values when .env is not present', () => {
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+      ).toEqual({
+        'src/third_party/chromium-variations': null,
+      })
+
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ).toEqual({
+        'checkout_clangd': true,
+      })
+    })
+
+    it('should merge .env and package.json values', () => {
+      mockFiles[envPath] = [
+        'projects_chrome_custom_deps={"src/third_party/chromium-variations": "rev"}',
+        'projects_chrome_custom_vars={"checkout_clang_tidy": true}',
+      ]
+      envConfig = new EnvConfig(configDir)
+
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+      ).toEqual({
+        'src/third_party/chromium-variations': 'rev',
+      })
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ).toEqual({
+        'checkout_clangd': true,
+        'checkout_clang_tidy': true,
+      })
+    })
+
+    it('should merge .env and package.json values with key prefix values', () => {
+      mockFiles[envPath] = [
+        'projects_chrome_custom_vars={"checkout_clang_tidy": false}',
+        'projects_chrome_custom_vars_checkout_clang_tidy=true',
+      ]
+      envConfig = new EnvConfig(configDir)
+
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ).toEqual({
+        'checkout_clangd': true,
+        'checkout_clang_tidy': true,
+      })
+    })
+  })
+
   describe('type validation', () => {
     let envConfig
 

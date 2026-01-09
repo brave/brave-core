@@ -127,8 +127,11 @@ const Config = function () {
   ])
   this.gclientFile = path.join(this.rootDir, '.gclient')
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
-  this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
-  this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+  this.disableGclientConfigUpdate = getEnvConfig(
+    ['disable_gclient_config_update'],
+    false,
+  )
+  this.gclientGlobalVars = envConfig.getMergedObject(['gclient', 'global_vars'])
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
@@ -154,18 +157,6 @@ const Config = function () {
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
-  if (this.rbeService) {
-    this.reapiAddress = this.rbeService
-    this.reapiBackendConfigPath = path.join(
-      this.srcDir,
-      'build',
-      'config',
-      'siso',
-      'backend_config',
-      'google.star',
-    )
-    this.reapiInstance = 'default'
-  }
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
@@ -1230,6 +1221,44 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       stdio: stdio,
       cwd: this.srcDir,
       git_cwd: '.',
+    }
+  },
+})
+
+Object.defineProperty(Config.prototype, 'chromiumCustomDeps', {
+  get: function () {
+    const gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
+    if (!this.isCI && Object.keys(gclientCustomDeps).length > 0) {
+      Log.error(
+        'gclient_custom_deps is deprecated, use projects_chrome_custom_deps in .env',
+      )
+    }
+    return {
+      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+      ...gclientCustomDeps,
+    }
+  },
+})
+
+Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
+  get: function () {
+    const gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+    if (!this.isCI && Object.keys(gclientCustomVars).length > 0) {
+      Log.error(
+        'gclient_custom_vars is deprecated, use projects_chrome_custom_vars in .env',
+      )
+    }
+    return {
+      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
+      ...(this.rbeService
+        ? {
+            'reapi_address': this.rbeService,
+            'reapi_backend_config_path': 'google.star',
+            'reapi_instance': 'default',
+          }
+        : {}),
+      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ...gclientCustomVars,
     }
   },
 })

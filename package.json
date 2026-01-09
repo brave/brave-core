@@ -80,6 +80,15 @@
         "tag": "144.0.7559.59",
         "repository": {
           "url": "https://github.com/brave/chromium"
+        },
+        "custom_deps": {
+          "src/testing/libfuzzer/fuzzers/wasm_corpus": null,
+          "src/third_party/chromium-variations": null
+        },
+        "custom_vars": {
+          "checkout_clang_coverage_tools": true,
+          "checkout_clangd": true,
+          "download_reclient": true
         }
       },
       "depot_tools": {
