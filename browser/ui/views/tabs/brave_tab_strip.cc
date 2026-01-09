@@ -50,11 +50,12 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
     : TabStrip(std::move(controller)) {
   always_hide_close_button_.Init(
       brave_tabs::kAlwaysHideTabCloseButton,
-      controller_->GetProfile()->GetPrefs(),
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged,
                           base::Unretained(this)));
-  middle_click_close_tab_enabled_.Init(brave_tabs::kMiddleClickCloseTabEnabled,
-                                       controller_->GetProfile()->GetPrefs());
+  middle_click_close_tab_enabled_.Init(
+      brave_tabs::kMiddleClickCloseTabEnabled,
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -119,7 +120,8 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
-  if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
+  if (brave_tabs::AreTooltipsEnabled(
+          controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs())) {
     return;
   }
   TabStrip::UpdateHoverCard(tab, update_type);
@@ -232,8 +234,10 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
     // "Hide Completely When Collapsed" is enabled. In this case, pinned tabs
     // are not visible at all, so we don't need to care about the jumping issue.
     should_layout_pinned_tabs_in_grid =
-        controller_->GetProfile()->GetPrefs()->GetBoolean(
-            brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+        controller_->GetBrowserWindowInterface()
+            ->GetProfile()
+            ->GetPrefs()
+            ->GetBoolean(brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
   }
 
   return should_layout_pinned_tabs_in_grid;
