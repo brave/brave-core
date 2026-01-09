@@ -10,7 +10,6 @@ import Checkbox from '@brave/leo/react/checkbox'
 import { StepContentProps, StepFooterProps } from '../types'
 
 import wdpIcon from '../img/wdp.svg'
-import setDefaultIcon from '../img/set-default.svg'
 import p3aIcon from '../img/p3a.svg'
 // TODO: Replace these placeholder imports with actual SVG icons
 // import anonymousDataIcon from '../img/anonymous-data.svg'
@@ -36,12 +35,6 @@ const privacyOptions: PrivacyOption[] = [
     subtitle: 'Share completely private & anonymous product insights.',
     icon: p3aIcon
   },
-  {
-    id: 'default-browser',
-    title: 'Set Brave as your default browser',
-    subtitle: 'Enjoy ad-blocking and real privacy with every page view. Give it a try!',
-    icon: setDefaultIcon
-  }
 ]
 
 export function StepCompleteContent({}: StepContentProps) {
