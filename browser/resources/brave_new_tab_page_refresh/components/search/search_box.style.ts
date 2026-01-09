@@ -101,7 +101,7 @@ export const style = scoped.css`
   }
 
   .results-container {
-    position: absolute;
+    position: fixed;
     position-anchor: --search-input-container;
     position-area: bottom center;
 
