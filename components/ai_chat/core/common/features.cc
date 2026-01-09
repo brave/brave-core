@@ -151,7 +151,7 @@ BASE_FEATURE(kCodeExecutionTool,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<bool> kCodeExecutionToolCharts{&kCodeExecutionTool,
-                                                        "charts", false};
+                                                        "charts", true};
 
 bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);
