@@ -144,7 +144,7 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
   auto* model = browser->tab_strip_model();
-  const auto selection = model->selection_model();
+  const auto& selection = model->selection_model().GetListSelectionModel();
   auto indices = std::vector<int>(selection.selected_indices().begin(),
                                   selection.selected_indices().end());
   CHECK(!indices.empty())
@@ -906,7 +906,8 @@ bool CanCloseTabsToLeft(Browser* browser) {
     return false;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   return left_selected > 0;
 }
 
@@ -917,7 +918,8 @@ void CloseTabsToLeft(Browser* browser) {
     return;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   for (int i = left_selected - 1; i >= 0; --i) {
     tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
                                    TabCloseTypes::CLOSE_USER_GESTURE);
