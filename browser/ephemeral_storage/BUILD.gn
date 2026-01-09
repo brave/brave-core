@@ -52,6 +52,9 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/content_settings/core/common",
     "//brave/components/ephemeral_storage",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
