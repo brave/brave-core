@@ -11,7 +11,7 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kChartsKey[] = "charts";
+constexpr char kChartType[] = "chart";
 constexpr char kDataKey[] = "data";
 constexpr char kXKey[] = "x";
 constexpr char kLabelsKey[] = "labels";
@@ -43,60 +43,55 @@ std::string_view ChartCodePlugin::SetupScript() const {
   return R"(
 const chartUtil = {
   createLineChart: function(data, labels) {
-    if (!codeExecOutput.charts) {
-      codeExecOutput.charts = [];
-    }
     const chartData = { data: data };
     if (labels) {
       chartData.labels = labels;
     }
-    codeExecOutput.charts.push(chartData);
+    codeExecArtifacts.push({ type: 'chart', content: chartData });
   }
 };
 )";
 }
 
-std::optional<std::string> ChartCodePlugin::ValidateOutput(
-    const base::Value::Dict& output) const {
-  const auto* charts = output.FindList(kChartsKey);
-  if (!charts) {
+std::optional<std::string> ChartCodePlugin::ValidateArtifact(
+    const std::string& type,
+    const base::Value& artifact_value) const {
+  if (type != kChartType) {
     return std::nullopt;
   }
 
-  for (const auto& chart : *charts) {
-    const auto* chart_dict = chart.GetIfDict();
-    if (!chart_dict) {
-      return "Chart must be an object";
+  const auto* chart_dict = artifact_value.GetIfDict();
+  if (!chart_dict) {
+    return "Chart must be an object";
+  }
+
+  const auto* data = chart_dict->FindList(kDataKey);
+  if (!data) {
+    return "Chart is missing 'data' array";
+  }
+
+  if (data->empty()) {
+    return "Chart has empty data array";
+  }
+
+  for (const auto& data_entry : *data) {
+    const auto* data_item = data_entry.GetIfDict();
+    if (!data_item) {
+      return "Chart data entry must be an object";
     }
 
-    const auto* data = chart_dict->FindList(kDataKey);
-    if (!data) {
-      return "Chart is missing 'data' array";
+    if (!data_item->Find(kXKey)) {
+      return "Chart data entry is missing required 'x' field";
     }
 
-    if (data->empty()) {
-      return "Chart has empty data array";
+    if (data_item->size() < 2) {
+      return "Chart data entry must have 'x' and at least one other field";
     }
+  }
 
-    for (const auto& data_entry : *data) {
-      const auto* data_item = data_entry.GetIfDict();
-      if (!data_item) {
-        return "Chart data entry must be an object";
-      }
-
-      if (!data_item->Find(kXKey)) {
-        return "Chart data entry is missing required 'x' field";
-      }
-
-      if (data_item->size() < 2) {
-        return "Chart data entry must have 'x' and at least one other field";
-      }
-    }
-
-    const auto* labels = chart_dict->Find(kLabelsKey);
-    if (labels && !labels->is_dict()) {
-      return "Chart labels must be an object";
-    }
+  const auto* labels = chart_dict->Find(kLabelsKey);
+  if (labels && !labels->is_dict()) {
+    return "Chart labels must be an object";
   }
 
   return std::nullopt;
