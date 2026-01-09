@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index c17cb56be34f7cb5e52edcb7a6f2cef9f94f8771..47bebc4d10381590ee57fde6ec817dacc4dc0b44 100644
+index c17cb56be34f7cb5e52edcb7a6f2cef9f94f8771..02fa38d86c0154b29775672e8746c86644d27ae4 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -362,6 +362,7 @@ void ThemeSource::SendColorsCss(
-   std::optional<std::string> css_content =
-       GenerateColorsCss(color_provider, url, theme_service->GetIsGrayscale(),
-                         theme_service->GetIsBaseline());
+@@ -358,6 +358,7 @@ void ThemeSource::SendColorsCss(
+ 
+   const auto* theme_service =
+       ThemeServiceFactory::GetForProfile(profile_->GetOriginalProfile());
 +  BRAVE_THEME_SOURCE_SEND_COLORS_CSS
  
-   if (!css_content) {
-     std::move(callback).Run(nullptr);
+   std::optional<std::string> css_content =
+       GenerateColorsCss(color_provider, url, theme_service->GetIsGrayscale(),
