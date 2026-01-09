@@ -23,16 +23,23 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
+
+import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabFavicon;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -84,6 +91,13 @@ public class BraveUnifiedPanelHandler {
     private LinearLayout mAdvancedOptionsButton;
     private @Nullable LinearLayout mAdvancedOptionsContent;
     private @Nullable ImageView mAdvancedOptionsArrow;
+    private boolean mIsAdvancedOptionsExpanded;
+
+    // Advanced options switches
+    private SwitchCompat mBlockScriptsSwitch;
+    private SwitchCompat mForgetMeSwitch;
+    private SwitchCompat mFingerprintingSwitch;
+    private boolean mIsUpdatingSwitches;
 
     // Report broken site section
     private LinearLayout mReportBrokenSiteSection;
@@ -263,6 +277,11 @@ public class BraveUnifiedPanelHandler {
         mAdvancedOptionsContent = popupView.findViewById(R.id.advanced_options_content);
         mAdvancedOptionsArrow = popupView.findViewById(R.id.advanced_options_arrow);
 
+        // Advanced options switches
+        mBlockScriptsSwitch = mPopupView.findViewById(R.id.scripts_toggle);
+        mForgetMeSwitch = mPopupView.findViewById(R.id.forget_me_toggle);
+        mFingerprintingSwitch = mPopupView.findViewById(R.id.fingerprinting_toggle);
+
         // Report broken site section
         mReportBrokenSiteSection = popupView.findViewById(R.id.report_broken_site_section);
         mReportBrokenSiteButton = popupView.findViewById(R.id.report_broken_site_button);
@@ -279,6 +298,20 @@ public class BraveUnifiedPanelHandler {
                     onShieldsToggleChanged(newState);
                 });
 
+        // Set up advanced options switches
+        if (mBlockScriptsSwitch != null) {
+            mBlockScriptsSwitch.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> onBlockScriptsChanged(isChecked));
+        }
+        if (mForgetMeSwitch != null) {
+            mForgetMeSwitch.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> onForgetMeChanged(isChecked));
+        }
+        if (mFingerprintingSwitch != null) {
+            mFingerprintingSwitch.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> onFingerprintingChanged(isChecked));
+        }
+
         // Set up report broken site button
         if (mReportBrokenSiteButton != null) {
             mReportBrokenSiteButton.setOnClickListener(v -> onReportBrokenSiteClicked());
@@ -288,6 +321,7 @@ public class BraveUnifiedPanelHandler {
         mAdvancedOptionsButton.setOnClickListener(v -> toggleAdvancedOptions());
 
         // Reset advanced options state (collapsed by default when showing panel)
+        mIsAdvancedOptionsExpanded = false;
         if (mAdvancedOptionsContent != null) {
             mAdvancedOptionsContent.setVisibility(View.GONE);
         }
@@ -303,7 +337,90 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void setupAdvancedOptionsListeners() {
-        // Stub - implemented in Advanced Options commit
+        // HTTPS upgrade item
+        View httpsUpgradeItem = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_item);
+        if (httpsUpgradeItem != null) {
+            httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+        }
+
+        // Trackers & Ads item
+        View trackersItem = mAdvancedOptionsContent.findViewById(R.id.trackers_item);
+        if (trackersItem != null) {
+            trackersItem.setOnClickListener(v -> showTrackersAdsPanel());
+        }
+
+        // Cookies item
+        View cookiesItem = mAdvancedOptionsContent.findViewById(R.id.cookies_item);
+        if (cookiesItem != null) {
+            cookiesItem.setOnClickListener(v -> showCookiesPanel());
+        }
+
+        // Shred site data item
+        View shredDataItem = mAdvancedOptionsContent.findViewById(R.id.shred_data_item);
+        if (shredDataItem != null) {
+            shredDataItem.setOnClickListener(v -> showShredPanel());
+        }
+
+        // Block element item
+        View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
+        if (blockElementItem != null) {
+            // Show/hide based on feature flag and private window status
+            boolean isPrivateWindow = mCurrentTab != null && mCurrentTab.isIncognito();
+            boolean isFeatureEnabled =
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER);
+
+            if (!isPrivateWindow && isFeatureEnabled) {
+                blockElementItem.setVisibility(View.VISIBLE);
+                blockElementItem.setOnClickListener(
+                        v -> {
+                            if (mCurrentTab != null) {
+                                BraveCosmeticFiltersUtils.launchContentPickerForWebContent(
+                                        mCurrentTab);
+                                hide(); // Close the popup after launching element picker
+                            }
+                        });
+            } else {
+                blockElementItem.setVisibility(View.GONE);
+            }
+        }
+
+        // Global shields settings item
+        View globalSettingsItem = mAdvancedOptionsContent.findViewById(R.id.global_settings_item);
+        if (globalSettingsItem != null) {
+            globalSettingsItem.setOnClickListener(v -> openGlobalShieldsSettings());
+        }
+    }
+
+    private void openGlobalShieldsSettings() {
+        if (mContext == null) {
+            return;
+        }
+
+        // Hide the panel before navigating
+        hide();
+
+        // Navigate to BravePrivacySettings (Shields & Privacy settings)
+        SettingsNavigation navigation = SettingsNavigationFactory.createSettingsNavigation();
+        navigation.startSettings(
+                mContext,
+                org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.class,
+                null);
+    }
+
+    private void showHttpsUpgradePanel() {
+        // Stub - implemented in Sub-panel Navigation commit
+    }
+
+    private void showTrackersAdsPanel() {
+        // Stub - implemented in Sub-panel Navigation commit
+    }
+
+    private void showCookiesPanel() {
+        // Stub - implemented in Sub-panel Navigation commit
+    }
+
+    private void showShredPanel() {
+        // Stub - implemented in Sub-panel Navigation commit
     }
 
     private void switchToTab(int tabIndex) {
@@ -656,8 +773,66 @@ public class BraveUnifiedPanelHandler {
         mBlockedItemsContainer.addView(imageView);
     }
 
-    private void updateAdvancedOptionsSwitches(@SuppressWarnings("unused") boolean shieldsEnabled) {
-        // Stub - implemented in Advanced Options commit
+    private void updateAdvancedOptionsSwitches(boolean shieldsEnabled) {
+        if (mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        mIsUpdatingSwitches = true;
+
+        // Block scripts switch
+        if (mBlockScriptsSwitch != null) {
+            if (shieldsEnabled) {
+                boolean scriptsBlocked =
+                        BraveShieldsContentSettings.getShields(
+                                mProfile,
+                                mUrlSpec,
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
+                mBlockScriptsSwitch.setEnabled(true);
+                mBlockScriptsSwitch.setChecked(scriptsBlocked);
+            } else {
+                mBlockScriptsSwitch.setEnabled(false);
+                mBlockScriptsSwitch.setChecked(false);
+            }
+        }
+
+        // Forget me switch
+        if (mForgetMeSwitch != null) {
+            if (shieldsEnabled) {
+                boolean forgetMeEnabled =
+                        BraveShieldsContentSettings.getShields(
+                                mProfile,
+                                mUrlSpec,
+                                BraveShieldsContentSettings
+                                        .RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
+                mForgetMeSwitch.setEnabled(true);
+                mForgetMeSwitch.setChecked(forgetMeEnabled);
+            } else {
+                mForgetMeSwitch.setEnabled(false);
+                mForgetMeSwitch.setChecked(false);
+            }
+        }
+
+        // Fingerprinting switch
+        if (mFingerprintingSwitch != null) {
+            if (shieldsEnabled) {
+                String fingerprintingValue =
+                        BraveShieldsContentSettings.getShieldsValue(
+                                mProfile,
+                                mUrlSpec,
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+                // If value is NOT ALLOW_RESOURCE, fingerprinting protection is enabled (checked)
+                boolean fingerprintingEnabled =
+                        !fingerprintingValue.equals(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                mFingerprintingSwitch.setEnabled(true);
+                mFingerprintingSwitch.setChecked(fingerprintingEnabled);
+            } else {
+                mFingerprintingSwitch.setEnabled(false);
+                mFingerprintingSwitch.setChecked(false);
+            }
+        }
+
+        mIsUpdatingSwitches = false;
     }
 
     private void onShieldsToggleChanged(boolean isChecked) {
@@ -691,6 +866,7 @@ public class BraveUnifiedPanelHandler {
             }
             if (mAdvancedOptionsContent != null) {
                 mAdvancedOptionsContent.setVisibility(View.GONE);
+                mIsAdvancedOptionsExpanded = false;
                 if (mAdvancedOptionsArrow != null) {
                     mAdvancedOptionsArrow.setRotation(0f);
                 }
@@ -701,12 +877,64 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
+    private void onBlockScriptsChanged(boolean isChecked) {
+        if (mIsUpdatingSwitches || mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShields(
+                mProfile,
+                mUrlSpec,
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS,
+                isChecked,
+                false);
+    }
+
+    private void onForgetMeChanged(boolean isChecked) {
+        if (mIsUpdatingSwitches || mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShields(
+                mProfile,
+                mUrlSpec,
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE,
+                isChecked,
+                false);
+    }
+
+    private void onFingerprintingChanged(boolean isChecked) {
+        if (mIsUpdatingSwitches || mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        // Fingerprinting uses setShieldsValue with DEFAULT (enabled) or ALLOW_RESOURCE (disabled)
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrlSpec,
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                isChecked
+                        ? BraveShieldsContentSettings.DEFAULT
+                        : BraveShieldsContentSettings.ALLOW_RESOURCE,
+                false);
+    }
+
     private void onReportBrokenSiteClicked() {
         // Stub - implemented in Site Info commit
     }
 
     private void toggleAdvancedOptions() {
-        // Stub - implemented in Advanced Options commit
+        mIsAdvancedOptionsExpanded = !mIsAdvancedOptionsExpanded;
+
+        if (mIsAdvancedOptionsExpanded) {
+            // Expand: show content and rotate arrow
+            mAdvancedOptionsContent.setVisibility(View.VISIBLE);
+            mAdvancedOptionsArrow.setRotation(180f);
+        } else {
+            // Collapse: hide content and reset arrow
+            mAdvancedOptionsContent.setVisibility(View.GONE);
+            mAdvancedOptionsArrow.setRotation(0f);
+        }
     }
 
     public boolean isShowing() {
