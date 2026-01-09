@@ -63,6 +63,11 @@ public class BraveUnifiedPanelHandler {
     private @Nullable View mHardwareButtonMenuAnchor;
     private @Nullable String mUrlSpec;
     private @Nullable String mHost;
+    private View mMainPanelContainer;
+    private View mHttpsPanelContainer;
+    private View mTrackersPanelContainer;
+    private View mCookiesPanelContainer;
+    private View mShredPanelContainer;
 
     // UI elements - initialized in setupViews() from known layout, non-null after setup
     private LinearLayout mShieldsTabButton;
@@ -243,6 +248,13 @@ public class BraveUnifiedPanelHandler {
     private void setupViews() {
         View popupView = assumeNonNull(mPopupView);
 
+        // Get container views
+        mMainPanelContainer = popupView.findViewById(R.id.main_panel_container);
+        mHttpsPanelContainer = popupView.findViewById(R.id.https_panel_container);
+        mTrackersPanelContainer = popupView.findViewById(R.id.trackers_panel_container);
+        mCookiesPanelContainer = popupView.findViewById(R.id.cookies_panel_container);
+        mShredPanelContainer = popupView.findViewById(R.id.shred_panel_container);
+
         // Tab buttons - these must exist in the layout
         mShieldsTabButton = assumeNonNull(popupView.findViewById(R.id.shields_tab_button));
         mSiteSettingsTabButton =
@@ -260,6 +272,22 @@ public class BraveUnifiedPanelHandler {
         mShieldsContent = assumeNonNull(popupView.findViewById(R.id.shields_tab_content));
         mSiteSettingsContent =
                 assumeNonNull(popupView.findViewById(R.id.site_settings_tab_content));
+
+        // Site Info elements - note: this is inside site_settings_tab_content which starts hidden
+        // It's okay if this is null initially, we'll find it when needed
+        if (mSiteSettingsContent != null) {
+            // Wire up clickable Site Info items
+            View dangerousSiteItem = mSiteSettingsContent.findViewById(R.id.dangerous_site_item);
+            View permissionsItem = mSiteSettingsContent.findViewById(R.id.permissions_item);
+
+            if (dangerousSiteItem != null) {
+                dangerousSiteItem.setOnClickListener(v -> onDangerousSiteClicked());
+            }
+
+            if (permissionsItem != null) {
+                permissionsItem.setOnClickListener(v -> onPermissionsClicked());
+            }
+        }
 
         // Shields content elements
         mShieldIconUnified = popupView.findViewById(R.id.shield_icon_unified);
@@ -405,22 +433,6 @@ public class BraveUnifiedPanelHandler {
                 mContext,
                 org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.class,
                 null);
-    }
-
-    private void showHttpsUpgradePanel() {
-        // Stub - implemented in Sub-panel Navigation commit
-    }
-
-    private void showTrackersAdsPanel() {
-        // Stub - implemented in Sub-panel Navigation commit
-    }
-
-    private void showCookiesPanel() {
-        // Stub - implemented in Sub-panel Navigation commit
-    }
-
-    private void showShredPanel() {
-        // Stub - implemented in Sub-panel Navigation commit
     }
 
     private void switchToTab(int tabIndex) {
@@ -877,6 +889,10 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
+    private void onReportBrokenSiteClicked() {
+        // Stub - implemented in Site Info commit
+    }
+
     private void onBlockScriptsChanged(boolean isChecked) {
         if (mIsUpdatingSwitches || mUrlSpec == null || mProfile == null) {
             return;
@@ -917,10 +933,6 @@ public class BraveUnifiedPanelHandler {
                         ? BraveShieldsContentSettings.DEFAULT
                         : BraveShieldsContentSettings.ALLOW_RESOURCE,
                 false);
-    }
-
-    private void onReportBrokenSiteClicked() {
-        // Stub - implemented in Site Info commit
     }
 
     private void toggleAdvancedOptions() {
@@ -968,6 +980,383 @@ public class BraveUnifiedPanelHandler {
 
     public void addObserver(@Nullable BraveShieldsMenuObserver observer) {
         // Stub - implemented in Permissions Panel commit
+    }
+
+    private void showHttpsUpgradePanel() {
+        if (mMainPanelContainer == null || mHttpsPanelContainer == null) {
+            return;
+        }
+
+        // Set up the HTTPS panel if not already done
+        if (mHttpsPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView = (android.widget.ScrollView) mHttpsPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View httpsPanel = scrollView.getChildAt(0);
+                setupHttpsUpgradePanel(httpsPanel);
+            }
+        }
+
+        // Hide main panel, show HTTPS panel
+        mMainPanelContainer.setVisibility(View.GONE);
+        mHttpsPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void showMainPanel() {
+        if (mMainPanelContainer == null
+                || mHttpsPanelContainer == null
+                || mTrackersPanelContainer == null
+                || mCookiesPanelContainer == null) {
+            return;
+        }
+
+        // Hide all sub-panels, show main panel
+        mHttpsPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.GONE);
+        if (mShredPanelContainer != null) {
+            mShredPanelContainer.setVisibility(View.GONE);
+        }
+        mMainPanelContainer.setVisibility(View.VISIBLE);
+
+        // Restore the expanded state of advanced options if it was expanded
+        if (mIsAdvancedOptionsExpanded
+                && mAdvancedOptionsContent != null
+                && mAdvancedOptionsArrow != null) {
+            mAdvancedOptionsContent.setVisibility(View.VISIBLE);
+            mAdvancedOptionsArrow.setRotation(180f);
+        }
+    }
+
+    private void setupHttpsUpgradePanel(View panel) {
+        // Set up back button
+        ImageView backButton = panel.findViewById(R.id.https_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        // Set up radio buttons
+        androidx.appcompat.widget.AppCompatRadioButton strictRadio =
+                panel.findViewById(R.id.https_strict_radio);
+        androidx.appcompat.widget.AppCompatRadioButton defaultRadio =
+                panel.findViewById(R.id.https_default_radio);
+        androidx.appcompat.widget.AppCompatRadioButton disabledRadio =
+                panel.findViewById(R.id.https_disabled_radio);
+
+        LinearLayout strictOption = panel.findViewById(R.id.https_strict_option);
+        LinearLayout defaultOption = panel.findViewById(R.id.https_default_option);
+        LinearLayout disabledOption = panel.findViewById(R.id.https_disabled_option);
+
+        if (strictRadio == null || defaultRadio == null || disabledRadio == null) {
+            return;
+        }
+
+        // Get current HTTPS upgrade setting
+        // For now, we'll default to "default" (the middle option)
+        // TODO: Get actual setting from BraveShieldsContentSettings
+        defaultRadio.setChecked(true);
+
+        // Set up click listeners for the entire option rows
+        if (strictOption != null) {
+            strictOption.setOnClickListener(
+                    v -> {
+                        strictRadio.setChecked(true);
+                        defaultRadio.setChecked(false);
+                        disabledRadio.setChecked(false);
+                        // TODO: Save setting to BraveShieldsContentSettings
+                    });
+        }
+
+        if (defaultOption != null) {
+            defaultOption.setOnClickListener(
+                    v -> {
+                        strictRadio.setChecked(false);
+                        defaultRadio.setChecked(true);
+                        disabledRadio.setChecked(false);
+                        // TODO: Save setting to BraveShieldsContentSettings
+                    });
+        }
+
+        if (disabledOption != null) {
+            disabledOption.setOnClickListener(
+                    v -> {
+                        strictRadio.setChecked(false);
+                        defaultRadio.setChecked(false);
+                        disabledRadio.setChecked(true);
+                        // TODO: Save setting to BraveShieldsContentSettings
+                    });
+        }
+    }
+
+    private void showTrackersAdsPanel() {
+        if (mMainPanelContainer == null || mTrackersPanelContainer == null) {
+            return;
+        }
+
+        // Set up the Trackers panel if not already done
+        if (mTrackersPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView =
+                    (android.widget.ScrollView) mTrackersPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View trackersPanel = scrollView.getChildAt(0);
+                setupTrackersAdsPanel(trackersPanel);
+            }
+        }
+
+        // Hide main panel, show Trackers panel
+        mMainPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupTrackersAdsPanel(View panel) {
+        // Set up back button
+        ImageView backButton = panel.findViewById(R.id.trackers_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        // Set up radio buttons
+        androidx.appcompat.widget.AppCompatRadioButton aggressiveRadio =
+                panel.findViewById(R.id.trackers_aggressive_radio);
+        androidx.appcompat.widget.AppCompatRadioButton standardRadio =
+                panel.findViewById(R.id.trackers_standard_radio);
+        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
+                panel.findViewById(R.id.trackers_allow_radio);
+
+        // Get current setting
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrlSpec,
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+
+        // Set initial radio button state based on current setting
+        if (aggressiveRadio != null && standardRadio != null && allowRadio != null) {
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                aggressiveRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.DEFAULT)
+                    || currentSetting.equals(
+                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                standardRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                standardRadio.setChecked(true); // Default to standard
+            }
+        }
+
+        // Set up click listeners for the option containers
+        View aggressiveOption = panel.findViewById(R.id.trackers_aggressive_option);
+        View standardOption = panel.findViewById(R.id.trackers_standard_option);
+        View allowOption = panel.findViewById(R.id.trackers_allow_option);
+
+        if (aggressiveOption != null && aggressiveRadio != null) {
+            aggressiveOption.setOnClickListener(
+                    v -> {
+                        aggressiveRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (standardOption != null && standardRadio != null) {
+            standardOption.setOnClickListener(
+                    v -> {
+                        standardRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.DEFAULT);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setTrackersAdsSetting(String value) {
+        if (mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        // Use setShieldsValue for trackers setting
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrlSpec,
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                value,
+                false);
+    }
+
+    private void showCookiesPanel() {
+        if (mMainPanelContainer == null || mCookiesPanelContainer == null) {
+            return;
+        }
+
+        // Set up the Cookies panel if not already done
+	// TODO: Cleanup type cruft.
+        if (mCookiesPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView =
+                    (android.widget.ScrollView) mCookiesPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View cookiesPanel = scrollView.getChildAt(0);
+                setupCookiesPanel(cookiesPanel);
+            }
+        }
+
+        // Hide main panel, show Cookies panel
+        mMainPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupCookiesPanel(View panel) {
+        // Set up back button
+        ImageView backButton = panel.findViewById(R.id.cookies_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        // Set up radio buttons
+        androidx.appcompat.widget.AppCompatRadioButton blockAllRadio =
+                panel.findViewById(R.id.cookies_block_all_radio);
+        androidx.appcompat.widget.AppCompatRadioButton blockThirdPartyRadio =
+                panel.findViewById(R.id.cookies_block_third_party_radio);
+        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
+                panel.findViewById(R.id.cookies_allow_radio);
+
+        // Get current setting
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrlSpec,
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+
+        // Set initial radio button state based on current setting
+        if (blockAllRadio != null && blockThirdPartyRadio != null && allowRadio != null) {
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                blockAllRadio.setChecked(true);
+            } else if (currentSetting.equals(
+                    BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                blockThirdPartyRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                blockThirdPartyRadio.setChecked(true); // Default to block 3rd-party
+            }
+        }
+
+        // Set up click listeners for the option containers
+        View blockAllOption = panel.findViewById(R.id.cookies_block_all_option);
+        View blockThirdPartyOption = panel.findViewById(R.id.cookies_block_third_party_option);
+        View allowOption = panel.findViewById(R.id.cookies_allow_option);
+
+        if (blockAllOption != null && blockAllRadio != null) {
+            blockAllOption.setOnClickListener(
+                    v -> {
+                        blockAllRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (blockThirdPartyOption != null && blockThirdPartyRadio != null) {
+            blockThirdPartyOption.setOnClickListener(
+                    v -> {
+                        blockThirdPartyRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setCookiesSetting(String value) {
+        if (mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        // Use setShieldsValue for cookies setting
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrlSpec,
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES,
+                value,
+                false);
+    }
+
+    // ==================== Shred Site Data Panel ====================
+
+    private void showShredPanel() {
+        if (mMainPanelContainer == null || mShredPanelContainer == null || mContext == null) {
+            return;
+        }
+
+        // Set up the Shred panel if not already done
+        setupShredPanel();
+
+        // Hide main panel, show Shred panel
+        mMainPanelContainer.setVisibility(View.GONE);
+        mShredPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupShredPanel() {
+        if (mShredPanelContainer == null) {
+            return;
+        }
+
+        // Set up back button
+        View backButton = mShredPanelContainer.findViewById(R.id.shred_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        // Set site label
+        TextView siteLabel = mShredPanelContainer.findViewById(R.id.shred_site_label);
+        if (siteLabel != null && mHost != null) {
+            String siteName = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+            siteLabel.setText(siteName.toUpperCase(java.util.Locale.ROOT));
+        }
+
+        // Set up auto shred dropdown click
+        View autoShredItem = mShredPanelContainer.findViewById(R.id.auto_shred_item);
+        if (autoShredItem != null) {
+            autoShredItem.setOnClickListener(
+                    v -> {
+                        // TODO: Show dropdown/dialog for auto shred options
+                        // For now, this is just UI - wiring will be added later
+                    });
+        }
+
+        // Set up shred now button
+        View shredNowItem = mShredPanelContainer.findViewById(R.id.shred_now_item);
+        if (shredNowItem != null) {
+            shredNowItem.setOnClickListener(
+                    v -> {
+                        // TODO: Trigger immediate shred action
+                        // For now, this is just UI - wiring will be added later
+                    });
+        }
+
+        // Set initial auto shred value display
+        TextView autoShredValue = mShredPanelContainer.findViewById(R.id.auto_shred_value);
+        if (autoShredValue != null) {
+            // TODO: Get actual setting value
+            // For now, show default value
+            autoShredValue.setText(R.string.shred_option_site_tabs_closed);
+        }
+    }
+
+    private void onDangerousSiteClicked() {
+        // Stub - implemented in Site Info commit
+    }
+
+    private void onPermissionsClicked() {
+        // Stub - implemented in Site Info commit
     }
 
     // TODO: Get rid of this

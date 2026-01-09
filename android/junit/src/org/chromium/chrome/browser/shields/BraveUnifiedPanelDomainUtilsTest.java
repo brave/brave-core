@@ -444,6 +444,162 @@ public final class BraveUnifiedPanelDomainUtilsTest {
     }
 
     // ========================================================================
+    // Sub-panel navigation tests
+    // ========================================================================
+    // Note: Tests for showTrackersAdsPanel and showCookiesPanel are omitted because
+    // they call BraveShieldsContentSettings.getShieldsValue() which requires native
+    // methods not available in Robolectric. HTTPS and Shred panels don't have this issue.
+    // TODO: Mock the native calls so we can still verify it?
+
+    @SmallTest
+    @Test
+    public void testShowHttpsUpgradePanel_hidesMainShowsHttps() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        invokeShowHttpsUpgradePanel();
+
+        assertEquals(
+                "Main panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(
+                "HTTPS panel should be visible",
+                View.VISIBLE,
+                panelView.findViewById(R.id.https_panel_container).getVisibility());
+    }
+
+    @SmallTest
+    @Test
+    public void testShowShredPanel_hidesMainShowsShred() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        invokeShowShredPanel();
+
+        assertEquals(
+                "Main panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(
+                "Shred panel should be visible",
+                View.VISIBLE,
+                panelView.findViewById(R.id.shred_panel_container).getVisibility());
+    }
+
+    @SmallTest
+    @Test
+    public void testShowMainPanel_hidesAllSubPanels() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        // First navigate to a sub-panel (HTTPS doesn't require native calls)
+        invokeShowHttpsUpgradePanel();
+        assertEquals(View.VISIBLE, panelView.findViewById(R.id.https_panel_container).getVisibility());
+
+        // Now go back to main
+        invokeShowMainPanel();
+
+        assertEquals(
+                "Main panel should be visible",
+                View.VISIBLE,
+                panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(
+                "HTTPS panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.https_panel_container).getVisibility());
+        assertEquals(
+                "Trackers panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.trackers_panel_container).getVisibility());
+        assertEquals(
+                "Cookies panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.cookies_panel_container).getVisibility());
+        assertEquals(
+                "Shred panel should be hidden",
+                View.GONE,
+                panelView.findViewById(R.id.shred_panel_container).getVisibility());
+    }
+
+    @SmallTest
+    @Test
+    public void testShowMainPanel_restoresAdvancedOptionsState() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        // Set advanced options as expanded
+        setPrivateField("mIsAdvancedOptionsExpanded", true);
+
+        // Navigate to sub-panel and back (HTTPS doesn't require native calls)
+        invokeShowHttpsUpgradePanel();
+        invokeShowMainPanel();
+
+        // Advanced options should be restored to expanded state
+        View advancedContent = panelView.findViewById(R.id.advanced_options_content);
+        ImageView arrow = (ImageView) panelView.findViewById(R.id.advanced_options_arrow);
+
+        assertEquals(
+                "Advanced options should be visible after returning",
+                View.VISIBLE,
+                advancedContent.getVisibility());
+        assertEquals(
+                "Arrow should be rotated after returning",
+                180f,
+                arrow.getRotation(),
+                0.01f);
+    }
+
+    @SmallTest
+    @Test
+    public void testSubPanelNavigation_httpsRoundTrip() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        // Main -> HTTPS -> Main
+        invokeShowHttpsUpgradePanel();
+        assertEquals(View.GONE, panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(View.VISIBLE, panelView.findViewById(R.id.https_panel_container).getVisibility());
+
+        invokeShowMainPanel();
+        assertEquals(View.VISIBLE, panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(View.GONE, panelView.findViewById(R.id.https_panel_container).getVisibility());
+    }
+
+    @SmallTest
+    @Test
+    public void testSubPanelNavigation_shredRoundTrip() throws Exception {
+        View panelView = inflateAndSetupSubPanels();
+
+        // Main -> Shred -> Main
+        invokeShowShredPanel();
+        assertEquals(View.GONE, panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(View.VISIBLE, panelView.findViewById(R.id.shred_panel_container).getVisibility());
+
+        invokeShowMainPanel();
+        assertEquals(View.VISIBLE, panelView.findViewById(R.id.main_panel_container).getVisibility());
+        assertEquals(View.GONE, panelView.findViewById(R.id.shred_panel_container).getVisibility());
+    }
+
+    @SmallTest
+    @Test
+    public void testSubPanelContainers_existInLayout() throws Exception {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View panelView = inflater.inflate(R.layout.brave_unified_panel_layout, null);
+
+        assertNotNull(
+                "Main panel container should exist",
+                panelView.findViewById(R.id.main_panel_container));
+        assertNotNull(
+                "HTTPS panel container should exist",
+                panelView.findViewById(R.id.https_panel_container));
+        assertNotNull(
+                "Trackers panel container should exist",
+                panelView.findViewById(R.id.trackers_panel_container));
+        assertNotNull(
+                "Cookies panel container should exist",
+                panelView.findViewById(R.id.cookies_panel_container));
+        assertNotNull(
+                "Shred panel container should exist",
+                panelView.findViewById(R.id.shred_panel_container));
+    }
+
+    // ========================================================================
     // Helper methods
     // ========================================================================
 
@@ -572,5 +728,53 @@ public final class BraveUnifiedPanelDomainUtilsTest {
                         "onFingerprintingChanged", boolean.class);
         method.setAccessible(true);
         method.invoke(mHandler, isChecked);
+    }
+
+    /**
+     * Inflates the panel layout and sets up sub-panel container references.
+     */
+    private View inflateAndSetupSubPanels() throws Exception {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View panelView = inflater.inflate(R.layout.brave_unified_panel_layout, null);
+
+        // Set the popup view field
+        setPrivateField("mPopupView", panelView);
+
+        // Set up container references
+        setPrivateField("mMainPanelContainer", panelView.findViewById(R.id.main_panel_container));
+        setPrivateField("mHttpsPanelContainer", panelView.findViewById(R.id.https_panel_container));
+        setPrivateField(
+                "mTrackersPanelContainer", panelView.findViewById(R.id.trackers_panel_container));
+        setPrivateField(
+                "mCookiesPanelContainer", panelView.findViewById(R.id.cookies_panel_container));
+        setPrivateField("mShredPanelContainer", panelView.findViewById(R.id.shred_panel_container));
+
+        // Set up advanced options for state restoration tests
+        setPrivateField(
+                "mAdvancedOptionsContent", panelView.findViewById(R.id.advanced_options_content));
+        setPrivateField(
+                "mAdvancedOptionsArrow", panelView.findViewById(R.id.advanced_options_arrow));
+        setPrivateField("mIsAdvancedOptionsExpanded", false);
+
+        return panelView;
+    }
+
+    private void invokeShowHttpsUpgradePanel() throws Exception {
+        Method method =
+                BraveUnifiedPanelHandler.class.getDeclaredMethod("showHttpsUpgradePanel");
+        method.setAccessible(true);
+        method.invoke(mHandler);
+    }
+
+    private void invokeShowShredPanel() throws Exception {
+        Method method = BraveUnifiedPanelHandler.class.getDeclaredMethod("showShredPanel");
+        method.setAccessible(true);
+        method.invoke(mHandler);
+    }
+
+    private void invokeShowMainPanel() throws Exception {
+        Method method = BraveUnifiedPanelHandler.class.getDeclaredMethod("showMainPanel");
+        method.setAccessible(true);
+        method.invoke(mHandler);
     }
 }
