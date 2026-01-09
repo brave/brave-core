@@ -1,0 +1,12 @@
+diff --git a/tools/grit/grit_args.gni b/tools/grit/grit_args.gni
+index 06eb8869ec668deaee75f64a3914afc8da160950..2d0eb8993dc2810b3c1ff2a197b8938965b2a5a1 100644
+--- a/tools/grit/grit_args.gni
++++ b/tools/grit/grit_args.gni
+@@ -43,7 +43,6 @@ if (!is_android) {
+ }
+ 
+ # Environment variables to be used by grit and its subproceses.
+-
+ _grit_environment_vars = [
+   "branding_path_component=$branding_path_component",
+   "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
