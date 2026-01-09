@@ -161,6 +161,26 @@ std::vector<std::string> FilterAccountsByPermissionIdentifier(
 
 }  // namespace
 
+EthereumProviderImpl::PendingRequestEthereumPersmissionsCallback::
+    PendingRequestEthereumPersmissionsCallback() = default;
+
+EthereumProviderImpl::PendingRequestEthereumPersmissionsCallback::
+    ~PendingRequestEthereumPersmissionsCallback() = default;
+
+EthereumProviderImpl::PendingRequestEthereumPersmissionsCallback::
+    PendingRequestEthereumPersmissionsCallback(
+        PendingRequestEthereumPersmissionsCallback&&) = default;
+
+EthereumProviderImpl::PendingRequestEthereumPersmissionsCallback::
+    PendingRequestEthereumPersmissionsCallback(RequestCallback in_callback,
+                                               base::Value in_id,
+                                               url::Origin in_origin,
+                                               std::string in_method)
+    : callback(std::move(in_callback)),
+      id(std::move(in_id)),
+      origin(std::move(in_origin)),
+      method(std::move(in_method)) {}
+
 EthereumProviderImpl::EthereumProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
     BraveWalletService* brave_wallet_service,
@@ -1244,18 +1264,24 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   }
 
   if (keyring_service_->IsLockedSync()) {
-    if (pending_request_ethereum_permissions_callback_) {
+    if (pending_request_ethereum_permissions_callbacks_.contains(origin)) {
+      // Only reject requests coming from the same origin. Requests from other
+      // origins should be cached and invoked later.
       OnRequestEthereumPermissions(
           std::move(callback), std::move(id), method, origin,
           RequestPermissionsError::kRequestInProgress, std::nullopt);
       return;
     }
-    pending_request_ethereum_permissions_callback_ = std::move(callback);
-    pending_request_ethereum_permissions_id_ = std::move(id);
-    pending_request_ethereum_permissions_method_ = method;
-    pending_request_ethereum_permissions_origin_ = origin;
-    keyring_service_->RequestUnlock();
-    delegate_->ShowPanel();
+
+    pending_request_ethereum_permissions_callbacks_.emplace(
+        origin, PendingRequestEthereumPersmissionsCallback(
+                    std::move(callback), std::move(id), origin, method));
+
+    if (pending_request_ethereum_permissions_callbacks_.size() == 1) {
+      keyring_service_->RequestUnlock();
+      delegate_->ShowPanel();
+    }
+
     return;
   }
 
@@ -1580,12 +1606,14 @@ void EthereumProviderImpl::Locked() {
 }
 
 void EthereumProviderImpl::Unlocked() {
-  if (pending_request_ethereum_permissions_callback_) {
-    RequestEthereumPermissions(
-        std::move(pending_request_ethereum_permissions_callback_),
-        std::move(pending_request_ethereum_permissions_id_),
-        pending_request_ethereum_permissions_method_,
-        pending_request_ethereum_permissions_origin_);
+  if (!pending_request_ethereum_permissions_callbacks_.empty()) {
+    absl::node_hash_map<url::Origin, PendingRequestEthereumPersmissionsCallback>
+        callbacks = std::move(pending_request_ethereum_permissions_callbacks_);
+
+    for (auto& [origin, cb] : callbacks) {
+      RequestEthereumPermissions(std::move(cb.callback), std::move(cb.id),
+                                 cb.method, cb.origin);
+    }
   } else {
     UpdateKnownAccounts();
   }
