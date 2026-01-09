@@ -86,6 +86,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private static final String TAG = "WelcomeOnboarding";
 
     private static final float LEAF_SCALE_ANIMATION = 1.5f;
+    private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
+    private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;
+    private static final int BRAVE_SPLASH_ANIMATION_DURATION_MS = 600;
 
     private boolean mIsTablet;
     private int mCurrentStep = -1;
@@ -96,7 +99,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private View mVLeafAlignBottom;
     private ImageView mIvLeafTop;
     private ImageView mIvLeafBottom;
-    private ImageView mIvBraveSplash;
+    private ImageView mBraveSplash;
     private ImageView mIvBrave;
     private ImageView mIvArrowDown;
     private LinearLayout mLayoutCard;
@@ -128,7 +131,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
         mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
-        mIvBraveSplash = findViewById(R.id.brave_splash);
+        mBraveSplash = findViewById(R.id.brave_splash);
         mIvLeafTop = findViewById(R.id.iv_leaf_top);
         mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
         mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
@@ -272,7 +275,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void nextOnboardingStep() {
-        if (isActivityFinishingOrDestroyed()) return;
+        if (isActivityFinishingOrDestroyed()) {
+            return;
+        }
 
         mCurrentStep++;
         handleOnboardingStepForDefaultVariant(mCurrentStep);
@@ -578,13 +583,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
         if (mDayZeroVariant.equals("b")) {
             mVariantBConstraintLayout.setVisibility(View.VISIBLE);
-            AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable) mIvBraveSplash.getDrawable();
+            final AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable) mBraveSplash.getDrawable();
             vectorDrawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
 
                 @Override
                 public void onAnimationStart(Drawable drawable) {
                     super.onAnimationStart(drawable);
-                    mIvBraveSplash.setAlpha(1f);
+                    mBraveSplash.setAlpha(1f);
                 }
 
                @Override
@@ -592,25 +597,21 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                    super.onAnimationEnd(drawable);
                    vectorDrawable.clearAnimationCallbacks();
 
-                   View parent = (View) mIvBraveSplash.getParent();
-
-                   float currentY = mIvBraveSplash.getY();
-                   float targetY  = parent.getPaddingTop();
-                   float deltaY   = targetY - currentY;
-
+                   final View parent = (View) mBraveSplash.getParent();
+                   final float deltaY   = parent.getPaddingTop() - mBraveSplash.getY();
                    // Compensate because shrinking around center moves the top edge down.
-                   float compensation = (mIvBraveSplash.getHeight() * (1f - 0.4f)) / 2f;
+                   final float compensation = (mBraveSplash.getHeight() * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
 
-                   mIvBraveSplash.animate()
+                   mBraveSplash.animate()
                            .translationY(deltaY - compensation)
-                           .scaleX(0.4f)
-                           .scaleY(0.4f)
-                           .setDuration(600)
-                           .setInterpolator(new OvershootInterpolator(1f))
+                           .scaleX(BRAVE_SPLASH_SCALE_ANIMATION)
+                           .scaleY(BRAVE_SPLASH_SCALE_ANIMATION)
+                           .setDuration(BRAVE_SPLASH_ANIMATION_DURATION_MS)
+                           .setInterpolator(new OvershootInterpolator(REDUCED_TENSION_OVERSHOOT_INTERPOLATOR))
                            .setListener(new Animator.AnimatorListener() {
                                @Override
                                public void onAnimationCancel(@NonNull Animator animation) {
-
+                                    /* No-op. */
                                }
 
                                @Override
@@ -620,12 +621,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
                                @Override
                                public void onAnimationRepeat(@NonNull Animator animation) {
-
+                                   /* No-op. */
                                }
 
                                @Override
                                public void onAnimationStart(@NonNull Animator animation) {
-
+                                   /* No-op. */
                                }
                            })
                            .start();
