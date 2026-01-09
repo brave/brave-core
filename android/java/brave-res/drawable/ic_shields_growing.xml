@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Growing shields illustration - concentric shield outlines -->
+<!-- Viewport 200x200, scaled up by ImageView to display size -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200"
+    android:alpha="0.35">
+
+    <!-- Shield outline paths - concentric rings from center outward -->
+    <!-- Each shield is scaled from the base 24x24 shield shape, centered at 100,100 -->
+
+    <!-- Ring 1 - innermost (scale ~2x from 24x24, offset to center) -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,76 L82,84.5 C80.5,85.1 79.5,86.5 79.5,88 V96 C79.5,106.5 85,115.5 100,119 C115,115.5 120.5,106.5 120.5,96 V88 C120.5,86.5 119.5,85.1 118,84.5 L100,76 Z"/>
+
+    <!-- Ring 2 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,68 L76,79 C74,80 72.5,82 72.5,84.5 V95 C72.5,110 80,122 100,127 C120,122 127.5,110 127.5,95 V84.5 C127.5,82 126,80 124,79 L100,68 Z"/>
+
+    <!-- Ring 3 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,60 L70,73.5 C67.5,74.7 65.5,77.2 65.5,80.5 V94 C65.5,113.5 75,128.5 100,135 C125,128.5 134.5,113.5 134.5,94 V80.5 C134.5,77.2 132.5,74.7 130,73.5 L100,60 Z"/>
+
+    <!-- Ring 4 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,52 L64,68 C61,69.4 58.5,72.4 58.5,76.5 V93 C58.5,117 70,135 100,143 C130,135 141.5,117 141.5,93 V76.5 C141.5,72.4 139,69.4 136,68 L100,52 Z"/>
+
+    <!-- Ring 5 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,44 L58,62.5 C54.5,64.1 51.5,67.6 51.5,72.5 V92 C51.5,120.5 65,141.5 100,151 C135,141.5 148.5,120.5 148.5,92 V72.5 C148.5,67.6 145.5,64.1 142,62.5 L100,44 Z"/>
+
+    <!-- Ring 6 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,36 L52,57 C48,58.8 44.5,62.8 44.5,68.5 V91 C44.5,124 60,148 100,159 C140,148 155.5,124 155.5,91 V68.5 C155.5,62.8 152,58.8 148,57 L100,36 Z"/>
+
+    <!-- Ring 7 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,28 L46,51.5 C41.5,53.5 37.5,58 37.5,64.5 V90 C37.5,127.5 55,154.5 100,167 C145,154.5 162.5,127.5 162.5,90 V64.5 C162.5,58 158.5,53.5 154,51.5 L100,28 Z"/>
+
+    <!-- Ring 8 -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,20 L40,46 C35,48.2 30.5,53.2 30.5,60.5 V89 C30.5,131 50,161 100,175 C150,161 169.5,131 169.5,89 V60.5 C169.5,53.2 165,48.2 160,46 L100,20 Z"/>
+
+    <!-- Ring 9 - outermost -->
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#697EE1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M100,12 L34,40.5 C28.5,42.9 23.5,48.4 23.5,56.5 V88 C23.5,134.5 45,167.5 100,183 C155,167.5 176.5,134.5 176.5,88 V56.5 C176.5,48.4 171.5,42.9 166,40.5 L100,12 Z"/>
+
+</vector>

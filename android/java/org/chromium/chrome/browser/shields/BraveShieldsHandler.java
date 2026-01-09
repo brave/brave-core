@@ -430,6 +430,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mTrackersBlocked;
     }
 
+    public int getTotalBlockedCount(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mAdsBlocked
+                + blockersInfo.mTrackersBlocked
+                + blockersInfo.mScriptsBlocked
+                + blockersInfo.mFingerprintsBlocked;
+    }
+
     public ArrayList<String> getBlockerNamesList(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return new ArrayList<String>();

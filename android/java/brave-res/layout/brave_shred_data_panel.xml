@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header with back button -->
+        <TextView
+            android:id="@+id/shred_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:drawablePadding="16dp"
+            app:drawableTint="@color/text_interactive"
+            android:text="@string/shred_site_data_title"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif-medium"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/accessibility_toolbar_btn_back"/>
+
+        <!-- Site label (uppercase, secondary color) -->
+        <TextView
+            android:id="@+id/shred_site_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="13sp"
+            android:lineHeight="18sp"
+            android:textColor="@color/text_secondary"
+            android:textAllCaps="true"
+            tools:text="THEVERGE.COM"/>
+
+        <!-- Main container - rounded rectangle with surface background -->
+        <LinearLayout
+            android:id="@+id/shred_options_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/advanced_options_bg">
+
+            <!-- Auto Shred row -->
+            <LinearLayout
+                android:id="@+id/auto_shred_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="11dp"
+                android:minHeight="44dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/shred_auto_shred"
+                    android:textSize="17sp"
+                    android:lineHeight="22sp"
+                    android:textColor="@color/text_primary"/>
+
+                <!-- Right content: dropdown value -->
+                <TextView
+                    android:id="@+id/auto_shred_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:lineHeight="22sp"
+                    android:textColor="@color/text_secondary"
+                    android:drawableEnd="@drawable/ic_shred_dropdown_arrows"
+                    android:drawablePadding="4dp"
+                    app:drawableTint="@color/text_secondary"
+                    tools:text="Site Tabs Closed"/>
+
+            </LinearLayout>
+
+            <!-- Separator line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_line_bg_color"/>
+
+            <!-- Shred Site Data Now row -->
+            <LinearLayout
+                android:id="@+id/shred_now_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="11dp"
+                android:minHeight="44dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/shred_site_data_now"
+                    android:textSize="17sp"
+                    android:lineHeight="22sp"
+                    android:textColor="@color/text_interactive"
+                    android:drawableEnd="@drawable/ic_brave_shred"
+                    android:drawablePadding="8dp"
+                    app:drawableTint="@color/text_interactive"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Helper/warning text below container -->
+        <TextView
+            android:id="@+id/shred_helper_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:textSize="13sp"
+            android:lineHeight="18sp"
+            android:textColor="@color/shields_text_warning"
+            android:text="@string/shred_helper_text"
+            tools:text="Placeholder for helper text"/>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Site Info Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/advanced_options_bg"
+            tools:ignore="UselessParent">
+
+            <!-- Site name -->
+            <LinearLayout
+                android:id="@+id/site_name_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:id="@+id/site_name_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/shield_text_color"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="example.com"/>
+
+            </LinearLayout>
+
+            <!-- Dangerous site (conditional) -->
+            <LinearLayout
+                android:id="@+id/dangerous_site_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_dangerous_filled"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/page_info_safe_browsing_summary"
+                    android:textSize="16sp"
+                    android:textColor="#B4020E"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_carat_right"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <!-- Permissions -->
+            <LinearLayout
+                android:id="@+id/permissions_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_tune"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/page_info_permissions_title"
+                        android:textSize="16sp"
+                        android:textColor="@color/shield_text_color"/>
+
+                    <TextView
+                        android:id="@+id/permissions_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Microphone, sound, +2 more"
+                        android:textSize="14sp"
+                        android:textColor="#464649"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_carat_right"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <!-- Last visited today -->
+            <LinearLayout
+                android:id="@+id/last_visited_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_history"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:id="@+id/last_visited_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/page_info_history_last_visit_today"
+                    android:textSize="16sp"
+                    android:textColor="@color/shield_text_color"/>
+
+            </LinearLayout>
+
+            <!-- Cookies and site data -->
+            <LinearLayout
+                android:id="@+id/cookies_data_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_cookie"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/page_info_cookies_title"
+                    android:textSize="16sp"
+                    android:textColor="@color/shield_text_color"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

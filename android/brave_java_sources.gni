@@ -378,6 +378,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsScreenshotUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/ContentFilteringAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/ContentFilteringFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/CreateCustomFiltersFragment.java",

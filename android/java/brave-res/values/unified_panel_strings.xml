@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- TODO: Final cleanup to ensure we're not duplicating existing strings -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Unified Panel Strings -->
+    <!-- Some strings reuse existing resources from android_brave_strings.grd and browser_ui_strings.grd -->
+
+    <!-- Warning text (line 1 uses @string/site_broken_text) -->
+    <string name="shields_warning_line2">Note: this may reduce Brave\'s privacy protections.</string>
+
+    <string name="shields_up_status">Shields up for this site</string>
+    <string name="shields_down_status">Shields down for this site</string>
+    <string name="trackers_blocked_text">Trackers, ads, and more blocked.</string>
+
+    <!-- Tab labels -->
+    <string name="brave_shields_page_info_site_info_link">Site info</string>
+
+    <!-- Site Settings tab (cookies uses @string/page_info_cookies_title) -->
+    <string name="page_info_safe_browsing_summary">Dangerous site</string>
+
+    <!-- Advanced Options descriptions -->
+    <string name="trackers_ads_description">Choose how to handle trackers and ads</string>
+    <string name="cookies_description">Choose how to handle cookies</string>
+    <string name="shred_site_data">Shred site\'s data</string>
+    <string name="reset_shields_defaults">Reset this site to Shields defaults</string>
+    <string name="brave_shields_global_settings_title">Shields global settings</string>
+
+    <!-- Report Broken Site -->
+    <string name="report_broken_site_prompt">Tell us if the site wasn\'t working properly with Shields up.</string>
+    <string name="report_broken_site_button">Report</string>
+
+    <!-- Permissions Panel -->
+    <string name="no_site_permissions_set">No site permissions set</string>
+
+    <!-- Shred Site Data Panel -->
+    <string name="shred_site_data_title">Shred Site Data</string>
+    <string name="shred_auto_shred">Auto Shred</string>
+    <string name="shred_option_site_tabs_closed">When site tabs are closed</string>
+    <string name="shred_site_data_now">Shred Site Data Now</string>
+    <string name="shred_helper_text">Placeholder for helper text</string>
+</resources>

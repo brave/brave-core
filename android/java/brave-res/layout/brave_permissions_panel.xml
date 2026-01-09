@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header with back button -->
+        <TextView
+            android:id="@+id/permissions_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:drawablePadding="16dp"
+            app:drawableTint="@color/text_primary"
+            android:text="@string/page_info_permissions_title"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif-medium"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <!-- Permissions container - rounded rectangle with surface background -->
+        <LinearLayout
+            android:id="@+id/permissions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/advanced_options_bg">
+
+            <!-- Site header row -->
+            <LinearLayout
+                android:id="@+id/permissions_site_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <!-- Site favicon -->
+                <ImageView
+                    android:id="@+id/permissions_site_favicon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@null"
+                    tools:src="@drawable/ic_globe_24dp"/>
+
+                <TextView
+                    android:id="@+id/permissions_site_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:textSize="14sp"
+                    android:lineHeight="20sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="example.com"/>
+
+            </LinearLayout>
+
+            <!-- Permissions list - dynamically populated -->
+            <LinearLayout
+                android:id="@+id/permissions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Permission items will be added here dynamically -->
+            </LinearLayout>
+
+            <!-- Reset permissions button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <Button
+                    android:id="@+id/reset_permissions_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/website_reset"
+                    android:textColor="@color/text_interactive"
+                    app:strokeColor="@color/text_interactive"
+                    app:cornerRadius="20dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Tab buttons container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:gravity="center_horizontal"
+        android:baselineAligned="false">
+
+        <!-- Brave Shields Tab -->
+        <LinearLayout
+            android:id="@+id/shields_tab_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <!-- Compound drawable not used here to maintain precise icon/text positioning.
+	         TODO: Is this right? -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/shields_tab_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_brave_shields_icon"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/brave_shields_onboarding_title"/>
+
+                <TextView
+                    android:id="@+id/shields_tab_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brave_shields_onboarding_title"
+                    android:textSize="16sp"
+                    android:textColor="@color/tab_text_selected_color"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Selected indicator -->
+            <View
+                android:id="@+id/shields_tab_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/tab_indicator_selected_color"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+        <!-- Site Settings Tab -->
+        <LinearLayout
+            android:id="@+id/site_settings_tab_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/site_settings_tab_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_site_settings"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/brave_shields_page_info_site_info_link"/>
+
+                <TextView
+                    android:id="@+id/site_settings_tab_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brave_shields_page_info_site_info_link"
+                    android:textSize="16sp"
+                    android:textColor="@color/tab_text_unselected_color"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"/>
+
+                <!-- Badge for permission count -->
+                <TextView
+                    android:id="@+id/site_settings_badge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/site_settings_badge_bg"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:textColor="@color/site_settings_badge_text_color"
+                    android:visibility="gone"
+                    tools:text="4"
+                    tools:visibility="visible"/>
+
+            </LinearLayout>
+
+            <!-- Selected indicator -->
+            <View
+                android:id="@+id/site_settings_tab_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/tab_indicator_selected_color"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Tab divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_line_bg_color"/>
+
+</LinearLayout>

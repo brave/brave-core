@@ -361,6 +361,15 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- Unified Panel tab text styles -->
+    <style name="TextAppearance.BraveUnifiedPanelTab.Selected" parent="TextAppearance.TextLarge">
+        <item name="android:textColor">@color/tab_text_selected_color</item>
+    </style>
+
+    <style name="TextAppearance.BraveUnifiedPanelTab.Unselected" parent="TextAppearance.TextLarge">
+        <item name="android:textColor">@color/tab_text_unselected_color</item>
+    </style>
+
     <!-- Suggestions tiles -->
     <style name="BraveSuggestionsTilesText"
            parent="TextAppearance.TextSmall.Secondary">

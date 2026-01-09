@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- TODO: Destroy this when we have the actual form control -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp"
+    android:height="22dp"
+    android:viewportWidth="22"
+    android:viewportHeight="22">
+    <!-- Up arrow -->
+    <path
+        android:fillColor="#464649"
+        android:pathData="M11,4L7,9h8L11,4z"/>
+    <!-- Down arrow -->
+    <path
+        android:fillColor="#464649"
+        android:pathData="M11,18L7,13h8L11,18z"/>
+</vector>
