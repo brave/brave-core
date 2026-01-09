@@ -80,18 +80,37 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
       return "Chart data entry must be an object";
     }
 
-    if (!data_item->Find(kXKey)) {
+    if (!data_item->contains(kXKey)) {
       return "Chart data entry is missing required 'x' field";
     }
 
     if (data_item->size() < 2) {
       return "Chart data entry must have 'x' and at least one other field";
     }
+
+    for (const auto [key, value] : *data_item) {
+      if (key == kXKey) {
+        if (!value.is_string() && !value.is_int() && !value.is_double()) {
+          return "Chart data entry 'x' field must be a string or number";
+        }
+      } else if (!value.is_int() && !value.is_double()) {
+        return "Chart data entry values (except 'x') must be numbers";
+      }
+    }
   }
 
   const auto* labels = chart_dict->Find(kLabelsKey);
-  if (labels && !labels->is_dict()) {
-    return "Chart labels must be an object";
+  if (labels) {
+    const auto* labels_dict = labels->GetIfDict();
+    if (!labels_dict) {
+      return "Chart labels must be an object";
+    }
+
+    for (const auto [key, value] : *labels_dict) {
+      if (!value.is_string()) {
+        return "Chart label values must be strings";
+      }
+    }
   }
 
   return std::nullopt;
