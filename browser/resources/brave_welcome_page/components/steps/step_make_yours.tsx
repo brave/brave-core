@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import SegmentedControl from '@brave/leo/react/segmentedControl'
 import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import Tooltip from '@brave/leo/react/tooltip'
 
 import { StepContentProps, StepFooterProps } from '../types'
 import wallpaperLight from '../img/bg-light.jpg'
@@ -19,7 +20,7 @@ type Theme = 'system' | 'light' | 'dark'
 // Default values for customization options
 const DEFAULT_TAB_LAYOUT: TabLayout = 'horizontal'
 const DEFAULT_THEME: Theme = 'system'
-const DEFAULT_COLOR: string = 'default'
+const DEFAULT_COLOR: string = 'Default'
 
 // Context to share customization state between content and footer
 interface MakeYoursContextType {
@@ -292,7 +293,7 @@ const DARK_MODE_LUMINOSITY = {
 // Generate themed colors from a color option
 function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSSProperties {
   // For default, use neutral colors (no tinting)
-  if (colorOpt.id === 'default') {
+  if (colorOpt.id === 'Default') {
     return {}
   }
 
@@ -322,20 +323,29 @@ function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSS
 }
 
 const colorOptions: ColorOption[] = [
-  { id: 'default', color1: '#E3E3E3', color2: '#C7C7C7', color3: '#4C54D2' },
-  { id: 'purple', color1: '#D7DBFF', color2: '#BBC1FF', color3: '#8B8FD6' },
-  { id: 'teal', color1: '#CDE3E5', color2: '#AEC3C6', color3: '#5A7A7D' },
-  { id: 'cyan', color1: '#B3E6EF', color2: '#77D4E4', color3: '#007A8C' },
-  { id: 'green', color1: '#C3E6CD', color2: '#96D5A9', color3: '#2D7A4A' },
-  { id: 'olive', color1: '#D5E2CE', color2: '#B6C3B1', color3: '#6B7A66' },
-  { id: 'gold', color1: '#FAE29F', color2: '#E2C384', color3: '#8B6914' },
-  { id: 'orange', color1: '#F6D7CA', color2: '#FFB597', color3: '#A85232' },
-  { id: 'tan', color1: '#FDD6C6', color2: '#DBB8A9', color3: '#8B6E61' },
-  { id: 'pink', color1: '#F8D2EA', color2: '#F2B1DB', color3: '#9E4D84' },
-  { id: 'dusty-rose', color1: '#FBD5DA', color2: '#D9B6BB', color3: '#8B6A70' },
-  { id: 'hot-pink', color1: '#FFD1DF', color2: '#FFB1C9', color3: '#A84D6B' },
-  { id: 'lavender', color1: '#E6D7FA', color2: '#D5BBF6', color3: '#7D5A9E' },
+  { id: 'Default', color1: '#E3E3E3', color2: '#C7C7C7', color3: '#4C54D2' },
+  { id: 'Blue', color1: '#D4E3FF', color2: '#A4C8FF', color3: '#2D5F9D' },
+  { id: 'Cool grey', color1: '#D4E3FF', color2: '#B8C7E7', color3: '#505F79' },
+  { id: 'Grey', color1: '#D1E8EB', color2: '#B5CCCF', color3: '#4D6366' },
+  { id: 'Aqua', color1: '#6CF7E7', color2: '#48DACB', color3: '#006D62' },
+  { id: 'Green', color1: '#ABF4A1', color2: '#90D788', color3: '#296A27' },
+  { id: 'Viridian', color1: '#D7E6D1', color2: '#BBCAB7', color3: '#546252' },
+  { id: 'Citron', color1: '#FFE169', color2: '#E3C550', color3: '#735C00' },
+  { id: 'Orange', color1: '#FFDAC4', color2: '#FFB37F', color3: '#994A07' },
+  { id: 'Apricot', color1: '#FFDBCA', color2: '#E4C0AF', color3: '#75594B' },
+  { id: 'Rose', color1: '#FFD8DF', color2: '#FFAEC0', color3: '#9E4159' },
+  { id: 'Pink', color1: '#FFDADF', color2: '#E3BEC3', color3: '#75575C' },
+  { id: 'Fuchsia', color1: '#FFD6F7', color2: '#FFACEE', color3: '#8C4680' },
+  { id: 'Lavender', color1: '#EFDCFF', color2: '#D9BAFF', color3: '#6F5198' },
 ]
+
+// Format color ID to display name (e.g., 'dusty-rose' → 'Dusty Rose')
+function formatColorName(id: string): string {
+  return id
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
 
 // Hook to detect system theme preference
 function useSystemTheme(): 'light' | 'dark' {
@@ -468,21 +478,22 @@ export function StepMakeYoursContent({}: StepContentProps) {
             {/* Color Swatches */}
             <div className="customize-colors-row">
               {colorOptions.map((colorOpt) => (
-                <button
-                  key={colorOpt.id}
-                  className={`color-swatch ${selectedColor === colorOpt.id ? 'color-swatch-selected' : ''}`}
-                  onClick={() => setSelectedColor(colorOpt.id)}
-                  aria-label={`Select ${colorOpt.id} color`}
-                  style={{
-                    '--swatch-color-1': colorOpt.color1,
-                    '--swatch-color-2': colorOpt.color2,
-                    '--swatch-color-3': colorOpt.color3,
-                  } as React.CSSProperties}
-                >
-                  {selectedColor === colorOpt.id && (
-                    <Icon name="check-circle-filled" className="color-swatch-check" />
-                  )}
-                </button>
+                <Tooltip key={colorOpt.id} mode='mini' text={formatColorName(colorOpt.id)} mouseenterDelay={500}>
+                  <button
+                    className={`color-swatch ${selectedColor === colorOpt.id ? 'color-swatch-selected' : ''}`}
+                    onClick={() => setSelectedColor(colorOpt.id)}
+                    aria-label={`Select ${colorOpt.id} color`}
+                    style={{
+                      '--swatch-color-1': colorOpt.color1,
+                      '--swatch-color-2': colorOpt.color2,
+                      '--swatch-color-3': colorOpt.color3,
+                    } as React.CSSProperties}
+                  >
+                    {selectedColor === colorOpt.id && (
+                      <Icon name="check-circle-filled" className="color-swatch-check" />
+                    )}
+                  </button>
+                </Tooltip>
               ))}
             </div>
           </div>

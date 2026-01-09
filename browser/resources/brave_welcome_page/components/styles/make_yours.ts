@@ -619,12 +619,12 @@ export const makeYoursStyles = `
     align-items: center;
     justify-content: space-between;
     gap: ${spacing.m};
-    padding: ${spacing.l} ${spacing.xl} ${spacing.xl};
+    padding: ${spacing.xl} ${spacing.xl} ${spacing.l} ${spacing.xl};
   }
 
   .color-swatch {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
