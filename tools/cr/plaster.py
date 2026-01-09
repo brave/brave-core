@@ -257,56 +257,73 @@ class PlasterFile:
         info = PatchInfo(self.path)
         plaster_file = tomllib.loads(info.plaster_contents)
         contents = repository.chromium.read_file(info.source)
+        errors = []
 
-        for substitution in plaster_file.get('substitution'):
-            description = substitution.get('description')
-            re_pattern = substitution.get('re_pattern')
-            pattern = substitution.get('pattern')
-            replace = substitution.get('replace')
-            expected_count = substitution.get('count', 1)
-            flags = substitution.get('re_flags', [])
+        try:
+            for substitution in plaster_file.get('substitution'):
+                description = substitution.get('description')
+                re_pattern = substitution.get('re_pattern')
+                pattern = substitution.get('pattern')
+                replace = substitution.get('replace')
+                expected_count = substitution.get('count', 1)
+                flags = substitution.get('re_flags', [])
 
-            if description is None:
-                raise ValueError(f'No description specified in {info.source}')
-
-            if re_pattern is not None and pattern is not None:
-                raise ValueError(
-                    f'Please specify either pattern or re_pattern '
-                    f' in {info.source}')
-
-            if re_pattern is None:
-                if pattern is None:
-                    raise ValueError(f'No pattern specified in {info.source}')
-                re_pattern = re.escape(pattern)
-
-            if replace is None:
-                raise ValueError(
-                    f'No replace value specified in {info.source}')
-
-            re_flags = 0
-            for flag in flags:
-                # Only accept valid re flags
-                if flag.isupper() and hasattr(re, flag):
-                    re_flags |= getattr(re, flag)
-                else:
+                if description is None:
                     raise ValueError(
-                        f'Invalid re flag specified: {flag} in {info.source}')
+                        f'No description specified in {info.source}')
 
-            contents, num_changes = re.subn(
-                re_pattern,
-                replace,
-                contents,
-                flags=re_flags,
-                # We dont't want to explicitly limit the number of matches here,
-                # we want to control what matches using the match pattern and
-                # then ensure the output matches only what we expected
-                count=0)
+                if re_pattern is not None and pattern is not None:
+                    raise ValueError(
+                        f'Please specify either pattern or re_pattern '
+                        f' in {info.source}')
 
-            # count == 0 means "replace all matches" and bypass count validation
-            if expected_count not in (0, num_changes):
-                raise ValueError(
-                    f'Unexpected number of matches ({num_changes} vs '
-                    f'{expected_count}) in {info.source}')
+                if re_pattern is None:
+                    if pattern is None:
+                        raise ValueError(
+                            f'No pattern specified in {info.source}')
+                    re_pattern = re.escape(pattern)
+
+                if replace is None:
+                    raise ValueError(
+                        f'No replace value specified in {info.source}')
+
+                re_flags = 0
+                for flag in flags:
+                    # Only accept valid re flags
+                    if flag.isupper() and hasattr(re, flag):
+                        re_flags |= getattr(re, flag)
+                    else:
+                        raise ValueError(
+                            f'Invalid re flag specified: {flag} in '
+                            f'{info.source}')
+
+                contents, num_changes = re.subn(
+                    re_pattern,
+                    replace,
+                    contents,
+                    flags=re_flags,
+                    # We dont't want to explicitly limit the number of matches
+                    # here, we want to control what matches using the match
+                    # pattern and then ensure the output matches only what we
+                    # expected
+                    count=0)
+
+                # count == 0 means "replace all matches" and bypass count
+                # validation
+                if expected_count not in (0, num_changes):
+                    errors.append(
+                        f'Unexpected number of matches ({num_changes} vs '
+                        f'{expected_count}) in {self.path}')
+
+        except re.error as e:
+            errors.append(f'Invalid regex: {e} in {self.path}')
+
+        if errors:
+            print('\n\nThere were errors attempting to apply the patches:',
+                  file=sys.stderr)
+            for error in errors:
+                print(f'{error}', file=sys.stderr)
+            sys.exit(1)
 
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
