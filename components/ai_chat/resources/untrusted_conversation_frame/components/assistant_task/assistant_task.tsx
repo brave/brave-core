@@ -17,6 +17,7 @@ import AssistantResponse from '../assistant_response'
 import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
+import { getToolCallArtifacts } from '../conversation_entries/conversation_entries_utils'
 
 interface Props {
   // Entries that make up the task loop
@@ -45,6 +46,9 @@ interface TabProps {
   toolUseTaskState: Mojom.TaskState
 
   taskData: TaskData
+
+  // Tool call artifacts to pass to AssistantResponse
+  toolCallArtifacts: Mojom.ToolCallArtifactContentBlock[] | null
 }
 
 /**
@@ -103,12 +107,19 @@ export default function AssistantTask(props: Props) {
     && !conversationContext.isToolExecuting
     && conversationContext.toolUseTaskState === Mojom.TaskState.kRunning
 
+  const shouldOmitArtifacts =
+    props.isActiveTask && conversationContext.isGenerating
+  const toolCallArtifacts = !shouldOmitArtifacts
+    ? getToolCallArtifacts(props.assistantEntries)
+    : null
+
   const tabProps: TabProps = {
     isGenerating: conversationContext.isGenerating,
     isToolExecuting: conversationContext.isToolExecuting,
     toolUseTaskState: conversationContext.toolUseTaskState,
     isThinking: isThinking,
     taskData: taskData,
+    toolCallArtifacts: toolCallArtifacts,
   }
 
   return (
@@ -139,6 +150,7 @@ export default function AssistantTask(props: Props) {
             <Progress
               {...props}
               {...tabProps}
+              toolCallArtifacts={toolCallArtifacts}
             />
           )}
 
@@ -224,6 +236,7 @@ function Progress(props: Props & TabProps) {
             isEntryInProgress={props.isGenerating}
             allowedLinks={[]}
             isLeoModel={props.isLeoModel}
+            toolCallArtifacts={props.toolCallArtifacts}
           />
         </div>
       )}

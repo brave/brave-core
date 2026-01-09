@@ -157,7 +157,11 @@ function ConversationEntries() {
 
         const groupIsTask = isAssistantGroupTask(group)
 
-        const toolCallArtifacts = getToolCallArtifacts(group)
+        const shouldOmitArtifacts =
+          isLastGroup && conversationContext.isGenerating
+        const toolCallArtifacts = !shouldOmitArtifacts
+          ? getToolCallArtifacts(group)
+          : null
 
         return (
           <div key={firstEntryEdit.uuid || index}>

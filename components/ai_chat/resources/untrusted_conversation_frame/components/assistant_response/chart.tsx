@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import * as Mojom from '../../../common/mojom'
+import styles from './chart.module.scss'
 
 interface ChartProps {
   artifact: Mojom.ToolCallArtifactContentBlock
@@ -57,9 +58,7 @@ export default function Chart({ artifact }: ChartProps) {
   const dataKeys = Object.keys(chartData.data[0]).filter((key) => key !== 'x')
 
   return (
-    <div
-      style={{ width: '100%', height: 300, marginTop: 16, marginBottom: 16 }}
-    >
+    <div className={styles.chartContainer}>
       <ResponsiveContainer
         width='100%'
         height='100%'
