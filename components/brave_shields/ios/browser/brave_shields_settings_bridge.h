@@ -45,6 +45,8 @@ NS_SWIFT_NAME(BraveShieldsSettings)
 - (BOOL)isShieldsDisabledOnAnyHostMatchingDomainOf:(NSURL*)url
     NS_SWIFT_NAME(isShieldsDisabledOnAnyHostMatchingDomain(of:));
 
+- (void)removeBraveShieldsSiteSettingsData;
+
 @end
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_

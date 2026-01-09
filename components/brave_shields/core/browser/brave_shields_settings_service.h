@@ -65,6 +65,9 @@ class BraveShieldsSettingsService : public KeyedService {
 
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const;
 
+  void RemoveBraveShieldsSiteSettingsData(const base::Time& delete_begin,
+                                          const base::Time& delete_end);
+
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED

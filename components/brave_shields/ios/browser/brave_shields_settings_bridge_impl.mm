@@ -130,4 +130,9 @@
       gurl);
 }
 
+- (void)removeBraveShieldsSiteSettingsData {
+  _braveShieldsSettings->RemoveBraveShieldsSiteSettingsData(base::Time(),
+                                                            base::Time::Max());
+}
+
 @end
