@@ -13,6 +13,35 @@ import { StepContentProps, StepFooterProps } from '../types'
 import wallpaperLight from '../img/bg-light.jpg'
 import wallpaperDark from '../img/bg-dark.jpg'
 
+type TabLayout = 'horizontal' | 'vertical'
+type Theme = 'system' | 'light' | 'dark'
+
+// Default values for customization options
+const DEFAULT_TAB_LAYOUT: TabLayout = 'horizontal'
+const DEFAULT_THEME: Theme = 'system'
+const DEFAULT_COLOR: string = 'default'
+
+// Context to share customization state between content and footer
+interface MakeYoursContextType {
+  hasChanges: boolean
+  setHasChanges: (value: boolean) => void
+}
+
+const MakeYoursContext = React.createContext<MakeYoursContextType>({
+  hasChanges: false,
+  setHasChanges: () => {}
+})
+
+export function MakeYoursProvider({ children }: { children: React.ReactNode }) {
+  const [hasChanges, setHasChanges] = React.useState(false)
+  
+  return (
+    <MakeYoursContext.Provider value={{ hasChanges, setHasChanges }}>
+      {children}
+    </MakeYoursContext.Provider>
+  )
+}
+
 interface MockBrowserWindowVariantProps {
   themeClass: string
   colorStyles: React.CSSProperties
@@ -190,9 +219,6 @@ function MockBrowserWindow({ layout, effectiveTheme, colorOption }: MockBrowserW
   return <MockBrowserWindowHorizontal themeClass={themeClass} colorStyles={colorStyles} />
 }
 
-type TabLayout = 'horizontal' | 'vertical'
-type Theme = 'system' | 'light' | 'dark'
-
 interface ColorOption {
   id: string
   color1: string  
@@ -336,11 +362,21 @@ function useSystemTheme(): 'light' | 'dark' {
 }
 
 export function StepMakeYoursContent({}: StepContentProps) {
-  const [tabLayout, setTabLayout] = React.useState<TabLayout>('horizontal')
-  const [theme, setTheme] = React.useState<Theme>('system')
-  const [selectedColor, setSelectedColor] = React.useState<string>('default')
+  const [tabLayout, setTabLayout] = React.useState<TabLayout>(DEFAULT_TAB_LAYOUT)
+  const [theme, setTheme] = React.useState<Theme>(DEFAULT_THEME)
+  const [selectedColor, setSelectedColor] = React.useState<string>(DEFAULT_COLOR)
   
+  const { setHasChanges } = React.useContext(MakeYoursContext)
   const systemTheme = useSystemTheme()
+  
+  // Track whether any changes have been made from defaults
+  React.useEffect(() => {
+    const hasAnyChanges = 
+      tabLayout !== DEFAULT_TAB_LAYOUT ||
+      theme !== DEFAULT_THEME ||
+      selectedColor !== DEFAULT_COLOR
+    setHasChanges(hasAnyChanges)
+  }, [tabLayout, theme, selectedColor, setHasChanges])
   
   // Compute effective theme: use system preference when 'system' is selected
   const effectiveTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme
@@ -458,6 +494,8 @@ export function StepMakeYoursContent({}: StepContentProps) {
 }
 
 export function StepMakeYoursFooter({ onNext, onBack, onSkip }: StepFooterProps) {
+  const { hasChanges } = React.useContext(MakeYoursContext)
+  
   return (
     <div className="footer">
       <div className="footer-left">
@@ -466,7 +504,7 @@ export function StepMakeYoursFooter({ onNext, onBack, onSkip }: StepFooterProps)
       <div className="footer-right">
         <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Continue
+          {hasChanges ? 'Apply and continue' : 'Continue'}
         </Button>
       </div>
     </div>
