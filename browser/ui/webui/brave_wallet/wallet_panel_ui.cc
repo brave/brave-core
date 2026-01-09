@@ -102,6 +102,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   source->AddBoolean("rewardsFeatureEnabled",
                      brave_rewards::IsSupportedForProfile(profile));
+  source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));

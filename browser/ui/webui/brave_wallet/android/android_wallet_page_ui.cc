@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
@@ -60,6 +61,7 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
 
   source->AddBoolean("isMobile", true);
   source->AddBoolean("isIOS", false);
+  source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,

@@ -10,8 +10,7 @@ import getWalletPanelApiProxy, {
 import getWalletPageApiProxy, {
   type WalletPageApiProxy,
 } from '../../page/wallet_page_api_proxy'
-
-import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+import { loadTimeData } from '../../../common/loadTimeData'
 
 const debugProxyHandler = (path?: string) => ({
   get(target: any, propertyKey: PropertyKey, receiver?: unknown): any {
@@ -46,8 +45,7 @@ export function getAPIProxy(): IsomorphicApiProxy {
       ? getWalletPanelApiProxy()
       : getWalletPageApiProxy()
 
-  const debug = window.localStorage.getItem(LOCAL_STORAGE_KEYS.DEBUG)
-  if (!debug || debug !== 'true') {
+  if (!loadTimeData.getBoolean('walletDebug')) {
     return nativeProxy
   }
 
