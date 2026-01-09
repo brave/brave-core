@@ -25,7 +25,7 @@ dependencies = [
  "selectors 0.26.0",
  "serde",
  "serde_json",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
  "url",
 ]
 
@@ -36,7 +36,7 @@ dependencies = [
  "adblock",
  "cxx",
  "serde_json",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -101,7 +101,7 @@ dependencies = [
  "cxx",
  "lazy_static",
  "rand 0.8.5",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -226,7 +226,7 @@ dependencies = [
  "rand_core 0.6.4",
  "sha2 0.9.9",
  "subtle",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -1273,7 +1273,7 @@ dependencies = [
  "memchr",
  "mime",
  "selectors 0.24.0",
- "thiserror 2.0.11",
+ "thiserror 2.0.17",
 ]
 
 [[package]]
@@ -1824,7 +1824,7 @@ dependencies = [
  "lazy_static",
  "regex",
  "serde_json",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
  "url",
 ]
 
@@ -1841,7 +1841,7 @@ dependencies = [
  "pasta_curves",
  "rand_core 0.6.4",
  "serde",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
  "zeroize",
 ]
 
@@ -2170,7 +2170,7 @@ dependencies = [
  "readability",
  "regex",
  "serde_json",
- "thiserror 1.0.65",
+ "thiserror 1.0.69",
  "url",
 ]
 
@@ -2334,23 +2334,22 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.65"
+version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "thiserror-impl 1.0.65",
+ "thiserror-impl 1.0.69",
 ]
 
 [[package]]
 name = "thiserror"
-version = "2.0.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "2.0.17"
 dependencies = [
- "thiserror-impl 2.0.11",
+ "thiserror-impl 2.0.17",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.65"
+version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
@@ -2360,8 +2359,7 @@ dependencies = [
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "2.0.17"
 dependencies = [
  "proc-macro2",
  "quote",
