@@ -14,7 +14,6 @@ import {
   selectMainnetNetworksFromQueryResult,
   selectAllNetworksFromQueryResult,
   selectOffRampNetworksFromQueryResult,
-  selectOnRampNetworksFromQueryResult,
   selectVisibleNetworksFromQueryResult,
 } from './entities/network.entity'
 
@@ -31,7 +30,6 @@ import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 import { handleEndpointError } from '../../utils/api-utils'
 import { walletEndpoints } from './endpoints/wallet.endpoints'
 import { tokenEndpoints } from './endpoints/token.endpoints'
-import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
 import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
 import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
@@ -125,8 +123,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
       .injectEndpoints({ endpoints: nftsEndpoints })
-      // onRamp endpoints
-      .injectEndpoints({ endpoints: onRampEndpoints })
       // offRamp endpoints
       .injectEndpoints({ endpoints: offRampEndpoints })
       // coingecko endpoints
@@ -203,7 +199,6 @@ export const {
   useGetAllKnownNetworksQuery,
   useGetAvailableShieldedAccountQuery,
   useGetBitcoinBalancesQuery,
-  useGetBuyUrlQuery,
   useGetChainTipStatusQuery,
   useGetCoingeckoIdQuery,
   useGetCoinMarketQuery,
@@ -232,8 +227,6 @@ export const {
   useGetNftMetadataQuery,
   useGetNftOwnerQuery,
   useGetOffRampAssetsQuery,
-  useGetOnRampAssetsQuery,
-  useGetOnRampFiatCurrenciesQuery,
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
@@ -284,7 +277,6 @@ export const {
   useLazyGetAllKnownNetworksQuery,
   useLazyGetAvailableShieldedAccountQuery,
   useLazyGetBitcoinBalancesQuery,
-  useLazyGetBuyUrlQuery,
   useLazyGetChainTipStatusQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
@@ -409,19 +401,6 @@ export const useGetOffRampNetworksQuery = (opts?: { skip?: boolean }) => {
       isLoading: res.isLoading,
       error: res.error,
       data: selectOffRampNetworksFromQueryResult(res),
-    }),
-    skip: opts?.skip,
-  })
-
-  return queryResults
-}
-
-export const useGetOnRampNetworksQuery = (opts?: { skip?: boolean }) => {
-  const queryResults = useGetNetworksRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      error: res.error,
-      data: selectOnRampNetworksFromQueryResult(res),
     }),
     skip: opts?.skip,
   })

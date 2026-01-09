@@ -662,21 +662,6 @@ export interface TransactionProviderErrorRegistry {
   [transactionId: string]: TransactionProviderError
 }
 
-export const SupportedOnRampNetworks = [
-  BraveWallet.SOLANA_MAINNET,
-  BraveWallet.MAINNET_CHAIN_ID, // ETH
-  BraveWallet.FILECOIN_MAINNET,
-  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
-  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.AURORA_MAINNET_CHAIN_ID,
-  BraveWallet.BITCOIN_MAINNET,
-]
-
 export const SupportedOffRampNetworks = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID, // ETH
