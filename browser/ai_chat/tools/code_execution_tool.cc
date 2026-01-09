@@ -141,7 +141,8 @@ void CodeExecutionTool::ResolveRequest(
 
   std::string tool_output;
   if (!base::JSONWriter::Write(output_dict, &tool_output)) {
-    tool_output = "Error: Failed to serialize output";
+    tool_output =
+        R"({"console_logs": "Error: Failed to serialize output", "output": {}})";
   }
   std::move(callback).Run(CreateContentBlocksForText(std::move(tool_output)));
 }

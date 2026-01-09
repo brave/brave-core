@@ -13,7 +13,7 @@ namespace {
 
 constexpr char kChartsKey[] = "charts";
 constexpr char kDataKey[] = "data";
-constexpr char kNameKey[] = "name";
+constexpr char kXKey[] = "x";
 constexpr char kLabelsKey[] = "labels";
 
 }  // namespace
@@ -29,8 +29,9 @@ bool ChartCodePlugin::IsEnabled() {
 std::string_view ChartCodePlugin::Description() const {
   return "Use chartUtil.createLineChart(data, labels) where data is an array "
          "of objects and labels is an optional map of data keys to display "
-         "labels. Example: chartUtil.createLineChart([{month: 'Jan', sales: "
-         "100, profit: 30}, {month: 'Feb', sales: 150, profit: 45}], {sales: "
+         "labels. You must use 'x' as the key for the x-axis. "
+         "Example: chartUtil.createLineChart([{x: 'Jan', sales: "
+         "100, profit: 30}, {x: 'Feb', sales: 150, profit: 45}], {sales: "
          "'Sales ($)', profit: 'Profit ($)'}).";
 }
 
@@ -83,12 +84,12 @@ std::optional<std::string> ChartCodePlugin::ValidateOutput(
         return "Chart data entry must be an object";
       }
 
-      if (!data_item->Find(kNameKey)) {
-        return "Chart data entry is missing required 'name' field";
+      if (!data_item->Find(kXKey)) {
+        return "Chart data entry is missing required 'x' field";
       }
 
       if (data_item->size() < 2) {
-        return "Chart data entry must have 'name' and at least one other field";
+        return "Chart data entry must have 'x' and at least one other field";
       }
     }
 
