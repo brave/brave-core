@@ -25,7 +25,7 @@ export function StepWelcomeContent({}: StepContentProps) {
   )
 }
 
-export function StepWelcomeFooter({ onNext, onBack, isFirstStep }: StepFooterProps) {
+export function StepWelcomeFooter({ onNext, onBack, onSkip, isFirstStep }: StepFooterProps) {
   return (
     <div className="footer">
       <div className="footer-left">
@@ -34,8 +34,9 @@ export function StepWelcomeFooter({ onNext, onBack, isFirstStep }: StepFooterPro
         )}
       </div>
       <div className="footer-right">
+        <Button kind="plain-faint" size="large" onClick={onSkip}>Skip</Button>
         <Button kind="filled" size="large" className='main-button' onClick={onNext}>
-          Get started
+          Set Brave as default
         </Button>
       </div>
     </div>
