@@ -1,6 +1,6 @@
 [package]
 name = "thiserror"
-version = "1.0.65"
+version = "1.0.69"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 categories = ["rust-patterns"]
 description = "derive(Error)"
@@ -9,10 +9,10 @@ edition = "2021"
 keywords = ["error", "error-handling", "derive"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/thiserror"
-rust-version = "1.56"
+rust-version = "1.61"
 
 [dependencies]
-thiserror-impl = { version = "=1.0.65", path = "impl" }
+thiserror-impl = { version = "=1.0.69", path = "impl" }
 
 [dev-dependencies]
 anyhow = "1.0.73"
