@@ -277,6 +277,14 @@ package = "syn"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/termcolor-v1"
 package = "termcolor"
 
+[patch.crates-io.thiserror_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-v2"
+package = "thiserror"
+
+[patch.crates-io.thiserror-impl_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2"
+package = "thiserror-impl"
+
 [patch.crates-io.unicode-ident_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-ident-v1"
 package = "unicode-ident"
