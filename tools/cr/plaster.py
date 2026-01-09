@@ -294,20 +294,22 @@ class PlasterFile:
                         re_flags |= getattr(re, flag)
                     else:
                         raise ValueError(
-                            f'Invalid re flag specified: {flag} in {info.source}'
-                        )
+                            f'Invalid re flag specified: {flag} in '
+                            f'{info.source}')
 
                 contents, num_changes = re.subn(
                     re_pattern,
                     replace,
                     contents,
                     flags=re_flags,
-                    # We dont't want to explicitly limit the number of matches here,
-                    # we want to control what matches using the match pattern and
-                    # then ensure the output matches only what we expected
+                    # We dont't want to explicitly limit the number of matches
+                    # here, we want to control what matches using the match
+                    # pattern and then ensure the output matches only what we
+                    # expected
                     count=0)
 
-                # count == 0 means "replace all matches" and bypass count validation
+                # count == 0 means "replace all matches" and bypass count
+                # validation
                 if expected_count not in (0, num_changes):
                     errors.append(
                         f'Unexpected number of matches ({num_changes} vs '
@@ -317,7 +319,7 @@ class PlasterFile:
             errors.append(f'Invalid regex: {e} in {self.path}')
 
         if errors:
-            print(f'\n\nThere were errors attempting to apply the patches:',
+            print('\n\nThere were errors attempting to apply the patches:',
                   file=sys.stderr)
             for error in errors:
                 print(f'{error}', file=sys.stderr)

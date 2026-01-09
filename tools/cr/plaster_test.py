@@ -363,7 +363,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result, 'Content with CHROMIUM and Brave words.')
 
     def test_invalid_regex_fails(self):
-        """Test that invalid regex patterns cause sys.exit(1) with error output."""
+        """Test that invalid regex patterns output errors with sys.exit(1)."""
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_invalid_regex.idl')
 
