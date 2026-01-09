@@ -118,12 +118,17 @@ path = r"""${config.gclientFile}"""
 exec(compile(open(path, 'r').read(), path, 'exec'), None, out)
 print(json.dumps(out))
 `
-    const result = util.run('python3', ['-'], {
-      skipLogging: true,
-      input: script,
-      encoding: 'utf8',
-      continueOnFail: true,
-    })
+    const result = util.run(
+      'python3',
+      ['-'],
+      util.mergeWithDefault({
+        skipLogging: true,
+        stdio: 'pipe',
+        input: script,
+        encoding: 'utf8',
+        continueOnFail: true,
+      }),
+    )
     if (result.status !== 0) {
       throw new Error(result.stderr.toString().trim())
     }

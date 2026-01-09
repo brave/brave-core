@@ -236,7 +236,15 @@ const runMojomFormatForFile = async (file, dryRun) => {
       'mojom_format.py',
     ),
   ]
-  const formatResult = util.run('python3', mojomFormatArgs, { input: content })
+  const formatResult = util.run(
+    'python3',
+    mojomFormatArgs,
+    util.mergeWithDefault({
+      skipLogging: true,
+      stdio: 'pipe',
+      input: content,
+    }),
+  )
   const formatted = formatResult.stdout.toString().split(/\r?\n/).join('\n')
   if (!formatted) {
     return `Can't format ${file}:\n`
