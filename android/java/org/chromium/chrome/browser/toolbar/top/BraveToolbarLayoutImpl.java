@@ -1042,6 +1042,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    public BraveShieldsHandler getBraveShieldsHandler() {
+        return mBraveShieldsHandler;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

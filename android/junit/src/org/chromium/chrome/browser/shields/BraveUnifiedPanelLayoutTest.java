@@ -10,12 +10,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.core.content.ContextCompat;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
@@ -317,5 +319,17 @@ public final class BraveUnifiedPanelLayoutTest {
     public void testShredDataPanel_inflatesSuccessfully() {
         View shredPanel = mInflater.inflate(R.layout.brave_shred_data_panel, null);
         assertNotNull("Shred data panel layout should inflate successfully", shredPanel);
+    }
+
+    // ========================================================================
+    // Menu button drawable tests (for location bar integration)
+    // ========================================================================
+
+    @SmallTest
+    @Test
+    public void testMenuButtonBackground_loadsSuccessfully() {
+        Drawable drawable =
+                ContextCompat.getDrawable(mActivity, R.drawable.brave_menu_button_background);
+        assertNotNull("Menu button background drawable should load successfully", drawable);
     }
 }

@@ -26,8 +26,10 @@ import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.page_info.ChromePageInfoHighlight;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.shields.BraveUnifiedPanelHandler;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -46,6 +48,58 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     /**
+     * Wrapper for PageInfoAction that delegates to the unified panel handler. This allows us to
+     * initialize the handler after super() is called.
+     */
+    private static class BravePageInfoActionWrapper implements PageInfoAction {
+        private @Nullable BraveUnifiedPanelHandler mHandler;
+        private final View mLocationBarLayout;
+
+        public BravePageInfoActionWrapper(View locationBarLayout) {
+            mLocationBarLayout = locationBarLayout;
+        }
+
+        public void initialize(BraveUnifiedPanelHandler handler) {
+            mHandler = handler;
+        }
+
+        @Override
+        public void show(Tab tab, ChromePageInfoHighlight pageInfoHighlight) {
+            if (mHandler == null || mLocationBarLayout == null || tab == null) {
+                return;
+            }
+
+            // Get the StatusView to use as anchor
+            View anchorView = null;
+            if (mLocationBarLayout instanceof BraveLocationBarLayout) {
+                anchorView = ((BraveLocationBarLayout) mLocationBarLayout).getStatusView();
+            }
+
+            if (anchorView != null) {
+                // Get the shields handler from the toolbar layout
+                org.chromium.chrome.browser.shields.BraveShieldsHandler shieldsHandler = null;
+                android.view.ViewParent parent = mLocationBarLayout.getParent();
+                while (parent != null) {
+                    if (parent
+                            instanceof
+                            org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl) {
+                        shieldsHandler =
+                                ((org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl)
+                                                parent)
+                                        .getBraveShieldsHandler();
+                        break;
+                    }
+                    parent = parent.getParent();
+                }
+
+                if (shieldsHandler != null) {
+                    mHandler.show(anchorView, tab, shieldsHandler);
+                }
+            }
+        }
+    }
+
+    /**
      * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
      * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
      * LocationBarCoordinator#mLocationBarMediator} protected via asm.
@@ -60,6 +114,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     private @Nullable View mUrlBar;
 
     private @Nullable View mQRButton;
+    private final BraveUnifiedPanelHandler mUnifiedPanelHandler;
 
     public BraveLocationBarCoordinator(
             View locationBarLayout,
@@ -115,7 +170,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 activityLifecycleDispatcher,
                 overrideUrlLoadingDelegate,
                 backKeyBehavior,
-                pageInfoAction,
+                createPageInfoActionWrapper(locationBarLayout), // Use our custom action
+                // bringTabToFrontCallback,
                 bringTabGroupToFrontCallback,
                 omniboxUma,
                 bookmarkState,
@@ -153,6 +209,30 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             mQRButton.setOnClickListener(
                     ((BraveLocationBarMediator) mLocationBarMediator)::qrButtonClicked);
         }
+
+        // Now initialize after super() has been called
+        // Retrieve the wrapper from thread local and initialize it
+        BravePageInfoActionWrapper wrapper = sPageInfoActionWrapper.get();
+
+        // Initialize unified panel handler
+        BraveUnifiedPanelHandler handler =
+                new BraveUnifiedPanelHandler(locationBarLayout.getContext());
+        mUnifiedPanelHandler = handler;
+
+        if (wrapper != null) {
+            wrapper.initialize(handler);
+            sPageInfoActionWrapper.remove(); // Clean up
+        }
+    }
+
+    private static final ThreadLocal<BravePageInfoActionWrapper> sPageInfoActionWrapper =
+            new ThreadLocal<>();
+
+    private static PageInfoAction createPageInfoActionWrapper(View locationBarLayout) {
+        BravePageInfoActionWrapper wrapper = new BravePageInfoActionWrapper(locationBarLayout);
+        // Store it in a thread local to retrieve after super() call
+        sPageInfoActionWrapper.set(wrapper);
+        return wrapper;
     }
 
     @Override
@@ -161,6 +241,9 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
         if (mQRButton != null) {
             mQRButton.setOnClickListener(null);
             mQRButton = null;
+        }
+        if (mUnifiedPanelHandler != null) {
+            mUnifiedPanelHandler.hide();
         }
     }
 

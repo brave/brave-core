@@ -213,6 +213,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_checkbox.xml",
     "java/brave-res/drawable/brave_icon_search.xml",
     "java/brave-res/drawable/brave_menu_bookmarks.xml",
+    "java/brave-res/drawable/brave_menu_button_background.xml",
     "java/brave-res/drawable/brave_menu_downloads.xml",
     "java/brave-res/drawable/brave_menu_exit.xml",
     "java/brave-res/drawable/brave_menu_history.xml",
