@@ -88,7 +88,8 @@
         "custom_vars": {
           "checkout_clang_coverage_tools": true,
           "checkout_clangd": true,
-          "download_reclient": true
+          "download_reclient": true,
+          "siso_version": "git_revision:75bb90e390e42de9f1b1044f18b71297c5ba82bd"
         }
       },
       "depot_tools": {
