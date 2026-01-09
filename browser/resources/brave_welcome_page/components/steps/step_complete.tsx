@@ -21,7 +21,6 @@ interface PrivacyOption {
   title: string
   subtitle: string
   icon: string | null // SVG import path
-  iconColor: string
 }
 
 const privacyOptions: PrivacyOption[] = [
@@ -29,22 +28,19 @@ const privacyOptions: PrivacyOption[] = [
     id: 'wdp',
     title: 'Help Brave Search grow',
     subtitle: 'Opt into the Web Discovery Project to help grow the index and improve search results.',
-    icon: wdpIcon,
-    iconColor: '#f98354'
+    icon: wdpIcon
   },
   {
     id: 'anonymous-data',
     title: 'Help us make the browser better',
     subtitle: 'Share completely private & anonymous product insights.',
-    icon: p3aIcon,
-    iconColor: '#bb8cf1'
+    icon: p3aIcon
   },
   {
     id: 'default-browser',
     title: 'Set Brave as your default browser',
     subtitle: 'Enjoy ad-blocking and real privacy with every page view. Give it a try!',
-    icon: setDefaultIcon,
-    iconColor: '#849bff'
+    icon: setDefaultIcon
   }
 ]
 
@@ -74,10 +70,7 @@ export function StepCompleteContent({}: StepContentProps) {
               className={`privacy-card ${!checkedOptions[option.id] ? 'privacy-card-unchecked' : ''}`}
               onClick={() => handleCardClick(option.id)}
             >
-              <div
-                className="privacy-card-icon"
-                style={{ backgroundColor: option.iconColor }}
-              >
+              <div className="privacy-card-icon">
                 {option.icon && <img src={option.icon} alt="" />}
               </div>
               <div className="privacy-card-content">
