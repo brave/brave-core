@@ -13,12 +13,14 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -31,10 +33,17 @@ namespace brave_wallet {
 namespace {
 
 mojom::CardanoBalancePtr BalanceFromUtxos(
-    const cardano_rpc::UnspentOutputs& utxos) {
+    const cardano_rpc::UnspentOutputs& utxos,
+    const std::optional<cardano_rpc::TokenId>& token_id) {
   base::CheckedNumeric<uint64_t> total_balance = 0;
   for (const auto& utxo : utxos) {
-    total_balance += utxo.lovelace_amount;
+    if (token_id) {
+      if (auto* token_balance = base::FindOrNull(utxo.tokens, token_id)) {
+        total_balance += *token_balance;
+      }
+    } else {
+      total_balance += utxo.lovelace_amount;
+    }
   }
 
   auto result = mojom::CardanoBalance::New();
@@ -71,21 +80,34 @@ void CardanoWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
-void CardanoWalletService::GetBalance(mojom::AccountIdPtr account_id,
-                                      GetBalanceCallback callback) {
+void CardanoWalletService::GetBalance(
+    mojom::AccountIdPtr account_id,
+    const std::optional<std::string>& token_id_hex,
+    GetBalanceCallback callback) {
+  std::optional<cardano_rpc::TokenId> token_id;
+  if (token_id_hex) {
+    token_id.emplace();
+    if (!base::HexStringToBytes(*token_id_hex, &token_id.value())) {
+      std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+      return;
+    }
+  }
+
   GetUtxos(account_id.Clone(),
            base::BindOnce(&CardanoWalletService::OnGetUtxosForGetBalance,
-                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                          weak_ptr_factory_.GetWeakPtr(), std::move(token_id),
+                          std::move(callback)));
 }
 
 void CardanoWalletService::OnGetUtxosForGetBalance(
+    const std::optional<cardano_rpc::TokenId>& token_id,
     GetBalanceCallback callback,
     base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
     std::move(callback).Run(nullptr, utxos.error());
     return;
   }
-  auto balance = BalanceFromUtxos(utxos.value());
+  auto balance = BalanceFromUtxos(utxos.value(), token_id);
   if (!balance) {
     std::move(callback).Run(nullptr, WalletInternalErrorMessage());
     return;

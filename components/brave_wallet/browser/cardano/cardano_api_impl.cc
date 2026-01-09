@@ -274,7 +274,7 @@ void CardanoApiImpl::GetBalance(GetBalanceCallback callback) {
   delegate_->WalletInteractionDetected();
 
   brave_wallet_service_->GetCardanoWalletService()->GetBalance(
-      selected_account_.Clone(),
+      selected_account_.Clone(), std::nullopt,
       base::BindOnce(&CardanoApiImpl::OnGetBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

@@ -955,7 +955,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                                   ->address_string,
                               500000);
 
-  auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
+  auto utxos_as_vec = UtxosToVector(test_rpc_service()->utxo_map());
   auto utxos_span = base::span(utxos_as_vec);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
@@ -980,7 +980,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
     EXPECT_EQ(utxos.value(),
               CardanoCip30Serializer::SerializeUtxos(
-                  UtxosToVector(test_rpc_service()->GetUtxos())));
+                  UtxosToVector(test_rpc_service()->utxo_map())));
 
     EXPECT_FALSE(error);
   }

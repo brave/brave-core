@@ -795,8 +795,10 @@ async function fetchAccountCurrentNativeBalance({
     }
 
     case BraveWallet.CoinType.ADA: {
-      const { balance, errorMessage } =
-        await cardanoWalletService.getBalance(accountId)
+      const { balance, errorMessage } = await cardanoWalletService.getBalance(
+        accountId,
+        null,
+      )
 
       if (errorMessage || balance === null) {
         throw new Error(
@@ -936,6 +938,20 @@ async function fetchAccountTokenCurrentBalance({
       }
 
       return token.isNft ? uiAmountString : amount
+    }
+    case BraveWallet.CoinType.ADA: {
+      const { balance, errorMessage } = await cardanoWalletService.getBalance(
+        accountId,
+        token.contractAddress,
+      )
+
+      if (errorMessage || balance === null) {
+        throw new Error(
+          `getBalance (${token.contractAddress}) error: ${errorMessage || 'Unknown error'}`,
+        )
+      }
+
+      return Amount.normalize(balance.totalBalance.toString())
     }
 
     // Other network type tokens
