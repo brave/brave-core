@@ -459,6 +459,10 @@ void ConversationAPIClient::OnQueryDataReceived(
             std::nullopt);
       }
     }
+    std::optional<std::string> model_key;
+    if (const auto* model = result_params.FindString("model")) {
+      model_key = model_service_->GetLeoModelKeyByName(*model);
+    }
 
     // Provide any valid tool use events to the callback
     for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
@@ -470,7 +474,9 @@ void ConversationAPIClient::OnQueryDataReceived(
       }
       auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_use_event));
-      callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+
+      callback.Run(GenerationResultData(std::move(tool_event),
+                                        std::optional<std::string>(model_key)));
     }
   }
 }
