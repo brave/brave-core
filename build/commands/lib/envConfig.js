@@ -6,9 +6,9 @@
 'use strict'
 
 const assert = require('assert')
-const dotenv = require('dotenv')
 const fs = require('fs')
 const path = require('path')
+const { parseEnv } = require('node:util')
 const Log = require('./logging')
 
 /**
@@ -233,11 +233,11 @@ class EnvConfig {
    * @param {string} configDir - Directory containing .env file
    */
   static #loadDotenvConfig(configDir) {
-    const dotenvConfig = {}
+    let dotenvConfig = {}
     // Parse {configDir}/.env with all included env files.
     const dotenvConfigPath = path.join(configDir, '.env')
     if (fs.existsSync(dotenvConfigPath)) {
-      EnvConfig.#dotenvPopulateWithIncludes(dotenvConfig, dotenvConfigPath)
+      dotenvConfig = EnvConfig.#parseEnvFileWithIncludes(dotenvConfigPath)
     } else {
       // The .env file is used by `gn gen`. Create it if it doesn't exist.
       const defaultEnvConfigContent =
@@ -257,10 +257,10 @@ class EnvConfig {
    *
    * Format: include_env=path/to/file.env
    *
-   * @param {Object} processEnv - Object to populate with parsed variables
    * @param {string} envPath - Path to the main .env file to parse
+   * @returns {Record<string, string>} The parsed .env file
    */
-  static #dotenvPopulateWithIncludes(processEnv, envPath) {
+  static #parseEnvFileWithIncludes(envPath) {
     const seenFiles = new Set()
     function readEnvFile(filePath, fromFile) {
       if (seenFiles.has(filePath)) {
@@ -294,8 +294,7 @@ class EnvConfig {
       return result
     }
 
-    const finalEnvContent = readEnvFile(envPath, envPath)
-    dotenv.populate(processEnv, dotenv.parse(finalEnvContent))
+    return parseEnv(readEnvFile(envPath, envPath))
   }
 
   /**
