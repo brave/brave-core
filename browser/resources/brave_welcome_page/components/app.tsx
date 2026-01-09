@@ -11,7 +11,7 @@ import { StepDefinition } from './types'
 import {
   StepWelcomeContent, StepWelcomeFooter,
   StepImportDataContent, StepImportDataFooter, ImportDataProvider,
-  StepMakeYoursContent, StepMakeYoursFooter,
+  StepMakeYoursContent, StepMakeYoursFooter, MakeYoursProvider,
   StepCompleteContent, StepCompleteFooter
 } from './steps'
 
@@ -119,31 +119,33 @@ export function App() {
 
   return (
     <ImportDataProvider>
-      <div data-css-scope={style.scope}>
-        <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
-          <div className="content-area">
-            <div className="brave-logo-container">
-              <Icon name='social-brave-release-favicon-fullheight-color'/>
+      <MakeYoursProvider>
+        <div data-css-scope={style.scope}>
+          <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
+            <div className="content-area">
+              <div className="brave-logo-container">
+                <Icon name='social-brave-release-favicon-fullheight-color'/>
+              </div>
+              <div className={`step-wrapper ${getTransitionClass()}`}>
+                <DisplayedContent
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  onSkip={handleSkip}
+                  isFirstStep={isFirstStep}
+                  isLastStep={isLastStep}
+                />
+              </div>
             </div>
-            <div className={`step-wrapper ${getTransitionClass()}`}>
-              <DisplayedContent
-                onNext={handleNext}
-                onBack={handleBack}
-                onSkip={handleSkip}
-                isFirstStep={isFirstStep}
-                isLastStep={isLastStep}
-              />
-            </div>
+            <CurrentFooter
+              onNext={handleNext}
+              onBack={handleBack}
+              onSkip={handleSkip}
+              isFirstStep={isFirstStep}
+              isLastStep={isLastStep}
+            />
           </div>
-          <CurrentFooter
-            onNext={handleNext}
-            onBack={handleBack}
-            onSkip={handleSkip}
-            isFirstStep={isFirstStep}
-            isLastStep={isLastStep}
-          />
         </div>
-      </div>
+      </MakeYoursProvider>
     </ImportDataProvider>
   )
 }
