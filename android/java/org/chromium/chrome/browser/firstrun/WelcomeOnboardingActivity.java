@@ -280,21 +280,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
 
         mCurrentStep++;
-        handleOnboardingStepForDefaultVariant(mCurrentStep);
-    }
-
-    private void handleOnboardingStepForDefaultVariant(final int step) {
-        if (step == 0) {
+        if (mCurrentStep == 0) {
             handleSetAsDefaultStep();
-        } else if (step == 1) {
+        } else if (mCurrentStep == 1) {
             handleWDPStep();
-        } else if (step == 2) {
+        } else if (mCurrentStep == 2) {
             handleAnalyticsConsentPage();
         } else {
             finalStep();
         }
     }
-
     private void finalStep() {
         OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
 
