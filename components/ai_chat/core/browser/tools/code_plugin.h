@@ -29,10 +29,12 @@ class CodePlugin {
   // JavaScript setup script to inject into the execution environment
   virtual std::string_view SetupScript() const = 0;
 
-  // Validates the output from script execution. Returns an error message
+  // Validates an artifact from script execution. Returns an error message
   // if validation fails, or std::nullopt if validation succeeds.
-  virtual std::optional<std::string> ValidateOutput(
-      const base::Value::Dict& output) const;
+  // |type| is the artifact type, |artifact_value| is the parsed JSON.
+  virtual std::optional<std::string> ValidateArtifact(
+      const std::string& type,
+      const base::Value& artifact_value) const;
 };
 
 }  // namespace ai_chat

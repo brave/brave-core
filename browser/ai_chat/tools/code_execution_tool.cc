@@ -10,7 +10,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -40,8 +39,8 @@ namespace {
 
 constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 constexpr char kScriptProperty[] = "script";
-constexpr char kConsoleLogsKey[] = "console_logs";
-constexpr char kOutputKey[] = "output";
+constexpr char kArtifactTypeKey[] = "type";
+constexpr char kArtifactContentKey[] = "content";
 
 }  // namespace
 
@@ -104,15 +103,14 @@ void CodeExecutionTool::CodeExecutionRequest::OnDidAddMessageToConsole(
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleResult(base::Value result) {
-  if (!result.is_dict()) {
+  if (!result.is_list()) {
     std::move(resolve_callback_).Run("Error: Syntax error", {});
     return;
   }
 
   std::string console_logs_str = base::JoinString(console_logs_, "\n");
-
   std::move(resolve_callback_)
-      .Run(std::move(console_logs_str), std::move(result.GetDict()));
+      .Run(std::move(console_logs_str), std::move(result).TakeList());
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleTimeout() {
@@ -123,28 +121,68 @@ void CodeExecutionTool::ResolveRequest(
     std::list<CodeExecutionRequest>::iterator request_it,
     UseToolCallback callback,
     std::string console_logs,
-    base::Value::Dict output) {
+    base::Value::List artifacts) {
   requests_.erase(request_it);
-  // Validate output with plugins
-  for (const auto& plugin : code_plugins_) {
-    if (auto error = plugin->ValidateOutput(output)) {
-      output.clear();
-      console_logs = base::StrCat({"Error: ", *error});
+
+  std::vector<mojom::ContentBlockPtr> artifact_blocks;
+  std::optional<std::string> error;
+
+  // Process artifacts
+  for (const auto& artifact : artifacts) {
+    const auto* artifact_dict = artifact.GetIfDict();
+    if (!artifact_dict) {
+      error = "Error: Artifact must be an object";
       break;
     }
+
+    const auto* type = artifact_dict->FindString(kArtifactTypeKey);
+    const auto* content = artifact_dict->Find(kArtifactContentKey);
+    if (!type || !content) {
+      error = "Error: Artifact missing required 'type' or 'content' field";
+      break;
+    }
+
+    // Validate artifact with plugins
+    for (const auto& plugin : code_plugins_) {
+      if (auto validation_error = plugin->ValidateArtifact(*type, *content)) {
+        error = base::StrCat({"Error: ", *validation_error});
+        break;
+      }
+    }
+
+    if (error) {
+      break;
+    }
+
+    // Serialize content to JSON string for storage
+    std::string content_json;
+    if (!base::JSONWriter::Write(*content, &content_json)) {
+      error = "Error: Failed to serialize artifact content";
+      break;
+    }
+
+    // Add artifact content block
+    artifact_blocks.push_back(
+        mojom::ContentBlock::NewToolCallArtifactContentBlock(
+            mojom::ToolCallArtifactContentBlock::New(*type,
+                                                     std::move(content_json))));
   }
 
-  // Build final output JSON
-  base::Value::Dict output_dict;
-  output_dict.Set(kConsoleLogsKey, console_logs);
-  output_dict.Set(kOutputKey, std::move(output));
+  // Construct final content blocks
+  std::vector<mojom::ContentBlockPtr> content_blocks;
 
-  std::string tool_output;
-  if (!base::JSONWriter::Write(output_dict, &tool_output)) {
-    tool_output =
-        R"({"console_logs": "Error: Failed to serialize output", "output": {}})";
+  // If error occurred, use error message instead of console logs
+  if (error) {
+    content_blocks = CreateContentBlocksForText(std::move(*error));
+  } else {
+    content_blocks = CreateContentBlocksForText(std::move(console_logs));
+
+    content_blocks.insert(content_blocks.end(),
+                          std::make_move_iterator(artifact_blocks.begin()),
+                          std::make_move_iterator(artifact_blocks.end()));
   }
-  std::move(callback).Run(CreateContentBlocksForText(std::move(tool_output)));
+
+  std::move(callback).Run(std::move(content_blocks));
 }
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
@@ -234,11 +272,11 @@ std::string CodeExecutionTool::WrapScript(const std::string& script) const {
     }
   }
 
-  return base::StrCat({"(async function() { const codeExecOutput = {}; ",
+  return base::StrCat({"(async function() { let codeExecArtifacts = []; ",
                        bignumber_js, base::StrCat(plugin_scripts), " try { ",
                        script,
                        " } catch (error) { console.error(error.toString()); } "
-                       "return codeExecOutput; })()"});
+                       "return codeExecArtifacts; })()"});
 }
 
 void CodeExecutionTool::UseTool(const std::string& input_json,

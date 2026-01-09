@@ -9,8 +9,9 @@ namespace ai_chat {
 
 CodePlugin::~CodePlugin() = default;
 
-std::optional<std::string> CodePlugin::ValidateOutput(
-    const base::Value::Dict& output) const {
+std::optional<std::string> CodePlugin::ValidateArtifact(
+    const std::string& type,
+    const base::Value& artifact_value) const {
   return std::nullopt;
 }
 

@@ -10,25 +10,9 @@ import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event_code_execution.module.scss'
 import '../../../common/strings'
 
-interface CodeExecutionOutput {
-  console_logs: string
-}
-
 const ToolEventCodeExecution: ToolComponent = (props) => {
   const jsCode = props.toolInput?.script
-
-  const output = React.useMemo<CodeExecutionOutput | null>(() => {
-    const outputText = props.toolUseEvent.output?.[0]?.textContentBlock?.text
-    if (!outputText) {
-      return null
-    }
-
-    try {
-      return JSON.parse(outputText)
-    } catch {
-      return null
-    }
-  }, [props.toolUseEvent.output])
+  const output = props.toolUseEvent.output?.[0]?.textContentBlock?.text ?? ''
 
   const content: ToolUseContent = {
     toolLabel: props.content.toolLabel,
@@ -44,14 +28,14 @@ const ToolEventCodeExecution: ToolComponent = (props) => {
               lang='javascript'
             />
           </div>
-          {output?.console_logs && (
+          {output && (
             <div className={styles.outputSection}>
               <div className={styles.sectionLabel}>
                 {getLocale(S.CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL)}
               </div>
               <div className={styles.outputContent}>
                 <CodeBlock.Block
-                  code={output.console_logs}
+                  code={output}
                   lang='text'
                 />
               </div>

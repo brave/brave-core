@@ -31,8 +31,9 @@ class ChartCodePlugin : public CodePlugin {
   std::string_view Description() const override;
   std::string_view InclusionKeyword() const override;
   std::string_view SetupScript() const override;
-  std::optional<std::string> ValidateOutput(
-      const base::Value::Dict& output) const override;
+  std::optional<std::string> ValidateArtifact(
+      const std::string& type,
+      const base::Value& artifact_value) const override;
 };
 
 }  // namespace ai_chat

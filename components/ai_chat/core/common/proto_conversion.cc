@@ -105,6 +105,17 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
               mojom::ContentBlock::NewTextContentBlock(std::move(text_block)));
           break;
         }
+        case store::ContentBlockProto::kToolCallArtifactContentBlock: {
+          auto artifact_block = mojom::ToolCallArtifactContentBlock::New();
+          artifact_block->type =
+              proto_block.tool_call_artifact_content_block().type();
+          artifact_block->content_json =
+              proto_block.tool_call_artifact_content_block().content_json();
+          mojom_event->output->push_back(
+              mojom::ContentBlock::NewToolCallArtifactContentBlock(
+                  std::move(artifact_block)));
+          break;
+        }
         case store::ContentBlockProto::CONTENT_NOT_SET:
           // Skip invalid blocks
           break;
@@ -153,6 +164,16 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
         case mojom::ContentBlock::Tag::kTextContentBlock: {
           auto* proto_text = proto_block->mutable_text_content_block();
           proto_text->set_text(mojom_block->get_text_content_block()->text);
+          break;
+        }
+        case mojom::ContentBlock::Tag::kToolCallArtifactContentBlock: {
+          auto* proto_artifact =
+              proto_block->mutable_tool_call_artifact_content_block();
+          proto_artifact->set_type(
+              mojom_block->get_tool_call_artifact_content_block()->type);
+          proto_artifact->set_content_json(
+              mojom_block->get_tool_call_artifact_content_block()
+                  ->content_json);
           break;
         }
         default:
