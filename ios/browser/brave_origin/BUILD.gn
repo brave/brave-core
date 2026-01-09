@@ -10,8 +10,14 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_service_bridge.h",
+    "brave_origin_service_bridge.mm",
+    "brave_origin_service_bridge_impl.h",
+    "brave_origin_service_bridge_impl.mm",
     "brave_origin_service_factory.h",
     "brave_origin_service_factory.mm",
+    "brave_origin_service_factory_bridge.h",
+    "brave_origin_service_factory_bridge.mm",
   ]
   deps = [
     "//base",
@@ -25,6 +31,7 @@ source_set("brave_origin") {
     "//brave/components/constants",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common",
+    "//brave/ios/browser/keyed_service",
     "//brave/ios/browser/policy",
     "//components/keyed_service/core",
     "//components/policy/core/browser",
