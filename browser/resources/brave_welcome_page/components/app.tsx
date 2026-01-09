@@ -12,6 +12,7 @@ import {
   StepWelcomeContent, StepWelcomeFooter,
   StepImportDataContent, StepImportDataFooter, ImportDataProvider,
   StepMakeYoursContent, StepMakeYoursFooter, MakeYoursProvider,
+  StepStartingFeaturesContent, StepStartingFeaturesFooter,
   StepCompleteContent, StepCompleteFooter
 } from './steps'
 
@@ -20,6 +21,7 @@ const steps: StepDefinition[] = [
   { id: 'welcome', Content: StepWelcomeContent, Footer: StepWelcomeFooter },
   { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
   { id: 'make-yours', Content: StepMakeYoursContent, Footer: StepMakeYoursFooter },
+  { id: 'starting-features', Content: StepStartingFeaturesContent, Footer: StepStartingFeaturesFooter },
   { id: 'complete', Content: StepCompleteContent, Footer: StepCompleteFooter },
 ]
 
