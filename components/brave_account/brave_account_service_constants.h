@@ -18,6 +18,12 @@ inline constexpr base::TimeDelta kAuthValidatePollInterval = base::Minutes(2);
 // stopping the periodic polling indefinitely.
 inline constexpr base::TimeDelta kWatchdogInterval = base::Seconds(15);
 
+// Service tokens are valid for 6 days.
+// Use a threshold that ensures we always return a service token
+// with at least 10 minutes remaining.
+inline constexpr base::TimeDelta kServiceTokenMaxAge =
+    base::Days(6) - base::Minutes(10);
+
 }  // namespace brave_account
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_CONSTANTS_H_

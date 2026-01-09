@@ -32,6 +32,25 @@ inline constexpr char kBraveAccountAuthenticationToken[] =
 inline constexpr char kBraveAccountEmailAddress[] =
     "brave.account.email_address";
 
+// This preference will store a dictionary of service tokens with their
+// fetch times. Each entry maps a service name to a dict containing:
+// - "service_token": the service token (`OSCrypt`-encrypted)
+// - "last_fetched": when the service token was retrieved (base::Time as
+// base::Value via base::TimeToValue())
+//
+// Example:
+// ...
+// "service_tokens": {
+//     "email-aliases": {
+//         "last_fetched": "...",
+//         "service_token": "..."
+//     },
+//     ...
+// },
+// ...
+inline constexpr char kBraveAccountServiceTokens[] =
+    "brave.account.service_tokens";
+
 }  // namespace brave_account::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_

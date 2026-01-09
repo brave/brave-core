@@ -85,8 +85,42 @@ struct LoginError {
   LoginErrorCode? errorCode;
 };
 
-// Interface for a two-step registration process
-// with the backend to create a Brave Account.
+// Services that depend on Brave Account.
+enum Service {
+  kEmailAliases,
+  kPremium,
+  kSync,
+};
+
+struct GetServiceTokenResult {
+  // Short-lived authentication token that allows a dependent service's backend
+  // to identify the user. Returned from prefs cache if available and not
+  // expired, otherwise fetched from /v2/auth/service_token.
+  string serviceToken;
+};
+
+enum GetServiceTokenErrorCode {
+  // Client-side errors:
+  kUserNotLoggedIn                     = -4,
+  kAuthenticationTokenDecryptionFailed = -3,
+  kAuthenticationSessionChanged        = -2,
+  kServiceTokenEncryptionFailed        = -1,
+  // Server-side errors (/v2/auth/service_token):
+  kMiscServerError                     = 0,
+  kEmailDomainNotSupported             = 13006,
+  kIncorrectCredentials                = 14004,
+  kInvalidTokenAudience                = 14007,
+};
+
+struct GetServiceTokenError {
+  // null: client-side error
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32? netErrorOrHttpStatus;
+  GetServiceTokenErrorCode? errorCode;
+};
+
 interface Authentication {
   // First step of the registration process.
   // `email`: user's email address.
@@ -142,4 +176,11 @@ interface Authentication {
 
   // Logs out the user by clearing the authentication token.
   LogOut();
+
+  // Retrieves a service token for the specified service.
+  // `service`: the service for which to retrieve the token.
+  // Returns `GetServiceTokenResult` on success, or
+  //         `GetServiceTokenError` on failure.
+  GetServiceToken(Service service)
+    => result<GetServiceTokenResult, GetServiceTokenError>;
 };
