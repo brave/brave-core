@@ -25,6 +25,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.Callback;
 import org.chromium.base.DeviceInfo;
+import org.chromium.base.library_loader.LibraryLoader;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
@@ -196,6 +197,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (currentTab == null) {
             return null;
         }
+        // Check if native library is loaded before calling native method
+        // In unit tests (Robolectric), native methods are not available
+        if (!LibraryLoader.getInstance().isInitialized()) {
+            return null;
+        }
         return Profile.fromWebContents(currentTab.getWebContents());
     }
 
@@ -262,6 +268,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      */
     private void updateMenuItemsBasedOnPolicy(MVCListAdapter.ModelList modelList) {
         Profile profile = getCurrentProfile();
+        if (profile == null) {
+            // Profile not available (e.g., in tests) - skip policy check
+            return;
+        }
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
             BraveOriginSubscriptionPrefs.checkPolicyAsync(
                     profile,
@@ -449,8 +459,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         Profile profile = getCurrentProfile();
         List<PolicyControlledMenuItem> policyItems = getPolicyControlledMenuItems();
 
-        if (policyItems.isEmpty()) {
-            // No policy-controlled items, build menu without policy checks
+        if (profile == null || policyItems.isEmpty()) {
+            // Profile not available (e.g., in tests) or no policy items - build menu without policy checks
             MVCListAdapter.ModelList menuList = buildMainMenuModelList(new HashMap<>());
             callback.onResult(menuList);
             return;
