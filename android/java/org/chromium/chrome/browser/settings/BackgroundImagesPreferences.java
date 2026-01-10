@@ -13,6 +13,7 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -22,9 +23,11 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -45,6 +48,8 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
     public static final String PREF_BACKGROUND_IMAGES_CATEGORY = "background_images";
+    public static final String PREF_OPENING_SCREEN = "opening_screen_option";
+    public static final String PREF_OPENING_SCREEN_CATEGORY = "opening_screen";
 
     public static final String PREF_SPONSORED_IMAGES_LEARN_MORE = "sponsored_images_learn_more";
 
@@ -56,6 +61,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
     private ClickableSpansTextMessagePreference mLearnMorePreference;
+    private BraveRadioButtonGroupOpeningScreenPreference mOpeningScreenPref;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -123,6 +129,32 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowBraveStatsPref.setChecked(NtpUtil.shouldDisplayBraveStats());
             mShowBraveStatsPref.setOnPreferenceChangeListener(this);
         }
+
+        // Initialize Opening Screen preference
+        mOpeningScreenPref =
+                (BraveRadioButtonGroupOpeningScreenPreference) findPreference(PREF_OPENING_SCREEN);
+        PreferenceCategory openingScreenCategory =
+                (PreferenceCategory) findPreference(PREF_OPENING_SCREEN_CATEGORY);
+
+        // Hide the preference category if feature is disabled or variant is "A"
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            if (openingScreenCategory != null) {
+                getPreferenceScreen().removePreference(openingScreenCategory);
+            }
+        } else {
+            String variant = BraveFreshNtpHelper.getVariant();
+            if (variant != null && variant.equals("A")) {
+                if (openingScreenCategory != null) {
+                    getPreferenceScreen().removePreference(openingScreenCategory);
+                }
+            } else if (mOpeningScreenPref != null) {
+                int currentValue =
+                        ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, 1);
+                mOpeningScreenPref.initialize(currentValue);
+                mOpeningScreenPref.setOnPreferenceChangeListener(this);
+            }
+        }
     }
 
     @Override
@@ -150,6 +182,10 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             NtpUtil.setDisplayTopSites((boolean) newValue);
         } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {
             NtpUtil.setDisplayBraveStats((boolean) newValue);
+        } else if (PREF_OPENING_SCREEN.equals(key)) {
+            int option = (int) newValue;
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, option);
         }
         return true;
     }

@@ -11,4 +11,5 @@ import org.chromium.build.annotations.NullMarked;
 @NullMarked
 public class BraveUrlConstants {
     public static final String BRAVE_SCHEME = "brave";
+    public static final String WWW_PREFIX = "www";
 }

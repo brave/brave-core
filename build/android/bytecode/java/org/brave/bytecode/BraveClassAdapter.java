@@ -39,6 +39,8 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCachedFlagClassAdapter(chain);
         chain = new BraveCachedFeatureParamClassAdapter(chain);
+        chain = new BraveSnackbarManagerClassAdapter(chain);
+        chain = new BraveSnackbarViewClassAdapter(chain);
         chain = new BraveCachedFlagsClassAdapter(chain);
         chain = new BraveCachedFlagUtilsClassAdapter(chain);
         chain = new BraveChromeContextMenuPopulatorAdapter(chain);

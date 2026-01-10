@@ -278,6 +278,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarView {
+    *** mContainerView;
+}
+
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager {
+    *** mView;
+}
+
 -keep class org.chromium.base.shared_preferences.StrictPreferenceKeyChecker {
     <init>(...);
     *** isKeyInUse(...);
@@ -636,6 +644,7 @@
 
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowNtpAsHomeSurfaceAtStartup(...);
+    *** createNewTabAndShowHomeSurfaceUi(...);
 }
 
 -keep class org.chromium.chrome.browser.IntentHandler {

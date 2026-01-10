@@ -123,6 +123,7 @@ import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
@@ -724,6 +725,17 @@ public class BytecodeTest {
                         Intent.class,
                         Bundle.class,
                         ChromeInactivityTracker.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "createNewTabAndShowHomeSurfaceUi",
+                        MethodModifier.STATIC,
+                        Tab.class,
+                        TabCreator.class,
+                        HomeSurfaceTracker.class,
+                        TabModelSelector.class,
+                        String.class,
+                        Tab.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
@@ -2476,6 +2488,14 @@ public class BytecodeTest {
                         "mBookmarkManagerCoordinator"));
         Assert.assertTrue(
                 fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
+                        "mContainerView"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager",
+                        "mView"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
