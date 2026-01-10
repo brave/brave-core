@@ -160,8 +160,7 @@ class EphemeralStorageServiceTest : public testing::Test {
           expect_first_window_opened_callback =
               ExpectFirstWindowOpenedCallback::kTrigger,
       std::optional<ExpectFirstWindowOpenedCallback>
-          expect_on_become_active_callback =
-              ExpectFirstWindowOpenedCallback::kDontTrigger) {
+          expect_on_become_active_callback = std::nullopt) {
     auto mock_delegate = std::make_unique<testing::StrictMock<MockDelegate>>();
     if (expect_first_window_opened_callback) {
       mock_delegate->ExpectRegisterFirstWindowOpenedCallback(
@@ -177,7 +176,8 @@ class EphemeralStorageServiceTest : public testing::Test {
     mock_delegate_ptr = mock_delegate.get();
     auto service = std::make_unique<EphemeralStorageService>(
         profile, HostContentSettingsMapFactory::GetForProfile(profile),
-        std::move(mock_delegate));
+        std::move(mock_delegate),
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile));
     if (observer) {
       service->AddObserver(observer);
     }
@@ -876,8 +876,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
       ShutdownEphemeralStorageService(service_);
 
-      service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
-                                               &mock_observer_);
+      service_ = CreateEphemeralStorageService(
+          &profile_, mock_delegate_, &mock_observer_,
+          ExpectFirstWindowOpenedCallback::kTrigger,
+          ExpectFirstWindowOpenedCallback::kTrigger);
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
       EXPECT_EQ(profile_.GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
