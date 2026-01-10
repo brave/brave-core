@@ -26,8 +26,13 @@ struct MIMEType {
   static let pdf = "application/pdf"
   static let plainText = "text/plain"
   static let png = "image/png"
+  static let vCard = "text/vcard"
   static let webP = "image/webp"
   static let xHTML = "application/xhtml+xml"
+
+  static func isVCard(_ mimeType: String) -> Bool {
+    return mimeType == MIMEType.vCard
+  }
 }
 
 extension String {

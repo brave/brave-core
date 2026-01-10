@@ -9445,3 +9445,24 @@ extension Strings {
     )
   }
 }
+
+// MARK: - VCard
+extension Strings {
+  public struct VCard {
+    public static let unableToOpenContactErrorTitle = NSLocalizedString(
+      "VCard.unableToOpenContactErrorTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unable to Open Contact",
+      comment: "Title for error alert when a VCard contact file cannot be parsed or opened"
+    )
+
+    public static let unableToOpenContactErrorMessage = NSLocalizedString(
+      "VCard.unableToOpenContactErrorMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "The contact file could not be read. It may be corrupted or in an unsupported format.",
+      comment: "Message for error alert when a VCard contact file cannot be parsed or opened"
+    )
+  }
+}
