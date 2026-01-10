@@ -12,7 +12,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
-#define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
 #define BRAVE_BROWSER_ON_WINDOW_CLOSING                             \
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) { \
     auto* shared_pinned_tab_service =                               \
@@ -24,17 +23,5 @@
 
 #include <chrome/browser/ui/browser.cc>
 
-#undef DeprecatedCreateOwnedForTesting
 #undef BrowserTabStripModelDelegate
 #undef BRAVE_BROWSER_ON_WINDOW_CLOSING
-
-// static
-std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
-    const CreateParams& params) {
-  CHECK_IS_TEST();
-  // If this is failing, a caller is trying to create a browser when creation is
-  // not possible, e.g. using the wrong profile or during shutdown. The caller
-  // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
-  CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
-  return std::make_unique<BraveBrowser>(params);
-}
