@@ -549,24 +549,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </cr-checkbox>
  </div>
  
-@@ -79,15 +59,12 @@
-   <div slot=\\"body\\" id=\\"dialog-body\\" class=\\"warning-message\\">
-     \${this.forceSigninErrorDialogBody_}
-   </div>
-   <div slot=\\"button-container\\" class=\\"button-container\\">
--    <cr-button id=\\"cancel-button\\"
--        @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
-+    <cr-button id=\\"cancel-button\\" @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
-       $i18n{ok}
-     </cr-button>
--    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\"
--        @click=\\"\${this.onReauthClicked_}\\"
--        ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
-+    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\" @click=\\"\${this.onReauthClicked_}\\" ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
-       $i18n{needsSigninPrompt}
-     </cr-button>
-   </div>
- </cr-dialog>
 "
 `;
 
