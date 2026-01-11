@@ -31,18 +31,36 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.offlinepages.OfflinePageUtils;
+import org.chromium.chrome.browser.page_info.ChromePageInfoControllerDelegate;
+import org.chromium.chrome.browser.page_info.ChromePageInfoHighlight;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabFavicon;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.browser_ui.site_settings.ContentSettingException;
+import org.chromium.components.browser_ui.site_settings.ContentSettingsResources;
+import org.chromium.components.browser_ui.site_settings.PermissionInfo;
+import org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings;
+import org.chromium.components.browser_ui.site_settings.Website;
+import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
+import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher;
+import org.chromium.components.content_settings.ContentSetting;
+import org.chromium.components.content_settings.ContentSettingsType;
+import org.chromium.components.page_info.PageInfoController;
+import org.chromium.components.page_info.PageInfoPermissionsController;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,6 +101,10 @@ public class BraveUnifiedPanelHandler {
     // Content containers
     private LinearLayout mShieldsContent;
     private View mSiteSettingsContent;
+
+    // Site Info elements
+    private TextView mSiteNameText;
+    private TextView mPermissionsSummary;
 
     // Shields tab elements
     private ImageView mShieldIconUnified;
@@ -276,6 +298,9 @@ public class BraveUnifiedPanelHandler {
         // Site Info elements - note: this is inside site_settings_tab_content which starts hidden
         // It's okay if this is null initially, we'll find it when needed
         if (mSiteSettingsContent != null) {
+            mSiteNameText = mSiteSettingsContent.findViewById(R.id.site_name_text);
+            mPermissionsSummary = mSiteSettingsContent.findViewById(R.id.permissions_summary);
+
             // Wire up clickable Site Info items
             View dangerousSiteItem = mSiteSettingsContent.findViewById(R.id.dangerous_site_item);
             View permissionsItem = mSiteSettingsContent.findViewById(R.id.permissions_item);
@@ -541,9 +566,100 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void updateSiteInfo() {
-        // Stub - implemented in Site Info commit
+        if (mSiteNameText != null && mHost != null) {
+            // Set the site name (same logic as Shields tab)
+            String siteName = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+            mSiteNameText.setText(siteName);
+        }
+
+        // Update permissions summary
+        updatePermissionsSummary();
     }
 
+    /**
+     * Update the permissions summary text to show what permissions the site has. Uses Chromium's
+     * PageInfoPermissionsController.getPermissionSummaryString().
+     */
+    private void updatePermissionsSummary() {
+        if (mPermissionsSummary == null
+                || mProfile == null
+                || mUrlSpec == null
+                || mContext == null) {
+            return;
+        }
+
+        WebsiteAddress address = WebsiteAddress.create(mUrlSpec);
+        if (address == null) {
+            mPermissionsSummary.setText(R.string.no_site_permissions_set);
+            return;
+        }
+
+        ChromeSiteSettingsDelegate delegate = new ChromeSiteSettingsDelegate(mContext, mProfile);
+        new WebsitePermissionsFetcher(delegate)
+                .fetchAllPreferences(sites -> processPermissionsSummary(sites, address));
+    }
+
+    private void processPermissionsSummary(Collection<Website> sites, WebsiteAddress address) {
+        if (mPermissionsSummary == null || mContext == null) return;
+
+        Website site =
+                SingleWebsiteSettings.mergePermissionAndStorageInfoForTopLevelOrigin(
+                        address, sites);
+
+        // Build PermissionObject list directly from Website's stored permissions
+        List<PageInfoPermissionsController.PermissionObject> permissions = new ArrayList<>();
+        if (site != null) {
+            for (PermissionInfo info : site.getPermissionInfos()) {
+                @ContentSetting Integer setting = info.getContentSetting(mProfile);
+                if (setting != null && setting != ContentSetting.DEFAULT) {
+                    permissions.add(
+                            createPermissionObject(
+                                    info.getContentSettingsType(),
+                                    setting == ContentSetting.ALLOW));
+                }
+            }
+            for (ContentSettingException ex : site.getContentSettingExceptions()) {
+                if (ex.getContentSetting() != ContentSetting.DEFAULT) {
+                    permissions.add(
+                            createPermissionObject(
+                                    ex.getContentSettingType(),
+                                    ex.getContentSetting() == ContentSetting.ALLOW));
+                }
+            }
+        }
+
+        final String summaryText =
+                PageInfoPermissionsController.getPermissionSummaryString(
+                        permissions, mContext.getResources());
+
+        String displayText =
+                (summaryText != null && !summaryText.isEmpty())
+                        ? summaryText
+                        : mContext.getString(R.string.no_site_permissions_set);
+
+        ((Activity) mContext)
+                .runOnUiThread(
+                        () -> {
+                            if (mPermissionsSummary != null) {
+                                mPermissionsSummary.setText(displayText);
+                            }
+                        });
+    }
+
+    /** Create a PermissionObject for the summary string. */
+    private PageInfoPermissionsController.PermissionObject createPermissionObject(
+            @ContentSettingsType.EnumType int type, boolean allowed) {
+        String name = mContext.getString(ContentSettingsResources.getTitle(type));
+        String nameMid =
+                name.substring(0, 1).toLowerCase(java.util.Locale.getDefault()) + name.substring(1);
+        return new PageInfoPermissionsController.PermissionObject(
+                type, name, nameMid, allowed, /* warningTextResource= */ 0, /* requested= */ false);
+    }
+
+    /**
+     * Display up to 3 favicons of blocked trackers/ads. Only shows favicons that are already cached
+     * locally.
+     */
     private void displayBlockedItemFavicons(int tabId) {
         if (mBlockedItemsContainer == null
                 || mLegacyShieldsHandler == null
@@ -890,7 +1006,13 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void onReportBrokenSiteClicked() {
-        // Stub - implemented in Site Info commit
+        // Hide the unified panel and use the legacy shields handler to show the report form
+        hide();
+
+        if (mLegacyShieldsHandler != null && mAnchorView != null && mCurrentTab != null) {
+            // Use the legacy handler to show the report broken site flow
+            mLegacyShieldsHandler.showShieldsReportBrokenSite(mAnchorView, mCurrentTab);
+        }
     }
 
     private void onBlockScriptsChanged(boolean isChecked) {
@@ -1352,11 +1474,55 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void onDangerousSiteClicked() {
-        // Stub - implemented in Site Info commit
+        // Show the page info dialog - user can navigate to connection/security details
+        showPageInfo(ChromePageInfoHighlight.noHighlight());
     }
 
     private void onPermissionsClicked() {
-        // Stub - implemented in Site Info commit
+        // Stub - showPermissionsPanel() implemented in Permissions Panel commit
+    }
+
+    private void showPageInfo(ChromePageInfoHighlight highlight) {
+        if (mContext == null || mCurrentTab == null || mCurrentTab.getWebContents() == null) {
+            return;
+        }
+
+        // Hide the unified panel first
+        hide();
+
+        // Get the modal dialog manager from WindowAndroid
+        WindowAndroid windowAndroid = mCurrentTab.getWebContents().getTopLevelNativeWindow();
+        if (windowAndroid == null) {
+            return;
+        }
+
+        ModalDialogManager modalDialogManager = windowAndroid.getModalDialogManager();
+        if (modalDialogManager == null) {
+            return;
+        }
+
+        // Show the standard Chrome page info dialog
+        if (mContext instanceof Activity) {
+            Activity activity = (Activity) mContext;
+            PageInfoController.show(
+                    activity,
+                    mCurrentTab.getWebContents(),
+                    null, // publisher (for Reader Mode)
+                    PageInfoController.OpenedFromSource.TOOLBAR,
+                    new ChromePageInfoControllerDelegate(
+                            activity,
+                            mCurrentTab.getWebContents(),
+                            () -> modalDialogManager, // modalDialogManagerSupplier
+                            new OfflinePageUtils.TabOfflinePageLoadUrlDelegate(mCurrentTab),
+                            null, // storeInfoActionHandlerSupplier
+                            null, // ephemeralTabCoordinatorSupplier
+                            highlight,
+                            null, // tabCreator
+                            null), // packageName
+                    highlight,
+                    Gravity.TOP,
+                    /* openPermissionsSubpage= */ false);
+        }
     }
 
     // TODO: Get rid of this

@@ -527,6 +527,40 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    /**
+     * Shows the shields popup directly with the report broken site form. Used by the unified panel
+     * when the user clicks "Report" with shields off.
+     */
+    public void showShieldsReportBrokenSite(View anchorView, Tab tab) {
+        // Initialize like normal show()
+        ensureInitializedForCustomTabs();
+
+        if (mHardwareButtonMenuAnchor == null || mContext == null) {
+            return;
+        }
+
+        mUrlSpec = tab.getUrl().getSpec();
+        mHost = tab.getUrl().getHost();
+        mTabId = tab.getId();
+        mProfile = Profile.fromWebContents(tab.getWebContents());
+
+        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        mIconFetcher = new BraveRewardsHelper(tab);
+        mPopupWindow = showPopupMenu(anchorView);
+
+        // Hide main layout and show report broken site form
+        if (mMainLayout != null && mReportBrokenSiteLayout != null) {
+            mMainLayout.setVisibility(View.GONE);
+            if (!tab.isShowingErrorPage()) {
+                mReportBrokenSiteLayout.setVisibility(View.VISIBLE);
+                setUpReportBrokenSiteLayout();
+            } else {
+                mReportErrorPageLayout.setVisibility(View.VISIBLE);
+                setupErrorPageLayout();
+            }
+        }
+    }
+
     private void initViews() {
         mMainLayout = mPopupView.findViewById(R.id.main_layout);
         mSecondaryLayout = mPopupView.findViewById(R.id.brave_shields_secondary_layout_id);

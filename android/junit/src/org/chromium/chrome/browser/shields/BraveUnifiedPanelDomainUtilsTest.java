@@ -600,6 +600,30 @@ public final class BraveUnifiedPanelDomainUtilsTest {
     }
 
     // ========================================================================
+    // Site info layout tests
+    // ========================================================================
+    // Note: Most site info layout elements are already tested in BraveUnifiedPanelLayoutTest.
+    // Only unique tests are included here.
+
+    @SmallTest
+    @Test
+    public void testShieldsTabContent_hasReportBrokenSiteSection() throws Exception {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View panelView = inflater.inflate(R.layout.brave_unified_panel_layout, null);
+
+        // Report broken site is in the shields tab content
+        View shieldsContent = panelView.findViewById(R.id.shields_tab_content);
+        assertNotNull("Shields content should exist", shieldsContent);
+
+        assertNotNull(
+                "Report broken site section should exist",
+                shieldsContent.findViewById(R.id.report_broken_site_section));
+        assertNotNull(
+                "Report broken site button should exist",
+                shieldsContent.findViewById(R.id.report_broken_site_button));
+    }
+
+    // ========================================================================
     // Helper methods
     // ========================================================================
 
