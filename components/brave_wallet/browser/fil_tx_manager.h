@@ -45,6 +45,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
+                                mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;

@@ -1272,6 +1272,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND},
     {"braveWalletTransactionIntentSwap",
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP},
+    {"braveWalletTransactionIntentBridge",
+     IDS_BRAVE_WALLET_TRANSACTION_INTENT_BRIDGE},
     {"braveWalletCreatingAssociatedTokenAccount",
      IDS_BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT},
     {"braveWalletFailedToCreateAssociatedTokenAccount",

@@ -2,104 +2,79 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+  ParsedSwapInfo,
+} from '../../constants/types'
 
 // Utils
 import Amount from '../../utils/amount'
 import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../constants/magics'
-import { makeNetworkAsset } from '../../options/asset-options'
 
 // Queries
-import { useGetNetworkQuery } from '../slices/api.slice'
 import useGetTokenInfo from './use-get-token-info'
 
 export const useSwapTransactionParser = <
   T extends
     | Pick<
         SerializableTransactionInfo | BraveWallet.TransactionInfo,
-        'chainId' | 'txType' | 'txDataUnion' | 'swapInfo'
+        'swapInfo'
       >
     | undefined,
 >(
   transaction: T,
-) => {
-  const { data: sellNetwork } = useGetNetworkQuery(
-    transaction?.swapInfo?.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-      ? {
-          chainId: transaction?.swapInfo.fromChainId,
-          coin: transaction?.swapInfo.fromCoin,
-        }
-      : skipToken,
-  )
-
-  const { tokenInfo: sellTokenInfo } = useGetTokenInfo(
+): ParsedSwapInfo => {
+  const { tokenInfo: sourceToken } = useGetTokenInfo(
     transaction?.swapInfo
-      && transaction.swapInfo.fromAsset
-      && transaction.swapInfo.fromAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          contractAddress: transaction.swapInfo.fromAsset,
+          contractAddress:
+            transaction.swapInfo.sourceTokenAddress
+            !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+              ? transaction.swapInfo.sourceTokenAddress
+              : '',
           network: {
-            chainId: transaction.swapInfo.fromChainId,
-            coin: transaction.swapInfo.fromCoin,
+            chainId: transaction.swapInfo.sourceChainId,
+            coin: transaction.swapInfo.sourceCoin,
           },
         }
       : skipToken,
   )
 
-  const sellToken = React.useMemo(() => {
-    if (sellNetwork) {
-      return makeNetworkAsset(sellNetwork)
-    }
-
-    return sellTokenInfo
-  }, [sellTokenInfo, sellNetwork])
-
-  const { data: buyNetwork } = useGetNetworkQuery(
-    transaction?.swapInfo?.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-      ? {
-          chainId: transaction?.swapInfo.toChainId,
-          coin: transaction?.swapInfo.toCoin,
-        }
-      : skipToken,
-  )
-
-  const { tokenInfo: buyTokenInfo } = useGetTokenInfo(
+  const { tokenInfo: destinationToken } = useGetTokenInfo(
     transaction?.swapInfo
-      && transaction.swapInfo.toAsset
-      && transaction.swapInfo.toAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          contractAddress: transaction.swapInfo.toAsset,
+          contractAddress:
+            transaction.swapInfo.destinationTokenAddress
+            !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+              ? transaction.swapInfo.destinationTokenAddress
+              : '',
           network: {
-            chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin,
+            chainId: transaction.swapInfo.destinationChainId,
+            coin: transaction.swapInfo.destinationCoin,
           },
         }
       : skipToken,
   )
 
-  const buyToken = React.useMemo(() => {
-    if (buyNetwork) {
-      return makeNetworkAsset(buyNetwork)
-    }
-
-    return buyTokenInfo
-  }, [buyTokenInfo, buyNetwork])
-
-  const sellAmountWei = new Amount(transaction?.swapInfo?.fromAmount || '')
-  const buyAmountWei = transaction?.swapInfo?.toAmount
-    ? new Amount(transaction.swapInfo.toAmount)
-    : sellAmountWei
+  const sourceAmount = new Amount(transaction?.swapInfo?.sourceAmount || '')
+  const destinationAmount = new Amount(
+    transaction?.swapInfo?.destinationAmount || '',
+  )
+  const destinationAmountMin = new Amount(
+    transaction?.swapInfo?.destinationAmountMin || '',
+  )
 
   return {
-    sellToken,
-    sellAmountWei,
-    buyToken,
-    buyAmountWei,
-    receiver: transaction?.swapInfo?.receiver || '',
+    sourceToken,
+    sourceAmount,
+    destinationToken,
+    destinationAmount,
+    destinationAmountMin,
+    destinationAddress: transaction?.swapInfo?.recipient || '',
     provider: transaction?.swapInfo?.provider,
-  }
+  } satisfies ParsedSwapInfo
 }

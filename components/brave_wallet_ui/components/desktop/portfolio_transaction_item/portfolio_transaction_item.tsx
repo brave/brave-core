@@ -158,13 +158,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       coin: txCoinType,
     })
 
-    const { data: toNetwork } = useGetNetworkQuery(
+    const { data: destinationNetwork } = useGetNetworkQuery(
       isBridge
-        && transaction.swapInfo?.toChainId
-        && transaction.swapInfo.toCoin !== undefined
+        && transaction.swapInfo?.destinationChainId
+        && transaction.swapInfo?.destinationCoin !== undefined
         ? {
-            chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin,
+            chainId: transaction.swapInfo.destinationChainId,
+            coin: transaction.swapInfo.destinationCoin,
           }
         : skipToken,
     )
@@ -197,26 +197,26 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       accountInfosRegistry,
     )
 
-    const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+    const { sourceToken, destinationToken, sourceAmount, destinationAmount } =
       useSwapTransactionParser(transaction)
 
     const [normalizedTransferredValue, transferredValueWei] =
       React.useMemo(() => {
         const { normalized, wei } = getTransactionTransferredValue({
           tx: transaction,
-          sellToken,
+          sourceToken,
           token: txToken,
           txAccount: account,
           txNetwork,
         })
         return [normalized.format(6), wei]
-      }, [transaction, sellToken, txToken, account, txNetwork])
+      }, [transaction, sourceToken, txToken, account, txNetwork])
 
     const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal(
       {
         normalizedTransferredValue,
         tx: transaction,
-        sellToken,
+        sourceToken,
         token: txToken,
         txNetwork,
       },
@@ -224,8 +224,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const priceRequests = React.useMemo(
       () =>
-        getPriceRequestsForTokens([networkAsset, txToken, sellToken, buyToken]),
-      [networkAsset, txToken, sellToken, buyToken],
+        getPriceRequestsForTokens([
+          networkAsset,
+          txToken,
+          sourceToken,
+          destinationToken,
+        ]),
+      [networkAsset, txToken, sourceToken, destinationToken],
     )
 
     // price queries
@@ -299,15 +304,15 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     const formattedApprovalAmount = isTxApprovalUnlimited
       ? getLocale('braveWalletTransactionApproveUnlimited')
       : formattedSendCurrencyTotal
-    const formattedSellAmount = sellToken
-      ? sellAmountWei
-          .divideByDecimals(sellToken.decimals)
-          .formatAsAsset(6, sellToken.symbol)
+    const formattedSourceAmount = sourceToken
+      ? sourceAmount
+          .divideByDecimals(sourceToken.decimals)
+          .formatAsAsset(6, sourceToken.symbol)
       : ''
-    const formattedBuyAmount = buyToken
-      ? buyAmountWei
-          .divideByDecimals(buyToken.decimals)
-          .formatAsAsset(6, buyToken.symbol)
+    const formattedDestinationAmount = destinationToken
+      ? destinationAmount
+          .divideByDecimals(destinationToken.decimals)
+          .formatAsAsset(6, destinationToken.symbol)
       : ''
     const isSolanaSwap = isSwap && isSolanaTx
     const showAmounts = !txToken?.isNft && !isSolanaSwap
@@ -380,7 +385,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               <SwapPlaceholderIcon />
                             </SellIconPlaceholder>
                           ) : (
-                            <SwapIconWithPlaceholder asset={sellToken} />
+                            <SwapIconWithPlaceholder asset={sourceToken} />
                           )}
                         </SwapSellIcon>
                         <SwapBuyIcon>
@@ -389,7 +394,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               <SwapPlaceholderIcon />
                             </BuyIconPlaceholder>
                           ) : (
-                            <SwapIconWithPlaceholder asset={buyToken} />
+                            <SwapIconWithPlaceholder asset={destinationToken} />
                           )}
                         </SwapBuyIcon>
                       </SwapIconsWrapper>
@@ -399,7 +404,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                           <NftIconWithPlaceholder asset={sendToken} />
                         ) : (
                           <AssetIconWithPlaceholder
-                            asset={isBridge ? sellToken : sendToken}
+                            asset={isBridge ? sourceToken : sendToken}
                           />
                         )}
                       </>
@@ -464,7 +469,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               isBold={true}
                               textAlign='left'
                             >
-                              {sellToken?.symbol ?? ''}
+                              {sourceToken?.symbol ?? ''}
                             </TokenNameText>
                             <ArrowIconWrapper>
                               <ArrowIcon />
@@ -474,16 +479,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               isBold={true}
                               textAlign='left'
                             >
-                              {isBridge && toNetwork
+                              {isBridge && destinationNetwork
                                 ? getLocale('braveWalletOnNetwork').replace(
                                     '$1',
-                                    toNetwork.chainName,
+                                    destinationNetwork.chainName,
                                   )
-                                : (buyToken?.symbol ?? '')}
+                                : (destinationToken?.symbol ?? '')}
                             </TokenNameText>
-                            {isBridge && toNetwork && (
+                            {isBridge && destinationNetwork && (
                               <CreateNetworkIcon
-                                network={toNetwork}
+                                network={destinationNetwork}
                                 marginRight={0}
                                 size='small'
                               />
@@ -538,22 +543,22 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               >
                 {isSwapOrBridge ? (
                   <>
-                    {formattedSellAmount && (
+                    {formattedSourceAmount && (
                       <FiatValueText
                         textSize='12px'
                         isBold={false}
                         textAlign='right'
                       >
-                        {`-${formattedSellAmount}`}
+                        {`-${formattedSourceAmount}`}
                       </FiatValueText>
                     )}
-                    {formattedBuyAmount && (
+                    {formattedDestinationAmount && (
                       <AssetValueText
                         textSize='14px'
                         isBold={true}
                         textAlign='right'
                       >
-                        {`+${formattedBuyAmount}`}
+                        {`+${formattedDestinationAmount}`}
                       </AssetValueText>
                     )}
                   </>

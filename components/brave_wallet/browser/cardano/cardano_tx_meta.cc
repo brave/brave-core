@@ -65,7 +65,7 @@ mojom::TransactionInfoPtr CardanoTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      tx_->to().ToString(), false, nullptr);
+      tx_->to().ToString(), false, swap_info_.Clone());
 }
 
 mojom::CoinType CardanoTxMeta::GetCoinType() const {

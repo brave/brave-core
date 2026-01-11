@@ -287,20 +287,21 @@ export const usePendingTransactions = () => {
       : skipToken,
   )
 
-  const { sellToken, sellAmountWei } = useSwapTransactionParser(transactionInfo)
+  const { sourceToken, sourceAmount } =
+    useSwapTransactionParser(transactionInfo)
 
-  const { data: sellTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
-    txAccount && sellToken
+  const { data: sourceTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
+    txAccount && sourceToken
       ? {
           accountId: txAccount.accountId,
           token: {
-            coin: sellToken.coin,
-            chainId: sellToken.chainId,
-            contractAddress: sellToken.contractAddress,
-            isErc721: sellToken.isErc721,
-            isNft: sellToken.isNft,
-            tokenId: sellToken.tokenId,
-            isShielded: sellToken.isShielded,
+            coin: sourceToken.coin,
+            chainId: sourceToken.chainId,
+            contractAddress: sourceToken.contractAddress,
+            isErc721: sourceToken.isErc721,
+            isNft: sourceToken.isNft,
+            tokenId: sourceToken.tokenId,
+            isShielded: sourceToken.isShielded,
           },
         }
       : skipToken,
@@ -312,8 +313,8 @@ export const usePendingTransactions = () => {
           accountNativeBalance: nativeBalance || '',
           accountTokenBalance: transferTokenBalance || '',
           gasFee,
-          sellAmountWei,
-          sellTokenBalance: sellTokenBalance || '',
+          sourceAmount,
+          sourceTokenBalance: sourceTokenBalance || '',
           tx: transactionInfo,
           txAccount,
         })
@@ -321,8 +322,8 @@ export const usePendingTransactions = () => {
   }, [
     gasFee,
     nativeBalance,
-    sellTokenBalance,
-    sellAmountWei,
+    sourceTokenBalance,
+    sourceAmount,
     transactionInfo,
     txAccount,
     transferTokenBalance,

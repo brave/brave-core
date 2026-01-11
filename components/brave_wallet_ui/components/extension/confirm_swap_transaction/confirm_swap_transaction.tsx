@@ -12,15 +12,7 @@ import Icon from '@brave/leo/react/icon'
 import {
   useGetActiveOriginQuery,
   useGetNetworkQuery,
-  useGetTokenInfoQuery,
 } from '../../../common/slices/api.slice'
-
-// Constants
-import { BraveWallet } from '../../../constants/types'
-import {
-  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-  UNKNOWN_TOKEN_COINGECKO_ID,
-} from '../../../common/constants/magics'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -79,43 +71,6 @@ import {
   ScrollableColumn,
 } from '../shared-panel-styles'
 
-const isNativeToken = (token: BraveWallet.BlockchainToken) =>
-  token.contractAddress === ''
-  || token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-
-const makeToken = (
-  token?: BraveWallet.BlockchainToken,
-  network?: BraveWallet.NetworkInfo,
-  symbol?: string,
-  decimals?: number,
-) => {
-  if (!token || !network) {
-    return undefined
-  }
-
-  if (token.coingeckoId !== UNKNOWN_TOKEN_COINGECKO_ID) {
-    return token
-  }
-
-  if (isNativeToken(token)) {
-    return {
-      ...token,
-      decimals: network.decimals,
-      symbol: network.symbol,
-    }
-  }
-
-  if (!symbol || !decimals) {
-    return undefined
-  }
-
-  return {
-    ...token,
-    symbol,
-    decimals,
-  }
-}
-
 export function ConfirmSwapTransaction() {
   // State
   const [showEditNetworkFee, setShowEditNetworkFee] =
@@ -157,65 +112,22 @@ export function ConfirmSwapTransaction() {
   const isBridgeTx = selectedPendingTransaction
     ? isBridgeTransaction(selectedPendingTransaction)
     : false
-  const toChainId = selectedPendingTransaction?.swapInfo?.toChainId
-  const toCoin = selectedPendingTransaction?.swapInfo?.toCoin
 
   // Queries
-  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
-    useSwapTransactionParser(selectedPendingTransaction)
+  const {
+    destinationToken,
+    sourceToken,
+    destinationAmount,
+    sourceAmount,
+    destinationAddress,
+  } = useSwapTransactionParser(selectedPendingTransaction)
 
-  const { data: sellAssetNetwork } = useGetNetworkQuery(sellToken ?? skipToken)
+  const { data: sourceNetwork } = useGetNetworkQuery(sourceToken ?? skipToken)
 
-  const { data: buyAssetNetwork } = useGetNetworkQuery(
-    isBridgeTx && toChainId && toCoin
-      ? { chainId: toChainId, coin: toCoin }
-      : (buyToken ?? skipToken),
-  )
-
-  const { data: sellTokenInfo } = useGetTokenInfoQuery(
-    sellToken
-      && sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(sellToken)
-      ? {
-          contractAddress: sellToken.contractAddress,
-          chainId: sellToken.chainId,
-          coin: sellToken.coin,
-        }
+  const { data: destinationNetwork } = useGetNetworkQuery(
+    isBridgeTx && destinationToken
+      ? { chainId: destinationToken.chainId, coin: destinationToken.coin }
       : skipToken,
-  )
-
-  const { data: buyTokenInfo } = useGetTokenInfoQuery(
-    buyToken
-      && buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(buyToken)
-      ? {
-          contractAddress: buyToken.contractAddress,
-          chainId: buyToken.chainId,
-          coin: buyToken.coin,
-        }
-      : skipToken,
-  )
-
-  // Memos
-  const buyTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        buyToken,
-        buyAssetNetwork,
-        buyTokenInfo?.symbol,
-        buyTokenInfo?.decimals,
-      ),
-    [buyToken, buyAssetNetwork, buyTokenInfo],
-  )
-  const sellTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        sellToken,
-        sellAssetNetwork,
-        sellTokenInfo?.symbol,
-        sellTokenInfo?.decimals,
-      ),
-    [sellToken, sellAssetNetwork, sellTokenInfo],
   )
 
   if (!selectedPendingTransaction || !transactionDetails) {
@@ -271,16 +183,16 @@ export function ConfirmSwapTransaction() {
                 width='100%'
                 padding='16px'
               >
-                {/* Sell token */}
+                {/* Source token */}
                 <ConfirmationTokenInfo
-                  token={sellTokenResult}
+                  token={sourceToken}
                   label='spend'
                   amount={
-                    !sellAmountWei.isUndefined()
-                      ? sellAmountWei.format()
+                    !sourceAmount.isUndefined()
+                      ? sourceAmount.format()
                       : undefined
                   }
-                  network={sellAssetNetwork}
+                  network={sourceNetwork}
                   account={fromAccount}
                 />
 
@@ -295,17 +207,17 @@ export function ConfirmSwapTransaction() {
                   <VerticalDivider />
                 </Row>
 
-                {/* Buy token */}
+                {/* Destination token */}
                 <ConfirmationTokenInfo
-                  token={buyTokenResult}
+                  token={destinationToken}
                   label={isBridgeTx ? 'bridge' : 'receive'}
                   amount={
-                    !buyAmountWei.isUndefined()
-                      ? buyAmountWei.format()
+                    !destinationAmount.isUndefined()
+                      ? destinationAmount.format()
                       : undefined
                   }
-                  network={buyAssetNetwork}
-                  receiveAddress={selectedPendingTransaction.swapInfo?.receiver}
+                  network={destinationNetwork}
+                  receiveAddress={destinationAddress}
                 />
               </Card>
 

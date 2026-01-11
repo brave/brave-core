@@ -112,10 +112,11 @@ class CardanoTxManagerUnitTest : public testing::Test {
       mojom::TxDataUnionPtr tx_data_union,
       mojom::AccountIdPtr from,
       std::optional<url::Origin> origin,
+      mojom::SwapInfoPtr swap_info,
       CardanoTxManager::AddUnapprovedTransactionCallback callback) {
     cardano_tx_manager()->AddUnapprovedTransaction(
         std::move(chain_id), std::move(tx_data_union), std::move(from),
-        std::move(origin), std::move(callback));
+        std::move(origin), std::move(swap_info), std::move(callback));
   }
 
   void ApproveTransaction(
@@ -148,7 +149,7 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction) {
   std::string to_account = kMockCardanoAddress1;
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false);
+      1000000, false, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -204,7 +205,7 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false);
+      1000000, false, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -239,6 +240,56 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
   EXPECT_TRUE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Error);
+}
+
+TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
+  // Create a transaction with swap_info
+  const auto from_account = CardanoAcc(0);
+
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::ADA;
+  swap_info->source_chain_id = mojom::kCardanoMainnet;
+  swap_info->source_token_address = "ADA";
+  swap_info->source_amount = "5000000";  // 5 ADA
+  swap_info->destination_coin = mojom::CoinType::ADA;
+  swap_info->destination_chain_id = mojom::kCardanoMainnet;
+  swap_info->destination_token_address =
+      "asset1abc123";                           // Some Cardano native token
+  swap_info->destination_amount = "100000";     // 100000 tokens
+  swap_info->destination_amount_min = "95000";  // 95000 tokens min
+  swap_info->recipient = "";
+  swap_info->provider = mojom::SwapProvider::kAuto;
+
+  auto params = mojom::NewCardanoTransactionParams::New(
+      mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
+      1000000, false, std::move(swap_info));
+
+  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  std::string meta_id;
+  EXPECT_CALL(add_callback, Run(_, _, _))
+      .WillOnce(
+          testing::DoAll(SaveArg<1>(&meta_id),
+                         RunOnceClosure(task_environment_.QuitClosure())));
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
+                                                        add_callback.Get());
+  task_environment_.RunUntilQuit();
+  ASSERT_FALSE(meta_id.empty());
+
+  // Verify swap_info was stored correctly
+  auto tx_meta = cardano_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta->swap_info());
+  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::ADA);
+  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kCardanoMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "ADA");
+  EXPECT_EQ(tx_meta->swap_info()->source_amount, "5000000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::ADA);
+  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kCardanoMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->destination_token_address, "asset1abc123");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "100000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min, "95000");
+  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
+  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kAuto);
 }
 
 }  //  namespace brave_wallet

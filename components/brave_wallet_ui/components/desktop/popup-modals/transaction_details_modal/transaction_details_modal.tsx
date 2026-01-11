@@ -189,13 +189,13 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     coin: txCoinType,
   })
 
-  const { data: toNetwork } = useGetNetworkQuery(
+  const { data: destinationNetwork } = useGetNetworkQuery(
     isBridgeTx
-      && transaction.swapInfo?.toChainId
-      && transaction.swapInfo.toCoin !== undefined
+      && transaction.swapInfo?.destinationChainId
+      && transaction.swapInfo?.destinationCoin !== undefined
       ? {
-          chainId: transaction.swapInfo.toChainId,
-          coin: transaction.swapInfo.toCoin,
+          chainId: transaction.swapInfo.destinationChainId,
+          coin: transaction.swapInfo.destinationCoin,
         }
       : skipToken,
   )
@@ -222,13 +222,18 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const txToken = findTransactionToken(transaction, combinedTokensList)
 
-  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+  const { destinationToken, sourceToken, destinationAmount, sourceAmount } =
     useSwapTransactionParser(transaction)
 
   const priceRequests = React.useMemo(
     () =>
-      getPriceRequestsForTokens([txToken, sellToken, buyToken, networkAsset]),
-    [txToken, sellToken, buyToken, networkAsset],
+      getPriceRequestsForTokens([
+        txToken,
+        sourceToken,
+        destinationToken,
+        networkAsset,
+      ]),
+    [txToken, sourceToken, destinationToken, networkAsset],
   )
 
   // price queries
@@ -275,18 +280,18 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     React.useMemo(() => {
       const { normalized, wei } = getTransactionTransferredValue({
         tx: transaction,
-        sellToken,
+        sourceToken,
         token: txToken,
         txAccount: account,
         txNetwork,
       })
       return [normalized.format(6), wei]
-    }, [transaction, sellToken, txToken, account, txNetwork])
+    }, [transaction, sourceToken, txToken, account, txNetwork])
 
   const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
     normalizedTransferredValue,
     tx: transaction,
-    sellToken,
+    sourceToken,
     token: txToken,
     txNetwork,
   })
@@ -301,11 +306,11 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       ? networkAsset
       : txToken
 
-  const formattedBuyFiatValue = buyToken
+  const formattedBuyFiatValue = destinationToken
     ? computeFiatAmount({
         spotPrices,
-        value: buyAmountWei.format(),
-        token: buyToken,
+        value: destinationAmount.format(),
+        token: destinationToken,
       }).formatAsFiat(defaultFiatCurrency)
     : ''
 
@@ -335,15 +340,15 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
           ? 'braveWalletSwap'
           : 'braveWalletTransactionSent'
 
-  const formattedSellAmount = sellToken
-    ? sellAmountWei
-        .divideByDecimals(sellToken.decimals)
-        .formatAsAsset(6, sellToken.symbol)
+  const formattedSourceAmount = sourceToken
+    ? sourceAmount
+        .divideByDecimals(sourceToken.decimals)
+        .formatAsAsset(6, sourceToken.symbol)
     : ''
-  const formattedBuyAmount = buyToken
-    ? buyAmountWei
-        .divideByDecimals(buyToken.decimals)
-        .formatAsAsset(6, buyToken.symbol)
+  const formattedDestinationAmount = destinationToken
+    ? destinationAmount
+        .divideByDecimals(destinationToken.decimals)
+        .formatAsAsset(6, destinationToken.symbol)
     : ''
 
   const gasFee =
@@ -477,13 +482,13 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                           width='unset'
                           margin='0px 0px 10px 0px'
                         >
-                          <SwapIconWithPlaceholder asset={sellToken} />
+                          <SwapIconWithPlaceholder asset={sourceToken} />
                           <SwapAmountText
                             textSize='14px'
                             isBold={true}
                             textAlign='left'
                           >
-                            {formattedSellAmount}
+                            {formattedSourceAmount}
                           </SwapAmountText>
                           <ArrowIcon />
                         </Row>
@@ -500,12 +505,12 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                             >
                               {getLocale('braveWalletOnNetwork').replace(
                                 '$1',
-                                toNetwork?.chainName ?? '',
+                                destinationNetwork?.chainName ?? '',
                               )}
                             </SwapAmountText>
-                            {toNetwork && (
+                            {destinationNetwork && (
                               <CreateNetworkIcon
-                                network={toNetwork}
+                                network={destinationNetwork}
                                 marginRight={0}
                                 size='small'
                               />
@@ -516,7 +521,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                             width='unset'
                             justifyContent='flex-start'
                           >
-                            <SwapIconWithPlaceholder asset={buyToken} />
+                            <SwapIconWithPlaceholder asset={destinationToken} />
                             <RowWrapped
                               width='unset'
                               justifyContent='flex-start'
@@ -526,7 +531,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                                 isBold={true}
                                 textAlign='left'
                               >
-                                {formattedBuyAmount}
+                                {formattedDestinationAmount}
                               </SwapAmountText>
                               <SwapFiatValueText
                                 textSize='14px'
@@ -644,7 +649,10 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   <HorizontalSpace space='12px' />
                   <Button
                     onClick={onClickViewOnBlockExplorer(
-                      transaction.swapInfo?.provider === 'lifi' ? 'lifi' : 'tx',
+                      transaction.swapInfo?.provider
+                        === BraveWallet.SwapProvider.kLiFi
+                        ? 'lifi'
+                        : 'tx',
                       transaction.txHash,
                     )}
                     kind='outline'

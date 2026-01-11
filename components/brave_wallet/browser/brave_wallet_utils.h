@@ -54,6 +54,9 @@ base::Value::Dict TransactionReceiptToValue(
 std::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value);
 
+base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info);
+mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value);
+
 bool IsEndpointUsingBraveWalletProxy(const GURL& url);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
 

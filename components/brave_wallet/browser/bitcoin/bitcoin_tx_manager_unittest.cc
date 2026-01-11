@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -98,10 +99,11 @@ class BitcoinTxManagerUnitTest : public testing::Test {
       mojom::TxDataUnionPtr tx_data_union,
       mojom::AccountIdPtr from,
       std::optional<url::Origin> origin,
+      mojom::SwapInfoPtr swap_info,
       BitcoinTxManager::AddUnapprovedTransactionCallback callback) {
     btc_tx_manager()->AddUnapprovedTransaction(
         std::move(chain_id), std::move(tx_data_union), std::move(from),
-        std::move(origin), std::move(callback));
+        std::move(origin), std::move(swap_info), std::move(callback));
   }
 
   void ApproveTransaction(
@@ -134,7 +136,7 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
   std::string to_account = kMockBtcAddress;
   auto params = mojom::NewBitcoinTransactionParams::New(
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
-      false);
+      false, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -180,7 +182,7 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
 
   auto params = mojom::NewBitcoinTransactionParams::New(
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
-      false);
+      false, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -211,6 +213,59 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
   EXPECT_TRUE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Error);
+}
+
+TEST_F(BitcoinTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
+  // Create a transaction with swap_info
+  const auto from_account = BtcAcc(0);
+
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::BTC;
+  swap_info->source_chain_id = mojom::kBitcoinMainnet;
+  swap_info->source_token_address = "BTC";
+  swap_info->source_amount = "100000";  // 0.001 BTC
+  swap_info->destination_coin = mojom::CoinType::BTC;
+  swap_info->destination_chain_id = mojom::kBitcoinMainnet;
+  swap_info->destination_token_address = "rune:token";  // Hypothetical rune
+  swap_info->destination_amount = "1000";               // 1000 rune tokens
+  swap_info->destination_amount_min = "950";            // 950 rune tokens min
+  swap_info->recipient = "";
+  swap_info->provider = mojom::SwapProvider::kAuto;
+
+  auto params = mojom::NewBitcoinTransactionParams::New(
+      mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
+      false, std::move(swap_info));
+
+  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  std::string meta_id;
+  base::RunLoop run_loop;
+  EXPECT_CALL(add_callback, Run(_, _, _))
+      .WillOnce(
+          testing::DoAll(SaveArg<1>(&meta_id),
+                         testing::Invoke([&run_loop](bool, const std::string&,
+                                                     const std::string&) {
+                           run_loop.Quit();
+                         })));
+  btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
+                                                    add_callback.Get());
+  run_loop.Run();
+  ASSERT_FALSE(meta_id.empty());
+
+  // Verify swap_info was stored correctly
+  auto tx_meta = btc_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta->swap_info());
+  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::BTC);
+  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kBitcoinMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "BTC");
+  EXPECT_EQ(tx_meta->swap_info()->source_amount, "100000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::BTC);
+  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kBitcoinMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->destination_token_address, "rune:token");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "1000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min, "950");
+  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
+  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kAuto);
 }
 
 }  //  namespace brave_wallet

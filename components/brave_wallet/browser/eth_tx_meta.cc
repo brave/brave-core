@@ -123,30 +123,48 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     data = tx_->data();
   }
 
-  auto tx_info = GetTransactionInfoFromData(data);
-  std::optional<std::string> final_recipient;
-  if (!tx_info) {
-    LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
+  // Prefer explicitly provided swap_info over parsing
+  if (swap_info_) {
+    swap_info = swap_info_.Clone();
   } else {
-    std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
-    final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
-                                        tx_type, tx_args);
+    // Fall back to parsing from transaction data
+    auto tx_info = GetTransactionInfoFromData(data);
+    if (!tx_info) {
+      LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
+    } else {
+      std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+    }
   }
+
+  std::optional<std::string> final_recipient;
+  if (!swap_info_) {
+    // Only parse final_recipient if we didn't have explicit swap_info
+    auto tx_info = GetTransactionInfoFromData(data);
+    if (tx_info) {
+      std::tie(tx_type, tx_params, tx_args, std::ignore) = std::move(*tx_info);
+      final_recipient = GetFinalRecipient(
+          chain_id, tx_->to().ToChecksumAddress(), tx_type, tx_args);
+    }
+  }
+
   std::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
   }
 
+  // Apply chain_id defaults if swap_info exists
   if (swap_info) {
-    swap_info->from_chain_id = chain_id_;
-
-    if (swap_info->to_chain_id.empty()) {
-      swap_info->to_chain_id = chain_id_;
+    if (swap_info->source_chain_id.empty()) {
+      swap_info->source_chain_id = chain_id_;
     }
 
-    if (swap_info->from_amount.empty() &&
-        swap_info->from_asset == kNativeEVMAssetContractAddress) {
-      swap_info->from_amount = Uint256ValueToHex(tx_->value());
+    if (swap_info->destination_chain_id.empty()) {
+      swap_info->destination_chain_id = chain_id_;
+    }
+
+    if (swap_info->source_amount.empty() &&
+        swap_info->source_token_address == kNativeEVMAssetContractAddress) {
+      swap_info->source_amount = Uint256ValueToHex(tx_->value());
     }
   }
 

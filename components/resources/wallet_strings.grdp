@@ -759,6 +759,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION" desc="Transaction intent for dapp interactions">Dapp interaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_BRIDGE" desc="Transaction intent for bridges">Bridge <ph name="SOURCE">$1<ex>1000 USDC</ex></ph> to <ph name="DESTINATION">$2<ex>990 USDT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for creating associated token account">Creating associated token account</message>
   <message name="IDS_BRAVE_WALLET_FAILED_TO_CREATE_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for failed to create associated token account">Failed to create associated token account</message>
   <message name="IDS_BRAVE_WALLET_ASSOCIATED_TOKEN_ACCOUNT_CREATED" desc="Transaction intent for associated token account created">Associated token account created</message>

@@ -1309,6 +1309,7 @@ provideStrings({
   braveWalletTransactionIntentDappInteraction: 'Dapp interaction',
   braveWalletTransactionIntentSend: 'Send $1',
   braveWalletTransactionIntentSwap: 'Swap $1 to $2',
+  braveWalletTransactionIntentBridge: 'Bridge $1 to $2',
 
   // Solana Associated Token Account
   braveWalletCreatingAssociatedTokenAccount:

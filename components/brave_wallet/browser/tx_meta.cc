@@ -9,6 +9,7 @@
 #include "base/json/values_util.h"
 #include "base/uuid.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
@@ -24,7 +25,8 @@ bool TxMeta::operator==(const TxMeta& meta) const {
          created_time_ == meta.created_time_ &&
          submitted_time_ == meta.submitted_time_ &&
          confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_ &&
-         origin_ == meta.origin_ && chain_id_ == meta.chain_id_;
+         origin_ == meta.origin_ && chain_id_ == meta.chain_id_ &&
+         swap_info_ == meta.swap_info_;
 }
 
 base::Value::Dict TxMeta::ToValue() const {
@@ -43,6 +45,9 @@ base::Value::Dict TxMeta::ToValue() const {
   }
   dict.Set("coin", static_cast<int>(GetCoinType()));
   dict.Set("chain_id", chain_id_);
+  if (swap_info_) {
+    dict.Set("swap_info", SwapInfoToValue(swap_info_));
+  }
   return dict;
 }
 

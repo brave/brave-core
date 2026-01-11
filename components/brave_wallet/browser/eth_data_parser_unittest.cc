@@ -495,19 +495,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellEthForTokenToUniswapV3) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  EXPECT_EQ(swap_info->from_amount, "");
+  EXPECT_EQ(swap_info->source_amount, "");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset, "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
-  EXPECT_EQ(swap_info->to_amount, "0x30c1a39b13e25f498");
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
+            "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x30c1a39b13e25f498");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
@@ -554,20 +556,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xc98d64da73a6616c42117b582e832812e7b8d57f");  // RSS3
-  EXPECT_EQ(swap_info->from_amount, "0x821ab0d44149800000");
+  EXPECT_EQ(swap_info->source_amount, "0x821ab0d44149800000");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");  // WETH
-  EXPECT_EQ(swap_info->to_amount, "0x248b3366b6ffd46");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x248b3366b6ffd46");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
@@ -614,20 +617,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab");  // COW
-  EXPECT_EQ(swap_info->from_amount, "0x4d12b6295c69ddebd5");
+  EXPECT_EQ(swap_info->source_amount, "0x4d12b6295c69ddebd5");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->to_amount, "0x3b9aca00");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x3b9aca00");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
@@ -673,20 +677,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->from_amount, "0x77359400");
+  EXPECT_EQ(swap_info->source_amount, "0x77359400");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x5a98fcbea516cf06857215779fd812ca3bef1b32");  // LDO
-  EXPECT_EQ(swap_info->to_amount, "0x16b28ec6ba93b8bb17");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x16b28ec6ba93b8bb17");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
@@ -794,16 +799,18 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  EXPECT_EQ(swap_info->from_amount, "0x902a721");
+  EXPECT_EQ(swap_info->source_amount, "0x902a721");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset, "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
-  EXPECT_EQ(swap_info->to_amount, "0x5f5e100");
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
+            "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x5f5e100");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
@@ -879,20 +886,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->from_amount, "0x1c9c380");
+  EXPECT_EQ(swap_info->source_amount, "0x1c9c380");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->to_amount, "0x3c11d06581812a");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x3c11d06581812a");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
@@ -963,20 +971,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x3d407736bd1262");
+  EXPECT_EQ(swap_info->source_amount, "0x3d407736bd1262");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->to_amount, "0x1c9c380");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x1c9c380");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
@@ -1052,20 +1061,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->from_amount, "0x1c9c380");
+  EXPECT_EQ(swap_info->source_amount, "0x1c9c380");
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xdac17f958d2ee523a2206206994597c13d831ec7");  // USDT
-  EXPECT_EQ(swap_info->to_amount, "0x1c6bad5");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x1c6bad5");
 
-  EXPECT_EQ(swap_info->receiver, "");
-  EXPECT_EQ(swap_info->provider, "zeroex");
+  EXPECT_EQ(swap_info->recipient, "");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kZeroEx);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
@@ -1121,21 +1131,22 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
   EXPECT_EQ(tx_args.size(), 0UL);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // XDAI
-  EXPECT_EQ(swap_info->from_amount,
+  EXPECT_EQ(swap_info->source_amount,
             "0x4967cb9ebd8176");  // 0.02066179753911948 XDAI
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83");  // USDC
-  EXPECT_EQ(swap_info->to_amount, "0x4f1e");                // 0.020254 USDC
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x4f1e");  // 0.020254 USDC
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "cowswap");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kAuto);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {
@@ -1286,21 +1297,22 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
-  EXPECT_EQ(swap_info->from_amount, "0x7b451");             // 0.504913 USDC.e
+  EXPECT_EQ(swap_info->source_amount, "0x7b451");           // 0.504913 USDC.e
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "0x96eeba8455b6e35");  // 0.6797397017301765 MATIC
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 
   // Swap 1 MATIC → Y USDC.e
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -1373,20 +1385,21 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
-  EXPECT_EQ(swap_info->from_amount, "0xde0b6b3a7640000");   // 1 MATIC
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");   // MATIC
+  EXPECT_EQ(swap_info->source_amount, "0xde0b6b3a7640000");  // 1 MATIC
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
-  EXPECT_EQ(swap_info->to_amount, "0x98647");               // 0.624199 USDC.e
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x98647");  // 0.624199 USDC.e
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -1484,20 +1497,21 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x5af3107a4000");      // 0.0001 ETH
+  EXPECT_EQ(swap_info->source_amount, "0x5af3107a4000");    // 0.0001 ETH
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(swap_info->to_amount, "0x52397");               // 0.336791 USDC
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x52397");  // 0.336791 USDC
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -1590,21 +1604,22 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
-            "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
-  EXPECT_EQ(swap_info->from_amount, "0x96324f4223190000");  // 10.8228 DAI
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
+            "0x6b175474e89094c44da98b954eedeac495271d0f");    // DAI
+  EXPECT_EQ(swap_info->source_amount, "0x96324f4223190000");  // 10.8228 DAI
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "0xb4fb6da8128d1");  // 0.003183871512357073 ETH
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -1699,22 +1714,23 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
-  EXPECT_EQ(swap_info->from_amount,
+  EXPECT_EQ(swap_info->source_amount,
             "0x12c64655a698c7e2b");  // 21.645537148041726 DAI
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x0d8775f648430679a709e98d2b0cb6250d2887ef");  // BAT
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "0x61dc2169221089f5c");  // 112.82476563171433 BAT
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(
@@ -1870,21 +1886,22 @@ TEST(
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
-  EXPECT_EQ(swap_info->from_amount, "0x989b3");             // 0.625075 USDC.e
+  EXPECT_EQ(swap_info->source_amount, "0x989b3");           // 0.625075 USDC.e
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "0xa");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "0xa");
+  EXPECT_EQ(swap_info->destination_token_address,
             "");  // cannot be reliably determined from the data
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "");  // cannot be reliably determined from the data
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -2053,22 +2070,23 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xad29abb318791d579433d831ed122afeaf29dcfe");  // FTM
-  EXPECT_EQ(swap_info->from_amount,
+  EXPECT_EQ(swap_info->source_amount,
             "0x318632acb5ec3c1");  // 0.223037217006601150 FTM
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "0xa");  // Optimism
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "0xa");  // Optimism
+  EXPECT_EQ(swap_info->destination_token_address,
             "");  // cannot be reliably determined from the data
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "");  // cannot be reliably determined from the data
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -2143,19 +2161,20 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0x0b2c639c533813f4aa9d7837caf62653d097ff85");  // USDC
-  EXPECT_EQ(swap_info->from_amount, "0x1e8480");            // 0.2 USDC
+  EXPECT_EQ(swap_info->source_amount, "0x1e8480");          // 0.2 USDC
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "0xa4b1");  // Arbitrum
-  EXPECT_EQ(swap_info->to_asset, "");
-  EXPECT_EQ(swap_info->to_amount, "");
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "0xa4b1");  // Arbitrum
+  EXPECT_EQ(swap_info->destination_token_address, "");
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "");
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataLiFiStartBridgeTokensViaMayan) {
@@ -2261,22 +2280,23 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiStartBridgeTokensViaMayan) {
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // BNB
-  EXPECT_EQ(swap_info->from_amount, "0x1753753f24cb000");   // 0.105051 BNB
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");   // BNB
+  EXPECT_EQ(swap_info->source_amount, "0x1753753f24cb000");  // 0.105051 BNB
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::SOL);
-  EXPECT_EQ(swap_info->to_chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::SOL);
+  EXPECT_EQ(swap_info->destination_chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(swap_info->destination_token_address,
             "");  // cannot be reliably determined from the data
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "");  // cannot be reliably determined from the data
 
-  EXPECT_EQ(swap_info->receiver,
+  EXPECT_EQ(swap_info->recipient,
             "");  // cannot be reliably determined from the data
-  EXPECT_EQ(swap_info->provider, "lifi");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
 }
 
 TEST(EthDataParser,
@@ -2452,20 +2472,21 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x5af3107a4000");      // 0.0001 ETH
+  EXPECT_EQ(swap_info->source_amount, "0x5af3107a4000");    // 0.0001 ETH
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x7f5c764cbc14f9669b88837ca1490cca17c31607");  // USDC.e
-  EXPECT_EQ(swap_info->to_amount, "0x389d6");               // 0.231894 USDC.e
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x389d6");  // 0.231894 USDC.e
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "squid");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
 TEST(
@@ -2626,20 +2647,21 @@ TEST(
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x570efc5b4ac00");     // 0.00153155 ETH
+  EXPECT_EQ(swap_info->source_amount, "0x570efc5b4ac00");   // 0.00153155 ETH
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x7f5c764cbc14f9669b88837ca1490cca17c31607");  // USDC.e
-  EXPECT_EQ(swap_info->to_amount, "0x38dfbc");              // 3.727292 USDC.e
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x38dfbc");  // 3.727292 USDC.e
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "squid");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
 TEST(
@@ -2881,20 +2903,22 @@ TEST(
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0x7f5c764cbc14f9669b88837ca1490cca17c31607");  // USDC.e
-  EXPECT_EQ(swap_info->from_amount, "0x3c97");              // 0.15511 USDC.e
+  EXPECT_EQ(swap_info->source_amount, "0x3c97");            // 0.15511 USDC.e
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->to_amount, "0x5c27c64134e");  // 0.00000633286872763 ETH
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
+            "0x5c27c64134e");  // 0.00000633286872763 ETH
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "squid");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
 TEST(EthDataParser,
@@ -3036,20 +3060,21 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x38d7ea4c68000");     // 0.0001 ETH
+  EXPECT_EQ(swap_info->source_amount, "0x38d7ea4c68000");   // 0.0001 ETH
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0xaf88d065e77c8cc2239327c5edb3a432268e5831");  // USDC
-  EXPECT_EQ(swap_info->to_amount, "0x239039");              // 2.330681 USDC
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min, "0x239039");  // 2.330681 USDC
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "squid");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
 TEST(EthDataParser,
@@ -3275,21 +3300,22 @@ TEST(EthDataParser,
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
   ASSERT_TRUE(swap_info);
 
-  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->from_chain_id, "");
-  EXPECT_EQ(swap_info->from_asset,
+  EXPECT_EQ(swap_info->source_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->source_chain_id, "");
+  EXPECT_EQ(swap_info->source_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(swap_info->from_amount, "0x9184e72a000");       // 0.00001 ETH
+  EXPECT_EQ(swap_info->source_amount, "0x9184e72a000");     // 0.00001 ETH
 
-  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(swap_info->to_chain_id, "");
-  EXPECT_EQ(swap_info->to_asset,
+  EXPECT_EQ(swap_info->destination_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->destination_chain_id, "");
+  EXPECT_EQ(swap_info->destination_token_address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
-  EXPECT_EQ(swap_info->to_amount,
+  EXPECT_EQ(swap_info->destination_amount, "");
+  EXPECT_EQ(swap_info->destination_amount_min,
             "0x53259bfcdc6572");  // 0.02340377495944536 DAI
 
-  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, "squid");
+  EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
 }  // namespace brave_wallet

@@ -2619,21 +2619,23 @@ union TxDataUnion {
 };
 
 struct SwapInfo {
-  CoinType from_coin;
-  string from_chain_id;
-  string from_asset;
-  string from_amount;
+  CoinType source_coin;
+  string source_chain_id;
+  string source_token_address;
+  string source_amount;
 
-  CoinType to_coin;
-  string to_chain_id;
+  CoinType destination_coin;
+  string destination_chain_id;
   // An empty string indicates that the asset could not be reliably determined.
-  string to_asset;
+  string destination_token_address;
   // An empty string indicates that the amount could not be reliably determined.
-  string to_amount;
+  string destination_amount;
+  // Populated for EXACT_INPUT swaps
+  string destination_amount_min;
 
   // An empty string indicates that the recipient is not known.
-  string receiver;
-  string provider;
+  string recipient;
+  SwapProvider provider;
 };
 
 struct TransactionInfo {
@@ -2686,6 +2688,7 @@ struct NewEvmTransactionParams {
   string value;
   string gas_limit;
   array<uint8> data;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Bitcoin transaction.
@@ -2695,6 +2698,7 @@ struct NewBitcoinTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved ZCash transaction.
@@ -2707,6 +2711,7 @@ struct NewZCashTransactionParams {
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   bool use_shielded_pool;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Cardano transaction.
@@ -2716,13 +2721,16 @@ struct NewCardanoTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(
-      TxDataUnion tx_data_union, string chain_id, AccountId from)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union,
+                           string chain_id,
+                           AccountId from,
+                           SwapInfo? swap_info)
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
