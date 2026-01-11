@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.shields;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -26,6 +27,7 @@ import org.robolectric.Robolectric;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.R;
+import org.chromium.components.content_settings.ContentSettingsType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -624,6 +626,71 @@ public final class BraveUnifiedPanelDomainUtilsTest {
     }
 
     // ========================================================================
+    // Permissions panel tests
+    // ========================================================================
+
+    @SmallTest
+    @Test
+    public void testPermissionItemLayout_inflatesSuccessfully() throws Exception {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View permissionItem = inflater.inflate(R.layout.brave_permission_item, null);
+
+        assertNotNull("Permission item layout should inflate successfully", permissionItem);
+
+        // Verify key elements exist
+        assertNotNull(
+                "Permission icon should exist",
+                permissionItem.findViewById(R.id.permission_icon));
+        assertNotNull(
+                "Permission title should exist",
+                permissionItem.findViewById(R.id.permission_title));
+        assertNotNull(
+                "Permission status should exist",
+                permissionItem.findViewById(R.id.permission_status));
+        assertNotNull(
+                "Permission toggle should exist",
+                permissionItem.findViewById(R.id.permission_toggle));
+    }
+
+    @SmallTest
+    @Test
+    public void testShouldAlwaysShowPermission_soundReturnsTrue() throws Exception {
+        assertTrue(
+                "SOUND permission should always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.SOUND));
+    }
+
+    @SmallTest
+    @Test
+    public void testShouldAlwaysShowPermission_javascriptReturnsTrue() throws Exception {
+        assertTrue(
+                "JAVASCRIPT permission should always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.JAVASCRIPT));
+    }
+
+    @SmallTest
+    @Test
+    public void testShouldAlwaysShowPermission_popupsReturnsTrue() throws Exception {
+        assertTrue(
+                "POPUPS permission should always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.POPUPS));
+    }
+
+    @SmallTest
+    @Test
+    public void testShouldAlwaysShowPermission_otherTypesReturnFalse() throws Exception {
+        assertFalse(
+                "COOKIES permission should not always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.COOKIES));
+        assertFalse(
+                "GEOLOCATION permission should not always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.GEOLOCATION));
+        assertFalse(
+                "NOTIFICATIONS permission should not always be shown",
+                invokeShouldAlwaysShowPermission(ContentSettingsType.NOTIFICATIONS));
+    }
+
+    // ========================================================================
     // Helper methods
     // ========================================================================
 
@@ -800,5 +867,13 @@ public final class BraveUnifiedPanelDomainUtilsTest {
         Method method = BraveUnifiedPanelHandler.class.getDeclaredMethod("showMainPanel");
         method.setAccessible(true);
         method.invoke(mHandler);
+    }
+
+    private boolean invokeShouldAlwaysShowPermission(int type) throws Exception {
+        Method method =
+                BraveUnifiedPanelHandler.class.getDeclaredMethod(
+                        "shouldAlwaysShowPermission", int.class);
+        method.setAccessible(true);
+        return (boolean) method.invoke(mHandler, type);
     }
 }

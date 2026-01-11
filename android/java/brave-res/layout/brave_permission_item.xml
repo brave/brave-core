@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Individual permission item row - Figma design node 4533:26438 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <!-- Permission icon -->
+        <ImageView
+            android:id="@+id/permission_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:tint="@color/text_secondary"
+            android:contentDescription="@null"
+            tools:src="@drawable/ic_volume_up_grey600_24dp"/>
+
+        <!-- Title and subtitle container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+
+            <!-- Permission title (e.g., "Camera", "Microphone") -->
+            <TextView
+                android:id="@+id/permission_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:lineHeight="24sp"
+                android:textColor="@color/text_primary"
+                tools:text="Camera"/>
+
+            <!-- Permission status (e.g., "Allowed", "Blocked", "Ask first") -->
+            <TextView
+                android:id="@+id/permission_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:lineHeight="20sp"
+                android:textColor="@color/text_secondary"
+                tools:text="Allowed"/>
+
+        </LinearLayout>
+
+        <!-- Toggle switch -->
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/permission_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:trackTint="@color/permission_toggle_track_color"
+            app:thumbTint="@color/permission_toggle_thumb_color"/>
+
+    </LinearLayout>
+
+    <!-- Divider at bottom -->
+    <View
+        android:id="@+id/permission_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="@color/divider_line_bg_color"/>
+
+</FrameLayout>

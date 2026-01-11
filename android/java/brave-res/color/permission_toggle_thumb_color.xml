@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Thumb color for permission toggles - matches Figma design -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked/ON state: white thumb -->
+    <item android:state_checked="true" android:color="@color/schemes_on_primary"/>
+    <!-- Unchecked/OFF state: gray outline color -->
+    <item android:color="#78787c"/>
+</selector>
+
+

@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
+
 import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -48,9 +50,11 @@ import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.ContentSettingsResources;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsUtil;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher;
+import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
 import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.components.page_info.PageInfoController;
@@ -129,6 +133,15 @@ public class BraveUnifiedPanelHandler {
     // Report broken site section
     private LinearLayout mReportBrokenSiteSection;
     private android.widget.Button mReportBrokenSiteButton;
+
+    // Permissions panel elements
+    private View mPermissionsPanelContainer;
+    private LinearLayout mPermissionsList;
+    private TextView mPermissionsSiteName;
+    private ImageView mPermissionsSiteFavicon;
+    private android.widget.Button mResetPermissionsButton;
+    private final List<PermissionItemHolder> mPermissionItems = new ArrayList<>();
+    private Website mCurrentPermissionsSite;
 
     // Current state
     private @Nullable Profile mProfile;
@@ -1081,6 +1094,7 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
+    /** Clean up resources when the handler is no longer needed. */
     public void destroy() {
         if (mFaviconHelper != null) {
             mFaviconHelper.destroy();
@@ -1088,20 +1102,29 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
+    // Delegate methods to legacy handler for stats tracking
     public void addStat(int tabId, @Nullable String blockType, @Nullable String subResource) {
-        // Stub - implemented in Permissions Panel commit
+        if (mLegacyShieldsHandler != null) {
+            mLegacyShieldsHandler.addStat(tabId, blockType, subResource);
+        }
     }
 
     public void removeStat(int tabId) {
-        // Stub - implemented in Permissions Panel commit
+        if (mLegacyShieldsHandler != null) {
+            mLegacyShieldsHandler.removeStat(tabId);
+        }
     }
 
     public void clearBraveShieldsCount(int tabId) {
-        // Stub - implemented in Permissions Panel commit
+        if (mLegacyShieldsHandler != null) {
+            mLegacyShieldsHandler.clearBraveShieldsCount(tabId);
+        }
     }
 
     public void addObserver(@Nullable BraveShieldsMenuObserver observer) {
-        // Stub - implemented in Permissions Panel commit
+        if (mLegacyShieldsHandler != null) {
+            mLegacyShieldsHandler.addObserver(observer);
+        }
     }
 
     private void showHttpsUpgradePanel() {
@@ -1135,6 +1158,9 @@ public class BraveUnifiedPanelHandler {
         mHttpsPanelContainer.setVisibility(View.GONE);
         mTrackersPanelContainer.setVisibility(View.GONE);
         mCookiesPanelContainer.setVisibility(View.GONE);
+        if (mPermissionsPanelContainer != null) {
+            mPermissionsPanelContainer.setVisibility(View.GONE);
+        }
         if (mShredPanelContainer != null) {
             mShredPanelContainer.setVisibility(View.GONE);
         }
@@ -1479,7 +1505,8 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void onPermissionsClicked() {
-        // Stub - showPermissionsPanel() implemented in Permissions Panel commit
+        // Show our custom permissions panel instead of Chromium's SingleWebsiteSettings
+        showPermissionsPanel();
     }
 
     private void showPageInfo(ChromePageInfoHighlight highlight) {
@@ -1525,8 +1552,304 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
+    private void showPermissionsPanel() {
+        if (mContext == null || mUrlSpec == null || mProfile == null) {
+            return;
+        }
+
+        // Initialize permissions panel views if needed
+        if (mPermissionsPanelContainer == null) {
+            mPermissionsPanelContainer = mPopupView.findViewById(R.id.permissions_panel_container);
+            if (mPermissionsPanelContainer != null) {
+                mPermissionsList = mPermissionsPanelContainer.findViewById(R.id.permissions_list);
+                mPermissionsSiteName =
+                        mPermissionsPanelContainer.findViewById(R.id.permissions_site_name);
+                mPermissionsSiteFavicon =
+                        mPermissionsPanelContainer.findViewById(R.id.permissions_site_favicon);
+                mResetPermissionsButton =
+                        mPermissionsPanelContainer.findViewById(R.id.reset_permissions_button);
+
+                // Set up back button
+                View backButton =
+                        mPermissionsPanelContainer.findViewById(R.id.permissions_back_button);
+                if (backButton != null) {
+                    backButton.setOnClickListener(v -> showMainPanel());
+                }
+
+                if (mResetPermissionsButton != null) {
+                    mResetPermissionsButton.setOnClickListener(v -> onResetPermissionsClicked());
+                }
+            }
+        }
+
+        if (mPermissionsPanelContainer == null) {
+            return;
+        }
+
+        // Set site name
+        if (mPermissionsSiteName != null && mHost != null) {
+            String siteName = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+            mPermissionsSiteName.setText(siteName);
+        }
+
+        // Set favicon
+        if (mPermissionsSiteFavicon != null && mCurrentTab != null) {
+            Bitmap favicon = TabFavicon.getBitmap(mCurrentTab);
+            if (favicon != null) {
+                mPermissionsSiteFavicon.setImageBitmap(favicon);
+            } else {
+                mPermissionsSiteFavicon.setImageResource(R.drawable.ic_globe_24dp);
+            }
+        }
+
+        // Fetch and display permissions
+        fetchAndDisplayPermissions();
+
+        // Show permissions panel, hide main panel
+        mMainPanelContainer.setVisibility(View.GONE);
+        mHttpsPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.GONE);
+        mPermissionsPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void fetchAndDisplayPermissions() {
+        if (mPermissionsList == null || mProfile == null || mUrlSpec == null || mContext == null) {
+            return;
+        }
+
+        // Clear existing items
+        mPermissionsList.removeAllViews();
+        mPermissionItems.clear();
+
+        // Create WebsiteAddress from URL
+        WebsiteAddress address = WebsiteAddress.create(mUrlSpec);
+        if (address == null) {
+            showEmptyPermissionsState();
+            return;
+        }
+
+        // Use ChromeSiteSettingsDelegate and WebsitePermissionsFetcher to get actual
+        // permissions
+        // This ensures we only show permissions that the site has actually
+        // requested/used
+        ChromeSiteSettingsDelegate delegate = new ChromeSiteSettingsDelegate(mContext, mProfile);
+        WebsitePermissionsFetcher fetcher = new WebsitePermissionsFetcher(delegate);
+
+        // Fetch all preferences for sites
+        fetcher.fetchAllPreferences(
+                sites -> {
+                    if (mPermissionsList == null) return;
+
+                    // Find the website matching our URL
+                    Website matchingSite = null;
+                    for (Website site : sites) {
+                        if (site.getAddress() != null && site.getAddress().matches(mUrlSpec)) {
+                            matchingSite = site;
+                            break;
+                        }
+                    }
+
+                    if (matchingSite != null) {
+                        populatePermissionsFromWebsite(matchingSite);
+                    } else {
+                        showEmptyPermissionsState();
+                    }
+                });
+    }
+
+    private void populatePermissionsFromWebsite(Website website) {
+        if (mPermissionsList == null || mContext == null) {
+            return;
+        }
+
+        // Store reference for permission changes
+        mCurrentPermissionsSite = website;
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        int addedCount = 0;
+
+        // Iterate through all permission types in the standard order
+        for (@ContentSettingsType.EnumType int type : SiteSettingsUtil.SETTINGS_ORDER) {
+            // Get the permission value - returns null if not set for this site
+            @ContentSetting Integer value = website.getContentSetting(mProfile, type);
+
+            // Some permissions should always be shown because they have defaults that
+            // users may want to change (e.g., Sound is allowed by default)
+            if (value == null && shouldAlwaysShowPermission(type)) {
+                value = getDefaultPermissionValue(type);
+            }
+
+            // Only show permissions that have been explicitly set or are "always show"
+            if (value != null) {
+                addPermissionItem(inflater, type, value, addedCount > 0);
+                addedCount++;
+            }
+        }
+
+        // If no permissions found, show a message
+        if (addedCount == 0) {
+            showEmptyPermissionsState();
+        }
+    }
+
+    /**
+     * Returns true for permission types that should always be displayed, even if no explicit value
+     * is stored. These are permissions that have meaningful defaults that users may want to change.
+     */
+    private boolean shouldAlwaysShowPermission(@ContentSettingsType.EnumType int type) {
+        switch (type) {
+            case ContentSettingsType.SOUND:
+                // Sound is allowed by default - users may want to mute a site
+                return true;
+            case ContentSettingsType.JAVASCRIPT:
+                // JavaScript is allowed by default - users may want to block it
+                return true;
+            case ContentSettingsType.POPUPS:
+                // Popups are blocked by default - users may want to allow them
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /** Returns the default permission value for "always show" permission types. */
+    private @ContentSetting int getDefaultPermissionValue(@ContentSettingsType.EnumType int type) {
+        // Check if the category is globally enabled
+        boolean categoryEnabled = WebsitePreferenceBridge.isCategoryEnabled(mProfile, type);
+
+        switch (type) {
+            case ContentSettingsType.SOUND:
+            case ContentSettingsType.JAVASCRIPT:
+                // These are allowed by default when the category is enabled
+                return categoryEnabled ? ContentSetting.ALLOW : ContentSetting.BLOCK;
+            case ContentSettingsType.POPUPS:
+                // Popups are blocked by default when the category is enabled
+                return categoryEnabled ? ContentSetting.BLOCK : ContentSetting.ALLOW;
+            default:
+                return ContentSetting.DEFAULT;
+        }
+    }
+
+    private void showEmptyPermissionsState() {
+        if (mPermissionsList == null || mContext == null) return;
+
+        mPermissionsList.removeAllViews();
+        TextView emptyView = new TextView(mContext);
+        emptyView.setText(R.string.no_site_permissions_set);
+        emptyView.setTextAppearance(R.style.TextAppearance_TextSmall_Secondary);
+        emptyView.setPadding(dpToPx(16), dpToPx(16), dpToPx(16), dpToPx(16));
+        emptyView.setGravity(Gravity.CENTER);
+        mPermissionsList.addView(emptyView);
+    }
+
+    private void addPermissionItem(
+            LayoutInflater inflater,
+            int contentSettingsType,
+            @ContentSetting int setting,
+            boolean showDivider) {
+        View itemView = inflater.inflate(R.layout.brave_permission_item, mPermissionsList, false);
+
+        ImageView iconView = itemView.findViewById(R.id.permission_icon);
+        TextView titleView = itemView.findViewById(R.id.permission_title);
+        TextView statusView = itemView.findViewById(R.id.permission_status);
+        MaterialSwitch toggleView = itemView.findViewById(R.id.permission_toggle);
+        View dividerView = itemView.findViewById(R.id.permission_divider);
+
+        // Set icon
+        int iconResId = ContentSettingsResources.getIcon(contentSettingsType);
+        if (iconResId != 0) {
+            iconView.setImageResource(iconResId);
+        }
+
+        // Set title
+        int titleResId = ContentSettingsResources.getTitle(contentSettingsType);
+        if (titleResId != 0) {
+            titleView.setText(titleResId);
+        }
+
+        // Set status text based on setting
+        String statusText = getStatusText(contentSettingsType, setting);
+        statusView.setText(statusText);
+
+        // Set toggle state
+        boolean isAllowed = (setting == ContentSetting.ALLOW);
+        toggleView.setChecked(isAllowed);
+
+        // Handle toggle changes
+        final int type = contentSettingsType;
+        toggleView.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    @ContentSetting
+                    int newSetting = isChecked ? ContentSetting.ALLOW : ContentSetting.BLOCK;
+                    setPermissionSetting(type, newSetting);
+                    statusView.setText(getStatusText(type, newSetting));
+                });
+
+        // Show/hide divider
+        if (dividerView != null) {
+            dividerView.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+        }
+
+        // Store reference for potential updates
+        mPermissionItems.add(new PermissionItemHolder(contentSettingsType));
+
+        mPermissionsList.addView(itemView);
+    }
+
+    private String getStatusText(int contentSettingsType, @ContentSetting int setting) {
+        if (mContext == null) return "";
+        switch (setting) {
+            case ContentSetting.ALLOW:
+                int enabledResId = ContentSettingsResources.getEnabledSummary(contentSettingsType);
+                return enabledResId != 0 ? mContext.getString(enabledResId) : "Allowed";
+            case ContentSetting.BLOCK:
+                int disabledResId =
+                        ContentSettingsResources.getDisabledSummary(contentSettingsType);
+                return disabledResId != 0 ? mContext.getString(disabledResId) : "Blocked";
+            case ContentSetting.ASK:
+            default:
+                return "Ask";
+        }
+    }
+
+    private void setPermissionSetting(int contentSettingsType, @ContentSetting int setting) {
+        if (mCurrentPermissionsSite == null || mProfile == null) {
+            return;
+        }
+
+        // Use the Website object to set the permission
+        mCurrentPermissionsSite.setContentSetting(mProfile, contentSettingsType, setting);
+    }
+
+    private void onResetPermissionsClicked() {
+        if (mCurrentPermissionsSite == null || mProfile == null) {
+            return;
+        }
+
+        // Reset all permissions by setting them to default
+        for (PermissionItemHolder holder : mPermissionItems) {
+            mCurrentPermissionsSite.setContentSetting(
+                    mProfile, holder.mContentSettingsType, ContentSetting.DEFAULT);
+        }
+
+        // Refresh the permissions list
+        fetchAndDisplayPermissions();
+    }
+
     // TODO: Get rid of this
     private int dpToPx(int dp) {
-        return (int) (dp * mContext.getResources().getDisplayMetrics().density);
+        float density = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * density);
+    }
+
+    /** Helper class to hold permission item references */
+    // TODO: Refactor
+    private static class PermissionItemHolder {
+        final int mContentSettingsType;
+
+        PermissionItemHolder(int type) {
+            this.mContentSettingsType = type;
+        }
     }
 }
