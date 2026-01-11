@@ -94,7 +94,7 @@
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_NEAR_DEEPSEEK_V3_1" desc="AI Chat intro message for the deepseek-v3.1 model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek V3.1, a model created by DeepSeek to be performant and applicable to many use cases. DeepSeek V3.1 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -382,7 +382,7 @@
     Change model for answer
   </message>
   <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP" desc="Tooltip of menu to regenerate AI agent answer with a specific model" formatter_data="webui=AiChat">
-    Change model for answer (current model: <ph name="MODEL_NAME">$1<ex>Qwen 14B</ex></ph>)
+    Change model for answer (current model: <ph name="MODEL_NAME">$1<ex>Qwen VL 30B</ex></ph>)
   </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful" formatter_data="webui=AiChat">
     Not helpful

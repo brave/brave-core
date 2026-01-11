@@ -297,7 +297,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.",
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeInstantMessageDescription = NSLocalizedString(
