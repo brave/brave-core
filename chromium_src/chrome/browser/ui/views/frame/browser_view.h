@@ -48,12 +48,12 @@
 #define HideSplitView virtual HideSplitView
 #define ReparentTopContainerForEndOfImmersive \
   virtual ReparentTopContainerForEndOfImmersive
-#define ShouldDrawStrokes virtual ShouldDrawStrokes
+#define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
 #undef ReparentTopContainerForEndOfImmersive
-#undef ShouldDrawStrokes
+#undef ShouldDrawTabStrokes
 #undef HideSplitView
 #undef ShowSplitView
 #undef LoadAccelerators
