@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
 <translation id="1035309871698658326">เมื่อเปิดใช้งาน ฟีเจอร์นี้จะส่งชื่อและแหล่งที่มาของแท็บทั้งหมดที่ไม่ใช่โหมดส่วนตัวไปยัง Leo เพื่อจัดประเภท</translation>
 <translation id="3435896845095436175">เปิดการใช้งาน</translation>
+<translation id="9082792303833649978">การตั้งค่านี้ถูกจัดการโดยผู้ดูแลระบบของคุณหรือโดยนโยบาย Brave อื่น</translation>
 <translation id="1940221956626514677">ปรับแต่งแถบเครื่องมือ</translation>
 <translation id="6501807887341963552">ธีมและสี</translation>
 <translation id="6724227215236550330">รหัสที่บันทึกไว้จะปรากฏที่นี่ หากต้องการนำเข้ารหัสผ่านไปยัง<ph name="BRAND"/>บนอุปกรณ์นี้ <ph name="BEGIN_LINK"/>เลือกไฟล์ CSV <ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ใช้แท็บแบบต้นไม้</translation>
 <translation id="5860254591544742609">แสดงแถบหัวเรื่อง</translation>
 <translation id="4691131445504068802">ซ่อนอย่างสมบูรณ์เมื่อย่อแท็บแนวตั้ง</translation>
+<translation id="6763346436728173884">ซ่อนปุ่มปิดแท็บเสมอ</translation>
 <translation id="4909269867860362936">ขยายอัตโนมัติเมื่อเลื่อนเมาส์ไปหยุดเหนือ เมื่อแท็บแนวตั้งถูกย่อ</translation>
 <translation id="3367129510799209147">โหมดโฮเวอร์แท็บ</translation>
 <translation id="8925055964134259461">ขยายหน้าต่างแท็บแนวตั้งแยกกันในหน้าต่างแต่ละบาน</translation>
@@ -754,6 +756,7 @@
 <translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="1077567586443625607">เครือข่าย Zcash</translation>
 <translation id="1177180573354712438">เครือข่ายบล็อกเชน Cardano</translation>
+<translation id="3176794108951154148">เครือข่าย Polkadot</translation>
 <translation id="3159419679550543837">แสดงเครือข่ายทดสอบ</translation>
 <translation id="3215569562674795548">แก้ไขหรือเพิ่มเครือข่ายใหม่</translation>
 <translation id="4418993400653250511">หมายเลขของเชน</translation>

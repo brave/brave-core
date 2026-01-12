@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Copiați linkul curat</translation>
 <translation id="721490496276866468">Importați parole</translation>
 <translation id="8178175542325151321">Selectați un fișier .csv care conține parolele dvs. pentru a le importa în managerul de parole Brave.</translation>
-<translation id="1177863135347784049">Personalizează</translation>
 <translation id="6112331814131703370">Blocați anunțurile „Treceți la aplicație”</translation>
 <translation id="4744921452903670666">Spuneți-ne părerea dvs.!</translation>
 <translation id="2524310205387880526">Evaluați Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Completați automat în filele private</translation>
 <translation id="8685431198160039193">Informațiile salvate pot fi completate automat în filele private</translation>
 <translation id="6583902294974160967">Asistență</translation>
-<translation id="5713644099811900409">Contul Brave</translation>
-<translation id="4472575034687746823">Începeți</translation>
 <translation id="1799030480311994998">Funcții</translation>
 <translation id="1919345977826869612">Reclame</translation>
 <translation id="2839742394543397416">Analiză</translation>
@@ -384,7 +381,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="717952606991220586">Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.</translation>
 <translation id="987264212798334818">General</translation>
 <translation id="1116694919640316211">Despre</translation>
-<translation id="7961015016161918242">Niciodată</translation>
 <translation id="1275213816424141989">Poate mai târziu</translation>
 <translation id="3624048886326677117">Blocați șabloanele de urmărire și reclamele (agresiv)</translation>
 <translation id="7151914815476509258">Blocați șabloanele de urmărire și reclamele (standard)</translation>
@@ -569,7 +565,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6697810017029555732">Potrivire!</translation>
 <translation id="5981303441790732480">Importați portofelul dvs. existent</translation>
 <translation id="9111102763498581341">Deblochează</translation>
-<translation id="6657585470893396449">Parolă</translation>
 <translation id="7553242001898162573">Introduceți parola</translation>
 <translation id="5619264711680220002">Deblocare biometrică</translation>
 <translation id="9195657745688986798">Deblocați portofelul</translation>
@@ -597,7 +592,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="4862812525895306758">Ștergeți informațiile referitoare la tranzacții și nonce</translation>
 <translation id="5693968582510626466">Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local</translation>
 <translation id="5421107279168565467">Sigur doriți să resetați toate tranzacțiile din portofel și informația nonce? Această opțiune este utilizată în principal de dezvoltatori care rulează un server de test local. Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
-<translation id="930472263779999522">{MINUTES, plural, one {} few {# minute}=1 {# minut} other {# minutes}}</translation>
+<translation id="930472263779999522">{MINUTES, plural, few {# minute}=1 {# minut} other {# minutes}}</translation>
 <translation id="8146860193318415026">Vizionați videoclipuri fără reclame.</translation>
 <translation id="6311019535466417620">Fără reclame înainte de videoclip</translation>
 <translation id="4274652342814424451">Fără reclame în timpul videoclipului</translation>
@@ -666,12 +661,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7125582363614011660">Se oferă asistență cu ajutorul echipei Guardian.\n\nVă rugăm să selectați informațiile pe care vă simțiți confortabil să ni le furnizați.\n\nCu cât ne oferiți mai multe informații inițial, cu atât va fi mai ușor pentru echipa noastră de asistență să vă ajute cu rezolvarea problemei dvs.</translation>
 <translation id="8813171284214934811">Auto-selectează regiunea de server VPN cea mai apropiată de tine pe baza fusului orar. Această opțiune este recomandată pentru a maximiza viteza de internet.</translation>
 <translation id="4636153103822002055">{CITY_COUNT, plural,
-          one {}
           few {<ph name="CITY_COUNT_MANY"/> orașe - }=1 {<ph name="CITY_COUNT_ONE"/> oraș - }
           other {<ph name="CITY_COUNT_MANY"/> orașe- }
         }</translation>
 <translation id="2509734936997119836">{SERVER_COUNT, plural,
-          one {}
           few {<ph name="SERVER_COUNT_MANY"/> servere}=1 {<ph name="SERVER_COUNT_ONE"/> server}
           other {<ph name="SERVER_COUNT_MANY"/> servere}
         }</translation>
@@ -736,6 +729,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="9091334651803050473">Deși nu există garanții, probabil că minerii vor acorda prioritate tranzacției dvs. dacă plătiți o taxă mai mare.</translation>
 <translation id="2941112035454246133">Redusă</translation>
 <translation id="7304030187361489308">Ridicat</translation>
+<translation id="1177863135347784049">Personalizează</translation>
 <translation id="4853037749278079787">Taxa maximă: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Taxa de bază actuală: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Limită Gas</translation>
@@ -1056,31 +1050,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6393423486818299209">Utilizați furnizorul dvs. de servicii actual sau Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilizați furnizorul dvs. de servicii actual sau Cloudflare</translation>
 <translation id="8812367543786936496">Dacă furnizorul dvs. de servicii actual este nesecurizat, Brave utilizează un furnizor DNS alternativ securizat</translation>
-<translation id="5680678411439841197">oraș</translation>
-<translation id="8185518433273977704">localitate</translation>
-<translation id="4528386452965343421">prefectură</translation>
-<translation id="1589122976691792535">regiune</translation>
-<translation id="2221292964468054123">stat</translation>
-<translation id="3801482889636327368">organizație</translation>
-<translation id="1425162721525518064">companie</translation>
-<translation id="7568794877555549044">țară</translation>
-<translation id="5982110855572850497">etichetă</translation>
-<translation id="6848689413353508904">container</translation>
-<translation id="1496514951988037011">nume de utilizator</translation>
-<translation id="6155129418108337061">conectați-vă</translation>
-<translation id="4038523199754403233">ID</translation>
-<translation id="901834265349196618">e-mail</translation>
-<translation id="3488199663160411179">nume</translation>
-<translation id="793994607260936590">prima</translation>
-<translation id="1782612111936779655">nume de familie</translation>
-<translation id="7628132737455466188">complet</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">adresă</translation>
-<translation id="5557821203571216370">apartament</translation>
-<translation id="8051552210542030943">cod PIN</translation>
-<translation id="5233247193491045452">cod poștal</translation>
-<translation id="3300502432153878901">cod poștal</translation>
 <translation id="1381108437654541567">Activați mai multe ferestre</translation>
 <translation id="6167344249617630304">Deschideți până la 5 ferestre concomitent și mutați filele dintr-o fereastră în alta</translation>
 <translation id="1063948063403254568">Mai multe ferestre detectate</translation>
@@ -1154,6 +1123,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7808889146555843082">Prin ștergerea acestei parole, nu va fi șters și contul de pe <ph name="SITE"/>. Schimbă-ți parola sau șterge contul din <ph name="SITE"/> ca să nu poată fi accesat de alte persoane.</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="8503813439785031346">Nume utilizator</translation>
+<translation id="6657585470893396449">Parolă</translation>
 <translation id="2278052315791335171">Prin ștergerea acestei parole, nu va fi șters și contul de pe <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Deblochează pentru a copia parola</translation>
 <translation id="5515439363601853141">Deblochează pentru a vedea parola</translation>

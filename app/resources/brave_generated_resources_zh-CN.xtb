@@ -335,6 +335,7 @@
 <translation id="7557539689487606886">订阅 Premium</translation>
 <translation id="1035309871698658326">开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。</translation>
 <translation id="3435896845095436175">启用</translation>
+<translation id="9082792303833649978">此设置由您的管理员或其他 Brave 策略管理。</translation>
 <translation id="1940221956626514677">自定义工具栏</translation>
 <translation id="6501807887341963552">主题和颜色</translation>
 <translation id="6724227215236550330">保存的密码会在此处显示。如要将密码导入到此设备上的 <ph name="BRAND"/>，请<ph name="BEGIN_LINK"/>选择 CSV 文件<ph name="END_LINK"/></translation>
@@ -378,6 +379,7 @@
 <translation id="2263346047290834619">使用树形标签页</translation>
 <translation id="5860254591544742609">显示标题栏</translation>
 <translation id="4691131445504068802">最小化时完全隐藏</translation>
+<translation id="6763346436728173884">始终隐藏标签关闭按钮</translation>
 <translation id="4909269867860362936">最小化时悬停自动展开</translation>
 <translation id="3367129510799209147">标签悬停模式</translation>
 <translation id="8925055964134259461">在每个窗口中独立展开垂直标签</translation>
@@ -392,7 +394,7 @@
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4749586705247636385">在主要内容区域显示圆角</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
-<translation id="4579877808890085926">设备上搜索建议</translation>
+<translation id="4579877808890085926">设备端建议</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="8820817407110198400">书签栏</translation>
 <translation id="4144468798716165316">快捷指令</translation>
@@ -495,7 +497,7 @@
 <translation id="2718718846210516552">未找到小脚本。</translation>
 <translation id="4088315951291671239">请勿在此处粘贴您不理解或未经您审查的代码。这可能会让攻击者窃取你的身份信息或控制你的电脑。</translation>
 <translation id="3020183492814296499">快捷方式</translation>
-<translation id="2935698011275148880">勇敢的起源</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
 <translation id="2587535830241068901">在支持 Brave 的同时定制您的浏览器</translation>
 <translation id="553273341094971255">Brave Origin 可以帮助您根据自己的喜好调整 Brave，并移除所有应用内促销活动、品牌广告，甚至是您在安装过程中启用的匿名分析功能。</translation>
 <translation id="534725333104202278">您以前启用或使用过的任何附加组件或功能都将保持可见并集成在浏览器中，而其他组件或功能将被禁用。当我们为浏览器提供新功能时，请继续调整 Brave。在Brave Origin控制面板中，这些功能将默认隐藏并静默显示。</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">比特币网络</translation>
 <translation id="1077567586443625607">Zcash 网络</translation>
 <translation id="1177180573354712438">卡尔达诺网络</translation>
+<translation id="3176794108951154148">Polkadot 网络</translation>
 <translation id="3159419679550543837">显示测试网站</translation>
 <translation id="3215569562674795548">编辑或添加新网络</translation>
 <translation id="4418993400653250511">链 ID</translation>

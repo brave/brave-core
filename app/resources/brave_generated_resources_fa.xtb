@@ -335,6 +335,7 @@
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
 <translation id="1035309871698658326">وقتی این ویژگی باز شود، عناوین و مبدأ همه برگه‌های غیرخصوصی را به‌طور خودکار برای طبقه‌بندی به Leo ارسال می‌کند.</translation>
 <translation id="3435896845095436175">فعال کنید</translation>
+<translation id="9082792303833649978">این تنظیم توسط مدیر شما یا خط‌مشی دیگری از Brave مدیریت می‌شود.</translation>
 <translation id="1940221956626514677">سفارشی کردن نوار ابزار</translation>
 <translation id="6501807887341963552">پوسته و رنگ‌ها</translation>
 <translation id="6724227215236550330">گذرواژه‌های ذخیره‌شده در اینجا نمایش داده می‌شوند. برای وارد کردن گذرواژه‌ها به <ph name="BRAND"/> در این دستگاه، <ph name="BEGIN_LINK"/>یک فایل CSV انتخاب کنید<ph name="END_LINK"/>؛</translation>
@@ -378,6 +379,7 @@
 <translation id="2263346047290834619">از زبانه‌های درختی استفاده کنید</translation>
 <translation id="5860254591544742609">نمایش نوار عنوان</translation>
 <translation id="4691131445504068802">در حالت مینیمایز شده، کاملاً مخفی شود</translation>
+<translation id="6763346436728173884">دکمه بستن تب را همیشه مخفی کن</translation>
 <translation id="4909269867860362936">گسترش خودکار در حالت شناور هنگام مینیمایز بودن</translation>
 <translation id="3367129510799209147">حالت شناور برگه</translation>
 <translation id="8925055964134259461">گسترش خودکار زبانه‌های عمودی به‌طور مستقل در هر پنجره</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="1077567586443625607">شبکه‌های Zcash</translation>
 <translation id="1177180573354712438">شبکه‌های Cardano</translation>
+<translation id="3176794108951154148">شبکه‌های پولکادات</translation>
 <translation id="3159419679550543837">نمایش شبکه‌های آزمایشی</translation>
 <translation id="3215569562674795548">اصلاح یا افزودن شبکه جدید</translation>
 <translation id="4418993400653250511">شناسه زنجیره</translation>

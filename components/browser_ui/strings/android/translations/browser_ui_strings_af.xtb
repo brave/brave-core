@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Tik op Apps en tik dan op Verstekapps</translation>
 <translation id="1415402041810619267">URL is afgekap</translation>
 <translation id="1741136041592162279">Laat Brave jou onlangse oortjies met jou toestel deel om dit in jou toestel se applys en soekresultate te sien. Jy kan dit in Brave-instellings aan- of afskakel.</translation>
+<translation id="1420688843103859429">Navigeer heen en weer deur met twee vingers op die raakpaneel te swiep</translation>
 <translation id="1432650420699700107">Werwe kan vra om aan enige toestel op jou plaaslike netwerk te koppel</translation>
 <translation id="1448064542941920355">Verklein zoem</translation>
 <translation id="1464044141348608623">Moenie werwe toelaat om te weet wanneer jy jou toestel aktief gebruik nie</translation>
@@ -170,6 +171,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="2787357173144933081">Kitsaktiveer Omnibox</translation>
 <translation id="2789132527330338807">Werwe kan vra om ’n 3D-kaart van jou omgewing te skep of jou kameraposisie na te spoor</translation>
 <translation id="2790501146643349491">Wanneer dit aan is, kan werwe wat onlangs toegemaak is data klaar stuur en ontvang. Wanneer dit af is, kan werwe wat onlangs toegemaak is nie data klaar stuur en ontvang nie.</translation>
+<translation id="1708222144403389505">Skakel kennisgewings aan vir nuttige wenke om jou te help om die beste uit Brave te kry</translation>
 <translation id="2795716239552913152">Werwe gebruik gewoonlik jou ligging vir relevante kenmerke, soos plaaslike nuus of nabygeleë winkels</translation>
 <translation id="2800760947029405028">Laai 'n prent op</translation>
 <translation id="2802908157808345702">Moenie werwe toelaat om opspringers te stuur en herleidings te gebruik nie</translation>
@@ -182,6 +184,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="2903493209154104877">Adresse</translation>
 <translation id="2910701580606108292">Vra voordat werwe toegelaat word om beskermde inhoud te speel</translation>
 <translation id="2918484639460781603">Gaan na instellings</translation>
+<translation id="4577990953241424923">Kry Brave-wenke-kennisgewings</translation>
 <translation id="2932883381142163287">Gee misbruik aan</translation>
 <translation id="2939338015096024043">Wanneer dit aan is, kan werwe vra om jou kameraposisie na te spoor en meer te leer oor jou omgewing. Wanneer dit af is, kan werwe nie jou kameraposisie naspoor of meer oor jou omgewing leer nie.</translation>
 <translation id="2968755619301702150">Sertifikaatbekyker</translation>
@@ -218,7 +221,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="3285500645985761267">Laat verwante werwe toe om jou aktiwiteit in die groep te sien</translation>
 <translation id="3295019059349372795">Hoofstuk 11: Die Wonderlike Smaragstad van Oz</translation>
 <translation id="3295602654194328831">Versteek inligting</translation>
-<translation id="3328801116991980348">Werfinligting</translation>
 <translation id="3333961966071413176">Alle kontakte</translation>
 <translation id="3360338140203645771">Vee gestoorde zoemvlakke uit?</translation>
 <translation id="3362437373201486687">Soek tans na Bluetooth-toestelle</translation>
@@ -241,6 +243,8 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="3611658447322220736">Werwe wat onlangs toegemaak is, kan data klaar stuur en ontvang</translation>
 <translation id="3619294456800709762">Werwe kan prent-in-prent outomaties ingaan</translation>
 <translation id="3628308229821498208">Voorgestelde soektogte</translation>
+<translation id="3632460243282703117">Teken in</translation>
+<translation id="363748948745453283">Gebruik benaderde ligging</translation>
 <translation id="3641456520301071208">Werwe kan vir jou ligging vra</translation>
 <translation id="3658847490588580244">Onderste blad van verstekblaaier</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> werf in <ph name="RWS_OWNER"/> se groep werwe wat jou aktiwiteit in die groep kan sien}other{<ph name="RWS_MEMBERS_COUNT"/> werwe in <ph name="RWS_OWNER"/> se groep werwe wat jou aktiwiteit in die groep kan sien}}</translation>
@@ -335,10 +339,12 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="4635969503923889910">Moenie werwe toelaat om NFC-toestelle te gebruik nie</translation>
 <translation id="4644713492825682049">Vee uit en stel terug</translation>
 <translation id="4645575059429386691">Deur jou ouer bestuur</translation>
+<translation id="4652266463001779298">Nie toegelaat nie</translation>
 <translation id="4663373278480897665">Kamera word toegelaat</translation>
 <translation id="4670064810192446073">Virtuele realiteit</translation>
 <translation id="5652778654712411580">Tik op Blaaierapp en tik dan op Brave</translation>
 <translation id="4676059169848868271">Om <ph name="APP_NAME"/> toe te laat om handnasporing te gebruik, moet jy ook handnasporing in <ph name="BEGIN_LINK"/>stelselinstellings<ph name="END_LINK"/> aanskakel.</translation>
+<translation id="4688045258817337666">Bestuur jou kaarte</translation>
 <translation id="4751476147751820511">Beweging- of ligsensors</translation>
 <translation id="4755971844837804407">Wanneer dit aan is, kan werwe enige advertensie vir jou wys. Wanneer dit af is, kan werwe nie indringerige of misleidende advertensies wys nie.</translation>
 <translation id="4779083564647765204">Zoem</translation>
@@ -429,8 +435,10 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="5750869797196646528">Handnasporing</translation>
 <translation id="5753570386948603678">Vee uit in geskiedenis</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> word geblokkeer</translation>
+<translation id="5792627621688759634">Swiep tussen bladsye met ’n raakpaneel</translation>
 <translation id="5801457289562671820">Deur jou organisasie aanbeveel</translation>
 <translation id="5804241973901381774">Toestemmings</translation>
+<translation id="5817042798620209981">Werfinligting, dialoog</translation>
 <translation id="5822675474983796325">Pasmaak die onderste blad van jou Nuwe Oortjie-bladsy is teen volle hoogte oopgemaak</translation>
 <translation id="5833899990800318936">Moenie werwe toelaat om JavaScript te gebruik nie</translation>
 <translation id="583673505367439042">Werwe kan vra om lêers of vouers op jou toestel te wysig</translation>
@@ -512,6 +520,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="662080504995468778">Bly</translation>
 <translation id="6630443592285535486">Tik hekskode hier</translation>
 <translation id="6635327442719709864">Wanneer dit aan is, kan werwe vra om reekspoorte te gebruik. Wanneer dit af is, kan werwe nie reekspoorte gebruik nie.</translation>
+<translation id="6669390930482049506">Stel my in kennis</translation>
 <translation id="6678072580827808850">Gaan Veiligheidskontrole na</translation>
 <translation id="6682057173375416470">Kry voorgestelde artikels oor die Nuwe Oortjie-bladsy</translation>
 <translation id="6683865262523156564">Hierdie werf is in ’n groep wat jou aktiwiteit kan sien. Die groep word gedefinieer deur <ph name="RWS_OWNER"/></translation>
@@ -621,6 +630,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="7990211076305263060">Wanneer dit aan is, kan werwe vra om jou mikrofoon te gebruik. Wanneer dit af is, kan werwe nie jou mikrofoon gebruik nie.</translation>
 <translation id="8007176423574883786">Afgeskakel vir hierdie toestel</translation>
 <translation id="802154636333426148">Kon nie aflaai nie</translation>
+<translation id="8033047164036749181">Teken in vir kennisgewings van hierdie werf af</translation>
 <translation id="8042586301629853791">Rangskik volgens:</translation>
 <translation id="8051193500142930381">Kenmerke wat 'n kamera nodig het, sal nie werk nie</translation>
 <translation id="2495032782748793764">Brave-verstek</translation>
@@ -671,6 +681,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="8487700953926739672">Vanlyn beskikbaar</translation>
 <translation id="848952951823693243">Versoek altyd mobiele werf</translation>
 <translation id="8492822722330266509">Werwe kan opspringers stuur en herleidings gebruik</translation>
+<translation id="8493548450030356203">Opspringerzoemvenster</translation>
 <translation id="8499083585497694743">Ontdemp mikrofoon</translation>
 <translation id="8514955299594277296">Moenie werwe toelaat om data op jou toestel te stoor nie (nie aanbeveel nie)</translation>
 <translation id="851751545965956758">Keer dat werwe aan toestelle koppel</translation>

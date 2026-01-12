@@ -336,6 +336,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="7557539689487606886">Canvia a Premium</translation>
 <translation id="1035309871698658326">En obrir-se, enviarà automàticament els títols i l'origen de totes les pestanyes no privades a Leo perquè pugui classificar-les.</translation>
 <translation id="3435896845095436175">Activa</translation>
+<translation id="9082792303833649978">Aquesta configuració està gestionada per l'administrador o per una altra política de Brave.</translation>
 <translation id="1940221956626514677">Personalitza la barra d'eines</translation>
 <translation id="6501807887341963552">Tema i colors</translation>
 <translation id="6724227215236550330">Les contrasenyes guardades apareixeran aquí. Per importar contrasenyes a <ph name="BRAND"/> aquest dispositiu, <ph name="BEGIN_LINK"/> selecciona un arxiu CSV<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="2263346047290834619">Utilitzar pestanyes d'arbre</translation>
 <translation id="5860254591544742609">Mostra la barra de títol</translation>
 <translation id="4691131445504068802">Amaga completament quan estigui minimitzat</translation>
+<translation id="6763346436728173884">Amaga sempre el botó de tancament de pestanya</translation>
 <translation id="4909269867860362936">Expandeix automàticament en passar el cursor quan estigui minimitzat</translation>
 <translation id="3367129510799209147">Mode de desplaçament de la pestanya</translation>
 <translation id="8925055964134259461">Expandeix pestanyes verticals automàticament i de forma independent per finestra</translation>
@@ -752,6 +754,7 @@ Segur que vols continuar?</translation>
 <translation id="7141438739990875547">Xarxes Bitcoin</translation>
 <translation id="1077567586443625607">Xarxes Zcash</translation>
 <translation id="1177180573354712438">Xarxes Cardano</translation>
+<translation id="3176794108951154148">Xarxes Polkadot</translation>
 <translation id="3159419679550543837">Mostra les xarxes de prova</translation>
 <translation id="3215569562674795548">Edita o afegeix una xarxa nova</translation>
 <translation id="4418993400653250511">La ID de la cadena</translation>
