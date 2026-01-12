@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Tik op Apps en daarna op Standaard-apps</translation>
 <translation id="1415402041810619267">URL afgekapt</translation>
 <translation id="1741136041592162279">Sta toe dat Brave je recente tabbladen deelt met je apparaat zodat je ze kunt zien in de app-lijst en zoekresultaten van je apparaat. Je kunt dit altijd aan- of uitzetten in de Brave-instellingen.</translation>
+<translation id="1420688843103859429">Navigeer heen en weer door met 2 vingers te swipen op de touchpad</translation>
 <translation id="1432650420699700107">Sites kunnen vragen of ze verbinding mogen maken met apparaten in je lokale netwerk</translation>
 <translation id="1448064542941920355">Zoomniveau verkleinen</translation>
 <translation id="1464044141348608623">Niet toestaan dat sites weten wanneer je je apparaat actief gebruikt</translation>
@@ -170,6 +171,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="2787357173144933081">Omnibox voor een goede start</translation>
 <translation id="2789132527330338807">Sites kunnen vragen of ze een 3D-kaart van je omgeving mogen maken of de camerapositie mogen volgen</translation>
 <translation id="2790501146643349491">Als deze optie aanstaat, kunnen recent gesloten sites het sturen en ontvangen van gegevens afronden. Staat de optie uit, dan kunnen recent gesloten sites het sturen of ontvangen van gegevens niet afronden.</translation>
+<translation id="1708222144403389505">Zet meldingen aan voor nuttige tips om het beste uit Brave te halen</translation>
 <translation id="2795716239552913152">Sites gebruiken je locatie meestal voor relevante functies of informatie, zoals lokaal nieuws of winkels in de buurt</translation>
 <translation id="2800760947029405028">Een afbeelding uploaden</translation>
 <translation id="2802908157808345702">Niet toestaan dat sites pop-ups sturen en omleidingen gebruiken</translation>
@@ -182,6 +184,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="2910701580606108292">Vragen voordat sites beschermde content mogen afspelen</translation>
 <translation id="2918484639460781603">Ga naar instellingen</translation>
+<translation id="4577990953241424923">Meldingen van Brave-tips krijgen</translation>
 <translation id="2932883381142163287">Misbruik melden</translation>
 <translation id="2939338015096024043">Als deze optie aanstaat, kunnen sites vragen of ze je camerapositie mogen volgen en meer informatie over je omgeving mogen krijgen. Staat de optie uit, dan kunnen sites je camerapositie niet volgen en geen informatie over je omgeving krijgen.</translation>
 <translation id="2968755619301702150">Certificaatviewer</translation>
@@ -218,7 +221,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3285500645985761267">Toestaan dat gerelateerde sites je activiteit in de groep zien</translation>
 <translation id="3295019059349372795">Hoofdstuk 11: De prachtige Smaragden Stad van Oz</translation>
 <translation id="3295602654194328831">Informatie verbergen</translation>
-<translation id="3328801116991980348">Site-informatie</translation>
 <translation id="3333961966071413176">Alle contacten</translation>
 <translation id="3360338140203645771">Opgeslagen zoomniveaus verwijderen?</translation>
 <translation id="3362437373201486687">Scannen naar bluetooth-apparaten</translation>
@@ -241,6 +243,8 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3611658447322220736">Onlangs gesloten sites kunnen het sturen en ontvangen van gegevens afronden</translation>
 <translation id="3619294456800709762">Sites kunnen automatisch scherm-in-scherm openen</translation>
 <translation id="3628308229821498208">Voorgestelde zoekopdrachten</translation>
+<translation id="3632460243282703117">Abonneren</translation>
+<translation id="363748948745453283">Geschatte locatie gebruiken</translation>
 <translation id="3641456520301071208">Sites kunnen om je locatie vragen</translation>
 <translation id="3658847490588580244">Blad onderaan voor standaardbrowser</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> site in de groep sites van <ph name="RWS_OWNER"/> die je activiteit in de groep kunnen bekijken}other{<ph name="RWS_MEMBERS_COUNT"/> sites in de groep sites van <ph name="RWS_OWNER"/> die je activiteit in de groep kunnen bekijken}}</translation>
@@ -335,10 +339,12 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="4635969503923889910">Niet toestaan dat sites NFC-apparaten gebruiken</translation>
 <translation id="4644713492825682049">Verwijderen en resetten</translation>
 <translation id="4645575059429386691">Beheerd door je ouder</translation>
+<translation id="4652266463001779298">Niet toegestaan</translation>
 <translation id="4663373278480897665">Camera toegestaan</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
 <translation id="5652778654712411580">Tik op Browser-app en daarna op Brave</translation>
 <translation id="4676059169848868271">Als je <ph name="APP_NAME"/> handen volgen wilt laten gebruiken, zet je handen volgen ook aan via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/>.</translation>
+<translation id="4688045258817337666">Je kaarten beheren</translation>
 <translation id="4751476147751820511">Bewegings- of lichtsensoren</translation>
 <translation id="4755971844837804407">Als deze optie aanstaat, kunnen sites elke advertentie aan je tonen. Staat de optie uit, dan kunnen sites geen opdringerige of misleidende advertenties tonen.</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -429,8 +435,10 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="5750869797196646528">Handen volgen</translation>
 <translation id="5753570386948603678">Verwijderen uit geschiedenis</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> geblokkeerd</translation>
+<translation id="5792627621688759634">Swipen tussen pagina's met een touchpad</translation>
 <translation id="5801457289562671820">Aanbevolen door je organisatie</translation>
 <translation id="5804241973901381774">Rechten</translation>
+<translation id="5817042798620209981">Site-informatie, dialoogvenster</translation>
 <translation id="5822675474983796325">Blad onderaan voor De pagina Nieuw tabblad aanpassen is op volledige hoogte geopend</translation>
 <translation id="5833899990800318936">Niet toestaan dat sites JavaScript gebruiken</translation>
 <translation id="583673505367439042">Sites kunnen vragen of ze bestanden en mappen op je apparaat mogen bewerken</translation>
@@ -512,6 +520,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="662080504995468778">Blijven</translation>
 <translation id="6630443592285535486">Typ hier de hexadecimale code</translation>
 <translation id="6635327442719709864">Als deze optie aanstaat, kunnen sites vragen of ze seriële poorten mogen gebruiken. Staat de optie uit, dan kunnen sites geen seriële poorten gebruiken.</translation>
+<translation id="6669390930482049506">Melding sturen</translation>
 <translation id="6678072580827808850">Veiligheidscheck controleren</translation>
 <translation id="6682057173375416470">Voorgestelde artikelen krijgen op de pagina Nieuw tabblad</translation>
 <translation id="6683865262523156564">Deze site zit in een groep die je activiteit kan bekijken. De groep wordt gedefinieerd door <ph name="RWS_OWNER"/></translation>
@@ -621,6 +630,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="7990211076305263060">Als deze optie aanstaat, kunnen sites om toegang tot je microfoon vragen. Staat de optie uit, dan kunnen sites je microfoon niet gebruiken.</translation>
 <translation id="8007176423574883786">Uitgezet voor dit apparaat</translation>
 <translation id="802154636333426148">Downloaden mislukt</translation>
+<translation id="8033047164036749181">Abonneren op meldingen van deze site</translation>
 <translation id="8042586301629853791">Sorteren op:</translation>
 <translation id="8051193500142930381">Functies waarvoor een camera nodig is, werken niet</translation>
 <translation id="2495032782748793764">Standaardthema van Brave</translation>
@@ -671,6 +681,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="8487700953926739672">Offline beschikbaar</translation>
 <translation id="848952951823693243">Altijd mobiele site aanvragen</translation>
 <translation id="8492822722330266509">Sites kunnen pop-ups sturen en omleidingen gebruiken</translation>
+<translation id="8493548450030356203">Pop-upvenster voor zoomen</translation>
 <translation id="8499083585497694743">Microfoon aanzetten</translation>
 <translation id="8514955299594277296">Niet toestaan dat sites gegevens opslaan op je apparaat (niet aanbevolen)</translation>
 <translation id="851751545965956758">Voorkomen dat sites verbinding maken met apparaten</translation>

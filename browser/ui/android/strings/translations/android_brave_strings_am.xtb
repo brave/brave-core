@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
 <translation id="721490496276866468">የይለፍ ቃሎትን አስመጣ</translation>
 <translation id="8178175542325151321">ይለፍ ቃሎትዎን ወደ Brave የይለፍ ቃል አስተዳዳሪ ለማስመጣት የይለፍ ቃሎት ያገናኙበት ያለውን .csv ፋይል ይምረጡ።</translation>
-<translation id="1177863135347784049">ብጁ</translation>
 <translation id="6112331814131703370">'ወደ መተግበሪያው ቀይር' ማስታወቂያዎችን አግድ</translation>
 <translation id="4744921452903670666">ምን እንደሚያስቡ ይንገሩን!</translation>
 <translation id="2524310205387880526">ለ Brave ደረጃ ስጥ</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">በግላዊ ትሮች ውስጥ በራስ ሰር ሙላ</translation>
 <translation id="8685431198160039193">የተቀመጠ መረጃ በግላዊ ትሮች ውስጥ በራስ ሰር ሊሞላ ይችላል</translation>
 <translation id="6583902294974160967">ይደግፉ</translation>
-<translation id="5713644099811900409">የBrave መለያ</translation>
-<translation id="4472575034687746823">ይጀምሩ</translation>
 <translation id="1799030480311994998">መለያ ባህሪዎች</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
 <translation id="2839742394543397416">ትንታኔ</translation>
@@ -384,7 +381,6 @@
 <translation id="717952606991220586">ውይ; የሆነ ችግር አለ፤ እባክዎ እንደገና ይሞክሩ::</translation>
 <translation id="987264212798334818">አጠቃላይ</translation>
 <translation id="1116694919640316211">ስለ</translation>
-<translation id="7961015016161918242">በፍጹም</translation>
 <translation id="1275213816424141989">ምናልባት በኋላ</translation>
 <translation id="3624048886326677117">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (ጠበኛ)</translation>
 <translation id="7151914815476509258">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (መደበኛ)</translation>
@@ -569,7 +565,6 @@
 <translation id="6697810017029555732">አዛምድ!</translation>
 <translation id="5981303441790732480">ነባር የገንዘብ መያዣዎን ያስመጡ</translation>
 <translation id="9111102763498581341">ክፈት</translation>
-<translation id="6657585470893396449">የይለፍ ቃል፦</translation>
 <translation id="7553242001898162573">የይለፍ ቃልዎን ያስገቡ</translation>
 <translation id="5619264711680220002">Biometric ክፈት</translation>
 <translation id="9195657745688986798">የኪስ ቦርሳ ይክፈቱ</translation>
@@ -726,6 +721,7 @@
 <translation id="9091334651803050473">ዋስትና ባይሆንም ፣ ከፍ ያለ ክፍያ ከከፈሉ የማዕድን ሠራተኞች ለግብይትዎ ቅድሚያ ይሰጣሉ።</translation>
 <translation id="2941112035454246133">ዝቅተኛ</translation>
 <translation id="7304030187361489308">ከፍተኛ</translation>
+<translation id="1177863135347784049">ብጁ</translation>
 <translation id="4853037749278079787">ከፍተኛው ክፍያ: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ብር)</translation>
 <translation id="5939983758912255310">የአሁን የመነሻ ተመን: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">የጋዝ መጠን ገደብ</translation>
@@ -1050,31 +1046,6 @@
 <translation id="6393423486818299209">የአሁኑን አገልግሎት አቅራቢዎን ወይም Wikimedia DNS ይጠቀሙ</translation>
 <translation id="3401384982562827787">የአሁኑን አገልግሎት አቅራቢዎን ወይም Cloudflare ይጠቀሙ</translation>
 <translation id="8812367543786936496">የአሁኑ አገልግሎት አቅራቢዎ ደህንነቱ ካልተጠበቀ፣ Brave ደህንነቱ የተጠበቀ አማራጭ የ DNS አቅራቢን ይጠቀማል</translation>
-<translation id="5680678411439841197">ከተማ</translation>
-<translation id="8185518433273977704">ትንሽ ከተማ</translation>
-<translation id="4528386452965343421">ጠቅላይ ግዛት</translation>
-<translation id="1589122976691792535">ክልል</translation>
-<translation id="2221292964468054123">ስቴት</translation>
-<translation id="3801482889636327368">ድርጅት</translation>
-<translation id="1425162721525518064">ኩባንያ</translation>
-<translation id="7568794877555549044">ሃገር</translation>
-<translation id="5982110855572850497">መለያ</translation>
-<translation id="6848689413353508904">መያዣ</translation>
-<translation id="1496514951988037011">የተጠቃሚ ስም</translation>
-<translation id="6155129418108337061">ግባ</translation>
-<translation id="4038523199754403233">መታወቂያ</translation>
-<translation id="901834265349196618">ኢሜይል</translation>
-<translation id="3488199663160411179">ስም</translation>
-<translation id="793994607260936590">መጀመሪያ</translation>
-<translation id="1782612111936779655">የመጨረሻ</translation>
-<translation id="7628132737455466188">ሙሉ</translation>
-<translation id="8621068256433641644">ስልክ</translation>
-<translation id="5993210100509955931">ሞባይል</translation>
-<translation id="598301471034819706">አድራሻ</translation>
-<translation id="5557821203571216370">አፓርታማ</translation>
-<translation id="8051552210542030943">የፒን ኮድ</translation>
-<translation id="5233247193491045452">የፖስታ ኮድ</translation>
-<translation id="3300502432153878901">ዚፕ</translation>
 <translation id="1381108437654541567">በርካታ መስኮቶችን ያንቃ</translation>
 <translation id="6167344249617630304">በአንድ ጊዜ እስከ 5 መስኮቶችን ክፈቱ እና የዉስጥ መስኮትን ወደ ሌላ ይቀያይሩ</translation>
 <translation id="1063948063403254568">ብዙ መስኮቶች ተገኝተዋል</translation>
@@ -1152,6 +1123,7 @@
 <translation id="7808889146555843082">ይህን የይለፍ ቃል መሰረዝ <ph name="SITE"/> ላይ መለያዎን አይሰርዘውም። መለያዎን ከሌሎች ለመጠበቅ የይለፍ ቃልዎን ይቀይሩት ወይም <ph name="SITE"/> ላይ መለያዎን ይሰርዙት።</translation>
 <translation id="2870560284913253234">ጣቢያ</translation>
 <translation id="8503813439785031346">የተጣቃሚ ስም</translation>
+<translation id="6657585470893396449">የይለፍ ቃል፦</translation>
 <translation id="2278052315791335171">ይህን የይለፍ ቃል መሰረዝ <ph name="SITE"/> ላይ መለያዎን አይሰርዘውም</translation>
 <translation id="6891726759199484455">የይለፍ ቃልዎን ለመቅዳት ይክፈቱ</translation>
 <translation id="5515439363601853141">የይለፍ ቃልዎን ለመመልከት ይክፈቱ</translation>

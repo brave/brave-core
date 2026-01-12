@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Copia l'enllaç net</translation>
 <translation id="721490496276866468">Importa contrasenyes</translation>
 <translation id="8178175542325151321">Selecciona un fitxer .csv que contingui les teves contrasenyes per importar-les al gestor de contrasenyes de Brave.</translation>
-<translation id="1177863135347784049">Personalitza</translation>
 <translation id="6112331814131703370">Bloqueja els avisos «Canvia a l'aplicació»</translation>
 <translation id="4744921452903670666">Dona'ns la teva opinió!</translation>
 <translation id="2524310205387880526">Valora Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Emplenament automàtic en pestanyes d'incògnit</translation>
 <translation id="8685431198160039193">La informació desada es pot emplenar automàticament en pestanyes d'incògnit</translation>
 <translation id="6583902294974160967">Suport</translation>
-<translation id="5713644099811900409">Compte de Brave</translation>
-<translation id="4472575034687746823">Comença</translation>
 <translation id="1799030480311994998">Funcions</translation>
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="2839742394543397416">Analítica</translation>
@@ -384,7 +381,6 @@ Segur que vols continuar?</translation>
 <translation id="717952606991220586">Ui, alguna cosa no va bé. Torna a provar-ho més tard.</translation>
 <translation id="987264212798334818">General</translation>
 <translation id="1116694919640316211">Informació</translation>
-<translation id="7961015016161918242">Mai</translation>
 <translation id="1275213816424141989">Potser més tard</translation>
 <translation id="3624048886326677117">Bloqueja els rastrejadors i els anuncis (Agressiu)</translation>
 <translation id="7151914815476509258">Bloqueja els rastrejadors i els anuncis (Estàndard)</translation>
@@ -569,7 +565,6 @@ Segur que vols continuar?</translation>
 <translation id="6697810017029555732">Encert!</translation>
 <translation id="5981303441790732480">Importeu la vostra cartera existent</translation>
 <translation id="9111102763498581341">Desbloqueja</translation>
-<translation id="6657585470893396449">Contrasenya</translation>
 <translation id="7553242001898162573">Introdueix la contrasenya</translation>
 <translation id="5619264711680220002">Desbloqueig biomètric</translation>
 <translation id="9195657745688986798">Desbloqueja la cartera</translation>
@@ -734,6 +729,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="9091334651803050473">Tot i que no és una garantia, és probable que els miners prioritzin la teva transacció si pagues una tarifa més alta.</translation>
 <translation id="2941112035454246133">Baixa</translation>
 <translation id="7304030187361489308">Alt</translation>
+<translation id="1177863135347784049">Personalitza</translation>
 <translation id="4853037749278079787">Tarifa màxima: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Tarifa base actual: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Límit de la quantitat de gas</translation>
@@ -1054,31 +1050,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6393423486818299209">Utilitza el proveïdor de serveis actual o Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilitza el proveïdor de serveis actual o Cloudfare</translation>
 <translation id="8812367543786936496">Si el vostre proveïdor de serveis actual no és segur, Brave utilitza un proveïdor de DNS alternatiu segur</translation>
-<translation id="5680678411439841197">ciutat</translation>
-<translation id="8185518433273977704">poble</translation>
-<translation id="4528386452965343421">municipi</translation>
-<translation id="1589122976691792535">província</translation>
-<translation id="2221292964468054123">comunitat autònoma</translation>
-<translation id="3801482889636327368">organització</translation>
-<translation id="1425162721525518064">companyia</translation>
-<translation id="7568794877555549044">país</translation>
-<translation id="5982110855572850497">etiqueta</translation>
-<translation id="6848689413353508904">contenidor</translation>
-<translation id="1496514951988037011">nom d'usuari</translation>
-<translation id="6155129418108337061">inici de sessió</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">correu electrònic</translation>
-<translation id="3488199663160411179">nom</translation>
-<translation id="793994607260936590">primer</translation>
-<translation id="1782612111936779655">cognom</translation>
-<translation id="7628132737455466188">complet</translation>
-<translation id="8621068256433641644">telèfon</translation>
-<translation id="5993210100509955931">mòbil</translation>
-<translation id="598301471034819706">adreça</translation>
-<translation id="5557821203571216370">pis</translation>
-<translation id="8051552210542030943">codi pin</translation>
-<translation id="5233247193491045452">codi postal</translation>
-<translation id="3300502432153878901">zip</translation>
 <translation id="1381108437654541567">Habilita múltiples finestres</translation>
 <translation id="6167344249617630304">Obre fins a 5 finestres alhora i mou les pestanyes d'una finestra a una altra</translation>
 <translation id="1063948063403254568">S'han detectat múltiples finestres</translation>
@@ -1156,6 +1127,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7808889146555843082">Encara que suprimeixis aquesta contrasenya, no se suprimirà el teu compte de <ph name="SITE"/>. Canvia la contrasenya o suprimeix el teu compte de <ph name="SITE"/> per protegir-lo dels altres.</translation>
 <translation id="2870560284913253234">Lloc</translation>
 <translation id="8503813439785031346">Nom d'usuari</translation>
+<translation id="6657585470893396449">Contrasenya</translation>
 <translation id="2278052315791335171">Encara que suprimeixis aquesta contrasenya, no se suprimirà el teu compte a <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Desbloqueja la pantalla per copiar la contrasenya</translation>
 <translation id="5515439363601853141">Desbloqueja la pantalla per veure la contrasenya</translation>

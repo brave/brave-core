@@ -335,6 +335,7 @@
 <translation id="7557539689487606886">לעבור לפרימיום</translation>
 <translation id="1035309871698658326">כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג.</translation>
 <translation id="3435896845095436175">הפעל</translation>
+<translation id="9082792303833649978">ההגדרה הזאת מנוהלת על ידי מנהל המערכת שלך או על ידי מדיניות אחרת של Brave.</translation>
 <translation id="1940221956626514677">התאמה אישית של סרגל הכלים</translation>
 <translation id="6501807887341963552">נושא וצבעים</translation>
 <translation id="6724227215236550330">סיסמאות שמורות יופיעו כאן. כדי לייבא סיסמאות אל <ph name="BRAND"/> במכשיר זה, <ph name="BEGIN_LINK"/> יש לבחור קובץ CSV<ph name="END_LINK"/></translation>
@@ -378,6 +379,7 @@
 <translation id="2263346047290834619">שימוש בתצוגת עץ היררכית לכרטיסיות</translation>
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
 <translation id="4691131445504068802">הסתר לחלוטין כאשר ממוזער</translation>
+<translation id="6763346436728173884">הסתר תמיד את כפתור סגירת הלשונית</translation>
 <translation id="4909269867860362936">הרחבה אוטומטית כאשר מרחפים כאשר ממוזער</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
 <translation id="8925055964134259461">הרחב לשוניות אנכיות באופן עצמאי בכל חלון</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">רשתות ביטקוין</translation>
 <translation id="1077567586443625607">רשתות זיקאש</translation>
 <translation id="1177180573354712438">רשתות Carando</translation>
+<translation id="3176794108951154148">רשתות Polkadot</translation>
 <translation id="3159419679550543837">הצג רשתות בדיקה</translation>
 <translation id="3215569562674795548">ערוך או הוסף רשת חדשה</translation>
 <translation id="4418993400653250511">המזהה של השרשרת</translation>

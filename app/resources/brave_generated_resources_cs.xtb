@@ -336,6 +336,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7557539689487606886">Přejít na Premium</translation>
 <translation id="1035309871698658326">Když je tato funkce zapnutá, názvy a původ všech nesoukromých karet jsou odeslány Leovy k roztřídění.</translation>
 <translation id="3435896845095436175">Aktivovat</translation>
+<translation id="9082792303833649978">Toto nastavení je spravováno vaším správcem nebo jiným pravidlem pro Brave.</translation>
 <translation id="1940221956626514677">Přizpůsobit panel nástrojů</translation>
 <translation id="6501807887341963552">Motiv a barvy</translation>
 <translation id="6724227215236550330">Zde se zobrazí uložená hesla. Pokud chcete importovat hesla do <ph name="BRAND"/> v tomto zařízení, <ph name="BEGIN_LINK"/> vyberte soubor CSV<ph name="END_LINK"/>.</translation>
@@ -379,6 +380,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2263346047290834619">Použít stromové záložky</translation>
 <translation id="5860254591544742609">Zobrazit lištu s názvem</translation>
 <translation id="4691131445504068802">Úplně skrýt při minimalizaci</translation>
+<translation id="6763346436728173884">Vždy skrýt tlačítko pro zavření panelu</translation>
 <translation id="4909269867860362936">Automatické rozbalení při najetí myší, když jsou minimalizovány</translation>
 <translation id="3367129510799209147">Režim Najetí na kartu</translation>
 <translation id="8925055964134259461">Automaticky rozbalit vertikální karty nezávisle pro každé okno</translation>
@@ -752,6 +754,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="1077567586443625607">Sítě Zcash</translation>
 <translation id="1177180573354712438">Sítě Cardano</translation>
+<translation id="3176794108951154148">Sítě Polkadot</translation>
 <translation id="3159419679550543837">Zobrazit zkušební sítě</translation>
 <translation id="3215569562674795548">Upravit nebo přidat novou síť</translation>
 <translation id="4418993400653250511">ID řetězce</translation>

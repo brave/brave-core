@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Ketik Apl kemudian ketik Apl lalai</translation>
 <translation id="1415402041810619267">URL terpangkas</translation>
 <translation id="1741136041592162279">Benarkan Brave berkongsi tab terbaharu anda dengan peranti anda untuk melihat tab tersebut dalam senarai apl dan hasil carian peranti anda. Anda boleh menghidupkan atau mematikan ciri ini dalam tetapan Brave.</translation>
+<translation id="1420688843103859429">Navigasi ke belakang dan ke hadapan dengan meleret menggunakan dua jari pada pad sentuh</translation>
 <translation id="1432650420699700107">Laman boleh meminta untuk menyambung kepada mana-mana peranti pada rangkaian setempat anda</translation>
 <translation id="1448064542941920355">Zum keluar</translation>
 <translation id="1464044141348608623">Jangan benarkan laman mengetahui waktunya anda aktif menggunakan peranti</translation>
@@ -170,6 +171,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="2787357173144933081">Mulakan Omnibox</translation>
 <translation id="2789132527330338807">Laman boleh meminta untuk membuat peta 3D persekitaran anda atau menjejaki kedudukan kamera</translation>
 <translation id="2790501146643349491">Apabila dihidupkan, laman yang ditutup baru-baru ini dapat menyelesaikan penghantaran dan penerimaan data. Apabila dimatikan, laman yang ditutup baru-baru ini tidak dapat menyelesaikan penghantaran atau penerimaan data.</translation>
+<translation id="1708222144403389505">Hidupkan pemberitahuan untuk mendapatkan petua berguna yang membantu anda memanfaatkan Brave sepenuhnya</translation>
 <translation id="2795716239552913152">Tapak biasanya menggunakan lokasi anda untuk ciri atau maklumat yang berkaitan, seperti berita tempatan atau kedai berdekatan</translation>
 <translation id="2800760947029405028">Muat naik imej</translation>
 <translation id="2802908157808345702">Jangan benarkan laman menghantar kandungan timbul dan menggunakan ubah hala</translation>
@@ -182,6 +184,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="2903493209154104877">Alamat</translation>
 <translation id="2910701580606108292">Tanya sebelum membenarkan tapak memainkan kandungan yang dilindungi</translation>
 <translation id="2918484639460781603">Pergi ke tetapan</translation>
+<translation id="4577990953241424923">Dapatkan pemberitahuan Petua Brave</translation>
 <translation id="2932883381142163287">Laporkan penyalahgunaan</translation>
 <translation id="2939338015096024043">Apabila dihidupkan, laman dapat meminta untuk menjejaki kedudukan kamera anda dan mengetahui tentang persekitaran anda. Apabila dimatikan, laman tidak dapat menjejaki kedudukan kamera anda dan mengetahui tentang persekitaran anda.</translation>
 <translation id="2968755619301702150">Pemapar sijil</translation>
@@ -218,7 +221,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="3285500645985761267">Benarkan laman berkaitan melihat aktiviti anda dalam kumpulan</translation>
 <translation id="3295019059349372795">Bab 11: Oz, Kota Zamrud yang Menakjubkan</translation>
 <translation id="3295602654194328831">Sembunyikan Maklumat</translation>
-<translation id="3328801116991980348">Maklumat tapak</translation>
 <translation id="3333961966071413176">Semua kenalan</translation>
 <translation id="3360338140203645771">Padamkan tahap zum yang disimpan?</translation>
 <translation id="3362437373201486687">Mengimbas peranti Bluetooth</translation>
@@ -241,6 +243,8 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="3611658447322220736">Laman yang ditutup baru-baru ini boleh menyelesaikan penghantaran dan penerimaan data</translation>
 <translation id="3619294456800709762">Laman dapat memasukkan gambar dalam gambar secara automatik</translation>
 <translation id="3628308229821498208">Carian cadangan</translation>
+<translation id="3632460243282703117">Langgan</translation>
+<translation id="363748948745453283">Menggunakan lokasi anggaran</translation>
 <translation id="3641456520301071208">Laman boleh meminta lokasi anda</translation>
 <translation id="3658847490588580244">Helaian bawah penyemak imbas lalai</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> laman dalam kumpulan laman <ph name="RWS_OWNER"/> yang boleh melihat aktiviti anda dalam kumpulan}other{<ph name="RWS_MEMBERS_COUNT"/> laman dalam kumpulan laman <ph name="RWS_OWNER"/> yang boleh melihat aktiviti anda dalam kumpulan}}</translation>
@@ -335,10 +339,12 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="4635969503923889910">Jangan benarkan laman menggunakan peranti NFC</translation>
 <translation id="4644713492825682049">Padam &amp; tetapkan semula</translation>
 <translation id="4645575059429386691">Diurus oleh ibu bapa anda</translation>
+<translation id="4652266463001779298">Tidak dibenarkan</translation>
 <translation id="4663373278480897665">Kamera dibenarkan</translation>
 <translation id="4670064810192446073">Realiti maya</translation>
 <translation id="5652778654712411580">Ketik apl Penyemak imbas kemudian ketik Brave</translation>
 <translation id="4676059169848868271">Untuk membenarkan <ph name="APP_NAME"/> menggunakan penjejakan tangan, hidupkan penjejakan tangan dalam <ph name="BEGIN_LINK"/>tetapan sistem<ph name="END_LINK"/>.</translation>
+<translation id="4688045258817337666">Urus kad anda</translation>
 <translation id="4751476147751820511">Penderia gerakan atau cahaya</translation>
 <translation id="4755971844837804407">Apabila dihidupkan, laman dapat memaparkan sebarang iklan kepada anda. Apabila dimatikan, laman tidak dapat memaparkan iklan yang mengganggu atau mengelirukan.</translation>
 <translation id="4779083564647765204">Zum</translation>
@@ -429,8 +435,10 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="5750869797196646528">Penjejakan tangan</translation>
 <translation id="5753570386948603678">Padam daripada sejarah</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> disekat</translation>
+<translation id="5792627621688759634">Leret antara halaman menggunakan pad sentuh</translation>
 <translation id="5801457289562671820">Disyorkan oleh organisasi anda</translation>
 <translation id="5804241973901381774">Kebenaran</translation>
+<translation id="5817042798620209981">Maklumat laman, dialog</translation>
 <translation id="5822675474983796325">Sesuaikan helaian bawah halaman tab baharu anda dibuka pada ketinggian penuh</translation>
 <translation id="5833899990800318936">Jangan benarkan laman menggunakan JavaScript</translation>
 <translation id="583673505367439042">Laman boleh meminta untuk mengedit fail dan folder pada peranti anda</translation>
@@ -512,6 +520,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="662080504995468778">Kekal di sini</translation>
 <translation id="6630443592285535486">Taip heks di sini</translation>
 <translation id="6635327442719709864">Apabila dihidupkan, laman dapat meminta untuk menggunakan port bersiri. Apabila dimatikan, laman tidak dapat menggunakan port bersiri.</translation>
+<translation id="6669390930482049506">Beritahu saya</translation>
 <translation id="6678072580827808850">Semak Pemeriksaan Keselamatan</translation>
 <translation id="6682057173375416470">Dapatkan artikel yang dicadangkan pada halaman Tab Baharu</translation>
 <translation id="6683865262523156564">Laman ini berada dalam kumpulan yang boleh melihat aktiviti anda. Kumpulan tersebut ditakrifkan oleh <ph name="RWS_OWNER"/></translation>
@@ -621,6 +630,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="7990211076305263060">Apabila dihidupkan, laman dapat meminta untuk menggunakan mikrofon anda. Apabila dimatikan, laman tidak dapat menggunakan mikrofon anda.</translation>
 <translation id="8007176423574883786">Dimatikan untuk peranti ini</translation>
 <translation id="802154636333426148">Muat turun gagal</translation>
+<translation id="8033047164036749181">Langgan untuk mendapatkan pemberitahuan daripada laman ini</translation>
 <translation id="8042586301629853791">Isih mengikut:</translation>
 <translation id="8051193500142930381">Ciri yang memerlukan kamera tidak akan berfungsi</translation>
 <translation id="2495032782748793764">Lalai Brave</translation>
@@ -671,6 +681,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="8487700953926739672">Tersedia di luar talian</translation>
 <translation id="848952951823693243">Sentiasa minta laman mudah alih</translation>
 <translation id="8492822722330266509">Tapak boleh menghantar tetingkap timbul dan menggunakan ubah hala</translation>
+<translation id="8493548450030356203">Tetingkap zum timbul</translation>
 <translation id="8499083585497694743">Nyahredamkan mikrofon</translation>
 <translation id="8514955299594277296">Jangan benarkan laman menyimpan data pada peranti anda (tidak disyorkan)</translation>
 <translation id="851751545965956758">Sekat tapak daripada menyambung ke peranti</translation>

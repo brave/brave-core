@@ -966,6 +966,7 @@
 <translation id="8459631690385393533">Cardano-Assets speichern</translation>
 <translation id="4915057812371523845">Cardano-Testnet-Assets speichern</translation>
 <translation id="5387140102951033657">Unterstützt Substrate-Assets auf der Polkadot-Relay-Chain und Substrate-Parachains</translation>
+<translation id="5601177227092533167">Unterstützt Substrate-Assets auf der Westend-Relay-Chain und Substrate-Parachains</translation>
 <translation id="8500387257977999003">Privater Schlüssel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">importieren</translation>
 <translation id="232925166623833246">Import aus Hardware-Wallet</translation>
@@ -1298,7 +1299,6 @@
 <translation id="6423985584914773314">Keine gültige FIL-Adresse</translation>
 <translation id="5522073372365069684">Mit Ramp kaufen</translation>
 <translation id="6153197326949684688">Verkaufen mit <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Mit Sardine kaufen</translation>
 <translation id="3301984548406568819">Finanz- und Transaktionsdaten werden von unseren Onramp-Partnern verarbeitet. Brave sammelt diese Daten nicht und hat auch keinen Zugriff darauf.</translation>
 <translation id="5795821518596541838">Transaktionspartner</translation>
 <translation id="1916136859742693273">Brave Wallet nutzt Meld.io, um verschiedene Krypto-Anbieter für deine Region zusammenzufassen und anzuzeigen. Wir werden Informationen mit Meld.io teilen, um die Transaktion abzuschließen, einschließlich deiner Wallet-Adresse und deines Ländercodes. Für weitere Informationen lese bitte die Nutzungsbedingungen von Meld.io.</translation>
@@ -1324,12 +1324,10 @@
 <translation id="5973390321030037823">Mit Link kaufen</translation>
 <translation id="1932640759496708012">Mit Coinbase Pay kaufen</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link von Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Kryptowährung mit Visa oder Mastercard kaufen.</translation>
-<translation id="3648994606506382289">Der einfachste, schnellste und billigste Weg, Kryptowährung mit Karten- und Banküberweisungen zu kaufen.</translation>
 <translation id="3101839349578102016">Sofortkauf mit Ihrem Bankkonto. Niedrigere Gebühren.</translation>
 <translation id="8280898387224328221">Bezahlen mit Kreditkarte, Lastschrift, Bankkonto</translation>
 <translation id="2218174283683424104">Kaufen Sie mit dem vertrauenswürdigsten Namen in der Kryptowährungswelt ein.</translation>
@@ -1661,6 +1659,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8044899503464538266">Langsam</translation>
 <translation id="3569512916300900704">Durchschnitt</translation>
 <translation id="7019805045859631636">Schnell</translation>
+<translation id="1345580220012169610">Geschätzte Gebühr</translation>
 <translation id="632241521608275119">Schlupftoleranz</translation>
 <translation id="6778140392042462129">Börsen</translation>
 <translation id="6173494033320397682">Nur direktes Routing</translation>
@@ -1714,6 +1713,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6276584161122912863">Gaspreis</translation>
 <translation id="6132197290665156212">Geschätzte Netzwerkgebühr</translation>
 <translation id="1788636309517085411">Standard verwenden</translation>
+<translation id="3968375068626660591">Diese Gasgebühr ersetzt die ursprüngliche.</translation>
+<translation id="1661088862481901887">Dadurch wird eine neue Transaktion mit einer neuen Gasgebühr erstellt, um die ausstehende zu überschreiben und zu stornieren. Eine Stornierung kann nur versucht werden, wenn die Transaktion im Netzwerk noch aussteht.</translation>
+<translation id="5797060124625958778">Geschwindigkeitspriorität</translation>
 <translation id="6213230117190778270">Erhalten</translation>
 <translation id="6748108480210050150">Von</translation>
 <translation id="4875290286426670462">Unbegrenzte <ph name="ASSET_SYMBOL"/></translation>
@@ -2114,6 +2116,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="5329136173514538969">Teilung der Tabs aufheben</translation>
 <translation id="7595612919377246359">Tab-Positionen austauschen</translation>
 <translation id="2367972762794486313">Apps anzeigen</translation>
+<translation id="3468387898712904997">Neuer E-Mail-Alias</translation>
 <translation id="8591883849678260674">Orginal anzeigen</translation>
 <translation id="1969654232209826429">Min. Lesezeit</translation>
 <translation id="4101707289420716287">Speedreader ausschalten</translation>
@@ -2180,11 +2183,23 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7127671672828944579">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Qwen 14B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Qwen wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Gemma 3 12B angetrieben, einem Modell, das von Google DeepMind entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Gemma wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von DeepSeek R1 angetrieben, einem Modell, das von DeepSeek entwickelt wurde, um Aufgaben des tiefen Denkens zu bewältigen. DeepSeek R1 wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von DeepSeek V3.1 angetrieben, einem Modell, das von DeepSeek entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. DeepSeek V3.1 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Instant angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Haiku angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Haiku wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Sonnet angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu unterstützen. Claude Sonnet wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Llama 4 Scout angetrieben, einem Modell, das von Meta entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Llama 4 Scout wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Llama 4 Maverick angetrieben, einem Modell, das von Meta entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Llama 4 Maverick wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von GPT OSS 20B angetrieben, einem Modell, das von OpenAI entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. GPT OSS 20B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von GPT OSS 120B angetrieben, einem Modell, das von OpenAI entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. GPT OSS 120B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Mistral Large angetrieben, einem Modell, das von Mistral entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Mistral Large wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Pixtral Large angetrieben, einem Modell, das von Mistral entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Pixtral Large wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Qwen 3 235B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Qwen 3 235B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Deepseek V3.1 angetrieben, einem Modell, das von Deepseek entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Deepseek V3.1 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Qwen 3 Coder 480B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Qwen 3 Coder 480B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Opus angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Opus wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Empfohlene Modelle</translation>
 <translation id="6568044140836233369">Alle Modelle anzeigen</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2309,6 +2324,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8506027496671575183">Suche • Vision • Tools</translation>
 <translation id="3213834013136637671">Suche • Vision</translation>
 <translation id="7697693533305615127">Suche • Denken</translation>
+<translation id="7465032796278724624">Nachweislich privat mit NEAR KI-TEE</translation>
 <translation id="8782867266498869301">Das Modell passt sich dynamisch an, um für die jeweilige Aufgabe das beste zu verwenden</translation>
 <translation id="3965507912994218570">Leo-Einstellungen</translation>
 <translation id="3754337604877048671">Das ist Leo KI</translation>
@@ -2372,7 +2388,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8410199626695516952">Okay, das merke ich mir nicht</translation>
 <translation id="8419849467765474535">Speichern des Speichers fehlgeschlagen. Bitte versuche es erneut.</translation>
 <translation id="5517580030864973329">Navigieren zu einer neuen Adresse auf der Website</translation>
-<translation id="8832457834975923266">Website zu <ph name="URL"/> navigiert</translation>
+<translation id="9197920788851078696">Zur Webseite <ph name="URL"/> navigieren</translation>
 <translation id="5095252080770652994">Fortschritt</translation>
 <translation id="8332385567036775056">Schritte</translation>
 <translation id="4521931942079977149">Auf die Seite klicken</translation>
@@ -2387,6 +2403,20 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4798146464408730445">Keine Skills gefunden. Erstelle einen neuen, indem du auf „Neu“ klickst.</translation>
 <translation id="271033894570825754">Neu</translation>
 <translation id="8266605059880650542">Informationen über die Seite für später notieren</translation>
+<translation id="7049849063044248805">Der Agentenmodus funktioniert mit Modellen mit Tool-Unterstützung. Nicht kompatible Modelle werden in dieser Liste ausgeblendet.</translation>
+<translation id="3397808797783614750">Das automatische Browsenlassen durch die KI kann schädliche, unbeabsichtigte Folgen für Ihre Privatsphäre, Finanzen und Ihre Online-Kommunikation haben. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Sicherheitswarnung</translation>
+<translation id="6077070599873946984">Brave KI benötigt Ihre Erlaubnis für: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Der Vorgang wurde als möglicherweise nicht im Sinne Ihrer Anfrage erkannt:</translation>
+<translation id="3927932062596804919">Ablehnen</translation>
+<translation id="4569155249847375786">Verifiziert</translation>
+<translation id="3240988198391588806">Agentenmodus</translation>
+<translation id="538066983058750776">Über das Leo-Profil</translation>
+<translation id="1577570612997320961">Um Ihre Daten zu schützen, beschränkt dieses isolierte Brave-Profil den KI-Zugriff auf Ihr Hauptbrowserprofil. Die Leo-KI hat hier zusätzliche Berechtigungen, Websites zu besuchen und mit ihnen zu interagieren, sodass Sie ihr Aufgaben geben und gemeinsam browsen können, um die Produktivität zu steigern.</translation>
+<translation id="648116453147783450">Ihre Daten und Sitzungen</translation>
+<translation id="3906161204878017619">Wenn Sie sich mit diesem Profil bei einer Website anmelden, kann Leo die Informationen auf dieser Website sehen, sofern sie geöffnet ist – entweder wenn Leo die Website selbst besucht oder wenn Sie es dort um etwas bitten.</translation>
+<translation id="5583803492921648196">Zurück wechseln</translation>
+<translation id="8068929004144221259">Sie können jederzeit über das Hauptmenü oder den Leo-Avatar in Ihrer Symbolleiste zu Ihrem normalen Profil zurückwechseln. Der Agentenmodus wird immer in diesem Profil geöffnet.</translation>
 <translation id="3486480638399578250">Schütze deine private E-Mail-Adresse</translation>
 <translation id="7765422154906712751">Erstelle einzigartige, zufällige Adressen, die an deine Brave-Konto-E-Mail weitergeleitet werden und jederzeit gelöscht werden können. So bleibt deine echte E-Mail-Adresse vor Werbetreibenden verborgen und wird nicht weitergegeben.</translation>
 <translation id="5222676887888702881">Abmelden</translation>
@@ -2509,6 +2539,12 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="131231380815754440">HTTPS aktivieren</translation>
 <translation id="4824468494729001999">Skripte blockieren</translation>
+<translation id="5465091511225410553">(erzwungen)</translation>
+<translation id="8646614940337543907">(durch Erweiterung erzwungen)</translation>
+<translation id="3559821445144429594">(durch Richtlinie erzwungen)</translation>
+<translation id="550374350047782149">(durch Allowlist erzwungen)</translation>
+<translation id="68858161161918073">(durch Supervisor erzwungen)</translation>
+<translation id="5735057546627037489">(durch PWA erzwungen)</translation>
 <translation id="3246600097575692802">Blockierte Skripte aktivieren</translation>
 <translation id="3603525299146223354">Tracker &amp; Anzeigen</translation>
 <translation id="4448697385961650078">Tracker &amp; Werbung blockieren</translation>
@@ -2543,6 +2579,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
       other {Brave-Schutz hat {BLOCKED_COUNT} Tracker auf <ph name="SITE_URL"/> blockiert}
     }</translation>
 <translation id="2540598191934725677">Klicken Sie auf das Brave-Symbol, um den Brave-Schutz anzuzeigen.</translation>
+<translation id="542789539047208469">Website-Info</translation>
 <translation id="6294662480095808915">Datenschutz. Standardmäßig.</translation>
 <translation id="4366423156486478559">Seien Sie bei jedem Link, den Sie anklicken, geschützt. Legen Sie einfach Brave als Standard fest und surfen Sie – privat.</translation>
 <translation id="3830912418080848377">Einstellungen importieren</translation>
@@ -2679,5 +2716,6 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
     und nicht zum bestehenden Tab zu wechseln.</translation>
 <translation id="451189393813405346">Leo fragen</translation>
 <translation id="1602850501393095406">Drücke ↑, um hervorzuheben</translation>
+<translation id="8367705492654390392">Beliebige Frage stellen</translation>
 <translation id="8525248723479742219">Später abspielen</translation>
 </translationbundle>

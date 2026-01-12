@@ -959,6 +959,7 @@
 <translation id="8459631690385393533">Cardano ပိုင်ဆိုင်မှုကို သိမ်းဆည်းပါ</translation>
 <translation id="4915057812371523845">Cardano Testnet ပိုင်ဆိုင်မှုကို သိမ်းဆည်းပါ</translation>
 <translation id="5387140102951033657">Polkadot relay chain နှင့် Substrate parachains များပေါ်ရှိ Substrate ပစ္စည်းများကို ပံ့ပိုးပေးသည်</translation>
+<translation id="5601177227092533167">Westend relay chain နှင့် Substrate parachains များပေါ်ရှိ Substrate ပစ္စည်းများကို ပံ့ပိုးပေးသည်</translation>
 <translation id="8500387257977999003">သီးသန့်သော key <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">သွင်းယူ</translation>
 <translation id="232925166623833246">hardware wallet မှတင်သွင်းရန်</translation>
@@ -1291,7 +1292,6 @@
 <translation id="6423985584914773314">မှန်ကန်သော FIL လိပ်စာမဟုတ်ပါ။</translation>
 <translation id="5522073372365069684">Ramp နဲ့ ဝယ်မည်</translation>
 <translation id="6153197326949684688">မှာရောင်းပါ <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">ကြာပြီအောင် ဝယ်ပါ</translation>
 <translation id="3301984548406568819">ငွေရေးကြေးရေးနှင့် ငွေပေးငွေယူ ဒေတာကို သင့်ရဲ့ onramp မိတ်ဖက်များက ပြုလုပ်ဆောင်ရွက်ပါသည်။ Brave သည် ဤအချက်အလက်များကိုစုစည်း၊ရယူခြင်း မပြုလုပ်ပါ。</translation>
 <translation id="5795821518596541838">ငွေပေးငွေယူလုပ်ငန်းမိတ်ဖက်</translation>
 <translation id="1916136859742693273">Brave Wallet သည် သင့်နိုင်ငံတွင် မတူညီသော crypto ပေးသွင်းသူများစွလာခြင်းနှင့် ပြသရန်အား Meld.io ကို အသုံးပြုထားသည်။ ပြည့်စုံသော ငွေပေးငွေယူမှု အတွက် စနစ်တိုင်းကို သင့် မော်ကွန်းရင်းနှင့် နိုင်ငံကုဒ် နှင့်အတူ share ပြုလုပ်ပါသည်။ ပိုမိုသိရှိရန် Meld ၏ terms of use ကို ဖတ်ပါ။</translation>
@@ -1318,12 +1318,10 @@
 <translation id="5973390321030037823">Link နဲ့ ဝယ်မည်</translation>
 <translation id="1932640759496708012">Coinbase Pay နဲ့ ဝယ်မည်</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link by Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Visa သို့မဟုတ် Mastercard ဖြင့် crypto ဝယ်ပါ။</translation>
-<translation id="3648994606506382289">ကဒ်နှင့် ဘဏ်ငွေလွှဲမှုများဖြင့် crypto ဝယ်ရန် လွယ်ကူလျှင်မြန်စွာနှင့် သက်သာစွာဖြစ်ပါသည်။</translation>
 <translation id="3101839349578102016">သင်၏ ဘဏ်အကောင့်ဖြင့် ချက်ချင်းဝယ်ယူပါ။ ကုန်ကျစရိတ်နည်းပါသည်။</translation>
 <translation id="8280898387224328221">ခရက်ဒစ်၊ ဒက်ဘစ်၊ ဘဏ်အကောင့်ဖြင့် ပေးချေရန်</translation>
 <translation id="2218174283683424104">crypto ဝယ်ယူရန် အထင်ကြီးဆုံး နာမည်ဖြင့် ဝယ်ပါ။</translation>
@@ -1651,6 +1649,7 @@
 <translation id="8044899503464538266">နှေး</translation>
 <translation id="3569512916300900704">ပျမ်းမျှ</translation>
 <translation id="7019805045859631636">အမြန်ဆုံး</translation>
+<translation id="1345580220012169610">ခန့်မှန်းအပ်နှံခ</translation>
 <translation id="632241521608275119">ငွေလျော့နှစ်ခံနိုင်ပါစွမ်း</translation>
 <translation id="6778140392042462129">ဘဏ်နှင့်လဲလှယ်ခြင်းများ</translation>
 <translation id="6173494033320397682">တိုက်ရိုက်လမ်းကြောင်းသာ</translation>
@@ -1704,6 +1703,9 @@
 <translation id="6276584161122912863">Gas စျေးနှုန်း</translation>
 <translation id="6132197290665156212">မြှင့်တင်ထားသော ကွန်ရက်ကြေး</translation>
 <translation id="1788636309517085411">ပုံမှန်အသုံးပြုပါ</translation>
+<translation id="3968375068626660591">ဤ gas အပ်နှံခသည် မူလအပ်နှံခကို အစားထိုးပါမည်။</translation>
+<translation id="1661088862481901887">ဤအက်ရှင်သည် မူလအပ်နှံမှုကို ပယ်ဖျက်ရန်နှင့် အစားထိုးရန် အသစ်သောအပ်နှံမှုကို အသစ်အားဖြင့် ဖန်တီးပါမည်။ သုံးနှုန်းမှုအတွက် ကွန်ရက်ပေါ်တွင် မကြာသေးမီအထိဆိုလျှင်ပင်ပယ်ဖျက်မှုကို ပြုလုပ်နိုင်ပါသည်။</translation>
+<translation id="5797060124625958778">အမြန်ဆုံး ဦးစားပေးမှု</translation>
 <translation id="6213230117190778270">လက်ခံပါ</translation>
 <translation id="6748108480210050150">ယူထားပြီး</translation>
 <translation id="4875290286426670462">အကန့်အသတ်မရှိ <ph name="ASSET_SYMBOL"/></translation>
@@ -2104,6 +2106,7 @@
 <translation id="5329136173514538969">Tab များကိုအသစ်ပြောင်းနေခြင်း</translation>
 <translation id="7595612919377246359">Tab များကို ပြန်ဖလှြပောင်းခြင်း</translation>
 <translation id="2367972762794486313">အကောက်ခွန်ပြရန်</translation>
+<translation id="3468387898712904997">အီးမေးလ် လိပ်စာ အသစ်</translation>
 <translation id="8591883849678260674">မူရင်းကို ကြည့်ရန်</translation>
 <translation id="1969654232209826429">မိနစ်. အောက်ပိုင်း ဖတ်ရည်နှုန်း</translation>
 <translation id="4101707289420716287">Speedreader ကို ပိတ်ပါ</translation>
@@ -2164,11 +2167,23 @@
 <translation id="7127671672828944579">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen 14B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်မားပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Qwen သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Gemma 3 12B သည် Google DeepMind မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်မားပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Gemma သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ DeepSeek R1 သည် DeepSeek မှ ဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး အနက်ရောင်ယူဆနေသည်။ DeepSeek R1 သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ DeepSeek V3.1 သည် DeepSeek မှဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ DeepSeek V3.1 သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">မင်္ဂလာပါ။ ကျွန်ုပ်မှာ Leo ဖြစ်ပြီး Brave မှဖန်တီးထားသော AI အင်္ဂင်ဖြစ်ပါသည်။ ဤကိရိယာသည် Anthropic မှထုတ်လွှင့်သော Claude Instant စံနမူနာဖြစ်ပြီး စကားပြောခြင်းနှင့်စာသားအုပ်စုများကဲ့သို့သော တုံ့ပြန်မှု လုပ်ငန်းများတွင်အသုံးပြုပါသည်။ Claude Instant ကို Brave ဝန်ဆောင်မှုမှတဆင့် လုံခြုံစွာအိမ်ရှေ့မှတ်ထားထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Haiku သည် Anthropic မှဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Haiku သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Sonnet သည် Anthropic မှ ဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Sonnet သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Llama 4 Scout သည် Meta မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Llama 4 Scout သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Llama 4 Maverick သည် Meta မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Llama 4 Maverick သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ GPT OSS 20B သည် OpenAI မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ GPT OSS 20B သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ GPT OSS 120B သည် OpenAI မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ GPT OSS 120B သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Mistral Large သည် Mistral မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Mistral Large သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Pixtral Large သည် Mistral မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Pixtral Large သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen 3 235B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Qwen 3 235B သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Deepseek V3.1 သည် Deepseek မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Deepseek V3.1 သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen 3 Coder 480B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Qwen 3 Coder 480B သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Opus သည် Anthropic မှဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Opus သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">နိုင်ငံ</translation>
+<translation id="830868413617744215">ဘီတာ</translation>
 <translation id="631371844654031449">အကြံပြုမော်ဒယ်များ</translation>
 <translation id="6568044140836233369">အားလုံးစီးပွားရေးမော်ဒယ်များ</translation>
 <translation id="6187065185557150870">နေ.</translation>
@@ -2293,6 +2308,7 @@
 <translation id="8506027496671575183">ရှာဖွေမှု • မြင်ကွင်း • ကိရိယာများ</translation>
 <translation id="3213834013136637671">ရှာဖွေမှု • မြင်ကွင်း</translation>
 <translation id="7697693533305615127">ရှာဖွေမှု • စဉ်းစားမှု</translation>
+<translation id="7465032796278724624">NEAR AI TEE ဖြင့် အထောက်အထားရှိစွာ ပုဂ္ဂလိက</translation>
 <translation id="8782867266498869301">မော်ဒယ်သည် အလုပ်ကိုလုပ်ဖို့အတွက် အကောင်းဆုံးနည်းဖြင့် ပြောင်းလဲသည့်စဉ်အတွက် မေးခွန်းများနှင့် ပြောင်းလားသည်</translation>
 <translation id="3965507912994218570">Leo ဆက်တင်များ</translation>
 <translation id="3754337604877048671">Leo AI ကိုမိတ်ဆက်ပါ</translation>
@@ -2356,7 +2372,7 @@
 <translation id="8410199626695516952">အားလုံးကိုဗြိတျ·ကောပြန်·အချိန်နောက်</translation>
 <translation id="8419849467765474535">မှတ်တမ်းကို သိမ်းဆည်း၍မရရှိဘူး၊ ထပ်လည်ကြိုးစားပါ။</translation>
 <translation id="5517580030864973329">ဝဘ်စာမျက်နှာကို လိပ်စာအသစ်သို့ သွားနေသည်</translation>
-<translation id="8832457834975923266">ဝဘ်စာမျက်နှာကို <ph name="URL"/> သို့ ပြောင်းပြီးဖြတ်သွားသည်</translation>
+<translation id="9197920788851078696">ဝဘ်စာမျက်နှာကို <ph name="URL"/> သို့ ပြောင်းပြီးဖြတ်သွားသည်</translation>
 <translation id="5095252080770652994">တိုးတက်မှု</translation>
 <translation id="8332385567036775056">အဆင့်များ</translation>
 <translation id="4521931942079977149">စာမျက်နှာပေါ်မှာ နှိပ်နေသည်</translation>
@@ -2371,6 +2387,20 @@
 <translation id="4798146464408730445">ဘယ်‍လောက်မှ ကျွမ်းကျင်မှုများ မတွေ့ပါ။ "New" ခလုတ်ကိုနှိပ်၍ အသစ်တစ်ခုဖန်တီးပါ။</translation>
 <translation id="271033894570825754">အသစ်</translation>
 <translation id="8266605059880650542">စာမျက်နှာအကြောင်းအရာအတွက် နောင်တချိန်အသုံးပြုရန် သတင်းအချက်အလက် ကို မှတ်သားနေသည်</translation>
+<translation id="7049849063044248805">Agent mode သည် ကိရိယာများကို ပံ့ပိုးသော မော်ဒယ်များနှင့် တွဲ၍ အလုပ်လုပ်သည်။ မကိုက်ညီသော မော်ဒယ်များကို စာရင်းမှ ဖျောက်ထားသည်။</translation>
+<translation id="3397808797783614750">သင်အတွက်သိမ်းထားသော AI ကို အလိုအလျှောက် ရှာဖွေခြင်းကို ဖွင့်ထားခြင်းသည် သင့်ပုဂ္ဂလိကရေးကိစ္စများ၊ ငွေကြေး၊ နှင့် အွန်လိုင်းဆက်သွယ်မှုများအတွက် အန္တရာယ်ဖြစ်စေနိုင်သော မျှော်လင့်ခြင်းမဲ့ရလဒ်များ ဖြစ်လာနိုင်သည်။ <ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">လုံခြုံရေးအချက်အချာပေးချက်</translation>
+<translation id="6077070599873946984">Brave AI သည် သင်၏ ခွင့်ပြုချက်လိုအပ်သည် - <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">လုပ်ဆောင်ချက်သည် သင်၏တောင်းဆိုချက်နှင့် မကိုက်ညီနိုင်ခြင်းရှိနိုင်သည်။</translation>
+<translation id="3927932062596804919">ငြင်းလိုက်သည်</translation>
+<translation id="4569155249847375786">အတည်ပြုလုပ်ပြီး</translation>
+<translation id="3240988198391588806">Agent mode</translation>
+<translation id="538066983058750776">Leo မျိုးရေးကိုယ်ရေးဖိုင်အကြောင်း</translation>
+<translation id="1577570612997320961">သင့်ဒေတာကိုကာကွယ်ရန်အတွက် အပိတ်ထားသော Brave ကိုယ်ရေးဖိုင်သည် သင်၏အဓိက ရှာဖွေမှုကိုယ်ရေးဖိုင်သို့ AI ဝင်ရောက်အသုံးပြုမှုကို ကန့်သတ်ထားပါသည်။ ဤနေရာတွင် Leo AI သည် ဝဘ်ဆိုက်များသို့ တတ်သွားခြင်းနှင့် ထိတွေ့အက်ရှင်များ ပြုလုပ်ခြင်းများအတွက် ထပ်ဆင့်ခွင့်ပြုချက်များရှိပါသည်။ ထို့ကြောင့် သင်၏လုပ်ငန်းအထောက်အကူအတွက် ဒေတာများကို တစ်နေရာတည်းတွင် အသုံးပြုရန် ထပ်ဆင့်အခန်းကဏ္ဍများကို ပေးအပ်နိုင်ပါသည်။</translation>
+<translation id="648116453147783450">သင့်ဒေတာနှင့် အစည်းအဝေးများ</translation>
+<translation id="3906161204878017619">သင်ဤကိုယ်ရေးဖိုင် အသုံးပြု၍ဝဘ်ဆိုက်တစ်ခုသို့ ဝင်သောအခါ Leo သည် ပြောင်းလဲနေသောအချိန်တွင်ပင် သိုလှောင်ခြင်းအသစ်များ ပြုလုပ်နိုင်သည်။ ထို့ကြောင့် ဝဘ်ဆိုက်အကြောင်းရှင်းလင်းချက်များမှာ တဝန်သာရှိပါသည်။</translation>
+<translation id="5583803492921648196">နောက်သို့ ပြောင်းရန်</translation>
+<translation id="8068929004144221259">သင်သည် သက်သာသည့်အချိန်တွင် မူရင်း ကိုယ်ရေးဖိုင်သို့ ပြန်သွားနိုင်ပါသည်။ မင်းရဲ့အစဉ်အလာရုပ်ပုံ Leo ကိုယ်ဟန်မှ တစ်ဆင့် Agent mode ကိုဖွင့်နိုင်သည်။</translation>
 <translation id="3486480638399578250">သင့် အီးမေးလ်လိပ်စာကို အပြင်မှ ပုခိုးထားပါ။</translation>
 <translation id="7765422154906712751">သင့် Brave စာအုပ်ထဲကို အီးမေးလ် လိပ်စာများကို ရန်တိုင်း ကြောင်းပေးဖို့ အကြောင်းမဲမဲ လက်ခံပြီး အန္တရာယ်ကင်းတဲက အီးမေးလ် လိပ်စာတွေ ဖန်တီးနိုင်ပါသည်။</translation>
 <translation id="5222676887888702881">ထွက်မည်</translation>
@@ -2494,6 +2524,12 @@
 <translation id="3570081523466826008">အဆင့်မြှင့်ရေးလင့်များကို HTTPS</translation>
 <translation id="131231380815754440">HTTPS ကိုဖွင့်ပါ</translation>
 <translation id="4824468494729001999">script များပိတ်ရန်</translation>
+<translation id="5465091511225410553">(သတ်မှတ်ထားသည်)</translation>
+<translation id="8646614940337543907">(extension သုံး၍ သတ်မှတ်ထားသည်)</translation>
+<translation id="3559821445144429594">(ပေါ်လစီသတ်မှတ်ချက်ဖြင့် သတ်မှတ်ထားသည်)</translation>
+<translation id="550374350047782149">(allowlist ဖြင့် သတ်မှတ်ထားသည်)</translation>
+<translation id="68858161161918073">(အုပ်ချုပ်သူဖြင့် သတ်မှတ်ထုတ်ထားသည်)</translation>
+<translation id="5735057546627037489">ဆိုက်အချက်အလက်</translation>
 <translation id="3246600097575692802">Script များကိုပိတ်ယူခြင်း ကိုဖွင့်ပါ</translation>
 <translation id="3603525299146223354">ထောက်လှမ်းနှင့် ကြော်ငြာများ</translation>
 <translation id="4448697385961650078">ထောက်လှမ်းနှင့် ကြော်ငြာများကို ပိတ်ပါ</translation>
@@ -2528,6 +2564,7 @@
       other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Brave Shields ကိုကြည့်ရန် Brave icon ကို နှိပ်ပါ။</translation>
+<translation id="542789539047208469">ဆိုက်အချက်အလက်</translation>
 <translation id="6294662480095808915">Privacy. By Default.</translation>
 <translation id="4366423156486478559">သင်နှိပ်သော лин毕ို့မှုတွေမှ Brave ကာကွယ်မှုကိုရပါ.</translation>
 <translation id="3830912418080848377">အဆင်သင့်ရှိသည့် ဆက်တင်များ</translation>
@@ -2661,5 +2698,6 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="1538335063514960365">ဒီနေရာမှာဖွင့်ရန်ခလုတ်၊ ဒီ URL ကိုယခု သတ်မှတ်ထားသောတဘ်တွင်ဖွင့်ရန် Enter ကိုနှိပ်ပါ၊ လက်ရှိတဘ်သို့ပြောင်းခြင်းမပြုပါ</translation>
 <translation id="451189393813405346">Leo ကိုမေးပါ</translation>
 <translation id="1602850501393095406">ကမ်းခြေလှ ခြိမ်းခြောက်မှု</translation>
+<translation id="8367705492654390392">မေးလိုသောအရာတစ်ခုခု</translation>
 <translation id="8525248723479742219">နောက်မှဖွင့်ရန်</translation>
 </translationbundle>

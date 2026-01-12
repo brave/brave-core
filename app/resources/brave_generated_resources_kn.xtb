@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">ಪ್ರೀಮಿಯಂಗೆ ಹೋಗಿ</translation>
 <translation id="1035309871698658326">ಓಪನ್ ಮಾಡಿದಾಗ, ಇದು ಎಲ್ಲಾ ಖಾಸಗಿಯಲ್ಲದ ಟ್ಯಾಬ್‌ಗಳ ಶೀರ್ಷಿಕೆಗಳು ಮತ್ತು ಮೂಲವನ್ನು ವರ್ಗೀಕರಿಸಲು Leoಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸುತ್ತದೆ.</translation>
 <translation id="3435896845095436175">ಸಕ್ರಿಯಗೊಳಿಸು</translation>
+<translation id="9082792303833649978">ಈ ಸೆಟ್ಟಿಂಗ್‌ನನ್ನು ನಿಮ್ಮ ನಿರ್ವಹಕರು ಅಥವಾ ಬೇರೆ Brave ನೀತಿಯು ನಿರ್ವಹಿಸುತ್ತಿದೆ.</translation>
 <translation id="1940221956626514677">ಟೂಲ್‌ಬಾ‌ರ್‌ನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="6501807887341963552">ಥೀಮ್ ಮತ್ತು ಬಣ್ಣಗಳು</translation>
 <translation id="6724227215236550330">ಸೇವ್‌ ಆದ ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣುತ್ತವೆ. ಈ ಡಿವೈಸ್‌ನಲ್ಲಿ <ph name="BRAND"/> ಗೆ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಇಂಪೋರ್ಟ್‌ ಮಾಡಲು, <ph name="BEGIN_LINK"/> CSV ಫೈಲ್ ಆಯ್ಕೆ ಮಾಡಿ<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ಟ್ರೀ ಲ್ಯಾಬ್ಸ್‌ ಬಳಸಿ</translation>
 <translation id="5860254591544742609">ಶೀರ್ಷಿಕೆ ಪಟ್ಟಿ ತೋರಿಸಿ</translation>
 <translation id="4691131445504068802">ಕಡಿಮೆಯಾದಾಗ ಸಂಪೂರ್ಣವಾಗಿ ಅಡಗಿಸಿ</translation>
+<translation id="6763346436728173884">ಟ್ಯಾಬ್ ಮುಚ್ಚುವ ಬಟನ್‌ನ್ನು ಸದಾ ಮರೆಮಾಡಿ</translation>
 <translation id="4909269867860362936">ಕಡಿಮೆಯಾದಾಗ ಹ್ಯಾವರ್ ಮಾಡಿದಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವಿಸ್ತರಿಸಿ</translation>
 <translation id="3367129510799209147">ಟ್ಯಾಬ್ ಹೋವರ್ ಮೋಡ್</translation>
 <translation id="8925055964134259461">ಪ್ರತಿ ವಿಂಡೋಗೆ ಸ್ವತಂತ್ರವಾಗಿ ಲಂಬ ಟ್ಯಾಬ್‌ಗಳನ್ನು ವಿಸ್ತರಿಸಿ</translation>
@@ -754,6 +756,7 @@
 <translation id="7141438739990875547">Bitcoin ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="1077567586443625607">Zcash ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="1177180573354712438">ಕಾರ್ಡಾನೋ ನೆಟ್‌ ವರ್ಕ್</translation>
+<translation id="3176794108951154148">Polkadot ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="3159419679550543837">ಟೆಸ್ಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="3215569562674795548">ಹೊಸ ನೆಟ್‌ವರ್ಕ್ ಎಡಿಟ್ ಮಾಡಿ ಅಥವಾ ಸೇರಿಸಿ</translation>
 <translation id="4418993400653250511">ಚೈನ್‌ನ ಐಡಿ</translation>

@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Nakili kiungo safi</translation>
 <translation id="721490496276866468">Ingiza nywila</translation>
 <translation id="8178175542325151321">Chagua faili la .csv lenye nywila zako ili kuziingiza kwenye msimamizi wa nywila wa Brave.</translation>
-<translation id="1177863135347784049">Maalum</translation>
 <translation id="6112331814131703370">Zuia Notisi za 'Badilisha Utumie Programu'</translation>
 <translation id="4744921452903670666">Tuambie unachofikiri!</translation>
 <translation id="2524310205387880526">Kadiria Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Jaza kiotomatiki katika vichupo vya faragha</translation>
 <translation id="8685431198160039193">Maelezo yaliyohifadhiwa yanaweza kujazwa kiotomatiki katika vichupo vya faragha</translation>
 <translation id="6583902294974160967">Usaidizi</translation>
-<translation id="5713644099811900409">Akaunti ya Brave</translation>
-<translation id="4472575034687746823">Anza</translation>
 <translation id="1799030480311994998">Vipengele</translation>
 <translation id="1919345977826869612">Matangazo</translation>
 <translation id="2839742394543397416">Takwimu</translation>
@@ -384,7 +381,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="717952606991220586">Ayaa, kuna kitu hakiko sawa. Tafadhali jaribu tena baadaye.</translation>
 <translation id="987264212798334818">Jumla</translation>
 <translation id="1116694919640316211">Kuhusu</translation>
-<translation id="7961015016161918242">Katu</translation>
 <translation id="1275213816424141989">Labda Baadaye</translation>
 <translation id="3624048886326677117">Zuia vifuatiliaji na matangazo (Hima)</translation>
 <translation id="7151914815476509258">Zuia vifuatiliaji na matangazo (Wastani)</translation>
@@ -569,7 +565,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="6697810017029555732">Mlingano!</translation>
 <translation id="5981303441790732480">Hamisha pochi yako iliyopo</translation>
 <translation id="9111102763498581341">Fungua</translation>
-<translation id="6657585470893396449">Nenosiri</translation>
 <translation id="7553242001898162573">Weka nenosiri lako</translation>
 <translation id="5619264711680220002">Kufungua kibiometriki</translation>
 <translation id="9195657745688986798">Fungua Pochi</translation>
@@ -734,6 +729,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="9091334651803050473">Ingawa si hakikisho, wachimbaji migodi huenda wakaupa kipaumbele muamala wako ukilipa ada ya juu zaidi.</translation>
 <translation id="2941112035454246133">Chini</translation>
 <translation id="7304030187361489308">Juu</translation>
+<translation id="1177863135347784049">Maalum</translation>
 <translation id="4853037749278079787">Ada ya juu zaidi: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Ada ya msingi ya sasa: Gwei <ph name="ASSET_VALUE"/></translation>
 <translation id="1011713837432053857">Kikomo cha kiasi cha gesi</translation>
@@ -1054,31 +1050,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6393423486818299209">Tumia mtoa huduma wako wa sasa au Wikimedia DNS</translation>
 <translation id="3401384982562827787">Tumia mtoa huduma wako wa sasa au Cloudflare</translation>
 <translation id="8812367543786936496">Ikiwa mtoa huduma wako wa sasa si salama, Brave hutumia mtoa huduma mbadala wa DNS ambaye ni salama</translation>
-<translation id="5680678411439841197">jiji</translation>
-<translation id="8185518433273977704">mji</translation>
-<translation id="4528386452965343421">wilaya</translation>
-<translation id="1589122976691792535">mkoa</translation>
-<translation id="2221292964468054123">jimbo</translation>
-<translation id="3801482889636327368">shirika</translation>
-<translation id="1425162721525518064">kampuni</translation>
-<translation id="7568794877555549044">nchi</translation>
-<translation id="5982110855572850497">lebo</translation>
-<translation id="6848689413353508904">kontena</translation>
-<translation id="1496514951988037011">jina la mtumiaji</translation>
-<translation id="6155129418108337061">ingia</translation>
-<translation id="4038523199754403233">kitambulisho</translation>
-<translation id="901834265349196618">Baruapepe</translation>
-<translation id="3488199663160411179">jina</translation>
-<translation id="793994607260936590">kwanza</translation>
-<translation id="1782612111936779655">la mwisho</translation>
-<translation id="7628132737455466188">kamili</translation>
-<translation id="8621068256433641644">simu</translation>
-<translation id="5993210100509955931">simu ya mkononi</translation>
-<translation id="598301471034819706">anwani</translation>
-<translation id="5557821203571216370">fleti</translation>
-<translation id="8051552210542030943">msimbo wa nambari ya binafsi ya utambulisho (pin)</translation>
-<translation id="5233247193491045452">msimbo wa posta</translation>
-<translation id="3300502432153878901">msimbo wa eneo (zip)</translation>
 <translation id="1381108437654541567">Wezesha madirisha mengi</translation>
 <translation id="6167344249617630304">Fungua hadi madirisha 5 kwa wakati mmoja na usogeze vichupo kutoka dirisha moja hadi lingine</translation>
 <translation id="1063948063403254568">Madirisha mengi yamegunduliwa</translation>
@@ -1152,6 +1123,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7808889146555843082">Hatua ya kufuta nenosiri hili haitafuta akaunti yako kwenye <ph name="SITE"/>. Badilisha nenosiri au futa akaunti yako kwenye <ph name="SITE"/> ili uilinde dhidi ya watu wengine.</translation>
 <translation id="2870560284913253234">Tovuti</translation>
 <translation id="8503813439785031346">Jina la mtumiaji</translation>
+<translation id="6657585470893396449">Nenosiri</translation>
 <translation id="2278052315791335171">Hatua ya kufuta nenosiri hili haitafuta akaunti yako kwenye <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Fungua ili unakili nenosiri lako</translation>
 <translation id="5515439363601853141">Fungua ili uangalie nenosiri lako</translation>

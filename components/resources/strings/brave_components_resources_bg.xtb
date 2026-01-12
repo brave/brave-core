@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Съхранение на активи в Cardano</translation>
 <translation id="4915057812371523845">Съхранение на активи в Cardano Testnet</translation>
 <translation id="5387140102951033657">Поддържа активи на Substrate в релейната верига на Polkadot и Substrate паравериги</translation>
+<translation id="5601177227092533167">Поддържа активи на Substrate в релейната верига Westend и Substrate паравериги</translation>
 <translation id="8500387257977999003">Поверителен ключ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Импортиране</translation>
 <translation id="232925166623833246">Импортиране от хардуерен портфейл</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">FIL адресът не е валиден</translation>
 <translation id="5522073372365069684">Купуване с Ramp</translation>
 <translation id="6153197326949684688">Продай с <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Купете със Sardine</translation>
 <translation id="3301984548406568819">Финансовите и трансакционните данни се обработват от нашите доверени партньори. Brave не събира такива данни и няма достъп до тях.</translation>
 <translation id="5795821518596541838">Страна в трансакциите</translation>
 <translation id="1916136859742693273">Brave Wallet използва Meld.io, за да събере и покаже различни доставчици на криптовалути във вашия регион. За да завършим трансакцията, ние ще споделим данни с Meld.io, включително за адреса на портфейла ви и кода на страната. За повече информация, моля, прочетете условията за ползване на Meld.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Купете с връзка</translation>
 <translation id="1932640759496708012">Купете с Coinbase Pay</translation>
 <translation id="8725252491405767337">Мрежа Ramp.</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Връзка от Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Купете криптовалута с Visa или Mastercard.</translation>
-<translation id="3648994606506382289">Най-лесният, най-бързият и най-евтин начин да купувате крипто с карта или банков трансфер.</translation>
 <translation id="3101839349578102016">Незабавна покупка с вашата банкова сметка. По-ниски такси.</translation>
 <translation id="8280898387224328221">Платете с кредит, дебит, банкова сметка</translation>
 <translation id="2218174283683424104">Купуване с най-надеждното име в криптовалутите.</translation>
@@ -1665,6 +1663,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8044899503464538266">Бавно</translation>
 <translation id="3569512916300900704">Средно аритметично</translation>
 <translation id="7019805045859631636">Бързо</translation>
+<translation id="1345580220012169610">Очаквана такса</translation>
 <translation id="632241521608275119">Толерантност към слипидж</translation>
 <translation id="6778140392042462129">Обмени</translation>
 <translation id="6173494033320397682">Само пряк маршрут</translation>
@@ -1718,6 +1717,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6276584161122912863">Цена в газ</translation>
 <translation id="6132197290665156212">Очаквана мрежова такса</translation>
 <translation id="1788636309517085411">Използване по подразбиране</translation>
+<translation id="3968375068626660591">Тази газова такса ще замени първоначалната.</translation>
+<translation id="1661088862481901887">Това ще създаде нова трансакция с нова газова такса за заместване и анулиране на висящата. Анулиране може да се опита само ако трансакцията все още е висяща в мрежата.</translation>
+<translation id="5797060124625958778">Приоритет на скоростта</translation>
 <translation id="6213230117190778270">Получаване</translation>
 <translation id="6748108480210050150">От</translation>
 <translation id="4875290286426670462">Неограничено <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="5329136173514538969">Освобождаване на разделите</translation>
 <translation id="7595612919377246359">Размяна на позиции на раздел</translation>
 <translation id="2367972762794486313">Показване на приложенията</translation>
+<translation id="3468387898712904997">Нов имейл псевдоним</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
 <translation id="4101707289420716287">Изключване на Speedreader</translation>
@@ -2184,11 +2187,23 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7127671672828944579">Здравей, аз съм Лио, изцяло хостваният AI асистент на Brave. Задвижван съм от Qwen 14B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Здравей, аз съм Лио, изцяло хостваният асистент с ИИ на Brave. Захранва ме Gemma 3 12B – модел, създаден от Google DeepMind, с цел ефективност и широко приложение. Gemma се хоства от Brave чрез собствената ни защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Здравей, аз съм Лио. Аз съм AI асистент на Brave. Задвижван съм от DeepSeek R1 – модел, създаден от DeepSeek за изпълнение на задачи по дълбоко разсъждение. DeepSeek R1 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от DeepSeek V3.1 – модел, създаден от DeepSeek с цел ефективност и широко приложение. DeepSeek V3.1 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здравей, аз съм Leo. Аз съм AI асистент на Brave. Захранвам се от Claude Instant — модел, създаден от Anthropic за водене на диалог и обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Sonnet – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Sonnet се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 4 Scout – модел, създаден от Meta с цел ефективност и широко приложение. Llama 4 Scout се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 4 Maverick – модел, създаден от Meta с цел ефективност и широко приложение. Llama 4 Maverick се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT OSS 20B – модел, създаден от OpenAI с цел ефективност и широко приложение. GPT OSS 20B се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT OSS 120B – модел, създаден от OpenAI с цел ефективност и широко приложение. GPT OSS 120B се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Mistral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Mistral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Pixtral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Pixtral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижван съм от Qwen 3 235B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3 235B се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Deepseek V3.1 – модел, създаден от Deepseek с цел ефективност и широко приложение. Deepseek V3.1 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижван съм от Qwen 3 Coder 480B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3 Coder 480B се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Opus – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Opus се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Локален</translation>
+<translation id="830868413617744215">Бета</translation>
 <translation id="631371844654031449">Препоръчани модели</translation>
 <translation id="6568044140836233369">Покажи всички модели</translation>
 <translation id="6187065185557150870">Чат</translation>
@@ -2313,6 +2328,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8506027496671575183">Търсене • Визия • Инструменти</translation>
 <translation id="3213834013136637671">Търсене • Визия</translation>
 <translation id="7697693533305615127">Търсене • Мислене</translation>
+<translation id="7465032796278724624">Проверимо поверителен чрез NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделът се променя динамично, за да се използва най-добрият за задачата</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
 <translation id="3754337604877048671">Представяме Leo AI</translation>
@@ -2376,7 +2392,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8410199626695516952">Добре, няма да запаметявам това</translation>
 <translation id="8419849467765474535">Неуспешно запазване в паметта. Моля, опитай отново.</translation>
 <translation id="5517580030864973329">Преминаване от уеб страницата към нов адрес</translation>
-<translation id="8832457834975923266">Преминаване към уеб страницата <ph name="URL"/></translation>
+<translation id="9197920788851078696">Навигиране към уеб страницата <ph name="URL"/></translation>
 <translation id="5095252080770652994">Прогрес</translation>
 <translation id="8332385567036775056">Стъпки</translation>
 <translation id="4521931942079977149">Кликване върху страницата</translation>
@@ -2391,6 +2407,20 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4798146464408730445">Не са намерени никакви умения. Създайте ново, като кликнете върху бутона "Ново".</translation>
 <translation id="271033894570825754">Нов</translation>
 <translation id="8266605059880650542">Записване на информация за страницата за по-късно</translation>
+<translation id="7049849063044248805">Режимът на агент работи с модели, които поддържат инструменти. Несъвместими модели са скрити от този списък.</translation>
+<translation id="3397808797783614750">Разрешаването на AI да сърфира автоматично вместо вас може да доведе до вредни, непреднамерени последици за вашата поверителност, финанси и онлайн комуникация. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Предупреждение за сигурност</translation>
+<translation id="6077070599873946984">Brave AI изисква вашето разрешение за: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Операцията е разпозната като потенциално неотговаряща на вашето запитване:</translation>
+<translation id="3927932062596804919">Отказ</translation>
+<translation id="4569155249847375786">Проверено</translation>
+<translation id="3240988198391588806">Режим на агент</translation>
+<translation id="538066983058750776">Относно профила на Лио</translation>
+<translation id="1577570612997320961">За да защитим данните ви, този изолиран профил на Brave ограничава достъпа на AI до основния ви профил за сърфиране. Лио AI има допълнителни разрешения тук, за да посещава и взаимодейства със сайтове, така че можете да му възлагате задачи и той да сърфира с вас, като по този начин повишава продуктивността ви.</translation>
+<translation id="648116453147783450">Вашите данни и сесии</translation>
+<translation id="3906161204878017619">Когато се впишете в сайт с този профил, Лио вижда информацията в този сайт, ако е отворен – било когато сам го посети, било когато му възложите да направи нещо в него.</translation>
+<translation id="5583803492921648196">Превключване обратно</translation>
+<translation id="8068929004144221259">Можете да се върнете към обичайния си профил по всяко време от главното меню или от аватара на Лио в лентата с инструменти. Режимът на агент винаги ще се отваря в този профил.</translation>
 <translation id="3486480638399578250">Пази личния си имейл адрес в тайна</translation>
 <translation id="7765422154906712751">Създава уникални, произволни адреси, които препращат към имейл адреса за твоя акаунт в Brave и могат да бъдат изтрити по всяко време. Така скрива истинския ти имейл адрес, за да не се разкрива или използва от рекламодатели.</translation>
 <translation id="5222676887888702881">Изход</translation>
@@ -2513,6 +2543,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="131231380815754440">Активиране на HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
+<translation id="5465091511225410553">(налага се)</translation>
+<translation id="8646614940337543907">(налага се от разширение)</translation>
+<translation id="3559821445144429594">(налага се от политика)</translation>
+<translation id="550374350047782149">(налага се от разрешителен списък)</translation>
+<translation id="68858161161918073">(налага се от надзорник)</translation>
+<translation id="5735057546627037489">(налага се от PWA)</translation>
 <translation id="3246600097575692802">Разширяване на блокирани скриптове</translation>
 <translation id="3603525299146223354">Проследяващи елементи и реклами</translation>
 <translation id="4448697385961650078">Блокиране на проследяването и рекламите</translation>
@@ -2547,6 +2583,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
  other {Щитовете на Brave блокираха {BLOCKED_COUNT} тракера от<ph name="SITE_URL"/>}
  }</translation>
 <translation id="2540598191934725677">Кликнете върху иконата на Brave, за да видите Щитовете на Brave.</translation>
+<translation id="542789539047208469">Информация за сайта</translation>
 <translation id="6294662480095808915">Поверителност. По подразбиране.</translation>
 <translation id="4366423156486478559">Получете защита от Brave за всяка връзка, върху която кликнете. Просто задайте Brave по подразбиране и сърфирайте. Частно.</translation>
 <translation id="3830912418080848377">Импортиране на настройки</translation>
@@ -2683,5 +2720,6 @@ Brave има помощна услуга, която Ви защитава от 
 съществуващия раздел</translation>
 <translation id="451189393813405346">Попитайте Leo</translation>
 <translation id="1602850501393095406">Натисни ↑ за маркиране</translation>
+<translation id="8367705492654390392">Попитай всичко</translation>
 <translation id="8525248723479742219">Възпроизвеждане по-късно</translation>
 </translationbundle>

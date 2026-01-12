@@ -336,6 +336,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="7557539689487606886">Telli Premium</translation>
 <translation id="1035309871698658326">Kui see on avatud, saadab see automaatselt kõigi mitte-privaatsete vahekaartide pealkirjad ja päritolu Leole, et neid klassifitseerida.</translation>
 <translation id="3435896845095436175">Luba</translation>
+<translation id="9082792303833649978">Seda seadistust haldab sinu administraator või mõni muu Brave’i poliitika.</translation>
 <translation id="1940221956626514677">Tööriistariba kohandamine</translation>
 <translation id="6501807887341963552">Teema ja värvid</translation>
 <translation id="6724227215236550330">Salvestatud paroolid ilmuvad siia. Paroolide importimiseks <ph name="BRAND"/> sellesse seadmesse <ph name="BEGIN_LINK"/> valige CSV-fail<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2263346047290834619">Kasuta puustiilis vahelehti</translation>
 <translation id="5860254591544742609">Kuva pealkirja riba</translation>
 <translation id="4691131445504068802">Peida täielikult, kui on minimeeritud</translation>
+<translation id="6763346436728173884">Peida alati vahelehe sulgemise nupp</translation>
 <translation id="4909269867860362936">Laienda automaatselt hõljutamisel, kui on minimeeritud</translation>
 <translation id="3367129510799209147">Vahelehe hõljutusrežiim</translation>
 <translation id="8925055964134259461">Laienda vertikaalseid vahekaarte aknast sõltumatult</translation>
@@ -753,6 +755,7 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="7141438739990875547">Bitcoini võrgud</translation>
 <translation id="1077567586443625607">Zcashi võrgud</translation>
 <translation id="1177180573354712438">Cardano võrgud</translation>
+<translation id="3176794108951154148">Polkadot võrgud</translation>
 <translation id="3159419679550543837">Kuva proovivõrgud</translation>
 <translation id="3215569562674795548">Võrgu muutmine või uue võrgu lisamine</translation>
 <translation id="4418993400653250511">Ahela tunnus</translation>

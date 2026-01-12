@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">প্রিমিয়াম-এ যান</translation>
 <translation id="1035309871698658326">খোলা থাকাকালীন, এটি সমস্ত অ-ব্যক্তিগত ট্যাবগুলির শ্রেণীবিন্যাস করার জন্য Leo-কে সেগুলির শিরোনাম এবং উৎস স্বয়ংক্রিয়ভাবে পাঠাবে।</translation>
 <translation id="3435896845095436175">সক্ষম করুন</translation>
+<translation id="9082792303833649978">এই সেটিংটি আপনার প্রশাসক অথবা অন্য কোনো Brave নীতিমালার মাধ্যমে নিয়ন্ত্রিত হচ্ছে।</translation>
 <translation id="1940221956626514677">সরঞ্জাম দণ্ড কাস্টমাইজ করুন</translation>
 <translation id="6501807887341963552">থিম এবং রঙ</translation>
 <translation id="6724227215236550330">সেভ করা পাসওয়ার্ডগুলি এখানে দেখা যাবে। To import passwords to <ph name="BRAND"/> এই ডিভাইসে, পাসওয়ার্ডগুলি আমদানি করতে <ph name="BEGIN_LINK"/> একটি CSV ফাইল নির্বাচন করুন<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ট্রী ট্যাবগুলি ব্যবহার করুন</translation>
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="4691131445504068802">সঙ্কুচিত হলে সম্পূর্ণরূপে লুকান</translation>
+<translation id="6763346436728173884">ট্যাব বন্ধের বোতাম সর্বদা লুকান</translation>
 <translation id="4909269867860362936">সঙ্কুচিত অবস্থায় হোভার করলেই স্বয়ংক্রিয়ভাবে প্রসারিত হবে</translation>
 <translation id="3367129510799209147">ট্যাব হোভার মোড</translation>
 <translation id="8925055964134259461">উইন্ডো প্রতি স্বাধীনভাবে উল্লম্ব ট্যাব স্বয়ংক্রিয়ভাবে প্রসারিত করুন</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Bitcoin নেটওয়ার্ক</translation>
 <translation id="1077567586443625607">Zcash নেটওয়ার্ক</translation>
 <translation id="1177180573354712438">Cardano নেটওয়ার্ক</translation>
+<translation id="3176794108951154148">Polkadot নেটওয়ার্ক</translation>
 <translation id="3159419679550543837">টেস্ট নেটওয়ার্ক দেখান</translation>
 <translation id="3215569562674795548">নতুন নেটওয়ার্ক যোগ করুন বা এডিট করুন</translation>
 <translation id="4418993400653250511">চেইনের Id</translation>

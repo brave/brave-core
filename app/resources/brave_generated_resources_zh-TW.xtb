@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">訂閱 Premium</translation>
 <translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
 <translation id="3435896845095436175">啟用</translation>
+<translation id="9082792303833649978">此設定由您的管理員或其他 Brave 政策所管理。</translation>
 <translation id="1940221956626514677">自訂工具列</translation>
 <translation id="6501807887341963552">主題與顏色</translation>
 <translation id="6724227215236550330">已儲存的密碼將顯示於此處。若要將密碼匯入本裝置上的 <ph name="BRAND"/>，<ph name="BEGIN_LINK"/> 請點選 CSV 檔案<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">使用樹狀標籤</translation>
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="4691131445504068802">最小化時完全隱藏</translation>
+<translation id="6763346436728173884">總是隱藏分頁關閉按鈕</translation>
 <translation id="4909269867860362936">最小化時滑鼠懸停時自動展開</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
 <translation id="8925055964134259461">依視窗個別展開垂直分頁</translation>
@@ -496,9 +498,9 @@
 <translation id="2718718846210516552">未找到 Scriptlet。</translation>
 <translation id="4088315951291671239">請勿在此貼上您不瞭解或未親自檢視的程式碼。這可能會讓攻擊者竊取您的身分或控制您的電腦。</translation>
 <translation id="3020183492814296499">捷徑</translation>
-<translation id="2935698011275148880">勇敢的起源</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
 <translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
-<translation id="553273341094971255">Brave Origin 可幫助您調整 Brave，使其符合您的喜好，並移除所有應用程式內的促銷優惠、品牌廣告，甚至是您在安裝時可能啟用的匿名分析。</translation>
+<translation id="553273341094971255">Brave Origin 可幫助您調整 Brave 使其符合您的喜好，並移除所有應用程式內的促銷優惠、品牌廣告，甚至是您在安裝時可能啟用的匿名分析。</translation>
 <translation id="534725333104202278">您之前啟用或使用過的任何附加元件或功能將維持可見與整合，而其他附加元件或功能則會停用。當我們在瀏覽器中提供新功能時，請繼續調整Brave。在Brave Origin控制面板中，這些功能預設會隱藏並靜默顯示。</translation>
 <translation id="1919345977826869612">廣告</translation>
 <translation id="944736176598169208">獎勵</translation>
@@ -514,11 +516,11 @@
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
-<translation id="3328713589982547433">僅廣告封鎖模式</translation>
+<translation id="3328713589982547433">僅限廣告攔截模式</translation>
 <translation id="1574253307550419595">只使用廣告封鎖模式</translation>
-<translation id="738717058053657696">僅廣告封鎖模式保留 Brave Shields 的核心廣告封鎖規則。警告：移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將 Shields 設定為 DOWN。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
-<translation id="3055675200351793825">遮罩選項目前已停用。</translation>
-<translation id="516439939408671102">僅廣告封鎖模式保留 Brave Shields 的核心廣告封鎖規則，並關閉隱私保護。如果您想啟用標準的 Shields，請停用此模式。</translation>
+<translation id="738717058053657696">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則。警告：會移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將盾牌設定為「關閉」。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">盾牌選項目前已停用。</translation>
+<translation id="516439939408671102">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則，並關閉隱私保護。如果您想啟用標準的盾牌功能，請停用此模式。</translation>
 <translation id="177233004755519660">關閉「僅限廣告封鎖」模式</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
@@ -753,6 +755,7 @@
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="1077567586443625607">Zcash 網路</translation>
 <translation id="1177180573354712438">Cardano 網絡</translation>
+<translation id="3176794108951154148">Polkadot 網路</translation>
 <translation id="3159419679550543837">顯示測試網站</translation>
 <translation id="3215569562674795548">編輯或新增新網路</translation>
 <translation id="4418993400653250511">鏈結 ID</translation>

@@ -335,6 +335,7 @@
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
 <translation id="1035309871698658326">Atverot parastas cilnes, to nosaukumi un izcelsme tiks automātiski nosūtīti Leo to klasifikācijai.</translation>
 <translation id="3435896845095436175">Iespējot</translation>
+<translation id="9082792303833649978">Šo iestatījumu pārvalda jūsu administrators vai cita Brave politika.</translation>
 <translation id="1940221956626514677">Pielāgot rīkjoslu</translation>
 <translation id="6501807887341963552">Dizains un krāsas</translation>
 <translation id="6724227215236550330">Šeit tiks rādītas saglabātās paroles. Lai importētu paroles uz <ph name="BRAND"/> šajā ierīcē, <ph name="BEGIN_LINK"/> atlasiet CSV failu<ph name="END_LINK"/></translation>
@@ -378,6 +379,7 @@
 <translation id="2263346047290834619">Izmantot koka stila cilnes</translation>
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
 <translation id="4691131445504068802">Pilnībā paslēpt, kad minimizēts</translation>
+<translation id="6763346436728173884">Vienmēr paslēpt cilnes aizvēršanas pogu</translation>
 <translation id="4909269867860362936">Automātiski izvērst, turot peli virs, kad minimizēts</translation>
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
 <translation id="8925055964134259461">Izvērst vertikālās cilnes atsevišķi katrā logā</translation>
@@ -751,6 +753,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7141438739990875547">Bitcoin tīkli</translation>
 <translation id="1077567586443625607">Zcash tīkli</translation>
 <translation id="1177180573354712438">Cardano tīkli</translation>
+<translation id="3176794108951154148">Polkadot tīkli</translation>
 <translation id="3159419679550543837">Parādīt testa tīklus</translation>
 <translation id="3215569562674795548">Rediģēt vai pievienot jaunu tīklu</translation>
 <translation id="4418993400653250511">Ķēdes ID</translation>

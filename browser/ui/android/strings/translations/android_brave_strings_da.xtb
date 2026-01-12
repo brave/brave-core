@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Kopiér rent link</translation>
 <translation id="721490496276866468">Importer adgangskoder</translation>
 <translation id="8178175542325151321">Vælg en .csv-fil, der indeholder dine adgangskoder, for at importere dem til Braves adgangskodeadministrator.</translation>
-<translation id="1177863135347784049">Tilpasset</translation>
 <translation id="6112331814131703370">Blokér anmodninger om at "skifte til app"</translation>
 <translation id="4744921452903670666">Fortæl os, hvad du synes!</translation>
 <translation id="2524310205387880526">Bedøm Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Automatisk udfyldning i private faner</translation>
 <translation id="8685431198160039193">Gemte oplysninger kan automatisk udfyldes i private faner</translation>
 <translation id="6583902294974160967">Support</translation>
-<translation id="5713644099811900409">Brave-konto</translation>
-<translation id="4472575034687746823">Kom godt i gang</translation>
 <translation id="1799030480311994998">Funktioner</translation>
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="2839742394543397416">Analyse</translation>
@@ -384,7 +381,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="717952606991220586">Ups, noget er galt. Prøv venligst igen senere.</translation>
 <translation id="987264212798334818">Generelt</translation>
 <translation id="1116694919640316211">Om</translation>
-<translation id="7961015016161918242">Aldrig</translation>
 <translation id="1275213816424141989">Måske senere</translation>
 <translation id="3624048886326677117">Blokér trackere og reklamer (aggressivt)</translation>
 <translation id="7151914815476509258">Blokér trackere og reklamer (standard)</translation>
@@ -569,7 +565,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="6697810017029555732">Match!</translation>
 <translation id="5981303441790732480">Importér din eksisterende wallet</translation>
 <translation id="9111102763498581341">Lås op</translation>
-<translation id="6657585470893396449">Adgangskode</translation>
 <translation id="7553242001898162573">Indtast din adgangskode</translation>
 <translation id="5619264711680220002">Biometrisk oplåsning</translation>
 <translation id="9195657745688986798">Lås wallet op</translation>
@@ -734,6 +729,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="9091334651803050473">Det er ikke garantere, men miners vil sikkert prioritere din transaktion, hvis du betaler et højere gebyr.</translation>
 <translation id="2941112035454246133">Lav</translation>
 <translation id="7304030187361489308">Høj</translation>
+<translation id="1177863135347784049">Tilpasset</translation>
 <translation id="4853037749278079787">Maksimumafgift: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Aktuel basisafgift: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Grænse for brændstofmængde</translation>
@@ -1054,31 +1050,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6393423486818299209">Brug din nuværende udbyder eller Wikimedia DNS</translation>
 <translation id="3401384982562827787">Brug din nuværende udbyder eller Cloudflare</translation>
 <translation id="8812367543786936496">Hvis din nuværende tjenesteudbyder er usikker, bruger Brave en sikker alternativ DNS-udbyder</translation>
-<translation id="5680678411439841197">by</translation>
-<translation id="8185518433273977704">by</translation>
-<translation id="4528386452965343421">præfektur</translation>
-<translation id="1589122976691792535">region</translation>
-<translation id="2221292964468054123">stat</translation>
-<translation id="3801482889636327368">organisation</translation>
-<translation id="1425162721525518064">firma</translation>
-<translation id="7568794877555549044">land</translation>
-<translation id="5982110855572850497">mærkat</translation>
-<translation id="6848689413353508904">container</translation>
-<translation id="1496514951988037011">brugernavn</translation>
-<translation id="6155129418108337061">login</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">mail</translation>
-<translation id="3488199663160411179">navn</translation>
-<translation id="793994607260936590">første</translation>
-<translation id="1782612111936779655">efternavn</translation>
-<translation id="7628132737455466188">fulde navn</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">adresse</translation>
-<translation id="5557821203571216370">lejlighed</translation>
-<translation id="8051552210542030943">pinkode</translation>
-<translation id="5233247193491045452">postnummer</translation>
-<translation id="3300502432153878901">postnummer</translation>
 <translation id="1381108437654541567">Aktiver flere faner</translation>
 <translation id="6167344249617630304">Åbn op til 5 faner ad gangen, og flyt faner fra et vindue til et andet</translation>
 <translation id="1063948063403254568">Flere faner fundet</translation>
@@ -1156,6 +1127,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7808889146555843082">Fjernelse af denne adgangskode sletter ikke din konto på <ph name="SITE"/>. Skift din adgangskode, eller slet din konto på <ph name="SITE"/> for at beskytte den mod andre.</translation>
 <translation id="2870560284913253234">Website</translation>
 <translation id="8503813439785031346">Brugernavn</translation>
+<translation id="6657585470893396449">Adgangskode</translation>
 <translation id="2278052315791335171">Fjernelse af denne adgangskode sletter ikke din konto på <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Lås op for at kopiere din adgangskode</translation>
 <translation id="5515439363601853141">Lås op for at se din adgangskode</translation>
