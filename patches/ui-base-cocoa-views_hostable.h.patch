@@ -1,0 +1,13 @@
+diff --git a/ui/base/cocoa/views_hostable.h b/ui/base/cocoa/views_hostable.h
+index 7470041ac5b6bf9d142f0908801b3c12d2141e0c..d9caf6c061c716a0a3f3c050e47d94aa7376a1a7 100644
+--- a/ui/base/cocoa/views_hostable.h
++++ b/ui/base/cocoa/views_hostable.h
+@@ -60,7 +60,7 @@ class ViewsHostableView {
+   virtual void ViewsHostableDetach() = 0;
+ 
+   // Resize the WebContentsView's NSView.
+-  virtual void ViewsHostableSetBounds(const gfx::Rect& bounds_in_superview) = 0;
++  virtual void ViewsHostableSetBounds(const gfx::Rect& bounds_in_window) = 0;
+ 
+   // Show or hide the WebContentsView's NSView.
+   virtual void ViewsHostableSetVisible(bool visible) = 0;
