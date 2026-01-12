@@ -45,6 +45,7 @@ group("browser") {
     "api/web_view",
     "brave_wallet",
     "//brave/browser/sync",
+    "//brave/components/brave_policy",
     "//brave/components/constants",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/application_context",
