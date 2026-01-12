@@ -123,14 +123,6 @@ exports.update = () => {
       ])
     }
   }
-  fileMap.add([
-    path.join(braveAppDir, 'theme', 'default_100_percent', 'common'),
-    path.join(chromeAppDir, 'theme', 'default_100_percent', 'common'),
-  ])
-  fileMap.add([
-    path.join(braveAppDir, 'theme', 'default_200_percent', 'common'),
-    path.join(chromeAppDir, 'theme', 'default_200_percent', 'common'),
-  ])
   // Copy product_logo for version UI (about:version page).
   // product_logo_name_48.png is renamed to product_logo.png during copy.
   // Use brave_origin logos when is_brave_origin_branded is true.
@@ -177,60 +169,6 @@ exports.update = () => {
       path.join(chromeComponentsDir, 'vector_icons', branding),
     ])
   }
-  // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'),
-    path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png'),
-  ])
-  fileMap.add([
-    path.join(
-      braveBrowserResourcesDir,
-      'downloads',
-      'images',
-      'incognito_marker.svg',
-    ),
-    path.join(
-      chromeBrowserResourcesDir,
-      'downloads',
-      'images',
-      'incognito_marker.svg',
-    ),
-  ])
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'settings', 'images'),
-    path.join(chromeBrowserResourcesDir, 'settings', 'images'),
-  ])
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'signin', 'images'),
-    path.join(chromeBrowserResourcesDir, 'signin', 'images'),
-  ])
-  fileMap.add([
-    path.join(
-      braveBrowserResourcesDir,
-      'signin',
-      'profile_customization',
-      'images',
-    ),
-    path.join(
-      chromeBrowserResourcesDir,
-      'signin',
-      'profile_customization',
-      'images',
-    ),
-  ])
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
-    path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
-  ])
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'side_panel', 'reading_list', 'images'),
-    path.join(
-      chromeBrowserResourcesDir,
-      'side_panel',
-      'reading_list',
-      'images',
-    ),
-  ])
 
   // Copy to make our ${branding_path_product}_behaviors.cc
   fileMap.add([
