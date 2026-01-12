@@ -150,14 +150,14 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
     if (source->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
         static_cast<Tab*>(source)->data().pinned) {
       auto index = GetModelIndexOf(source).value();
-      auto* browser = controller_->GetBrowser();
+      auto* browser = controller_->GetBrowserWindowInterface();
       DCHECK(browser);
 
       auto* shared_pinned_tab_service =
-          SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+          SharedPinnedTabServiceFactory::GetForProfile(browser->GetProfile());
       DCHECK(shared_pinned_tab_service);
       if (shared_pinned_tab_service->IsDummyContents(
-              browser->tab_strip_model()->GetWebContentsAt(index))) {
+              browser->GetTabStripModel()->GetWebContentsAt(index))) {
         return;
       }
     }
