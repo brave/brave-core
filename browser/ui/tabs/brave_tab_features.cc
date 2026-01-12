@@ -24,10 +24,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/features.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #endif
 
 namespace tabs {
@@ -60,7 +60,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                HostContentSettingsMapFactory::GetForProfile(profile)),
+                PsstSettingsServiceFactory::GetForProfile(profile)),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif

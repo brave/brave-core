@@ -4,9 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("psst") {
-  public = [ "psst_ui_delegate_impl.h" ]
+  public = [
+    "psst_settings_service_factory.h",
+    "psst_ui_delegate_impl.h",
+  ]
 
-  sources = [ "psst_ui_delegate_impl.cc" ]
+  sources = [
+    "psst_settings_service_factory.cc",
+    "psst_ui_delegate_impl.cc",
+  ]
 
   deps = [
     "//base",
@@ -24,7 +30,7 @@ static_library("psst") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_psst_utils_unittest.cc" ]
+  sources = [ "psst_settings_service_unittest.cc" ]
   deps = [
     ":psst",
     "//base",

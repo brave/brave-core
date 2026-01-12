@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/browser/core/psst_settings_service.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -22,8 +23,7 @@ namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
-  explicit PsstUiDelegateImpl(
-      HostContentSettingsMap* host_content_settings_map);
+  explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
@@ -50,7 +50,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   std::optional<PsstWebsiteSettings> dialog_data_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
 };
 
 }  // namespace psst
