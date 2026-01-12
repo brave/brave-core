@@ -1,0 +1,13 @@
+diff --git a/content/browser/web_contents/web_contents_view_mac.h b/content/browser/web_contents/web_contents_view_mac.h
+index 3bff2ec50fb7d39261e1f5b4cb21f59ddf0ef9d0..f4d4c97b7365b6417e5c35791a264a43ada1268d 100644
+--- a/content/browser/web_contents/web_contents_view_mac.h
++++ b/content/browser/web_contents/web_contents_view_mac.h
+@@ -127,7 +127,7 @@ class WebContentsViewMac : public WebContentsView,
+   // ViewsHostableView:
+   void ViewsHostableAttach(ViewsHostableView::Host* host) override;
+   void ViewsHostableDetach() override;
+-  void ViewsHostableSetBounds(const gfx::Rect& bounds_in_superview) override;
++  void ViewsHostableSetBounds(const gfx::Rect& bounds_in_window) override;
+   void ViewsHostableSetVisible(bool visible) override;
+   void ViewsHostableMakeFirstResponder() override;
+   void ViewsHostableSetParentAccessible(
