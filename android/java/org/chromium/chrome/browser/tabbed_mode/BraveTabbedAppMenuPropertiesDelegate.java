@@ -460,7 +460,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         List<PolicyControlledMenuItem> policyItems = getPolicyControlledMenuItems();
 
         if (profile == null || policyItems.isEmpty()) {
-            // Profile not available (e.g., in tests) or no policy items - build menu without policy checks
+            // Profile not available (e.g., in tests) or no policy items - build menu without policy
+            // checks
             MVCListAdapter.ModelList menuList = buildMainMenuModelList(new HashMap<>());
             callback.onResult(menuList);
             return;
