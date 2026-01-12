@@ -17,6 +17,8 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
@@ -24,6 +26,7 @@ import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager;
@@ -67,6 +70,13 @@ public class BraveRecentTabsSnackbarHelper {
     private String mSnackbarTitle = "";
     private String mSnackbarPageTitle = "";
     private String mSnackbarUrl = "";
+    // Store NTP tab ID to detect when user switches away from NTP
+    private int mNtpTabId = Tab.INVALID_TAB_ID;
+    // Observer to detect tab selection changes (e.g., user switches to another tab)
+    private @Nullable TabModelSelectorTabModelObserver mTabModelObserver;
+    // Observer to detect when tab switcher is opened
+    private @Nullable LayoutStateProvider mLayoutStateProvider;
+    private LayoutStateProvider.@Nullable LayoutStateObserver mLayoutStateObserver;
 
     public BraveRecentTabsSnackbarHelper() {
         mFaviconHelper = new FaviconHelper();
@@ -187,6 +197,12 @@ public class BraveRecentTabsSnackbarHelper {
                                 Snackbar.UMA_UNKNOWN)
                         .setDuration(SNACKBAR_DISMISS_DELAY_MS);
 
+        // Store NTP tab ID to detect when user switches away
+        mNtpTabId = currentTab.getId();
+
+        // Register observers to dismiss snackbar when user leaves NTP
+        registerDismissObservers(activity);
+
         // Delay showing snackbar to let view hierarchy settle first
         // This gives MessageContainer time to be properly positioned before we adjust it
         PostTask.postDelayedTask(
@@ -221,6 +237,53 @@ public class BraveRecentTabsSnackbarHelper {
                 },
                 SNACKBAR_SHOW_DELAY_MS); // Wait for view hierarchy to settle as sometimes snackbar
         // pop ups under bottom bar otherwise
+    }
+
+    /**
+     * Registers observers to automatically dismiss the snackbar when: - User switches to a
+     * different tab - User opens the tab switcher
+     */
+    private void registerDismissObservers(BraveActivity activity) {
+        TabModelSelector selector = activity.getTabModelSelectorSupplier().get();
+        if (selector != null) {
+            mTabModelObserver =
+                    new TabModelSelectorTabModelObserver(selector) {
+                        @Override
+                        public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
+                            if (mDestroyed) {
+                                return;
+                            }
+                            // If user switched away from NTP tab, dismiss snackbar
+                            if (lastId == mNtpTabId && tab.getId() != mNtpTabId) {
+                                dismissSnackbar();
+                            }
+                        }
+                    };
+        }
+
+        // Get LayoutManager from ChromeActivity's supplier to detect tab switcher
+        activity.getLayoutManagerSupplier()
+                .addObserver(
+                        layoutManager -> {
+                            if (mDestroyed || layoutManager == null) {
+                                return;
+                            }
+                            mLayoutStateProvider = layoutManager;
+                            mLayoutStateObserver =
+                                    new LayoutStateProvider.LayoutStateObserver() {
+                                        @Override
+                                        public void onStartedShowing(@LayoutType int layoutType) {
+                                            if (mDestroyed) {
+                                                return;
+                                            }
+                                            // Dismiss snackbar when tab switcher is opened
+                                            if (layoutType == LayoutType.TAB_SWITCHER) {
+                                                dismissSnackbar();
+                                            }
+                                        }
+                                    };
+                            mLayoutStateProvider.addObserver(mLayoutStateObserver);
+                        });
     }
 
     /** Generates a fallback icon and sets it as the profile image on the snackbar. */
@@ -368,6 +431,16 @@ public class BraveRecentTabsSnackbarHelper {
         return null;
     }
 
+    /** Dismisses the snackbar and cleans up resources without switching tabs. */
+    private void dismissSnackbar() {
+        if (mSnackbarManager != null && mSnackbarController != null) {
+            mSnackbarManager.dismissSnackbars(mSnackbarController);
+        }
+        mCurrentSnackbar = null;
+        mSnackbarController = null;
+        destroy();
+    }
+
     /** Switches to the last tab and dismisses the snackbar. */
     private void switchToLastTabAndDismiss(BraveActivity activity) {
         // Dismiss snackbar first to ensure it's removed before tab switch
@@ -448,6 +521,20 @@ public class BraveRecentTabsSnackbarHelper {
             return;
         }
         mDestroyed = true;
+
+        // Clean up tab model observer
+        if (mTabModelObserver != null) {
+            mTabModelObserver.destroy();
+            mTabModelObserver = null;
+        }
+
+        // Clean up layout state observer
+        if (mLayoutStateProvider != null && mLayoutStateObserver != null) {
+            mLayoutStateProvider.removeObserver(mLayoutStateObserver);
+        }
+        mLayoutStateObserver = null;
+        mLayoutStateProvider = null;
+
         if (mFaviconHelper != null) {
             mFaviconHelper.destroy();
         }
