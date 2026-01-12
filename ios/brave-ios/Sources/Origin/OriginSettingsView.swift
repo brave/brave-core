@@ -22,6 +22,8 @@ public struct OriginSettingsView: View {
         Toggle(isOn: $viewModel.isRewardsDisabled.inversed) {
           Label(Strings.Origin.rewardsLabel, braveSystemImage: "leo.product.bat-outline")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.adsHeader)
       }
@@ -29,9 +31,13 @@ public struct OriginSettingsView: View {
         Toggle(isOn: $viewModel.isP3AEnabled) {
           Label(Strings.Origin.privacyPreservingAnalyticsLabel, braveSystemImage: "leo.bar.chart")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isStatsPingEnabled) {
           Label(Strings.Origin.statisticsReportingLabel, braveSystemImage: "leo.bar.chart")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.analyticsHeader)
       }
@@ -39,18 +45,28 @@ public struct OriginSettingsView: View {
         Toggle(isOn: $viewModel.isAIChatEnabled) {
           Label(Strings.Origin.leoAILabel, braveSystemImage: "leo.product.brave-leo")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isNewsDisabled.inversed) {
           Label(Strings.Origin.newsLabel, braveSystemImage: "leo.product.brave-news")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isTalkDisabled.inversed) {
           Label(Strings.Origin.talkLabel, braveSystemImage: "leo.product.brave-talk")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isVPNDisabled.inversed) {
           Label(Strings.Origin.vpnLabel, braveSystemImage: "leo.product.vpn")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isWalletDisabled.inversed) {
           Label(Strings.Origin.walletLabel, braveSystemImage: "leo.product.brave-wallet")
         }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.featuresHeader)
       } footer: {
@@ -65,10 +81,47 @@ public struct OriginSettingsView: View {
         } label: {
           Text(Strings.Origin.resetToDefaultsButton)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .navigationTitle(Strings.Origin.originProductName)
     .navigationBarTitleDisplayMode(.inline)
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
+  }
+}
+
+extension ToggleStyle where Self == OriginToggleStyle {
+  fileprivate static var origin: OriginToggleStyle { .init() }
+}
+
+private struct OriginToggleStyle: ToggleStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    Toggle(isOn: configuration.$isOn) {
+      configuration.label
+        .labelStyle(_LabelStyle(isOn: configuration.isOn))
+    }
+    .tint(Color(braveSystemName: .primary40))
+  }
+
+  struct _LabelStyle: LabelStyle {
+    var isOn: Bool
+    func makeBody(configuration: Configuration) -> some View {
+      Label {
+        VStack(alignment: .leading) {
+          configuration.title
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
+          if isOn {
+            Text(Strings.Origin.enabledFeatureNote)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.footnote)
+          }
+        }
+      } icon: {
+        configuration.icon
+          .foregroundStyle(Color(braveSystemName: .iconDefault))
+      }
+    }
   }
 }
 
