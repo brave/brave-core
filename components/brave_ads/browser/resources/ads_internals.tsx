@@ -77,8 +77,8 @@ const App: React.FC = () => {
   const getAdsInternals = React.useCallback(async () => {
     try {
       const adsInternals = await API.getAdsInternals();
-      const { conversionUrlPatterns = [], adEvents = [] } = JSON.parse(adsInternals.response);
-      setConversionUrlPatterns(conversionUrlPatterns);
+      const { creativeSetConversions = [], adEvents = [] } = JSON.parse(adsInternals.response);
+      setConversionUrlPatterns(creativeSetConversions);
       setAdEvents(adEvents);
     } catch (error) {
       console.error('Error getting ads internals', error);
