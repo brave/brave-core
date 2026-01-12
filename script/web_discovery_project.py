@@ -31,7 +31,7 @@ def main():
                 execute_stdout([PNPM, 'install', '--frozen-lockfile'], env=env)
             else:
                 # Fall back to npm with package-lock.json
-                execute_stdout([NPM, 'ci'], env=env)
+                execute_stdout([NPM, 'install', '--no-save', '--yes'], env=env)
         if args.build:
             env["OUTPUT_PATH"] = args.output_path
             # Use npm for build-module script as well
