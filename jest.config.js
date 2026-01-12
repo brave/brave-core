@@ -106,6 +106,7 @@ module.exports = {
     '<rootDir>/build/rustup',
     '<rootDir>/third_party',
     '<rootDir>/tools/crates/vendor',
+    '<rootDir>/leo',
     ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat']),
     ...(buildConfig.enable_brave_wallet
       ? []
