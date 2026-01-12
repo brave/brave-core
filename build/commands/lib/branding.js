@@ -119,24 +119,7 @@ exports.update = () => {
     path.join(braveAppDir, 'theme', 'default_200_percent', 'common'),
     path.join(chromeAppDir, 'theme', 'default_200_percent', 'common'),
   ])
-  // Copy product_logo for version UI (about:version page).
-  // product_logo_name_48.png is renamed to product_logo.png during copy.
-  fileMap.add([
-    path.join(
-      braveAppDir,
-      'theme',
-      'default_200_percent',
-      'brave',
-      'product_logo_white.png',
-    ),
-    path.join(
-      chromeComponentsDir,
-      'resources',
-      'default_200_percent',
-      'chromium',
-      'product_logo_white.png',
-    ),
-  ])
+
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
       path.join(braveAppVectorIconsDir, 'vector_icons', branding),
