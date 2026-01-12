@@ -37,3 +37,8 @@ export const InfoBox = styled(Column)`
   border-radius: ${leo.radius.xl};
   overflow: hidden;
 `
+
+export const ProviderIcon = styled.img`
+  height: 12px;
+  width: auto;
+`

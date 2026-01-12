@@ -13,12 +13,16 @@ import {
   useGetActiveOriginQuery,
   useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
+import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { isBridgeTransaction } from '../../../utils/tx-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { getAddressLabel } from '../../../utils/account-utils'
+
+// Constants
+import { SwapProviderMetadata } from '../../../page/screens/swap/constants/metadata'
+import { BraveWallet, SwapProviderNameMapping } from '../../../constants/types'
 
 // Hooks
 import {
@@ -63,8 +67,9 @@ import {
   InfoBox,
   Card,
   ArrowIconContainer,
+  ProviderIcon,
 } from './confirm_swap_transaction.style'
-import { Column, Row, VerticalDivider } from '../../shared/style'
+import { Column, Row, VerticalDivider, Text } from '../../shared/style'
 import {
   ConfirmationButtonLink,
   ConfirmationInfoLabel,
@@ -118,8 +123,10 @@ export function ConfirmSwapTransaction() {
     destinationToken,
     sourceToken,
     destinationAmount,
+    destinationAmountMin,
     sourceAmount,
     destinationAddress,
+    provider,
   } = useSwapTransactionParser(selectedPendingTransaction)
 
   const { data: sourceNetwork } = useGetNetworkQuery(sourceToken ?? skipToken)
@@ -129,8 +136,32 @@ export function ConfirmSwapTransaction() {
       ? { chainId: destinationToken.chainId, coin: destinationToken.coin }
       : skipToken,
   )
+  const {
+    account: destinationAccount,
+    isLoading: isLoadingDestinationAccount,
+  } = useAccountFromAddressQuery(destinationAddress || skipToken)
 
-  if (!selectedPendingTransaction || !transactionDetails) {
+  const contractAddressTitle = React.useMemo(() => {
+    if (provider === BraveWallet.SwapProvider.kNearIntents) {
+      return getLocale('braveWalletSwapDepositAddress')
+    }
+
+    if (sourceToken?.coin === BraveWallet.CoinType.ETH) {
+      return getLocale('braveWalletSwapContractAddress')
+    }
+
+    if (sourceToken?.coin === BraveWallet.CoinType.SOL) {
+      return getLocale('braveWalletSwapProgramAddress')
+    }
+
+    return getLocale('braveWalletSwapContractAddress')
+  }, [provider, sourceToken])
+
+  if (
+    !selectedPendingTransaction
+    || !transactionDetails
+    || isLoadingDestinationAccount
+  ) {
     return <LoadingPanel />
   }
 
@@ -166,7 +197,6 @@ export function ConfirmSwapTransaction() {
               <OriginInfoCard
                 origin={originInfo}
                 noBackground={true}
-                provider={getAddressLabel(transactionDetails.recipient) ?? ''}
               />
             </Row>
           )}
@@ -186,7 +216,7 @@ export function ConfirmSwapTransaction() {
                 {/* Source token */}
                 <ConfirmationTokenInfo
                   token={sourceToken}
-                  label='spend'
+                  label='swapSource'
                   amount={
                     !sourceAmount.isUndefined()
                       ? sourceAmount.format()
@@ -210,14 +240,23 @@ export function ConfirmSwapTransaction() {
                 {/* Destination token */}
                 <ConfirmationTokenInfo
                   token={destinationToken}
-                  label={isBridgeTx ? 'bridge' : 'receive'}
+                  label={
+                    !destinationAmount.isUndefined()
+                      ? 'swapDestination'
+                      : !destinationAmountMin.isUndefined()
+                        ? 'swapDestinationMin'
+                        : 'swapDestination'
+                  }
                   amount={
                     !destinationAmount.isUndefined()
                       ? destinationAmount.format()
-                      : undefined
+                      : !destinationAmountMin.isUndefined()
+                        ? destinationAmountMin.format()
+                        : undefined
                   }
                   network={destinationNetwork}
                   receiveAddress={destinationAddress}
+                  account={destinationAccount}
                 />
               </Card>
 
@@ -227,6 +266,29 @@ export function ConfirmSwapTransaction() {
                 padding='16px'
                 gap='8px'
               >
+                {provider && (
+                  <>
+                    <Row justifyContent='space-between'>
+                      <ConfirmationInfoLabel textColor='secondary'>
+                        {getLocale('braveWalletSwapProvider')}
+                      </ConfirmationInfoLabel>
+                      <Row
+                        width='unset'
+                        gap='4px'
+                      >
+                        <ProviderIcon src={SwapProviderMetadata[provider]} />
+                        <Text
+                          textSize='12px'
+                          isBold={true}
+                          textColor='primary'
+                        >
+                          {SwapProviderNameMapping[provider]}
+                        </Text>
+                      </Row>
+                    </Row>
+                    <VerticalDivider />
+                  </>
+                )}
                 <ConfirmationNetworkFee
                   transactionsNetwork={transactionsNetwork}
                   gasFee={gasFee}
@@ -240,7 +302,7 @@ export function ConfirmSwapTransaction() {
                 <VerticalDivider />
                 <Row justifyContent='space-between'>
                   <ConfirmationInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletNFTDetailContractAddress')}
+                    {contractAddressTitle}
                   </ConfirmationInfoLabel>
                   <Row
                     width='unset'

@@ -148,6 +148,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_SWAP" desc="Confirm swap title">Confirm swap</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER " desc="Swap provider label">Provider</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
@@ -572,6 +573,9 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND" desc="Swap review text for spending asset">You spend</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE" desc="Swap review text for receiving asset">You'll receive</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER" desc="Swap review header title">Confirm order</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_CONTRACT_ADDRESS" desc="Swap contract address label">Contract address</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROGRAM_ADDRESS" desc="Swap program address label">Program address</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_DEPOSIT_ADDRESS" desc="Swap deposit address label">Deposit address</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SWAP" desc="Generic Solana Swap message">Solana Swap</message>
   <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="ACCOUNT_NUMBER">$1<ex>1</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
@@ -1014,6 +1018,7 @@
   <message name="IDS_BRAVE_SWAP_ENTER_AN_AMOUNT" desc="Text prompting to enter an amount">Enter an amount</message>
   <message name="IDS_BRAVE_WALLET_FETCHING_QUOTE" desc="Loader text while quotes are fetched">Fetching quote</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE_ESTIMATE" desc="Swap receive estimate label">Receive (est.)</message>
+  <message name="IDS_BRAVE_WALLET_RECEIVE_MINIMUM" desc="Swap receive minimum label">Receive (min.)</message>
   <message name="IDS_BRAVE_WALLET_FROM_TOKEN" desc="Swap from token label">From token</message>
   <message name="IDS_BRAVE_WALLET_TO_TOKEN" desc="Swap to token label">To token</message>
   <message name="IDS_BRAVE_WALLET_NEW_QUOTE_IN" desc="Swap new quote in label">New quote in <ph name="COUNTDOWN">$1<ex>00:05</ex></ph></message>

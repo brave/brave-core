@@ -107,9 +107,13 @@ provideStrings({
     + 'which may be able to see your IP address and domain.',
   braveWalletFetchingQuote: 'Fetching quote',
   braveWalletReceiveEstimate: 'Receive (est.)',
+  braveWalletReceiveMinimum: 'Receive (min.)',
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
   braveWalletNewQuoteIn: 'New quote in $1',
+  braveWalletSwapContractAddress: 'Contract address',
+  braveWalletSwapProgramAddress: 'Program address',
+  braveWalletSwapDepositAddress: 'Deposit address',
 
   // Send Tab
   braveWalletChooseAssetToSend: 'Choose asset to send',
@@ -653,6 +657,7 @@ provideStrings({
   braveWalletConfirmSwap: 'Confirm swap',
   braveWalletConfirmBridge: 'Confirm bridge',
   braveWalletConfirmSend: 'Confirm send',
+  braveWalletSwapProvider: 'Provider',
   braveWalletConfirmShield: 'Confirm shield',
   braveWalletConfirmUnshield: 'Confirm unshield',
   braveWalletSpend: 'Spend',
