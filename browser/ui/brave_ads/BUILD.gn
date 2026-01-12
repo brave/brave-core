@@ -13,6 +13,6 @@ source_set("brave_ads") {
 
   deps = [
     "//base",
-    "//ui/gfx:native_widget_types",
+    "//ui/gfx:native_ui_types",
   ]
 }
