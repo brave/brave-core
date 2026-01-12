@@ -92,6 +92,8 @@ class BraveTabContainer : public TabContainerImpl {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            GetMaxScrollOffsetWithGroups);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           LayoutAfterFirstTabCreation);
 
   class DropArrow {
    public:
