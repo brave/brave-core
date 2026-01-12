@@ -47,15 +47,21 @@ export default function TabsMenu() {
     triggerCharacter: '@',
   })
 
-  const isOpen = React.useMemo(() => query !== null, [query])
+  const [isOpen, setIsOpen] = React.useState(false)
+  React.useEffect(() => {
+    if (query !== null) {
+      setIsOpen(true)
+    }
+  }, [query !== null])
 
-  const setIsOpen = React.useCallback(
+  const handleClose = React.useCallback(
     (isOpen: boolean) => {
       if (!isOpen) {
         const editor = document.querySelector<HTMLElement>('[data-editor]')
         if (!editor) return
 
         makeEdit(editor).selectRangeToTriggerChar('@').replaceSelectedRange('')
+        setIsOpen(false)
 
         editor?.focus()
       }
@@ -148,7 +154,7 @@ export default function TabsMenu() {
         },
       ]}
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      setIsOpen={handleClose}
       query={query}
       matchesQuery={matchesQuery}
       header={
@@ -156,11 +162,10 @@ export default function TabsMenu() {
           {getLocale(S.CHAT_UI_ATTACHMENTS_MENU_TITLE)}
         </div>
       }
-      noMatchesMessage={
-        <div className={styles.tabNoMatches}>
-          {getLocale(S.CHAT_UI_ATTACHMENTS_MENU_NO_MATCHING_ATTACHMENTS)}
-        </div>
-      }
+      onResultsChanged={(results) => {
+        const hasMatches = results.some((result) => result.entries.length > 0)
+        setIsOpen(query !== null && hasMatches)
+      }}
     >
       {(item, category, match) => (
         <leo-menu-item
