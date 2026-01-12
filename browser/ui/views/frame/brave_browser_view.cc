@@ -978,7 +978,7 @@ void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
   BrowserView::ReparentTopContainerForEndOfImmersive();
 }
 
-bool BraveBrowserView::ShouldDrawStrokes() const {
+bool BraveBrowserView::ShouldDrawTabStrokes() const {
   // TODO(simonhong): We can return false always here as horizontal tab design
   // doesn't need additional stroke.
   // Delete all below code when horizontal tab feature flag is removed.
@@ -988,7 +988,7 @@ bool BraveBrowserView::ShouldDrawStrokes() const {
     return false;
   }
 
-  if (!BrowserView::ShouldDrawStrokes()) {
+  if (!BrowserView::ShouldDrawTabStrokes()) {
     return false;
   }
 
@@ -999,7 +999,7 @@ bool BraveBrowserView::ShouldDrawStrokes() const {
   // Set 1.0816f as a minimum ratio to prevent drawing stroke.
   // We don't need the stroke for our default light theme.
   // NOTE: We don't need to check features::kTabOutlinesInLowContrastThemes
-  // enabled state. Although TabStrip::ShouldDrawStrokes() has related code,
+  // enabled state. Although TabStrip::ShouldDrawTabStrokes() has related code,
   // that feature is already expired since cr82. See
   // chrome/browser/flag-metadata.json.
   const SkColor background_color = TabStyle::Get()->GetTabBackgroundColor(
