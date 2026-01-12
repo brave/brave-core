@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Ýttu á „Forrit“ og síðan á „Sjálfgefin forrit“</translation>
 <translation id="1415402041810619267">Stytt vefslóð</translation>
 <translation id="1741136041592162279">Leyfðu Brave að deila nýlegum flipum með tækinu þínu svo að þú getir séð þá á forritalista og í leitarniðurstöðum tækisins. Þú getur kveikt eða slökkt á þessu í stillingum Brave.</translation>
+<translation id="1420688843103859429">Flettu fram og til baka með því að strjúka með tveimur fingrum á snertifletinum</translation>
 <translation id="1432650420699700107">Vefsvæði geta beðið um að tengjast hvaða tæki sem er á staðarnetinu þínu</translation>
 <translation id="1448064542941920355">Minnka aðdrátt</translation>
 <translation id="1464044141348608623">Ekki leyfa vefsvæðum að vita hvenær þú notar tækið þitt</translation>
@@ -170,6 +171,7 @@
 <translation id="2787357173144933081">Forræsing veffangastiku</translation>
 <translation id="2789132527330338807">Vefsvæði geta beðið um að búa til þrívíddarkort af umhverfi þínu eða rekja stöðu myndavélar</translation>
 <translation id="2790501146643349491">Þegar kveikt er á þessu geta vefsvæði sem nýlega var lokað lokið við að senda og taka á móti gögnum. Þegar slökkt er á þessu geta vefsvæði sem nýlega var lokað ekki lokið við að senda og taka á móti gögnum.</translation>
+<translation id="1708222144403389505">Kveiktu á tilkynningum til að fá gagnleg ráð sem hjálpa þér að fá sem mest út úr Brave</translation>
 <translation id="2795716239552913152">Vefsvæði nota yfirleitt staðsetningu þína fyrir viðeigandi eiginleika eða upplýsingar eins og staðbundnar fréttir eða verslanir í nágrenninu</translation>
 <translation id="2800760947029405028">Hlaða inn mynd</translation>
 <translation id="2802908157808345702">Ekki leyfa vefsvæðum að senda sprettiglugga og nota framsendingu</translation>
@@ -182,6 +184,7 @@
 <translation id="2903493209154104877">Heimilisföng</translation>
 <translation id="2910701580606108292">Spyrja áður en vefsvæðum er veitt heimild til að spila varið efni</translation>
 <translation id="2918484639460781603">Opna stillingar</translation>
+<translation id="4577990953241424923">Fá tilkynningar um ráð fyrir Brave</translation>
 <translation id="2932883381142163287">Tilkynna misnotkun</translation>
 <translation id="2939338015096024043">Þegar kveikt er á þessu geta vefsvæði beðið um að rekja stöðu myndavélarinnar og kynnt sér umhverfi þitt. Þegar slökkt er á þessu geta vefsvæði hvorki rakið stöðu myndavélarinnar né kynnt sér umhverfi þitt.</translation>
 <translation id="2968755619301702150">Vottorðaskoðari</translation>
@@ -218,7 +221,6 @@
 <translation id="3285500645985761267">Leyfa tengdum vefsvæðum að sjá virkni þína í hópnum</translation>
 <translation id="3295019059349372795">11. kafli: Smaragðsborgin dásamlega í Oz</translation>
 <translation id="3295602654194328831">Fela upplýsingar</translation>
-<translation id="3328801116991980348">Upplýsingar um vefsvæði</translation>
 <translation id="3333961966071413176">Allir tengiliðir</translation>
 <translation id="3360338140203645771">Eyða vistuðum aðdráttarstillingum?</translation>
 <translation id="3362437373201486687">Leitar að Bluetooth-tækjum</translation>
@@ -243,6 +245,8 @@
 <translation id="3611658447322220736">Vefsvæði sem nýlega var lokað geta lokið við að senda og taka á móti gögnum</translation>
 <translation id="3619294456800709762">Vefsvæði geta farið sjálfkrafa í mynd í mynd</translation>
 <translation id="3628308229821498208">Leitartillögur</translation>
+<translation id="3632460243282703117">Gerast áskrifandi</translation>
+<translation id="363748948745453283">Notar áætlaða staðsetningu</translation>
 <translation id="3641456520301071208">Vefsvæði geta beðið um staðsetningarupplýsingar</translation>
 <translation id="3658847490588580244">Blað neðst í sjálfgefnum vafra</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> vefsvæði í hópi vefsvæða í eigu <ph name="RWS_OWNER"/> sem geta séð virkni þína í hópnum}one{<ph name="RWS_MEMBERS_COUNT"/> vefsvæði í hópi vefsvæða í eigu <ph name="RWS_OWNER"/> sem geta séð virkni þína í hópnum}other{<ph name="RWS_MEMBERS_COUNT"/> vefsvæði í hópi vefsvæða í eigu <ph name="RWS_OWNER"/> sem geta séð virkni þína í hópnum}}</translation>
@@ -337,10 +341,12 @@
 <translation id="4635969503923889910">Ekki leyfa vefsvæðum að nota NFC-tæki</translation>
 <translation id="4644713492825682049">Eyða og endurstilla</translation>
 <translation id="4645575059429386691">Stjórnað af foreldri þínu</translation>
+<translation id="4652266463001779298">Ekki heimilað</translation>
 <translation id="4663373278480897665">Myndavél er leyfð</translation>
 <translation id="4670064810192446073">Sýndarveruleiki</translation>
 <translation id="5652778654712411580">Ýttu á „Vafraforrit“ og síðan á „Brave“</translation>
 <translation id="4676059169848868271">Til að leyfa <ph name="APP_NAME"/> að nota rakningu handahreyfinga skaltu líka kveikja á rakningu handahreyfinga í <ph name="BEGIN_LINK"/>kerfisstillingum<ph name="END_LINK"/>.</translation>
+<translation id="4688045258817337666">Stjórnaðu kortunum þínum</translation>
 <translation id="4751476147751820511">Hreyfi- eða birtuskynjarar</translation>
 <translation id="4755971844837804407">Þegar kveikt er á þessu geta vefsvæði birt þér hvaða auglýsingar sem er. Þegar slökkt er á þessu geta vefsvæði ekki sýnt ágengar eða villandi auglýsingar.</translation>
 <translation id="4779083564647765204">Aðdráttur</translation>
@@ -433,8 +439,10 @@
 <translation id="5750869797196646528">Rakning handahreyfinga</translation>
 <translation id="5753570386948603678">Eyða úr ferli</translation>
 <translation id="5771720122942595109">Lokað er fyrir <ph name="PERMISSION_1"/></translation>
+<translation id="5792627621688759634">Strjúktu á milli síðna með snertifleti</translation>
 <translation id="5801457289562671820">Fyrirtækið þitt mælir með</translation>
 <translation id="5804241973901381774">Heimildir</translation>
+<translation id="5817042798620209981">Upplýsingar um vefsvæði, gluggi</translation>
 <translation id="5822675474983796325">Sérsníða blað neðst á síðu nýrra flipa opið til fulls</translation>
 <translation id="5833899990800318936">Ekki leyfa vefsvæðum að nota JavaScript</translation>
 <translation id="583673505367439042">Vefsvæði geta beðið um leyfi til að breyta skrám og möppum í tækinu þínu</translation>
@@ -516,6 +524,7 @@
 <translation id="662080504995468778">Vera áfram</translation>
 <translation id="6630443592285535486">Sláðu inn sextándakerfislit</translation>
 <translation id="6635327442719709864">Ef kveikt er á þessu geta vefsvæði beðið um að fá að nota raðtengi. Ef slökkt er á þessu geta vefsvæði ekki notað raðtengi.</translation>
+<translation id="6669390930482049506">Láta mig vita</translation>
 <translation id="6678072580827808850">Opna öryggisathugun</translation>
 <translation id="6682057173375416470">Fáðu tillögur að greinum á síðu nýrra flipa</translation>
 <translation id="6683865262523156564">Þetta vefsvæði er í hóp sem getur séð virknina þína. Hópurinn er skilgreindur af <ph name="RWS_OWNER"/></translation>
@@ -625,6 +634,7 @@
 <translation id="7990211076305263060">Þegar kveikt er á þessu geta vefsvæði beðið um að fá að nota hljóðnemann þinn. Þegar slökkt er á þessu geta vefsvæði ekki notað hljóðnemann þinn.</translation>
 <translation id="8007176423574883786">Slökkt fyrir þetta tæki</translation>
 <translation id="802154636333426148">Niðurhal mistókst</translation>
+<translation id="8033047164036749181">Gerast áskrifandi að tilkynningum frá þessu vefsvæði</translation>
 <translation id="8042586301629853791">Raða eftir:</translation>
 <translation id="8051193500142930381">Eiginleikar sem þurfa myndavél munu ekki virka</translation>
 <translation id="2495032782748793764">Sjálfgefin stilling Brave</translation>
@@ -675,6 +685,7 @@
 <translation id="8487700953926739672">Í boði án nettengingar</translation>
 <translation id="848952951823693243">Biðja alltaf um símaútgáfu vefsvæða</translation>
 <translation id="8492822722330266509">Vefsvæði geta sent sprettiglugga og notað framsendingu</translation>
+<translation id="8493548450030356203">Sprettigluggi til að stækka/minnka</translation>
 <translation id="8499083585497694743">Kveikja á hljóðnema</translation>
 <translation id="8514955299594277296">Ekki leyfa vefsvæðum að vista gögn í tækinu (ekki er mælt með þessu)</translation>
 <translation id="851751545965956758">Ekki leyfa vefsvæðum að tengjast tækjum</translation>

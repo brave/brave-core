@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Tryk på Apps og derefter på Standardapps</translation>
 <translation id="1415402041810619267">Webadressen er forkortet</translation>
 <translation id="1741136041592162279">Få Brave til at dele dine seneste faner med din enhed for at se dem på din enheds appliste og i søgeresultaterne. Du kan slå dette til eller fra i Brave-indstillingerne.</translation>
+<translation id="1420688843103859429">Naviger frem og tilbage ved at stryge med to fingre på touchpladen</translation>
 <translation id="1432650420699700107">Websites kan anmode om at oprette tilknytning til enhver enhed på dit lokale netværk</translation>
 <translation id="1448064542941920355">Zoom ud</translation>
 <translation id="1464044141348608623">Tillad ikke, at websites ved, hvornår du aktivt bruger din enhed</translation>
@@ -170,6 +171,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="2787357173144933081">Åbn omnifeltet</translation>
 <translation id="2789132527330338807">Websites kan anmode om at oprette et 3D-kort over dine omgivelser eller registrere kamerapositionen</translation>
 <translation id="2790501146643349491">Når dette er slået til, kan nyligt lukkede websites gennemføre afsendelse og modtagelse af data. Når dette er slået fra, kan nyligt lukkede websites ikke sende eller modtage data.</translation>
+<translation id="1708222144403389505">Aktivér notifikationer for at få nyttige tips, der hjælper dig med at få mest muligt ud af Brave</translation>
 <translation id="2795716239552913152">Websites bruger normalt din lokation til relevante formål eller oplysninger om lokale nyheder eller butikker i nærheden</translation>
 <translation id="2800760947029405028">Upload et billede</translation>
 <translation id="2802908157808345702">Tillad ikke, at websites sender pop op-vinduer og anvender omdirigeringer</translation>
@@ -182,6 +184,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="2903493209154104877">Adresser</translation>
 <translation id="2910701580606108292">Spørg, før websites begynder at afspille beskyttet indhold</translation>
 <translation id="2918484639460781603">Gå til indstillinger</translation>
+<translation id="4577990953241424923">Få notifikationer med tips til Brave</translation>
 <translation id="2932883381142163287">Rapportér misbrug</translation>
 <translation id="2939338015096024043">Når dette er slået til, kan websites anmode om tilladelse til at registrere din kameraposition og få oplysninger om dine omgivelser. Når dette er slået fra, kan websites ikke registrere din kameraposition eller få oplysninger om dine omgivelser.</translation>
 <translation id="2968755619301702150">Certifikatfremviser</translation>
@@ -218,7 +221,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="3285500645985761267">Giv relaterede websites tilladelse til at se din aktivitet i gruppen</translation>
 <translation id="3295019059349372795">Kapitel 11: Den vidunderlige smaragdby i Oz</translation>
 <translation id="3295602654194328831">Skjul oplysninger</translation>
-<translation id="3328801116991980348">Webstedoplysninger</translation>
 <translation id="3333961966071413176">Alle kontakter</translation>
 <translation id="3360338140203645771">Vil du slette de gemte zoomniveauer?</translation>
 <translation id="3362437373201486687">Søger efter Bluetooth-enheder</translation>
@@ -241,6 +243,8 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="3611658447322220736">Nyligt lukkede websites kan gennemføre afsendelse og modtagelse af data</translation>
 <translation id="3619294456800709762">Websites kan automatisk åbne integreret billede</translation>
 <translation id="3628308229821498208">Foreslåede søgninger</translation>
+<translation id="3632460243282703117">Abonner</translation>
+<translation id="363748948745453283">Bruger omtrentlig lokation</translation>
 <translation id="3641456520301071208">Websites kan anmode om adgang til din lokation</translation>
 <translation id="3658847490588580244">Felt i bunden med standardbrowser</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{Der er <ph name="RWS_MEMBERS_COUNT"/> website i gruppen af websites, der tilhører <ph name="RWS_OWNER"/>, som kan se din aktivitet i gruppen}one{Der er <ph name="RWS_MEMBERS_COUNT"/> website i gruppen af websites, der tilhører <ph name="RWS_OWNER"/>, som kan se din aktivitet i gruppen}other{Der er <ph name="RWS_MEMBERS_COUNT"/> websites i gruppen af websites, der tilhører <ph name="RWS_OWNER"/>, som kan se din aktivitet i gruppen}}</translation>
@@ -329,16 +333,18 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="4505788138578415521">Webadressen er udvidet</translation>
 <translation id="4534723447064627427">Aktivér også din mikrofon i <ph name="BEGIN_LINK"/>Android-indstillingerne<ph name="END_LINK"/> for at give <ph name="APP_NAME"/> adgang til mikrofonen.</translation>
 <translation id="4566417217121906555">Slå mikrofon fra</translation>
-<translation id="4570913071927164677">Info</translation>
+<translation id="4570913071927164677">Oplysninger</translation>
 <translation id="4578289292431526768">Kom i gang</translation>
 <translation id="461356340001513807">Tillader, at du logger ind på websites med den konto, du har hos en identitetstjeneste</translation>
 <translation id="4635969503923889910">Tillad ikke, at websites anvender NFC-enheder</translation>
 <translation id="4644713492825682049">Slet og gendan</translation>
 <translation id="4645575059429386691">Administreret af en af dine forældre</translation>
+<translation id="4652266463001779298">Ikke tilladt</translation>
 <translation id="4663373278480897665">Der er givet adgang til kameraet</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
 <translation id="5652778654712411580">Tryk på Browserapp og derefter på Brave</translation>
 <translation id="4676059169848868271">Aktivér desuden registrering af håndbevægelser i <ph name="BEGIN_LINK"/>systemindstillingerne<ph name="END_LINK"/> for at give <ph name="APP_NAME"/> tilladelse til at bruge håndregistrering.</translation>
+<translation id="4688045258817337666">Administrer dine kort</translation>
 <translation id="4751476147751820511">Bevægelses- eller lyssensorer</translation>
 <translation id="4755971844837804407">Når dette er slået til, kan websites vise dig en hvilken som helst annonce. Når dette er slået fra, kan websites ikke vise påtrængende eller vildledende annoncer.</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -429,8 +435,10 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="5750869797196646528">Registrering af håndbevægelser</translation>
 <translation id="5753570386948603678">Slet fra historik</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> blev blokeret</translation>
+<translation id="5792627621688759634">Stryg mellem sider ved hjælp af en touchplade</translation>
 <translation id="5801457289562671820">Anbefalet af din organisation</translation>
 <translation id="5804241973901381774">Tilladelser</translation>
+<translation id="5817042798620209981">Websiteoplysninger, dialogboks</translation>
 <translation id="5822675474983796325">Feltet i bunden med tilpasning af siden Ny fane er åbnet i fuld højde</translation>
 <translation id="5833899990800318936">Tillad ikke, at websites anvender JavaScript</translation>
 <translation id="583673505367439042">Websites kan anmode om tilladelse til at redigere filer og mapper på din enhed</translation>
@@ -512,6 +520,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="662080504995468778">Bliv her</translation>
 <translation id="6630443592285535486">Angiv hex-kode her</translation>
 <translation id="6635327442719709864">Når denne indstilling er aktiveret, kan websites anmode om at anvende serieporte. Når denne indstilling er deaktiveret, kan websites ikke anvende serieporte.</translation>
+<translation id="6669390930482049506">Send mig notifikationer</translation>
 <translation id="6678072580827808850">Gennemgå sikkerhedstjek</translation>
 <translation id="6682057173375416470">Få forslag til artikler på siden Ny fane</translation>
 <translation id="6683865262523156564">Dette website er i en gruppe, der kan se din aktivitet. Gruppen er defineret af <ph name="RWS_OWNER"/></translation>
@@ -621,6 +630,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="7990211076305263060">Når dette er slået til, kan websites anmode om at anvende din mikrofon. Når dette er slået fra, kan websites ikke anvende din mikrofon.</translation>
 <translation id="8007176423574883786">Deaktiveret på denne enhed</translation>
 <translation id="802154636333426148">Download mislykkedes</translation>
+<translation id="8033047164036749181">Abonner på notifikationer fra dette website</translation>
 <translation id="8042586301629853791">Sortér efter:</translation>
 <translation id="8051193500142930381">Funktioner, der skal bruge et kamera, fungerer ikke</translation>
 <translation id="2495032782748793764">Standard i Brave</translation>
@@ -671,6 +681,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="8487700953926739672">Tilgængelig offline</translation>
 <translation id="848952951823693243">Anmod altid om mobilwebsite</translation>
 <translation id="8492822722330266509">Websites kan sende pop op-vinduer og bruge omdirigeringer</translation>
+<translation id="8493548450030356203">Pop op-vindue med zoom</translation>
 <translation id="8499083585497694743">Slå mikrofon til</translation>
 <translation id="8514955299594277296">Tillad ikke, at websites gemmer data på din enhed (anbefales ikke)</translation>
 <translation id="851751545965956758">Bloker websites fra at oprette forbindelse til enheder</translation>

@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">プレミアムプラン</translation>
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
+<translation id="9082792303833649978">この設定は、管理者または別のBraveポリシーによって管理されています。</translation>
 <translation id="1940221956626514677">ツールバーをカスタマイズ</translation>
 <translation id="6501807887341963552">テーマと色</translation>
 <translation id="6724227215236550330">保存されたパスワードはここに表示されます。このデバイスの <ph name="BRAND"/> にパスワードをインポートするには、 <ph name="BEGIN_LINK"/> CSV ファイルを選択してください<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ツリータブを使用</translation>
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="4691131445504068802">最小化時に完全に非表示にする</translation>
+<translation id="6763346436728173884">タブの閉じるボタンを常に非表示にする</translation>
 <translation id="4909269867860362936">最小化時にホバーで自動的に展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
 <translation id="8925055964134259461">垂直タブをウィンドウごとに独立して自動展開</translation>
@@ -499,7 +501,7 @@
 <translation id="2935698011275148880">ブレイブ・オリジン</translation>
 <translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
 <translation id="553273341094971255">ブレイブオリジンでは、アプリ内のプロモーションやブランド広告、インストール時に有効にしていた匿名アナリティクスをすべて削除し、お好みに合わせてブレイブを調整することができます。</translation>
-<translation id="534725333104202278">以前有効にしていた、または使用していたアドオンや機能は表示されたまま統合されますが、それ以外は無効になります。Braveを調整して、ブラウザに新機能を追加してください。これらの機能はBrave Originではデフォルトで非表示となり、コントロールパネルのみに表示されます。</translation>
+<translation id="534725333104202278">以前有効にしていた、または使用していたアドオンや機能は表示されたまま統合されますが、それ以外は無効になります。ブラウザに新機能を追加するには、Braveを調整してください。これらの機能はBrave Originではデフォルトで非表示となり、コントロールパネルのみに表示されます。</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="944736176598169208">リワード</translation>
 <translation id="2839742394543397416">アナリティクス</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="1077567586443625607">Zcashネットワーク</translation>
 <translation id="1177180573354712438">カルダノネットワーク</translation>
+<translation id="3176794108951154148">Polkadotネットワーク</translation>
 <translation id="3159419679550543837">テストネットワークを表示</translation>
 <translation id="3215569562674795548">編集または新しいネットワークを追加</translation>
 <translation id="4418993400653250511">チェーンID</translation>

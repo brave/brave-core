@@ -332,6 +332,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7557539689487606886">Premium obuna qilish</translation>
 <translation id="1035309871698658326">Ochilganida, bu avtomatik ravishda barcha maxfiy bo‘lmagan yorliqlarning sarlavhalarini va kelib chiqish joylarini Leo ga ularga tasniflash uchun yuboradi.</translation>
 <translation id="3435896845095436175">Yoqish</translation>
+<translation id="9082792303833649978">Ushbu sozlama administratoringiz yoki boshqa bir Brave siyosati tomonidan boshqarilmoqda.</translation>
 <translation id="1940221956626514677">Asboblar panelini moslash</translation>
 <translation id="6501807887341963552">Mavzu va ranglar</translation>
 <translation id="6724227215236550330">Saqlangan parollar shu yerda koʻrsatiladi. Ushbu qurilmadagi <ph name="BRAND"/>ga parollarni import qilish uchun <ph name="BEGIN_LINK"/>CSV faylni tanlang<ph name="END_LINK"/></translation>
@@ -375,6 +376,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2263346047290834619">Daraxt tablarini foydalaning</translation>
 <translation id="5860254591544742609">Sarlavha satrini ko'rsatish</translation>
 <translation id="4691131445504068802">Minimallashtirilganda butunlay yashirish</translation>
+<translation id="6763346436728173884">Tabni yopish tugmasini har doim yashirish</translation>
 <translation id="4909269867860362936">Minimallashtirilganda ustiga olib borishda avtomatik kengaytirish</translation>
 <translation id="3367129510799209147">Varaq hover rejimi</translation>
 <translation id="8925055964134259461">Har bir oynada vertikal tablarni alohida avtomatik kengaytirish</translation>
@@ -747,6 +749,7 @@ Buni amalga oshirishni xohlaysizmi?</translation>
 <translation id="7141438739990875547">Bitcoin tarmoqlari</translation>
 <translation id="1077567586443625607">Zcash tarmoqlari</translation>
 <translation id="1177180573354712438">Cardano tarmoqlari</translation>
+<translation id="3176794108951154148">Polkadot tarmoqlari</translation>
 <translation id="3159419679550543837">Sinov tarmoqlarini koʻrsatish</translation>
 <translation id="3215569562674795548">Yangi tarmoq qo'shish yoki tahrirlash</translation>
 <translation id="4418993400653250511">Zanjir identifikatori</translation>

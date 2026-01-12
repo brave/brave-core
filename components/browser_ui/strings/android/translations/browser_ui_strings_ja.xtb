@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">[アプリ]、[デフォルトのアプリ] をタップします</translation>
 <translation id="1415402041810619267">URL の短縮バージョンです</translation>
 <translation id="1741136041592162279">Brave で最近使ったタブをデバイスと共有して、デバイスのアプリリストと検索結果に表示できます。この機能は Brave の設定でオンまたはオフにできます。</translation>
+<translation id="1420688843103859429">タッチパッドを 2 本の指でスワイプして前後に移動します</translation>
 <translation id="1432650420699700107">サイトがローカル ネットワーク上のデバイスへの接続を要求できるようにする</translation>
 <translation id="1448064542941920355">縮小</translation>
 <translation id="1464044141348608623">サイトによるデバイスのアクティブ状態の検出を許可しない</translation>
@@ -170,6 +171,7 @@
 <translation id="2787357173144933081">ジャンプスタート アドレスバー</translation>
 <translation id="2789132527330338807">サイトが周囲の 3D マップの作成またはカメラ位置の追跡を要求できるようにする</translation>
 <translation id="2790501146643349491">オンにすると、最近閉じたサイトのデータの送受信を完了できます。オフにすると、最近閉じたサイトのデータの送受信を完了できません。</translation>
+<translation id="1708222144403389505">Brave を最大限に活用するためのヒントを受け取るには、通知をオンにしてください</translation>
 <translation id="2795716239552913152">多くのサイトは、ローカル ニュースや近くのお店の情報などを取得するためにユーザーの位置情報を使用します。</translation>
 <translation id="2800760947029405028">画像をアップロード</translation>
 <translation id="2802908157808345702">サイトにポップアップの送信とリダイレクトの使用を許可しない</translation>
@@ -182,6 +184,7 @@
 <translation id="2903493209154104877">住所</translation>
 <translation id="2910701580606108292">保護されたコンテンツの再生をサイトに許可する前に確認する</translation>
 <translation id="2918484639460781603">設定に移動</translation>
+<translation id="4577990953241424923">Brave のヒントの通知を受け取る</translation>
 <translation id="2932883381142163287">不正行為を報告</translation>
 <translation id="2939338015096024043">オンにすると、サイトはカメラ位置の追跡と周囲の状況の検出を要求できます。オフにすると、サイトはカメラ位置の追跡や周囲の状況の検出を行えません。</translation>
 <translation id="2968755619301702150">証明書ビューア</translation>
@@ -218,7 +221,6 @@
 <translation id="3285500645985761267">関連サイトにグループ内のアクティビティの確認を許可する</translation>
 <translation id="3295019059349372795">第 11 章: オズの不思議なエメラルド シティ</translation>
 <translation id="3295602654194328831">情報を表示しない</translation>
-<translation id="3328801116991980348">サイト情報</translation>
 <translation id="3333961966071413176">すべての連絡先</translation>
 <translation id="3360338140203645771">保存したズームレベルを削除しますか？</translation>
 <translation id="3362437373201486687">Bluetooth デバイスをスキャンしています</translation>
@@ -241,6 +243,8 @@
 <translation id="3611658447322220736">最近閉じたサイトがデータの送受信を完了できるようにする</translation>
 <translation id="3619294456800709762">サイトはピクチャー イン ピクチャーを自動的に開始できる</translation>
 <translation id="3628308229821498208">提案された検索</translation>
+<translation id="3632460243282703117">許可</translation>
+<translation id="363748948745453283">おおよその位置情報を使用しています</translation>
 <translation id="3641456520301071208">サイトが位置情報を要求できるようにする</translation>
 <translation id="3658847490588580244">デフォルトのブラウザのボトムシート</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_OWNER"/> のサイトグループに属する <ph name="RWS_MEMBERS_COUNT"/> 件のサイトが、グループでのあなたのアクティビティを確認できます}other{<ph name="RWS_OWNER"/> のサイトグループに属する <ph name="RWS_MEMBERS_COUNT"/> 件のサイトが、グループでのあなたのアクティビティを確認できます}}</translation>
@@ -335,10 +339,12 @@
 <translation id="4635969503923889910">サイトに NFC デバイスの使用を許可しない</translation>
 <translation id="4644713492825682049">削除してリセット</translation>
 <translation id="4645575059429386691">保護者により管理されています</translation>
+<translation id="4652266463001779298">ブロック</translation>
 <translation id="4663373278480897665">カメラを使用できます</translation>
 <translation id="4670064810192446073">バーチャル リアリティ（VR）</translation>
 <translation id="5652778654712411580">[ブラウザアプリ]、[Brave] をタップします</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/> にハンド トラッキングの使用を許可するには、<ph name="BEGIN_LINK"/>システム設定<ph name="END_LINK"/>でもハンド トラッキングをオンにしてください。</translation>
+<translation id="4688045258817337666">カードを管理</translation>
 <translation id="4751476147751820511">モーション センサーまたは光センサー</translation>
 <translation id="4755971844837804407">オンにすると、サイトはユーザーにあらゆる広告を表示できます。オフにすると、サイトは煩わしい広告や誤解を招く広告を表示できません。</translation>
 <translation id="4779083564647765204">ズーム</translation>
@@ -429,8 +435,10 @@
 <translation id="5750869797196646528">ハンド トラッキング</translation>
 <translation id="5753570386948603678">履歴から削除</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/>をブロック</translation>
+<translation id="5792627621688759634">タッチパッドを使用してページ間をスワイプする</translation>
 <translation id="5801457289562671820">組織からのおすすめ</translation>
 <translation id="5804241973901381774">権限</translation>
+<translation id="5817042798620209981">サイト情報、ダイアログ</translation>
 <translation id="5822675474983796325">[新しいタブページをカスタマイズ] のボトムシートが画面全体に表示されています</translation>
 <translation id="5833899990800318936">サイトに JavaScript の使用を許可しない</translation>
 <translation id="583673505367439042">サイトがデバイスのファイルやフォルダの編集を要求できるようにする</translation>
@@ -512,6 +520,7 @@
 <translation id="662080504995468778">とどまる</translation>
 <translation id="6630443592285535486">ここに 16 進数を入力</translation>
 <translation id="6635327442719709864">オンにすると、サイトはシリアルポートの使用を要求できます。オフにすると、サイトはシリアルポートを使用できません。</translation>
+<translation id="6669390930482049506">通知する</translation>
 <translation id="6678072580827808850">安全確認を表示</translation>
 <translation id="6682057173375416470">新しいタブページでおすすめの記事を表示</translation>
 <translation id="6683865262523156564">このサイトは、あなたのアクティビティを確認できるグループに属しています。グループは <ph name="RWS_OWNER"/> によって定義されます</translation>
@@ -621,6 +630,7 @@
 <translation id="7990211076305263060">オンにすると、サイトはマイクの使用を要求できます。オフにすると、サイトはマイクを使用できません。</translation>
 <translation id="8007176423574883786">このデバイスに対して無効</translation>
 <translation id="802154636333426148">ダウンロード エラー</translation>
+<translation id="8033047164036749181">このサイトの通知を許可</translation>
 <translation id="8042586301629853791">並べ替え:</translation>
 <translation id="8051193500142930381">カメラを必要とする機能は動作しなくなります</translation>
 <translation id="2495032782748793764">Brave のデフォルト</translation>
@@ -671,6 +681,7 @@
 <translation id="8487700953926739672">オフラインでの利用</translation>
 <translation id="848952951823693243">常にモバイル版サイトを表示する</translation>
 <translation id="8492822722330266509">サイトがポップアップを送信したりリダイレクトを使用したりできるようにする</translation>
+<translation id="8493548450030356203">ポップアップ ズーム ウィンドウ</translation>
 <translation id="8499083585497694743">マイクのミュートを解除</translation>
 <translation id="8514955299594277296">サイトによるデバイスへのデータの保存を許可しない（非推奨）</translation>
 <translation id="851751545965956758">サイトからデバイスへの接続をブロックする</translation>

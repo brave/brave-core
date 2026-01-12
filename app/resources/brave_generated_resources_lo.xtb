@@ -331,6 +331,7 @@
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
 <translation id="1035309871698658326">ເມື່ອເປີດແລ້ວ, ນີ້ຈະສົ່ງຫົວຂໍ້ ແລະ ຕົ້ນກຳເນີດຂອງແຖບທີ່ບໍ່ແມ່ນສ່ວນຕົວທັງໝົດໄປຫາ Leo ໂດຍອັດຕະໂນມັດເພື່ອຈັດປະເພດພວກມັນ.</translation>
 <translation id="3435896845095436175">ເປີດໃຊ້ງານ</translation>
+<translation id="9082792303833649978">ການຕັ້ງຄ່ານີ້ຖືກຄວບຄຸມໂດຍຜູ້ບໍລິຫານຂອງທ່ານ ຫຼືໂດຍນະໂຍບາຍຂອງ Brave ອື່ນໆ</translation>
 <translation id="1940221956626514677">ປັບແຕ່ງຫນ້າຕ່າງ</translation>
 <translation id="6501807887341963552">ຊຳນຳແລະສີຖ່ານ</translation>
 <translation id="6724227215236550330">ລະຫັດຜ່ານທີ່ຖືກບັນທຶກໄວ້ຈະສະແດງຢູ່ບ່ອນນີ້. ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກ <ph name="BEGIN_LINK"/> ເລືອກຟາຍ CVS<ph name="END_LINK"/></translation>
@@ -374,6 +375,7 @@
 <translation id="2263346047290834619">ໃຊ້ແທັບຂຶ້ນັ້ນໆ</translation>
 <translation id="5860254591544742609">ສະແດງແຖບชื่อໜ້າ</translation>
 <translation id="4691131445504068802">ເຊື່ອມບັງໂຕໃຫ້ມິດເມື່ອຫົວແຖບຕັ້ງຖືກຂະໝອດ</translation>
+<translation id="6763346436728173884">ເຊື່ອງປິດແທັບຈະຖືກເຊື່ອງເຊື່ອນໄວ້ຕະຫຼອດເວລາ</translation>
 <translation id="4909269867860362936">ຂະໝອດແຖບຕັ້ງໂດຍອັດຕະໂນມັດໃນການເລື່ອນເມົາເມື່ອຖືກຂະໝອດ</translation>
 <translation id="3367129510799209147">ໂໝດເຊື່ອມແທບ</translation>
 <translation id="8925055964134259461">ຂະໝອດແຖບຕັ້ງຕໍ່ແຕ່ຫນ້າຕ່າງໂດຍອັດຕະໂນມັດ</translation>
@@ -742,6 +744,7 @@
 <translation id="7141438739990875547">Bitcoin networks</translation>
 <translation id="1077567586443625607">Zcash networks</translation>
 <translation id="1177180573354712438">ເຄືອຂ່າຍ Cardano</translation>
+<translation id="3176794108951154148">ເຄືອຂ່າຍ Polkadot</translation>
 <translation id="3159419679550543837">ສະແດງເຄືອຂ່າຍທົະ</translation>
 <translation id="3215569562674795548">ແກ້ໄຂຫົວຂ້າຍືາເລີ້າ</translation>
 <translation id="4418993400653250511">ID ຫອນດຌານ</translation>

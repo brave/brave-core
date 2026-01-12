@@ -336,6 +336,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7557539689487606886">Bëhu Premium</translation>
 <translation id="1035309871698658326">Kur hapet, kjo do të dërgojë automatikisht titujt dhe origjinën e të gjitha skedave jo-private te Leo për t'i klasifikuar.</translation>
 <translation id="3435896845095436175">Lejo</translation>
+<translation id="9082792303833649978">Ky cilësim menaxhohet nga administratori juaj ose nga një tjetër politikë e Brave.</translation>
 <translation id="1940221956626514677">Përshtat shiritin e veglave</translation>
 <translation id="6501807887341963552">Tema dhe ngjyrat</translation>
 <translation id="6724227215236550330">Fjalëkalimet e ruajtura do të shfaqen këtu. Për të importuar fjalëkalimet në <ph name="BRAND"/> në këtë pajisje, <ph name="BEGIN_LINK"/> zgjidhni një skedar CSV<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2263346047290834619">Përdorni skedat e pemës</translation>
 <translation id="5860254591544742609">Shfaq shiritin e titullit</translation>
 <translation id="4691131445504068802">Fshi krejtësisht kur minimizohet</translation>
+<translation id="6763346436728173884">Fshih gjithmonë butonin për mbylljen e skedës</translation>
 <translation id="4909269867860362936">Zgjero automatikisht kur kalon miun sipër në gjendje të minimizuar</translation>
 <translation id="3367129510799209147">Modaliteti i kalimit të skedës</translation>
 <translation id="8925055964134259461">Zgjero automatikisht skedat vertikale në mënyrë të pavarur për çdo dritare</translation>
@@ -751,6 +753,7 @@ A jeni i sigurt që doni ta bëni këtë?</translation>
 <translation id="7141438739990875547">Rrjetet Bitcoin</translation>
 <translation id="1077567586443625607">Rrjetet Zcash</translation>
 <translation id="1177180573354712438">Rrjetet Cardano</translation>
+<translation id="3176794108951154148">Rrjetet Polkadot</translation>
 <translation id="3159419679550543837">Shfaq rrjetet testuese</translation>
 <translation id="3215569562674795548">Përpunoni ose shtoni rrjet të ri</translation>
 <translation id="4418993400653250511">Identifikuesi i rrjetit</translation>

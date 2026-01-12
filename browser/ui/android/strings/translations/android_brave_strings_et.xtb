@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Kopeeri puhas link</translation>
 <translation id="721490496276866468">Impordi paroolid</translation>
 <translation id="8178175542325151321">Vali .csv-fail, mis sisaldab sinu paroole, et need Brave'i paroolihaldurisse importida.</translation>
-<translation id="1177863135347784049">Kohandatud</translation>
 <translation id="6112331814131703370">Blokeeri teatised „Lülitu rakendusele“</translation>
 <translation id="4744921452903670666">Andke meile teada, mida arvate!</translation>
 <translation id="2524310205387880526">Hinda Brave’i</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Automaattäitmine privaatsetel vahelehtedel</translation>
 <translation id="8685431198160039193">Privaatsetel vahelehtedel saab salvestatud teabe automaatselt täita</translation>
 <translation id="6583902294974160967">Kasutajatugi</translation>
-<translation id="5713644099811900409">Brave'i konto</translation>
-<translation id="4472575034687746823">Alustamine</translation>
 <translation id="1799030480311994998">Funktsioonid</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
 <translation id="2839742394543397416">Analüütika</translation>
@@ -385,7 +382,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="717952606991220586">Ups, midagi on valesti. Palun proovi hiljem uuesti.</translation>
 <translation id="987264212798334818">Üldine</translation>
 <translation id="1116694919640316211">Teave</translation>
-<translation id="7961015016161918242">Mitte kunagi</translation>
 <translation id="1275213816424141989">Ehk hiljem</translation>
 <translation id="3624048886326677117">Blokeeri jälitajad ja reklaamid (agressiivne)</translation>
 <translation id="7151914815476509258">Blokeeri jälitajad ja reklaamid (tavapärane)</translation>
@@ -570,7 +566,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6697810017029555732">Ühesugused!</translation>
 <translation id="5981303441790732480">Importige oma olemasolev rahakott</translation>
 <translation id="9111102763498581341">Ava lukk</translation>
-<translation id="6657585470893396449">Parool</translation>
 <translation id="7553242001898162573">Sisestage oma parool</translation>
 <translation id="5619264711680220002">Biomeetriline avamine</translation>
 <translation id="9195657745688986798">Lukusta rahakott lahti</translation>
@@ -735,6 +730,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="9091334651803050473">Kui maksate suuremat tasu, prioriseerivad kaevurid tõenäoliselt teie tehingu, kuid see ei ole garanteeritud.</translation>
 <translation id="2941112035454246133">Madal</translation>
 <translation id="7304030187361489308">Kõrge</translation>
+<translation id="1177863135347784049">Kohandatud</translation>
 <translation id="4853037749278079787">Maksimaalne tasu: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH-i)</translation>
 <translation id="5939983758912255310">Praegune põhitasu: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Gaasikoguse piirmäär</translation>
@@ -1058,31 +1054,6 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="6393423486818299209">Kasutage oma praegust teenusepakkujat või Wikimedia DNS-i</translation>
 <translation id="3401384982562827787">Kasutage oma praegust teenusepakkujat või Cloudflare'i</translation>
 <translation id="8812367543786936496">Kui teie praegune teenusepakkuja ei ole turvaline, kasutab Brave turvalist alternatiivset DNS-i teenusepakkujat.</translation>
-<translation id="5680678411439841197">linn</translation>
-<translation id="8185518433273977704">väikelinn</translation>
-<translation id="4528386452965343421">prefektuur</translation>
-<translation id="1589122976691792535">piirkond</translation>
-<translation id="2221292964468054123">osariik</translation>
-<translation id="3801482889636327368">organisatsioon</translation>
-<translation id="1425162721525518064">ettevõte</translation>
-<translation id="7568794877555549044">riik</translation>
-<translation id="5982110855572850497">silt</translation>
-<translation id="6848689413353508904">konteiner</translation>
-<translation id="1496514951988037011">kasutajanimi</translation>
-<translation id="6155129418108337061">kasutajatunnus</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">meil:</translation>
-<translation id="3488199663160411179">nimi</translation>
-<translation id="793994607260936590">esimene</translation>
-<translation id="1782612111936779655">perekonnanimi</translation>
-<translation id="7628132737455466188">täisnimi</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobiiltelefon</translation>
-<translation id="598301471034819706">aadress</translation>
-<translation id="5557821203571216370">korter</translation>
-<translation id="8051552210542030943">PIN-kood</translation>
-<translation id="5233247193491045452">sihtnumber</translation>
-<translation id="3300502432153878901">sihtnumber</translation>
 <translation id="1381108437654541567">Lubage mitu akent</translation>
 <translation id="6167344249617630304">Avage korraga kuni 5 akent ja liigutage vahekaarte ühest aknast teise.</translation>
 <translation id="1063948063403254568">Tuvastati mitu akent</translation>
@@ -1156,6 +1127,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="7808889146555843082">Selle parooli eemaldamisel ei kustutata teie kontot saidil <ph name="SITE"/>. Muutke oma parooli või kustutage saidil <ph name="SITE"/> olev konto, et parooli kaitsta.</translation>
 <translation id="2870560284913253234">Sait</translation>
 <translation id="8503813439785031346">Kasutajanimi</translation>
+<translation id="6657585470893396449">Parool</translation>
 <translation id="2278052315791335171">Selle parooli kustutamisel ei kustutata teie kontot saidil <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Avage oma parooli kopeerimiseks</translation>
 <translation id="5515439363601853141">Avage oma parooli vaatamiseks</translation>

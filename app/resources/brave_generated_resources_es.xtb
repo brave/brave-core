@@ -336,6 +336,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="7557539689487606886">Hazte Premium</translation>
 <translation id="1035309871698658326">Cuando se abre, esto enviará automáticamente los títulos y el origen de todas las pestañas que no son de incógnito a Leo para clasificarlas.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
+<translation id="9082792303833649978">Esta configuración está administrada por tu administrador o por otra política de Brave.</translation>
 <translation id="1940221956626514677">Personalizar barra de herramientas</translation>
 <translation id="6501807887341963552">Tema y colores</translation>
 <translation id="6724227215236550330">Las contraseñas guardadas aparecerán aquí. Para importar contraseñas a <ph name="BRAND"/> en este dispositivo, <ph name="BEGIN_LINK"/> selecciona un archivo CSV<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2263346047290834619">Usar pestañas de árbol</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="4691131445504068802">Ocultar completamente cuando esté minimizado</translation>
+<translation id="6763346436728173884">Ocultar siempre el botón de cerrar pestaña</translation>
 <translation id="4909269867860362936">Expandir automáticamente al pasar el cursor cuando esté minimizado</translation>
 <translation id="3367129510799209147">Modo de pasar por encima de las pestañas</translation>
 <translation id="8925055964134259461">Ampliar las pestañas verticales de forma independiente en cada ventana</translation>
@@ -752,6 +754,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="1077567586443625607">Redes de Zcash</translation>
 <translation id="1177180573354712438">Redes Cardano</translation>
+<translation id="3176794108951154148">Redes de Polkadot</translation>
 <translation id="3159419679550543837">Mostrar redes de prueba</translation>
 <translation id="3215569562674795548">Editar o añadir nueva red</translation>
 <translation id="4418993400653250511">El ID de la cadena</translation>

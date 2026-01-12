@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="721490496276866468">비밀번호 가져오기</translation>
 <translation id="8178175542325151321">비밀번호를 내보내기 위해 포함된 .csv 파일을 선택하여 Brave의 비밀번호 관리자에 가져오세요.</translation>
-<translation id="1177863135347784049">맞춤</translation>
 <translation id="6112331814131703370">'앱으로 전환' 요청 차단</translation>
 <translation id="4744921452903670666">어떻게 생각하시는지 알려주세요!</translation>
 <translation id="2524310205387880526">Brave 평가</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">비공개 탭에 자동 채우기</translation>
 <translation id="8685431198160039193">저장된 정보를 비공개 탭에 자동으로 채울 수 있음</translation>
 <translation id="6583902294974160967">지원</translation>
-<translation id="5713644099811900409">Brave 계정</translation>
-<translation id="4472575034687746823">시작하기</translation>
 <translation id="1799030480311994998">기능</translation>
 <translation id="1919345977826869612">광고</translation>
 <translation id="2839742394543397416">분석</translation>
@@ -384,7 +381,6 @@
 <translation id="717952606991220586">이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="987264212798334818">일반</translation>
 <translation id="1116694919640316211">정보</translation>
-<translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="1275213816424141989">나중에</translation>
 <translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
@@ -431,7 +427,7 @@
 <translation id="721949491455392748">현재 페이지의 스크린샷 포함</translation>
 <translation id="8459191579769999214">스크린샷 보기</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
-<translation id="6145852496180774737">연락 방법:(선택사항)</translation>
+<translation id="6145852496180774737">연락 방법: (선택사항)</translation>
 <translation id="6367576083705149078">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
@@ -569,7 +565,6 @@
 <translation id="6697810017029555732">일치합니다!</translation>
 <translation id="5981303441790732480">기존 월렛 가져오기</translation>
 <translation id="9111102763498581341">잠금 해제</translation>
-<translation id="6657585470893396449">비밀번호</translation>
 <translation id="7553242001898162573">비밀번호 입력</translation>
 <translation id="5619264711680220002">생체인식 잠금 해제</translation>
 <translation id="9195657745688986798">월렛 잠금 해제</translation>
@@ -734,6 +729,7 @@
 <translation id="9091334651803050473">확신할 수는 없지만 더 높은 수수료를 지불하면 채굴자가 귀하의 트랜잭션을 우선시할 가능성이 높습니다.</translation>
 <translation id="2941112035454246133">낮음</translation>
 <translation id="7304030187361489308">높음</translation>
+<translation id="1177863135347784049">맞춤</translation>
 <translation id="4853037749278079787">최대 수수료: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">현재 기본 수수료: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">가스비 한도</translation>
@@ -1054,31 +1050,6 @@
 <translation id="6393423486818299209">현재 서비스 제공자 또는 Wikimedia DNS 사용</translation>
 <translation id="3401384982562827787">현재 서비스 제공자 또는 Cloudflare 사용</translation>
 <translation id="8812367543786936496">현재 서비스 제공자가 비보안이면 Brave가 대체 보안 DNS 제공자를 사용합니다.</translation>
-<translation id="5680678411439841197">도시</translation>
-<translation id="8185518433273977704">읍면</translation>
-<translation id="4528386452965343421">현</translation>
-<translation id="1589122976691792535">지역</translation>
-<translation id="2221292964468054123">주</translation>
-<translation id="3801482889636327368">조직</translation>
-<translation id="1425162721525518064">회사</translation>
-<translation id="7568794877555549044">국가</translation>
-<translation id="5982110855572850497">라벨</translation>
-<translation id="6848689413353508904">컨테이너</translation>
-<translation id="1496514951988037011">사용자 이름</translation>
-<translation id="6155129418108337061">로그인</translation>
-<translation id="4038523199754403233">ID</translation>
-<translation id="901834265349196618">이메일</translation>
-<translation id="3488199663160411179">이름</translation>
-<translation id="793994607260936590">처음</translation>
-<translation id="1782612111936779655">성</translation>
-<translation id="7628132737455466188">성명</translation>
-<translation id="8621068256433641644">전화</translation>
-<translation id="5993210100509955931">모바일</translation>
-<translation id="598301471034819706">주소</translation>
-<translation id="5557821203571216370">아파트</translation>
-<translation id="8051552210542030943">PIN 코드</translation>
-<translation id="5233247193491045452">우편번호</translation>
-<translation id="3300502432153878901">우편</translation>
 <translation id="1381108437654541567">여러 창 활성화</translation>
 <translation id="6167344249617630304">동시에 최대 5개의 창을 열고 한 창에서 다른 창으로 탭 이동</translation>
 <translation id="1063948063403254568">여러 창 감지됨</translation>
@@ -1152,6 +1123,7 @@
 <translation id="7808889146555843082">비밀번호를 삭제해도 <ph name="SITE"/> 계정은 삭제되지 않습니다. 비밀번호를 변경하거나 <ph name="SITE"/> 계정을 삭제하여 보안을 유지하세요.</translation>
 <translation id="2870560284913253234">사이트</translation>
 <translation id="8503813439785031346">사용자 이름</translation>
+<translation id="6657585470893396449">비밀번호</translation>
 <translation id="2278052315791335171">비밀번호를 삭제해도 <ph name="SITE"/> 계정은 삭제되지 않습니다.</translation>
 <translation id="6891726759199484455">비밀번호를 복사하려면 잠금 해제하세요</translation>
 <translation id="5515439363601853141">비밀번호를 보려면 잠금 해제하세요</translation>
