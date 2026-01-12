@@ -1,16 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
-index c29f02d96b3c3bfe95d372a1fddc9500568300f1..25188cfccba2ded7895987a6c025e640998e8397 100644
+index c29f02d96b3c3bfe95d372a1fddc9500568300f1..df0743fab210cb5165117a899b1d0f31822f57cd 100644
 --- a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
 +++ b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
-@@ -270,6 +270,7 @@ export class CrDialogElement extends CrLitElement {
-   }
- 
-   private onKeypress_(e: KeyboardEvent) {
-+    debugger;
-     if (e.key !== 'Enter') {
-       return;
-     }
-@@ -282,7 +283,7 @@ export class CrDialogElement extends CrLitElement {
+@@ -282,7 +282,7 @@ export class CrDialogElement extends CrLitElement {
      const accept = e.target === this ||
          e.composedPath().some(
              el => (el as HTMLElement).tagName === 'CR-INPUT' &&
