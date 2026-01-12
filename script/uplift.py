@@ -321,6 +321,9 @@ def main():
     try:
         print('\nCreating the pull requests...')
         for channel in config.channels_to_process:
+            if local_branches[channel] is None:
+                print('(' + channel + ') skipping PR (no changes to uplift)')
+                continue
             submit_pr(channel, top_level_base, remote_branches[channel],
                       local_branches[channel], issues_fixed)
         print('\nDone!')
@@ -396,10 +399,12 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
+            picked_count = 0
             for sha in sha_list:
                 try:
                     output = execute(['git', 'cherry-pick', sha]).split('\n')
                     print('- picked ' + sha + ' (' + output[0] + ')')
+                    picked_count += 1
                 except RuntimeError as e:
                     error_message = str(e)
                     if 'cherry-pick is now empty' in error_message:
@@ -407,6 +412,17 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                         execute(['git', 'cherry-pick', '--skip'])
                     else:
                         raise
+
+            skipped_count = len(sha_list) - picked_count
+            if picked_count > 0 and skipped_count > 0:
+                print('[WARNING] Partial uplift: ' + str(picked_count) +
+                      ' commit(s) picked, ' + str(skipped_count) +
+                      ' already applied. Please verify this is expected.')
+
+            if picked_count == 0:
+                print('(' + channel + ') all commits already applied, ' +
+                      'skipping uplift')
+                return None
 
             # squash all commits into one
             # NOTE: master is not squashed. This only runs for uplifts.
