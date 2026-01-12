@@ -276,6 +276,7 @@ function syncChromium(program) {
 
   util.runGclient(args)
   util.addGitExclusion(config.srcDir, 'brave/')
+  util.addGitExclusion(config.srcDir, 'brave_origin/')
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
