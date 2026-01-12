@@ -62,7 +62,7 @@
 #undef param
 
 const Browser* TabStrip::GetBrowser() const {
-  return controller_->GetBrowser();
+  return controller_->GetBrowserWindowInterface()->GetBrowserForMigrationOnly();
 }
 
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
