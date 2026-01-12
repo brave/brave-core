@@ -595,7 +595,7 @@ union SwapTransactionUnion {
   ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
   SquidTransactionUnion squid_transaction;
-  Gate3SwapTransactionParamsUnion gate3_transaction;
+  Gate3SwapRoute gate3_route;
 };
 
 enum Gate3SwapErrorKind {

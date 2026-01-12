@@ -2111,7 +2111,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
           "gasless": false,
           "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
           "depositMemo": null,
-          "expiresAt": "2025-12-30T11:26:07.371000Z",
+          "expiresAt": "1767810375",
           "slippagePercentage": "0.5",
           "transactionParams": {
             "evm": {
@@ -2147,6 +2147,56 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_evm_params->value = "0";
   expected_evm_params->data = "0xdeadbeef";
 
+  // Create expected route step
+  auto expected_step = mojom::Gate3SwapRouteStep::New();
+  auto source_token = mojom::Gate3SwapStepToken::New();
+  source_token->coin = "ETH";
+  source_token->chain_id = "0x1";
+  source_token->contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  source_token->symbol = "USDC";
+  source_token->decimals = "6";
+  source_token->logo = "";
+  expected_step->source_token = std::move(source_token);
+  expected_step->source_amount = "1000000";
+  auto destination_token = mojom::Gate3SwapStepToken::New();
+  destination_token->coin = "SOL";
+  destination_token->chain_id = "0x65";
+  destination_token->contract_address =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  destination_token->symbol = "USDC";
+  destination_token->decimals = "6";
+  destination_token->logo = "";
+  expected_step->destination_token = std::move(destination_token);
+  expected_step->destination_amount = "714488";
+  auto tool = mojom::Gate3SwapTool::New();
+  tool->name = "NEAR Intents";
+  tool->logo = "https://example.com/logo.png";
+  expected_step->tool = std::move(tool);
+
+  // Create expected route
+  auto expected_route = mojom::Gate3SwapRoute::New();
+  expected_route->id = "ni_firm_test";
+  expected_route->provider = mojom::SwapProvider::kNearIntents;
+  expected_route->steps.push_back(std::move(expected_step));
+  expected_route->source_amount = "1000000";
+  expected_route->destination_amount = "714488";
+  expected_route->destination_amount_min = "710915";
+  expected_route->estimated_time = "42";
+  expected_route->price_impact = "-0.5";
+  expected_route->network_fee = nullptr;
+  expected_route->gasless = false;
+  expected_route->deposit_address =
+      "0x16a0FdeB69D821753440dFA092316F54eF95E967";
+  expected_route->deposit_memo = std::nullopt;
+  expected_route->expires_at = "1767810375";
+  expected_route->slippage_percentage = "0.5";
+  expected_route->transaction_params =
+      mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
+          std::move(expected_evm_params));
+  expected_route->has_post_submit_hook = true;
+  expected_route->requires_token_allowance = false;
+  expected_route->requires_firm_route = true;
+
   auto quote_params = GetCannedSwapQuoteParams(
       mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
       mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
@@ -2154,12 +2204,10 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
 
   base::RunLoop run_loop;
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Transaction(
-              mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
-                  std::move(expected_evm_params)))),
-          EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Route(
+                      std::move(expected_route))),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
       .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   swap_service_->GetTransaction(
