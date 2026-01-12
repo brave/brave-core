@@ -125,54 +125,6 @@ exports.update = () => {
     path.join(
       braveAppDir,
       'theme',
-      'default_100_percent',
-      'brave',
-      'product_logo_name_48.png',
-    ),
-    path.join(
-      chromeComponentsDir,
-      'resources',
-      'default_100_percent',
-      'chromium',
-      'product_logo.png',
-    ),
-  ])
-  fileMap.add([
-    path.join(
-      braveAppDir,
-      'theme',
-      'default_100_percent',
-      'brave',
-      'product_logo_white.png',
-    ),
-    path.join(
-      chromeComponentsDir,
-      'resources',
-      'default_100_percent',
-      'chromium',
-      'product_logo_white.png',
-    ),
-  ])
-  fileMap.add([
-    path.join(
-      braveAppDir,
-      'theme',
-      'default_200_percent',
-      'brave',
-      'product_logo_name_48.png',
-    ),
-    path.join(
-      chromeComponentsDir,
-      'resources',
-      'default_200_percent',
-      'chromium',
-      'product_logo.png',
-    ),
-  ])
-  fileMap.add([
-    path.join(
-      braveAppDir,
-      'theme',
       'default_200_percent',
       'brave',
       'product_logo_white.png',
