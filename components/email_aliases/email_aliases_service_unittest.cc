@@ -70,21 +70,6 @@ class EmailAliasesServiceTest : public ::testing::Test {
   std::unique_ptr<test::AuthStateObserver> observer_;
 };
 
-TEST_F(EmailAliasesServiceTest, Auth) {
-  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
-                        base::BindLambdaForTesting([&]() {}));
-
-  auth.SetAuthEmail("test@domain.com");
-  EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
-
-  auth.SetAuthToken("token");
-  EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
-
-  auth.SetAuthEmail({});
-  EXPECT_EQ(auth.GetAuthEmail(), "");
-  EXPECT_EQ(auth.CheckAndGetAuthToken(), "");
-}
-
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
   void OnAuthStateChanged(mojom::AuthStatePtr) override {}
@@ -186,11 +171,10 @@ class EmailAliasesAPITest : public ::testing::Test {
 
   void SetupAuth(bool auth = true) {
     EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()));
-    settings.SetAuthEmail("test@example.com");
     if (auth) {
-      settings.SetAuthToken("token456");
+      settings.SetAuthForTesting("token456");
     } else {
-      settings.SetAuthEmail({});
+      settings.SetAuthForTesting({});
     }
   }
 
@@ -411,8 +395,7 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
                         base::BindLambdaForTesting([&]() {}));
-  auth.SetAuthEmail("test@domain.com");
-  auth.SetAuthToken("auth456");
+  auth.SetAuthForTesting("auth456");
 
   // Wait until auth token is set by the session poll response.
   EXPECT_TRUE(base::test::RunUntil(

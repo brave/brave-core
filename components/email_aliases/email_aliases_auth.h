@@ -27,12 +27,10 @@ class EmailAliasesAuth {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   bool IsAuthenticated() const;
-
-  void SetAuthEmail(const std::string& email);
-  void SetAuthToken(const std::string& auth_token);
-
   std::string GetAuthEmail() const;
-  std::string CheckAndGetAuthToken();
+  std::string GetAuthToken() const;
+
+  void SetAuthForTesting(const std::string& auth_token);
 
  private:
   void OnPrefChanged(const std::string& pref_name);
@@ -42,13 +40,7 @@ class EmailAliasesAuth {
   os_crypt_async::Encryptor encryptor_;
 
   PrefChangeRegistrar pref_change_registrar_;
-
   OnChangedCallback on_changed_;
-
-  bool notify_ = true;
-
-  std::string auth_email_;
-  bool is_authenticated_ = false;
 };
 
 }  // namespace email_aliases

@@ -154,7 +154,7 @@ std::string EmailAliasesService::GetAuthToken() {
   if (!auth_) {
     return {};
   }
-  return auth_->CheckAndGetAuthToken();
+  return auth_->GetAuthToken();
 }
 
 mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
@@ -167,10 +167,9 @@ mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
 }
 
 void EmailAliasesService::OnAuthChanged() {
-  const auto email = auth_ ? auth_->GetAuthEmail() : std::string();
   for (auto& observer : observers_) {
     observer->OnAuthStateChanged(
-        mojom::AuthState::New(GetCurrentStatus(), email));
+        mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail()));
   }
 }
 

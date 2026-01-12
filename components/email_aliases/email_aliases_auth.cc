@@ -66,41 +66,24 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
       brave_account::prefs::kBraveAccountAuthenticationToken,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
                           base::Unretained(this)));
-
-  auth_email_ =
-      prefs_service->GetString(brave_account::prefs::kBraveAccountEmailAddress);
-  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
+  pref_change_registrar_.Add(
+      brave_account::prefs::kBraveAccountEmailAddress,
+      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                          base::Unretained(this)));
 }
 
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return is_authenticated_;
-}
-
-void EmailAliasesAuth::SetAuthEmail(const std::string& email) {
-  if (GetAuthEmail() != email) {
-    auth_email_ = email;
-    SetAuthToken({});
-  }
-}
-
-void EmailAliasesAuth::SetAuthToken(const std::string& auth_token) {
-  std::string encrypted;
-  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
-    prefs_service_->ClearPref(
-        brave_account::prefs::kBraveAccountAuthenticationToken);
-  } else {
-    prefs_service_->SetString(
-        brave_account::prefs::kBraveAccountAuthenticationToken, encrypted);
-  }
+  return !GetAuthToken().empty() && !GetAuthEmail().empty();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
-  return auth_email_;
+  return prefs_service_->GetString(
+      brave_account::prefs::kBraveAccountEmailAddress);
 }
 
-std::string EmailAliasesAuth::CheckAndGetAuthToken() {
+std::string EmailAliasesAuth::GetAuthToken() const {
   const auto encrypted_token = prefs_service_->GetString(
       brave_account::prefs::kBraveAccountAuthenticationToken);
   if (encrypted_token.empty()) {
@@ -110,26 +93,26 @@ std::string EmailAliasesAuth::CheckAndGetAuthToken() {
   std::string token;
   if (!Decrypt(encryptor_, encrypted_token, token)) {
     // Failed to decrypt token -> reset.
-    SetAuthToken({});
+    prefs_service_->ClearPref(
+        brave_account::prefs::kBraveAccountAuthenticationToken);
     return {};
   }
   return token;
 }
 
+void EmailAliasesAuth::SetAuthForTesting(const std::string& auth_token) {
+  std::string encrypted;
+
+  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
+    prefs_service_->ClearPref(
+        brave_account::prefs::kBraveAccountAuthenticationToken);
+  } else {
+    prefs_service_->SetString(
+        brave_account::prefs::kBraveAccountAuthenticationToken, encrypted);
+  }
+}
+
 void EmailAliasesAuth::OnPrefChanged(const std::string& pref_name) {
-  if (!notify_) {
-    return;
-  }
-
-  base::AutoReset reenter(&notify_, false);
-
-  auto auth_email = GetAuthEmail();
-  if (auth_email != auth_email_) {
-    SetAuthToken({});
-    auth_email_ = std::move(auth_email);
-  }
-
-  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
   on_changed_.Run();
 }
 
