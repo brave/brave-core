@@ -21,12 +21,14 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
+import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager;
@@ -70,10 +72,14 @@ public class BraveRecentTabsSnackbarHelper {
     private String mSnackbarTitle = "";
     private String mSnackbarPageTitle = "";
     private String mSnackbarUrl = "";
-    // Store NTP tab ID to detect when user switches away from NTP
+    // Store NTP tab to detect when user switches away or navigates
+    private @Nullable Tab mNtpTab;
     private int mNtpTabId = Tab.INVALID_TAB_ID;
-    // Observer to detect tab selection changes (e.g., user switches to another tab)
-    private @Nullable TabModelSelectorTabModelObserver mTabModelObserver;
+    // Observer to detect when NTP tab navigates (e.g., clicking a favorite)
+    private @Nullable TabObserver mTabObserver;
+    // Observer to detect when NTP tab is hidden (e.g., switching tabs or to private mode)
+    private @Nullable TabModelSelectorObserver mSelectorObserver;
+    private @Nullable TabModelSelector mTabModelSelector;
     // Observer to detect when tab switcher is opened
     private @Nullable LayoutStateProvider mLayoutStateProvider;
     private LayoutStateProvider.@Nullable LayoutStateObserver mLayoutStateObserver;
@@ -197,7 +203,8 @@ public class BraveRecentTabsSnackbarHelper {
                                 Snackbar.UMA_UNKNOWN)
                         .setDuration(SNACKBAR_DISMISS_DELAY_MS);
 
-        // Store NTP tab ID to detect when user switches away
+        // Store NTP tab to detect when user switches away or navigates
+        mNtpTab = currentTab;
         mNtpTabId = currentTab.getId();
 
         // Register observers to dismiss snackbar when user leaves NTP
@@ -240,25 +247,49 @@ public class BraveRecentTabsSnackbarHelper {
     }
 
     /**
-     * Registers observers to automatically dismiss the snackbar when: - User switches to a
-     * different tab - User opens the tab switcher
+     * Registers observers to automatically dismiss the snackbar when:
+     *
+     * <pre>
+     * - User switches to a different tab
+     * - User opens the tab switcher
+     * - User navigates on the NTP (e.g., clicking a favorite)
+     * </pre>
      */
     private void registerDismissObservers(BraveActivity activity) {
-        TabModelSelector selector = activity.getTabModelSelectorSupplier().get();
-        if (selector != null) {
-            mTabModelObserver =
-                    new TabModelSelectorTabModelObserver(selector) {
+        // Observer to detect navigation on the NTP tab (e.g., clicking a favorite)
+        if (mNtpTab != null) {
+            mTabObserver =
+                    new EmptyTabObserver() {
                         @Override
-                        public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
+                        public void onPageLoadStarted(Tab tab, GURL url) {
                             if (mDestroyed) {
                                 return;
                             }
-                            // If user switched away from NTP tab, dismiss snackbar
-                            if (lastId == mNtpTabId && tab.getId() != mNtpTabId) {
+                            // NTP is navigating to a new page, dismiss snackbar
+                            dismissSnackbar();
+                        }
+                    };
+            mNtpTab.addObserver(mTabObserver);
+        }
+
+        TabModelSelector selector = activity.getTabModelSelectorSupplier().get();
+        if (selector != null) {
+            mTabModelSelector = selector;
+            // onTabHidden fires when any tab is hidden to switch to another tab
+            mSelectorObserver =
+                    new TabModelSelectorObserver() {
+                        @Override
+                        public void onTabHidden(Tab tab) {
+                            if (mDestroyed) {
+                                return;
+                            }
+                            // If our NTP tab was hidden, dismiss snackbar
+                            if (tab.getId() == mNtpTabId) {
                                 dismissSnackbar();
                             }
                         }
                     };
+            selector.addObserver(mSelectorObserver);
         }
 
         // Get LayoutManager from ChromeActivity's supplier to detect tab switcher
@@ -522,11 +553,19 @@ public class BraveRecentTabsSnackbarHelper {
         }
         mDestroyed = true;
 
-        // Clean up tab model observer
-        if (mTabModelObserver != null) {
-            mTabModelObserver.destroy();
-            mTabModelObserver = null;
+        // Clean up tab observer
+        if (mNtpTab != null && mTabObserver != null) {
+            mNtpTab.removeObserver(mTabObserver);
         }
+        mTabObserver = null;
+        mNtpTab = null;
+
+        // Clean up selector observer
+        if (mTabModelSelector != null && mSelectorObserver != null) {
+            mTabModelSelector.removeObserver(mSelectorObserver);
+        }
+        mSelectorObserver = null;
+        mTabModelSelector = null;
 
         // Clean up layout state observer
         if (mLayoutStateProvider != null && mLayoutStateObserver != null) {
