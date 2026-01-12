@@ -2238,7 +2238,7 @@ struct GetServiceTokenTestCase {
                         .FindDict("email-aliases");
                 EXPECT_TRUE(email_aliases);
                 const auto* service_token =
-                    email_aliases->FindString("service_token");
+                    email_aliases->FindString(prefs::keys::kServiceToken);
                 EXPECT_TRUE(service_token);
                 EXPECT_EQ(*service_token,
                           base::Base64Encode(expected_service_token));
@@ -2280,9 +2280,10 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
             return base::Value::Dict().Set(
                 "email-aliases",
                 base::Value::Dict()
-                    .Set("service_token",
+                    .Set(prefs::keys::kServiceToken,
                          base::Base64Encode("cached_service_token"))
-                    .Set("last_fetched", base::TimeToValue(mock_now)));
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
           }),
           .set_authentication_token = {},    // not used
           .fail_decryption = {},             // not used
@@ -2711,7 +2712,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
           .service_tokens_dict = base::BindOnce([](base::Time mock_now) {
             return base::Value::Dict().Set(
                 "email-aliases",
-                base::Value::Dict().Set("last_fetched",
+                base::Value::Dict().Set(prefs::keys::kLastFetched,
                                         base::TimeToValue(mock_now)));
           }),
           .set_authentication_token = true,
@@ -2742,7 +2743,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
             return base::Value::Dict().Set(
                 "email-aliases",
                 base::Value::Dict().Set(
-                    "service_token",
+                    prefs::keys::kServiceToken,
                     base::Base64Encode("cached_service_token")));
           }),
           .set_authentication_token = true,
@@ -2773,9 +2774,9 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
             return base::Value::Dict().Set(
                 "email-aliases",
                 base::Value::Dict()
-                    .Set("service_token",
+                    .Set(prefs::keys::kServiceToken,
                          base::Base64Encode("cached_service_token"))
-                    .Set("last_fetched", "invalid-time-format"));
+                    .Set(prefs::keys::kLastFetched, "invalid-time-format"));
           }),
           .set_authentication_token = true,
           .fail_decryption = false,
@@ -2805,9 +2806,10 @@ const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
             return base::Value::Dict().Set(
                 "email-aliases",
                 base::Value::Dict()
-                    .Set("service_token",
+                    .Set(prefs::keys::kServiceToken,
                          base::Base64Encode("cached_service_token"))
-                    .Set("last_fetched", base::TimeToValue(mock_now)));
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
           }),
           .set_authentication_token = true,
           .fail_decryption = false,
@@ -2839,8 +2841,9 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
             return base::Value::Dict().Set(
                 "email-aliases",
                 base::Value::Dict()
-                    .Set("service_token", "!!!invalid-base64!!!")
-                    .Set("last_fetched", base::TimeToValue(mock_now)));
+                    .Set(prefs::keys::kServiceToken, "!!!invalid-base64!!!")
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
           }),
           .set_authentication_token = true,
           .fail_decryption = false,

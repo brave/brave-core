@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/json/values_util.h"
@@ -242,19 +243,18 @@ void BraveAccountService::LogOut() {
 
 void BraveAccountService::GetServiceToken(mojom::Service service,
                                           GetServiceTokenCallback callback) {
-  std::string service_name = [&] {
-    switch (service) {
-      case mojom::Service::kEmailAliases:
-        return "email-aliases";
-      case mojom::Service::kPremium:
-        return "premium";
-      case mojom::Service::kSync:
-        return "sync";
-    }
+  static constexpr auto kServiceToNameMap =
+      base::MakeFixedFlatMap<mojom::Service, const char*>({
+          {mojom::Service::kEmailAliases, "email-aliases"},
+          {mojom::Service::kPremium, "premium"},
+          {mojom::Service::kSync, "sync"},
+      });
+  static_assert(
+      kServiceToNameMap.size() ==
+          static_cast<std::size_t>(mojom::Service::kMaxValue) + 1,
+      "kServiceToNameMap must contain all mojom::Service enum values!");
 
-    NOTREACHED();
-  }();
-
+  std::string service_name = kServiceToNameMap.at(service);
   if (auto service_token = GetCachedServiceToken(service_name);
       !service_token.empty()) {
     return std::move(callback).Run(
@@ -673,11 +673,12 @@ void BraveAccountService::OnGetServiceToken(
             auto service_tokens =
                 pref_service_->GetDict(prefs::kBraveAccountServiceTokens)
                     .Clone();
-            service_tokens.Set(
-                service_name,
-                base::Value::Dict()
-                    .Set("service_token", std::move(encrypted_service_token))
-                    .Set("last_fetched", base::TimeToValue(base::Time::Now())));
+            service_tokens.Set(service_name,
+                               base::Value::Dict()
+                                   .Set(prefs::keys::kServiceToken,
+                                        std::move(encrypted_service_token))
+                                   .Set(prefs::keys::kLastFetched,
+                                        base::TimeToValue(base::Time::Now())));
 
             pref_service_->SetDict(prefs::kBraveAccountServiceTokens,
                                    std::move(service_tokens));
@@ -698,8 +699,9 @@ std::string BraveAccountService::GetCachedServiceToken(
     return "";
   }
 
-  const auto* encrypted_service_token = service->FindString("service_token");
-  const auto* last_fetched_value = service->Find("last_fetched");
+  const auto* encrypted_service_token =
+      service->FindString(prefs::keys::kServiceToken);
+  const auto* last_fetched_value = service->Find(prefs::keys::kLastFetched);
 
   if (!encrypted_service_token || !last_fetched_value) {
     return "";

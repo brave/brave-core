@@ -51,6 +51,14 @@ inline constexpr char kBraveAccountEmailAddress[] =
 inline constexpr char kBraveAccountServiceTokens[] =
     "brave.account.service_tokens";
 
+namespace keys {
+
+// Dictionary keys used within kBraveAccountServiceTokens.
+inline constexpr char kServiceToken[] = "service_token";
+inline constexpr char kLastFetched[] = "last_fetched";
+
+}  // namespace keys
+
 }  // namespace brave_account::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_

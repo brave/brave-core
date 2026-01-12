@@ -86,6 +86,8 @@ struct LoginError {
 };
 
 // Services that depend on Brave Account.
+// Note: do not assign explicit values to enumerators,
+// as kMaxValue is used to validate that all services are handled.
 enum Service {
   kEmailAliases,
   kPremium,
