@@ -315,7 +315,7 @@ exports.update = () => {
       braveAppDir,
       'theme',
       branding,
-      config.channel ? `BRANDING.${config.channel}` : 'BRANDING',
+      'BRANDING' + (config.channel ? `.${config.channel}` : ''),
     )
     const brandingDest = path.join(chromeAppDir, 'theme', branding, 'BRANDING')
     explicitSourceFiles[brandingDest] = brandingSource
