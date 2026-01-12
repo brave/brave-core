@@ -4791,7 +4791,7 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->associated_content_manager()->ClearContent();
 
   // Add a skill with different model
-  std::string different_model = "chat-gemma";
+  std::string different_model = "chat-qwen";
   prefs::AddSkillToPrefs("translate", "Please translate the content",
                          different_model, prefs_);
   auto skills = prefs::GetSkillsFromPrefs(prefs_);
