@@ -198,7 +198,11 @@ const Config = function () {
   this.braveAndroidPkcs11Alias = ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec'], false)
-  this.useReclient = getEnvConfig(['use_reclient'], this.useRemoteExec)
+  this.useSiso = getEnvConfig(['use_siso'], true)
+  this.useReclient = getEnvConfig(
+    ['use_reclient'],
+    this.useRemoteExec && !this.useSiso,
+  )
   this.offline = getEnvConfig(['offline'], false)
   this.use_libfuzzer = false
   this.androidAabToApk = false
@@ -1232,27 +1236,12 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
 Object.defineProperty(Config.prototype, 'chromiumCustomDeps', {
   get: function () {
-    const gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
-    if (!this.isCI && Object.keys(gclientCustomDeps).length > 0) {
-      Log.error(
-        'gclient_custom_deps is deprecated, use projects_chrome_custom_deps in .env',
-      )
-    }
-    return {
-      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
-      ...gclientCustomDeps,
-    }
+    return envConfig.getMergedObject(['projects', 'chrome', 'custom_deps'])
   },
 })
 
 Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
   get: function () {
-    const gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
-    if (!this.isCI && Object.keys(gclientCustomVars).length > 0) {
-      Log.error(
-        'gclient_custom_vars is deprecated, use projects_chrome_custom_vars in .env',
-      )
-    }
     return {
       'checkout_pgo_profiles': this.isBraveReleaseBuild(),
       ...(this.rbeService
@@ -1263,7 +1252,6 @@ Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
           }
         : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
-      ...gclientCustomVars,
     }
   },
 })
@@ -1305,17 +1293,6 @@ Object.defineProperty(Config.prototype, 'outputDir', {
   },
   set: function (outputDir) {
     return (this.__outputDir = outputDir)
-  },
-})
-
-Object.defineProperty(Config.prototype, 'useSiso', {
-  get: function () {
-    return getEnvConfig(
-      ['use_siso'],
-      // * iOS fails in siso+reproxy mode because of incorrect handling of
-      //   input_root_absolute_path value.
-      !this.isIOS(),
-    )
   },
 })
 

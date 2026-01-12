@@ -114,6 +114,8 @@ def configure_sisorc():
         # Increase fs_min_flush_timeout to allow for more time for blobs to be
         # downloaded on slow connection.
         ninja_flags.append('-fs_min_flush_timeout 300s')
+        # Use byte stream for most files as it is compression-aware.
+        ninja_flags.append('-reapi_byte_stream_read_threshold 1024')
 
     if cache_dir := os.environ.get('SISO_CACHE_DIR'):
         # `-cache_dir` and `-local_cache_enable` to use a local disk cache for
