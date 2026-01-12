@@ -9,12 +9,12 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/time_period_storage/monthly_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -87,7 +87,7 @@ class SkillsMetrics {
 
   std::optional<std::string> clicked_skill_shortcut_;
   // Map of conversation UUID to session durations
-  base::flat_map<std::string, base::TimeDelta> conversations_with_skill_;
+  absl::flat_hash_map<std::string, base::TimeDelta> conversations_with_skill_;
 };
 
 }  // namespace ai_chat
