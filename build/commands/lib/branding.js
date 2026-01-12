@@ -171,6 +171,35 @@ exports.update = () => {
       ),
     ])
   }
+  // Replace history page's favicon.
+  fileMap.add([
+    path.join(
+      braveComponentsDir,
+      'resources',
+      'default_100_percent',
+      'favicon_history.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_100_percent',
+      'favicon_history.png',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      braveComponentsDir,
+      'resources',
+      'default_200_percent',
+      'favicon_history.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_200_percent',
+      'favicon_history.png',
+    ),
+  ])
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
       path.join(braveAppVectorIconsDir, 'vector_icons', branding),
