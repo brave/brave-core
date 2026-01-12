@@ -84,7 +84,7 @@ class CardanoTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr,
-        cardano_wallet_service_.get(), *keyring_service_, &prefs_,
+        cardano_wallet_service_.get(), nullptr, *keyring_service_, &prefs_,
         temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 

@@ -260,8 +260,8 @@ class EthTxManagerUnitTest : public testing::Test {
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, nullptr, *keyring_service_,
-        GetPrefs(), temp_dir_.GetPath(),
+        json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
+        *keyring_service_, GetPrefs(), temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 

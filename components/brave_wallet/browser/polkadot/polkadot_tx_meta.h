@@ -33,7 +33,7 @@ class PolkadotTxMeta : public TxMeta {
  private:
   std::string recipient_;
   std::string encoded_extrinsic_;
-  base::StrictNumeric<uint64_t> amount_ = uint64_t{0};
+  base::StrictNumeric<uint128_t> amount_ = uint128_t{0};
 };
 
 }  // namespace brave_wallet

@@ -2602,7 +2602,7 @@ struct CardanoTxData {
 
 struct PolkadotTxdata {
   string to;
-  uint64 amount;
+  uint128 amount;
   bool sending_max_amount;
   uint64 fee;
 };
@@ -2718,6 +2718,15 @@ struct NewCardanoTransactionParams {
   bool sending_max_amount;
 };
 
+// Params sent from UI to Core for a new unapproved Polkadot transaction.
+struct NewPolkadotTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  uint128 amount;
+  bool sending_max_amount;
+};
+
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
@@ -2735,6 +2744,9 @@ interface TxService {
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedCardanoTransaction(NewCardanoTransactionParams params)
+      => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedPolkadotTransaction(NewPolkadotTransactionParams params)
       => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
