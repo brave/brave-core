@@ -21,12 +21,13 @@ struct OriginPolicyBooleanValue {
     storage storageKeyPath: ReferenceWritableKeyPath<OriginSettingsViewModel, Self>
   ) -> Bool {
     get {
+      instance.access(keyPath: wrappedKeyPath)
       let key = instance[keyPath: storageKeyPath].key
       return instance.service.getPolicyValue(key) as? Bool ?? false
     }
     set {
       let key = instance[keyPath: storageKeyPath].key
-      instance.withMutation(keyPath: storageKeyPath) {
+      instance.withMutation(keyPath: wrappedKeyPath) {
         _ = instance.service.setPolicyValue(key, value: newValue)
       }
     }

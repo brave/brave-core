@@ -9,14 +9,13 @@ import Strings
 import SwiftUI
 
 public struct OriginSettingsView: View {
-  private let viewModel: OriginSettingsViewModel
+  @Bindable private var viewModel: OriginSettingsViewModel
 
   public init(service: any BraveOriginService) {
     viewModel = .init(service: service)
   }
 
   public var body: some View {
-    @Bindable var viewModel: OriginSettingsViewModel = self.viewModel
     Form {
       Section {
         Toggle(isOn: $viewModel.isRewardsDisabled.inversed) {
