@@ -10,6 +10,8 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "components/permissions/permission_util.h"
 #include "content/public/browser/web_contents_observer.h"
+// Forward includes to avoid redefine of CreateDialog term
+#include "components/permissions/android/permission_prompt/permission_dialog_controller.h"
 
 namespace permissions {
 class PermissionPromptAndroid_ChromiumImpl;
@@ -36,9 +38,14 @@ class PermissionPromptAndroid_ChromiumImpl;
          PermissionPromptAndroid_ChromiumImpl* permission_prompt); \
   static std::unique_ptr<PermissionDialogDelegate> Create
 
+#define CreateDialog                 \
+  BravePreCreateDialog(JNIEnv* env); \
+  void CreateDialog
+
 #include <components/permissions/android/permission_prompt/permission_dialog_delegate.h>  // IWYU pragma: export
 
 #undef Create
+#undef CreateDialog
 
 #undef OnRequestingOriginFaviconLoaded
 
