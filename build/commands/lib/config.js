@@ -483,15 +483,7 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (
-    (process.platform === 'win32' || process.platform === 'darwin')
-    && this.build_delta_installer
-  ) {
-    assert(
-      this.last_chrome_installer,
-      'Need last_chrome_installer args for building delta installer',
-    )
-    args.build_delta_installer = true
+  if (this.last_chrome_installer) {
     args.last_chrome_installer = this.last_chrome_installer
   }
 
@@ -913,8 +905,7 @@ Config.prototype.updateInternal = function (options) {
     this.skip_signing = true
   }
 
-  if (options.build_delta_installer) {
-    this.build_delta_installer = true
+  if (options.last_chrome_installer) {
     this.last_chrome_installer = options.last_chrome_installer
   }
 

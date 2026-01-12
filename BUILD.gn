@@ -437,7 +437,7 @@ group("create_dist") {
       deps += [ "//brave/vendor/omaha" ]
     }
 
-    if (build_delta_installer) {
+    if (last_chrome_installer != "") {
       deps += [ "//brave/build/win:signed_delta_installer" ]
     }
   }

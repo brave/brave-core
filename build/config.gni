@@ -34,7 +34,6 @@ declare_args() {
   skip_signing = false
 
   # Used for generating delta installer on macOS/Windows
-  build_delta_installer = false
   last_chrome_installer = ""
 
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
