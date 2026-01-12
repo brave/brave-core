@@ -1,8 +1,18 @@
 diff --git a/chrome/app/theme/BUILD.gn b/chrome/app/theme/BUILD.gn
-index 05627a44d0fec2963be170297cd7371ead146bbd..7554295a457bf68792493496f57124f099560585 100644
+index 05627a44d0fec2963be170297cd7371ead146bbd..c885de31ce868128305187c7f7ba32437652c76e 100644
 --- a/chrome/app/theme/BUILD.gn
 +++ b/chrome/app/theme/BUILD.gn
-@@ -21,6 +21,7 @@ grit("theme_resources") {
+@@ -8,6 +8,9 @@ import("//tools/grit/grit_rule.gni")
+ grit("theme_resources") {
+   source = "theme_resources.grd"
+   defines = chrome_grit_defines
++  defines += [
++    "branding_path_component=../../../../$branding_path_component",
++  ]
+   outputs = [
+     "grit/theme_resources.h",
+     "grit/theme_resources_map.cc",
+@@ -21,17 +24,24 @@ grit("theme_resources") {
      ":chrome_unscaled_resources",
      "//ui/resources",
    ]
@@ -10,7 +20,16 @@ index 05627a44d0fec2963be170297cd7371ead146bbd..7554295a457bf68792493496f57124f0
  
    output_dir = "$root_gen_dir/chrome"
  }
-@@ -32,6 +33,7 @@ grit("chrome_unscaled_resources") {
+ 
++
++
+ grit("chrome_unscaled_resources") {
+   source = "chrome_unscaled_resources.grd"
+   defines = chrome_grit_defines
++  defines += [
++    "branding_path_component=../../../$branding_path_component",
++  ]
+   outputs = [
      "grit/chrome_unscaled_resources.h",
      "chrome_unscaled_resources.pak",
    ]
