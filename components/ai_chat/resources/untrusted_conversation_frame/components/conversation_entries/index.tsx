@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
@@ -36,28 +35,49 @@ import useConversationEventClipboardCopyHandler from './use_conversation_event_c
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
 
-// Function to highlight skill shortcuts in text
-const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
-  if (!skill) return text
+const escape = (text: string): string => (RegExp as any).escape(text)
+export const highlightRichText = (
+  text: string,
+  skill: Mojom.SkillEntry | undefined,
+  associatedContent: Mojom.AssociatedContent[],
+) => {
+  const replacements: string[] = []
 
-  const shortcutPattern = `/${skill.shortcut}`
-  const index = text.indexOf(shortcutPattern)
+  // Skills can only be at the beginning of the text
+  if (skill) {
+    replacements.push(`^${escape(`/${skill.shortcut}`)}`)
+  }
 
-  if (index === -1) return text
-
-  return (
-    <span>
-      {text.substring(0, index)}
-      <Label
-        className={styles.skillLabel}
-        color='primary'
-        mode='default'
-      >
-        {shortcutPattern}
-      </Label>
-      {text.substring(index + shortcutPattern.length)}
-    </span>
+  replacements.push(
+    ...associatedContent.map((c) => escape(`[mention(${c.title})]`)),
   )
+
+  if (!replacements.length) return text
+
+  const regex = new RegExp(replacements.map((r) => `(${r})`).join('|'), 'g')
+
+  const parts = []
+  let lastIndex = 0
+  for (const match of text.matchAll(regex)) {
+    const title = match[0].replaceAll(/^\[mention\((.*)\)\]$/g, '$1')
+    const content = associatedContent.find((c) => c.title === title)
+
+    parts.push(text.substring(lastIndex, match.index))
+    lastIndex = match.index + match[0].length
+    parts.push(
+      <span className={styles.richLabel} title={content?.url.url}>
+        {content && (
+          <img
+            src={`chrome-untrusted://favicon2?size=64&pageUrl=${encodeURIComponent(content?.url.url)}`}
+          />
+        )}
+        <span className={styles.richLabelTitle}>{title}</span>
+      </span>,
+    )
+  }
+  parts.push(text.substring(lastIndex))
+
+  return <>{...parts}</>
 }
 
 function ConversationEntries() {
@@ -249,9 +269,10 @@ function ConversationEntries() {
                               )}
                               <div className={styles.humanMessageBubble}>
                                 <div className={styles.humanTextRow}>
-                                  {maybeHighlightSkillText(
+                                  {highlightRichText(
                                     currentEntryEdit.text,
                                     currentEntryEdit.skill,
+                                    conversationContext.associatedContent,
                                   )}
                                   {!!entry.edits?.length && (
                                     <div className={styles.editLabel}>
