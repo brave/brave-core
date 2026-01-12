@@ -396,10 +396,17 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
-            # TODO: handle errors thrown by cherry-pick
             for sha in sha_list:
-                output = execute(['git', 'cherry-pick', sha]).split('\n')
-                print('- picked ' + sha + ' (' + output[0] + ')')
+                try:
+                    output = execute(['git', 'cherry-pick', sha]).split('\n')
+                    print('- picked ' + sha + ' (' + output[0] + ')')
+                except RuntimeError as e:
+                    error_message = str(e)
+                    if 'cherry-pick is now empty' in error_message:
+                        print('- skipped ' + sha + ' (already applied)')
+                        execute(['git', 'cherry-pick', '--skip'])
+                    else:
+                        raise
 
             # squash all commits into one
             # NOTE: master is not squashed. This only runs for uplifts.
