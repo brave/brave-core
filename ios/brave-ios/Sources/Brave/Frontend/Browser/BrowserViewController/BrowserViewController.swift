@@ -38,6 +38,12 @@ public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
   private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
 
+  private(set) lazy var vCardHelper: VCardHelper = {
+    let helper = VCardHelper()
+    helper.delegate = self
+    return helper
+  }()
+
   private(set) lazy var topToolbar: TopToolbarView = {
     // Setup the URL bar, wrapped in a view to get transparency effect
     let topToolbar = TopToolbarView(
