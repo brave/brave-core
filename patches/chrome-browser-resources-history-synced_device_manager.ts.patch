@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
+index 9a98032a14a071b6b8e2b6a36be1165034f82b9b..64583e9c378517f11c66c8956331a816c788d15b 100644
+--- a/chrome/browser/resources/history/synced_device_manager.ts
++++ b/chrome/browser/resources/history/synced_device_manager.ts
+@@ -440,9 +440,6 @@ export class HistorySyncedDeviceManagerElement extends
+         return;
+       }
+     } else if (this.isSignInState_(HistorySignInState.SIGNED_OUT)) {
+-      // User signed out, clear synced device list and show the sign in promo.
+-      this.clearDisplayedSyncedDevices_();
+-      return;
+     }
+     this.updateSyncedDevices_();
+     // User signed in, show the loading message when querying for synced
