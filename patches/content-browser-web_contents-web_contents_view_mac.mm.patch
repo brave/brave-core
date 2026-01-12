@@ -1,0 +1,19 @@
+diff --git a/content/browser/web_contents/web_contents_view_mac.mm b/content/browser/web_contents/web_contents_view_mac.mm
+index 0ae46d50d3ae36d07702db9701b154f11a6b356c..dd8de72aad0c84502ae77a03068b0593fcac56b8 100644
+--- a/content/browser/web_contents/web_contents_view_mac.mm
++++ b/content/browser/web_contents/web_contents_view_mac.mm
+@@ -768,11 +768,11 @@ void WebContentsViewMac::ViewsHostableDetach() {
+ }
+ 
+ void WebContentsViewMac::ViewsHostableSetBounds(
+-    const gfx::Rect& bounds_in_superview) {
++    const gfx::Rect& bounds_in_window) {
+   // Update both the in-process and out-of-process NSViews' bounds.
+-  in_process_ns_view_bridge_->SetBounds(bounds_in_superview);
++  in_process_ns_view_bridge_->SetBounds(bounds_in_window);
+   if (remote_ns_view_)
+-    remote_ns_view_->SetBounds(bounds_in_superview);
++    remote_ns_view_->SetBounds(bounds_in_window);
+ }
+ 
+ void WebContentsViewMac::ViewsHostableSetVisible(bool visible) {
