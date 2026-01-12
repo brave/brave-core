@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_action_container.cc b/chrome/browser/ui/views/tabs/tab_strip_action_container.cc
+index 737b4b0fe4dc2d105af7df91c42f8ec7672e9f9a..ce14d000f097a7913e54729d400a2d84163d3ea1 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_action_container.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_action_container.cc
+@@ -657,11 +657,11 @@ bool TabStripActionContainer::GetIsShowingGlicNudge() {
+ #endif  // BUILDFLAG(ENABLE_GLIC)
+ }
+ 
++#if BUILDFLAG(ENABLE_GLIC)
+ views::FlexLayoutView* TabStripActionContainer::glic_actor_button_container() {
+   return glic_actor_button_container_;
+ }
+ 
+-#if BUILDFLAG(ENABLE_GLIC)
+ void TabStripActionContainer::TriggerGlicActorNudge(
+     const std::u16string nudge_text) {
+   CHECK(glic_actor_task_icon_);
