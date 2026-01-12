@@ -185,10 +185,12 @@ exports.update = () => {
       'product_logo_white.png',
     ),
   ])
-  fileMap.add([
-    path.join(braveAppVectorIconsDir, 'vector_icons', 'brave'),
-    path.join(chromeComponentsDir, 'vector_icons', 'brave'),
-  ])
+  for (const branding of ['brave', 'brave_origin']) {
+    fileMap.add([
+      path.join(braveAppVectorIconsDir, 'vector_icons', branding),
+      path.join(chromeComponentsDir, 'vector_icons', branding),
+    ])
+  }
   fileMap.add([
     path.join(
       braveBrowserResourcesDir,
@@ -345,6 +347,22 @@ exports.update = () => {
       )
       explicitSourceFiles[iconDest] = iconSource
 
+      // Set proper branding file.
+      fileMap.add([
+        path.join(
+            braveAppDir,
+            'theme',
+            branding,
+            brandingFileName,
+          ),
+        path.join(
+          chromeAppDir,
+            'theme',
+            branding,
+            'BRANDING',
+          ),
+      ])
+    }
     // Set proper mac app asset catalog for channel to
     // chrome/app/theme/mac/Assets.car. Each channel's resource catalog is
     // stored in brave/app/theme/$channel/Assets.car. With this copying, we
