@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_action_container_browsertest.cc b/chrome/browser/ui/views/tabs/tab_strip_action_container_browsertest.cc
+index 0da957901e5cfaa3a95ff7568680f0b6db4b69d7..82532f5a8432a4798cf23b5a3a020e2f8c4547a1 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_action_container_browsertest.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_action_container_browsertest.cc
+@@ -162,9 +162,11 @@ class TabStripActionContainerBrowserTest : public InProcessBrowserTest {
+     return tab_strip_action_container()->glic_actor_task_icon();
+   }
+ 
++#if BUILDFLAG(ENABLE_GLIC)
+   views::FlexLayoutView* GlicActorButtonContainer() {
+     return tab_strip_action_container()->glic_actor_button_container();
+   }
++#endif
+ 
+   void ShowTabStripNudgeButton(TabStripNudgeButton* button) {
+     tab_strip_action_container()->ShowTabStripNudge(button);
