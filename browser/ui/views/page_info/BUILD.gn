@@ -5,6 +5,8 @@
 
 import("//build/config/features.gni")
 
+assert(!is_android)
+
 source_set("page_info") {
   sources = [
     "brave_page_info_bubble_view.cc",
