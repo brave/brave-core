@@ -20,12 +20,14 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
@@ -174,6 +176,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             mBraveRewardsNativeWorker.addObserver(this);
         }
         super.onStart();
+
+        // Check if Brave Rewards is disabled by policy and hide the icon preference if so
+        checkRewardsPolicyAndUpdatePreference();
 
         if (ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
             updatePreferenceTitle(
@@ -345,5 +350,24 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (preference != null) {
             preference.setOrder(order);
         }
+    }
+
+    /**
+     * Checks if Brave Rewards is disabled by policy via Brave Origin and removes related
+     * preferences if so. This ensures that when Brave Rewards is disabled, users cannot toggle
+     * rewards-related settings in the appearance settings.
+     */
+    private void checkRewardsPolicyAndUpdatePreference() {
+        BraveOriginSubscriptionPrefs.checkPolicyAsync(
+                getProfile(),
+                BravePolicyConstants.BRAVE_REWARDS_DISABLED,
+                (isDisabled) -> {
+                    if (getActivity() == null || getActivity().isFinishing() || !isDisabled) {
+                        return;
+                    }
+                    // Policy disables Brave Rewards - remove rewards-related preferences
+                    removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
+                    removePreferenceIfPresent(PREF_ADS_SWITCH);
+                });
     }
 }

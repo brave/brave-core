@@ -464,17 +464,22 @@ public abstract class BraveActivity extends ChromeActivity
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
 
-            final Bundle bundle =
-                    CustomizeBraveMenu.populateBundle(
-                            getResources(),
-                            new Bundle(),
-                            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
-                            braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
-            SettingsNavigation settingsNavigation =
-                    SettingsNavigationFactory.createSettingsNavigation();
-            // Follow upstream code and pass null as fragment to show
-            // that defaults to main settings screen.
-            settingsNavigation.startSettings(this, null, bundle);
+            // Use async version to ensure policy values are checked before building menu
+            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
+                    (mainMenuList) -> {
+                        final Bundle bundle =
+                                CustomizeBraveMenu.populateBundle(
+                                        getResources(),
+                                        new Bundle(),
+                                        mainMenuList,
+                                        braveTabbedAppMenuPropertiesDelegate
+                                                .buildPageActionsModelList());
+                        SettingsNavigation settingsNavigation =
+                                SettingsNavigationFactory.createSettingsNavigation();
+                        // Follow upstream code and pass null as fragment to show
+                        // that defaults to main settings screen.
+                        settingsNavigation.startSettings(BraveActivity.this, null, bundle);
+                    });
             return true;
         }
 
@@ -537,11 +542,15 @@ public abstract class BraveActivity extends ChromeActivity
             assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
-            // Get full menu items and pass them to settings.
-            CustomizeBraveMenu.openCustomizeMenuSettings(
-                    this,
-                    braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
-                    braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+            // Use async version to ensure policy values are checked before building menu
+            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
+                    (mainMenuList) -> {
+                        // Get full menu items and pass them to settings.
+                        CustomizeBraveMenu.openCustomizeMenuSettings(
+                                BraveActivity.this,
+                                mainMenuList,
+                                braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+                    });
         } else if (id == R.id.brave_shred_id) {
             shredData(currentTab);
         } else {
