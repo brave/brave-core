@@ -326,9 +326,9 @@ ContentNodeBuilder& ContentNodeBuilder::AsIframe(
 
 ContentNodeBuilder& ContentNodeBuilder::AsSvg(const std::string& inner_text) {
   node_.mutable_content_attributes()->set_attribute_type(
-      optimization_guide::proto::CONTENT_ATTRIBUTE_SVG);
+      optimization_guide::proto::CONTENT_ATTRIBUTE_SVG_ROOT);
   if (!inner_text.empty()) {
-    node_.mutable_content_attributes()->mutable_svg_data()->set_inner_text(
+    node_.mutable_content_attributes()->mutable_svg_root_data()->set_inner_text(
         inner_text);
   }
   return *this;
