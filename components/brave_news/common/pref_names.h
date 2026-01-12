@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
+
 class PrefService;
 class PrefRegistrySimple;
 

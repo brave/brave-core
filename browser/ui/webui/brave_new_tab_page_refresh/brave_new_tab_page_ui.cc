@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
@@ -22,7 +21,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
@@ -34,6 +33,11 @@
 #include "components/contextual_search/contextual_search_session_handle.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -131,6 +135,7 @@ void BraveNewTabPageUI::BindInterface(
       profile->GetPrefs());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
@@ -140,6 +145,7 @@ void BraveNewTabPageUI::BindInterface(
     brave_news_controller->Bind(std::move(receiver));
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveNewTabPageUI::BindInterface(

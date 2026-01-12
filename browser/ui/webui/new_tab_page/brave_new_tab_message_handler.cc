@@ -24,7 +24,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -45,6 +45,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -93,16 +97,20 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   }
   pref_data.Set("clockFormat", clock_format);
   pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("showToday",
                 prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("isBraveNewsOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set(
       "isBraveNewsDisabledByPolicy",
       prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   pref_data.Set("showBraveTalk",
@@ -269,6 +277,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
                           base::Unretained(this)));
   // News
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -277,6 +286,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       brave_news::prefs::kBraveNewsDisabledByPolicy,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   // New Tab Page preferences
   pref_change_registrar_.Add(
       kNewTabPageShowBackgroundImage,
@@ -314,10 +324,12 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kNewTabPageShowStats,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_change_registrar_.Add(
       brave_news::prefs::kNewTabPageShowToday,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_change_registrar_.Add(
       kNewTabPageShowRewards,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -436,10 +448,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settings_key = kNewTabPageShowClock;
   } else if (settings_key_input == "showStats") {
     settings_key = kNewTabPageShowStats;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (settings_key_input == "showToday") {
     settings_key = brave_news::prefs::kNewTabPageShowToday;
   } else if (settings_key_input == "isBraveNewsOptedIn") {
     settings_key = brave_news::prefs::kBraveNewsOptedIn;
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (settings_key_input == "showRewards") {
     settings_key = kNewTabPageShowRewards;
   } else if (settings_key_input == "isBrandedWallpaperNotificationDismissed") {

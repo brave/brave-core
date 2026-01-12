@@ -18,8 +18,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -48,6 +47,11 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -137,9 +141,9 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   auto* profile = GetProfile();
   auto* prefs = profile->GetPrefs();
 
-  source_->AddBoolean("customBackgroundFeatureEnabled",
-                      !profile->GetPrefs()->IsManagedPreference(
-                          prefs::kNtpCustomBackgroundDict));
+  source_->AddBoolean(
+      "customBackgroundFeatureEnabled",
+      !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
 
   source_->AddString("sponsoredRichMediaBaseUrl",
                      kNTPNewTabTakeoverRichMediaUrl);
@@ -163,15 +167,19 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 #endif
   source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   bool news_feed_update_enabled =
       base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate);
   source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled",
                       news_feed_update_enabled);
-
   source_->AddBoolean(
       "newsFeatureEnabled",
       news_feed_update_enabled &&
           !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#else
+  source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled", false);
+  source_->AddBoolean("newsFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   source_->AddBoolean("talkFeatureEnabled",

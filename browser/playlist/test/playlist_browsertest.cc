@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"

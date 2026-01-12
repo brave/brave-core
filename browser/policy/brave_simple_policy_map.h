@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -44,6 +44,10 @@
 #if BUILDFLAG(DEPRECATE_IPFS)
 #include "brave/components/ipfs/ipfs_prefs.h"  // nogncheck
 #endif                                         // BUILDFLAG(DEPRECATE_IPFS)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
@@ -96,8 +100,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     {policy::key::kBraveTalkDisabled, brave_talk::prefs::kDisabledByPolicy,
      base::Value::Type::BOOLEAN},

@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
@@ -20,6 +20,10 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/brave_news.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
@@ -57,8 +61,10 @@ class BraveNewTabUI : public ui::MojoWebUIController,
 
   // Instantiates the implementor of the mojo
   // interface passing the pending receiver that will be internally bound.
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+#endif
 
   void BindInterface(
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>

@@ -15,6 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,6 +33,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -51,10 +56,12 @@ void AddActionsForAddressBarCategory(Profile* profile,
     brave_actions.push_back(kShowReward);
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (!profile->GetPrefs()->GetBoolean(
           brave_news::prefs::kBraveNewsDisabledByPolicy)) {
     brave_actions.push_back(kShowBraveNews);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 }
 
 }  // namespace

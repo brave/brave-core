@@ -13,7 +13,7 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -58,6 +58,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

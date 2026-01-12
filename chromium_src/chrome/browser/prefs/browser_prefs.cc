@@ -13,9 +13,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
-#include "brave/components/brave_news/browser/brave_news_p3a.h"
-#include "brave/components/brave_news/common/p3a_pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -45,6 +43,12 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -135,8 +139,10 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_wallet::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Added 05/2021
   profile_prefs->ClearPref(kBraveNewsIntroDismissed);
+#endif
   // Added 07/2021
   profile_prefs->ClearPref(prefs::kNetworkPredictionOptions);
 
@@ -188,7 +194,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   brave_news::p3a::prefs::MigrateObsoleteProfileNewsMetricsPrefs(profile_prefs);
+#endif
 
   // Added 2023-09
   ntp_background_images::MigrateObsoleteProfilePrefs(profile_prefs);

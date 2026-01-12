@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -109,7 +110,7 @@ source_set("extensions") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_extension:static_resources",
-    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/mojom",
@@ -167,6 +168,10 @@ source_set("extensions") {
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
   }
 
   if (enable_brave_vpn) {
