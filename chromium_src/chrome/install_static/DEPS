@@ -3,5 +3,6 @@ inline_file("//chrome/install_static/DEPS", globals(), locals())
 
 
 include_rules = [
+  "+brave/components/brave_origin/buildflags",
   "+components/version_info",
 ]
