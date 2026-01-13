@@ -11,7 +11,7 @@
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
@@ -41,6 +41,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 namespace brave_origin {
@@ -89,11 +93,13 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
         // Brave News preferences
         {brave_news::prefs::kBraveNewsDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
         // Brave VPN preferences
