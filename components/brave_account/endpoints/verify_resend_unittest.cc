@@ -38,13 +38,15 @@ const VerifyResendTestCase* Success() {
 // application/json errors:
 // - HTTP 400:
 //   - { "code": null, "error": "Bad Request", "status": 400 }
+//   - { "code": 13008, "error": "maximum email send attempts exceeded", "status": 400 }
+//   - { "code": 13009, "error": "email already verified", "status": 400 }
 // - HTTP 5XX:
 //   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const VerifyResendTestCase* ApplicationJsonError() {
+const VerifyResendTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<VerifyResendTestCase>
       kApplicationJsonErrorCodeIsNull(
-          {.test_name = "application_json_error",
+          {.test_name = "application_json_error_code_is_null",
            .http_status_code = net::HTTP_BAD_REQUEST,
            .raw_response_body =
                R"({ "code": null,
@@ -58,6 +60,25 @@ const VerifyResendTestCase* ApplicationJsonError() {
                                    return body;
                                  }())}});
   return kApplicationJsonErrorCodeIsNull.get();
+}
+
+const VerifyResendTestCase* ApplicationJsonErrorCodeIsNotNull() {
+  static const base::NoDestructor<VerifyResendTestCase>
+      kApplicationJsonErrorCodeIsNotNull(
+          {.test_name = "application_json_error_code_is_not_null",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": 13008,
+                    "error": "maximum email send attempts exceeded",
+                    "status": 400 })",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value(13008);
+                                   return body;
+                                 }())}});
+  return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
 // non-application/json errors:
@@ -86,7 +107,8 @@ TEST_P(VerifyResendTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(VerifyResendTestCases,
                          VerifyResendTest,
                          testing::Values(Success(),
-                                         ApplicationJsonError(),
+                                         ApplicationJsonErrorCodeIsNull(),
+                                         ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
                          VerifyResendTest::kNameGenerator);
 
