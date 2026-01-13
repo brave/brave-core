@@ -892,14 +892,15 @@ void SwapService::OnGetGate3Transaction(GetTransactionCallback callback,
   // Extract transaction params from the first route
   auto& route = quote->routes[0];
   if (!route->transaction_params) {
+    // Firm route should always have transaction params
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(mojom::SwapTransactionUnion::NewGate3Transaction(
-                              std::move(route->transaction_params)),
-                          nullptr, "");
+  std::move(callback).Run(
+      mojom::SwapTransactionUnion::NewGate3Route(std::move(route)), nullptr,
+      "");
 }
 
 void SwapService::GetLiFiStatus(const std::string& tx_hash,

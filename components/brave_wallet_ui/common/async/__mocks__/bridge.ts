@@ -544,7 +544,7 @@ export class MockedWalletApiProxy {
             jupiterTransaction: undefined,
             lifiTransaction: undefined,
             squidTransaction: undefined,
-            gate3Transaction: undefined,
+            gate3Route: undefined,
           },
           errorString: '',
         }
