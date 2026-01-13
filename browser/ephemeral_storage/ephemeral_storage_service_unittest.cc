@@ -76,7 +76,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
   MOCK_METHOD(
       void,
       RegisterOnBecomeActiveCallback,
-      (base::OnceCallback<void(const std::vector<std::string>&)> callback),
+      (base::OnceCallback<void(const base::flat_set<std::string>)> callback),
       (override));
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
@@ -95,15 +95,16 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
       base::OnceCallback<void(const std::vector<std::string>&)> callback,
       bool trigger_callback) {
     EXPECT_CALL(*this, RegisterOnBecomeActiveCallback(_))
-        .WillOnce([this, trigger_callback](
-                      base::OnceCallback<void(const std::vector<std::string>&)>
-                          callback) {
-          if (trigger_callback) {
-            std::move(callback).Run({});
-          } else {
-            on_become_active_callback_ = std::move(callback);
-          }
-        });
+        .WillOnce(
+            [this, trigger_callback](
+                base::OnceCallback<void(const base::flat_set<std::string>)>
+                    callback) {
+              if (trigger_callback) {
+                std::move(callback).Run({});
+              } else {
+                on_become_active_callback_ = std::move(callback);
+              }
+            });
   }
 
   void TriggerFirstWindowOpenedCallback() {
@@ -113,7 +114,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
 
  private:
   base::OnceClosure first_window_opened_callback_;
-  base::OnceCallback<void(const std::vector<std::string>&)>
+  base::OnceCallback<void(const base::flat_set<std::string>)>
       on_become_active_callback_;
 };
 
