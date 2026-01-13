@@ -43,7 +43,9 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
 
@@ -64,6 +66,7 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable Tab> activityTabProvider,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -78,6 +81,7 @@ public class BraveNewTabPage extends NewTabPage {
             WindowAndroid windowAndroid,
             Supplier<Toolbar> toolbarSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
+            ActivityResultTracker activityResultTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
@@ -89,6 +93,7 @@ public class BraveNewTabPage extends NewTabPage {
                 activity,
                 browserControlsStateProvider,
                 activityTabProvider,
+                modalDialogManagerSupplier,
                 snackbarManager,
                 lifecycleDispatcher,
                 tabModelSelector,
@@ -103,6 +108,7 @@ public class BraveNewTabPage extends NewTabPage {
                 windowAndroid,
                 toolbarSupplier,
                 homeSurfaceTracker,
+                activityResultTracker,
                 tabContentManagerSupplier,
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,
