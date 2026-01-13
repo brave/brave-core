@@ -221,6 +221,9 @@ class BraveTabContainer : public TabContainerImpl,
   // tabs.
   void UpdatePinnedUnpinnedSeparator();
 
+  // Checks if the vertical tabs should be shown
+  bool ShouldShowVerticalTabs() const;
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContext> drag_context_;

@@ -148,9 +148,9 @@ void BraveTab::UpdateTabStyle() {
 }
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
-  auto* browser = controller_->GetBrowser();
+  auto* browser = controller_->GetBrowserWindowInterface();
   if (browser &&
-      brave_tabs::AreTooltipsEnabled(browser->profile()->GetPrefs())) {
+      brave_tabs::AreTooltipsEnabled(browser->GetProfile()->GetPrefs())) {
     return Tab::GetTooltipText(
         data_.title,
         tabs::TabAlertController::GetAlertStateToShow(data_.alert_state));
@@ -185,7 +185,8 @@ void BraveTab::ActiveStateChanged() {
 
 std::optional<SkColor> BraveTab::GetGroupColor() const {
   // Hide tab border with group color as it doesn't go well with vertical tabs.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
     return {};
   }
 
@@ -199,7 +200,8 @@ std::optional<SkColor> BraveTab::GetGroupColor() const {
 
 void BraveTab::UpdateIconVisibility() {
   Tab::UpdateIconVisibility();
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
     return;
   }
 
@@ -227,7 +229,8 @@ void BraveTab::UpdateIconVisibility() {
 
     const bool is_active = IsActive();
     const bool can_enter_floating_mode =
-        tabs::utils::IsFloatingVerticalTabsEnabled(controller()->GetBrowser());
+        tabs::utils::IsFloatingVerticalTabsEnabled(
+            controller()->GetBrowserWindowInterface());
     // When floating mode enabled, we don't show close button as the tab strip
     // will be expanded as soon as mouse hovers onto the tab.
     showing_close_button_ =
@@ -268,7 +271,8 @@ gfx::Insets BraveTab::GetInsets() const {
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
     return;
   }
@@ -284,7 +288,8 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
     return false;
   }
 
-  if (tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
+  if (tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface()) &&
       data().pinned && !controller_->IsVerticalTabsFloating()) {
     // In cased of pinned vertical tabs, we never render as normal tab, i.e.
     // always show only icon.
@@ -295,7 +300,8 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
+  return tabs::utils::ShouldShowBraveVerticalTabs(
+             controller()->GetBrowserWindowInterface()) &&
          width() <= tabs::kVerticalTabMinWidth;
 }
 
@@ -310,7 +316,8 @@ void BraveTab::SetData(TabRendererData data) {
   // has assumption that it's not included in any group.
   // So, clear in-advance when tab enters to pinned TabContainerImpl.
   if (data_changed &&
-      tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
+      tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface()) &&
       data_.pinned) {
     SetGroup(std::nullopt);
   }

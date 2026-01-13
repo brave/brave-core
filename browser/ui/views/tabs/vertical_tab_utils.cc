@@ -11,7 +11,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_native_widget.h"
 #include "components/prefs/pref_service.h"
@@ -38,7 +38,7 @@
 
 namespace tabs::utils {
 
-bool SupportsBraveVerticalTabs(const Browser* browser) {
+bool SupportsBraveVerticalTabs(const BrowserWindowInterface* browser) {
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableVerticalTabsSwitch)) {
     return false;
@@ -50,28 +50,29 @@ bool SupportsBraveVerticalTabs(const Browser* browser) {
     return false;
   }
 
-  return browser->is_type_normal();
+  return browser->GetType() == BrowserWindowInterface::TYPE_NORMAL;
 }
 
-bool ShouldShowBraveVerticalTabs(const Browser* browser) {
+bool ShouldShowBraveVerticalTabs(const BrowserWindowInterface* browser) {
   if (!SupportsBraveVerticalTabs(browser)) {
     return false;
   }
 
-  return browser->profile()->GetPrefs()->GetBoolean(
+  return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsEnabled);
 }
 
-bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
+bool ShouldShowWindowTitleForVerticalTabs(
+    const BrowserWindowInterface* browser) {
   if (!ShouldShowBraveVerticalTabs(browser)) {
     return false;
   }
 
-  return browser->profile()->GetPrefs()->GetBoolean(
+  return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
 
-bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
+bool IsFloatingVerticalTabsEnabled(const BrowserWindowInterface* browser) {
   if (!ShouldShowBraveVerticalTabs(browser)) {
     return false;
   }
@@ -82,12 +83,12 @@ bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
     return true;
   }
 
-  return browser->profile()->GetPrefs()->GetBoolean(
+  return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled);
 }
 
-bool IsVerticalTabOnRight(const Browser* browser) {
-  return browser->profile()->GetPrefs()->GetBoolean(
+bool IsVerticalTabOnRight(const BrowserWindowInterface* browser) {
+  return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsOnRight);
 }
 
@@ -162,9 +163,10 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 #endif
 }
 
-bool ShouldHideVerticalTabsCompletelyWhenCollapsed(const Browser* browser) {
+bool ShouldHideVerticalTabsCompletelyWhenCollapsed(
+    const BrowserWindowInterface* browser) {
   return base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely) &&
-         browser->profile()->GetPrefs()->GetBoolean(
+         browser->GetProfile()->GetPrefs()->GetBoolean(
              brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
 }
 
