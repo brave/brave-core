@@ -5,7 +5,7 @@
 
 #include "components/browsing_data/content/browsing_data_helper.h"
 
-#include "components/content_settings/core/browser/website_settings_registry.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"
 
 #define RemoveSiteSettingsData RemoveSiteSettingsData_ChromiumImpl
 
@@ -21,21 +21,8 @@ void RemoveSiteSettingsData(const base::Time& delete_begin,
   RemoveSiteSettingsData_ChromiumImpl(delete_begin, delete_end,
                                       host_content_settings_map);
 
-  static constexpr ContentSettingsType kBraveWebSettings[] = {
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      ContentSettingsType::BRAVE_AUTO_SHRED, ContentSettingsType::BRAVE_PSST};
-
-  for (const auto type : kBraveWebSettings) {
-    if (!content_settings::WebsiteSettingsRegistry::GetInstance()->Get(type)) {
-      // If setting isn't registered for some reason (g.e. feature is disabled)
-      // then skip it.
-      continue;
-    }
-
-    host_content_settings_map->ClearSettingsForOneTypeWithPredicate(
-        type, delete_begin, delete_end,
-        HostContentSettingsMap::PatternSourcePredicate());
-  }
+  BraveRemoveSiteSettingsData(delete_begin, delete_end,
+                              host_content_settings_map);
 }
 
 }  // namespace browsing_data

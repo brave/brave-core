@@ -262,8 +262,8 @@ class DataTypeContentSettings_Clearing
 // 1. Ensure the corresponding feature is enabled (by adding
 //      base::test::ScopedFeatureList your_feature_{feature-name})
 // 2. Check for related build flags (or other reason) in ShouldNotBeRegistered
-// 3. Add the necessary clearing logic to `RemoveSiteSettingsData()` in:
-//    `chromium_src\components\browsing_data\content\browsing_data_helper.cc`
+// 3. Add the necessary clearing logic to `BraveRemoveSiteSettingsData()` in:
+//  `content_settings/core/browser/brave_content_settings_browsing_data_utils.h`
 // 4. Alternatively, add an exception in the `ShouldNotClear()` method above
 //    with reason why your content setting shouldn't be cleared.
 TEST_F(DataTypeContentSettings_Clearing, CheckAll) {
