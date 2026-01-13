@@ -27,6 +27,9 @@
   <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARK" desc="Title for a toggle button to show or hide bookmark button to add a new bookmark">
     Add Bookmark
   </message>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SHARE_MENU" desc="Title for a toggle button to show or hide share menu">
+    Share Menu
+  </message>
   <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARKS_PANEL" desc="Title for a toggle button to show or hide bookmarks panel">
     Bookmarks Panel
   </message>

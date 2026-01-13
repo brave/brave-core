@@ -16,7 +16,9 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -361,6 +363,32 @@ TEST_F(ListActionModifiersUnitTest,
 }
 
 TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_ShareMenuShouldNotBeAddedWhenDisabled) {
+  // Share Menu should be added by default (Sharing Hub enabled by default)
+  ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      *web_contents_, GetBasicActions());
+  auto share_menu_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(share_menu_action_it, modified_actions.end());
+
+  // Disable Sharing Hub using pref
+  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
+  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      *web_contents_, GetBasicActions());
+  share_menu_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show Share Menu action should not be present
+  EXPECT_EQ(share_menu_action_it, modified_actions.end());
+}
+
+TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
@@ -396,12 +424,11 @@ TEST_F(ListActionModifiersUnitTest,
           EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
           EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
-          EqId(ActionId::kShowReward)
+          EqId(ActionId::kShowReward),
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
-              ,
-          EqId(ActionId::kShowBraveNews)
+          EqId(ActionId::kShowBraveNews),
 #endif
-              ));
+          EqId(ActionId::kShowShareMenu)));
 }
 
 TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
@@ -433,6 +460,11 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
       prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
   ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+
+  // Also disables Sharing Hub to ensure it doesn't affect the result
+  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
+  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
 
   categories.clear();
   categories = customize_chrome::AppendBraveSpecificCategories(
@@ -471,6 +503,11 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_BraveNews) {
   ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
 
+  // Also disables Sharing Hub to ensure it doesn't affect the result
+  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
+  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+
   categories.clear();
   categories = customize_chrome::AppendBraveSpecificCategories(
       *web_contents_, std::move(categories));
@@ -483,3 +520,49 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_BraveNews) {
   EXPECT_EQ(it, categories.end());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_ShareMenu) {
+  // Create a vector of categories
+  std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories;
+
+  // Append Brave specific categories
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+
+  // Verify "Address bar" category is added when Share Menu is enabled
+  ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+  auto it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+  EXPECT_NE(it, categories.end());
+
+  // When Share Menu is disabled, check if Address bar category behavior
+  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
+  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+
+  // Also disable Brave Rewards to ensure only Share Menu affects the result
+  prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Also disable Brave News to ensure only Share Menu affects the result
+  prefs()->SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  ASSERT_TRUE(
+      prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+  categories.clear();
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+  it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+
+  // Address bar category should not be added when Rewards, News, and Share
+  // Menu are all disabled
+  EXPECT_EQ(it, categories.end());
+}
