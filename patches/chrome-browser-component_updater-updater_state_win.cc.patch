@@ -1,33 +1,16 @@
 diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
-index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..231b1fb13c63120457c8e7c812725dadf0bad8d8 100644
+index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..e67a563640b2966c0cc845b76409c119f93b4cb8 100644
 --- a/chrome/browser/component_updater/updater_state_win.cc
 +++ b/chrome/browser/component_updater/updater_state_win.cc
-@@ -19,20 +19,32 @@ namespace {
+@@ -18,6 +18,7 @@ namespace component_updater {
+ namespace {
  
  // Google Update group policy settings.
++#if 0
  const wchar_t kGoogleUpdatePoliciesKey[] =
-+    L"SOFTWARE\\Policies\\BraveSoftware\\Update";
-+#if 0
      L"SOFTWARE\\Policies\\Google\\Update";
-+#endif
  const wchar_t kCheckPeriodOverrideMinutes[] = L"AutoUpdateCheckPeriodMinutes";
- const wchar_t kUpdatePolicyValue[] = L"UpdateDefault";
- const wchar_t kChromeUpdatePolicyOverride[] =
-+    L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
-+#if 0
-     L"Update{8A69D345-D564-463C-AFF1-A69D9E530F96}";
-+#endif
- 
- // Don't allow update periods longer than six weeks (Chrome release cadence).
- const int kCheckPeriodOverrideMinutesMax = 60 * 24 * 7 * 6;
- 
- // Google Update registry settings.
-+const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
-+const wchar_t kRegPathClientsGoogleUpdate[] =
-+    L"Software\\BraveSoftware\\Update\\Clients\\"
-+    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
-+#if 0
- const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
+@@ -33,6 +34,7 @@ const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
  const wchar_t kRegPathClientsGoogleUpdate[] =
      L"Software\\Google\\Update\\Clients\\"
      L"{430FD4D0-B729-4F61-AA34-91526481799D}";

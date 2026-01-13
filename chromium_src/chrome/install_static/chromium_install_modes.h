@@ -10,6 +10,7 @@
 
 #include <array>
 
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/app/chrome_dll_resource.h"
 #include "chrome/common/chrome_icon_resources_win.h"
 #include "chrome/install_static/install_constants.h"
@@ -36,6 +37,207 @@ enum InstallConstantIndex {
 
 // Regarding the install switch, use the same values that are in
 // chrome/installer/mini_installer/configuration.cc
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+// Brave Origin uses separate identifiers from Brave Browser to allow
+// side-by-side installation and independent update infrastructure.
+inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
+    // The primary install mode for stable Brave Origin.
+    {
+        .size = sizeof(InstallConstants),
+        .index = STABLE_INDEX,  // The first mode is for stable/beta/dev.
+        .install_switch =
+            "",  // No install switch for the primary install mode.
+        .install_suffix =
+            L"-Origin",  // Install suffix for side-by-side with Brave Browser.
+        .logo_suffix = L"",  // No logo suffix for the primary install mode.
+        .app_guid = L"{F1EF32DE-F987-4289-81D2-6C4780027F9B}",
+        .base_app_name = L"Brave Origin",         // A distinct base_app_name.
+        .base_app_id = L"BraveOrigin",            // A distinct base_app_id.
+        .browser_prog_id_prefix = L"BraveOHTML",  // Browser ProgID prefix.
+        .browser_prog_id_description =
+            L"Brave Origin HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-origin",
+        .pdf_prog_id_prefix = L"BraveOPDF",  // PDF ProgID prefix.
+        .pdf_prog_id_description =
+            L"Brave Origin PDF Document",  // PDF ProgID description.
+        .active_setup_guid =
+            L"{F1EF32DE-F987-4289-81D2-6C4780027F9B}",  // Active Setup GUID.
+        .legacy_command_execute_clsid =
+            L"{A7B3C8D1-E2F4-5A6B-9C8D-1E2F3A4B5C6D}",  // CommandExecuteImpl
+                                                        // CLSID.
+        .toast_activator_clsid = {0x8a7b6c5d,
+                                  0x4e3f,
+                                  0x2a1b,
+                                  {0x9c, 0x8d, 0x7e, 0x6f, 0x5a, 0x4b, 0x3c,
+                                   0x2d}},  // Toast activator CLSID.
+        .elevator_clsid = {0x1a2b3c4d,
+                           0x5e6f,
+                           0x7a8b,
+                           {0x9c, 0x0d, 0x1e, 0x2f, 0x3a, 0x4b, 0x5c,
+                            0x6d}},  // Elevator CLSID.
+        .elevator_iid = {0x2b3c4d5e,
+                         0x6f7a,
+                         0x8b9c,
+                         {0x0d, 0x1e, 0x2f, 0x3a, 0x4b, 0x5c, 0x6d, 0x7e}},
+        .default_channel_name = L"",  // The empty string means "stable".
+        .channel_strategy = ChannelStrategy::FLOATING,
+        .supports_system_level = true,  // Supports system-level installs.
+        .supports_set_as_default_browser =
+            true,  // Supports in-product set as default browser UX.
+        .app_icon_resource_index =
+            icon_resources::kApplicationIndex,  // App icon resource index.
+        .app_icon_resource_id = IDR_MAINFRAME,  // App icon resource id.
+        .sandbox_sid_prefix =
+            L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+            L"934012153-",  // App container sid prefix for sandbox.
+    },
+    // A secondary install mode for Brave Origin Beta
+    {
+        .size = sizeof(InstallConstants),
+        .index = BETA_INDEX,  // The mode for the side-by-side beta channel.
+        .install_switch = "chrome-beta",    // Install switch.
+        .install_suffix = L"-Origin-Beta",  // Install suffix.
+        .logo_suffix = L"Beta",             // Logo suffix.
+        .app_guid =
+            L"{56DA94FD-D872-416B-BFC4-1D7011DA7473}",  // A distinct app GUID.
+        .base_app_name = L"Brave Origin Beta",     // A distinct base_app_name.
+        .base_app_id = L"BraveOriginBeta",         // A distinct base_app_id.
+        .browser_prog_id_prefix = L"BraveOBHTML",  // Browser ProgID prefix.
+        .browser_prog_id_description =
+            L"Brave Origin Beta HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-origin-beta",
+        .pdf_prog_id_prefix = L"BraveOBPDF",  // PDF ProgID prefix.
+        .pdf_prog_id_description =
+            L"Brave Origin Beta PDF Document",  // PDF ProgID description.
+        .active_setup_guid =
+            L"{56DA94FD-D872-416B-BFC4-1D7011DA7473}",  // Active Setup GUID.
+        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
+        .toast_activator_clsid = {0x3c4d5e6f,
+                                  0x7a8b,
+                                  0x9c0d,
+                                  {0x1e, 0x2f, 0x3a, 0x4b, 0x5c, 0x6d, 0x7e,
+                                   0x8f}},  // Toast activator CLSID.
+        .elevator_clsid = {0x4d5e6f7a,
+                           0x8b9c,
+                           0x0d1e,
+                           {0x2f, 0x3a, 0x4b, 0x5c, 0x6d, 0x7e, 0x8f,
+                            0x9a}},  // Elevator CLSID.
+        .elevator_iid = {0x5e6f7a8b,
+                         0x9c0d,
+                         0x1e2f,
+                         {0x3a, 0x4b, 0x5c, 0x6d, 0x7e, 0x8f, 0x9a, 0x0b}},
+        .default_channel_name = L"beta",  // Forced channel name.
+        .channel_strategy = ChannelStrategy::FIXED,
+        .supports_system_level = true,  // Supports system-level installs.
+        .supports_set_as_default_browser =
+            true,  // Supports in-product set as default browser UX.
+        .app_icon_resource_index =
+            icon_resources::kBetaApplicationIndex,  // App icon resource index.
+        .app_icon_resource_id = IDR_X005_BETA,      // App icon resource id.
+        .sandbox_sid_prefix =
+            L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+            L"934012154-",  // App container sid prefix for sandbox.
+    },
+    // A secondary install mode for Brave Origin Dev
+    {
+        .size = sizeof(InstallConstants),
+        .index = DEV_INDEX,  // The mode for the side-by-side dev channel.
+        .install_switch = "chrome-dev",    // Install switch.
+        .install_suffix = L"-Origin-Dev",  // Install suffix.
+        .logo_suffix = L"Dev",             // Logo suffix.
+        .app_guid =
+            L"{716D6A4A-D071-47A8-AC64-DBDE3EE3797B}",  // A distinct app GUID.
+        .base_app_name = L"Brave Origin Dev",      // A distinct base_app_name.
+        .base_app_id = L"BraveOriginDev",          // A distinct base_app_id.
+        .browser_prog_id_prefix = L"BraveODHTML",  // Browser ProgID prefix.
+        .browser_prog_id_description =
+            L"Brave Origin Dev HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-origin-dev",
+        .pdf_prog_id_prefix = L"BraveODPDF",  // PDF ProgID prefix.
+        .pdf_prog_id_description =
+            L"Brave Origin Dev PDF Document",  // PDF ProgID description.
+        .active_setup_guid =
+            L"{716D6A4A-D071-47A8-AC64-DBDE3EE3797B}",  // Active Setup GUID.
+        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
+        .toast_activator_clsid = {0x6f7a8b9c,
+                                  0x0d1e,
+                                  0x2f3a,
+                                  {0x4b, 0x5c, 0x6d, 0x7e, 0x8f, 0x9a, 0x0b,
+                                   0x1c}},  // Toast activator CLSID.
+        .elevator_clsid = {0x7a8b9c0d,
+                           0x1e2f,
+                           0x3a4b,
+                           {0x5c, 0x6d, 0x7e, 0x8f, 0x9a, 0x0b, 0x1c,
+                            0x2d}},  // Elevator CLSID.
+        .elevator_iid = {0x8b9c0d1e,
+                         0x2f3a,
+                         0x4b5c,
+                         {0x6d, 0x7e, 0x8f, 0x9a, 0x0b, 0x1c, 0x2d, 0x3e}},
+        .default_channel_name = L"dev",  // Forced channel name.
+        .channel_strategy = ChannelStrategy::FIXED,
+        .supports_system_level = true,  // Supports system-level installs.
+        .supports_set_as_default_browser =
+            true,  // Supports in-product set as default browser UX.
+        .app_icon_resource_index =
+            icon_resources::kDevApplicationIndex,  // App icon resource index.
+        .app_icon_resource_id = IDR_X004_DEV,      // App icon resource id.
+        .sandbox_sid_prefix =
+            L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+            L"934012155-",  // App container sid prefix for sandbox.
+    },
+    // A secondary install mode for Brave Origin SxS (nightly).
+    {
+        .size = sizeof(InstallConstants),
+        .index =
+            NIGHTLY_INDEX,  // The mode for the side-by-side nightly channel.
+        .install_switch = "chrome-sxs",        // Install switch.
+        .install_suffix = L"-Origin-Nightly",  // Install suffix.
+        .logo_suffix = L"Canary",              // Logo suffix.
+        .app_guid =
+            L"{50474E96-9CD2-4BC8-B0A7-0D4B6EF2E709}",  // A distinct app GUID.
+        .base_app_name = L"Brave Origin Nightly",  // A distinct base_app_name.
+        .base_app_id = L"BraveOriginNightly",      // A distinct base_app_id.
+        .browser_prog_id_prefix = L"BraveOSHTM",   // Browser ProgID prefix.
+        .browser_prog_id_description =
+            L"Brave Origin Nightly HTML Document",  // Browser ProgID
+                                                    // description.
+        .direct_launch_url_scheme = "brave-origin-nightly",
+        .pdf_prog_id_prefix = L"BraveOSPDF",  // PDF ProgID prefix.
+        .pdf_prog_id_description =
+            L"Brave Origin Nightly PDF Document",  // PDF ProgID description.
+        .active_setup_guid =
+            L"{50474E96-9CD2-4BC8-B0A7-0D4B6EF2E709}",  // Active Setup GUID.
+        .legacy_command_execute_clsid =
+            L"{B8C9D0E1-F2A3-4B5C-6D7E-8F9A0B1C2D3E}",  // CommandExecuteImpl
+                                                        // CLSID.
+        .toast_activator_clsid = {0x9c0d1e2f,
+                                  0x3a4b,
+                                  0x5c6d,
+                                  {0x7e, 0x8f, 0x9a, 0x0b, 0x1c, 0x2d, 0x3e,
+                                   0x4f}},  // Toast activator CLSID.
+        .elevator_clsid = {0x0d1e2f3a,
+                           0x4b5c,
+                           0x6d7e,
+                           {0x8f, 0x9a, 0x0b, 0x1c, 0x2d, 0x3e, 0x4f,
+                            0x5a}},  // Elevator CLSID.
+        .elevator_iid = {0x1e2f3a4b,
+                         0x5c6d,
+                         0x7e8f,
+                         {0x9a, 0x0b, 0x1c, 0x2d, 0x3e, 0x4f, 0x5a, 0x6b}},
+        .default_channel_name = L"nightly",  // Forced channel name.
+        .channel_strategy = ChannelStrategy::FIXED,
+        .supports_system_level = true,  // Support system-level installs.
+        .supports_set_as_default_browser =
+            true,  // Support in-product set as default browser UX.
+        .app_icon_resource_index =
+            icon_resources::kSxSApplicationIndex,  // App icon resource index.
+        .app_icon_resource_id = IDR_SXS,           // App icon resource id.
+        .sandbox_sid_prefix =
+            L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+            L"934012156-",  // App container sid prefix for sandbox.
+    },
+});
+#else   // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
     // The primary install mode for stable Brave.
     {
@@ -232,6 +434,7 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"934012152-",  // App container sid prefix for sandbox.
     },
 });
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #else
 
 #define CHROMIUM_INDEX DEVELOPER_INDEX

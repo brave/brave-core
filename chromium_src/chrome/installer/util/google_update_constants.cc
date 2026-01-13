@@ -5,6 +5,8 @@
 
 #include "chrome/installer/util/google_update_constants.h"
 
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+
 #define kChromeUpgradeCode kChromeUpgradeCode_Unused
 #define kGoogleUpdateUpgradeCode kGoogleUpdateUpgradeCode_Unused
 #define kGoogleUpdateSetupExe kGoogleUpdateSetupExe_Unused
@@ -25,7 +27,15 @@
 
 namespace google_update {
 
+// kChromeUpgradeCode is browser-specific to allow side-by-side installation.
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+const wchar_t kChromeUpgradeCode[] = L"{D6ED51F0-8149-4F97-A869-3424DC454A2D}";
+#else
 const wchar_t kChromeUpgradeCode[] = L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
+#endif
+
+// Updater constants are shared between Brave Browser and Brave Origin since
+// they use the same updater infrastructure.
 const wchar_t kGoogleUpdateUpgradeCode[] =
     L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
 const wchar_t kGoogleUpdateSetupExe[] = L"BraveUpdateSetup.exe";
