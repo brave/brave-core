@@ -112,12 +112,24 @@ void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     const GURL& request_url,
     content::FrameTreeNodeId frame_tree_node_id,
-    const std::string& block_type) {
+    const std::string& block_type,
+    const GURL& tab_origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto subresource = request_url.spec();
   WebContents* web_contents =
       WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+
+  // Skip if the request's origin doesn't match the current page.
+  // This prevents late-arriving blocked events from a previous navigation
+  // from being attributed to the new page. See brave-browser#49854.
+  if (web_contents && tab_origin.is_valid()) {
+    if (url::Origin::Create(tab_origin) !=
+        url::Origin::Create(web_contents->GetLastCommittedURL())) {
+      return;
+    }
+  }
+
+  auto subresource = request_url.spec();
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
 
   if (web_contents) {
