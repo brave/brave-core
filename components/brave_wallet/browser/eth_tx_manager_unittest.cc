@@ -2465,17 +2465,15 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
       std::vector<uint8_t>({0x00, 0x01, 0x02}), false, std::nullopt);
 
-  bool callback_called = false;
-  std::string meta_id;
-  AddUnapprovedTransaction(
-      mojom::kMainnetChainId, std::move(data), from(), swap_info.Clone(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &meta_id));
-  ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
-  ASSERT_FALSE(meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  AddUnapprovedTransaction(mojom::kMainnetChainId, std::move(data), from(),
+                           swap_info.Clone(), add_tx_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
 
   // Verify swap_info was stored correctly
-  auto tx_meta = eth_tx_manager()->GetTxForTesting(meta_id);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
   EXPECT_EQ(tx_meta->swap_info(), swap_info);

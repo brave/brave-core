@@ -2206,23 +2206,16 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   auto tx_data_union =
       mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
 
-  std::string meta_id;
-  base::RunLoop run_loop;
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
   solana_tx_manager()->AddUnapprovedTransaction(
       mojom::kSolanaMainnet, std::move(tx_data_union), from_account,
-      GetOrigin(), swap_info.Clone(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                     const std::string& err_message) {
-        ASSERT_TRUE(success);
-        ASSERT_FALSE(id.empty());
-        ASSERT_TRUE(err_message.empty());
-        meta_id = id;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+      GetOrigin(), swap_info.Clone(), add_tx_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
 
   // Verify swap_info was stored correctly
-  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
   EXPECT_EQ(tx_meta->swap_info(), swap_info);

@@ -264,19 +264,15 @@ TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
       1000000, false, swap_info.Clone());
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _))
-      .WillOnce(
-          testing::DoAll(SaveArg<1>(&meta_id),
-                         RunOnceClosure(task_environment_.QuitClosure())));
-  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
-                                                        add_callback.Get());
-  task_environment_.RunUntilQuit();
-  ASSERT_FALSE(meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(
+      params.Clone(), add_tx_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
 
   // Verify swap_info was stored correctly
-  auto tx_meta = cardano_tx_manager()->GetTxForTesting(meta_id);
+  auto tx_meta = cardano_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
   EXPECT_EQ(tx_meta->swap_info(), swap_info);

@@ -236,23 +236,15 @@ TEST_F(BitcoinTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, swap_info.Clone());
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
-  std::string meta_id;
-  base::RunLoop run_loop;
-  EXPECT_CALL(add_callback, Run(_, _, _))
-      .WillOnce(
-          testing::DoAll(SaveArg<1>(&meta_id),
-                         testing::Invoke([&run_loop](bool, const std::string&,
-                                                     const std::string&) {
-                           run_loop.Quit();
-                         })));
-  btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
-                                                    add_callback.Get());
-  run_loop.Run();
-  ASSERT_FALSE(meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  btc_tx_manager()->AddUnapprovedBitcoinTransaction(
+      params.Clone(), add_tx_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
 
   // Verify swap_info was stored correctly
-  auto tx_meta = btc_tx_manager()->GetTxForTesting(meta_id);
+  auto tx_meta = btc_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
   EXPECT_EQ(tx_meta->swap_info(), swap_info);
