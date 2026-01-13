@@ -9,11 +9,13 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -192,15 +194,27 @@ SearchEngineTracker::SearchEngineTracker(
       previous_search_url_ = url;
       current_default_engine_ = GetSearchEngineProvider(
           url, template_url->GetEngineType(search_terms));
-      UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric,
-                                current_default_engine_);
+      RecordDefaultEngine();
+      RecordRewardsWalletConnected();
       RecordSwitchP3A(url);
     }
   }
 
+  pref_change_registrar_.Init(profile_prefs);
+  pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
+                             base::BindRepeating(
+                                 [](SearchEngineTracker* self) {
+                                   self->RecordDefaultEngine();
+                                   self->RecordRewardsWalletConnected();
+                                 },
+                                 base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kExternalWalletType,
+      base::BindRepeating(&SearchEngineTracker::RecordRewardsWalletConnected,
+                          base::Unretained(this)));
+
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   RecordWebDiscoveryEnabledP3A();
-  pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
@@ -232,8 +246,8 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
       current_default_engine_ = GetSearchEngineProvider(
           url, template_url->GetEngineType(search_terms));
 
-      UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric,
-                                current_default_engine_);
+      RecordDefaultEngine();
+      RecordRewardsWalletConnected();
 
       default_search_url_ = url;
 
@@ -269,6 +283,53 @@ void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
                              static_cast<int>(SearchEngineP3A::kMaxValue) + 1);
 }
 #endif
+
+void SearchEngineTracker::RecordDefaultEngine() {
+  // Record the main default search engine metric
+  UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric,
+                            current_default_engine_);
+
+  // Record rewards-based metrics
+  bool rewards_enabled =
+      profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
+
+  const char* active_histogram_name;
+  const char* inactive_histogram_name;
+
+  if (rewards_enabled) {
+    active_histogram_name = kRewardsDefaultEngineMetric;
+    inactive_histogram_name = kNonRewardsDefaultEngineMetric;
+  } else {
+    active_histogram_name = kNonRewardsDefaultEngineMetric;
+    inactive_histogram_name = kRewardsDefaultEngineMetric;
+  }
+
+  base::UmaHistogramExactLinear(
+      active_histogram_name, static_cast<int>(current_default_engine_),
+      static_cast<int>(SearchEngineP3A::kMaxValue) + 1);
+  base::UmaHistogramExactLinear(
+      inactive_histogram_name, INT_MAX - 1,
+      static_cast<int>(SearchEngineP3A::kMaxValue) + 1);
+}
+
+void SearchEngineTracker::RecordRewardsWalletConnected() {
+  // Record wallet connection status for non-Brave Search users with Rewards
+  // enabled
+  bool rewards_enabled =
+      profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
+  bool is_brave_search = current_default_engine_ == SearchEngineP3A::kBrave;
+  bool condition_met = !is_brave_search && rewards_enabled;
+
+  int wallet_connected_answer = INT_MAX - 1;
+  if (condition_met) {
+    wallet_connected_answer =
+        !profile_prefs_->GetString(brave_rewards::prefs::kExternalWalletType)
+             .empty();
+  }
+
+  UMA_HISTOGRAM_EXACT_LINEAR(kNonBraveSearchWalletConnectedMetric,
+                             wallet_connected_answer, 2);
+}
 
 void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
   const base::Time now = base::Time::Now();
