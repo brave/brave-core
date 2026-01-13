@@ -229,8 +229,8 @@ BraveWalletService::BraveWalletService(
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
-      GetCardanoWalletService(), *keyring_service(), profile_prefs,
-      delegate_->GetWalletBaseDirectory(),
+      GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
+      profile_prefs, delegate_->GetWalletBaseDirectory(),
       base::SequencedTaskRunner::GetCurrentDefault());
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(

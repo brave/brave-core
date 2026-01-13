@@ -325,6 +325,10 @@ export interface SendCardanoTransactionParams extends BaseTransactionParams {
   sendingMaxAmount: boolean
 }
 
+export interface SendPolkadotTransactionParams extends BaseTransactionParams {
+  sendingMaxAmount: boolean
+}
+
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,
  * since bigints are not serializable by default

@@ -28,7 +28,6 @@ import {
 import { MAX_ZCASH_MEMO_LENGTH } from '../constants/magics'
 
 // Utils
-import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -60,6 +59,7 @@ import {
   useSendBtcTransactionMutation,
   useSendZecTransactionMutation,
   useSendCardanoTransactionMutation,
+  useSendPolkadotTransactionMutation,
   useGetZCashTransactionTypeQuery,
 } from '../../../../common/slices/api.slice'
 import {
@@ -167,6 +167,7 @@ export const SendScreen = React.memo(() => {
   const [sendBtcTransaction] = useSendBtcTransactionMutation()
   const [sendZecTransaction] = useSendZecTransactionMutation()
   const [sendCardanoTransaction] = useSendCardanoTransactionMutation()
+  const [sendPolkadotTransaction] = useSendPolkadotTransactionMutation()
   const [sendERC20Transfer] = useSendERC20TransferMutation()
   const [sendERC721TransferFrom] = useSendERC721TransferFromMutation()
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
@@ -527,7 +528,16 @@ export const SendScreen = React.memo(() => {
       }
 
       case BraveWallet.CoinType.DOT: {
-        assertNotReached()
+        await sendPolkadotTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          sendingMaxAmount,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex(),
+        })
+        resetSendFields()
       }
     }
   }, [
@@ -550,6 +560,7 @@ export const SendScreen = React.memo(() => {
     sendSPLTransfer,
     sendZecTransaction,
     sendCardanoTransaction,
+    sendPolkadotTransaction,
   ])
 
   const handleFromAssetValueChange = React.useCallback(
