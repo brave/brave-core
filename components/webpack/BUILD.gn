@@ -6,13 +6,19 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
-# Generate a JSON config file with build flags for Jest tests
-generated_file("jest_build_config") {
-  outputs = [ "$root_gen_dir/brave/jest_build_config.json" ]
+# Generate a JSON config file with build flags
+generated_file("build_flags_json") {
+  outputs = [ "$root_gen_dir/brave/build_flags.json" ]
 
   contents = {
     enable_ai_chat = enable_ai_chat
     enable_brave_wallet = enable_brave_wallet
+    is_ios = is_ios
+    is_android = is_android
+    is_linux = is_linux
+    is_mac = is_mac
+    is_win = is_win
+    is_desktop = is_linux || is_mac || is_win
   }
 
   output_conversion = "json"
@@ -21,7 +27,7 @@ generated_file("jest_build_config") {
 action("generate_tsconfig") {
   script = "//brave/script/generate-tsconfig.py"
   deps = [
-    ":jest_build_config",
+    ":build_flags_json",
 
     # Ensure chrome://resources/js file and typescript definitions are
     # generated
