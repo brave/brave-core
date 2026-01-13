@@ -118,8 +118,8 @@ std::string_view GetContentBlockTypeString(
       auto it = kSimpleRequestTypeMap.find(request->type);
       return it->second;
     }
-    case mojom::ContentBlock::Tag::kToolCallArtifactContentBlock:
-      return "brave-tool-call-artifact";
+    case mojom::ContentBlock::Tag::kToolArtifactContentBlock:
+      return "brave-tool-artifact";
   }
 }
 
@@ -240,7 +240,7 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           content_block_dict.Set("text", "");
           break;
 
-        case mojom::ContentBlock::Tag::kToolCallArtifactContentBlock:
+        case mojom::ContentBlock::Tag::kToolArtifactContentBlock:
           continue;
       }
       content_list.Append(std::move(content_block_dict));

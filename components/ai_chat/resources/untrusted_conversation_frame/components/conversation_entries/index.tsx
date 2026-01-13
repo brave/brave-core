@@ -29,7 +29,7 @@ import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import {
   getReasoningText,
-  getToolCallArtifacts,
+  getToolArtifacts,
   groupConversationEntries,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
@@ -159,8 +159,8 @@ function ConversationEntries() {
 
         const shouldOmitArtifacts =
           isLastGroup && conversationContext.isGenerating
-        const toolCallArtifacts = !shouldOmitArtifacts
-          ? getToolCallArtifacts(group)
+        const toolArtifacts = !shouldOmitArtifacts
+          ? getToolArtifacts(group)
           : null
 
         return (
@@ -226,10 +226,8 @@ function ConversationEntries() {
                               isEntryInProgress={isEntryInProgress}
                               allowedLinks={allowedLinksForEntry}
                               isLeoModel={conversationContext.isLeoModel}
-                              toolCallArtifacts={
-                                i === group.length - 1
-                                  ? toolCallArtifacts
-                                  : null
+                              toolArtifacts={
+                                i === group.length - 1 ? toolArtifacts : null
                               }
                             />
                           </>

@@ -199,7 +199,7 @@ struct SimpleRequestContentBlock {
 };
 
 // Artifact generated from tool call, will be omitted from API requests
-struct ToolCallArtifactContentBlock {
+struct ToolArtifactContentBlock {
   string type;
   string content_json;
 };
@@ -217,7 +217,7 @@ union ContentBlock {
   RequestTitleContentBlock request_title_content_block;
   ChangeToneContentBlock change_tone_content_block;
   MemoryContentBlock memory_content_block;
-  ToolCallArtifactContentBlock tool_call_artifact_content_block;
+  ToolArtifactContentBlock tool_artifact_content_block;
 
   // Brave customized content blocks for tab focus
   FilterTabsContentBlock filter_tabs_content_block;

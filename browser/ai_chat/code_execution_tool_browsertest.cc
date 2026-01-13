@@ -240,8 +240,8 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
   EXPECT_EQ(output, "Chart created");
   ASSERT_EQ(artifacts.size(), 1u);
 
-  ASSERT_TRUE(artifacts[0]->is_tool_call_artifact_content_block());
-  const auto& artifact = artifacts[0]->get_tool_call_artifact_content_block();
+  ASSERT_TRUE(artifacts[0]->is_tool_artifact_content_block());
+  const auto& artifact = artifacts[0]->get_tool_artifact_content_block();
   EXPECT_EQ(artifact->type, "chart");
   EXPECT_FALSE(artifact->content_json.empty());
 }
