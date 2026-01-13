@@ -18,9 +18,8 @@
   case ContentSettingsType::BACKGROUND_SYNC
 
 // Default is ASK
-#define CLIPBOARD_READ_WRITE                                \
-  BRAVE_GOOGLE_SIGN_IN:                                     \
-  case ContentSettingsType::DELETED_BRAVE_LOCALHOST_ACCESS: \
+#define CLIPBOARD_READ_WRITE \
+  BRAVE_GOOGLE_SIGN_IN:      \
   case ContentSettingsType::CLIPBOARD_READ_WRITE
 
 #define JNI_WebsitePreferenceBridge_ClearCookieData \
