@@ -35,6 +35,8 @@ export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
+import Amount from '../utils/amount'
+
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
   | 'deviceBusy'
@@ -259,6 +261,9 @@ export interface BaseTransactionParams {
   >
   to: string
   value: string
+
+  // Contains extra details if this transaction is part of a swap/bridge operation.
+  swapInfo?: BraveWallet.SwapInfo
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
@@ -1116,4 +1121,14 @@ export type MaxPriorityFeeOptionType = {
   id: MaxPriorityFeeTypes
   fee: string
   duration: string
+}
+
+export interface ParsedSwapInfo {
+  sourceToken: BraveWallet.BlockchainToken | undefined
+  sourceAmount: Amount
+  destinationToken: BraveWallet.BlockchainToken | undefined
+  destinationAmount: Amount
+  destinationAmountMin: Amount
+  destinationAddress: string
+  provider: BraveWallet.SwapProvider | undefined
 }

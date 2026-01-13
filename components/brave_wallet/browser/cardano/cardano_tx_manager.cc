@@ -68,13 +68,14 @@ void CardanoTxManager::AddUnapprovedCardanoTransaction(
   // We don't support Cardano dApps so far, so all transactions come from
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
+  auto swap_info = params->swap_info.Clone();
 
   cardano_wallet_service_->CreateCardanoTransaction(
       params->from.Clone(), *address_to, params->amount,
       params->sending_max_amount,
       base::BindOnce(&CardanoTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
-                     origin, std::move(callback)));
+                     origin, std::move(swap_info), std::move(callback)));
 }
 
 void CardanoTxManager::OnLatestHeightUpdated(const std::string& chain_id,
@@ -87,6 +88,7 @@ void CardanoTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   NOTREACHED() << "AddUnapprovedCardanoTransaction must be used";
 }
@@ -95,6 +97,7 @@ void CardanoTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback,
     base::expected<CardanoTransaction, std::string> cardano_transaction) {
   if (!cardano_transaction.has_value()) {
@@ -110,6 +113,7 @@ void CardanoTxManager::ContinueAddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
+  meta.set_swap_info(std::move(swap_info));
 
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());

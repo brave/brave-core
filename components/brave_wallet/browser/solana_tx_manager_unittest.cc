@@ -417,7 +417,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     solana_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin,
+        chain_id, std::move(tx_data_union), from, origin, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -2157,6 +2157,86 @@ TEST_F(SolanaTxManagerUnitTest, DecodeMerkleTreeAuthorityAndDepth) {
   EXPECT_EQ((*result).second.ToBase58(),
             "2rm66D8wbJEfb9vNDuwmk5UhLj18h9ZURxVSRM13gzNL");
   EXPECT_EQ((*result).first, 0u);
+}
+
+TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
+  // Create a transaction with swap_info
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::SOL;
+  swap_info->source_chain_id = mojom::kSolanaMainnet;
+  swap_info->source_token_address = "SOL";
+  swap_info->source_amount = "1000000000";  // 1 SOL
+  swap_info->destination_coin = mojom::CoinType::SOL;
+  swap_info->destination_chain_id = mojom::kSolanaMainnet;
+  swap_info->destination_token_address =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC
+  swap_info->destination_amount = "150000000";         // 150 USDC
+  swap_info->destination_amount_min = "145000000";     // 145 USDC min
+  swap_info->recipient = "";
+  swap_info->provider = mojom::SwapProvider::kJupiter;
+
+  const auto& from_account = sol_account();
+  std::string from_account_address = from_account->address;
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  auto account_meta1 =
+      mojom::SolanaAccountMeta::New(from_account_address, nullptr, true, true);
+  auto account_meta2 =
+      mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
+  account_metas.push_back(std::move(account_meta1));
+  account_metas.push_back(std::move(account_meta2));
+
+  auto instruction = mojom::SolanaInstruction::New(
+      mojom::kSolanaSystemProgramId, std::move(account_metas), data, nullptr);
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(instruction));
+
+  auto solana_tx_data = mojom::SolanaTxData::New(
+      "", 0, from_account_address, to_account, "", 10000000, 0,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
+      mojom::SolanaMessageVersion::kLegacy,
+      mojom::SolanaMessageHeader::New(1, 0, 1),
+      std::vector<std::string>(
+          {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
+      std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+      nullptr, nullptr);
+
+  auto tx_data_union =
+      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
+
+  std::string meta_id;
+  base::RunLoop run_loop;
+  solana_tx_manager()->AddUnapprovedTransaction(
+      mojom::kSolanaMainnet, std::move(tx_data_union), from_account,
+      GetOrigin(), std::move(swap_info),
+      base::BindLambdaForTesting([&](bool success, const std::string& id,
+                                     const std::string& err_message) {
+        ASSERT_TRUE(success);
+        ASSERT_FALSE(id.empty());
+        ASSERT_TRUE(err_message.empty());
+        meta_id = id;
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  // Verify swap_info was stored correctly
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta->swap_info());
+  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::SOL);
+  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "SOL");
+  EXPECT_EQ(tx_meta->swap_info()->source_amount, "1000000000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::SOL);
+  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(tx_meta->swap_info()->destination_token_address,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "150000000");
+  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min, "145000000");
+  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
+  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kJupiter);
 }
 
 }  // namespace brave_wallet

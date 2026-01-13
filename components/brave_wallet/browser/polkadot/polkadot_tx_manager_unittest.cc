@@ -95,6 +95,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
 
   polkadot_tx_manager_->AddUnapprovedTransaction(
       "polkadot_mainnet", std::move(tx_data_union), account_id, std::nullopt,
+      nullptr,
       base::BindOnce([](bool success, const std::string& tx_meta_id,
                         const std::string& error_message) {
         EXPECT_FALSE(success);

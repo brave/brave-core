@@ -77,11 +77,13 @@ class TxService : public mojom::TxService,
       mojom::TxDataUnionPtr tx_data_union,
       const std::string& chain_id,
       mojom::AccountIdPtr from,
+      mojom::SwapInfoPtr swap_info,
       AddUnapprovedTransactionCallback callback) override;
   void AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnionPtr tx_data_union,
       const std::string& chain_id,
       mojom::AccountIdPtr from,
+      mojom::SwapInfoPtr swap_info,
       const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback callback);
   void AddUnapprovedEvmTransaction(
