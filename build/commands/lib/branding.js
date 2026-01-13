@@ -405,6 +405,20 @@ exports.update = () => {
       androidIconSet = 'res_brave_nightly'
     }
 
+    const androidResSource = path.join(
+      config.braveCoreDir,
+      'android',
+      'java',
+      'res',
+    )
+    const androidResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'android',
+      'java',
+      'res',
+    )
+
     const androidIconSource = path.join(
       braveAppDir,
       'theme',
