@@ -112,7 +112,8 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
 }
 
 bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(
+      tab_group_views_->GetBrowserWindowInterface());
 }
 
 // static
