@@ -199,15 +199,15 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (PREF_REWARDS_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_REWARDS_DISABLED;
         } else if (PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_P3_A_ENABLED;
+            return BravePolicyConstants.BRAVE_P3A_ENABLED;
         } else if (PREF_LEO_AI_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_A_I_CHAT_ENABLED;
+            return BravePolicyConstants.BRAVE_AI_CHAT_ENABLED;
         } else if (PREF_NEWS_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_NEWS_DISABLED;
         } else if (PREF_STATISTICS_REPORTING_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_STATS_PING_ENABLED;
         } else if (PREF_VPN_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_V_P_N_DISABLED;
+            return BravePolicyConstants.BRAVE_VPN_DISABLED;
         } else if (PREF_WALLET_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_WALLET_DISABLED;
         } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(preferenceKey)) {
