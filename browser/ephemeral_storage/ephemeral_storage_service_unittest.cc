@@ -19,6 +19,7 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -78,6 +79,9 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
       RegisterOnBecomeActiveCallback,
       (base::OnceCallback<void(const base::flat_set<std::string>)> callback),
       (override));
+#if BUILDFLAG(IS_ANDROID)
+  MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
+#endif
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
                                                bool trigger_callback) {
