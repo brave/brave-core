@@ -229,6 +229,7 @@
   // Otherwise the menu can sometimes be overlapped by the Suggested question
   // buttons.
   position: var(--iframe-position-for-menus);
+  z-index: 1;
 }
 
 .aichatIframeContainer.dragActive {
