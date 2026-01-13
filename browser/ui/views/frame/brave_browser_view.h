@@ -222,7 +222,6 @@ class BraveBrowserView : public BrowserView,
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
   void ReparentTopContainerForEndOfImmersive() override;
-  void FullscreenStateChanged() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   bool IsBraveWebViewRoundedCornersEnabled();
