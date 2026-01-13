@@ -50,7 +50,6 @@
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
-  {ContentSettingsType::DELETED_BRAVE_LOCALHOST_ACCESS, nullptr},     \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
   {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},                   \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
