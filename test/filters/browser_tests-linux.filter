@@ -56,6 +56,9 @@
 # FetchCountryId to get locale from device instead of the variations service.
 -RegionalCapabilitiesServiceFactoryBrowserTestForVariationsCountry.GetCountryId/FR
 
+# This test fails because we disable PermissionElement origin trial.
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
