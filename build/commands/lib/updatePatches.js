@@ -62,6 +62,7 @@ async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
   let writePatchOps = modifiedPaths.map(async (old, i) => {
     const singleDiffArgs = [
       'diff',
+      '--binary',
       '--src-prefix=a/',
       '--dst-prefix=b/',
       '--default-prefix',

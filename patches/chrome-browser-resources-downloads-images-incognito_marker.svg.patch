@@ -1,0 +1,8 @@
+diff --git a/chrome/browser/resources/downloads/images/incognito_marker.svg b/chrome/browser/resources/downloads/images/incognito_marker.svg
+index d36ca640be62ca87be97b825740634f643876017..71ae5af1d7f8a20e007b8526193577651f3d1f8b 100644
+--- a/chrome/browser/resources/downloads/images/incognito_marker.svg
++++ b/chrome/browser/resources/downloads/images/incognito_marker.svg
+@@ -1 +1 @@
+-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><g fill="#5F6368"><circle cx="5.44" cy="10.371" r="1.411"/><path d="M8 0C3.578 0 0 3.578 0 8c0 4.422 3.578 8 8 8 4.422 0 8-3.578 8-8 0-4.422-3.578-8-8-8zM6.095 3.28a.557.557 0 0 1 .705-.335l1.178.393 1.171-.393a.573.573 0 0 1 .706.335l1.287 3.433H4.815l1.28-3.433zm4.414 9.062a1.97 1.97 0 0 1-1.956-1.804c-.546-.349-.99-.13-1.164-.014a1.96 1.96 0 0 1-1.956 1.81 1.977 1.977 0 0 1-1.971-1.97c0-1.084.887-1.971 1.97-1.971.932 0 1.71.647 1.913 1.52a1.547 1.547 0 0 1 1.237.007 1.97 1.97 0 0 1 1.913-1.527c1.083 0 1.97.887 1.97 1.97a1.948 1.948 0 0 1-1.956 1.979zm2.538-4.502H2.91v-.567h10.138v.567z"/><circle cx="10.509" cy="10.371" r="1.411"/></g></svg>
+\ No newline at end of file
++<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M2.212 7.54c.092.299.276 2.029.827 2.528.568.514 2.713.506 3.123.283.92-.498 1.292-2.107 1.454-2.812C7.708 7.14 8 7.14 8 7.14s.308 0 .4.4c.163.704.519 2.318 1.437 2.815.41.223 2.555.231 3.125-.282.55-.5.734-2.235.826-2.534.091-.299.551-.598.643-.698.092-.1.092-.498 0-.598-.184-.2-2.352-.377-4.686-.1-.466.055-.643.2-1.746.2-1.102 0-1.28-.145-1.745-.2-2.333-.277-4.501-.1-4.685.1-.092.1-.092.499 0 .599.092.1.551.399.643.698z" id="a"/></defs><g fill="none" fill-rule="evenodd"><use fill="#fff" xlink:href="#a"/></g></svg>
