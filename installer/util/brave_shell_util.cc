@@ -30,7 +30,7 @@ std::wstring GetProgIdForFileType() {
   NOTREACHED();
 }
 
-bool ShouldUseFileTypeProgId(const std::wstring& ext) {
+bool ShouldUseFileTypeProgId(std::wstring_view ext) {
   return (ext == L".pdf" || ext == L".svg");
 }
 
