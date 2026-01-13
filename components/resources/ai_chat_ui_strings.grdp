@@ -883,7 +883,7 @@
     Code Execution
   </message>
   <message name="IDS_CHAT_UI_TOOL_LABEL_CODE_EXECUTION" desc="Title for code execution tool event" formatter_data="webui=AiChat">
-    Executed code in sandbox
+    Executed code in sandbox to help with your query
   </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
