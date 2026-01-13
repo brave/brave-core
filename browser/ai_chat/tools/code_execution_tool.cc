@@ -162,10 +162,8 @@ void CodeExecutionTool::ResolveRequest(
     }
 
     // Add artifact content block
-    artifact_blocks.push_back(
-        mojom::ContentBlock::NewToolCallArtifactContentBlock(
-            mojom::ToolCallArtifactContentBlock::New(*type,
-                                                     std::move(content_json))));
+    artifact_blocks.push_back(mojom::ContentBlock::NewToolArtifactContentBlock(
+        mojom::ToolArtifactContentBlock::New(*type, std::move(content_json))));
   }
 
   // Construct final content blocks

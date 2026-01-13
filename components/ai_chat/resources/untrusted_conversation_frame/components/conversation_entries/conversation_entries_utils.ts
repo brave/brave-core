@@ -180,10 +180,10 @@ export const removeCitationsWithMissingLinks = (
   })
 }
 
-export function getToolCallArtifacts(
+export function getToolArtifacts(
   group: Mojom.ConversationTurn[],
-): Mojom.ToolCallArtifactContentBlock[] {
-  const artifacts: Mojom.ToolCallArtifactContentBlock[] = []
+): Mojom.ToolArtifactContentBlock[] {
+  const artifacts: Mojom.ToolArtifactContentBlock[] = []
 
   for (const entry of group) {
     if (!entry.events) {
@@ -196,8 +196,8 @@ export function getToolCallArtifacts(
       }
 
       for (const contentBlock of event.toolUseEvent.output) {
-        if (contentBlock.toolCallArtifactContentBlock) {
-          artifacts.push(contentBlock.toolCallArtifactContentBlock)
+        if (contentBlock.toolArtifactContentBlock) {
+          artifacts.push(contentBlock.toolArtifactContentBlock)
         }
       }
     }

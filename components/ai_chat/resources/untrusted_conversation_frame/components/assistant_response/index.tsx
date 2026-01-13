@@ -160,7 +160,7 @@ function AssistantEvent(
 
 export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
-  toolCallArtifacts?: Mojom.ToolCallArtifactContentBlock[] | null
+  toolArtifacts?: Mojom.ToolArtifactContentBlock[] | null
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {
@@ -186,8 +186,8 @@ export default function AssistantResponse(props: AssistantResponseProps) {
             jsonData={r}
           />
         ))}
-      {props.toolCallArtifacts
-        ?.filter((artifact) => artifact.type === 'chart')
+      {props.toolArtifacts
+        ?.filter((artifact) => artifact.type === Mojom.CHART_ARTIFACT_TYPE)
         .map((artifact, i) => (
           <Chart
             key={i}

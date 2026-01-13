@@ -6,12 +6,12 @@
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
 
 namespace {
 
-constexpr char kChartType[] = "chart";
 constexpr char kDataKey[] = "data";
 constexpr char kXKey[] = "x";
 constexpr char kLabelsKey[] = "labels";
@@ -56,7 +56,7 @@ const chartUtil = {
 std::optional<std::string> ChartCodePlugin::ValidateArtifact(
     const std::string& type,
     const base::Value& artifact_value) const {
-  if (type != kChartType) {
+  if (type != mojom::kChartArtifactType) {
     return std::nullopt;
   }
 

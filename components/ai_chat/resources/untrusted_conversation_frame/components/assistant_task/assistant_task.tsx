@@ -17,7 +17,7 @@ import AssistantResponse from '../assistant_response'
 import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
-import { getToolCallArtifacts } from '../conversation_entries/conversation_entries_utils'
+import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 
 interface Props {
   // Entries that make up the task loop
@@ -48,7 +48,7 @@ interface TabProps {
   taskData: TaskData
 
   // Tool call artifacts to pass to AssistantResponse
-  toolCallArtifacts: Mojom.ToolCallArtifactContentBlock[] | null
+  toolArtifacts: Mojom.ToolArtifactContentBlock[] | null
 }
 
 /**
@@ -109,8 +109,8 @@ export default function AssistantTask(props: Props) {
 
   const shouldOmitArtifacts =
     props.isActiveTask && conversationContext.isGenerating
-  const toolCallArtifacts = !shouldOmitArtifacts
-    ? getToolCallArtifacts(props.assistantEntries)
+  const toolArtifacts = !shouldOmitArtifacts
+    ? getToolArtifacts(props.assistantEntries)
     : null
 
   const tabProps: TabProps = {
@@ -119,7 +119,7 @@ export default function AssistantTask(props: Props) {
     toolUseTaskState: conversationContext.toolUseTaskState,
     isThinking: isThinking,
     taskData: taskData,
-    toolCallArtifacts: toolCallArtifacts,
+    toolArtifacts: toolArtifacts,
   }
 
   return (
@@ -150,7 +150,7 @@ export default function AssistantTask(props: Props) {
             <Progress
               {...props}
               {...tabProps}
-              toolCallArtifacts={toolCallArtifacts}
+              toolArtifacts={toolArtifacts}
             />
           )}
 
@@ -236,7 +236,7 @@ function Progress(props: Props & TabProps) {
             isEntryInProgress={props.isGenerating}
             allowedLinks={[]}
             isLeoModel={props.isLeoModel}
-            toolCallArtifacts={props.toolCallArtifacts}
+            toolArtifacts={props.toolArtifacts}
           />
         </div>
       )}

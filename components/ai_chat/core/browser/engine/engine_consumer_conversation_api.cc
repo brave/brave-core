@@ -305,7 +305,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         size_t content_size = 0;
         for (const auto& content : tool_event->output.value()) {
           // Skip artifact content blocks when calculating size
-          if (content->is_tool_call_artifact_content_block()) {
+          if (content->is_tool_artifact_content_block()) {
             continue;
           }
           if (content->is_image_content_block()) {
@@ -463,7 +463,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
           std::vector<mojom::ContentBlockPtr> tool_result_content;
           for (const auto& item : tool_event->output.value()) {
             // Skip artifact content blocks - they are not sent to the API
-            if (item->is_tool_call_artifact_content_block()) {
+            if (item->is_tool_artifact_content_block()) {
               continue;
             }
             tool_result_content.push_back(item.Clone());

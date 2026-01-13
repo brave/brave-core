@@ -18,7 +18,7 @@ import * as Mojom from '../../../common/mojom'
 import styles from './chart.module.scss'
 
 interface ChartProps {
-  artifact: Mojom.ToolCallArtifactContentBlock
+  artifact: Mojom.ToolArtifactContentBlock
 }
 
 interface ChartData {
@@ -27,19 +27,20 @@ interface ChartData {
 }
 
 const CHART_COLORS = [
-  '#4C54D2',
-  '#0E9F6E',
-  '#FF1A1A',
-  '#F59E0B',
-  '#8B5CF6',
-  '#EC4899',
-  '#14B8A6',
-  '#F97316',
+  'var(--leo-color-blurple-40)',
+  'var(--leo-color-green-40)',
+  'var(--leo-color-red-40)',
+  'var(--leo-color-yellow-40)',
+  'var(--leo-color-purple-40)',
+  'var(--leo-color-teal-40)',
+  'var(--leo-color-orange-40)',
+  'var(--leo-color-purple-40)',
+  'var(--leo-color-blue-40)',
 ]
 
 export default function Chart({ artifact }: ChartProps) {
   const chartData = React.useMemo<ChartData | null>(() => {
-    if (artifact.type !== 'chart') {
+    if (artifact.type !== Mojom.CHART_ARTIFACT_TYPE) {
       return null
     }
 
@@ -55,7 +56,10 @@ export default function Chart({ artifact }: ChartProps) {
     return null
   }
 
-  const dataKeys = Object.keys(chartData.data[0]).filter((key) => key !== 'x')
+  const dataKeys = React.useMemo(
+    () => Object.keys(chartData.data[0]).filter((key) => key !== 'x'),
+    [chartData],
+  )
 
   return (
     <div className={styles.chartContainer}>

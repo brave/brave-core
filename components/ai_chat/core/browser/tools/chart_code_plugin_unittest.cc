@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/test/values_test_util.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -25,7 +26,7 @@ TEST(ChartCodePluginTest, ValidateArtifact_Success) {
     }
   })json");
 
-  auto result = chart_plugin.ValidateArtifact("chart", value);
+  auto result = chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
   EXPECT_FALSE(result.has_value());
 }
 
@@ -35,7 +36,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   // Not an object
   {
     auto value = base::Value("not an object");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart must be an object");
   }
@@ -43,7 +45,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   // Missing data array
   {
     auto value = base::test::ParseJson(R"({"labels": {}})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart is missing 'data' array");
   }
@@ -51,7 +54,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   // Empty data array
   {
     auto value = base::test::ParseJson(R"({"data": []})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart has empty data array");
   }
@@ -59,7 +63,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   // Missing x field
   {
     auto value = base::test::ParseJson(R"({"data": [{"value": 10}]})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart data entry is missing required 'x' field");
   }
@@ -68,7 +73,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   {
     auto value =
         base::test::ParseJson(R"({"data": [{"x": true, "value": 10}]})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(),
               "Chart data entry 'x' field must be a string or number");
@@ -78,7 +84,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   {
     auto value = base::test::ParseJson(
         R"({"data": [{"x": "A", "value": "not a number"}]})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(),
               "Chart data entry values (except 'x') must be numbers");
@@ -88,7 +95,8 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   {
     auto value = base::test::ParseJson(
         R"({"data": [{"x": "A", "value": 10}], "labels": "not an object"})");
-    auto result = chart_plugin.ValidateArtifact("chart", value);
+    auto result =
+        chart_plugin.ValidateArtifact(mojom::kChartArtifactType, value);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart labels must be an object");
   }
