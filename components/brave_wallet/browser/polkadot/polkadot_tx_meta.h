@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 
-#include "base/numerics/safe_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
@@ -33,7 +32,7 @@ class PolkadotTxMeta : public TxMeta {
  private:
   std::string recipient_;
   std::string encoded_extrinsic_;
-  base::StrictNumeric<uint128_t> amount_ = uint128_t{0};
+  uint128_t amount_ = uint128_t{0};
 };
 
 }  // namespace brave_wallet
