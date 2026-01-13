@@ -688,7 +688,7 @@ class AccountActivityStoreTests: XCTestCase {
       chainId: BraveWallet.FilecoinMainnet,
       effectiveRecipient: nil,
       isRetriable: false,
-      swapInfo: nil
+      swapInfoDeprecated: nil
     )
 
     let transactionCopy = transaction.copy() as! BraveWallet.TransactionInfo

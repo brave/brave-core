@@ -2619,6 +2619,27 @@ union TxDataUnion {
 };
 
 struct SwapInfo {
+  CoinType source_coin;
+  string source_chain_id;
+  string source_token_address;
+  string source_amount;
+
+  CoinType destination_coin;
+  string destination_chain_id;
+  // An empty string indicates that the asset could not be reliably determined.
+  string destination_token_address;
+  // An empty string indicates that the amount could not be reliably determined.
+  string destination_amount;
+  // Populated for EXACT_INPUT swaps
+  string destination_amount_min;
+
+  // An empty string indicates that the recipient is not known.
+  string recipient;
+  SwapProvider provider;
+};
+
+// Deprecated in favour of SwapInfo
+struct SwapInfoDeprecated {
   CoinType from_coin;
   string from_chain_id;
   string from_asset;
@@ -2660,7 +2681,7 @@ struct TransactionInfo {
   string? effective_recipient;
   bool is_retriable;
 
-  SwapInfo? swap_info;
+  SwapInfoDeprecated? swap_info_deprecated;
 };
 
 interface TxServiceObserver {

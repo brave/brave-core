@@ -15,10 +15,10 @@
 
 namespace brave_wallet {
 
-std::optional<std::tuple<mojom::TransactionType,    // tx_type
-                         std::vector<std::string>,  // tx_params
-                         std::vector<std::string>,  // tx_args
-                         mojom::SwapInfoPtr>>       // swap_info
+std::optional<std::tuple<mojom::TransactionType,         // tx_type
+                         std::vector<std::string>,       // tx_params
+                         std::vector<std::string>,       // tx_args
+                         mojom::SwapInfoDeprecatedPtr>>  // swap_info
 GetTransactionInfoFromData(const std::vector<uint8_t>& data);
 
 }  // namespace brave_wallet

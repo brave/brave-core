@@ -117,7 +117,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data{0x0};
   if (tx_->data().size() > 0) {
     data = tx_->data();

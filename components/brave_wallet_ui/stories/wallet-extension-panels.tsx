@@ -93,7 +93,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
     {
       chainId: '',
@@ -132,7 +132,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
     {
       chainId: '',
@@ -171,7 +171,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
     {
       chainId: '',
@@ -210,7 +210,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
     {
       chainId: '',
@@ -249,7 +249,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
   ],
   [
@@ -290,7 +290,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
     {
       chainId: '',
@@ -329,7 +329,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     },
   ],
 ]

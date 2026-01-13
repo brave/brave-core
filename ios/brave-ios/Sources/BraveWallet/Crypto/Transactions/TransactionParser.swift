@@ -469,7 +469,7 @@ enum TransactionParser {
         )
       )
     case .ethSwap:
-      guard let swapInfo = transaction.swapInfo
+      guard let swapInfo = transaction.swapInfoDeprecated
       else {
         return nil
       }

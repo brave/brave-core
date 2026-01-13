@@ -90,7 +90,7 @@ export const getMockedTransactionInfo =
       },
       effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
       isRetriable: false,
-      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
     }
   }
 
@@ -544,7 +544,7 @@ SerializableTransactionInfo = {
   },
   effectiveRecipient: undefined,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockSolDappSignAllTransactionsRequest: //

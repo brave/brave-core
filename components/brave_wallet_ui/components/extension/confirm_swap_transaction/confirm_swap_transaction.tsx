@@ -157,8 +157,8 @@ export function ConfirmSwapTransaction() {
   const isBridgeTx = selectedPendingTransaction
     ? isBridgeTransaction(selectedPendingTransaction)
     : false
-  const toChainId = selectedPendingTransaction?.swapInfo?.toChainId
-  const toCoin = selectedPendingTransaction?.swapInfo?.toCoin
+  const toChainId = selectedPendingTransaction?.swapInfoDeprecated?.toChainId
+  const toCoin = selectedPendingTransaction?.swapInfoDeprecated?.toCoin
 
   // Queries
   const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
@@ -305,7 +305,9 @@ export function ConfirmSwapTransaction() {
                       : undefined
                   }
                   network={buyAssetNetwork}
-                  receiveAddress={selectedPendingTransaction.swapInfo?.receiver}
+                  receiveAddress={
+                    selectedPendingTransaction.swapInfoDeprecated?.receiver
+                  }
                 />
               </Card>
 
