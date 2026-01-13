@@ -1,0 +1,12 @@
+diff --git a/build/BUILD.gn b/build/BUILD.gn
+index 95ceaf090e6c097763752a34b750d968603226f3..054a368a9d84a30b0a849f0c46545f6805222562 100644
+--- a/build/BUILD.gn
++++ b/build/BUILD.gn
+@@ -54,6 +54,7 @@ buildflag_header("branding_buildflags") {
+   }
+ 
+   flags += [ "ENABLE_BUILTIN_SEARCH_PROVIDER_ASSETS=$enable_builtin_search_provider_assets" ]
++  public_deps = [ "//brave/components/brave_origin/buildflags" ]
+ }
+ 
+ buildflag_header("blink_buildflags") {
