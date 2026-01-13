@@ -597,6 +597,7 @@ export const usePendingTransactions = () => {
       txCoinType === BraveWallet.CoinType.BTC
       || txCoinType === BraveWallet.CoinType.ZEC
       || txCoinType === BraveWallet.CoinType.ADA
+      || txCoinType === BraveWallet.CoinType.DOT
     ) {
       return false
     }

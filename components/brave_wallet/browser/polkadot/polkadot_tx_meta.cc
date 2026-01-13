@@ -5,35 +5,35 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
-                               const PolkadotChainMetadata& chain_metadata,
-                               const PolkadotUnsignedTransfer& extrinsic)
-    : recipient_(base::HexEncodeLower(extrinsic.recipient())),
-      encoded_extrinsic_(extrinsic.Encode(chain_metadata)) {
-  set_from(from.Clone());
-  amount_ = extrinsic.send_amount();
-}
-
+PolkadotTxMeta::PolkadotTxMeta() = default;
 PolkadotTxMeta::~PolkadotTxMeta() = default;
 
 base::Value::Dict PolkadotTxMeta::ToValue() const {
   auto dict = TxMeta::ToValue();
-  dict.Set("extrinsic", encoded_extrinsic_);
+  dict.Set("tx", tx_->ToValue());
   return dict;
+}
+
+void PolkadotTxMeta::set_tx(PolkadotTransaction tx) {
+  tx_.emplace(std::move(tx));
+}
+
+base::optional_ref<PolkadotTransaction> PolkadotTxMeta::tx() {
+  return tx_;
 }
 
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
-          recipient_, Uint128ToMojom(amount_), false, 0)),
+          tx_->recipient().ToString().value_or(""),
+          Uint128ToMojom(tx_->amount()), Uint128ToMojom(tx_->fee()), false)),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

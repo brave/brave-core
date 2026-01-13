@@ -23,14 +23,21 @@ inline constexpr const size_t kPolkadotSubstrateAccountIdSize = 32;
 
 inline constexpr const size_t kPolkadotBlockHashSize = 32;
 
+struct PolkadotAddress {
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  std::optional<uint16_t> ss58_prefix;
+
+  std::optional<std::string> ToString() const;
+};
+
 // Parse a string provided from the front-end that's intended to be used as a
 // destination address for send transactions. The input string can be in ss58
 // format or an appropriately sized hex string with the leading "0x".
 //
 // TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
 // off of `const std::string&`.
-std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
-ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix);
+std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
+                                                    uint16_t ss58_prefix);
 
 mojom::uint128Ptr Uint128ToMojom(uint128_t);
 uint128_t MojomToUint128(const mojom::uint128Ptr&);
