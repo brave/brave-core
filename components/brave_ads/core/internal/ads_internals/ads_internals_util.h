@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INTERNALS_ADS_INTERNALS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INTERNALS_ADS_INTERNALS_UTIL_H_
 
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
