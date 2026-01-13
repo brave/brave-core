@@ -19,13 +19,8 @@
 #include "base/logging.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
-#include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
@@ -39,6 +34,15 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
+#include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace brave_rewards {
 
@@ -64,10 +68,11 @@ class RewardsPageHandler::UpdateObserver
                  base::RepeatingCallback<void(UpdateSource)> update_callback)
       : update_callback_(std::move(update_callback)) {
     rewards_observation_.Observe(rewards_service);
-    ads_service->AddBatAdsObserver(
-        ads_observer_receiver_.BindNewPipeAndPassRemote());
-
     pref_change_registrar_.Init(pref_service);
+    AddPrefListener(ntp_background_images::prefs::
+                        kNewTabPageShowSponsoredImagesBackgroundImage,
+                    UpdateSource::kAds);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     AddPrefListener(brave_ads::prefs::kOptedInToNotificationAds,
                     UpdateSource::kAds);
     AddPrefListener(brave_ads::prefs::kMaximumNotificationAdsPerHour,
@@ -75,9 +80,12 @@ class RewardsPageHandler::UpdateObserver
     AddPrefListener(
         brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision,
         UpdateSource::kAds);
-    AddPrefListener(ntp_background_images::prefs::
-                        kNewTabPageShowSponsoredImagesBackgroundImage,
-                    UpdateSource::kAds);
+
+    if (ads_service) {
+      ads_service->AddBatAdsObserver(
+          ads_observer_receiver_.BindNewPipeAndPassRemote());
+    }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 
   // RewardsServiceObserver:
@@ -191,7 +199,6 @@ RewardsPageHandler::RewardsPageHandler(
       captcha_service_(captcha_service),
       prefs_(prefs) {
   CHECK(rewards_service_);
-  CHECK(ads_service_);
   CHECK(prefs_);
 
   // Unretained because `update_observer_` is owned by `this`.
@@ -401,6 +408,12 @@ void RewardsPageHandler::RemoveRecurringContribution(
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   auto settings = mojom::AdsSettings::New();
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!ads_service_) {
+    std::move(callback).Run(std::move(settings));
+    return;
+  }
+
   settings->browser_upgrade_required =
       ads_service_->IsBrowserUpgradeRequiredToServeAds();
   settings->is_supported_region = brave_ads::IsSupportedRegion();
@@ -430,11 +443,17 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
       settings->available_subdivisions.push_back(std::move(entry));
     }
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   std::move(callback).Run(std::move(settings));
 }
 
 void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
+  if (!ads_service_) {
+    std::move(callback).Run(/*statement=*/nullptr);
+    return;
+  }
+
   auto on_statement = [](decltype(callback) callback,
                          brave_ads::mojom::StatementInfoPtr info) {
     if (!info) {
@@ -464,6 +483,12 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 }
 
 void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!ads_service_) {
+    std::move(callback).Run(/*ads_history=*/"");
+    return;
+  }
+
   base::Time now = base::Time::Now();
   base::Time from_time =
       now - brave_ads::kAdHistoryRetentionPeriod.Get() - base::Days(1);
@@ -494,11 +519,15 @@ void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
   // GetAdHistory from base::Value to a mojom data structure.
   ads_service_->GetAdHistory(from_time.LocalMidnight(), now,
                              base::BindOnce(on_history, std::move(callback)));
+#else
+  std::move(callback).Run(/*ads_history=*/"");
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsPageHandler::SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
                                           bool enabled,
                                           SetAdTypeEnabledCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   using AdType = brave_ads::mojom::AdType;
   switch (ad_type) {
     case AdType::kNewTabPageAd:
@@ -514,28 +543,39 @@ void RewardsPageHandler::SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
       // These Ad types cannot be enabled/disabled from the Rewards page.
       break;
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   std::move(callback).Run();
 }
 
 void RewardsPageHandler::SetNotificationAdsPerHour(
     int32_t ads_per_hour,
     SetNotificationAdsPerHourCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   DCHECK_GE(ads_per_hour, 0);
   prefs_->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
                    ads_per_hour);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   std::move(callback).Run();
 }
 
 void RewardsPageHandler::SetAdsSubdivision(const std::string& subdivision,
                                            SetAdsSubdivisionCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   prefs_->SetString(
       brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision,
       subdivision);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   std::move(callback).Run();
 }
 
 void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
                                       ToggleAdLikeCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!ads_service_) {
+    std::move(callback).Run();
+    return;
+  }
+
   auto dict = base::JSONReader::ReadDict(history_item,
                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
@@ -550,10 +590,19 @@ void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
 
   ads_service_->ToggleLikeAd(brave_ads::CreateReaction(ad_history_item),
                              base::IgnoreArgs<bool>(std::move(callback)));
+#else
+  std::move(callback).Run();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
                                          ToggleAdDislikeCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!ads_service_) {
+    std::move(callback).Run();
+    return;
+  }
+
   auto dict = base::JSONReader::ReadDict(history_item,
                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
@@ -568,11 +617,20 @@ void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
 
   ads_service_->ToggleDislikeAd(brave_ads::CreateReaction(ad_history_item),
                                 base::IgnoreArgs<bool>(std::move(callback)));
+#else
+  std::move(callback).Run();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsPageHandler::ToggleAdInappropriate(
     const std::string& history_item,
     ToggleAdInappropriateCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!ads_service_) {
+    std::move(callback).Run();
+    return;
+  }
+
   auto dict = base::JSONReader::ReadDict(history_item,
                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
@@ -588,6 +646,9 @@ void RewardsPageHandler::ToggleAdInappropriate(
   ads_service_->ToggleMarkAdAsInappropriate(
       brave_ads::CreateReaction(ad_history_item),
       base::IgnoreArgs<bool>(std::move(callback)));
+#else
+  std::move(callback).Run();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsPageHandler::GetRewardsNotifications(
@@ -683,7 +744,9 @@ void RewardsPageHandler::OnCaptchaResult(bool success,
   if (captcha_service_) {
     captcha_service_->UpdateScheduledCaptchaResult(success);
   }
-  ads_service_->NotifyDidSolveAdaptiveCaptcha();
+  if (ads_service_) {
+    ads_service_->NotifyDidSolveAdaptiveCaptcha();
+  }
   std::move(callback).Run();
 }
 

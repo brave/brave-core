@@ -16,11 +16,10 @@
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -30,6 +29,11 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 namespace {
 
@@ -138,9 +142,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
 
 void RewardsInternalsDOMHandler::Init() {
   profile_ = Profile::FromWebUI(web_ui());
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
 void RewardsInternalsDOMHandler::OnJavascriptAllowed() {}
@@ -414,10 +420,12 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
   }
 
   base::Value::Dict diagnostics;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   const PrefService* prefs = profile_->GetPrefs();
   const std::string& diagnostic_id =
       prefs->GetString(brave_ads::prefs::kDiagnosticId);
   diagnostics.Set("diagnosticId", diagnostic_id);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (diagnosticsEntries) {
 #if DCHECK_IS_ON()
@@ -443,8 +451,10 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
     return;
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   PrefService* prefs = profile_->GetPrefs();
   prefs->SetString(brave_ads::prefs::kDiagnosticId, args[0].GetString());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {

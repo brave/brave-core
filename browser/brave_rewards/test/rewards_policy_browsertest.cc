@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -32,6 +32,10 @@
 #include "content/public/test/navigation_handle_observer.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace policy {
 
@@ -91,11 +95,15 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, GetRewardsAndAdsServices) {
   if (IsBraveRewardsDisabledTest()) {
     EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   } else {
     EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 }
 
