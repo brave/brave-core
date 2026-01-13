@@ -423,7 +423,7 @@ public class BraveOriginSubscriptionPrefs {
         switch (policyKey) {
             case BravePolicyConstants.BRAVE_REWARDS_DISABLED:
             case BravePolicyConstants.BRAVE_NEWS_DISABLED:
-            case BravePolicyConstants.BRAVE_V_P_N_DISABLED:
+            case BravePolicyConstants.BRAVE_VPN_DISABLED:
             case BravePolicyConstants.BRAVE_WALLET_DISABLED:
                 return true;
             default:
