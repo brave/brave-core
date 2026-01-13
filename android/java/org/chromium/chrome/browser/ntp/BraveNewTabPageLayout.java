@@ -92,6 +92,7 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
@@ -1502,8 +1503,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
 
-        // Show the snackbar
-        BraveRecentTabsSnackbarHelper snackbarHelper = new BraveRecentTabsSnackbarHelper();
-        snackbarHelper.showSnackbar((BraveActivity) mActivity);
+        // Wait for tab state to be initialized before showing snackbar.
+        // On cold start, tabs are restored asynchronously, so we need to wait
+        // for them to be fully loaded before searching for the last active tab.
+        BraveActivity braveActivity = (BraveActivity) mActivity;
+        TabModelUtils.runOnTabStateInitialized(
+                braveActivity.getTabModelSelectorSupplier().get(),
+                (selector) -> {
+                    BraveRecentTabsSnackbarHelper snackbarHelper =
+                            new BraveRecentTabsSnackbarHelper();
+                    snackbarHelper.showSnackbar(braveActivity);
+                });
     }
 }
