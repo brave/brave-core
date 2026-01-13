@@ -36,7 +36,8 @@
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX                \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) {  \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                              \
+          tab_strip_->GetBrowserWindowInterface())) {                        \
     tabs::UpdateInsertionIndexForVerticalTabs(                               \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
         GetTabAt(first_dragged_tab_index)->group().has_value(),              \
@@ -47,7 +48,8 @@
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) { \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                             \
+          tab_strip_->GetBrowserWindowInterface())) {                       \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
