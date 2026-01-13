@@ -39,6 +39,12 @@ inline constexpr char kWebDiscoveryAndAdsMetric[] =
     "Brave.Search.WebDiscoveryAndAds";
 inline constexpr char kWebDiscoveryDefaultEngineMetric[] =
     "Brave.Search.WebDiscoveryDefaultEngine";
+inline constexpr char kRewardsDefaultEngineMetric[] =
+    "Brave.Search.DefaultEngine.Rewards";
+inline constexpr char kNonRewardsDefaultEngineMetric[] =
+    "Brave.Search.DefaultEngine.NonRewards";
+inline constexpr char kNonBraveSearchWalletConnectedMetric[] =
+    "Brave.Rewards.NonBraveSearchWalletConnected";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -124,6 +130,9 @@ class SearchEngineTracker : public KeyedService,
   void RecordWebDiscoveryEnabledP3A();
 #endif
 
+  void RecordDefaultEngine();
+  void RecordRewardsWalletConnected();
+
   void MigrateObsoletePrefs();
 
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
@@ -143,9 +152,7 @@ class SearchEngineTracker : public KeyedService,
 
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   PrefChangeRegistrar pref_change_registrar_;
-#endif
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_
