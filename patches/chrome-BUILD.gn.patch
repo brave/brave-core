@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3ca96ab41 100644
+index fa036801ce974378c5fb586bcf0609da24dd8547..54d67d2d55599a7f16677480930b509a4310bb68 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -195,6 +195,7 @@ if (!is_android && !is_mac) {
@@ -32,6 +32,21 @@ index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
+@@ -625,12 +628,12 @@ if (is_win) {
+   }
+ 
+   bundle_data("chrome_app_icon") {
+-    sources = [ "app/theme/$branding_path_component/mac/app.icns" ]
++    sources = [ "$branding_theme_dir/$branding_path_component/mac/app.icns" ]
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+   }
+ 
+   bundle_data("chrome_asset_catalog") {
+-    sources = [ "app/theme/$branding_path_component/mac/Assets.car" ]
++    sources = [ "$branding_theme_dir/$branding_path_component/mac/Assets.car" ]
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+   }
+ 
 @@ -668,6 +671,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
@@ -68,6 +83,15 @@ index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
+@@ -945,7 +953,7 @@ if (is_win) {
+       # Authorization Services uses.  Also, Authorization Services
+       # can't deal with .icns files.
+       "$root_gen_dir/chrome/browser/mac/install.sh",
+-      "app/theme/default_100_percent/$branding_path_component/product_logo_32.png",
++      "$branding_theme_dir/default_100_percent/$branding_path_component/product_logo_32.png",
+     ]
+ 
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
 @@ -1207,6 +1215,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
@@ -93,6 +117,34 @@ index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
+@@ -1473,19 +1483,19 @@ if (is_win) {
+ 
+ copy("visual_elements_resources") {
+   sources = [
+-    "//chrome/app/theme/$branding_path_component/win/tiles/Logo.png",
+-    "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogo.png",
++    "$branding_theme_dir/$branding_path_component/win/tiles/Logo.png",
++    "$branding_theme_dir/$branding_path_component/win/tiles/SmallLogo.png",
+     "app/visual_elements_resources/chrome.VisualElementsManifest.xml",
+   ]
+ 
+   if (is_chrome_branded) {
+     sources += [
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoBeta.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoCanary.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoDev.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoBeta.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoCanary.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoDev.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/LogoBeta.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/LogoCanary.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/LogoDev.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/SmallLogoBeta.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/SmallLogoCanary.png",
++      "$branding_theme_dir/$branding_path_component/win/tiles/SmallLogoDev.png",
+     ]
+   }
+ 
 @@ -1497,6 +1507,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
@@ -109,3 +161,17 @@ index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3
      }
  
      if (is_chrome_branded && !is_mac) {
+@@ -1816,11 +1828,11 @@ if (is_linux || is_chromeos) {
+     ]
+     if (is_linux) {
+       sources += [
+-        "//chrome/app/theme/$branding_path_component/linux/product_logo_48.png",
++        "$branding_theme_dir/$branding_path_component/linux/product_logo_48.png",
+       ]
+     } else {
+       sources +=
+-          [ "//chrome/app/theme/$branding_path_component/product_logo_48.png" ]
++          [ "$branding_theme_dir/$branding_path_component/product_logo_48.png" ]
+     }
+     outputs = [ "$root_out_dir/{{source_file_part}}" ]
+   }

@@ -393,6 +393,8 @@ Config.prototype.buildArgs = function () {
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
+    // workaround for BRANDING problem - TODO explain this and link to issue
+    branding_file_path: "//chrome/app/theme/brave/BRANDING",
   }
 
   if (this.targetOS !== 'ios') {

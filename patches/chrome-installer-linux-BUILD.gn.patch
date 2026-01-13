@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index fa33ca7cd5c207b34fb2d8c7519bac1291472a76..127a46c8bbf6e23c536b6d29ded8c5b9a3d4ad7e 100644
+index fa33ca7cd5c207b34fb2d8c7519bac1291472a76..89ba61fc032c9f7af04eca1da1914cb00907ae20 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -16,6 +16,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -34,6 +34,18 @@ index fa33ca7cd5c207b34fb2d8c7519bac1291472a76..127a46c8bbf6e23c536b6d29ded8c5b9
  }
  
  strip_binary("strip_libEGL_shlib") {
+@@ -244,9 +248,9 @@ group("linux") {
+   ]
+ }
+ 
+-branding_dir = "//chrome/app/theme/$branding_path_component"
++branding_dir = "$branding_base_dir/$branding_path_component"
+ branding_dir_100 =
+-    "//chrome/app/theme/default_100_percent/$branding_path_component"
++    "$branding_base_dir/default_100_percent/$branding_path_component"
+ 
+ copy("common_packaging_files") {
+   visibility = [ ":*" ]
 @@ -275,6 +279,7 @@ copy("common_packaging_files") {
    }
  

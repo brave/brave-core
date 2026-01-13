@@ -111,18 +111,6 @@ exports.update = () => {
     chromeAndroidTabUiJavaStringsTranslationsDir,
   ])
   // By overwriting, we don't need to modify some grd files.
-  for (const branding of ['brave', 'brave_origin']) {
-    fileMap.add([
-      path.join(braveAppDir, 'theme', branding),
-      path.join(chromeAppDir, 'theme', branding),
-    ])
-    for (const scale of ['default_100_percent', 'default_200_percent']) {
-      fileMap.add([
-        path.join(braveAppDir, 'theme', scale, branding),
-        path.join(chromeAppDir, 'theme', scale, branding),
-      ])
-    }
-  }
   fileMap.add([
     path.join(braveAppDir, 'theme', 'default_100_percent', 'common'),
     path.join(chromeAppDir, 'theme', 'default_100_percent', 'common'),
@@ -131,57 +119,13 @@ exports.update = () => {
     path.join(braveAppDir, 'theme', 'default_200_percent', 'common'),
     path.join(chromeAppDir, 'theme', 'default_200_percent', 'common'),
   ])
-  // Copy product_logo for version UI (about:version page).
-  // product_logo_name_48.png is renamed to product_logo.png during copy.
-  // Use brave_origin logos when is_brave_origin_branded is true.
-  const productLogoSource = config.isBraveOriginBranded
-    ? 'brave_origin'
-    : 'brave'
-  for (const scale of ['default_100_percent', 'default_200_percent']) {
-    fileMap.add([
-      path.join(
-        braveAppDir,
-        'theme',
-        scale,
-        productLogoSource,
-        'product_logo_name_48.png',
-      ),
-      path.join(
-        chromeComponentsDir,
-        'resources',
-        scale,
-        'chromium',
-        'product_logo.png',
-      ),
-    ])
-    fileMap.add([
-      path.join(
-        braveAppDir,
-        'theme',
-        scale,
-        productLogoSource,
-        'product_logo_white.png',
-      ),
-      path.join(
-        chromeComponentsDir,
-        'resources',
-        scale,
-        'chromium',
-        'product_logo_white.png',
-      ),
-    ])
-  }
+
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
       path.join(braveAppVectorIconsDir, 'vector_icons', branding),
       path.join(chromeComponentsDir, 'vector_icons', branding),
     ])
   }
-  // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
-  fileMap.add([
-    path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'),
-    path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png'),
-  ])
   fileMap.add([
     path.join(
       braveBrowserResourcesDir,
@@ -338,42 +282,42 @@ exports.update = () => {
       )
       explicitSourceFiles[iconDest] = iconSource
 
-      // Set proper mac app asset catalog for channel to
-      // chrome/app/theme/mac/Assets.car. Each channel's resource catalog is
-      // stored in brave/app/theme/$channel/Assets.car. With this copying, we
-      // don't need to modify chrome/BUILD.gn for this.
-      const assetCatalogSource = path.join(
-        braveAppDir,
-        'theme',
-        branding,
-        'mac',
-        config.channel,
-        'Assets.car',
-      )
-      const assetCatalogDest = path.join(
-        chromeAppDir,
-        'theme',
-        branding,
-        'mac',
-        'Assets.car',
-      )
-      explicitSourceFiles[assetCatalogDest] = assetCatalogSource
-
       // Set proper branding file.
-      const brandingSource = path.join(
-        braveAppDir,
-        'theme',
-        branding,
-        brandingFileName,
-      )
-      const brandingDest = path.join(
-        chromeAppDir,
-        'theme',
-        branding,
-        'BRANDING',
-      )
-      explicitSourceFiles[brandingDest] = brandingSource
+      fileMap.add([
+        path.join(
+            braveAppDir,
+            'theme',
+            branding,
+            brandingFileName,
+          ),
+        path.join(
+          chromeAppDir,
+            'theme',
+            branding,
+            'BRANDING',
+          ),
+      ])
     }
+    // Set proper mac app asset catalog for channel to
+    // chrome/app/theme/mac/Assets.car. Each channel's resource catalog is
+    // stored in brave/app/theme/$channel/Assets.car. With this copying, we
+    // don't need to modify chrome/BUILD.gn for this.
+    const assetCatalogSource = path.join(
+      braveAppDir,
+      'theme',
+      'brave',
+      'mac',
+      config.channel,
+      'Assets.car',
+    )
+    const assetCatalogDest = path.join(
+      chromeAppDir,
+      'theme',
+      'brave',
+      'mac',
+      'Assets.car',
+    )
+    explicitSourceFiles[assetCatalogDest] = assetCatalogSource
   }
 
   for (const [source, output] of fileMap) {
