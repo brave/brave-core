@@ -870,7 +870,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         mShredSiteDataLayout.setVisibility(View.VISIBLE);
                     }
                 });
-        ImageView shredSiteDataBackButton = mShredSiteDataLayout.findViewById(R.id.back_button);
+        ImageView shredSiteDataBackButton =
+                mShredSiteDataLayout.findViewById(R.id.shred_site_data_back_button);
         shredSiteDataBackButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

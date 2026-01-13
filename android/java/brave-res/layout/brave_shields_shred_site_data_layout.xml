@@ -19,7 +19,7 @@
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:id="@+id/back_button"
+            android:id="@+id/shred_site_data_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
@@ -28,25 +28,10 @@
             app:srcCompat="@drawable/ic_back"
             app:tint="@color/shield_back_button_tint"/>
 
-        <TextView
-            android:id="@+id/option_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginEnd="16dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:maxLines="2"
-            android:ellipsize="start"
-            android:textColor="@color/shield_title_color"
-            android:text="@string/brave_shields_shred_sites_data_text"
-            />
-
     </LinearLayout>
 
     <TextView
-        android:id="@+id/option_text"
+        android:id="@+id/shred_site_data_option_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -56,7 +41,7 @@
         android:layout_marginBottom="16dp"/>
 
     <TextView
-        android:id="@+id/about_text"
+        android:id="@+id/shred_site_data_about_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
