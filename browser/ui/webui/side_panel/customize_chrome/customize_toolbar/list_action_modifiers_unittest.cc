@@ -548,10 +548,12 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_ShareMenu) {
   ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Also disable Brave News to ensure only Share Menu affects the result
   prefs()->SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
   ASSERT_TRUE(
       prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
   categories.clear();
   categories = customize_chrome::AppendBraveSpecificCategories(

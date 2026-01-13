@@ -584,6 +584,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 
+#if defined(TOOLKIT_VIEWS)
+  registry->RegisterBooleanPref(prefs::kPinShareMenuButton, true);
+#endif  // defined(TOOLKIT_VIEWS)
+
   OverrideDefaultPrefValues(registry);
 }
 
