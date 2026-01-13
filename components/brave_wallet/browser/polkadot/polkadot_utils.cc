@@ -10,14 +10,14 @@
 
 namespace brave_wallet {
 
-std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
-ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
+std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
+                                                    uint16_t ss58_prefix) {
   auto ss58_address = Ss58Address::Decode(input);
   if (ss58_address) {
     if (ss58_address->prefix != ss58_prefix) {
       return std::nullopt;
     }
-    return ss58_address->public_key;
+    return PolkadotAddress{ss58_address->public_key, ss58_prefix};
   }
 
   // Note: Avoid using PrefixedHexStringToFixed here because it accepts hex
@@ -31,10 +31,21 @@ ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   if (base::HexStringToSpan(str, pubkey)) {
-    return pubkey;
+    return PolkadotAddress{pubkey, std::nullopt};
   }
 
   return std::nullopt;
+}
+
+std::optional<std::string> PolkadotAddress::ToString() const {
+  if (ss58_prefix.has_value()) {
+    Ss58Address addr;
+    addr.prefix = *ss58_prefix;
+    addr.public_key = pubkey;
+    return addr.Encode();
+  }
+
+  return "0x" + base::HexEncodeLower(pubkey);
 }
 
 mojom::uint128Ptr Uint128ToMojom(uint128_t x) {

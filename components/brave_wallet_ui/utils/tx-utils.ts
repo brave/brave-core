@@ -251,6 +251,15 @@ export function isEthereumTransaction(
   )
 }
 
+export function isPolkadotTransaction(
+  tx?: Pick<TransactionInfo, 'txDataUnion'>,
+) {
+  if (!tx) {
+    return false
+  }
+  return tx.txDataUnion.polkadotTxData !== undefined
+}
+
 export const getTransactionNonce = (tx: TransactionInfo): string => {
   // Handle EIP1559 transactions
   if (tx.txDataUnion?.ethTxData1559?.baseData.nonce) {
@@ -362,6 +371,10 @@ export const getTransactionToAddress = (
     return tx.txDataUnion.cardanoTxData?.to ?? ''
   }
 
+  if (isPolkadotTransaction(tx)) {
+    return tx.txDataUnion.polkadotTxData?.to ?? ''
+  }
+
   assertNotReached('Unknown transaction type')
 }
 
@@ -394,6 +407,10 @@ export function getTransactionInteractionAddress(
       || tx.txDataUnion.ethTxData?.to // EVM
       || '' // Other
     )
+  }
+
+  if (isPolkadotTransaction(tx)) {
+    return tx.txDataUnion.polkadotTxData?.to ?? ''
   }
 
   assertNotReached('Unknown transaction type')
@@ -651,6 +668,12 @@ export function getTransactionBaseValue(tx: TransactionInfo) {
     return tx.txDataUnion.cardanoTxData?.amount.toString() ?? ''
   }
 
+  if (isPolkadotTransaction(tx)) {
+    const high = tx.txDataUnion.polkadotTxData?.amount?.high || BigInt(0)
+    const low = tx.txDataUnion.polkadotTxData?.amount?.low || BigInt(0)
+    return ((high << BigInt(64)) | low).toString() ?? ''
+  }
+
   assertNotReached('Unknown transaction type')
 }
 
@@ -837,7 +860,8 @@ export const getTransactionGasFee = (transaction: TransactionInfo): string => {
       || isFilecoinTransaction(transaction)
       || isBitcoinTransaction(transaction)
       || isZCashTransaction(transaction)
-      || isCardanoTransaction(transaction),
+      || isCardanoTransaction(transaction)
+      || isPolkadotTransaction(transaction),
   )
 
   if (isBitcoinTransaction(transaction)) {
@@ -850,6 +874,10 @@ export const getTransactionGasFee = (transaction: TransactionInfo): string => {
 
   if (isCardanoTransaction(transaction)) {
     return transaction.txDataUnion.cardanoTxData?.fee.toString() || ''
+  }
+
+  if (isPolkadotTransaction(transaction)) {
+    return transaction.txDataUnion.polkadotTxData?.fee.toString() || ''
   }
 
   const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)
@@ -890,6 +918,10 @@ export const isTransactionGasLimitMissing = (tx: TransactionInfo): boolean => {
     return gasLimit === '' || Amount.normalize(gasLimit) === '0'
   }
 
+  if (isPolkadotTransaction(tx)) {
+    return false
+  }
+
   assertNotReached('Unknown transaction type')
 }
 
@@ -899,6 +931,7 @@ export const parseTransactionFeesWithoutPrices = (tx: TransactionInfo) => {
     || isBitcoinTransaction(tx)
     || isZCashTransaction(tx)
     || isCardanoTransaction(tx)
+    || isPolkadotTransaction(tx)
   ) {
     return {
       gasLimit: '',
