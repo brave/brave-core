@@ -262,7 +262,7 @@ TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false, std::move(swap_info));
+      1000000, false, swap_info.Clone());
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -279,17 +279,7 @@ TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   auto tx_meta = cardano_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
-  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::ADA);
-  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kCardanoMainnet);
-  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "ADA");
-  EXPECT_EQ(tx_meta->swap_info()->source_amount, "5000000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::ADA);
-  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kCardanoMainnet);
-  EXPECT_EQ(tx_meta->swap_info()->destination_token_address, "asset1abc123");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "100000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min, "95000");
-  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
-  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kAuto);
+  EXPECT_EQ(tx_meta->swap_info(), swap_info);
 }
 
 }  //  namespace brave_wallet

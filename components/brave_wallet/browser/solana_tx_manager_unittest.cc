@@ -2210,7 +2210,7 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   base::RunLoop run_loop;
   solana_tx_manager()->AddUnapprovedTransaction(
       mojom::kSolanaMainnet, std::move(tx_data_union), from_account,
-      GetOrigin(), std::move(swap_info),
+      GetOrigin(), swap_info.Clone(),
       base::BindLambdaForTesting([&](bool success, const std::string& id,
                                      const std::string& err_message) {
         ASSERT_TRUE(success);
@@ -2225,18 +2225,7 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
-  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::SOL);
-  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "SOL");
-  EXPECT_EQ(tx_meta->swap_info()->source_amount, "1000000000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::SOL);
-  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->swap_info()->destination_token_address,
-            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "150000000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min, "145000000");
-  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
-  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kJupiter);
+  EXPECT_EQ(tx_meta->swap_info(), swap_info);
 }
 
 }  // namespace brave_wallet

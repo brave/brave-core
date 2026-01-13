@@ -2468,7 +2468,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   bool callback_called = false;
   std::string meta_id;
   AddUnapprovedTransaction(
-      mojom::kMainnetChainId, std::move(data), from(), std::move(swap_info),
+      mojom::kMainnetChainId, std::move(data), from(), swap_info.Clone(),
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &meta_id));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
@@ -2478,19 +2478,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
-  EXPECT_EQ(tx_meta->swap_info()->source_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(tx_meta->swap_info()->source_chain_id, mojom::kMainnetChainId);
-  EXPECT_EQ(tx_meta->swap_info()->source_token_address, "ETH");
-  EXPECT_EQ(tx_meta->swap_info()->source_amount, "1000000000000000000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_coin, mojom::CoinType::ETH);
-  EXPECT_EQ(tx_meta->swap_info()->destination_chain_id, mojom::kMainnetChainId);
-  EXPECT_EQ(tx_meta->swap_info()->destination_token_address,
-            "0x6B175474E89094C44Da98b954EedeAC495271d0F");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount, "1800000000000000000000");
-  EXPECT_EQ(tx_meta->swap_info()->destination_amount_min,
-            "1750000000000000000000");
-  EXPECT_EQ(tx_meta->swap_info()->recipient, "");
-  EXPECT_EQ(tx_meta->swap_info()->provider, mojom::SwapProvider::kZeroEx);
+  EXPECT_EQ(tx_meta->swap_info(), swap_info);
 }
 
 }  //  namespace brave_wallet
