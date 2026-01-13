@@ -14,6 +14,9 @@ import './css/line_chart_global.css'
 // types
 import { LineChartIframeData } from '../constants/types'
 
+// utils
+import { sanitizeLineChartIframeData } from '../utils/line_chart_utils'
+
 // theme setup
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
@@ -31,9 +34,24 @@ const App = () => {
     : undefined
 
   // Convert the JSON string back to a JavaScript object
-  const decodedData = decodedJsonString
-    ? (JSON.parse(decodedJsonString) as LineChartIframeData)
-    : undefined
+  // and sanitizes the parsed data.
+  const decodedData = React.useMemo((): LineChartIframeData | undefined => {
+    if (!decodedJsonString) {
+      return undefined
+    }
+    try {
+      const parsed: unknown = JSON.parse(decodedJsonString)
+      const sanitized = sanitizeLineChartIframeData(parsed)
+      if (!sanitized) {
+        console.error('Invalid LineChartIframeData payload')
+        return undefined
+      }
+      return sanitized
+    } catch (e) {
+      console.error('Failed to parse LineChartIframeData:', e)
+      return undefined
+    }
+  }, [decodedJsonString])
 
   return (
     <BrowserRouter>
