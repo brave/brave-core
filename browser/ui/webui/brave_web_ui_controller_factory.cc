@@ -12,7 +12,6 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -23,6 +22,7 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -73,6 +73,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_agent_new_tab_page_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -160,7 +164,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     }
     return new BraveNewTabUI(
         web_ui, url.host(),
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
         brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+        nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
         ntp_background_images::ViewCounterServiceFactory::GetForProfile(
             profile),
         regional_capabilities::RegionalCapabilitiesServiceFactory::
