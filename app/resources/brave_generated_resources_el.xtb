@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">Επιλέξτε το Premium</translation>
 <translation id="1035309871698658326">Όταν είναι ενεργοποιημένη η επιλογή, θα στείλει αυτόματα τους τίτλους και την προέλευση όλων των μη ιδιωτικών καρτελών στο Leo για να τις ταξινομήσει.</translation>
 <translation id="3435896845095436175">Ενεργοποίηση</translation>
+<translation id="9082792303833649978">Αυτή η ρύθμιση διαχειρίζεται από τον διαχειριστή σας ή από άλλη πολιτική του Brave.</translation>
 <translation id="1940221956626514677">Προσαρμογή γραμμής εργαλείων</translation>
 <translation id="6501807887341963552">Θέμα και χρώματα</translation>
 <translation id="6724227215236550330">Οι αποθηκευμένοι κωδικοί πρόσβασης θα εμφανίζονται εδώ. Για να εισαγάγετε κωδικούς πρόσβασης <ph name="BRAND"/> σε αυτήν τη συσκευή, <ph name="BEGIN_LINK"/> επιλέξτε ένα αρχείο CSV<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">Χρήση καρτέλων Tree Tabs</translation>
 <translation id="5860254591544742609">Εμφάνιση γραμμής τίτλου</translation>
 <translation id="4691131445504068802">Απόκρυψη εντελώς όταν είναι ελαχιστοποιημένες</translation>
+<translation id="6763346436728173884">Πάντα να αποκρύπτεται το κουμπί κλεισίματος καρτέλας</translation>
 <translation id="4909269867860362936">Αυτόματη ανάπτυξη κατά την αιώρηση όταν είναι ελαχιστοποιημένες</translation>
 <translation id="3367129510799209147">Λειτουργία αιώρησης καρτέλας</translation>
 <translation id="8925055964134259461">Ανεξάρτητη ανάπτυξη κάθετων καρτελών ανά παράθυρο</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Δίκτυα Bitcoin</translation>
 <translation id="1077567586443625607">Δίκτυα Zcash</translation>
 <translation id="1177180573354712438">Δίκτυα Cardano</translation>
+<translation id="3176794108951154148">Δίκτυα Polkadot</translation>
 <translation id="3159419679550543837">Εμφάνιση δοκιμαστικών δικτύων</translation>
 <translation id="3215569562674795548">Επεξεργασία ή προσθήκη νέου δικτύου</translation>
 <translation id="4418993400653250511">Το αναγνωριστικό της αλυσίδας</translation>

@@ -339,6 +339,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
 <translation id="1035309871698658326">Ko jo odprete, bo Leu samodejno poslala naslove in izvor vseh zavihkov, ki niso zasebni, da jih razvrsti.</translation>
 <translation id="3435896845095436175">Omogoči</translation>
+<translation id="9082792303833649978">To nastavitev upravlja vaš skrbnik ali drug Brave pravilnik.</translation>
 <translation id="1940221956626514677">Prilagodi orodno vrstico</translation>
 <translation id="6501807887341963552">Tema in barve</translation>
 <translation id="6724227215236550330">Tu se prikažejo shranjena gesla. Če želite uvoziti gesla <ph name="BRAND"/> v to napravo, <ph name="BEGIN_LINK"/> izberite datoteko CSV<ph name="END_LINK"/></translation>
@@ -382,6 +383,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2263346047290834619">Uporabite zavihke drevesa</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="4691131445504068802">Popolnoma skrij, ko je minimizirano</translation>
+<translation id="6763346436728173884">Vedno skrij gumb za zapiranje zavihka</translation>
 <translation id="4909269867860362936">Samodejno razširi ob prehodu miške, ko je minimizirano</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
 <translation id="8925055964134259461">Navpične zavihke samodejno razširi ločeno za vsako okno</translation>
@@ -755,6 +757,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="7141438739990875547">Omrežja Bitcoin</translation>
 <translation id="1077567586443625607">Omrežja Zcash</translation>
 <translation id="1177180573354712438">Omrežja Cardano</translation>
+<translation id="3176794108951154148">Omrežja Polkadot</translation>
 <translation id="3159419679550543837">Prikaži testna omrežja</translation>
 <translation id="3215569562674795548">Uredi ali dodaj novo omrežje</translation>
 <translation id="4418993400653250511">ID verige</translation>

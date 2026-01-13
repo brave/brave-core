@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
 <translation id="1035309871698658326">उघडल्यावर, हे आपोआप सर्व नॉन-प्रायव्हेट टॅब्सची शीर्षके आणि उत्पत्ती Leo कडे वर्गीकृत करण्यासाठी पाठवेल.</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
+<translation id="9082792303833649978">ही सेटिंग तुमच्या प्रशासकाद्वारे किंवा दुसऱ्या Brave धोरणाद्वारे व्यवस्थापित केली जाते.</translation>
 <translation id="1940221956626514677">टूलबार कस्टमाईझ करा</translation>
 <translation id="6501807887341963552">थीम आणि रंग</translation>
 <translation id="6724227215236550330">येथे सहेत असलेले पासवर्ड दिसतील. या डिव्हाइसवरील <ph name="BRAND"/> करण्‍यासाठी पासवर्ड आयात करण्‍यासाठी, <ph name="BEGIN_LINK"/> एक CSV फाइल निवडा<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ट्री टॅब्स वापरा</translation>
 <translation id="5860254591544742609">टायटल बार दाखवा</translation>
 <translation id="4691131445504068802">किमान केल्यावर पूर्णपणे लपवा</translation>
+<translation id="6763346436728173884">नेहमी टॅब बंद करण्याचे बटण लपवा</translation>
 <translation id="4909269867860362936">किमान केल्यावर होव्हर केल्यावर आपोआप विस्तारित करा</translation>
 <translation id="3367129510799209147">टॅब होवर मोड</translation>
 <translation id="8925055964134259461">प्रत्येक विंडोसाठी स्वतंत्रपणे उभी टॅब्स आपोआप विस्तारित करा</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">Bitcoin नेटवर्क्स</translation>
 <translation id="1077567586443625607">Zcash नेटवर्क्स</translation>
 <translation id="1177180573354712438">Cardano नेटवर्क्स</translation>
+<translation id="3176794108951154148">Polkadot नेटवर्क्स</translation>
 <translation id="3159419679550543837">टेस्ट नेटवर्क्स दर्शवा</translation>
 <translation id="3215569562674795548">नेटवर्क संपादित करा किंवा नवीन नेटवर्क जोडा</translation>
 <translation id="4418993400653250511">चेनचे आयडी</translation>

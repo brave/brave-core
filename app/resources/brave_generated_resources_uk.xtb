@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">Перейти на версію Premium</translation>
 <translation id="1035309871698658326">Leo отримає назви та джерела всіх неприватних вкладок для їх аналізу.</translation>
 <translation id="3435896845095436175">Увімкнути</translation>
+<translation id="9082792303833649978">Цей параметр керується вашим адміністратором або іншою політикою Brave.</translation>
 <translation id="1940221956626514677">Налаштувати панель інструментів</translation>
 <translation id="6501807887341963552">Тема та кольори</translation>
 <translation id="6724227215236550330">Тут з'являться збережені паролі. Щоб імпортувати паролі <ph name="BRAND"/> на цьому пристрої, <ph name="BEGIN_LINK"/> виберіть файл CSV<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">Увімкнути деревовидні вкладки</translation>
 <translation id="5860254591544742609">Показати панель заголовка</translation>
 <translation id="4691131445504068802">Повністю приховувати після мінімізації</translation>
+<translation id="6763346436728173884">Завжди приховувати кнопку закриття вкладки</translation>
 <translation id="4909269867860362936">Автоматично розгортати при наведенні після мінімізації</translation>
 <translation id="3367129510799209147">Режим наведення на вкладку</translation>
 <translation id="8925055964134259461">Розгортати вертикальні вкладки окремо для кожного вікна</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Мережі Bitcoin</translation>
 <translation id="1077567586443625607">Мережі Zcash</translation>
 <translation id="1177180573354712438">Мережі Cardano</translation>
+<translation id="3176794108951154148">Мережі Polkadot</translation>
 <translation id="3159419679550543837">Показувати тестові мережі</translation>
 <translation id="3215569562674795548">Редагувати чи додати нову мережу</translation>
 <translation id="4418993400653250511">Ідентифікатор ланцюжка</translation>

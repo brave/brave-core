@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Temiz bağlantıyı kopyala</translation>
 <translation id="721490496276866468">Parolaları içe aktar</translation>
 <translation id="8178175542325151321">Parolalarınızı Brave’in parola yöneticisine aktarmak için bir .csv dosyası seçin.</translation>
-<translation id="1177863135347784049">Özel</translation>
 <translation id="6112331814131703370">"Uygulamaya Git" Bildirimlerini engelle</translation>
 <translation id="4744921452903670666">Bize ne düşündüğünü söyle!</translation>
 <translation id="2524310205387880526">Brave'i Puanlayın</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Gizli sekmelerde otomatik doldur</translation>
 <translation id="8685431198160039193">Kaydedilen bilgiler gizli sekmelerde otomatik doldurulabilir</translation>
 <translation id="6583902294974160967">Destek</translation>
-<translation id="5713644099811900409">Brave Hesabı</translation>
-<translation id="4472575034687746823">Başlayın</translation>
 <translation id="1799030480311994998">Özellikler</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
 <translation id="2839742394543397416">Analitik</translation>
@@ -385,7 +382,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="717952606991220586">Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="987264212798334818">Genel</translation>
 <translation id="1116694919640316211">Hakkında</translation>
-<translation id="7961015016161918242">Hiçbir Zaman</translation>
 <translation id="1275213816424141989">Belki Daha Sonra</translation>
 <translation id="3624048886326677117">İzleyicileri &amp; reklamları engelle (Agresif)</translation>
 <translation id="7151914815476509258">İzleyicileri &amp; reklamları engelle (Standart)</translation>
@@ -570,7 +566,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6697810017029555732">Eşleşti!</translation>
 <translation id="5981303441790732480">Mevcut cüzdanınızı içe aktarın</translation>
 <translation id="9111102763498581341">Unlock</translation>
-<translation id="6657585470893396449">Şifre</translation>
 <translation id="7553242001898162573">Parolanızı girin</translation>
 <translation id="5619264711680220002">Biyometrik kilit açma</translation>
 <translation id="9195657745688986798">Cüzdan Kilidini Aç</translation>
@@ -735,6 +730,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="9091334651803050473">Bir garantisi olmasa da, daha yüksek bir ücret ödemeniz halinde madencilerin işleminize öncelik vermesi muhtemeldir.</translation>
 <translation id="2941112035454246133">Düşük</translation>
 <translation id="7304030187361489308">Yüksek</translation>
+<translation id="1177863135347784049">Özel</translation>
 <translation id="4853037749278079787">Maksimum ücret: ~<ph name="FIAT_VALUE"/>$ (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Mevcut baz ücret: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">GAS miktarı limiti</translation>
@@ -1055,31 +1051,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6393423486818299209">Mevcut hizmet sağlayıcınızı veya Wikimedia DNS'yi kullanın</translation>
 <translation id="3401384982562827787">Mevcut hizmet sağlayıcınızı veya Cloudflare'yi kullanın</translation>
 <translation id="8812367543786936496">Mevcut hizmet sağlayıcınız güvenli dğeilse Brave güvenli bir alternatif DNS sağlayıcı kullanır</translation>
-<translation id="5680678411439841197">şehir</translation>
-<translation id="8185518433273977704">ilçe</translation>
-<translation id="4528386452965343421">vilayet</translation>
-<translation id="1589122976691792535">bölge</translation>
-<translation id="2221292964468054123">eyalet</translation>
-<translation id="3801482889636327368">kuruluş</translation>
-<translation id="1425162721525518064">şirket</translation>
-<translation id="7568794877555549044">ülke</translation>
-<translation id="5982110855572850497">etiket</translation>
-<translation id="6848689413353508904">konteyner</translation>
-<translation id="1496514951988037011">kullanıcı adı</translation>
-<translation id="6155129418108337061">oturum aç</translation>
-<translation id="4038523199754403233">kimlik</translation>
-<translation id="901834265349196618">e-posta</translation>
-<translation id="3488199663160411179">ad</translation>
-<translation id="793994607260936590">birinci</translation>
-<translation id="1782612111936779655">soyad</translation>
-<translation id="7628132737455466188">tam</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">adres</translation>
-<translation id="5557821203571216370">apartman</translation>
-<translation id="8051552210542030943">pin kodu</translation>
-<translation id="5233247193491045452">posta kodu</translation>
-<translation id="3300502432153878901">zip</translation>
 <translation id="1381108437654541567">Birden fazla pencereyi etkinleştir</translation>
 <translation id="6167344249617630304">Bir seferde 5'e varan pencere açın ve sekmeleri bir pencereden diğerine taşıyın</translation>
 <translation id="1063948063403254568">Birden fazla pencere tespit edildi</translation>
@@ -1157,6 +1128,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7808889146555843082">Bu şifre kaldırıldığında <ph name="SITE"/> üzerindeki hesabınız silinmez. <ph name="SITE"/> üzerindeki hesabınıza başka kişilerin ulaşmaması için şifrenizi değiştirin veya hesabı silin.</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="8503813439785031346">Kullanıcı adı</translation>
+<translation id="6657585470893396449">Şifre</translation>
 <translation id="2278052315791335171">Bu şifre silindiğinde <ph name="SITE"/> üzerindeki hesabınız silinmez</translation>
 <translation id="6891726759199484455">Şifrenizi kopyalamak için kilidi açın</translation>
 <translation id="5515439363601853141">Şifrenizi görüntülemek için kilidi açın</translation>

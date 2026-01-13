@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Toca Aplicaciones y, a continuación, Aplicaciones predeterminadas</translation>
 <translation id="1415402041810619267">URL truncada</translation>
 <translation id="1741136041592162279">Permite que Brave comparta tus pestañas recientes con tu dispositivo para que aparezcan en la lista de aplicaciones y en los resultados de búsqueda de tu dispositivo. Puedes activar o desactivar esta opción en la configuración de Brave.</translation>
+<translation id="1420688843103859429">Desliza dos dedos hacia delante o hacia atrás en el panel táctil para desplazarte</translation>
 <translation id="1432650420699700107">Los sitios pueden solicitar permiso para conectarse a cualquier dispositivo de tu red local</translation>
 <translation id="1448064542941920355">Reducir zoom</translation>
 <translation id="1464044141348608623">No permitir que los sitios sepan cuándo usas activamente tu dispositivo</translation>
@@ -170,6 +171,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="2787357173144933081">Arrancar con omnibox</translation>
 <translation id="2789132527330338807">Los sitios pueden solicitar permiso para crear un mapa 3D de tu entorno o hacer un seguimiento de la posición de la cámara</translation>
 <translation id="2790501146643349491">Cuando esta opción está activada, los sitios cerrados recientemente pueden terminar de enviar y recibir datos. Si está desactivada, los sitios cerrados recientemente no pueden terminar de enviar ni de recibir datos.</translation>
+<translation id="1708222144403389505">Activa las notificaciones para recibir consejos útiles que te ayudarán a sacar el máximo partido de Brave</translation>
 <translation id="2795716239552913152">Los sitios suelen acceder a tu ubicación para mostrar información o usar funciones relevantes, como noticias locales o tiendas cercanas.</translation>
 <translation id="2800760947029405028">Subir una imagen</translation>
 <translation id="2802908157808345702">No permitir que los sitios envíen ventanas emergentes ni utilicen redirecciones</translation>
@@ -182,6 +184,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="2903493209154104877">Direcciones</translation>
 <translation id="2910701580606108292">Preguntar antes de permitir que los sitios reproduzcan contenido protegido</translation>
 <translation id="2918484639460781603">Ir a Configuración</translation>
+<translation id="4577990953241424923">Recibir notificaciones de consejos de Brave</translation>
 <translation id="2932883381142163287">Denunciar abuso</translation>
 <translation id="2939338015096024043">Cuando esta opción está activada, los sitios pueden solicitar permiso para monitorizar la posición de tu cámara y obtener información sobre tu entorno. Si está desactivada, los sitios no pueden monitorizar la posición de tu cámara ni obtener información sobre tu entorno.</translation>
 <translation id="2968755619301702150">Visor de certificados</translation>
@@ -218,7 +221,6 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="3285500645985761267">Permitir que los sitios relacionados vean tu actividad en el grupo</translation>
 <translation id="3295019059349372795">Capítulo 11: La maravillosa Ciudad Esmeralda de Oz</translation>
 <translation id="3295602654194328831">Ocultar información</translation>
-<translation id="3328801116991980348">Información del sitio</translation>
 <translation id="3333961966071413176">Todos los contactos</translation>
 <translation id="3360338140203645771">¿Eliminar niveles de zoom guardados?</translation>
 <translation id="3362437373201486687">Buscando dispositivos Bluetooth</translation>
@@ -241,6 +243,8 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="3611658447322220736">Los sitios cerrados recientemente pueden terminar de enviar y recibir datos</translation>
 <translation id="3619294456800709762">Los sitios pueden activar la función Imagen en imagen automáticamente</translation>
 <translation id="3628308229821498208">Sugerencias de búsqueda</translation>
+<translation id="3632460243282703117">Suscribirme</translation>
+<translation id="363748948745453283">Se usa una ubicación aproximada</translation>
 <translation id="3641456520301071208">Los sitios pueden solicitar permiso para acceder a tu ubicación</translation>
 <translation id="3658847490588580244">Hoja inferior del navegador predeterminado</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> sitio incluido en el grupo de sitios de <ph name="RWS_OWNER"/> que puede ver tu actividad en el grupo}other{<ph name="RWS_MEMBERS_COUNT"/> sitios incluidos en el grupo de sitios de <ph name="RWS_OWNER"/> que puede ver tu actividad en el grupo}}</translation>
@@ -335,10 +339,12 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="4635969503923889910">No permitir que los sitios usen dispositivos NFC</translation>
 <translation id="4644713492825682049">Eliminar y restablecer</translation>
 <translation id="4645575059429386691">Administrado por uno de tus padres</translation>
+<translation id="4652266463001779298">No permitido</translation>
 <translation id="4663373278480897665">Cámara permitida</translation>
 <translation id="4670064810192446073">Realidad virtual</translation>
 <translation id="5652778654712411580">Toca Aplicación de navegador y, a continuación, Brave</translation>
 <translation id="4676059169848868271">Para que <ph name="APP_NAME"/> pueda usar el seguimiento de manos, actívalo también en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/>.</translation>
+<translation id="4688045258817337666">Gestionar las tarjetas</translation>
 <translation id="4751476147751820511">Sensores de luz o movimiento</translation>
 <translation id="4755971844837804407">Cuando esta opción está activada, los sitios pueden mostrarte cualquier anuncio. Si está desactivada, los sitios no pueden mostrar anuncios invasivos o engañosos.</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -429,8 +435,10 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="5750869797196646528">Seguimiento de manos</translation>
 <translation id="5753570386948603678">Eliminar del historial</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> (bloqueado)</translation>
+<translation id="5792627621688759634">Desliza entre páginas con un panel táctil</translation>
 <translation id="5801457289562671820">Recomendado por tu organización</translation>
 <translation id="5804241973901381774">Permisos</translation>
+<translation id="5817042798620209981">Información del sitio, cuadro de diálogo</translation>
 <translation id="5822675474983796325">Hoja inferior de Personalizar la página Nueva pestaña abierta a altura completa</translation>
 <translation id="5833899990800318936">No permitir que los sitios usen JavaScript</translation>
 <translation id="583673505367439042">Los sitios pueden solicitar permiso para editar archivos y carpetas de tu dispositivo</translation>
@@ -512,6 +520,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="662080504995468778">Seguir aquí</translation>
 <translation id="6630443592285535486">Escribe el hexadecimal aquí</translation>
 <translation id="6635327442719709864">Si se activa, los sitios pueden solicitar permiso para usar puertos serie. Si se desactiva, los sitios no pueden usar los puertos serie.</translation>
+<translation id="6669390930482049506">Notificarme</translation>
 <translation id="6678072580827808850">Revisar comprobación de seguridad</translation>
 <translation id="6682057173375416470">Recibe artículos sugeridos en la página Nueva pestaña</translation>
 <translation id="6683865262523156564">Este sitio está en un grupo que puede ver tu actividad. El grupo está definido por <ph name="RWS_OWNER"/>.</translation>
@@ -621,6 +630,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="7990211076305263060">Cuando esta opción está activada, los sitios pueden solicitar permiso para usar tu micrófono. Si está desactivada, los sitios no pueden usar tu micrófono.</translation>
 <translation id="8007176423574883786">Desactivada para este dispositivo</translation>
 <translation id="802154636333426148">No se ha podido descargar el archivo</translation>
+<translation id="8033047164036749181">Suscribirse a las notificaciones de este sitio</translation>
 <translation id="8042586301629853791">Ordenar por:</translation>
 <translation id="8051193500142930381">Las funciones que necesiten una cámara no se podrán utilizar</translation>
 <translation id="2495032782748793764">Predeterminado en Brave</translation>
@@ -671,6 +681,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="8487700953926739672">Disponible sin conexión</translation>
 <translation id="848952951823693243">Solicitar siempre la vista para móvil</translation>
 <translation id="8492822722330266509">Los sitios pueden enviar ventanas emergentes y utilizar redirecciones</translation>
+<translation id="8493548450030356203">Ventana emergente de zoom</translation>
 <translation id="8499083585497694743">Activar micrófono</translation>
 <translation id="8514955299594277296">No permitir que los sitios guarden datos en tu dispositivo (no recomendado)</translation>
 <translation id="851751545965956758">No permitir que los sitios se conecten a dispositivos</translation>

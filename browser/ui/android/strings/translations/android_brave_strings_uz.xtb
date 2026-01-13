@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Toza havolani nusxalash</translation>
 <translation id="721490496276866468">Parollarni import qilish</translation>
 <translation id="8178175542325151321">Brave parol menejeriga import qilish uchun parollaringiz boʻlgan .csv faylni tanlang.</translation>
-<translation id="1177863135347784049">Maxsus</translation>
 <translation id="6112331814131703370">‘Ilovaga o‘tish’ bildirishnomalarini bloklash</translation>
 <translation id="4744921452903670666">Fikringizni bizga ayting!</translation>
 <translation id="2524310205387880526">Brave brauzerini baholang</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Maxfiy varaqlarda avtomatik kiritish</translation>
 <translation id="8685431198160039193">Saqlangan axborotni maxfiy varaqlarda avtomatik kiritish</translation>
 <translation id="6583902294974160967">Yordam xizmati</translation>
-<translation id="5713644099811900409">Brave hisob</translation>
-<translation id="4472575034687746823">Foydalanishni boshlash</translation>
 <translation id="1799030480311994998">Funksiyalar</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="2839742394543397416">Tahlil</translation>
@@ -391,7 +388,6 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="717952606991220586">Oops, bir narsa xato. Iltimos, keyinroq qayta urinib ko'ring.</translation>
 <translation id="987264212798334818">Umumiy</translation>
 <translation id="1116694919640316211">Haqida</translation>
-<translation id="7961015016161918242">Hech qachon</translation>
 <translation id="1275213816424141989">Balki keyinroq</translation>
 <translation id="3624048886326677117">Trekerlar va reklamalarni bloklash (hujumkor)</translation>
 <translation id="7151914815476509258">Trekerlar va reklamalarni bloklash (Standart)</translation>
@@ -582,7 +578,6 @@ Va ko'p zanjirli.</translation>
 <translation id="6697810017029555732">Mos!</translation>
 <translation id="5981303441790732480">Mavjud hamyoningizni import qilish</translation>
 <translation id="9111102763498581341">Ochish</translation>
-<translation id="6657585470893396449">Parol</translation>
 <translation id="7553242001898162573">Parolingizni kiriting</translation>
 <translation id="5619264711680220002">Biometrik qulf</translation>
 <translation id="9195657745688986798">Hamyonni ochish</translation>
@@ -751,6 +746,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="9091334651803050473">Garchi kafolat boʻlmasa-da, agar yuqori haq toʻlasangiz, maynerlar tranzaksiyangizga ustuvor ahamiyat berishadi.</translation>
 <translation id="2941112035454246133">Past</translation>
 <translation id="7304030187361489308">Yuqori</translation>
+<translation id="1177863135347784049">Maxsus</translation>
 <translation id="4853037749278079787">Maksimal to'lov: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Joriy asosiy komissiya: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Gaz miqdori limiti</translation>
@@ -1075,31 +1071,6 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="6393423486818299209">Sizning joriy xizmat ko'rsatuvchingiz yoki Wikimedia DNS dan foydalaning</translation>
 <translation id="3401384982562827787">Sizning joriy xizmat ko'rsatuvchingiz yoki Cloudflare dan foydalaning</translation>
 <translation id="8812367543786936496">Agar sizning joriy xizmat ko'rsatuvchingiz xavfsiz bo'lmasa, Brave xavfsiz alternativ DNS provayderdan foydalanadi</translation>
-<translation id="5680678411439841197">shahar</translation>
-<translation id="8185518433273977704">qishloq</translation>
-<translation id="4528386452965343421">prefektura</translation>
-<translation id="1589122976691792535">hudud</translation>
-<translation id="2221292964468054123">shtat</translation>
-<translation id="3801482889636327368">tashkilot</translation>
-<translation id="1425162721525518064">kompaniya</translation>
-<translation id="7568794877555549044">mamlakat</translation>
-<translation id="5982110855572850497">yorliq</translation>
-<translation id="6848689413353508904">konteyner</translation>
-<translation id="1496514951988037011">foydalanuvchi nomi</translation>
-<translation id="6155129418108337061">login</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">elektron pochta</translation>
-<translation id="3488199663160411179">nomi</translation>
-<translation id="793994607260936590">birinchi</translation>
-<translation id="1782612111936779655">oxirgi</translation>
-<translation id="7628132737455466188">to‘liq</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">manzil</translation>
-<translation id="5557821203571216370">kvartira</translation>
-<translation id="8051552210542030943">pin kod</translation>
-<translation id="5233247193491045452">pochta kodi</translation>
-<translation id="3300502432153878901">zip kod</translation>
 <translation id="1381108437654541567">Bir nechta oynalarni yoqing</translation>
 <translation id="6167344249617630304">Bir vaqtning o'zida 5 ta oynani oching va yorliqlarni bir oynadan ikkinchisiga ko'chiring</translation>
 <translation id="1063948063403254568">Bir nechta oynalar aniqlangan</translation>
@@ -1177,6 +1148,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="7808889146555843082">Bu parol olib tashlangani bilan <ph name="SITE"/> hisobingiz oʻchib ketmaydi. Boshqalardan himoyalash maqsadida <ph name="SITE"/> hisobingiz parolini almashtiring yoki olib tashlang.</translation>
 <translation id="2870560284913253234">Sayt</translation>
 <translation id="8503813439785031346">Foydalanuvchi nomi</translation>
+<translation id="6657585470893396449">Parol</translation>
 <translation id="2278052315791335171">Bu parol olib tashlangani bilan <ph name="SITE"/> hisobingiz oʻchib ketmaydi</translation>
 <translation id="6891726759199484455">Paroldan nusxa olish uchun qulfni oching</translation>
 <translation id="5515439363601853141">Paolni ko‘rish uchun qulfni oching</translation>
