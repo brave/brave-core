@@ -49,10 +49,6 @@ class PolkadotChainMetadata {
   // to Rust routines.
   const CxxPolkadotChainMetadata& operator*() const;
 
-  // Returns the ss58 prefix used by the chain when encoding/working with ss58
-  // addresses.
-  uint16_t GetSs58Prefix() const;
-
  private:
   explicit PolkadotChainMetadata(
       ::rust::Box<CxxPolkadotChainMetadata> chain_metadata);
