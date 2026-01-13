@@ -169,17 +169,17 @@ void EthTxManager::AddUnapprovedEvmTransaction(
       mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
                          params->data, false, std::nullopt);
 
-  auto swap_info = params->swap_info.Clone();
   if (!json_rpc_service_->network_manager()->IsEip1559Chain(params->chain_id)) {
     AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
-                             std::move(origin_val), std::move(swap_info),
-                             std::move(callback));
+                             std::move(origin_val),
+                             std::move(params->swap_info), std::move(callback));
   } else {
     auto tx_data_1559 = mojom::TxData1559::New(
         std::move(tx_data), params->chain_id, "", "", nullptr);
     AddUnapproved1559Transaction(params->chain_id, std::move(tx_data_1559),
                                  params->from, std::move(origin_val),
-                                 std::move(swap_info), std::move(callback));
+                                 std::move(params->swap_info),
+                                 std::move(callback));
   }
 }
 

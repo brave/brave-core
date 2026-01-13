@@ -64,7 +64,6 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
     AddUnapprovedZCashTransactionCallback callback) {
   auto from = params->from.Clone();
   auto chain_id = params->chain_id;
-  auto swap_info = params->swap_info.Clone();
   auto tx_result = zcash_wallet_service_->GetTransactionType(
       from, params->use_shielded_pool, params->to);
   if (!tx_result.has_value()) {
@@ -91,7 +90,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         swap_info.Clone(), std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard ||
                tx_result.value() == mojom::ZCashTxType::kShielding) {
@@ -99,7 +98,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         swap_info.Clone(), std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     } else if (tx_result.value() == mojom::ZCashTxType::kOrchardToTransparent ||
                tx_result.value() == mojom::ZCashTxType::kUnshielding) {
@@ -107,7 +106,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         swap_info.Clone(), std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     }
   }
@@ -117,7 +116,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
         from->Clone(), params->to, amount,
         base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                       swap_info.Clone(), std::move(callback)));
+                       std::move(params->swap_info), std::move(callback)));
     return;
   }
 

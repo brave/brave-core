@@ -120,13 +120,13 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
-  auto swap_info = params->swap_info.Clone();
   bitcoin_wallet_service_->CreateTransaction(
       params->from.Clone(), params->to, params->amount,
       params->sending_max_amount,
       base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
-                     origin, std::move(swap_info), std::move(callback)));
+                     origin, std::move(params->swap_info),
+                     std::move(callback)));
 }
 
 void BitcoinTxManager::AddUnapprovedTransaction(
