@@ -24,7 +24,7 @@ constexpr auto kPaddingForVerticalTabInTile = 4;
 // displayed. For tabs, this is important for Fitts' law; ensuring that when the
 // browser occupies the full screen, tabs can be selected by moving the pointer
 // to the edge of the screen.
-bool IsBrowserFrameCondensed(const Browser* browser) {
+bool IsBrowserFrameCondensed(const BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -131,8 +131,8 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
 
       // Note that upstream's `ShouldExtendHitTest` does not currently take into
       // account some "condensed" frame scenarios on Linux.
-      bool frame_condensed =
-          IsBrowserFrameCondensed(tab()->controller()->GetBrowser());
+      bool frame_condensed = IsBrowserFrameCondensed(
+          tab()->controller()->GetBrowserWindowInterface());
 
       // We should only extend the hit test bounds into the top margin if the
       // browser frame is "condensed" (e.g. maximized, fullscreen, or otherwise
@@ -397,7 +397,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowBraveVerticalTabs(
-      tab()->controller()->GetBrowser());
+      tab()->controller()->GetBrowserWindowInterface());
 }
 
 bool BraveVerticalTabStyle::IsSplitTab(const Tab* tab) const {
