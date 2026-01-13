@@ -24,6 +24,7 @@ bool SearchSuggestionParser::ParseSuggestResults(
     const AutocompleteSchemeClassifier& scheme_classifier,
     int default_result_relevance,
     bool is_keyword_result,
+    const ParseSuggestResultsOptions& options,
     Results* results,
     bool is_brave_rich_suggestion) {
   if (is_brave_rich_suggestion) {
@@ -32,5 +33,20 @@ bool SearchSuggestionParser::ParseSuggestResults(
   }
   return SearchSuggestionParser::ParseSuggestResults_Chromium(
       root_list, input, scheme_classifier, default_result_relevance,
-      is_keyword_result, results);
+      is_keyword_result, options, results);
+}
+
+// static
+bool SearchSuggestionParser::ParseSuggestResults(
+    const base::Value::List& root_list,
+    const AutocompleteInput& input,
+    const AutocompleteSchemeClassifier& scheme_classifier,
+    int default_result_relevance,
+    bool is_keyword_result,
+    Results* results,
+    bool is_brave_rich_suggestion) {
+  return SearchSuggestionParser::ParseSuggestResults(
+      root_list, input, scheme_classifier, default_result_relevance,
+      is_keyword_result,
+      /*options=*/{}, results, is_brave_rich_suggestion);
 }
