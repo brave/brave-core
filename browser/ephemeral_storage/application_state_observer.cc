@@ -10,20 +10,26 @@
 #include "base/logging.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #endif
 
 namespace ephemeral_storage {
 
-ApplicationStateObserver::ApplicationStateObserver() {
 #if BUILDFLAG(IS_ANDROID)
+ApplicationStateObserver::ApplicationStateObserver() {
   app_status_listener_ = base::android::ApplicationStatusListener::New(
       base::BindRepeating(&ApplicationStateObserver::OnApplicationStateChange,
                           weak_ptr_factory_.GetWeakPtr()));
-#else
-  BrowserList::AddObserver(this);
-#endif
 }
+#else
+ApplicationStateObserver::ApplicationStateObserver(
+    content::BrowserContext* context)
+    : context_(context) {
+  BrowserList::AddObserver(this);
+}
+#endif
 
 ApplicationStateObserver::~ApplicationStateObserver() {
 #if BUILDFLAG(IS_ANDROID)
@@ -70,6 +76,10 @@ void ApplicationStateObserver::OnApplicationStateChange(
 
 #if !BUILDFLAG(IS_ANDROID)
 void ApplicationStateObserver::OnBrowserAdded(Browser* browser) {
+  if (browser->profile() != Profile::FromBrowserContext(context_)) {
+    return;
+  }
+
   if (!has_notified_active_) {
     NotifyApplicationBecameActive();
     has_notified_active_ = true;

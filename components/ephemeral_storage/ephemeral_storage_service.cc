@@ -451,7 +451,6 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
   first_party_storage_areas_to_cleanup_on_startup_ =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
-
   first_party_storage_areas_startup_cleanup_timer_.Start(
       FROM_HERE,
       base::Seconds(

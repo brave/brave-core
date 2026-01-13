@@ -16,6 +16,11 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
+
+namespace content {
+class BrowserContext;
+}
+
 #endif
 
 namespace ephemeral_storage {
@@ -35,7 +40,12 @@ class ApplicationStateObserver
     virtual ~Observer() = default;
   };
 
-  ApplicationStateObserver();
+  explicit ApplicationStateObserver(
+#if !BUILDFLAG(IS_ANDROID)
+      content::BrowserContext* context
+#endif  // !BUILDFLAG(IS_ANDROID
+  );
+
   ApplicationStateObserver(const ApplicationStateObserver&) = delete;
   ApplicationStateObserver& operator=(const ApplicationStateObserver&) = delete;
   ~ApplicationStateObserver()
@@ -70,6 +80,10 @@ class ApplicationStateObserver
 
   std::vector<Observer*> observers_;
   bool has_notified_active_ = false;
+
+#if !BUILDFLAG(IS_ANDROID)
+  raw_ptr<content::BrowserContext> context_ = nullptr;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   base::WeakPtrFactory<ApplicationStateObserver> weak_ptr_factory_{this};
 };

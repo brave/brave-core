@@ -165,7 +165,11 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
-      application_state_observer_(std::make_unique<ApplicationStateObserver>()),
+      application_state_observer_(std::make_unique<ApplicationStateObserver>(
+#if !BUILDFLAG(IS_ANDROID)
+          context
+#endif  // !BUILDFLAG(IS_ANDROID
+          )),
       shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
