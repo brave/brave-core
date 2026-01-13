@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
@@ -110,6 +109,7 @@ brave_chrome_java_srcjar_deps = [
 
 brave_chrome_app_java_resources_deps = [
   "//brave/android:java_resources",
+  "//brave/android:chrome_java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
 ]
