@@ -418,7 +418,6 @@ exports.update = () => {
       'java',
       'res',
     )
-
     const androidIconSource = path.join(
       braveAppDir,
       'theme',
@@ -450,6 +449,7 @@ exports.update = () => {
 
     // Mapping for copying Brave's Android resource into chromium folder.
     const copyAndroidResourceMapping = {
+      [androidResSource]: [androidResDest],
       [androidIconSource]: [androidIconDest],
       [androidIconBaseSource]: [androidIconBaseDest],
     }
