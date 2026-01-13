@@ -463,7 +463,7 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 }
 
 void EphemeralStorageService::FinishStorageCleanupOnBecomeActive(
-    const std::vector<std::string>& ephemeral_domains) {
+    const base::flat_set<std::string> ephemeral_domains) {
   for (const auto& domain : ephemeral_domains) {
     const GURL url(GetFirstPartyStorageURL(domain));
     const content::StoragePartitionConfig storage_partition_config =
