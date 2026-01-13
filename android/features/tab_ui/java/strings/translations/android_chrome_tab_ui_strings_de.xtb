@@ -7,6 +7,7 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Vor <ph name="NUM_YEARS_ONE"/> Jahr erstellt}other{Vor <ph name="NUM_YEARS_MANY"/> Jahren erstellt}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Inaktive Tabs und Gruppen werden nach 1 Monat geschlossen}other{Inaktive Tabs und Gruppen werden nach <ph name="MONTH_COUNT_MANY"/> Monaten geschlossen}}</translation>
 <translation id="1173894706177603556">Umbenennen</translation>
+<translation id="1203747227183434426">Medien werden aufgezeichnet</translation>
 <translation id="1245862538775272968">{TAB_COUNT,plural, =1{„<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TAB_COUNT2"/> Tab öffnen}other{„<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TAB_COUNT2"/> Tabs öffnen}}</translation>
 <translation id="1273910660700874265">Optionen für Tapgruppe „<ph name="TITLE_OF_GROUP"/>“</translation>
 <translation id="1300188005269437765">Lege fest, wann Tabs und Tabgruppen automatisch in den Bereich „Inaktiv“ verschoben werden.</translation>
@@ -20,6 +21,7 @@
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> inaktives Element}other{<ph name="TABS_COUNT_MANY"/> inaktive Elemente}}</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> Tabs zu Gruppe hinzugefügt</translation>
 <translation id="1657719826150349398">Tab nach unten verschieben</translation>
+<translation id="1670942869417022142">Stummgeschaltete Audiowiedergabe</translation>
 <translation id="1697284962337958118">Hinzufügen zu</translation>
 <translation id="1713541401465507417">Alle Tabs und Gruppen schließen</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> Tabgruppe ist nicht mehr verfügbar}other{<ph name="TAB_GROUPS_COUNT_MANY"/> Tabgruppen sind nicht mehr verfügbar}}</translation>
@@ -79,6 +81,7 @@
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Element schließen}other{Elemente schließen}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Vorschau: geteilte Tabelle.</translation>
+<translation id="3776329373944672717">Titel der Tabgruppe: <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">Verwalten</translation>
 <translation id="3849789634341518784">{TAB_COUNT,plural, =1{Tab loslösen}other{Tabs loslösen}}</translation>
 <translation id="3940195383040445971">Preise auf Tabs beobachten</translation>
@@ -107,6 +110,7 @@
 <translation id="4871719318659334896">Gruppe schließen</translation>
 <translation id="4876860795942196286">{NUMBER_OF_TABS,plural, =1{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_ONE"/> Tab und der Farbe <ph name="COLOR_NAME"/> wiederherstellen und öffnen.}other{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_MANY"/> Tabs und der Farbe <ph name="COLOR_NAME"/> wiederherstellen und öffnen.}}</translation>
 <translation id="4881695831933465202">Öffnen</translation>
+<translation id="4894777338623123366">Tab-Bildschirm wird geteilt</translation>
 <translation id="4895402777090717310">{TABS_COUNT,plural, =1{Tab schließen}other{Tabs schließen}}</translation>
 <translation id="4908147833782857886"><ph name="USER_EMAIL"/> Gruppen gespeichert (dadurch werden Tabs geschlossen und Gruppen gelöscht)</translation>
 <translation id="492284538114688557">Preisnachlass entdeckt</translation>
@@ -126,6 +130,7 @@
 <translation id="5556417849629758491">Geschäftsinformationen anzeigen, Option ist oben auf dem Bildschirm verfügbar</translation>
 <translation id="5627941783489838464">Keine Tab-Updates</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> Link aus Brave}other{<ph name="TABS_COUNT_MANY"/> Links aus Brave}}</translation>
+<translation id="5740354908255726955">{TAB_COUNT,plural, =1{Tab nach links verschieben}other{Tabs nach links verschieben}}</translation>
 <translation id="5746204836956568669"><ph name="NUMBER_OF_TABS"/> Tabs gruppieren, um schneller zu arbeiten?</translation>
 <translation id="5773295109010386583">Inaktive Elemente automatisch schließen</translation>
 <translation id="58326064309361797">Tabs zum Gruppieren ziehen</translation>
@@ -136,7 +141,9 @@
 <translation id="6109251075362363230">Alle doppelten Tabs werden jetzt ebenfalls archiviert, mit Ausnahme des zuletzt verwendeten Elements.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ausgewähltes Element schließen}other{<ph name="TABS_COUNT_MANY"/> ausgewählte Elemente schließen}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Gruppe in ein neues Fenster verschieben}other{Gruppe in ein anderes Fenster verschieben}}</translation>
+<translation id="6212374449852603982">{TAB_COUNT,plural, =1{Tab nach rechts verschieben}other{Tabs nach rechts verschieben}}</translation>
 <translation id="6228793724645064692">(Händlerbewertung)</translation>
+<translation id="6251046978189636310">Audiowiedergabe läuft</translation>
 <translation id="625996437999624951">{TAB_COUNT,plural, =1{Tab aus Gruppe entfernen}other{Tabs aus Gruppe entfernen}}</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Tab zu neuer Gruppe hinzufügen}other{Tabs zu neuer Gruppe hinzufügen}}</translation>
 <translation id="6333260925957816943">Informationen zu diesem Händler</translation>
@@ -168,6 +175,7 @@
 <translation id="7326879924029668159">Rückgabebedingungen und mehr</translation>
 <translation id="7352298686197644113">Sieh nach, welcher Artikel auf deinen geöffneten Tabs zu einem günstigeren Preis erhältlich ist</translation>
 <translation id="7369451074646620503">Tabgruppe „<ph name="TAB_GROUP_NAME"/>“ ist nicht mehr verfügbar</translation>
+<translation id="7402375256128852434">Zuletzt geöffnete Tabs hinzufügen</translation>
 <translation id="7452985128687107478">Tabgruppen werden automatisch auf allen deinen Geräten gespeichert und aktualisiert</translation>
 <translation id="747459581954555080">Alle wiederherstellen</translation>
 <translation id="7489558427602531799">Tabgruppe nach rechts verschieben</translation>
@@ -189,6 +197,7 @@
 <translation id="7853202427316060426">Aktivität</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Bewertung: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> Rezension}other{Bewertung: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> Rezensionen}}</translation>
 <translation id="7885132941432959125">Tab nach rechts verschieben</translation>
+<translation id="7887334752153342268">Duplizieren</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> nicht ausgewählt</translation>
 <translation id="7961015016161918242">Nie</translation>
 <translation id="7966321538264951561">Vorschläge ablehnen.</translation>
@@ -212,6 +221,7 @@
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="855081842937141170">Anpinnen</translation>
 <translation id="8633025649649592204">Letzte Aktivität</translation>
+<translation id="8635822281281406185">Du kannst maximal 10 Dateien, Tabs oder Bilder hinzufügen</translation>
 <translation id="8712637175834984815">Ok</translation>
 <translation id="8714939927607906138">Günstigerer Preis</translation>
 <translation id="8730621377337864115">Fertig</translation>

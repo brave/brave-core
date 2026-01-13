@@ -197,6 +197,8 @@
         သင် <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ဒီကော်ပီကိုဖန်တီးရန်အတွက်မြင်ရစေဘို့ ဗဟုသုတရရှိရန်အတွက် ညွှန်ကြားချက်များကိုဖတ်နိုင်ပြီး <ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>open source code ကိုဝင်၍ကြည့်ခြင်း<ph name="END_LINK_SOURCE_CODE"/> ယခုဆုံးဖြတ်ချက်ကိုယူရသည်။</translation>
 <translation id="4474155171896946103">ဘွတ်မတ် စာမျက်နှာများကို...ခေါင်းစဉ် ရေးပါ။</translation>
 <translation id="3987546108749866209">ကြန်ကြာရွက်များကို ညီညာစေခြင်း</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {အတိုက်သံ ဖြုတ်မည်} other {အတိုက်သံများ ဖြုတ်မည်}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {အတိုက်သံ ပြန်ဖွင့်မည်} other {အတိုက်သံများ ပြန်ဖွင့်မည်}}</translation>
 <translation id="2289567621059034186">အောက်တွင် ယူရွတ် တက်ဘ်အသစ်</translation>
 <translation id="3228962656492373217">အောက်တွင် တက်ဘ်များကို ပိတ်ရန်</translation>
 <translation id="8030501904366631501">ဤဘာသာရပ်ပုံတွင် တက်ဘ်များအားလုံးကို ယူရွတ်ချင့်ကြောင်း ပြုလုပ်ပါ</translation>
@@ -206,6 +208,8 @@
 <translation id="7302999361397024774">တဘ်အမည်ပြောင်းခြင်း</translation>
 <translation id="2336228925368920074">ဘွတ်မတ် တက်ဘ်များအားလုံးကို...ခေါင်းစဉ်ရေးပါ။</translation>
 <translation id="2523967823495420116">ရက်တတ်ကြန်းကို သုံးပါ</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {အတိုက်သံ ဖြုတ်မည်} other {အတိုက်သံများ ဖြုတ်မည်}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {အတိုက်သံ ပြန်ဖွင့်မည်} other {အတိုက်သံများ ပြန်ဖွင့်မည်}}</translation>
 <translation id="4405580203042711503">အောက်တွင် တက်ဘ်အသစ်အတွက် ကြုတ်ချက် တိုက်ရိုက်ဖြင့်ချပြသည်။</translation>
 <translation id="5611474372949142946">အောက်တွင် တက်ဘ်များသည်မှန်ကန်စွာ ရှိရန်ကို ပိတ်ထားပါ။</translation>
 <translation id="573844928911967687">Tab များအားလုံးကိုဤဝင်းဒိုးပေါ်သို့ယူပါ</translation>
@@ -332,6 +336,7 @@
 <translation id="7557539689487606886">ပရီမီယံ သုံးရန်</translation>
 <translation id="1035309871698658326">ဖွင့်သောအခါ ဤသည်ကို သင့်မှတ်သားမည်မဟုတ်ရှိသော တဘ်ခေါင်းစဉ်နှင့် မူလစာမျက်နှာများအား Leo ဆီသို့ မန်မထားဘဲသို့ပို့သွားသည်။</translation>
 <translation id="3435896845095436175">ဖွင့်ရန်</translation>
+<translation id="9082792303833649978">ဤ setting သည် သင်၏ စီမံခန့်ခွဲသူသို့မဟုတ် အခြား Brave မူဝါဒတစ်ခုမှ တာဝန်ယူထားသည်။</translation>
 <translation id="1940221956626514677">တိမ့်ကို စိတ်ကြိုက်ပြင်ဆင်ပါ</translation>
 <translation id="6501807887341963552">အနက် တည်နေရာနှင့်အရောင်</translation>
 <translation id="6724227215236550330">သိမ်းဆည်းထားသော စကားဝှက်များသည် ဤနေရာ၌ပေါ်လာမည်။ <ph name="BRAND"/> တွင်စာသားများကိုသွင်းခွင့်ရရှိရန်, <ph name="BEGIN_LINK"/> CSV ဖိုင်ရွေးချယ်ပါ<ph name="END_LINK"/></translation>
@@ -375,6 +380,7 @@
 <translation id="2263346047290834619">tree tab များကို အသုံးပြု</translation>
 <translation id="5860254591544742609">ခေါင်းစဉ်ကို ပြပါ</translation>
 <translation id="4691131445504068802">ချုံ့ထားသောအခါ တတ်နိုင်သမျှဖျောက်ထားရန်</translation>
+<translation id="6763346436728173884">တစ်စွဲတစ်ညှာ 탭 ပိတ်ခြင်းခလုတ်ကို အမြဲဖျောက်ထားမည်</translation>
 <translation id="4909269867860362936">ချုံ့ထားသည့်အချိန်တွင် မော်စ်များပြီးအလိုအလျှောက်ဖွင့်ပါ</translation>
 <translation id="3367129510799209147">တဘ်လည်ပြောင်းမည်</translation>
 <translation id="8925055964134259461">သီးခြားပြတင်းပေါ်တွင် စက်လည်စားတိုင်းအလိုအလျှောက် ဆောင်းမြှပ်တင်ပြရန်</translation>
@@ -743,6 +749,7 @@
 <translation id="7141438739990875547">Bitcoin နက်ဝတ်က</translation>
 <translation id="1077567586443625607">Zcash networks</translation>
 <translation id="1177180573354712438">Cardano networks</translation>
+<translation id="3176794108951154148">Polkadot နက်ဝတ်များ</translation>
 <translation id="3159419679550543837">test networks ပြရန်</translation>
 <translation id="3215569562674795548">Network အသစ် edit လုပ်ရန် သို့မဟုတ် ထည့်ရန်</translation>
 <translation id="4418993400653250511">chain id</translation>

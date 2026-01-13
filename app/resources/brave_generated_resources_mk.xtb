@@ -332,6 +332,7 @@
 <translation id="7557539689487606886">Вклучи Premium</translation>
 <translation id="1035309871698658326">Кога ќе се отвори, автоматски ќе испрати насловите и потеклото на сите не-приватни картички до Лео за да ги класифицира.</translation>
 <translation id="3435896845095436175">Овозможи</translation>
+<translation id="9082792303833649978">Оваа поставка е управувана од вашиот администратор или од друга Brave политика.</translation>
 <translation id="1940221956626514677">Персонализирај ја лентата со алатки</translation>
 <translation id="6501807887341963552">Тема и бои</translation>
 <translation id="6724227215236550330">Зачуваните лозинки ќе се појават тука. За да увезете лозинки на <ph name="BRAND"/> на овој уред, <ph name="BEGIN_LINK"/> изберете CSV датотека<ph name="END_LINK"/></translation>
@@ -375,6 +376,7 @@
 <translation id="2263346047290834619">Користете дрвени картички</translation>
 <translation id="5860254591544742609">Прикажи ја лентата на насловот</translation>
 <translation id="4691131445504068802">Целосно сокриј кога е минимизирана</translation>
+<translation id="6763346436728173884">Секогаш сокриј ја копчето за затворање на јазичето</translation>
 <translation id="4909269867860362936">Автоматски прошири при лебдење кога е минимизирана</translation>
 <translation id="3367129510799209147">Режим на поминување преку картичките</translation>
 <translation id="8925055964134259461">Автоматски проширува вертикални јазичиња одделно по прозорец</translation>
@@ -747,6 +749,7 @@
 <translation id="7141438739990875547">Bitcoin мрежи</translation>
 <translation id="1077567586443625607">Zcash мрежи</translation>
 <translation id="1177180573354712438">Cardano мрежи</translation>
+<translation id="3176794108951154148">Polkadot мрежи</translation>
 <translation id="3159419679550543837">Покажи тест мрежи</translation>
 <translation id="3215569562674795548">Уреди или додај нова мрежа</translation>
 <translation id="4418993400653250511">ID на синџирот</translation>

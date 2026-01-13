@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">تخزين أصول Cardano</translation>
 <translation id="4915057812371523845">تخزين أصول Cardano Testnet</translation>
 <translation id="5387140102951033657">يدعم أصول Substrate على سلسلة Polkadot الرئيسية و Parachains التابعة لها</translation>
+<translation id="5601177227092533167">يدعم أصول Substrate على سلسلة Westend الرئيسية و Parachains التابعة لها</translation>
 <translation id="8500387257977999003">المفتاح الخاص لـ<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
@@ -1303,7 +1304,6 @@
 <translation id="6423985584914773314">ليس عنوان FIL صالح</translation>
 <translation id="5522073372365069684">الشراء باستخدام Ramp</translation>
 <translation id="6153197326949684688">بيع باستخدام <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">شراء بواسطة Sardine</translation>
 <translation id="3301984548406568819">تتم معالجة البيانات المالية وبيانات المعاملات من جانب شركائنا في onramp. لا يقوم Brave بجمع مثل هذه البيانات أو الوصول إليها.</translation>
 <translation id="5795821518596541838">شريك المعاملات</translation>
 <translation id="1916136859742693273">تستخدم محفظة Brave موقع Meld.io للمساعدة على جمع وإظهار مختلف مزودي العملات الرقمية لمنطقتك. سنشارك معلومات مع موقع Meld.io لإكمال المعاملات، بما في ذلك عنوان محفظتك ورمز بلدك. للمزيد من المعلومات، يُرجى قراءة شروط استخدام Meld.</translation>
@@ -1329,12 +1329,10 @@
 <translation id="5973390321030037823">الشراء من خلال الرابط</translation>
 <translation id="1932640759496708012">الشراء باستخدام Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">الرابط عن طريق Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">شراء العملات المشفرة باستخدام Visa أو Mastercard.</translation>
-<translation id="3648994606506382289">وتعد أسهل وأسرع وأرخص طريقة لشراء العملات المشفرة باستخدام البطاقات والتحويلات المصرفية.</translation>
 <translation id="3101839349578102016">شراء فوري عن طريق حسابك المصرفي. رسوم أقل.</translation>
 <translation id="8280898387224328221">الدفع باستخدام بطاقة الائتمان والخصم والحساب المصرفي</translation>
 <translation id="2218174283683424104">اشتري من الاسم الأكثر ثقة في مجال العملات المشفرة.</translation>
@@ -1666,6 +1664,7 @@
 <translation id="8044899503464538266">بطيء</translation>
 <translation id="3569512916300900704">المتوسط</translation>
 <translation id="7019805045859631636">سريع</translation>
+<translation id="1345580220012169610">الرسوم المقدرة</translation>
 <translation id="632241521608275119">تحمل الانزلاق</translation>
 <translation id="6778140392042462129">عمليات التبادل</translation>
 <translation id="6173494033320397682">توجيه مباشر فقط</translation>
@@ -1719,6 +1718,9 @@
 <translation id="6276584161122912863">سعر الوقود</translation>
 <translation id="6132197290665156212">رسوم الشبكة المقدرة</translation>
 <translation id="1788636309517085411">استخدام الخيار الافتراضي</translation>
+<translation id="3968375068626660591">سيتم استبدال رسم الغاز الأصلي بهذا الرسم.</translation>
+<translation id="1661088862481901887">سيتم إنشاء معاملة جديدة مع رسم غاز جديد لتعويض المعاملة المعلّقة وإلغائها. لا يمكن محاولة الإلغاء إلا إذا كانت المعاملة لا تزال معلقة على الشبكة.</translation>
+<translation id="5797060124625958778">أولوية السرعة</translation>
 <translation id="6213230117190778270">استلام</translation>
 <translation id="6748108480210050150">من</translation>
 <translation id="4875290286426670462"><ph name="ASSET_SYMBOL"/> غير محدود</translation>
@@ -2119,6 +2121,7 @@
 <translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
 <translation id="7595612919377246359">تبديل مواضع علامات التبويب</translation>
 <translation id="2367972762794486313">إظهار التطبيقات</translation>
+<translation id="3468387898712904997">معرّف بريد إلكتروني جديد</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
 <translation id="4101707289420716287">إيقاف تشغيل قارئ السرعة</translation>
@@ -2185,11 +2188,23 @@
 <translation id="7127671672828944579">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 14B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Gemma 3 12B، وهو نموذج تم إنشاؤه من طرف Google DeepMind ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Gemma من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة DeepSeek R1، وهو نموذج تم إنشاؤه من طرف DeepSeek لتنفيذ مهام الاستدلال العميق. يتم استضافة DeepSeek R1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة DeepSeek V3.1، وهو نموذج تم إنشاؤه من طرف DeepSeek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة DeepSeek V3.1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 4 Scout، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama 4 Scout من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 4 Maverick، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama 4 Maverick من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 20B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 20B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 120B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 120B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Mistral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Mistral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Pixtral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Pixtral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 235B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 235B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Deepseek V3.1، وهو نموذج تم إنشاؤه من طرف Deepseek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Deepseek V3.1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 Coder 480B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 Coder 480B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Opus، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Opus من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">محلي</translation>
+<translation id="830868413617744215">بيتا</translation>
 <translation id="631371844654031449">النماذج الموصى بها</translation>
 <translation id="6568044140836233369">إظهار جميع النماذج</translation>
 <translation id="6187065185557150870">الدردشة</translation>
@@ -2314,6 +2329,7 @@
 <translation id="8506027496671575183">Search • رؤية • أدوات</translation>
 <translation id="3213834013136637671">Search • رؤية</translation>
 <translation id="7697693533305615127">Search • تفكير</translation>
+<translation id="7465032796278724624">خاص يمكن التحقق منه باستخدام NEAR AI TEE</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
 <translation id="3754337604877048671">تعرف على Leo AI</translation>
@@ -2377,7 +2393,7 @@
 <translation id="8410199626695516952">حسناً، لن أتذكر ذلك</translation>
 <translation id="8419849467765474535">فشل حفظ الذاكرة. يرجى المحاولة مرة أخرى.</translation>
 <translation id="5517580030864973329">التنقل في صفحة الويب إلى عنوان جديد</translation>
-<translation id="8832457834975923266">انتقل إلى صفحة الويب إلى <ph name="URL"/></translation>
+<translation id="9197920788851078696">التنقل إلى صفحة الويب إلى <ph name="URL"/></translation>
 <translation id="5095252080770652994">التقدم المحرز</translation>
 <translation id="8332385567036775056">الخطوات</translation>
 <translation id="4521931942079977149">النقر على الصفحة</translation>
@@ -2392,6 +2408,20 @@
 <translation id="4798146464408730445">لم يتم العثور على مهارات. قم بإنشاء واحدة جديدة بالنقر فوق الزر "جديد".</translation>
 <translation id="271033894570825754">جديد</translation>
 <translation id="8266605059880650542">تدوين بعض المعلومات عن الصفحة في وقت لاحق</translation>
+<translation id="7049849063044248805">يعمل وضع الوكيل مع النماذج التي تدعم الأدوات. النماذج غير المتوافقة مخفية من هذه القائمة.</translation>
+<translation id="3397808797783614750">قد تؤدي تمكين الذكاء الاصطناعي للتصفح تلقائيًا نيابةً عنك إلى عواقب ضارة وغير مقصودة تتعلق بالخصوصية والشؤون المالية والتواصل عبر الإنترنت. <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">تحذير أمني</translation>
+<translation id="6077070599873946984">يحتاج ذكاء Brave الاصطناعي إلى إذنك بشأن: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">تم اعتبار العملية غير متوافقة مع طلبك المحتمل:</translation>
+<translation id="3927932062596804919">رفض</translation>
+<translation id="4569155249847375786">تم التحقق منه</translation>
+<translation id="3240988198391588806">وضع الوكيل</translation>
+<translation id="538066983058750776">حول ملف Leo التعريفي</translation>
+<translation id="1577570612997320961">لحماية بياناتك، يحد ملف Brave التعريفي المعزول هذا من وصول الذكاء الاصطناعي إلى ملف التصفح الرئيسي الخاص بك. يتمتع ذكاء Leo الاصطناعي بصلاحيات إضافية هنا لزيارة المواقع والتفاعل معها، حتى تتمكن من تجربة إعطائه مهامًا وتصفح الويب معًا لزيادة إنتاجيتك.</translation>
+<translation id="648116453147783450">بياناتك وجلساتك</translation>
+<translation id="3906161204878017619">عند تسجيل الدخول إلى موقع باستخدام هذا الملف التعريفي، يمكن لـ Leo مشاهدة معلومات ذلك الموقع إذا كان مفتوحًا، سواء عند زيارته للموقع مباشرةً أو عندما تطلب منه تنفيذ شيء هناك.</translation>
+<translation id="5583803492921648196">الرجوع</translation>
+<translation id="8068929004144221259">يمكنك الرجوع إلى ملفك التعريفي المعتاد في أي وقت من القائمة الرئيسية أو من خلال صورة ملف Leo التعريفي في شريط الأدوات. سيتم دائمًا فتح وضع الوكيل في هذا الملف التعريفي.</translation>
 <translation id="3486480638399578250">حافظ على خصوصية عنوان بريدك الإلكتروني الشخصي</translation>
 <translation id="7765422154906712751">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
 <translation id="5222676887888702881">تسجيل الخروج</translation>
@@ -2514,6 +2544,12 @@
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="131231380815754440">تمكين HTTPS</translation>
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
+<translation id="5465091511225410553">(مفروض)</translation>
+<translation id="8646614940337543907">(فُرض بواسطة الملحق)</translation>
+<translation id="3559821445144429594">(فُرض بواسطة السياسة)</translation>
+<translation id="550374350047782149">(فُرض بواسطة قائمة السماح)</translation>
+<translation id="68858161161918073">(فُرض بواسطة المشرف)</translation>
+<translation id="5735057546627037489">(فُرض بواسطة PWA)</translation>
 <translation id="3246600097575692802">تمكين البرامج النصية المحظورة</translation>
 <translation id="3603525299146223354">أدوات التتبع &amp; الإعلانات</translation>
 <translation id="4448697385961650078">حجب المتتبعات والإعلانات</translation>
@@ -2548,6 +2584,7 @@
       other {Brave Shields حظر {BLOCKED_COUNT} أداة تتبع أخرى على <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">انقر على أيقونة Brave لعرض Brave Shields.</translation>
+<translation id="542789539047208469">معلومات الموقع</translation>
 <translation id="6294662480095808915">الحصوصية. بشكل افتراضي.</translation>
 <translation id="4366423156486478559">احصل على حماية Brave على كل رابط تنقر عليه. ليس عليك سوى تعيين Brave كإعداد افتراضي وتصفح بخصوصية.</translation>
 <translation id="3830912418080848377">إعدادات الاستيراد</translation>
@@ -2682,5 +2719,6 @@
 <translation id="1538335063514960365">زر الفتح من هنا، اضغط على Enter لفتح عنوان url في علامة التبويب الحالية، بدلًا من الانتقال إلى علامة التبويب الموجودة مسبقًا</translation>
 <translation id="451189393813405346">اسأل Leo</translation>
 <translation id="1602850501393095406">اضغط ↑ للإبراز</translation>
+<translation id="8367705492654390392">اطرح أي سؤال</translation>
 <translation id="8525248723479742219">تشغيل لاحقًا</translation>
 </translationbundle>

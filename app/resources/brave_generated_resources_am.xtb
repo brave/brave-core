@@ -339,6 +339,7 @@
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
 <translation id="1035309871698658326">ሲክፈት ይሄ ሁሉንም ትሮች ስምምነቶችን እና ምንጮችን ለማለፍ ወደ ማስላት ይላካል።</translation>
 <translation id="3435896845095436175">አንቃ</translation>
+<translation id="9082792303833649978">ይህ ቅኝት በአስተዳዳሪዎ ወይም በሌላ Brave ፖሊሲ የሚነደው ነው።</translation>
 <translation id="1940221956626514677">መሳሪያ አሞሌን አብጅ</translation>
 <translation id="6501807887341963552">ገጽታ እና ቀለም</translation>
 <translation id="6724227215236550330">የተቀመጡ የይለፍ ቃሎች እዚህ ይታያሉ። እንደ ተለይነት የይለፍ ቃሎችን ወደ <ph name="BRAND"/> በዚህ መሳሪያ ለማምጣት <ph name="BEGIN_LINK"/> የCSV ፋይል ይምረጡ <ph name="END_LINK"/></translation>
@@ -382,6 +383,7 @@
 <translation id="2263346047290834619">የእንጋፋ ትሮችን ተጠቃሚ ያድርጉ</translation>
 <translation id="5860254591544742609">የርዕስ አሞሌ አሳይ</translation>
 <translation id="4691131445504068802">ሲቀነስ ሙሉ በሙሉ ደብቅ</translation>
+<translation id="6763346436728173884">የትር መዝጊያ አዝራርን ሁልጊዜ ደብቅ</translation>
 <translation id="4909269867860362936">ሲቀነስ በመቆየት ራሱን በራሱ ያሰፋ</translation>
 <translation id="3367129510799209147">የትር ማንዣበብ ሁናቴ</translation>
 <translation id="8925055964134259461">ሁሉም መስኮቶች ለተለያዩ በራሳቸው በቀስታ ታብ እንዲተፉ አድርግ</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Bitcoin አውታረ መረቦች</translation>
 <translation id="1077567586443625607">Zcash አውታረ መረቦች</translation>
 <translation id="1177180573354712438">የካርዳኖ ኔትዎርኮች</translation>
+<translation id="3176794108951154148">የPolkadot አውታረ መረቦች</translation>
 <translation id="3159419679550543837">አውታረ መረቦችን አሳይ</translation>
 <translation id="3215569562674795548">አስተካክል ወይም አዲስ አውታረ መረብ ጨምር</translation>
 <translation id="4418993400653250511">የሰንሰለት መታወቂያ</translation>

@@ -336,6 +336,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="7557539689487606886">Prémium előfizetés</translation>
 <translation id="1035309871698658326">Az összes nem privát lap nevét és forrását automatikusan elküldi a Leónak kategorizálás céljából.</translation>
 <translation id="3435896845095436175">Engedélyezés</translation>
+<translation id="9082792303833649978">Ezt a beállítást a rendszergazda vagy egy másik Brave-szabályzat kezeli.</translation>
 <translation id="1940221956626514677">Eszköztár testreszabása</translation>
 <translation id="6501807887341963552">Téma és színek</translation>
 <translation id="6724227215236550330">A mentett jelszavak itt jelennek meg. Jelszavak importálásához a <ph name="BRAND"/> ezen az eszközön, <ph name="BEGIN_LINK"/> válasszon egy CSV fájlt<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2263346047290834619">Fastruktúrás lapok használata</translation>
 <translation id="5860254591544742609">Címsor mutatása</translation>
 <translation id="4691131445504068802">Teljes elrejtés minimalizáláskor</translation>
+<translation id="6763346436728173884">A lap bezárás gomb mindig legyen elrejtve</translation>
 <translation id="4909269867860362936">Automatikus kibontás egérrel fölé húzva, ha minimalizálva van</translation>
 <translation id="3367129510799209147">Lap fölötti kurzor üzemmódja</translation>
 <translation id="8925055964134259461">Függőleges lapok panel kibontása függetlenül, ablakonként</translation>
@@ -753,6 +755,7 @@ A szinkronizálás előrehaladása minden védett fióknál el fog veszni. A meg
 <translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="1077567586443625607">Zcash hálózatok</translation>
 <translation id="1177180573354712438">Cardano hálózatok</translation>
+<translation id="3176794108951154148">Polkadot-hálózatok</translation>
 <translation id="3159419679550543837">Teszthálózatok megjelenítése</translation>
 <translation id="3215569562674795548">Hálózat szerkesztése vagy hozzáadása</translation>
 <translation id="4418993400653250511">A láncolat azonosítója</translation>

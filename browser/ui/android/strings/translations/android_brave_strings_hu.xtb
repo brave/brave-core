@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
 <translation id="721490496276866468">Jelszavak importálása</translation>
 <translation id="8178175542325151321">Válasszon ki egy olyan .csv fájlt, amely tartalmazza a jelszavait, hogy importálhassa őket a Brave jelszókezelőbe.</translation>
-<translation id="1177863135347784049">Egyéni</translation>
 <translation id="6112331814131703370">Az 'Alkalmazásra váltás' értesítések letiltása</translation>
 <translation id="4744921452903670666">Mondja el, mit gondol!</translation>
 <translation id="2524310205387880526">Értékeld a Brave-et</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Automatikus kitöltés a privát lapokon</translation>
 <translation id="8685431198160039193">A mentett információk automatikusan kitölthetők a privát lapokon</translation>
 <translation id="6583902294974160967">Támogatás</translation>
-<translation id="5713644099811900409">Brave fiók</translation>
-<translation id="4472575034687746823">Kezdő lépések</translation>
 <translation id="1799030480311994998">Funkciók</translation>
 <translation id="1919345977826869612">Reklámok</translation>
 <translation id="2839742394543397416">Analitika</translation>
@@ -384,7 +381,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
 <translation id="987264212798334818">Általános</translation>
 <translation id="1116694919640316211">Névjegy</translation>
-<translation id="7961015016161918242">Soha</translation>
 <translation id="1275213816424141989">Talán később</translation>
 <translation id="3624048886326677117">Nyomkövetők és hirdetések letiltása (agresszív)</translation>
 <translation id="7151914815476509258">Nyomkövetők és hirdetések letiltása (standard)</translation>
@@ -569,7 +565,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6697810017029555732">Egyezés!</translation>
 <translation id="5981303441790732480">Meglévő pénztárca importálása</translation>
 <translation id="9111102763498581341">Feloldás</translation>
-<translation id="6657585470893396449">Jelszó</translation>
 <translation id="7553242001898162573">Adja meg a jelszót</translation>
 <translation id="5619264711680220002">Biometrikus feloldás</translation>
 <translation id="9195657745688986798">Pénztárca zárolásának feloldása</translation>
@@ -734,6 +729,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="9091334651803050473">Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.</translation>
 <translation id="2941112035454246133">Alacsony</translation>
 <translation id="7304030187361489308">Magas</translation>
+<translation id="1177863135347784049">Egyéni</translation>
 <translation id="4853037749278079787">Maximális díj: ~<ph name="FIAT_VALUE"/> $ (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Jelenlegi alapdíj: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Gas mennyiségi korlátja</translation>
@@ -1054,31 +1050,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6393423486818299209">A jelenlegi szolgáltató vagy a Wikimedia DNS használata</translation>
 <translation id="3401384982562827787">A jelenlegi szolgáltató vagy a Cloudflare használata</translation>
 <translation id="8812367543786936496">Ha jelenlegi szolgáltatója nem biztonságos, a Brave biztonságos, alternatív DNS-szolgáltatót használ</translation>
-<translation id="5680678411439841197">város</translation>
-<translation id="8185518433273977704">település</translation>
-<translation id="4528386452965343421">prefektúra</translation>
-<translation id="1589122976691792535">régió</translation>
-<translation id="2221292964468054123">állam</translation>
-<translation id="3801482889636327368">szervezet</translation>
-<translation id="1425162721525518064">vállalat</translation>
-<translation id="7568794877555549044">ország</translation>
-<translation id="5982110855572850497">címke</translation>
-<translation id="6848689413353508904">tároló</translation>
-<translation id="1496514951988037011">felhasználónév</translation>
-<translation id="6155129418108337061">bejelentkezés</translation>
-<translation id="4038523199754403233">azonosító</translation>
-<translation id="901834265349196618">e-mail</translation>
-<translation id="3488199663160411179">név</translation>
-<translation id="793994607260936590">első</translation>
-<translation id="1782612111936779655">vezetéknév</translation>
-<translation id="7628132737455466188">teljes</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">cím</translation>
-<translation id="5557821203571216370">lakás</translation>
-<translation id="8051552210542030943">PIN-kód</translation>
-<translation id="5233247193491045452">postai irányítószám</translation>
-<translation id="3300502432153878901">irányítószám</translation>
 <translation id="1381108437654541567">Több ablak engedélyezése</translation>
 <translation id="6167344249617630304">Nyisson meg egyszerre akár 5 ablakot és mozgassa a füleket egyik ablakból a másikba</translation>
 <translation id="1063948063403254568">Több ablak érzékelve</translation>
@@ -1152,6 +1123,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7808889146555843082">A jelszó eltávolításával nem törli fiókját a következő domainről: <ph name="SITE"/>. Ha szeretné megőrizni fiókja biztonságát, módosítsa a jelszót, vagy törölje a fiókot a(z) <ph name="SITE"/> domainről.</translation>
 <translation id="2870560284913253234">Webhely</translation>
 <translation id="8503813439785031346">Felhasználónév</translation>
+<translation id="6657585470893396449">Jelszó</translation>
 <translation id="2278052315791335171">A jelszó eltávolításával nem törli fiókját a következő domainről: <ph name="SITE"/>.</translation>
 <translation id="6891726759199484455">Oldja fel a képernyőzárat a jelszó másolásához</translation>
 <translation id="5515439363601853141">Oldja fel a képernyőzárat a jelszó megtekintéséhez</translation>

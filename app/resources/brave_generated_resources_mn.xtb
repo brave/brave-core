@@ -331,6 +331,7 @@
 <translation id="7557539689487606886">Премиум багцаар явах</translation>
 <translation id="1035309871698658326">Нээгдэх үед энэ нь бүх нууцлалгүй табуудын гарчиг ба эх үүсвэрийг автоматаар Leo-д илгээж ангилуулна.</translation>
 <translation id="3435896845095436175">Идэвхжүүлэх</translation>
+<translation id="9082792303833649978">Энэ тохиргоог таны системийн админ эсвэл өөр Brave бодлогын дагуу удирдаж байна.</translation>
 <translation id="1940221956626514677">Хэрэгслийн самбарыг өөрчлөх</translation>
 <translation id="6501807887341963552">Загвар болон өнгө</translation>
 <translation id="6724227215236550330">Сохраненные нууц үгс энд харагдана. Энэ төхөөрөмж дээр <ph name="BRAND"/> нууц үг импортлохын тулд, <ph name="BEGIN_LINK"/> CSV файл сонгоно уу<ph name="END_LINK"/></translation>
@@ -374,6 +375,7 @@
 <translation id="2263346047290834619">Модон табыг ашиглах</translation>
 <translation id="5860254591544742609">Гарчигийн баар харуулах</translation>
 <translation id="4691131445504068802">Цонх багассан үед бүрэн нуух</translation>
+<translation id="6763346436728173884">Хуудасны хаах товчийг үргэлж нуух</translation>
 <translation id="4909269867860362936">Хулгана байрлуулсан үед автоматаар тэлэх (цонх багассан үед)</translation>
 <translation id="3367129510799209147">Таб хөвөх горим</translation>
 <translation id="8925055964134259461">Цонх бүрт босоо табыг тус тусад нь автоматаар тэлэх</translation>
@@ -746,6 +748,7 @@
 <translation id="7141438739990875547">Bitcoin сүлжээ</translation>
 <translation id="1077567586443625607">Zcash сүлжээ</translation>
 <translation id="1177180573354712438">Cardano сүлжээнүүд</translation>
+<translation id="3176794108951154148">Polkadot сүлжээнүүд</translation>
 <translation id="3159419679550543837">Туршилтын сүлжээнүүдийг харуулах</translation>
 <translation id="3215569562674795548">Шинэ сүлжээ нэмэх эсвэл засварлах</translation>
 <translation id="4418993400653250511">Сүлжээний id</translation>

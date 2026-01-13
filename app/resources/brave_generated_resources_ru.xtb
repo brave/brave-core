@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">Премиум-подписка</translation>
 <translation id="1035309871698658326">При открытии она автоматически отправит названия и происхождение всех неприватных вкладок в Leo, чтобы классифицировать их.</translation>
 <translation id="3435896845095436175">Включить</translation>
+<translation id="9082792303833649978">Этот параметр управляется вашим администратором или другой политикой Brave.</translation>
 <translation id="1940221956626514677">Настройте панель инструментов</translation>
 <translation id="6501807887341963552">Тема и цвета</translation>
 <translation id="6724227215236550330">Здесь появятся сохраненные пароли. Чтобы импортировать пароли в <ph name="BRAND"/> на это устройство, <ph name="BEGIN_LINK"/> выберите CSV-файл<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">Используйте древовидные вкладки</translation>
 <translation id="5860254591544742609">Показывать заголовок окна</translation>
 <translation id="4691131445504068802">Полностью скрывать при сворачивании</translation>
+<translation id="6763346436728173884">Всегда скрывать кнопку закрытия вкладки</translation>
 <translation id="4909269867860362936">Автораскрытие при наведении в свернутом виде</translation>
 <translation id="3367129510799209147">Режим наведения указателя на вкладку</translation>
 <translation id="8925055964134259461">Раскрыть вертикальную панель вкладок в этом окне</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">Биткойн-сети</translation>
 <translation id="1077567586443625607">Сети Zcash</translation>
 <translation id="1177180573354712438">Сети Cardano</translation>
+<translation id="3176794108951154148">Сети Polkadot</translation>
 <translation id="3159419679550543837">Показывать тестовые сети</translation>
 <translation id="3215569562674795548">Изменить или добавить новую сеть</translation>
 <translation id="4418993400653250511">Идентификатор цепочки</translation>

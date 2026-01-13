@@ -331,6 +331,7 @@
 <translation id="7557539689487606886">Премиумге өту</translation>
 <translation id="1035309871698658326">Ашылғанда, бұл барлық жекеменшік емес қойындылардың атаулары мен шығу тегін Леоға жіберіп, оларды жіктеуді автоматты түрде атқарады.</translation>
 <translation id="3435896845095436175">Қосу</translation>
+<translation id="9082792303833649978">Бұл баптауды сіздің әкімшіңіз немесе басқа Brave саясаты басқарады.</translation>
 <translation id="1940221956626514677">Құралдар тақтасын теңшеу</translation>
 <translation id="6501807887341963552">Тақырып пен түстер</translation>
 <translation id="6724227215236550330">Сақталған құпия сөздер мұнда көрсетіледі. Бұл құрылғыда <ph name="BRAND"/> үшін құпия сөздерді импорттау үшін <ph name="BEGIN_LINK"/> CSV файлын таңдаңыз<ph name="END_LINK"/></translation>
@@ -374,6 +375,7 @@
 <translation id="2263346047290834619">Ағаш қойындыларын пайдалану</translation>
 <translation id="5860254591544742609">Атаулар жолағын көрсету</translation>
 <translation id="4691131445504068802">Минималды күйге түскен кезде түгелімен жасыру</translation>
+<translation id="6763346436728173884">Қосымша беттерді жабу түймесін әрқашан жасыру</translation>
 <translation id="4909269867860362936">Минималды күйде болғанда меңзеп кеңейту автоіске қосылады</translation>
 <translation id="3367129510799209147">Қойынды үстінен өту режимі</translation>
 <translation id="8925055964134259461">Әр терезе үшін тік бетбелгілерді бөлек автоіске қосу</translation>
@@ -746,6 +748,7 @@
 <translation id="7141438739990875547">Bitcoin желілері</translation>
 <translation id="1077567586443625607">Zcash желілері</translation>
 <translation id="1177180573354712438">Cardano желілері</translation>
+<translation id="3176794108951154148">Polkadot желілері</translation>
 <translation id="3159419679550543837">Тестілеу желілерін көрсету</translation>
 <translation id="3215569562674795548">Жаңа желіні өңдеу немесе қосу</translation>
 <translation id="4418993400653250511">Тізбектің идентификаторы</translation>

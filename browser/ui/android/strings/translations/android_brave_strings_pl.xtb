@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Skopiuj wyczyszczone łącze</translation>
 <translation id="721490496276866468">Importuj hasła</translation>
 <translation id="8178175542325151321">Wybierz plik .csv zawierający Twoje hasła, aby zaimportować je do menedżera haseł Brave.</translation>
-<translation id="1177863135347784049">Niestandardowe</translation>
 <translation id="6112331814131703370">Zablokuj powiadomienia „Przełącz na aplikację”</translation>
 <translation id="4744921452903670666">Powiedz nam, co myślisz!</translation>
 <translation id="2524310205387880526">Oceń Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Autouzupełnianie w prywatnych oknach</translation>
 <translation id="8685431198160039193">Zapisane informacje mogą być autouzupełniane w prywatnych oknach</translation>
 <translation id="6583902294974160967">Wsparcie</translation>
-<translation id="5713644099811900409">Konto Brave</translation>
-<translation id="4472575034687746823">Podstawowe</translation>
 <translation id="1799030480311994998">Funkcje</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="2839742394543397416">Analityka</translation>
@@ -258,7 +255,7 @@
 <translation id="5582839680698949063">Menu główne</translation>
 <translation id="7002271985859760052">Akcje strony</translation>
 <translation id="7104487676473617844">Poniższe elementy będą widoczne w menu tylko wtedy, gdy będą obsługiwane przez aktualnie otwartą stronę.</translation>
-<translation id="4159764849281393303">Aplikacja WebApp</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="8038539967102225446">Oto reklamy Brave!</translation>
 <translation id="222883304157347087">(to urządzenie)</translation>
@@ -384,7 +381,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="717952606991220586">Ups, coś poszło nie tak. Spróbuj ponownie później.</translation>
 <translation id="987264212798334818">Ogólne</translation>
 <translation id="1116694919640316211">Informacje</translation>
-<translation id="7961015016161918242">Nigdy</translation>
 <translation id="1275213816424141989">Może później</translation>
 <translation id="3624048886326677117">Zablokuj skrypty śledzące i reklamy (agresywnie)</translation>
 <translation id="7151914815476509258">Zablokuj skrypty śledzące i reklamy (standardowo)</translation>
@@ -570,7 +566,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6697810017029555732">Pasuje!</translation>
 <translation id="5981303441790732480">Zaimportuj istniejący portfel</translation>
 <translation id="9111102763498581341">Odblokuj</translation>
-<translation id="6657585470893396449">Hasło</translation>
 <translation id="7553242001898162573">Wprowadź hasło</translation>
 <translation id="5619264711680220002">Odblokowanie biometryczne</translation>
 <translation id="9195657745688986798">Odblokuj portfel</translation>
@@ -735,6 +730,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="9091334651803050473">Nie jest to gwarantowane, ale jeśli zaoferujesz wyższą stawkę, górnicy najprawdopodobniej wybiorą Twoją transakcję w pierwszej kolejności.</translation>
 <translation id="2941112035454246133">Niska cena</translation>
 <translation id="7304030187361489308">Wysoka cena</translation>
+<translation id="1177863135347784049">Niestandardowe</translation>
 <translation id="4853037749278079787">Maksymalna opłata: ~<ph name="FIAT_VALUE"/> USD (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Bieżąca opłata bazowa: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Limit kwoty gazu</translation>
@@ -958,7 +954,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Przywróć ustawienia domyślne</translation>
 <translation id="4922034974043704366">Ta funkcja jest włączona, ponieważ wyrazili Państwo na nią zgodę</translation>
-<translation id="3144818380093107753">Brave Origin to oparty na subskrypcji sposób na wyłączenie funkcji generujących przychody, które w przeciwnym razie wspierają Brave jako firmę. Subskrybenci Brave Origin nadal będą mogli korzystać z naszych najlepszych w branży funkcji prywatności, blokowania reklam i szybkości (za pośrednictwem Brave Shields), a także regularnych aktualizacji oprogramowania, poprawek Chromium oraz ulepszeń w zakresie bezpieczeństwa i prywatności. Odblokują również opcję wyłączenia funkcji takich jak Brave Leo, Wiadomości, Nagrody, Portfel, VPN, domeny Web3 i inne.&lt;br/&gt;&lt;br/&gt;Subskrybenci zobaczą nowy panel sterowania w menu ustawień przeglądarki. Istniejące funkcje - a także wszelkie nowe funkcje, które udostępnimy w przyszłości - pojawią się tutaj i będą domyślnie wyłączone.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Uwaga: Brave Origin nie wyłączy funkcji przeglądarki, z których obecnie korzystasz, i nie wpłynie na funkcje Brave Search ani reklamy Brave Search.&lt;/b&gt;</translation>
+<translation id="3144818380093107753">Brave Origin to oparte na subskrypcji rozwiązanie umożliwiające wyłączenie funkcji generujących przychody dla firmy Brave. Użytkownicy Brave Origin mogą korzystać z naszych najlepszych w branży funkcji prywatności, blokowania reklam i szybkości działania (dzięki funkcji Tarcze Brave), a także regularnych aktualizacji oprogramowania, poprawek Chromium oraz ulepszeń w zakresie bezpieczeństwa i prywatności. Zyskują również możliwość wyłączenia funkcji takich jak Brave Leo, Aktualności, Nagrody, Portfel, VPN, domeny Web3 i innych.&lt;br/&gt;&lt;br/&gt;Użytkownicy Brave Origin zobaczą nowy panel sterowania w menu ustawień przeglądarki. Istniejące funkcje – a także wszelkie nowe funkcje, które udostępnimy w przyszłości – pojawią się tutaj i będą domyślnie wyłączone.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Uwaga: Brave Origin nie wyłączy funkcji przeglądarki, z których obecnie korzystasz, i nie wpłynie na funkcje wyszukiwarki Brave Search ani reklam Brave Search.&lt;/b&gt;</translation>
 <translation id="8613144770663526433">Zaloguj się za pomocą portfela Brave</translation>
 <translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobacz szczegóły</translation>
@@ -1057,31 +1053,6 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6393423486818299209">Wybierz Twojego dostawcę usług internetowych lub Wikimedia DNS</translation>
 <translation id="3401384982562827787">Wybierz Twojego dostawcę usług internetowych lub Cloudflare</translation>
 <translation id="8812367543786936496">Jeśli Twój dostawca usług jest niepewny, Brave może skorzystać z alternatywnego, bezpiecznego DNS</translation>
-<translation id="5680678411439841197">miasto</translation>
-<translation id="8185518433273977704">miejscowość</translation>
-<translation id="4528386452965343421">prefektura</translation>
-<translation id="1589122976691792535">region</translation>
-<translation id="2221292964468054123">stan</translation>
-<translation id="3801482889636327368">organizacja</translation>
-<translation id="1425162721525518064">firma</translation>
-<translation id="7568794877555549044">państwo</translation>
-<translation id="5982110855572850497">etykieta</translation>
-<translation id="6848689413353508904">pole</translation>
-<translation id="1496514951988037011">nazwa użytkownika</translation>
-<translation id="6155129418108337061">login</translation>
-<translation id="4038523199754403233">identyfikator</translation>
-<translation id="901834265349196618">e-mail</translation>
-<translation id="3488199663160411179">imię</translation>
-<translation id="793994607260936590">początek</translation>
-<translation id="1782612111936779655">nazwisko</translation>
-<translation id="7628132737455466188">pełne dane</translation>
-<translation id="8621068256433641644">numer telefonu</translation>
-<translation id="5993210100509955931">numer telefonu komórkowego</translation>
-<translation id="598301471034819706">adres</translation>
-<translation id="5557821203571216370">lokal</translation>
-<translation id="8051552210542030943">kod pin</translation>
-<translation id="5233247193491045452">kod pocztowy</translation>
-<translation id="3300502432153878901">kod pocztowy</translation>
 <translation id="1381108437654541567">Zezwól na wiele okien</translation>
 <translation id="6167344249617630304">Otwórz do 5 okien jednocześnie i przenoś karty między oknami</translation>
 <translation id="1063948063403254568">Wykryto wiele okien</translation>
@@ -1106,9 +1077,9 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="2735247450315842119">Zezwalaj na zrzuty ekranu w kartach prywatnych</translation>
 <translation id="8420414929552321089">Po zezwoleniu karty prywatne będą również widoczne, gdy otwartych jest wiele aplikacji.</translation>
 <translation id="7956713633345437162">Zakładki mobilne</translation>
-<translation id="6261139507111008244">Proszę wesprzeć naszą misję &amp; praca open-source</translation>
-<translation id="7882690061170175552">Minimalny interfejs użytkownika przeglądarki skoncentrowany na Shields</translation>
-<translation id="2267973897341040743">Utrzymanie podstawowych funkcji adblock, prywatność, szybkość &amp;</translation>
+<translation id="6261139507111008244">Wesprzyj naszą misję i działalność open source</translation>
+<translation id="7882690061170175552">Minimalistyczny interfejs przeglądarki skoncentrowany na funkcji Tarcze</translation>
+<translation id="2267973897341040743">Te same funkcje blokowania reklam, ochrona prywatności i szybkość</translation>
 <translation id="1361157028850796410">najlepsza wartość</translation>
 <translation id="7280825497485894053">Subskrypcja miesięczna</translation>
 <translation id="4570901726096223030">Dowiedz się więcej o Origin</translation>
@@ -1128,7 +1099,9 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="8258027225380843424">Import zakończony sukcesem!</translation>
 <translation id="766635563210446220">Nie można zaimportować haseł. Sprawdź <ph name="FILENAME"/> i upewnij się, że jest poprawnie sformatowany. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">Nie można zaimportować haseł. Rozmiar pliku powinien być mniejszy niż 1 MB.</translation>
-<translation id="5895244669404288318">{COUNT, plural, =1 {Nie można zaimportować haseł. Można importować tylko 1 hasło na raz.} few {Nie można zaimportować haseł. Można importować do kilku haseł naraz.} many {Nie można zaimportować haseł. Można importować tylko wiele haseł naraz.} other {Nie można zaimportować haseł. Można importować do <ph name="COUNT_MANY"/> haseł naraz.}}</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Nie można zaimportować haseł. Możesz importować tylko 1 hasło na raz.}
+        other {Nie można zaimportować haseł. Możesz importować tylko do <ph name="COUNT_MANY"/> haseł na raz.}}</translation>
 <translation id="3748424433435232460">Hasło do tego konta zostało już zapisane na tym urządzeniu</translation>
 <translation id="6438475350605608554">Już trwa import haseł w innej karcie</translation>
 <translation id="3482868954775580230">Nie udało się odczytać wybranego pliku. <ph name="EXCEPTION_INFO"/></translation>
@@ -1155,6 +1128,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="7808889146555843082">Usunięcie tego hasła nie spowoduje usunięcia Twojego konta w serwisie <ph name="SITE"/>. Aby uniemożliwić innym osobom dostęp do konta w serwisie <ph name="SITE"/>, usuń je lub zmień do niego hasło.</translation>
 <translation id="2870560284913253234">Witryna</translation>
 <translation id="8503813439785031346">Nazwa użytkownika</translation>
+<translation id="6657585470893396449">Hasło</translation>
 <translation id="2278052315791335171">Usunięcie tego hasła nie spowoduje usunięcia Twojego konta na stronie <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Odblokuj, by skopiować hasło</translation>
 <translation id="5515439363601853141">Odblokuj, by wyświetlić hasło</translation>

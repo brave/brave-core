@@ -336,6 +336,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7557539689487606886">Pređite na Premium</translation>
 <translation id="1035309871698658326">Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje.</translation>
 <translation id="3435896845095436175">Aktiviraj</translation>
+<translation id="9082792303833649978">Ovo podešavanje upravlja vaš administrator ili neka druga Brave politika.</translation>
 <translation id="1940221956626514677">Prilagodi traku sa alatkama</translation>
 <translation id="6501807887341963552">Tema i boje</translation>
 <translation id="6724227215236550330">Sačuvane lozinke će se pojaviti ovde. Da biste uvezli lozinke u <ph name="BRAND"/> na ovom uređaju, <ph name="BEGIN_LINK"/> izaberite CSV fajl<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="2263346047290834619">Koristi razgranate kartice</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="4691131445504068802">Potpuno sakrij kada je minimizovano</translation>
+<translation id="6763346436728173884">Uvek sakrij dugme za zatvaranje kartice</translation>
 <translation id="4909269867860362936">Automatski proširi pri prelasku mišem kada je minimizovano</translation>
 <translation id="3367129510799209147">Režim prelaska mišem preko kartice</translation>
 <translation id="8925055964134259461">Proširi vertikalne kartice nezavisno po prozoru</translation>
@@ -751,6 +753,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7141438739990875547">Bitcoin mreže</translation>
 <translation id="1077567586443625607">Zcash mreže</translation>
 <translation id="1177180573354712438">Cardano mreže</translation>
+<translation id="3176794108951154148">Polkadot mreže</translation>
 <translation id="3159419679550543837">Prikaži mreže za test</translation>
 <translation id="3215569562674795548">Izmenite ili dodajte novu mrežu</translation>
 <translation id="4418993400653250511">Identifikacioni broj lanca</translation>

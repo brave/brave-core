@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">I-tap ang Mga App at pagkatapos ay i-tap ang Mga default na app</translation>
 <translation id="1415402041810619267">Naputol ang URL</translation>
 <translation id="1741136041592162279">Hayaang i-share ng Brave ang iyong mga kamakailang tab gamit ang device mo para makita ang mga ito sa listahan ng app at mga resulta ng paghahanap ng iyong device. Puwede mo itong i-on o i-off sa mga setting ng Brave.</translation>
+<translation id="1420688843103859429">Mag-navigate pabalik-balik sa pamamagitan ng pag-swipe gamit ang dalawang daliri sa touchpad</translation>
 <translation id="1432650420699700107">Puwedeng hilingin ng mga site na kumonekta sa anumang device sa iyong lokal na network</translation>
 <translation id="1448064542941920355">Bawasan ang pag-zoom</translation>
 <translation id="1464044141348608623">Huwag payagan ang mga site na malaman kung aktibo mong ginagamit ang iyong device</translation>
@@ -170,6 +171,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="2787357173144933081">Simulan ang Omnibox</translation>
 <translation id="2789132527330338807">Puwedeng hilingin ng mga site na gumawa ng 3D na map ng iyong kapaligiran o subaybayan ang posisyon ng camera</translation>
 <translation id="2790501146643349491">Kapag naka-on, matatapos ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data. Kapag naka-off, hindi matatapos ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data.</translation>
+<translation id="1708222144403389505">I-on ang mga notification para sa mga kapaki-pakinabang na tip para matulungan kang masulit ang Brave</translation>
 <translation id="2795716239552913152">Karaniwang ginagamit ng mga site ang iyong lokasyon para sa mga nauugnay na feature o impormasyon, gaya ng lokal na balita o mga kalapit na tindahan</translation>
 <translation id="2800760947029405028">Mag-upload ng larawan</translation>
 <translation id="2802908157808345702">Huwag payagan ang mga site na magpadala ng mga pop-up at gumamit ng mga redirect</translation>
@@ -182,6 +184,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="2903493209154104877">Mga Address</translation>
 <translation id="2910701580606108292">Magtanong bago payagan ang mga site na mag-play ng pinoprotektahang content</translation>
 <translation id="2918484639460781603">Pumunta sa mga setting</translation>
+<translation id="4577990953241424923">Makakuha ng mga notification sa Mga Tip sa Brave</translation>
 <translation id="2932883381142163287">I-ulat ang pang-aabuso</translation>
 <translation id="2939338015096024043">Kapag naka-on, puwedeng hilingin ng mga site na i-track ang posisyon ng iyong camera at malaman ang tungkol sa paligid mo. Kapag naka-off, hindi mata-track ng mga site ang posisyon ng iyong camera o malalaman ang tungkol sa paligid mo.</translation>
 <translation id="2968755619301702150">Viewer ng certificate</translation>
@@ -218,7 +221,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3285500645985761267">Payagan ang mga kaugnay na site na makita ang iyong aktibidad sa grupo</translation>
 <translation id="3295019059349372795">Kabanata 11: The Wonderful Emerald City of Oz</translation>
 <translation id="3295602654194328831">Itago ang Impormasyon</translation>
-<translation id="3328801116991980348">Impormasyon ng site</translation>
 <translation id="3333961966071413176">Lahat ng contact</translation>
 <translation id="3360338140203645771">I-delete ang mga naka-save na level ng pag-zoom?</translation>
 <translation id="3362437373201486687">Nagsa-scan ng mga Bluetooth device</translation>
@@ -241,6 +243,8 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3611658447322220736">Puwedeng tapusin ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data</translation>
 <translation id="3619294456800709762">Awtomatikong makakapasok sa picture-in-picture ang mga site</translation>
 <translation id="3628308229821498208">Mga iminumungkahing paghahanap</translation>
+<translation id="3632460243282703117">Mag-subscribe</translation>
+<translation id="363748948745453283">Gumagamit ng tinatayang lokasyon</translation>
 <translation id="3641456520301071208">Puwedeng hilingin ng mga site ang iyong lokasyon</translation>
 <translation id="3658847490588580244">Bottom sheet ng default browser</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}one{<ph name="RWS_MEMBERS_COUNT"/> site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}other{<ph name="RWS_MEMBERS_COUNT"/> na site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}}</translation>
@@ -335,10 +339,12 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="4635969503923889910">Huwag payagan ang mga site na gumamit ng mga NFC device</translation>
 <translation id="4644713492825682049">I-delete at i-reset</translation>
 <translation id="4645575059429386691">Pinamamahalaan ng iyong magulang</translation>
+<translation id="4652266463001779298">Hindi pinapayagan</translation>
 <translation id="4663373278480897665">Pinapayagan ang camera</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
 <translation id="5652778654712411580">I-tap ang Browser app at pagkatapos ay i-tap ang Brave</translation>
 <translation id="4676059169848868271">Para payagan ang <ph name="APP_NAME"/> na gamitin ang pag-track sa kamay, i-on din ang pag-track sa kamay sa <ph name="BEGIN_LINK"/>mga setting ng system<ph name="END_LINK"/>.</translation>
+<translation id="4688045258817337666">Pamahalaan ang iyong mga card</translation>
 <translation id="4751476147751820511">Mga motion o light sensor</translation>
 <translation id="4755971844837804407">Kapag naka-on, puwedeng magpakita sa iyo ng anumang ad ang mga site. Kapag naka-off, hindi makakapagpakita ang mga site ng mga nakakasagabal o mapanlinlang na ad.</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -429,8 +435,10 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="5750869797196646528">Pag-track sa kamay</translation>
 <translation id="5753570386948603678">I-delete sa history</translation>
 <translation id="5771720122942595109">Naka-block ang <ph name="PERMISSION_1"/></translation>
+<translation id="5792627621688759634">Mag-swipe sa mga page gamit ang touchpad</translation>
 <translation id="5801457289562671820">Inirerekomenda ng iyong organisasyon</translation>
 <translation id="5804241973901381774">Mga Pahintulot</translation>
+<translation id="5817042798620209981">Impormasyon ng site, dialog</translation>
 <translation id="5822675474983796325">Binuksan nang buo ang bottom sheet ng pag-customize ng page ng bagong tab mo</translation>
 <translation id="5833899990800318936">Huwag payagan ang mga site na gumamit ng JavaScript</translation>
 <translation id="583673505367439042">Puwedeng hilingin ng mga site na mag-edit ng mga file at folder sa iyong device</translation>
@@ -512,6 +520,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="662080504995468778">Manatili</translation>
 <translation id="6630443592285535486">I-type ang hex dito</translation>
 <translation id="6635327442719709864">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga serial port. Kapag naka-off, hindi magagamit ng mga site ang mga serial port.</translation>
+<translation id="6669390930482049506">Abisuhan ako</translation>
 <translation id="6678072580827808850">Suriin ang Pag-check sa Kaligtasan</translation>
 <translation id="6682057173375416470">Makakuha ng mga iminumungkahing artikulo sa page na Bagong Tab</translation>
 <translation id="6683865262523156564">Ang site na ito ay nasa isang grupong makakakita ng iyong aktibidad. Tinukoy ng <ph name="RWS_OWNER"/> ang grupo</translation>
@@ -621,6 +630,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7990211076305263060">Kapag naka-on, puwedeng hilingin ng mga site na gamitin ang iyong mikropono. Kapag naka-off, hindi magagamit ng mga site ang iyong mikropono.</translation>
 <translation id="8007176423574883786">Naka-off para sa device na ito</translation>
 <translation id="802154636333426148">Hindi na-download</translation>
+<translation id="8033047164036749181">Mag-subscribe para sa mga notification mula sa site na ito</translation>
 <translation id="8042586301629853791">Pagbukud-bukurin ayon sa:</translation>
 <translation id="8051193500142930381">Hindi gagana ang mga feature na nangangailangan ng camera</translation>
 <translation id="2495032782748793764">Default ng Brave</translation>
@@ -671,6 +681,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8487700953926739672">Available sa offline</translation>
 <translation id="848952951823693243">Palaging hilingin ang pang-mobile na site</translation>
 <translation id="8492822722330266509">Puwedeng magpadala ng mga pop-up at gumamit ng mga pag-redirect ang mga site</translation>
+<translation id="8493548450030356203">Popup na window ng pag-zoom</translation>
 <translation id="8499083585497694743">I-unmute ang mikropono</translation>
 <translation id="8514955299594277296">Huwag payagan ang mga site na mag-save ng data sa iyong device (hindi inirerekomenda)</translation>
 <translation id="851751545965956758">I-block ang mga site sa pagkonekta sa mga device</translation>

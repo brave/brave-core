@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Təmiz keçidi kopyalayın</translation>
 <translation id="721490496276866468">Şifrələri idxal et</translation>
 <translation id="8178175542325151321">Şifrlərinizi Brave-in şifrə menecerinə idxal etmək üçün .csv formatında faylı seçin.</translation>
-<translation id="1177863135347784049">Fərdi</translation>
 <translation id="6112331814131703370">'Tətbiqə keç' bildirişlərini blokla</translation>
 <translation id="4744921452903670666">Nə düşündüyünüzü bizə deyin!</translation>
 <translation id="2524310205387880526">Brave-i qiymətləndirin</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Məxfi tabulyasiyaları avtomatik doldurun</translation>
 <translation id="8685431198160039193">Yaddaşda saxlanmış məlumatlar məxfi tabulyasiyalarda avtomatik doldurula bilər</translation>
 <translation id="6583902294974160967">Dəstək</translation>
-<translation id="5713644099811900409">Brave Hesabı</translation>
-<translation id="4472575034687746823">Başla</translation>
 <translation id="1799030480311994998">Xüsusiyyətlər</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
 <translation id="2839742394543397416">Analitika</translation>
@@ -382,7 +379,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="717952606991220586">Oops, bir səhv baş verdi. Zəhmət olmasa daha sonra yenidən cəhd edin.</translation>
 <translation id="987264212798334818">Ümumi</translation>
 <translation id="1116694919640316211">Haqqımızda</translation>
-<translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="1275213816424141989">Bəlkə daha sonra</translation>
 <translation id="3624048886326677117">İzləyiciləri və reklamları bloklayın (aqressiv)</translation>
 <translation id="7151914815476509258">İzləyiciləri və reklamları bloklayın (standart)</translation>
@@ -567,7 +563,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="6697810017029555732">Uyğundur!</translation>
 <translation id="5981303441790732480">Mövcud cüzdanınıza idxal etmək</translation>
 <translation id="9111102763498581341">Kilidi aç</translation>
-<translation id="6657585470893396449">Şifrə</translation>
 <translation id="7553242001898162573">Şifrənizi daxil edin</translation>
 <translation id="5619264711680220002">Biometrik kilid açma</translation>
 <translation id="9195657745688986798">Pul Kisəsinin Kilidini Aç</translation>
@@ -735,6 +730,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="9091334651803050473">Bu zəmanət olmasa da, daha yüksək haqq ödəsəniz, minerlərin əməliyyatınızı prioritetləşdirməsi ehtimalı yüksəkdir.</translation>
 <translation id="2941112035454246133">Aşağı</translation>
 <translation id="7304030187361489308">Yüksək</translation>
+<translation id="1177863135347784049">Fərdi</translation>
 <translation id="4853037749278079787">Maksimum rüsum: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Cari əsas rüsum: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Qaz məbləği limiti</translation>
@@ -1055,31 +1051,6 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6393423486818299209">Cari xidmət təminatçınız və ya Wikimedia DNS istifadə edin</translation>
 <translation id="3401384982562827787">Cari xidmət təminatçınız və ya Cloudflare istifadə edin</translation>
 <translation id="8812367543786936496">Cari xidmət təminatçınız təhlükəsiz deyilsə, Brave təhlükəsiz alternativa DNS təminatçısından istifadə edəcək</translation>
-<translation id="5680678411439841197">şəhər</translation>
-<translation id="8185518433273977704">qəsəbə</translation>
-<translation id="4528386452965343421">prefektura</translation>
-<translation id="1589122976691792535">region</translation>
-<translation id="2221292964468054123">dövlət</translation>
-<translation id="3801482889636327368">təşkilat</translation>
-<translation id="1425162721525518064">şirkət</translation>
-<translation id="7568794877555549044">ölkə</translation>
-<translation id="5982110855572850497">etiket</translation>
-<translation id="6848689413353508904">konteyner</translation>
-<translation id="1496514951988037011">i̇stifadəçi adı</translation>
-<translation id="6155129418108337061">giriş</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">email</translation>
-<translation id="3488199663160411179">ad</translation>
-<translation id="793994607260936590">ad</translation>
-<translation id="1782612111936779655">son</translation>
-<translation id="7628132737455466188">tam</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobil</translation>
-<translation id="598301471034819706">ünvan</translation>
-<translation id="5557821203571216370">mənzil</translation>
-<translation id="8051552210542030943">pin kodu</translation>
-<translation id="5233247193491045452">poçt kodu</translation>
-<translation id="3300502432153878901">zi̇p</translation>
 <translation id="1381108437654541567">Çoxlu pəncərələri aktiv edin</translation>
 <translation id="6167344249617630304">Bir anda 5 pəncərə açın və tabları bir pəncərədən digərinə keçirin</translation>
 <translation id="1063948063403254568">Birdən çox pəncərə aşkarlandı</translation>
@@ -1153,6 +1124,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="7808889146555843082">Bu parolu sildikdə <ph name="SITE"/> saytında hesabınız silinməyəcək. Hesabınızı digərlərindən qorumaq üçün parolunuzu dəyişin, ya da onu <ph name="SITE"/> saytından silin.</translation>
 <translation id="2870560284913253234">Sayt</translation>
 <translation id="8503813439785031346">İstifadəçi adı</translation>
+<translation id="6657585470893396449">Şifrə</translation>
 <translation id="2278052315791335171">Bu parolu sildikdə <ph name="SITE"/> saytında hesabınız silinməyəcək</translation>
 <translation id="6891726759199484455">Parolu kopyalamaq üçün kiliddən çıxarın</translation>
 <translation id="5515439363601853141">Parola baxmaq üçün kiliddən çıxarın</translation>

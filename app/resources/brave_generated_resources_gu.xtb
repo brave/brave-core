@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
 <translation id="1035309871698658326">ઓપન હોવા પર, આ Leo ને ક્લાસિફાઈ કરવા માટે તમામ નોન-પ્રાઈવેટ ટૅબ્સના શીર્ષકો અને મૂળ આપોઆપ મોકલી દેશે.</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
+<translation id="9082792303833649978">આ સેટિંગ તમારા સંચાલક દ્વારા અથવા બીજાં Brave પોલીસી દ્વારા સંચાલિત છે.</translation>
 <translation id="1940221956626514677">ટૂલબાર કસ્ટમાઇઝ કરો</translation>
 <translation id="6501807887341963552">થીમ અને રંગો</translation>
 <translation id="6724227215236550330">સાચવેલા પાસવર્ડ્સ અહીં દેખાશે. આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, <ph name="BEGIN_LINK"/> એક CSV ફાઇલ પસંદ કરો<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">ટ્રી ટેબ્સનો ઉપયોગ કરો</translation>
 <translation id="5860254591544742609">શીર્ષક બાર બતાવો</translation>
 <translation id="4691131445504068802">મિનિમાઇઝ કરેલ હોવા પર સંપૂર્ણ રીતે છુપાવો</translation>
+<translation id="6763346436728173884">ટૅબ બંધ કરો બટન હંમેશા છુપાવો</translation>
 <translation id="4909269867860362936">મિનિમાઇઝ કરેલ હોવા પર હવરને આધારે આપમેળે વિસ્તારો</translation>
 <translation id="3367129510799209147">ટેબ હૉવર મોડ</translation>
 <translation id="8925055964134259461">દરે વિન્ડો માટે ઊભા ટૅબ આપમેળે જુદાંપણે વિસ્તારો</translation>
@@ -751,6 +753,7 @@
 <translation id="7141438739990875547">Bitcoin નેટવર્ક્સ</translation>
 <translation id="1077567586443625607">Zcash નેટવર્ક્સ</translation>
 <translation id="1177180573354712438">Cardano નેટવર્ક્સ</translation>
+<translation id="3176794108951154148">Polkadot નેટવર્ક્સ</translation>
 <translation id="3159419679550543837">ટેસ્ટ નેટવર્ક્સ બતાવો</translation>
 <translation id="3215569562674795548">નવી નેટવર્ક સંપાદિત કરો અથવા ઉમેરો</translation>
 <translation id="4418993400653250511">ચેનનો id</translation>

@@ -33,6 +33,7 @@
 <translation id="1409338233051621926">Tətbiqlər, sonra Defolt tətbiqlər seçiminə toxunun</translation>
 <translation id="1415402041810619267">URL tam deyil</translation>
 <translation id="1741136041592162279">Brave-un son tabları cihazla paylaşmasına icazə verməklə tətbiq siyahısında və axtarış nəticələrində onları görə bilərsiniz. Bunu istənilən vaxt Brave ayarlarında aktiv və ya deaktiv edə bilərsiniz.</translation>
+<translation id="1420688843103859429">Taçpeddə iki barmaqla çəkərək geri və irəli hərəkət edin</translation>
 <translation id="1432650420699700107">Saytlar lokal şəbəkənizdəki hər hansı cihaza qoşulmaq istəyə bilər</translation>
 <translation id="1448064542941920355">Zoom'u azaldın</translation>
 <translation id="1464044141348608623">Saytlara cihazınızdan nə zaman aktiv şəkildə istifadə etdiyinizi bilmək icazəsi verməyin</translation>
@@ -170,6 +171,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="2787357173144933081">Omnibox-u sürətlə başladın</translation>
 <translation id="2789132527330338807">Saytlar ətrafın 3D xəritəsini yaratmaq və ya kameranın mövqeyini izləmək istəyə bilər</translation>
 <translation id="2790501146643349491">Aktiv ediləndə son qapadılan saytlar data göndərilməsi və qəbulunu tamamlaya bilər. Deaktiv ediləndə son qapadılan saytlar data göndərilməsi və ya qəbulunu tamamlaya bilməz.</translation>
+<translation id="1708222144403389505">Brave-dan maksimum yararlanmağınıza kömək edəcək faydalı ipucular üçün bildirişləri aktiv edin</translation>
 <translation id="2795716239552913152">Saytlar adətən yerli xəbərlər və ya yaxınlıqdakı mağazalar kimi müvafiq xüsusiyyətlər və məlumatlar üçün məkanınızdan istifadə edir</translation>
 <translation id="2800760947029405028">Təsvir yükləyin</translation>
 <translation id="2802908157808345702">Saytlara popap bildirişlər göndərmək və yönləndirmələrdən istifadə etmək icazəsi verməyin</translation>
@@ -182,6 +184,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="2903493209154104877">Ünvanlar</translation>
 <translation id="2910701580606108292">Saytlar qorunan kontenti göstərmədən öncə icazə tələb edilsin</translation>
 <translation id="2918484639460781603">Ayarlara keçin</translation>
+<translation id="4577990953241424923">Brave məsləhətləri üzrə bildirişlər əldə edin</translation>
 <translation id="2932883381142163287">Sui-istifadəni xəbər verin</translation>
 <translation id="2939338015096024043">Aktiv ediləndə saytlar kamera mövqeyini izləmək və ətrafınız haqqında məlumat əldə etmək üçün icazə istəyə bilər. Deaktiv ediləndə saytlar kamera mövqeyini izləyə və ya ətrafınız haqqında məlumat əldə edə bilməz.</translation>
 <translation id="2968755619301702150">Sertifikat izləyici</translation>
@@ -218,7 +221,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3285500645985761267">Əlaqədar saytlara qrupdakı fəaliyyətinizi görməyə icazə verin</translation>
 <translation id="3295019059349372795">Fəsil 11: Məftunedici Zümrüd Şəhəri Oz</translation>
 <translation id="3295602654194328831">Məlumatı gizlədin</translation>
-<translation id="3328801116991980348">Sayt haqqında</translation>
 <translation id="3333961966071413176">Bütün kontaktar</translation>
 <translation id="3360338140203645771">Zum səviyyəsi silinsin?</translation>
 <translation id="3362437373201486687">Bluetooth cihazları skan edilir</translation>
@@ -241,6 +243,8 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3611658447322220736">Son qapadılan saytlar data göndərilməsi və qəbulunu bitirə bilər</translation>
 <translation id="3619294456800709762">Saytlar şəkildə şəkil rejiminə avtomatik daxil ola bilər</translation>
 <translation id="3628308229821498208">Təklif edilən axtarışlar</translation>
+<translation id="3632460243282703117">Abunə olun</translation>
+<translation id="363748948745453283">Təxmini məkandan istifadə edilir</translation>
 <translation id="3641456520301071208">Saytlar məkanınızı tələb edə bilər</translation>
 <translation id="3658847490588580244">Defolt brauzerin aşağıdakı vərəqi</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> sayt qrupdakı fəaliyyətinizi görə bilən <ph name="RWS_OWNER"/> adlı şəxsin saytlar qrupundadır}other{<ph name="RWS_MEMBERS_COUNT"/> sayt qrupdakı fəaliyyətinizi görə bilən <ph name="RWS_OWNER"/> adlı şəxsin saytlar qrupundadır}}</translation>
@@ -335,10 +339,12 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="4635969503923889910">Saytlara NFC cihazlarından istifadə etmək icazəsi verməyin</translation>
 <translation id="4644713492825682049">Silin və sıfırlayın</translation>
 <translation id="4645575059429386691">Valideyniniz tərəfindən idarə olunur</translation>
+<translation id="4652266463001779298">İcazə verilmir</translation>
 <translation id="4663373278480897665">Kameraya icazə verildi</translation>
 <translation id="4670064810192446073">Virtual reallıq</translation>
 <translation id="5652778654712411580">Brauzer tətbiqinə, sonra Brave-a toxunun</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/> tətbiqinə əl izləmədən istifadə etmək imkanı vermək üçün <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> əl izləməni də yandırın.</translation>
+<translation id="4688045258817337666">Kartlarınızı idarə edin</translation>
 <translation id="4751476147751820511">Hərəkət və ışıq sensorları</translation>
 <translation id="4755971844837804407">Aktiv ediləndə saytlar istənilən reklamı göstərə bilər. Deaktiv ediləndə saytlar bezdirici və ya aldadıcı reklam göstərə bilməz.</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -429,8 +435,10 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5750869797196646528">Əlin izlənilməsi</translation>
 <translation id="5753570386948603678">Tarixçədən silin</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> bloklanıb</translation>
+<translation id="5792627621688759634">Taçped vasitəsilə səhifələr arasında keçid edin</translation>
 <translation id="5801457289562671820">Təşkilatınız tərəfindən tövsiyə olunur</translation>
 <translation id="5804241973901381774">İcazələr</translation>
+<translation id="5817042798620209981">Sayt haqqında məlumat, dialoq</translation>
 <translation id="5822675474983796325">Yeni tab səhifəsinin tam hündürlükdə açılmış aşağıdakı vərəqini fərdiləşdirin</translation>
 <translation id="5833899990800318936">Saytlara JavaScript icazəsi verməyin</translation>
 <translation id="583673505367439042">Saytlar cihazınızdakı faylları və qovluqları redaktə etmək üçün icazə istəyə bilər</translation>
@@ -512,6 +520,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="662080504995468778">Qalın</translation>
 <translation id="6630443592285535486">Hex kodunu bura daxil edin</translation>
 <translation id="6635327442719709864">Aktiv olduqda saytlar silsilə portlardan istifadə etmək istəyə bilər. Deaktiv olduqda saytlar silsilə portlardan istifadə edə bilməz.</translation>
+<translation id="6669390930482049506">Mənə bildirin</translation>
 <translation id="6678072580827808850">Təhlükəsizlik yoxlanışını nəzərdən keçirin</translation>
 <translation id="6682057173375416470">Yeni Tab səhifəsində təklif olunan məqalələri əldə edin</translation>
 <translation id="6683865262523156564">Bu sayt fəaliyyətinizi görə bilən qrupdadır. Qrup <ph name="RWS_OWNER"/> tərəfindən təyin edilib</translation>
@@ -621,6 +630,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7990211076305263060">Aktiv ediləndə saytlar mikrofondan istifadə icazəsi istəyə bilər. Deaktiv ediləndə saytlar mikrofondan istifadə edə bilməz.</translation>
 <translation id="8007176423574883786">Bu cihaz üçün söndürüldükdə</translation>
 <translation id="802154636333426148">Endirmə alınmadı</translation>
+<translation id="8033047164036749181">Bu saytdan gələn bildirişlərə abunə olun</translation>
 <translation id="8042586301629853791">Sıralama metodu:</translation>
 <translation id="8051193500142930381">Kamera tələb edən xüsusiyyətlər işləmir</translation>
 <translation id="2495032782748793764">Defolt Brave</translation>
@@ -671,6 +681,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8487700953926739672">Oflayn olaraq əlçatan</translation>
 <translation id="848952951823693243">Həmişə mobil sayt tələb edin</translation>
 <translation id="8492822722330266509">Saytlar ani bildirişlər göndərə və yönləndirmələrdən istifadə edə bilər</translation>
+<translation id="8493548450030356203">Popap zum pəncərəsi</translation>
 <translation id="8499083585497694743">Mikrofonu səssiz rejimdən çıxarın</translation>
 <translation id="8514955299594277296">Saytlara cihazınızda məlumat saxlamağa icazə verməyin (tövsiyə edilmir)</translation>
 <translation id="851751545965956758">Saytların cihazlara qoşulmasını blok edin</translation>

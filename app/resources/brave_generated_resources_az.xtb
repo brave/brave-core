@@ -332,6 +332,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="7557539689487606886">Premiuma keç</translation>
 <translation id="1035309871698658326">Açıldıqda, bu, bütün şəxsi olmayan tabların başlıqlarını və mənşəyini Leo'ya təsnif etmək üçün avtomatik olaraq göndərəcək.</translation>
 <translation id="3435896845095436175">Aktiv et</translation>
+<translation id="9082792303833649978">Bu sazlama administratorunuz və ya başqa bir Brave siyasəti tərəfindən idarə olunur.</translation>
 <translation id="1940221956626514677">Alətlər panelini fərdiləşdir</translation>
 <translation id="6501807887341963552">Tema və rənglər</translation>
 <translation id="6724227215236550330">Saxlanmış parollar burada görünəcək. Bu cihazda <ph name="BRAND"/>-a parolları idxal etmək üçün, <ph name="BEGIN_LINK"/> CSV faylı seçin<ph name="END_LINK"/>.</translation>
@@ -375,6 +376,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="2263346047290834619">Ağac tablarını istifadə et</translation>
 <translation id="5860254591544742609">Başlıq çubuğunu göstər</translation>
 <translation id="4691131445504068802">Minimizə edildikdə tamamilə gizlət</translation>
+<translation id="6763346436728173884">Sekmə bağlama düyməsini həmişə gizlət</translation>
 <translation id="4909269867860362936">Minimizə edildikdə üzərinə gəldikdə avtomatik genişlən</translation>
 <translation id="3367129510799209147">Tab hover rejimi</translation>
 <translation id="8925055964134259461">Şaquli vərəqləri pəncərə üzrə müstəqil şəkildə avtomatik genişlət</translation>
@@ -747,6 +749,7 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="7141438739990875547">Bitcoin şəbəkələri</translation>
 <translation id="1077567586443625607">Zcash şəbəkələri</translation>
 <translation id="1177180573354712438">Cardano şəbəkələri</translation>
+<translation id="3176794108951154148">Polkadot şəbəkələri</translation>
 <translation id="3159419679550543837">Test şəbəkələrini göstər</translation>
 <translation id="3215569562674795548">Yeni şəbəkə redaktə edin və ya əlavə edin</translation>
 <translation id="4418993400653250511">Şəxsi identifikator (chain ID)</translation>
