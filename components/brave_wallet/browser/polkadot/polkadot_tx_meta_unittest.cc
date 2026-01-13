@@ -105,7 +105,7 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
   const auto& tx_data = ti->tx_data_union->get_polkadot_tx_data();
 
   EXPECT_EQ(tx_data->to, kBob);
-  EXPECT_EQ(tx_data->amount, mojom::uint128::New(0, 1234));
+  EXPECT_EQ(tx_data->amount, 1234u);
   EXPECT_EQ(tx_data->fee, 0u);
 }
 

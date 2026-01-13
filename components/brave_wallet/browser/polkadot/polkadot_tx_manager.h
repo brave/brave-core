@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_MANAGER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
-#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/origin.h"
@@ -22,17 +22,12 @@ class KeyringService;
 class TxService;
 class TxStorageDelegate;
 class AccountResolverDelegate;
-class PolkadotWalletService;
 
 // Polkadot transaction manager
 class PolkadotTxManager : public TxManager,
                           public PolkadotBlockTracker::Observer {
  public:
-  using AddUnapprovedPolkadotTransactionCallback =
-      mojom::TxService::AddUnapprovedPolkadotTransactionCallback;
-
   PolkadotTxManager(TxService& tx_service,
-                    PolkadotWalletService& polkadot_wallet_service,
                     KeyringService& keyring_service,
                     TxStorageDelegate& delegate,
                     AccountResolverDelegate& account_resolver_delegate);
@@ -47,10 +42,6 @@ class PolkadotTxManager : public TxManager,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback callback) override;
-
-  void AddUnapprovedPolkadotTransaction(
-      mojom::NewPolkadotTransactionParamsPtr params,
-      AddUnapprovedPolkadotTransactionCallback callback);
 
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback callback) override;
@@ -75,21 +66,12 @@ class PolkadotTxManager : public TxManager,
   FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnLatestBlock);
   FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnNewBlock);
 
-  void OnGetChainMetadataForUnapproved(
-      mojom::NewPolkadotTransactionParamsPtr params,
-      AddUnapprovedPolkadotTransactionCallback callback,
-      const base::expected<PolkadotChainMetadata, std::string>& chain_metadata);
-
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;
   void OnNewBlock(const std::string& chain_id, uint64_t block_num) override;
 
   // Helper methods
   PolkadotBlockTracker& GetPolkadotBlockTracker();
-
-  raw_ref<PolkadotWalletService> polkadot_wallet_service_;
-
-  base::WeakPtrFactory<PolkadotTxManager> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

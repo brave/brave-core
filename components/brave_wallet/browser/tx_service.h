@@ -40,7 +40,6 @@ class JsonRpcService;
 class BitcoinWalletService;
 class ZCashWalletService;
 class CardanoWalletService;
-class PolkadotWalletService;
 class KeyringService;
 class TxManager;
 class TxStorageDelegate;
@@ -51,7 +50,6 @@ class BitcoinTxManager;
 class FilTxManager;
 class ZCashTxManager;
 class CardanoTxManager;
-class PolkadotTxManager;
 
 class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
@@ -63,7 +61,6 @@ class TxService : public mojom::TxService,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
             CardanoWalletService* cardano_wallet_service,
-            PolkadotWalletService* polkadot_wallet_service,
             KeyringService& keyring_service,
             PrefService* prefs,
             const base::FilePath& wallet_base_directory,
@@ -103,9 +100,6 @@ class TxService : public mojom::TxService,
   void AddUnapprovedCardanoTransaction(
       mojom::NewCardanoTransactionParamsPtr params,
       AddUnapprovedCardanoTransactionCallback callback) override;
-  void AddUnapprovedPolkadotTransaction(
-      mojom::NewPolkadotTransactionParamsPtr params,
-      AddUnapprovedPolkadotTransactionCallback callback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -286,7 +280,6 @@ class TxService : public mojom::TxService,
   BitcoinTxManager* GetBitcoinTxManager();
   ZCashTxManager* GetZCashTxManager();
   CardanoTxManager* GetCardanoTxManager();
-  PolkadotTxManager* GetPolkadotTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
