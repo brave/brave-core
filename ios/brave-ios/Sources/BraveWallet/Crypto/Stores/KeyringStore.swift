@@ -268,9 +268,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       },
       _backedUp: { [weak self] in
         self?.updateInfo()
-        if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-          self?.isWalletWebUIBackedUp = true
-        }
+        self?.isWalletWebUIBackedUp = true
       },
       _accountsChanged: { [weak self] in
         self?.updateInfo()
