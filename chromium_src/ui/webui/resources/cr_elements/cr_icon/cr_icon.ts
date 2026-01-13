@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// <if expr="not is_android and not is_ios">
 import { CrIconElement } from './cr_icon-chromium.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { injectStyle } from '//resources/brave/lit_overriding.js'
@@ -125,5 +126,6 @@ const old = (CrIconElement.prototype as any).updateIcon_;
         old.apply(this, args)
     }
 }
+// </if>
 
 export * from './cr_icon-chromium.js'
