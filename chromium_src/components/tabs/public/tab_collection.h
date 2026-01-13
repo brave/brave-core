@@ -10,7 +10,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 // Add new collection Type enum value for Tree tab feature on Desktop.
-#define SPLIT SPLIT, TREE_NODE
+#define UNPINNED UNPINNED, TREE_NODE
 
 // Make static version of GetPassKey() and GetChildren() available for
 // TreeTabNode to build/flatten tree tabs.
@@ -35,7 +35,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef OnTabRemovedFromTree
-#undef SPLIT
+#undef UNPINNED
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_COLLECTION_H_
