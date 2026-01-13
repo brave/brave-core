@@ -8207,7 +8207,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Night mode will effect website appearance and general system appearance at the same time.",
+        "Night mode will affect website appearance and general system appearance at the same time.",
       comment:
         "A table cell subtitle for Night Mode - explanatory element for the toggle preference"
     )
