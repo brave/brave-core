@@ -28,7 +28,8 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 
   UpdateTabStripMargin();
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          tab_strip_->GetBrowserWindowInterface())) {
     LayoutSuperclass<HorizontalTabStripRegionView>(this);
 
     // Ensure that the new tab button is positioned after the last tab, with the
@@ -50,8 +51,8 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   HorizontalTabStripRegionView::UpdateTabStripMargin();
 
   gfx::Insets margins;
-  bool vertical_tabs =
-      tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser());
+  bool vertical_tabs = tabs::utils::ShouldShowBraveVerticalTabs(
+      tab_strip_->GetBrowserWindowInterface());
 
   // In horizontal mode, take the current right margin. It is required so that
   // the new tab button will not be covered by the frame grab handle.

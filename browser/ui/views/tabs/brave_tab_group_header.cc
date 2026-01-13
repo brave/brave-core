@@ -114,7 +114,7 @@ void BraveTabGroupHeader::Layout(PassKey) {
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_slot_controller_->GetBrowser());
+      tab_slot_controller_->GetBrowserWindowInterface());
 }
 
 void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
@@ -131,8 +131,8 @@ SkColor BraveTabGroupHeader::GetGroupColor() const {
   auto group_id = group().value();
 
   auto model_contains_group = [&]() {
-    if (auto* browser = tab_slot_controller_->GetBrowser()) {
-      return browser->tab_strip_model()->group_model()->ContainsTabGroup(
+    if (auto* browser = tab_slot_controller_->GetBrowserWindowInterface()) {
+      return browser->GetTabStripModel()->group_model()->ContainsTabGroup(
           group_id);
     }
     return false;
