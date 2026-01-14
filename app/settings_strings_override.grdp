@@ -108,9 +108,6 @@
   <message name="IDS_SETTINGS_COOKIES_RELATED_WEBSITE_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control related website sets enabled sharing between related sites">
     A company can define a group of sites that can use cookies to share your activity in the group. This is off in Private.
   </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="Description of the first bullet for tracking protection settings. Explains what limiting third-party cookies means.">
-    Most sites can’t use third-party cookies to track you as you browse and sites can’t use third-party cookies in Private mode.
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current Private session only.">
     Current Private session only
   </message>

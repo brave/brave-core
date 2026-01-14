@@ -14,10 +14,6 @@
     </if>
   <if expr="not is_android and not is_ios">
     </if>
-  <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_BY_ADMINISTRATOR" desc="Summary in the error page when an administrator policy blocks a request.">
-    The profile who set up this computer has chosen to block this site.
-  </message>
-
   <if expr="is_android">
     </if>
   <if expr="not is_ios or not is_android">
@@ -34,4 +30,13 @@
     </if>
   <if expr="not is_android and not is_ios">
     </if>
-  </grit-part>
+  <message name="IDS_ERRORPAGES_HEADING_BLOCKED_IN_INCOGNITO_BY_ADMINISTRATOR" desc="Heading of the error page when an administrator policy blocks a URL in Private mode.">
+    You can’t visit this page in Private mode
+  </message>
+  <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_IN_INCOGNITO_BY_ADMINISTRATOR" desc="Summary in the error page when an administrator policy blocks a URL in Private mode.">
+    Your organization has blocked <ph name="HOST_NAME">&lt;span&gt;$1&lt;/span&gt;<ex>www.example.com</ex></ph> in Private mode.
+  </message>
+  <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_IN_INCOGNITO_BY_ADMINISTRATOR_SCHEME" desc="Summary in the error page when an administrator policy blocks a URL scheme in Private mode.">
+    Your organization has blocked “<ph name="HOST_NAME">&lt;span&gt;$1&lt;/span&gt;<ex>mailto</ex></ph>” links in Private mode.
+  </message>
+</grit-part>

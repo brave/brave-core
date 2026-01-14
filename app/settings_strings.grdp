@@ -682,6 +682,12 @@
       =1 {1 reused password}
       other {{NUM_REUSED} reused passwords}}
   </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_TITLE" desc="The title of the toggle shown in the settings page that allows managing the authentication requirement before seeings enhanced autofill settings sensitive fields, such as passport number and natinal id card number." translateable="false">
+    Use your screen lock when filling sensitive info
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_SUBTITLE" desc="The subtitle of the toggle shown in the settings page that allows managing the authentication requirement before seeings enhanced autofill settings sensitive fields, such as passport number and natinal id card number." translateable="false">
+    If you share this device with others, you can use your screen lock to verify it's you whenever you use a saved sensitive info like passports or drivers licenses.
+  </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_PAGE_TITLE" desc="The title of the page in Settings that allows managing the enhanced autofill settings.">
     Enhanced autofill
   </message>
@@ -729,6 +735,24 @@
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_ADD_OR_EDIT_DIALOG_VALIDATION_ERROR" desc="An error message if the user clicks Save without having filled at least one value in the form.">
     Fill at least one field before saving
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TOGGLE_LABEL" desc="Label for the toggle in Settings that allows managing the full page save settings for wallet.">
+    Save info to Brave Wallet from pages you view
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TOGGLE_SUB_LABEL" desc="The sub-label of the page in Settings that allows managing the full page save settings for wallet.">
+    Access your passes, like event tickets and loyalty cards, from your device
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_WHEN_ON_SAVED_INFO" desc="Bullet 1 of 2 that appears beneath the 'When on' title for wallet.">
+    Wallet can offer to save info from pages you're viewing, like tickets you purchase
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_WHEN_ON_NOTIFICATIONS" desc="Bullet 2 of 2 that appears beneath the 'When on' title for wallet.">
+    Later, Wallet can send you notifications about your events
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TO_CONSIDER_DATA_USAGE" desc="Bullet 1 of 2 that appears beneath the 'Things to consider' title for wallet.">
+    To offer suggestions and improve this feature, the URL and full page content of the site you visit are shared with Brave
+  </message>
+  <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TO_CONSIDER_DATA_STORAGE" desc="Bullet 2 of 2 that appears beneath the 'Things to consider' title for wallet.">
+    Your info is available in Brave Wallet on any signed-in device
   </message>
 
   <if expr="is_win or is_macosx">
@@ -1964,6 +1988,9 @@
   </message>
 
   <!-- Bundled Security Settings (chrome://settings/security) -->
+  <message name="IDS_SETTINGS_SECURITY_BUNDLE_TOAST_FOR_USER_OPTED_INTO_ENHANCED_BUNDLE" desc="Text on the toast shown when an Enhanced Safe Browsing user is enrolled in the enhanced bundle for bundled security settings.">
+    Your security settings were upgraded
+  </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_RESET_TO_DEFAULTS_BUTTON_LABEL" desc="Label of button which resets security-settings-bundle to default settings">
     Reset to defaults
   </message>
@@ -1985,6 +2012,18 @@
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_TITLE" desc="Name of Safe Browsing standard protection">
     Standard Protection
   </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_SUBTITLE" desc="Description of Safe Browsing standard protection">
+    Protects you from sites, downloads, and extensions that are known to be dangerous
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_WHAT_IT_DOES_HEADING" desc="Heading of the Safe Browsing standard protection column describing what it does">
+    What it does
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_WHAT_IT_DOES_CONTENT" desc="Content of the Safe Browsing standard protection column describing what it does">
+    Warns you about sites, downloads, and extensions that are known to be dangerous. You can turn off these warnings at any time. If you see a warning for legitimate content, you can <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://safebrowsing.google.com/safebrowsing/report_error/"&gt;</ph>report an error<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_HOW_IT_WORKS_HEADING" desc="Heading of the Safe Browsing standard protection column describing how it works">
+    How it works
+  </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_STANDARD_BULLET_ONE" desc="First bullet point under the security settings standard bundle section">
     Uses on-device methods to detect threats
   </message>
@@ -1996,6 +2035,9 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_TITLE" desc="Name of Safe Browsing enhanced protection">
     Enhanced Protection
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE" desc="Description of Safe Browsing enhanced protection">
+    Real-time, proactive protection by sending more information to Google Safe Browsing
   </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_ENHANCED_BULLET_ONE" desc="First bullet point under the security settings enhanced bundle section">
     Sends the URL and page content to Brave to detect threats faster
@@ -2018,8 +2060,26 @@
   <message name="IDS_SETTINGS_SECURITY_ACCOUNT_AND_NETWORK_SECTION_TITLE" desc="Name of the security page's 'account and network protection' section.">
     Account and network protection
   </message>
+  <message name="IDS_SETTINGS_SECURITY_ADVANCED_PROTECTION_PROGRAM_LABEL" desc="Description of the Brave Advanced Protection Program. Includes a link which takes users to the Brave Advanced Protection Program external webpage.">
+    If you are an activist, journalist, public figure, election worker, or someone else in a uniquely high risk role, you may be interested in Brave's <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Advanced Protection Program<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
   <message name="IDS_SETTINGS_SECURITY_PASSWORDS_LEAK_DETECTION_TITLE" desc="Label for a toggle that allows users to choose whether chrome should check if credentials have been part of a leak.">
     Compromised password detection
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_TITLE" desc="Name of Secure DNS security setting">
+    Secure DNS
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_DESCRIPTION" desc="Description of Secure DNS security setting">
+    Encrypts navigation requests so attackers on the same network can't see your traffic
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_DEFAULT" desc="Name of Secure DNS default option">
+    Use default if available
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_FALLBACK" desc="Name of Secure DNS fallback option">
+    Use default if available and Brave DNS as backup
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_CUSTOM" desc="Name of Secure DNS custom option">
+    Use always with selected DNS over HTTPS provider
   </message>
 
   <!-- Secure Connections -->
@@ -2064,6 +2124,26 @@
   </message>
   <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_BALANCED_SUBLABEL" desc="Secondary, continued explanation for the less strict form of HTTPS-First Mode">
     Doesn’t warn you for private sites, such as your company’s intranet
+  </message>
+
+  <!-- Secure Connections (in bundled version of security settings page) -->
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_TOGGLE_LABEL" desc="Label for the HTTPS-First Mode toggle in the Security settings page">
+    Secure connections
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_TOGGLE_SUBLABEL" desc="Sublabel explaining HTTPS-First Mode in the Security settings page">
+    Upgrades connections to HTTPS when possible and warns you before making insecure connections
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_BALANCED_LABEL" desc="Label for radio button to enable the less-strict form of HTTPS-First Mode">
+    On open internet connections
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_BALANCED_SUBLABEL" desc="Sublabel explaining the less-strict form of HTTPS-First Mode">
+    Warns you about insecure connections on the open internet
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_STRICT_LABEL" desc="Label for radio button to enable the stricter form of HTTPS-First Mode">
+    On all connections
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_HTTPS_FIRST_MODE_STRICT_SUBLABEL" desc="Sublabel explaining the stricter form of HTTPS-First Mode">
+    Warns you about all insecure connections, including private intranets
   </message>
 
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
@@ -3083,6 +3163,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_HAND_TRACKING_BLOCK" desc="The block label for the hand tracking feature in site settings.">
     Don't allow sites to track your hands
   </message>
+
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_ACCESS_DESCRIPTION" desc="Description of the local network access content setting.">
     Sites can use this feature to look for and connect to any device on your local network
   </message>
@@ -3098,6 +3179,39 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_ACCESS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the local network access content setting.">
     Not allowed to connect to any device on your local network
   </message>
+
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_DESCRIPTION" desc="Description of the local network content setting.">
+    Sites can use this feature to access other devices on your local network
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_ASK" desc="Label for the enabled option of the local network content setting.">
+    Sites can ask to access other devices on your local network
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_BLOCK" desc="Label for the disabled option of the local network content setting.">
+    Don't allow sites to access other devices on your local network
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the local network content setting.">
+    Allowed to access other devices on your local network
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCAL_NETWORK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the local network content setting.">
+    Not allowed to access other devices on your local network
+  </message>
+
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOOPBACK_NETWORK_DESCRIPTION" desc="Description of the loopback network content setting.">
+    Sites can use this feature to access other apps and services on this device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOOPBACK_NETWORK_ASK" desc="Label for the enabled option of the loopback network content setting.">
+    Sites can ask to access other apps and services on this device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOOPBACK_NETWORK_BLOCK" desc="Label for the disabled option of the loopback network content setting.">
+    Don't allow sites to access other apps and services on this device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOOPBACK_NETWORK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the loopback network content setting.">
+    Allowed to access other apps and services on this device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOOPBACK_NETWORK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the loopback network content setting.">
+    Not allowed to access other apps and services on this device
+  </message>
+
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_DESCRIPTION" desc="An explanation of what third-party cookies are that appear beneath the page title: 'Third-party cookies'. * 'embed': A site you visit uses HTML to construct the page. HTML tags include references to images, like img src='filename.jpg', that are used to show an image. 'filename.jpg' can be a local file owned by the site you visit or a site can embed an external file with something like img src='www.third-party-site.com/images/filename.jpg'. This image is embedded into the site you visit and www.third-party-site.com can set a third-party cookie onto your device.">
     A site you visit can embed content from other sites, for example, images, ads, and text. Cookies set by these other sites are called third-party cookies.
   </message>
@@ -3128,35 +3242,8 @@
   <message name="IDS_SETTINGS_COOKIES_ALL_SITES_LINK" desc="Label for the link row which takes the user to the page listing all sites with storage and permissions">
     See all site data and permissions
   </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_PAGE_DESCRIPTION" desc="Explanatory text for the Tracking Protection settings page.">
-    Brave limits the type of information sites can use to track you as you browse. You can change your settings to choose your own level of protection.
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_ONE" desc="The first bullet for Tracking Protection settings. Informs users that Brave will limit third-party cookies.">
-    Brave automatically limits third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="Description of the first bullet for tracking protection settings. Explains what limiting third-party cookies means.">
-    Most sites can’t use third-party cookies to track you as you browse and sites can’t use third-party cookies in Private mode.
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_TWO" desc="The second bullet for Tracking Protection settings. Informs users that most sites should work as expected.">
-    Most sites should work as expected
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_TWO_DESCRIPTION" desc="Description of the second bullet for Tracking Protection settings. Explains that you can temporarilty allow a site to use third-party cookies if it isn't working. Contains a learn more link to a help center article.">
-    If a site isn’t working, you can try giving it temporary permission to use third-party cookies. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2" aria-description="$3"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_TWO_LEARN_MORE_ARIA_LABEL" desc="Screenreader text for the 'Learn more' link in the second bullet of Tracking Protection settings.">
-    Learn more about giving a site temporary permission to use third-party cookies
-  </message>
   <message name="IDS_SETTINGS_TRACKING_PROTECTION_ADVANCED_LABEL" desc="Label for a section on the Tracking Protection settings page containing advanced options.">
     Advanced
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_THIRD_PARTY_COOKIES_TOGGLE_LABEL" desc="Label for a toggle that blocks all third-party cookies when on.">
-    Block all third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_THIRD_PARTY_COOKIES_TOGGLE_SUB_LABEL" desc="Sub-label for the third-party cookie blocking toggle. Explains that features on some sites may not work when the toggle is on and third-party cookies are blocked.">
-    Features on some sites may not work.
-  </message>
-  <message name="IDS_SETTINGS_TRACKING_PROTECTION_THIRD_PARTY_COOKIES_LEARN_MORE_ARIA_LABEL" desc="Screenreader text for the 'Learn more' link in the sub-label of the third-party cookie blocking toggle.">
-    Learn more about sites that may not work when blocking third-party cookies
   </message>
   <message name="IDS_SETTINGS_TRACKING_PROTECTION_DO_NOT_TRACK_TOGGLE_SUB_LABEL" desc="Sub-label for the Do Not Track toggle. Explains that sites may not respond to 'do not track' requests even when this toggle is on.">
     Sites use their discretion when responding to this request
