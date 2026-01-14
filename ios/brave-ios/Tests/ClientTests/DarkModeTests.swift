@@ -16,6 +16,7 @@ class DarkModeTests: XCTestCase {
       "m.twitter.com",
       "instagram.com",
       "www.instagram.com",
+      "m.instagram.com",
       "youtube.com",
       "m.youtube.com",
       "www.youtube.com",
