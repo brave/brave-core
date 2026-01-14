@@ -12,6 +12,9 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
 } from '../../../../../common/slices/api.slice'
+
+// Components
+import CreateAccountTab from '../../../../../components/buy-send-swap/create-account/index'
 import {
   TokenBalancesRegistry, //
 } from '../../../../../common/slices/entities/token-balance.entity'
@@ -73,6 +76,7 @@ interface Props {
   tokenBalancesRegistry?: TokenBalancesRegistry | null
   spotPrice?: BraveWallet.AssetPrice
   onSelectAccount: (account: BraveWallet.AccountInfo) => void
+  onCancel?: () => void
 }
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
@@ -80,16 +84,53 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const SelectAccount = (props: Props) => {
-  const { token, accounts, tokenBalancesRegistry, spotPrice, onSelectAccount } =
-    props
+  const {
+    token,
+    accounts,
+    tokenBalancesRegistry,
+    spotPrice,
+    onSelectAccount,
+    onCancel,
+  } = props
 
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token)
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // State
-  const [selectedAccount, setSelectedAccount] =
-    React.useState<BraveWallet.AccountInfo>(accounts[0])
+  const [selectedAccount, setSelectedAccount] = React.useState<
+    BraveWallet.AccountInfo | undefined
+  >(accounts.length > 0 ? accounts[0] : undefined)
+
+  // Callbacks
+  const handleAccountCreated = React.useCallback(
+    (newAccount: BraveWallet.AccountInfo) => {
+      onSelectAccount(newAccount)
+    },
+    [onSelectAccount],
+  )
+
+  const handleCancel = React.useCallback(() => {
+    if (onCancel) {
+      onCancel()
+    }
+  }, [onCancel])
+
+  // Show account creation UI when no accounts exist
+  if (accounts.length === 0 && tokensNetwork) {
+    return (
+      <CreateAccountTab
+        network={tokensNetwork}
+        onCreated={handleAccountCreated}
+        onCancel={handleCancel}
+      />
+    )
+  }
+
+  // Early return if no selected account
+  if (!selectedAccount) {
+    return null
+  }
 
   return (
     <Column
@@ -192,8 +233,9 @@ export const SelectAccount = (props: Props) => {
       </ScrollableColumn>
       <Row padding='16px'>
         <LeoSquaredButton
-          onClick={() => onSelectAccount(selectedAccount)}
+          onClick={() => selectedAccount && onSelectAccount(selectedAccount)}
           size='large'
+          isDisabled={!selectedAccount}
         >
           {getLocale('braveWalletButtonContinue')}
         </LeoSquaredButton>
