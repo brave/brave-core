@@ -35,10 +35,15 @@ void TreeTabModel::AddTreeTabNode(const tabs::TreeTabNode& node) {
 
   auto notification = [](base::WeakPtr<TreeTabModel> model,
                          const tree_tab::TreeTabNodeId& id) {
-    if (model) {
-      model->add_tree_tab_node_callback_list_.Notify(
-          *model->tree_tab_nodes_.at(id));
+    if (!model) {
+      return;
     }
+
+    auto iter = model->tree_tab_nodes_.find(id);
+    if (iter == model->tree_tab_nodes_.end()) {
+      return;
+    }
+    model->add_tree_tab_node_callback_list_.Notify(*iter->second);
   };
 
   // Defer notification to make sure the tab creation operation is completed
