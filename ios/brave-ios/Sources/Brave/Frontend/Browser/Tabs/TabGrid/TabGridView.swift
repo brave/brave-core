@@ -462,11 +462,9 @@ struct TabGridView: View {
           Text(Strings.TabGrid.moreMenuButtonTitle)
             .padding(4)
             .lineLimit(1)
-            .minimumScaleFactor(0.7)
             .fixedSize(horizontal: false, vertical: true)
         }
         .menuOrder(.fixed)
-        .frame(maxWidth: 100)
 
         Spacer()
 
@@ -479,11 +477,9 @@ struct TabGridView: View {
           Text(Strings.done)
             .padding(4)
             .lineLimit(1)
-            .minimumScaleFactor(0.7)
             .fixedSize(horizontal: false, vertical: true)
         }
         .keyboardShortcut(.defaultAction)
-        .frame(maxWidth: 100)
       }
       .foregroundStyle(Color(braveSystemName: .textSecondary))
       .fontWeight(.medium)
