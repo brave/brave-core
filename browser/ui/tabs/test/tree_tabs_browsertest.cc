@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -11,6 +12,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
@@ -18,6 +20,8 @@
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 class TreeTabsBrowserTest : public InProcessBrowserTest {
  protected:
@@ -453,4 +457,140 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
     EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
               tabs::TabCollection::Type::UNPINNED);
   }
+}
+
+// Mock observer for testing OnTreeTabChanged callback.
+class MockTabStripModelObserver : public TabStripModelObserver {
+ public:
+  MOCK_METHOD(void, OnTreeTabChanged, (const TreeTabChange& change), ());
+};
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       OnTreeTabChanged_CalledWhenTreeNodeCreated) {
+  // Add tabs to the browser.
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+
+  // Create and register mock observer.
+  MockTabStripModelObserver mock_observer;
+  tab_strip_model().AddObserver(&mock_observer);
+
+  // Verify initial flat structure.
+  ASSERT_EQ(3, tab_strip_model().count());
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    ASSERT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::UNPINNED);
+  }
+
+  // Use RunLoop to wait for all callbacks to be invoked.
+  base::RunLoop run_loop;
+  int call_count = 0;
+  const int expected_calls = 3;
+
+  // Expect OnTreeTabChanged to be called with kNodeCreated for each tab.
+  // We have 3 tabs, so expect 3 calls with kNodeCreated type.
+  // Also verify the CreatedChange contains valid node reference.
+  EXPECT_CALL(mock_observer,
+              OnTreeTabChanged(testing::Field(&TreeTabChange::type,
+                                              TreeTabChange::kNodeCreated)))
+      .Times(expected_calls)
+      .WillRepeatedly([&](const TreeTabChange& change) {
+        // Verify we can get the CreatedChange delta.
+        const auto& created_change = change.GetCreatedChange();
+        // Verify the node reference is valid - TreeTabNode should have a valid
+        // ID.
+        EXPECT_EQ(created_change.node->id(), change.id);
+        // Verify the node has an associated tab.
+        EXPECT_NE(created_change.node->GetTab(), nullptr);
+
+        // Quit the run loop after all expected callbacks are received.
+        if (++call_count == expected_calls) {
+          run_loop.Quit();
+        }
+      });
+
+  // Enable tree tabs - this should trigger OnTreeTabChanged callbacks.
+  SetTreeTabsEnabled(true);
+
+  // Wait for all callbacks to be invoked.
+  run_loop.Run();
+
+  // Verify tree structure is created.
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+
+  tab_strip_model().RemoveObserver(&mock_observer);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       OnTreeTabChanged_CalledWhenTreeNodeDestroyed) {
+  // Add tabs and enable tree structure first.
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+
+  // Use RunLoop to wait for tree creation callbacks.
+  base::RunLoop create_run_loop;
+  int create_call_count = 0;
+  const int expected_create_calls = 3;
+
+  // Temporarily add observer to wait for tree creation to complete.
+  MockTabStripModelObserver temp_observer;
+  tab_strip_model().AddObserver(&temp_observer);
+  EXPECT_CALL(temp_observer,
+              OnTreeTabChanged(testing::Field(&TreeTabChange::type,
+                                              TreeTabChange::kNodeCreated)))
+      .Times(expected_create_calls)
+      .WillRepeatedly([&](const TreeTabChange&) {
+        if (++create_call_count == expected_create_calls) {
+          create_run_loop.Quit();
+        }
+      });
+
+  SetTreeTabsEnabled(true);
+  create_run_loop.Run();
+  tab_strip_model().RemoveObserver(&temp_observer);
+
+  // Verify tree structure is created.
+  ASSERT_EQ(3, tab_strip_model().count());
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    ASSERT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+
+  // Create and register mock observer after tree is built.
+  MockTabStripModelObserver mock_observer;
+  tab_strip_model().AddObserver(&mock_observer);
+
+  // Expect OnTreeTabChanged to be called with kNodeWillBeDestroyed for each
+  // tree node. We have 3 tabs wrapped in tree nodes, so expect 3 calls.
+  // Also verify the WillBeDestroyedChange contains valid node reference.
+  EXPECT_CALL(mock_observer,
+              OnTreeTabChanged(testing::Field(
+                  &TreeTabChange::type, TreeTabChange::kNodeWillBeDestroyed)))
+      .Times(3)
+      .WillRepeatedly([](const TreeTabChange& change) {
+        // Verify we can get the WillBeDestroyedChange delta.
+        const auto& destroyed_change = change.GetWillBeDestroyedChange();
+        // Verify the node reference is valid - TreeTabNode should have a valid
+        // ID.
+        EXPECT_EQ(destroyed_change.node->id(), change.id);
+        // Verify the node has an associated tab before destruction.
+        EXPECT_NE(destroyed_change.node->GetTab(), nullptr);
+      });
+
+  // Disable tree tabs - this should trigger OnTreeTabChanged callbacks.
+  // Note: kNodeWillBeDestroyed is called synchronously, not posted.
+  SetTreeTabsEnabled(false);
+
+  // Verify structure is flattened.
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::UNPINNED);
+  }
+
+  tab_strip_model().RemoveObserver(&mock_observer);
 }
