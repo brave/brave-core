@@ -187,8 +187,7 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   PickArticles pick_top_news = base::BindRepeating(
       [](const ArticleInfos& articles) -> std::optional<size_t> {
         for (size_t i = 0; i < articles.size(); ++i) {
-          if (base::Contains(std::get<1>(articles[i]).channels,
-                             kTopNewsChannel)) {
+          if (std::get<1>(articles[i]).channels.contains(kTopNewsChannel)) {
             return std::make_optional(i);
           }
         }

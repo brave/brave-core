@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
-#include "base/containers/contains.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
@@ -500,7 +499,7 @@ void EnsResolverTask::FetchOffchainData() {
   for (auto url_string : offchain_lookup_data_->urls) {
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{sender}",
                                        offchain_lookup_data_->sender.ToHex());
-    data_substituted = base::Contains(url_string, "{data}");
+    data_substituted = url_string.contains("{data}");
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{data}",
                                        ToHex(offchain_lookup_data_->call_data));
     GURL url(url_string);

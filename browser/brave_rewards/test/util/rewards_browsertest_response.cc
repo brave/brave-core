@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -183,14 +182,13 @@ void RewardsBrowserTestResponse::Get(const std::string& url,
   requests_.emplace_back(url, method);
   DCHECK(response_status_code && response);
 
-  if (base::Contains(url, "/v4/wallets/")) {
+  if (url.contains("/v4/wallets/")) {
     *response = "";
     *response_status_code = net::HTTP_OK;
     return;
   }
 
-  if (base::Contains(url, "/v3/wallet/brave") ||
-      base::Contains(url, "/v4/wallets")) {
+  if (url.contains("/v3/wallet/brave") || url.contains("/v4/wallets")) {
     *response = wallet_;
     *response_status_code = net::HTTP_CREATED;
     return;

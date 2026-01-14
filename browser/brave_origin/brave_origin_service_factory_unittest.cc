@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 
-#include "base/containers/contains.h"
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
@@ -60,8 +59,8 @@ TEST(BraveOriginServiceFactoryTest,
 #endif
 
   // Test that profile-level policies are NOT in browser definitions
-  EXPECT_FALSE(base::Contains(browser_policy_definitions,
-                              policy::key::kBraveRewardsDisabled))
+  EXPECT_FALSE(
+      browser_policy_definitions.contains(policy::key::kBraveRewardsDisabled))
       << "Profile-level policy should not be in browser definitions";
 }
 
@@ -83,10 +82,10 @@ TEST(BraveOriginServiceFactoryTest,
 
   // Test that browser-level policies are NOT in profile definitions
   EXPECT_FALSE(
-      base::Contains(profile_policy_definitions, policy::key::kBraveP3AEnabled))
+      profile_policy_definitions.contains(policy::key::kBraveP3AEnabled))
       << "Browser-level policy should not be in profile definitions";
-  EXPECT_FALSE(base::Contains(profile_policy_definitions,
-                              policy::key::kBraveStatsPingEnabled))
+  EXPECT_FALSE(
+      profile_policy_definitions.contains(policy::key::kBraveStatsPingEnabled))
       << "Browser-level policy should not be in profile definitions";
 }
 
@@ -98,15 +97,15 @@ TEST(BraveOriginServiceFactoryTest,
   // Test that policies in kBraveSimplePolicyMap but NOT in kBraveOriginMetadata
   // are excluded kBraveShieldsDisabledForUrls is in kBraveSimplePolicyMap but
   // not in kBraveOriginMetadata
-  EXPECT_FALSE(base::Contains(policy_definitions,
-                              policy::key::kBraveShieldsDisabledForUrls))
+  EXPECT_FALSE(
+      policy_definitions.contains(policy::key::kBraveShieldsDisabledForUrls))
       << "kManagedBraveShieldsDisabledForUrls should not be in policy "
          "definitions";
 
   // kBraveShieldsEnabledForUrls is also in kBraveSimplePolicyMap but not in
   // kBraveOriginMetadata
-  EXPECT_FALSE(base::Contains(policy_definitions,
-                              policy::key::kBraveShieldsEnabledForUrls))
+  EXPECT_FALSE(
+      policy_definitions.contains(policy::key::kBraveShieldsEnabledForUrls))
       << "kManagedBraveShieldsEnabledForUrls should not be in policy "
          "definitions";
 }

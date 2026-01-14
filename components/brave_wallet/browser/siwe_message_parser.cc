@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_tokenizer.h"
@@ -235,7 +234,7 @@ bool SIWEMessageParser::ParseSchemeAndDomain(std::string_view& msg_view,
   std::string_view old_origin_str(msg_view.begin(), msg_view.begin() + n);
   std::string new_origin_str(old_origin_str);
   // If scheme is not specified, https will be used by default.
-  if (!base::Contains(old_origin_str, url::kStandardSchemeSeparator)) {
+  if (!old_origin_str.contains(url::kStandardSchemeSeparator)) {
     new_origin_str = base::StrCat(
         {url::kHttpsScheme, url::kStandardSchemeSeparator, old_origin_str});
   }

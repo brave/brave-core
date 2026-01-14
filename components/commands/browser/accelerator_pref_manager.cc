@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
@@ -40,7 +39,7 @@ AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
     CHECK(base::StringToInt(command_id, &id))
         << "Failed to parse " << command_id << " as int";
 
-    if (!base::Contains(command_ids, id)) {
+    if (!command_ids.contains(id)) {
       DVLOG(1) << "Found non-existent command_id " << id
                << ". Maybe it has been removed?";
       continue;

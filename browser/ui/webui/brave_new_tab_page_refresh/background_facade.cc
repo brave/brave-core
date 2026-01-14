@@ -10,7 +10,6 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
@@ -169,7 +168,7 @@ mojom::SelectedBackgroundPtr BackgroundFacade::GetSelectedBackground() {
       // has selected based on the selected value.
       if (!bg_prefs.ShouldUseRandomValue()) {
         background->value = bg_prefs.GetSelectedValue();
-        background->type = base::Contains(background->value, "gradient")
+        background->type = background->value.contains("gradient")
                                ? mojom::SelectedBackgroundType::kGradient
                                : mojom::SelectedBackgroundType::kSolid;
       } else if (bg_prefs.GetSelectedValue() == "gradient") {

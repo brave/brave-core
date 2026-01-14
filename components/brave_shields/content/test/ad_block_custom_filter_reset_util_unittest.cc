@@ -8,8 +8,8 @@
 #include <array>
 #include <optional>
 
-#include "base/containers/contains.h"
 #include "base/strings/strcat.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -48,73 +48,64 @@ void CheckCase(const std::string& host_pos0,
       ResetCustomFiltersForHost(reset_for_host, custom_filters_current_host);
 
   ASSERT_TRUE(resetted_cf_list);
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##main [role="reg"] > )",
-                    R"([role="row"]:has(span:has-text(/^Prom/)))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##button:matches-attr(class="/[\w]{7}/"))"})));
-  EXPECT_TRUE(
-      base::Contains(*resetted_cf_list,
-                     base::StrCat({R"(host0.com##body > div[class])",
-                                   R"(:matches-css(position: absolute))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##body > div[class]:matches-css)",
-                    R"(-before(position: absolute))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##body > div[class])",
-                    R"(:matches-css-after(position: absolute))"})));
-  EXPECT_TRUE(
-      base::Contains(*resetted_cf_list,
-                     base::StrCat({R"(host0.com###target-1 > .target-2)",
-                                   R"(:matches-media((min-width: 800px)))"})));
-  EXPECT_TRUE(
-      base::Contains(*resetted_cf_list,
-                     base::StrCat({R"(host0.com##:matches-path(/shop) p)"})));
-  EXPECT_TRUE(
-      base::Contains(*resetted_cf_list,
-                     base::StrCat({R"(host0.com##div:matches-prop(imanad))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##^script:has-text(/[\w\W]{35000}/))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##main [role="reg"] > [role="row"])",
-                    R"(:has(span:not(:has-text(/^Promo/))))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##:matches-path(/^/home/) )",
-                    R"([data-testid="primaryColumn"]:others())"})));
-  EXPECT_TRUE(
-      base::Contains(*resetted_cf_list,
-                     base::StrCat({R"(host0.com###pcf #a19 b:upward(2))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##.j-mini-player[class])",
-                    R"(:watch-attr(class):remove-attr(class))"})));
-  EXPECT_TRUE(base::Contains(
-      *resetted_cf_list,
-      base::StrCat({R"(host0.com##:xpath(//div[@id="pag"])",
-                    R"(//div[starts-with(@id,"hyperfeed_story_id_")])"})));
-  EXPECT_TRUE(base::Contains(*resetted_cf_list,
-                             base::StrCat({"host0.com##+js(nobab)\n"})));
-
-  EXPECT_EQ(
-      !base::Contains(
-          *resetted_cf_list,
-          base::StrCat(
-              {host_pos0,
-               "##body > div.logged-in.env-production.page-responsive\n"})),
-      host_pos0 == reset_for_host);
-  EXPECT_EQ(
-      !base::Contains(
-          *resetted_cf_list,
-          base::StrCat(
-              {host_pos1, "###post-864297 > div.text > img:nth-child(9)\n"})),
-      host_pos1 == reset_for_host);
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat(
+                  {R"(host0.com##main [role="reg"] > )",
+                   R"([role="row"]:has(span:has-text(/^Prom/)))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat(
+                  {R"(host0.com##button:matches-attr(class="/[\w]{7}/"))"})));
+  EXPECT_THAT(*resetted_cf_list, testing::HasSubstr(base::StrCat(
+                                     {R"(host0.com##body > div[class])",
+                                      R"(:matches-css(position: absolute))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##body > div[class]:matches-css)",
+                                R"(-before(position: absolute))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##body > div[class])",
+                                R"(:matches-css-after(position: absolute))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com###target-1 > .target-2)",
+                                R"(:matches-media((min-width: 800px)))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##:matches-path(/shop) p)"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##div:matches-prop(imanad))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat(
+                  {R"(host0.com##^script:has-text(/[\w\W]{35000}/))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat(
+                  {R"(host0.com##main [role="reg"] > [role="row"])",
+                   R"(:has(span:not(:has-text(/^Promo/))))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##:matches-path(/^/home/) )",
+                                R"([data-testid="primaryColumn"]:others())"})));
+  EXPECT_THAT(*resetted_cf_list, testing::HasSubstr(base::StrCat(
+                                     {R"(host0.com###pcf #a19 b:upward(2))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(
+                  base::StrCat({R"(host0.com##.j-mini-player[class])",
+                                R"(:watch-attr(class):remove-attr(class))"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat(
+                  {R"(host0.com##:xpath(//div[@id="pag"])",
+                   R"(//div[starts-with(@id,"hyperfeed_story_id_")])"})));
+  EXPECT_THAT(*resetted_cf_list,
+              testing::HasSubstr(base::StrCat({"host0.com##+js(nobab)\n"})));
+  EXPECT_EQ(!resetted_cf_list->contains(base::StrCat(
+                {host_pos0,
+                 "##body > div.logged-in.env-production.page-responsive\n"})),
+            host_pos0 == reset_for_host);
+  EXPECT_EQ(!resetted_cf_list->contains(base::StrCat(
+                {host_pos1, "###post-864297 > div.text > img:nth-child(9)\n"})),
+            host_pos1 == reset_for_host);
 }
 
 }  // namespace

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ai_chat/upload_file_helper.h"
 
+#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"

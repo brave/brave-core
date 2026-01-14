@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
@@ -98,16 +97,13 @@ class BraveUserAgentNetworkDelegateBrowserTest
     ASSERT_TRUE(capture.sec_ch_ua_full_version_list.has_value());
     if (feature_enabled) {
       // Excepted domain, feature enabled: expect Google Chrome
+      EXPECT_EQ(!feature_enabled, capture.sec_ch_ua->contains(kBraveBrand));
       EXPECT_EQ(!feature_enabled,
-                base::Contains(*capture.sec_ch_ua, kBraveBrand));
-      EXPECT_EQ(
-          !feature_enabled,
-          base::Contains(*capture.sec_ch_ua_full_version_list, kBraveBrand));
+                capture.sec_ch_ua_full_version_list->contains(kBraveBrand));
       EXPECT_EQ(feature_enabled,
-                base::Contains(*capture.sec_ch_ua, kGoogleChromeBrand));
-      EXPECT_EQ(feature_enabled,
-                base::Contains(*capture.sec_ch_ua_full_version_list,
-                               kGoogleChromeBrand));
+                capture.sec_ch_ua->contains(kGoogleChromeBrand));
+      EXPECT_EQ(feature_enabled, capture.sec_ch_ua_full_version_list->contains(
+                                     kGoogleChromeBrand));
     }
   }
 
