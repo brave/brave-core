@@ -53,7 +53,7 @@ export function useGate3(params: SwapParams) {
   const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
 
   const exchange = useCallback(
-    async function (route: BraveWallet.Gate3SwapRoute) {
+    async function (indicativeRoute: BraveWallet.Gate3SwapRoute) {
       if (
         !fromAccount
         || !toAccountId
@@ -85,17 +85,18 @@ export function useGate3(params: SwapParams) {
 
       // For UTXO accounts (like BTC), wait for the receive addresses to be
       // fetched.
-      if (needsAddressResolution) {
+      if (needsAddressResolution || !toAccountAddress) {
         return
       }
 
       // If the route requires a firm quote, we need to fetch the transaction
       // from the backend. Otherwise, we can use the transaction params
       // embedded in the route.
-      if (route.requiresFirmRoute) {
-        let transactionResponse
+      let firmRoute = indicativeRoute
+      if (indicativeRoute.requiresFirmRoute) {
+        let firmRouteResponse
         try {
-          transactionResponse = await generateSwapTransaction(
+          firmRouteResponse = await generateSwapTransaction(
             toMojoUnion(
               {
                 gate3TransactionParams: {
@@ -143,34 +144,24 @@ export function useGate3(params: SwapParams) {
           return makeGate3Error(`Error getting Gate3 swap transaction: ${e}`)
         }
 
-        if (transactionResponse?.error) {
-          return transactionResponse?.error
+        if (firmRouteResponse?.error) {
+          return firmRouteResponse?.error
         }
 
-        if (!transactionResponse?.response?.gate3Transaction) {
+        if (!firmRouteResponse?.response?.gate3Route) {
           return makeGate3Error('No transaction returned from Gate3')
         }
 
-        const transactionParams = transactionResponse.response.gate3Transaction
-
-        try {
-          await sendTransaction(transactionParams)
-        } catch (e) {
-          console.error(`Error creating Gate3 transaction: ${e}`)
-          return makeGate3Error(`Error creating Gate3 transaction: ${e}`)
-        }
-
-        return undefined
+        firmRoute = firmRouteResponse.response.gate3Route
       }
 
-      // Use the transaction params from the route directly
-      if (!route.transactionParams) {
-        console.error('Gate3: No transaction params in route')
-        return makeGate3Error('No transaction params in route')
+      if (!firmRoute.transactionParams) {
+        console.error('Gate3: No transaction params in firm route')
+        return makeGate3Error('No transaction params in firm route')
       }
 
       try {
-        await sendTransaction(route.transactionParams)
+        await sendTransaction(firmRoute)
       } catch (e) {
         console.error(`Error creating Gate3 transaction: ${e}`)
         return makeGate3Error(`Error creating Gate3 transaction: ${e}`)
@@ -191,15 +182,30 @@ export function useGate3(params: SwapParams) {
         }
       }
 
-      async function sendTransaction(
-        transactionParams: BraveWallet.Gate3SwapTransactionParamsUnion,
-      ) {
+      async function sendTransaction(firmRoute: BraveWallet.Gate3SwapRoute) {
+        const { transactionParams } = firmRoute
+        if (!transactionParams) {
+          throw new Error('No transaction params found in firm route')
+        }
+
         if (!fromNetwork) {
-          return makeGate3Error('Source network not found')
+          throw new Error('Source network not found')
         }
 
         if (!fromAccount) {
-          return makeGate3Error('Source account not found')
+          throw new Error('Source account not found')
+        }
+
+        if (!fromToken) {
+          throw new Error('Source token not found')
+        }
+
+        if (!toToken) {
+          throw new Error('Destination token not found')
+        }
+
+        if (!toAccountAddress) {
+          throw new Error('Destination address not found')
         }
 
         if (transactionParams.evmTransactionParams) {
@@ -300,7 +306,7 @@ export function useGate3(params: SwapParams) {
           })
         }
 
-        return makeGate3Error('No transaction params found')
+        throw new Error('Unsupported transaction params')
       }
     },
     [
