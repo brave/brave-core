@@ -543,32 +543,6 @@ exports.update = () => {
       'java',
       'res_chromium_base',
     )
-    const androidResSource = path.join(
-      config.braveCoreDir,
-      'android',
-      'java',
-      'res',
-    )
-    const androidResDest = path.join(
-      config.srcDir,
-      'chrome',
-      'android',
-      'java',
-      'res',
-    )
-    const androidResTemplateSource = path.join(
-      config.braveCoreDir,
-      'android',
-      'java',
-      'res_template',
-    )
-    const androidResTemplateDest = path.join(
-      config.srcDir,
-      'chrome',
-      'android',
-      'java',
-      'res_template',
-    )
     const androidContentPublicResSource = path.join(
       config.braveCoreDir,
       'content',

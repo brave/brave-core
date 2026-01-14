@@ -77,6 +77,94 @@ android_library("qrreader_java") {
   ]
 }
 
+# Overlay for chromium resources
+android_resources("chrome_java_resources") {
+  resource_overlay = true
+  sources = [
+    "java/res/drawable-hdpi/btn_delete_24dp.png",
+    "java/res/drawable-hdpi/btn_star_filled.png",
+    "java/res/drawable-hdpi/btn_tabswitcher_modern.png",
+    "java/res/drawable-hdpi/btn_toolbar_home.png",
+    "java/res/drawable-hdpi/chevron_right.png",
+    "java/res/drawable-hdpi/chromelogo16.png",
+    "java/res/drawable-hdpi/ic_chrome.png",
+    "java/res/drawable-hdpi/ic_delete_white_24dp.png",
+    "java/res/drawable-hdpi/ic_expand_less_black_24dp.png",
+    "java/res/drawable-hdpi/ic_expand_more_black_24dp.png",
+    "java/res/drawable-hdpi/modern_location_bar.9.png",
+    "java/res/drawable-hdpi/omnibox_https_valid_lock.png",
+    "java/res/drawable-hdpi/plus.png",
+    "java/res/drawable-hdpi/share_icon.png",
+    "java/res/drawable-mdpi/btn_delete_24dp.png",
+    "java/res/drawable-mdpi/btn_star_filled.png",
+    "java/res/drawable-mdpi/btn_tabswitcher_modern.png",
+    "java/res/drawable-mdpi/btn_toolbar_home.png",
+    "java/res/drawable-mdpi/chevron_right.png",
+    "java/res/drawable-mdpi/chromelogo16.png",
+    "java/res/drawable-mdpi/ic_chrome.png",
+    "java/res/drawable-mdpi/ic_delete_white_24dp.png",
+    "java/res/drawable-mdpi/ic_expand_less_black_24dp.png",
+    "java/res/drawable-mdpi/ic_expand_more_black_24dp.png",
+    "java/res/drawable-mdpi/modern_location_bar.9.png",
+    "java/res/drawable-mdpi/omnibox_https_valid_lock.png",
+    "java/res/drawable-mdpi/plus.png",
+    "java/res/drawable-mdpi/share_icon.png",
+    "java/res/drawable-xhdpi/btn_delete_24dp.png",
+    "java/res/drawable-xhdpi/btn_star_filled.png",
+    "java/res/drawable-xhdpi/btn_tabswitcher_modern.png",
+    "java/res/drawable-xhdpi/btn_toolbar_home.png",
+    "java/res/drawable-xhdpi/chevron_right.png",
+    "java/res/drawable-xhdpi/chromelogo16.png",
+    "java/res/drawable-xhdpi/ic_chrome.png",
+    "java/res/drawable-xhdpi/ic_delete_white_24dp.png",
+    "java/res/drawable-xhdpi/ic_expand_less_black_24dp.png",
+    "java/res/drawable-xhdpi/ic_expand_more_black_24dp.png",
+    "java/res/drawable-xhdpi/modern_location_bar.9.png",
+    "java/res/drawable-xhdpi/omnibox_https_valid_lock.png",
+    "java/res/drawable-xhdpi/plus.png",
+    "java/res/drawable-xhdpi/share_icon.png",
+    "java/res/drawable-xxhdpi/btn_delete_24dp.png",
+    "java/res/drawable-xxhdpi/btn_star_filled.png",
+    "java/res/drawable-xxhdpi/btn_tabswitcher_modern.png",
+    "java/res/drawable-xxhdpi/btn_toolbar_home.png",
+    "java/res/drawable-xxhdpi/chevron_right.png",
+    "java/res/drawable-xxhdpi/chromelogo16.png",
+    "java/res/drawable-xxhdpi/ic_chrome.png",
+    "java/res/drawable-xxhdpi/ic_delete_white_24dp.png",
+    "java/res/drawable-xxhdpi/ic_expand_less_black_24dp.png",
+    "java/res/drawable-xxhdpi/ic_expand_more_black_24dp.png",
+    "java/res/drawable-xxhdpi/modern_location_bar.9.png",
+    "java/res/drawable-xxhdpi/omnibox_https_valid_lock.png",
+    "java/res/drawable-xxhdpi/plus.png",
+    "java/res/drawable-xxhdpi/share_icon.png",
+    "java/res/drawable-xxxhdpi/btn_delete_24dp.png",
+    "java/res/drawable-xxxhdpi/btn_star_filled.png",
+    "java/res/drawable-xxxhdpi/btn_tabswitcher_modern.png",
+    "java/res/drawable-xxxhdpi/btn_toolbar_home.png",
+    "java/res/drawable-xxxhdpi/chromelogo16.png",
+    "java/res/drawable-xxxhdpi/ic_chrome.png",
+    "java/res/drawable-xxxhdpi/ic_delete_white_24dp.png",
+    "java/res/drawable-xxxhdpi/ic_expand_less_black_24dp.png",
+    "java/res/drawable-xxxhdpi/ic_expand_more_black_24dp.png",
+    "java/res/drawable-xxxhdpi/omnibox_https_valid_lock.png",
+    "java/res/drawable-xxxhdpi/plus.png",
+    "java/res/drawable-xxxhdpi/share_icon.png",
+    "java/res/drawable/ic_add.xml",
+    "java/res/drawable/ic_arrow_down.xml",
+    "java/res/drawable/ic_download.xml",
+    "java/res/drawable/ic_open_in_new.xml",
+    "java/res/drawable/ic_search.xml",
+    "java/res/drawable/ic_timer.xml",
+    "java/res/drawable/tab_selector.xml",
+    "java/res/layout/location_status_incognito_badge.xml",
+    "java/res/values-night/brave_colors.xml",
+    "java/res/values-sw600dp/brave_dimens.xml",
+    "java/res/values/brave_colors.xml",
+    "java/res/values/brave_dimens.xml",
+    "java/res/xml/secure_dns_settings.xml",
+  ]
+}
+
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [
@@ -767,5 +855,27 @@ android_resources("java_resources") {
     "java/brave-res/xml/quick_action_search_and_bookmark_widget_info.xml",
     "java/brave-res/xml/sns_preferences.xml",
     "java/brave-res/xml/unstoppable_domains_preferences.xml",
+  ]
+}
+
+android_resources("brave_base_module_resources") {
+  sources = [
+    "java/res_chromium_base/drawable-night/themed_app_icon.xml"
+  ]
+}
+
+android_resources("brave_download_internal_java_resources") {
+  sources = [
+    "java/res/drawable-night/downloads_empty_state_illustration.xml",
+    "java/res/drawable/no_dynamic_download_search_bar_background.xml",
+  ]
+}
+
+android_resources("brave_android_features_java_resources") {
+  sources = [
+    "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_bottom_window.xml",
+    "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_left.xml",
+    "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_right.xml",
+    "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_top_window.xml",
   ]
 }
