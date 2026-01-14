@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
