@@ -99,7 +99,6 @@ class BravePrefProvider : public PrefProvider, public Observer {
   void MigrateFingerprintingSettings();
   void MigrateFingerprintingSetingsToOriginScoped();
   void MigrateCosmeticFilteringSettings();
-  void MigrateBraveRemember1PStorageToAutoShred();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<std::unique_ptr<Rule>>& rules,
