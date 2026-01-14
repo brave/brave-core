@@ -36,25 +36,25 @@ public enum BraveStoreProductGroup: String, CaseIterable {
   case origin
 
   /// The subscription group ID on App Store Connect
-  public var groupID: String {
+  public var subscriptionGroupID: String? {
     switch BraveSkusEnvironment.current {
     case .beta:
       switch self {
       case .vpn: return "21497512"
       case .leo: return "21497453"
-      case .origin: return "21734932"
+      case .origin: return nil
       }
     case .nightly:
       switch self {
       case .vpn: return "21497623"
       case .leo: return "21497565"
-      case .origin: return "21734930"
+      case .origin: return nil
       }
     case .release:
       switch self {
       case .vpn: return "20621968"
       case .leo: return "21439231"
-      case .origin: return "21734868"
+      case .origin: return nil
       }
     }
   }
@@ -86,11 +86,8 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
   /// Leo Yearly AppStore SKU
   case leoYearly
 
-  /// Origin Monthly AppStore SKU
-  case originMonthly
-
-  /// Origin Yearly AppStore SKU
-  case originYearly
+  /// Origin One-Time Purchase AppStore SKU
+  case originPurchase
 
   public init?(rawValue: String) {
     if let value = Self.allCases.first(where: { $0.rawValue == rawValue }) {
@@ -111,7 +108,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     switch self {
     case .vpnMonthly, .vpnYearly: return "Brave VPN"
     case .leoMonthly, .leoYearly: return "Brave Leo"
-    case .originMonthly, .originYearly: return "Brave Origin"
+    case .originPurchase: return "Brave Origin"
     }
   }
 
@@ -124,8 +121,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     case .vpnYearly: return "brave-vpn-premium-year"
     case .leoMonthly: return "brave-leo-premium"
     case .leoYearly: return "brave-leo-premium-year"
-    case .originMonthly: return "brave-origin-premium"
-    case .originYearly: return "brave-origin-premium-year"
+    case .originPurchase: return "brave-origin-premium-perpetual-license"
     }
   }
 
@@ -134,7 +130,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     switch self {
     case .vpnMonthly, .vpnYearly: return .vpn
     case .leoMonthly, .leoYearly: return .leo
-    case .originMonthly, .originYearly: return .origin
+    case .originPurchase: return .origin
     }
   }
 
@@ -158,18 +154,19 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
       switch self {
       case .vpnMonthly, .vpnYearly: return "bravevpn"
       case .leoMonthly, .leoYearly: return "braveleo"
-      case .originMonthly, .originYearly: return "braveorigin"
+      case .originPurchase: return "braveorigin"
       }
     }
 
     switch self {
-    case .vpnMonthly, .leoMonthly, .originMonthly: return "\(prefix)\(productId).monthly"
-    case .vpnYearly, .originYearly: return "\(prefix)\(productId).yearly"
+    case .vpnMonthly, .leoMonthly: return "\(prefix)\(productId).monthly"
+    case .vpnYearly: return "\(prefix)\(productId).yearly"
     case .leoYearly:
       if BraveSkusEnvironment.current == .release {
         return "\(prefix)\(productId).yearly.2"
       }
       return "\(prefix)\(productId).yearly"
+    case .originPurchase: return "\(prefix)\(productId).perpetual"
     }
   }
 }
@@ -220,17 +217,9 @@ public class BraveStoreSDK: AppStoreSDK {
 
   // MARK: - ORIGIN
 
-  /// The AppStore Origin Monthly Product offering
+  /// The AppStore Origin One-Time Purchase Product offering
   @Published
-  private(set) public var originMonthlyProduct: Product?
-
-  /// The AppStore Origin Monthly Product offering
-  @Published
-  private(set) public var originYearlyProduct: Product?
-
-  /// The AppStore Origin customer purchase Subscription Status
-  @Published
-  private(set) public var originSubscriptionStatus: Product.SubscriptionInfo.Status?
+  private(set) public var originPurchaseProduct: Product?
 
   // MARK: - Private
 
@@ -304,11 +293,7 @@ public class BraveStoreSDK: AppStoreSDK {
 
   /// A boolean indicating whether or not all the Origin product offerings has been loaded
   public var isOriginProductsLoaded: Bool {
-    if originMonthlyProduct != nil || originYearlyProduct != nil {
-      return true
-    }
-
-    return false
+    originPurchaseProduct != nil
   }
 
   /// Restores a single purchased product
@@ -332,14 +317,15 @@ public class BraveStoreSDK: AppStoreSDK {
     for await result in Transaction.currentEntitlements {
       if case .verified(let transaction) = result {
         if let product = BraveStoreProduct(rawValue: transaction.productID) {
-          // Update subscription status for the product
+          // Update subscription status for subscription products
           switch product {
           case .vpnMonthly, .vpnYearly:
             vpnSubscriptionStatus = await transaction.subscriptionStatus
           case .leoMonthly, .leoYearly:
             leoSubscriptionStatus = await transaction.subscriptionStatus
-          case .originMonthly, .originYearly:
-            originSubscriptionStatus = await transaction.subscriptionStatus
+          case .originPurchase:
+            // Non-consumable purchase, no subscription status
+            break
           }
 
           // Update SkusSDK
@@ -376,11 +362,28 @@ public class BraveStoreSDK: AppStoreSDK {
   ///           Purchase may be successful with the AppStore, but fail with SkusSDK.
   @MainActor
   public func purchase(product: BraveStoreProduct) async throws {
-    if let subscription = await subscription(for: product) {
-      if try await super.purchase(subscription) != nil {
-        Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+    // Handle non-consumable purchases (Origin)
+    if product == .originPurchase {
+      if let nonConsumableProduct = await nonConsumablePurchase(for: product) {
+        if try await super.purchase(nonConsumableProduct) != nil {
+          Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+        }
+      }
+    } else {
+      // Handle subscription purchases (VPN, Leo)
+      if let subscription = await subscription(for: product) {
+        if try await super.purchase(subscription) != nil {
+          Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+        }
       }
     }
+  }
+
+  /// Retrieves a non-consumable product from the loaded products
+  /// - Parameter product: The product to retrieve
+  /// - Returns: The non-consumable product if found
+  private func nonConsumablePurchase(for product: any AppStoreProduct) async -> Product? {
+    allProducts.nonConsumable.first(where: { $0.id == product.rawValue })
   }
 
   /// Processes the product purchase transaction with the SkusService
@@ -404,39 +407,47 @@ public class BraveStoreSDK: AppStoreSDK {
 
   /// Observer function called when AppStore products have been fetched or updated
   private func onProductsUpdated(_ products: Products) {
-    // Process only subscriptions at this time as Brave has no other products
-    let products = products.all.filter({ $0.type == .autoRenewable })
+    // Process subscriptions and non-consumable products
+    let autoRenewableProducts = products.all.filter({ $0.type == .autoRenewable })
+    let nonConsumableProducts = products.all.filter({ $0.type == .nonConsumable })
 
     // No products to process
-    if products.isEmpty {
+    if autoRenewableProducts.isEmpty && nonConsumableProducts.isEmpty {
       return
     }
 
     // Update vpn products
-    vpnMonthlyProduct = products.first(where: { $0.id == BraveStoreProduct.vpnMonthly.rawValue })
-    vpnYearlyProduct = products.first(where: { $0.id == BraveStoreProduct.vpnYearly.rawValue })
+    vpnMonthlyProduct = autoRenewableProducts.first(where: {
+      $0.id == BraveStoreProduct.vpnMonthly.rawValue
+    })
+    vpnYearlyProduct = autoRenewableProducts.first(where: {
+      $0.id == BraveStoreProduct.vpnYearly.rawValue
+    })
 
     // Update leo products
-    leoMonthlyProduct = products.first(where: { $0.id == BraveStoreProduct.leoMonthly.rawValue })
-    leoYearlyProduct = products.first(where: { $0.id == BraveStoreProduct.leoYearly.rawValue })
-
-    // Update origin products
-    originMonthlyProduct = products.first(where: {
-      $0.id == BraveStoreProduct.originMonthly.rawValue
+    leoMonthlyProduct = autoRenewableProducts.first(where: {
+      $0.id == BraveStoreProduct.leoMonthly.rawValue
     })
-    originYearlyProduct = products.first(where: { $0.id == BraveStoreProduct.originYearly.rawValue }
-    )
+    leoYearlyProduct = autoRenewableProducts.first(where: {
+      $0.id == BraveStoreProduct.leoYearly.rawValue
+    })
+
+    // Update origin product
+    originPurchaseProduct = nonConsumableProducts.first(where: {
+      $0.id == BraveStoreProduct.originPurchase.rawValue
+    })
   }
 
   /// Observer function called when AppStore customer purchased products have been fetched or updated
   private func onPurchasesUpdated(_ products: Products) {
-    // Process only subscriptions at this time as Brave has no other products
-    let products = products.all.filter({ $0.type == .autoRenewable }).filter({
+    // Process subscriptions and non-consumable products
+    let subscriptionProducts = products.all.filter({ $0.type == .autoRenewable }).filter({
       $0.subscription != nil
     })
+    let nonConsumableProducts = products.all.filter({ $0.type == .nonConsumable })
 
     // No products to process
-    if products.isEmpty {
+    if subscriptionProducts.isEmpty && nonConsumableProducts.isEmpty {
       return
     }
 
@@ -444,41 +455,39 @@ public class BraveStoreSDK: AppStoreSDK {
       guard let self = self else { return }
 
       // Retrieve subscriptions
-      let vpnSubscriptions = products.filter({
+      let vpnSubscriptions = subscriptionProducts.filter({
         $0.id == BraveStoreProduct.vpnMonthly.rawValue
           || $0.id == BraveStoreProduct.vpnYearly.rawValue
       })
 
-      let leoSubscriptions = products.filter({
+      let leoSubscriptions = subscriptionProducts.filter({
         $0.id == BraveStoreProduct.leoMonthly.rawValue
           || $0.id == BraveStoreProduct.leoYearly.rawValue
       })
 
-      let originSubscriptions = products.filter({
-        $0.id == BraveStoreProduct.originMonthly.rawValue
-          || $0.id == BraveStoreProduct.originYearly.rawValue
+      // Retrieve non-consumable purchases
+      let originPurchases = nonConsumableProducts.filter({
+        $0.id == BraveStoreProduct.originPurchase.rawValue
       })
 
       // Retrieve subscription statuses
       let vpnSubscriptionStatuses = vpnSubscriptions.compactMap({ $0.subscription })
       let leoSubscriptionsStatuses = leoSubscriptions.compactMap({ $0.subscription })
-      let originSubscriptionsStatuses = originSubscriptions.compactMap({ $0.subscription })
 
       // Statuses apply to the entire group
       vpnSubscriptionStatus = try? await vpnSubscriptionStatuses.first?.status.first
       leoSubscriptionStatus = try? await leoSubscriptionsStatuses.first?.status.first
-      originSubscriptionStatus = try? await originSubscriptionsStatuses.first?.status.first
 
       // Save subscription Ids
       Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
-      Preferences.BraveOrigin.subscriptionProductId.value = originSubscriptions.first?.id
+      Preferences.BraveOrigin.purchaseProductId.value = originPurchases.first?.id
 
       // Once our backend allows restoring purchases `without` linking, we can get rid of this and just use `processTransaction`.
       #if BACKEND_SUPPORTS_IOS_MULTI_DEVICE_RESTORE
 
       // Restore product subscription if necessary
       if Preferences.AIChat.subscriptionOrderId.value == nil
-        || Preferences.BraveOrigin.subscriptionOrderId.value == nil
+        || Preferences.BraveOrigin.purchaseOrderId.value == nil
       {
         // We don't have a cached subscriptionOrderId
         // This means the product was purchased on a different device
@@ -515,7 +524,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
-    if let orderId = Preferences.BraveOrigin.subscriptionOrderId.value, productGroup == .origin {
+    if let orderId = Preferences.BraveOrigin.purchaseOrderId.value, productGroup == .origin {
       try await skusService.refreshOrder(orderId: orderId, for: productGroup)
       return
     }
@@ -537,7 +546,7 @@ public class BraveStoreSDK: AppStoreSDK {
     case .leo:
       Preferences.AIChat.subscriptionProductId.value = product.rawValue
     case .origin:
-      Preferences.BraveOrigin.subscriptionProductId.value = product.rawValue
+      Preferences.BraveOrigin.purchaseProductId.value = product.rawValue
     }
 
     guard let skusService else {
@@ -570,7 +579,7 @@ public class BraveStoreSDK: AppStoreSDK {
     case .leo:
       Preferences.AIChat.subscriptionProductId.value = orderId
     case .origin:
-      Preferences.BraveOrigin.subscriptionProductId.value = orderId
+      Preferences.BraveOrigin.purchaseProductId.value = orderId
     }
 
     Logger.module.info("[BraveStoreSDK] - Order Completed")
