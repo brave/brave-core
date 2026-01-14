@@ -751,7 +751,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           to: sendToAddress,
           value: "0x\(weiHexString)",
           gasLimit: "",
-          data: .init()
+          data: .init(),
+          swapInfo: nil
         )
         self.txService.addUnapprovedEvmTransaction(
           params: params
@@ -776,7 +777,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             to: token.contractAddress,
             value: "0x0",
             gasLimit: "",
-            data: data
+            data: data,
+            swapInfo: nil
           )
           self.txService.addUnapprovedEvmTransaction(
             params: params
@@ -803,7 +805,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             to: token.contractAddress,
             value: "0x0",
             gasLimit: "",
-            data: data
+            data: data,
+            swapInfo: nil
           )
           self.txService.addUnapprovedEvmTransaction(
             params: params
@@ -852,7 +855,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountInfo.accountId
+            from: fromAccountInfo.accountId,
+            swapInfo: nil
           ) { success, txMetaId, errMsg in
             self.isMakingTx = false
             completion(success, errMsg)
@@ -918,7 +922,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     self.txService.addUnapprovedTransaction(
       txDataUnion: txDataUnion,
       chainId: network.chainId,
-      from: fromAccountInfo.accountId
+      from: fromAccountInfo.accountId,
+      swapInfo: nil
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)
@@ -960,7 +965,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.txService.addUnapprovedTransaction(
         txDataUnion: BraveWallet.TxDataUnion(filTxData: filTxData),
         chainId: network.chainId,
-        from: fromAccountId
+        from: fromAccountId,
+        swapInfo: nil
       ) { success, txMetaId, errorMessage in
         self.isMakingTx = false
         completion(success, errorMessage)
@@ -990,7 +996,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       from: fromAccountId,
       to: sendAddress,
       amount: amountInSatoshi,
-      sendingMaxAmount: isSendingMaxValue
+      sendingMaxAmount: isSendingMaxValue,
+      swapInfo: nil
     )
     self.txService.addUnapprovedBitcoinTransaction(
       params: params
@@ -1034,7 +1041,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         amount: amountInSatoshi,
         sendingMaxAmount: isSendingMaxValue,
         memo: nil,
-        useShieldedPool: false
+        useShieldedPool: false,
+        swapInfo: nil
       )
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false

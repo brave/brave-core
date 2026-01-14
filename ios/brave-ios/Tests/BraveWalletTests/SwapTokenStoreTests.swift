@@ -333,7 +333,7 @@ class SwapStoreTests: XCTestCase {
       }
     }
     let txService = BraveWallet.TestTxService()
-    txService._addUnapprovedTransaction = { $3(true, "tx-meta-id", "") }
+    txService._addUnapprovedTransaction = { $4(true, "tx-meta-id", "") }
     let walletService = BraveWallet.TestBraveWalletService()
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
@@ -880,7 +880,7 @@ class SwapStoreTests: XCTestCase {
       completion(.init(), .success, "")
     }
     var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
+    txService._addUnapprovedTransaction = { txData, _, _, _, completion in
       submittedTxData = txData
       completion(true, "tx-meta-id", "")
     }
