@@ -220,6 +220,8 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
   tld_ephemeral_areas_to_cleanup_.erase(key);
   FirstPartyStorageAreaInUse(ephemeral_domain, storage_partition_config);
 #if BUILDFLAG(IS_ANDROID)
+  // Triggers notification of current app state on Android. We need to call it
+  // at the beginning of the TLD ephemeral lifetime.
   delegate_->TriggerCurrentAppStateNotification();
 #endif
 }

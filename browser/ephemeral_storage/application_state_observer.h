@@ -57,6 +57,7 @@ class ApplicationStateObserver
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 #if BUILDFLAG(IS_ANDROID)
+  // On Android we need to trigger the current app state notification
   void TriggerCurrentAppStateNotification();
 #endif
 

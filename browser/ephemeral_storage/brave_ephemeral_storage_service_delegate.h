@@ -52,6 +52,7 @@ class BraveEphemeralStorageServiceDelegate
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const override;
 #if BUILDFLAG(IS_ANDROID)
+  // Initiates the notification of the current app state on Android.
   void TriggerCurrentAppStateNotification() override;
 #endif
 

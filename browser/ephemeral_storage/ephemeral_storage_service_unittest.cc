@@ -61,6 +61,9 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               PrepareTabsForFirstPartyStorageCleanup,
               (const std::string& ephemeral_domain),
               (override));
+#if BUILDFLAG(IS_ANDROID)
+  MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
+#endif
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
                                                bool trigger_callback) {
