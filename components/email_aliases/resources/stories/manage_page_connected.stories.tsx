@@ -14,14 +14,12 @@ import {
 const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
   status: AuthenticationStatus.kUnauthenticated,
   email: '',
-  errorMessage: undefined,
 })
 
 const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
   {
     status: AuthenticationStatus.kAuthenticated,
     email: demoData.email,
-    errorMessage: undefined,
   },
 )
 

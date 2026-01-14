@@ -9,20 +9,8 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE" desc="The label for the learn more link" formatter_data="webui=EmailAliases">
     Learn more
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT" desc="The label for the sign out link" formatter_data="webui=EmailAliases">
-    Sign out
-  </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE" desc="The title for the sign out link" formatter_data="webui=EmailAliases">
-    Sign out of Email Aliases
-  </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT" desc="The label for the connecting to Brave Account" formatter_data="webui=EmailAliases">
-    Connecting to Brave Account...
-  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases">
     Email Aliases
-  </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT" desc="The label for the Brave Account" formatter_data="webui=EmailAliases">
-    Brave Account
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD" desc="The label for the copied to clipboard" formatter_data="webui=EmailAliases">
     Copied to clipboard
@@ -112,12 +100,12 @@
     This action is irreversible. Are you sure you want to proceed?
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT" desc="The label for the sign in or create account" formatter_data="webui=EmailAliases">
-    To get started, sign in or create a Brave account
+    Sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK" desc="The label for the enter email to get login link" formatter_data="webui=EmailAliases">
-    Enter your email address to get a secure login link sent to your email. Clicking this link will either create or access a Brave Account and let you use the free Email Aliases service.
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT_DESCRIPTION" desc="The label for the description to the get started button" formatter_data="webui=EmailAliases">
+    A Brave account will allow you to access certain Brave products and easily sync your information across all your devices.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON" desc="The label for the get login link button" formatter_data="webui=EmailAliases">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GET_STARTED" desc="The label for the get login link button" formatter_data="webui=EmailAliases">
     Get login link
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR" desc="The label for the request authentication error" formatter_data="webui=EmailAliases">

@@ -8,38 +8,6 @@
 [none_as_absent_optional]
 namespace email_aliases {
 
-// Body for POST /verify/init
-dictionary AuthenticationRequest {
-  DOMString email;
-  DOMString intent;
-  DOMString service;
-};
-
-// Response of POST /verify/init
-dictionary AuthenticationResponse {
-  DOMString verificationToken;
-};
-
-// Body for POST /verify/result
-dictionary SessionRequest {
-  boolean wait;
-};
-
-// Response of POST /verify/result
-dictionary SessionResponse {
-  DOMString? authToken;
-  DOMString? email;
-  DOMString service;
-  boolean verified;
-};
-
-// Generic error shape returned by backend
-dictionary ErrorResponse {
-  DOMString error;
-  long code;
-  long status;
-};
-
 // Email Aliases – aliases management JSON types
 // Base URL: https://aliases.bravesoftware.com/manage
 
