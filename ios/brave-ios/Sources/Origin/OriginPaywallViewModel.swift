@@ -21,9 +21,8 @@ public class OriginPaywallViewModel {
     store: BraveStoreSDK,
   ) {
     self.store = store
-    // Temporarily set to the yearly product which will be removed/replaced with a one-time purchase
-    self.product = store.originYearlyProduct
-    cancellable = store.$originYearlyProduct.sink { [weak self] product in
+    self.product = store.originPurchaseProduct
+    cancellable = store.$originPurchaseProduct.sink { [weak self] product in
       self?.product = product
     }
   }
@@ -35,7 +34,7 @@ public class OriginPaywallViewModel {
     defer { isStoreOperationActive = false }
 
     do {
-      try await store.purchase(product: .originYearly)
+      try await store.purchase(product: .originPurchase)
     } catch {
       isErrorPresented = true
     }

@@ -124,15 +124,13 @@ public class BraveSkusManager {
             Preferences.AIChat.subscriptionExpirationDate.value = credentialSummary.expiresAt
           }
         case .origin:
-          if Preferences.BraveOrigin.subscriptionOrderId.value == nil {
-            Preferences.BraveOrigin.subscriptionOrderId.value = credentialSummary.orderId
+          if Preferences.BraveOrigin.purchaseOrderId.value == nil {
+            Preferences.BraveOrigin.purchaseOrderId.value = credentialSummary.orderId
           }
 
-          if Preferences.BraveOrigin.subscriptionOrderId.value != nil {
+          if Preferences.BraveOrigin.purchaseOrderId.value != nil {
             Logger.module.debug("[SkusManager] - Preparing Origin Credentials")
             _ = await prepareCredentialsPresentation(for: domain, path: "*")
-
-            Preferences.BraveOrigin.subscriptionExpirationDate.value = credentialSummary.expiresAt
           }
         case .unknown:
           Logger.module.debug("[SkusManager] - Unknown Credentials")
