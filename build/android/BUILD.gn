@@ -118,7 +118,9 @@ if (needs_mapping_rename) {
         outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
       } else {
         # apk arm64 or x64
-        deps += [ "//chrome/android:monochrome_64_public_apk__final_dex${dep_suffix}" ]
+        deps += [
+          "//chrome/android:monochrome_64_public_apk__final_dex${dep_suffix}",
+        ]
         sources += [ "$root_out_dir/apks/MonochromePublic64.apk.mapping" ]
         outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
       }
