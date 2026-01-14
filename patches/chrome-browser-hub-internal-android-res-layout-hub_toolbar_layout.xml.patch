@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
-index 943892a524e9c19d8595511ac640f06960ccd540..922034b963fb906f95508f8338b44504e75042fb 100644
+index ad958053aeb2082222cea33886bb578120842391..c7af5895c07e74f1a3c4836028feb9801e520dbc 100644
 --- a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 +++ b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 @@ -21,7 +21,7 @@ found in the LICENSE file.
