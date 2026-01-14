@@ -409,6 +409,171 @@ std::optional<TransactionReceipt> ValueToTransactionReceipt(
   return tx_receipt;
 }
 
+std::string EncodeSwapProvider(mojom::SwapProvider provider) {
+  switch (provider) {
+    case mojom::SwapProvider::kAuto:
+      return "AUTO";
+    case mojom::SwapProvider::kLiFi:
+      return "LIFI";
+    case mojom::SwapProvider::kZeroEx:
+      return "ZERO_EX";
+    case mojom::SwapProvider::kJupiter:
+      return "JUPITER";
+    case mojom::SwapProvider::kSquid:
+      return "SQUID";
+    case mojom::SwapProvider::kNearIntents:
+      return "NEAR_INTENTS";
+    default:
+      return "AUTO";
+  }
+}
+
+mojom::SwapProvider DecodeSwapProvider(const std::string& provider_str) {
+  if (provider_str == "AUTO") {
+    return mojom::SwapProvider::kAuto;
+  }
+
+  if (provider_str == "LIFI") {
+    return mojom::SwapProvider::kLiFi;
+  }
+
+  if (provider_str == "ZERO_EX") {
+    return mojom::SwapProvider::kZeroEx;
+  }
+
+  if (provider_str == "JUPITER") {
+    return mojom::SwapProvider::kJupiter;
+  }
+
+  if (provider_str == "SQUID") {
+    return mojom::SwapProvider::kSquid;
+  }
+
+  if (provider_str == "NEAR_INTENTS") {
+    return mojom::SwapProvider::kNearIntents;
+  }
+
+  return mojom::SwapProvider::kAuto;
+}
+
+base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
+  base::Value::Dict dict;
+  if (!swap_info) {
+    return dict;
+  }
+
+  auto source_coin_str = GetStringFromCoinType(swap_info->source_coin);
+  if (!source_coin_str) {
+    return dict;
+  }
+  dict.Set("source_coin", *source_coin_str);
+  dict.Set("source_chain_id", swap_info->source_chain_id);
+  dict.Set("source_token_address", swap_info->source_token_address);
+  dict.Set("source_amount", swap_info->source_amount);
+
+  auto destination_coin_str =
+      GetStringFromCoinType(swap_info->destination_coin);
+  if (!destination_coin_str) {
+    return dict;
+  }
+  dict.Set("destination_coin", *destination_coin_str);
+  dict.Set("destination_chain_id", swap_info->destination_chain_id);
+  dict.Set("destination_token_address", swap_info->destination_token_address);
+  dict.Set("destination_amount", swap_info->destination_amount);
+  dict.Set("destination_amount_min", swap_info->destination_amount_min);
+
+  dict.Set("recipient", swap_info->recipient);
+  dict.Set("provider", EncodeSwapProvider(swap_info->provider));
+
+  return dict;
+}
+
+mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value) {
+  auto swap_info = mojom::SwapInfo::New();
+
+  const std::string* source_coin_str = value.FindString("source_coin");
+  if (!source_coin_str) {
+    return nullptr;
+  }
+  auto source_coin = GetCoinTypeFromString(*source_coin_str);
+  if (!source_coin) {
+    return nullptr;
+  }
+  swap_info->source_coin = *source_coin;
+
+  const std::string* source_chain_id = value.FindString("source_chain_id");
+  if (!source_chain_id) {
+    return nullptr;
+  }
+  swap_info->source_chain_id = *source_chain_id;
+
+  const std::string* source_token_address =
+      value.FindString("source_token_address");
+  if (!source_token_address) {
+    return nullptr;
+  }
+  swap_info->source_token_address = *source_token_address;
+
+  const std::string* source_amount = value.FindString("source_amount");
+  if (!source_amount) {
+    return nullptr;
+  }
+  swap_info->source_amount = *source_amount;
+
+  const std::string* destination_coin_str =
+      value.FindString("destination_coin");
+  if (!destination_coin_str) {
+    return nullptr;
+  }
+  auto destination_coin = GetCoinTypeFromString(*destination_coin_str);
+  if (!destination_coin) {
+    return nullptr;
+  }
+  swap_info->destination_coin = *destination_coin;
+
+  const std::string* destination_chain_id =
+      value.FindString("destination_chain_id");
+  if (!destination_chain_id) {
+    return nullptr;
+  }
+  swap_info->destination_chain_id = *destination_chain_id;
+
+  const std::string* destination_token_address =
+      value.FindString("destination_token_address");
+  if (!destination_token_address) {
+    return nullptr;
+  }
+  swap_info->destination_token_address = *destination_token_address;
+
+  const std::string* destination_amount =
+      value.FindString("destination_amount");
+  if (!destination_amount) {
+    return nullptr;
+  }
+  swap_info->destination_amount = *destination_amount;
+
+  // destination_amount_min is optional (only for EXACT_INPUT swaps)
+  const std::string* destination_amount_min =
+      value.FindString("destination_amount_min");
+  swap_info->destination_amount_min =
+      destination_amount_min ? *destination_amount_min : "";
+
+  const std::string* recipient = value.FindString("recipient");
+  if (!recipient) {
+    return nullptr;
+  }
+  swap_info->recipient = *recipient;
+
+  const std::string* provider_str = value.FindString("provider");
+  if (!provider_str) {
+    return nullptr;
+  }
+
+  swap_info->provider = DecodeSwapProvider(*provider_str);
+
+  return swap_info;
+}
+
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kDefaultEthereumWallet));

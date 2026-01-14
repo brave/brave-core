@@ -76,7 +76,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   originInfo: mockUniswapOriginInfo,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
@@ -131,7 +131,7 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   originInfo: mockOriginInfo,
   effectiveRecipient: undefined,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockSOLTXInstructions: SerializableTransactionInfo = {
@@ -242,7 +242,7 @@ export const mockSOLTXInstructions: SerializableTransactionInfo = {
   originInfo: mockOriginInfo,
   effectiveRecipient: undefined,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockATAInstruction = {
@@ -351,7 +351,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txType: BraveWallet.TransactionType.Other,
   effectiveRecipient: mockAccount.address,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockedErc20ApprovalTransaction = {
@@ -411,7 +411,7 @@ export const mockEthSendTransaction = {
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   effectiveRecipient: mockEthAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockBtcSendTransaction = {
@@ -465,7 +465,7 @@ export const mockBtcSendTransaction = {
   chainId: BraveWallet.BITCOIN_MAINNET,
   effectiveRecipient: mockBtcAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockZecSendTransaction: SerializableTransactionInfo = {
@@ -518,7 +518,7 @@ export const mockZecSendTransaction: SerializableTransactionInfo = {
   chainId: BraveWallet.Z_CASH_MAINNET,
   effectiveRecipient: mockZecAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
 }
 
 export const mockERC20TransferTransaction: SerializableTransactionInfo = {
@@ -531,7 +531,7 @@ export const mockERC20TransferTransaction: SerializableTransactionInfo = {
   isRetriable: false,
   originInfo: mockOriginInfo,
   submittedTime: { microseconds: 0 },
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
     ethTxData1559: {
@@ -672,7 +672,7 @@ export const createMockTransactionInfo = (arg: {
   }
 
   let txArgs: string[] = []
-  let swapInfo
+  let swapInfoDeprecated
 
   switch (true) {
     case isERC20Approve: {
@@ -697,7 +697,7 @@ export const createMockTransactionInfo = (arg: {
       txBase.txDataUnion.ethTxData1559 = ethTxData
     }
     case isSwap: {
-      swapInfo = {
+      swapInfoDeprecated = {
         fromCoin: BraveWallet.CoinType.ETH,
         fromChainId: chainId,
         fromAsset: sendApproveOrSellAssetContractAddress,
@@ -708,7 +708,7 @@ export const createMockTransactionInfo = (arg: {
         toAmount: buyAmount || '',
         receiver: toAddress,
         provider: 'lifi',
-      } as BraveWallet.SwapInfo
+      } as BraveWallet.SwapInfoDeprecated
     }
   }
 
@@ -724,7 +724,7 @@ export const createMockTransactionInfo = (arg: {
     chainId,
     fromAccountId: fromAccount.accountId,
     txArgs,
-    swapInfo,
+    swapInfoDeprecated,
   }
 }
 
@@ -806,7 +806,7 @@ export const getPostConfirmationStatusMockTransaction = (
     },
     txStatus: transactionStatus,
     txType: getMockTransactionType(isSwapOrBridge, transactionType, coin),
-    swapInfo: isSwapOrBridge
+    swapInfoDeprecated: isSwapOrBridge
       ? ({
           fromCoin: BraveWallet.CoinType.ETH,
           fromChainId: BraveWallet.MAINNET_CHAIN_ID,
@@ -821,7 +821,7 @@ export const getPostConfirmationStatusMockTransaction = (
           toAmount: '111111111111111',
           receiver: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
           provider: 'lifi',
-        } as BraveWallet.SwapInfo)
+        } as BraveWallet.SwapInfoDeprecated)
       : undefined,
   } as SerializableTransactionInfo
 }
@@ -864,7 +864,7 @@ export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
   txType: BraveWallet.TransactionType.ETHSwap,
   id: 'mock-eth-swap-tx',
   txStatus: BraveWallet.TransactionStatus.Unapproved,
-  swapInfo: {
+  swapInfoDeprecated: {
     fromAmount: '0xde0b6b3a7640000',
     fromAsset: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
     fromCoin: BraveWallet.CoinType.ETH,
@@ -895,7 +895,7 @@ export const mockETHNativeTokenSendTransaction = {
     originSpec: 'chrome://wallet',
     eTldPlusOne: '',
   },
-  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
   txArgs: [],
   txHash: '',
   txParams: [],

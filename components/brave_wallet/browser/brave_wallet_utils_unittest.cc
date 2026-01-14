@@ -262,6 +262,160 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 
+TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_Basic) {
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::ETH;
+  swap_info->source_chain_id = mojom::kMainnetChainId;
+  swap_info->source_token_address =
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
+  swap_info->source_amount = "1000000000000000000";
+  swap_info->destination_coin = mojom::CoinType::ETH;
+  swap_info->destination_chain_id = mojom::kMainnetChainId;
+  swap_info->destination_token_address =
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+  swap_info->destination_amount = "2000000";
+  swap_info->destination_amount_min = "1950000";
+  swap_info->recipient = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
+  swap_info->provider = mojom::SwapProvider::kZeroEx;
+
+  base::Value::Dict value = SwapInfoToValue(swap_info);
+
+  // Verify all fields are correctly serialized
+  EXPECT_EQ(*value.FindString("source_coin"), "ETH");
+  EXPECT_EQ(*value.FindString("source_chain_id"), mojom::kMainnetChainId);
+  EXPECT_EQ(*value.FindString("source_token_address"),
+            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  EXPECT_EQ(*value.FindString("source_amount"), "1000000000000000000");
+  EXPECT_EQ(*value.FindString("destination_coin"), "ETH");
+  EXPECT_EQ(*value.FindString("destination_chain_id"), mojom::kMainnetChainId);
+  EXPECT_EQ(*value.FindString("destination_token_address"),
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7");
+  EXPECT_EQ(*value.FindString("destination_amount"), "2000000");
+  EXPECT_EQ(*value.FindString("destination_amount_min"), "1950000");
+  EXPECT_EQ(*value.FindString("recipient"),
+            "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
+  EXPECT_EQ(*value.FindString("provider"), "ZERO_EX");
+}
+
+TEST(BraveWalletUtilsUnitTest, SwapInfoToValueAndBack_RoundTrip) {
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::SOL;
+  swap_info->source_chain_id = mojom::kSolanaMainnet;
+  swap_info->source_token_address =
+      "So11111111111111111111111111111111111111112";
+  swap_info->source_amount = "1000000000";
+  swap_info->destination_coin = mojom::CoinType::SOL;
+  swap_info->destination_chain_id = mojom::kSolanaMainnet;
+  swap_info->destination_token_address =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  swap_info->destination_amount = "50000000";
+  swap_info->destination_amount_min = "49000000";
+  swap_info->recipient = "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9";
+  swap_info->provider = mojom::SwapProvider::kJupiter;
+
+  base::Value::Dict value = SwapInfoToValue(swap_info);
+  auto swap_info_from_value = ValueToSwapInfo(value);
+
+  ASSERT_TRUE(swap_info_from_value);
+  EXPECT_EQ(swap_info, swap_info_from_value);
+}
+
+TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_NullPtr) {
+  mojom::SwapInfoPtr null_swap_info;
+  base::Value::Dict value = SwapInfoToValue(null_swap_info);
+  EXPECT_TRUE(value.empty());
+}
+
+TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
+  std::vector<mojom::SwapProvider> providers = {
+      mojom::SwapProvider::kAuto,   mojom::SwapProvider::kLiFi,
+      mojom::SwapProvider::kZeroEx, mojom::SwapProvider::kJupiter,
+      mojom::SwapProvider::kSquid,  mojom::SwapProvider::kNearIntents,
+  };
+
+  for (auto provider : providers) {
+    auto swap_info = mojom::SwapInfo::New();
+    swap_info->source_coin = mojom::CoinType::ETH;
+    swap_info->source_chain_id = mojom::kMainnetChainId;
+    swap_info->source_token_address = "";
+    swap_info->source_amount = "1000000000000000000";
+    swap_info->destination_coin = mojom::CoinType::ETH;
+    swap_info->destination_chain_id = mojom::kMainnetChainId;
+    swap_info->destination_token_address = "";
+    swap_info->destination_amount = "2000000000000000000";
+    swap_info->destination_amount_min = "";
+    swap_info->recipient = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
+    swap_info->provider = provider;
+
+    base::Value::Dict value = SwapInfoToValue(swap_info);
+    auto swap_info_from_value = ValueToSwapInfo(value);
+
+    ASSERT_TRUE(swap_info_from_value);
+    EXPECT_EQ(swap_info->provider, swap_info_from_value->provider);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_InvalidCoin) {
+  base::Value::Dict value;
+  value.Set("source_coin", "INVALID_COIN");
+  value.Set("source_chain_id", mojom::kMainnetChainId);
+  value.Set("source_token_address", "");
+  value.Set("source_amount", "1000000000000000000");
+  value.Set("destination_coin", "ETH");
+  value.Set("destination_chain_id", mojom::kMainnetChainId);
+  value.Set("destination_token_address", "");
+  value.Set("destination_amount", "2000000000000000000");
+  value.Set("recipient", "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
+  value.Set("provider", "AUTO");
+
+  auto swap_info = ValueToSwapInfo(value);
+  EXPECT_FALSE(swap_info);
+
+  value.Set("source_coin", "ETH");
+  swap_info = ValueToSwapInfo(value);
+  EXPECT_TRUE(swap_info);
+
+  value.Set("destination_coin", "INVALID_COIN");
+  swap_info = ValueToSwapInfo(value);
+  EXPECT_FALSE(swap_info);
+}
+
+TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
+  // All required fields for mojom::SwapInfo
+  const char* required_fields[] = {"source_coin",
+                                   "source_chain_id",
+                                   "source_token_address",
+                                   "source_amount",
+                                   "destination_coin",
+                                   "destination_chain_id",
+                                   "destination_token_address",
+                                   "destination_amount",
+                                   "recipient",
+                                   "provider"};
+
+  base::Value::Dict base_value;
+  base_value.Set("source_coin", "ETH");
+  base_value.Set("source_chain_id", mojom::kMainnetChainId);
+  base_value.Set("source_token_address", "");
+  base_value.Set("source_amount", "1000000000000000000");
+  base_value.Set("destination_coin", "ETH");
+  base_value.Set("destination_chain_id", mojom::kMainnetChainId);
+  base_value.Set("destination_token_address", "");
+  base_value.Set("destination_amount", "2000000000000000000");
+  base_value.Set("recipient", "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
+  base_value.Set("provider", "AUTO");
+
+  // The valid dict should be accepted
+  EXPECT_TRUE(ValueToSwapInfo(base_value));
+
+  for (const auto* field : required_fields) {
+    base::Value::Dict value = base_value.Clone();
+    value.Remove(field);
+    auto swap_info = ValueToSwapInfo(value);
+    EXPECT_FALSE(swap_info) << "Field missing: " << field;
+  }
+}
+
 TEST(BraveWalletUtilsTest, IsEndpointUsingBraveWalletProxy) {
   // Test with valid URLs that should match the proxy domains
   EXPECT_TRUE(IsEndpointUsingBraveWalletProxy(

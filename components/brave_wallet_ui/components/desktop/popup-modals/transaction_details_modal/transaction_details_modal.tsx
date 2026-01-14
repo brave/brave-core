@@ -191,11 +191,11 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const { data: toNetwork } = useGetNetworkQuery(
     isBridgeTx
-      && transaction.swapInfo?.toChainId
-      && transaction.swapInfo.toCoin !== undefined
+      && transaction.swapInfoDeprecated?.toChainId
+      && transaction.swapInfoDeprecated.toCoin !== undefined
       ? {
-          chainId: transaction.swapInfo.toChainId,
-          coin: transaction.swapInfo.toCoin,
+          chainId: transaction.swapInfoDeprecated.toChainId,
+          coin: transaction.swapInfoDeprecated.toCoin,
         }
       : skipToken,
   )
@@ -644,7 +644,9 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   <HorizontalSpace space='12px' />
                   <Button
                     onClick={onClickViewOnBlockExplorer(
-                      transaction.swapInfo?.provider === 'lifi' ? 'lifi' : 'tx',
+                      transaction.swapInfoDeprecated?.provider === 'lifi'
+                        ? 'lifi'
+                        : 'tx',
                       transaction.txHash,
                     )}
                     kind='outline'

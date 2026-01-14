@@ -172,7 +172,7 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           txStatus: BraveWallet.TransactionStatus.Unapproved,
           txType: BraveWallet.TransactionType.ETHSwap,
           isRetriable: false,
-          swapInfo: {
+          swapInfoDeprecated: {
             fromCoin: mockBasicAttentionToken.coin,
             fromChainId: mockBasicAttentionToken.chainId,
             fromAsset: mockBasicAttentionToken.contractAddress,
@@ -181,7 +181,7 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
             toChainId: mockBitcoinErc20Token.chainId,
             toAsset: mockBitcoinErc20Token.contractAddress,
             toAmount: '2',
-          } as BraveWallet.SwapInfo,
+          } as BraveWallet.SwapInfoDeprecated,
         },
         nativeAsset: makeNetworkAsset(mockNetwork),
       })

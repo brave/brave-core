@@ -127,11 +127,11 @@ export const TransactionIntent = (props: Props) => {
 
   const { data: bridgeToNetwork } = useGetNetworkQuery(
     isBridge
-      && transaction.swapInfo?.toChainId
-      && transaction.swapInfo.toCoin !== undefined
+      && transaction.swapInfoDeprecated?.toChainId
+      && transaction.swapInfoDeprecated.toCoin !== undefined
       ? {
-          chainId: transaction.swapInfo.toChainId,
-          coin: transaction.swapInfo.toCoin,
+          chainId: transaction.swapInfoDeprecated.toChainId,
+          coin: transaction.swapInfoDeprecated.toCoin,
         }
       : skipToken,
   )
@@ -160,12 +160,12 @@ export const TransactionIntent = (props: Props) => {
   const transactionConfirmed =
     transaction.txStatus === BraveWallet.TransactionStatus.Confirmed
 
-  // Currently we only get transaction.swapInfo.receiver info
+  // Currently we only get transaction.swapInfoDeprecated.receiver info
   // for lifi swaps. Core should also return this value
   // for all other providers.
   const swapOrBridgeRecipient =
-    transaction.swapInfo?.provider === 'lifi'
-      ? (transaction.swapInfo?.receiver ?? '')
+    transaction.swapInfoDeprecated?.provider === 'lifi'
+      ? (transaction.swapInfoDeprecated?.receiver ?? '')
       : (txAccount?.address ?? '')
 
   const recipientLabel = getAddressLabel(
@@ -360,7 +360,8 @@ export const TransactionIntent = (props: Props) => {
           </Text>
           <Button
             onClick={onClickViewOnBlockExplorer(
-              isSwapOrBridge && transaction.swapInfo?.provider === 'lifi'
+              isSwapOrBridge
+                && transaction.swapInfoDeprecated?.provider === 'lifi'
                 ? 'lifi'
                 : 'tx',
               transaction.txHash,
