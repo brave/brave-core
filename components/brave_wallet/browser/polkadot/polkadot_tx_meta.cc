@@ -33,9 +33,7 @@ mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
-          recipient_,
-          mojom::uint128::New(amount_ >> 64, amount_ & 0xffffffffffffffff),
-          false, 0)),
+          recipient_, Uint128ToMojom(amount_), false, 0)),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
