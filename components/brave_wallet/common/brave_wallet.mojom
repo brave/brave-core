@@ -2681,6 +2681,7 @@ struct TransactionInfo {
   string? effective_recipient;
   bool is_retriable;
 
+  SwapInfo? swap_info;
   SwapInfoDeprecated? swap_info_deprecated;
 };
 
