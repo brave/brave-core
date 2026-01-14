@@ -72,12 +72,12 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 
 type TokenInfoLabel =
   | 'send'
-  | 'spend'
-  | 'receive'
-  | 'bridge'
   | 'to'
   | 'shield'
   | 'fee'
+  | 'swapSource'
+  | 'swapDestination'
+  | 'swapDestinationMin'
 
 interface Props {
   token?: BraveWallet.BlockchainToken
@@ -132,8 +132,12 @@ export function ConfirmationTokenInfo(props: Props) {
         return getLocale('braveWalletEstimatedFee')
       case 'send':
         return getLocale('braveWalletSend')
-      case 'spend':
+      case 'swapSource':
         return getLocale('braveWalletSpend')
+      case 'swapDestination':
+        return getLocale('braveWalletReceiveEstimate')
+      case 'swapDestinationMin':
+        return getLocale('braveWalletReceiveMinimum')
       case 'shield':
         return getLocale('braveWalletShielding')
       default:
@@ -174,6 +178,18 @@ export function ConfirmationTokenInfo(props: Props) {
     }
     return ''
   }, [fiatValue, amount, token, defaultFiatCurrency, spotPrices])
+
+  const isSwapDestinationLabel = React.useMemo(() => {
+    return ['swapDestination', 'swapDestinationMin'].includes(label)
+  }, [label])
+
+  const isSwapOrBridgeDestinationWithMissingToken = React.useMemo(() => {
+    return isSwapDestinationLabel && !token
+  }, [isSwapDestinationLabel, token])
+
+  const isSwapOrBridgeDestinationWithMissingAmount = React.useMemo(() => {
+    return isSwapDestinationLabel && !amount
+  }, [isSwapDestinationLabel, amount])
 
   if (label === 'to' && account) {
     return (
@@ -279,9 +295,11 @@ export function ConfirmationTokenInfo(props: Props) {
     <Row
       justifyContent='space-between'
       gap='16px'
-      margin={label === 'bridge' ? '10px 0px 0px 0px' : '0px'}
+      margin={
+        isSwapOrBridgeDestinationWithMissingToken ? '10px 0px 0px 0px' : '0px'
+      }
     >
-      {label === 'bridge' ? (
+      {isSwapOrBridgeDestinationWithMissingToken ? (
         <CreateNetworkIcon
           network={network}
           marginRight={0}
@@ -337,7 +355,7 @@ export function ConfirmationTokenInfo(props: Props) {
             </AccountButton>
           </Tooltip>
         </Row>
-        {label === 'bridge' && !token && (
+        {isSwapOrBridgeDestinationWithMissingToken && (
           <TokenAmountText
             textColor='success'
             textAlign='left'
@@ -348,22 +366,26 @@ export function ConfirmationTokenInfo(props: Props) {
             )}
           </TokenAmountText>
         )}
-        {label !== 'bridge' && formattedAmount && (
-          <TokenAmountText
-            textColor={label === 'receive' ? 'success' : 'primary'}
-            textAlign='left'
-          >
-            {formattedAmount}
-          </TokenAmountText>
-        )}
-        {label !== 'bridge' && formattedFiatAmount && (
-          <ConfirmationInfoText
-            textColor='tertiary'
-            textAlign='left'
-          >
-            {formattedFiatAmount}
-          </ConfirmationInfoText>
-        )}
+        {!isSwapOrBridgeDestinationWithMissingToken
+          && !isSwapOrBridgeDestinationWithMissingAmount
+          && formattedAmount && (
+            <TokenAmountText
+              textColor={isSwapDestinationLabel ? 'success' : 'primary'}
+              textAlign='left'
+            >
+              {formattedAmount}
+            </TokenAmountText>
+          )}
+        {!isSwapOrBridgeDestinationWithMissingToken
+          && !isSwapOrBridgeDestinationWithMissingAmount
+          && formattedFiatAmount && (
+            <ConfirmationInfoText
+              textColor='tertiary'
+              textAlign='left'
+            >
+              {formattedFiatAmount}
+            </ConfirmationInfoText>
+          )}
       </Column>
     </Row>
   )

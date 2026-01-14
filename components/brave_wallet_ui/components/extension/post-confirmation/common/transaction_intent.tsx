@@ -127,11 +127,11 @@ export const TransactionIntent = (props: Props) => {
 
   const { data: bridgeToNetwork } = useGetNetworkQuery(
     isBridge
-      && transaction.swapInfoDeprecated?.toChainId
-      && transaction.swapInfoDeprecated.toCoin !== undefined
+      && transaction.swapInfo?.destinationChainId
+      && transaction.swapInfo?.destinationCoin !== undefined
       ? {
-          chainId: transaction.swapInfoDeprecated.toChainId,
-          coin: transaction.swapInfoDeprecated.toCoin,
+          chainId: transaction.swapInfo.destinationChainId,
+          coin: transaction.swapInfo.destinationCoin,
         }
       : skipToken,
   )
@@ -139,19 +139,26 @@ export const TransactionIntent = (props: Props) => {
   const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
     useGetAccountInfosRegistryQuery(undefined)
 
-  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
-    useSwapTransactionParser(transaction)
+  const {
+    destinationToken,
+    sourceToken,
+    destinationAmount,
+    sourceAmount,
+    destinationAddress,
+  } = useSwapTransactionParser(transaction)
 
-  const formattedSellAmount = sellToken
-    ? sellAmountWei
-        .divideByDecimals(sellToken.decimals)
-        .formatAsAsset(6, sellToken.symbol)
-    : ''
-  const formattedBuyAmount = buyToken
-    ? buyAmountWei
-        .divideByDecimals(buyToken.decimals)
-        .formatAsAsset(6, buyToken.symbol)
-    : ''
+  const formattedSourceAmount =
+    sourceAmount && sourceToken
+      ? sourceAmount
+          .divideByDecimals(sourceToken.decimals)
+          .formatAsAsset(6, sourceToken.symbol)
+      : ''
+  const formattedDestinationAmount =
+    destinationAmount && destinationToken
+      ? destinationAmount
+          .divideByDecimals(destinationToken.decimals)
+          .formatAsAsset(6, destinationToken.symbol)
+      : ''
 
   const transactionFailed =
     transaction.txStatus === BraveWallet.TransactionStatus.Dropped
@@ -160,13 +167,7 @@ export const TransactionIntent = (props: Props) => {
   const transactionConfirmed =
     transaction.txStatus === BraveWallet.TransactionStatus.Confirmed
 
-  // Currently we only get transaction.swapInfoDeprecated.receiver info
-  // for lifi swaps. Core should also return this value
-  // for all other providers.
-  const swapOrBridgeRecipient =
-    transaction.swapInfoDeprecated?.provider === 'lifi'
-      ? (transaction.swapInfoDeprecated?.receiver ?? '')
-      : (txAccount?.address ?? '')
+  const swapOrBridgeRecipient = destinationAddress || txAccount?.address || ''
 
   const recipientLabel = getAddressLabel(
     isERC20Approval
@@ -228,10 +229,10 @@ export const TransactionIntent = (props: Props) => {
       return swappingOrBridgingLocale
     }
     if (isSwapOrBridge && transactionConfirmed) {
-      return formattedBuyAmount
+      return formattedDestinationAmount
     }
     if (isSwapOrBridge) {
-      return formattedSellAmount
+      return formattedSourceAmount
     }
     return formattedSendAmount
   }, [
@@ -239,8 +240,8 @@ export const TransactionIntent = (props: Props) => {
     formattedApprovalAmount,
     isSwapOrBridge,
     transactionConfirmed,
-    formattedBuyAmount,
-    formattedSellAmount,
+    formattedDestinationAmount,
+    formattedSourceAmount,
     formattedSendAmount,
     isSOLSwapOrBridge,
     sendSwapOrBridgeLocale,
@@ -259,7 +260,7 @@ export const TransactionIntent = (props: Props) => {
       return bridgeToNetwork?.chainName ?? ''
     }
     if (isSwap) {
-      return formattedBuyAmount
+      return formattedDestinationAmount
     }
     return recipientLabel
   }, [
@@ -269,7 +270,7 @@ export const TransactionIntent = (props: Props) => {
     isBridge,
     bridgeToNetwork,
     isSwap,
-    formattedBuyAmount,
+    formattedDestinationAmount,
     isSOLSwapOrBridge,
     txNetwork,
   ])
@@ -361,7 +362,8 @@ export const TransactionIntent = (props: Props) => {
           <Button
             onClick={onClickViewOnBlockExplorer(
               isSwapOrBridge
-                && transaction.swapInfoDeprecated?.provider === 'lifi'
+                && transaction.swapInfo?.provider
+                  === BraveWallet.SwapProvider.kLiFi
                 ? 'lifi'
                 : 'tx',
               transaction.txHash,
