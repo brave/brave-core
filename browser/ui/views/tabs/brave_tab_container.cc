@@ -576,6 +576,7 @@ void BraveTabContainer::Layout(PassKey) {
     return;
   }
 
+  // We don't need to layout if the height is 0 as it's invisible.
   if (!height()) {
     return;
   }
