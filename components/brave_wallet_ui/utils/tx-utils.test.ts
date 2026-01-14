@@ -9,9 +9,8 @@ import {
   mockNetwork,
   mockSolanaAccount,
 } from '../common/constants/mocks'
-import { SwapExchangeProxy } from '../common/constants/registry'
+import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../common/constants/magics'
 import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
-import { makeNetworkAsset } from '../options/asset-options'
 import {
   mockBasicAttentionToken,
   mockBitcoinErc20Token,
@@ -24,7 +23,10 @@ import {
   mockSplBat,
   mockZecToken,
 } from '../stories/mock-data/mock-asset-options'
-import { mockEthMainnet } from '../stories/mock-data/mock-networks'
+import {
+  NetworksRegistry,
+  networkEntityAdapter,
+} from '../common/slices/entities/network.entity'
 import {
   createMockTransactionInfo,
   mockATAInstruction,
@@ -41,13 +43,13 @@ import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
   getIsRevokeApprovalTx,
   getIsSolanaAssociatedTokenAccountCreation,
   getTransactionGas,
   getTransactionStatusString,
   getTransactionTypeName,
   isCancelTransaction,
+  parseSwapInfo,
   toTxDataUnion,
 } from './tx-utils'
 
@@ -133,69 +135,145 @@ describe('getTransactionGas()', () => {
   })
 })
 
-describe('getETHSwapTransactionBuyAndSellTokens', () => {
-  it('should detect the correct but/swap tokens of a transaction', () => {
-    const { buyAmountWei, sellAmountWei, buyToken, sellToken } =
-      getETHSwapTransactionBuyAndSellTokens({
-        tokensList: mockErc20TokensList,
-        tx: {
-          chainId: BraveWallet.MAINNET_CHAIN_ID,
-          confirmedTime: { microseconds: Date.now() },
-          createdTime: { microseconds: Date.now() },
-          fromAddress: mockAccount.address,
-          effectiveRecipient: mockAccount.address,
-          fromAccountId: mockAccount.accountId,
-          id: 'swap',
-          originInfo: undefined,
-          submittedTime: { microseconds: Date.now() },
-          txArgs: [],
-          txDataUnion: {
-            ethTxData1559: {
-              baseData: {
-                data: [],
-                gasLimit: '',
-                gasPrice: '',
-                nonce: '',
-                signedTransaction: '',
-                signOnly: false,
-                to: SwapExchangeProxy,
-                value: '',
-              },
-              chainId: BraveWallet.MAINNET_CHAIN_ID,
-              gasEstimation: undefined,
-              maxFeePerGas: '1',
-              maxPriorityFeePerGas: '1',
-            },
-          },
-          txHash: '123',
-          txParams: [],
-          txStatus: BraveWallet.TransactionStatus.Unapproved,
-          txType: BraveWallet.TransactionType.ETHSwap,
-          isRetriable: false,
-          swapInfoDeprecated: {
-            fromCoin: mockBasicAttentionToken.coin,
-            fromChainId: mockBasicAttentionToken.chainId,
-            fromAsset: mockBasicAttentionToken.contractAddress,
-            fromAmount: '1',
-            toCoin: mockBitcoinErc20Token.coin,
-            toChainId: mockBitcoinErc20Token.chainId,
-            toAsset: mockBitcoinErc20Token.contractAddress,
-            toAmount: '2',
-          } as BraveWallet.SwapInfoDeprecated,
-        },
-        nativeAsset: makeNetworkAsset(mockNetwork),
-      })
+describe('parseSwapInfo', () => {
+  const createMockNetworksRegistry = (): NetworksRegistry => {
+    const sourceNetworkId = networkEntityAdapter.selectId({
+      chainId: mockBasicAttentionToken.chainId,
+      coin: mockBasicAttentionToken.coin,
+    }) as string
+    const destinationNetworkId = networkEntityAdapter.selectId({
+      chainId: mockBitcoinErc20Token.chainId,
+      coin: mockBitcoinErc20Token.coin,
+    }) as string
 
-    expect(buyToken).toBeDefined()
-    expect(sellToken).toBeDefined()
-    expect(sellToken?.contractAddress).toBe(
+    return {
+      ...networkEntityAdapter.getInitialState(),
+      entities: {
+        [sourceNetworkId]: mockNetwork,
+        [destinationNetworkId]: mockNetwork,
+      },
+      ids: [sourceNetworkId, destinationNetworkId],
+      hiddenIds: [],
+      hiddenIdsByCoinType: {},
+      visibleIdsByCoinType: {},
+      mainnetIds: [],
+      testnetIds: [],
+      offRampIds: [],
+      visibleIds: [sourceNetworkId, destinationNetworkId],
+    }
+  }
+
+  it('should parse swap info with new structure (source/destination)', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: mockBitcoinErc20Token.contractAddress,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '1900000000000000000', // 1.9 tokens
+        recipient: '0x1234567890123456789012345678901234567890',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe(
       mockBasicAttentionToken.contractAddress,
     )
-    expect(buyToken?.contractAddress).toBe(
+    expect(destinationToken?.contractAddress).toBe(
       mockBitcoinErc20Token.contractAddress,
     )
-    expect(buyAmountWei.format()).toEqual('2')
-    expect(sellAmountWei.format()).toEqual('1')
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(
+      sourceAmount.divideByDecimals(mockBasicAttentionToken.decimals).format(6),
+    ).toEqual('1')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmount.divideByDecimals(18).format(6)).toEqual('2')
+    expect(destinationAmountMin.divideByDecimals(18).format(6)).toEqual('1.9')
+    expect(destinationAddress).toBe(
+      '0x1234567890123456789012345678901234567890',
+    )
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
+  })
+
+  it('should handle undefined swapInfo', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: undefined,
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeUndefined()
+    expect(destinationToken).toBeUndefined()
+    expect(sourceAmount.format()).toEqual('')
+    expect(destinationAmount.format()).toEqual('')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBeUndefined()
+  })
+
+  it('should handle native assets correctly', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '',
+        recipient: '',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe('')
+    expect(destinationToken?.contractAddress).toBe('')
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
   })
 })
 
@@ -258,7 +336,6 @@ describe('check for insufficient funds errors', () => {
 
       const mockTransactionInfo = {
         ...getMockedTransactionInfo(),
-        fromAddress: '0xdeadbeef',
         txArgs: [
           BraveWallet.TransactionType.ERC20Approve,
           BraveWallet.TransactionType.ERC20Transfer,
@@ -285,42 +362,37 @@ describe('check for insufficient funds errors', () => {
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
         accountNativeBalance:
-          nativeBalanceRegistry[mockTransactionInfo.chainId],
+          nativeBalanceRegistry[mockTransactionInfo.chainId] || '',
         gasFee,
       })
-
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: mockTransactionInfo.chainId,
-      }
 
       const token = findTransactionToken(
         mockTransactionInfo,
         mockErc20TokensList,
       )
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: mockTransactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: mockTransactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const accountNativeBalance =
         nativeBalanceRegistry[mockTransactionInfo.chainId]
 
-      const sellTokenBalance =
-        tokenBalanceRegistry[sellToken?.contractAddress ?? '']
+      const sourceTokenBalance =
+        tokenBalanceRegistry[sourceToken?.contractAddress ?? '']
 
       const tokenBalance = tokenBalanceRegistry[token?.contractAddress ?? '']
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
         accountNativeBalance,
-        accountTokenBalance: tokenBalance,
+        accountTokenBalance: tokenBalance || '',
         gasFee,
-        sellAmountWei,
-        sellTokenBalance: sellTokenBalance,
+        sourceAmount,
+        sourceTokenBalance: sourceTokenBalance || '',
         tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsForGasError).toBeFalsy()
@@ -335,7 +407,6 @@ describe('check for insufficient funds errors', () => {
     const mockTransactionInfo = getMockedTransactionInfo()
     const transactionInfo: SerializableTransactionInfo = {
       ...mockTransactionInfo,
-      fromAddress: '0xdeadbeef',
       txType,
       txDataUnion: {
         ethTxData: {} as any,
@@ -377,12 +448,14 @@ describe('check for insufficient funds errors', () => {
       })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: '',
         gasFee,
-        sellAmountWei: Amount.empty(),
-        sellTokenBalance: '',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeTruthy()
@@ -405,7 +478,7 @@ describe('check for insufficient funds errors', () => {
         '0x1': '1003150000000000000', // 1.00315 ETH
       }
       const accountNativeBalance =
-        nativeBalanceRegistry[mockTransactionInfo.chainId]
+        nativeBalanceRegistry[mockTransactionInfo.chainId] || ''
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
         accountNativeBalance,
@@ -416,9 +489,10 @@ describe('check for insufficient funds errors', () => {
         accountNativeBalance,
         accountTokenBalance: '',
         gasFee,
-        sellAmountWei: Amount.empty(),
-        sellTokenBalance: '',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
         tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeFalsy()
@@ -446,7 +520,6 @@ describe('check for insufficient funds errors', () => {
         .toHex() // 1 full Token
       const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
-        fromAddress: '0xdeadbeef',
         // (address recipient, uint256 amount)
         txArgs: ['mockRecipient', sendAmount],
         txType: BraveWallet.TransactionType.ERC20Transfer,
@@ -479,32 +552,29 @@ describe('check for insufficient funds errors', () => {
       }
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         gasFee,
       })
 
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: transactionInfo.chainId,
-      }
-
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: transactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
         gasFee,
-        sellAmountWei,
-        sellTokenBalance:
-          tokenBalanceRegistry[sellToken?.contractAddress ?? ''],
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(nativeBalanceRegistry[transactionInfo.chainId]).toBeTruthy()
@@ -534,7 +604,6 @@ describe('check for insufficient funds errors', () => {
 
       const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
-        fromAddress: '0xdeadbeef',
         // (address recipient, uint256 amount)
         txArgs: ['mockRecipient', sendAmount],
         txType: BraveWallet.TransactionType.ERC20Transfer,
@@ -567,32 +636,29 @@ describe('check for insufficient funds errors', () => {
       }
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         gasFee,
       })
 
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: transactionInfo.chainId,
-      }
-
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: transactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
         gasFee,
-        sellAmountWei,
-        sellTokenBalance:
-          tokenBalanceRegistry[sellToken?.contractAddress ?? ''],
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeFalsy()
@@ -868,6 +934,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [mockATAInstruction],
           },
@@ -887,6 +954,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [mockATAInstruction],
           },
@@ -902,6 +970,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {
@@ -922,6 +991,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {
@@ -942,6 +1012,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {

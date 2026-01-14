@@ -187,24 +187,18 @@ export const TransactionsScreen = (props: Props) => {
     return userTokensList.concat(knownTokensList)
   }, [userTokensList, knownTokensList])
 
-  const combinedTokensListForSelectedChain = React.useMemo(() => {
-    return chainId && chainId !== AllNetworksOption.chainId
-      ? combinedTokensList.filter((token) => token.chainId === chainId)
-      : combinedTokensList
-  }, [chainId, combinedTokensList])
-
   const searchableTransactions = React.useMemo(() => {
     return txsForSelectedChain.map((tx) => {
       return makeSearchableTransaction(
         tx,
-        combinedTokensListForSelectedChain,
+        combinedTokensList,
         networksRegistry,
         accountInfosRegistry,
       )
     })
   }, [
     txsForSelectedChain,
-    combinedTokensListForSelectedChain,
+    combinedTokensList,
     networksRegistry,
     accountInfosRegistry,
   ])
