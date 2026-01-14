@@ -486,7 +486,7 @@ exports.update = () => {
     // Mapping for copying Brave's Android resource into chromium folder.
     const copyAndroidResourceMapping = {
       [androidResSource]: [androidResDest],
-      [androidFeaturesTabUiResSource, androidFeaturesTabUiDest],
+      [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
       [androidDownloadInternalResSource]: [androidDownloadInternalResDest],
       [androidIconSource]: [androidIconDest],
       [androidIconBaseSource]: [androidIconBaseDest],
