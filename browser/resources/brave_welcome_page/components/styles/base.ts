@@ -7,6 +7,10 @@ import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
 import bgLight from '../img/bg-light.jpg'
 import bgDark from '../img/bg-dark.jpg'
+import bgLightVideo from '../img/bg-light.mp4'
+import bgDarkVideo from '../img/bg-dark.mp4'
+
+export { bgLightVideo, bgDarkVideo }
 
 export const baseStyles = `
   /* CSS Reset */
@@ -55,6 +59,7 @@ export const baseStyles = `
   }
 
   & {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,11 +73,43 @@ export const baseStyles = `
     background-position: center center;
     background-repeat: no-repeat;
     padding: ${spacing.xl};
+    overflow: hidden;
   }
 
   @media (prefers-color-scheme: dark) {
     & {
       background-image: url(${bgDark});
+    }
+  }
+
+  .video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    object-fit: cover;
+  }
+
+  .video-background.light {
+    display: block;
+  }
+
+  .video-background.dark {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .video-background.light {
+      display: none;
+    }
+
+    .video-background.dark {
+      display: block;
     }
   }
 

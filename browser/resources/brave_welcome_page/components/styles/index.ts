@@ -5,7 +5,9 @@
 
 import { scoped } from '$web-common/scoped_css'
 
-import { baseStyles } from './base'
+import { baseStyles, bgLightVideo, bgDarkVideo } from './base'
+
+export { bgLightVideo, bgDarkVideo }
 import { layoutStyles } from './layout'
 import { transitionStyles } from './transitions'
 import { importDataStyles } from './import_data'
