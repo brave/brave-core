@@ -13,7 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
@@ -306,7 +305,7 @@ void PublishersController::UpdateDefaultLocale() {
 
   // Fallback to en_US, if we can't match anything else.
   // TODO(fallaciousreasoning): Implement more complicated fallback
-  default_locale_ = base::Contains(available_locales, brave_news_locale)
+  default_locale_ = available_locales.contains(brave_news_locale)
                         ? brave_news_locale
                         : "en_US";
 }

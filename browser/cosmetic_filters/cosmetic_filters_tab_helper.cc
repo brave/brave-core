@@ -42,7 +42,7 @@ bool IsValidFilterText(std::string_view selector) {
   // The rules are parsed by adblock-rust via lines() method.
   // The method checks a newline byte (the 0xA byte) or CRLF (0xD, 0xA bytes).
   // https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
-  if (base::Contains(selector, '\n')) {
+  if (selector.contains('\n')) {
     return false;
   }
 

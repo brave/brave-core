@@ -11,7 +11,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -97,7 +96,7 @@ std::optional<std::string> SolanaKeyring::ImportAccount(
 
   std::string address = GetAddressInternal(*hd_key);
 
-  if (base::Contains(imported_accounts_, address)) {
+  if (imported_accounts_.contains(address)) {
     return std::nullopt;
   }
 

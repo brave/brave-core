@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/uuid.h"
@@ -433,10 +432,10 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
   size_t index = 0;
   for (const GURL& url : chain_urls) {
     if (net::IsHTTPSOrLocalhostURL(url) &&
-        !base::Contains(url.spec(), "$%7BINFURA_API_KEY%7D") &&
-        !base::Contains(url.spec(), "$%7BALCHEMY_API_KEY%7D") &&
-        !base::Contains(url.spec(), "$%7BAPI_KEY%7D") &&
-        !base::Contains(url.spec(), "$%7BPULSECHAIN_API_KEY%7D")) {
+        !url.spec().contains("$%7BINFURA_API_KEY%7D") &&
+        !url.spec().contains("$%7BALCHEMY_API_KEY%7D") &&
+        !url.spec().contains("$%7BAPI_KEY%7D") &&
+        !url.spec().contains("$%7BPULSECHAIN_API_KEY%7D")) {
       return index;
     }
     index++;
