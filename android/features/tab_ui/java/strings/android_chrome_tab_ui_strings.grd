@@ -252,7 +252,10 @@
         Multi-select mode
       </message>
       <message name="IDS_TAB_ITEM_PICKER_LIMIT_REACHED" desc="Notification shown on Tab Item Picker when maximum item limit is reached.">
-        Add up to 10 files, tabs, or images
+        {LIMIT_COUNT, plural,
+          =1 {Add up to <ph name="LIMIT_COUNT_ONE">%1$d<ex>1</ex></ph> file, tab, or image}
+          other {Add up to <ph name="LIMIT_COUNT_MANY">%1$d<ex>10</ex></ph> files, tabs, or images}
+        }
       </message>
       <!-- Tab Selection Editor V2 strings -->
       <message name="IDS_TAB_SELECTION_EDITOR_SELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave selects all the tabs shown in the editor. [CHAR_LIMIT=27]">
@@ -1030,6 +1033,17 @@
 
       <message name="IDS_SEND_FEEDBACK_TAB_GRID_DIALOG" desc="Button to send feedback on shared tab groups.">
         Send feedback
+      </message>
+
+      <!-- Tab Bottom Sheet Strings -->
+      <message name="IDS_TAB_BOTTOM_SHEET_CLOSED" desc="The announcement when the Tab Bottom Sheet is closed.">
+        Tab Bottom Sheet changes closed.
+      </message>
+      <message name="IDS_TAB_BOTTOM_SHEET_HALF_HEIGHT" desc="The announcement when the Tab Bottom Sheet is opened to half height.">
+        Tab Bottom Sheet at half height.
+      </message>
+      <message name="IDS_TAB_BOTTOM_SHEET_FULL_HEIGHT" desc="The announcement when the Tab Bottom Sheet is opened to full height.">
+        Tab Bottom Sheet at full height
       </message>
 
       <!-- Auto Delete Decision Promo Strings -->
