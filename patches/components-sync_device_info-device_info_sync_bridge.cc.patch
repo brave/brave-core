@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 22acbf3f0777d2c9f8316b95fe47ebbe2931a170..fde8fe05eeb3522a400081ef06188119fb5a1047 100644
+index 92dd8f82c1505cdb20d425c8fedcc826e40f855d..59bb8733422c0ee05f4ea2360473e193bf3f67b9 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -290,6 +290,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
@@ -42,4 +42,4 @@ index 22acbf3f0777d2c9f8316b95fe47ebbe2931a170..fde8fe05eeb3522a400081ef06188119
 +  BRAVE_SKIP_EXPIRE_OLD_ENTRIES
    const base::Time expiration_threshold =
        base::Time::Now() - kExpirationThreshold;
-   std::unordered_set<std::string> cache_guids_to_expire;
+   absl::flat_hash_set<std::string> cache_guids_to_expire;
