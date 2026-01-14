@@ -16,23 +16,35 @@ const PERIOD: u32 = 64;
 // "Balances" pallet lives at index 4:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
 // https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
-const POLKADOT_TESTNET: CxxPolkadotChainMetadata =
-    CxxPolkadotChainMetadata { balances_pallet_index: 4, transfer_allow_death_call_index: 0 };
+const POLKADOT_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
+    balances_pallet_index: 4,
+    transfer_allow_death_call_index: 0,
+    ss58_prefix: 42,
+};
 
 // "Balances" pallet lives at index 10:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
-const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata =
-    CxxPolkadotChainMetadata { balances_pallet_index: 10, transfer_allow_death_call_index: 0 };
+const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
+    balances_pallet_index: 10,
+    transfer_allow_death_call_index: 0,
+    ss58_prefix: 42,
+};
 
 // "Balances" pallet lives at index 5:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
-const POLKADOT_MAINNET: CxxPolkadotChainMetadata =
-    CxxPolkadotChainMetadata { balances_pallet_index: 5, transfer_allow_death_call_index: 0 };
+const POLKADOT_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
+    balances_pallet_index: 5,
+    transfer_allow_death_call_index: 0,
+    ss58_prefix: 0,
+};
 
 // "Balances" pallet lives at index 10:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
-const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata =
-    CxxPolkadotChainMetadata { balances_pallet_index: 10, transfer_allow_death_call_index: 0 };
+const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
+    balances_pallet_index: 10,
+    transfer_allow_death_call_index: 0,
+    ss58_prefix: 0,
+};
 
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
@@ -53,6 +65,8 @@ mod ffi {
     extern "Rust" {
         type CxxPolkadotChainMetadata;
         type CxxPolkadotChainMetadataResult;
+
+        fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16;
 
         fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
@@ -165,6 +179,11 @@ impl fmt::Display for Error {
 struct CxxPolkadotChainMetadata {
     balances_pallet_index: u8,
     transfer_allow_death_call_index: u8,
+    ss58_prefix: u16,
+}
+
+fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16 {
+    chain_metadata.ss58_prefix
 }
 
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
@@ -187,7 +206,7 @@ fn encode_unsigned_transfer_allow_death(
     send_amount_bytes: &[u8; 16],
     pubkey: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
@@ -235,7 +254,7 @@ fn decode_unsigned_transfer_allow_death_impl(
         return Err(Error::InvalidLength);
     }
 
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
         chain_metadata;
 
     if next_n_bytes(&mut input, 4)?
@@ -337,7 +356,7 @@ fn generate_extrinsic_signature_payload(
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
@@ -399,7 +418,7 @@ fn make_signed_extrinsic(
     block_number: u32,
     sender_nonce: u32,
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(512);

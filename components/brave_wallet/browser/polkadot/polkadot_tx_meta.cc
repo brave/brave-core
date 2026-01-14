@@ -18,13 +18,7 @@ PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
     : recipient_(base::HexEncodeLower(extrinsic.recipient())),
       encoded_extrinsic_(extrinsic.Encode(chain_metadata)) {
   set_from(from.Clone());
-
-  // The only way this code winds up dying is if somehow we're trying to save an
-  // invalid transaction. Currently the front-end only permits transferring
-  // uint64s so if we hit this codepath it means there's a bug either in our
-  // front-end interactions or we're attempting to save an invalid transaction
-  // and we have a bug.
-  amount_ = base::checked_cast<uint64_t>(extrinsic.send_amount());
+  amount_ = extrinsic.send_amount();
 }
 
 PolkadotTxMeta::~PolkadotTxMeta() = default;
@@ -38,8 +32,8 @@ base::Value::Dict PolkadotTxMeta::ToValue() const {
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
-      mojom::TxDataUnion::NewPolkadotTxData(
-          mojom::PolkadotTxdata::New(recipient_, amount_, false, 0)),
+      mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
+          recipient_, Uint128ToMojom(amount_), false, 0)),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
