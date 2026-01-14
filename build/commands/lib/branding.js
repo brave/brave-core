@@ -16,10 +16,15 @@ exports.update = () => {
   const braveComponentsDir = path.join(config.braveCoreDir, 'components')
   const chromeAppDir = path.join(config.srcDir, 'chrome', 'app')
   const braveAppDir = path.join(config.braveCoreDir, 'app')
-  const braveChromiumResources = path.join(
+  const chromeBrowserResourcesDir = path.join(
+    config.srcDir,
+    'chrome',
+    'browser',
+    'resources',
+  )
+  const braveBrowserResourcesDir = path.join(
     config.braveCoreDir,
-    'build',
-    'chromium',
+    'browser',
     'resources',
   )
   const braveAppVectorIconsDir = path.join(config.braveCoreDir, 'components')
@@ -118,7 +123,14 @@ exports.update = () => {
       ])
     }
   }
-  fileMap.add([path.join(braveChromiumResources), path.join(config.srcDir)])
+  fileMap.add([
+    path.join(braveAppDir, 'theme', 'default_100_percent', 'common'),
+    path.join(chromeAppDir, 'theme', 'default_100_percent', 'common'),
+  ])
+  fileMap.add([
+    path.join(braveAppDir, 'theme', 'default_200_percent', 'common'),
+    path.join(chromeAppDir, 'theme', 'default_200_percent', 'common'),
+  ])
   // Copy product_logo for version UI (about:version page).
   // product_logo_name_48.png is renamed to product_logo.png during copy.
   // Use brave_origin logos when is_brave_origin_branded is true.
@@ -159,12 +171,95 @@ exports.update = () => {
       ),
     ])
   }
+  // Replace history page's favicon.
+  fileMap.add([
+    path.join(
+      braveComponentsDir,
+      'resources',
+      'default_100_percent',
+      'favicon_history.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_100_percent',
+      'favicon_history.png',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      braveComponentsDir,
+      'resources',
+      'default_200_percent',
+      'favicon_history.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_200_percent',
+      'favicon_history.png',
+    ),
+  ])
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
       path.join(braveAppVectorIconsDir, 'vector_icons', branding),
       path.join(chromeComponentsDir, 'vector_icons', branding),
     ])
   }
+  // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
+  fileMap.add([
+    path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'),
+    path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png'),
+  ])
+  fileMap.add([
+    path.join(
+      braveBrowserResourcesDir,
+      'downloads',
+      'images',
+      'incognito_marker.svg',
+    ),
+    path.join(
+      chromeBrowserResourcesDir,
+      'downloads',
+      'images',
+      'incognito_marker.svg',
+    ),
+  ])
+  fileMap.add([
+    path.join(braveBrowserResourcesDir, 'settings', 'images'),
+    path.join(chromeBrowserResourcesDir, 'settings', 'images'),
+  ])
+  fileMap.add([
+    path.join(braveBrowserResourcesDir, 'signin', 'images'),
+    path.join(chromeBrowserResourcesDir, 'signin', 'images'),
+  ])
+  fileMap.add([
+    path.join(
+      braveBrowserResourcesDir,
+      'signin',
+      'profile_customization',
+      'images',
+    ),
+    path.join(
+      chromeBrowserResourcesDir,
+      'signin',
+      'profile_customization',
+      'images',
+    ),
+  ])
+  fileMap.add([
+    path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
+    path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
+  ])
+  fileMap.add([
+    path.join(braveBrowserResourcesDir, 'side_panel', 'reading_list', 'images'),
+    path.join(
+      chromeBrowserResourcesDir,
+      'side_panel',
+      'reading_list',
+      'images',
+    ),
+  ])
 
   // Copy to make our ${branding_path_product}_behaviors.cc
   fileMap.add([
@@ -328,9 +423,6 @@ exports.update = () => {
     }
 
     for (let sourceFile of sourceFiles) {
-      if (path.basename(sourceFile) === 'README.md') {
-        continue
-      }
       const destinationFile = path.join(
         output,
         path.relative(source, sourceFile),
@@ -405,15 +497,20 @@ exports.update = () => {
       androidIconSet = 'res_brave_nightly'
     }
 
-    const androidResSource = path.join(
+    const androidTranslateResSource = path.join(
       config.braveCoreDir,
+      'components',
+      'translate',
+      'content',
       'android',
       'java',
       'res',
     )
-    const androidResDest = path.join(
+    const androidTranslateResDest = path.join(
       config.srcDir,
-      'chrome',
+      'components',
+      'translate',
+      'content',
       'android',
       'java',
       'res',
@@ -446,12 +543,246 @@ exports.update = () => {
       'java',
       'res_chromium_base',
     )
+    const androidResSource = path.join(
+      config.braveCoreDir,
+      'android',
+      'java',
+      'res',
+    )
+    const androidResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'android',
+      'java',
+      'res',
+    )
+    const androidResTemplateSource = path.join(
+      config.braveCoreDir,
+      'android',
+      'java',
+      'res_template',
+    )
+    const androidResTemplateDest = path.join(
+      config.srcDir,
+      'chrome',
+      'android',
+      'java',
+      'res_template',
+    )
+    const androidContentPublicResSource = path.join(
+      config.braveCoreDir,
+      'content',
+      'public',
+      'android',
+      'java',
+      'res',
+    )
+    const androidContentPublicResDest = path.join(
+      config.srcDir,
+      'content',
+      'public',
+      'android',
+      'java',
+      'res',
+    )
+    const androidTouchtoFillResSource = path.join(
+      config.braveCoreDir,
+      'browser',
+      'touch_to_fill',
+      'password_manager',
+      'android',
+      'internal',
+      'java',
+      'res',
+    )
+    const androidTouchtoFillResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'touch_to_fill',
+      'password_manager',
+      'android',
+      'internal',
+      'java',
+      'res',
+    )
+    const androidToolbarResSource = path.join(
+      config.braveCoreDir,
+      'browser',
+      'ui',
+      'android',
+      'toolbar',
+      'java',
+      'res',
+    )
+    const androidToolbarResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'ui',
+      'android',
+      'toolbar',
+      'java',
+      'res',
+    )
+    const androidComponentsWidgetResSource = path.join(
+      config.braveCoreDir,
+      'components',
+      'browser_ui',
+      'widget',
+      'android',
+      'java',
+      'res',
+    )
+    const androidComponentsWidgetResDest = path.join(
+      config.srcDir,
+      'components',
+      'browser_ui',
+      'widget',
+      'android',
+      'java',
+      'res',
+    )
+    const androidComponentsStylesResSource = path.join(
+      config.braveCoreDir,
+      'components',
+      'browser_ui',
+      'styles',
+      'android',
+      'java',
+      'res',
+    )
+    const androidComponentsStylesResDest = path.join(
+      config.srcDir,
+      'components',
+      'browser_ui',
+      'styles',
+      'android',
+      'java',
+      'res',
+    )
+    const androidSafeBrowsingResSource = path.join(
+      config.braveCoreDir,
+      'browser',
+      'safe_browsing',
+      'android',
+      'java',
+      'res',
+    )
+    const androidSafeBrowsingResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'safe_browsing',
+      'android',
+      'java',
+      'res',
+    )
+    const androidDownloadInternalResSource = path.join(
+      config.braveCoreDir,
+      'browser',
+      'download',
+      'internal',
+      'android',
+      'java',
+      'res',
+    )
+    const androidDownloadInternalResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'download',
+      'internal',
+      'android',
+      'java',
+      'res',
+    )
+    const androidFeaturesTabUiResSource = path.join(
+      config.braveCoreDir,
+      'android',
+      'features',
+      'tab_ui',
+      'java',
+      'res',
+    )
+    const androidFeaturesTabUiDest = path.join(
+      config.srcDir,
+      'chrome',
+      'android',
+      'features',
+      'tab_ui',
+      'java',
+      'res',
+    )
+    const androidComponentsOmniboxResSource = path.join(
+      config.braveCoreDir,
+      'components',
+      'omnibox',
+      'browser',
+      'android',
+      'java',
+      'res',
+    )
+    const androidComponentsOmniboxResDest = path.join(
+      config.srcDir,
+      'components',
+      'omnibox',
+      'browser',
+      'android',
+      'java',
+      'res',
+    )
+    const androidBrowserPrivateResSource = path.join(
+      config.braveCoreDir,
+      'browser',
+      'incognito',
+      'android',
+      'java',
+      'res',
+    )
+    const androidBrowserPrivateResDest = path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'incognito',
+      'android',
+      'java',
+      'res',
+    )
+
+    const uiAndroidResSource = path.join(
+      config.braveCoreDir,
+      'ui',
+      'android',
+      'java',
+      'res',
+    )
+    const uiAndroidResDest = path.join(
+      config.srcDir,
+      'ui',
+      'android',
+      'java',
+      'res',
+    )
 
     // Mapping for copying Brave's Android resource into chromium folder.
     const copyAndroidResourceMapping = {
-      [androidResSource]: [androidResDest],
+      [androidTranslateResSource]: [androidTranslateResDest],
       [androidIconSource]: [androidIconDest],
       [androidIconBaseSource]: [androidIconBaseDest],
+      [androidResSource]: [androidResDest],
+      [androidResTemplateSource]: [androidResTemplateDest],
+      [androidContentPublicResSource]: [androidContentPublicResDest],
+      [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
+      [androidToolbarResSource]: [androidToolbarResDest],
+      [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
+      [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
+      [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest],
+      [androidDownloadInternalResSource]: [androidDownloadInternalResDest],
+      [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
+      [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
+      [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest],
+      [uiAndroidResSource]: [uiAndroidResDest],
     }
 
     console.log('copy Android app icons and app resources')

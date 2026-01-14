@@ -251,7 +251,7 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
 
     source_file_filter = lambda f: input_api.FilterSourceFile(
         f,
-        files_to_check=[r"^app/theme/.*", r"^build/chromium/resources/.*"],
+        files_to_check=[r"^app/theme/.*"],
         files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
 
     new_sources = []
@@ -274,15 +274,9 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
             upstream_file = f.replace('/brave_origin/', '/chromium/', 1)
         elif '/brave/' in f:
             upstream_file = f.replace('/brave/', '/chromium/', 1)
-
-        if 'build/chromium/resources/' in f:
-            upstream_file = f.replace('build/chromium/resources/', '//', 1)
-        elif 'app/theme/' in f:
-            upstream_file = f'//chrome/{upstream_file}'
         else:
             upstream_file = f
-
-        path = brave_chromium_utils.wspath(upstream_file)
+        path = brave_chromium_utils.wspath(f'//chrome/{upstream_file}')
         if not os.path.exists(path):
             problems.append(upstream_file)
 
@@ -291,8 +285,8 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
             output_api.PresubmitError(
                 'Missing upstream theme file to override',
                 items=sorted(problems),
-                long_text='app/theme and build/chromium/resources should only '
-                'be used for overrides of upstream files. Channel-specific '
+                long_text='app/theme should only be used for overrides of '
+                'upstream theme files in chrome/app/theme. Channel-specific '
                 'theme assets (e.g., dev/beta/nightly) are exempt.')
         ]
     return []
