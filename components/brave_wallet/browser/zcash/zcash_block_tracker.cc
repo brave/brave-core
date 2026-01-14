@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 
@@ -22,7 +21,7 @@ ZCashBlockTracker::~ZCashBlockTracker() = default;
 
 void ZCashBlockTracker::Start(const std::string& chain_id,
                               base::TimeDelta interval) {
-  if (!base::Contains(timers_, chain_id)) {
+  if (!timers_.contains(chain_id)) {
     timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
   }
 
@@ -40,7 +39,7 @@ void ZCashBlockTracker::GetBlockHeight(const std::string& chain_id) {
 
 std::optional<uint32_t> ZCashBlockTracker::GetLatestHeight(
     const std::string& chain_id) const {
-  if (!base::Contains(latest_height_map_, chain_id)) {
+  if (!latest_height_map_.contains(chain_id)) {
     return std::nullopt;
   }
   return latest_height_map_.at(chain_id);

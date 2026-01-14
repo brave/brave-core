@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/pref_names.h"
@@ -34,7 +33,7 @@ bool DebounceService::Debounce(const GURL& original_url,
       component_installer_->host_cache();
   const std::string etldp1 =
       DebounceRule::GetETLDForDebounce(original_url.host());
-  if (!base::Contains(host_cache, etldp1)) {
+  if (!host_cache.contains(etldp1)) {
     return false;
   }
 

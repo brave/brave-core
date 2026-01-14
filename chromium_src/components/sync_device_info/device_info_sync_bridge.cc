@@ -36,7 +36,6 @@
 #undef RefreshLocalDeviceInfoIfNeeded
 #undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 
-#include "base/containers/contains.h"
 #include "base/task/sequenced_task_runner.h"
 
 namespace syncer {

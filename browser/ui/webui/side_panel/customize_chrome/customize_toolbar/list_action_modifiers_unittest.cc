@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -147,8 +146,7 @@ TEST_F(ListActionModifiersUnitTest,
         std::move(single_action));
 
     // Check if this action should be filtered out
-    const bool should_be_filtered =
-        base::Contains(kUnsupportedChromiumActions, id);
+    const bool should_be_filtered = kUnsupportedChromiumActions.contains(id);
 
     if (should_be_filtered) {
       EXPECT_TRUE(filtered.empty()) << "Action ID " << static_cast<int>(id)
@@ -187,7 +185,7 @@ TEST_F(ListActionModifiersUnitTest,
 
   // Verify none of the unsupported actions remain
   for (const auto& action : filtered_all) {
-    EXPECT_FALSE(base::Contains(kUnsupportedChromiumActions, action->id))
+    EXPECT_FALSE(kUnsupportedChromiumActions.contains(action->id))
         << "Found unsupported action ID " << static_cast<int>(action->id)
         << " in filtered results.";
   }
