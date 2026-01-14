@@ -91,17 +91,23 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
+      application_state_observer_(std::make_unique<ApplicationStateObserver>(
+#if !BUILDFLAG(IS_ANDROID)
+          context
+#endif  // !BUILDFLAG(IS_ANDROID
+          )),
       shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
   CHECK(shields_settings_service_);
+  application_state_observer_->AddObserver(this);
 }
 
 BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() {
-#if !BUILDFLAG(IS_ANDROID)
-  BrowserList::RemoveObserver(this);
-#endif
+  if (application_state_observer_) {
+    application_state_observer_->RemoveObserver(this);
+  }
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
@@ -176,29 +182,28 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
                             origin_type, std::move(filter_builder));
 }
 
-void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
-    base::OnceClosure callback) {
-  DCHECK(callback);
-#if !BUILDFLAG(IS_ANDROID)
-  BrowserList::AddObserver(this);
-  first_window_opened_callback_ = std::move(callback);
-#else
-  std::move(callback).Run();
-#endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-#if !BUILDFLAG(IS_ANDROID)
-void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
-  if (browser->profile() != Profile::FromBrowserContext(context_)) {
-    return;
-  }
-
+void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
   if (first_window_opened_callback_) {
     std::move(first_window_opened_callback_).Run();
   }
+}
 
-  // No need to observe anymore.
-  BrowserList::RemoveObserver(this);
+void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
+    base::OnceClosure callback) {
+  DCHECK(callback);
+  first_window_opened_callback_ = std::move(callback);
+}
+
+void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
+  //
+}
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveEphemeralStorageServiceDelegate::
+    TriggerCurrentAppStateNotification() {
+  if (application_state_observer_) {
+    application_state_observer_->TriggerCurrentAppStateNotification();
+  }
 }
 #endif
 

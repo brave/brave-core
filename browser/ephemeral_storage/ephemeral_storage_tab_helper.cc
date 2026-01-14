@@ -20,11 +20,56 @@
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#endif
+
 using content::BrowserContext;
 using content::NavigationHandle;
 using content::WebContents;
 
 namespace ephemeral_storage {
+
+namespace {
+
+#if BUILDFLAG(IS_ANDROID)
+void SetTabModelObserver(WebContents* web_contents,
+                         EphemeralStorageTabHelper* tab_helper,
+                         const bool remove_observer) {
+  if (!web_contents) {
+    return;
+  }
+
+  auto* current_profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!current_profile) {
+    return;
+  }
+
+  for (TabModel* tab_model : TabModelList::models()) {
+    if (tab_model->GetProfile() != current_profile) {
+      continue;
+    }
+    const size_t tab_count = tab_model->GetTabCount();
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = tab_model->GetTabAt(index);
+      if (!tab) {
+        continue;
+      }
+      if (!remove_observer) {
+        tab_model->AddObserver(tab_helper);
+      } else {
+        tab_model->RemoveObserver(tab_helper);
+      }
+      return;
+    }
+  }
+}
+#endif
+
+}  // namespace
 
 // EphemeralStorageTabHelper helps to manage the lifetime of ephemeral storage.
 // For more information about the design of ephemeral storage please see the
@@ -38,7 +83,9 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
       cookie_settings_(CookieSettingsFactory::GetForProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
-
+#if BUILDFLAG(IS_ANDROID)
+  SetTabModelObserver(web_contents, this, false);
+#endif
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
@@ -64,13 +111,6 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup() {
   if (tld_ephemeral_lifetime_) {
     tld_ephemeral_lifetime_->EnforceFirstPartyStorageCleanup();
   }
-}
-
-void EphemeralStorageTabHelper::WebContentsDestroyed() {
-  provisional_tld_ephemeral_lifetimes_.clear();
-  tld_ephemeral_lifetime_.reset();
-
-  weak_factory_.InvalidateWeakPtrs();
 }
 
 void EphemeralStorageTabHelper::DidStartNavigation(
@@ -181,6 +221,20 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
+  if (!tab || tab->web_contents() != web_contents()) {
+    return;
+  }
+  // Reset TLDEphemeralLifetime when a tab closes, since on Android
+  // it may be invoked much later after the tab has actually closed.
+  provisional_tld_ephemeral_lifetimes_.clear();
+  tld_ephemeral_lifetime_.reset();
+  weak_factory_.InvalidateWeakPtrs();
+  SetTabModelObserver(web_contents(), this, true);
+}
+#endif
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);
 
