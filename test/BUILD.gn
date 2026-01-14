@@ -9,6 +9,7 @@ import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
@@ -50,6 +51,7 @@ static_library("test_support") {
 
   deps = [
     "//brave/browser",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_origin",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",

@@ -41,6 +41,7 @@ import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
@@ -164,8 +165,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_account:features",
   "//brave/components/brave_account/mojom",
   "//brave/components/brave_adaptive_captcha",
-  "//brave/components/brave_ads/browser",
-  "//brave/components/brave_ads/core",
+  "//brave/components/brave_ads/buildflags",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_education:buildflags",
   "//brave/components/brave_new_tab_ui:mojom",
@@ -296,6 +296,13 @@ if (enable_psst) {
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
+  ]
+}
+
+if (enable_brave_ads) {
+  brave_chrome_browser_deps += [
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core",
   ]
 }
 
