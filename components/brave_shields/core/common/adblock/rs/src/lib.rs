@@ -119,7 +119,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("brave/components/brave_shields/core/browser/adblock/resolver/adblock_domain_resolver.h");
+        include!("brave/components/brave_shields/core/common/adblock/resolver/adblock_domain_resolver.h");
 
         /// Wrapper function for
         /// net::registry_controlled_domains::GetDomainAndRegistry

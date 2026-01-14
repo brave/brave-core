@@ -15,7 +15,7 @@
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/services/brave_shields/mojom/filter_set.mojom-forward.h"
 #include "brave/components/services/brave_shields/mojom/filter_set.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"

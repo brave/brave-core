@@ -11,7 +11,7 @@ source_set("filter_set") {
 
   deps = [
     "//base",
-    "//brave/components/brave_shields/core/browser/adblock",
+    "//brave/components/brave_shields/core/common/adblock",
     "//brave/components/services/brave_shields/mojom",
   ]
 }

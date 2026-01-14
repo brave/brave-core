@@ -5,7 +5,7 @@
 
 #include "brave/components/services/brave_shields/filter_set_service.h"
 
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 
 namespace brave_shields {
 

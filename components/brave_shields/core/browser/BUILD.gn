@@ -60,10 +60,7 @@ static_library("browser") {
     "//crypto",
     "//url",
   ]
-  public_deps = [
-    "//base",
-    "//brave/components/brave_shields/core/browser/adblock",
-  ]
+  public_deps = [ "//base" ]
 }
 
 source_set("unit_tests") {
