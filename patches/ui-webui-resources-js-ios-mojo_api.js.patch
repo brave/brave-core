@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/js/ios/mojo_api.js b/ui/webui/resources/js/ios/mojo_api.js
-index 7494d7b5ea9c2e12e56765145edbb3db8450a7d3..474ade6f36f0ea06d0babff8d838c5faa6848900 100644
+index 2f575559d3e679074050a74a5ea781c34f6082e7..10d42acff1bdc9421576972c89082a3ccac64e4d 100644
 --- a/ui/webui/resources/js/ios/mojo_api.js
 +++ b/ui/webui/resources/js/ios/mojo_api.js
 @@ -228,6 +228,7 @@ Mojo.internal = Mojo.internal || {};
@@ -7,6 +7,6 @@ index 7494d7b5ea9c2e12e56765145edbb3db8450a7d3..474ade6f36f0ea06d0babff8d838c5fa
   */
  Mojo.internal.sendMessage = function(message) {
 +  message.args.frameId = __gCrWeb.frameId;
-   const response = window.prompt(__gCrWeb.common.JSONStringify(message));
+   const response = window.prompt(JSON.stringify(message));
    return response ? JSON.parse(response) : undefined;
  };

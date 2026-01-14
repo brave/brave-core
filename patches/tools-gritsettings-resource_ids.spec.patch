@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f937a36aea3 100644
+index 05fe260ac0424f58ff053b81b9d461b11ee71abc..36810c0788720ac1c5f43597749138d97bcb3443 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
@@ -24,15 +24,6 @@ index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f93
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -458,7 +464,7 @@
-     "includes": [4030],
-   },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
--    "META": {"sizes": {"includes": [50]}},
-+    "META": {"sizes": {"includes": [53]}},
-     "includes": [4040],
-   },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
 @@ -618,7 +624,7 @@
      "includes": [4720],
    },
@@ -51,7 +42,7 @@ index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f93
      "includes": [4840],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/history/resources.grd": {
-@@ -1085,6 +1091,12 @@
+@@ -1089,6 +1095,12 @@
      "META": {"join": 2},
      "messages": [7020],
    },
@@ -64,7 +55,7 @@ index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f93
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1593,11 +1605,11 @@
+@@ -1600,11 +1612,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {

@@ -1,13 +1,19 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
-index b15710a2323c4191f3bd3e6fcd032c182d7d3aad..f0963ec6c0d3eb6fede2ab0fe555afc95dd698d7 100644
+index f5e26215336bcd3b2d8213977a103e87bfbfc154..c6df1ad0d67d5199dd0999aced78a711fd5e187b 100644
 --- a/chrome/browser/resources/history/synced_device_manager.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.ts
-@@ -441,8 +441,6 @@ export class HistorySyncedDeviceManagerElement extends
+@@ -443,10 +443,10 @@ export class HistorySyncedDeviceManagerElement extends
+         return;
        }
      } else if (this.isSignInState_(HistorySignInState.SIGNED_OUT)) {
-       // User signed out, clear synced device list and show the sign in promo.
+-      // User signed out, clear synced device list and show the sign in promo.
 -      this.clearDisplayedSyncedDevices_();
+-      this.sessionList = null;
 -      return;
++      // // User signed out, clear synced device list and show the sign in promo.
++      // this.clearDisplayedSyncedDevices_();
++      // this.sessionList = null;
++      // return;
      }
-     this.updateSyncedDevices_();
-     // User signed in, show the loading message when querying for synced
+     // If the session list is null, the fetching is not done yet. Set
+     // fetchingSyncedTabs_ to true to show the loading message when querying.
