@@ -195,7 +195,7 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
-  //
+  // Reserved for future use.
 }
 
 #if BUILDFLAG(IS_ANDROID)

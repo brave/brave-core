@@ -159,7 +159,6 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(GetShieldsSettingUserPrefsPath(
       brave_shields::kObsoleteCosmeticFiltering));
   registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
-  registry->RegisterBooleanPref(kBraveRemember1PStorageMigration, false);
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
