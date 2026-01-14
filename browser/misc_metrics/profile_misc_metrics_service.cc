@@ -6,7 +6,9 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -32,7 +34,6 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #else
@@ -66,10 +67,13 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
+
   if (history_service && host_content_settings_map) {
     page_metrics_ = std::make_unique<PageMetrics>(
         local_state, profile_prefs_, host_content_settings_map, history_service,
         bookmark_model,
+        g_brave_browser_process->process_misc_metrics()
+            ->default_browser_monitor(),
         base::BindRepeating(&brave_stats::GetFirstRunTime,
                             base::Unretained(local_state)));
   }

@@ -435,7 +435,8 @@ extension BrowserViewController {
     if url.host != braveSearchHost || url.path != braveSearchPath {
       return
     }
-    UmaHistogramBoolean("Brave.Search.BraveDaily", true)
+    let isDefault = defaultBrowserHelper.status == .defaulted || defaultBrowserHelper.status == .likely
+    UmaHistogramBoolean("Brave.Search.BraveDaily.2", isDefault)
   }
 }
 

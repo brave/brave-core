@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -53,11 +54,31 @@ class PageMetricsUnitTest : public testing::Test {
 
     misc_metrics::PageMetrics::RegisterPrefs(local_state_.registry());
     first_run_time_ = base::Time::Now();
+
+#if BUILDFLAG(IS_ANDROID)
+    default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>();
+    default_browser_monitor_->OnDefaultBrowserStateReceived(mocked_is_default_);
+#else
+    default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(
+        base::BindRepeating(&PageMetricsUnitTest::GetMockedDefaultBrowser,
+                            base::Unretained(this)),
+        base::BindRepeating([]() { return false; }));
+    default_browser_monitor_->Start();
+    task_environment_.FastForwardBy(base::Minutes(5));
+#endif
+
     page_metrics_service_ = std::make_unique<PageMetrics>(
         &local_state_, profile_->GetPrefs(),
         HostContentSettingsMapFactory::GetForProfile(profile_.get()),
-        history_service_, bookmark_model_,
+        history_service_, bookmark_model_, default_browser_monitor_.get(),
         base::BindLambdaForTesting([&]() { return first_run_time_; }));
+  }
+
+  bool GetMockedDefaultBrowser() { return mocked_is_default_; }
+
+  void SetMockedDefaultBrowserStatus(bool is_default) {
+    mocked_is_default_ = is_default;
+    default_browser_monitor_->OnDefaultBrowserStateReceived(is_default);
   }
 
  protected:
@@ -65,11 +86,13 @@ class PageMetricsUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
+  std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   std::unique_ptr<PageMetrics> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_;
 
   base::Time first_run_time_;
+  bool mocked_is_default_ = false;
 };
 
 TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
@@ -80,11 +103,16 @@ TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
     GTEST_SKIP() << "Disabled on macOS Tahoe.";
   }
 #endif
-  histogram_tester_.ExpectTotalCount(kDomainsLoadedHistogramName, 0);
+  // Test with non-default browser (already set in SetUp)
+  histogram_tester_.ExpectTotalCount(kDomainsLoadedNonDefaultHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kDomainsLoadedDefaultHistogramName, 0);
 
   task_environment_.FastForwardBy(base::Seconds(30));
 
-  histogram_tester_.ExpectUniqueSample(kDomainsLoadedHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kDomainsLoadedNonDefaultHistogramName, 0,
+                                       1);
+  histogram_tester_.ExpectUniqueSample(kDomainsLoadedDefaultHistogramName,
+                                       INT_MAX - 1, 1);
 
   history_service_->AddPage(GURL("https://abc.com"), base::Time::Now(),
                             history::VisitSource::SOURCE_BROWSED);
@@ -97,26 +125,39 @@ TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
   history_service_->AddPage(GURL("https://xyz.net/page2"), base::Time::Now(),
                             history::VisitSource::SOURCE_BROWSED);
 
-  histogram_tester_.ExpectBucketCount(kDomainsLoadedHistogramName, 1, 0);
+  histogram_tester_.ExpectBucketCount(kDomainsLoadedNonDefaultHistogramName, 1,
+                                      0);
   task_environment_.FastForwardBy(base::Days(1));
-  EXPECT_GE(histogram_tester_.GetBucketCount(kDomainsLoadedHistogramName, 1),
+  EXPECT_GE(histogram_tester_.GetBucketCount(
+                kDomainsLoadedNonDefaultHistogramName, 1),
             1);
+  EXPECT_GE(histogram_tester_.GetBucketCount(kDomainsLoadedDefaultHistogramName,
+                                             INT_MAX - 1),
+            2);
+
+  // Switch to default browser
+  SetMockedDefaultBrowserStatus(true);
 
   history_service_->AddPage(GURL("https://aaa.com"), base::Time::Now(),
                             history::VisitSource::SOURCE_BROWSED);
   history_service_->AddPage(GURL("https://bbb.com"), base::Time::Now(),
                             history::VisitSource::SOURCE_BROWSED);
 
-  histogram_tester_.ExpectBucketCount(kDomainsLoadedHistogramName, 2, 0);
+  histogram_tester_.ExpectBucketCount(kDomainsLoadedDefaultHistogramName, 2, 0);
   task_environment_.FastForwardBy(base::Days(1));
-  EXPECT_GE(histogram_tester_.GetBucketCount(kDomainsLoadedHistogramName, 2),
+  EXPECT_GE(
+      histogram_tester_.GetBucketCount(kDomainsLoadedDefaultHistogramName, 2),
+      1);
+  EXPECT_GE(histogram_tester_.GetBucketCount(
+                kDomainsLoadedNonDefaultHistogramName, INT_MAX - 1),
             1);
 
   int init_zero_count =
-      histogram_tester_.GetBucketCount(kDomainsLoadedHistogramName, 0);
+      histogram_tester_.GetBucketCount(kDomainsLoadedDefaultHistogramName, 0);
   task_environment_.FastForwardBy(base::Days(7));
-  EXPECT_GT(histogram_tester_.GetBucketCount(kDomainsLoadedHistogramName, 0),
-            init_zero_count);
+  EXPECT_GT(
+      histogram_tester_.GetBucketCount(kDomainsLoadedDefaultHistogramName, 0),
+      init_zero_count);
 }
 
 TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
@@ -218,12 +259,12 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeImmediate) {
   histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
 
   page_metrics_service_->IncrementPagesLoadedCount(false);
-  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 1, 1);
 
   task_environment_.FastForwardBy(base::Hours(2));
 
   page_metrics_service_->IncrementPagesLoadedCount(false);
-  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 1, 1);
 }
 
 TEST_F(PageMetricsUnitTest, FirstPageLoadTimeLater) {
@@ -263,6 +304,20 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeTooLate) {
 
   page_metrics_service_->IncrementPagesLoadedCount(false);
   histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
+}
+
+TEST_F(PageMetricsUnitTest, BraveSearchDaily) {
+  // Test with non-default browser
+  page_metrics_service_->ReportBraveQuery();
+  histogram_tester_.ExpectUniqueSample(kSearchBraveDailyHistogramName, false,
+                                       1);
+
+  // Switch to default browser
+  SetMockedDefaultBrowserStatus(true);
+
+  page_metrics_service_->ReportBraveQuery();
+  histogram_tester_.ExpectBucketCount(kSearchBraveDailyHistogramName, true, 1);
+  histogram_tester_.ExpectTotalCount(kSearchBraveDailyHistogramName, 2);
 }
 
 }  // namespace misc_metrics

@@ -39,12 +39,14 @@ static_library("misc_metrics_impl") {
 
   deps = [
     "//brave/browser:browser_process",
+    "//brave/browser/brave_stats",
     "//brave/browser/misc_metrics",
     "//brave/browser/profiles:util",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
+    "//chrome/browser:shell_integration",
     "//chrome/browser/autofill",
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
@@ -72,7 +74,6 @@ static_library("misc_metrics_impl") {
 
   if (!is_android) {
     sources += [
-      "//brave/browser/misc_metrics/default_browser_monitor.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
@@ -134,7 +135,6 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [
-      "default_browser_monitor_unittest.cc",
       "profile_new_tab_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
       "usage_clock_unittest.cc",

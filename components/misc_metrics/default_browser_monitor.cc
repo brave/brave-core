@@ -3,56 +3,52 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_stats/first_run_util.h"
-#include "chrome/browser/shell_integration.h"
+#endif
 
 namespace misc_metrics {
 
+#if !BUILDFLAG(IS_ANDROID)
 namespace {
 
 constexpr base::TimeDelta kRegularCheckInterval = base::Hours(3);
 constexpr base::TimeDelta kFirstRunDelay = base::Minutes(5);
-constexpr base::TimeDelta kSubsequentStartupDelay = base::Minutes(1);
-
-bool GetDefaultBrowserAsBool() {
-  shell_integration::DefaultWebClientState state =
-      shell_integration::GetDefaultBrowser();
-  return state == shell_integration::IS_DEFAULT ||
-         state == shell_integration::OTHER_MODE_IS_DEFAULT;
-}
+constexpr base::TimeDelta kSubsequentStartupDelay = base::Seconds(10);
 
 }  // namespace
+#endif
 
-DefaultBrowserMonitor::DefaultBrowserMonitor(PrefService* local_state)
-    : local_state_(local_state),
-      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+#if BUILDFLAG(IS_ANDROID)
+DefaultBrowserMonitor::DefaultBrowserMonitor() = default;
+#else
+DefaultBrowserMonitor::DefaultBrowserMonitor(
+    GetDefaultBrowserCallback get_default_browser_callback,
+    IsFirstRunCallback is_first_run_callback)
+    : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
-      get_default_browser_callback_(
-          base::BindRepeating(&GetDefaultBrowserAsBool)) {}
+      get_default_browser_callback_(std::move(get_default_browser_callback)),
+      is_first_run_callback_(std::move(is_first_run_callback)) {}
+#endif
 
 DefaultBrowserMonitor::~DefaultBrowserMonitor() = default;
 
+#if !BUILDFLAG(IS_ANDROID)
 void DefaultBrowserMonitor::Start() {
-  base::TimeDelta delay = brave_stats::IsFirstRun(local_state_)
-                              ? kFirstRunDelay
-                              : kSubsequentStartupDelay;
+  base::TimeDelta delay =
+      is_first_run_callback_.Run() ? kFirstRunDelay : kSubsequentStartupDelay;
 
   timer_.Start(FROM_HERE, base::Time::Now() + delay,
                base::BindOnce(&DefaultBrowserMonitor::CheckDefaultBrowserState,
                               base::Unretained(this)));
-}
-
-void DefaultBrowserMonitor::SetGetDefaultBrowserCallbackForTesting(
-    base::RepeatingCallback<bool()> callback) {
-  get_default_browser_callback_ = std::move(callback);
 }
 
 void DefaultBrowserMonitor::CheckDefaultBrowserState() {
@@ -61,8 +57,14 @@ void DefaultBrowserMonitor::CheckDefaultBrowserState() {
       base::BindOnce(&DefaultBrowserMonitor::OnDefaultBrowserStateReceived,
                      weak_factory_.GetWeakPtr()));
 }
+#endif
 
 void DefaultBrowserMonitor::OnDefaultBrowserStateReceived(bool is_default) {
+  bool status_changed =
+      !cached_default_status_ || *cached_default_status_ != is_default;
+
+  cached_default_status_ = is_default;
+
   int typical_answer = is_default ? 1 : 0;
   int express_answer = is_default ? 1 : (INT_MAX - 1);
 
@@ -70,9 +72,29 @@ void DefaultBrowserMonitor::OnDefaultBrowserStateReceived(bool is_default) {
   UMA_HISTOGRAM_EXACT_LINEAR(kDefaultBrowserDailyHistogramName, express_answer,
                              2);
 
+  if (status_changed) {
+    for (auto& observer : observers_) {
+      observer.OnDefaultBrowserStatusChanged();
+    }
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
   timer_.Start(FROM_HERE, base::Time::Now() + kRegularCheckInterval,
                base::BindOnce(&DefaultBrowserMonitor::CheckDefaultBrowserState,
                               weak_factory_.GetWeakPtr()));
+#endif
+}
+
+std::optional<bool> DefaultBrowserMonitor::GetCachedDefaultStatus() const {
+  return cached_default_status_;
+}
+
+void DefaultBrowserMonitor::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void DefaultBrowserMonitor::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 }  // namespace misc_metrics

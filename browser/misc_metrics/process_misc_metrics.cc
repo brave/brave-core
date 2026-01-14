@@ -5,19 +5,33 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/misc_metrics/default_browser_monitor.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
+#include "chrome/browser/shell_integration.h"
 #else
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+namespace {
+
+bool GetDefaultBrowserAsBool() {
+  auto state = shell_integration::GetDefaultBrowser();
+  return state == shell_integration::IS_DEFAULT ||
+         state == shell_integration::OTHER_MODE_IS_DEFAULT;
+}
+
+}  // namespace
 #endif
 
 namespace misc_metrics {
@@ -29,9 +43,14 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
   split_view_metrics_ = std::make_unique<SplitViewMetrics>(local_state);
   default_browser_monitor_ =
-      std::make_unique<misc_metrics::DefaultBrowserMonitor>(local_state);
+      std::make_unique<misc_metrics::DefaultBrowserMonitor>(
+          base::BindRepeating(&GetDefaultBrowserAsBool),
+          base::BindRepeating(&brave_stats::IsFirstRun,
+                              base::Unretained(local_state)));
   default_browser_monitor_->Start();
 #else
+  default_browser_monitor_ =
+      std::make_unique<misc_metrics::DefaultBrowserMonitor>();
   privacy_hub_metrics_ =
       std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);
   tab_metrics_ = std::make_unique<misc_metrics::TabMetrics>(local_state);
@@ -68,6 +87,10 @@ TabMetrics* ProcessMiscMetrics::tab_metrics() {
   return tab_metrics_.get();
 }
 #endif
+
+DefaultBrowserMonitor* ProcessMiscMetrics::default_browser_monitor() {
+  return default_browser_monitor_.get();
+}
 
 UptimeMonitorImpl* ProcessMiscMetrics::uptime_monitor() {
   return uptime_monitor_.get();

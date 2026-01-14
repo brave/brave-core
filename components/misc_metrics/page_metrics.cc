@@ -59,14 +59,18 @@ PageMetrics::PageMetrics(PrefService* local_state,
                          HostContentSettingsMap* host_content_settings_map,
                          history::HistoryService* history_service,
                          bookmarks::BookmarkModel* bookmark_model,
+                         DefaultBrowserMonitor* default_browser_monitor,
                          FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       host_content_settings_map_(host_content_settings_map),
       history_service_(history_service),
-      first_run_time_callback_(first_run_time_callback) {
+      first_run_time_callback_(first_run_time_callback),
+      default_browser_monitor_(default_browser_monitor) {
   DCHECK(local_state);
   DCHECK(history_service);
+
+  default_browser_observation_.Observe(default_browser_monitor_);
 
   init_timer_.Start(FROM_HERE, kInitReportDelay, this,
                     &PageMetrics::ReportAllMetrics);
@@ -340,10 +344,47 @@ void PageMetrics::OnDomainDiversityResult(
   if (!metric_set.seven_day_metric.has_value()) {
     return;
   }
-  int count = metric_set.seven_day_metric->count;
-  p3a_utils::RecordToHistogramBucket(kDomainsLoadedHistogramName,
-                                     kDomainsLoadedBuckets, count);
-  VLOG(2) << "PageMetrics: domains loaded report, count = " << count;
+
+  current_domain_count_ = metric_set.seven_day_metric->count;
+  ReportDomainsLoadedWithStatus();
+}
+
+void PageMetrics::OnDefaultBrowserStatusChanged() {
+  ReportDomainsLoadedWithStatus();
+
+  if (has_pending_brave_query_) {
+    ReportBraveQuery();
+  }
+}
+
+void PageMetrics::ReportDomainsLoadedWithStatus() {
+  if (!current_domain_count_) {
+    return;
+  }
+
+  auto is_default = default_browser_monitor_->GetCachedDefaultStatus();
+  if (!is_default) {
+    return;
+  }
+
+  int count = current_domain_count_.value();
+
+  const char* active_metric_name;
+  const char* inactive_metric_name;
+  if (*is_default) {
+    active_metric_name = kDomainsLoadedDefaultHistogramName;
+    inactive_metric_name = kDomainsLoadedNonDefaultHistogramName;
+  } else {
+    active_metric_name = kDomainsLoadedNonDefaultHistogramName;
+    inactive_metric_name = kDomainsLoadedDefaultHistogramName;
+  }
+
+  p3a_utils::RecordToHistogramBucket(active_metric_name, kDomainsLoadedBuckets,
+                                     count);
+  base::UmaHistogramExactLinear(inactive_metric_name, INT_MAX - 1, 7);
+
+  VLOG(2) << "PageMetrics: domains loaded report, count = " << count
+          << ", is_default = " << *is_default;
 }
 
 void PageMetrics::OnBookmarkCountResult(
@@ -366,8 +407,14 @@ void PageMetrics::ReportBookmarkCount() {
   bookmark_counter_->Restart();
 }
 
-void PageMetrics::OnBraveQuery() {
-  UMA_HISTOGRAM_BOOLEAN(kSearchBraveDailyHistogramName, true);
+void PageMetrics::ReportBraveQuery() {
+  auto is_default = default_browser_monitor_->GetCachedDefaultStatus();
+  if (!is_default) {
+    has_pending_brave_query_ = true;
+    return;
+  }
+  base::UmaHistogramBoolean(kSearchBraveDailyHistogramName, *is_default);
+  has_pending_brave_query_ = false;
 }
 
 }  // namespace misc_metrics
