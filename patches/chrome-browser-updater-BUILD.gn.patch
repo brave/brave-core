@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index 4da6a64d959c9eada3d48631c7536678eef24b31..fc373c1e25f4f2470fb59de11309f6c34c246b87 100644
+index f8a93ff9323b95db68eb515e67edfbfd79d486b6..91d1d071a95d66830c5a32c1a18a7e5c96eb95e4 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
-@@ -38,6 +38,7 @@ source_set("updater") {
-       "//chrome/updater/mojom",
+@@ -36,6 +36,7 @@ source_set("updater") {
+       "//chrome/updater:browser_sources",
      ]
  
 +    import("//brave/browser/updater/sources.gni") deps += brave_chrome_updater_scheduler_deps
