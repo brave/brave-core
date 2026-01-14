@@ -611,11 +611,12 @@ Config.prototype.buildArgs = function () {
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
+      && this.isCI
     ) {
-      // We want to have both 32 and 64 bit native libs in arm64/x64 apks
+      // We want to have both 32 and 64 bit native libs in arm64/x64 apks for CI
       // Starting from cr136 it is defaulted to false.
-      // For local build you can add --gn=enable_android_secondary_abi:false
-      // to have only 64 bit libs.
+      // For local build you can add --gn=enable_android_secondary_abi:true
+      // to build both
       args.enable_android_secondary_abi = true
     }
 

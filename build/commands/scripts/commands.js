@@ -208,7 +208,6 @@ program
   .option(
     '--target_android_output_format <target_android_output_format>',
     'target Android output format (apk, aab)',
-    'aab',
   )
   .option('--target_arch <target_arch>', 'target architecture')
   .option(
