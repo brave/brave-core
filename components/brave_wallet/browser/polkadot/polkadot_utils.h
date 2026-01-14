@@ -25,8 +25,7 @@ inline constexpr const size_t kPolkadotBlockHashSize = 32;
 
 // Parse a string provided from the front-end that's intended to be used as a
 // destination address for send transactions. The input string can be in ss58
-// format or an appropriately sized hex string, with or without the leading
-// "0x".
+// format or an appropriately sized hex string with the leading "0x".
 //
 // TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
 // off of `const std::string&`.
