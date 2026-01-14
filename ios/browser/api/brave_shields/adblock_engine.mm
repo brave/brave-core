@@ -7,7 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/apple/foundation_util.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
