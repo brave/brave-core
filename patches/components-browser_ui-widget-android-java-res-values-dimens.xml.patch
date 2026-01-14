@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index 7d84cfc7193384543ae6e1aea5182c354f163916..1ddb8b66fa1bebeae0830a0492e361717df4e35b 100644
+index f8653221beed8b5fd73fff00abd5a55180c1f08a..a048eb90d2143ee74fcabcffb0645201d81eb005 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
 @@ -91,7 +91,7 @@ found in the LICENSE file.
@@ -8,6 +8,6 @@ index 7d84cfc7193384543ae6e1aea5182c354f163916..1ddb8b66fa1bebeae0830a0492e36171
           24dp is needed to completely round the corners. -->
 -    <dimen name="modern_toolbar_background_corner_radius">24dp</dimen>
 +    <dimen name="modern_toolbar_background_corner_radius">8dp</dimen>
+     <dimen name="modern_toolbar_background_inner_corner_radius">16dp</dimen>
      <!-- The offset is required for the background drawable used by the
           location bar on tablets. -->
-     <dimen name="modern_toolbar_background_vertical_offset">4dp</dimen>
