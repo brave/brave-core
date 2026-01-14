@@ -2750,6 +2750,7 @@ struct NewPolkadotTransactionParams {
   string to;
   uint128 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // For transaction management such as creation, broadcasting, and storing

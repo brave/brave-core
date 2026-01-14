@@ -108,6 +108,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   tx_metadata.set_created_time(base::Time::Now());
   tx_metadata.set_status(mojom::TransactionStatus::Unapproved);
   tx_metadata.set_chain_id(params->chain_id);
+  tx_metadata.set_swap_info(std::move(params->swap_info));
 
   if (!tx_state_manager().AddOrUpdateTx(tx_metadata)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
