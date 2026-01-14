@@ -1429,7 +1429,7 @@ extension BraveWallet.TransactionInfo {
 
   /// Contract address for the from and to token being swapped
   var ethSwapTokenContractAddresses: (from: String, to: String)? {
-    guard txType == .ethSwap, let swapInfo = swapInfo
+    guard txType == .ethSwap, let swapInfo = swapInfoDeprecated
     else { return nil }
     return (swapInfo.fromAsset, swapInfo.toAsset)
   }
