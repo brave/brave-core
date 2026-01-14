@@ -209,7 +209,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   // ID
   if (
     elem.id.length > 0
-    && document.querySelectorAll(`#${elem.id}`).length === 1
+    && document.querySelectorAll(`#${CSS.escape(elem.id)}`).length === 1
   ) {
     builder.addRule({
       type: Selector.Id,
