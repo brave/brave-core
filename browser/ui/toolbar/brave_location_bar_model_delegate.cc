@@ -10,6 +10,7 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -19,6 +20,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -86,6 +88,16 @@ bool BraveLocationBarModelDelegate::GetURL(GURL* url) const {
 
 const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
     const {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // For Brave Origin branded builds, use the branded product icon for
+  // chrome:// URLs instead of the omnibox product icon which uses the
+  // regular Brave branding.
+  GURL url;
+  if (GetURL(&url) && url.SchemeIs(content::kChromeUIScheme)) {
+    return &kLeoBraveIconOnlyFaceIcon;
+  }
+#endif
+
   // Defer to the Chromium implementation first.
   const gfx::VectorIcon* parent_icon =
       BrowserLocationBarModelDelegate::GetVectorIconOverride();

@@ -1214,6 +1214,7 @@ source_set("ui") {
       # "//brave/browser/extensions",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
+      "//brave/components/brave_origin/buildflags",
       "//brave/components/resources:static_resources",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
