@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStateManager } from '../../shared/lib/state_manager'
+import { createStateStore } from '$web-common/state_store'
 import { AppState, defaultState } from '../lib/app_state'
 import { AppModel } from '../lib/app_model'
 import { localeStrings } from './storybook_strings'
@@ -20,7 +20,7 @@ const sampleLog = `\
 `
 
 export function createModel(): AppModel {
-  const stateManager = createStateManager<AppState>({
+  const store = createStateStore<AppState>({
     ...defaultState(),
     externalWallet: {
       provider: 'uphold',
@@ -49,21 +49,21 @@ export function createModel(): AppModel {
     getString(key) {
       return localeStrings[key]
     },
-    getState: stateManager.getState,
-    addListener: stateManager.addListener,
+    getState: store.getState,
+    addListener: store.addListener,
 
     setAdDiagnosticId(diagnosticId) {
-      stateManager.update({ adDiagnosticId: diagnosticId })
+      store.update({ adDiagnosticId: diagnosticId })
     },
 
     clearRewardsLog() {
-      stateManager.update({
+      store.update({
         rewardsLog: '',
       })
     },
 
     loadRewardsLog() {
-      stateManager.update({
+      store.update({
         rewardsLog: sampleLog,
       })
     },
@@ -73,7 +73,7 @@ export function createModel(): AppModel {
     },
 
     loadContributions() {
-      stateManager.update({
+      store.update({
         contributions: [
           {
             id: '812e6649-ba2b-4b8e-8925-163e401007c8',
@@ -122,7 +122,7 @@ export function createModel(): AppModel {
     },
 
     loadRewardsEvents() {
-      stateManager.update({
+      store.update({
         rewardsEvents: [
           {
             id: '1',

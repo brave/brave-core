@@ -486,7 +486,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
 } => {
   if (
     !tx
-    || !tx.swapInfo
+    || !tx.swapInfoDeprecated
     || tx.txType !== BraveWallet.TransactionType.ETHSwap
   ) {
     return {
@@ -500,19 +500,19 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   }
 
   const sellToken =
-    tx.swapInfo.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    tx.swapInfoDeprecated.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? nativeAsset
-      : findTokenByContractAddress(tx.swapInfo.fromAsset, tokensList)
+      : findTokenByContractAddress(tx.swapInfoDeprecated.fromAsset, tokensList)
         // token not found
         // return a "faked" coin (will need to "discover" it later)
         || ({
-          chainId: tx.swapInfo.fromChainId,
-          coin: tx.swapInfo.fromCoin,
-          contractAddress: tx.swapInfo.fromAsset,
+          chainId: tx.swapInfoDeprecated.fromChainId,
+          coin: tx.swapInfoDeprecated.fromCoin,
+          contractAddress: tx.swapInfoDeprecated.fromAsset,
           symbol: '???',
           isErc20: true,
           coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-          name: tx.swapInfo.fromAsset,
+          name: tx.swapInfoDeprecated.fromAsset,
           logo: 'chrome://erc-token-images/',
           tokenId: '',
           isErc1155: false,
@@ -522,26 +522,26 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
           visible: true,
         } as BraveWallet.BlockchainToken)
 
-  const sellAmountWei = new Amount(tx.swapInfo.fromAmount)
+  const sellAmountWei = new Amount(tx.swapInfoDeprecated.fromAmount)
   const sellAmount = sellToken
     ? sellAmountWei.divideByDecimals(sellToken.decimals)
     : Amount.empty()
 
   const buyToken =
-    tx.swapInfo.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    tx.swapInfoDeprecated.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? nativeAsset
-      : tx.swapInfo.toAsset
-        ? findTokenByContractAddress(tx.swapInfo.toAsset, tokensList)
+      : tx.swapInfoDeprecated.toAsset
+        ? findTokenByContractAddress(tx.swapInfoDeprecated.toAsset, tokensList)
           // token not found
           // return a "faked" coin (will need to "discover" it later)
           || ({
-            chainId: tx.swapInfo.toChainId,
-            coin: tx.swapInfo.toCoin,
-            contractAddress: tx.swapInfo.toAsset,
+            chainId: tx.swapInfoDeprecated.toChainId,
+            coin: tx.swapInfoDeprecated.toCoin,
+            contractAddress: tx.swapInfoDeprecated.toAsset,
             symbol: '???',
             isErc20: true,
             coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-            name: tx.swapInfo.toAsset,
+            name: tx.swapInfoDeprecated.toAsset,
             logo: 'chrome://erc-token-images/',
             tokenId: '',
             isErc1155: false,
@@ -552,8 +552,8 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
           } as BraveWallet.BlockchainToken)
         : undefined
 
-  const buyAmountWei = tx.swapInfo.toAmount
-    ? new Amount(tx.swapInfo.toAmount)
+  const buyAmountWei = tx.swapInfoDeprecated.toAmount
+    ? new Amount(tx.swapInfoDeprecated.toAmount)
     : Amount.empty()
   const buyAmount = buyToken
     ? buyAmountWei.divideByDecimals(buyToken.decimals)
@@ -1444,7 +1444,7 @@ export const isSwapTransaction = (tx: TransactionInfo) => {
 }
 
 export const isBridgeTransaction = (tx: TransactionInfo) => {
-  return tx.swapInfo?.fromChainId !== tx.swapInfo?.toChainId
+  return tx.swapInfoDeprecated?.fromChainId !== tx.swapInfoDeprecated?.toChainId
 }
 
 export const getTransactionFormattedSendCurrencyTotal = ({

@@ -8,15 +8,12 @@ import Strings
 import SwiftUI
 
 struct WalletActionsView: View {
-  var networkStore: NetworkStore
   var action: (WalletActionDestination) -> Void
   var destinations: [WalletActionDestination] = []
 
   init(
-    networkStore: NetworkStore,
     action: @escaping (WalletActionDestination) -> Void
   ) {
-    self.networkStore = networkStore
     self.action = action
     self.destinations.append(WalletActionDestination(kind: .buy))
     self.destinations.append(WalletActionDestination(kind: .send))
@@ -57,7 +54,7 @@ struct WalletActionsView: View {
 #if DEBUG
 struct BuySendSwapDepositView_Previews: PreviewProvider {
   static var previews: some View {
-    WalletActionsView(networkStore: .previewStore, action: { _ in })
+    WalletActionsView(action: { _ in })
       .previewLayout(.sizeThatFits)
       //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])

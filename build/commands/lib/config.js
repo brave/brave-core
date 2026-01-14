@@ -8,11 +8,8 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
+const EnvConfig = require('./envConfig')
 const Log = require('./logging')
-
-let envConfig = null
-let envConfigParseErrors = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -27,22 +24,10 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-const packageConfig = function (key, sourceDir = braveCoreDir) {
-  let packages = { config: {} }
-  const configAbsolutePath = path.join(sourceDir, 'package.json')
-  if (fs.existsSync(configAbsolutePath)) {
-    packages = require(path.relative(__dirname, configAbsolutePath))
-  }
+const envConfig = new EnvConfig(braveCoreDir)
 
-  // packages.config should include version string.
-  let obj = Object.assign({}, packages.config, { version: packages.version })
-  for (let i = 0, len = key.length; i < len; i++) {
-    if (!obj) {
-      return obj
-    }
-    obj = obj[key[i]]
-  }
-  return obj
+const getEnvConfig = (keyPath, defaultValue = undefined) => {
+  return envConfig.get(keyPath, defaultValue)
 }
 
 const readArgsGn = (srcDir, outputDir) => {
@@ -59,73 +44,18 @@ import json
 print(json.dumps(result))
 `
 
-  const result = util.run('python3', ['-'], {
-    skipLogging: true,
-    input: script,
-    encoding: 'utf8',
-  })
+  const result = util.run(
+    'python3',
+    ['-'],
+    util.mergeWithDefault({
+      skipLogging: true,
+      stdio: 'pipe',
+      input: script,
+      encoding: 'utf8',
+    }),
+  )
 
   return JSON.parse(result.stdout.toString().trim())
-}
-
-const getEnvConfig = (key, defaultValue = undefined) => {
-  if (!envConfig) {
-    envConfig = {}
-    envConfigParseErrors = {}
-
-    // Parse src/brave/.env with all included env files.
-    let envConfigPath = path.join(braveCoreDir, '.env')
-    if (fs.existsSync(envConfigPath)) {
-      dotenvPopulateWithIncludes(envConfig, envConfigPath)
-    } else {
-      // The .env file is used by `gn gen`. Create it if it doesn't exist.
-      const defaultEnvConfigContent =
-        '# This is a placeholder .env config file for the build system.\n'
-        + '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
-      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
-    }
-
-    // Attempt to parse JSON-parseable values (strings, numbers, booleans, null,
-    // objects, arrays). If parsing fails, store the value as string.
-    for (const [key, value] of Object.entries(envConfig)) {
-      try {
-        if (typeof defaultValue === 'string') {
-          envConfig[key] = value
-        } else {
-          envConfig[key] = JSON.parse(value)
-        }
-      } catch (e) {
-        envConfig[key] = value
-        envConfigParseErrors[key] = e.message
-      }
-    }
-  }
-
-  const keyJoined = key.join('_')
-  const envConfigValue = envConfig[keyJoined]
-  if (envConfigValue !== undefined) {
-    if (
-      defaultValue !== undefined
-      && getValueType(defaultValue) !== getValueType(envConfigValue)
-    ) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${getValueType(defaultValue)}, got ${getValueType(envConfigValue)}`,
-      )
-      const parseError = envConfigParseErrors[keyJoined]
-      if (parseError) {
-        Log.error(`${parseError}:\n${envConfigValue}`)
-      }
-      process.exit(1)
-    }
-    return envConfigValue
-  }
-
-  const packageConfigValue = packageConfig(key)
-  if (packageConfigValue !== undefined) {
-    return packageConfigValue
-  }
-
-  return defaultValue
 }
 
 const getDepotToolsDir = (rootDir) => {
@@ -150,7 +80,7 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const getBraveVersion = (ignorePatchVersionNumber) => {
-  const braveVersion = packageConfig(['version'])
+  const braveVersion = envConfig.getPackageVersion()
   if (!ignorePatchVersionNumber) {
     return braveVersion
   }
@@ -202,8 +132,11 @@ const Config = function () {
   ])
   this.gclientFile = path.join(this.rootDir, '.gclient')
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
-  this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
-  this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+  this.disableGclientConfigUpdate = getEnvConfig(
+    ['disable_gclient_config_update'],
+    false,
+  )
+  this.gclientGlobalVars = envConfig.getMergedObject(['gclient', 'global_vars'])
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
@@ -224,22 +157,11 @@ const Config = function () {
   this.notary_user = getEnvConfig(['notary_user'])
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
+  this.isBraveOriginBranded = getEnvConfig(['is_brave_origin_branded'])
   this.git_cache_path = getEnvConfig(['git_cache_path'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
-  if (this.rbeService) {
-    this.reapiAddress = this.rbeService
-    this.reapiBackendConfigPath = path.join(
-      this.srcDir,
-      'build',
-      'config',
-      'siso',
-      'backend_config',
-      'google.star',
-    )
-    this.reapiInstance = 'default'
-  }
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
@@ -276,7 +198,11 @@ const Config = function () {
   this.braveAndroidPkcs11Alias = ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec'], false)
-  this.useReclient = getEnvConfig(['use_reclient'], this.useRemoteExec)
+  this.useSiso = getEnvConfig(['use_siso'], true)
+  this.useReclient = getEnvConfig(
+    ['use_reclient'],
+    this.useRemoteExec && !this.useSiso,
+  )
   this.offline = getEnvConfig(['offline'], false)
   this.use_libfuzzer = false
   this.androidAabToApk = false
@@ -471,6 +397,12 @@ Config.prototype.buildArgs = function () {
 
   if (this.targetOS !== 'ios') {
     args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
+    if (this.isBraveOriginBranded) {
+      args['import("//brave/build/args/brave_origin/branding_defaults.gni")'] =
+        null
+    } else {
+      args['import("//brave/build/args/branding_defaults.gni")'] = null
+    }
   } else {
     args['import("//brave/build/args/ios_defaults.gni")'] = null
   }
@@ -551,15 +483,7 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (
-    (process.platform === 'win32' || process.platform === 'darwin')
-    && this.build_delta_installer
-  ) {
-    assert(
-      this.last_chrome_installer,
-      'Need last_chrome_installer args for building delta installer',
-    )
-    args.build_delta_installer = true
+  if (this.last_chrome_installer) {
     args.last_chrome_installer = this.last_chrome_installer
   }
 
@@ -981,8 +905,7 @@ Config.prototype.updateInternal = function (options) {
     this.skip_signing = true
   }
 
-  if (options.build_delta_installer) {
-    this.build_delta_installer = true
+  if (options.last_chrome_installer) {
     this.last_chrome_installer = options.last_chrome_installer
   }
 
@@ -1302,6 +1225,28 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
   },
 })
 
+Object.defineProperty(Config.prototype, 'chromiumCustomDeps', {
+  get: function () {
+    return envConfig.getMergedObject(['projects', 'chrome', 'custom_deps'])
+  },
+})
+
+Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
+  get: function () {
+    return {
+      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
+      ...(this.rbeService
+        ? {
+            'reapi_address': this.rbeService,
+            'reapi_backend_config_path': 'google.star',
+            'reapi_instance': 'default',
+          }
+        : {}),
+      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+    }
+  },
+})
+
 Object.defineProperty(Config.prototype, 'outputDir', {
   get: function () {
     if (this.use_no_gn_gen && this.__outputDir == null) {
@@ -1341,26 +1286,5 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     return (this.__outputDir = outputDir)
   },
 })
-
-Object.defineProperty(Config.prototype, 'useSiso', {
-  get: function () {
-    return getEnvConfig(
-      ['use_siso'],
-      // * iOS fails in siso+reproxy mode because of incorrect handling of
-      //   input_root_absolute_path value.
-      !this.isIOS(),
-    )
-  },
-})
-
-function getValueType(value) {
-  if (value === undefined) {
-    return 'undefined'
-  }
-  if (value === null) {
-    return 'null'
-  }
-  return value.constructor.name
-}
 
 module.exports = new Config()

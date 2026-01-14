@@ -1,0 +1,60 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_service_bridge.h",
+    "brave_origin_service_bridge.mm",
+    "brave_origin_service_bridge_impl.h",
+    "brave_origin_service_bridge_impl.mm",
+    "brave_origin_service_factory.h",
+    "brave_origin_service_factory.mm",
+    "brave_origin_service_factory_bridge.h",
+    "brave_origin_service_factory_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/constants",
+    "//brave/components/p3a",
+    "//brave/components/playlist/core/common",
+    "//brave/ios/browser/keyed_service",
+    "//brave/ios/browser/policy",
+    "//components/keyed_service/core",
+    "//components/policy/core/browser",
+    "//components/user_prefs",
+    "//ios/chrome/browser/policy/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+  ]
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/browser:pref_names" ]
+  }
+  if (enable_brave_talk) {
+    deps += [ "//brave/components/brave_talk" ]
+  }
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
+  }
+}

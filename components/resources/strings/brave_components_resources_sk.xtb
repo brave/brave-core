@@ -966,6 +966,7 @@
 <translation id="8459631690385393533">Uloženie aktív Cardano</translation>
 <translation id="4915057812371523845">Uloženie aktív Cardano Testnet</translation>
 <translation id="5387140102951033657">Podporuje aktíva Substrate na reťazci Polkadot a padacích reťazcoch Substrate</translation>
+<translation id="5601177227092533167">Podporuje aktíva Substrate na reťazci Westend a padacích reťazcoch Substrate</translation>
 <translation id="8500387257977999003">Súkromný kľúč <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import z hardvérovej peňaženky</translation>
@@ -1298,7 +1299,6 @@
 <translation id="6423985584914773314">Neplatná adresa FIL</translation>
 <translation id="5522073372365069684">Kúpiť s Ramp</translation>
 <translation id="6153197326949684688">Predať cez <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Kúpte si so službou Sardine</translation>
 <translation id="3301984548406568819">Finančné údaje a údaje o transakciách spracúvajú naši partneri. Spoločnosť Brave takéto údaje nezhromažďuje ani k nim nemá prístup.</translation>
 <translation id="5795821518596541838">Partner transakcií</translation>
 <translation id="1916136859742693273">Brave Wallet využíva službu Meld.io na zhromažďovanie a sprístupňovanie rôznych poskytovateľov kryptomien pre váš región. S Meld.io budeme zdieľať informácie na dokončenie transakcie vrátane adresy vašej peňaženky a kódu krajiny. Ďalšie informácie nájdete v podmienkach používania služby Meld.</translation>
@@ -1324,12 +1324,10 @@
 <translation id="5973390321030037823">Kúpiť pomocou služby Link</translation>
 <translation id="1932640759496708012">Kúpiť pomocou Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Služba Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Služba Link od spoločnosti Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Kupujte kryptomeny pomocou karty Visa alebo Mastercard.</translation>
-<translation id="3648994606506382289">Najjednoduchší, najrýchlejší a najlacnejší spôsob nákupu kryptomeny platobnou kartou alebo bankovým prevodom.</translation>
 <translation id="3101839349578102016">Okamžitý nákup pomocou bankového účtu. Nižšie poplatky.</translation>
 <translation id="8280898387224328221">Platba pomocou kreditnej karty, debetnej karty, bankového účtu</translation>
 <translation id="2218174283683424104">Nakupujte s najdôveryhodnejším menom v oblasti kryptomien.</translation>
@@ -1661,6 +1659,7 @@
 <translation id="8044899503464538266">Pomalé</translation>
 <translation id="3569512916300900704">Priemerný</translation>
 <translation id="7019805045859631636">Rýchle</translation>
+<translation id="1345580220012169610">Odhadovaný poplatok</translation>
 <translation id="632241521608275119">Tolerancia sklzu</translation>
 <translation id="6778140392042462129">Burzy</translation>
 <translation id="6173494033320397682">Len priame spojenie</translation>
@@ -1714,6 +1713,9 @@
 <translation id="6276584161122912863">Cena gas</translation>
 <translation id="6132197290665156212">Odhadovaný sieťový poplatok</translation>
 <translation id="1788636309517085411">Použiť predvolené</translation>
+<translation id="3968375068626660591">Tento poplatok za plyn nahradí pôvodný.</translation>
+<translation id="1661088862481901887">Týmto sa vytvorí nová transakcia s novým poplatkom za plyn na zrušenie čakajúcej transakcie. Zrušenie je možné iba v prípade, že transakcia je stále v stave čakania v sieti.</translation>
+<translation id="5797060124625958778">Priorita rýchlosti</translation>
 <translation id="6213230117190778270">Obrdžet</translation>
 <translation id="6748108480210050150">Od</translation>
 <translation id="4875290286426670462">Neobmedzené <ph name="ASSET_SYMBOL"/></translation>
@@ -2115,6 +2117,7 @@
 <translation id="5329136173514538969">Nerozdelené karty</translation>
 <translation id="7595612919377246359">Vymeniť polohy kariet</translation>
 <translation id="2367972762794486313">Zobraziť aplikácie</translation>
+<translation id="3468387898712904997">Nový emailový alias</translation>
 <translation id="8591883849678260674">Zobraziť originál</translation>
 <translation id="1969654232209826429">min čítanie</translation>
 <translation id="4101707289420716287">Vypnúť Speedreader</translation>
@@ -2181,11 +2184,23 @@
 <translation id="7127671672828944579">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 14B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Gemma 3 12B vytvoreným spoločnosťou Google DeepMind, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Gemma prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom DeepSeek R1 vytvoreným spoločnosťou DeepSeek na vykonávanie úloh s hlbokým uvažovaním. Model DeepSeek R1 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom DeepSeek V3.1 vytvoreným spoločnosťou DeepSeek, aby som bol výkonný a použiteľný v mnohých prípadoch. DeepSeek V3.1 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ahoj, som Leo. Som AI asistent od Brave. Poháňa ma Claude Instant, model vytvorený spoločnosťou Anthropic na konverzačné úlohy a spracovanie textu. Claude Instant je hostovaný Brave na našej vlastnej zabezpečenej infraštruktúre.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Haiku vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Haiku prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Sonnet vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Sonnet prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 4 Scout vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Llama 4 Scout prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 4 Maverick vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Llama 4 Maverick prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GPT OSS 20B vytvoreným spoločnosťou OpenAI, aby som bol výkonný a použiteľný v mnohých prípadoch. Model GPT OSS 20B prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GPT OSS 120B vytvoreným spoločnosťou OpenAI, aby som bol výkonný a použiteľný v mnohých prípadoch. Model GPT OSS 120B prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Mistral Large vytvoreným spoločnosťou Mistral, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Mistral Large prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Pixtral Large vytvoreným spoločnosťou Mistral, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Pixtral Large prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 3 235B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen 3 235B prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Deepseek V3.1 vytvoreným spoločnosťou Deepseek, aby som bol výkonný a použiteľný v mnohých prípadoch. Deepseek V3.1 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 3 Coder 480B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen 3 Coder 480B prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Opus vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Opus prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokálne</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Odporúčané modely</translation>
 <translation id="6568044140836233369">Zobraziť všetky modely</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2310,6 +2325,7 @@
 <translation id="8506027496671575183">Vyhľadávanie • Vízia • Nástroje</translation>
 <translation id="3213834013136637671">Vyhľadávanie • Vízia</translation>
 <translation id="7697693533305615127">Vyhľadávanie • Myslenie</translation>
+<translation id="7465032796278724624">Verifikované súkromné riešenie s NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model sa dynamicky mení na ten najvhodnejší pre danú úlohu</translation>
 <translation id="3965507912994218570">Nastavenia Lea</translation>
 <translation id="3754337604877048671">Predstavujeme Leo AI</translation>
@@ -2373,7 +2389,7 @@
 <translation id="8410199626695516952">Dobre, nebudem si to pamätať</translation>
 <translation id="8419849467765474535">Nepodarilo sa uložiť pamäť. Skúste to prosím znova.</translation>
 <translation id="5517580030864973329">Prechod na webovú stránku na novú adresu</translation>
-<translation id="8832457834975923266">Navigácia na webovú stránku <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navigácia na webovú stránku <ph name="URL"/></translation>
 <translation id="5095252080770652994">Pokrok</translation>
 <translation id="8332385567036775056">Kroky</translation>
 <translation id="4521931942079977149">Kliknutie na stránku</translation>
@@ -2388,6 +2404,20 @@
 <translation id="4798146464408730445">Neboli nájdené žiadne zručnosti. Vytvorte novú kliknutím na tlačidlo "Nová".</translation>
 <translation id="271033894570825754">Nový</translation>
 <translation id="8266605059880650542">Zaznamenanie niektorých informácií o stránke na neskôr</translation>
+<translation id="7049849063044248805">Režim agenta funguje s modelmi, ktoré podporujú nástroje. Nezlučiteľné modely sú skryté z tohto zoznamu.</translation>
+<translation id="3397808797783614750">Povolenie hovoriť AI, aby automaticky prehľadávala za vás, môže mať škodlivé, neúmyselné následky na vaše súkromie, financie a online komunikáciu. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Bezpečnostné upozornenie</translation>
+<translation id="6077070599873946984">Brave AI potrebuje vaše povolenie pre: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Operácia bola detegovaná ako potenciálne nezhodná s vašou požiadavkou:</translation>
+<translation id="3927932062596804919">Odmietnuť</translation>
+<translation id="4569155249847375786">Overené</translation>
+<translation id="3240988198391588806">Režim agenta</translation>
+<translation id="538066983058750776">O profile Leo</translation>
+<translation id="1577570612997320961">Na ochranu vašich údajov tento izolovaný profil Brave obmedzuje prístup AI k vášmu hlavnému profilu prehliadania. Leo AI má tu rozšírené oprávnenia na navštevovanie a interakciu so stránkami, takže mu môžete zadať úlohy a skúsiť prehliadať spoločne na zvýšenie produktivity.</translation>
+<translation id="648116453147783450">Vaše údaje a relácie</translation>
+<translation id="3906161204878017619">Keď sa na webe prihlásite s týmto profilom, Leo môže vidieť informácie na tejto stránke, ak je otvorená — či už pri návšteve stránky samotným Leom alebo ak ho o to požiadate.</translation>
+<translation id="5583803492921648196">Prepnutie späť</translation>
+<translation id="8068929004144221259">Kedykoľvek môžete prejsť späť na svoj bežný profil z hlavnej ponuky alebo z avatara Lea na paneli s nástrojmi. Režim agenta sa vždy otvorí v tomto profile.</translation>
 <translation id="3486480638399578250">Zachovajte svoju osobnú e-mailovú adresu súkromnú</translation>
 <translation id="7765422154906712751">Vytvorte jedinečné, náhodné adresy, ktoré preposielajú obsah na váš e-mail k účtu Brave a môžu byť kedykoľvek odstránené. Chráňte svoju skutočnú e-mailovu adresu pred odhalením alebo zneužitím inzerentmi.</translation>
 <translation id="5222676887888702881">Odhlásiť sa</translation>
@@ -2510,6 +2540,12 @@
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="131231380815754440">Zapnúť HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
+<translation id="5465091511225410553">(vynútené)</translation>
+<translation id="8646614940337543907">(vynútené doplnkom)</translation>
+<translation id="3559821445144429594">(vynútené politikou)</translation>
+<translation id="550374350047782149">(vynútené zoznamom výnimiek)</translation>
+<translation id="68858161161918073">(vynútené správcom)</translation>
+<translation id="5735057546627037489">(vynútené PWA)</translation>
 <translation id="3246600097575692802">Zapnúť zablokované skripty</translation>
 <translation id="3603525299146223354">Sledovače a reklamy</translation>
 <translation id="4448697385961650078">Blokovať sledovače &amp; reklamy</translation>
@@ -2544,6 +2580,7 @@
 other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph name="SITE_URL"/>}
 }</translation>
 <translation id="2540598191934725677">Kliknite na ikonu Brave pre zobrazenie štítov Brave.</translation>
+<translation id="542789539047208469">Informácie o stránke</translation>
 <translation id="6294662480095808915">Ochrana súkromia ako štandard.</translation>
 <translation id="4366423156486478559">Získajte ochranu Brave na každom prepojení, na ktoré kliknete. Stačí nastaviť prehliadač Brave ako predvolený a môžete prehľadávať webové lokality. Súkromne.</translation>
 <translation id="3830912418080848377">Importovať nastavenia</translation>
@@ -2680,5 +2717,6 @@ Pripojíme vás!</translation>
     existujúcu kartu</translation>
 <translation id="451189393813405346">Opýtajte sa Lea</translation>
 <translation id="1602850501393095406">Stlačením tlačidla ↑ zvýraznite</translation>
+<translation id="8367705492654390392">Spýtaj sa čokoľvek</translation>
 <translation id="8525248723479742219">Prehrať neskôr</translation>
 </translationbundle>

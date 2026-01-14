@@ -22,8 +22,10 @@ class EmailAliasesPage extends HTMLElement {
       EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
     )
     subpage.setAttribute('page-title', title)
-    import('/email_aliases.bundle.js' as any).then(({ mount }) => {
-      mount(subpage)
+    customElements.whenDefined('settings-brave-account-row').then(() => {
+      import('/email_aliases.bundle.js' as any).then(({ mount }) => {
+        mount(subpage)
+      })
     })
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {

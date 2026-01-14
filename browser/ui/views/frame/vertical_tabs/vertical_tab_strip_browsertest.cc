@@ -50,13 +50,16 @@
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/test/ui_controls.h"
 #include "ui/display/screen.h"
 #include "ui/display/test/test_screen.h"
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
+#include "ui/views/test/views_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -233,6 +236,15 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   void RunLoop() {
     run_loop_ = std::make_unique<base::RunLoop>();
     run_loop_->Run();
+  }
+
+  void InvalidateAndRunLayoutForVerticalTabStrip() {
+    auto* widget_delegate_view =
+        browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+    ASSERT_TRUE(widget_delegate_view);
+    widget_delegate_view->vertical_tab_strip_region_view()->InvalidateLayout();
+    views::test::RunScheduledLayout(
+        widget_delegate_view->vertical_tab_strip_region_view());
   }
 
  protected:
@@ -570,32 +582,46 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   browser_view()->tabstrip()->StopAnimating();
 
+  // At this point, the contents_view_height already contains spacing after the
+  // last pinned tab
   int contents_view_height = region_view->original_region_view_->height();
-  AppendTab(browser());
+  AppendTab(browser());  // Add first unpinned tab
   browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
 
-  // When first tab is added, height should have tab's height plus top & bottom
-  // margin and separator's height as both pinned and unpinned tabs are used.
-  contents_view_height +=
-      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2) +
-      tabs::kPinnedUnpinnedSeparatorHeight;
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->original_region_view_->height() == contents_view_height;
-  }));
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  ASSERT_FALSE(brave_tab_container->GetTabAtModelIndex(1)->data().pinned);
+  EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
+            brave_tab_container->GetIdealBounds(1).y() -
+                /*spacing before the first unpinned tab*/
+                tabs::kMarginForVerticalTabContainers)
+      << "The firs unpinned tabs y should be aligned to the pinned tab + "
+         "separator's bottom";
+  contents_view_height += tabs::kPinnedUnpinnedSeparatorHeight;
+  contents_view_height += tabs::kVerticalTabsSpacing +
+                          tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing;
+  EXPECT_EQ(contents_view_height, region_view->original_region_view_->height());
 
-  AppendTab(browser());
+  // Check if separator is laid out correctly
+  EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
+  EXPECT_EQ(brave_tab_container->separator_->bounds().y(),
+            brave_tab_container->GetPinnedTabsAreaBottom() -
+                tabs::kPinnedUnpinnedSeparatorHeight);
+
+  AppendTab(browser());  // Add second unpinned tab
   browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
 
   // When second tab is added, height should be increased with tab height plus
   // tab spacing.
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->original_region_view_->height() == contents_view_height;
-  }));
+  ASSERT_EQ(region_view->original_region_view_->height(), contents_view_height);
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarMode) {
   ToggleVerticalTabStrip();
 
   auto* prefs = browser()->profile()->GetPrefs();
@@ -628,6 +654,220 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             brave_tab_container->GetScrollBarMode());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollBarDisabledWhenHorizontal) {
+  // Pre-condition: horizontal tab strip
+  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+
+  EXPECT_TRUE(brave_tab_container);
+  // Scrollbar should be disabled when not in vertical tab mode
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kDisabled,
+            brave_tab_container->GetScrollBarMode());
+  EXPECT_FALSE(brave_tab_container->scroll_bar_->GetVisible());
+
+  // Even if the pref is enabled, scrollbar should be disabled in horizontal
+  // mode
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kDisabled,
+            brave_tab_container->GetScrollBarMode());
+  EXPECT_FALSE(brave_tab_container->scroll_bar_->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollBarVisibilityWithManyTabs) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+
+  EXPECT_TRUE(brave_tab_container);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->GetScrollBarMode());
+  // Scrollbar should be invisible as max scroll offset is 0
+  EXPECT_EQ(0, brave_tab_container->GetMaxScrollOffset());
+  EXPECT_FALSE(brave_tab_container->scroll_bar_->GetVisible());
+
+  // Add many tabs to trigger scrollbar visibility
+  // The scrollbar should be visible when content height exceeds viewport
+  for (int i = 0; i < 50; i++) {
+    AppendTab(browser());
+  }
+
+  browser_view()->tabstrip()->StopAnimating();
+  EXPECT_GT(brave_tab_container->GetMaxScrollOffset(), 0);
+
+  // After adding many tabs, scrollbar mode should still be enabled
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->GetScrollBarMode());
+
+  // And scrollbar should be visible as max scroll offset is greater than 0
+  EXPECT_TRUE(brave_tab_container->scroll_bar_->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollBarBoundsWithPinnedTabs) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+
+  EXPECT_TRUE(brave_tab_container);
+
+  // Add many tabs to make scrollbar visible
+  for (int i = 0; i < 30; i++) {
+    AppendTab(browser());
+  }
+  browser_view()->tabstrip()->StopAnimating();
+
+  ASSERT_TRUE(brave_tab_container->scroll_bar_->GetVisible());
+
+  views::ScrollBar* scroll_bar = brave_tab_container->scroll_bar_.get();
+  EXPECT_TRUE(scroll_bar);
+  EXPECT_TRUE(scroll_bar->GetVisible());
+
+  // Get initial scrollbar bounds when no pinned tabs
+  gfx::Rect initial_bounds = scroll_bar->bounds();
+  EXPECT_GT(initial_bounds.height(), 0);
+  EXPECT_EQ(initial_bounds.y(),
+            0);  // Should start from top when no pinned tabs
+  int initial_pinned_area_bottom =
+      brave_tab_container->GetPinnedTabsAreaBottom();
+  EXPECT_EQ(initial_pinned_area_bottom, 0);
+
+  auto* model = browser()->tab_strip_model();
+
+  // Pin first tab and check if scrollbar bounds are updated
+  model->SetTabPinned(0, true);
+  browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  // Get pinned area bottom after pinning
+  // Note: GetPinnedTabsAreaBottom() uses GetIdealBounds() which may not be
+  // updated immediately, so we check the actual scrollbar bounds instead
+  int pinned_area_bottom = brave_tab_container->GetPinnedTabsAreaBottom();
+  ASSERT_GE(pinned_area_bottom, 0);
+
+  // At least verify that scrollbar bounds changed
+  gfx::Rect bounds_after_pinning = scroll_bar->bounds();
+  EXPECT_GT(bounds_after_pinning.y(), initial_bounds.y());
+
+  // Verify scrollbar bounds are updated
+  EXPECT_EQ(bounds_after_pinning.y(), pinned_area_bottom);
+  // Height should be container height minus pinned area bottom
+  EXPECT_EQ(bounds_after_pinning.height(),
+            brave_tab_container->height() - pinned_area_bottom);
+
+  // Pin more tabs and verify bounds continue to update
+  while (brave_tab_container->GetPinnedTabsAreaBottom() <= pinned_area_bottom) {
+    model->SetTabPinned(model->IndexOfFirstNonPinnedTab(), true);
+    browser_view()->tabstrip()->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+  pinned_area_bottom = brave_tab_container->GetPinnedTabsAreaBottom();
+
+  // After pinning multiple tabs, scrollbar should be positioned below pinned
+  // area
+  gfx::Rect bounds_after_pinning_multiple = scroll_bar->bounds();
+  EXPECT_EQ(bounds_after_pinning_multiple.y(), pinned_area_bottom);
+  EXPECT_EQ(bounds_after_pinning_multiple.height(),
+            brave_tab_container->height() - pinned_area_bottom);
+
+  // Unpin all tabs and verify bounds return to initial state
+  while (model->IndexOfFirstNonPinnedTab() != 0) {
+    model->SetTabPinned(0, false);
+  }
+  browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  pinned_area_bottom = brave_tab_container->GetPinnedTabsAreaBottom();
+  ASSERT_EQ(pinned_area_bottom, 0);
+
+  // After unpinning, scrollbar should return to top when no pinned tabs
+  gfx::Rect bounds_after_unpinning = scroll_bar->bounds();
+  EXPECT_EQ(bounds_after_unpinning.y(), 0);
+  EXPECT_EQ(bounds_after_unpinning.height(), brave_tab_container->height());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarThumbState) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+
+  EXPECT_TRUE(brave_tab_container);
+
+  // Add many tabs to make scrollbar visible and enable scrolling
+  for (int i = 0; i < 30; i++) {
+    AppendTab(browser());
+  }
+  browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  views::ScrollBar* scroll_bar = brave_tab_container->scroll_bar_.get();
+  ASSERT_TRUE(scroll_bar->GetVisible());
+  const int track_bounds_y = scroll_bar->GetTrackBounds().y();
+
+  EXPECT_TRUE(scroll_bar);
+  EXPECT_TRUE(scroll_bar->GetVisible());
+
+  // Get initial thumb state
+  EXPECT_EQ(scroll_bar->GetMinPosition(), 0);
+  EXPECT_GT(scroll_bar->GetMaxPosition(), 0);
+
+  // ## Scroll to middle
+  int middle_offset = brave_tab_container->GetMaxScrollOffset() / 2;
+  ASSERT_GT(middle_offset, 0);
+
+  brave_tab_container->SetScrollOffset(middle_offset);
+  ASSERT_EQ(scroll_bar->GetTrackBounds().y(), track_bounds_y)
+      << "Track bounds y should not changed";
+
+  // Verify scroll offset was set correctly
+  ASSERT_EQ(brave_tab_container->scroll_offset_, middle_offset);
+
+  int position_at_middle = scroll_bar->GetPosition();
+  EXPECT_GT(position_at_middle, 0) << scroll_bar->GetTrackBounds().y();
+  EXPECT_LT(position_at_middle, scroll_bar->GetMaxPosition());
+
+  // ## Scroll to maximum
+  brave_tab_container->SetScrollOffset(
+      brave_tab_container->GetMaxScrollOffset());
+  ASSERT_EQ(scroll_bar->GetTrackBounds().y(), track_bounds_y)
+      << "Track bounds y should not changed";
+
+  // Verify scroll offset was set correctly
+  ASSERT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
+  EXPECT_GT(scroll_bar->GetPosition(), position_at_middle);
+
+  // ## Scroll back to top
+  brave_tab_container->SetScrollOffset(0);
+  ASSERT_EQ(scroll_bar->GetTrackBounds().y(), track_bounds_y)
+      << "Track bounds y should not changed";
+  // Verify scroll offset was reset
+  ASSERT_EQ(brave_tab_container->scroll_offset_, 0);
+  EXPECT_EQ(scroll_bar->GetPosition(), 0);
+
+  // Verify min position remains 0
+  EXPECT_EQ(scroll_bar->GetMinPosition(), 0);
+  EXPECT_GT(scroll_bar->GetMaxPosition(), 0);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
@@ -1146,23 +1386,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
       position_to_drag_to);  // This shouldn't end up in a crash
 }
 
-class VerticalTabStripWithScrollableTabBrowserTest
-    : public VerticalTabStripBrowserTest {
- public:
-  VerticalTabStripWithScrollableTabBrowserTest() = default;
-
-  ~VerticalTabStripWithScrollableTabBrowserTest() override = default;
-};
-
-IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, Sanity) {
   // Make sure browser works with both vertical tab and scrollable tab strip
   // https://github.com/brave/brave-browser/issues/28877
   ToggleVerticalTabStrip();
   Browser::Create(Browser::CreateParams(browser()->profile(), true));
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest,
-                       ToggleWithGroups) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleWithGroups) {
   // Deflake the test by setting TabGroupSyncService initialized.
   tab_groups::TabGroupSyncService* service =
       tab_groups::TabGroupSyncServiceFactory::GetForProfile(
@@ -1175,6 +1406,289 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest,
   AddTabToNewGroup(browser(), 0);
   ToggleVerticalTabStrip();  // To vertical tab strip
   ToggleVerticalTabStrip();  // To horizontal tab strip
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* model = browser()->tab_strip_model();
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Pre-condition: With only one tab, max scroll offset should be 0
+  ASSERT_EQ(1, model->count());
+  EXPECT_EQ(0, brave_tab_container->GetMaxScrollOffset());
+
+  // Adding tabs until they hit the height of the tab strip. When they exceed
+  // the height, max scroll offset should be greater than 0.
+  while (brave_tab_container->GetMaxScrollOffset() <= 0) {
+    AppendTab(browser());
+    browser_view()->tabstrip()->StopAnimating();
+  }
+
+  // ## Basic test -------------------------------------------------------------
+  // Max scroll offset should be the total height of unpinned tabs minus the
+  // height of the container.
+  auto unpinned_tabs_total_height = [](int unpinned_tab_count) {
+    return unpinned_tab_count *
+               (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing) -
+           tabs::kVerticalTabsSpacing +
+           2 * tabs::kMarginForVerticalTabContainers;
+  };
+
+  auto available_height = [&]() {
+    return brave_tab_container->height() -
+           brave_tab_container->GetPinnedTabsAreaBottom();
+  };
+  EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
+            brave_tab_container->GetMaxScrollOffset());
+
+  // When adding foreground tabs, the current scroll offset should be updated
+  // so that the new active tab is visible.
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
+
+  // ## Pinning a tab test -----------------------------------------------------
+  // Add a few more tabs for further testing
+  while (brave_tab_container->GetMaxScrollOffset() <
+         5 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->tabstrip()->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+  // Make sure that the container has a reasonable height.
+  ASSERT_GT(brave_tab_container->height(), 40);
+
+  // When pin a tab from the last, pinned tabs area should be updated.
+  const int max_scroll_offset_before_pinning =
+      brave_tab_container->GetMaxScrollOffset();
+  int scroll_offset_before_pinning = brave_tab_container->scroll_offset_;
+  ASSERT_EQ(max_scroll_offset_before_pinning, scroll_offset_before_pinning)
+      << "As we added active tabs at the end, the scroll offset should be "
+         "equal to the max scroll offset";
+
+  model->SetTabPinned(model->count() - 1, true);
+  browser_view()->tabstrip()->StopAnimating();
+  ASSERT_EQ(1, model->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
+            tabs::kVerticalTabHeight +
+                2 * tabs::kMarginForVerticalTabContainers +
+                tabs::kPinnedUnpinnedSeparatorHeight);
+
+  // Also max scroll offset should be updated.
+  EXPECT_EQ(max_scroll_offset_before_pinning - tabs::kVerticalTabHeight -
+                tabs::kVerticalTabsSpacing +
+                brave_tab_container->GetPinnedTabsAreaBottom(),
+            brave_tab_container->GetMaxScrollOffset());
+  EXPECT_EQ(unpinned_tabs_total_height(model->count() -
+                                       model->IndexOfFirstNonPinnedTab()) -
+                available_height(),
+            brave_tab_container->GetMaxScrollOffset());
+
+  // Pin the last tab again, so that the max scroll offset could be smaller
+  scroll_offset_before_pinning = brave_tab_container->scroll_offset_;
+  model->SetTabPinned(model->count() - 1, true);
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Then, current scroll offset should be clamped to the max scroll offset.
+  EXPECT_GT(scroll_offset_before_pinning, brave_tab_container->scroll_offset_);
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
+
+  // ## Unpin the tab
+  model->SetTabPinned(0, false);
+  model->SetTabPinned(0, false);
+  browser_view()->tabstrip()->StopAnimating();
+  ASSERT_EQ(0, brave_tab_container->GetPinnedTabsAreaBottom());
+
+  // Max scroll offset should be restored after unpinning
+  EXPECT_EQ(max_scroll_offset_before_pinning,
+            brave_tab_container->GetMaxScrollOffset());
+  EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
+            brave_tab_container->GetMaxScrollOffset());
+
+  // ## Removing a tab
+  // Scroll offset should be updated
+  int scroll_offset_before_removing = brave_tab_container->scroll_offset_;
+  model->SelectLastTab();
+  model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_USER_GESTURE);
+  browser_view()->tabstrip()->StopAnimating();
+  ASSERT_EQ(model->GetIndexOfWebContents(model->GetActiveWebContents()),
+            model->count() - 1);
+
+  // Max scroll offset should be updated
+  EXPECT_EQ(unpinned_tabs_total_height(model->count()) - available_height(),
+            brave_tab_container->GetMaxScrollOffset());
+  // also the current scroll offset should be clamped to the max scroll offset.
+  EXPECT_GT(scroll_offset_before_removing, brave_tab_container->scroll_offset_);
+  EXPECT_EQ(brave_tab_container->scroll_offset_,
+            brave_tab_container->GetMaxScrollOffset());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
+  // https://github.com/brave/brave-browser/issues/51734
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Add enough tabs to make the tab strip scrollable
+  while (brave_tab_container->GetMaxScrollOffset() <=
+         5 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->tabstrip()->StopAnimating();
+
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+  const int container_height = brave_tab_container->height();
+  ASSERT_GT(container_height, 40);
+
+  const int pinned_tabs_area_bottom =
+      brave_tab_container->GetPinnedTabsAreaBottom();
+
+  ASSERT_GT(pinned_tabs_area_bottom, 0);
+  ASSERT_NE(brave_tab_container->scroll_offset_, 0);
+
+  // Set scroll offset to 0 (top)
+  brave_tab_container->SetScrollOffset(0);
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Verify that UpdateClipPathForSlotViews() was called by checking clip paths
+  // All unpinned tabs should have clip path set when pinned tabs exist
+  // The clip path should match the visible area bounds
+  gfx::Rect expected_clip_bounds_in_container(
+      0, pinned_tabs_area_bottom, brave_tab_container->width(),
+      container_height - pinned_tabs_area_bottom);
+
+  for (int i = 0; i < model->count(); ++i) {
+    Tab* tab = GetTabAt(browser(), i);
+    if (tab->data().pinned) {
+      // Pinned tabs should not have clip path
+      EXPECT_TRUE(tab->clip_path().isEmpty())
+          << "Pinned tab at index " << i << " should not have clip path";
+      continue;
+    }
+
+    // Unpinned tabs should have clip path set (when pinned tabs exist)
+    // The clip path should match the visible area bounds in tab's coordinate
+    // system
+    EXPECT_FALSE(tab->clip_path().isEmpty())
+        << "Unpinned tab at index " << i << " should have clip path";
+
+    // Verify the clip path bounds match the expected visible area
+    SkRect clip_bounds_sk = tab->clip_path().computeTightBounds();
+    gfx::RectF clip_bounds_in_tab_f = gfx::SkRectToRectF(clip_bounds_sk);
+    gfx::Rect clip_bounds_in_tab = gfx::ToEnclosingRect(clip_bounds_in_tab_f);
+
+    // Convert expected clip bounds from container to tab coordinate system
+    gfx::Rect expected_clip_bounds_in_tab = views::View::ConvertRectToTarget(
+        brave_tab_container, tab, expected_clip_bounds_in_container);
+
+    // The clip path bounds should match the expected bounds
+    EXPECT_EQ(clip_bounds_in_tab, expected_clip_bounds_in_tab)
+        << "Unpinned tab at index " << i << " should have clip path";
+  }
+
+  // Set scroll offset to maximum (bottom)
+  const int max_offset = brave_tab_container->GetMaxScrollOffset();
+  brave_tab_container->SetScrollOffset(max_offset);
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Verify clip paths are updated after scrolling to bottom
+  // The clip path should still match the visible area bounds
+  for (int i = 0; i < model->count(); ++i) {
+    Tab* tab = GetTabAt(browser(), i);
+    if (tab->data().pinned) {
+      // Pinned tabs should not have clip path
+      EXPECT_TRUE(tab->clip_path().isEmpty())
+          << "Pinned tab at index " << i << " should not have clip path";
+      continue;
+    }
+
+    // Unpinned tabs should have clip path set (when pinned tabs exist)
+    EXPECT_FALSE(tab->clip_path().isEmpty())
+        << "Unpinned tab at index " << i << " should have clip path";
+
+    // Verify the clip path bounds match the expected visible area
+    SkRect clip_bounds_sk = tab->clip_path().computeTightBounds();
+    gfx::RectF clip_bounds_in_tab_f = gfx::SkRectToRectF(clip_bounds_sk);
+    gfx::Rect clip_bounds_in_tab = gfx::ToEnclosingRect(clip_bounds_in_tab_f);
+
+    // Convert expected clip bounds from container to tab coordinate system
+    gfx::Rect expected_clip_bounds_in_tab = views::View::ConvertRectToTarget(
+        brave_tab_container, tab, expected_clip_bounds_in_container);
+
+    // The clip path bounds should match the expected bounds
+    EXPECT_EQ(clip_bounds_in_tab, expected_clip_bounds_in_tab)
+        << "Unpinned tab at index " << i << " should have clip path";
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       GetMaxScrollOffsetWithGroups) {
+  // Test GetMaxScrollOffset with tab groups
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  // Deflake the test by setting TabGroupSyncService initialized.
+  tab_groups::TabGroupSyncService* service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  service->SetIsInitializedForTesting(true);
+
+  auto* model = browser()->tab_strip_model();
+  browser_view()->tabstrip()->StopAnimating();
+
+  // Create enough tabs to make the tab strip scrollable
+  while (brave_tab_container->GetMaxScrollOffset() <=
+         5 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->tabstrip()->StopAnimating();
+
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+
+  int last_max_scroll_offset = brave_tab_container->GetMaxScrollOffset();
+  tab_groups::TabGroupId group1 =
+      AddTabToNewGroup(browser(), model->count() - 1);
+  EXPECT_GT(brave_tab_container->GetMaxScrollOffset(), last_max_scroll_offset)
+      << "When adding a tab to a group, max scroll offset should increase, as "
+         "group header should be visible";
+  last_max_scroll_offset = brave_tab_container->GetMaxScrollOffset();
+
+  // Collapse the group
+  browser_view()->tabstrip()->controller()->ToggleTabGroupCollapsedState(
+      group1);
+  ASSERT_TRUE(
+      browser_view()->tabstrip()->controller()->IsGroupCollapsed(group1));
+
+  EXPECT_EQ(brave_tab_container->GetMaxScrollOffset(),
+            last_max_scroll_offset - tabs::kVerticalTabHeight -
+                tabs::kVerticalTabsSpacing)
+      << "When collapsing a group, max scroll offset should decrease, by the "
+         "height of the contained tabs and spacing";
+
+  // Even though all tabs in the group are invisible, the group should be
+  // considered as the last visible slot view.
+  // https://github.com/brave/brave-browser/issues/51635#issuecomment-3702630411
+  EXPECT_EQ(brave_tab_container->FindVisibleUnpinnedSlotViews()
+                .second->GetTabSlotViewType(),
+            TabSlotView::ViewType::kTabGroupHeader);
 }
 
 // * Non-type argument of 'float' or 'double' for template is unsupported

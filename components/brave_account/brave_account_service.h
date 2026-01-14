@@ -20,6 +20,7 @@
 #include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
+#include "brave/components/brave_account/endpoints/service_token.h"
 #include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -85,6 +86,9 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void LogOut() override;
 
+  void GetServiceToken(mojom::Service service,
+                       GetServiceTokenCallback callback) override;
+
   void OnRegisterInitialize(RegisterInitializeCallback callback,
                             endpoints::PasswordInit::Response response);
 
@@ -119,6 +123,14 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       endpoint_client::RequestHandle current_auth_validate_request);
 
   void OnAuthValidate(endpoints::AuthValidate::Response response);
+
+  void OnGetServiceToken(
+      const std::string& expected_encrypted_authentication_token,
+      const std::string& service_name,
+      GetServiceTokenCallback callback,
+      endpoints::ServiceToken::Response response);
+
+  std::string GetCachedServiceToken(const std::string& service_name) const;
 
   std::string Encrypt(const std::string& plain_text) const;
 

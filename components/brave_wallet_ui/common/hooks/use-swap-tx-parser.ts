@@ -21,30 +21,32 @@ export const useSwapTransactionParser = <
   T extends
     | Pick<
         SerializableTransactionInfo | BraveWallet.TransactionInfo,
-        'chainId' | 'txType' | 'txDataUnion' | 'swapInfo'
+        'chainId' | 'txType' | 'txDataUnion' | 'swapInfoDeprecated'
       >
     | undefined,
 >(
   transaction: T,
 ) => {
   const { data: sellNetwork } = useGetNetworkQuery(
-    transaction?.swapInfo?.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfoDeprecated?.fromAsset
+      === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          chainId: transaction?.swapInfo.fromChainId,
-          coin: transaction?.swapInfo.fromCoin,
+          chainId: transaction?.swapInfoDeprecated.fromChainId,
+          coin: transaction?.swapInfoDeprecated.fromCoin,
         }
       : skipToken,
   )
 
   const { tokenInfo: sellTokenInfo } = useGetTokenInfo(
-    transaction?.swapInfo
-      && transaction.swapInfo.fromAsset
-      && transaction.swapInfo.fromAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfoDeprecated
+      && transaction.swapInfoDeprecated.fromAsset
+      && transaction.swapInfoDeprecated.fromAsset
+        !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          contractAddress: transaction.swapInfo.fromAsset,
+          contractAddress: transaction.swapInfoDeprecated.fromAsset,
           network: {
-            chainId: transaction.swapInfo.fromChainId,
-            coin: transaction.swapInfo.fromCoin,
+            chainId: transaction.swapInfoDeprecated.fromChainId,
+            coin: transaction.swapInfoDeprecated.fromCoin,
           },
         }
       : skipToken,
@@ -59,23 +61,25 @@ export const useSwapTransactionParser = <
   }, [sellTokenInfo, sellNetwork])
 
   const { data: buyNetwork } = useGetNetworkQuery(
-    transaction?.swapInfo?.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfoDeprecated?.toAsset
+      === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          chainId: transaction?.swapInfo.toChainId,
-          coin: transaction?.swapInfo.toCoin,
+          chainId: transaction?.swapInfoDeprecated.toChainId,
+          coin: transaction?.swapInfoDeprecated.toCoin,
         }
       : skipToken,
   )
 
   const { tokenInfo: buyTokenInfo } = useGetTokenInfo(
-    transaction?.swapInfo
-      && transaction.swapInfo.toAsset
-      && transaction.swapInfo.toAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfoDeprecated
+      && transaction.swapInfoDeprecated.toAsset
+      && transaction.swapInfoDeprecated.toAsset
+        !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
-          contractAddress: transaction.swapInfo.toAsset,
+          contractAddress: transaction.swapInfoDeprecated.toAsset,
           network: {
-            chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin,
+            chainId: transaction.swapInfoDeprecated.toChainId,
+            coin: transaction.swapInfoDeprecated.toCoin,
           },
         }
       : skipToken,
@@ -89,9 +93,11 @@ export const useSwapTransactionParser = <
     return buyTokenInfo
   }, [buyTokenInfo, buyNetwork])
 
-  const sellAmountWei = new Amount(transaction?.swapInfo?.fromAmount || '')
-  const buyAmountWei = transaction?.swapInfo?.toAmount
-    ? new Amount(transaction.swapInfo.toAmount)
+  const sellAmountWei = new Amount(
+    transaction?.swapInfoDeprecated?.fromAmount || '',
+  )
+  const buyAmountWei = transaction?.swapInfoDeprecated?.toAmount
+    ? new Amount(transaction.swapInfoDeprecated.toAmount)
     : sellAmountWei
 
   return {
@@ -99,7 +105,7 @@ export const useSwapTransactionParser = <
     sellAmountWei,
     buyToken,
     buyAmountWei,
-    receiver: transaction?.swapInfo?.receiver || '',
-    provider: transaction?.swapInfo?.provider,
+    receiver: transaction?.swapInfoDeprecated?.receiver || '',
+    provider: transaction?.swapInfoDeprecated?.provider,
   }
 }

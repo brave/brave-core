@@ -1968,4 +1968,286 @@ TEST_F(SwapServiceUnitTest, GetSquidTransactionError) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(SwapServiceUnitTest, GetGate3Quote) {
+  // Indicative quote response
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_test123",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714449",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714449",
+          "destinationAmountMin": "710876",
+          "estimatedTime": 42,
+          "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+  EXPECT_CALL(callback, Run(IsTruthy(true), IsTruthy(false),
+                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "USDC", mojom::CoinType::SOL,
+                               mojom::kSolanaMainnet, "USDC",
+                               mojom::SwapProvider::kNearIntents),
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
+  std::string error = R"(
+    {
+      "message": "Provider NEAR_INTENTS does not support this swap",
+      "kind": "UNKNOWN"
+    }
+  )";
+  SetErrorInterceptor(error);
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+                  EqualsMojo(mojom::SwapFeesPtr()),
+                  EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
+                      mojom::Gate3SwapError::New(
+                          "Provider NEAR_INTENTS does not support this swap",
+                          mojom::Gate3SwapErrorKind::kUnknown))),
+                  ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "USDC", mojom::CoinType::SOL,
+                               mojom::kSolanaMainnet, "USDC",
+                               mojom::SwapProvider::kNearIntents),
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
+  // Firm quote response with EVM transaction params
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_firm_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714488",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              }
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714488",
+          "destinationAmountMin": "710915",
+          "estimatedTime": 42,
+          "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
+          "depositMemo": null,
+          "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
+          "transactionParams": {
+            "evm": {
+              "chain": {
+                "coin": "ETH",
+                "chainId": "0x1"
+              },
+              "from": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+              "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+              "value": "0",
+              "data": "0xdeadbeef",
+              "gasLimit": null,
+              "gasPrice": null
+            },
+            "solana": null,
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": null
+          },
+          "hasPostSubmitHook": true,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto expected_evm_params = mojom::Gate3SwapEvmTransactionParams::New();
+  expected_evm_params->chain =
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId);
+  expected_evm_params->from = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  expected_evm_params->to = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  expected_evm_params->value = "0";
+  expected_evm_params->data = "0xdeadbeef";
+
+  // Create expected route step
+  auto expected_step = mojom::Gate3SwapRouteStep::New();
+  auto source_token = mojom::Gate3SwapStepToken::New();
+  source_token->coin = "ETH";
+  source_token->chain_id = "0x1";
+  source_token->contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  source_token->symbol = "USDC";
+  source_token->decimals = "6";
+  source_token->logo = "";
+  expected_step->source_token = std::move(source_token);
+  expected_step->source_amount = "1000000";
+  auto destination_token = mojom::Gate3SwapStepToken::New();
+  destination_token->coin = "SOL";
+  destination_token->chain_id = "0x65";
+  destination_token->contract_address =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  destination_token->symbol = "USDC";
+  destination_token->decimals = "6";
+  destination_token->logo = "";
+  expected_step->destination_token = std::move(destination_token);
+  expected_step->destination_amount = "714488";
+  auto tool = mojom::Gate3SwapTool::New();
+  tool->name = "NEAR Intents";
+  tool->logo = "https://example.com/logo.png";
+  expected_step->tool = std::move(tool);
+
+  // Create expected route
+  auto expected_route = mojom::Gate3SwapRoute::New();
+  expected_route->id = "ni_firm_test";
+  expected_route->provider = mojom::SwapProvider::kNearIntents;
+  expected_route->steps.push_back(std::move(expected_step));
+  expected_route->source_amount = "1000000";
+  expected_route->destination_amount = "714488";
+  expected_route->destination_amount_min = "710915";
+  expected_route->estimated_time = "42";
+  expected_route->price_impact = "-0.5";
+  expected_route->network_fee = nullptr;
+  expected_route->gasless = false;
+  expected_route->deposit_address =
+      "0x16a0FdeB69D821753440dFA092316F54eF95E967";
+  expected_route->deposit_memo = std::nullopt;
+  expected_route->expires_at = "1767810375";
+  expected_route->slippage_percentage = "0.5";
+  expected_route->transaction_params =
+      mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
+          std::move(expected_evm_params));
+  expected_route->has_post_submit_hook = true;
+  expected_route->requires_token_allowance = false;
+  expected_route->requires_firm_route = true;
+
+  auto quote_params = GetCannedSwapQuoteParams(
+      mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
+      mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
+      mojom::SwapProvider::kNearIntents);
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Route(
+                      std::move(expected_route))),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
+          std::move(quote_params)),
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
+  std::string error = R"(
+    {
+      "message": "Insufficient liquidity",
+      "kind": "INSUFFICIENT_LIQUIDITY"
+    }
+  )";
+  SetErrorInterceptor(error);
+
+  auto quote_params = GetCannedSwapQuoteParams(
+      mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
+      mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
+      mojom::SwapProvider::kNearIntents);
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+                  EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
+                      mojom::Gate3SwapError::New(
+                          "Insufficient liquidity",
+                          mojom::Gate3SwapErrorKind::kInsufficientLiquidity))),
+                  ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
+          std::move(quote_params)),
+      callback.Get());
+  run_loop.Run();
+}
+
 }  // namespace brave_wallet

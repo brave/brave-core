@@ -3,27 +3,40 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+
 brave_browser_brave_news_sources = []
 brave_browser_brave_news_deps = []
 
-if (is_android) {
-  brave_browser_brave_news_sources += [ "//brave/browser/brave_news/android/brave_news_controller_factory_android.cc" ]
-}
-brave_browser_brave_news_sources += [
-  "//brave/browser/brave_news/brave_news_controller_factory.cc",
-  "//brave/browser/brave_news/brave_news_controller_factory.h",
-  "//brave/browser/brave_news/brave_news_tab_helper.cc",
-  "//brave/browser/brave_news/brave_news_tab_helper.h",
-  "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.cc",
-  "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h",
-]
+# Deps for chrome/browser/prefs:impl
+brave_browser_brave_news_prefs_deps =
+    [ "//brave/components/brave_news/common/buildflags" ]
 
-brave_browser_brave_news_deps += [
-  "//base",
-  "//brave/components/brave_news/browser",
-  "//brave/components/brave_news/common",
-  "//brave/components/brave_shields/content/browser",
-  "//chrome/browser/profiles:profile",
-  "//components/keyed_service/content",
-  "//content/public/browser",
-]
+if (enable_brave_news) {
+  brave_browser_brave_news_prefs_deps += [
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+  ]
+
+  if (is_android) {
+    brave_browser_brave_news_sources += [ "//brave/browser/brave_news/android/brave_news_controller_factory_android.cc" ]
+  }
+  brave_browser_brave_news_sources += [
+    "//brave/browser/brave_news/brave_news_controller_factory.cc",
+    "//brave/browser/brave_news/brave_news_controller_factory.h",
+    "//brave/browser/brave_news/brave_news_tab_helper.cc",
+    "//brave/browser/brave_news/brave_news_tab_helper.h",
+    "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.cc",
+    "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h",
+  ]
+
+  brave_browser_brave_news_deps += [
+    "//base",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_shields/content/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+}

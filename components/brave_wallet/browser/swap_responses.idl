@@ -375,4 +375,155 @@ namespace swap_responses {
     DOMString statusCode;
     DOMString type;
   };
+
+  // Gate3 swap response types
+
+  enum Gate3Provider {
+    AUTO,
+    NEAR_INTENTS,
+    ZERO_EX,
+    JUPITER,
+    LIFI
+  };
+
+  dictionary Gate3ChainSpec {
+    DOMString coin;
+    DOMString chainId;
+  };
+
+  dictionary Gate3SwapEvmTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString from;
+    DOMString to;
+    DOMString value;
+    DOMString data;
+
+    any gasLimit;
+    any gasPrice;
+  };
+
+  dictionary Gate3SwapSolanaTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString from;
+    DOMString to;
+    DOMString lamports;
+
+    any splTokenMint;
+    any splTokenAmount;
+    any decimals;
+
+    any versionedTransaction;
+
+    any computeUnitLimit;
+    any computeUnitPrice;
+  };
+
+  dictionary Gate3SwapBitcoinTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString to;
+    DOMString value;
+    DOMString refundTo;
+  };
+
+  dictionary Gate3SwapCardanoTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString to;
+    DOMString value;
+    DOMString refundTo;
+  };
+
+  dictionary Gate3SwapZCashTransactionParams {
+    Gate3ChainSpec chain;
+    DOMString to;
+    DOMString value;
+    DOMString refundTo;
+  };
+
+  dictionary Gate3SwapTool {
+    DOMString name;
+    any logo;
+  };
+
+  dictionary Gate3SwapStepToken {
+    DOMString coin;
+    DOMString chainId;
+    any contractAddress;
+    DOMString symbol;
+    DOMString decimals;
+    any logo;
+  };
+
+  dictionary Gate3SwapRouteStep {
+    Gate3SwapStepToken sourceToken;
+    DOMString sourceAmount;
+
+    Gate3SwapStepToken destinationToken;
+    DOMString destinationAmount;
+
+    Gate3SwapTool tool;
+  };
+
+  dictionary Gate3SwapNetworkFee {
+    DOMString amount;
+    DOMString decimals;
+    DOMString symbol;
+  };
+
+  dictionary Gate3SwapRoute {
+    DOMString id;
+    Gate3Provider provider;
+
+    Gate3SwapRouteStep[] steps;
+
+    DOMString sourceAmount;
+    DOMString destinationAmount;
+    DOMString destinationAmountMin;
+
+    any estimatedTime;
+    any priceImpact;
+
+    any networkFee;
+    boolean gasless;
+
+    any depositAddress;
+    any depositMemo;
+    any expiresAt;
+    DOMString slippagePercentage;
+
+    // Nullable union field of the following structs:
+    //  - Gate3SwapEvmTransactionParams
+    //  - Gate3SwapSolanaTransactionParams
+    //  - Gate3SwapBitcoinTransactionParams
+    //  - Gate3SwapCardanoTransactionParams
+    //  - Gate3SwapZCashTransactionParams
+    //
+    // Schema:
+    //  {
+    //    evm: Gate3SwapEvmTransactionParams  or null
+    //    solana: Gate3SwapSolanaTransactionParams or null
+    //    bitcoin: Gate3SwapBitcoinTransactionParams or null
+    //    cardano: Gate3SwapCardanoTransactionParams or null
+    //    zcash: Gate3SwapZCashTransactionParams or null
+    //  }
+    any transactionParams;
+
+    // Provider-specific requirements
+    boolean hasPostSubmitHook;
+    boolean requiresTokenAllowance;
+    boolean requiresFirmRoute;
+  };
+
+  dictionary Gate3Quote {
+    Gate3SwapRoute[] routes;
+  };
+
+  enum Gate3ErrorKind {
+    INSUFFICIENT_LIQUIDITY,
+    UNKNOWN
+  };
+
+  dictionary Gate3Error {
+    DOMString message;
+    Gate3ErrorKind kind;
+  };
 };

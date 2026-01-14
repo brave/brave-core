@@ -25,6 +25,29 @@
 
 namespace brave_wallet {
 
+namespace {
+std::optional<std::string> ParseNullableString(const base::Value& value) {
+  if (value.is_none()) {
+    return std::nullopt;
+  }
+
+  if (value.is_string()) {
+    return value.GetString();
+  }
+
+  if (value.is_int()) {
+    return base::NumberToString(value.GetInt());
+  }
+
+  if (value.is_double()) {
+    return base::NumberToString(value.GetDouble());
+  }
+
+  return std::nullopt;
+}
+
+}  // namespace
+
 namespace zeroex {
 namespace {
 
@@ -1157,5 +1180,363 @@ mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value) {
 }
 
 }  // namespace squid
+
+namespace gate3 {
+
+namespace {
+
+std::optional<mojom::SwapProvider> ParseProvider(
+    const swap_responses::Gate3Provider& value) {
+  switch (value) {
+    case swap_responses::Gate3Provider::kAuto:
+      return mojom::SwapProvider::kAuto;
+    case swap_responses::Gate3Provider::kNearIntents:
+      return mojom::SwapProvider::kNearIntents;
+    case swap_responses::Gate3Provider::kZeroEx:
+      return mojom::SwapProvider::kZeroEx;
+    case swap_responses::Gate3Provider::kJupiter:
+      return mojom::SwapProvider::kJupiter;
+    case swap_responses::Gate3Provider::kLifi:
+      return mojom::SwapProvider::kLiFi;
+    default:
+      return std::nullopt;
+  }
+}
+
+mojom::Gate3SwapErrorKind ParseErrorKind(
+    const swap_responses::Gate3ErrorKind& value) {
+  switch (value) {
+    case swap_responses::Gate3ErrorKind::kInsufficientLiquidity:
+      return mojom::Gate3SwapErrorKind::kInsufficientLiquidity;
+    case swap_responses::Gate3ErrorKind::kUnknown:
+    case swap_responses::Gate3ErrorKind::kNone:
+      return mojom::Gate3SwapErrorKind::kUnknown;
+  }
+  NOTREACHED();
+}
+
+std::optional<mojom::CoinType> ParseCoinType(const std::string& value) {
+  const std::string upper_value = base::ToUpperASCII(value);
+  if (upper_value == "ETH") {
+    return mojom::CoinType::ETH;
+  }
+  if (upper_value == "SOL") {
+    return mojom::CoinType::SOL;
+  }
+  if (upper_value == "BTC") {
+    return mojom::CoinType::BTC;
+  }
+  if (upper_value == "FIL") {
+    return mojom::CoinType::FIL;
+  }
+  if (upper_value == "ZEC") {
+    return mojom::CoinType::ZEC;
+  }
+  if (upper_value == "ADA") {
+    return mojom::CoinType::ADA;
+  }
+  return std::nullopt;
+}
+
+mojom::ChainIdPtr ParseChainId(const swap_responses::Gate3ChainSpec& value) {
+  auto coin_type = ParseCoinType(value.coin);
+  if (!coin_type) {
+    return nullptr;
+  }
+
+  auto result = mojom::ChainId::New();
+  result->coin = *coin_type;
+  result->chain_id = value.chain_id;
+  return result;
+}
+
+mojom::Gate3SwapToolPtr ParseTool(const swap_responses::Gate3SwapTool& value) {
+  auto result = mojom::Gate3SwapTool::New();
+  result->name = value.name;
+  result->logo = ParseNullableString(value.logo).value_or("");
+  return result;
+}
+
+mojom::Gate3SwapStepTokenPtr ParseStepToken(
+    const swap_responses::Gate3SwapStepToken& value) {
+  auto result = mojom::Gate3SwapStepToken::New();
+  result->coin = value.coin;
+  result->chain_id = value.chain_id;
+  result->contract_address =
+      ParseNullableString(value.contract_address).value_or("");
+  result->symbol = value.symbol;
+  result->decimals = value.decimals;
+  result->logo = ParseNullableString(value.logo).value_or("");
+  return result;
+}
+
+mojom::Gate3SwapRouteStepPtr ParseRouteStep(
+    const swap_responses::Gate3SwapRouteStep& value) {
+  auto result = mojom::Gate3SwapRouteStep::New();
+  result->source_token = ParseStepToken(value.source_token);
+  result->source_amount = value.source_amount;
+  result->destination_token = ParseStepToken(value.destination_token);
+  result->destination_amount = value.destination_amount;
+  result->tool = ParseTool(value.tool);
+  return result;
+}
+
+mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
+    const base::Value& value) {
+  if (value.is_none()) {
+    return nullptr;
+  }
+
+  if (!value.is_dict()) {
+    return nullptr;
+  }
+
+  const auto& dict = value.GetDict();
+
+  // Check for EVM transaction params
+  if (const auto* evm_value = dict.Find("evm");
+      evm_value && !evm_value->is_none()) {
+    auto evm_params =
+        swap_responses::Gate3SwapEvmTransactionParams::FromValue(*evm_value);
+    if (!evm_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(evm_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto evm_result = mojom::Gate3SwapEvmTransactionParams::New();
+    evm_result->chain = std::move(chain);
+    evm_result->from = evm_params->from;
+    evm_result->to = evm_params->to;
+    evm_result->value = evm_params->value;
+    evm_result->data = evm_params->data;
+    evm_result->gas_limit = ParseNullableString(evm_params->gas_limit);
+    evm_result->gas_price = ParseNullableString(evm_params->gas_price);
+    return mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
+        std::move(evm_result));
+  }
+
+  // Check for Solana transaction params
+  if (const auto* solana_value = dict.Find("solana");
+      solana_value && !solana_value->is_none()) {
+    auto solana_params =
+        swap_responses::Gate3SwapSolanaTransactionParams::FromValue(
+            *solana_value);
+    if (!solana_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(solana_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto solana_result = mojom::Gate3SwapSolanaTransactionParams::New();
+    solana_result->chain = std::move(chain);
+    solana_result->from = solana_params->from;
+    solana_result->to = solana_params->to;
+    solana_result->lamports = solana_params->lamports;
+
+    solana_result->spl_token_mint =
+        ParseNullableString(solana_params->spl_token_mint);
+    solana_result->spl_token_amount =
+        ParseNullableString(solana_params->spl_token_amount);
+    solana_result->decimals = ParseNullableString(solana_params->decimals);
+
+    solana_result->versioned_transaction =
+        ParseNullableString(solana_params->versioned_transaction);
+
+    solana_result->compute_unit_limit =
+        ParseNullableString(solana_params->compute_unit_limit);
+    solana_result->compute_unit_price =
+        ParseNullableString(solana_params->compute_unit_price);
+
+    return mojom::Gate3SwapTransactionParamsUnion::NewSolanaTransactionParams(
+        std::move(solana_result));
+  }
+
+  // Check for Bitcoin transaction params
+  if (const auto* btc_value = dict.Find("bitcoin");
+      btc_value && !btc_value->is_none()) {
+    auto btc_params =
+        swap_responses::Gate3SwapBitcoinTransactionParams::FromValue(
+            *btc_value);
+    if (!btc_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(btc_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto btc_result = mojom::Gate3SwapBitcoinTransactionParams::New();
+    btc_result->chain = std::move(chain);
+    btc_result->to = btc_params->to;
+    btc_result->value = btc_params->value;
+    btc_result->refund_to = btc_params->refund_to;
+    return mojom::Gate3SwapTransactionParamsUnion::NewBitcoinTransactionParams(
+        std::move(btc_result));
+  }
+
+  // Check for Cardano transaction params
+  if (const auto* cardano_value = dict.Find("cardano");
+      cardano_value && !cardano_value->is_none()) {
+    auto cardano_params =
+        swap_responses::Gate3SwapCardanoTransactionParams::FromValue(
+            *cardano_value);
+    if (!cardano_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(cardano_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto cardano_result = mojom::Gate3SwapCardanoTransactionParams::New();
+    cardano_result->chain = std::move(chain);
+    cardano_result->to = cardano_params->to;
+    cardano_result->value = cardano_params->value;
+    cardano_result->refund_to = cardano_params->refund_to;
+    return mojom::Gate3SwapTransactionParamsUnion::NewCardanoTransactionParams(
+        std::move(cardano_result));
+  }
+
+  // Check for ZCash transaction params
+  if (const auto* zcash_value = dict.Find("zcash");
+      zcash_value && !zcash_value->is_none()) {
+    auto zcash_params =
+        swap_responses::Gate3SwapZCashTransactionParams::FromValue(
+            *zcash_value);
+    if (!zcash_params) {
+      return nullptr;
+    }
+    auto chain = ParseChainId(zcash_params->chain);
+    if (!chain) {
+      return nullptr;
+    }
+    auto zcash_result = mojom::Gate3SwapZCashTransactionParams::New();
+    zcash_result->chain = std::move(chain);
+    zcash_result->to = zcash_params->to;
+    zcash_result->value = zcash_params->value;
+    zcash_result->refund_to = zcash_params->refund_to;
+    return mojom::Gate3SwapTransactionParamsUnion::NewZcashTransactionParams(
+        std::move(zcash_result));
+  }
+
+  return nullptr;
+}
+
+mojom::Gate3SwapNetworkFeePtr ParseNetworkFee(
+    const swap_responses::Gate3SwapNetworkFee& value) {
+  auto result = mojom::Gate3SwapNetworkFee::New();
+  result->amount = value.amount;
+
+  // Convert string decimals to int32
+  int32_t decimals = 0;
+  if (base::StringToInt(value.decimals, &decimals)) {
+    result->decimals = decimals;
+  } else {
+    return nullptr;
+  }
+
+  result->symbol = value.symbol;
+  return result;
+}
+
+mojom::Gate3SwapRoutePtr ParseRoute(
+    const swap_responses::Gate3SwapRoute& value) {
+  auto provider = ParseProvider(value.provider);
+  if (!provider) {
+    return nullptr;
+  }
+
+  auto result = mojom::Gate3SwapRoute::New();
+  result->id = value.id;
+  result->provider = *provider;
+
+  for (const auto& step_value : value.steps) {
+    auto step = ParseRouteStep(step_value);
+    if (!step) {
+      return nullptr;
+    }
+    result->steps.push_back(std::move(step));
+  }
+
+  result->source_amount = value.source_amount;
+  result->destination_amount = value.destination_amount;
+  result->destination_amount_min = value.destination_amount_min;
+  result->estimated_time = ParseNullableString(value.estimated_time);
+  result->price_impact = ParseNullableString(value.price_impact);
+
+  if (!value.network_fee.is_none()) {
+    auto network_fee_value =
+        swap_responses::Gate3SwapNetworkFee::FromValue(value.network_fee);
+    if (network_fee_value) {
+      result->network_fee = ParseNetworkFee(*network_fee_value);
+    } else {
+      // Log if parsing failed but network_fee was present
+      LOG(ERROR) << "Failed to parse Gate3SwapNetworkFee from value: "
+                 << value.network_fee;
+    }
+  }
+
+  result->gasless = value.gasless;
+  result->deposit_address = ParseNullableString(value.deposit_address);
+  result->deposit_memo = ParseNullableString(value.deposit_memo);
+  result->expires_at = ParseNullableString(value.expires_at);
+  result->slippage_percentage = value.slippage_percentage;
+
+  if (!value.transaction_params.is_none()) {
+    auto transaction_params = ParseTransactionParams(value.transaction_params);
+
+    if (!transaction_params) {
+      return nullptr;
+    }
+
+    result->transaction_params = std::move(transaction_params);
+  }
+
+  result->has_post_submit_hook = value.has_post_submit_hook;
+  result->requires_token_allowance = value.requires_token_allowance;
+  result->requires_firm_route = value.requires_firm_route;
+
+  return result;
+}
+
+}  // namespace
+
+mojom::Gate3SwapQuotePtr ParseQuoteResponse(const base::Value& json_value) {
+  auto value = swap_responses::Gate3Quote::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  if (value->routes.empty()) {
+    return nullptr;
+  }
+
+  auto result = mojom::Gate3SwapQuote::New();
+
+  for (const auto& route_value : value->routes) {
+    auto route = ParseRoute(route_value);
+    if (!route) {
+      return nullptr;
+    }
+    result->routes.push_back(std::move(route));
+  }
+
+  return result;
+}
+
+mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value) {
+  auto value = swap_responses::Gate3Error::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::Gate3SwapError::New();
+  result->message = value->message;
+  result->kind = ParseErrorKind(value->kind);
+  return result;
+}
+
+}  // namespace gate3
 
 }  // namespace brave_wallet

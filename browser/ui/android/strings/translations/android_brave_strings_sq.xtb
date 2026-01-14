@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Kopjo lidhjen e pastër</translation>
 <translation id="721490496276866468">Importo fjalëkalimet</translation>
 <translation id="8178175542325151321">Zgjidh një skedar .csv që përmban fjalëkalimet e tua për t’i importuar në menaxherin e fjalëkalimeve të Brave.</translation>
-<translation id="1177863135347784049">I personalizuar</translation>
 <translation id="6112331814131703370">Blloko 'Kalimi në Aplikacion' Njoftimet</translation>
 <translation id="4744921452903670666">Na trego çfarë mendon!</translation>
 <translation id="2524310205387880526">Vlerëso Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Mbush automatikisht në dritaret private</translation>
 <translation id="8685431198160039193">Informacioni i ruajtur mund të plotësohet automatikisht në dritaret private</translation>
 <translation id="6583902294974160967">Mbështetje</translation>
-<translation id="5713644099811900409">Llogari Brave</translation>
-<translation id="4472575034687746823">Fillojani</translation>
 <translation id="1799030480311994998">Veçoritë</translation>
 <translation id="1919345977826869612">Reklama</translation>
 <translation id="2839742394543397416">Analitika</translation>
@@ -384,7 +381,6 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="717952606991220586">Hëm, diç shkoi ters. Ju lutemi, riprovoni më vonë.</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
 <translation id="1116694919640316211">Rreth</translation>
-<translation id="7961015016161918242">Asnjëherë</translation>
 <translation id="1275213816424141989">Mbase më vonë</translation>
 <translation id="3624048886326677117">Bllokoni gjurmues &amp; reklama (Agresive)</translation>
 <translation id="7151914815476509258">Bllokoni gjurmues &amp; reklama (Standard)</translation>
@@ -573,7 +569,6 @@ Të Bllokuara</translation>
 <translation id="6697810017029555732">Përputhet!</translation>
 <translation id="5981303441790732480">Importoni kuletën tuaj ekzistuese</translation>
 <translation id="9111102763498581341">Shkyç</translation>
-<translation id="6657585470893396449">Fjalëkalim</translation>
 <translation id="7553242001898162573">Fut fjalëkalimin tënd</translation>
 <translation id="5619264711680220002">Zhbllokim biometrik</translation>
 <translation id="9195657745688986798">Zhblloko Portofolin</translation>
@@ -732,6 +727,7 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="9091334651803050473">Edhe pse nuk është e garantuar, minatorët ka të ngjarë ta përparësojnë transaksionin tuaj nëse paguani një tarifë më të lartë.</translation>
 <translation id="2941112035454246133">E ulët</translation>
 <translation id="7304030187361489308">E lartë</translation>
+<translation id="1177863135347784049">I personalizuar</translation>
 <translation id="4853037749278079787">Tarifa maksimale: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Tarifa bazë aktuale: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Kufiri i sasisë së gazit</translation>
@@ -1057,31 +1053,6 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="6393423486818299209">Përdorni ofruesin tuaj aktual të shërbimit ose Wikimedia DNS</translation>
 <translation id="3401384982562827787">Përdorni ofruesin tuaj aktual të shërbimit ose Cloudflare</translation>
 <translation id="8812367543786936496">Nëse ofruesi juaj aktual i shërbimit është i pasigurt, Brave përdor një ofrues DNS alternativ të sigurt</translation>
-<translation id="5680678411439841197">qytet</translation>
-<translation id="8185518433273977704">qytet</translation>
-<translation id="4528386452965343421">prefektura</translation>
-<translation id="1589122976691792535">rajon</translation>
-<translation id="2221292964468054123">shteti</translation>
-<translation id="3801482889636327368">organizatë</translation>
-<translation id="1425162721525518064">kompania</translation>
-<translation id="7568794877555549044">vend</translation>
-<translation id="5982110855572850497">etiketë</translation>
-<translation id="6848689413353508904">kontenieri</translation>
-<translation id="1496514951988037011">emri i përdoruesit</translation>
-<translation id="6155129418108337061">hyrje</translation>
-<translation id="4038523199754403233">id</translation>
-<translation id="901834265349196618">email</translation>
-<translation id="3488199663160411179">emër</translation>
-<translation id="793994607260936590">e parë</translation>
-<translation id="1782612111936779655">i fundit</translation>
-<translation id="7628132737455466188">plotë</translation>
-<translation id="8621068256433641644">telefon</translation>
-<translation id="5993210100509955931">mobile</translation>
-<translation id="598301471034819706">adresa</translation>
-<translation id="5557821203571216370">apartament</translation>
-<translation id="8051552210542030943">kod pin</translation>
-<translation id="5233247193491045452">kodi postar</translation>
-<translation id="3300502432153878901">zip</translation>
 <translation id="1381108437654541567">Aktivizo dritaret e shumëfishta</translation>
 <translation id="6167344249617630304">Hap deri në 5 dritare në të njëjtën kohë dhe zhvendos skedat nga një dritare në tjetrën</translation>
 <translation id="1063948063403254568">Janë zbuluar dritare të shumëfishta</translation>
@@ -1155,6 +1126,7 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="7808889146555843082">Fshirja e këtij fjalëkalimi nuk do ta fshijë llogarinë tënde në <ph name="SITE"/>. Ndrysho fjalëkalimin ose fshi llogarinë tënde në <ph name="SITE"/> për ta mbajtur të sigurt nga të tjerët.</translation>
 <translation id="2870560284913253234">Sajti</translation>
 <translation id="8503813439785031346">Emri i përdoruesit</translation>
+<translation id="6657585470893396449">Fjalëkalim</translation>
 <translation id="2278052315791335171">Fshirja e këtij fjalëkalimi nuk do ta fshijë llogarinë tënde në <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Shkyçe për të kopjuar fjalëkalimin</translation>
 <translation id="5515439363601853141">Shkyçe për të parë fjalëkalimin</translation>

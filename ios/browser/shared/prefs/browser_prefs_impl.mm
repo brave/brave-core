@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -104,6 +105,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
   ntp_background_images::RegisterLocalStatePrefs(registry);
   brave_shields::RegisterShieldsP3ALocalPrefs(registry);
+  brave_origin::RegisterLocalStatePrefs(registry);
 
   // brave_shields
   // Note this can be removed when we use the entire

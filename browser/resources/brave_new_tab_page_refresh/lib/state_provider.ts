@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { StateStore, createStateStore } from './state_store'
+import { StateStore, createStateStore } from '$web-common/state_store'
 
 /**
  * Creates a React context provider component for managing application state.

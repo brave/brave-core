@@ -15,7 +15,6 @@ const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
   {
     status: AuthenticationStatus.kAuthenticated,
     email: demoData.email,
-    errorMessage: undefined,
   },
 )
 

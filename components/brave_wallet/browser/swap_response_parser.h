@@ -51,6 +51,26 @@ mojom::SquidTransactionUnionPtr ParseTransactionResponse(
 
 }  // namespace squid
 
+namespace gate3 {
+
+// Parse a Gate3 quote response JSON into a structured Gate3SwapQuote object.
+// The response contains one or more swap routes, sorted by the best route
+// first. Return nullptr if parsing fails, or if the response contains no valid
+// routes.
+//
+// See swap_responses.idl and https://gate3.bsg.brave.com/docs for the
+// underlying response format.
+mojom::Gate3SwapQuotePtr ParseQuoteResponse(const base::Value& json_value);
+
+// Parse a Gate3 error response JSON into a structured Gate3SwapError object.
+// Return nullptr if parsing fails.
+//
+// See swap_responses.idl and https://gate3.bsg.brave.com/docs for the
+// underlying response format.
+mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value);
+
+}  // namespace gate3
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_

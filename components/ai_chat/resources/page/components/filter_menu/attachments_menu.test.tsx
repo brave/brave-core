@@ -120,7 +120,19 @@ describe('TabsMenu', () => {
 
   it('should be open when query starts with @', () => {
     const { container } = render(
-      <MockContext inputText={['@']}>
+      <MockContext
+        inputText={['@']}
+        tabs={[
+          {
+            contentId: 1,
+            title: 'Test 1',
+            url: {
+              url: 'https://tes1t.com',
+            },
+            id: 1,
+          },
+        ]}
+      >
         <TabsMenu />
       </MockContext>,
     )

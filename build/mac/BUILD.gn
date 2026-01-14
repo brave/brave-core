@@ -395,7 +395,7 @@ group("create_dist_mac") {
       deps += [ ":generate_eddsa_sig_for_dmg" ]
     }
 
-    if (build_delta_installer && last_chrome_installer != "") {
+    if (last_chrome_installer != "") {
       deps += [ ":build_delta_installer" ]
       if (sparkle_eddsa_private_key != "") {
         deps += [ ":generate_eddsa_sig_for_delta" ]

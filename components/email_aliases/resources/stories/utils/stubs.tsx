@@ -6,7 +6,6 @@
 import { getLocale } from '$web-common/locale'
 import {
   Alias,
-  AuthenticationStatus,
   AuthState,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
@@ -105,42 +104,5 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     } while (this.aliases.has(aliasEmail))
 
     return aliasEmail
-  }
-
-  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-  async requestAuthentication(authEmail: string): Promise<void> {
-    if (Math.random() < 1 / 3) {
-      return Promise.reject(
-        getLocale(S.SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR),
-      )
-    }
-    this.observers.forEach((observer) => {
-      observer.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticating,
-        email: authEmail,
-        errorMessage: undefined,
-      })
-    })
-    this.accountRequestId = window.setTimeout(() => {
-      this.observers.forEach((observer) => {
-        observer.onAuthStateChanged({
-          status: AuthenticationStatus.kAuthenticated,
-          email: authEmail,
-          errorMessage: undefined,
-        })
-      })
-    }, 5000)
-    return Promise.resolve()
-  }
-
-  async cancelAuthenticationOrLogout() {
-    window.clearTimeout(this.accountRequestId)
-    this.observers.forEach((observer) => {
-      observer.onAuthStateChanged({
-        status: AuthenticationStatus.kUnauthenticated,
-        email: '',
-        errorMessage: undefined,
-      })
-    })
   }
 }

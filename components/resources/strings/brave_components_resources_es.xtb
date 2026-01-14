@@ -971,6 +971,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="8459631690385393533">Almacenar activos de Cardano</translation>
 <translation id="4915057812371523845">Almacenar activos Cardano Testnet</translation>
 <translation id="5387140102951033657">Admite activos de Substrate en la cadena de retransmisión de Polkadot y parachains de Substrate</translation>
+<translation id="5601177227092533167">Admite activos de Substrate en la cadena de retransmisión de Westend y parachains de Substrate</translation>
 <translation id="8500387257977999003">Clave privada <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="232925166623833246">Importar desde una cartera en formato físico</translation>
@@ -1303,7 +1304,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="6423985584914773314">No es una dirección de FIL válida</translation>
 <translation id="5522073372365069684">Comprar con Ramp</translation>
 <translation id="6153197326949684688">Vender con <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Comprar con Sardine</translation>
 <translation id="3301984548406568819">Nuestros socios de intercambios de divisas tratan los datos financieros y los relativos a las transacciones. Brave no recopila ni tiene acceso a tales datos.</translation>
 <translation id="5795821518596541838">Socio de transacción</translation>
 <translation id="1916136859742693273">Brave Wallet utiliza Meld.io para ayudar a añadir y mostrar varios proveedores de criptomonedas para tu región. Compartiremos información con Meld.io para completar la transacción, incluida la dirección de tu cartera y el código de país. Para más información, lee las condiciones de uso de Meld.</translation>
@@ -1329,12 +1329,10 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="5973390321030037823">Comprar con Link</translation>
 <translation id="1932640759496708012">Comprar con Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link, de Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Compra criptomonedas con Visa o Mastercard.</translation>
-<translation id="3648994606506382289">La forma más fácil, rápida y económica de comprar criptomonedas mediante tarjeta y transferencia bancaria.</translation>
 <translation id="3101839349578102016">Compra al instante con tu cuenta bancaria. Con menos comisiones.</translation>
 <translation id="8280898387224328221">Pagar con tarjeta de crédito o débito o mediante cuenta bancaria</translation>
 <translation id="2218174283683424104">Compra con el nombre más fiable en criptomonedas.</translation>
@@ -1666,6 +1664,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Promedio</translation>
 <translation id="7019805045859631636">Rápido</translation>
+<translation id="1345580220012169610">Cuota estimada</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="6778140392042462129">Intercambios</translation>
 <translation id="6173494033320397682">Solo ruta directa</translation>
@@ -1719,6 +1718,9 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="6276584161122912863">Precio de gas</translation>
 <translation id="6132197290665156212">Cuota estimada de la red</translation>
 <translation id="1788636309517085411">Usar por defecto</translation>
+<translation id="3968375068626660591">Esta tarifa de gas reemplazará a la original.</translation>
+<translation id="1661088862481901887">Esto creará una nueva transacción con una nueva tarifa de gas para sobrescribir y cancelar la pendiente. Solo se puede intentar la cancelación si la transacción aún está pendiente en la red.</translation>
+<translation id="5797060124625958778">Prioridad de velocidad</translation>
 <translation id="6213230117190778270">Receive</translation>
 <translation id="6748108480210050150">De:</translation>
 <translation id="4875290286426670462"><ph name="ASSET_SYMBOL"/> ilimitados</translation>
@@ -2119,6 +2121,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="5329136173514538969">No dividir pestañas</translation>
 <translation id="7595612919377246359">Intercambiar posiciones de pestañas</translation>
 <translation id="2367972762794486313">Mostrar aplicaciones</translation>
+<translation id="3468387898712904997">Nuevo correo electrónico alternativo</translation>
 <translation id="8591883849678260674">Ver original</translation>
 <translation id="1969654232209826429">minutos de lectura</translation>
 <translation id="4101707289420716287">Desactivar lector de velocidad</translation>
@@ -2157,7 +2160,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="7297056998057521697">Por defecto, cuando le haces una pregunta a Leo sobre un sitio web o página que estás viendo, el contenido de la página que estás visitando o cualquier texto que resaltes en la página, así como tu consulta de búsqueda, se enviarán a los servidores de Brave para que Leo pueda proporcionar una respuesta. En algunos casos, Leo enviará consultas derivadas de tu entrada a al Buscador de Brave y utilizará los resultados de búsqueda para responder mejor a tu pregunta. Brave no garantiza la precisión de las respuestas, y estas pueden incluir información inexacta, engañosa o falsa. No envíes información sensible o privada a Leo, y ten cuidado con respuestas sobre salud, finanzas o seguridad. Puedes ajustar las preferencias de Leo en Configuración &gt; Leo.</translation>
 <translation id="6644545214304085600">Leo no recopila identificadores como tu dirección IP que puedan vincularse contigo. No entrenamos nuestros modelos basándonos en tus datos, incluyendo tus consultas de búsqueda o las respuestas de Leo. Ningún dato personal se almacena en nuestros servidores ni es retenido por Brave. Consulta la <ph name="LINK_BEFORE"/>Política de privacidad<ph name="LINK_AFTER"/> para más información.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
-      one {}=1 {Haz una pregunta sobre el contenido de esta página}
+      =1 {Haz una pregunta sobre el contenido de esta página}
       other {Haz una pregunta sobre el contenido de estas páginas}
     }</translation>
 <translation id="6961721183181597848">¿En qué puedo ayudarte hoy?</translation>
@@ -2167,7 +2170,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4524675003624341892">Sugerir preguntas...</translation>
 <translation id="4567071417854988869">Resumir este vídeo</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
-      one {}=1 {Resume esta página}
+      =1 {Resume esta página}
       other {Resume estas páginas}
     }</translation>
 <translation id="7921782882718083488">Resumir esta página</translation>
@@ -2185,11 +2188,23 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="7127671672828944579">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 14B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Gemma 3 12B, un modelo creado por Google DeepMind para ser de gran utilidad en multitud de situaciones. Gemma está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de DeepSeek R1, un modelo creado por DeepSeek para realizar tareas de razonamiento profundo. DeepSeek R1 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de DeepSeek V3.1, un modelo creado por DeepSeek para ser de gran utilidad en multitud de situaciones. DeepSeek V3.1 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hola, soy Leo. Soy un asistente de IA de Brave. Estoy impulsado por Claude Instant, un modelo creado por Anthropic para tareas conversacionales y de procesamiento de texto. Claude Instant es alojado por Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Haiku está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Sonnet está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Llama 4 Scout, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama 4 Scout está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Llama 4 Maverick, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama 4 Maverick está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT OSS 20B, un modelo creado por OpenAI para ser de gran utilidad en multitud de situaciones. GPT OSS 20B está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT OSS 120B, un modelo creado por OpenAI para ser de gran utilidad en multitud de situaciones. GPT OSS 120B está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Mistral Large, un modelo creado por Mistral para ser de gran utilidad en multitud de situaciones. Mistral Large está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Pixtral Large, un modelo creado por Mistral para ser de gran utilidad en multitud de situaciones. Pixtral Large está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3 235B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen 3 235B está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Deepseek V3.1, un modelo creado por Deepseek para ser de gran utilidad en multitud de situaciones. Deepseek V3.1 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3 Coder 480B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen 3 Coder 480B está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Opus, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Opus está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Modelos recomendados</translation>
 <translation id="6568044140836233369">Mostrar todos los modelos</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2314,6 +2329,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="8506027496671575183">Buscador • Visión • Herramientas</translation>
 <translation id="3213834013136637671">Buscador • Visión</translation>
 <translation id="7697693533305615127">Buscador • Pensamiento</translation>
+<translation id="7465032796278724624">Verificadamente privado con NEAR IA TEE</translation>
 <translation id="8782867266498869301">El modelo cambia dinámicamente para usar el mejor para la tarea</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
 <translation id="3754337604877048671">Presentamos Leo AI</translation>
@@ -2377,7 +2393,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="8410199626695516952">Ok, no lo recordaré</translation>
 <translation id="8419849467765474535">Error al guardar la memoria. Inténtalo de nuevo.</translation>
 <translation id="5517580030864973329">Navegación de la página web a una nueva dirección</translation>
-<translation id="8832457834975923266">Navegue por la página web hasta <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navegue por la página web hasta <ph name="URL"/></translation>
 <translation id="5095252080770652994">Progreso</translation>
 <translation id="8332385567036775056">Pasos</translation>
 <translation id="4521931942079977149">Haciendo clic en la página</translation>
@@ -2392,6 +2408,20 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4798146464408730445">No se han encontrado competencias. Cree una nueva pulsando el botón "Nueva".</translation>
 <translation id="271033894570825754">Nuevo</translation>
 <translation id="8266605059880650542">Anotar alguna información para más tarde sobre la página</translation>
+<translation id="7049849063044248805">El modo agente funciona con modelos que ofrecen compatibilidad con herramientas. Los modelos no compatibles se ocultan de esta lista.</translation>
+<translation id="3397808797783614750">Permitir que la IA navegue automáticamente por ti puede ocasionar consecuencias imprevistas y perjudiciales para tu privacidad, tus finanzas y tus comunicaciones en línea. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Advertencia de seguridad</translation>
+<translation id="6077070599873946984">Brave IA necesita tu autorización para: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Se ha detectado que la operación podría no estar alineada con tu solicitud:</translation>
+<translation id="3927932062596804919">Denegar</translation>
+<translation id="4569155249847375786">Verificado</translation>
+<translation id="3240988198391588806">Modo agente</translation>
+<translation id="538066983058750776">Acerca del perfil de Leo</translation>
+<translation id="1577570612997320961">Para proteger tus datos, este perfil aislado de Brave limita el acceso de la IA a tu perfil de navegación principal. Leo IA tiene permisos adicionales aquí para visitar e interactuar con sitios, por lo que puedes asignarle tareas y navegar juntos para aumentar tu productividad.</translation>
+<translation id="648116453147783450">Tus datos y sesiones</translation>
+<translation id="3906161204878017619">Cuando inicies sesión en un sitio web usando este perfil, Leo podrá ver la información de ese sitio si está abierto, bien sea porque lo visita por sí mismo o porque tú se lo solicitas.</translation>
+<translation id="5583803492921648196">Volver al anterior</translation>
+<translation id="8068929004144221259">Puedes cambiar de nuevo al perfil habitual en cualquier momento desde el menú principal o el avatar de Leo en la barra de herramientas. El modo agente se abrirá siempre en este perfil.</translation>
 <translation id="3486480638399578250">Mantén tu dirección de correo electrónico privada</translation>
 <translation id="7765422154906712751">Crea direcciones únicas y aleatorias que reenvían los mensajes al correo electrónico de tu cuenta de Brave y se pueden eliminar en cualquier momento. Evita que se divulgue tu dirección de correo real o sea utilizada por anunciantes.</translation>
 <translation id="5222676887888702881">Cerrar sesión</translation>
@@ -2514,6 +2544,12 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3570081523466826008">Mejorar conexiones a HTTPS</translation>
 <translation id="131231380815754440">Habilitar HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
+<translation id="5465091511225410553">(forzado)</translation>
+<translation id="8646614940337543907">(forzado por extensión)</translation>
+<translation id="3559821445144429594">(forzado por política)</translation>
+<translation id="550374350047782149">(forzado por la lista de permitidos)</translation>
+<translation id="68858161161918073">(forzado por el supervisor)</translation>
+<translation id="5735057546627037489">(forzado por PWA)</translation>
 <translation id="3246600097575692802">Habilitar los scripts bloqueados</translation>
 <translation id="3603525299146223354">Rastreadores y anuncios</translation>
 <translation id="4448697385961650078">Bloquear controladores y anuncios</translation>
@@ -2548,6 +2584,7 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
       other {Escudos de Brave ha bloqueado {BLOCKED_COUNT} rastreadores en <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Haz clic en el icono de Brave para ver los escudos de Brave.</translation>
+<translation id="542789539047208469">Información del sitio</translation>
 <translation id="6294662480095808915">Privacidad por defecto.</translation>
 <translation id="4366423156486478559">Benefíciate de la protección de Brave cada vez que hagas clic en algún enlace. Para navegar de forma privada, lo único que tienes que hacer es configurar Brave como navegador predeterminado.</translation>
 <translation id="3830912418080848377">Importar configuración</translation>
@@ -2684,5 +2721,6 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
     pestaña ya existente.</translation>
 <translation id="451189393813405346">Preguntar a Leo</translation>
 <translation id="1602850501393095406">Pulsar la tecla ↑ para destacar</translation>
+<translation id="8367705492654390392">Pregunta lo que quieras</translation>
 <translation id="8525248723479742219">Reproducir más tarde</translation>
 </translationbundle>

@@ -27,14 +27,17 @@
 #include "brave/components/brave_account/prefs.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_account {
 
 struct AuthValidateTestCase;
 struct CancelRegistrationTestCase;
+struct GetServiceTokenTestCase;
 struct LoginFinalizeTestCase;
 struct LoginInitializeTestCase;
 struct LogOutTestCase;
@@ -69,7 +72,11 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
       if (test_case.endpoint_response) {
         const auto& endpoint_response_status_code =
             test_case.endpoint_response->status_code;
-        CHECK(endpoint_response_status_code);
+        auto head = endpoint_response_status_code
+                        ? network::CreateURLResponseHead(
+                              static_cast<net::HttpStatusCode>(
+                                  *endpoint_response_status_code))
+                        : nullptr;
 
         const auto& endpoint_response_body = test_case.endpoint_response->body;
         base::Value value(endpoint_response_body
@@ -81,21 +88,19 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
         CHECK(body);
 
         test_url_loader_factory_.AddResponse(
-            TestCase::Endpoint::URL().spec(), *body,
-            static_cast<net::HttpStatusCode>(*endpoint_response_status_code));
+            TestCase::Endpoint::URL(), std::move(head), *body,
+            network::URLLoaderCompletionStatus(
+                test_case.endpoint_response->net_error));
       }
     }
 
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
-                  std::is_same_v<TestCase, LoginInitializeTestCase>) {
+                  std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
+                  std::is_same_v<TestCase, LoginInitializeTestCase> ||
+                  std::is_same_v<TestCase, LoginFinalizeTestCase> ||
+                  std::is_same_v<TestCase, GetServiceTokenTestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
-      TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
-                    future.GetCallback());
-      EXPECT_EQ(future.Take(), test_case.mojo_expected);
-    } else if constexpr (std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
-                         std::is_same_v<TestCase, LoginFinalizeTestCase>) {
-      base::test::TestFuture<typename TestCase::MojoExpected> future;
-      TestCase::Run(test_case, pref_service_,
+      TestCase::Run(test_case, pref_service_, task_environment_,
                     CHECK_DEREF(brave_account_service_.get()),
                     future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);

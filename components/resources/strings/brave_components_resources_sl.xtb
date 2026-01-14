@@ -973,6 +973,7 @@
 <translation id="8459631690385393533">Shranjevanje sredstev Cardano</translation>
 <translation id="4915057812371523845">Shranjevanje sredstev Cardano Testnet</translation>
 <translation id="5387140102951033657">Podpira Substrate sredstva na verigi relacijskega omrežja Polkadot in Substrate podverigah</translation>
+<translation id="5601177227092533167">Podpira Substrate sredstva na verigi relacijskega omrežja Westend in Substrate podverigah</translation>
 <translation id="8500387257977999003">Zasebni ključ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Uvozi</translation>
 <translation id="232925166623833246">Uvoz iz strojne denarnice</translation>
@@ -1307,7 +1308,6 @@
 <translation id="6423985584914773314">Ni veljaven naslov FIL</translation>
 <translation id="5522073372365069684">Kupite z Ramp</translation>
 <translation id="6153197326949684688">Prodaja z <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Kupite s Sardino</translation>
 <translation id="3301984548406568819">Finančne in transakcijske podatke obdelujejo naši zunanji povezani partnerji. Brave ne zbira in nima dostopa do takih podatkov.</translation>
 <translation id="5795821518596541838">Partner za transakcije</translation>
 <translation id="1916136859742693273">Brave Wallet uporablja Meld.io, ki pomaga združevati in prikazovati različne ponudnike kriptovalut za vašo regijo. Z Meld.io bomo delili informacije za dokončanje transakcije, vključno z naslovom vaše denarnice in kodo države. Za več informacij preberite pogoje uporabe družbe Meld.</translation>
@@ -1333,12 +1333,10 @@
 <translation id="5973390321030037823">Nakup s povezavo</translation>
 <translation id="1932640759496708012">Kupujte s Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Povezava s strani Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Kupite kriptovaluto s kartico Visa ali Mastercard.</translation>
-<translation id="3648994606506382289">Najenostavnejši, najhitrejši in najcenejši način nakupa kriptovalut s kartico in bančnimi nakazili.</translation>
 <translation id="3101839349578102016">Takojšnji nakup z vašim bančnim računom. Nižje pristojbine.</translation>
 <translation id="8280898387224328221">Plačajte s kreditnim, debetnim, bančnim računom</translation>
 <translation id="2218174283683424104">Kupujte z najbolj zaupanja vrednim imenom v kripto.</translation>
@@ -1672,6 +1670,7 @@
 <translation id="8044899503464538266">Počasen</translation>
 <translation id="3569512916300900704">Povprečje</translation>
 <translation id="7019805045859631636">Hitro</translation>
+<translation id="1345580220012169610">Ocena cene</translation>
 <translation id="632241521608275119">Toleranca padca</translation>
 <translation id="6778140392042462129">Menjave</translation>
 <translation id="6173494033320397682">Samo neposredna pot</translation>
@@ -1725,6 +1724,9 @@
 <translation id="6276584161122912863">Cena bencina</translation>
 <translation id="6132197290665156212">Ocena cene omrežja</translation>
 <translation id="1788636309517085411">Uporabi privzeto</translation>
+<translation id="3968375068626660591">Ta pristojbina za plin bo nadomestila prvotno.</translation>
+<translation id="1661088862481901887">To bo ustvarilo novo transakcijo z novo pristojbino za plin, da se prepiše in prekliče čakajoča. Preklic je mogoče poskusiti le, če je transakcija še vedno v čakanju v omrežju.</translation>
+<translation id="5797060124625958778">Prednost hitrosti</translation>
 <translation id="6213230117190778270">Prejmi</translation>
 <translation id="6748108480210050150">Od</translation>
 <translation id="4875290286426670462">Neomejeno <ph name="ASSET_SYMBOL"/></translation>
@@ -2128,6 +2130,7 @@
 <translation id="5329136173514538969">Nerazdeljeni zavihki</translation>
 <translation id="7595612919377246359">Položaji zavihka zamenjav</translation>
 <translation id="2367972762794486313">Pokaži aplikacije</translation>
+<translation id="3468387898712904997">Nov e-poštni vzdevek</translation>
 <translation id="8591883849678260674">Poglej original</translation>
 <translation id="1969654232209826429">min. branje</translation>
 <translation id="4101707289420716287">Izklopi Speedreader</translation>
@@ -2194,11 +2197,23 @@
 <translation id="7127671672828944579">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 14B, model, ki ga je družba Alibaba Cloud ustvarila za zmogljivost in uporabnost za številne primere uporabe. Qwen gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Živjo, jaz sem Leo. Sem popolnoma gostujoči pomočnik z umetno inteligenco Brave. Poganja me Gemma 3 12B, model, ki ga je ustvaril Google DeepMind, da bi bil zmogljiv in uporaben za številne primere uporabe. Gemma gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več informacij<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me DeepSeek R1, model, ki ga je ustvaril DeepSeek za izvajanje zahtevnih nalog razumevanja. DeepSeek R1 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me DeepSeek V3.1, model, ki ga je ustvaril DeepSeek za zmogljivost in uporabnost pri številnih primerih uporabe. DeepSeek V3.1 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Živjo, sem Leo. Sem AI pomočnik podjetja Brave. Poganja me Claude Instant, model podjetja Anthropic, namenjen pogovoru in obdelavi besedil. Claude Instant gostuje neposredno pri Brave na naši varni infrastrukturi.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Haiku – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Haiku gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Sonnet – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Sonnet gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Llama 4 Scout, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost za številne primere uporabe. Llama 4 Scout gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Llama 4 Maverick, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost za številne primere uporabe. Llama 4 Maverick gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT OSS 20B, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT OSS 20B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT OSS 120B, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT OSS 120B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Mistral Large, model, ki ga je ustvaril Mistral za zmogljivost in uporabnost za številne primere uporabe. Mistral Large gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Pixtral Large, model, ki ga je ustvaril Mistral za zmogljivost in uporabnost za številne primere uporabe. Pixtral Large gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 3 235B, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3 235B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Deepseek V3.1, model, ki ga je ustvaril Deepseek za zmogljivost in uporabnost za številne primere uporabe. Deepseek V3.1 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 3 Coder 480B, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3 Coder 480B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Opus – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Opus gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokalno</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Priporočeni modeli</translation>
 <translation id="6568044140836233369">Prikaži vse modele</translation>
 <translation id="6187065185557150870">Klepet</translation>
@@ -2323,6 +2338,7 @@
 <translation id="8506027496671575183">Iskanje • Vizija • Orodja</translation>
 <translation id="3213834013136637671">Iskanje • Vizija</translation>
 <translation id="7697693533305615127">Iskanje • Razmišljanje</translation>
+<translation id="7465032796278724624">Z jamstvom zasebnosti z NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamično spreminja, da uporabi najboljšega za določen opravek</translation>
 <translation id="3965507912994218570">Nastavitve Lea</translation>
 <translation id="3754337604877048671">Predstavljamo Leo AI</translation>
@@ -2386,7 +2402,7 @@
 <translation id="8410199626695516952">Ok, tega si ne bom zapomnil</translation>
 <translation id="8419849467765474535">Ni bilo mogoče shraniti pomnilnika. Poskusite znova.</translation>
 <translation id="5517580030864973329">Navigacija po spletni strani na nov naslov</translation>
-<translation id="8832457834975923266">Navigacija na spletno stran <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navigacija na spletno stran <ph name="URL"/></translation>
 <translation id="5095252080770652994">Napredek</translation>
 <translation id="8332385567036775056">Koraki</translation>
 <translation id="4521931942079977149">Klik na stran</translation>
@@ -2401,6 +2417,20 @@
 <translation id="4798146464408730445">Znanja niso bila najdena. Ustvarite novo s klikom na gumb "Novo".</translation>
 <translation id="271033894570825754">Novo</translation>
 <translation id="8266605059880650542">Zapisovanje nekaterih informacij o strani za poznejšo uporabo</translation>
+<translation id="7049849063044248805">Način agenta deluje z modeli, ki podpirajo orodja. Nezdružljivi modeli so skriti s seznama.</translation>
+<translation id="3397808797783614750">Omogočanje samodejnega brskanja z umetno inteligenco lahko povzroči škodljive in neželene posledice za vašo zasebnost, finance in spletno komunikacijo. <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Varnostno opozorilo</translation>
+<translation id="6077070599873946984">Brave AI potrebuje vaše dovoljenje za: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Dejanje je bilo zaznano kot morebiti neusklajeno z vašo zahtevo:</translation>
+<translation id="3927932062596804919">Zavrni</translation>
+<translation id="4569155249847375786">Preverjeno</translation>
+<translation id="3240988198391588806">Način agenta</translation>
+<translation id="538066983058750776">O profilu Leo</translation>
+<translation id="1577570612997320961">Za zaščito vaših podatkov, ta izoliran Brave profil omejuje dostop umetne inteligence do vašega glavnega brskalniškega profila. Leo AI ima tukaj dodatna dovoljenja za obiskovanje in interakcijo s spletnimi mesti, zato lahko preizkusite dodeljevanje nalog in skupno brskanje za večjo produktivnost.</translation>
+<translation id="648116453147783450">Vaši podatki in seje</translation>
+<translation id="3906161204878017619">Ko se s tem profilom prijavite v spletno mesto, lahko Leo vidi informacije na tem spletnem mestu, če je odprto – bodisi ko obišče spletno mesto sam ali ko ga prosite, da tam opravi neko nalogo.</translation>
+<translation id="5583803492921648196">Preklop nazaj</translation>
+<translation id="8068929004144221259">Kadarkoli lahko iz glavnega menija ali z avatarjem Leo na orodni vrstici preklopite nazaj na običajni profil. Način agenta se bo vedno odprl v tem profilu.</translation>
 <translation id="3486480638399578250">Ohranite svoj osebni e-poštni naslov zaseben</translation>
 <translation id="7765422154906712751">Ustvarite unikatne, naključne naslove, ki so presumerjeni na vaš e-poštni naslov Brave in jih lahko kadarkoli izbrišete. Tako vaš dejanski e-poštni naslov ne bo razkrit ali uporabljen s strani oglaševalcev.</translation>
 <translation id="5222676887888702881">Odjava</translation>
@@ -2523,6 +2553,12 @@
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="131231380815754440">Omogoči HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
+<translation id="5465091511225410553">(vsiljeno)</translation>
+<translation id="8646614940337543907">(vsiljeno z razširitvijo)</translation>
+<translation id="3559821445144429594">(vsiljeno s pravilnikom)</translation>
+<translation id="550374350047782149">(vsiljeno s seznamom dovoljenj)</translation>
+<translation id="68858161161918073">(vsiljeno z nadzornikom)</translation>
+<translation id="5735057546627037489">(vsiljeno s strani PWA)</translation>
 <translation id="3246600097575692802">Omogoči blokirane skripte</translation>
 <translation id="3603525299146223354">Sledilniki&amp; oglasi</translation>
 <translation id="4448697385961650078">Blokiraj sledilnike in oglase</translation>
@@ -2557,6 +2593,7 @@
 other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL"/>}
  }</translation>
 <translation id="2540598191934725677">Kliknite ikono Brave, da si ogledate zaščito Brave Shields.</translation>
+<translation id="542789539047208469">Podatki o spletnem mestu</translation>
 <translation id="6294662480095808915">Zasebnost. Privzeto.</translation>
 <translation id="4366423156486478559">Zagotovite si zaščito Brave za vsako povezavo, na katero kliknete. Preprosto nastavite brskalnik Brave kot privzet in brskajte. Zasebno.</translation>
 <translation id="3830912418080848377">Uvozite nastavitve</translation>
@@ -2687,5 +2724,6 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
      obstoječi zavihek</translation>
 <translation id="451189393813405346">Vprašaj Lea</translation>
 <translation id="1602850501393095406">Pritisnite ↑, da označite</translation>
+<translation id="8367705492654390392">Vprašaj karkoli</translation>
 <translation id="8525248723479742219">Predvajaj kasneje</translation>
 </translationbundle>

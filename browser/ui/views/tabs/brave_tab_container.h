@@ -18,12 +18,14 @@
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
 #include "ui/views/controls/scroll_view.h"
+#include "ui/views/controls/scrollbar/scroll_bar.h"
 
 namespace views {
 class ScrollView;
 }  // namespace views
 
-class BraveTabContainer : public TabContainerImpl {
+class BraveTabContainer : public TabContainerImpl,
+                          public views::ScrollBarController {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
   BraveTabContainer(TabContainerController& controller,
@@ -85,10 +87,28 @@ class BraveTabContainer : public TabContainerImpl {
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
 
+  // views::ScrollBarController:
+  void ScrollToPosition(views::ScrollBar* source, int position) override;
+  int GetScrollIncrement(views::ScrollBar* source,
+                         bool is_page,
+                         bool is_positive) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            BraveTabContainerSeparator);
-
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           GetMaxScrollOffsetWithGroups);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           LayoutAfterFirstTabCreation);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarBoundsWithPinnedTabs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarThumbState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarDisabledWhenHorizontal);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarVisibilityWithManyTabs);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
@@ -163,6 +183,13 @@ class BraveTabContainer : public TabContainerImpl {
   // Returns the ideal bounds for the given slot view (tab or group header).
   gfx::Rect GetIdealBoundsOf(TabSlotView* slot_view) const;
 
+  // Returns the total height of unpinned tabs including margins.
+  int GetUnpinnedTabsTotalHeight() const;
+
+  // Returns the viewport height available for unpinned tabs.
+  // This excludes the pinned tabs area if any pinned tabs exist.
+  int GetUnpinnedTabsViewportHeight() const;
+
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
@@ -179,6 +206,12 @@ class BraveTabContainer : public TabContainerImpl {
 
   // Show or hide scrollbar based on the preference
   void UpdateScrollBarVisibility();
+
+  // Updates the bounds of the scroll bar.
+  void UpdateScrollBarBounds();
+
+  // Update the scroll bar's content size, viewport size and offset.
+  void UpdateScrollBarState();
 
   // Handles vertical scroll input for unpinned tabs. Returns true if the scroll
   // was handled.
@@ -198,6 +231,8 @@ class BraveTabContainer : public TabContainerImpl {
   const raw_ref<TabContainerController, DanglingUntriaged> controller_;
 
   std::unique_ptr<DropArrow> drop_arrow_;
+
+  raw_ptr<views::ScrollBar> scroll_bar_;
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;

@@ -24,6 +24,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 namespace misc_metrics {
 
 class PageMetricsUnitTest : public testing::Test {
@@ -69,6 +73,13 @@ class PageMetricsUnitTest : public testing::Test {
 };
 
 TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   histogram_tester_.ExpectTotalCount(kDomainsLoadedHistogramName, 0);
 
   task_environment_.FastForwardBy(base::Seconds(30));
@@ -109,6 +120,13 @@ TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
 }
 
 TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   // Set up rewards status
   profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
@@ -209,6 +227,13 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeImmediate) {
 }
 
 TEST_F(PageMetricsUnitTest, FirstPageLoadTimeLater) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
 
@@ -226,6 +251,13 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeLater) {
 }
 
 TEST_F(PageMetricsUnitTest, FirstPageLoadTimeTooLate) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
 

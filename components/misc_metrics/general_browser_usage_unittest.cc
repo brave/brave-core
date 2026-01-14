@@ -14,6 +14,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 namespace misc_metrics {
 
 class GeneralBrowserUsageUnitTest : public testing::Test {
@@ -57,6 +61,13 @@ class GeneralBrowserUsageUnitTest : public testing::Test {
 };
 
 TEST_F(GeneralBrowserUsageUnitTest, WeeklyUsage) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   SetUpUsage({}, true, base::Time::Now());
 
   histogram_tester_->ExpectUniqueSample(kWeeklyUseHistogramName, 0, 1);
@@ -93,6 +104,13 @@ TEST_F(GeneralBrowserUsageUnitTest, ProfileCount) {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 TEST_F(GeneralBrowserUsageUnitTest, InstallTimeVariantSwitch) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   base::Time install_time = base::Time::Now();
   SetUpUsage("B", true, install_time);
 
@@ -120,6 +138,13 @@ TEST_F(GeneralBrowserUsageUnitTest, InstallTimeVariantSwitch) {
 }
 
 TEST_F(GeneralBrowserUsageUnitTest, InstallTimeBasic) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   base::Time install_time = base::Time::Now();
   SetUpUsage("A", true, install_time);
 

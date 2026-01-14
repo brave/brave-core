@@ -173,6 +173,7 @@ class BraveBrowserView : public BrowserView,
   friend class VerticalTabStripDragAndDropBrowserTest;
   friend class SplitViewBrowserTest;
   friend class BraveBrowserViewTest;
+  friend class VerticalTabStripBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
@@ -221,7 +222,6 @@ class BraveBrowserView : public BrowserView,
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
   void ReparentTopContainerForEndOfImmersive() override;
-  void FullscreenStateChanged() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   bool IsBraveWebViewRoundedCornersEnabled();

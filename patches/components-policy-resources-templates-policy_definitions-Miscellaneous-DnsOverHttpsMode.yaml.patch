@@ -1,0 +1,10 @@
+diff --git a/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml b/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
+index 6a8fe80e2d410fc87277a39f66b1d42d6643bcdf..cd47d817b9ad23449d4e84e2b20d2a0dd97490b5 100644
+--- a/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
++++ b/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
+@@ -1,5 +1,4 @@
+ caption: Controls the mode of DNS-over-HTTPS
+-default_for_enterprise_users: 'off'
+ desc: |-
+   Controls the mode of the DNS-over-HTTPS resolver. Please note that this
+   policy will only set the default mode for each query. The mode may be

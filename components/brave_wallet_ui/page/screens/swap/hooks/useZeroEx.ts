@@ -96,6 +96,7 @@ export function useZeroEx(params: SwapParams) {
               jupiterTransactionParams: undefined,
               lifiTransactionParams: undefined,
               squidTransactionParams: undefined,
+              gate3TransactionParams: undefined,
             },
             'zeroExTransactionParams',
           ),

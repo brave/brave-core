@@ -548,6 +548,7 @@ enum SwapProvider {
   kZeroEx,
   kJupiter,
   kSquid,
+  kNearIntents,
 };
 
 struct SwapQuoteParams {
@@ -567,7 +568,7 @@ struct SwapQuoteParams {
   string slippage_percentage;
 
   // This is primarily used for LiFi swaps. For every other case, this should
-  // be set to kRecommended.
+  // be set to kCheapest.
   RoutePriority route_priority;
 
   SwapProvider provider;
@@ -578,6 +579,7 @@ union SwapTransactionParamsUnion {
   SwapQuoteParams zero_ex_transaction_params;
   LiFiStep lifi_transaction_params;
   SwapQuoteParams squid_transaction_params;
+  SwapQuoteParams gate3_transaction_params;
 };
 
 union SwapQuoteUnion {
@@ -585,6 +587,7 @@ union SwapQuoteUnion {
   ZeroExQuote zero_ex_quote;
   LiFiQuote lifi_quote;
   SquidQuote squid_quote;
+  Gate3SwapQuote gate3_quote;
 };
 
 union SwapTransactionUnion {
@@ -592,6 +595,149 @@ union SwapTransactionUnion {
   ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
   SquidTransactionUnion squid_transaction;
+  Gate3SwapRoute gate3_route;
+};
+
+enum Gate3SwapErrorKind {
+  kInsufficientLiquidity,
+  kUnknown,
+};
+
+struct Gate3SwapError {
+  string message;
+  Gate3SwapErrorKind kind;
+};
+
+struct Gate3SwapTool {
+  string name;
+  string logo;
+};
+
+struct Gate3SwapStepToken {
+  string coin;
+  string chain_id;
+  string contract_address;
+  string symbol;
+  string decimals;
+  string logo;
+};
+
+struct Gate3SwapRouteStep {
+  Gate3SwapStepToken source_token;
+  string source_amount;
+  Gate3SwapStepToken destination_token;
+  string destination_amount;
+  Gate3SwapTool tool;
+};
+
+struct Gate3SwapEvmTransactionParams {
+  ChainId chain;
+  string from;
+  string to;
+  string value;
+  string data;
+  string? gas_limit;
+  string? gas_price;
+};
+
+struct Gate3SwapSolanaTransactionParams {
+  ChainId chain;
+  string from;
+  string to;
+  string lamports;
+  string? spl_token_mint;
+  string? spl_token_amount;
+  string? decimals;
+  string? versioned_transaction;
+  string? compute_unit_limit;
+  string? compute_unit_price;
+};
+
+struct Gate3SwapBitcoinTransactionParams {
+  ChainId chain;
+  string to;
+  string value;
+  string refund_to;
+};
+
+struct Gate3SwapCardanoTransactionParams {
+  ChainId chain;
+  string to;
+  string value;
+  string refund_to;
+};
+
+struct Gate3SwapZCashTransactionParams {
+  ChainId chain;
+  string to;
+  string value;
+  string refund_to;
+};
+
+union Gate3SwapTransactionParamsUnion {
+  Gate3SwapEvmTransactionParams evm_transaction_params;
+  Gate3SwapSolanaTransactionParams solana_transaction_params;
+  Gate3SwapBitcoinTransactionParams bitcoin_transaction_params;
+  Gate3SwapCardanoTransactionParams cardano_transaction_params;
+  Gate3SwapZCashTransactionParams zcash_transaction_params;
+};
+
+struct Gate3SwapNetworkFee {
+  string amount;
+  int32 decimals;
+  string symbol;
+};
+
+struct Gate3SwapRoute {
+  string id;
+
+  SwapProvider provider;
+
+  array<Gate3SwapRouteStep> steps;
+
+  // Source amount in smallest unit
+  string source_amount;
+
+  // Destination amount in smallest unit
+  string destination_amount;
+
+  // Minimum destination amount after slippage in smallest unit
+  string destination_amount_min;
+
+  // Estimated time for swap completion in seconds (0 indicates atomic swap)
+  string? estimated_time;
+
+  // Price impact percentage (negative value indicates loss due to
+  // slippage/fees)
+  string? price_impact;
+
+  // Total estimated network fee for the swap route
+  Gate3SwapNetworkFee? network_fee;
+
+  // Whether this route operates in gasless mode (network fees are
+  // sponsored/waived)
+  bool gasless;
+
+  // Address to deposit funds (may not be available for indicative quotes)
+  string? deposit_address;
+
+  // Memo required for deposit (if applicable)
+  string? deposit_memo;
+
+  // Quote expiration time (Unix timestamp in seconds); may be unset.
+  string? expires_at;
+
+  string slippage_percentage;
+
+  Gate3SwapTransactionParamsUnion? transaction_params;
+
+  bool has_post_submit_hook;
+  bool requires_token_allowance;
+  bool requires_firm_route;
+};
+
+struct Gate3SwapQuote {
+  array<Gate3SwapRoute> routes;
 };
 
 struct ZeroExFee {
@@ -651,6 +797,7 @@ union SwapErrorUnion {
   ZeroExError zero_ex_error;
   LiFiError lifi_error;
   SquidError squid_error;
+  Gate3SwapError gate3_error;
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
@@ -2173,7 +2320,7 @@ struct CardanoAccountInfo {
 interface CardanoWalletService {
   // Fetches CardanoBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
-  GetBalance(AccountId account_id)
+  GetBalance(AccountId account_id, string? token_id_hex)
       => (CardanoBalance? balance, string? error_message);
 };
 
@@ -2472,6 +2619,27 @@ union TxDataUnion {
 };
 
 struct SwapInfo {
+  CoinType source_coin;
+  string source_chain_id;
+  string source_token_address;
+  string source_amount;
+
+  CoinType destination_coin;
+  string destination_chain_id;
+  // An empty string indicates that the asset could not be reliably determined.
+  string destination_token_address;
+  // An empty string indicates that the amount could not be reliably determined.
+  string destination_amount;
+  // Populated for EXACT_INPUT swaps
+  string destination_amount_min;
+
+  // An empty string indicates that the recipient is not known.
+  string recipient;
+  SwapProvider provider;
+};
+
+// Deprecated in favour of SwapInfo
+struct SwapInfoDeprecated {
   CoinType from_coin;
   string from_chain_id;
   string from_asset;
@@ -2513,7 +2681,7 @@ struct TransactionInfo {
   string? effective_recipient;
   bool is_retriable;
 
-  SwapInfo? swap_info;
+  SwapInfoDeprecated? swap_info_deprecated;
 };
 
 interface TxServiceObserver {

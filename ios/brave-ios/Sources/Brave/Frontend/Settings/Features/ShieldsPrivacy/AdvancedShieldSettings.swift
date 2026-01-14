@@ -18,8 +18,9 @@ import os
 @MainActor class AdvancedShieldsSettings: ObservableObject {
   struct ClearableSetting: Identifiable {
     enum ClearableType: String {
-      case history, cache, cookiesAndCache, passwords, downloads, braveNews, playlistCache,
-        playlistData, recentSearches, braveAdsData
+      case history, cache, cookiesAndCache, passwords, siteAndShieldsSettings,
+        downloads, braveNews, playlistCache, playlistData, recentSearches,
+        braveAdsData
     }
 
     var id: ClearableType
@@ -263,9 +264,14 @@ import os
       ]
     }
 
-    clearableSettings.append(
-      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true)
-    )
+    clearableSettings.append(contentsOf: [
+      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
+      ClearableSetting(
+        id: .siteAndShieldsSettings,
+        clearable: SiteAndShieldsSettingsClearable(),
+        isEnabled: false
+      ),
+    ])
 
     let savedToggles = Preferences.Privacy.clearPrivateDataToggles.value
 

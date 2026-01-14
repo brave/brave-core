@@ -6,11 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_FRAME_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_FRAME_H_
 
+#include "brave/components/brave_page_graph/common/buildflags.h"
+
 class SkBitmap;
 
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 namespace blink {
 class PageGraph;
 }  // namespace blink
+#endif
 
 #define CopyImageAtViewportPoint                                      \
   CopyImageAtViewportPoint_UnUsed() {}                                \
@@ -21,6 +25,7 @@ class PageGraph;
   ScriptEnabled(const KURL& script_url); \
   bool ScriptEnabled_ChromiumImpl
 
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #define PerformSpellCheck                                          \
   PerformSpellCheck();                                             \
   ForwardDeclaredMember<PageGraph> GetPageGraph() const {          \
@@ -34,6 +39,7 @@ class PageGraph;
 #define link_preview_triggerer_ \
   link_preview_triggerer_;      \
   ForwardDeclaredMember<PageGraph> page_graph_
+#endif
 
 #define IsSameOrigin(...)    \
   IsSameOrigin(__VA_ARGS__); \
@@ -41,9 +47,12 @@ class PageGraph;
 
 #include <third_party/blink/renderer/core/frame/local_frame.h>  // IWYU pragma: export
 
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef link_preview_triggerer_
 #undef PerformSpellCheck
+#endif
 #undef ScriptEnabled
+
 #undef CopyImageAtViewportPoint
 #undef IsSameOrigin
 

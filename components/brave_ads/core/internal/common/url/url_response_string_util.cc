@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 
+#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
@@ -36,10 +38,16 @@ std::string HeadersToString(
 
 std::string UrlResponseToString(
     const mojom::UrlResponseInfo& mojom_url_response) {
+  std::string_view http_reason_phrase =
+      mojom_url_response.code >= 0
+          ? net::GetHttpReasonPhrase(
+                static_cast<net::HttpStatusCode>(mojom_url_response.code))
+          : "";
+
   return absl::StrFormat(
-      "URL Response:\n  URL: %s\n  Response Code: %d\n  Response: %s",
+      "URL Response:\n  URL: %s\n  Response Code: %d %s\n  Response: %s",
       mojom_url_response.url.spec(), mojom_url_response.code,
-      mojom_url_response.body);
+      http_reason_phrase, mojom_url_response.body);
 }
 
 std::string UrlResponseHeadersToString(

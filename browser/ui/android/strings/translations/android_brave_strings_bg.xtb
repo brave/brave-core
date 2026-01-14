@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Копиране на чиста връзка</translation>
 <translation id="721490496276866468">Импортиране на пароли</translation>
 <translation id="8178175542325151321">Изберете .csv файл, който съдържа вашите пароли, за да ги импортирате в мениджъра на пароли на Brave.</translation>
-<translation id="1177863135347784049">По избор</translation>
 <translation id="6112331814131703370">Блокирай нотификации „Превключи към приложение“</translation>
 <translation id="4744921452903670666">Споделете вашето мнение!</translation>
 <translation id="2524310205387880526">Оценете Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Автоматично попълване в частни раздели</translation>
 <translation id="8685431198160039193">Запазената информация може да бъде попълнена автоматично в частни раздели</translation>
 <translation id="6583902294974160967">Поддържа</translation>
-<translation id="5713644099811900409">Brave акаунт</translation>
-<translation id="4472575034687746823">Първи стъпки</translation>
 <translation id="1799030480311994998">Функции</translation>
 <translation id="1919345977826869612">Реклами</translation>
 <translation id="2839742394543397416">Анализ</translation>
@@ -384,7 +381,6 @@
 <translation id="717952606991220586">Грешка, нещо се обърка. Опитайте отново по-късно.</translation>
 <translation id="987264212798334818">Общи</translation>
 <translation id="1116694919640316211">Информация</translation>
-<translation id="7961015016161918242">Никога</translation>
 <translation id="1275213816424141989">Може би по-късно</translation>
 <translation id="3624048886326677117">Блокиране на тракери и реклами (агресивно)</translation>
 <translation id="7151914815476509258">Блокиране на тракери и реклами (стандартно)</translation>
@@ -569,7 +565,6 @@
 <translation id="6697810017029555732">Съвпадение!</translation>
 <translation id="5981303441790732480">Импортирайте съществуващия си портфейл</translation>
 <translation id="9111102763498581341">Отключване</translation>
-<translation id="6657585470893396449">Парола</translation>
 <translation id="7553242001898162573">Въведете паролата си</translation>
 <translation id="5619264711680220002">Отключване с биометрични данни</translation>
 <translation id="9195657745688986798">Отключване на портфейла</translation>
@@ -734,6 +729,7 @@
 <translation id="9091334651803050473">Въпреки че не е гарантирано, миньорите вероятно ще приоритизират трансакцията ви, ако платите по-висока такса.</translation>
 <translation id="2941112035454246133">Ниска</translation>
 <translation id="7304030187361489308">Висока</translation>
+<translation id="1177863135347784049">По избор</translation>
 <translation id="4853037749278079787">Максимална такса: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Текуща базова такса: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Ограничение на количеството газ</translation>
@@ -1054,31 +1050,6 @@
 <translation id="6393423486818299209">Използвайте текущия си доставчик на услуги или Wikimedia DNS</translation>
 <translation id="3401384982562827787">Използвайте текущия си доставчик на услуги или Cloudflare</translation>
 <translation id="8812367543786936496">Ако текущият ви доставчик на услуги е несигурен, Brave използва сигурен алтернативен DNS доставчик</translation>
-<translation id="5680678411439841197">град</translation>
-<translation id="8185518433273977704">населено място</translation>
-<translation id="4528386452965343421">префектура</translation>
-<translation id="1589122976691792535">регион</translation>
-<translation id="2221292964468054123">щат</translation>
-<translation id="3801482889636327368">организация</translation>
-<translation id="1425162721525518064">компания</translation>
-<translation id="7568794877555549044">държава</translation>
-<translation id="5982110855572850497">етикет</translation>
-<translation id="6848689413353508904">контейнер</translation>
-<translation id="1496514951988037011">потребителско име</translation>
-<translation id="6155129418108337061">вход</translation>
-<translation id="4038523199754403233">Идентиф.</translation>
-<translation id="901834265349196618">имейл</translation>
-<translation id="3488199663160411179">име</translation>
-<translation id="793994607260936590">първи</translation>
-<translation id="1782612111936779655">фамилия</translation>
-<translation id="7628132737455466188">пълен</translation>
-<translation id="8621068256433641644">телефон</translation>
-<translation id="5993210100509955931">мобилен</translation>
-<translation id="598301471034819706">адрес</translation>
-<translation id="5557821203571216370">апартамент</translation>
-<translation id="8051552210542030943">пинкод</translation>
-<translation id="5233247193491045452">пощенски код</translation>
-<translation id="3300502432153878901">zip код</translation>
 <translation id="1381108437654541567">Активиране на множество прозорци</translation>
 <translation id="6167344249617630304">Отваряйте до 5 прозореца едновременно и премествайте раздели от един прозорец в друг</translation>
 <translation id="1063948063403254568">Открити са множество прозорци</translation>
@@ -1152,6 +1123,7 @@
 <translation id="7808889146555843082">Изтриването на тази парола няма да премахне профила ви за <ph name="SITE"/>. За да го защитите от други хора, променете паролата си или изтрийте профила си за <ph name="SITE"/>.</translation>
 <translation id="2870560284913253234">Сайт</translation>
 <translation id="8503813439785031346">Потребителско име</translation>
+<translation id="6657585470893396449">Парола</translation>
 <translation id="2278052315791335171">Изтриването на тази парола няма да премахне профила ви за <ph name="SITE"/></translation>
 <translation id="6891726759199484455">Отключете, за да копирате паролата си</translation>
 <translation id="5515439363601853141">Отключете, за да видите паролата си</translation>

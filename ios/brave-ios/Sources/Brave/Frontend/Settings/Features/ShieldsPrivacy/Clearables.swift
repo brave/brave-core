@@ -152,6 +152,21 @@ class PasswordsClearable: Clearable {
   }
 }
 
+class SiteAndShieldsSettingsClearable: Clearable {
+
+  var label: String {
+    return Strings.siteAndShieldsSettings
+  }
+
+  func clear() async throws {
+    await withCheckedContinuation { continuation in
+      Domain.deleteAll({
+        continuation.resume()
+      })
+    }
+  }
+}
+
 /// Clears all files in Downloads folder.
 class DownloadsClearable: Clearable {
   var label: String {

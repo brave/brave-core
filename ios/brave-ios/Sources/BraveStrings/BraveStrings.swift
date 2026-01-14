@@ -2728,6 +2728,13 @@ extension Strings {
     value: "Saved Logins",
     comment: "Settings item for clearing passwords and login data"
   )
+  public static let siteAndShieldsSettings = NSLocalizedString(
+    "SavedLogins",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Site and Shields Settings",
+    comment: "Settings item for clearing site-specific settings and shields settings."
+  )
   public static let downloadedFiles = NSLocalizedString(
     "DownloadedFiles",
     tableName: "BraveShared",
@@ -8200,7 +8207,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Night mode will effect website appearance and general system appearance at the same time.",
+        "Night mode will affect website appearance and general system appearance at the same time.",
       comment:
         "A table cell subtitle for Night Mode - explanatory element for the toggle preference"
     )
@@ -9435,6 +9442,27 @@ extension Strings {
       bundle: .module,
       value: "Page Translation available",
       comment: "Accessibility message e.g. spoken by VoiceOver when page translation becomes available."
+    )
+  }
+}
+
+// MARK: - VCard
+extension Strings {
+  public struct VCard {
+    public static let unableToOpenContactErrorTitle = NSLocalizedString(
+      "VCard.unableToOpenContactErrorTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unable to Open Contact",
+      comment: "Title for error alert when a VCard contact file cannot be parsed or opened"
+    )
+
+    public static let unableToOpenContactErrorMessage = NSLocalizedString(
+      "VCard.unableToOpenContactErrorMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "The contact file could not be read. It may be corrupted or in an unsupported format.",
+      comment: "Message for error alert when a VCard contact file cannot be parsed or opened"
     )
   }
 }

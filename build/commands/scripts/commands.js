@@ -141,7 +141,6 @@ program
     '--android_override_version_name <android_override_version_name>',
     'Android version number',
   )
-  .option('--build_delta_installer', 'build delta mini installer')
   .option('--build_omaha', 'build omaha stub/standalone installer')
   .option(
     '--build_sparkle',

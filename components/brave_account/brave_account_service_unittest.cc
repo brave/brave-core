@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/functional/callback.h"
+#include "base/json/values_util.h"
 #include "base/no_destructor.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
+#include "brave/components/brave_account/endpoints/service_token.h"
 #include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
@@ -36,6 +38,7 @@ using endpoints::LoginFinalize;
 using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
+using endpoints::ServiceToken;
 using endpoints::VerifyResult;
 
 struct RegisterInitializeTestCase {
@@ -45,6 +48,8 @@ struct RegisterInitializeTestCase {
                                       mojom::RegisterErrorPtr>;
 
   static void Run(const RegisterInitializeTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     authentication.RegisterInitialize(
@@ -443,6 +448,7 @@ struct RegisterFinalizeTestCase {
 
   static void Run(const RegisterFinalizeTestCase& test_case,
                   PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     authentication.RegisterFinalize(test_case.encrypted_verification_token,
@@ -1400,6 +1406,8 @@ struct LoginInitializeTestCase {
       base::expected<mojom::LoginInitializeResultPtr, mojom::LoginErrorPtr>;
 
   static void Run(const LoginInitializeTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     authentication.LoginInitialize(test_case.email, test_case.serialized_ke1,
@@ -1743,6 +1751,7 @@ struct LoginFinalizeTestCase {
 
   static void Run(const LoginFinalizeTestCase& test_case,
                   PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     authentication.LoginFinalize(
@@ -2188,5 +2197,709 @@ INSTANTIATE_TEST_SUITE_P(
                     LoginFinalizeAuthenticationTokenFailedToEncrypt(),
                     LoginFinalizeSuccess()),
     BraveAccountServiceLoginFinalizeTest::kNameGenerator);
+
+struct GetServiceTokenTestCase {
+  using Endpoint = ServiceToken;
+  using EndpointResponse = Endpoint::Response;
+  using MojoExpected = base::expected<mojom::GetServiceTokenResultPtr,
+                                      mojom::GetServiceTokenErrorPtr>;
+
+  static void Run(const GetServiceTokenTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
+                  mojom::Authentication& authentication,
+                  base::OnceCallback<void(MojoExpected)> callback) {
+    pref_service.SetDict(
+        prefs::kBraveAccountServiceTokens,
+        std::move(test_case.service_tokens_dict).Run(base::Time::Now()));
+
+    if (test_case.set_authentication_token) {
+      pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
+                             base::Base64Encode("auth_token"));
+    }
+
+    task_environment.FastForwardBy(test_case.time_advance);
+
+    std::string expected_service_token =
+        test_case.mojo_expected.has_value()
+            ? test_case.mojo_expected.value()->serviceToken
+            : "";
+
+    authentication.GetServiceToken(
+        mojom::Service::kEmailAliases,
+        // |callback| resolves the TestFuture in BraveAccountServiceTest with
+        // the result. The Then() callback runs immediately after, before the
+        // test verifies the future's value.
+        std::move(callback).Then(base::BindOnce(
+            [](PrefService* pref_service, std::string expected_service_token) {
+              if (!expected_service_token.empty()) {
+                const auto* email_aliases =
+                    pref_service->GetDict(prefs::kBraveAccountServiceTokens)
+                        .FindDict("email-aliases");
+                EXPECT_TRUE(email_aliases);
+                const auto* service_token =
+                    email_aliases->FindString(prefs::keys::kServiceToken);
+                EXPECT_TRUE(service_token);
+                EXPECT_EQ(*service_token,
+                          base::Base64Encode(expected_service_token));
+              }
+            },
+            base::Unretained(&pref_service),
+            std::move(expected_service_token))));
+
+    // The ServiceToken (/v2/auth/service_token) network request's callback will
+    // be processed on the next message pump iteration, so this runs before the
+    // request completes.
+    if (test_case.clear_authentication_token) {
+      pref_service.ClearPref(prefs::kBraveAccountAuthenticationToken);
+    }
+  }
+
+  std::string test_name;
+  // |service_tokens_dict| is a callback instead of a plain base::Value::Dict
+  // so that test cases can use the current mock time (passed as parameter)
+  // when constructing the dictionary. This is necessary for cache expiration
+  // tests that need to set timestamps relative to when the test runs.
+  mutable base::OnceCallback<base::Value::Dict(base::Time)> service_tokens_dict;
+  bool set_authentication_token;
+  bool fail_decryption;
+  bool clear_authentication_token;
+  bool fail_encryption;
+  base::TimeDelta time_advance;
+  std::optional<EndpointResponse> endpoint_response;
+  MojoExpected mojo_expected;
+};
+
+namespace {
+
+const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenCacheHit({
+          .test_name = "get_service_token_cache_hit",
+          .service_tokens_dict = base::BindOnce([](base::Time mock_now) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict()
+                    .Set(prefs::keys::kServiceToken,
+                         base::Base64Encode("cached_service_token"))
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
+          }),
+          .set_authentication_token = {},    // not used
+          .fail_decryption = {},             // not used
+          .clear_authentication_token = {},  // not used
+          .fail_encryption = {},             // not used
+          .time_advance = {},                // not used
+          .endpoint_response = {},           // not used
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("cached_service_token"),
+      });
+  return kGetServiceTokenCacheHit.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenUserNotLoggedIn() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenUserNotLoggedIn({
+          .test_name = "get_service_token_user_not_logged_in",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = {},    // not used
+          .fail_decryption = {},             // not used
+          .clear_authentication_token = {},  // not used
+          .fail_encryption = {},             // not used
+          .time_advance = {},                // not used
+          .endpoint_response = {},           // not used
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              std::nullopt, mojom::GetServiceTokenErrorCode::kUserNotLoggedIn)),
+      });
+  return kGetServiceTokenUserNotLoggedIn.get();
+}
+
+const GetServiceTokenTestCase*
+GetServiceTokenAuthenticationTokenDecryptionFailed() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenAuthenticationTokenDecryptionFailed({
+          .test_name =
+              "get_service_token_authentication_token_decryption_failed",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = true,
+          .clear_authentication_token = {},  // not used
+          .fail_encryption = {},             // not used
+          .time_advance = {},                // not used
+          .endpoint_response = {},           // not used
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              std::nullopt, mojom::GetServiceTokenErrorCode::
+                                kAuthenticationTokenDecryptionFailed)),
+      });
+  return kGetServiceTokenAuthenticationTokenDecryptionFailed.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenAuthenticationSessionChanged() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenAuthenticationSessionChanged({
+          .test_name = "get_service_token_authentication_session_changed",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = true,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              std::nullopt,
+              mojom::GetServiceTokenErrorCode::kAuthenticationSessionChanged)),
+      });
+  return kGetServiceTokenAuthenticationSessionChanged.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenNetworkError({
+          .test_name = "get_service_token_network_error",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
+                                 .status_code = std::nullopt,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+      });
+  return kGetServiceTokenNetworkError.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenBodyMissingOrFailedToParse({
+          .test_name = "get_service_token_body_missing_or_failed_to_parse",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kGetServiceTokenBodyMissingOrFailedToParse.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenErrorCodeIsNull({
+          .test_name = "get_service_token_error_code_is_null",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_BAD_REQUEST, std::nullopt)),
+      });
+  return kGetServiceTokenErrorCodeIsNull.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenEmailDomainNotSupported({
+          .test_name = "get_service_token_email_domain_not_supported",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(13006);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::GetServiceTokenErrorCode::kEmailDomainNotSupported)),
+      });
+  return kGetServiceTokenEmailDomainNotSupported.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenIncorrectCredentials({
+          .test_name = "get_service_token_incorrect_credentials",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_FORBIDDEN,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(14004);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_FORBIDDEN,
+              mojom::GetServiceTokenErrorCode::kIncorrectCredentials)),
+      });
+  return kGetServiceTokenIncorrectCredentials.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenInvalidTokenAudience({
+          .test_name = "get_service_token_invalid_token_audience",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_FORBIDDEN,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(14007);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_FORBIDDEN,
+              mojom::GetServiceTokenErrorCode::kInvalidTokenAudience)),
+      });
+  return kGetServiceTokenInvalidTokenAudience.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenBadRequest({
+          .test_name = "get_service_token_bad_request",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+      });
+  return kGetServiceTokenBadRequest.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenUnauthorized({
+          .test_name = "get_service_token_unauthorized",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+      });
+  return kGetServiceTokenUnauthorized.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServerError() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenInternalServerError({
+          .test_name = "get_service_token_internal_server_error",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR,
+              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+      });
+  return kGetServiceTokenInternalServerError.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenUnknown() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenUnknown({
+          .test_name = "get_service_token_unknown",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_TOO_EARLY,
+                                 .body = base::unexpected([] {
+                                   ServiceToken::Response::ErrorBody body;
+                                   body.code = base::Value(42);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              net::HTTP_TOO_EARLY, std::nullopt)),
+      });
+  return kGetServiceTokenUnknown.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenServiceTokenEmpty({
+          .test_name = "get_service_token_service_token_empty",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = {},  // not used
+          .time_advance = {},     // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token = "";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::GetServiceTokenError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kGetServiceTokenServiceTokenEmpty.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenServiceTokenEncryptionFailed({
+          .test_name = "get_service_token_service_token_encryption_failed",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = true,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
+              std::nullopt,
+              mojom::GetServiceTokenErrorCode::kServiceTokenEncryptionFailed)),
+      });
+  return kGetServiceTokenServiceTokenEncryptionFailed.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenSuccess() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenSuccess({
+          .test_name = "get_service_token_success",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenSuccess.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServiceDictMissing() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenServiceDictMissing({
+          .test_name = "get_service_token_service_dict_missing",
+          .service_tokens_dict =
+              base::BindOnce([](base::Time) { return base::Value::Dict(); }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenServiceDictMissing.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenServiceTokenMissing({
+          .test_name = "get_service_token_cache_service_token_missing",
+          .service_tokens_dict = base::BindOnce([](base::Time mock_now) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict().Set(prefs::keys::kLastFetched,
+                                        base::TimeToValue(mock_now)));
+          }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenServiceTokenMissing.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenLastFetchedMissing({
+          .test_name = "get_service_token_cache_last_fetched_missing",
+          .service_tokens_dict = base::BindOnce([](base::Time) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict().Set(
+                    prefs::keys::kServiceToken,
+                    base::Base64Encode("cached_service_token")));
+          }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenLastFetchedMissing.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenLastFetchedInvalid({
+          .test_name = "get_service_token_cache_last_fetched_invalid",
+          .service_tokens_dict = base::BindOnce([](base::Time) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict()
+                    .Set(prefs::keys::kServiceToken,
+                         base::Base64Encode("cached_service_token"))
+                    .Set(prefs::keys::kLastFetched, "invalid-time-format"));
+          }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenLastFetchedInvalid.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenCacheExpired({
+          .test_name = "get_service_token_cache_expired",
+          .service_tokens_dict = base::BindOnce([](base::Time mock_now) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict()
+                    .Set(prefs::keys::kServiceToken,
+                         base::Base64Encode("cached_service_token"))
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
+          }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          // Advance time after setting cache to make it expired.
+          .time_advance = kServiceTokenMaxAge + base::Minutes(1),
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenCacheExpired.get();
+}
+
+const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
+  static const base::NoDestructor<GetServiceTokenTestCase>
+      kGetServiceTokenServiceTokenDecryptionFailed({
+          .test_name =
+              "get_service_token_cache_service_token_decryption_failed",
+          .service_tokens_dict = base::BindOnce([](base::Time mock_now) {
+            return base::Value::Dict().Set(
+                "email-aliases",
+                base::Value::Dict()
+                    .Set(prefs::keys::kServiceToken, "!!!invalid-base64!!!")
+                    .Set(prefs::keys::kLastFetched,
+                         base::TimeToValue(mock_now)));
+          }),
+          .set_authentication_token = true,
+          .fail_decryption = false,
+          .clear_authentication_token = false,
+          .fail_encryption = false,
+          .time_advance = base::TimeDelta(),
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       ServiceToken::Response::SuccessBody body;
+                                       body.auth_token =
+                                           "fetched_service_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              mojom::GetServiceTokenResult::New("fetched_service_token"),
+      });
+  return kGetServiceTokenServiceTokenDecryptionFailed.get();
+}
+
+using BraveAccountServiceGetServiceTokenTest =
+    BraveAccountServiceTest<GetServiceTokenTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceGetServiceTokenTest, GetServiceToken) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceGetServiceTokenTest,
+    testing::Values(GetServiceTokenCacheHit(),
+                    GetServiceTokenUserNotLoggedIn(),
+                    GetServiceTokenAuthenticationTokenDecryptionFailed(),
+                    GetServiceTokenAuthenticationSessionChanged(),
+                    GetServiceTokenNetworkError(),
+                    GetServiceTokenBodyMissingOrFailedToParse(),
+                    GetServiceTokenErrorCodeIsNull(),
+                    GetServiceTokenEmailDomainNotSupported(),
+                    GetServiceTokenIncorrectCredentials(),
+                    GetServiceTokenInvalidTokenAudience(),
+                    GetServiceTokenBadRequest(),
+                    GetServiceTokenUnauthorized(),
+                    GetServiceTokenServerError(),
+                    GetServiceTokenUnknown(),
+                    GetServiceTokenServiceTokenEmpty(),
+                    GetServiceTokenServiceTokenEncryptionFailed(),
+                    GetServiceTokenSuccess(),
+                    GetServiceTokenServiceDictMissing(),
+                    GetServiceTokenServiceTokenMissing(),
+                    GetServiceTokenLastFetchedMissing(),
+                    GetServiceTokenLastFetchedInvalid(),
+                    GetServiceTokenCacheExpired(),
+                    GetServiceTokenServiceTokenDecryptionFailed()),
+    BraveAccountServiceGetServiceTokenTest::kNameGenerator);
 
 }  // namespace brave_account

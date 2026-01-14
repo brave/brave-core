@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render, screen, act } from '@testing-library/react'
 
 import { createStateProvider } from './state_provider'
-import { StateStore } from './state_store'
+import { StateStore } from '$web-common/state_store'
 
 interface TestState {
   count: number

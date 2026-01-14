@@ -337,6 +337,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7557539689487606886">Subscribirse á versión Premium</translation>
 <translation id="1035309871698658326">Cando se abra, isto enviará automaticamente os títulos e a orixe de todos os separadores non privados a Leo para clasificalos.</translation>
 <translation id="3435896845095436175">Activar</translation>
+<translation id="9082792303833649978">Esta configuración está xestionada polo teu administrador ou por outra política de Brave.</translation>
 <translation id="1940221956626514677">Personalizar barra de ferramentas</translation>
 <translation id="6501807887341963552">Tema e cores</translation>
 <translation id="6724227215236550330">Os contrasinais gardados aparecerán aquí. Para importar os contrasinais <ph name="BRAND"/> neste dispositivo, <ph name="BEGIN_LINK"/> escolle un arquivo CSV<ph name="END_LINK"/></translation>
@@ -380,6 +381,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2263346047290834619">Empregar separadores tipo árbore</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="4691131445504068802">Agochar completamente ao minimizalo</translation>
+<translation id="6763346436728173884">Agochar sempre o botón de pechar lapela</translation>
 <translation id="4909269867860362936">Expandir automaticamente ao pasar o rato por enriba cando estea minimizado</translation>
 <translation id="3367129510799209147">Modo para ver os separadores ao pasar por riba</translation>
 <translation id="8925055964134259461">Expandir pestanas verticais independentemente por ventá</translation>
@@ -753,6 +755,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="1077567586443625607">Redes Zcash</translation>
 <translation id="1177180573354712438">Redes de Cardano</translation>
+<translation id="3176794108951154148">Redes de Polkadot</translation>
 <translation id="3159419679550543837">Amosar redes de proba</translation>
 <translation id="3215569562674795548">Editar ou engadir rede nova</translation>
 <translation id="4418993400653250511">O ID da cadea</translation>

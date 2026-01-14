@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Copier le lien propre</translation>
 <translation id="721490496276866468">Importer des mots de passe</translation>
 <translation id="8178175542325151321">Sélectionnez un fichier .csv contenant vos mots de passe pour l'importer dans le gestionnaire de mots de passe de Brave.</translation>
-<translation id="1177863135347784049">Personnalisé</translation>
 <translation id="6112331814131703370">Bloquer les demandes d'installation d'applications</translation>
 <translation id="4744921452903670666">Dites-nous ce que vous pensez !</translation>
 <translation id="2524310205387880526">Évaluer Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Remplir automatiquement dans les onglets de navigation privée</translation>
 <translation id="8685431198160039193">Les informations enregistrées peuvent être remplies automatiquement dans les onglets de navigation privée</translation>
 <translation id="6583902294974160967">Assistance</translation>
-<translation id="5713644099811900409">Compte Brave</translation>
-<translation id="4472575034687746823">Premiers pas</translation>
 <translation id="1799030480311994998">Fonctionnalités</translation>
 <translation id="1919345977826869612">Publicités</translation>
 <translation id="2839742394543397416">Données analytiques</translation>
@@ -384,7 +381,6 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="717952606991220586">Oups, quelque chose ne va pas. Veuillez réessayer plus tard.</translation>
 <translation id="987264212798334818">Général</translation>
 <translation id="1116694919640316211">À propos</translation>
-<translation id="7961015016161918242">Jamais</translation>
 <translation id="1275213816424141989">Peut-être plus tard</translation>
 <translation id="3624048886326677117">Bloquer les traqueurs et les pubs (agressif)</translation>
 <translation id="7151914815476509258">Bloquer les traqueurs et les pubs (standard)</translation>
@@ -569,7 +565,6 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="6697810017029555732">Correspondance !</translation>
 <translation id="5981303441790732480">Importez votre portefeuille existant</translation>
 <translation id="9111102763498581341">Déverrouiller</translation>
-<translation id="6657585470893396449">Mot de passe</translation>
 <translation id="7553242001898162573">Saisissez votre mot de passe</translation>
 <translation id="5619264711680220002">Déverrouillage par authentification biométrique</translation>
 <translation id="9195657745688986798">Déverrouiller le portefeuille</translation>
@@ -734,6 +729,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="9091334651803050473">Bien que cela ne soit pas garanti, les mineurs donneront probablement la priorité à votre transaction si vous payez des frais plus élevés.</translation>
 <translation id="2941112035454246133">Faible</translation>
 <translation id="7304030187361489308">Élevé</translation>
+<translation id="1177863135347784049">Personnalisé</translation>
 <translation id="4853037749278079787">Frais maximum : ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Frais de base actuels : <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Frais Gas max.</translation>
@@ -1054,31 +1050,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6393423486818299209">Utilisez votre fournisseur de service actuel ou Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilisez votre fournisseur de service actuel ou Cloudflare</translation>
 <translation id="8812367543786936496">Si votre fournisseur de service actuel n'est pas sécurisé, Brave utilise un fournisseur DNS alternatif sécurisé.</translation>
-<translation id="5680678411439841197">ville</translation>
-<translation id="8185518433273977704">ville</translation>
-<translation id="4528386452965343421">préfecture</translation>
-<translation id="1589122976691792535">région</translation>
-<translation id="2221292964468054123">état</translation>
-<translation id="3801482889636327368">organisation</translation>
-<translation id="1425162721525518064">entreprise</translation>
-<translation id="7568794877555549044">pays</translation>
-<translation id="5982110855572850497">étiquette</translation>
-<translation id="6848689413353508904">conteneur</translation>
-<translation id="1496514951988037011">nom d'utilisateur</translation>
-<translation id="6155129418108337061">connexion</translation>
-<translation id="4038523199754403233">identifiant</translation>
-<translation id="901834265349196618">e-mail</translation>
-<translation id="3488199663160411179">nom</translation>
-<translation id="793994607260936590">première</translation>
-<translation id="1782612111936779655">nom de famille</translation>
-<translation id="7628132737455466188">nom complet</translation>
-<translation id="8621068256433641644">numéro de téléphone</translation>
-<translation id="5993210100509955931">mobile</translation>
-<translation id="598301471034819706">adresse</translation>
-<translation id="5557821203571216370">appartement</translation>
-<translation id="8051552210542030943">code PIN</translation>
-<translation id="5233247193491045452">code postal</translation>
-<translation id="3300502432153878901">code postal</translation>
 <translation id="1381108437654541567">Activer les fenêtres multiples</translation>
 <translation id="6167344249617630304">Permet d'ouvrir jusqu'à 5 fenêtres à la fois et de déplacer vos onglets d'une fenêtre à l'autre</translation>
 <translation id="1063948063403254568">Fenêtres multiples détectées</translation>
@@ -1126,13 +1097,13 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="766635563210446220">Impossible d'importer les mots de passe. Vérifiez le formatage du fichier <ph name="FILENAME"/>. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">Impossible d'importer les mots de passe. La taille du fichier doit être inférieure à 1 Mo.</translation>
 <translation id="5895244669404288318">{COUNT, plural,
-        one {}=1 {Impossible d'importer les mots de passe. Vous ne pouvez importer qu'un mot de passe à la fois.}
+        =1 {Impossible d'importer les mots de passe. Vous ne pouvez importer qu'un mot de passe à la fois.}
         other {Impossible d'importer les mots de passe. Vous ne pouvez importer jusqu'à <ph name="COUNT_MANY"/> mots de passe à la fois.}}</translation>
 <translation id="3748424433435232460">Un mot de passe pour ce compte est déjà enregistré sur cet appareil.</translation>
 <translation id="6438475350605608554">Vous importez déjà des mots de passe dans un autre onglet.</translation>
 <translation id="3482868954775580230">La lecture du fichier sélectionné a échoué. <ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural,
-        one {}=1 {Un mot de passe a été importé.}
+        =1 {Un mot de passe a été importé.}
         other {<ph name="IMPORT_COUNT_MANY"/> mots de passe ont été importés.}}</translation>
 <translation id="4637949129057123593">L'importation a échoué.</translation>
 <translation id="4300452012226767715">Gestionnaire de mots de passe non disponible.</translation>
@@ -1156,6 +1127,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7808889146555843082">La suppression de ce mot de passe ne supprimera pas votre compte <ph name="SITE"/>. Modifiez votre mot de passe ou supprimez votre compte <ph name="SITE"/> pour vous protéger.</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="8503813439785031346">Nom d'utilisateur</translation>
+<translation id="6657585470893396449">Mot de passe</translation>
 <translation id="2278052315791335171">La suppression de ce mot de passe ne supprimera pas votre compte <ph name="SITE"/>.</translation>
 <translation id="6891726759199484455">Déverrouillez pour copier votre mot de passe.</translation>
 <translation id="5515439363601853141">Déverrouillez pour afficher votre mot de passe.</translation>

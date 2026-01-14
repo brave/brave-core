@@ -3,18 +3,49 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+const path = require('path')
+const fs = require('fs')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const l10nUtil = require('./l10nUtil')
 
+const srcDir = config.srcDir
+
 const resetChromeStringFiles = () => {
   // Revert to originals before string replacement because original grd(p)s are
   // overwritten with modified versions from ./src/brave during build.
-  const srcDir = config.srcDir
   const targetFilesForReset = ['*.grd', '*.grdp']
   targetFilesForReset.forEach((targetFile) => {
     util.run('git', ['checkout', '--', targetFile], { cwd: srcDir })
   })
+}
+
+// Copy post-processed Brave strings to Brave Origin strings.
+const copyBraveStringsToOrigin = () => {
+  const braveOriginCopies = [
+    [
+      path.join(srcDir, 'brave', 'app', 'brave_strings.grd'),
+      path.join(srcDir, 'brave', 'app', 'brave_origin_strings.grd'),
+    ],
+    [
+      path.join(srcDir, 'brave', 'components', 'components_brave_strings.grd'),
+      path.join(
+        srcDir,
+        'brave',
+        'components',
+        'components_brave_origin_strings.grd',
+      ),
+    ],
+  ]
+  for (const [sourcePath, destPath] of braveOriginCopies) {
+    console.log(
+      'Copying Brave Origin strings: '
+        + path.relative(srcDir, destPath)
+        + ' <- '
+        + path.relative(srcDir, sourcePath),
+    )
+    fs.copyFileSync(sourcePath, destPath)
+  }
 }
 
 const chromiumRebaseL10n = async (options) => {
@@ -34,6 +65,7 @@ const chromiumRebaseL10n = async (options) => {
     )
   })
   l10nUtil.logRemovedGRDParts(removed)
+  copyBraveStringsToOrigin()
 }
 
 module.exports = chromiumRebaseL10n

@@ -10,7 +10,6 @@ import { EntityId } from '@reduxjs/toolkit'
 import {
   BraveWallet,
   SupportedTestNetworks,
-  SupportedOnRampNetworks,
   SupportedOffRampNetworks,
   BraveRewardsInfo,
   WalletStatus,
@@ -132,7 +131,6 @@ export class BaseQueryCache {
       const hiddenIdsByCoinType: Record<EntityId, string[]> = {}
       const mainnetIds: string[] = []
       const testnetIds: string[] = []
-      const onRampIds: string[] = []
       const offRampIds: string[] = []
 
       const { networks } = await jsonRpcService.getAllNetworks()
@@ -196,11 +194,6 @@ export class BaseQueryCache {
               visibleIds.push(networkId)
             }
 
-            // on-ramps
-            if (SupportedOnRampNetworks.includes(chainId)) {
-              onRampIds.push(networkId)
-            }
-
             // off-ramps
             if (SupportedOffRampNetworks.includes(chainId)) {
               offRampIds.push(networkId)
@@ -222,7 +215,6 @@ export class BaseQueryCache {
           hiddenIds,
           hiddenIdsByCoinType,
           visibleIds,
-          onRampIds,
           offRampIds,
           mainnetIds,
           testnetIds,

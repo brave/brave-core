@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (c) 2024 The Brave Authors. All rights reserved.
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this file,
-You can obtain one at https://mozilla.org/MPL/2.0/.
--->
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
@@ -19,7 +17,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
       android:pathData="M22.218,11.57L22.617,10.593C22.617,10.593 22.11,10.05 21.494,9.436C20.878,8.821 19.575,9.182 19.575,9.182L18.09,7.5H15.483H12.876L11.391,9.182C11.391,9.182 10.087,8.821 9.472,9.436C8.856,10.05 8.349,10.593 8.349,10.593L8.748,11.57L8.241,13.017C8.241,13.017 9.732,18.657 9.906,19.346C10.25,20.703 10.486,21.227 11.464,21.914C12.441,22.602 14.215,23.795 14.505,23.976C14.795,24.157 15.157,24.465 15.483,24.465C15.809,24.465 16.171,24.157 16.461,23.976C16.75,23.795 18.525,22.602 19.502,21.914C20.48,21.227 20.715,20.703 21.059,19.346C21.234,18.657 22.725,13.017 22.725,13.017L22.218,11.57Z"
       android:fillType="evenOdd">
     <aapt:attr name="android:fillColor">
-      <gradient 
+      <gradient
           android:startX="8.241"
           android:startY="24.585"
           android:endX="22.725"

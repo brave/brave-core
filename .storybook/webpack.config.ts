@@ -12,6 +12,7 @@ import { forkTsChecker } from './options'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import generatePathMap from '../components/webpack/path-map'
 import { genPath } from '../build/commands/lib/guessConfig'
+import ifdefLoader from '../components/webpack/plugins/ifdef-loader'
 
 if (!fs.existsSync(genPath)) {
   throw new Error("Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?")
@@ -41,6 +42,7 @@ const pathMap = {
   ]
 }
 
+const buildFlags = JSON.parse(fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'))
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
  * support for scheme prefixes (like chrome://)
@@ -147,6 +149,11 @@ export default async ({ config, mode }) => {
           '../components/webpack/webpack-ts-transformers.js'
         )
       }
+    },
+    {
+      test: /\.(js|ts)x?$/,
+      loader: './components/webpack/plugins/ifdef-loader.ts',
+      options: buildFlags
     },
     {
       test: /\.avif$/,

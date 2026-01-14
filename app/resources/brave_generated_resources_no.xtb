@@ -336,6 +336,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
 <translation id="1035309871698658326">Når det er åpent, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem.</translation>
 <translation id="3435896845095436175">Slå på</translation>
+<translation id="9082792303833649978">Denne innstillingen administreres av administratoren din eller av en annen Brave-policy.</translation>
 <translation id="1940221956626514677">Tilpass verktøylinjen</translation>
 <translation id="6501807887341963552">Tema og farger</translation>
 <translation id="6724227215236550330">Lagrede passord vises her. Hvis du vil importere passord for <ph name="BRAND"/> på denne enheten, <ph name="BEGIN_LINK"/> velger du en CSV-fil<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2263346047290834619">Bruk tre-faner</translation>
 <translation id="5860254591544742609">Vis tittelfelt</translation>
 <translation id="4691131445504068802">Skjul helt når minimert</translation>
+<translation id="6763346436728173884">Skjul alltid fanens lukkeknapp</translation>
 <translation id="4909269867860362936">Utvid automatisk ved hover når minimert</translation>
 <translation id="3367129510799209147">Tab hover-modus</translation>
 <translation id="8925055964134259461">Utvid vertikale faner automatisk uavhengig per vindu</translation>
@@ -752,6 +754,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="7141438739990875547">Bitcoin-nettverk</translation>
 <translation id="1077567586443625607">Zcash-nettverk</translation>
 <translation id="1177180573354712438">Cardano-nettverk</translation>
+<translation id="3176794108951154148">Polkadot-nettverk</translation>
 <translation id="3159419679550543837">Vis testnettverk</translation>
 <translation id="3215569562674795548">Rediger eller legg til nettverk</translation>
 <translation id="4418993400653250511">ID for kjeden</translation>

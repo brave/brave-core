@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStateManager } from '../../shared/lib/state_manager'
+import { createStateStore } from '$web-common/state_store'
 import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { AppState, defaultState } from '../lib/app_state'
 import { AppModel, defaultModel } from '../lib/app_model'
@@ -26,7 +26,7 @@ function repeat<T>(array: T[], times: number) {
 
 export function createModel(): AppModel {
   const locale = createLocaleContextForTesting(localeStrings)
-  const stateManager = createStateManager<AppState>({
+  const store = createStateStore<AppState>({
     ...defaultState(),
     embedder: {
       platform: 'desktop',
@@ -189,8 +189,8 @@ export function createModel(): AppModel {
 
     getString: locale.getString,
     getPluralString: locale.getPluralString,
-    getState: stateManager.getState,
-    addListener: stateManager.addListener,
+    getState: store.getState,
+    addListener: store.addListener,
 
     async getAvailableCountries() {
       return {
@@ -201,13 +201,13 @@ export function createModel(): AppModel {
 
     async resetRewards() {
       await delay(100)
-      stateManager.update({ paymentId: '', externalWallet: null })
+      store.update({ paymentId: '', externalWallet: null })
     },
 
     async enableRewards(countryCode) {
       await delay(500)
       setTimeout(() => {
-        stateManager.update({ paymentId: 'abc123' })
+        store.update({ paymentId: 'abc123' })
       }, 20)
       return 'success'
     },
@@ -223,26 +223,26 @@ export function createModel(): AppModel {
     },
 
     async setAdTypeEnabled(adType, enabled) {
-      const { adsInfo } = stateManager.getState()
+      const { adsInfo } = store.getState()
       if (adsInfo) {
         adsInfo.adsEnabled[adType] = enabled
-        stateManager.update({ adsInfo })
+        store.update({ adsInfo })
       }
     },
 
     async setNotificationAdsPerHour(adsPerHour) {
-      const { adsInfo } = stateManager.getState()
+      const { adsInfo } = store.getState()
       if (adsInfo) {
         adsInfo.notificationAdsPerHour = adsPerHour
-        stateManager.update({ adsInfo })
+        store.update({ adsInfo })
       }
     },
 
     async setAdsSubdivision(subdivision) {
-      const { adsInfo } = stateManager.getState()
+      const { adsInfo } = store.getState()
       if (adsInfo) {
         adsInfo.currentSubdivision = subdivision
-        stateManager.update({ adsInfo })
+        store.update({ adsInfo })
       }
     },
 
@@ -277,11 +277,11 @@ export function createModel(): AppModel {
     },
 
     async removeRecurringContribution(id) {
-      let { recurringContributions } = stateManager.getState()
+      let { recurringContributions } = store.getState()
       recurringContributions = recurringContributions.filter((entry) => {
         return entry.site.id !== id
       })
-      stateManager.update({ recurringContributions })
+      store.update({ recurringContributions })
     },
 
     async sendContribution(creatorID, amount, recurring) {
@@ -290,20 +290,20 @@ export function createModel(): AppModel {
     },
 
     async acceptTermsOfServiceUpdate() {
-      stateManager.update({ tosUpdateRequired: false })
+      store.update({ tosUpdateRequired: false })
     },
 
     async dismissSelfCustodyInvite() {
-      stateManager.update({ selfCustodyInviteDismissed: true })
+      store.update({ selfCustodyInviteDismissed: true })
     },
 
     async onCaptchaResult(success) {
-      stateManager.update({ captchaInfo: null })
+      store.update({ captchaInfo: null })
     },
 
     async clearNotification(id: string) {
-      stateManager.update({
-        notifications: stateManager.getState().notifications.filter((item) => {
+      store.update({
+        notifications: store.getState().notifications.filter((item) => {
           return item.id !== id
         }),
       })

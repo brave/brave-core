@@ -9,7 +9,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -45,6 +45,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 namespace commands {
@@ -288,6 +292,7 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
 TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   commands::AcceleratorService service(profile().GetPrefs(), {}, {});
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Test Brave News
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
   profile().GetPrefs()->SetBoolean(
@@ -296,6 +301,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   // Test Brave Talk
@@ -406,7 +412,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   // Test FilterCommandsByPolicy
   commands::AcceleratorPrefManager::Accelerators test_accelerators = {
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}},
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
       {IDC_CONFIGURE_BRAVE_NEWS, {commands::FromCodesString("Control+KeyN")}},
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {IDC_SHOW_BRAVE_WALLET, {commands::FromCodesString("Control+KeyW")}},
 #endif
@@ -416,8 +424,10 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   };
 
   // Disable some features and test filtering
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    true);
@@ -436,7 +446,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   EXPECT_EQ(1u, filtered.size());
 #endif
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   EXPECT_FALSE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_FALSE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
 #endif
@@ -445,8 +457,10 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #endif
 
   // Re-enable commands and test again
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    false);
@@ -457,15 +471,22 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 
   filtered = service.FilterCommandsByPolicy(test_accelerators);
   // All commands should be present now
-#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_EQ(4u, filtered.size());
-#elif BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_EQ(3u, filtered.size());
-#else
-  EXPECT_EQ(2u, filtered.size());
+  constexpr size_t kExpectedSize = 1  // IDC_NEW_TAB
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+                                   + 1
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+                                   + 1
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+                                   + 1
+#endif
+      ;
+  EXPECT_EQ(kExpectedSize, filtered.size());
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   EXPECT_TRUE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_TRUE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
 #endif

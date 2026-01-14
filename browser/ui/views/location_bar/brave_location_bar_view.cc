@@ -17,12 +17,12 @@
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -54,6 +54,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -118,6 +122,7 @@ void BraveLocationBarView::Init() {
     }
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (!browser_->profile()->IsOffTheRecord()) {
     brave_news_action_icon_view_ =
         AddChildView(std::make_unique<BraveNewsActionIconView>(
@@ -126,6 +131,7 @@ void BraveLocationBarView::Init() {
     views::InkDrop::Get(brave_news_action_icon_view_)
         ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = AddChildView(
       std::make_unique<OnionLocationView>(browser_->profile(), this, this));
@@ -186,9 +192,11 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
   }
+#endif
 
   LocationBarView::Update(contents);
 }
@@ -233,9 +241,11 @@ void BraveLocationBarView::OnChanged() {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
   }
+#endif
 
   if (promotion_controller_) {
     const bool show_button =
@@ -250,9 +260,11 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
   std::vector<views::View*> views;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_) {
     views.push_back(brave_news_action_icon_view_);
   }
+#endif
 
   if (brave_actions_) {
     views.push_back(brave_actions_);
@@ -296,6 +308,7 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
         brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_ &&
       brave_news_action_icon_view_->GetVisible()) {
     const int extra_width =
@@ -303,6 +316,7 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
         brave_news_action_icon_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_ && onion_location_view_->GetVisible()) {
     const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +

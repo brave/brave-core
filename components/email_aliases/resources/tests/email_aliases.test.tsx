@@ -112,64 +112,6 @@ describe('ManagePageConnected', () => {
     jest.clearAllMocks()
   })
 
-  it('shows loading state initially', async () => {
-    await setupTest()
-    await waitFor(() => {
-      expect(document.querySelector('leo-progressring')).toBeInTheDocument()
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT),
-      ).toBeInTheDocument()
-    })
-  })
-
-  it('shows sign up form when no email is available', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kUnauthenticated)
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByPlaceholderText(
-          S.SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER,
-        ),
-      ).toBeInTheDocument()
-    })
-  })
-
-  it('shows main view when email is available', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-
-    await waitFor(() => {
-      expect(screen.getByText(mockEmail)).toBeInTheDocument()
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_SIGN_OUT),
-      ).toBeInTheDocument()
-    })
-  })
-
-  it('shows verification pending view', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticating)
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL),
-      ).toBeInTheDocument()
-    })
-  })
-
   it('can add new aliases via observer', async () => {
     const service = await setupTest()
     await authenticate(service, AuthenticationStatus.kAuthenticated)
@@ -416,21 +358,6 @@ describe('ManagePageConnected', () => {
     await expectAliasesNotVisible()
   })
 
-  it('shows error message when auth fails', async () => {
-    const service = await setupTest()
-
-    await authenticate(
-      service,
-      AuthenticationStatus.kAuthenticating,
-      mockEmail,
-      'mockErrorMessage',
-    )
-
-    await waitFor(() => {
-      expect(screen.getByText(/mockErrorMessage/)).toBeInTheDocument()
-    })
-  })
-
   it('clears aliases when we are suddenly unauthenticated', async () => {
     const service = await setupTest()
 
@@ -439,27 +366,6 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kUnauthenticated)
 
     await expectAliasesNotVisible()
-  })
-
-  it('can recover from an authentication error', async () => {
-    const service = await setupTest()
-
-    await authenticate(
-      service,
-      AuthenticationStatus.kAuthenticating,
-      mockEmail,
-      'mockErrorMessage',
-    )
-
-    await waitFor(() => {
-      expect(screen.queryByText(/mockErrorMessage/)).toBeInTheDocument()
-    })
-
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail)
-
-    await waitFor(() => {
-      expect(screen.queryByText(/mockErrorMessage/)).not.toBeInTheDocument()
-    })
   })
 
   it("Data doesn't persist across different logins", async () => {
@@ -476,31 +382,5 @@ describe('ManagePageConnected', () => {
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await expectAliasesNotVisible()
-  })
-
-  it("doesn't show an error message if the string is empty", async () => {
-    const service = await setupTest()
-
-    await authenticate(
-      service,
-      AuthenticationStatus.kAuthenticating,
-      mockEmail,
-      'mockErrorMessage',
-    )
-
-    await waitFor(() => {
-      expect(screen.queryByText('mockErrorMessage')).toBeInTheDocument()
-    })
-
-    await authenticate(
-      service,
-      AuthenticationStatus.kAuthenticating,
-      mockEmail,
-      '' /* empty string */,
-    )
-
-    await waitFor(() => {
-      expect(screen.queryByText('mockErrorMessage')).not.toBeInTheDocument()
-    })
   })
 })

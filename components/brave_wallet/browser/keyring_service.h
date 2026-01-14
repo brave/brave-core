@@ -324,6 +324,7 @@ class KeyringService : public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            DefaultSolanaAccountRestored);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AccountsAdded);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, EncodePrivateKeyForExport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,

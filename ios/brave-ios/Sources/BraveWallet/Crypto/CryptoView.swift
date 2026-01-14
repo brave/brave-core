@@ -78,12 +78,16 @@ public struct CryptoView: View {
           Group {
             switch presentingContext {
             case .`default`(let selectedTab):
-              CryptoContainerView(
-                keyringStore: keyringStore,
-                cryptoStore: store,
-                toolbarDismissContent: dismissButtonToolbarContents,
-                selectedTab: selectedTab
-              )
+              if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+                EmptyView()
+              } else {
+                CryptoContainerView(
+                  keyringStore: keyringStore,
+                  cryptoStore: store,
+                  toolbarDismissContent: dismissButtonToolbarContents,
+                  selectedTab: selectedTab
+                )
+              }
             case .pendingRequests:
               RequestContainerView(
                 keyringStore: keyringStore,
@@ -248,6 +252,19 @@ public struct CryptoView: View {
                 )
               }
               .navigationViewStyle(.stack)
+            case .webUI(let action):
+              if action == .backup {
+                NavigationView {
+                  BackupWalletView(
+                    password: nil,
+                    keyringStore: keyringStore
+                  )
+                }
+                .accentColor(Color(.braveBlurpleTint))
+                .navigationViewStyle(.stack)
+              } else {
+                EmptyView()  // screen will be handled via `visibleScreen`
+              }
             }
           }
           .transition(.asymmetric(insertion: .identity, removal: .opacity))
@@ -270,16 +287,28 @@ public struct CryptoView: View {
           .zIndex(2)  // Needed or the dismiss animation messes up
         } else {
           UIKitNavigationView {
-            SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
-              .toolbar {
-                ToolbarItemGroup(placement: .destructiveAction) {
-                  Button {
-                    dismissAction()
-                  } label: {
-                    Text(Strings.CancelString)
-                  }
+            Group {
+              if case .webUI(let action) = presentingContext,
+                case .onboarding(let isNewAccount) = action
+              {
+                LegalView(
+                  keyringStore: keyringStore,
+                  setupOption: isNewAccount ? .new : .restore,
+                  dismissAction: dismissAction
+                )
+              } else {
+                SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
+              }
+            }
+            .toolbar {
+              ToolbarItemGroup(placement: .destructiveAction) {
+                Button {
+                  dismissAction()
+                } label: {
+                  Text(Strings.CancelString)
                 }
               }
+            }
           }
           .transition(.move(edge: .bottom))
           .zIndex(3)  // Needed or the dismiss animation messes up
@@ -303,8 +332,32 @@ public struct CryptoView: View {
       })
     )
     .environment(\.webImageDownloader, webImageDownloader)
-    .onChange(of: visibleScreen) { newValue in
-      if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
+    .onChange(of: visibleScreen) { oldValue, newValue in
+      guard newValue == .crypto else { return }
+      switch presentingContext {
+      case .panelUnlockOrSetup, .webUI(.unlock), .webUI(.onboarding):
+        // 1. wallet is unlocked from wallet panel
+        // 2. wallet is unlocked from wallet webui
+        // 3. onboarding is completed from wallet webui
+        dismissAction()
+      case .default:
+        // wallet is unlocked from menu
+        if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+          // need to open wallet webui
+          openWalletURLAction?(.webUI.wallet.home)
+        }
+      default:
+        break
+      }
+    }
+    .onChange(of: keyringStore.isWalletWebUIBackedUp) { oldValue, newValue in
+      // back up wallet from wallet webui
+      if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
+        case .webUI(let action) = presentingContext,
+        action == .backup,
+        !oldValue,
+        newValue
+      {
         dismissAction()
       }
     }

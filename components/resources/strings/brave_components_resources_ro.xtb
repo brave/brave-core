@@ -851,7 +851,6 @@
 <translation id="3799091982455573025">Conversie pe <ph name="NETWORK_NAME"/> via <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">Punte de la <ph name="FRIST_NETWORK_NAME"/> la <ph name="SECOND_NETWORK_NAME"/></translation>
 <translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      one {}
       few {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} pași}=1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} spas}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} pași}
     }</translation>
@@ -971,6 +970,7 @@
 <translation id="8459631690385393533">Salvează activele Cardano</translation>
 <translation id="4915057812371523845">Salvează activele Cardano Testnet</translation>
 <translation id="5387140102951033657">Acceptă active Substrate în lanțul de relee Polkadot și parachains Substrate</translation>
+<translation id="5601177227092533167">Acceptă active Substrate în lanțul de relee Westend și parachains Substrate</translation>
 <translation id="8500387257977999003">Cheie privată <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="232925166623833246">Importare din portofelul hardware</translation>
@@ -1302,7 +1302,6 @@
 <translation id="6423985584914773314">Nu este o adresă FIL validă</translation>
 <translation id="5522073372365069684">Cumpărați cu Ramp</translation>
 <translation id="6153197326949684688">Vindeți folosind <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Cumpărați cu Sardine</translation>
 <translation id="3301984548406568819">Datele financiare și referitoare la tranzacții sunt procesate de partenerii noștri onramp. Brave nu colectează și nui are acces la astfel de date.</translation>
 <translation id="5795821518596541838">Partener de tranzacții</translation>
 <translation id="1916136859742693273">Brave Wallet utilizează Meld.io pentru a ajuta la agregarea și identificarea diverșilor furnizori de criptomonede pentru regiunea dvs. Vom partaja informații cu Meld.io pentru a finaliza tranzacția, inclusiv adresa portofelului dvs. și codul țării. Pentru mai multe informații, vă rugăm să citiți termenii de utilizare ai Meld.</translation>
@@ -1328,12 +1327,10 @@
 <translation id="5973390321030037823">Cumpărați cu Link</translation>
 <translation id="1932640759496708012">Cumpărați cu Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Cumpărați cu Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Cumpărați criptomonede utilizând un card Visa sau Mastercard.</translation>
-<translation id="3648994606506382289">Cel mai simplu, rapid și ieftin mod de a cumpăra cripto este prin card și prin transferuri bancare.</translation>
 <translation id="3101839349578102016">Cumpărați instant cu contul dvs. bancar. Taxe mai mici.</translation>
 <translation id="8280898387224328221">Plătiți cu card de credit, debit sau din contul bancar</translation>
 <translation id="2218174283683424104">Cumpărați cu cel mai cunoscut nume de domeniul crypto.</translation>
@@ -1384,7 +1381,6 @@
 <translation id="1778601041100951971">Se protejează <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> a fost protejat</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
-      one {}
       few {{PENDING_TRANSACTIONS} tranzacții în așteptare.}=1 {{PENDING_TRANSACTIONS} tranzacție în așteptare.}
       other {{PENDING_TRANSACTIONS} tranzacții în așteptare.}
     }</translation>
@@ -1666,6 +1662,7 @@
 <translation id="8044899503464538266">Lent</translation>
 <translation id="3569512916300900704">Mediu</translation>
 <translation id="7019805045859631636">Rapid</translation>
+<translation id="1345580220012169610">Taxă estimată</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
 <translation id="6778140392042462129">Schimburi</translation>
 <translation id="6173494033320397682">Exclusiv rută directă</translation>
@@ -1719,6 +1716,9 @@
 <translation id="6276584161122912863">Gas price</translation>
 <translation id="6132197290665156212">Taxă estimată pentru rețea</translation>
 <translation id="1788636309517085411">Folosește implicit</translation>
+<translation id="3968375068626660591">Această taxă de gaz va înlocui valoarea originală.</translation>
+<translation id="1661088862481901887">Aceasta va crea o tranzacție nouă cu o taxă de gaz nouă pentru a înlocui și anula tranzacția în așteptare. O anulare poate fi încercată doar dacă tranzacția este încă în așteptare în rețea.</translation>
+<translation id="5797060124625958778">Prioritate viteză</translation>
 <translation id="6213230117190778270">Primiți</translation>
 <translation id="6748108480210050150">De la</translation>
 <translation id="4875290286426670462">Nelimitate <ph name="ASSET_SYMBOL"/></translation>
@@ -2119,6 +2119,7 @@ other {# surse}
 <translation id="5329136173514538969">Anulați divizarea filelor</translation>
 <translation id="7595612919377246359">Schimbă pozițiile filelor</translation>
 <translation id="2367972762794486313">Afișați aplicații</translation>
+<translation id="3468387898712904997">Nume alternativ nou pentru email</translation>
 <translation id="8591883849678260674">Vedeți originalul</translation>
 <translation id="1969654232209826429">min. de citire</translation>
 <translation id="4101707289420716287">Dezactivați Speedreader</translation>
@@ -2185,11 +2186,23 @@ other {# surse}
 <translation id="7127671672828944579">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen 14B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Gemma 3 12B, un model creat de Google DeepMind pentru a fi performant și aplicabil la multe cazuri de utilizare. Gemma este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza DeepSeek R1, un model creat de DeepSeek pentru a îndeplini sarcini de raționament profund. DeepSeek R1 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza DeepSeek V3.1, un model creat de DeepSeek pentru a fi performant și aplicabil la multe cazuri de utilizare. DeepSeek V3.1 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Salut, sunt Leo. Sunt un asistent AI oferit de Brave. Sunt alimentat de Claude Instant, un model creat de Anthropic pentru a susține sarcini conversaționale și de procesare a textului. Claude Instant este găzduit de Brave prin infrastructura noastră securizată.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Haiku, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Haiku este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Sonnet, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Sonnet este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Llama 4 Scout, un model creat de Meta pentru a fi performant și aplicabil la multe cazuri de utilizare. Llama 4 Scout este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Llama 4 Maverick, un model creat de Meta pentru a fi performant și aplicabil la multe cazuri de utilizare. Llama 4 Maverick este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza GPT OSS 20B, un model creat de OpenAI pentru a fi performant și aplicabil la multe cazuri de utilizare. GPT OSS 20B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza GPT OSS 120B, un model creat de OpenAI pentru a fi performant și aplicabil la multe cazuri de utilizare. GPT OSS 120B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Mistral Large, un model creat de Mistral pentru a fi performant și aplicabil la multe cazuri de utilizare. Mistral Large este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Pixtral Large, un model creat de Mistral pentru a fi performant și aplicabil la multe cazuri de utilizare. Pixtral Large este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen 3 235B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen 3 235B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Deepseek V3.1, un model creat de Deepseek pentru a fi performant și aplicabil la multe cazuri de utilizare. Deepseek V3.1 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen 3 Coder 480B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen 3 Coder 480B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Opus, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Opus este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
+<translation id="830868413617744215">beta</translation>
 <translation id="631371844654031449">Modele recomandate</translation>
 <translation id="6568044140836233369">Afișați toate modelele</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2314,6 +2327,7 @@ other {# surse}
 <translation id="8506027496671575183">Căutare • Viziune • Instrumente</translation>
 <translation id="3213834013136637671">Căutare • Viziune</translation>
 <translation id="7697693533305615127">Căutare • Gândire</translation>
+<translation id="7465032796278724624">Privacy verificabilă cu NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelul se schimbă dinamic pentru a folosi cel mai bun pentru sarcină</translation>
 <translation id="3965507912994218570">Setări Leo</translation>
 <translation id="3754337604877048671">Prezentarea Leo AI</translation>
@@ -2377,7 +2391,7 @@ other {# surse}
 <translation id="8410199626695516952">Ok, nu o să-mi amintesc asta</translation>
 <translation id="8419849467765474535">Salvarea memoriei a eșuat. Vă rugăm să încercați din nou.</translation>
 <translation id="5517580030864973329">Navigarea paginii web la o adresă nouă</translation>
-<translation id="8832457834975923266">A navigat pe pagina web la <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navighează pe pagina web la <ph name="URL"/></translation>
 <translation id="5095252080770652994">Progres</translation>
 <translation id="8332385567036775056">Trepte</translation>
 <translation id="4521931942079977149">Faceți clic pe pagină</translation>
@@ -2392,6 +2406,20 @@ other {# surse}
 <translation id="4798146464408730445">Nu s-au găsit competențe. Creați una nouă făcând clic pe butonul "Nou".</translation>
 <translation id="271033894570825754">Nou</translation>
 <translation id="8266605059880650542">Notarea unor informații despre pagină pentru mai târziu</translation>
+<translation id="7049849063044248805">Modul Agent funcționează cu modele care au suport pentru instrumente. Modelele non-compatibile sunt ascunse din această listă.</translation>
+<translation id="3397808797783614750">Activarea navigării automate AI poate duce la consecințe dăunătoare, neintenționate pentru confidențialitatea, finanțele și comunicările dvs. online. <ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Avertisment de securitate</translation>
+<translation id="6077070599873946984">Brave IA are nevoie de permisiunea ta pentru: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Operațiunea a fost detectată ca fiind potențial aliniată greșit cu cererea ta:</translation>
+<translation id="3927932062596804919">Refuză</translation>
+<translation id="4569155249847375786">Verificat</translation>
+<translation id="3240988198391588806">Mod agent</translation>
+<translation id="538066983058750776">Despre profilul Leo</translation>
+<translation id="1577570612997320961">Pentru a-ți proteja datele, acest profil izolat Brave limitează accesul IA la profilul tău principal de navigare. Leo IA are permisiuni suplimentare aici pentru a vizita și interacționa cu site-urile, astfel că poți încerca să îi dai sarcini și să navigați împreună pentru o productivitate sporită.</translation>
+<translation id="648116453147783450">Datele și sesiunile tale</translation>
+<translation id="3906161204878017619">Când te autentifici pe un site utilizând acest profil, Leo poate vedea informațiile de pe acel site dacă e deschis, fie când el vizitează site-ul, fie când îl rogi să facă ceva acolo.</translation>
+<translation id="5583803492921648196">Comutarea înapoi</translation>
+<translation id="8068929004144221259">Poți comuta înapoi la profilul tău obișnuit oricând din meniul principal sau din avatarul Leo din bara de instrumente. Modul Agent se va deschide întotdeauna în acest profil.</translation>
 <translation id="3486480638399578250">Menține adresa de e-mail privată</translation>
 <translation id="7765422154906712751">Creează adrese unice și aleatorii care redirecționează către contul tău de e-mail Brave și care pot fi șterse oricând. Menține adresa ta reală de e-mail departe de publicitate.</translation>
 <translation id="5222676887888702881">Deconectare</translation>
@@ -2514,6 +2542,12 @@ other {# surse}
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="131231380815754440">Activați HTTPS</translation>
 <translation id="4824468494729001999">Blocare scripturi</translation>
+<translation id="5465091511225410553">(impus)</translation>
+<translation id="8646614940337543907">(impus de extensie)</translation>
+<translation id="3559821445144429594">(impus de politică)</translation>
+<translation id="550374350047782149">(impus de lista de permisiuni)</translation>
+<translation id="68858161161918073">(impus de supervizor)</translation>
+<translation id="5735057546627037489">(impus de PWA)</translation>
 <translation id="3246600097575692802">Activați scripturile blocate</translation>
 <translation id="3603525299146223354">Urmăritori &amp; reclame</translation>
 <translation id="4448697385961650078">Blocare șabloane de urmărire &amp; reclame</translation>
@@ -2548,6 +2582,7 @@ other {# surse}
       other {Scuturile Brave a blocat {BLOCKED_COUNT} trackere pe <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Dați clic pe pictograma Brave pentru a afișa Scuturile Brave.</translation>
+<translation id="542789539047208469">Informații site</translation>
 <translation id="6294662480095808915">Confidențialitate. În mod implicit.</translation>
 <translation id="4366423156486478559">Obțineți protecție Brave la fiecare link pe care faceți clic. Pur și simplu setați Brave ca implicită și navigați. Privat.</translation>
 <translation id="3830912418080848377">Import setări</translation>
@@ -2684,5 +2719,6 @@ Permiteți-ne să vă conectăm!</translation>
  fila existentă</translation>
 <translation id="451189393813405346">Întrebați-l pe Leo</translation>
 <translation id="1602850501393095406">Apasă ↑ pentru a evidenția</translation>
+<translation id="8367705492654390392">Întreabă orice</translation>
 <translation id="8525248723479742219">Redați mai târziu</translation>
 </translationbundle>

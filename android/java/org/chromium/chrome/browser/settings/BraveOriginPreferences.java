@@ -21,6 +21,7 @@ import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -126,9 +127,13 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (policyKey == null || mBraveOriginSettingsHandler == null) {
             return false;
         }
+        // For DISABLED policies, invert the value (checked = enabled = false policy value)
+        // For ENABLED policies, use the value as-is (checked = enabled = true policy value)
+        boolean policyValue =
+                BraveOriginSubscriptionPrefs.isPolicyInverted(policyKey) ? !isEnabled : isEnabled;
         mBraveOriginSettingsHandler.setPolicyValue(
                 policyKey,
-                isEnabled,
+                policyValue,
                 (success) -> {
                     if (!success) {
                         Log.e(TAG, "Failed to set policy value for " + policyKey);
@@ -170,8 +175,14 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 policyKey,
                 (value) -> {
                     if (value != null) {
-                        preference.setChecked(value);
-                        updateToggleDescription(preference, value);
+                        // For DISABLED policies, invert the value (!value)
+                        // For ENABLED policies, use the value as-is
+                        boolean checkedValue =
+                                BraveOriginSubscriptionPrefs.isPolicyInverted(policyKey)
+                                        ? !value
+                                        : value;
+                        preference.setChecked(checkedValue);
+                        updateToggleDescription(preference, checkedValue);
                     }
                 });
     }
@@ -188,15 +199,15 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (PREF_REWARDS_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_REWARDS_DISABLED;
         } else if (PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_P3_A_ENABLED;
+            return BravePolicyConstants.BRAVE_P3A_ENABLED;
         } else if (PREF_LEO_AI_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_A_I_CHAT_ENABLED;
+            return BravePolicyConstants.BRAVE_AI_CHAT_ENABLED;
         } else if (PREF_NEWS_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_NEWS_DISABLED;
         } else if (PREF_STATISTICS_REPORTING_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_STATS_PING_ENABLED;
         } else if (PREF_VPN_SWITCH.equals(preferenceKey)) {
-            return BravePolicyConstants.BRAVE_V_P_N_DISABLED;
+            return BravePolicyConstants.BRAVE_VPN_DISABLED;
         } else if (PREF_WALLET_SWITCH.equals(preferenceKey)) {
             return BravePolicyConstants.BRAVE_WALLET_DISABLED;
         } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(preferenceKey)) {

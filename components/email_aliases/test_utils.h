@@ -40,8 +40,7 @@ class AuthStateObserver
 
   mojom::AuthStatePtr last_status_ =
       mojom::AuthState::New(mojom::AuthenticationStatus::kStartup,
-                            std::string(),
-                            std::nullopt);
+                            std::string());
 
   mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver_{
       this};

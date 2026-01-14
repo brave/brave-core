@@ -275,15 +275,13 @@ export const makeSwapOrBridgeRoute = ({
   fromToken,
   fromAccount,
   toToken,
-  toAddress,
-  toCoin,
+  toAccountId,
   routeType,
 }: {
   fromToken: BraveWallet.BlockchainToken
   fromAccount?: BraveWallet.AccountInfo
   toToken?: BraveWallet.BlockchainToken
-  toAddress?: string
-  toCoin?: BraveWallet.CoinType
+  toAccountId?: BraveWallet.AccountId
   routeType?: 'swap' | 'bridge'
 }) => {
   const baseQueryParams = {
@@ -296,29 +294,22 @@ export const makeSwapOrBridgeRoute = ({
     ? {
         ...baseQueryParams,
         fromAccountId: fromAccount.accountId.uniqueKey,
-        // Will default to fromAccount's address and be replaced
-        // below if toAddress is passed.
-        toAddress: fromAccount.accountId.address,
-        // Will default to fromAccount's coin and be replaced
-        // below if toCoin is passed.
-        toCoin: fromAccount.accountId.coin.toString(),
+        // Will default to fromAccount's uniqueKey and be replaced
+        // below if toAccountId is passed.
+        toAccountId: fromAccount.accountId.uniqueKey,
       }
     : baseQueryParams
 
-  const toAddressParams = toAddress
-    ? { ...fromAccountParams, toAddress: toAddress }
+  const toAccountIdParams = toAccountId
+    ? { ...fromAccountParams, toAccountId: toAccountId.uniqueKey }
     : fromAccountParams
-
-  const toCoinParams = toCoin
-    ? { ...toAddressParams, toCoin: toCoin.toString() }
-    : toAddressParams
 
   const toTokenParams = toToken
     ? {
-        ...toCoinParams,
+        ...toAccountIdParams,
         toToken: toToken.contractAddress || toToken.symbol.toUpperCase(),
       }
-    : toCoinParams
+    : toAccountIdParams
 
   const params = new URLSearchParams(toTokenParams)
 

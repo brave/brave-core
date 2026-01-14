@@ -39,6 +39,12 @@ BASE_FEATURE(kBraveWalletPolkadotFeature,
              "BraveWalletPolkadot",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if !defined(OFFICIAL_BUILD)
+BASE_FEATURE(kBraveWalletDebugFeature,
+             "BraveWalletDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
 BASE_FEATURE(kBraveWalletCardanoFeature,
              "BraveWalletCardano",
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

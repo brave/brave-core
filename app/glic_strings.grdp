@@ -128,7 +128,12 @@
       Show Gemini in Mac menu bar and turn on keyboard shortcut
     </message>
   </if>
-  <if expr="not is_macosx">
+  <if expr="is_chromeos">
+  <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" desc="Name of the toggle that controls whether the keyboard shortcut is enabled (on ChromeOS only).">
+      Turn on Gemini keyboard shortcut
+    </message>
+  </if>
+  <if expr="is_win or is_linux">
     <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the system tray (on Windows and Linux).">
       Show Gemini in system tray and turn on keyboard shortcut
     </message>
@@ -196,12 +201,6 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini by default, but the user's data is not used to improve the model.">
     The current tab is shared with Gemini when you start a new chat. Your data is not used to improve generative AI models. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more about AI and privacy<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
-    Let Gemini browse for you
-  </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
-    Gemini works in your tabs to complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON" desc="Name of the Gemini Apps Activity link out.">
     Gemini Apps Activity
   </message>
@@ -239,11 +238,18 @@
     Conversations about shared tabs may be seen by human reviewers to improve Gemini.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERSONAL_CONTEXT_LABEL" desc="Description for the Gemini personal context linkout.">
-      View and manage your personal context
+      Manage the information Gemini can use to personalize your experience
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERSONAL_CONTEXT" desc="Title for the Gemini personal context section in Other Data.">
+  <message name="IDS_SETTINGS_GLIC_PERSONAL_CONTEXT" desc="Title for the Gemini personal context linkout.">
       Personal context
   </message>
+  <message name="IDS_SETTINGS_GLIC_INSTRUCTIONS_BUTTON" desc="Title for the Gemini instructions linkout.">
+     Instructions for Gemini
+  </message>
+  <message name="IDS_SETTINGS_GLIC_INSTRUCTIONS_BUTTON_SUBLABEL" desc="Description for the Gemini instructions linkout.">
+    Customize how Gemini responds to you
+  </message>
+
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_WHEN_ON_1" desc="First point in 'when on' column of the 'let Gemini browse for you' expands">
     Gemini can help you book appointments, create shopping carts, or do other tasks you give it.
   </message>
@@ -358,6 +364,7 @@
   <if expr="not use_titlecase">
     <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create image with Gemini</message>
   </if>
+
   <!-- IPH -->
   <if expr="use_titlecase">
     <message name="IDS_GLIC_PROMO_CONFIRM" desc="The button that a user clicks to open Gemini.">Try Now</message>
@@ -370,5 +377,16 @@
   </message>
   <message name="IDS_GLIC_TRYIT_BODY" desc="Text for a promo pointing to the Gemini icon in Brave, that opens Gemini in Brave if selected.">
     Chat with Gemini in Brave to get answers, key takeaways, and more as you browse
+  </message>
+
+  <!-- Shortcut IPH -->
+  <message name="IDS_GLIC_SHORTCUT_IPH_TEXT_TEMPLATE" desc="Placeholder for string to be shown for IPH informing users about Glic keyboard shortcut." translateable="false">
+    <ph name="message">$1<ex>Easily open with Ctrl+⌘+G</ex></ph>
+  </message>
+  <message name="IDS_GLIC_SHORTCUT_IPH_TEXT" desc="Title for a promo pointing to the Gemini icon in Brave. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave." translateable="false">
+    Easily open with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>
+  </message>
+  <message name="IDS_GLIC_SHORTCUT_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Title for a promo pointing to the Gemini icon in Brave for screen readers. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave." translateable="false">
+    Easily open Gemini in Brave with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>
   </message>
 </grit-part>

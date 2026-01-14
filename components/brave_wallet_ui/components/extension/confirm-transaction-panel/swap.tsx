@@ -131,8 +131,8 @@ export function ConfirmSwapTransaction() {
         // set to true once Swap+Send is supported
         expectRecipientAddress={false}
         isBridgeTx={isBridgeTx}
-        toChainId={selectedPendingTransaction?.swapInfo?.toChainId}
-        toCoin={selectedPendingTransaction?.swapInfo?.toCoin}
+        toChainId={selectedPendingTransaction?.swapInfoDeprecated?.toChainId}
+        toCoin={selectedPendingTransaction?.swapInfoDeprecated?.toCoin}
       />
 
       <PendingTransactionNetworkFeeAndSettings

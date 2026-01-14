@@ -15,6 +15,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 namespace brave_vpn {
 
 class BraveVpnMetricsTest : public testing::Test {
@@ -84,6 +88,13 @@ class BraveVpnMetricsTest : public testing::Test {
 };
 
 TEST_F(BraveVpnMetricsTest, NewUserReturningMetric) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   metrics_->RecordAllMetrics(false);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 0, 2);
 
@@ -100,6 +111,13 @@ TEST_F(BraveVpnMetricsTest, NewUserReturningMetric) {
 }
 
 TEST_F(BraveVpnMetricsTest, DaysInMonthUsedMetric) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
   metrics_->RecordAllMetrics(false);
   histogram_tester_.ExpectTotalCount(kDaysInMonthUsedHistogramName, 0);
 

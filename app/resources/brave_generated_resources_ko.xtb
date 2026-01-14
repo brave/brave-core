@@ -336,6 +336,7 @@
 <translation id="7557539689487606886">프리미엄 가입</translation>
 <translation id="1035309871698658326">탭을 열면 비공개 탭이 아닌 모든 탭의 제목과 출처가 자동으로 레오로 전송되어 분류됩니다.</translation>
 <translation id="3435896845095436175">사용</translation>
+<translation id="9082792303833649978">이 설정은 관리자 또는 다른 Brave 정책에 의해 관리되고 있습니다.</translation>
 <translation id="1940221956626514677">도구 모음 사용자 지정</translation>
 <translation id="6501807887341963552">테마 및 색상</translation>
 <translation id="6724227215236550330">저장된 암호가 여기에 표시됩니다. 이 기기에서 <ph name="BRAND"/>(으)로 비밀번호를 가져오려면 <ph name="BEGIN_LINK"/>CSV 파일을 선택하세요.<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@
 <translation id="2263346047290834619">트리 탭 사용</translation>
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="4691131445504068802">최소화될 때 완전히 숨기기</translation>
+<translation id="6763346436728173884">탭 닫기 버튼 항상 숨기기</translation>
 <translation id="4909269867860362936">최소화된 상태에서 마우스를 올리면 자동 확장</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
 <translation id="8925055964134259461">창별로 독립적으로 세로 탭 자동 확장</translation>
@@ -752,6 +754,7 @@
 <translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="1077567586443625607">Zcash 네트워크</translation>
 <translation id="1177180573354712438">Cardano 네트워크</translation>
+<translation id="3176794108951154148">Polkadot 네트워크</translation>
 <translation id="3159419679550543837">테스트 네트워크 표시</translation>
 <translation id="3215569562674795548">네트워크 편집 또는 새로 추가</translation>
 <translation id="4418993400653250511">체인의 ID</translation>
