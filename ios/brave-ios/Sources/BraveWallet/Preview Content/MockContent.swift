@@ -275,6 +275,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
   }
@@ -315,6 +316,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: .init(
         from: .eth,
         fromChainId: BraveWallet.MainnetChainId,
@@ -369,6 +371,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
   }
@@ -413,6 +416,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
   }
@@ -454,6 +458,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
   }
@@ -494,6 +499,7 @@ extension BraveWallet.TransactionInfo {
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
   }
@@ -526,6 +532,7 @@ extension BraveWallet.TransactionInfo {
     chainId: BraveWallet.FilecoinMainnet,
     effectiveRecipient: nil,
     isRetriable: false,
+    swapInfo: nil,
     swapInfoDeprecated: nil
   )
   /// Bitcoin Unapproved Send
@@ -556,6 +563,7 @@ extension BraveWallet.TransactionInfo {
     chainId: BraveWallet.BitcoinMainnet,
     effectiveRecipient: nil,
     isRetriable: false,
+    swapInfo: nil,
     swapInfoDeprecated: nil
   )
   /// Zcash Unapproved Send
@@ -588,6 +596,7 @@ extension BraveWallet.TransactionInfo {
     chainId: BraveWallet.ZCashMainnet,
     effectiveRecipient: nil,
     isRetriable: false,
+    swapInfo: nil,
     swapInfoDeprecated: nil
   )
 
