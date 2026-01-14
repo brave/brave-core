@@ -42,6 +42,7 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyResend;
 using endpoints::VerifyResult;
 
 namespace {
@@ -188,9 +189,73 @@ void BraveAccountService::RegisterFinalize(
                      encrypted_verification_token));
 }
 
-void BraveAccountService::ResendConfirmationEmail() {
-  // TODO(https://github.com/brave/brave-browser/issues/50653)
-  NOTIMPLEMENTED();
+void BraveAccountService::ResendConfirmationEmail(
+    ResendConfirmationEmailCallback callback) {
+  // static std::size_t i = 0;
+  // if (i == 0) {
+  //   ++i;
+  //   std::move(callback).Run(
+  //       base::unexpected(mojom::ResendConfirmationEmailError::New(
+  //           std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+  //                             kUserNotInTheVerificationState)));
+  // } else if (i == 1) {
+  //   ++i;
+  //   std::move(callback).Run(
+  //       base::unexpected(mojom::ResendConfirmationEmailError::New(
+  //           std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+  //                             kVerificationTokenDecryptionFailed)));
+  // } else if (i == 2) {
+  //   ++i;
+  //   std::move(callback).Run(base::unexpected(
+  //       mojom::ResendConfirmationEmailError::New(400, std::nullopt)));
+  // } else if (i == 3) {
+  //   ++i;
+  //   std::move(callback).Run(
+  //       base::unexpected(mojom::ResendConfirmationEmailError::New(
+  //           400,
+  //           mojom::ResendConfirmationEmailErrorCode::kMiscServerError)));
+  // } else if (i == 4) {
+  //   ++i;
+  //   std::move(callback).Run(
+  //       base::unexpected(mojom::ResendConfirmationEmailError::New(
+  //           400, mojom::ResendConfirmationEmailErrorCode::
+  //                    kMaximumEmailSendAttemptsExceeded)));
+  // } else if (i == 5) {
+  //   ++i;
+  //   std::move(callback).Run(
+  //       base::unexpected(mojom::ResendConfirmationEmailError::New(
+  //           400,
+  //           mojom::ResendConfirmationEmailErrorCode::kEmailAlreadyVerified)));
+  // } else {
+  //   std::move(callback).Run(mojom::ResendConfirmationEmailResult::New());
+  // }
+
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+  if (encrypted_verification_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                              kUserNotInTheVerificationState)));
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                              kVerificationTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<VerifyResend::Request>>();
+  SetBearerToken(request, verification_token);
+  // Server side will determine locale based on the Accept-Language request
+  // header (which is included automatically by upstream).
+  request.locale = "";
+  Client<VerifyResend>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnResendConfirmationEmail,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::CancelRegistration() {
@@ -364,6 +429,40 @@ void BraveAccountService::OnRegisterFinalize(
 
             return mojom::RegisterFinalizeResult::New();
           });
+
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveAccountService::OnResendConfirmationEmail(
+    ResendConfirmationEmailCallback callback,
+    VerifyResend::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody                      ]> ==>
+          // expected<SuccessBody, [ResendConfirmationEmailErrorPtr]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::ResendConfirmationEmailError>(
+                status_code, std::move(error_body));
+          })
+          // expected<[SuccessBody                     ],
+          //                         ResendConfirmationEmailErrorPtr> ==>
+          // expected<[ResendConfirmationEmailResultPtr],
+          //                         ResendConfirmationEmailErrorPtr>
+          .and_then(
+              [](auto success_body)
+                  -> base::expected<mojom::ResendConfirmationEmailResultPtr,
+                                    mojom::ResendConfirmationEmailErrorPtr> {
+                return mojom::ResendConfirmationEmailResult::New();
+              });
 
   std::move(callback).Run(std::move(result));
 }

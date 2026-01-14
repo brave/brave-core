@@ -161,15 +161,29 @@ class Client {
       response.headers = std::move(headers);
     }
 
+    // Normalize null/empty response bodies to an empty JSON object (turns into
+    // an empty base::Dict) so that FromValue() can succeed - but only if the
+    // endpoint definition expects truly nothing (i.e. on 2xx, SuccessBody is
+    // an empty type; on non-2xx, ErrorBody is an empty type). This supports
+    // endpoints for which we don't expect a response body (e.g. HTTP 204 No
+    // Content).
+    const bool is_2xx = network::IsSuccessfulStatus(*response.status_code);
+    if (!response_body || response_body->empty()) {
+      if (is_2xx ? std::is_empty_v<typename Response::SuccessBody>
+                 : std::is_empty_v<typename Response::ErrorBody>) {
+        response_body = "{}";
+      }
+    }
+
     const auto value =
         base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
             .value_or(base::Value());
     // Intentionally kept as an if-else block for symmetry.
-    if (network::IsSuccessfulStatus(*response.status_code)) {  // 2xx
+    if (is_2xx) {
       if (auto success_body = Response::SuccessBody::FromValue(value)) {
         response.body = std::move(*success_body);
       }
-    } else {  // non-2xx
+    } else {
       if (auto error_body = Response::ErrorBody::FromValue(value)) {
         response.body = base::unexpected(std::move(*error_body));
       }
