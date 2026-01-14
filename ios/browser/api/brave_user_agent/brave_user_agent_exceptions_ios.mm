@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_user_agent/common/features.h"

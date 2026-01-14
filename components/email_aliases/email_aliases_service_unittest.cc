@@ -10,7 +10,6 @@
 #include <variant>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
@@ -107,10 +106,9 @@ class EmailAliasesAPITest : public ::testing::Test {
   void AddManageResponseFor(const std::optional<std::string>& body) {
     const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
     if (body.has_value()) {
-      url_loader_factory_.AddResponse(manage_url.spec(), *body,
-                                      base::Contains(*body, "error")
-                                          ? net::HTTP_BAD_REQUEST
-                                          : net::HTTP_OK);
+      url_loader_factory_.AddResponse(
+          manage_url.spec(), *body,
+          body->contains("error") ? net::HTTP_BAD_REQUEST : net::HTTP_OK);
     } else {
       network::URLLoaderCompletionStatus completion(net::ERR_FAILED);
       url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
@@ -219,7 +217,7 @@ MATCHER_P(MatchesExpected, expected_result, "") {
                  },
                  expected_result.error());
 
-  return !arg.has_value() && base::Contains(arg.error(), expected_error);
+  return !arg.has_value() && arg.error().contains(expected_error);
 }
 
 template <typename T>

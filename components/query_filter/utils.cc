@@ -10,7 +10,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
@@ -180,7 +179,7 @@ bool IsScopedTracker(
     std::string_view param_name,
     std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
-  if (!base::Contains(trackers, param_name)) {
+  if (!trackers.contains(param_name)) {
     return false;
   }
 

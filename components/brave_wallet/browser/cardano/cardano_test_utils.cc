@@ -12,6 +12,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"

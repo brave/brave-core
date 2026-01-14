@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -182,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
 
   // Verify all tools match expected names
   for (const auto& tool : tool_provider->GetTools()) {
-    EXPECT_TRUE(base::Contains(kContentAgentToolNames, tool->Name()))
+    EXPECT_TRUE(kContentAgentToolNames.contains(tool->Name()))
         << "Tool " << tool->Name() << " should be in the agent profile";
   }
 
@@ -198,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   // check it isn't the ContentAgentToolProvider.
   if (regular_tool_provider) {
     for (const auto& tool : regular_tool_provider->GetTools()) {
-      EXPECT_FALSE(base::Contains(kContentAgentToolNames, tool->Name()))
+      EXPECT_FALSE(kContentAgentToolNames.contains(tool->Name()))
           << "Tool " << tool->Name() << " should not be in the regular profile";
     }
   }
