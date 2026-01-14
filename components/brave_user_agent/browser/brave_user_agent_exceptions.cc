@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_split.h"
@@ -77,7 +76,7 @@ bool BraveUserAgentExceptions::CanShowBrave(const GURL& url) {
       url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   // Show Brave only if the domain is not on the exceptions list.
-  return !base::Contains(excepted_domains_, domain);
+  return !excepted_domains_.contains(domain);
 }
 
 void BraveUserAgentExceptions::AddToExceptedDomainsForTesting(

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/json/values_util.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 
@@ -87,7 +86,7 @@ void MigratePlaylistOrder(const base::Value::Dict& playlists,
   base::flat_set<std::string> removed_ids;
   for (const auto& existing_id_value : order) {
     const auto& existing_id = existing_id_value.GetString();
-    if (base::Contains(missing_ids, existing_id)) {
+    if (missing_ids.contains(existing_id)) {
       missing_ids.erase(existing_id);
     } else {
       removed_ids.insert(existing_id);
@@ -97,7 +96,7 @@ void MigratePlaylistOrder(const base::Value::Dict& playlists,
   // Added 2024.01.
   // Data resetting had left dangled data in the order list and it caused crash
   order.EraseIf([&](const auto& id_value) {
-    return base::Contains(removed_ids, id_value.GetString());
+    return removed_ids.contains(id_value.GetString());
   });
 
   for (const auto& id : missing_ids) {

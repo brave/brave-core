@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/map_util.h"
 
 namespace brave_wallet {
@@ -72,7 +71,7 @@ std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
 
   std::string address = GetAddressInternal(*hd_key);
 
-  if (base::Contains(imported_accounts_, address)) {
+  if (imported_accounts_.contains(address)) {
     return std::nullopt;
   }
 

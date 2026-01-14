@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "brave/components/request_otr/browser/request_otr_component_installer.h"
@@ -51,7 +50,7 @@ void RequestOTRService::OnRulesReady(const std::string& json_content) {
 bool RequestOTRService::ShouldBlock(const GURL& url) const {
   // Check host cache
   const std::string etldp1 = RequestOTRRule::GetETLDForRequestOTR(url.host());
-  if (!base::Contains(host_cache_, etldp1)) {
+  if (!host_cache_.contains(etldp1)) {
     return false;
   }
 

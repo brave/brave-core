@@ -16,7 +16,6 @@
 
 #include "base/barrier_closure.h"
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
@@ -826,7 +825,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   }
 
   if (response_body && !response_body->empty() && loader->ResponseInfo() &&
-      base::Contains(loader->ResponseInfo()->mime_type, "json")) {
+      loader->ResponseInfo()->mime_type.contains("json")) {
     json_sanitizer_task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(

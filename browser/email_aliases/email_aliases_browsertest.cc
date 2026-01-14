@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"

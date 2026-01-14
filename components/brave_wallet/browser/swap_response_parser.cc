@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -437,7 +436,7 @@ mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value) {
   result->message = jupiter_error_response_value->message;
 
   result->is_insufficient_liquidity =
-      base::Contains(result->message, kNoRoutesMessage);
+      result->message.contains(kNoRoutesMessage);
 
   return result;
 }

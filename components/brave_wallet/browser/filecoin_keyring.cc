@@ -11,7 +11,6 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
@@ -218,7 +217,7 @@ std::optional<std::string> FilecoinKeyring::ImportBlsAccount(
   }
   std::string address = fil_address.EncodeAsString();
 
-  if (base::Contains(imported_bls_accounts_, address)) {
+  if (imported_bls_accounts_.contains(address)) {
     return std::nullopt;
   }
 

@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check_is_test.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
@@ -118,7 +117,7 @@ std::vector<ActionPtr> FilterUnsupportedChromiumActions(
             ActionId::kShowReadAnything,
             ActionId::kShowAddresses,
         });
-    return base::Contains(kUnsupportedChromiumActions, action->id);
+    return kUnsupportedChromiumActions.contains(action->id);
   });
   return actions;
 }

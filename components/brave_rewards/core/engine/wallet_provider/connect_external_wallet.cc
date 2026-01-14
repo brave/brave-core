@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
@@ -64,10 +63,10 @@ ConnectExternalWallet::GetCode(
   if (query_parameters.contains("error_description")) {
     const std::string message = query_parameters.at("error_description");
     engine_->Log(FROM_HERE) << message;
-    if (base::Contains(message, "User does not meet minimum requirements")) {
+    if (message.contains("User does not meet minimum requirements")) {
       engine_->database()->SaveEventLog(log::kKYCRequired, WalletType());
       return base::unexpected(ConnectExternalWalletResult::kKYCRequired);
-    } else if (base::Contains(message, "not available for user geolocation")) {
+    } else if (message.contains("not available for user geolocation")) {
       engine_->database()->SaveEventLog(log::kRegionNotSupported, WalletType());
       return base::unexpected(ConnectExternalWalletResult::kRegionNotSupported);
     }

@@ -452,7 +452,7 @@ void PageGraph::Trace(blink::Visitor* visitor) const {
 }
 
 void PageGraph::NodeCreated(blink::Node* node) {
-  DCHECK(!base::Contains(currently_constructed_nodes_, node));
+  DCHECK(!currently_constructed_nodes_.contains(node));
   currently_constructed_nodes_.emplace(node, false);
 }
 
@@ -1026,10 +1026,10 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
   if (auto* graph_node = DynamicTo<GraphNode>(item)) {
     nodes_.push_back(graph_node);
     if (auto* element_node = DynamicTo<NodeHTMLElement>(graph_node)) {
-      DCHECK(!base::Contains(element_nodes_, element_node->GetDOMNodeId()));
+      DCHECK(!element_nodes_.Contains(element_node->GetDOMNodeId()));
       element_nodes_.insert(element_node->GetDOMNodeId(), element_node);
     } else if (auto* text_node = DynamicTo<NodeHTMLText>(graph_node)) {
-      DCHECK(!base::Contains(text_nodes_, text_node->GetDOMNodeId()));
+      DCHECK(!text_nodes_.Contains(text_node->GetDOMNodeId()));
       text_nodes_.insert(text_node->GetDOMNodeId(), text_node);
     } else if (auto* resource_node = DynamicTo<NodeResource>(graph_node)) {
       resource_nodes_.insert(resource_node->GetURL(), resource_node);
@@ -1258,7 +1258,7 @@ bool PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
 
   RegisterPageGraphNodeFullyCreated(node);
   // Node should be removed from currently_constructed_nodes_.
-  DCHECK(!base::Contains(currently_constructed_nodes_, node));
+  DCHECK(!currently_constructed_nodes_.contains(node));
   // Mark the node as an already registered for the upcoming
   // RegisterPageGraphNodeFullyCreated call.
   currently_constructed_nodes_.emplace(node, true);
