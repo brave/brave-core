@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { style } from './styles'
+import { style, bgLightVideo, bgDarkVideo } from './styles'
 import { StepDefinition } from './types'
 import {
   StepWelcomeContent, StepWelcomeFooter,
@@ -123,6 +123,24 @@ export function App() {
     <ImportDataProvider>
       <MakeYoursProvider>
         <div data-css-scope={style.scope}>
+          <video
+            className="video-background light"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={bgLightVideo} type="video/mp4" />
+          </video>
+          <video
+            className="video-background dark"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={bgDarkVideo} type="video/mp4" />
+          </video>
           <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
             <div className="content-area">
               <div className="brave-logo-container">
