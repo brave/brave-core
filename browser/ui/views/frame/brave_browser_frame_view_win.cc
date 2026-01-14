@@ -44,7 +44,7 @@ BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
 bool BraveBrowserFrameViewWin::ShouldCaptionButtonsBeDrawnOverToolbar() const {
   auto* browser = browser_view()->browser();
-  return tabs::utils::ShouldShowVerticalTabs(browser) &&
+  return tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
          !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
 }
 
@@ -72,7 +72,7 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
   if (auto* browser = browser_view()->browser();
-      tabs::utils::ShouldShowVerticalTabs(browser)) {
+      tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
     if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
       if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
         return 0;
@@ -126,7 +126,7 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
 
 bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {
   if (auto* browser = browser_view()->browser();
-      tabs::utils::ShouldShowVerticalTabs(browser) &&
+      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser) &&
       type == TitlebarType::kCustom &&
       !ShouldBrowserCustomDrawTitlebar(browser_view())) {

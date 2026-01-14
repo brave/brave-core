@@ -16,7 +16,7 @@ class ContainersMenuModelDelegate;
 // Last |unused_| is added to handle remained " = 0;".
 #define GetTabGroupSyncService(...)                \
   GetTabGroupSyncService(__VA_ARGS__) = 0;         \
-  virtual bool ShouldShowVerticalTab();            \
+  virtual bool ShouldShowBraveVerticalTab();       \
   virtual containers::ContainersMenuModelDelegate* \
   GetContainersMenuModelDelegate();                \
   const int unused_

@@ -15,7 +15,7 @@ BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   auto bounds = OmniboxPopupViewViews::GetTargetBounds();
   if (auto* browser = location_bar_view_->browser();
-      tabs::utils::ShouldShowVerticalTabs(browser) &&
+      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
     // Remove top shadow inset so that omnibox popup stays inside browser
     // widget. Especially on Mac, Widgets can't be out of screen so we need to

@@ -51,7 +51,7 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_view()->browser())) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
       return button && button->GetVisible() &&
@@ -88,7 +88,7 @@ void BraveOpaqueBrowserFrameView::
   auto* browser = browser_view()->browser();
   DCHECK(browser);
   const bool should_window_caption_buttons_overlap_toolbar =
-      tabs::utils::ShouldShowVerticalTabs(browser) &&
+      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
 
   for (auto& button :
@@ -149,7 +149,7 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   DCHECK(browser_view());
   auto* browser = browser_view()->browser();
   DCHECK(browser);
-  return tabs::utils::ShouldShowVerticalTabs(browser);
+  return tabs::utils::ShouldShowBraveVerticalTabs(browser);
 }
 
 BEGIN_METADATA(BraveOpaqueBrowserFrameView)

@@ -18,7 +18,7 @@
 
 // TabGroupViews destructor is not virtual, so we can't override the method.
 #define BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS                 \
-  if (tabs::utils::ShouldShowVerticalTabs(                                     \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                                \
           tab_slot_controller_->GetBrowser())) {                               \
     std::vector<raw_ptr<views::View, VectorExperimental>>                      \
         children_in_same_group;                                                \

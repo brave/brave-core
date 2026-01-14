@@ -30,7 +30,7 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
     float* titlebar_height) {
   if (BrowserView* browser_view = browser_view_.get()) {
     Browser* browser = browser_view->browser();
-    if (tabs::utils::ShouldShowVerticalTabs(browser)) {
+    if (tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
       if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
         // In this case, titlebar height should be the same as toolbar height.
         *titlebar_height = browser_view->toolbar()->GetPreferredSize().height();

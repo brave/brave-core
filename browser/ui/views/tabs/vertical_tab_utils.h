@@ -14,10 +14,10 @@ class BrowserWidget;
 namespace tabs::utils {
 
 // Returns true if the current |browser| might ever support vertical tabs.
-bool SupportsVerticalTabs(const Browser* browser);
+bool SupportsBraveVerticalTabs(const Browser* browser);
 
 // Returns true when users chose to use vertical tabs
-bool ShouldShowVerticalTabs(const Browser* browser);
+bool ShouldShowBraveVerticalTabs(const Browser* browser);
 
 // Returns true when we should show window title on window frame when vertical
 // tab strip is enabled.

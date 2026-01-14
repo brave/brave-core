@@ -113,7 +113,7 @@ void BraveTabGroupHeader::Layout(PassKey) {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(
+  return tabs::utils::ShouldShowBraveVerticalTabs(
       tab_slot_controller_->GetBrowser());
 }
 

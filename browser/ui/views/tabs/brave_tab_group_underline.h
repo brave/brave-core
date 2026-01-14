@@ -33,7 +33,7 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
   void OnPaint(gfx::Canvas* canvas) override;
 
  private:
-  bool ShouldShowVerticalTabs() const;
+  bool ShouldShowBraveVerticalTabs() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_UNDERLINE_H_

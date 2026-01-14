@@ -431,7 +431,8 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(tab()->controller()->GetBrowser());
+  return tabs::utils::ShouldShowBraveVerticalTabs(
+      tab()->controller()->GetBrowser());
 }
 
 bool BraveVerticalTabStyle::IsSplitTab(const Tab* tab) const {

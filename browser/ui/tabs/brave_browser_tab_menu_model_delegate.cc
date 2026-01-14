@@ -29,10 +29,10 @@ BraveBrowserTabMenuModelDelegate::BraveBrowserTabMenuModelDelegate(
 
 BraveBrowserTabMenuModelDelegate::~BraveBrowserTabMenuModelDelegate() = default;
 
-bool BraveBrowserTabMenuModelDelegate::ShouldShowVerticalTab() {
+bool BraveBrowserTabMenuModelDelegate::ShouldShowBraveVerticalTab() {
   // TODO(https://github.com/brave/brave-browser/issues/51112): Avoid
   // GetBrowserForMigrationOnly().
-  return tabs::utils::ShouldShowVerticalTabs(
+  return tabs::utils::ShouldShowBraveVerticalTabs(
       browser_window_->GetBrowserForMigrationOnly());
 }
 

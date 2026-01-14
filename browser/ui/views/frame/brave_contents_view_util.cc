@@ -76,7 +76,7 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     return rounded_corners;
   }
 
-  bool show_vertical_tab = tabs::utils::ShouldShowVerticalTabs(
+  bool show_vertical_tab = tabs::utils::ShouldShowBraveVerticalTabs(
       browser_window_interface->GetBrowserForMigrationOnly());
   auto* vertical_tab_strip_widget_delegate_view =
       browser_view->vertical_tab_strip_widget_delegate_view();

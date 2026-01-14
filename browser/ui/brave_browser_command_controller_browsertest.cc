@@ -537,15 +537,15 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleVerticalTabs) {
   auto* command_controller = browser()->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
-  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   // Enable Vertical tabs
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   // Toggle back
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
-  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 }
 
 class BraveBrowserCommandControllerWithSideBySideTest

@@ -370,7 +370,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   }
 
   const bool supports_vertical_tabs =
-      tabs::utils::SupportsVerticalTabs(browser_);
+      tabs::utils::SupportsBraveVerticalTabs(browser_);
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
@@ -427,7 +427,8 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser());
+  const bool is_vertical_tabs =
+      tabs::utils::ShouldShowBraveVerticalTabs(browser());
   const bool use_search_button =
       browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (features::HasTabSearchToolbarButton()) {
@@ -509,7 +510,7 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     return false;
   }
 
@@ -965,7 +966,7 @@ void BraveBrowserView::HideSplitView() {
 }
 
 void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
-  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     return;
   }
 
@@ -1146,7 +1147,7 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
   }
 
   if (vertical_tab_strip_widget_delegate_view_ &&
-      tabs::utils::ShouldShowVerticalTabs(browser())) {
+      tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
         ->ShowVerticalTabStripOnMouseOver(point_in_screen);
   }

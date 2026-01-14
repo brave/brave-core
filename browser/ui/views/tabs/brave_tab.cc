@@ -182,7 +182,7 @@ void BraveTab::ActiveStateChanged() {
 
 std::optional<SkColor> BraveTab::GetGroupColor() const {
   // Hide tab border with group color as it doesn't go well with vertical tabs.
-  if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
     return {};
   }
 
@@ -196,7 +196,7 @@ std::optional<SkColor> BraveTab::GetGroupColor() const {
 
 void BraveTab::UpdateIconVisibility() {
   Tab::UpdateIconVisibility();
-  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
     return;
   }
 
@@ -265,7 +265,7 @@ gfx::Insets BraveTab::GetInsets() const {
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
-  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) {
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
     return;
   }
@@ -281,7 +281,7 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
     return false;
   }
 
-  if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+  if (tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
       data().pinned && !controller_->IsVerticalTabsFloating()) {
     // In cased of pinned vertical tabs, we never render as normal tab, i.e.
     // always show only icon.
@@ -292,7 +292,7 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
-  return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+  return tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
 }
 
@@ -307,7 +307,7 @@ void BraveTab::SetData(TabRendererData data) {
   // has assumption that it's not included in any group.
   // So, clear in-advance when tab enters to pinned TabContainerImpl.
   if (data_changed &&
-      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+      tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser()) &&
       data_.pinned) {
     SetGroup(std::nullopt);
   }

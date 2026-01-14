@@ -44,7 +44,7 @@ bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
   DCHECK(browser_view);
 #endif
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view->browser())) {
     return result;
   }
 

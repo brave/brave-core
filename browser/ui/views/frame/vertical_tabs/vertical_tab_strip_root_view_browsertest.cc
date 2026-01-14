@@ -101,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -136,7 +136,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -175,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_ContextMenuInUnobscuredRegion) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* vtab_strip_root_view =
       vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();

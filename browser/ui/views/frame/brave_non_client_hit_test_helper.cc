@@ -52,7 +52,7 @@ int NonClientHitTest(BrowserView* browser_view,
 
   // Below checking is only for dragging with tab when vertical tab is
   // enabled and title is hidden.
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view->browser())) {
     return HTNOWHERE;
   }
 

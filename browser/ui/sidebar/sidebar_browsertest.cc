@@ -1706,7 +1706,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();

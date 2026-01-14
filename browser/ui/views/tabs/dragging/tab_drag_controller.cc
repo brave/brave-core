@@ -91,7 +91,7 @@ TabDragController::Liveness TabDragController::Init(
     }
   }
 
-  is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
+  is_showing_vertical_tabs_ = tabs::utils::ShouldShowBraveVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_) {
     return TabDragController::TabDragController::Liveness::kAlive;

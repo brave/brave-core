@@ -58,7 +58,7 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = browser_view()->browser();
   DCHECK(browser);
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser) ||
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
     BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();
     UpdateLeadingTrailingCaptionButtonWidth();
@@ -130,7 +130,7 @@ void BraveBrowserFrameViewLinuxNative::
   auto* browser = browser_view()->browser();
   DCHECK(browser);
   std::pair<int, int> new_leading_trailing_caption_button_width;
-  if (tabs::utils::ShouldShowVerticalTabs(browser) &&
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
     auto* window_order_provider =
         views::WindowButtonOrderProvider::GetInstance();
