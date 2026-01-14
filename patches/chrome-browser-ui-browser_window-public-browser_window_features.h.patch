@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 20a7ab09d06306489583ec16e539e9a3ddae2168..eac2eb165eeab9204999505eba79296810d45a3a 100644
+index d6eed16c41d7165eb8dc28016e00615c8c60c6cd..e2e66bd1dffd8fc5bfbfe8cdf93cd1635459ac0f 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -214,7 +214,7 @@ class OmniboxPopupCloser;
+@@ -215,7 +215,7 @@ class OmniboxPopupCloser;
  class BrowserWindowFeatures {
   public:
    BrowserWindowFeatures();

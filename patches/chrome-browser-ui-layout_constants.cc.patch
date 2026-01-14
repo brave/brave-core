@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/layout_constants.cc b/chrome/browser/ui/layout_constants.cc
-index 7c7c784c6910c2515cf02887d2a54036130273f9..663eec6bec3a5cffe035ae0a5422fd5a9787aa2b 100644
+index c7424d55cfef168acea31b22f47b4648a873645c..438e440859db4f04260a41d3d6af3f013dae823d 100644
 --- a/chrome/browser/ui/layout_constants.cc
 +++ b/chrome/browser/ui/layout_constants.cc
 @@ -20,6 +20,7 @@
