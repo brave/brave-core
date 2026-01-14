@@ -135,8 +135,8 @@ class BraveSkusScriptHandler: TabContentScript {
       }
 
       if storeMessage.message == "origin" {
-        if let originSubscriptionProductId = Preferences.BraveOrigin.subscriptionProductId.value,
-          let orderId = Preferences.BraveOrigin.subscriptionOrderId.value,
+        if let originSubscriptionProductId = Preferences.BraveOrigin.purchaseProductId.value,
+          let orderId = Preferences.BraveOrigin.purchaseOrderId.value,
           let product = BraveStoreProduct(rawValue: originSubscriptionProductId)
         {
           let storageKey = product.localStorageKey

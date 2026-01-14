@@ -17,7 +17,7 @@ extension BraveStoreProduct {
     switch self {
     case .vpnMonthly, .vpnYearly: return "braveVpn.receipt"
     case .leoMonthly, .leoYearly: return "braveLeo.receipt"
-    case .originMonthly, .originYearly: return "braveOrigin.receipt"
+    case .originPurchase: return "braveOrigin.receipt"
     }
   }
 }
@@ -59,7 +59,7 @@ class BraveSkusAccountLink {
       await BraveSkusAccountLink.injectLocalStorage(tab: tab, product: product)
     }
 
-    if let originSubscriptionProductId = Preferences.BraveOrigin.subscriptionProductId.value,
+    if let originSubscriptionProductId = Preferences.BraveOrigin.purchaseProductId.value,
       let product = BraveStoreProduct(rawValue: originSubscriptionProductId)
     {
       await BraveSkusAccountLink.injectLocalStorage(tab: tab, product: product)
