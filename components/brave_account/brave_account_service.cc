@@ -8,11 +8,14 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/json/values_util.h"
 #include "base/notimplemented.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
@@ -38,6 +41,7 @@ using endpoints::LoginFinalize;
 using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
+using endpoints::ServiceToken;
 using endpoints::VerifyResult;
 
 namespace {
@@ -237,6 +241,53 @@ void BraveAccountService::LogOut() {
   pref_service_->ClearPref(prefs::kBraveAccountAuthenticationToken);
 }
 
+void BraveAccountService::GetServiceToken(mojom::Service service,
+                                          GetServiceTokenCallback callback) {
+  static constexpr auto kServiceToNameMap =
+      base::MakeFixedFlatMap<mojom::Service, const char*>({
+          {mojom::Service::kEmailAliases, "email-aliases"},
+          {mojom::Service::kPremium, "premium"},
+          {mojom::Service::kSync, "sync"},
+      });
+  static_assert(
+      kServiceToNameMap.size() ==
+          static_cast<std::size_t>(mojom::Service::kMaxValue) + 1,
+      "kServiceToNameMap must contain all mojom::Service enum values!");
+
+  std::string service_name = kServiceToNameMap.at(service);
+  if (auto service_token = GetCachedServiceToken(service_name);
+      !service_token.empty()) {
+    return std::move(callback).Run(
+        mojom::GetServiceTokenResult::New(std::move(service_token)));
+  }
+
+  auto encrypted_authentication_token =
+      pref_service_->GetString(prefs::kBraveAccountAuthenticationToken);
+  if (encrypted_authentication_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::GetServiceTokenError::New(
+            std::nullopt, mojom::GetServiceTokenErrorCode::kUserNotLoggedIn)));
+  }
+
+  const auto authentication_token = Decrypt(encrypted_authentication_token);
+  if (authentication_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::GetServiceTokenError::New(
+            std::nullopt, mojom::GetServiceTokenErrorCode::
+                              kAuthenticationTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<ServiceToken::Request>>();
+  SetBearerToken(request, authentication_token);
+  request.service = service_name;
+  Client<ServiceToken>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnGetServiceToken,
+                     weak_factory_.GetWeakPtr(),
+                     std::move(encrypted_authentication_token),
+                     std::move(service_name), std::move(callback)));
+}
+
 void BraveAccountService::OnRegisterInitialize(
     RegisterInitializeCallback callback,
     PasswordInit::Response response) {
@@ -250,14 +301,14 @@ void BraveAccountService::OnRegisterInitialize(
 
   auto result =
       std::move(*response.body)
-          // expected<SuccessBody, [ErrorBody    ]> ==>
-          // expected<SuccessBody, [RegisterError]>
+          // expected<SuccessBody, [ErrorBody       ]> ==>
+          // expected<SuccessBody, [RegisterErrorPtr]>
           .transform_error([&](auto error_body) {
             return MakeMojomError<mojom::RegisterError>(status_code,
                                                         std::move(error_body));
           })
-          // expected<[SuccessBody                ], RegisterError> ==>
-          // expected<[RegisterInitializeResultPtr], RegisterError>
+          // expected<[SuccessBody                ], RegisterErrorPtr> ==>
+          // expected<[RegisterInitializeResultPtr], RegisterErrorPtr>
           .and_then([&](auto success_body)
                         -> base::expected<mojom::RegisterInitializeResultPtr,
                                           mojom::RegisterErrorPtr> {
@@ -297,14 +348,14 @@ void BraveAccountService::OnRegisterFinalize(
 
   auto result =
       std::move(*response.body)
-          // expected<SuccessBody, [ErrorBody    ]> ==>
-          // expected<SuccessBody, [RegisterError]>
+          // expected<SuccessBody, [ErrorBody       ]> ==>
+          // expected<SuccessBody, [RegisterErrorPtr]>
           .transform_error([&](auto error_body) {
             return MakeMojomError<mojom::RegisterError>(status_code,
                                                         std::move(error_body));
           })
-          // expected<[SuccessBody              ], RegisterError> ==>
-          // expected<[RegisterFinalizeResultPtr], RegisterError>
+          // expected<[SuccessBody              ], RegisterErrorPtr> ==>
+          // expected<[RegisterFinalizeResultPtr], RegisterErrorPtr>
           .and_then([&](auto success_body)
                         -> base::expected<mojom::RegisterFinalizeResultPtr,
                                           mojom::RegisterErrorPtr> {
@@ -364,20 +415,20 @@ void BraveAccountService::VerifyResult(
 }
 
 void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
-  const auto authentication_token =
+  const auto [authentication_token, email] =
       response.body
           ? std::move(*response.body)
                 .transform([](auto success_body) {
-                  if (auto* auth_token = success_body.auth_token.GetIfString();
-                      !auth_token || auth_token->empty()) {
-                    return std::string();
-                  }
-                  return std::move(success_body.auth_token).TakeString();
+                  return std::pair(
+                      success_body.auth_token.GetIfString()
+                          ? std::move(success_body.auth_token).TakeString()
+                          : "",
+                      std::move(success_body.email).value_or(""));
                 })
-                .value_or("")
-          : "";
+                .value_or({})
+          : std::pair<std::string, std::string>{};
 
-  if (!authentication_token.empty()) {
+  if (!authentication_token.empty() && !email.empty()) {
     // We stop polling regardless of encryption success,
     // since the auth token is transient on the server
     // and cannot be retrieved again.
@@ -387,6 +438,7 @@ void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
     if (const auto encrypted_authentication_token =
             Encrypt(authentication_token);
         !encrypted_authentication_token.empty()) {
+      pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
       pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
                                encrypted_authentication_token);
     }
@@ -416,14 +468,14 @@ void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,
 
   auto result =
       std::move(*response.body)
-          // expected<SuccessBody, [ErrorBody ]> ==>
-          // expected<SuccessBody, [LoginError]>
+          // expected<SuccessBody, [ErrorBody    ]> ==>
+          // expected<SuccessBody, [LoginErrorPtr]>
           .transform_error([&](auto error_body) {
             return MakeMojomError<mojom::LoginError>(status_code,
                                                      std::move(error_body));
           })
-          // expected<[SuccessBody             ], LoginError> ==>
-          // expected<[LoginInitializeResultPtr], LoginError>
+          // expected<[SuccessBody             ], LoginErrorPtr> ==>
+          // expected<[LoginInitializeResultPtr], LoginErrorPtr>
           .and_then([&](auto success_body)
                         -> base::expected<mojom::LoginInitializeResultPtr,
                                           mojom::LoginErrorPtr> {
@@ -461,18 +513,18 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
 
   auto result =
       std::move(*response.body)
-          // expected<SuccessBody, [ErrorBody ]> ==>
-          // expected<SuccessBody, [LoginError]>
+          // expected<SuccessBody, [ErrorBody    ]> ==>
+          // expected<SuccessBody, [LoginErrorPtr]>
           .transform_error([&](auto error_body) {
             return MakeMojomError<mojom::LoginError>(status_code,
                                                      std::move(error_body));
           })
-          // expected<[SuccessBody           ], LoginError> ==>
-          // expected<[LoginFinalizeResultPtr], LoginError>
+          // expected<[SuccessBody           ], LoginErrorPtr> ==>
+          // expected<[LoginFinalizeResultPtr], LoginErrorPtr>
           .and_then([&](auto success_body)
                         -> base::expected<mojom::LoginFinalizeResultPtr,
                                           mojom::LoginErrorPtr> {
-            if (success_body.auth_token.empty()) {
+            if (success_body.auth_token.empty() || success_body.email.empty()) {
               return base::unexpected(
                   mojom::LoginError::New(status_code, std::nullopt));
             }
@@ -485,6 +537,8 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
                   mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed));
             }
 
+            pref_service_->SetString(prefs::kBraveAccountEmailAddress,
+                                     success_body.email);
             pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
                                      encrypted_authentication_token);
 
@@ -497,6 +551,7 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
 void BraveAccountService::OnAuthenticationTokenChanged() {
   if (pref_authentication_token_.GetValue().empty()) {
     pref_service_->ClearPref(prefs::kBraveAccountEmailAddress);
+    pref_service_->ClearPref(prefs::kBraveAccountServiceTokens);
     return auth_validate_timer_.Stop();
   }
 
@@ -559,6 +614,109 @@ void BraveAccountService::OnAuthValidate(AuthValidate::Response response) {
 
   // Replace watchdog timer with the normal cadence.
   ScheduleAuthValidate(kAuthValidatePollInterval);
+}
+
+void BraveAccountService::OnGetServiceToken(
+    const std::string& expected_encrypted_authentication_token,
+    const std::string& service_name,
+    GetServiceTokenCallback callback,
+    ServiceToken::Response response) {
+  // Check if the authentication token is still the same as when we sent the
+  // request. If the user logged out, logged out and back in, or switched
+  // accounts while the request was in flight, don't cache or return the service
+  // token as it belongs to a different (or no longer valid) authentication
+  // session.
+  if (const auto current_encrypted_authentication_token =
+          pref_service_->GetString(prefs::kBraveAccountAuthenticationToken);
+      current_encrypted_authentication_token !=
+      expected_encrypted_authentication_token) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::GetServiceTokenError::New(
+            std::nullopt,
+            mojom::GetServiceTokenErrorCode::kAuthenticationSessionChanged)));
+  }
+
+  if (!response.body) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::GetServiceTokenError::New(
+            response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody              ]> ==>
+          // expected<SuccessBody, [GetServiceTokenErrorPtr]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::GetServiceTokenError>(
+                status_code, std::move(error_body));
+          })
+          // expected<[SuccessBody             ], GetServiceTokenErrorPtr> ==>
+          // expected<[GetServiceTokenResultPtr], GetServiceTokenErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::GetServiceTokenResultPtr,
+                                          mojom::GetServiceTokenErrorPtr> {
+            if (success_body.auth_token.empty()) {
+              return base::unexpected(
+                  mojom::GetServiceTokenError::New(status_code, std::nullopt));
+            }
+
+            auto encrypted_service_token = Encrypt(success_body.auth_token);
+            if (encrypted_service_token.empty()) {
+              return base::unexpected(mojom::GetServiceTokenError::New(
+                  std::nullopt, mojom::GetServiceTokenErrorCode::
+                                    kServiceTokenEncryptionFailed));
+            }
+
+            auto service_tokens =
+                pref_service_->GetDict(prefs::kBraveAccountServiceTokens)
+                    .Clone();
+            service_tokens.Set(service_name,
+                               base::Value::Dict()
+                                   .Set(prefs::keys::kServiceToken,
+                                        std::move(encrypted_service_token))
+                                   .Set(prefs::keys::kLastFetched,
+                                        base::TimeToValue(base::Time::Now())));
+
+            pref_service_->SetDict(prefs::kBraveAccountServiceTokens,
+                                   std::move(service_tokens));
+
+            return mojom::GetServiceTokenResult::New(
+                std::move(success_body.auth_token));
+          });
+
+  std::move(callback).Run(std::move(result));
+}
+
+std::string BraveAccountService::GetCachedServiceToken(
+    const std::string& service_name) const {
+  const auto* service =
+      pref_service_->GetDict(prefs::kBraveAccountServiceTokens)
+          .FindDict(service_name);
+  if (!service) {
+    return "";
+  }
+
+  const auto* encrypted_service_token =
+      service->FindString(prefs::keys::kServiceToken);
+  const auto* last_fetched_value = service->Find(prefs::keys::kLastFetched);
+
+  if (!encrypted_service_token || !last_fetched_value) {
+    return "";
+  }
+
+  const auto last_fetched_time = base::ValueToTime(*last_fetched_value);
+  if (!last_fetched_time) {
+    return "";
+  }
+
+  if (base::Time::Now() - *last_fetched_time >= kServiceTokenMaxAge) {
+    return "";
+  }
+
+  return Decrypt(*encrypted_service_token);
 }
 
 std::string BraveAccountService::Encrypt(const std::string& plain_text) const {

@@ -81,13 +81,19 @@ extension Strings {
       value: "Wallet",
       comment: "A toggle label for Brave Wallet feature"
     )
+    public static let enabledFeatureNote = NSLocalizedString(
+      "enabledFeatureNote",
+      bundle: .module,
+      value: "This feature is enabled because you opted into it",
+      comment: "A note that indicates a feature is enabled"
+    )
     public static let featuresFooter = NSLocalizedString(
       "featuresFooter",
       bundle: .module,
       value: """
-        Brave Origin is a subscription-based way to disable the revenue-generating features that otherwise support Brave as a business. Brave Origin subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like Brave Leo, News, Rewards, Wallet, VPN, Web3 domains, and more.
+        Brave Origin is a version of the Brave browser that allows you to easily disable the revenue-generating features that otherwise support Brave as a business. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They’ll also unlock the option to disable features like Brave Leo, Rewards, Wallet, VPN, Web3 domains, and more.
 
-        Subscribers will see a new control panel in the browser Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
+        Once purchased, users will see a new control panel in the browser Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
 
         **Note: Brave Origin will not disable browser features that you currently use, and will not affect Brave Search features or Brave Search Ads.**
         """,

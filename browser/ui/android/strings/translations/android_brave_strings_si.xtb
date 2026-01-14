@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">පිරිසිදු සබැඳියේ පිටපතක්</translation>
 <translation id="721490496276866468">මුරපද ආයාත කරන්න</translation>
 <translation id="8178175542325151321">ඔබේ මුරපද අඩංගු .csv ගොනුවක් තෝරාගෙන එය Brave මුරපද කළමණාකරකය වෙත ආයාත කරන්න.</translation>
-<translation id="1177863135347784049">අභිරුචි</translation>
 <translation id="6112331814131703370">'යෙදුම වෙත මාරුවන්න' දැනුම්දීම් අවහිර කරන්න</translation>
 <translation id="4744921452903670666">ඔබ සිතන දෑ අපට කියන්න!</translation>
 <translation id="2524310205387880526">Brave අගයන්න</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">පෞද්ගලික පටිති වල ස්වයං පුරවන්න</translation>
 <translation id="8685431198160039193">සුරැකි තොරතුරු පෞද්ගලික පටිති වල ස්වයං පිරවීමට හැකිය</translation>
 <translation id="6583902294974160967">සහාය</translation>
-<translation id="5713644099811900409">Brave Software ගිණුම</translation>
-<translation id="4472575034687746823">පටන් ගන්න</translation>
 <translation id="1799030480311994998">විශේෂාංග</translation>
 <translation id="1919345977826869612">දැන්වීම්</translation>
 <translation id="2839742394543397416">සංඛ්‍යාන විශ්ලේෂණය</translation>
@@ -384,7 +381,6 @@
 <translation id="717952606991220586">අපොයි, යමක් වැරදී ඇත. නැවත උත්සාහ කරන්න.</translation>
 <translation id="987264212798334818">සාමාන්‍ය</translation>
 <translation id="1116694919640316211">පිළිබඳ</translation>
-<translation id="7961015016161918242">කවදාවත් නැහැ</translation>
 <translation id="1275213816424141989">සමහර විට පසුව</translation>
 <translation id="3624048886326677117">ලුහුබැඳීම් හා දැන්වීම් අවහිර කරන්න (ආක්‍රමණශ්‍රීලී)</translation>
 <translation id="7151914815476509258">ලුහුබැඳීම් හා දැන්වීම් අවහිර කරන්න (සම්මත)</translation>
@@ -569,7 +565,6 @@
 <translation id="6697810017029555732">ගැළපෙයි!</translation>
 <translation id="5981303441790732480">ඔබගේ පවතින පසුම්බිය ආයාත කරන්න</translation>
 <translation id="9111102763498581341">අගුළු හරින්න</translation>
-<translation id="6657585470893396449">මුරපදය</translation>
 <translation id="7553242001898162573">ඔබගේ මුරපදය ලියන්න</translation>
 <translation id="5619264711680220002">වමිතික අගුළු හැරීම</translation>
 <translation id="9195657745688986798">පසුම්බිය අගුළු හරින්න</translation>
@@ -734,6 +729,7 @@
 <translation id="9091334651803050473">සහතිකයක් නොවුනත්, ඔබ වැඩි ගාස්තුවක් ගෙවන්නේ නම් පතල්කරුවන් ඔබේ ගනුදෙනුවට ප්‍රමුඛත්වය දෙනු ඇත.</translation>
 <translation id="2941112035454246133">අවම</translation>
 <translation id="7304030187361489308">ඉහළ</translation>
+<translation id="1177863135347784049">අභිරුචි</translation>
 <translation id="4853037749278079787">උපරිම ගාස්තුව: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">වත්මන් මූලික ගාස්තුව: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">ගෑස් ප්රමාණය සීමාව</translation>
@@ -1054,31 +1050,6 @@
 <translation id="6393423486818299209">ඔබගේ වත්මන් සේවා සපයන්නා හෝ විකිමීඩියා ව.නා.ප. භාවිතා කරන්න</translation>
 <translation id="3401384982562827787">ඔබගේ වත්මන් සේවා සපයන්නා හෝ ක්ලවුඩ්ෆ්ලෙයාර් භාවිතා කරන්න</translation>
 <translation id="8812367543786936496">ඔබගේ වත්මන් සේවා ප්‍රතිපාදකයා අනාරක්‍ෂිත නම්, බ්‍රේව් ආරක්‍ෂිත විකල්ප ව.නා.ප. ප්‍රතිපාදකයෙක් භාවිතා කරයි</translation>
-<translation id="5680678411439841197">නගරය</translation>
-<translation id="8185518433273977704">සුළු නගරය</translation>
-<translation id="4528386452965343421">උපකොට්ඨාශය</translation>
-<translation id="1589122976691792535">කලාපය</translation>
-<translation id="2221292964468054123">ප්‍රාන්තය</translation>
-<translation id="3801482889636327368">සංවිධානය</translation>
-<translation id="1425162721525518064">සමාගම</translation>
-<translation id="7568794877555549044">රට</translation>
-<translation id="5982110855572850497">නම්පත</translation>
-<translation id="6848689413353508904">අඩංගුව</translation>
-<translation id="1496514951988037011">පරිශ්‍රීලක නාමය</translation>
-<translation id="6155129418108337061">පිවිසෙන්න</translation>
-<translation id="4038523199754403233">හැඳු.</translation>
-<translation id="901834265349196618">වි-තැපෑල</translation>
-<translation id="3488199663160411179">නම</translation>
-<translation id="793994607260936590">මුල්</translation>
-<translation id="1782612111936779655">අග</translation>
-<translation id="7628132737455466188">සම්පූර්ණ</translation>
-<translation id="8621068256433641644">දුරකථනය</translation>
-<translation id="5993210100509955931">ජංගම</translation>
-<translation id="598301471034819706">ලිපිනය</translation>
-<translation id="5557821203571216370">නිවස්කඩ</translation>
-<translation id="8051552210542030943">තැ.සූ. කේතය</translation>
-<translation id="5233247193491045452">තැපැල් කේතය</translation>
-<translation id="3300502432153878901">තැ.පෙ. කේතය</translation>
 <translation id="1381108437654541567">කවුළු කිහිපයක් සබල කරන්න</translation>
 <translation id="6167344249617630304">වරකට කවුළු 5  ක් දක්වා විවෘත කර පටිති කවුළුවකින් තවත් කවුළුවකට ගෙනයන්න</translation>
 <translation id="1063948063403254568">කවුළු කිහිපයක් අනාවරණය විය</translation>
@@ -1152,6 +1123,7 @@
 <translation id="7808889146555843082">මෙම මුරපදය මැකීම <ph name="SITE"/> මත ඔබේ ගිණුම මකන්නේ නැත. එය අන් අයගෙන් ආරක්ෂිතව තබා ගැනීමට ඔබේ මුරපදය වෙනස් කරන්න, නැති නම් <ph name="SITE"/> මත ඔබේ ගිණුම මකන්න.</translation>
 <translation id="2870560284913253234">අඩවිය</translation>
 <translation id="8503813439785031346">පරිශීලක නාමය</translation>
+<translation id="6657585470893396449">මුරපදය</translation>
 <translation id="2278052315791335171">මෙම මුරපදය මැකීම <ph name="SITE"/> හි ඔබගේ ගිණුම මකන්නේ නැත</translation>
 <translation id="6891726759199484455">ඔබේ මුරපදය පිටපත් කිරීමට අගුළු හරින්න</translation>
 <translation id="5515439363601853141">ඔබේ මුරපදය බැලීමට අගුළු හරින්න</translation>

@@ -243,11 +243,13 @@ export const SendScreen = React.memo(() => {
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
   const isShieldingFunds =
     tokenFromParams
+    && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
     && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShielding
   const isUnshieldingFunds =
     tokenFromParams
+    && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
     && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kUnshielding

@@ -20,15 +20,15 @@ interface Props {
 }
 
 export class AdblockPage extends React.Component<Props, {}> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
   }
 
-  get actions () {
+  get actions() {
     return this.props.actions
   }
 
-  render () {
+  render() {
     const { actions, adblockData } = this.props
     return (
       <div id='adblockPage'>
@@ -50,14 +50,11 @@ export class AdblockPage extends React.Component<Props, {}> {
 }
 
 export const mapStateToProps = (state: AdBlock.ApplicationState) => ({
-  adblockData: state.adblockData
+  adblockData: state.adblockData,
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(adblockActions, dispatch)
+  actions: bindActionCreators(adblockActions, dispatch),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdblockPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AdblockPage)

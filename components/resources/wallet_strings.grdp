@@ -369,9 +369,6 @@
   <message name="IDS_BRAVE_WALLET_SWAP_MARKET" desc="Swap tab market button">Market</message>
   <message name="IDS_BRAVE_WALLET_SWAP_LIMIT" desc="Swap tab limit button">Limit</message>
   <message name="IDS_BRAVE_WALLET_SWAP_PRICE_IN" desc="Swap tab price label">Price in</message>
-  <message name="IDS_BRAVE_WALLET_BUY_TITLE" desc="Buy tab faucet button">Test faucet</message>
-  <message name="IDS_BRAVE_WALLET_BUY_DESCRIPTION" desc="Buy tab faucet description to get test crypto">Get Ether from a faucet for <ph name="SELECTED_NETWORK"><ex>Goerli Network</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_CONTINUE_BUTTON" desc="Buy tab continue button">Select purchase method</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_TITLE" desc="Sign panel title">Your signature is being requested</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
@@ -653,9 +650,7 @@
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN" desc="Market data table buy/deposit column name">Buy/Deposit</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty">No assets matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
   <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_DISCLAIMER" desc="Brave disclaimer text in buy screen">Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS_PARTNER" desc="Transactions partner modal title">Transactions partner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT" desc="Meld consent description">Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.</message>
   <message name="IDS_BRAVE_WALLET_MELD_TERMS_OF_USE" desc="Meld terms of use checkbox label">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Meld's Terms of use<ph name="LINK_AFTER">/$1</ph></message>
@@ -678,17 +673,6 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME" desc="Account name input label">Account name</message>
   <message name="IDS_BRAVE_WALLET_MINIMUM_AMOUNT" desc="Minimum amount error label">Minimum amount: <ph name="AMOUNT">$1<ex>$2 USD</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_MAXIMUM_AMOUNT" desc="Maximum amount error label">Maximum amount: <ph name="AMOUNT">$1<ex>$1000 USD</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Buy with Transak option label">Buy with Transak</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_STRIPE" desc="Buy with Stripe option label">Buy with Link</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_COINBASE" desc="Buy with Coinbase Pay option label">Buy with Coinbase Pay</message>
-  <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
-  <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_NAME" desc="Transak onramp provider name">Transak</message>
-  <message name="IDS_BRAVE_WALLET_BUY_STRIPE_NAME" desc="Stripe onramp provider name">Link by Stripe</message>
-  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_NAME" desc="Coinbase Pay onramp provider name">Coinbase Pay</message>
-  <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_STRIPE_DESCRIPTION" desc="Stripe description in buy options list">Pay with credit, debit, bank account</message>
-  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy with the most trusted name in crypto.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
@@ -959,8 +943,6 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
   <message name="IDS_BRAVE_WALLET_BUY_SELECT_ASSET" desc="Continue button text for buy crypto flow when an asset is not yet selected">Select an asset</message>
-  <message name="IDS_BRAVE_WALLET_FUND_WALLET_TITLE" desc="Fund wallet screen title text">To finish your <ph name="ASSET_TICKER">$1<ex>1</ex></ph> purchase, select one of our partners</message>
-  <message name="IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION" desc="Fund wallet screen description text">On completion, your funds will be transferred to your Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_FUNDS_TITLE" desc="Deposit funds screen title">Deposit crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_X" desc="Generic prompt to deposit an asset">Deposit <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS" desc="Description of depositable Solana wallet assets">Deposit Solana or SPL tokens</message>

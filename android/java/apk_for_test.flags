@@ -1109,3 +1109,11 @@
     <init>(...);
     *** mIgnorePullToRefresh;
 }
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedAdaptiveToolbarBehavior {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAdaptiveToolbarBehavior {
+    <init>(...);
+}

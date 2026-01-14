@@ -44,9 +44,9 @@ source_set("auth") {
 
   deps = [
     "//base",
+    "//brave/components/brave_account",
     "//components/os_crypt/async/common",
     "//components/prefs",
-    "//services/preferences/public/cpp",
   ]
 }
 
@@ -100,6 +100,7 @@ source_set("unit_tests") {
     ":service",
     ":test_utils",
     "//base/test:test_support",
+    "//brave/components/brave_account",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//components/os_crypt/async/browser:test_support",

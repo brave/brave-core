@@ -501,8 +501,6 @@ export enum WalletRoutes {
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:assetId?',
-  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/:assetId/purchase',
 
   // deposit funds
   DepositFundsPageStart = '/crypto/deposit-funds',
@@ -664,21 +662,6 @@ export interface TransactionProviderErrorRegistry {
   [transactionId: string]: TransactionProviderError
 }
 
-export const SupportedOnRampNetworks = [
-  BraveWallet.SOLANA_MAINNET,
-  BraveWallet.MAINNET_CHAIN_ID, // ETH
-  BraveWallet.FILECOIN_MAINNET,
-  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
-  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.AURORA_MAINNET_CHAIN_ID,
-  BraveWallet.BITCOIN_MAINNET,
-]
-
 export const SupportedOffRampNetworks = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID, // ETH
@@ -781,14 +764,6 @@ export enum CoinTypesMap {
   ZEC = BraveWallet.CoinType.ZEC,
   ADA = BraveWallet.CoinType.ADA,
   DOT = BraveWallet.CoinType.DOT,
-}
-
-export type BuyOption = {
-  id: BraveWallet.OnRampProvider
-  icon: string
-  name: string
-  description: string
-  actionText: string
 }
 
 export type OriginInfo = {
@@ -1091,6 +1066,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kZeroEx]: '0x',
   [BraveWallet.SwapProvider.kLiFi]: 'LI.FI',
   [BraveWallet.SwapProvider.kSquid]: 'Squid',
+  [BraveWallet.SwapProvider.kNearIntents]: 'NEAR Intents',
 }
 
 export const SupportedSwapProviders = [
@@ -1099,6 +1075,7 @@ export const SupportedSwapProviders = [
   BraveWallet.SwapProvider.kZeroEx,
   BraveWallet.SwapProvider.kLiFi,
   BraveWallet.SwapProvider.kSquid,
+  BraveWallet.SwapProvider.kNearIntents,
 ]
 
 export type StorybookTransactionTypes = 'Send' | 'Swap' | 'Bridge' | 'Approve'

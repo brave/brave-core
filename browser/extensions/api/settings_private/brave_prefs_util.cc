@@ -8,7 +8,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -58,6 +58,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -130,8 +134,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowSidePanelButton] = settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   (*s_brave_allowlist)[brave_news::prefs::kShouldShowToolbarButton] =
       settings_api::PrefType::kBoolean;
+#endif
   (*s_brave_allowlist)[kLocationBarIsWide] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kAutocompleteEnabled] =
       settings_api::PrefType::kBoolean;
@@ -347,6 +353,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_tabs::kTreeTabsEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kAlwaysHideTabCloseButton] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kMiddleClickCloseTabEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

@@ -10,6 +10,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
@@ -195,4 +196,28 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   return BrowserTabStripController::IsContextMenuCommandEnabled(index,
                                                                 command_id);
+}
+
+void BraveBrowserTabStripController::OnTreeTabChanged(
+    const TreeTabChange& change) {
+  switch (change.type) {
+    case TreeTabChange::Type::kNodeCreated: {
+      const auto& created_change = change.GetCreatedChange();
+      auto index = model_->GetIndexOfTab(created_change.node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+      break;
+    }
+    case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      auto* tab = change.GetWillBeDestroyedChange().node->GetTab();
+      CHECK(tab);
+      auto index = model_->GetIndexOfTab(tab);
+      // The tab might have already been removed from the model when the
+      // TreeTabNode is being destroyed (e.g., during group removal).
+      if (index != TabStripModel::kNoTab) {
+        tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+      }
+      break;
+    }
+  }
 }

@@ -336,6 +336,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7557539689487606886">Užsisakyti „Premium“</translation>
 <translation id="1035309871698658326">Atidarius šią funkciją, į „Leo“ bus automatiškai siunčiami visų ne privačių kortelių pavadinimai ir kilmė, kad jie būtų suklasifikuoti.</translation>
 <translation id="3435896845095436175">Įgalinti</translation>
+<translation id="9082792303833649978">Šį nustatymą valdo jūsų administratorius arba kita Brave politika.</translation>
 <translation id="1940221956626514677">Tinkinti įrankių juostą</translation>
 <translation id="6501807887341963552">Apipavidalinimas ir spalvos</translation>
 <translation id="6724227215236550330">Čia rodomi išsaugoti slaptažodžiai. Norėdami importuoti slaptažodžius į <ph name="BRAND"/> šiame įrenginyje, <ph name="BEGIN_LINK"/> pasirinkite CSV failą<ph name="END_LINK"/></translation>
@@ -379,6 +380,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2263346047290834619">Naudoti medžio stiliaus korteles</translation>
 <translation id="5860254591544742609">Rodyti pavadinimo juostą</translation>
 <translation id="4691131445504068802">Sumažinus visiškai paslėpti</translation>
+<translation id="6763346436728173884">Visada slėpti kortelės uždarymo mygtuką</translation>
 <translation id="4909269867860362936">Sumažinus automatiškai išskleisti laikant pelę viršuje</translation>
 <translation id="3367129510799209147">Skirtuko užvedimo režimas</translation>
 <translation id="8925055964134259461">Vertikaliuosius skirtukus išskleisti atskirai kiekviename lange</translation>
@@ -752,6 +754,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="7141438739990875547">„Bitcoin“ tinklai</translation>
 <translation id="1077567586443625607">„Zcash“ tinklai</translation>
 <translation id="1177180573354712438">„Cardano“ tinklai</translation>
+<translation id="3176794108951154148">„Polkadot“ tinklai</translation>
 <translation id="3159419679550543837">Rodyti bandomuosius tinklus</translation>
 <translation id="3215569562674795548">Pridėti arba redaguoti naują tinklą</translation>
 <translation id="4418993400653250511">Grandinės ID</translation>

@@ -6,6 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../style'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const AssetButton = styled(WalletButton)<{
   isSelected?: boolean
@@ -70,4 +71,10 @@ export const PriceText = styled.span`
   color: ${leo.color.text.primary};
   text-align: right;
   vertical-align: middle;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${leo.color.text.interactive};
+  height: 13px;
+  width: 13px;
 `

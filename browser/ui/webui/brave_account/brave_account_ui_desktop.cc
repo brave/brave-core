@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
-#include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -58,7 +58,7 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit BraveAccountDialogDelegate(content::WebContents* web_contents)
-      : web_contents_(CHECK_DEREF(web_contents)) {
+      : web_contents_(CHECK_DEREF(web_contents).GetWeakPtr()) {
     BraveAccountDialogTracker::CreateForWebContents(web_contents);
 
     set_delete_on_close(false);
@@ -67,11 +67,13 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
   }
 
   ~BraveAccountDialogDelegate() override {
-    web_contents_->RemoveUserData(BraveAccountDialogTracker::UserDataKey());
+    if (web_contents_) {
+      web_contents_->RemoveUserData(BraveAccountDialogTracker::UserDataKey());
+    }
   }
 
  private:
-  const raw_ref<content::WebContents> web_contents_;
+  base::WeakPtr<content::WebContents> web_contents_;
 };
 
 }  // namespace

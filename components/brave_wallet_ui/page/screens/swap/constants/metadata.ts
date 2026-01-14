@@ -38,6 +38,7 @@ import MDexIcon from '../assets/lp-icons/mdex.svg'
 import MercurialIcon from '../assets/lp-icons/mercurial.svg'
 import MeshSwapIcon from '../assets/lp-icons/meshswap.svg'
 import MStableIcon from '../assets/lp-icons/mstable.png'
+import NearIntentsIcon from '../assets/lp-icons/near-intents.svg'
 import OrcaIcon from '../assets/lp-icons/orca.svg'
 import QuickSwapIcon from '../assets/lp-icons/quickswap.svg'
 import PancakeSwapIcon from '../assets/lp-icons/pancakeswap.svg'
@@ -64,6 +65,7 @@ const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kJupiter]: JupiterIcon,
   [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
   [BraveWallet.SwapProvider.kSquid]: SquidIncon,
+  [BraveWallet.SwapProvider.kNearIntents]: NearIntentsIcon,
 }
 
 type LPMetadataType = {

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
@@ -18,7 +19,7 @@ source_set("customize_chrome") {
     "//base",
     "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/common/buildflags",
-    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
@@ -26,12 +27,19 @@ source_set("customize_chrome") {
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/sharing_hub",
     "//chrome/browser/ui/webui/side_panel/customize_chrome:mojo_bindings",
     "//chrome/browser/ui/webui/util",
+    "//chrome/common:constants",
+    "//components/omnibox/browser:vector_icons",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
   ]
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [
@@ -81,7 +89,7 @@ source_set("unit_tests") {
     "//base",
     "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/common/buildflags",
-    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
@@ -98,6 +106,10 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [ "//brave/components/brave_wallet/common" ]

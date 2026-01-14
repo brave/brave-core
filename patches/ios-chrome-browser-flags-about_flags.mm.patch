@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 28ea279eb2b50e538e21247269cbeb886f9a32a2..f7f0acf969d0ef108ee91265a35c768da397855c 100644
+index 198a5b8c91ed48147c87fe330d1244091fce39bb..4a46198dc14077c2e9021ae4fb544cad4d33f2d7 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1501,6 +1501,7 @@ const FeatureEntry::FeatureVariation kPersistTabContextVariations[] = {

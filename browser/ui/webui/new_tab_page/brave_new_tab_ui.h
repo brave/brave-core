@@ -11,9 +11,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -21,6 +20,10 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/brave_news.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
@@ -34,6 +37,12 @@ namespace ntp_background_images {
 class NTPSponsoredRichMediaAdEventHandler;
 class ViewCounterService;
 }  // namespace ntp_background_images
+
+namespace contextual_search {
+class ContextualSearchSessionHandle;
+}  // namespace contextual_search
+
+class RealboxHandler;
 
 class BraveNewTabPageHandler;
 
@@ -52,8 +61,10 @@ class BraveNewTabUI : public ui::MojoWebUIController,
 
   // Instantiates the implementor of the mojo
   // interface passing the pending receiver that will be internally bound.
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+#endif
 
   void BindInterface(
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
@@ -67,6 +78,11 @@ class BraveNewTabUI : public ui::MojoWebUIController,
                          pending_vpn_service_handler);
 #endif
 
+  // Returns a reference to the owned contextual search session handle for
+  // `realbox_handler_`.
+  contextual_search::ContextualSearchSessionHandle*
+  GetContextualSessionHandle();
+
  private:
   // new_tab_page::mojom::PageHandlerFactory:
   void CreatePageHandler(
@@ -78,6 +94,10 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<
           ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
           pending_rich_media_ad_event_handler) override;
+
+  // Must outlive `realbox_handler_`.
+  std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
+      session_handle_;
 
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;

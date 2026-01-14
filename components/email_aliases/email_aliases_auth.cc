@@ -7,16 +7,10 @@
 
 #include "base/auto_reset.h"
 #include "base/base64.h"
-#include "base/values.h"
-#include "components/prefs/pref_registry_simple.h"
+#include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace {
-
-constexpr char kEmailField[] = "email";
-constexpr char kTokenField[] = "token";
 
 bool Encrypt(const os_crypt_async::Encryptor& encryptor,
              const std::string& plain_text,
@@ -69,83 +63,56 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
 
   pref_change_registrar_.Init(prefs_service_);
   pref_change_registrar_.Add(
-      prefs::kAuth, base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                                        base::Unretained(this)));
-
-  auth_email_ = GetAuthEmail();
-  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
+      brave_account::prefs::kBraveAccountAuthenticationToken,
+      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_account::prefs::kBraveAccountEmailAddress,
+      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                          base::Unretained(this)));
 }
 
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
-// static
-void EmailAliasesAuth::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(prefs::kAuth);
-}
-
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return is_authenticated_;
-}
-
-void EmailAliasesAuth::SetAuthEmail(const std::string& email) {
-  if (GetAuthEmail() != email) {
-    ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
-    update->SetString(kEmailField, email);
-    update->SetString(kTokenField, std::string_view{});
-  }
-}
-
-void EmailAliasesAuth::SetAuthToken(const std::string& auth_token) {
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
-
-  std::string encrypted;
-  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
-    update->SetString(kTokenField, std::string_view{});
-  } else {
-    update->SetString(kTokenField, encrypted);
-  }
+  return !GetAuthToken().empty() && !GetAuthEmail().empty();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
-  const base::Value::Dict& auth = prefs_service_->GetDict(prefs::kAuth);
-  if (const auto* email = auth.FindString(kEmailField)) {
-    return *email;
-  }
-  return {};
+  return prefs_service_->GetString(
+      brave_account::prefs::kBraveAccountEmailAddress);
 }
 
-std::string EmailAliasesAuth::CheckAndGetAuthToken() {
-  const base::Value::Dict& auth = prefs_service_->GetDict(prefs::kAuth);
-  if (const auto* encrypted_token = auth.FindString(kTokenField)) {
-    if (encrypted_token->empty()) {
-      return {};
-    }
-
-    std::string token;
-    if (!Decrypt(encryptor_, *encrypted_token, token)) {
-      // Failed to decrypt token -> reset.
-      SetAuthToken({});
-      return {};
-    }
-    return token;
+std::string EmailAliasesAuth::GetAuthToken() const {
+  const auto encrypted_token = prefs_service_->GetString(
+      brave_account::prefs::kBraveAccountAuthenticationToken);
+  if (encrypted_token.empty()) {
+    return {};
   }
-  return {};
+
+  std::string token;
+  if (!Decrypt(encryptor_, encrypted_token, token)) {
+    // Failed to decrypt token -> reset.
+    prefs_service_->ClearPref(
+        brave_account::prefs::kBraveAccountAuthenticationToken);
+    return {};
+  }
+  return token;
+}
+
+void EmailAliasesAuth::SetAuthForTesting(const std::string& auth_token) {
+  std::string encrypted;
+
+  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
+    prefs_service_->ClearPref(
+        brave_account::prefs::kBraveAccountAuthenticationToken);
+  } else {
+    prefs_service_->SetString(
+        brave_account::prefs::kBraveAccountAuthenticationToken, encrypted);
+  }
 }
 
 void EmailAliasesAuth::OnPrefChanged(const std::string& pref_name) {
-  if (!notify_) {
-    return;
-  }
-
-  base::AutoReset reenter(&notify_, false);
-
-  auto auth_email = GetAuthEmail();
-  if (auth_email != auth_email_) {
-    SetAuthToken({});
-    auth_email_ = std::move(auth_email);
-  }
-
-  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
   on_changed_.Run();
 }
 

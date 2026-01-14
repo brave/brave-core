@@ -96,6 +96,7 @@ export function useSquid(params: SwapParams) {
               jupiterTransactionParams: undefined,
               lifiTransactionParams: undefined,
               zeroExTransactionParams: undefined,
+              gate3TransactionParams: undefined,
             },
             'squidTransactionParams',
           ),

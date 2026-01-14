@@ -6,7 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '../lib/state_store'
+import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 import {
   VpnState,

@@ -58,12 +58,7 @@ bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
 
-BASE_FEATURE(kAIChatHistory,
-#if BUILDFLAG(IS_IOS)
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
+BASE_FEATURE(kAIChatHistory, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
@@ -77,8 +72,7 @@ bool IsAIChatFirstEnabled() {
 
 BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAIChatAgentProfile,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatAgentProfileEnabled() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -96,8 +90,7 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled() {
       features::kAIChatGlobalSidePanelEverywhere);
 }
 
-BASE_FEATURE(kCustomSiteDistillerScripts,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kCustomSiteDistillerScripts, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsCustomSiteDistillerScriptsEnabled() {
   return base::FeatureList::IsEnabled(features::kCustomSiteDistillerScripts);
@@ -110,8 +103,7 @@ bool IsContextMenuRewriteInPlaceEnabled() {
   return base::FeatureList::IsEnabled(features::kContextMenuRewriteInPlace);
 }
 
-BASE_FEATURE(kAllowPrivateIPs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAllowPrivateIPs, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAllowPrivateIPsEnabled() {
   return base::FeatureList::IsEnabled(features::kAllowPrivateIPs);
@@ -128,8 +120,7 @@ bool IsOpenAIChatFromBraveSearchEnabled() {
   return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
 }
 
-BASE_FEATURE(kPageContextEnabledInitially,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kPageContextEnabledInitially, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsPageContextEnabledInitially() {
   return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);

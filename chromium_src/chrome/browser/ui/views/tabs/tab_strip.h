@@ -19,8 +19,10 @@ class BraveTabHoverCardController;
   friend class BraveVerticalTabStripRegionView; \
   void UpdateHoverCard
 
-#define ShouldDrawStrokes   \
-  UnUsed() { return true; } \
+#define ShouldDrawStrokes \
+  UnUsed() {              \
+    return true;          \
+  }                       \
   virtual bool ShouldDrawStrokes
 #define GetDragContext                                                  \
   Unused_GetDragContext() {                                             \
@@ -30,6 +32,7 @@ class BraveTabHoverCardController;
   friend class BraveTabDragContext;                                     \
   const Browser* GetBrowser() const override;                           \
   bool ShouldAlwaysHideCloseButton() const override;                    \
+  bool CanCloseTabViaMiddleButtonClick() const override;                \
   bool IsVerticalTabsFloating() const override;                         \
   static constexpr bool IsUsingBraveTabHoverCardController() {          \
     return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \

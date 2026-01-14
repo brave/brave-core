@@ -5,6 +5,9 @@
 
 #include "chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.h"
 
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+
 #define ShouldOfferOmniboxIcon ShouldOfferOmniboxIcon_ChromiumImpl
 
 #include <chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.cc>
@@ -18,6 +21,11 @@ bool SharingHubBubbleControllerDesktopImpl::ShouldOfferOmniboxIcon() {
 
   // To disable share icons in internal pages.
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
+  // Checks if the kPinShareMenuButton pref is true.
+  if (!GetProfile()->GetPrefs()->GetBoolean(prefs::kPinShareMenuButton)) {
     return false;
   }
 

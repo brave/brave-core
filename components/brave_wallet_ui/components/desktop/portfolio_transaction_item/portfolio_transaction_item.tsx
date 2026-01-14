@@ -160,11 +160,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const { data: toNetwork } = useGetNetworkQuery(
       isBridge
-        && transaction.swapInfo?.toChainId
-        && transaction.swapInfo.toCoin !== undefined
+        && transaction.swapInfoDeprecated?.toChainId
+        && transaction.swapInfoDeprecated.toCoin !== undefined
         ? {
-            chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin,
+            chainId: transaction.swapInfoDeprecated.toChainId,
+            coin: transaction.swapInfoDeprecated.toCoin,
           }
         : skipToken,
     )

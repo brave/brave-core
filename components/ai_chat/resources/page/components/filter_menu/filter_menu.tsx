@@ -20,6 +20,8 @@ export interface Props<T> {
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
 
+  onResultsChanged?: (results: { category: string; entries: T[] }[]) => void
+
   // Note: undefined means no match.
   matchesQuery: (
     query: FuzzyFinder,
@@ -78,6 +80,10 @@ export default function FilterMenu<T>(props: Props<T>) {
       lookup,
     ]
   }, [props.query, props.categories])
+
+  React.useEffect(() => {
+    props.onResultsChanged?.(filtered)
+  }, [filtered])
 
   const noMatches = useMemo(
     () => !filtered.some((g) => g.entries.length !== 0),

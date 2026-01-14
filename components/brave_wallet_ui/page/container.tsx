@@ -247,7 +247,7 @@ export const Container = () => {
           redirectRoute={defaultRedirect}
           exact={true}
         >
-          <SendScreen />
+          <SendScreen key='send' />
         </ProtectedRoute>
 
         <ProtectedRoute

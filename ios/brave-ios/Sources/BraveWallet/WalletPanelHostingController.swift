@@ -46,31 +46,44 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       }
     }
     rootView.presentBuySendSwap = { [weak self] in
-      guard let self = self, let store = walletStore.cryptoStore else { return }
-      let controller = FixedHeightHostingPanModalController(
-        rootView: WalletActionsView(
-          networkStore: store.networkStore,
-          action: { destination in
-            self.dismiss(
-              animated: true,
-              completion: {
-                let walletHostingController = WalletHostingViewController(
-                  walletStore: walletStore,
-                  webImageDownloader: webImageDownloader,
-                  presentingContext: .walletAction(destination)
-                )
-                walletHostingController.delegate = self.delegate
-                self.present(walletHostingController, animated: true)
-              }
-            )
+      guard let self = self else { return }
+      let panelActionsSheet = WalletPanelActionsController(
+        handlePanelActionInWebUI: { [unowned self] destination in
+          var actionURL: URL = .webUI.wallet.home
+          switch destination.kind {
+          case .buy:
+            actionURL = .webUI.wallet.buy
+          case .send:
+            actionURL = .webUI.wallet.send
+          case .swap:
+            actionURL = .webUI.wallet.swap
+          case .deposit(_):
+            actionURL = .webUI.wallet.deposit
           }
-        )
+          self.dismiss(animated: true) {
+            self.delegate?.openDestinationURL(actionURL)
+          }
+        },
+        handlePanelActionInNativeUI: { [unowned self] destination in
+          let walletHostingController = WalletHostingViewController(
+            walletStore: walletStore,
+            webImageDownloader: webImageDownloader,
+            presentingContext: .walletAction(destination)
+          )
+          walletHostingController.delegate = self.delegate
+          self.dismiss(animated: true) {
+            self.present(walletHostingController, animated: true)
+          }
+        }
       )
-      self.presentPanModal(
-        controller,
-        sourceView: self.rootView.buySendSwapBackground.uiView,
-        sourceRect: self.rootView.buySendSwapBackground.uiView.bounds
-      )
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        panelActionsSheet.modalPresentationStyle = .popover
+      }
+      panelActionsSheet.popoverPresentationController?.sourceView =
+        self.rootView.buySendSwapBackground.uiView
+      panelActionsSheet.popoverPresentationController?.sourceRect =
+        self.rootView.buySendSwapBackground.uiView.bounds
+      self.present(panelActionsSheet, animated: true)
     }
 
     // Dismiss Buy/Send/Swap Menu when Wallet becomes locked

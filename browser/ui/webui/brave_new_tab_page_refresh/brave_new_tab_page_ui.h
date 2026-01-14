@@ -9,9 +9,13 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#endif
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -28,6 +32,10 @@ class NTPSponsoredRichMediaAdEventHandler;
 namespace brave_rewards {
 class RewardsPageHandler;
 }
+
+namespace contextual_search {
+class ContextualSearchSessionHandle;
+}  // namespace contextual_search
 
 class RealboxHandler;
 
@@ -52,15 +60,26 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 #endif
 
+  // Returns a reference to the owned contextual search session handle for
+  // `realbox_handler_`.
+  contextual_search::ContextualSearchSessionHandle*
+  GetContextualSessionHandle();
+
  private:
+  // Must outlive `realbox_handler_`.
+  std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
+      session_handle_;
+
   std::unique_ptr<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
       page_handler_;
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>

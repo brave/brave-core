@@ -56,6 +56,12 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTNOWHERE;
   }
 
+  // Don't need to give resize area when maximized.
+  // Having resize area prevents window dragging by grab top border.
+  if (browser_view->IsMaximized()) {
+    return hit_test_result;
+  }
+
   // Now we have only resizable areas.
   if (point_in_widget.x() <= kResizableArea &&
       point_in_widget.y() <= kResizableArea) {

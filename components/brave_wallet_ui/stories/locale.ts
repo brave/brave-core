@@ -658,30 +658,8 @@ provideStrings({
   braveWalletSpend: 'Spend',
 
   // Buy
-  braveWalletBuyTitle: 'Test faucet',
-  braveWalletBuyDescription: 'Get Ether from a faucet for $1',
-  braveWalletBuyFaucetButton: 'Get Ether',
-  braveWalletBuyContinueButton: 'Select purchase method',
   braveWalletBuySelectAsset: 'Select an asset',
-  braveWalletBuyRampNetworkName: 'Ramp.Network',
-  braveWalletBuyTransakName: 'Transak',
-  braveWalletBuyStripeName: 'Link by Stripe',
-  braveWalletBuyCoinbaseName: 'Coinbase Pay',
-  braveWalletBuyRampDescription:
-    'Buy with CC/Debit or ACH. ' + 'Competitive Rates.',
-  braveWalletBuyTransakDescription:
-    'Instant buy with your bank account. Lower fees.',
-  braveWalletBuyStripeDescription: 'Pay with credit, debit, bank account',
-  braveWalletBuyCoinbaseDescription:
-    'Buy with the most trusted name in crypto.',
-  braveWalletBuyWithRamp: 'Buy with Ramp',
-  braveWalletBuyWithTransak: 'Buy with Transak',
-  braveWalletBuyWithStripe: 'Buy with Link',
-  braveWalletBuyWithCoinbase: 'Buy with Coinbase Pay',
   braveWalletSellWithProvider: 'Sell with $1',
-  braveWalletBuyDisclaimer:
-    'Financial and transaction data is processed by our onramp partners. '
-    + 'Brave does not collect or have access to such data.',
   braveWalletTransactionsPartner: 'Transactions partner',
   braveWalletTransactionPartnerConsent:
     'Brave Wallet uses Meld.io to help aggregate and surface various '
@@ -712,12 +690,6 @@ provideStrings({
   braveWalletAccountName: 'Account name',
   braveWalletMinimumAmount: 'Minimum amount: $1',
   braveWalletMaximumAmount: 'Maximum amount: $1',
-
-  // Fund Wallet Screen
-  braveWalletFundWalletTitle:
-    'To finish your $1 purchase, select one of our partners',
-  braveWalletFundWalletDescription:
-    'On completion, your funds will be transferred to your Brave Wallet',
 
   // Deposit Funds Screen
   braveWalletDepositFundsTitle: 'Deposit crypto',

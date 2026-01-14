@@ -19,24 +19,24 @@ import brave_chromium_utils
 import deps
 
 # Configuration
-OPENGREP_VERSION = 'v1.12.1'
+OPENGREP_VERSION = 'v1.14.1'
 
 # SHA256 checksums for each platform binary
 BINARY_CHECKSUMS = {
     'opengrep_osx_arm64': (
-        '542ee85211a2828729349d7c672ed90ad432e9b6397fada96d92b0c0e6df269f'),
+        '1272dd1322d686d09fb97f1a3b743e17d7d1babcfc0d421f20c76d7dbdef4695'),
     'opengrep_osx_x86': (
-        '7595409c21135349e99f68efac605defdb62944b181d5d7f6e5c4d1822090fc3'),
+        '34bc4b5db6dc6654cf71324388f13d29f9cb40a0170f47935389f0f30434b28a'),
     'opengrep_manylinux_x86': (
-        'f18f3c7012070dec9ac612e1d6715a3d9d34e966e8c5f67c190c5f6ac8d63963'),
+        '85e8a4af4a37d58565c35010221574887329a043271d4efff81e35e455c87f9e'),
     'opengrep_manylinux_aarch64': (
-        '078d7b69b04e416ed4f2ebf59bdb7dae17e744e0a3af380f9f392af219aec8b8'),
+        '30efbe59a173c53f020c995c33d8db6ae34eccc958a14bbe5fe4047d36595abf'),
     'opengrep_musllinux_x86': (
-        '13a0a121549f59295d2a1554ffd9593a9c18e093db6eded4d6f5f637662cdae1'),
+        'ff9bb40afc87cb324ccf5bb79b8e772bf2eb05cca9bbe3f1c42ea95488d9ae5a'),
     'opengrep_musllinux_aarch64': (
-        'c4dfd2a152f23c980e6ea7f36642999d8b1c1423e92ae6e01cc52be160aeb5ec'),
+        '829d7a6b72a501c3ff938bd8551cc596a66bbc1e8ac55966742b5992c430d681'),
     'opengrep_windows_x86.exe': (
-        '73fe3433e9ae913dbfafe0a981df849209c0ee744cdc125651c4a812c71b5bd2'),
+        '58f4bba7ef474b143bb5eeee803a4791a05269fd461737e0e2faa96732160ac3'),
 }
 
 # Download directory (relative to brave core)
@@ -125,7 +125,8 @@ def DownloadOpengrep():
     version_file = os.path.join(INSTALL_DIR, '.version')
 
     # Construct download URL
-    url = (f'https://github.com/opengrep/opengrep/releases/download/'
+    # original url: https://github.com/opengrep/opengrep/releases/download/
+    url = (f'https://brave-build-deps-public.s3.brave.com/opengrep/'
            f'{OPENGREP_VERSION}/{dist_name}')
 
     print(f'Downloading opengrep {OPENGREP_VERSION}...')

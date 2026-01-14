@@ -22,11 +22,11 @@ void TestGetTransactionInfoFromData(
     mojom::TransactionType expected_tx_type,
     std::vector<std::string> expected_tx_params,
     std::vector<std::string> expected_tx_args,
-    mojom::SwapInfoPtr expected_swap_info = nullptr) {
+    mojom::SwapInfoDeprecatedPtr expected_swap_info = nullptr) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
 
   auto result = GetTransactionInfoFromData(data);
   ASSERT_NE(result, std::nullopt);
@@ -50,7 +50,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC20Transfer
@@ -114,7 +114,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC20Approve
@@ -196,7 +196,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
 
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes("0x0", &data));
@@ -222,7 +222,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC721TransferFrom
@@ -433,7 +433,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
 
   std::vector<uint8_t> data;
 
@@ -459,7 +459,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellEthForTokenToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: WETH → STG
@@ -514,7 +514,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: RSS3 → USDC → WETH
@@ -574,7 +574,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: COW → WETH → USDC
@@ -634,7 +634,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → WETH → LDO
@@ -693,7 +693,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → DAI
@@ -810,7 +810,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → ETH
@@ -899,7 +899,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → USDC
@@ -983,7 +983,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → USDT
@@ -1072,7 +1072,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: XDAI → USDC
@@ -1142,7 +1142,7 @@ TEST(EthDataParser, GetTransactionInfoFromFilForward) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
 
   std::vector<uint8_t> data;
   ASSERT_TRUE(
@@ -1170,7 +1170,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → token
@@ -1394,7 +1394,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → token
@@ -1505,7 +1505,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → ETH
@@ -1612,7 +1612,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → token
@@ -1723,7 +1723,7 @@ TEST(
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -1892,7 +1892,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2076,7 +2076,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2162,7 +2162,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiStartBridgeTokensViaMayan) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2284,7 +2284,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2474,7 +2474,7 @@ TEST(
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2648,7 +2648,7 @@ TEST(
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -2902,7 +2902,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:
@@ -3057,7 +3057,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
+  mojom::SwapInfoDeprecatedPtr swap_info;
   std::vector<uint8_t> data;
 
   // Function:

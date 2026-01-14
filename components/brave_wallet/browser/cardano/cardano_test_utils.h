@@ -37,6 +37,9 @@ cardano_rpc::TokenId GetMockTokenId(std::string_view name);
 
 class CardanoTestRpcServer {
  public:
+  using UnspentOutputs =
+      std::vector<cardano_rpc::blockfrost_api::UnspentOutput>;
+
   explicit CardanoTestRpcServer(CardanoWalletService& cardano_wallet_service);
   ~CardanoTestRpcServer();
 
@@ -66,9 +69,10 @@ class CardanoTestRpcServer {
 
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
-  const std::map<std::string,
-                 std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
-  GetUtxos();
+  std::map<std::string, UnspentOutputs>& utxo_map() { return utxos_map_; }
+  const std::map<std::string, UnspentOutputs>& utxo_map() const {
+    return utxos_map_;
+  }
 
  private:
   void RequestInterceptor(const network::ResourceRequest& request);
@@ -82,8 +86,7 @@ class CardanoTestRpcServer {
       const network::ResourceRequest& request);
   std::array<uint8_t, 32> CreateNewTxHash();
 
-  std::map<std::string, std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>
-      utxos_map_;
+  std::map<std::string, UnspentOutputs> utxos_map_;
   std::array<uint8_t, 32> next_tx_hash_ = {};
 
   std::string captured_raw_tx_;

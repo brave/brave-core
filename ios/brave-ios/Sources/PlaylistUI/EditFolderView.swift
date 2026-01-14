@@ -78,6 +78,7 @@ struct EditFolderView: View {
       )
       .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
       .navigationTitle(folder.title ?? Strings.Playlist.editPlaylist)
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button {

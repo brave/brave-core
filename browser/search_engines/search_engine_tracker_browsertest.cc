@@ -10,6 +10,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -59,8 +60,19 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
+  // By default, Rewards is disabled
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
                                         SearchEngineP3A::kBrave, 1);
+  // Since Rewards is disabled, NonRewards metric should have the value
+  histogram_tester_->ExpectUniqueSample(kNonRewardsDefaultEngineMetric,
+                                        SearchEngineP3A::kBrave, 1);
+  // And Rewards metric should be invalidated
+  histogram_tester_->ExpectUniqueSample(kRewardsDefaultEngineMetric,
+                                        INT_MAX - 1, 1);
+  // Wallet connected metric should be invalidated (Brave Search + Rewards
+  // disabled)
+  histogram_tester_->ExpectUniqueSample(kNonBraveSearchWalletConnectedMetric,
+                                        INT_MAX - 1, 1);
 
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
@@ -80,6 +92,34 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   service->SetUserSelectedDefaultSearchProvider(&ddg_url);
   histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 1);
+  histogram_tester_->ExpectBucketCount(kNonRewardsDefaultEngineMetric,
+                                       SearchEngineP3A::kDuckDuckGo, 1);
+  histogram_tester_->ExpectUniqueSample(kRewardsDefaultEngineMetric,
+                                        INT_MAX - 1, 2);
+  // Still invalidated (non-Brave Search but Rewards disabled)
+  histogram_tester_->ExpectUniqueSample(kNonBraveSearchWalletConnectedMetric,
+                                        INT_MAX - 1, 2);
+
+  // Enable Rewards and check metrics switch
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+
+  // Now Rewards metric should have the value and NonRewards should be
+  // invalidated
+  histogram_tester_->ExpectBucketCount(kRewardsDefaultEngineMetric,
+                                       SearchEngineP3A::kDuckDuckGo, 1);
+  histogram_tester_->ExpectBucketCount(kNonRewardsDefaultEngineMetric,
+                                       INT_MAX - 1, 1);
+  // Wallet connected metric should now report 0 (non-Brave Search + Rewards
+  // enabled + no wallet)
+  histogram_tester_->ExpectBucketCount(kNonBraveSearchWalletConnectedMetric, 0,
+                                       1);
+
+  // Connect a wallet
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
+  // Wallet connected metric should now report 1 (wallet connected)
+  histogram_tester_->ExpectBucketCount(kNonBraveSearchWalletConnectedMetric, 1,
+                                       1);
 
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
@@ -89,6 +129,25 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
   histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
                                        SearchEngineP3A::kBrave, 2);
+  // With Rewards enabled, Rewards metric should show Brave
+  histogram_tester_->ExpectBucketCount(kRewardsDefaultEngineMetric,
+                                       SearchEngineP3A::kBrave, 1);
+  histogram_tester_->ExpectBucketCount(kNonRewardsDefaultEngineMetric,
+                                       INT_MAX - 1, 2);
+  // Wallet connected metric should be invalidated again (Brave Search)
+  histogram_tester_->ExpectBucketCount(kNonBraveSearchWalletConnectedMetric,
+                                       INT_MAX - 1, 3);
+
+  // Disable Rewards again
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  // NonRewards metric should have the value again
+  histogram_tester_->ExpectBucketCount(kNonRewardsDefaultEngineMetric,
+                                       SearchEngineP3A::kBrave, 2);
+  histogram_tester_->ExpectBucketCount(kRewardsDefaultEngineMetric, INT_MAX - 1,
+                                       3);
+  // Still invalidated (Brave Search + Rewards disabled)
+  histogram_tester_->ExpectBucketCount(kNonBraveSearchWalletConnectedMetric,
+                                       INT_MAX - 1, 4);
 
   // Check that incognito or TOR profiles do not emit the metric.
   CreateIncognitoBrowser();
@@ -96,7 +155,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
-  histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 3);
+  histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 5);
+  histogram_tester_->ExpectTotalCount(kRewardsDefaultEngineMetric, 5);
+  histogram_tester_->ExpectTotalCount(kNonRewardsDefaultEngineMetric, 5);
+  histogram_tester_->ExpectTotalCount(kNonBraveSearchWalletConnectedMetric, 6);
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {

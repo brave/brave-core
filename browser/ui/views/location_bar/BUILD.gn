@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -31,6 +32,7 @@ source_set("location_bar") {
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/views/page_info",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_search_conversion",
     "//brave/components/commander/browser",
     "//brave/components/commander/common",

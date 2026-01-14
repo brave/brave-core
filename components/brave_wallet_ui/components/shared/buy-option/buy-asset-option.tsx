@@ -53,8 +53,8 @@ import {
   NetworkDescriptionText,
   PriceContainer,
   PriceText,
+  LoadIcon,
 } from './buy-asset-option.styles'
-import { LoadIcon } from './buy-option-item-styles'
 
 interface Props {
   onClick?: (token: BraveWallet.BlockchainToken) => void

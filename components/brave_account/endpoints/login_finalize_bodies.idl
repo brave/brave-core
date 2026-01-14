@@ -11,5 +11,6 @@ namespace endpoints {
 
   dictionary LoginFinalizeSuccessBody {
     DOMString authToken;
+    DOMString email;
   };
 };

@@ -11,16 +11,21 @@ import android.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
 import org.chromium.brave.browser.skus.SkusServiceFactory;
 import org.chromium.brave.browser.util.BraveDomainsUtils;
 import org.chromium.brave.browser.util.ServicesEnvironment;
+import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveOriginPreferences;
@@ -401,5 +406,88 @@ public class BraveOriginSubscriptionPrefs {
         }
         SettingsNavigationFactory.createSettingsNavigation()
                 .startSettings(activity, BraveOriginPreferences.class);
+    }
+
+    /**
+     * Checks if a policy value should be inverted when mapping to/from UI state. DISABLED policies
+     * need inversion (true = disabled = unchecked in UI). ENABLED policies don't need inversion
+     * (true = enabled = checked in UI).
+     *
+     * @param policyKey The policy key to check
+     * @return true if the policy value should be inverted, false otherwise
+     */
+    public static boolean isPolicyInverted(@Nullable String policyKey) {
+        if (policyKey == null) {
+            return false;
+        }
+        switch (policyKey) {
+            case BravePolicyConstants.BRAVE_REWARDS_DISABLED:
+            case BravePolicyConstants.BRAVE_NEWS_DISABLED:
+            case BravePolicyConstants.BRAVE_VPN_DISABLED:
+            case BravePolicyConstants.BRAVE_WALLET_DISABLED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Generic method to check if a feature is disabled by policy asynchronously. This method checks
+     * subscription status first, then checks the policy value.
+     *
+     * @param profile The profile to use for the operation
+     * @param policyKey The policy key to check (e.g., BravePolicyConstants.BRAVE_REWARDS_DISABLED)
+     * @param callback Called with the policy value (true if disabled, false if not disabled)
+     */
+    public static void checkPolicyAsync(
+            @Nullable Profile profile, String policyKey, @Nullable Callback<Boolean> callback) {
+        if (callback == null) {
+            return;
+        }
+
+        // If Brave Origin feature is not enabled, policies are not applicable
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            callback.onResult(false);
+            return;
+        }
+
+        if (profile == null) {
+            callback.onResult(false);
+            return;
+        }
+
+        // Check subscription status first - if not active, policies don't apply (feature enabled)
+        requestCredentialSummary(
+                profile,
+                (isSubscriptionActive) -> {
+                    // If subscription is not active, return false (feature not disabled = enabled)
+                    if (!isSubscriptionActive) {
+                        callback.onResult(false);
+                        return;
+                    }
+
+                    // Subscription is active, proceed with policy check
+                    BraveOriginServiceFactory factory = BraveOriginServiceFactory.getInstance();
+                    BraveOriginSettingsHandler handler =
+                            factory.getBraveOriginSettingsHandler(profile, null);
+                    if (handler == null) {
+                        callback.onResult(false);
+                        return;
+                    }
+
+                    handler.getPolicyValue(
+                            policyKey,
+                            (value) -> {
+                                // For "DISABLED" policies (inverted): true = disabled, null/false =
+                                // enabled
+                                // For "ENABLED" policies: true = enabled, null/false = disabled
+                                boolean isDisabled =
+                                        isPolicyInverted(policyKey)
+                                                ? (value != null && value)
+                                                : (value == null || !value);
+                                callback.onResult(isDisabled);
+                                handler.close();
+                            });
+                });
     }
 }

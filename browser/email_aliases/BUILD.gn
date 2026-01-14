@@ -53,6 +53,7 @@ if (toolkit_views) {
     deps = [
       ":email_aliases",
       "//brave/browser/ui/email_aliases",
+      "//brave/components/brave_account/endpoints",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:service",

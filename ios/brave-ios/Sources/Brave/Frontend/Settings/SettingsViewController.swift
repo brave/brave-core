@@ -193,6 +193,10 @@ class SettingsViewController: TableViewController {
       callback: refreshUI
     )
     prefsChangeRegistrar.addObserver(
+      forPath: BraveAccountEmailAddressPref,
+      callback: refreshUI
+    )
+    prefsChangeRegistrar.addObserver(
       forPath: BraveAccountVerificationTokenPref,
       callback: refreshUI
     )
@@ -365,8 +369,10 @@ class SettingsViewController: TableViewController {
         header: .title(Strings.braveAccount),
         rows: [
           Row(
-            text: "John Doe",
-            detailText: "johndoe@gmail.com",
+            text: Strings.braveAccountEmailAddress,
+            detailText: braveCore.profile.prefs.string(
+              forPath: BraveAccountEmailAddressPref
+            ),
             image: UIImage(sharedNamed: "brave.logo"),
             cellClass: BraveAccountIconCell.self
           ),
@@ -714,7 +720,10 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Origin.originProductName,
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: OriginSettingsView())
+            guard let service = BraveOriginServiceFactory.get(profile: braveCore.profile) else {
+              return
+            }
+            let controller = UIHostingController(rootView: OriginSettingsView(service: service))
             controller.title = Strings.Origin.originProductName  // Not Translated
             self.navigationController?.pushViewController(controller, animated: true)
           },

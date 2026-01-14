@@ -9,6 +9,7 @@ import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -68,11 +69,17 @@ source_set("ui") {
     "//brave/browser/ui/webui/brave_account",
     "//brave/browser/ui/webui/email_aliases",
     "//brave/components/ai_chat/core/common/buildflags",
+
+    # Unconditional for gn check since the mojom header is included
+    # in brave_new_tab_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
+    "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_origin",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser/contextual_search",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/ui:browser_navigator_params_headers",
@@ -149,6 +156,10 @@ source_set("ui") {
         "//brave/components/ai_chat/core/browser/ollama",
       ]
     }
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
   }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -530,12 +541,6 @@ source_set("ui") {
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_javascript_tab_modal_dialog_view_views.cc",
       "views/brave_javascript_tab_modal_dialog_view_views.h",
-      "views/brave_news/brave_news_bubble_view.cc",
-      "views/brave_news/brave_news_bubble_view.h",
-      "views/brave_news/brave_news_feed_item_view.cc",
-      "views/brave_news/brave_news_feed_item_view.h",
-      "views/brave_news/brave_news_feeds_container_view.cc",
-      "views/brave_news/brave_news_feeds_container_view.h",
       "views/brave_tab_search_bubble_host.cc",
       "views/brave_tab_search_bubble_host.h",
       "views/commands/default_accelerators_views.cc",
@@ -816,8 +821,6 @@ source_set("ui") {
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_news/browser",
-    "//brave/components/brave_news/common",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
@@ -944,6 +947,25 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/nft:nft_display_generated",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/decentralized_dns/core",
+    ]
+  }
+
+  if (enable_brave_news && toolkit_views) {
+    sources += [
+      "views/brave_news/brave_news_action_icon_view.cc",
+      "views/brave_news/brave_news_action_icon_view.h",
+      "views/brave_news/brave_news_bubble_controller.cc",
+      "views/brave_news/brave_news_bubble_controller.h",
+      "views/brave_news/brave_news_bubble_view.cc",
+      "views/brave_news/brave_news_bubble_view.h",
+      "views/brave_news/brave_news_feed_item_view.cc",
+      "views/brave_news/brave_news_feed_item_view.h",
+      "views/brave_news/brave_news_feeds_container_view.cc",
+      "views/brave_news/brave_news_feeds_container_view.h",
+    ]
+    deps += [
+      "//brave/components/brave_news/browser",
+      "//ui/base/metadata",
     ]
   }
 
@@ -1152,10 +1174,6 @@ source_set("ui") {
       "views/brave_help_bubble/brave_help_bubble_delegate_view.h",
       "views/brave_help_bubble/brave_help_bubble_host_view.cc",
       "views/brave_help_bubble/brave_help_bubble_host_view.h",
-      "views/brave_news/brave_news_action_icon_view.cc",
-      "views/brave_news/brave_news_action_icon_view.h",
-      "views/brave_news/brave_news_bubble_controller.cc",
-      "views/brave_news/brave_news_bubble_controller.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_new_tab_button.cc",
@@ -1270,7 +1288,6 @@ source_set("ui") {
       "commands/default_accelerators.h",
     ]
     deps += [
-      "//brave/components/brave_news/common",
       "//brave/components/brave_rewards/core",
       "//brave/components/commands/browser",
       "//brave/components/constants",

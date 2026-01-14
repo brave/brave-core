@@ -192,7 +192,7 @@ class TransactionParserTests: XCTestCase {
     txArgs: [String] = [],
     chainId: String = BraveWallet.MainnetChainId,
     effectiveRecipient: String,
-    swapInfo: BraveWallet.SwapInfo? = nil
+    swapInfoDeprecated: BraveWallet.SwapInfoDeprecated? = nil
   ) -> BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "1",
@@ -210,7 +210,7 @@ class TransactionParserTests: XCTestCase {
       chainId: chainId,
       effectiveRecipient: effectiveRecipient,
       isRetriable: false,
-      swapInfo: swapInfo
+      swapInfoDeprecated: swapInfoDeprecated
     )
   }
 
@@ -392,7 +392,7 @@ class TransactionParserTests: XCTestCase {
       txType: .ethSwap,
       txArgs: [],
       effectiveRecipient: transactionData.baseData.to,
-      swapInfo: .init(
+      swapInfoDeprecated: .init(
         from: .eth,
         fromChainId: BraveWallet.MainnetChainId,
         fromAsset: BraveWallet.ethSwapAddress,
@@ -477,7 +477,7 @@ class TransactionParserTests: XCTestCase {
       txType: .ethSwap,
       txArgs: [],
       effectiveRecipient: transactionData.baseData.to,
-      swapInfo: .init(
+      swapInfoDeprecated: .init(
         from: .eth,
         fromChainId: BraveWallet.MainnetChainId,
         fromAsset: "0x07865c6e87b9f70255377e024ace6630c1eaa37f",

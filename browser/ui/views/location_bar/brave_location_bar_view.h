@@ -11,10 +11,10 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/types/pass_key.h"
-#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/view_shadow.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -27,6 +27,10 @@ class PromotionButtonView;
 class PlaylistActionIconView;
 class RewardsBrowserTest;
 class SkPath;
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+class BraveNewsActionIconView;
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 class OnionLocationView;
@@ -133,7 +137,9 @@ class BraveLocationBarView : public LocationBarView {
   bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;
+#endif
   std::unique_ptr<PromotionButtonController> promotion_controller_;
   raw_ptr<PromotionButtonView> promotion_button_ = nullptr;
   std::unique_ptr<BraveShieldsPageInfoController> shields_page_info_controller_;

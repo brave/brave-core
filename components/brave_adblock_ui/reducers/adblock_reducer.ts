@@ -15,7 +15,10 @@ const updateCustomFilters = debounce((customFilters: string) => {
   chrome.send('brave_adblock.updateCustomFilters', [customFilters])
 }, 1500)
 
-const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State | undefined, action) => {
+const adblockReducer: Reducer<AdBlock.State | undefined> = (
+  state: AdBlock.State | undefined,
+  action,
+) => {
   if (state === undefined) {
     state = storage.load()
   }
@@ -23,15 +26,20 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
   const startingState = state
   switch (action.type) {
     case types.ADBLOCK_ENABLE_FILTER_LIST:
-      chrome.send('brave_adblock.enableFilterList', [action.payload.uuid, action.payload.enabled])
+      chrome.send('brave_adblock.enableFilterList', [
+        action.payload.uuid,
+        action.payload.enabled,
+      ])
       state = {
         ...state,
         settings: {
           ...state.settings,
-          regionalLists: state.settings.regionalLists.map(resource =>
-            resource.uuid === action.payload.uuid ? { ...resource, enabled: action.payload.enabled } : resource
-          )
-        }
+          regionalLists: state.settings.regionalLists.map((resource) =>
+            resource.uuid === action.payload.uuid
+              ? { ...resource, enabled: action.payload.enabled }
+              : resource,
+          ),
+        },
       }
       break
     case types.ADBLOCK_GET_CUSTOM_FILTERS:
@@ -44,10 +52,15 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
       chrome.send('brave_adblock.getListSubscriptions')
       break
     case types.ADBLOCK_SUBMIT_NEW_SUBSCRIPTION:
-      chrome.send('brave_adblock.submitNewSubscription', [action.payload.listUrl])
+      chrome.send('brave_adblock.submitNewSubscription', [
+        action.payload.listUrl,
+      ])
       break
     case types.ADBLOCK_SET_SUBSCRIPTION_ENABLED:
-      chrome.send('brave_adblock.setSubscriptionEnabled', [action.payload.listUrl, action.payload.enabled])
+      chrome.send('brave_adblock.setSubscriptionEnabled', [
+        action.payload.listUrl,
+        action.payload.enabled,
+      ])
       break
     case types.ADBLOCK_DELETE_SUBSCRIPTION:
       chrome.send('brave_adblock.deleteSubscription', [action.payload.listUrl])
@@ -56,19 +69,45 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
       chrome.send('brave_adblock.refreshSubscription', [action.payload.listUrl])
       break
     case types.ADBLOCK_VIEW_SUBSCRIPTION_SOURCE:
-      chrome.send('brave_adblock.viewSubscriptionSource', [action.payload.listUrl])
+      chrome.send('brave_adblock.viewSubscriptionSource', [
+        action.payload.listUrl,
+      ])
       break
     case types.ADBLOCK_ON_GET_CUSTOM_FILTERS:
-      state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
+      state = {
+        ...state,
+        settings: {
+          ...state.settings,
+          customFilters: action.payload.customFilters,
+        },
+      }
       break
     case types.ADBLOCK_ON_GET_REGIONAL_LISTS:
-      state = { ...state, settings: { ...state.settings, regionalLists: action.payload.regionalLists } }
+      state = {
+        ...state,
+        settings: {
+          ...state.settings,
+          regionalLists: action.payload.regionalLists,
+        },
+      }
       break
     case types.ADBLOCK_ON_GET_LIST_SUBSCRIPTIONS:
-      state = { ...state, settings: { ...state.settings, listSubscriptions: action.payload.listSubscriptions } }
+      state = {
+        ...state,
+        settings: {
+          ...state.settings,
+          listSubscriptions: action.payload.listSubscriptions,
+        },
+      }
       break
     case types.ADBLOCK_UPDATE_CUSTOM_FILTERS:
-      state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
+      state = {
+        ...state,
+        settings: {
+          ...state.settings,
+          customFilters: action.payload.customFilters,
+        },
+      }
       updateCustomFilters(state.settings.customFilters)
       break
     default:

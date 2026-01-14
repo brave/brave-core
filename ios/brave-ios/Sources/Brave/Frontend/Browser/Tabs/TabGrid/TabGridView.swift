@@ -378,7 +378,9 @@ struct TabGridView: View {
 
   var headerBar: some View {
     HStack {
-      PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
+      if !privateBrowsingOnly.value {
+        PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
+      }
       Spacer()
       HStack(spacing: 20) {
         if viewModel.isShredMenuVisible {

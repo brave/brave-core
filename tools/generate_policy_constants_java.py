@@ -41,12 +41,58 @@ def find_policy_yaml_files(policy_dir):
 def generate_java_constant_name(policy_name):
     """Convert policy name to Java constant name.
 
-    Example: 'BraveWebDiscoveryEnabled' -> 'BRAVE_WEB_DISCOVERY_ENABLED'
+    Handles acronyms properly:
+    - 'BraveWebDiscoveryEnabled' -> 'BRAVE_WEB_DISCOVERY_ENABLED'
+    - 'BraveP3AEnabled' -> 'BRAVE_P3A_ENABLED'
+    - 'BraveAIChatEnabled' -> 'BRAVE_AI_CHAT_ENABLED'
+    - 'BraveVPNDisabled' -> 'BRAVE_VPN_DISABLED'
     """
-    # Insert underscore before capital letters (except the first one)
-    # and convert to uppercase
-    result = re.sub(r'(?<!^)(?=[A-Z])', '_', policy_name).upper()
-    return result
+    result = []
+    i = 0
+    while i < len(policy_name):
+        char = policy_name[i]
+
+        if char.isupper():
+            # Check if this starts an acronym (consecutive uppercase letters
+            # possibly followed by a digit)
+            acronym_end = i + 1
+            while acronym_end < len(policy_name):
+                next_char = policy_name[acronym_end]
+                if next_char.isupper():
+                    acronym_end += 1
+                elif next_char.isdigit():
+                    # Include digits in acronyms (like P3A)
+                    acronym_end += 1
+                else:
+                    break
+
+            acronym_len = acronym_end - i
+
+            if acronym_len > 1:
+                # We have an acronym
+                # Check if the last uppercase letter starts the next word
+                if (acronym_end < len(policy_name)
+                        and policy_name[acronym_end - 1].isupper()
+                        and policy_name[acronym_end].islower()):
+                    # The last uppercase is part of next word (e.g., "AIChat")
+                    acronym_end -= 1
+                    acronym_len -= 1
+
+                if result:
+                    result.append('_')
+                result.append(policy_name[i:acronym_end].upper())
+                i = acronym_end
+            else:
+                # Single uppercase letter - start of a new word
+                if result:
+                    result.append('_')
+                result.append(char.upper())
+                i += 1
+        else:
+            result.append(char.upper())
+            i += 1
+
+    return ''.join(result)
 
 
 def generate_java_content(policy_names):

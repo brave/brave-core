@@ -418,36 +418,8 @@ extension Domain {
     return domainOnCorrectContext
   }
 
-  public class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping () -> Void)
-  {
-    DataController.perform { context in
-      let fetchRequest = NSFetchRequest<Domain>()
-      fetchRequest.entity = Domain.entity(context)
-      do {
-        let results = try context.fetch(fetchRequest)
-        results.forEach {
-          if let bms = $0.bookmarks, bms.count > 0 {
-            // Clear visit count and clear the shield settings
-            $0.visits = 0
-            $0.shield_allOff = nil
-            $0.shield_blockAdsAndTrackingLevel = nil
-            $0.shield_noScript = nil
-            $0.shield_fpProtection = nil
-            $0.shield_safeBrowsing = nil
-          } else {
-            // Delete
-            context.delete($0)
-          }
-        }
-      } catch {
-        let fetchError = error as NSError
-        print(fetchError)
-      }
-
-      DispatchQueue.main.async {
-        completionOnMain()
-      }
-    }
+  public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
+    Domain.deleteAll(completion: completionOnMain)
   }
 
   class func getForUrl(_ url: URL) -> Domain? {

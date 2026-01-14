@@ -443,7 +443,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 mojom::TransactionType tx_type;
                 std::vector<std::string> tx_params;
                 std::vector<std::string> tx_args;
-                mojom::SwapInfoPtr swap_info;
+                mojom::SwapInfoDeprecatedPtr swap_info;
 
                 auto tx_info = GetTransactionInfoFromData(data);
                 ASSERT_NE(tx_info, std::nullopt);

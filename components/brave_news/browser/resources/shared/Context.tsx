@@ -79,11 +79,11 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   shouldRenderImages: false,
 })
 
-export const publishersCache = new PublishersCachingWrapper()
-const channelsCache = new ChannelsCachingWrapper()
-export const configurationCache = new ConfigurationCachingWrapper()
-
 export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
+  const configurationCache = ConfigurationCachingWrapper.getInstance()
+  const channelsCache = ChannelsCachingWrapper.getInstance()
+  const publishersCache = PublishersCachingWrapper.getInstance()
+
   const [locale, setLocale] = useState('')
   const [configuration, setConfiguration] = useState<Configuration>(configurationCache.value)
 
@@ -240,6 +240,7 @@ export const useChannelSubscribed = (channelName: string) => {
   const subscribed = useMemo(() => channels[channelName]?.subscribedLocales.includes(locale) ?? false,
     [channels[channelName], locale])
   const setSubscribed = React.useCallback((subscribed: boolean) => {
+    const channelsCache = ChannelsCachingWrapper.getInstance()
     channelsCache.setChannelSubscribed(locale, channelName, subscribed)
   }, [channelName, locale])
 
@@ -258,7 +259,10 @@ export const usePublisherFollowed = (publisherId: string) => {
   const publisher = usePublisher(publisherId)
 
   const followed = isPublisherEnabled(publisher)
-  const setFollowed = useCallback((followed: boolean) => publishersCache.setPublisherFollowed(publisherId, followed), [publisherId])
+  const setFollowed = useCallback((followed: boolean) => {
+    const publishersCache = PublishersCachingWrapper.getInstance()
+    publishersCache.setPublisherFollowed(publisherId, followed)
+  }, [publisherId])
 
   return {
     followed,

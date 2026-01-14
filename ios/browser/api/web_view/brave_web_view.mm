@@ -16,6 +16,7 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
@@ -207,10 +208,13 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
-  ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
-      ->SetBridge(self.aiChatUIHandler);
-  ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
-      ->SetPageFetcher(self.aiChatUIHandler);
+
+  if (ai_chat::features::IsAIChatWebUIEnabled()) {
+    ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+        ->SetBridge(self.aiChatUIHandler);
+    ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+        ->SetPageFetcher(self.aiChatUIHandler);
+  }
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
 
@@ -354,10 +358,12 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)setAiChatUIHandler:
     (id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>)bridge {
   _aiChatUIHandler = bridge;
-  ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
-      ->SetBridge(bridge);
-  ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
-      ->SetPageFetcher(self.aiChatUIHandler);
+  if (ai_chat::features::IsAIChatWebUIEnabled()) {
+    ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+        ->SetBridge(bridge);
+    ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+        ->SetPageFetcher(self.aiChatUIHandler);
+  }
 }
 
 @end

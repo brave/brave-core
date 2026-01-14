@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">लिंक कॉपी करा</translation>
 <translation id="721490496276866468">पासवर्ड आयात करा</translation>
 <translation id="8178175542325151321">Brave पासवर्ड व्यवस्थापकामध्ये पासवर्ड आयात करण्यासाठी तुमच्या पासवर्डसह .csv फाइल निवडा.</translation>
-<translation id="1177863135347784049">सानुकूल</translation>
 <translation id="6112331814131703370">'अ‍ॅपवर स्विच करा' सूचना अवरोधित करा</translation>
 <translation id="4744921452903670666">आम्हाला तुमचे मत सांगा!</translation>
 <translation id="2524310205387880526">ब्रेव्हला रेटिंग द्या</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">खासगी टॅब्समध्ये मजकूर आपोआप भरा</translation>
 <translation id="8685431198160039193">जतन केलेली माहिती खासगी टॅब्समध्ये आपोआप भरता येते</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
-<translation id="5713644099811900409">Brave खाते</translation>
-<translation id="4472575034687746823">प्रारंभ करा</translation>
 <translation id="1799030480311994998">वैशिष्ट्ये</translation>
 <translation id="1919345977826869612">जाहिराती</translation>
 <translation id="2839742394543397416">विश्लेषण</translation>
@@ -385,7 +382,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="717952606991220586">अरेरे, काहीतरी चुकीचे आहे. कृपया नंतर पुन्हा प्रयत्न करा.</translation>
 <translation id="987264212798334818">सामान्य</translation>
 <translation id="1116694919640316211">बद्दल</translation>
-<translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="1275213816424141989">कदाचित नंतर</translation>
 <translation id="3624048886326677117">ट्रॅकर्स आणि ॲड्स ब्लॉक करा (आक्रमक)</translation>
 <translation id="7151914815476509258">ट्रॅकर्स आणि ॲड्स ब्लॉक करा (मानक)</translation>
@@ -570,7 +566,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="6697810017029555732">जुळले!</translation>
 <translation id="5981303441790732480">तुमचा विद्यमान वॉलेट आयात करा</translation>
 <translation id="9111102763498581341">अनलॉक करा</translation>
-<translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="7553242001898162573">तुमचा पासवर्ड प्रविष्ट करा</translation>
 <translation id="5619264711680220002">बायोमेट्रिक अनलॉक</translation>
 <translation id="9195657745688986798">वॉलेट अनलॉक करा</translation>
@@ -727,6 +722,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="9091334651803050473">याची हमी देता येत नाही, पण तुम्ही जास्त शुल्क दिल्यास तुमच्या व्यवहाराला मायनर्स प्राधान्य देऊ शकतात.</translation>
 <translation id="2941112035454246133">कमी</translation>
 <translation id="7304030187361489308">उच्च</translation>
+<translation id="1177863135347784049">सानुकूल</translation>
 <translation id="4853037749278079787">कमाल शुल्क: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">सध्याचे बेस शुल्क: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">गॅस अमाऊंट लिमिट</translation>
@@ -1047,31 +1043,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="6393423486818299209">तुमचा चालू सेवा पुरवठादार किंवा Wikimedia DNS वापरा</translation>
 <translation id="3401384982562827787">तुमचा चालू सेवा पुरवठादार किंवा Cloudflare वापरा</translation>
 <translation id="8812367543786936496">तुमचा चालू सेवा पुरवठादार असुरक्षित असल्यास, Brave सुरक्षित पर्यायी DNS पुरवठादार वापरेल</translation>
-<translation id="5680678411439841197">शहर</translation>
-<translation id="8185518433273977704">नागर</translation>
-<translation id="4528386452965343421">प्रांत</translation>
-<translation id="1589122976691792535">क्षेत्र</translation>
-<translation id="2221292964468054123">राज्य</translation>
-<translation id="3801482889636327368">संस्था</translation>
-<translation id="1425162721525518064">कंपनी</translation>
-<translation id="7568794877555549044">देश</translation>
-<translation id="5982110855572850497">लेबल</translation>
-<translation id="6848689413353508904">कंटेनर</translation>
-<translation id="1496514951988037011">वापरकर्तानाव</translation>
-<translation id="6155129418108337061">लॉगिन</translation>
-<translation id="4038523199754403233">ID</translation>
-<translation id="901834265349196618">ईमेल</translation>
-<translation id="3488199663160411179">नाव</translation>
-<translation id="793994607260936590">पहिले</translation>
-<translation id="1782612111936779655">शेवटचं</translation>
-<translation id="7628132737455466188">पूर्णं</translation>
-<translation id="8621068256433641644">फोन</translation>
-<translation id="5993210100509955931">मोबाइल</translation>
-<translation id="598301471034819706">पत्ता</translation>
-<translation id="5557821203571216370">फ्लॅट क्र.</translation>
-<translation id="8051552210542030943">सुरक्षा कोड</translation>
-<translation id="5233247193491045452">पोस्टल कोड</translation>
-<translation id="3300502432153878901">पिन कोड</translation>
 <translation id="1381108437654541567">अनेक विंडो सक्षम करा</translation>
 <translation id="6167344249617630304">साथीचेजोडीने एकावेळी 5 पर्यंत विंडो उघडा आणि एकाच विंडोमधून दुसऱ्या विंडोत शिफ्ट करा</translation>
 <translation id="1063948063403254568">अनेक विंडो शोधल्या</translation>
@@ -1149,6 +1120,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="7808889146555843082">हा पासवर्ड हटवल्यामुळे तुमचे <ph name="SITE"/> वरील खाते हटवले जाणार नाही. तुमचे खाते इतरांपासून सुरक्षित ठेवण्यासाठी, त्‍याचा <ph name="SITE"/> वरील पासवर्ड बदला किंवा तुमचे त्‍यावरील खाते हटवा.</translation>
 <translation id="2870560284913253234">साइट</translation>
 <translation id="8503813439785031346">वापरकर्तानाव</translation>
+<translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="2278052315791335171">हा पासवर्ड हटवल्यामुळे तुमचे <ph name="SITE"/> वरील खाते हटवले जाणार नाही</translation>
 <translation id="6891726759199484455">तुमचा पासवर्ड कॉपी करण्यासाठी अनलॉक करा</translation>
 <translation id="5515439363601853141">तुमचा पासवर्ड पाहण्यासाठी अनलॉक करा</translation>

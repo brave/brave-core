@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -19,6 +20,8 @@ void RegisterPrefs(PrefRegistrySimple* registry) {
     registry->RegisterStringPref(kBraveAccountAuthenticationToken,
                                  std::string());
     registry->RegisterStringPref(kBraveAccountEmailAddress, std::string());
+    registry->RegisterDictionaryPref(kBraveAccountServiceTokens,
+                                     base::Value::Dict());
   }
 }
 

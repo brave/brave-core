@@ -15,8 +15,7 @@
         android:key="user_info"
         android:order="1"
         android:icon="@drawable/ic_brave"
-        android:title="John Doe"
-        android:summary="johndoe@gmail.com"
+        android:title="@string/prefs_brave_account_email_address"
         app:summary_text_color="@color/brave_theme_subtitle_text"
         android:selectable="false"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference

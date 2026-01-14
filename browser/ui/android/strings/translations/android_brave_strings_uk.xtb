@@ -4,7 +4,6 @@
 <translation id="7630214457764713113">Копіювати чисте посилання</translation>
 <translation id="721490496276866468">Імпортувати паролі</translation>
 <translation id="8178175542325151321">Виберіть файл .csv з вашими паролями, щоб імпортувати їх у Менеджер паролів Brave.</translation>
-<translation id="1177863135347784049">Спеціальне</translation>
 <translation id="6112331814131703370">Блокувати сповіщення «Відкрити в застосунку»</translation>
 <translation id="4744921452903670666">Поділіться своїми враженнями!</translation>
 <translation id="2524310205387880526">Оцінити Brave</translation>
@@ -59,8 +58,6 @@
 <translation id="8617525558807213034">Автозаповнення у приватних вкладках</translation>
 <translation id="8685431198160039193">Збережені дані можна автоматично заповнювати у приватних вкладках</translation>
 <translation id="6583902294974160967">Підтримка</translation>
-<translation id="5713644099811900409">Обліковий запис Brave</translation>
-<translation id="4472575034687746823">Початок роботи</translation>
 <translation id="1799030480311994998">Функції</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="2839742394543397416">Аналітика</translation>
@@ -384,7 +381,6 @@
 <translation id="717952606991220586">Отакої, щось пішло не так. Будь ласка, спробуйте ще раз пізніше.</translation>
 <translation id="987264212798334818">Загальне</translation>
 <translation id="1116694919640316211">Про нас</translation>
-<translation id="7961015016161918242">Ніколи</translation>
 <translation id="1275213816424141989">Можливо, пізніше</translation>
 <translation id="3624048886326677117">Блокувати стеження і рекламу (агресивно)</translation>
 <translation id="7151914815476509258">Блокувати стеження і рекламу (стандартно)</translation>
@@ -569,7 +565,6 @@
 <translation id="6697810017029555732">Збіг!</translation>
 <translation id="5981303441790732480">Імпортуйте наявний гаманець</translation>
 <translation id="9111102763498581341">Розблокувати</translation>
-<translation id="6657585470893396449">Пароль</translation>
 <translation id="7553242001898162573">Уведіть свій пароль</translation>
 <translation id="5619264711680220002">Розблокування за допомогою біометричних даних</translation>
 <translation id="9195657745688986798">Розблокувати гаманець</translation>
@@ -734,6 +729,7 @@
 <translation id="9091334651803050473">Хоча це й не гарантовано, але, імовірно, майнери нададуть пріоритет вашій транзакції, якщо ви сплатите більшу комісію.</translation>
 <translation id="2941112035454246133">Низька</translation>
 <translation id="7304030187361489308">Висока</translation>
+<translation id="1177863135347784049">Спеціальне</translation>
 <translation id="4853037749278079787">Максимальна комісія: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Поточна базова комісія: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Сума ліміту газу</translation>
@@ -1054,31 +1050,6 @@
 <translation id="6393423486818299209">Використовувати поточного постачальника послуг або Wikimedia DNS</translation>
 <translation id="3401384982562827787">Використовувати поточного постачальника послуг або Cloudflare</translation>
 <translation id="8812367543786936496">Якщо ваш поточний постачальник послуг не є безпечним, Brave використає безпечного альтернативного постачальника послуг DNS</translation>
-<translation id="5680678411439841197">місто</translation>
-<translation id="8185518433273977704">селище</translation>
-<translation id="4528386452965343421">префектура</translation>
-<translation id="1589122976691792535">регіон</translation>
-<translation id="2221292964468054123">штат</translation>
-<translation id="3801482889636327368">організація</translation>
-<translation id="1425162721525518064">компанія</translation>
-<translation id="7568794877555549044">країна</translation>
-<translation id="5982110855572850497">мітка</translation>
-<translation id="6848689413353508904">контейнер</translation>
-<translation id="1496514951988037011">ім’я користувача</translation>
-<translation id="6155129418108337061">логін</translation>
-<translation id="4038523199754403233">ідентифікатор</translation>
-<translation id="901834265349196618">електронна адреса</translation>
-<translation id="3488199663160411179">ім’я</translation>
-<translation id="793994607260936590">перша</translation>
-<translation id="1782612111936779655">прізвище</translation>
-<translation id="7628132737455466188">повне ім’я</translation>
-<translation id="8621068256433641644">телефон</translation>
-<translation id="5993210100509955931">мобільний телефон</translation>
-<translation id="598301471034819706">адреса</translation>
-<translation id="5557821203571216370">квартира</translation>
-<translation id="8051552210542030943">pin-код</translation>
-<translation id="5233247193491045452">поштовий індекс</translation>
-<translation id="3300502432153878901">zip-код</translation>
 <translation id="1381108437654541567">Активувати декілька вікон</translation>
 <translation id="6167344249617630304">Відкривайте до 5 вікон одночасно й перетягуйте вкладки з одного вікна в інше</translation>
 <translation id="1063948063403254568">Виявлено декілька вікон</translation>
@@ -1133,7 +1104,10 @@
 <translation id="3482868954775580230">Не вдалося прочитати вибраний файл. <ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural,
         =1 {Успішно імпортовано 1 пароль.}
-        other {Успішно імпортовано <ph name="IMPORT_COUNT_MANY"/> паролів.}}</translation>
+        one {Успішно імпортовано <ph name="IMPORT_COUNT_MANY"/> пароль.}
+        few {Успішно імпортовано <ph name="IMPORT_COUNT_MANY"/> паролі.}
+        many {Успішно імпортовано <ph name="IMPORT_COUNT_MANY"/> паролів.}
+        other {Успішно імпортовано <ph name="IMPORT_COUNT_MANY"/> пароля.}}</translation>
 <translation id="4637949129057123593">Не вдалось імпортувати.</translation>
 <translation id="4300452012226767715">Менеджер паролів недоступний.</translation>
 <translation id="6221633008163990886">Розблокуйте, щоб експортувати паролі</translation>
@@ -1156,6 +1130,7 @@
 <translation id="7808889146555843082">Якщо видалити цей пароль, ваш обліковий запис на сайті <ph name="SITE"/> залишиться. Змініть пароль або видаліть обліковий запис на сайті <ph name="SITE"/>, щоб захистити його.</translation>
 <translation id="2870560284913253234">Сайт</translation>
 <translation id="8503813439785031346">Ім’я користувача</translation>
+<translation id="6657585470893396449">Пароль</translation>
 <translation id="2278052315791335171">Якщо видалити цей пароль, ваш обліковий запис на сайті <ph name="SITE"/> залишиться</translation>
 <translation id="6891726759199484455">Розблокуйте, щоб скопіювати пароль</translation>
 <translation id="5515439363601853141">Розблокуйте, щоб переглянути пароль</translation>

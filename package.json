@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.87.152",
+  "version": "1.88.20",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -77,9 +77,19 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "144.0.7559.31",
+        "tag": "144.0.7559.59",
         "repository": {
           "url": "https://github.com/brave/chromium"
+        },
+        "custom_deps": {
+          "src/testing/libfuzzer/fuzzers/wasm_corpus": null,
+          "src/third_party/chromium-variations": null
+        },
+        "custom_vars": {
+          "checkout_clang_coverage_tools": true,
+          "checkout_clangd": true,
+          "download_reclient": true,
+          "siso_version": "git_revision:75bb90e390e42de9f1b1044f18b71297c5ba82bd"
         }
       },
       "depot_tools": {
@@ -109,6 +119,7 @@
     "@types/dom-navigation": "1.0.3",
     "@types/jest": "28.1.6",
     "@types/jszip": "3.4.1",
+    "@types/node": "25.0.3",
     "@types/qr-image": "3.2.5",
     "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",
@@ -130,7 +141,6 @@
     "css-loader": "5.2.7",
     "csstype": "2.6.21",
     "diff": "7.0.0",
-    "dotenv": "16.3.1",
     "emptykit.css": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-love": "43.1.0",

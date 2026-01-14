@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Cardano-activa opslaan</translation>
 <translation id="4915057812371523845">Cardano-activa in testnet opslaan</translation>
 <translation id="5387140102951033657">Ondersteunt Substrate-assets op de Polkadot-relayketen en Substrate-parachains</translation>
+<translation id="5601177227092533167">Ondersteunt Substrate-assets op de Westend-relayketen en Substrate-parachains</translation>
 <translation id="8500387257977999003">Privésleutel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importeer</translation>
 <translation id="232925166623833246">Importeren uit hardwarewallet</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
 <translation id="5522073372365069684">Kopen met Ramp</translation>
 <translation id="6153197326949684688">Verkopen met <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Kopen met Sardine</translation>
 <translation id="3301984548406568819">Financiële gegevens en transactiegegevens worden verwerkt door onze on-ramppartners. Brave verzamelt zulke gegevens niet en heeft er geen toegang toe.</translation>
 <translation id="5795821518596541838">Transactiepartner</translation>
 <translation id="1916136859742693273">Brave Wallet maakt gebruik van Meld.io om verschillende aanbieders van cryptodiensten voor jouw regio samen te voegen. We delen informatie met Meld.io om de transactie te voltooien, waaronder je het adres van je wallet en de landcode. Lees voor meer informatie de Gebruiksvoorwaarden van Meld.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Kopen met link</translation>
 <translation id="1932640759496708012">Kopen met Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">Link door Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
-<translation id="3648994606506382289">Makkelijkste, snelste en goedkoopste manier om crypto te kopen met betaalkaart en bankoverschrijving.</translation>
 <translation id="3101839349578102016">Direct kopen met uw bankrekening. Lagere kosten.</translation>
 <translation id="8280898387224328221">Betalen met creditcard, betaalkaart, bankrekening</translation>
 <translation id="2218174283683424104">Koop met de meest vertrouwde naam in crypto.</translation>
@@ -1665,6 +1663,7 @@
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Average</translation>
 <translation id="7019805045859631636">Snel</translation>
+<translation id="1345580220012169610">Geschatte vergoeding</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="6778140392042462129">Wisselkoersen</translation>
 <translation id="6173494033320397682">Alleen rechtstreeks</translation>
@@ -1718,6 +1717,9 @@
 <translation id="6276584161122912863">Gas prijs</translation>
 <translation id="6132197290665156212">Geschatte netwerkvergoeding</translation>
 <translation id="1788636309517085411">Gebruik standaardinstelling</translation>
+<translation id="3968375068626660591">Deze gasvergoeding vervangt de oorspronkelijke.</translation>
+<translation id="1661088862481901887">Hiermee wordt een nieuwe transactie aangemaakt met een nieuwe gasvergoeding om de nog in behandeling zijnde transactie te overschrijven en te annuleren. Een annulering kan alleen worden geprobeerd als de transactie nog in behandeling is op het netwerk.</translation>
+<translation id="5797060124625958778">Snelheidsprioriteit</translation>
 <translation id="6213230117190778270">Receive</translation>
 <translation id="6748108480210050150">From</translation>
 <translation id="4875290286426670462">Onbeperkte <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@
 <translation id="5329136173514538969">Tabbladen niet langer splitsen</translation>
 <translation id="7595612919377246359">Tabbladposities omwisselen</translation>
 <translation id="2367972762794486313">Apps weergeven</translation>
+<translation id="3468387898712904997">Nieuwe e-mailalias</translation>
 <translation id="8591883849678260674">Origineel bekijken</translation>
 <translation id="1969654232209826429">minuten leestijd</translation>
 <translation id="4101707289420716287">Speedreader uitschakelen</translation>
@@ -2156,7 +2159,7 @@
 <translation id="7297056998057521697">Als je Leo een vraag stelt over een website of pagina die je bekijkt, wordt de inhoud van de webpagina die je bekijkt of tekst die je markeert op een pagina, evenals je zoekopdracht, standaard naar de servers van Brave gestuurd zodat Leo een antwoord kan geven. In sommige gevallen zal Leo zoekopdrachten afgeleid van je invoer naar Brave Search sturen en de zoekresultaten gebruiken om je vraag beter te beantwoorden. Brave garandeert de nauwkeurigheid van de antwoorden niet, en antwoorden kunnen onnauwkeurige, misleidende of onjuiste informatie bevatten. Geef geen gevoelige of privé-informatie aan Brave Leo en wees voorzichtig met antwoorden over gezondheid, financiën, persoonlijke veiligheid en dergelijke. Je kunt de opties van Leo op elk moment aanpassen in Instellingen. Ga naar Instellingen &gt; Leo.</translation>
 <translation id="6644545214304085600">Leo verzamelt geen ID's, zoals je IP-adres, die aan jou kunnen worden gekoppeld. We trainen onze modellen niet op basis van je gegevens, zoekopdrachten of de antwoorden van Brave Leo. Er worden geen persoonsgegevens opgeslagen op onze servers of bewaard door Brave. Lees het <ph name="LINK_BEFORE"/>Privacybeleid<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
-      one {}=1 {Stel een vraag over de inhoud van deze pagina}
+      =1 {Stel een vraag over de inhoud van deze pagina}
       other {Stel een vraag over de inhoud van deze pagina's}
     }</translation>
 <translation id="6961721183181597848">Hoe kan ik je vandaag helpen?</translation>
@@ -2166,7 +2169,7 @@
 <translation id="4524675003624341892">Stel vragen voor...</translation>
 <translation id="4567071417854988869">Deze video samenvatten</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
-      one {}=1 {Deze pagina samenvatten}
+      =1 {Deze pagina samenvatten}
       other {Deze pagina's samenvatten}
     }</translation>
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
@@ -2184,11 +2187,23 @@
 <translation id="7127671672828944579">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen 14B, een model gecreëerd door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Gemma 3 12B, een model gecreëerd door Google DeepMind om in vele gebruikssituaties efficiënt te zijn. Gemma wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van DeepSeek R1, een model gecreëerd door DeepSeek om diepgaande redeneertaken uit te voeren. DeepSeek R1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van DeepSeek V3.1, een model ontwikkeld door DeepSeek om in vele gebruikssituaties efficiënt te zijn. DeepSeek V3.1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hoi, ik ben Leo. Ik ben een AI-assistent van Brave. Ik word aangedreven door Claude Instant, een model ontwikkeld door Anthropic om gespreks- en tekstverwerkingstaken uit te voeren. Claude Instant wordt door Brave gehost via onze eigen beveiligde infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Haiku, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Haiku wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Sonnet, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Sonnet wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Llama 4 Scout, een model ontwikkeld door Meta om in vele gebruikssituaties efficiënt te zijn. Llama 4 Scout wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Llama 4 Maverick, een model ontwikkeld door Meta om in vele gebruikssituaties efficiënt te zijn. Llama 4 Maverick wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van GPT OSS 20B, een model ontwikkeld door OpenAI om in vele gebruikssituaties efficiënt te zijn. GPT OSS 20B wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van GPT OSS 120B, een model ontwikkeld door OpenAI om in vele gebruikssituaties efficiënt te zijn. GPT OSS 120B wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Mistral Large, een model ontwikkeld door Mistral om in vele gebruikssituaties efficiënt te zijn. Mistral Large wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Pixtral Large, een model ontwikkeld door Mistral om in vele gebruikssituaties efficiënt te zijn. Pixtral Large wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen 3 235B, een model gecreëerd door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen 3 235B wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Deepseek V3.1, een model ontwikkeld door Deepseek om in vele gebruikssituaties efficiënt te zijn. Deepseek V3.1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen 3 Coder 480B, een model gecreëerd door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen 3 Coder 480B wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Opus, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Opus wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokaal</translation>
+<translation id="830868413617744215">Bèta</translation>
 <translation id="631371844654031449">Aanbevolen modellen</translation>
 <translation id="6568044140836233369">Alle modellen tonen</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2313,6 +2328,7 @@
 <translation id="8506027496671575183">Zoek • Beeld • Tools</translation>
 <translation id="3213834013136637671">Zoek • Beeld</translation>
 <translation id="7697693533305615127">Zoek • Denken</translation>
+<translation id="7465032796278724624">Verifieerbaar privé met NEAR AI TEE</translation>
 <translation id="8782867266498869301">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="3754337604877048671">Introductie van Leo AI</translation>
@@ -2376,7 +2392,7 @@
 <translation id="8410199626695516952">Oké, dat zal ik niet onthouden</translation>
 <translation id="8419849467765474535">Geheugen opslaan mislukt. Probeer het opnieuw.</translation>
 <translation id="5517580030864973329">De webpagina naar een nieuw adres navigeren</translation>
-<translation id="8832457834975923266">Navigeer de webpagina naar <ph name="URL"/></translation>
+<translation id="9197920788851078696">Navigeer de webpagina naar <ph name="URL"/></translation>
 <translation id="5095252080770652994">Vooruitgang</translation>
 <translation id="8332385567036775056">Stappen</translation>
 <translation id="4521931942079977149">Op de pagina klikken</translation>
@@ -2391,6 +2407,20 @@
 <translation id="4798146464408730445">Geen vaardigheden gevonden. Maak een nieuwe aan door op de knop "Nieuw" te klikken.</translation>
 <translation id="271033894570825754">Nieuw</translation>
 <translation id="8266605059880650542">Noteer wat informatie voor later over de pagina</translation>
+<translation id="7049849063044248805">Agentmodus werkt met modellen die ondersteuning voor tools bieden. Niet-compatibele modellen zijn verborgen in deze lijst.</translation>
+<translation id="3397808797783614750">AI automatisch voor jou laten browsen kan schadelijke, onbedoelde gevolgen hebben voor je privacy, financiën en online communicatie. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Beveiligingswaarschuwing</translation>
+<translation id="6077070599873946984">Brave AI heeft jouw toestemming nodig voor: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Er is vastgesteld dat de bewerking mogelijk niet overeenkomt met jouw verzoek:</translation>
+<translation id="3927932062596804919">Weigeren</translation>
+<translation id="4569155249847375786">Geverifieerd</translation>
+<translation id="3240988198391588806">Agentmodus</translation>
+<translation id="538066983058750776">Over het Leo-profiel</translation>
+<translation id="1577570612997320961">Om je gegevens te beschermen, beperkt dit geïsoleerde Brave-profiel de AI-toegang tot je hoofdbrowserprofiel. Leo AI heeft hier extra machtigingen om sites te bezoeken en te gebruiken, zodat je hem taken kunt geven en samen kunt browsen om je productiviteit te verhogen.</translation>
+<translation id="648116453147783450">Jouw gegevens en sessies</translation>
+<translation id="3906161204878017619">Wanneer je je aanmeldt op een website via dit profiel, kan Leo de informatie op die site zien als deze geopend is, hetzij wanneer hij zelf de site bezoekt, hetzij wanneer jij hem vraagt daar iets te doen.</translation>
+<translation id="5583803492921648196">Terugschakelen</translation>
+<translation id="8068929004144221259">Je kunt op elk moment terugschakelen naar je gewone profiel via het hoofdmenu of op het Leo-avatarpictogram in je werkbalk klikken. Agentmodus opent altijd in dit profiel.</translation>
 <translation id="3486480638399578250">Houd je persoonlijke e-mailadres privé</translation>
 <translation id="7765422154906712751">Maak unieke, willekeurige adressen die je altijd kunt verwijderen en laat je e-mailberichten doorsturen naar je Brave-account. Voorkom dat je je echte e-mailadres moet delen met adverteerders.</translation>
 <translation id="5222676887888702881">Uitloggen</translation>
@@ -2513,6 +2543,12 @@
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="131231380815754440">HTTPS inschakelen</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
+<translation id="5465091511225410553">(afgedwongen)</translation>
+<translation id="8646614940337543907">(afgedwongen door extensie)</translation>
+<translation id="3559821445144429594">(afgedwongen door beleid)</translation>
+<translation id="550374350047782149">(afgedwongen door toestemmingslijst)</translation>
+<translation id="68858161161918073">(afgedwongen door supervisor)</translation>
+<translation id="5735057546627037489">(afgedwongen door PWA)</translation>
 <translation id="3246600097575692802">Geblokkeerde scripts inschakelen</translation>
 <translation id="3603525299146223354">Trackers en advertenties</translation>
 <translation id="4448697385961650078">Blokkeer trackers &amp; advertenties</translation>
@@ -2547,6 +2583,7 @@
       other {Brave Shields heeft {BLOCKED_COUNT} trackers geblokkeerd op <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">Klik op het Brave-pictogram om Brave Shields weer te geven.</translation>
+<translation id="542789539047208469">Sitegegevens</translation>
 <translation id="6294662480095808915">Privacy. Standaard.</translation>
 <translation id="4366423156486478559">Ontvang bescherming door Brave voor elke link waarop u klikt. Stel Brave in als uw standaardbrowser en zoek privé.</translation>
 <translation id="3830912418080848377">Instellingen importeren</translation>
@@ -2683,5 +2720,6 @@ Laten we je verbinding snel in orde brengen!</translation>
     bestaande tabblad te gaan</translation>
 <translation id="451189393813405346">Vraag het Leo</translation>
 <translation id="1602850501393095406">Druk op ↑ om te markeren</translation>
+<translation id="8367705492654390392">Stel een vraag</translation>
 <translation id="8525248723479742219">Later afspelen</translation>
 </translationbundle>

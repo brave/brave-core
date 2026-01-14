@@ -30,6 +30,7 @@
 <translation id="1108938384783527433">Geçmiş senkronizasyonu</translation>
 <translation id="1111673857033749125">Diğer cihazlarınızda kaydedilmiş yer işaretleri burada görünür.</translation>
 <translation id="1126696498560056882">Bu cihazdaki hesapları yönet</translation>
+<translation id="9171525955914564119">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için Brave'da <ph name="EMAIL"/> olarak oturum açın.</translation>
 <translation id="1138458427267715730">Web'deki herhangi bir sitede fiyat düşüşü olduğunda uyarı alın</translation>
 <translation id="1140317858355046628">Grubu silerseniz herkes "<ph name="GROUP_NAME"/>" sekme grubuna erişimini anında kaybeder ve grup tüm cihazlardan silinir.</translation>
 <translation id="1142732900304639782">Şu siteleri çevirmeyi önerme:</translation>
@@ -45,6 +46,7 @@
 <translation id="1181037720776840403">Kaldır</translation>
 <translation id="4606796610935634842">Brave Hesabınızdaki şifreleri her zaman kullanabildiğinizden emin olmak için kimliğinizi doğrulayın</translation>
 <translation id="1187810343066461819">Bu arabadaki yer işaretleri, geçmiş ve diğer öğeleri de silin</translation>
+<translation id="1193589902336218259">İpuçları bildirimlerini aç</translation>
 <translation id="1193729455103054076">Güçlü şifre kullanılsın mı?</translation>
 <translation id="11947597112837849">e-posta adresi</translation>
 <translation id="1197267115302279827">Yer işaretlerini taşı</translation>
@@ -188,7 +190,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="1902518199598615730">Google Pay'deki ödeme yöntemleri ve adresler şifrelenmez. Brave'daki tarama geçmişi senkronize edilmez.
 Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Parola Brave'a gönderilmez veya Brave tarafından saklanmaz. Parolanızı unutursanız veya bu ayarı değiştirmek isterseniz <ph name="BEGIN_LINK"/>hesabınızdaki Brave verilerini silin<ph name="END_LINK"/>.</translation>
 <translation id="1829244130665387512">Sayfada bul</translation>
-<translation id="1832459821645506983">Evet, kabul ediyorum</translation>
+<translation id="1832459821645506983">Evet, etkinleştir</translation>
 <translation id="4544426875066706571">Verilerinizin korunması için Brave'un, yakın zamanda ziyaret etmediğiniz sitelerin izinlerini kaldırmasına izin verin</translation>
 <translation id="3456819043493172402">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave, bu siteden gelen bildirimleri durdurdu. Bunları inceleyip yönetebilirsiniz.}other{Brave, bu sitelerden gelen bildirimleri durdurdu. Bunları inceleyip yönetebilirsiniz.}}</translation>
 <translation id="7175072311426658869">Brave tarayıcıda aç</translation>
@@ -216,7 +218,6 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="1959679933317802873">İçerik bekleniyor</translation>
 <translation id="3968054912784331254">Brave güncellemeleri Android'in bu sürümü için artık desteklenmiyor</translation>
 <translation id="1962061488333185936"><ph name="TAB_TITLE"/>, Ses Çalan Birden Çok Seçili Sekme</translation>
-<translation id="1963056249988316027">Kimlik kontrolü açık ancak kimliğinizi doğrulayamıyor</translation>
 <translation id="1963976881984600709">Standart koruma</translation>
 <translation id="1966710179511230534">Lütfen oturum açma ayrıntılarınızı güncelleyin.</translation>
 <translation id="789731011736896184">Tarama verilerinizi sildiğinizde Brave Hesabınızın oturumu kapatılmaz. Bunu yapmak için <ph name="BEGIN_LINK1"/>Brave oturumunu kapatın<ph name="END_LINK1"/>.</translation>
@@ -229,6 +230,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="1986685561493779662">Ad zaten var</translation>
 <translation id="6968892567705775281">Seçilen kelimenin etrafındaki metin Brave aramalarına dahil edilsin mi?</translation>
 <translation id="2021896219286479412">Tam ekran site kontrolleri</translation>
+<translation id="2029669011553795746">İpucu bildirimlerini etkinleştirme sayfası ekranın yarısına kadar açıldı</translation>
 <translation id="2038563949887743358">Masaüstü sitesi iste işlevini etkinleştir</translation>
 <translation id="7675869148432102528"><ph name="APP_NAME"/> uygulamasına ait veriler Brave'da da mevcut</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
@@ -237,7 +239,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2063047797624276601">Kuruluşunuz, Gelişmiş Güvenli Tarama'yı etkinleştirdi</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{1 indirme işlemi başarısız oldu}other{# indirme işlemi başarısız oldu}}</translation>
 <translation id="2067805253194386918">Kısa mesaj</translation>
-<translation id="2074527029802029717">Sekmeyi ayır</translation>
+<translation id="2072027001582274150">Kullanılmayan veya kopya sekmeler</translation>
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="2082238445998314030"><ph name="TOTAL_RESULTS"/> sonuçtan <ph name="RESULT_NUMBER"/> numaralı sonuç</translation>
 <translation id="8992364521253636633">Otomatik doldurma kurulumunu tamamlamak için Brave'u şimdi yeniden başlatın. Sekmeleriniz otomatik olarak yeniden açılır.</translation>
@@ -322,6 +324,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2461822463642141190">Şu an</translation>
 <translation id="2466378451804467735"><ph name="TAB_TITLE"/>, Birden Çok Seçili Sesi Kapalı Sekme</translation>
 <translation id="2468444275314013497">Tarayıcınızda bir sorun görünmüyor</translation>
+<translation id="2471632347767899461">Yardım merkezinde arama yapmayı deneyin</translation>
 <translation id="2542068854151299295">Brave'dan en iyi şekilde yararlanmak için oturum açın</translation>
 <translation id="247737702124049222">Resim açıklamaları açık</translation>
 <translation id="2479148705183875116">Ayarlar'a git</translation>
@@ -348,6 +351,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2546283357679194313">Çerezler ve site verileri</translation>
 <translation id="1272534541032649011">Profil kilidiniz sayesinde şifreler, ödemeler ve diğer öğeler de dahil olmak üzere bilgileriniz Brave Hesabınıza kaydedilerek arabada güvenli bir şekilde saklanır.</translation>
 <translation id="254973855621628293">Bu cihaza kaydedilen şifreler.</translation>
+<translation id="2553962148913791095">Bazı yer işaretleri kaydedilmedi</translation>
 <translation id="2566471851103108967">{FILE_COUNT,plural, =1{Tehlikeli indirme işlemi engellendi}other{# tehlikeli indirme işlemi engellendi}}</translation>
 <translation id="5079947353572974060">Diğer dillerdeki sayfaları Brave Çeviri'ye göndermeyi öner</translation>
 <translation id="2571834852878229351">Kendi şifremi oluşturacağım</translation>
@@ -383,8 +387,8 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2723001399770238859">ses</translation>
 <translation id="2739887572830526131">Daha sonra sekme eklemek için bu grubu tutun ya da artık ihtiyacınız yoksa silin.</translation>
 <translation id="2742373789128106053"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> şu anda kullanılamıyor.</translation>
+<translation id="2751271371269891762">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda almak için <ph name="EMAIL"/> olarak oturum açın.</translation>
 <translation id="2760805590727089264">AA / YY</translation>
-<translation id="2760989362628427051">Cihazınızın koyu tema veya Pil Tasarrufu özelliği açık olduğunda koyu tema açılır</translation>
 <translation id="2762000892062317888">az önce</translation>
 <translation id="276969039800130567"><ph name="USER_EMAIL_ADDRESS"/> olarak oturum açıldı.</translation>
 <translation id="2777555524387840389"><ph name="SECONDS"/> sn. kaldı</translation>
@@ -392,7 +396,9 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2781151931089541271">1 sn. kaldı</translation>
 <translation id="2789486458103222910">Tamam</translation>
 <translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{Brave, yeniden kullanılan ve iyileştirilebilecek bir şifre tespit etti}other{Brave, yeniden kullanılan ve iyileştirilebilecek # şifre tespit etti}}</translation>
+<translation id="1708222144403389505">Brave'dan en iyi şekilde yararlanmanıza yardımcı olacak faydalı ipuçları için bildirimleri açın</translation>
 <translation id="2800066122460699237"><ph name="TAB_TITLE"/> sekmesi kapatılacak</translation>
+<translation id="2805210243313393104">Yer işaretlerinizi, geçmişinizi ve diğerlerini tüm cihazlarınızda kullanın</translation>
 <translation id="2805756323405976993">Uygulamalar</translation>
 <translation id="2819849308549746319">Tüm abonelikleri iptal et</translation>
 <translation id="5702802474992520892">Brave Hesabınıza (<ph name="ACCOUNT_EMAIL"/>) kaydedilecek verileri seçebilirsiniz.\nAyrıca, bu öğeleri yer işaretleriniz, Okuma Listeniz veya şifre yöneticinizde görüntüleyip yönetebilirsiniz.</translation>
@@ -474,6 +480,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3114507951000454849">Bugünkü haberleri <ph name="NEWS_ICON"/> okuyun</translation>
 <translation id="3122883569442693641">Diğer ayrıntılar</translation>
 <translation id="3123734510202723619">Duyurular</translation>
+<translation id="3134385238404760368">Yakın zamanda açılmış herhangi bir sekme yok</translation>
 <translation id="5063487983358782016">Brave’un ana sayfası</translation>
 <translation id="3158667104057012316">Manuel şekilde sıralanıyor</translation>
 <translation id="3159335509547415276">Engellenen hesaplar hakkında bilgi</translation>
@@ -518,6 +525,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3331974543021145906">Uygulama bilgisi</translation>
 <translation id="3334729583274622784">Dosya uzantısı değiştirilsin mi?</translation>
 <translation id="333863344734218290">Sizi herkese açık ve gizli durumdaki güvensiz sitelerle ilgili uyarır</translation>
+<translation id="3340978935015468852">ayarlar</translation>
 <translation id="3341262203274374114">Takip bırakılamıyor. Bir sorun oldu.</translation>
 <translation id="3359667936385849800">Mevcut servis sağlayıcınızı kullanın</translation>
 <translation id="3373701465337594448">Bu ayar açık olduğunda, ziyaret ettiğiniz ve ilgi alanlarınızı tahmin eden sitelerin listesi burada gösterilir</translation>
@@ -575,10 +583,10 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3623240789707551553">{DOMAIN_COUNT,plural, =1{+ 1 site}other{+ # site}}</translation>
 <translation id="3625870480639975468">Yakınlaştırma özelliğini sıfırla</translation>
 <translation id="3631987586758005671"><ph name="DEVICE_NAME"/> ile paylaşılıyor</translation>
-<translation id="363484704507524488">Kimlik kontrolünü, hırsızlığa karşı koruma ayarlarından yönetebilirsiniz. <ph name="BEGIN_LINK"/>Ayarlara git<ph name="END_LINK"/></translation>
-<translation id="871233388178581868">Kaydetmeniz halinde Brave, şifrelerinizi kontrol edebilir.</translation>
+<translation id="871233388178581868">Kaydetmeniz halinde Brave, şifrelerinizi kontrol edebilir</translation>
 <translation id="3636940436873918441">Tercih edilen diller</translation>
 <translation id="7120697372526128040">Parolanızı unuttuysanız veya bu ayarı değiştirmek istiyorsanız <ph name="BEGIN_LINK"/>hesabınızdaki Brave verilerini silin<ph name="END_LINK"/>.</translation>
+<translation id="3647019414263135904">Bağlam pop-up'ını açın veya kapatın</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">Brave uygulamasının ana sayfasına gidin</translation>
 <translation id="368329460027487650">Oturum kapatıldı. Oturum açma seçeneklerini açar.</translation>
@@ -596,6 +604,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3710560693796335511">Ortak çalışma</translation>
 <translation id="7305861879874805497">Brave'da bağlantı açan diğer uygulamalardaki geçmişi görebilirsiniz.</translation>
 <translation id="8397843425685839889">Siz ve Brave</translation>
+<translation id="3727000368239390918">Sekmelerinize ve daha fazlasına tüm cihazlarınızdan ulaşmak için oturum açın</translation>
 <translation id="3737319253362202215">Çeviri ayarları</translation>
 <translation id="3738139272394829648">Dokun ve Ara</translation>
 <translation id="4890062597702688591">Brave Hesabınızda güvenliği ihlal edilmiş şifre yok</translation>
@@ -613,8 +622,10 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3819178904835489326">İndirilen <ph name="NUMBER_OF_DOWNLOADS"/> dosya silindi</translation>
 <translation id="3819183753496523827">Çevrimdışısınız. İnternet bağlantınızı kontrol edip tekrar deneyin.</translation>
 <translation id="3823019343150397277">IBAN</translation>
+<translation id="3824259034819781947">Dosya ekle</translation>
 <translation id="38243391581572867">Lens bu hesapta kullanılamıyor.</translation>
 <translation id="38258275871320156">Yalnızca küçük pencerelerde kullanılabilir</translation>
+<translation id="3826529618131025925">İpucu bildirimlerini etkinleştirme yardımı ve rehberliği alt sayfası</translation>
 <translation id="3847319713229060696">Web'de herkes için güvenliğin iyileştirilmesine yardımcı olun</translation>
 <translation id="385051799172605136">Geri</translation>
 <translation id="3851464569313827017"><ph name="SITE_ETLD_PLUS_ONE"/>, <ph name="IFRAME_ETLD_PLUS_ONE"/> kaynağından içerik yerleştirir</translation>
@@ -625,6 +636,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3870908470613821006">Herkes <ph name="GROUP_NAME"/> sekme grubuna erişimini anında kaybeder ve grup tüm cihazlardan silinir</translation>
 <translation id="3873174561423636563"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>, devam etmek için <ph name="FIELDS_STRING"/> bilgilerinizi bu siteyle paylaşacak. Sitenin <ph name="BEGIN_LINK1"/>hizmet şartlarını<ph name="END_LINK1"/> görüntüleyin.</translation>
 <translation id="3892148308691398805">Metni kopyala</translation>
+<translation id="3893858854379998374">Yer işaretlerini hesabınıza kaydetmek için kullanılmayan yer işaretlerinizi silin</translation>
 <translation id="3898498281932368596">Engelle ve ayrıl</translation>
 <translation id="3900966090527141178">Şifreleri dışa aktar</translation>
 <translation id="3902562446536395999">A'dan Z'ye sıralanıyor</translation>
@@ -647,10 +659,12 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3985022125189960801">Nelerden hoşlandığınızı tahmin eden siteler havuzunda görmek istediğiniz bir siteyi tekrar ekleyin</translation>
 <translation id="3985215325736559418"><ph name="FILE_NAME"/> dosyasını tekrar indirmek istiyor musunuz?</translation>
 <translation id="3987993985790029246">Bağlantıyı kopyala</translation>
+<translation id="3994236846568425219">Cihazınızda koyu tema açık olduğunda koyu tema açılır</translation>
 <translation id="4000212216660919741">Çevrimdışı Ana Sayfa</translation>
 <translation id="4694008025405984126">Vurgulanan öğelerle Brave'u özelleştirin ve kontrol edin</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{Brave Hesabınızda güvenliği ihlal edilmiş 1 şifre var}other{Brave Hesabınızda güvenliği ihlal edilmiş # şifre var}}</translation>
 <translation id="4016425174436051808">Takip edilemiyor. Bir sorun oldu.</translation>
+<translation id="7002462047122704254">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için Brave'da oturum açın</translation>
 <translation id="4024768890073681126">Tarayıcınız, ebeveyniniz tarafından yönetiliyor</translation>
 <translation id="4027569221211770437"><ph name="FOLDER_TITLE"/> klasörü</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# sa.}other{# sa.}}</translation>
@@ -685,6 +699,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="4170011742729630528">Hizmet kullanılamıyor, daha sonra tekrar deneyin.</translation>
 <translation id="4177222230309051052">Tüm yer işaretlerinize ulaşın</translation>
 <translation id="4177501066905053472">Reklam konuları</translation>
+<translation id="417865198503699526">Ayar için arama yapın</translation>
 <translation id="4180726336228139707">Yalnızca bu cihazda</translation>
 <translation id="4181841719683918333">Diller</translation>
 <translation id="4188221736490993796">Z'den A'ya sırala</translation>
@@ -735,13 +750,13 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="4384468725000734951">Arama için Sogou kullanılıyor</translation>
 <translation id="4387647248986092471">Araba profil kilidi oluştur</translation>
 <translation id="4387817230000841154">İndirilenler'i Aç</translation>
-<translation id="4401432223274567153">{INACTIVE_TIME_DAYS,plural, =1{En az 1 gündür kullanılmayan sekmeler ve gruplar}other{En az # gündür kullanılmayan sekmeler ve gruplar}}</translation>
 <translation id="4402611456429872546"><ph name="LANG"/> - İndiriliyor…</translation>
 <translation id="4404568932422911380">Yer işareti yok</translation>
 <translation id="4405224443901389797">Klasöre taşı…</translation>
 <translation id="4405636711880428279">Sanal kartınız kaldırılsın mı?</translation>
 <translation id="4408965460206576430">Bu dosya kötü amaçlı yazılım içeriyor veya şüpheli bir siteden geliyor</translation>
 <translation id="4409014848144759297"><ph name="WEBSITE_TITLE"/> ve <ph name="TAB_COUNT"/> sekme daha</translation>
+<translation id="441100617989818073">Kullanılmayan veya kopya sekme ve gruplar</translation>
 <translation id="4414179633735763985"><ph name="TAB_GROUPS_AND_TABS_PART"/> silindi</translation>
 <translation id="5749788945734786627">Brave Hesabınızı yönetin</translation>
 <translation id="4425140285732600465">Fiyat takip ediliyor. Herhangi bir sitedeki fiyat düşüşüyle ilgili uyarıları alın.</translation>
@@ -770,15 +785,18 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="452750746583162491">Senkronize edilmiş verilerinizi inceleyin</translation>
 <translation id="4532845899244822526">Klasör seçin</translation>
 <translation id="4535755320005483982">Paylaşılan <ph name="GROUP_TITLE"/> sekme grubu</translation>
+<translation id="4537137366307982887">İpucu bildirimlerini etkinleştirme sayfası tam ekranda açıldı</translation>
 <translation id="4543131175509360848">Geçiş anahtarı yok sayfası</translation>
 <translation id="4558311620361989323">Web sayfası kısayolları</translation>
 <translation id="4572422548854449519">Yönetilen hesapta oturum açın</translation>
 <translation id="4577115723294378384">A'dan Z'ye sırala</translation>
 <translation id="4578289292431526768">Başlayalım</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# dakika önce}other{# dakika önce}}</translation>
+<translation id="4585751637295612750">Sorunuza eklemek için yeni bir sekme açın</translation>
 <translation id="4587589328781138893">Siteler</translation>
 <translation id="4594952190837476234">Bu çevrimdışı sayfa <ph name="CREATION_TIME"/> tarihli olup web'deki sürümden farklı olabilir.</translation>
 <translation id="4595237294768457124">Yeni sekme sayfasını açın.</translation>
+<translation id="4595276580892809760">Galeriden resim ekleyin</translation>
 <translation id="2724914440849807699">Brave Hesabı hatası</translation>
 <translation id="4601095002996233687">Şüpheli indirme işlemleri için ayrıntılı taramalar.</translation>
 <translation id="3047078595137661468">Bir site veya uygulama kendi sayfasındaki bağlantıları gizli olarak önceden yüklemek istediğinde Brave, sayfaları çerezler olmadan Brave sunucuları aracılığıyla şifreler ve önceden yükler. Bu şekilde kimliğiniz önceden yüklenmiş siteden gizlenmiş olur.</translation>
@@ -853,6 +871,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="4864369630010738180">Oturum açılıyor...</translation>
 <translation id="5131234170665854056">Brave için <ph name="MODULE"/> yüklenemiyor</translation>
 <translation id="4871568871368204250">Senkronizasyonu kapatma</translation>
+<translation id="487567923005969537">AI Modu'nu etkinleştir</translation>
 <translation id="4875775213178255010">İçerik Önerileri</translation>
 <translation id="4878404682131129617">Proxy sunucu üzerinden tünel oluşturulamadı</translation>
 <translation id="4880127995492972015">Çevir...</translation>
@@ -900,6 +919,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> sekme - <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> sekme - <ph name="URL_LIST"/>}}</translation>
 <translation id="5040262127954254034">Gizlilik</translation>
 <translation id="504456571576643789">Dikkate alınması gereken noktalar</translation>
+<translation id="5056587122125565772">Resim oluştur</translation>
 <translation id="506254248375231072">Sekme yok</translation>
 <translation id="5075939510584558547">Şifreleme olmadan kaydedin</translation>
 <translation id="6518666204737985156">Yer işaretlerinize ve daha fazlasına tüm cihazlarınızdan ulaşmak için bu sitede ve Brave'da oturum açın.</translation>
@@ -914,6 +934,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5122378528687922675">Yardıma ihtiyacınız olursa ebeveyninize (<ph name="PARENT_NAME_1"/> veya <ph name="PARENT_NAME_2"/>) sorun</translation>
 <translation id="5142281402488957685">Yeni hikayeler için aşağıya çekerek feed içeriğini yenileyin</translation>
 <translation id="8164849572238219995">Ziyaret ettiğiniz sayfaların bazıları önceden yüklenir. Bir Brave sitesinden veya uygulamasından bağlantı verildiğinde sayfalar Brave sunucuları aracılığıyla önceden yüklenebilir.</translation>
+<translation id="5145887002054615868">Kopya veya <ph name="DAYS_INACTIVE"/> gündür kullanılmayan sekmeler buraya taşınır<ph name="AUTODELETE_SECTION"/>. Bunu istediğiniz zaman <ph name="DECLUTTER_SETTINGS_TITLE"/> bölümünde değiştirebilirsiniz.</translation>
 <translation id="5152843274749979095">Desteklenen yüklü uygulama yok</translation>
 <translation id="5161254044473106830">Başlık gerekiyor</translation>
 <translation id="5161262286013276579">Geçiş anahtarı onay sayfası açıldı</translation>
@@ -968,7 +989,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5410300144953132176"><ph name="OWNER_FULL_NAME"/> (<ph name="OWNER_EMAIL"/>) bir sekme grubuna katılmanızı istiyor. Bağlantıya sahip olan herkes tüm sekmeleri düzenleyebilir. Bu nedenle katılırken dikkatli olun. Bağlantı 48 saat süreyle geçerlidir.</translation>
 <translation id="5412388166586147626">Yapay zeka asistanı açılamadı. Tekrar deneyin.</translation>
 <translation id="5414836363063783498">Doğrulanıyor…</translation>
-<translation id="5415871492522952905">Geçmişinize ve sekmelerinize tüm cihazlarınızdan erişebileceğiniz için işlemlerinize kaldığınız yerden devam edebilirsiniz.</translation>
+<translation id="5415871492522952905">Geçmişinize ve sekmelerinize tüm cihazlarınızdan erişebileceğiniz için işlemlerinize kaldığınız yerden devam edebilirsiniz</translation>
 <translation id="542073632571549028"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>), "<ph name="GROUP_NAME"/>" sekme grubuna erişimi anında kaybedecek</translation>
 <translation id="5424588387303617268"><ph name="GIGABYTES"/> GB kullanılabilir</translation>
 <translation id="5436928407363358055">Kaldığınız yerden kolayca devam etmek için geçmişinizi ve sekmelerinizi senkronize edin</translation>
@@ -1001,7 +1022,9 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5578795271662203820">Bu resmi, <ph name="SEARCH_ENGINE"/> üzerinde ara</translation>
 <translation id="5596627076506792578">Diğer seçenekler</translation>
 <translation id="6894318537270274409">Veri kullanarak Brave deneyiminizi iyileştiren daha fazla ayar görmek için <ph name="BEGIN_LINK"/>Brave Hizmetleri<ph name="END_LINK"/>'ne gidin.</translation>
+<translation id="5601924940067278327">Sekmelerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanın</translation>
 <translation id="5611398002774823980">Hesaba kaydet</translation>
+<translation id="7769309869030290448">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için Brave'da <ph name="EMAIL"/> olarak oturum açın</translation>
 <translation id="5614625640221885312">Yer işaretlerinize, şifrelerinize ve daha fazlasına tüm cihazlarınızdan ulaşmak için oturum açın</translation>
 <translation id="5619633276517849615">Kuruluşunuz, Güvenli Tarama'yı etkinleştirdi</translation>
 <translation id="5620163320393916465">Kaydedilen şifre yok</translation>
@@ -1056,7 +1079,6 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5833984609253377421">Bağlantıyı paylaş</translation>
 <translation id="2225291765389142805">Brave Dinozor</translation>
 <translation id="5841444063256914865">"<ph name="FILE_NAME"/>" dosyasını yine de indirmek istiyor musunuz?</translation>
-<translation id="5842871376175639063"><ph name="DAYS_INACTIVE"/> gündür kullanmadığınız sekmeler ve sekme grupları buraya taşınır<ph name="AUTODELETE_SECTION"/>. Bunu istediğiniz zaman <ph name="SETTINGS_TITLE"/> bölümünde değiştirebilirsiniz.</translation>
 <translation id="5848257610304005265">PDF, <ph name="APP_NAME"/> ile açılsın mı?</translation>
 <translation id="5849288995120328556">Paylaşım durdurulsun mu?</translation>
 <translation id="5853623416121554550">duraklatıldı</translation>
@@ -1068,8 +1090,8 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5864419784173784555">Başka bir indirme işlemi bekleniyor…</translation>
 <translation id="6538479075382111079">Kullanım istatistiklerini ve kilitlenme raporlarını Brave'a otomatik olarak gönderir</translation>
 <translation id="5869522115854928033">Kayıtlı şifreler</translation>
+<translation id="5870416898561279542">Kopya veya <ph name="DAYS_INACTIVE"/> gündür kullanılmayan sekmeler ve gruplar buraya taşınır<ph name="AUTODELETE_SECTION"/>. Bunu istediğiniz zaman <ph name="DECLUTTER_SETTINGS_TITLE"/> bölümünde değiştirebilirsiniz.</translation>
 <translation id="5604589745019948682">Bir siteyi takip etmek için siteye gidin, Brave menüsünü açıp Takip et'e dokunun.</translation>
-<translation id="5883855034004058011">Biyometrik doğrulama çok fazla kez yapılamadı. Yeniden denemek için cihazınızı kilitleyip kilidini açın.</translation>
 <translation id="2496394743292988533">Bildirimler <ph name="SEPARATOR"/> Bu site tehlikeli olduğu için Brave bu izinleri kaldırdı</translation>
 <translation id="5899667542927581604">Geçiş anahtarı yok sayfası kapatıldı</translation>
 <translation id="5907542076239273525">Yer işareti <ph name="FOLDER_NAME"/> klasörüne kaydedildi</translation>
@@ -1098,6 +1120,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="6026538407078977628">Tam ekrana genişlet</translation>
 <translation id="6030719887161080597">Reklam performansını ölçmek için sitelerin kullandığı bilgileri yönetin</translation>
 <translation id="6039379616847168523">Sonraki sekmeye gider</translation>
+<translation id="6040143037577758943">Kapat</translation>
 <translation id="604124094241169006">Otomatik</translation>
 <translation id="6042308850641462728">Daha fazla</translation>
 <translation id="604996488070107836">Bilinmeyen bir hata nedeniyle <ph name="FILE_NAME"/> dosyası indirilemedi.</translation>
@@ -1200,6 +1223,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="641643625718530986">Yazdır…</translation>
 <translation id="6433501201775827830">Arama motorunuzu seçin</translation>
 <translation id="6434309073475700221">Kapat</translation>
+<translation id="6435307030888827407">Oturumu kapalı tut</translation>
 <translation id="6437162790453527153">Yer işaretlerinize ve daha fazlasına tüm cihazlarınızdan ulaşmak için oturum açın</translation>
 <translation id="6437478888915024427">Sayfa bilgileri</translation>
 <translation id="6440291723980579689">Sayfalar yalnızca açıldıktan sonra yüklenir</translation>
@@ -1252,6 +1276,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="6636623428211296678">Aşağıda diğer ayarlara bakın veya şimdi tamamlayın</translation>
 <translation id="7939692063031538305">Brave, uygulamanın iyileştirilmesine yardımcı olmak için kullanım ve kilitlenme verilerini Brave'a gönderir. <ph name="BEGIN_UMA_LINK"/>Yönetin<ph name="END_UMA_LINK"/></translation>
 <translation id="6641780377503683465">Kaldır: <ph name="INTEREST"/></translation>
+<translation id="6642299196749785472">Sekme ekleyin</translation>
 <translation id="7556503430569358637">Ziyaret ettiğiniz URL'ler, daha sonra hangi siteleri ziyaret edebileceğinizi tahmin etmek için Brave'a gönderilir</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 ve <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> kişi daha}other{<ph name="CONTACT_PREVIEW"/>\u2026 ve <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> kişi daha}}</translation>
 <translation id="6649642165559792194">Resmin önizlemesini aç <ph name="BEGIN_NEW"/>Yeni<ph name="END_NEW"/></translation>
@@ -1267,7 +1292,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="670498945988402717">Dün kontrol edildi</translation>
 <translation id="6710213216561001401">Önceki</translation>
 <translation id="671481426037969117"><ph name="FQDN"/> zamanlayıcınızın süresi doldu. Yarın tekrar başlatılacak.</translation>
-<translation id="671928215901716392">Kilit ekranı</translation>
+<translation id="6716434912087331834">Yeni bir pencereyi geri yüklemek için toplam etkin pencere sayısını en fazla <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> olacak şekilde azaltın. Etkin olmayan pencereler 6 ay sonra silinir.</translation>
 <translation id="7499197548870160669">Brave Hesabınızda</translation>
 <translation id="6734310707649923383">Ziyaret ettiğiniz sayfaları görebilir veya geçmişinizden silebilirsiniz</translation>
 <translation id="6738867403308150051">İndiriliyor…</translation>
@@ -1329,6 +1354,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="6908998565271542516">Tam ekranda açılan bir web sitesini onaylama veya onaylamama seçeneği</translation>
 <translation id="6909589135458168665">Sayfaları Önceden Yükleme</translation>
 <translation id="6910211073230771657">Silindi</translation>
+<translation id="6916590542764765824">Uzantıları yönet</translation>
 <translation id="6918398787259831832">Bu sorun çözülmezse <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ile ilgili <ph name="BEGIN_LINK"/>daha fazla bilgi edinin<ph name="END_LINK"/>.</translation>
 <translation id="1431096429631226393"><ph name="PERMISSION"/> <ph name="SEPARATOR"/> Brave, yakın zamanda ziyaret etmediğiniz için bu izinleri kaldırdı</translation>
 <translation id="6927821422725196292">{TABS_COUNT,plural, =1{1 sekme}other{<ph name="NUMBER_OF_TABS"/> sekme}}</translation>
@@ -1422,6 +1448,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7293429513719260019">Dil seç</translation>
 <translation id="7298319215489933099"><ph name="TAB_TITLE"/>, Paylaşım Yapan Seçili Sabit Sekme</translation>
 <translation id="7581648335850642193">Android cihazınızda benzer bir ayar olabilir. Brave'da ve Android cihazınızda bu ayar etkinse bir şirket, ziyaret ettiğiniz web siteleri ve kullandığınız uygulamalardaki reklamların etkinliğini ölçebilir.</translation>
+<translation id="7311244614769792472">Sonuç bulunamadı</translation>
 <translation id="7313188324932846546">Senkronizasyonu ayarlamak için dokunun</translation>
 <translation id="7314734791127433392">Şifreler kontrol edilemiyor</translation>
 <translation id="7324354302972299151">"Do Not Track" isteği gönder</translation>
@@ -1490,7 +1517,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7581273696622423628">Ankete katıl</translation>
 <translation id="7583262514280211622">Okuma listenizi burada bulabilirsiniz</translation>
 <translation id="758603037873046260">Bu sayfayı kaydetmek için oturum açın</translation>
-<translation id="7588219262685291874">Cihazın Pil Tasarrufu özelliği açık olduğunda koyu tema açılır</translation>
 <translation id="7594687499944811403"><ph name="EMBEDDED_ORIGIN"/> kaynağının <ph name="TOP_ORIGIN"/> için bu kişinin siz olduğunu doğrulamasına izin verin</translation>
 <translation id="7596558890252710462">İşletim sistemi</translation>
 <translation id="7597601275223325603">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> standart sekme}other{<ph name="TABS_COUNT_MANY"/> standart sekme}}</translation>
@@ -1524,6 +1550,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7708994397325774423">Tüm şifrelerinize ulaşın</translation>
 <translation id="1864444014110998467">Brave menüsünü aç</translation>
 <translation id="7733878270780732638">Cihazda yeterli alan yok.</translation>
+<translation id="7740287852186792672">Arama sonuçları</translation>
 <translation id="774876555279732384">Otomatik doldurma hizmetleri, <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda da yönetilir.</translation>
 <translation id="7759809451544302770">İsteğe bağlı</translation>
 <translation id="7762668264895820836">SD Kart <ph name="SD_CARD_NUMBER"/></translation>
@@ -1560,7 +1587,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7876243839304621966">Tümünü kaldır</translation>
 <translation id="6143689084714664628">Brave'da çalıştırılıyor</translation>
 <translation id="7887174313503389866">Önemli gizlilik ve güvenlik kontrolleriyle ilgili rehberli tura katılın. Daha fazla seçenek için bağımsız ayarlara gidin.</translation>
-<translation id="7907478394153853634">Lorem Ipsum</translation>
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{1 indirme, kuruluşunuz tarafından engellendi}other{# indirme, kuruluşunuz tarafından engellendi}}</translation>
 <translation id="7914399737746719723">Uygulama yüklendi</translation>
 <translation id="7917574899775263813">Son sekmeye gidin</translation>
@@ -1572,6 +1598,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> güncel değil.</translation>
 <translation id="7944772052836377867">Senkronizasyonun, kimliğinizi doğrulaması gerekiyor</translation>
 <translation id="7951102827450076904">İndirilen PDF'leri her zaman aç</translation>
+<translation id="7952479614398473176">Yeni bir pencere açmak için toplam etkin pencere sayısını en fazla <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> olacak şekilde azaltın.</translation>
 <translation id="7957413488482743710">Sanal kart, gerçek kartınızı saklayarak olası sahtekarlıklardan korunmanıza yardımcı olur. <ph name="BEGIN_LINK1"/>Sanal kartlar hakkında daha fazla bilgi<ph name="END_LINK1"/></translation>
 <translation id="7959485987650214982">Bu cihazdaki sekmeler</translation>
 <translation id="7961926449547174351">Depolama alanına erişimi devre dışı bıraktınız. Lütfen etkinleştirmek için Ayarlar'a gidin.</translation>
@@ -1616,6 +1643,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="2919733817273403520">Brave\u2019un özelliklerini ve performansını iyileştirmeye yardımcı olun</translation>
 <translation id="4565206163201411670">Brave etkinliğiniz Dijital Denge'de gösterilsin mi?</translation>
 <translation id="8118117428362942925">Yardıma ihtiyacınız olursa ebeveyninize (<ph name="PARENT_NAME"/>) sorun</translation>
+<translation id="3018959290664438109">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için Brave'da oturum açın</translation>
 <translation id="8120286190326371840">Bu cihazda güvenliği ihlal edilmiş şifre yok</translation>
 <translation id="8122623268651408616">Yeniden eskiye sıralanıyor</translation>
 <translation id="8127542551745560481">Ana sayfayı düzenle</translation>
@@ -1645,6 +1673,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="8236097722223016103">Yer işaretlerine ekle</translation>
 <translation id="8243077599929149377">Kullanıcı adınızı ekleyin</translation>
 <translation id="8244387390464017490">Yeni sekmeyi özelleştir</translation>
+<translation id="8244444485683708655">Kamerayla resim ekleyin</translation>
 <translation id="8250920743982581267">Dokümanlar</translation>
 <translation id="8258999165172757081">Eklendi</translation>
 <translation id="2876689296031086375">Önceden yüklenmiş sayfalar şifrelenmiş olduğu için Brave, önceden yüklenmiş sayfa içeriğiyle ilgili hiçbir şey öğrenmez. Brave sunucuları hangi sitelerin gizli olarak önceden yüklendiğini öğrenir. Bu bilgi yalnızca sayfaları önceden yüklemek için kullanılır ve Brave Hesabınızdaki diğer bilgilerle bağlantılı değildir.</translation>
@@ -1700,6 +1729,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7018408824172283743">Brave Hesabınızdaki Brave verilerini kullanmaya devam edin</translation>
 <translation id="8460448946170646641">Önemli gizlilik ve güvenlik kontrollerini inceleyin</translation>
 <translation id="8473863474539038330">Adresler ve daha fazlası</translation>
+<translation id="847433688444405067">Farklı cihazlarda göz atın</translation>
 <translation id="8477178913400731244">Verileri sil</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8493948351860045254">Yer aç</translation>
@@ -1714,7 +1744,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="8540136935098276800">Doğru biçimli bir URL girin</translation>
 <translation id="854522910157234410">Şu sayfayı aç:</translation>
 <translation id="8547466829003330976">PDF'i yapay zeka ile inceleyin</translation>
-<translation id="855081842937141170">Sekmeyi iğnele</translation>
 <translation id="5503308854539525011">Brave, reklam performansını ölçmek için sitelerin tarayıcı aracılığıyla paylaşabileceği toplam veri miktarını sınırlar</translation>
 <translation id="8559990750235505898">Diğer dillerdeki sayfaları çevirmeyi öner</translation>
 <translation id="8560602726703398413">Okuma listenizi Yer işaretleri'nde görün</translation>
@@ -1749,6 +1778,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="8715300232952757586"><ph name="TAB_TITLE"/> kapatılacak</translation>
 <translation id="8723453889042591629">Bu sayfayı hızlıca çevirin. Bu kısayolu düzenlemek için dokunup basılı tutun.</translation>
 <translation id="8725066075913043281">Yeniden dene</translation>
+<translation id="6614332522102257453">Brave'dan en iyi şekilde yararlanın</translation>
 <translation id="8731268612289859741">Güvenlik kodu</translation>
 <translation id="8738163682604285902">Okuma Modu görüntülensin mi?</translation>
 <translation id="8746155870861185046">Vurgulanan metni paylaş</translation>
@@ -1772,13 +1802,13 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="8840953339110955557">Bu sayfa, web'deki sürümden farklı olabilir.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Gizli</translation>
+<translation id="8849164661359544855"><ph name="URL"/>, otomatik olarak pencere içinde pencere moduna girmek istiyor</translation>
 <translation id="8854223127042600341">Çevrimdışı dosyalarınızı görün</translation>
 <translation id="885480114717186641"><ph name="HOST_NAME"/> masaüstü sitesini isteyebilirsiniz</translation>
 <translation id="8856607253650333758">Açıklama al</translation>
 <translation id="8856931513242997049">Bildirim izni akışı kapatıldı</translation>
 <translation id="8863714995118816041"><ph name="SITE_NAME"/> sitesine tekrar izin verildi</translation>
 <translation id="7261356974224431851">Hesabınızdaki Brave verileri</translation>
-<translation id="8888527824584402177"><ph name="DAYS_INACTIVE"/> gündür kullanmadığınız sekmeler buraya taşınır<ph name="AUTODELETE_SECTION"/>. Bunu istediğiniz zaman <ph name="SETTINGS_TITLE"/> bölümünde değiştirebilirsiniz.</translation>
 <translation id="1984646864943401749">Yeni tehditleri keşfetmeye ve web'deki herkesi korumaya yardımcı olmak için, ziyaret ettiğiniz bazı sayfaların URL'lerini, sınırlı sistem bilgilerini ve bazı sayfa içeriklerini Brave'a gönderir.</translation>
 <translation id="8903921497873541725">Yakınlaştır</translation>
 <translation id="8909135823018751308">Paylaş…</translation>
@@ -1790,12 +1820,13 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="8942627711005830162">Yeni pencerede aç</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> - Bu dil indirilemedi. Daha sonra tekrar deneyin.</translation>
 <translation id="8946759102391960088">Şifrelerinize erişmeye devam edin</translation>
+<translation id="895442993047180128">İpucu bildirimlerini etkinleştirme sayfası kapatıldı</translation>
 <translation id="85151160756468368">Şifrelerinize erişmeye devam etmek için hemen dışa aktarın ve ardından tercih ettiğiniz şifre yöneticisine aktarın. Google Play Hizmetleri kullanılamadığı için Brave Şifre Yöneticisi çalışmayı durdurdu.</translation>
 <translation id="8963117664422609631">Site ayarlarına gidin</translation>
 <translation id="8965591936373831584">beklemede</translation>
 <translation id="8970887620466824814">Bir hata oluştu.</translation>
 <translation id="8972098258593396643">Varsayılan klasöre indirilsin mi?</translation>
-<translation id="2481553173340651149">Verileriniz parolanızla şifrelenir. Brave verilerini kullanmak ve Brave Hesabınıza kaydetmek için bu kodu girin.</translation>
+<translation id="2481553173340651149">Verileriniz parolanızla şifrelenir. Brave verilerini kullanmak ve Brave Hesabınıza kaydetmek için parolanızı girin.</translation>
 <translation id="8995521496079646922">Seçtiğiniz uygulamalar varsayılan olarak kullanılır. Cihazda yüklü olmayan uygulamalar kısa süre içinde indirilir.</translation>
 <translation id="8996847606757455498">Başka bir sağlayıcı seçin:</translation>
 <translation id="8998837250940831980">Sekme küçültülemedi. Daha sonra tekrar deneyin.</translation>
@@ -1822,6 +1853,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9086302186042011942">Senkronize ediliyor</translation>
 <translation id="9086455579313502267">Ağa erişilemiyor</translation>
+<translation id="7708077127614889658">Brave penceresinde aç</translation>
 <translation id="2324185818196590038">En iyi şekilde kişiselelştirilmiş bir deneyim için Brave'u Web ve Uygulama Etkinliği'ne ve bağlı Brave hizmetlerine ekleyin</translation>
 <translation id="9099220545925418560">Tarama geçmişinize dayalı. Bu ayar kapalı.</translation>
 <translation id="9100610230175265781">Parola gerekli</translation>
@@ -1829,9 +1861,9 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="9102803872260866941">Önizleme sekmesi açık</translation>
 <translation id="9102864637938129124">Siteler ve reklamverenler, reklamların nasıl performans gösterdiğini anlayabilir. Bu ayar açık.</translation>
 <translation id="9104217018994036254">Sekme paylaşılacak cihazların listesi.</translation>
-<translation id="9104858485806491627">{INACTIVE_TIME_DAYS,plural, =1{En az 1 gündür kullanılmadı}other{En az # gündür kullanılmadı}}</translation>
 <translation id="9106148373857059373">Yer işareti kaydetme akışı kapatıldı</translation>
 <translation id="9108808586816295166">Güvenli DNS her zaman kullanılamayabilir</translation>
+<translation id="9112483451228487295">Tarama verilerini hızlıca silin</translation>
 <translation id="9124978074365039456">Gördüklerinizi satın almak, çevirmek ve tanımlamak için kameranızı ve fotoğraf galerinizi kullanın</translation>
 <translation id="9130135798965366513"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>, devam etmek için <ph name="FIELDS_STRING"/> bilgilerinizi bu siteyle paylaşacak. Bu sitenin <ph name="BEGIN_LINK1"/>Gizlilik Politikası<ph name="END_LINK1"/>'nı ve <ph name="BEGIN_LINK2"/>Hizmet Şartları<ph name="END_LINK2"/>'nı inceleyin.</translation>
 <translation id="9131209053278896908">Engellenen siteler burada gösterilir</translation>
@@ -1856,11 +1888,13 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="9212845824145208577">Daha aşağı inilemiyor. Sayfanın daha aşağısından başlamayı deneyin.</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="9219103736887031265">Resimler</translation>
+<translation id="9222198206152536936">Yer işaretlerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için <ph name="EMAIL"/> olarak oturum açın.</translation>
 <translation id="7625138338483121345">Brave'u varsayılan tarayıcınız yapma</translation>
 <translation id="4596514158372210596">Brave etkinliğinizi Dijital Denge'den kaldırma</translation>
 <translation id="2830145431802238213">Brave'da Basit modu kullanın</translation>
 <translation id="928550791203542716"><ph name="SITE_NAME"/> takip ediliyor</translation>
 <translation id="930124987204876019">Geçmiş, çerezler, site verileri, önbelleği silin</translation>
+<translation id="930834144334005936">Mevcut <ph name="MODE_NAME"/> modunu Arama olarak sıfırlayın</translation>
 <translation id="938850635132480979">Hata: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Parolayı girin</translation>
 <translation id="945522503751344254">Geri bildirim gönder</translation>
@@ -1901,6 +1935,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="408336132633586393">Gizli pencere</translation>
 <translation id="8120164982795455341">Yeni Gizli sekme</translation>
 <translation id="3377025655491224618">Gizli Sekme</translation>
+<translation id="8428257636009471988">Web Mağazasını ziyaret et</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {1 Özel pencereyi kapat}
           other {# Özel pencereleri kapat}}</translation>

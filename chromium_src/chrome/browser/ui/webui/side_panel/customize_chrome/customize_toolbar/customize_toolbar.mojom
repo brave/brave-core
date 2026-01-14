@@ -17,6 +17,7 @@ enum ActionId {
   // Actions in the "Address bar" category.
   kShowReward,
   kShowBraveNews,
+  kShowShareMenu,
 };
 
 [BraveExtend]

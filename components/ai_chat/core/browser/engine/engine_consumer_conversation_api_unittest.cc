@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -3351,6 +3352,113 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       future.GetCallback());
 
   // Wait for the response
+  auto result = future.Take();
+  EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       ModelNameNotOverriddenWithToolCalls) {
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  conversation_history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather?", std::nullopt /* prompt */, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+  tool_output_content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Let me check the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(tool_output_content_blocks), nullptr)));
+
+  conversation_history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "Let me check the weather...", std::nullopt /* prompt */, std::nullopt,
+      std::move(response_events), base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, kClaudeSonnetModelKey,
+      nullptr /* near_verification_status */));
+
+  MockConversationAPIClient* mock_client = GetMockConversationAPIClient();
+
+  EXPECT_CALL(*mock_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_FALSE(model_name.has_value());
+
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("The temperature is 75F"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, conversation_history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
+      future.GetCallback());
+
+  auto result = future.Take();
+  EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       RegenerateAnswerModelNameOverridden) {
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  conversation_history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Tell me a joke", std::nullopt /* prompt */, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      kClaudeSonnetModelKey /* model_key */,
+      nullptr /* near_verification_status */));
+
+  MockConversationAPIClient* mock_client = GetMockConversationAPIClient();
+
+  EXPECT_CALL(*mock_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        ASSERT_TRUE(model_name.has_value());
+        EXPECT_EQ(*model_name, kClaudeSonnetModelName);
+
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "Why did the chicken cross the road?"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, conversation_history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
+      future.GetCallback());
+
   auto result = future.Take();
   EXPECT_TRUE(result.has_value());
 }

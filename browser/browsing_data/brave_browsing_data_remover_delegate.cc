@@ -11,9 +11,8 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "build/build_config.h"
@@ -28,6 +27,11 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
 #endif
 
 namespace {
@@ -139,12 +143,14 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
     // Brave News feed cache
     if (auto* brave_news_controller =
             brave_news::BraveNewsControllerFactory::GetForBrowserContext(
                 profile_)) {
       brave_news_controller->ClearHistory();
     }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_AI_CHAT)
     // AI Chat history but only associated content, not neccessary if we
     // are also deleting entire AI Chat history.

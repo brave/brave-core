@@ -306,6 +306,10 @@ extension URL {
       // only allow reader mode InternalURL to be shred
       return nil
     }
+    guard scheme == "https" || scheme == "http" else {
+      // Data is not stored for other schemes (`data`, `brave` / `chrome`, etc)
+      return nil
+    }
     // Use `domainURL` to align with `Domain.getOrCreateInternal` storage
     if FeatureList.kBraveShieldsContentSettings.enabled {
       return self

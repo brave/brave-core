@@ -14,7 +14,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
@@ -24,6 +23,7 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -43,12 +43,15 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
-#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
+#include "brave/components/brave_news/common/features.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -125,12 +128,14 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
     return new BraveNewsInternalsUI(
         web_ui, url.host(),
         brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
@@ -200,9 +205,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
       (url.is_valid() && url.host() == kWalletPageHost) ||
 #elif !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
        url.host() == kBraveNewsInternalsHost) ||
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
       url.host() == chrome::kChromeUINewTabHost ||

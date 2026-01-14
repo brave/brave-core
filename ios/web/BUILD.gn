@@ -8,6 +8,8 @@ import("//testing/test.gni")
 test("ios_brave_web_unittests") {
   testonly = true
   deps = [
+    "//brave/ios/web/test:packed_resources",
+    "//brave/ios/web/test:resources",
     "//ios/web:run_all_unittests",
 
     # Add individual test source_set targets here.
@@ -18,6 +20,8 @@ test("ios_brave_web_unittests") {
 test("ios_brave_web_inttests") {
   testonly = true
   deps = [
+    "//brave/ios/web/test:packed_resources",
+    "//brave/ios/web/test:resources",
     "//ios/web:run_all_unittests",
 
     # Add individual test source_set targets here.

@@ -12,6 +12,7 @@
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
@@ -45,85 +46,23 @@ namespace email_aliases {
 
 namespace {
 constexpr char kSuccessEmail[] = "success@domain.com";
-constexpr char kForbiddenEmail[] = "forbidden@domain.com";
-constexpr char kFailEmail[] = "fail@domain.com";
 
-std::unique_ptr<net::test_server::HttpResponse> AuthenticationHandler(
+std::unique_ptr<net::test_server::HttpResponse> ValidateHandler(
     const net::test_server::HttpRequest& request) {
   if (!request.GetURL().has_path() ||
-      !request.GetURL().path().starts_with("/v2/verify/init")) {
+      !request.GetURL().path().starts_with("/v2/auth/validate")) {
     return nullptr;
   }
-
-  const auto& content =
-      base::JSONReader::Read(request.content, base::JSON_PARSE_RFC);
-  const auto data = AuthenticationRequest::FromValue(content->GetDict());
-
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-  response->set_code(net::HTTP_BAD_REQUEST);
 
-  if (data && data->intent == "auth_token" &&
-      data->service == "email-aliases") {
-    if (data->email == kSuccessEmail) {
-      response->set_code(net::HTTP_OK);
-      response->set_content_type("application/json");
-      response->set_content(R"({"verificationToken": "success_token"})");
-    } else if (data->email == kFailEmail) {
-      response->set_code(net::HTTP_OK);
-      response->set_content_type("application/json");
-      response->set_content(R"({"verificationToken": "fail_token"})");
+  brave_account::endpoints::AuthValidateSuccessBody body;
+  body.email = kSuccessEmail;
 
-    } else if (data->email == kForbiddenEmail) {
-      response->set_code(net::HTTP_FORBIDDEN);
-      response->set_content_type("application/json");
-      response->set_content(R"json(
-        {
-          "code": 90001,
-          "message": "service not available in user's region",
-          "status": 403
-        }
-      )json");
-    }
-  }
+  response->set_code(net::HTTP_OK);
+  response->set_content_type("application/json");
+  response->set_content(*base::WriteJson(body.ToValue()));
+
   return response;
-}
-
-std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
-    const net::test_server::HttpRequest& request) {
-  if (!request.GetURL().has_path() ||
-      !request.GetURL().path().starts_with("/v2/verify/result")) {
-    return nullptr;
-  }
-
-  if (auto* authorization = base::FindOrNull(request.headers, "Authorization");
-      authorization && authorization->starts_with("Bearer ")) {
-    const auto token = authorization->substr(7);
-    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-    response->set_code(net::HTTP_BAD_REQUEST);
-    if (token == "success_token") {
-      response->set_code(net::HTTP_OK);
-      email_aliases::SessionResponse session;
-      session.auth_token = token;
-      session.email = kSuccessEmail;
-      session.service = "email-aliases";
-      session.verified = true;
-      response->set_content_type("application/json");
-      response->set_content(*base::WriteJson(session.ToValue()));
-    } else if (token == "fail_token") {
-      response->set_code(net::HTTP_UNAUTHORIZED);
-      email_aliases::ErrorResponse error;
-      response->set_content_type("application/json");
-      response->set_content(*base::WriteJson(error.ToValue()));
-    } else {
-      response->set_code(net::HTTP_BAD_REQUEST);
-      email_aliases::ErrorResponse error;
-      response->set_content_type("application/json");
-      response->set_content(*base::WriteJson(error.ToValue()));
-    }
-    return response;
-  }
-
-  return nullptr;
 }
 
 std::unique_ptr<net::test_server::HttpResponse> ManageHandler(
@@ -183,9 +122,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     // Add handler for YouTube player endpoint
-    https_server_.RegisterRequestHandler(
-        base::BindRepeating(&AuthenticationHandler));
-    https_server_.RegisterRequestHandler(base::BindRepeating(&SessionHandler));
+    https_server_.RegisterRequestHandler(base::BindRepeating(&ValidateHandler));
     https_server_.RegisterRequestHandler(base::BindRepeating(&ManageHandler));
     https_server_.ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
@@ -264,6 +201,24 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
     ASSERT_EQ(true, content::EvalJs((contents ? contents : ActiveWebContents()),
                                     content::JsReplace(kScript, id)));
+  }
+
+  void WaitDisappear(const std::string& selector,
+                     content::WebContents* contents = nullptr) {
+    constexpr const char kScript[] = R"js(
+      (async () => {
+        let waiter = () => {
+          return deepQuery($1)
+        };
+        while (waiter()) {
+          await new Promise(r => setTimeout(r, 10));
+        }
+        return true;
+      })();
+    )js";
+
+    ASSERT_EQ(true, content::EvalJs((contents ? contents : ActiveWebContents()),
+                                    content::JsReplace(kScript, selector)));
   }
 
   void SetText(const std::string& id,
@@ -410,7 +365,10 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   {
     auto initilized = test::AuthStateObserver::Setup(service, true);
   }
-  service->RequestAuthentication("success@domain.com", base::DoNothing());
+  EmailAliasesAuth auth(
+      browser()->profile()->GetPrefs(),
+      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  auth.SetAuthForTesting("success_token");
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !service->GetAuthTokenForTesting().empty(); }));
 
@@ -443,11 +401,10 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
-  email_aliases_service()->RequestAuthentication("success@domain.com",
-                                                 base::DoNothing());
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !email_aliases_service()->GetAuthTokenForTesting().empty();
-  }));
+  EmailAliasesAuth auth(
+      browser()->profile()->GetPrefs(),
+      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  auth.SetAuthForTesting("success_token");
 
   const GURL settings_page("chrome://settings/email-aliases");
 
@@ -478,11 +435,10 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
-  email_aliases_service()->RequestAuthentication("success@domain.com",
-                                                 base::DoNothing());
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !email_aliases_service()->GetAuthTokenForTesting().empty();
-  }));
+  EmailAliasesAuth auth(
+      browser()->profile()->GetPrefs(),
+      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  auth.SetAuthForTesting("success_token");
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
@@ -514,8 +470,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   EmailAliasesAuth auth(
       browser()->profile()->GetPrefs(),
       test::GetEncryptor(g_browser_process->os_crypt_async()));
-  auth.SetAuthEmail(kSuccessEmail);
-  auth.SetAuthToken("success_token");
+  auth.SetAuthForTesting("success_token");
 
   // Settings in logged-in state
   Navigate(GURL("chrome://settings/email-aliases"));
@@ -523,11 +478,11 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   Wait("#create-new-item-button");
 
   // Reset token
-  auth.SetAuthToken({});
-  Wait("#get-login-link-button");  // Settings in sing-in state.
+  auth.SetAuthForTesting("");
+  WaitDisappear("#create-new-item-button");  // Settings in sing-in state.
 
   // Logged-in again
-  auth.SetAuthToken("success_token");
+  auth.SetAuthForTesting("success_token");
   Wait("#create-new-item-button");  // Logged-in state.
 }
 

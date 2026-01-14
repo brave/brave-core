@@ -15,6 +15,7 @@ import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useLifi } from './useLifi'
 import { useSquid } from './useSquid'
+import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
   useScopedBalanceUpdater, //
@@ -57,6 +58,9 @@ import {
   getSquidFromAmount,
   getSquidToAmount,
   getSquidQuoteOptions,
+  getGate3FromAmount,
+  getGate3ToAmount,
+  getGate3QuoteOptions,
 } from '../swap.utils'
 import {
   makeSwapOrBridgeRoute, //
@@ -75,6 +79,7 @@ import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-
 import {
   useAccountFromAddressQuery,
   useGetCombinedTokensListQuery,
+  useReceiveAddressQuery,
 } from '../../../../common/slices/api.slice.extra'
 
 const hasDecimalsOverflow = (
@@ -144,14 +149,42 @@ export const useSwap = () => {
   const { account: fromAccount } = useAccountFromAddressQuery(
     fromAccountIdFromParams,
   )
+  const toAccountIdFromParams = query.get('toAccountId') ?? undefined
   const { account: toAccount } = useAccountFromAddressQuery(
-    query.get('toAddress') ?? undefined,
+    toAccountIdFromParams,
   )
-  // TODO: deprecate toAccountId in favour of toAddress + toCoin
-  const toAccountId = toAccount?.accountId
-  const toCoinFromParams = query.get('toCoin') ?? undefined
-  const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
-  const toAddress = query.get('toAddress') ?? undefined
+  const toAccountId = toAccount?.accountId ?? undefined
+
+  // For UTXO-based accounts, the address field in the accountId is empty,
+  // so we need to use useReceiveAddressQuery to get the actual receive address.
+  const {
+    receiveAddress: toAccountAddress,
+    isFetchingAddress: isFetchingToAccountAddress,
+  } = useReceiveAddressQuery(toAccountId)
+  const {
+    receiveAddress: fromAccountAddress,
+    isFetchingAddress: isFetchingFromAccountAddress,
+  } = useReceiveAddressQuery(fromAccount?.accountId)
+  const needsAddressResolution = useMemo(() => {
+    const needsToAddressResolution =
+      toAccountId
+      && !toAccountId.address
+      && (isFetchingToAccountAddress || !toAccountAddress)
+
+    const needsFromAddressResolution =
+      fromAccount
+      && !fromAccount.accountId.address
+      && (isFetchingFromAccountAddress || !fromAccountAddress)
+
+    return needsToAddressResolution || needsFromAddressResolution
+  }, [
+    toAccountId,
+    toAccountAddress,
+    isFetchingToAccountAddress,
+    fromAccount,
+    fromAccountAddress,
+    isFetchingFromAccountAddress,
+  ])
   const fromContractOrSymbolFromParams = query.get('fromToken') ?? undefined
   const fromChainIdFromParams = query.get('fromChainId') ?? undefined
 
@@ -213,14 +246,15 @@ export const useSwap = () => {
   }, [supportedNetworks, fromChainIdFromParams])
 
   const toNetwork = useMemo(() => {
-    if (!supportedNetworks?.length || !toCoin) {
+    if (!supportedNetworks?.length || !toAccountId) {
       return
     }
     return supportedNetworks.find(
       (network) =>
-        network.chainId === query.get('toChainId') && network.coin === toCoin,
+        network.chainId === query.get('toChainId')
+        && network.coin === toAccountId.coin,
     )
-  }, [supportedNetworks, toCoin, query])
+  }, [supportedNetworks, toAccountId, query])
 
   const fromToken = useMemo(() => {
     if (!fromContractOrSymbolFromParams || !fromNetwork) {
@@ -327,6 +361,17 @@ export const useSwap = () => {
       })
     }
 
+    if (quoteUnion.gate3Quote) {
+      return getGate3QuoteOptions({
+        quote: quoteUnion.gate3Quote,
+        fromToken,
+        toToken,
+        fromNetwork,
+        spotPrices,
+        defaultFiatCurrency,
+      })
+    }
+
     return []
   }, [
     fromNetwork,
@@ -347,6 +392,9 @@ export const useSwap = () => {
       toToken,
       toAmount: editingFromOrToAmount === 'to' ? toAmount : '',
       slippageTolerance,
+      fromAccountAddress,
+      toAccountAddress,
+      needsAddressResolution,
     }
   }, [
     fromNetwork,
@@ -358,6 +406,9 @@ export const useSwap = () => {
     toToken,
     toAmount,
     slippageTolerance,
+    fromAccountAddress,
+    toAccountAddress,
+    needsAddressResolution,
   ])
 
   const needsAccountSelected =
@@ -369,6 +420,7 @@ export const useSwap = () => {
   const zeroEx = useZeroEx(swapProviderHookParams)
   const lifi = useLifi(swapProviderHookParams)
   const squid = useSquid(swapProviderHookParams)
+  const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
 
@@ -415,7 +467,13 @@ export const useSwap = () => {
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
-      if (!fromAccount || !toAccountId || !fromNetwork || !fromAssetBalance) {
+      const effectiveToAccountId = overrides.toAccountId ?? toAccountId
+      if (
+        !fromAccount
+        || !effectiveToAccountId
+        || !fromNetwork
+        || !fromAssetBalance
+      ) {
         return
       }
 
@@ -428,6 +486,7 @@ export const useSwap = () => {
           overrides.toAmount === undefined ? toAmount : overrides.toAmount,
         fromToken: overrides.fromToken || fromToken,
         toToken: overrides.toToken || toToken,
+        toAccountId: effectiveToAccountId,
         editingFromOrToAmount,
         provider:
           overrides.provider === undefined
@@ -462,6 +521,12 @@ export const useSwap = () => {
         return
       }
 
+      // For UTXO accounts (like BTC), wait for the receive addresses to be
+      // fetched.
+      if (needsAddressResolution) {
+        return
+      }
+
       const controller = new AbortController()
       setAbortController(controller)
       setIsFetchingQuote(true)
@@ -471,7 +536,11 @@ export const useSwap = () => {
       let quoteResponse
       try {
         quoteResponse = await generateSwapQuote({
-          fromAccountId: fromAccount.accountId,
+          fromAccountId: {
+            ...fromAccount.accountId,
+            // Use fetched address for UTXO accounts where address field is empty
+            address: fromAccount.accountId.address || fromAccountAddress || '',
+          },
           fromChainId: params.fromToken.chainId,
           fromAmount:
             params.editingFromOrToAmount === 'from' && params.fromAmount
@@ -480,7 +549,11 @@ export const useSwap = () => {
                   .format()
               : '',
           fromToken: params.fromToken.contractAddress,
-          toAccountId: toAccountId,
+          toAccountId: params.toAccountId && {
+            ...params.toAccountId,
+            // Use fetched address for UTXO accounts where address field is empty
+            address: params.toAccountId.address || toAccountAddress || '',
+          },
           toChainId: params.toToken.chainId,
           toAmount:
             params.editingFromOrToAmount === 'to' && params.toAmount
@@ -618,6 +691,52 @@ export const useSwap = () => {
             token: params.fromToken,
           })
         }
+
+        if (quoteResponse.response.gate3Quote) {
+          const { routes } = quoteResponse.response.gate3Quote
+
+          // If overrides.selectedQuoteOptionId is undefined, we will use the
+          // first route as the default option.
+          const route = overrides.selectedQuoteOptionId
+            ? routes.find(
+                (route) => route.id === overrides.selectedQuoteOptionId,
+              ) || routes[0]
+            : routes[0]
+
+          if (!route) {
+            return
+          }
+
+          if (params.editingFromOrToAmount === 'from') {
+            setToAmount(
+              getGate3ToAmount({
+                route,
+                toToken: params.toToken,
+              }).format(6),
+            )
+          } else {
+            setFromAmount(
+              getGate3FromAmount({
+                route,
+                fromToken: params.fromToken,
+              }).format(6),
+            )
+          }
+
+          // Check allowance for EVM tokens that require it
+          if (
+            route.requiresTokenAllowance
+            && params.fromToken.coin === BraveWallet.CoinType.ETH
+            && route.depositAddress
+          ) {
+            await checkAllowance({
+              account: fromAccount,
+              spendAmount: fromAssetBalance.format(),
+              spenderAddress: route.depositAddress,
+              token: params.fromToken,
+            })
+          }
+        }
       }
 
       setSelectedQuoteOptionId(overrides.selectedQuoteOptionId)
@@ -632,7 +751,10 @@ export const useSwap = () => {
     },
     [
       fromAccount,
+      fromAccountAddress,
       toAccountId,
+      toAccountAddress,
+      needsAddressResolution,
       fromNetwork,
       fromAmount,
       toAmount,
@@ -702,7 +824,7 @@ export const useSwap = () => {
     if (
       !isBridge
       && (fromAccount.accountId.coin !== toToken.coin
-        || toCoin !== fromToken.coin)
+        || toAccountId?.coin !== fromToken.coin)
     ) {
       history.replace(WalletRoutes.Swap)
     } else {
@@ -711,8 +833,7 @@ export const useSwap = () => {
           fromToken: toToken,
           fromAccount: toAccount,
           toToken: fromToken,
-          toAddress: fromAccount.accountId.address,
-          toCoin: fromToken.coin,
+          toAccountId: fromAccount.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
@@ -723,7 +844,7 @@ export const useSwap = () => {
     toAccount,
     fromToken,
     toToken,
-    toCoin,
+    toAccountId,
     handleOnSetFromAmount,
     history,
     isBridge,
@@ -750,8 +871,7 @@ export const useSwap = () => {
           fromToken,
           fromAccount,
           toToken: token,
-          toAddress: account?.accountId.address,
-          toCoin: token.coin,
+          toAccountId: account?.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
@@ -762,6 +882,7 @@ export const useSwap = () => {
       await handleQuoteRefreshInternal({
         toToken: token,
         toAmount: '',
+        toAccountId: account?.accountId,
       })
     },
     [
@@ -795,8 +916,7 @@ export const useSwap = () => {
             fromToken: token,
             fromAccount: account,
             toToken,
-            toAddress,
-            toCoin,
+            toAccountId,
             routeType: 'bridge',
           }),
         )
@@ -816,8 +936,7 @@ export const useSwap = () => {
             fromToken: token,
             fromAccount: account,
             toToken,
-            toAddress,
-            toCoin,
+            toAccountId,
             routeType: 'swap',
           }),
         )
@@ -835,7 +954,7 @@ export const useSwap = () => {
       setToAmount('')
       reset()
     },
-    [toToken, reset, history, toAddress, toCoin, isBridge],
+    [toToken, reset, history, toAccountId, isBridge],
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -857,7 +976,7 @@ export const useSwap = () => {
   )
 
   const onChangeRecipient = useCallback(
-    async (address: string) => {
+    async (address: string, account?: BraveWallet.AccountInfo) => {
       if (!fromToken || !fromAccount || !toToken) {
         return
       }
@@ -866,13 +985,24 @@ export const useSwap = () => {
           fromToken,
           fromAccount,
           toToken: toToken,
-          toAddress: address,
-          toCoin: toToken.coin,
+          toAccountId: account?.accountId,
           routeType: isBridge ? 'bridge' : 'swap',
         }),
       )
+
+      // Refresh quote with the new recipient account
+      await handleQuoteRefreshInternal({
+        toAccountId: account?.accountId,
+      })
     },
-    [fromToken, toToken, fromAccount, history, isBridge],
+    [
+      fromToken,
+      toToken,
+      fromAccount,
+      history,
+      isBridge,
+      handleQuoteRefreshInternal,
+    ],
   )
 
   // Memos
@@ -922,7 +1052,11 @@ export const useSwap = () => {
     }
 
     if (isBridge && hasSolInFillPath) {
-      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kLiFi]
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kNearIntents,
+      ]
     }
 
     if (isBridge && hasEthInFillPath) {
@@ -930,6 +1064,7 @@ export const useSwap = () => {
         BraveWallet.SwapProvider.kAuto,
         BraveWallet.SwapProvider.kLiFi,
         BraveWallet.SwapProvider.kSquid,
+        BraveWallet.SwapProvider.kNearIntents,
       ]
     }
 
@@ -1018,6 +1153,22 @@ export const useSwap = () => {
         return 'unknownError'
       }
 
+      // Gate3 specific validations
+      if (quoteErrorUnion?.gate3Error) {
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
+        ) {
+          return 'insufficientLiquidity'
+        }
+
+        return 'unknownError'
+      }
+
+      if (quoteUnion?.gate3Quote?.routes.length === 0) {
+        return 'insufficientLiquidity'
+      }
+
       const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
         fromToken.decimals,
       )
@@ -1048,6 +1199,24 @@ export const useSwap = () => {
         return 'insufficientAllowance'
       }
 
+      // Gate3 EVM allowance check
+      if (quoteUnion?.gate3Quote) {
+        const route = selectedQuoteOptionId
+          ? quoteUnion.gate3Quote.routes.find(
+              (r) => r.id === selectedQuoteOptionId,
+            ) || quoteUnion.gate3Quote.routes[0]
+          : quoteUnion.gate3Quote.routes[0]
+
+        if (
+          route?.requiresTokenAllowance
+          && fromToken.coin === BraveWallet.CoinType.ETH
+          && fromToken.contractAddress
+          && !hasAllowance
+        ) {
+          return 'insufficientAllowance'
+        }
+      }
+
       return undefined
     }, [
       fromAmount,
@@ -1061,11 +1230,13 @@ export const useSwap = () => {
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
       quoteUnion?.squidQuote,
+      quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
       backendError,
       selectedProvider,
       availableProvidersForSwap,
+      selectedQuoteOptionId,
     ])
 
   const onSubmit = useCallback(async () => {
@@ -1172,6 +1343,46 @@ export const useSwap = () => {
       }
     }
 
+    if (quoteUnion.gate3Quote) {
+      const route = selectedQuoteOptionId
+        ? quoteUnion.gate3Quote.routes.find(
+            (route) => route.id === selectedQuoteOptionId,
+          ) || quoteUnion.gate3Quote.routes[0]
+        : quoteUnion.gate3Quote.routes[0]
+
+      if (!route) {
+        setIsSubmittingSwap(false)
+        return
+      }
+
+      // Check if we need to approve allowance first
+      if (
+        route.requiresTokenAllowance
+        && fromToken.coin === BraveWallet.CoinType.ETH
+        && !hasAllowance
+      ) {
+        if (route.depositAddress) {
+          await approveSpendAllowance({
+            account: fromAccount,
+            network: fromNetwork,
+            spenderAddress: route.depositAddress,
+            token: fromToken,
+            spendAmount: fromAssetBalance.format(),
+          })
+        }
+      } else {
+        const error = await gate3.exchange(route)
+        if (error) {
+          console.log('gate3.exchange error', error.gate3Error)
+          setQuoteErrorUnion(error)
+        } else {
+          setFromAmount('')
+          setToAmount('')
+          reset()
+        }
+      }
+    }
+
     setIsSubmittingSwap(false)
   }, [
     selectedQuoteOptionId,
@@ -1187,6 +1398,7 @@ export const useSwap = () => {
     lifi,
     jupiter,
     squid,
+    gate3,
   ])
 
   const onChangeSwapProvider = useCallback(
@@ -1268,6 +1480,9 @@ export const useSwap = () => {
       // of a new quote is in progress.
       || isFetchingQuote
       || isSubmittingSwap
+      // For UTXO accounts (like BTC), wait for the receive addresses to be
+      // fetched.
+      || needsAddressResolution
       // If quote is not set, there's nothing to create the swap with, so Swap
       // button must be disabled.
       || quoteUnion === undefined
@@ -1299,6 +1514,7 @@ export const useSwap = () => {
     fromAccount,
     toNetwork,
     isFetchingQuote,
+    needsAddressResolution,
     quoteUnion,
     fromToken,
     toToken,

@@ -9,7 +9,7 @@ import * as mojom from 'gen/brave/components/brave_rewards/core/mojom/rewards.mo
 import { Optional, optional } from '../../shared/lib/optional'
 import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
 import { AppModel } from '../lib/app_model'
-import { createStateManager } from '../../shared/lib/state_manager'
+import { createStateStore } from '$web-common/state_store'
 
 import {
   AppState,
@@ -81,7 +81,7 @@ function parseContributionPublishers(list: any): ContributionPublisher[] {
 }
 
 export function createModel(): AppModel {
-  const stateManager = createStateManager<AppState>(defaultState())
+  const store = createStateStore<AppState>(defaultState())
   let fetchLogResolver: ((value: string) => void) | null = null
 
   Object.assign(self, {
@@ -91,7 +91,7 @@ export function createModel(): AppModel {
           return
         }
         const paymentId = String(info.walletPaymentId || '')
-        stateManager.update({
+        store.update({
           isKeyInfoSeedValid: Boolean(info.isKeyInfoSeedValid),
           paymentId,
           createdAt: new Optional(
@@ -106,7 +106,7 @@ export function createModel(): AppModel {
 
       balance(balance: any) {
         if (balance && typeof balance.total === 'number') {
-          stateManager.update({ balance: optional(balance.total) })
+          store.update({ balance: optional(balance.total) })
         }
       },
 
@@ -114,7 +114,7 @@ export function createModel(): AppModel {
         if (!Array.isArray(contributions)) {
           return
         }
-        stateManager.update({
+        store.update({
           contributions: contributions
             .filter((item) => Boolean(item))
             .map((item) => ({
@@ -131,7 +131,7 @@ export function createModel(): AppModel {
       },
 
       partialLog(log: any) {
-        stateManager.update({ rewardsLog: String(log || '') })
+        store.update({ rewardsLog: String(log || '') })
       },
 
       fullLog(log: any) {
@@ -141,7 +141,7 @@ export function createModel(): AppModel {
       },
 
       onGetExternalWallet(wallet: any) {
-        stateManager.update({
+        store.update({
           externalWallet: externalWalletFromExtensionData(wallet),
           externalWalletAccountId: String(wallet?.memberId || ''),
           externalWalletId: String(wallet?.address || ''),
@@ -152,7 +152,7 @@ export function createModel(): AppModel {
         if (!Array.isArray(events)) {
           return
         }
-        stateManager.update({
+        store.update({
           rewardsEvents: events
             .filter((item) => Boolean(item))
             .map((item) => ({
@@ -168,14 +168,14 @@ export function createModel(): AppModel {
         if (!info) {
           return
         }
-        stateManager.update({
+        store.update({
           adDiagnosticId: String(info.diagnosticId || ''),
         })
         const { entries } = info
         if (!Array.isArray(entries)) {
           return
         }
-        stateManager.update({
+        store.update({
           adDiagnosticEntries: entries
             .filter((item) => Boolean(item))
             .map((item) => ({
@@ -186,7 +186,7 @@ export function createModel(): AppModel {
       },
 
       environment(environment: any) {
-        stateManager.update({
+        store.update({
           environment: parseEnvironment(environment),
         })
       },
@@ -207,17 +207,17 @@ export function createModel(): AppModel {
     getString(key) {
       return loadTimeData.getString(key)
     },
-    getState: stateManager.getState,
-    addListener: stateManager.addListener,
+    getState: store.getState,
+    addListener: store.addListener,
 
     setAdDiagnosticId(diagnosticId) {
       chrome.send('brave_rewards_internals.setAdDiagnosticId', [diagnosticId])
-      stateManager.update({ adDiagnosticId: diagnosticId })
+      store.update({ adDiagnosticId: diagnosticId })
     },
 
     clearRewardsLog() {
       chrome.send('brave_rewards_internals.clearLog')
-      stateManager.update({ rewardsLog: '' })
+      store.update({ rewardsLog: '' })
     },
 
     loadRewardsLog() {

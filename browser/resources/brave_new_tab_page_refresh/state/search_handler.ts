@@ -6,7 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '../lib/state_store'
+import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 
 import {

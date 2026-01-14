@@ -119,29 +119,31 @@ const fetchFeed = (feedView: FeedView) => {
   })
 }
 
-// Clear out of date caches when the feed receives new data.
-addFeedListener(latestHash => {
-  // Delete everything in the localCache which wasn't generated from the latest
-  // data - the last visited feed is stored in under |FEED_KEY| so clicking an
-  // article and coming back will still work.
-  for (const key in localCache) {
-    if (localCache[key].sourceHash === latestHash) continue
-    delete localCache[key]
-  }
-
-  // If what's in localStorage isn't from the latest data, make sure we remove
-  // it. Without the eslint-disable-next-line comment the below will fail on iOS
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-  const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
-  if (localStorageData?.sourceHash !== latestHash) {
-    localStorage.removeItem(FEED_KEY)
-  }
-})
-
 export const useFeedV2 = (enabled: boolean) => {
   const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
   const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(feedV2))
   const [hash, setHash] = useState<string>()
+
+  // Clear out of date caches when the feed receives new data.
+  useEffect(() => {
+    addFeedListener(latestHash => {
+      // Delete everything in the localCache which wasn't generated from the latest
+      // data - the last visited feed is stored in under |FEED_KEY| so clicking an
+      // article and coming back will still work.
+      for (const key in localCache) {
+        if (localCache[key].sourceHash === latestHash) continue
+        delete localCache[key]
+      }
+
+      // If what's in localStorage isn't from the latest data, make sure we remove
+      // it. Without the eslint-disable-next-line comment the below will fail on iOS
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
+      if (localStorageData?.sourceHash !== latestHash) {
+        localStorage.removeItem(FEED_KEY)
+      }
+    })
+  }, [])
 
   // Add a listener for the latest hash if Brave News is enabled. Note: We need
   // to re-add the listener when the enabled state changes because the backing

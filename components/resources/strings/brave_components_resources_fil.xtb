@@ -970,6 +970,7 @@
 <translation id="8459631690385393533">Mag-store ng mga asset ng Cardano</translation>
 <translation id="4915057812371523845">I-store ang mga asset ng Cardano Testnet</translation>
 <translation id="5387140102951033657">Sumusuporta sa mga Substrate asset sa Polkadot relay chain at Substrate parachain</translation>
+<translation id="5601177227092533167">Sumusuporta sa mga Substrate asset sa Westend relay chain at Substrate parachain</translation>
 <translation id="8500387257977999003">Pribadong key <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="232925166623833246">Mag-import mula sa hardware wallet</translation>
@@ -1302,7 +1303,6 @@
 <translation id="6423985584914773314">Hindi valid na FIL na address</translation>
 <translation id="5522073372365069684">Bumili gamit ang Ramp</translation>
 <translation id="6153197326949684688">Ibenta gamit ang <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="7902920577183739843">Bumili gamit ang Sardine</translation>
 <translation id="3301984548406568819">Pinoproseso ng aming mga onramp partner ang data sa pananalapi at transaksyon. Hindi kinokolekta ng at walang access ang Brave sa nasabing data.</translation>
 <translation id="5795821518596541838">Partner ng transaksyon</translation>
 <translation id="1916136859742693273">Ginagamit ng Brave Wallet ang Meld.io para tumulong na i-aggregate a i-surface ang iba't ibang provider ng crypto para sa rehiyon mo. Magbabahagi kami ng impormasyon sa Meld.io para tapusin ang transaksyon, kasama ang iyong wallet address at country code. Para sa karagdagang impormasyon, pakibasa ang mga tuntunin sa paggamit ng Meld.</translation>
@@ -1328,12 +1328,10 @@
 <translation id="5973390321030037823">Bilhin gamit ang Link</translation>
 <translation id="1932640759496708012">Bilhin gamit ang Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7295150312737713113">I-link sa pamamagitan ng Stripe</translation>
 <translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Bumili ng crypto gamit ang Visa o Mastercard.</translation>
-<translation id="3648994606506382289">Pinakamadali, pinakamabilis, at pinakamurang paraan para bumili ng crypto sa pamamagitan ng card at mga bank transfer.</translation>
 <translation id="3101839349578102016">Instant na bumili gamit ang iyong bank account. Mas mabababang fee.</translation>
 <translation id="8280898387224328221">Magbayad gamit ang credit, debit, bank account</translation>
 <translation id="2218174283683424104">Bumili gamit ang pinakapinagkakatiwalaang pangalan sa crypto.</translation>
@@ -1665,6 +1663,7 @@
 <translation id="8044899503464538266">Mabagal</translation>
 <translation id="3569512916300900704">Katamtaman</translation>
 <translation id="7019805045859631636">Mabilis</translation>
+<translation id="1345580220012169610">Tinatayang fee</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
 <translation id="6778140392042462129">Mga Palitan</translation>
 <translation id="6173494033320397682">Direktang ruta lang</translation>
@@ -1718,6 +1717,9 @@
 <translation id="6276584161122912863">Presyo ng gas</translation>
 <translation id="6132197290665156212">Tinatayang fee ng network</translation>
 <translation id="1788636309517085411">Gamitin ang default</translation>
+<translation id="3968375068626660591">Papaltan ng gas fee na ito ang orihinal.</translation>
+<translation id="1661088862481901887">Magkakaroon ito ng bagong transaksyon na may bagong gas fee upang palitan at kanselahin ang nakabinbing isa. Maari lamang subukang kanselahin kapag ang transaksyon ay nananatiling nakabinbin pa rin sa network.</translation>
+<translation id="5797060124625958778">Prayoridad ng bilis</translation>
 <translation id="6213230117190778270">Tanggapin</translation>
 <translation id="6748108480210050150">Mula sa</translation>
 <translation id="4875290286426670462">Walang limistasyon na <ph name="ASSET_SYMBOL"/></translation>
@@ -2118,6 +2120,7 @@
 <translation id="5329136173514538969">I-unsplit ang mga tab</translation>
 <translation id="7595612919377246359">Pagpalitin ang mga posisyon ng tab</translation>
 <translation id="2367972762794486313">Ipakita ang apps</translation>
+<translation id="3468387898712904997">Bagong email alias</translation>
 <translation id="8591883849678260674">Tingnan ang orihinal</translation>
 <translation id="1969654232209826429">min. pagbabasa</translation>
 <translation id="4101707289420716287">I-off ang Speedreader</translation>
@@ -2156,7 +2159,7 @@
 <translation id="7297056998057521697">Bilang default, kapag nagtanong ka sa Leo tungkol sa isang website o page na tinitingnan mo, ipapadala sa mga server ng Brave ang content ng webpage na tinitingnan mo o anumang text na hina-highlight mo sa isang page para makasagot ang Leo. Sa ilang situwasyon, Magpapadala ang Leo ng mga query na nagawa gamit ang input sa Brave Search at gamitin ang mga resulta ng paghahanap para mas masagot ang tanong mo. Hindi ginagarantiya ng Brave ang accuracy ng mga sagot, at posibleng kasama sa mga sagot ang hindi tumpak, nakakalito, o maling impormasyon. Huwag magsumite ng sensitibo o pribadong impormasyon sa Brave Leo, at mag-ingat sa mga sagot na nauugnay sa kalusugan, finance, personal na kaligtasan, o katulad. Puwede mong i-adjust ang mga opsyon ng Leo sa Mga Setting anumang oras. Pumunta sa Mga Setting &gt; Leo.</translation>
 <translation id="6644545214304085600">Hindi nangongolekta ang Leo ng mga identifier tulad ng iyong IP address na puwedeng maiugnay sa iyo. Hindi namin sinasanay ang mga model namin batay sa iyong data, kabilang ang mga query mo sa paghahanap o mga sagot ng Brave Leo. Walang ini-store na personal data sa mga server namin, o pinapanatili ng Brave. Tingnan ang <ph name="LINK_BEFORE"/>patakaran sa privacy<ph name="LINK_AFTER"/> para sa karagdagang impormasyon.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
-      one {}=1 {Magtanong tungkol sa content ng page na ito}
+      =1 {Magtanong tungkol sa content ng page na ito}
       other {Magtanong tungkol sa content ng mga page na ito}
     }</translation>
 <translation id="6961721183181597848">Ano ang maitutulong ko sa iyo ngayon?</translation>
@@ -2166,7 +2169,7 @@
 <translation id="4524675003624341892">Magmungkahi ng mga tanong...</translation>
 <translation id="4567071417854988869">Ibuod ang video na ito</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
-      one {}=1 {I-summarize ang page na ito}
+      =1 {I-summarize ang page na ito}
       other {I-summarize ang mga page na ito}
     }</translation>
 <translation id="7921782882718083488">Ibuod ang page na ito</translation>
@@ -2184,11 +2187,23 @@
 <translation id="7127671672828944579">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Qwen 14B, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Qwen sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Gemma 3 12B, isang modelo na ginawa ng Google DeepMind para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Gemma sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng DeepSeek R1, isang modelo na ginawa ng DeepSeek para magsagawa ng malalim na mga task ng pangangatwiran. Naka-host sa Brave ang DeepSeek R1 sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="1021134081694325196">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng DeepSeek V3.1, isang modelo na ginawa ng DeepSeek para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang DeepSeek V3.1 sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hi, ako si Leo. Isa akong AI na katulong ng Brave. Ginamitan ako ng Claude Instant, isang modelong ginawa ng Anthropic para sa mga gawain sa pag-uusap at pagproseso ng teksto. Ang Claude Instant ay naka-host ng Brave sa sarili nitong secure na imprastruktura.<ph name="LINK_BEFORE"/>Alamin pa<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Claude Haiku, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Haiku sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Claude Sonnet, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Sonnet sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="1058830842518828124">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Llama 4 Scout, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Llama 4 Scout sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="6277330815126859513">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Llama 4 Maverick, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Llama 4 Maverick sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="5833148755396048122">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GPT OSS 20B, isang modelo na ginawa ng OpenAI para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang GPT OSS 20B sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="5414593137581221307">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GPT OSS 120B, isang modelo na ginawa ng OpenAI para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang GPT OSS 120B sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="5037359072717016032">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Mistral Large, isang modelo na ginawa ng Mistral para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Mistral Large sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="8947618429500471804">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Pixtral Large, isang modelo na ginawa ng Mistral para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Pixtral Large sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="4026902371301997261">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Qwen 3 235B, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Qwen 3 235B sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="768541432895104346">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Deepseek V3.1, isang modelo na ginawa ng Deepseek para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Deepseek V3.1 sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="3767678495358551728">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Qwen 3 Coder 480B, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Qwen 3 Coder 480B sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="3369866806475938617">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Claude Opus, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Opus sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
+<translation id="830868413617744215">Beta</translation>
 <translation id="631371844654031449">Inirerekomendang mga model</translation>
 <translation id="6568044140836233369">Ipakita ang lahat ng model</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2313,6 +2328,7 @@
 <translation id="8506027496671575183">Maghanap • Paningin • Mga Tool</translation>
 <translation id="3213834013136637671">Maghanap • Paningin</translation>
 <translation id="7697693533305615127">Maghanap • Pag-iisip</translation>
+<translation id="7465032796278724624">Maaaring mapribatong ma-verify gamit ang NEAR AI TEE</translation>
 <translation id="8782867266498869301">Dynamic na nagbabago ang model para gamitin ang pinakamaganda para sa task</translation>
 <translation id="3965507912994218570">Mga Setting ni Leo</translation>
 <translation id="3754337604877048671">Ipinapakilala ang Leo AI</translation>
@@ -2376,7 +2392,7 @@
 <translation id="8410199626695516952">Ok, hindi ko iyon matatandaan</translation>
 <translation id="8419849467765474535">Hindi nakatipid ng memory. Pakisubukan ulit.</translation>
 <translation id="5517580030864973329">Nina-navigate ang web page sa bagong address</translation>
-<translation id="8832457834975923266">Nina-navigate ang web page sa <ph name="URL"/></translation>
+<translation id="9197920788851078696">Nina-navigate ang web page sa <ph name="URL"/></translation>
 <translation id="5095252080770652994">Pag-unlad</translation>
 <translation id="8332385567036775056">Mga Hakbang</translation>
 <translation id="4521931942079977149">Nagi-click sa page</translation>
@@ -2391,6 +2407,20 @@
 <translation id="4798146464408730445">Walang nakitang skill. Gumawa ng bago sa pamamagitan ng pag-click ng button na "New".</translation>
 <translation id="271033894570825754">Bago</translation>
 <translation id="8266605059880650542">Nagno-note ng ilang impormasyon para sa susunod tungkol sa page</translation>
+<translation id="7049849063044248805">Ang Agent mode ay gumagana lamang sa mga model na may suportang tool. Ang mga model na hindi compatible ay nakatago sa listahang ito.</translation>
+<translation id="3397808797783614750">Ang pagpapagana sa AI upang awtomatikong mag-browse para sa iyo ay maaaring magdulot ng mapaminsalang hindi inaasahang epekto sa iyong privacy, pananalapi, at mga komunikasyong online. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="4522025297473237294">Babala sa seguridad</translation>
+<translation id="6077070599873946984">Kailangan ng pahintulot ng Brave AI para sa: <ph name="TOOL_LABEL"/></translation>
+<translation id="4163837693685963037">Ang operasyon ay nakita bilang posibleng hindi tumutugma sa iyong hinihiling:</translation>
+<translation id="3927932062596804919">Tanggihan</translation>
+<translation id="4569155249847375786">Beripikado</translation>
+<translation id="3240988198391588806">Agent mode</translation>
+<translation id="538066983058750776">Tungkol sa profile ni Leo</translation>
+<translation id="1577570612997320961">Upang maprotektahan ang iyong data, nililimitahan ng hiwalay na Brave profile na ito ang access ng AI sa iyong pangunahing profile sa pagba-browse. May karagdagang pahintulot si Leo AI dito upang bumisita at makipag-interact sa mga site, kaya’t maaari mong subukang bigyan ito ng mga task at mag-browse nang magkasama upang mapaigting ang iyong produktibidad.</translation>
+<translation id="648116453147783450">Ang iyong data at mga session</translation>
+<translation id="3906161204878017619">Kapag nag-log in ka sa isang website gamit ang profile na ito, maaaring makita ni Leo ang impormasyon sa site kung ito ay bukas, alinman sa kanyang pagbisita o kung hihingin mong gumawa siya ng aksyon doon.</translation>
+<translation id="5583803492921648196">Lumipat pabalik</translation>
+<translation id="8068929004144221259">Maaari kang lumipat pabalik sa iyong karaniwang profile anumang oras mula sa pangunahing menu o ang Leo avatar sa iyong toolbar. Palaging bubukas sa profile na ito ang Agent mode.</translation>
 <translation id="3486480638399578250">Panatilihing pribado ang iyong personal na email address</translation>
 <translation id="7765422154906712751">Gumawa ng natatangi, random na mga address na ipinapasa sa iyong email account ng Brave at puwedeng i-delete anumang oras. Panatilihing hindi maipapakita o magagamit ng mga advertiser ang iyong aktwal na email address.</translation>
 <translation id="5222676887888702881">Mag-sign out</translation>
@@ -2513,6 +2543,12 @@
 <translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="131231380815754440">I-enable ang HTTPS</translation>
 <translation id="4824468494729001999">I-block ang mga script</translation>
+<translation id="5465091511225410553">(ipinapatupad)</translation>
+<translation id="8646614940337543907">(ipinapatupad ng extension)</translation>
+<translation id="3559821445144429594">(ipinapatupad ng patakaran)</translation>
+<translation id="550374350047782149">(ipinapatupad ng allowlist)</translation>
+<translation id="68858161161918073">(ipinapatupad ng tagapangasiwa)</translation>
+<translation id="5735057546627037489">(ipinapatupad ng PWA)</translation>
 <translation id="3246600097575692802">I-enable ang Mga Script na Na-block</translation>
 <translation id="3603525299146223354">Mga tracker at ad</translation>
 <translation id="4448697385961650078">I-block ang mga tracker at ad</translation>
@@ -2547,6 +2583,7 @@
       other {Na-block ng Brave Shields ang {BLOCKED_COUNT} tracker sa <ph name="SITE_URL"/>}
     }</translation>
 <translation id="2540598191934725677">I-click ang icon ng Brave para matingnan ang Brave Shields.</translation>
+<translation id="542789539047208469">Impormasyon ng Site</translation>
 <translation id="6294662480095808915">Privacy. Bilang Default.</translation>
 <translation id="4366423156486478559">Kunin ang proteksyon ng Brave sa lahat ng link na iki-click mo. Itakda lang ang Brave bilang default at mag-browse. Nang pribado.</translation>
 <translation id="3830912418080848377">I-import ang Mga Setting</translation>
@@ -2683,5 +2720,6 @@ Ikonekta ka natin!</translation>
    umiiral na tab</translation>
 <translation id="451189393813405346">Tanungin si Leo</translation>
 <translation id="1602850501393095406">Pindutin ang ↑ para i-highlight</translation>
+<translation id="8367705492654390392">Magtanong ng kahit ano</translation>
 <translation id="8525248723479742219">I-play sa Ibang Pagkakataon</translation>
 </translationbundle>

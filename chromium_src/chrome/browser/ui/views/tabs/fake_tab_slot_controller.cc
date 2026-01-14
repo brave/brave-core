@@ -13,6 +13,10 @@ bool FakeTabSlotController::ShouldAlwaysHideCloseButton() const {
   return should_always_hide_close_button_;
 }
 
+bool FakeTabSlotController::CanCloseTabViaMiddleButtonClick() const {
+  return can_close_tab_via_middle_button_click_;
+}
+
 bool FakeTabSlotController::IsVerticalTabsFloating() const {
   return false;
 }
