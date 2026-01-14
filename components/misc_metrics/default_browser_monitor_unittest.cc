@@ -7,34 +7,38 @@
 
 #include <memory>
 
-#include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace misc_metrics {
 
-class DefaultBrowserMonitorUnitTest : public ::testing::Test {
+class DefaultBrowserMonitorUnitTest : public ::testing::Test
+#if !BUILDFLAG(IS_ANDROID)
+    ,
+                                      public DefaultBrowserMonitor::Delegate
+#endif
+{
  public:
   DefaultBrowserMonitorUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+
+#if !BUILDFLAG(IS_ANDROID)
+  // DefaultBrowserMonitor::Delegate:
+  bool IsDefaultBrowser() override { return mocked_is_default_; }
+  bool IsFirstRun() override { return false; }
+#endif
 
   void CreateMonitor() {
 #if BUILDFLAG(IS_ANDROID)
     monitor_ = std::make_unique<DefaultBrowserMonitor>();
     monitor_->OnDefaultBrowserStateReceived(mocked_is_default_);
 #else
-    monitor_ = std::make_unique<DefaultBrowserMonitor>(
-        base::BindRepeating(
-            &DefaultBrowserMonitorUnitTest::GetMockedDefaultBrowser,
-            base::Unretained(this)),
-        base::BindLambdaForTesting([]() { return false; }));
+    monitor_ = std::make_unique<DefaultBrowserMonitor>(this);
     monitor_->Start();
     task_environment_.FastForwardBy(base::Minutes(5));
 #endif
   }
-
-  bool GetMockedDefaultBrowser() { return mocked_is_default_; }
 
   void SetMockedDefaultBrowserStatus(bool is_default) {
     mocked_is_default_ = is_default;

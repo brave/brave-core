@@ -15,6 +15,7 @@ source_set("misc_metrics") {
 
   deps = [
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/misc_metrics",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",

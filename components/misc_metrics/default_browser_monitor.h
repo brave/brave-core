@@ -12,7 +12,7 @@
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
@@ -35,14 +35,17 @@ class DefaultBrowserMonitor {
     virtual void OnDefaultBrowserStatusChanged() = 0;
   };
 
-#if BUILDFLAG(IS_ANDROID)
-  DefaultBrowserMonitor();
-#else
-  using GetDefaultBrowserCallback = base::RepeatingCallback<bool(void)>;
-  using IsFirstRunCallback = base::RepeatingCallback<bool(void)>;
+#if !BUILDFLAG(IS_ANDROID)
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual bool IsDefaultBrowser() = 0;
+    virtual bool IsFirstRun() = 0;
+  };
 
-  DefaultBrowserMonitor(GetDefaultBrowserCallback get_default_browser_callback,
-                        IsFirstRunCallback is_first_run_callback);
+  explicit DefaultBrowserMonitor(Delegate* delegate);
+#else
+  DefaultBrowserMonitor();
 #endif
   ~DefaultBrowserMonitor();
 
@@ -69,10 +72,9 @@ class DefaultBrowserMonitor {
 #if !BUILDFLAG(IS_ANDROID)
   void CheckDefaultBrowserState();
 
+  raw_ptr<Delegate> delegate_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WallClockTimer timer_;
-  GetDefaultBrowserCallback get_default_browser_callback_;
-  IsFirstRunCallback is_first_run_callback_;
 #endif
 
   std::optional<bool> cached_default_status_;

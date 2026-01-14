@@ -5,11 +5,10 @@
 
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 
-#include <utility>
-
 #include "base/metrics/histogram_macros.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "base/functional/bind.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #endif
@@ -29,22 +28,19 @@ constexpr base::TimeDelta kSubsequentStartupDelay = base::Seconds(10);
 #if BUILDFLAG(IS_ANDROID)
 DefaultBrowserMonitor::DefaultBrowserMonitor() = default;
 #else
-DefaultBrowserMonitor::DefaultBrowserMonitor(
-    GetDefaultBrowserCallback get_default_browser_callback,
-    IsFirstRunCallback is_first_run_callback)
-    : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+DefaultBrowserMonitor::DefaultBrowserMonitor(Delegate* delegate)
+    : delegate_(delegate),
+      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
-      get_default_browser_callback_(std::move(get_default_browser_callback)),
-      is_first_run_callback_(std::move(is_first_run_callback)) {}
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 #endif
 
 DefaultBrowserMonitor::~DefaultBrowserMonitor() = default;
 
 #if !BUILDFLAG(IS_ANDROID)
 void DefaultBrowserMonitor::Start() {
-  base::TimeDelta delay =
-      is_first_run_callback_.Run() ? kFirstRunDelay : kSubsequentStartupDelay;
+  auto delay =
+      delegate_->IsFirstRun() ? kFirstRunDelay : kSubsequentStartupDelay;
 
   timer_.Start(FROM_HERE, base::Time::Now() + delay,
                base::BindOnce(&DefaultBrowserMonitor::CheckDefaultBrowserState,
@@ -53,7 +49,8 @@ void DefaultBrowserMonitor::Start() {
 
 void DefaultBrowserMonitor::CheckDefaultBrowserState() {
   task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, get_default_browser_callback_,
+      FROM_HERE,
+      base::BindOnce(&Delegate::IsDefaultBrowser, base::Unretained(delegate_)),
       base::BindOnce(&DefaultBrowserMonitor::OnDefaultBrowserStateReceived,
                      weak_factory_.GetWeakPtr()));
 }
