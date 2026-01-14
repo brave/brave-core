@@ -386,11 +386,11 @@ class TabManager: NSObject {
     // Only restore zombie tabs that actually need restoration and do not restore those
     // that are currently loading or have a pending navigation. They may have a temporary nil visibleURL
     // before navigation commits.
-    // Finally check if the tab's webview has a URL, which ia an indicator of a pending navigation.
+    // Finally check if the tab's webview has a URL, which is an indicator of a pending navigation.
     if let selectedTab = selectedTab,
       selectedTab.visibleURL == nil,
       !selectedTab.isLoading,
-      SessionTab.from(tabId: selectedTab.id) != nil
+      SessionTab.from(tabId: selectedTab.id)?.interactionState != nil
     {
       selectedTab.setVirtualURL(selectedTab.visibleURL ?? TabManager.ntpInteralURL)
       restoreTab(selectedTab)
