@@ -543,5 +543,19 @@ describe('EnvConfig', () => {
       const undefResult = envConfig.get(['NONEXISTENT', 'VALUE'])
       expect(undefResult).toBeUndefined()
     })
+
+    it('should handle BOM (Byte Order Mark) at the beginning of .env file', () => {
+      mockFiles[packageJsonPath] = {
+        version: '1.0.0',
+        config: {},
+      }
+      // Include BOM at the beginning of the file
+      mockFiles[envPath] = '\uFEFFTEST_VALUE=value\nSECOND_VALUE=second'
+
+      const envConfig = new EnvConfig(configDir)
+
+      expect(envConfig.get(['TEST', 'VALUE'])).toBe('value')
+      expect(envConfig.get(['SECOND', 'VALUE'])).toBe('second')
+    })
   })
 })
