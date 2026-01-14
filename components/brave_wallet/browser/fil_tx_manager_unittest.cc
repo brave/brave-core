@@ -155,7 +155,7 @@ class FilTxManagerUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin,
+        chain_id, std::move(tx_data_union), from, origin, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);

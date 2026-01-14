@@ -211,6 +211,7 @@ void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   CHECK_NE(from->coin, mojom::CoinType::ETH)
       << "Wallet UI must use AddUnapprovedEvmTransaction";
@@ -221,14 +222,15 @@ void TxService::AddUnapprovedTransaction(
   CHECK_NE(from->coin, mojom::CoinType::ADA)
       << "Wallet UI must use AddUnapprovedCardanoTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
-                                     std::move(from), std::nullopt,
-                                     std::move(callback));
+                                     std::move(from), std::move(swap_info),
+                                     std::nullopt, std::move(callback));
 }
 
 void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
@@ -247,7 +249,8 @@ void TxService::AddUnapprovedTransactionWithOrigin(
 
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
-      chain_id, std::move(tx_data_union), from, origin, std::move(callback));
+      chain_id, std::move(tx_data_union), from, origin, std::move(swap_info),
+      std::move(callback));
 }
 
 void TxService::AddUnapprovedEvmTransaction(

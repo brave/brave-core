@@ -54,6 +54,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   NOTREACHED() << "AddUnapprovedZCashTransaction must be used";
 }
@@ -89,7 +90,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard ||
                tx_result.value() == mojom::ZCashTxType::kShielding) {
@@ -97,7 +98,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     } else if (tx_result.value() == mojom::ZCashTxType::kOrchardToTransparent ||
                tx_result.value() == mojom::ZCashTxType::kUnshielding) {
@@ -105,7 +106,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
           from->Clone(), params->to, amount,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                         std::move(callback)));
+                         std::move(params->swap_info), std::move(callback)));
       return;
     }
   }
@@ -115,7 +116,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
         from->Clone(), params->to, amount,
         base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                       std::move(callback)));
+                       std::move(params->swap_info), std::move(callback)));
     return;
   }
 
@@ -125,6 +126,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
 void ZCashTxManager::ContinueAddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> zcash_transaction) {
   if (!zcash_transaction.has_value()) {
@@ -140,6 +142,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(GetNetworkForZCashAccount(from));
+  meta.set_swap_info(std::move(swap_info));
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

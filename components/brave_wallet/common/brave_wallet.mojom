@@ -2707,6 +2707,7 @@ struct NewEvmTransactionParams {
   string value;
   string gas_limit;
   array<uint8> data;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Bitcoin transaction.
@@ -2716,6 +2717,7 @@ struct NewBitcoinTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved ZCash transaction.
@@ -2728,6 +2730,7 @@ struct NewZCashTransactionParams {
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   bool use_shielded_pool;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Cardano transaction.
@@ -2737,13 +2740,16 @@ struct NewCardanoTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(
-      TxDataUnion tx_data_union, string chain_id, AccountId from)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union,
+                           string chain_id,
+                           AccountId from,
+                           SwapInfo? swap_info)
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedEvmTransaction(NewEvmTransactionParams params)

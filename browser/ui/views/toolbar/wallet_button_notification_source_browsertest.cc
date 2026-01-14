@@ -345,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
               "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
 
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data), chain_id, from_account->account_id.Clone(),
+        std::move(tx_data), chain_id, from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           first_tx_meta_id = id;
@@ -386,7 +386,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     auto params = brave_wallet::mojom::NewEvmTransactionParams::New(
         "0x06", from_account->account_id.Clone(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", "",
-        std::vector<uint8_t>());
+        std::vector<uint8_t>(), nullptr);
     tx_service()->AddUnapprovedEvmTransaction(
         std::move(params),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
@@ -437,7 +437,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
         network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::SOL,
                                              std::nullopt),
-        from_account->account_id.Clone(),
+        from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           third_tx_meta_id = id;
@@ -534,7 +534,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::CoinType::FIL, std::nullopt);
     EXPECT_EQ(chain_id, "t");
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data), chain_id, from_account->account_id.Clone(),
+        std::move(tx_data), chain_id, from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           tx_meta_id = id;

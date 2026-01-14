@@ -20,6 +20,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -49,6 +50,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -394,9 +396,11 @@ class EthTxManagerUnitTest : public testing::Test {
       mojom::TxDataUnionPtr tx_data,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
     eth_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data), from, origin, std::move(callback));
+        chain_id, std::move(tx_data), from, origin, std::move(swap_info),
+        std::move(callback));
   }
 
   void AddUnapprovedEvmTransaction(
@@ -411,9 +415,11 @@ class EthTxManagerUnitTest : public testing::Test {
       const std::string& chain_id,
       mojom::TxDataPtr tx_data,
       const mojom::AccountIdPtr& from,
+      mojom::SwapInfoPtr swap_info,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
     eth_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data), from, GetOrigin(), std::move(callback));
+        chain_id, std::move(tx_data), from, GetOrigin(), std::move(swap_info),
+        std::move(callback));
   }
 
   void AddUnapproved1559Transaction(
@@ -421,8 +427,9 @@ class EthTxManagerUnitTest : public testing::Test {
       mojom::TxData1559Ptr tx_data,
       const mojom::AccountIdPtr& from,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapproved1559Transaction(
-        chain_id, std::move(tx_data), from, GetOrigin(), std::move(callback));
+    eth_tx_manager()->AddUnapproved1559Transaction(chain_id, std::move(tx_data),
+                                                   from, GetOrigin(), nullptr,
+                                                   std::move(callback));
   }
 
   void TestMakeERC1155TransferFromDataTxType(
@@ -495,7 +502,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -519,7 +526,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto params = mojom::NewEvmTransactionParams::New(
         mojom::kMainnetChainId, from(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-        "0x0974", data_);
+        "0x0974", data_, nullptr);
     EXPECT_TRUE(network_manager_->IsEip1559Chain(params->chain_id));
 
     bool callback_called = false;
@@ -543,7 +550,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto params = mojom::NewEvmTransactionParams::New(
         mojom::kBnbSmartChainMainnetChainId, from(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-        "0x0974", data_);
+        "0x0974", data_, nullptr);
     EXPECT_FALSE(network_manager_->IsEip1559Chain(params->chain_id));
 
     bool callback_called = false;
@@ -566,7 +573,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
   {
     auto params = mojom::NewEvmTransactionParams::New(
         "0x1234", from(), "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-        "0x016345785d8a0000", "0x0974", data_);
+        "0x016345785d8a0000", "0x0974", data_, nullptr);
     EXPECT_FALSE(network_manager_->IsEip1559Chain(params->chain_id));
 
     bool callback_called = false;
@@ -597,7 +604,7 @@ TEST_F(EthTxManagerUnitTest, WalletOrigin) {
   AddUnapprovedTransaction(
       mojom::kLocalhostChainId,
       mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
-      std::nullopt,
+      std::nullopt, nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -620,7 +627,7 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
   AddUnapprovedTransaction(
       mojom::kLocalhostChainId,
       mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
-      url::Origin::Create(GURL("https://some.site.com")),
+      url::Origin::Create(GURL("https://some.site.com")), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -643,7 +650,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -693,7 +700,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
     SetErrorInterceptor();
     callback_called = false;
     AddUnapprovedTransaction(
-        mojom::kLocalhostChainId, std::move(tx_data), from(),
+        mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
         base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
                        &callback_called, &tx_meta_id));
     task_environment_.RunUntilIdle();
@@ -717,7 +724,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -737,7 +744,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   SetErrorInterceptor();
   callback_called = false;
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionFailureCallback,
                      &callback_called));
   task_environment_.RunUntilIdle();
@@ -754,7 +761,7 @@ TEST_F(EthTxManagerUnitTest,
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -773,7 +780,7 @@ TEST_F(EthTxManagerUnitTest,
   SetErrorInterceptor();
   callback_called = false;
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionFailureCallback,
                      &callback_called));
   task_environment_.RunUntilIdle();
@@ -790,7 +797,7 @@ TEST_F(EthTxManagerUnitTest,
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -816,7 +823,7 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -905,7 +912,7 @@ TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
   bool callback_called = false;
   std::string tx_meta_id;
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
   task_environment_.RunUntilIdle();
@@ -956,7 +963,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   bool callback_called = false;
   std::string tx_meta_id;
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
   task_environment_.RunUntilIdle();
@@ -1111,7 +1118,7 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
   TestTxServiceObserver observer("0x6", "", "", "", "", std::vector<uint8_t>(),
@@ -1157,7 +1164,7 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureFail) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
   TestTxServiceObserver observer("0x6", "", "", "", "", std::vector<uint8_t>(),
@@ -1222,7 +1229,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
+      mojom::kLocalhostChainId, tx_data.Clone(), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -1897,7 +1904,7 @@ TEST_F(EthTxManagerUnitTest,
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      mojom::kLocalhostChainId, std::move(tx_data), from(), nullptr,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -2435,6 +2442,41 @@ TEST_F(EthTxManagerUnitTest, Reset) {
                                           run_loop.Quit();
                                         }));
   run_loop.Run();
+}
+
+TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
+  // Create a transaction with swap_info
+  auto swap_info = mojom::SwapInfo::New();
+  swap_info->source_coin = mojom::CoinType::ETH;
+  swap_info->source_chain_id = mojom::kMainnetChainId;
+  swap_info->source_token_address = "ETH";
+  swap_info->source_amount = "1000000000000000000";  // 1 ETH
+  swap_info->destination_coin = mojom::CoinType::ETH;
+  swap_info->destination_chain_id = mojom::kMainnetChainId;
+  swap_info->destination_token_address =
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F";              // DAI
+  swap_info->destination_amount = "1800000000000000000000";      // 1800 DAI
+  swap_info->destination_amount_min = "1750000000000000000000";  // 1750 DAI min
+  swap_info->recipient = "";
+  swap_info->provider = mojom::SwapProvider::kZeroEx;
+
+  auto data = mojom::TxData::New(
+      "0x01", "0x09184e72a000", "0x0974",
+      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+      std::vector<uint8_t>({0x00, 0x01, 0x02}), false, std::nullopt);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  AddUnapprovedTransaction(mojom::kMainnetChainId, std::move(data), from(),
+                           swap_info.Clone(), add_tx_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+
+  // Verify swap_info was stored correctly
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta->swap_info());
+  EXPECT_EQ(tx_meta->swap_info(), swap_info);
 }
 
 }  //  namespace brave_wallet

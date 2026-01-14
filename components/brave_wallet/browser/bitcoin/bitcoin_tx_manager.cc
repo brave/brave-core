@@ -125,7 +125,8 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
       params->sending_max_amount,
       base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
-                     origin, std::move(callback)));
+                     origin, std::move(params->swap_info),
+                     std::move(callback)));
 }
 
 void BitcoinTxManager::AddUnapprovedTransaction(
@@ -133,6 +134,7 @@ void BitcoinTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   NOTREACHED() << "AddUnapprovedBitcoinTransaction must be used";
 }
@@ -141,6 +143,7 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback,
     base::expected<BitcoinTransaction, std::string> bitcoin_transaction) {
   if (!bitcoin_transaction.has_value()) {
@@ -156,6 +159,7 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
+  meta.set_swap_info(std::move(swap_info));
 
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());

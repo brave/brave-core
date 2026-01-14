@@ -41,6 +41,7 @@ void PolkadotTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   NOTIMPLEMENTED_LOG_ONCE();
 

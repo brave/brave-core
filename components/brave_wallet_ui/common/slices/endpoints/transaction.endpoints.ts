@@ -236,6 +236,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: txData ?? undefined }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success && errorMessage) {
@@ -299,6 +300,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: txData }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -342,6 +344,7 @@ export const transactionEndpoints = ({
         accountId: BraveWallet.AccountId
         txType: BraveWallet.TransactionType
         sendOptions?: BraveWallet.SolanaSendTransactionOptions
+        swapInfo?: BraveWallet.SwapInfo
       }
     >({
       queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
@@ -366,6 +369,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
               payload.chainId,
               payload.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -621,6 +625,7 @@ export const transactionEndpoints = ({
             to: payload.to,
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -664,6 +669,7 @@ export const transactionEndpoints = ({
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
             useShieldedPool: payload.useShieldedPool,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -705,6 +711,7 @@ export const transactionEndpoints = ({
             to: payload.to,
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -755,6 +762,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ filTxData: filTxData }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -1738,6 +1746,7 @@ async function sendEvmTransaction({
     to: payload.to,
     value: payload.value,
     data: payload.data,
+    swapInfo: payload.swapInfo,
   }
 
   const { errorMessage, success } =

@@ -27,6 +27,7 @@ class MockTxService: BraveWalletTxService {
     txDataUnion: BraveWallet.TxDataUnion,
     chainId: String,
     from: BraveWallet.AccountId,
+    swapInfo: BraveWallet.SwapInfo?,
     completion: @escaping (Bool, String, String) -> Void
   ) {
     completion(true, "txMetaId", "")

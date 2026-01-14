@@ -121,7 +121,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
       TxService::AddUnapprovedTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction) {
     tx_service()->GetZCashTxManager()->ContinueAddUnapprovedTransaction(
-        from, origin, std::move(callback), std::move(zcash_transaction));
+        from, origin, nullptr, std::move(callback),
+        std::move(zcash_transaction));
   }
 
   void SetInterceptor(const std::string& content) {
@@ -291,7 +292,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
     bool success;
     base::RunLoop run_loop;
     tx_service()->AddUnapprovedTransaction(
-        tx_data_union.Clone(), chain_id, from_account.Clone(),
+        tx_data_union.Clone(), chain_id, from_account.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
                                        const std::string& error_message) {
           success = v;
@@ -618,7 +619,7 @@ TEST_F(BraveWalletP3AUnitTest, EthTransactionSentObservation) {
       mojom::NewEvmTransactionParams::New(
           mojom::kBnbSmartChainMainnetChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-          "0x0974", std::vector<uint8_t>()),
+          "0x0974", std::vector<uint8_t>(), nullptr),
       &tx_meta_id));
 
   // Approve the ETH transaction
@@ -644,7 +645,7 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
       mojom::NewEvmTransactionParams::New(
           mojom::kLocalhostChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-          "0x0974", std::vector<uint8_t>()),
+          "0x0974", std::vector<uint8_t>(), nullptr),
       &tx_meta_id));
 
   // Approve the ETH transaction on testnet
@@ -662,7 +663,7 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
       mojom::NewEvmTransactionParams::New(
           mojom::kLocalhostChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-          "0x0974", std::vector<uint8_t>()),
+          "0x0974", std::vector<uint8_t>(), nullptr),
       &tx_meta_id));
 
   // Approve the ETH transaction on testnet
@@ -764,7 +765,8 @@ TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
 
   auto params = mojom::NewBitcoinTransactionParams::New(
-      mojom::kBitcoinMainnet, btc_from(), kMockBtcAddress, 5000, false);
+      mojom::kBitcoinMainnet, btc_from(), kMockBtcAddress, 5000, false,
+      nullptr);
 
   std::string tx_meta_id;
   EXPECT_TRUE(AddUnapprovedBitcoinTransaction(std::move(params), &tx_meta_id));
