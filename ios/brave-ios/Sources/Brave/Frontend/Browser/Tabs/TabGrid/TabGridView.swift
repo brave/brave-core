@@ -67,7 +67,6 @@ struct TabGridView: View {
 
   @State private var editMode: EditMode = .inactive
   @State private var selectedTabs: Set<TabState.ID> = []
-  @State private var plusButtonWidth: CGFloat = 64 // Default approximate width
 
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
 
@@ -426,74 +425,43 @@ struct TabGridView: View {
   }
 
   var footerBar: some View {
-    ZStack {
-      // HStack with More and Done buttons leading and trailing edges respectively, separated by spacer
-      HStack {
-        Menu {
-          if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
-            Section {
-              Button {
-                destinationSheet = .privateTabsSettings
-              } label: {
-                Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
-              }
-            }
-          }
+    HStack {
+      Menu {
+        if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
           Section {
-            if !viewModel.tabs.isEmpty {
-              Button {
-                withAnimation {
-                  editMode = .active
-                }
-              } label: {
-                Label(
-                  Strings.TabGrid.selectTabsButtonTitle,
-                  braveSystemImage: "leo.check.circle-outline"
-                )
-              }
-              Button(role: .destructive) {
-                viewModel.closeAllTabs()
-                dismiss()
-              } label: {
-                Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
-              }
+            Button {
+              destinationSheet = .privateTabsSettings
+            } label: {
+              Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
             }
           }
-        } label: {
-          Text(Strings.TabGrid.moreMenuButtonTitle)
-            .padding(4)
-            .lineLimit(1)
-            .fixedSize(horizontal: false, vertical: true)
         }
-        .menuOrder(.fixed)
-
-        Spacer()
-        
-        // Invisible view to constrain More and Done buttons from expanding past the Plus button area
-        // This view matches the Plus button's actual width
-        Color.clear
-          .frame(width: plusButtonWidth, height: 1)
-          .layoutPriority(-1) // Lower priority so it doesn't affect layout
-        
-        Spacer()
-
-        Button {
-          if viewModel.tabs.isEmpty {
-            viewModel.addTab()
+        Section {
+          if !viewModel.tabs.isEmpty {
+            Button {
+              withAnimation {
+                editMode = .active
+              }
+            } label: {
+              Label(
+                Strings.TabGrid.selectTabsButtonTitle,
+                braveSystemImage: "leo.check.circle-outline"
+              )
+            }
+            Button(role: .destructive) {
+              viewModel.closeAllTabs()
+              dismiss()
+            } label: {
+              Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+            }
           }
-          dismiss()
-        } label: {
-          Text(Strings.done)
-            .padding(4)
-            .lineLimit(1)
-            .fixedSize(horizontal: false, vertical: true)
         }
-        .keyboardShortcut(.defaultAction)
+      } label: {
+        Text(Strings.TabGrid.moreMenuButtonTitle)
+          .padding(4)
       }
-      .foregroundStyle(Color(braveSystemName: .textSecondary))
-      .fontWeight(.medium)
-
-      // Plus button centered on top of the HStack
+      .menuOrder(.fixed)
+      Spacer()
       Button {
         viewModel.addTab()
         // Let the tab show up in the collection view first
@@ -516,30 +484,23 @@ struct TabGridView: View {
       }
       .keyboardShortcut("t", modifiers: [.command])
       .buttonStyle(.plain)
-      .background(
-        GeometryReader { geometry in
-          Color.clear
-            .preference(
-              key: PlusButtonWidthPreferenceKey.self,
-              value: geometry.size.width
-            )
+      Spacer()
+      Button {
+        if viewModel.tabs.isEmpty {
+          viewModel.addTab()
         }
-      )
-      .onPreferenceChange(PlusButtonWidthPreferenceKey.self) { width in
-        plusButtonWidth = width
+        dismiss()
+      } label: {
+        Text(Strings.done)
+          .padding(4)
       }
+      .keyboardShortcut(.defaultAction)
     }
-    .padding(.horizontal, 8)
-    .padding(.vertical, 0)
+    .foregroundStyle(Color(braveSystemName: .textSecondary))
+    .fontWeight(.medium)
+    .padding(.horizontal, 16)
+    .padding(.vertical, 8)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
-  }
-  
-  // Preference key to track Plus button width
-  private struct PlusButtonWidthPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 64
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-      value = nextValue()
-    }
   }
 
   var editModeHeaderBar: some View {
