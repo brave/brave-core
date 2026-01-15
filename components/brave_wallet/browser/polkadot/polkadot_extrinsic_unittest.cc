@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -653,6 +654,174 @@ TEST(PolkadotExtrinsics, UnsignedExtrinsicBase) {
 
   EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
   EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.value().recipient()), kBob);
+}
+
+TEST(PolkadotExtrinsics, MetadataSerde) {
+  {
+    // Test empty (de)serialization.
+
+    PolkadotExtrinsicMetadata metadata;
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "block_num": "00000000",
+      "extrinsic": "",
+      "mortality_period": "40000000"
+    })";
+
+    EXPECT_EQ(metadata.ToValue(), base::test::ParseJsonDict(expected_json));
+
+    metadata = PolkadotExtrinsicMetadata::FromValue(
+                   base::test::ParseJsonDict(expected_json))
+                   .value();
+
+    EXPECT_EQ(metadata.block_hash(),
+              (std::array<uint8_t, kPolkadotBlockHashSize>{}));
+    EXPECT_EQ(metadata.block_num(), 0u);
+    EXPECT_EQ(metadata.extrinsic(), (std::vector<uint8_t>{}));
+    EXPECT_EQ(metadata.mortality_period(), 64u);
+  }
+
+  {
+    // Test non-empty (de)serialization.
+    const char block_hash_hex[] =
+        R"(c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e)";
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    EXPECT_TRUE(base::HexStringToSpan(block_hash_hex, block_hash));
+
+    const char extrinsic_hex[] =
+        R"(4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c)";
+    std::vector<uint8_t> extrinsic;
+    EXPECT_TRUE(base::HexStringToBytes(extrinsic_hex, &extrinsic));
+
+    PolkadotExtrinsicMetadata metadata;
+    metadata.set_block_hash(block_hash);
+    metadata.set_extrinsic(extrinsic);
+    metadata.set_block_num(29959235);
+    metadata.set_mortality_period(32);
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e",
+      "block_num": "4324c901",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    EXPECT_EQ(metadata.ToValue(), base::test::ParseJsonDict(expected_json));
+
+    metadata = PolkadotExtrinsicMetadata::FromValue(
+                   base::test::ParseJsonDict(expected_json))
+                   .value();
+
+    EXPECT_EQ(metadata.block_hash(), block_hash);
+    EXPECT_EQ(metadata.block_num(), 29959235u);
+    EXPECT_EQ(metadata.extrinsic(), extrinsic);
+    EXPECT_EQ(metadata.mortality_period(), 32u);
+  }
+
+  {
+    // Block hash is non-hex.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "cat286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e",
+      "block_num": "4324c901",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
+
+  {
+    // Block hash is too short.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a5",
+      "block_num": "4324c901",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
+
+  {
+    // Block hash is too long.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57eaa",
+      "block_num": "4324c901",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
+
+  {
+    // Extrinsic is non-hex.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e",
+      "block_num": "4324c901",
+      "extrinsic": "cat2840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
+
+  {
+    // Block num exceeds numeric limits.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e",
+      "block_num": "4324c90101",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "20000000"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
+
+  {
+    // Morality period exceeds numeric limits.
+
+    const char expected_json[] = R"(
+    {
+      "block_hash": "c01286d21f2b843c2fda8f7fd09a7f4eab1229d97041306536a7a9606961a57e",
+      "block_num": "4324c901",
+      "extrinsic": "4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c",
+      "mortality_period": "2000000001"
+    })";
+
+    auto metadata = PolkadotExtrinsicMetadata::FromValue(
+        base::test::ParseJsonDict(expected_json));
+
+    EXPECT_EQ(metadata, std::nullopt);
+  }
 }
 
 }  // namespace brave_wallet

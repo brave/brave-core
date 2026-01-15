@@ -412,7 +412,7 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
   if (const auto* method = req_body.FindString("method")) {
     if (*method == "state_call") {
       if (const auto* params_list = req_body.FindList("params")) {
-        DCHECK(!params_list->empty());
+        CHECK(!params_list->empty());
         if (params_list->front().GetString() ==
             "TransactionPaymentApi_query_info") {
           // Because this is a fee estimate call, we shouldn't be using a
@@ -422,7 +422,7 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
           // In our case, signature type is 0x01 (sr25519) and our dummy
           // signature is all 0x01.
 
-          DCHECK(params_list->size() == 2);
+          CHECK(params_list->size() == 2);
           const auto& extrinsic = (*params_list)[1].GetString();
           EXPECT_NE(extrinsic.find(base::HexEncodeLower(
                         std::vector<uint8_t>(1 + 64, 0x01))),

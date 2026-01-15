@@ -256,12 +256,25 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
   auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
   CHECK(sender_pubkey);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  auto extrinsic = make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
       signature, signing_header_->block_number, account_info_->nonce);
 
-  std::move(callback_).Run(base::ok(
-      std::vector<uint8_t>(signed_extrinsic.begin(), signed_extrinsic.end())));
+  extrinsic_ = std::vector(extrinsic.begin(), extrinsic.end());
+  std::move(callback_).Run(base::ok(GetMetadata()));
+}
+
+PolkadotExtrinsicMetadata PolkadotSignedTransferTask::GetMetadata() {
+  CHECK(!extrinsic_.empty());
+
+  PolkadotExtrinsicMetadata metadata;
+
+  metadata.set_extrinsic(extrinsic_);
+  metadata.set_block_hash(signing_block_hash_.value());
+  metadata.set_block_num(signing_header_->block_number);
+  metadata.set_mortality_period(64);
+
+  return metadata;
 }
 
 }  // namespace brave_wallet

@@ -63,13 +63,13 @@ The nature of the RPC calls looks roughly akin to this:
       └──────────────────│MaybeFinalizeSignTransaction│───────────────────┴──────────────────┘
                          └────────────────────────────┘
 
-                         // clang-format on
 */
+// clang-format on
 
 struct PolkadotSignedTransferTask {
  public:
-  using GenerateSignedTransferExtrinsicCallback =
-      base::OnceCallback<void(base::expected<std::vector<uint8_t>, std::string>)>;
+  using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
+      base::expected<PolkadotExtrinsicMetadata, std::string>)>;
 
   PolkadotSignedTransferTask(
       PolkadotWalletService& polkadot_wallet_service,
@@ -84,6 +84,8 @@ struct PolkadotSignedTransferTask {
   ~PolkadotSignedTransferTask();
 
   void Start(GenerateSignedTransferExtrinsicCallback callback);
+
+  PolkadotExtrinsicMetadata GetMetadata();
 
  private:
   void StopWithError(std::string error_string);
@@ -184,6 +186,8 @@ struct PolkadotSignedTransferTask {
       signing_block_hash_;
 
   std::optional<PolkadotRuntimeVersion> runtime_version_;
+
+  std::vector<uint8_t> extrinsic_;
 
   base::WeakPtrFactory<PolkadotSignedTransferTask> weak_ptr_factory_{this};
 };
