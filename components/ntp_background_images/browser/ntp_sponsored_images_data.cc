@@ -12,7 +12,6 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -423,7 +422,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
 }
 
 std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackground(
-    const brave_ads::NewTabPageAdInfo& ad) {
+    const brave_ads::mojom::NewTabPageAdInfo& ad) {
   // Find campaign
   size_t campaign_index = 0;
   for (; campaign_index != campaigns.size(); ++campaign_index) {

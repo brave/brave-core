@@ -17,7 +17,6 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -45,11 +44,14 @@ namespace ntp_background_images {
 namespace {
 
 constexpr char kPlacementId[] = "326eb47b-467b-46ab-ac1b-5f5de780b344";
-constexpr char kCampaignId[] = "fb7ee174-5430-4fb9-8e97-29bf14e8d828";
 constexpr char kCreativeInstanceId[] = "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70";
+constexpr char kCreativeSetId[] = "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b";
+constexpr char kCampaignId[] = "fb7ee174-5430-4fb9-8e97-29bf14e8d828";
+constexpr char kAdvertiserId[] = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
+constexpr char kSegment[] = "untargeted";
+constexpr char kTargetUrl[] = "https://brave.com";
 constexpr char kCompanyName[] = "Technikke";
 constexpr char kAltText[] = "Technikke: For music lovers.";
-constexpr char kTargetUrl[] = "https://brave.com";
 
 constexpr char kSponsoredImageCampaignsJson[] = R"(
     {
@@ -116,15 +118,19 @@ constexpr char kSponsoredRichMediaCampaignsJson[] = R"(
       ]
     })";
 
-brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
-  brave_ads::NewTabPageAdInfo ad;
-  ad.placement_id = kPlacementId;
-  ad.campaign_id = kCampaignId;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.company_name = kCompanyName;
-  ad.alt = kAltText;
-  ad.target_url = GURL(kTargetUrl);
-  return ad;
+brave_ads::mojom::NewTabPageAdInfoPtr BuildNewTabPageAd() {
+  brave_ads::mojom::NewTabPageAdInfoPtr mojom_ad =
+      brave_ads::mojom::NewTabPageAdInfo::New();
+  mojom_ad->placement_id = kPlacementId;
+  mojom_ad->creative_instance_id = kCreativeInstanceId;
+  mojom_ad->creative_set_id = kCreativeSetId;
+  mojom_ad->campaign_id = kCampaignId;
+  mojom_ad->advertiser_id = kAdvertiserId;
+  mojom_ad->segment = kSegment;
+  mojom_ad->target_url = GURL(kTargetUrl);
+  mojom_ad->company_name = kCompanyName;
+  mojom_ad->alt = kAltText;
+  return mojom_ad;
 }
 
 int GetInitialCountToBrandedWallpaper() {
@@ -504,9 +510,9 @@ TEST_F(
       kSponsoredRichMediaCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
-  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-  ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillByDefault(::testing::Return(ad));
+  brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
+      .WillOnce(::testing::Return(std::move(ad)));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
   EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
 }
@@ -523,9 +529,7 @@ TEST_F(
       kSponsoredRichMediaCampaignsJson);
   ASSERT_FALSE(view_counter_service_->CanShowSponsoredImages());
 
-  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-  ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillByDefault(::testing::Return(ad));
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
   EXPECT_FALSE(view_counter_service_->GetCurrentBrandedWallpaper());
 }
@@ -541,9 +545,9 @@ TEST_F(ViewCounterServiceTest,
       kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
-  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-  ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillByDefault(::testing::Return(ad));
+  brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
+      .WillOnce(::testing::Return(std::move(ad)));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
   EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
 }
@@ -559,9 +563,9 @@ TEST_F(ViewCounterServiceTest,
       kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
-  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-  ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillByDefault(::testing::Return(ad));
+  brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
+      .WillOnce(::testing::Return(std::move(ad)));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
   EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
 }
@@ -572,13 +576,13 @@ TEST_F(ViewCounterServiceTest,
 
   MockBackgroundImagesService();
 
-  brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-  ad.creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+  brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
+  ad->creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
       .Times(GetInitialCountToBrandedWallpaper());
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillOnce(::testing::Return(ad));
+      .WillOnce(::testing::Return(std::move(ad)));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
   VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }

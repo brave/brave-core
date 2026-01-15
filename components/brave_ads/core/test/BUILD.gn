@@ -168,7 +168,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test.cc",
     "//brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.cc",
     "//brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h",
-    "//brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_value_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_for_mobile_test.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util_should_serve_at_regular_intervals_unittest.cc",

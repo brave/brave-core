@@ -32,6 +32,7 @@
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -1604,14 +1605,16 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return nil;
   }
 
-  const std::optional<brave_ads::NewTabPageAdInfo> new_tab_page_ad =
+  brave_ads::mojom::NewTabPageAdInfoPtr new_tab_page_ad =
       adsService->MaybeGetPrefetchedNewTabPageAd();
   adsService->PrefetchNewTabPageAd();
-  if (!new_tab_page_ad) {
+  std::optional<brave_ads::NewTabPageAdInfo> ad =
+      brave_ads::FromMojom(new_tab_page_ad);
+  if (!ad) {
     return nil;
   }
 
-  return [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*new_tab_page_ad];
+  return [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*ad];
 }
 
 - (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId

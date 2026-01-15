@@ -64,7 +64,6 @@ class BatAdsServiceFactory;
 class DeviceId;
 class NewTabPageAdPrefetcher;
 class ResourceComponent;
-struct NewTabPageAdInfo;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -242,7 +241,7 @@ class AdsServiceImpl final : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
+  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
@@ -250,7 +249,8 @@ class AdsServiceImpl final : public AdsService,
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void MaybeServeNewTabPageAd(
+      MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

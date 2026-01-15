@@ -29,7 +29,6 @@ namespace brave_ads {
 
 class Ads;
 class AdsClient;
-struct NewTabPageAdInfo;
 class NewTabPageAdPrefetcher;
 class AdsServiceImplIOS : public AdsService {
  public:
@@ -82,7 +81,7 @@ class AdsServiceImplIOS : public AdsService {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
+  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
@@ -90,7 +89,8 @@ class AdsServiceImplIOS : public AdsService {
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void MaybeServeNewTabPageAd(
+      MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

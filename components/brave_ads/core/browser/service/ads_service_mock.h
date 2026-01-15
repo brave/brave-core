@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -44,11 +44,11 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void, GetStatementOfAccounts, (GetStatementOfAccountsCallback));
 
-  MOCK_METHOD(std::optional<NewTabPageAdInfo>,
-              MaybeGetPrefetchedNewTabPageAd,
-              ());
+  MOCK_METHOD(mojom::NewTabPageAdInfoPtr, MaybeGetPrefetchedNewTabPageAd, ());
   MOCK_METHOD(void, PrefetchNewTabPageAd, ());
-  MOCK_METHOD(void, MaybeServeNewTabPageAd, (MaybeServeNewTabPageAdCallback));
+  MOCK_METHOD(void,
+              MaybeServeNewTabPageAd,
+              (MaybeServeMojomNewTabPageAdCallback));
   MOCK_METHOD(void,
               TriggerNewTabPageAdEvent,
               (const std::string&,

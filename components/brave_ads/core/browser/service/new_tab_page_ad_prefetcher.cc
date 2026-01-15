@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
@@ -16,21 +17,12 @@ NewTabPageAdPrefetcher::NewTabPageAdPrefetcher(AdsService& ads_service)
 
 NewTabPageAdPrefetcher::~NewTabPageAdPrefetcher() = default;
 
-std::optional<NewTabPageAdInfo> NewTabPageAdPrefetcher::MaybeGetPrefetchedAd() {
-  std::optional<NewTabPageAdInfo> ad;
-  if (prefetched_ad_) {
-    if (prefetched_ad_->IsValid()) {
-      ad = prefetched_ad_;
-    }
-
-    prefetched_ad_.reset();
-  }
-
-  return ad;
+mojom::NewTabPageAdInfoPtr NewTabPageAdPrefetcher::MaybeGetPrefetchedAd() {
+  return std::move(mojom_prefetched_ad_);
 }
 
 void NewTabPageAdPrefetcher::Prefetch() {
-  if (!prefetched_ad_ && !is_prefetching_) {
+  if (!mojom_prefetched_ad_ && !is_prefetching_) {
     is_prefetching_ = true;
 
     ads_service_->MaybeServeNewTabPageAd(
@@ -40,18 +32,15 @@ void NewTabPageAdPrefetcher::Prefetch() {
 }
 
 void NewTabPageAdPrefetcher::PrefetchCallback(
-    base::optional_ref<const NewTabPageAdInfo> ad) {
-  CHECK(!prefetched_ad_);
+    mojom::NewTabPageAdInfoPtr mojom_ad) {
+  CHECK(!mojom_prefetched_ad_);
 
   if (!is_prefetching_) {
     // `is_prefetching_` can be reset during shutdown, so fail gracefully.
     return;
   }
   is_prefetching_ = false;
-
-  if (ad) {
-    prefetched_ad_ = *ad;
-  }
+  mojom_prefetched_ad_ = std::move(mojom_ad);
 }
 
 }  // namespace brave_ads

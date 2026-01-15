@@ -270,7 +270,7 @@ static_library("internal") {
     "ad_units/new_tab_page_ad/new_tab_page_ad_handler.cc",
     "ad_units/new_tab_page_ad/new_tab_page_ad_handler.h",
     "ad_units/new_tab_page_ad/new_tab_page_ad_info.cc",
-    "ad_units/new_tab_page_ad/new_tab_page_ad_value_util.cc",
+    "ad_units/new_tab_page_ad/new_tab_page_ad_util.cc",
     "ad_units/notification_ad/notification_ad_feature.cc",
     "ad_units/notification_ad/notification_ad_handler.cc",
     "ad_units/notification_ad/notification_ad_handler.h",
