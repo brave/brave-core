@@ -972,6 +972,20 @@ void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
   BrowserView::ReparentTopContainerForEndOfImmersive();
 }
 
+void BraveBrowserView::FullscreenStateChanged() {
+  BrowserView::FullscreenStateChanged();
+
+#if BUILDFLAG(IS_MAC)
+  if (!base::FeatureList::IsEnabled(features::kAsyncFullscreenWindowState)) {
+    // Need to call to set correct web contents's container bounds.
+    // ToolbarSizeChanged() invalidates each webview's layout.
+    // W/o this, incorrect mouse event location is set in fullscreen mode.
+    // Not sure why this happens since cr144.
+    ToolbarSizeChanged(false);
+  }
+#endif
+}
+
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
   return BraveMultiContentsView::From(multi_contents_view_);
 }
