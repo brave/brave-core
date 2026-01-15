@@ -116,6 +116,10 @@ def configure_sisorc():
         ninja_flags.append('-fs_min_flush_timeout 300s')
         # Use byte stream for most files as it is compression-aware.
         ninja_flags.append('-reapi_byte_stream_read_threshold 1024')
+        # Enable googlechrome config to build most targets with RBE. This is
+        # disabled by default in Chromium to make only clang actions be
+        # RBE-buildable, but we can build most tarets in Brave RBE infra.
+        ninja_flags.append('-config googlechrome')
 
     if cache_dir := os.environ.get('SISO_CACHE_DIR'):
         # `-cache_dir` and `-local_cache_enable` to use a local disk cache for
