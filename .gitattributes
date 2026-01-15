@@ -37,6 +37,8 @@
 *.xslt  text eol=lf
 *.xtb   text eol=lf
 
+*.mm diff=cpp
+
 .ci_features             text eol=lf linguist-language=ini
 .clang*                  text eol=lf
 .git-blame-ignore-revs   text eol=lf
