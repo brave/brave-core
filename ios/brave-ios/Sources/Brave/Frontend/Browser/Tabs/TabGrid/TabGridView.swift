@@ -67,6 +67,7 @@ struct TabGridView: View {
 
   @State private var editMode: EditMode = .inactive
   @State private var selectedTabs: Set<TabState.ID> = []
+  @State private var plusButtonWidth: CGFloat = 64 // Default approximate width
 
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
 
@@ -467,6 +468,14 @@ struct TabGridView: View {
         .menuOrder(.fixed)
 
         Spacer()
+        
+        // Invisible view to constrain More and Done buttons from expanding past the Plus button area
+        // This view matches the Plus button's actual width
+        Color.clear
+          .frame(width: plusButtonWidth, height: 1)
+          .layoutPriority(-1) // Lower priority so it doesn't affect layout
+        
+        Spacer()
 
         Button {
           if viewModel.tabs.isEmpty {
@@ -507,10 +516,30 @@ struct TabGridView: View {
       }
       .keyboardShortcut("t", modifiers: [.command])
       .buttonStyle(.plain)
+      .background(
+        GeometryReader { geometry in
+          Color.clear
+            .preference(
+              key: PlusButtonWidthPreferenceKey.self,
+              value: geometry.size.width
+            )
+        }
+      )
+      .onPreferenceChange(PlusButtonWidthPreferenceKey.self) { width in
+        plusButtonWidth = width
+      }
     }
     .padding(.horizontal, 8)
     .padding(.vertical, 0)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+  }
+  
+  // Preference key to track Plus button width
+  private struct PlusButtonWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 64
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+      value = nextValue()
+    }
   }
 
   var editModeHeaderBar: some View {
