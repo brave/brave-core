@@ -165,6 +165,9 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
   const std::string ephemeral_domain = "a.com";
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
+#if BUILDFLAG(IS_ANDROID)
+  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
+#endif
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -178,6 +181,9 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
     task_environment_.FastForwardBy(base::Seconds(10));
   }
 
+#if BUILDFLAG(IS_ANDROID)
+  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
+#endif
   // Reopen tld ephemeral lifetime while the keepalive is active.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -210,6 +216,9 @@ TEST_F(EphemeralStorageServiceTest,
   const auto second_storage_partition_config =
       content::StoragePartitionConfig::Create(&profile_, "partition_domain",
                                               "partition_name", false);
+#if BUILDFLAG(IS_ANDROID)
+  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification()).Times(2);
+#endif
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -259,6 +268,9 @@ TEST_F(EphemeralStorageServiceNoKeepAliveTest, ImmediateCleanup) {
   const std::string ephemeral_domain = "a.com";
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
+#if BUILDFLAG(IS_ANDROID)
+  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
+#endif
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
