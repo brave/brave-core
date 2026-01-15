@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
@@ -28,6 +29,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       const base::expected<PolkadotChainMetadata, std::string>&)>;
 
   using GenerateSignedTransferExtrinsicCallback =
+      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+
+  using SignAndSendTransactionCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
 
   PolkadotWalletService(
@@ -72,6 +76,13 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
 
+  void SignAndSendTransaction(
+      std::string_view chain_id,
+      const mojom::AccountIdPtr& account_id,
+      uint128_t send_amount,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+      SignAndSendTransactionCallback callback);
+
  private:
   // KeyringServiceObserverBase:
   void Unlocked() override;
@@ -93,6 +104,15 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       PolkadotSignedTransferTask* transaction_state,
       GenerateSignedTransferExtrinsicCallback callback,
       base::expected<std::string, std::string> signed_extrinsic);
+
+  void OnGenerateSignedTransfer(
+      std::string chain_id,
+      SignAndSendTransactionCallback callback,
+      base::expected<std::string, std::string> signed_extrinsic);
+
+  void OnSubmitSignedExtrinsic(SignAndSendTransactionCallback callback,
+                               std::optional<std::string>,
+                               std::optional<std::string>);
 
   const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
