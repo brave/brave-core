@@ -63,8 +63,8 @@ class PageMetricsUnitTest : public testing::Test {
     default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(
         std::make_unique<TestDelegate>(&mocked_is_default_));
     default_browser_monitor_->Start();
-    task_environment_.FastForwardBy(base::Minutes(5));
 #endif
+    task_environment_.FastForwardBy(base::Minutes(5));
 
     page_metrics_service_ = std::make_unique<PageMetrics>(
         &local_state_, profile_->GetPrefs(),

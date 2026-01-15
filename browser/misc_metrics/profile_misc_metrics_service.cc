@@ -68,7 +68,8 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
 
-  if (history_service && host_content_settings_map) {
+  auto* process_misc_metrics = g_brave_browser_process->process_misc_metrics();
+  if (history_service && host_content_settings_map && process_misc_metrics) {
     page_metrics_ = std::make_unique<PageMetrics>(
         local_state, profile_prefs_, host_content_settings_map, history_service,
         bookmark_model,

@@ -34,7 +34,9 @@ class DefaultBrowserMonitorUnitTest : public ::testing::Test {
   void SetMockedDefaultBrowserStatus(bool is_default) {
     mocked_is_default_ = is_default;
 #if BUILDFLAG(IS_ANDROID)
-    monitor_->OnDefaultBrowserStateReceived(is_default);
+    if (monitor_) {
+      monitor_->OnDefaultBrowserStateReceived(is_default);
+    }
 #endif
   }
 
