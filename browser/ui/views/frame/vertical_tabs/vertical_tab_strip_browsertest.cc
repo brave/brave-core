@@ -1884,9 +1884,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   // On Mac, host view is moved by 1px to prevent vertical tab overlap
   // with frame border. If failed see
   // BraveBrowserViewLayout::AddVerticalTabFrameBorderInsets();
-  EXPECT_TRUE(browser_view()
-                  ->vertical_tab_strip_host_view_->GetContentsBounds()
-                  .IsEmpty());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser_view()
+        ->vertical_tab_strip_host_view_->GetContentsBounds()
+        .IsEmpty();
+  }));
   EXPECT_EQ(browser_view()->vertical_tab_strip_host_view_->GetInsets().width(),
             1);
 
@@ -1895,7 +1897,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   EXPECT_EQ(browser_view()->contents_container()->x(), rounded_corners ? 5 : 1);
 #else
   // Check contents container doesn't have insets for frame border.
-  EXPECT_EQ(browser_view()->contents_container()->x(), rounded_corners ? 4 : 0);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser_view()->contents_container()->x() ==
+           (rounded_corners ? 4 : 0);
+  }));
 #endif
 
   region_view->ToggleState();

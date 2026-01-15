@@ -114,9 +114,10 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
   host_->SetPreferredSize(region_view_->GetMinimumSize());
 
   // The position could be changed, so we should lay out again.
-  host_->parent()->DeprecatedLayoutImmediately();
+  host_->InvalidateLayout();
 
   // Lay out the widget manually in case the host doesn't arrange it.
+  // Ex, expand on mouse hover.
   UpdateWidgetBounds();
 }
 
@@ -189,12 +190,11 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
   auto insets = host_->GetInsets();
   widget_bounds.set_width(region_view_->GetPreferredSize().width() +
                           insets.width());
-  if (!region_view_->GetVisible() || widget_bounds.IsEmpty()) {
+  if (!region_view_->GetVisible() || widget_bounds.IsEmpty() ||
+      !tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     widget->Hide();
     return;
   }
-
-  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()));
 
   if (GetInsets() != insets) {
     SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
