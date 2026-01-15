@@ -13,7 +13,11 @@ const RICH_SEARCH_WIDGETS_ORIGIN = loadTimeData.getString(
 
 /** Gets the browser theme (which might be user configured) */
 function getBrowserTheme() {
-  const stringifyStyles = (stylesheet: CSSStyleSheet) => {
+  const stringifyStyles = (stylesheet: CSSStyleSheet | null | undefined) => {
+    if (!stylesheet) {
+      return ''
+    }
+
     return Array.from(stylesheet.cssRules || [])
       .filter((rule) => rule instanceof CSSStyleRule)
       .map((rule) => rule.cssText)
@@ -22,14 +26,14 @@ function getBrowserTheme() {
 
   const nala = Array.from(document.styleSheets).find((s) =>
     s.href?.includes('nala.css'),
-  )!
+  )
 
-  const baseColors = Array.from(nala.cssRules || []).find(
+  const baseColors = Array.from(nala?.cssRules || []).find(
     (rule) =>
       rule instanceof CSSImportRule && rule.href?.includes('theme/colors.css'),
-  ) as CSSImportRule
+  ) as CSSImportRule | undefined
 
-  return stringifyStyles(baseColors.styleSheet!) + stringifyStyles(nala)
+  return stringifyStyles(baseColors?.styleSheet) + stringifyStyles(nala)
 }
 
 export default function RichSearchWidget(props: { jsonData: string }) {
