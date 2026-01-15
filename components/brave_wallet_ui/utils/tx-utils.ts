@@ -976,7 +976,10 @@ export const getTransactionGasFee = (transaction: TransactionInfo): string => {
   }
 
   if (isPolkadotTransaction(transaction)) {
-    return transaction.txDataUnion.polkadotTxData?.fee.toString() || ''
+    return (
+      Uint128ToBigInt(transaction.txDataUnion.polkadotTxData?.fee)?.toString()
+      || ''
+    )
   }
 
   const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)

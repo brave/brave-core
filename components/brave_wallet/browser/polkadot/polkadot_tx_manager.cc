@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/notimplemented.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -172,14 +173,42 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
 
+  std::string chain_id = params->chain_id;
+  auto account_id = params->from.Clone();
+  auto send_amount = MojomToUint128(params->amount);
+
+  polkadot_wallet_service_->GetFeeEstimate(
+      std::move(chain_id), std::move(account_id), send_amount,
+      recipient->pubkey,
+      base::BindOnce(&PolkadotTxManager::OnGetFeeForUnapproved,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(chain_metadata.value()), std::move(params),
+                     std::move(callback)));
+}
+
+void PolkadotTxManager::OnGetFeeForUnapproved(
+    PolkadotChainMetadata chain_metadata,
+    mojom::NewPolkadotTransactionParamsPtr params,
+    AddUnapprovedPolkadotTransactionCallback callback,
+    base::expected<uint128_t, std::string> partial_fee) {
+  if (!partial_fee.has_value()) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+
   // We don't support Polkadot dApps so far, so all transactions come from
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
+
+  auto recipient =
+      ParsePolkadotAccount(params->to, chain_metadata.GetSs58Prefix());
+  // We should have already verified this upon retrieving the chain metadata.
+  CHECK(recipient);
 
   PolkadotTxMeta tx_metadata;
 
   PolkadotTransaction tx;
   tx.set_amount(MojomToUint128(params->amount));
+  tx.set_fee(partial_fee.value());
   tx.set_recipient(*recipient);
   tx.set_transfer_all(params->sending_max_amount);
   tx_metadata.set_tx(std::move(tx));

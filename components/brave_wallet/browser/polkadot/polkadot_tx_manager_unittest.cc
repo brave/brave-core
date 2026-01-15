@@ -175,6 +175,12 @@ inline constexpr const char kBobSS58[] =
 }  // namespace
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
+          .value();
+
+  polkadot_mock_rpc_->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
 
   {
@@ -209,10 +215,15 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
               EXPECT_EQ(*polkadot_tx->FindString("amount"),
                         "d2040000000000000000000000000000");
               EXPECT_EQ(*polkadot_tx->FindString("fee"),
-                        "00000000000000000000000000000000");
+                        "dc8df1b5030000000000000000000000");
               EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
               EXPECT_EQ(polkadot_tx->FindInt("ss58_prefix"), std::nullopt);
 
+              uint128_t fee = 0;
+              EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
+                                                base::byte_span_from_ref(fee)));
+
+              EXPECT_EQ(fee, 15937408476ull);
               quit_closure.Run();
             },
             task_environment_.QuitClosure(), tx_service_.get()));
@@ -252,9 +263,15 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
               EXPECT_EQ(*polkadot_tx->FindString("amount"),
                         "ffffffffffffffffffffffffffffffff");
               EXPECT_EQ(*polkadot_tx->FindString("fee"),
-                        "00000000000000000000000000000000");
+                        "dc8df1b5030000000000000000000000");
               EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
               EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
+
+              uint128_t fee = 0;
+              EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
+                                                base::byte_span_from_ref(fee)));
+
+              EXPECT_EQ(fee, 15937408476ull);
 
               quit_closure.Run();
             },
@@ -449,7 +466,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
   EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
   EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
   EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
-  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
   EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
 }
 
@@ -522,7 +539,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
   EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Error);
   EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
   EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
-  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
   EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
 }
 
@@ -530,7 +547,6 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
   // Prove that we can handle the case where an intermitent network failure
   // during extrinsic signing fails.
 
-  polkadot_mock_rpc_->RejectAccountInfoRequest();
   polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
 
@@ -558,6 +574,8 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
   EXPECT_FALSE(tx_meta_id.empty());
   EXPECT_EQ(err_str, "");
 
+  polkadot_mock_rpc_->RejectAccountInfoRequest();
+
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
@@ -577,7 +595,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
   EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Error);
   EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
   EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
-  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
   EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
 }
 

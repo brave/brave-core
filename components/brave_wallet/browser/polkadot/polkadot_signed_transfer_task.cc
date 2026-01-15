@@ -16,6 +16,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
     KeyringService& keyring_service,
     mojom::AccountIdPtr sender_account_id,
     std::string chain_id,
+    bool use_dummy_signature,
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient)
@@ -23,6 +24,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
       keyring_service_(keyring_service),
       sender_account_id_(std::move(sender_account_id)),
       chain_id_(std::move(chain_id)),
+      use_dummy_signature_{use_dummy_signature},
       send_amount_{send_amount} {
   base::span(sender_).copy_from_nonoverlapping(sender);
   base::span(recipient_).copy_from_nonoverlapping(recipient);
@@ -240,17 +242,23 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
       runtime_version_->transaction_version, signing_header_->block_number,
       *genesis_hash_, *signing_block_hash_);
 
-  auto signature = keyring_service_->SignMessageByPolkadotKeyring(
-      sender_account_id_, signature_payload);
+  std::array<uint8_t, kSr25519SignatureSize> signature = {};
 
-  CHECK(signature);
+  if (use_dummy_signature_) {
+    signature.fill(uint8_t{0x01});
+  } else {
+    auto sig = keyring_service_->SignMessageByPolkadotKeyring(
+        sender_account_id_, signature_payload);
 
+    CHECK(sig);
+    signature = *sig;
+  }
   auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
   CHECK(sender_pubkey);
 
   auto signed_extrinsic = make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      *signature, signing_header_->block_number, account_info_->nonce);
+      signature, signing_header_->block_number, account_info_->nonce);
 
   std::move(callback_).Run(base::ok(
       std::vector<uint8_t>(signed_extrinsic.begin(), signed_extrinsic.end())));

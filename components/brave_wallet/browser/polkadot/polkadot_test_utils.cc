@@ -62,58 +62,6 @@ void PolkadotMockRpc::SetSenderPubKey(
   base::span(sender_pubkey_).copy_from_nonoverlapping(pubkey);
 }
 
-void PolkadotMockRpc::AddGetAccountInfo() {
-  // Our initial call to get account information so we have a usable nonce for
-  // extinsic creation.
-  // Note that it's the account's pubkey that comprises the last 64 characters
-  // of "params" here.
-
-  base::DictValue req;
-  req.Set("id", 1);
-  req.Set("jsonrpc", "2.0");
-  req.Set("method", "state_queryStorageAt");
-
-  // Storage keys for Polkadot block chains are shaped:
-  // xxhash("System") | xxhash("Account") | <checksum> | <pubkey>
-  auto checksum = Blake2bHash<16>({sender_pubkey_});
-  req.Set("params",
-          base::ListValue().Append(base::ListValue().Append(base::StrCat(
-              {"0x", "26AA394EEA5630E07C48AE0C9558CEF7",
-               "B99D880EC681799C0CF30E8886371DA9", base::HexEncode(checksum),
-               base::HexEncode(sender_pubkey_)}))));
-
-  std::string_view res;
-
-  if (reject_account_info_request_) {
-    res = R"(
-            {
-              "jsonrpc":"2.0",
-              "id":8,
-              "error": { "code": 1234 }
-            })";
-
-  } else {
-    res = R"(
-            {
-              "jsonrpc":"2.0",
-              "id":8,
-              "result":[
-                {
-                  "block":"0xdcc9741f0258ede18a1684ff787c1591db8585f3154481cd162378fdd6677056",
-                  "changes":[
-                    [
-                      "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9c6282eb06d1994674b75538b85244e4952707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c",
-                      "0x11000000000000000100000000000000be2bcb22d90800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
-                    ]
-                  ]
-                }
-              ]
-            })";
-  }
-
-  req_res_pairs_.emplace(std::move(req), res);
-}
-
 void PolkadotMockRpc::AddGetInitialChainHeader() {
   // Our initial call to get the most recent block header in the chain.
   req_res_pairs_.emplace(
@@ -254,7 +202,6 @@ void PolkadotMockRpc::AddGetGenesisBlockHash() {
 }
 
 void PolkadotMockRpc::AddReqResPairs() {
-  AddGetAccountInfo();
   AddGetInitialChainHeader();
   AddGetParentBlockHeader();
   AddGetFinalizedBlockHash();
@@ -297,14 +244,21 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     return;
   }
 
+  if (HandleGetAccountInfoRequest(req, req_body)) {
+    return;
+  }
+
   if (HandleAuthorSubmitExtrinsic(req, req_body)) {
+    return;
+  }
+
+  if (HandlePaymentInfoRequest(req, req_body)) {
     return;
   }
 
   auto pos = req_res_pairs_.find(req_body);
   if (pos != req_res_pairs_.end()) {
-    url_loader_factory_->AddResponse(req.url.spec(), pos->second);
-    return;
+    return url_loader_factory_->AddResponse(req.url.spec(), pos->second);
   }
 }
 
@@ -350,6 +304,78 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
 
   return false;
 }
+bool PolkadotMockRpc::HandleGetAccountInfoRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  // Our initial call to get account information so we have a usable nonce for
+  // extinsic creation.
+  // Note that it's the account's pubkey that comprises the last 64 characters
+  // of "params" here.
+
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
+  }
+
+  if (*method != "state_queryStorageAt") {
+    return false;
+  }
+
+  if (reject_account_info_request_) {
+    url_loader_factory_->AddResponse(req.url.spec(), R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": { "code": 1234 }
+      })");
+    return true;
+  }
+
+  base::DictValue req_json;
+  req_json.Set("id", 1);
+  req_json.Set("jsonrpc", "2.0");
+  req_json.Set("method", "state_queryStorageAt");
+
+  // Storage keys for Polkadot block chains are shaped:
+  // xxhash("System") | xxhash("Account") | <checksum> | <pubkey>
+  auto checksum = Blake2bHash<16>({sender_pubkey_});
+  req_json.Set(
+      "params",
+      base::ListValue().Append(base::ListValue().Append(base::StrCat(
+          {"0x", "26AA394EEA5630E07C48AE0C9558CEF7",
+           "B99D880EC681799C0CF30E8886371DA9", base::HexEncode(checksum),
+           base::HexEncode(sender_pubkey_)}))));
+
+  if (req_body != req_json) {
+    url_loader_factory_->AddResponse(req.url.spec(), R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": { "code": 1234 }
+      })");
+
+    return true;
+  }
+
+  url_loader_factory_->AddResponse(req.url.spec(), R"(
+    {
+      "jsonrpc":"2.0",
+      "id":8,
+      "result":[
+        {
+          "block":"0xdcc9741f0258ede18a1684ff787c1591db8585f3154481cd162378fdd6677056",
+          "changes":[
+            [
+              "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9c6282eb06d1994674b75538b85244e4952707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c",
+              "0x11000000000000000100000000000000be2bcb22d90800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
+            ]
+          ]
+        }
+      ]
+    })");
+
+  return true;
+}
 
 bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
     const network::ResourceRequest& req,
@@ -374,6 +400,25 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
       }
 
       return true;
+    }
+  }
+
+  return false;
+}
+bool PolkadotMockRpc::HandlePaymentInfoRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  if (const auto* method = req_body.FindString("method")) {
+    if (*method == "state_call") {
+      if (const auto* params_list = req_body.FindList("params")) {
+        if (params_list->front().GetString() ==
+            "TransactionPaymentApi_query_info") {
+          url_loader_factory_->AddResponse(
+              req.url.spec(),
+              R"({"jsonrpc":"2.0","id":18,"result":"0x82ab80766da800dc8df1b5030000000000000000000000"})");
+          return true;
+        }
+      }
     }
   }
 

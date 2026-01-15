@@ -36,7 +36,6 @@ struct PolkadotMockRpc {
   // assembling the signing payload.
   // For configuration, call the above methods first such as SetSenderPubKey.
 
-  void AddGetAccountInfo();
   void AddGetInitialChainHeader();
   void AddGetParentBlockHeader();
   void AddGetFinalizedBlockHash();
@@ -58,8 +57,14 @@ struct PolkadotMockRpc {
   bool HandleMetadataRequest(const network::ResourceRequest& req,
                              const base::DictValue& req_body);
 
+  bool HandleGetAccountInfoRequest(const network::ResourceRequest& req,
+                                   const base::DictValue& req_body);
+
   bool HandleAuthorSubmitExtrinsic(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
+
+  bool HandlePaymentInfoRequest(const network::ResourceRequest& req,
+                                const base::DictValue& req_body);
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_pubkey_ = {};
   raw_ptr<network::TestURLLoaderFactory> url_loader_factory_ = nullptr;
