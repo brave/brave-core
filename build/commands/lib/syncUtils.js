@@ -229,7 +229,7 @@ function syncChromium(program) {
   }
 
   if (deleteUnusedDeps) {
-    if (util.isGitExclusionExists(config.srcDir, 'brave/')) {
+    if (util.isGitExclusionExists(config.srcDir, '/brave/')) {
       args.push('-D')
     } else if (!config.isCI) {
       Log.warn(
@@ -275,8 +275,10 @@ function syncChromium(program) {
   }
 
   util.runGclient(args)
-  util.addGitExclusion(config.srcDir, 'brave/')
-  util.addGitExclusion(config.srcDir, 'brave_origin/')
+  util.modifyGitExclusions(config.srcDir, {
+    remove: ['brave/', 'brave_origin/'],
+    add: ['/brave/'],
+  })
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
