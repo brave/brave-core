@@ -3258,6 +3258,7 @@
 -SearchApiTest.*
 -SearchByImageBrowserTest.*
 -SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowAgainAfterSettingPref
+-SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
 -SearchEngineChoiceDialogBrowserTest.DialogIsDisplayedOnEveryGuestSession
 -SearchEngineRepromptBrowserTest.Reprompt/Skip3p
 -SearchEnginePreconnectorDesktopAutoStartBrowserTest.*
