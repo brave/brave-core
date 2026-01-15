@@ -20,38 +20,6 @@ source_set("service") {
   ]
 }
 
-source_set("network") {
-  sources = [
-    "network_client.cc",
-    "network_client.h",
-    "network_client_callback.h",
-    "network_client_util.cc",
-    "network_client_util.h",
-    "oblivious_http_client_impl.cc",
-    "oblivious_http_client_impl.h",
-    "oblivious_http_constants.h",
-    "oblivious_http_feature.cc",
-    "oblivious_http_feature.h",
-    "oblivious_http_key_config.cc",
-    "oblivious_http_key_config.h",
-  ]
-
-  public_deps = [
-    "//base",
-    "//brave/components/brave_ads/core/mojom",
-    "//services/network/public/cpp",
-  ]
-
-  deps = [
-    "//brave/components/brave_ads/core/public:headers",
-    "//components/prefs",
-    "//mojo/public/cpp/bindings",
-    "//net",
-    "//services/network/public/mojom",
-    "//url",
-  ]
-}
-
 source_set("new_tab_page_ad") {
   sources = [
     "new_tab_page_ad_prefetcher.cc",
@@ -89,14 +57,11 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "network_client_util_unittest.cc",
     "new_tab_page_ad_prefetcher_unittest.cc",
-    "oblivious_http_feature_unittest.cc",
     "virtual_pref_provider_unittest.cc",
   ]
 
   deps = [
-    ":network",
     ":new_tab_page_ad",
     ":service",
     ":test_support",
@@ -109,7 +74,6 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/skus/browser",
     "//components/prefs:test_support",
-    "//net",
     "//testing/gmock",
     "//testing/gtest",
   ]

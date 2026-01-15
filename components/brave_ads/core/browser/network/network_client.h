@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_NETWORK_CLIENT_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_NETWORK_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
 
 #include <memory>
 #include <optional>
@@ -13,7 +13,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/browser/service/network_client_callback.h"
+#include "brave/components/brave_ads/core/browser/network/network_client_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "url/gurl.h"
@@ -87,4 +87,4 @@ class NetworkClient {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_NETWORK_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
