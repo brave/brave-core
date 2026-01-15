@@ -24,7 +24,7 @@
 }
 
 :host(:not([narrow])[disable-right-content-grow]) #centeredContent {
-  justify-content: start;
+  justify-content: center;
   padding-inline-start: 12px;
 }
 
