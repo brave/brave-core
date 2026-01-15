@@ -266,9 +266,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
-#endif
-      &features::kTabstripComboButton,
-#if !BUILDFLAG(IS_ANDROID)
       &kDesktopMediaPickerMultiLineTitle,
 #endif
   // We are following upstream's field trial with this feature and they only
