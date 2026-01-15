@@ -1596,8 +1596,7 @@ void KeyringService::EncodePolkadotKeyForExport(
     return;
   }
 
-  if (!account_id || encryption_password.empty() ||
-      !ValidatePasswordInternal(password)) {
+  if (encryption_password.empty() || !ValidatePasswordInternal(password)) {
     std::move(callback).Run(std::nullopt);
     return;
   }

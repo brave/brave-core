@@ -49,6 +49,7 @@ import {
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
 import {
   useGetQrCodeImageQuery,
   useGetZCashAccountInfoQuery,
@@ -256,17 +257,21 @@ export const AccountSettingsModal = () => {
     React.useState<boolean>(true)
   const [showEncryptionPassword, setShowEncryptionPassword] =
     React.useState<boolean>(false)
-  const [encryptionPassword, setEncryptionPassword] = React.useState<string>('')
-  const [encryptionPasswordConfirm, setEncryptionPasswordConfirm] =
-    React.useState<string>('')
-  const [encryptionPasswordError, setEncryptionPasswordError] =
-    React.useState<string>('')
 
   // mutations
   const [updateAccountName] = useUpdateAccountNameMutation()
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
+  const {
+    hasConfirmedPasswordError,
+    hasPasswordError,
+    password: encryptionPassword,
+    confirmedPassword: encryptionPasswordConfirm,
+    onPasswordChanged: handleEncryptionPasswordChanged,
+    setConfirmedPassword: handleEncryptionPasswordConfirmChanged,
+    isValid: isEncryptionPasswordValid,
+  } = usePasswordStrength()
 
   // Helper function to download JSON file
   const downloadJsonFile = React.useCallback(
@@ -284,23 +289,9 @@ export const AccountSettingsModal = () => {
     [],
   )
 
-  // Validate encryption password strength (minimum 8 characters)
-  const validateEncryptionPassword = React.useCallback(
-    (password: string): boolean => {
-      return password.length >= 8
-    },
-    [],
-  )
-
   // Handler for confirming encryption password and showing key
   const onConfirmEncryptionPassword = React.useCallback(async () => {
-    if (
-      !encryptionPassword
-      || !encryptionPasswordConfirm
-      || encryptionPassword !== encryptionPasswordConfirm
-      || !validateEncryptionPassword(encryptionPassword)
-      || !selectedAccount
-    ) {
+    if (!isEncryptionPasswordValid || !selectedAccount) {
       return
     }
 
@@ -317,18 +308,18 @@ export const AccountSettingsModal = () => {
       setPrivateKey(encryptedKey)
       // Reset encryption password state
       setShowEncryptionPassword(false)
-      setEncryptionPassword('')
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
       setPassword('')
-      setEncryptionPasswordConfirm('')
-      setEncryptionPasswordError('')
     }
   }, [
-    encryptionPassword,
-    encryptionPasswordConfirm,
-    validateEncryptionPassword,
+    isEncryptionPasswordValid,
     selectedAccount,
     password,
+    encryptionPassword,
     isMounted,
+    handleEncryptionPasswordChanged,
+    handleEncryptionPasswordConfirmChanged,
   ])
 
   // Handler for downloading the already-encrypted key
@@ -344,13 +335,12 @@ export const AccountSettingsModal = () => {
 
   const onCancelEncryptionPassword = React.useCallback(() => {
     setShowEncryptionPassword(false)
-    setEncryptionPassword('')
-    setEncryptionPasswordConfirm('')
-    setEncryptionPasswordError('')
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
     // Also clear the wallet password state
     setPassword('')
     setIsCorrectPassword(true)
-  }, [])
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
 
   // methods
   const onViewPrivateKey = React.useCallback(
@@ -366,10 +356,6 @@ export const AccountSettingsModal = () => {
     },
     [password, isMounted],
   )
-
-  const onDoneViewingPrivateKey = React.useCallback(() => {
-    setPrivateKey('')
-  }, [])
 
   const handleAccountNameChanged = (detail: InputEventDetail) => {
     setFullLengthAccountName(detail.value)
@@ -418,9 +404,8 @@ export const AccountSettingsModal = () => {
       setIsCorrectPassword(true)
       // Show encryption password input
       setShowEncryptionPassword(true)
-      setEncryptionPassword('')
-      setEncryptionPasswordConfirm('')
-      setEncryptionPasswordError('')
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
       return
     }
 
@@ -431,14 +416,12 @@ export const AccountSettingsModal = () => {
     onViewPrivateKey(selectedAccount.accountId)
   }
 
-  const onHidePrivateKey = () => {
-    onDoneViewingPrivateKey()
+  const onHidePrivateKey = React.useCallback(() => {
     setPrivateKey('')
     setShowEncryptionPassword(false)
-    setEncryptionPassword('')
-    setEncryptionPasswordConfirm('')
-    setEncryptionPasswordError('')
-  }
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
 
   const onClickClose = () => {
     onHidePrivateKey()
@@ -459,23 +442,16 @@ export const AccountSettingsModal = () => {
 
   const onEncryptionPasswordChange = React.useCallback(
     (value: string) => {
-      setEncryptionPassword(value)
-      if (value && !validateEncryptionPassword(value)) {
-        setEncryptionPasswordError(
-          getLocale('braveWalletAccountSettingsEncryptionPasswordTooShort'),
-        )
-      } else {
-        setEncryptionPasswordError('')
-      }
+      handleEncryptionPasswordChanged(value)
     },
-    [validateEncryptionPassword],
+    [handleEncryptionPasswordChanged],
   )
 
   const onEncryptionPasswordConfirmChange = React.useCallback(
     (value: string) => {
-      setEncryptionPasswordConfirm(value)
+      handleEncryptionPasswordConfirmChanged(value)
     },
-    [],
+    [handleEncryptionPasswordConfirmChanged],
   )
 
   const handlePasswordKeyDown = (
@@ -566,8 +542,14 @@ export const AccountSettingsModal = () => {
                     'braveWalletAccountSettingsEncryptionPassword',
                   )}
                   onChange={onEncryptionPasswordChange}
-                  hasError={!!encryptionPasswordError}
-                  error={encryptionPasswordError}
+                  hasError={hasPasswordError}
+                  error={
+                    hasPasswordError
+                      ? getLocale(
+                          'braveWalletAccountSettingsEncryptionPasswordTooShort',
+                        )
+                      : ''
+                  }
                   autoFocus={true}
                   value={encryptionPassword}
                 />
@@ -577,13 +559,9 @@ export const AccountSettingsModal = () => {
                     'braveWalletAccountSettingsConfirmEncryptionPassword',
                   )}
                   onChange={onEncryptionPasswordConfirmChange}
-                  hasError={
-                    encryptionPasswordConfirm !== ''
-                    && encryptionPassword !== encryptionPasswordConfirm
-                  }
+                  hasError={hasConfirmedPasswordError}
                   error={
-                    encryptionPasswordConfirm !== ''
-                    && encryptionPassword !== encryptionPasswordConfirm
+                    hasConfirmedPasswordError
                       ? getLocale(
                           'braveWalletAccountSettingsPasswordsDoNotMatch',
                         )
@@ -592,13 +570,7 @@ export const AccountSettingsModal = () => {
                   autoFocus={false}
                   value={encryptionPasswordConfirm}
                   onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                    if (
-                      event.key === 'Enter'
-                      && encryptionPassword
-                      && encryptionPasswordConfirm
-                      && encryptionPassword === encryptionPasswordConfirm
-                      && validateEncryptionPassword(encryptionPassword)
-                    ) {
+                    if (event.key === 'Enter' && isEncryptionPasswordValid) {
                       onConfirmEncryptionPassword()
                     }
                   }}
@@ -648,13 +620,7 @@ export const AccountSettingsModal = () => {
                   <LeoSquaredButton
                     onClick={onConfirmEncryptionPassword}
                     kind='filled'
-                    isDisabled={
-                      !encryptionPassword
-                      || !encryptionPasswordConfirm
-                      || encryptionPassword !== encryptionPasswordConfirm
-                      || !validateEncryptionPassword(encryptionPassword)
-                      || !!encryptionPasswordError
-                    }
+                    isDisabled={!isEncryptionPasswordValid}
                   >
                     {getLocale('braveWalletAccountSettingsShowKey')}
                   </LeoSquaredButton>
@@ -679,7 +645,7 @@ export const AccountSettingsModal = () => {
                   </LeoSquaredButton>
                 </ButtonRow>
               ) : (
-                // Show Show Key button when no key is visible
+                // Show "Show Key" button when no key is visible
                 <LeoSquaredButton
                   onClick={onShowPrivateKey}
                   kind='filled'

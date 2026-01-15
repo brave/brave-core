@@ -62,6 +62,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJsonDict;
+using base::test::TestFuture;
 using ::testing::_;
 using ::testing::AnyNumber;
 using ::testing::ElementsAre;
@@ -1433,13 +1434,13 @@ TEST_F(KeyringServiceUnitTest, EncodePolkadotPrivateKeyForExport) {
         AddAccount(&service, mojom::CoinType::DOT,
                    mojom::KeyringId::kPolkadotMainnet, "Polkadot Account");
 
-    base::test::TestFuture<const std::optional<std::string>&> future1;
+    TestFuture<const std::optional<std::string>&> future1;
     service.EncodePolkadotKeyForExport(polkadot_account->account_id.Clone(),
                                        kPasswordBrave123, "encryptpassword",
                                        future1.GetCallback());
     EXPECT_FALSE(future1.Get().has_value());
 
-    base::test::TestFuture<const std::optional<std::string>&> future2;
+    TestFuture<const std::optional<std::string>&> future2;
     service.EncodePolkadotKeyForExport(polkadot_account->account_id.Clone(),
                                        kPasswordBrave, "encryptpassword",
                                        future2.GetCallback());
@@ -1456,7 +1457,7 @@ TEST_F(KeyringServiceUnitTest, EncodePolkadotPrivateKeyForExport) {
     auto polkadot_account_2 =
         AddAccount(&service, mojom::CoinType::DOT,
                    mojom::KeyringId::kPolkadotMainnet, "Polkadot Account 2");
-    base::test::TestFuture<const std::optional<std::string>&> future3;
+    TestFuture<const std::optional<std::string>&> future3;
     service.EncodePolkadotKeyForExport(polkadot_account_2->account_id.Clone(),
                                        kPasswordBrave, "encryptpassword",
                                        future3.GetCallback());
@@ -1473,7 +1474,7 @@ TEST_F(KeyringServiceUnitTest, EncodePolkadotPrivateKeyForExport) {
     auto testnet_account = AddAccount(&service, mojom::CoinType::DOT,
                                       mojom::KeyringId::kPolkadotTestnet,
                                       "Polkadot Testnet Account");
-    base::test::TestFuture<const std::optional<std::string>&> future4;
+    TestFuture<const std::optional<std::string>&> future4;
     service.EncodePolkadotKeyForExport(testnet_account->account_id.Clone(),
                                        kPasswordBrave, "encryptpassword",
                                        future4.GetCallback());
