@@ -11,6 +11,7 @@
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class PlaylistSidePanelCoordinator;
+class WalletSidePanelCoordinator;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -52,6 +53,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return playlist_side_panel_coordinator_.get();
   }
 
+  WalletSidePanelCoordinator* wallet_side_panel_coordinator() {
+    return wallet_side_panel_coordinator_.get();
+  }
+
   email_aliases::EmailAliasesController* email_aliases_controller() {
     return email_aliases_controller_.get();
   }
@@ -67,6 +72,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       rewards_panel_coordinator_;
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+  std::unique_ptr<WalletSidePanelCoordinator> wallet_side_panel_coordinator_;
   std::unique_ptr<email_aliases::EmailAliasesController>
       email_aliases_controller_;
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;

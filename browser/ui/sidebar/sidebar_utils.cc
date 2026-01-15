@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -144,12 +145,17 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       return SidePanelEntryId::kBookmarks;
     case BuiltInItemType::kPlaylist:
       return SidePanelEntryId::kPlaylist;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case BuiltInItemType::kWallet:
+      return SidePanelEntryId::kWallet;
+#else
+    case BuiltInItemType::kWallet:
+      [[fallthrough]];
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case BuiltInItemType::kChatUI:
       return SidePanelEntryId::kChatUI;
 #endif
-    case BuiltInItemType::kWallet:
-      [[fallthrough]];
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     case BuiltInItemType::kBraveTalk:
       [[fallthrough]];
@@ -173,6 +179,10 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
       return BuiltInItemType::kBookmarks;
     case SidePanelEntryId::kPlaylist:
       return BuiltInItemType::kPlaylist;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case SidePanelEntryId::kWallet:
+      return BuiltInItemType::kWallet;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidePanelEntryId::kChatUI:
       return BuiltInItemType::kChatUI;
@@ -222,6 +232,11 @@ void SetLastUsedSidePanel(PrefService* prefs,
       case SidePanelEntryId::kPlaylist:
         type = BuiltInItemType::kPlaylist;
         break;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+      case SidePanelEntryId::kWallet:
+        type = BuiltInItemType::kWallet;
+        break;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       case SidePanelEntryId::kChatUI:
         type = BuiltInItemType::kChatUI;

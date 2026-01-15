@@ -626,11 +626,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       if (brave_wallet::IsAllowed(prefs_)) {
         return SidebarItem::Create(
-            GURL("chrome://wallet/"),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
             SidebarItem::Type::kTypeBuiltIn,
             SidebarItem::BuiltInItemType::kWallet,
-            /* open_in_panel = */ false);
+            /* open_in_panel = */ true);
       }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
       return SidebarItem();
