@@ -77,7 +77,9 @@ extension BrowserViewController: TabDownloadDelegate {
 
     Task {
       let suggestedFilename = download.filename
-      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType) {
+      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType)
+        && !MIMEType.isVCard(download.mimeType)
+      {
         let shouldDownload = await downloadAlert(
           for: download,
           tab: tab,
@@ -138,6 +140,28 @@ extension BrowserViewController: TabDownloadDelegate {
         Task {
           await passbookHelper.open()
           try await AsyncFileManager.default.removeItem(at: destinationURL)
+        }
+      }
+      return
+    }
+
+    // Handle VCard files - display in contact modal instead of downloading to Files
+    if MIMEType.isVCard(download.mimeType) {
+      downloadQueue.download(download, didFinishDownloadingTo: destinationURL)
+      Task {
+        do {
+          let vcardData = try Data(contentsOf: destinationURL)
+          try vCardHelper.openVCard(from: vcardData)
+          try await AsyncFileManager.default.removeItem(at: destinationURL)
+        } catch {
+          // If VCard parsing fails, show an error
+          let alertController = UIAlertController(
+            title: Strings.VCard.unableToOpenContactErrorTitle,
+            message: Strings.VCard.unableToOpenContactErrorMessage,
+            preferredStyle: .alert
+          )
+          alertController.addAction(UIAlertAction(title: Strings.OKString, style: .cancel) { _ in })
+          present(alertController, animated: true, completion: nil)
         }
       }
       return
