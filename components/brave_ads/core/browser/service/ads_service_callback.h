@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_CALLBACK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_CALLBACK_H_
 
 #include <optional>
 
@@ -25,8 +25,15 @@ using GetDiagnosticsCallback =
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
+using ParseAndSaveNewTabPageAdsCallback =
+    base::OnceCallback<void(bool success)>;
 using MaybeServeMojomNewTabPageAdCallback =
     base::OnceCallback<void(mojom::NewTabPageAdInfoPtr ad)>;
+
+using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
+
+using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
@@ -42,4 +49,4 @@ using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_CALLBACK_H_

@@ -7,14 +7,26 @@ source_set("service") {
   sources = [
     "ads_service.cc",
     "ads_service.h",
+    "ads_service_callback.h",
     "ads_service_observer.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("network") {
+  sources = [
     "network_client.cc",
     "network_client.h",
     "network_client_callback.h",
     "network_client_util.cc",
     "network_client_util.h",
-    "new_tab_page_ad_prefetcher.cc",
-    "new_tab_page_ad_prefetcher.h",
     "oblivious_http_client_impl.cc",
     "oblivious_http_client_impl.h",
     "oblivious_http_constants.h",
@@ -22,29 +34,54 @@ source_set("service") {
     "oblivious_http_feature.h",
     "oblivious_http_key_config.cc",
     "oblivious_http_key_config.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//services/network/public/cpp",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/core/public:headers",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
+
+source_set("new_tab_page_ad") {
+  sources = [
+    "new_tab_page_ad_prefetcher.cc",
+    "new_tab_page_ad_prefetcher.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+  ]
+
+  deps = [ "//brave/components/brave_ads/core/browser/service" ]
+}
+
+source_set("virtual_pref") {
+  sources = [
     "virtual_pref_provider.cc",
     "virtual_pref_provider.h",
     "virtual_pref_provider_util.cc",
     "virtual_pref_provider_util.h",
   ]
 
-  public_deps = [
-    "//base",
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_ads/core/public:headers",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/services/bat_ads/public/interfaces",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//mojo/public/cpp/bindings",
-  ]
+  public_deps = [ "//base" ]
 
   deps = [
     "//base/version_info",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/skus/browser",
-    "//net",
-    "//services/network/public/cpp",
-    "//services/network/public/mojom",
+    "//components/prefs",
   ]
 }
 
@@ -59,13 +96,17 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":network",
+    ":new_tab_page_ad",
     ":service",
     ":test_support",
+    ":virtual_pref",
     "//base",
     "//base/test:test_support",
     "//base/version_info",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/public:test_support",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/skus/browser",
     "//components/prefs:test_support",
     "//net",
