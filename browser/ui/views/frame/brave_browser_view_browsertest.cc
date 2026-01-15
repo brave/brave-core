@@ -364,6 +364,17 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                              ->GetContentsContainerViews()[0]
                                              ->contents_view()
                                              ->GetBackgroundRadii();
+
+  // Wait till end contents view gets proper rounded corners as it's newly
+  // created tabs by opening split view.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return rounded_corners_border_radius == browser_view()
+                                                ->GetContentsContainerViews()[1]
+                                                ->contents_view()
+                                                ->GetBackgroundRadii()
+                                                .lower_right();
+  }));
+
   const auto end_contents_view_radii = browser_view()
                                            ->GetContentsContainerViews()[1]
                                            ->contents_view()
