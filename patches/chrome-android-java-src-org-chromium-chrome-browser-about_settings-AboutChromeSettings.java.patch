@@ -1,0 +1,15 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
+index b4db43786e47518273c67982cefa2ccece15f4c9..0a3a4071bc540a6ae2758173b6eb94655d5e6e9c 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
+@@ -76,7 +76,9 @@ public class AboutChromeSettings extends ChromeBaseSettingsFragment
+         p.setSummary(AboutSettingsBridge.getOSVersion());
+         p = findPreference(PREF_LEGAL_INFORMATION);
+         assumeNonNull(p);
+-        int currentYear = CalendarFactory.get().get(Calendar.YEAR);
++        Calendar calendar = CalendarFactory.get();
++        calendar.setTimeInMillis(System.currentTimeMillis());
++        int currentYear = calendar.get(Calendar.YEAR);
+         p.setSummary(getString(R.string.legal_information_summary, currentYear));
+     }
+ 
