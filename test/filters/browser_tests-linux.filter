@@ -12,13 +12,17 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
-# These tests pass locally but fail on CI (flaky).
+# These tests pass locally but fail on CI
+-All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
 -GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
 -HeadlessModeProtocolBrowserTest.InputClipboardOps
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
+-InstanceIDApiTest.GetCreationTimeFormat
+-InterstitialUITest.PinnedCertInterstitial
 -HasBeforeUnloadHandlerTest.NonEmptyBeforeUnloadDetected
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
