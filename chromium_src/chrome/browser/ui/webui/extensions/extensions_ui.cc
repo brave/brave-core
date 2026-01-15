@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
@@ -19,7 +18,6 @@ namespace {
 // patch.
 void BraveAddExtensionsResources(content::WebUIDataSource* source,
                                  Profile* profile) {
-  NavigationBarDataProvider::Initialize(source, profile);
   source->AddLocalizedString("privateInfoWarning",
                              IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING);
   source->AddLocalizedString("spanningInfoWarning",
