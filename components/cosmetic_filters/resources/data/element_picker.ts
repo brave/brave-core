@@ -184,7 +184,8 @@ class ElementSelectorBuilder {
               op = '^='
             }
             // Escape attribute and its values for CSS selector
-            selector += `[${CSS.escape(attribute.attr)}${op}"${CSS.escape(attribute.value)}"]`
+            selector += `[${CSS.escape(attribute.attr)}${op}` +
+            `"${CSS.escape(attribute.value)}"]`
           }
           break
         }
@@ -210,7 +211,8 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   // ID
   if (
     elem.id.length > 0
-    // Ensure the escaped ID is unique in the document to avoid ambiguous selectors
+    // Ensure the escaped ID is unique in the document 
+    // to avoid ambiguous selectors
     && document.querySelectorAll(`#${CSS.escape(elem.id)}`).length === 1
   ) {
     builder.addRule({
