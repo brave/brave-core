@@ -7,6 +7,11 @@
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_coordinator.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -29,6 +34,14 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
           browser->GetFeatures().playlist_side_panel_coordinator()) {
     playlist_coordinator->CreateAndRegisterEntry(global_registry);
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Register wallet side panel if available.
+  if (auto* wallet_coordinator =
+          browser->GetFeatures().wallet_side_panel_coordinator()) {
+    wallet_coordinator->CreateAndRegisterEntry(global_registry);
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat side panel as a global panel and not tab-specific is conditional
