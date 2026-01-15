@@ -187,6 +187,8 @@ static_library("browser") {
     "polkadot/polkadot_block_tracker.h",
     "polkadot/polkadot_extrinsic.cc",
     "polkadot/polkadot_extrinsic.h",
+    "polkadot/polkadot_signed_transfer_task.cc",
+    "polkadot/polkadot_signed_transfer_task.h",
     "polkadot/polkadot_substrate_rpc.cc",
     "polkadot/polkadot_substrate_rpc.h",
     "polkadot/polkadot_transaction.cc",

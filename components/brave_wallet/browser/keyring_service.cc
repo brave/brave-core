@@ -2975,6 +2975,20 @@ KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
   return {key};
 }
 
+std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+KeyringService::SignMessageByPolkadotKeyring(
+    const mojom::AccountIdPtr& account_id,
+    base::span<const uint8_t> message) {
+  CHECK(account_id);
+
+  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
+  if (!keyring) {
+    return std::nullopt;
+  }
+
+  return keyring->SignMessage(message, account_id->account_index);
+}
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> next_receive_index,

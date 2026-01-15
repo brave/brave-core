@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -291,6 +292,10 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
   GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
 
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+  SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
+                               base::span<const uint8_t> message);
+
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
   mojom::AccountInfoPtr GetSelectedWalletAccount();
@@ -359,6 +364,7 @@ class KeyringService : public mojom::KeyringService {
   friend class KeyringServiceUnitTest;
   friend class AssetDiscoveryManagerUnitTest;
   friend class SolanaTransactionUnitTest;
+  friend class PolkadotWalletServiceUnitTest;
 
   void ResetAllAccountInfosCache();
   mojom::AccountInfoPtr AddHDAccountForKeyring(mojom::KeyringId keyring_id,

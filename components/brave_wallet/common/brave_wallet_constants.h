@@ -17,6 +17,13 @@ inline constexpr size_t kSolanaHashSize = 32;
 // fragment header)
 inline constexpr size_t kSolanaMaxTxSize = 1232;
 
+// https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/index.html#constants
+inline constexpr size_t kSr25519SeedSize = 32;
+inline constexpr size_t kSr25519SecretKeySize = 64;
+inline constexpr size_t kSr25519PublicKeySize = 32;
+inline constexpr size_t kSr25519SignatureSize = 64;
+inline constexpr size_t kSr25519Pkcs8Size = 117;
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_CONSTANTS_H_
