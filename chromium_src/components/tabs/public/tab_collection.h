@@ -10,7 +10,9 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 // Add new collection Type enum value for Tree tab feature on Desktop.
-#define SPLIT SPLIT, TREE_NODE
+// Keep our additions to this tabs::TabCollection::Type enum in sync with
+// TabCollectionNode::Type enum.
+#define UNPINNED UNPINNED, TREE_NODE
 
 // Make static version of GetPassKey() and GetChildren() available for
 // TreeTabNode to build/flatten tree tabs.
