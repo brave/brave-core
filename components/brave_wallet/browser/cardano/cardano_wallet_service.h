@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -80,6 +81,9 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   mojom::CardanoAddressPtr GetChangeAddress(
       const mojom::AccountIdPtr& account_id);
 
+  void SetNewTokenDiscoveredCallback(
+      base::RepeatingCallback<void(mojom::BlockchainTokenPtr)> callback);
+
   KeyringService& keyring_service() { return *keyring_service_; }
   NetworkManager& network_manager() { return *network_manager_; }
 
@@ -124,9 +128,20 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       base::expected<std::optional<cardano_rpc::Transaction>, std::string>
           transaction);
 
+  void DiscoverNewTokens(const std::string& chain_id,
+                         const cardano_rpc::UnspentOutputs& outputs);
+  void OnGetAssetInfoForTokensDiscovery(
+      const std::string& chain_id,
+      base::expected<cardano_rpc::AssetInfo, std::string> asset_info);
+
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_mainnet_rpc_;
   cardano_rpc::CardanoRpc cardano_testnet_rpc_;
+
+  base::RepeatingCallback<void(mojom::BlockchainTokenPtr)>
+      new_token_discovered_callback_;
+  base::flat_set<std::pair<std::string, cardano_rpc::TokenId>>
+      discovered_tokens_;  // set of (chain_id,token_id)
 
   TaskContainer<GetCardanoUtxosTask> get_cardano_utxo_tasks_;
   TaskContainer<CardanoCreateTransactionTask> create_transaction_tasks_;

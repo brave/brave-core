@@ -20,6 +20,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -405,6 +406,108 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   url_loader_factory_.AddResponse(testnet_rpc_url_ + "tx/submit",
                                   txid_response);
   EXPECT_EQ(post_tx_future.Take().value(), txid);
+}
+
+TEST_F(CardanoRpcUnitTest, GetTransaction) {
+  constexpr char kTxId[] =
+      "1fca84164f59606710ff4cf0fd660753bd299e30bb2c8194117fdb965ace67b9";
+
+  const std::string req_url = mainnet_rpc_url_ + "txs/" + kTxId;
+
+  const std::string tx_json = R"({
+      "hash": "1fca84164f59606710ff4cf0fd660753bd299e30bb2c8194117fdb965ace67b9"
+  })";
+
+  cardano_rpc::Transaction tx;
+  tx.tx_hash = test::HexToArray<32>(kTxId);
+
+  TestFuture<
+      base::expected<std::optional<cardano_rpc::Transaction>, std::string>>
+      tx_future;
+
+  // GetUtxoList works.
+  url_loader_factory_.AddResponse(req_url, tx_json);
+  cardano_mainnet_rpc_->GetTransaction(kTxId, tx_future.GetCallback());
+  EXPECT_EQ(tx_future.Take().value(), tx);
+
+  // Invalid value returned.
+  url_loader_factory_.AddResponse(req_url, "[123]");
+  cardano_mainnet_rpc_->GetTransaction(kTxId, tx_future.GetCallback());
+  EXPECT_EQ(tx_future.Take().error(), WalletParsingErrorMessage());
+
+  // HTTP Error returned.
+  url_loader_factory_.AddResponse(req_url, tx_json,
+                                  net::HTTP_INTERNAL_SERVER_ERROR);
+  cardano_mainnet_rpc_->GetTransaction(kTxId, tx_future.GetCallback());
+  EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+
+  // HTTP 404 Not Found Error results in empty list.
+  url_loader_factory_.AddResponse(req_url, "Not Found", net::HTTP_NOT_FOUND);
+  cardano_mainnet_rpc_->GetTransaction(kTxId, tx_future.GetCallback());
+  EXPECT_EQ(tx_future.Take().value(), std::nullopt);
+
+  // Testnet works.
+  url_loader_factory_.ClearResponses();
+  url_loader_factory_.AddResponse(testnet_rpc_url_ + "txs/" + kTxId, tx_json);
+  cardano_testnet_rpc_->GetTransaction(kTxId, tx_future.GetCallback());
+  EXPECT_EQ(tx_future.Take().value(), tx);
+}
+
+TEST_F(CardanoRpcUnitTest, GetAssetInfo) {
+  auto token_id = GetMockTokenId("foo");
+
+  const std::string req_url =
+      mainnet_rpc_url_ + "assets/" + base::HexEncodeLower(token_id);
+
+  EXPECT_EQ(base::HexEncodeLower(token_id),
+            "66666666666666666666666666666666666666666666666666666666666f6f");
+
+  const std::string asset_json = R"({
+      "asset": "66666666666666666666666666666666666666666666666666666666666f6f",
+      "metadata": {
+        "name": "Foo token",
+        "ticker": "foo",
+        "decimals": 6
+      }
+  })";
+
+  cardano_rpc::AssetInfo asset_info;
+  asset_info.asset =
+      "66666666666666666666666666666666666666666666666666666666666f6f";
+  asset_info.name = "Foo token";
+  asset_info.ticker = "foo";
+  asset_info.decimals = 6;
+
+  TestFuture<base::expected<cardano_rpc::AssetInfo, std::string>> asset_future;
+
+  // GetUtxoList works.
+  url_loader_factory_.AddResponse(req_url, asset_json);
+  cardano_mainnet_rpc_->GetAssetInfo(token_id, asset_future.GetCallback());
+  EXPECT_EQ(asset_future.Take().value(), asset_info);
+
+  // Invalid value returned.
+  url_loader_factory_.AddResponse(req_url, "[123]");
+  cardano_mainnet_rpc_->GetAssetInfo(token_id, asset_future.GetCallback());
+  EXPECT_EQ(asset_future.Take().error(), WalletParsingErrorMessage());
+
+  // HTTP Error returned.
+  url_loader_factory_.AddResponse(req_url, asset_json,
+                                  net::HTTP_INTERNAL_SERVER_ERROR);
+  cardano_mainnet_rpc_->GetAssetInfo(token_id, asset_future.GetCallback());
+  EXPECT_EQ(asset_future.Take().error(), WalletInternalErrorMessage());
+
+  // HTTP 404 Not Found Error results in empty list.
+  url_loader_factory_.AddResponse(req_url, "Not Found", net::HTTP_NOT_FOUND);
+  cardano_mainnet_rpc_->GetAssetInfo(token_id, asset_future.GetCallback());
+  EXPECT_FALSE(asset_future.Take().has_value());
+
+  // Testnet works.
+  url_loader_factory_.ClearResponses();
+  url_loader_factory_.AddResponse(
+      testnet_rpc_url_ + "assets/" + base::HexEncodeLower(token_id),
+      asset_json);
+  cardano_testnet_rpc_->GetAssetInfo(token_id, asset_future.GetCallback());
+  EXPECT_EQ(asset_future.Take().value(), asset_info);
 }
 
 }  // namespace brave_wallet

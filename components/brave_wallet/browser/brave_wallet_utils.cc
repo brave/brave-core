@@ -46,6 +46,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr size_t kCardanoScriptHashSize = 28u;
+
 bool IsDisabledByPolicy(PrefService* prefs) {
 #if BUILDFLAG(IS_ANDROID)
   return false;
@@ -96,6 +98,14 @@ std::optional<std::string> GetUserAssetAddress(const std::string& address,
       return std::nullopt;
     }
     return address;
+  }
+
+  if (coin == mojom::CoinType::ADA) {
+    std::vector<uint8_t> bytes;
+    if (base::HexStringToBytes(address, &bytes) &&
+        bytes.size() >= kCardanoScriptHashSize + 1) {
+      return address;
+    }
   }
 
   return std::nullopt;

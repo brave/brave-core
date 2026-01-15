@@ -137,4 +137,26 @@ std::optional<Transaction> Transaction::FromBlockfrostApiValue(
   return result;
 }
 
+AssetInfo::AssetInfo() = default;
+AssetInfo::AssetInfo(const AssetInfo&) = default;
+AssetInfo::AssetInfo(AssetInfo&&) = default;
+AssetInfo& AssetInfo::operator=(const AssetInfo&) = default;
+AssetInfo& AssetInfo::operator=(AssetInfo&&) = default;
+AssetInfo::~AssetInfo() = default;
+
+// static
+std::optional<AssetInfo> AssetInfo::FromBlockfrostApiValue(
+    std::optional<blockfrost_api::Asset> api_asset) {
+  if (!api_asset) {
+    return std::nullopt;
+  }
+
+  AssetInfo result;
+  result.asset = api_asset->asset;
+  result.name = api_asset->metadata.name;
+  result.ticker = api_asset->metadata.ticker;
+  result.decimals = api_asset->metadata.decimals;
+
+  return result;
+}
 }  // namespace brave_wallet::cardano_rpc

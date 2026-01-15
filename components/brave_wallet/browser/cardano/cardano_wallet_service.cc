@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/map_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -165,9 +166,13 @@ void CardanoWalletService::OnGetUtxosTaskDone(
     GetCardanoUtxosTask* task,
     GetUtxosCallback callback,
     base::expected<cardano_rpc::UnspentOutputs, std::string> result) {
-  get_cardano_utxo_tasks_.erase(task);
+  if (result.has_value()) {
+    DiscoverNewTokens(task->chain_id(), result.value());
+  }
 
   std::move(callback).Run(std::move(result));
+
+  get_cardano_utxo_tasks_.erase(task);
 }
 
 void CardanoWalletService::CreateCardanoTransaction(
@@ -344,6 +349,55 @@ mojom::CardanoAddressPtr CardanoWalletService::GetChangeAddress(
   return keyring_service().GetCardanoAddress(
       account_id,
       mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+}
+
+void CardanoWalletService::DiscoverNewTokens(
+    const std::string& chain_id,
+    const cardano_rpc::UnspentOutputs& outputs) {
+  if (!new_token_discovered_callback_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  for (auto& output : outputs) {
+    for (auto& token : output.tokens) {
+      if (discovered_tokens_.contains({chain_id, token.first})) {
+        continue;
+      }
+
+      discovered_tokens_.insert(std::make_pair(chain_id, token.first));
+
+      GetCardanoRpc(chain_id)->GetAssetInfo(
+          token.first,
+          base::BindOnce(
+              &CardanoWalletService::OnGetAssetInfoForTokensDiscovery,
+              weak_ptr_factory_.GetWeakPtr(), chain_id));
+    }
+  }
+}
+
+void CardanoWalletService::OnGetAssetInfoForTokensDiscovery(
+    const std::string& chain_id,
+    base::expected<cardano_rpc::AssetInfo, std::string> asset_info) {
+  if (!asset_info.has_value() || !new_token_discovered_callback_) {
+    return;
+  }
+
+  mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New();
+  token->coin = mojom::CoinType::ADA;
+  token->chain_id = chain_id;
+  token->contract_address = asset_info.value().asset;
+  token->name = asset_info.value().name;
+  token->symbol = asset_info.value().ticker;
+  token->decimals = asset_info.value().decimals;
+  token->visible = true;
+
+  new_token_discovered_callback_.Run(std::move(token));
+}
+
+void CardanoWalletService::SetNewTokenDiscoveredCallback(
+    base::RepeatingCallback<void(mojom::BlockchainTokenPtr)> callback) {
+  new_token_discovered_callback_ = std::move(callback);
 }
 
 cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
