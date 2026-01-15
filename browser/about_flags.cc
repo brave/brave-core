@@ -522,9 +522,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
   EXPAND_FEATURE_ENTRIES({                                           \
-      "brave-midnight-theme",                                        \
-      "Brave Midnight Theme",                                        \
-      "Enables the Brave Midnight theme",                            \
+      "brave-ultra-dark-theme",                                      \
+      "Brave Ultra Dark Theme",                                      \
+      "Enables the Brave Ultra Dark theme",                          \
       kOsWin | kOsMac | kOsLinux,                                    \
       FEATURE_VALUE_TYPE(darker_theme::features::kBraveDarkerTheme), \
   })
