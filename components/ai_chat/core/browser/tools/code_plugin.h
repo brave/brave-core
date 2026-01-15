@@ -29,11 +29,13 @@ class CodePlugin {
   // JavaScript setup script to inject into the execution environment
   virtual std::string_view SetupScript() const = 0;
 
+  // The artifact type this plugin handles
+  virtual std::string_view ArtifactType() const = 0;
+
   // Validates an artifact from script execution. Returns an error message
   // if validation fails, or std::nullopt if validation succeeds.
-  // |type| is the artifact type, |artifact_value| is the parsed JSON.
+  // |artifact_value| is the parsed JSON.
   virtual std::optional<std::string> ValidateArtifact(
-      const std::string& type,
       const base::Value& artifact_value) const;
 };
 

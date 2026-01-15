@@ -246,4 +246,24 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
   EXPECT_FALSE(artifact->content_json.empty());
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       UnsupportedArtifactType) {
+  std::string script = R"(
+    codeExecArtifacts.push({
+      type: 'unsupported_type',
+      content: {data: 'some data'}
+    });
+    console.log('Artifact created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ContentBlockPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_THAT(
+      output,
+      HasSubstr("Error: Artifact type 'unsupported_type' is not supported"));
+  EXPECT_TRUE(artifacts.empty());
+}
+
 }  // namespace ai_chat

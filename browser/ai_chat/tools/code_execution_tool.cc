@@ -142,12 +142,23 @@ void CodeExecutionTool::ResolveRequest(
       break;
     }
 
-    // Validate artifact with plugins
+    // Find matching plugin and validate artifact
+    bool plugin_found = false;
     for (const auto& plugin : code_plugins_) {
-      if (auto validation_error = plugin->ValidateArtifact(*type, *content)) {
-        error = base::StrCat({"Error: ", *validation_error});
-        break;
+      if (plugin->ArtifactType() != *type) {
+        continue;
       }
+      plugin_found = true;
+      if (auto validation_error = plugin->ValidateArtifact(*content)) {
+        error = base::StrCat({"Error: ", *validation_error});
+      }
+      break;
+    }
+
+    if (!plugin_found) {
+      error =
+          base::StrCat({"Error: Artifact type '", *type, "' is not supported"});
+      break;
     }
 
     if (error) {

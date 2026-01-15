@@ -53,13 +53,12 @@ const chartUtil = {
 )";
 }
 
-std::optional<std::string> ChartCodePlugin::ValidateArtifact(
-    const std::string& type,
-    const base::Value& artifact_value) const {
-  if (type != mojom::kChartArtifactType) {
-    return std::nullopt;
-  }
+std::string_view ChartCodePlugin::ArtifactType() const {
+  return mojom::kChartArtifactType;
+}
 
+std::optional<std::string> ChartCodePlugin::ValidateArtifact(
+    const base::Value& artifact_value) const {
   const auto* chart_dict = artifact_value.GetIfDict();
   if (!chart_dict) {
     return "Chart must be an object";
