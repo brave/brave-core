@@ -27,8 +27,7 @@ const allBehaviorsMap = {}
 const allPropertiesMap = {}
 const componentPropertyModifications = {}
 const prototypeModifications: { [key: string]: (prototype: any) => void } = {}
-const ignoredComponents = [
-  'cr-toolbar'
+const ignoredComponents: string[] = [
 ]
 
 function addBraveBehaviorsLegacy(moduleName: string, component: { behaviors: Function[] }) {
