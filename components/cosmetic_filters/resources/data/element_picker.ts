@@ -211,7 +211,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   if (
     elem.id.length > 0
     // Ensure the escaped ID is unique in the document to avoid ambiguous selectors
-    && document.querySelectorAll(`#${CSS.escape(elem.id)}`).length === 1 //
+    && document.querySelectorAll(`#${CSS.escape(elem.id)}`).length === 1
   ) {
     builder.addRule({
       type: Selector.Id,
