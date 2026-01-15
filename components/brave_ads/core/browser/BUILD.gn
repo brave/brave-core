@@ -12,6 +12,7 @@ group("browser") {
 
   public_deps = [
     "//brave/components/brave_ads/core/browser/internals",
+    "//brave/components/brave_ads/core/browser/network",
     "//brave/components/brave_ads/core/browser/service",
   ]
 }
