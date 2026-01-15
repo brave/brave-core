@@ -292,8 +292,10 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     // Check contents container has margin by comparing simply its left & bottom
     // with main container's local bounds. As views local bounds' origin is (0,
     // 0), checking child view's margin with child view's bounds works.
-    EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
-              browser_view()->GetLocalBounds().x());
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return contents_container->bounds().x() - rounded_corners_margin ==
+             browser_view()->GetLocalBounds().x();
+    }));
     EXPECT_EQ(contents_container->bounds().bottom() + rounded_corners_margin,
               browser_view()->GetLocalBounds().bottom());
     EXPECT_EQ(rounded_corners_margin,

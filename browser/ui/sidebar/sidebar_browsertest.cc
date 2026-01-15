@@ -696,6 +696,9 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   service->SetSidebarShowOption(
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
 
+  // To put sidebar right position after changing show option.
+  browser_view()->DeprecatedLayoutImmediately();
+
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
 
