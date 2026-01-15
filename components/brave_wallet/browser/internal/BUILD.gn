@@ -56,7 +56,10 @@ source_set("hd_key") {
     "hd_key_sr25519.cc",
     "hd_key_sr25519.h",
   ]
-  deps += [ "//brave/components/brave_wallet/browser/internal:sr25519_rs" ]
+  deps += [
+    "//brave/components/brave_wallet/browser/internal:sr25519_rs",
+    "//brave/components/brave_wallet/common:common_constants",
+  ]
 }
 
 if (enable_orchard) {

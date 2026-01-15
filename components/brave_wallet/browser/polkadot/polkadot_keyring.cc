@@ -161,6 +161,13 @@ void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
   rand_nonce_bytes_for_testing_ = nonce_bytes;
 }
 
+void PolkadotKeyring::SetSignatureRngForTesting() {
+  CHECK_IS_TEST();
+  for (auto& [idx, keypair] : secondary_keys_) {
+    keypair.UseMockRngForTesting();  // IN-TEST
+  }
+}
+
 // Creates JSON to export Polkadot account info in the proper format.
 // At this time password is reused to encrypt encoded data.
 std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(

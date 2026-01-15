@@ -75,6 +75,10 @@ class PolkadotKeyring {
   std::array<uint8_t, kSr25519Pkcs8Size> GetPkcs8KeyForTesting(
       uint32_t account_index);
 
+  // Set the RNG used by the underlying Schnorr signing routines to be
+  // deterministic for the sake of testing.
+  void SetSignatureRngForTesting();
+
  private:
   HDKeySr25519& EnsureKeyPair(uint32_t account_index);
 
