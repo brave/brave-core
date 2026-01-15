@@ -97,8 +97,13 @@ if (needs_mapping_rename) {
     sources = []
     outputs = []
 
+    dep_suffix = ""
+    if (enable_r8_tracerefs) {
+      dep_suffix = "__r8"
+    }
+
     if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:chrome_public_bundle__dex__r8" ]
+      deps += [ "//chrome/android:chrome_public_bundle__dex${dep_suffix}" ]
       if (target_cpu == "arm64" || target_cpu == "x64") {
         sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
         outputs += [ "$root_out_dir/apks/MonochromePublic64.aab.mapping" ]
@@ -108,12 +113,14 @@ if (needs_mapping_rename) {
       }
     } else {
       if (target_cpu == "arm" || target_cpu == "x86") {
-        deps += [ "//chrome/android:chrome_public_apk__final_dex__r8" ]
+        deps += [ "//chrome/android:chrome_public_apk__final_dex${dep_suffix}" ]
         sources += [ "$root_out_dir/apks/ChromePublic.apk.mapping" ]
         outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
       } else {
         # apk arm64 or x64
-        deps += [ "//chrome/android:monochrome_64_public_apk__final_dex__r8" ]
+        deps += [
+          "//chrome/android:monochrome_64_public_apk__final_dex${dep_suffix}",
+        ]
         sources += [ "$root_out_dir/apks/MonochromePublic64.apk.mapping" ]
         outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
       }
