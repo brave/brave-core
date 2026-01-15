@@ -1142,7 +1142,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
       // Restrict remote execution jobs.
-      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 160)
+      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 900)
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'
