@@ -59,8 +59,13 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::optional<PolkadotRuntimeVersion>,
                               std::optional<std::string>)>;
 
-  // Get the name of the chain pointed to by the current network configuration.
-  // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
+  using SubmitExtrinsicCallback =
+      base::OnceCallback<void(std::optional<std::string>,
+                              std::optional<std::string>)>;
+
+  // Get the name of the chain pointed to by the current network
+  // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
+  // the mainnet.
   void GetChainName(std::string_view chain_id, GetChainNameCallback callback);
 
   void GetAccountBalance(
@@ -113,6 +118,10 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetRuntimeVersionCallback callback);
 
+  void SubmitExtrinsic(std::string_view chain_id,
+                       std::string_view signed_extrinsic,
+                       SubmitExtrinsicCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -128,6 +137,8 @@ class PolkadotSubstrateRpc {
   void OnGetBlockHash(GetBlockHashCallback callback, APIRequestResult res);
   void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
                            APIRequestResult res);
+  void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
+                         APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

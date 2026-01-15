@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/checked_math.h"
-#include "base/strings/strcat.h"
+#include "base/strings/strcat.h"  // IWYU pragma: export
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -540,6 +540,55 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
   version.transaction_version = transaction_version.ValueOrDie();
 
   return std::move(callback).Run(version, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,
+                                           std::string_view signed_extrinsic,
+                                           SubmitExtrinsicCallback callback) {
+  /*
+
+  D:\brave-browser\src\brave>curl.exe   -H "Content-Type: application/json"   -d
+  "{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"author_submitExtrinsic\",
+  \"params\":[\"0x3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01349d7c183c26b13a2aba6e18fc6322c90695568b9b543f20779a9fa53d6b5d4162f5769f74b05c81aeb958d7a4be2fdc307bd1cd676ff19701f1592913995984b5012800000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4842514b00\"]}"
+  https://westend-rpc.polkadot.io
+
+  {"jsonrpc":"2.0","id":1,"result":"0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d"}
+  */
+
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+  params.Append(signed_extrinsic);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("author_submitExtrinsic", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnSubmitExtrinsic,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
+                                             APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotSubmitExtrinsic>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(*res->result, std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
