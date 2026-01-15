@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml b/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
+index e8bcf5b539df6b7ffee48f238b0462cfc99ae12a..ab67d8a044ad0e91d2446143ec1b2b895d9dcc2c 100644
+--- a/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
++++ b/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
+@@ -8,7 +8,7 @@ found in the LICENSE file.
+ <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+ 
+-    <org.chromium.chrome.browser.safe_browsing.settings.RadioButtonGroupSafeBrowsingPreference
++    <org.chromium.chrome.browser.safe_browsing.settings.BraveRadioButtonGroupSafeBrowsingPreference
+         android:key="safe_browsing_radio_button_group"
+         android:selectable="false"
+         app:allowDividerAbove="false"

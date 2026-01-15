@@ -1,0 +1,37 @@
+diff --git a/components/omnibox/browser/android/java/res/drawable/ic_settings_tune_24dp.xml b/components/omnibox/browser/android/java/res/drawable/ic_settings_tune_24dp.xml
+index a9c4b52467a169c4b6cb608aa9fdb2013b5b0112..fb25a63f31120de37019d0ef7dfab6e04f9c251f 100644
+--- a/components/omnibox/browser/android/java/res/drawable/ic_settings_tune_24dp.xml
++++ b/components/omnibox/browser/android/java/res/drawable/ic_settings_tune_24dp.xml
+@@ -6,24 +6,12 @@ found in the LICENSE file.
+ -->
+ <vector
+     xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="24dp"
+-    android:height="24dp"
+-    android:viewportWidth="960.0"
+-    android:viewportHeight="960.0">
+-    <!--
+-    Scale the vector contents to give them an effective size of 20dp within our
+-    total size of 24dp. 0.833 is 20/24 and 480 is the center of the viewport.
+-    -->
+-    <group
+-        android:scaleX="0.833"
+-        android:scaleY="0.833"
+-        android:pivotX="480"
+-        android:pivotY="480">
+-
+-        <path
+-            android:fillColor="@android:color/black"
+-            android:pathData="M696,780q-60.5,0 -102.2,-41.8T552,636q0,-60.5 41.8,-102.2T696,492q60.5,0 102.2,41.8T840,636q0,60.5 -41.8,102.2T696,780ZM696.1,708Q726,708 747,686.9q21,-21.1 21,-51T746.9,585q-21.1,-21 -51,-21T645,585.1q-21,21.1 -21,51T645.1,687q21.1,21 51,21ZM144,672v-72h336v72L144,672ZM264,468q-60.5,0 -102.2,-41.8T120,324q0,-60.5 41.8,-102.2T264,180q60.5,0 102.2,41.8T408,324q0,60.5 -41.8,102.2T264,468ZM264.1,396Q294,396 315,374.9q21,-21.1 21,-51T314.9,273q-21.1,-21 -51,-21T213,273.1q-21,21.1 -21,51T213.1,375q21.1,21 51,21ZM480,360v-72h336v72L480,360ZM696,636ZM264,324Z"/>
+-
+-    </group>
+-
++    android:width="14dp"
++    android:height="14dp"
++    android:viewportWidth="14"
++    android:viewportHeight="14">
++  <path
++      android:pathData="M1.75,4.315C1.75,5.568 2.764,6.582 4.017,6.582C5.049,6.582 5.956,5.884 6.213,4.882L6.236,4.793H10.58C10.842,4.793 11.057,4.578 11.057,4.315C11.057,4.053 10.842,3.838 10.58,3.838H6.236L6.213,3.749C5.956,2.746 5.049,2.048 4.017,2.048C2.764,2.048 1.75,3.063 1.75,4.315ZM2.705,4.315C2.705,3.594 3.295,3.003 4.017,3.003C4.739,3.003 5.33,3.594 5.33,4.315C5.33,5.037 4.739,5.628 4.017,5.628C3.295,5.628 2.705,5.037 2.705,4.315ZM7.787,10.252C8.044,11.254 8.951,11.952 9.983,11.952C11.236,11.952 12.25,10.938 12.25,9.685C12.25,8.432 11.236,7.418 9.983,7.418C8.951,7.418 8.044,8.116 7.787,9.118L7.764,9.207H3.42C3.158,9.207 2.943,9.422 2.943,9.685C2.943,9.947 3.158,10.162 3.42,10.162H7.764L7.787,10.252ZM8.67,9.685C8.67,8.963 9.261,8.372 9.983,8.372C10.705,8.372 11.295,8.963 11.295,9.685C11.295,10.407 10.705,10.997 9.983,10.997C9.261,10.997 8.67,10.407 8.67,9.685Z"
++      android:fillColor="@android:color/black"
++      android:fillType="evenOdd"/>
+ </vector>

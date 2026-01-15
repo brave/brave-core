@@ -1,0 +1,57 @@
+diff --git a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
+index 249326638c059c9b8b7f57107b6b05cf51b6e337..127694637bf0119bf1aa6890483186a613bd529d 100644
+--- a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
++++ b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
+@@ -12,7 +12,7 @@ found in the LICENSE file.
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:background="@color/ntp_bg_incognito">
++    android:background="@color/brave_private_tabs_bg_color">
+ 
+     <org.chromium.ui.listmenu.ListMenuButton
+         android:id="@+id/incognito_reauth_menu_button"
+@@ -33,12 +33,11 @@ found in the LICENSE file.
+ 
+     <org.chromium.ui.widget.ChromeImageView
+         android:id="@+id/incognito_reauth_icon"
+-        android:layout_width="72dp"
+-        android:layout_height="72dp"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:importantForAccessibility="no"
+-        app:srcCompat="@drawable/incognito_splash"
+-        app:tint="@color/ntp_incognito_icon_color" />
++        app:srcCompat="@drawable/brave_privacy_tabs_unlock_image" />
+ 
+     <Space
+         android:layout_width="0dp"
+@@ -56,11 +55,11 @@ found in the LICENSE file.
+         <org.chromium.ui.widget.ButtonCompat
+             android:id="@+id/incognito_reauth_unlock_incognito_button"
+             style="@style/FilledButton"
+-            android:backgroundTint="@color/filled_button_bg_color_light"
++            android:backgroundTint="@color/brave_private_reauth_unlock_button_bg_color"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/incognito_reauth_page_unlock_incognito_button_label"
+-            app:buttonTextColor="@color/default_text_color_on_accent1_dark" />
++            app:buttonTextColor="@android:color/white" />
+ 
+         <org.chromium.ui.widget.ButtonCompat
+             android:id="@+id/incognito_reauth_see_other_tabs_label"
+@@ -70,6 +69,12 @@ found in the LICENSE file.
+             android:layout_marginTop="16dp"
+             android:text="@string/incognito_reauth_page_see_other_tabs_label"
+             android:textAppearance="@style/TextAppearance.TextMedium.Blue.Baseline.Light"
+-            app:buttonTextColor="@color/default_icon_color_blue_light" />
++            app:buttonTextColor="@android:color/white" />
+     </LinearLayout>
++
++    <Space
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        android:layout_weight="1" >
++    </Space>
+ </LinearLayout>
