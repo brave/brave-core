@@ -77,10 +77,32 @@ export function LineChart({
   defaultFiatCurrency,
   hidePortfolioBalances,
 }: Props) {
+  // refs
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
   // state
   const [activeXPosition, setActiveXPosition] = React.useState<number>(0)
   const [activeYPosition, setActiveYPosition] = React.useState<number>(0)
+  const [viewBoxWidth, setViewBoxWidth] = React.useState<number>(0)
   const [viewBoxHeight, setViewBoxHeight] = React.useState<number>(0)
+
+  // effects
+  React.useEffect(() => {
+    const container = containerRef.current
+    if (!container) {
+      return
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setViewBoxWidth(Math.trunc(entry.contentRect.width))
+        setViewBoxHeight(Math.trunc(entry.contentRect.height))
+      }
+    })
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
 
   // memos / computed
   const chartData = React.useMemo(() => {
@@ -102,7 +124,7 @@ export function LineChart({
   // render
   return (
     <StyledWrapper style={customStyle}>
-      <AreaWrapper>
+      <AreaWrapper ref={containerRef}>
         <ResponsiveContainer
           width='100%'
           height='99%'
@@ -153,13 +175,14 @@ export function LineChart({
                     stroke: leo.color.icon.interactive,
                     strokeWidth: 2,
                   }}
-                  content={
+                  content={(props) => (
                     <CustomTooltip
-                      onUpdateViewBoxHeight={setViewBoxHeight}
+                      {...props}
+                      viewBoxWidth={viewBoxWidth}
                       defaultFiatCurrency={defaultFiatCurrency}
                       hidePortfolioBalances={hidePortfolioBalances}
                     />
-                  }
+                  )}
                 />
               )}
             <Area
@@ -188,9 +211,4 @@ export function LineChart({
       </LoadingOverlay>
     </StyledWrapper>
   )
-}
-
-LineChart.defaultProps = {
-  showPulsatingDot: true,
-  showTooltip: true,
 }
