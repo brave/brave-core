@@ -1,9 +1,9 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -15,39 +15,40 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 
-#include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc>
+BraveBrowserViewLayoutDelegateImpl::~BraveBrowserViewLayoutDelegateImpl() =
+    default;
 
-bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
+bool BraveBrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
   return browser_view().browser() &&
          tabs::utils::ShouldShowBraveVerticalTabs(browser_view().browser());
 }
 
-bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
+bool BraveBrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
   return browser_view().browser() &&
          tabs::utils::IsVerticalTabOnRight(browser_view().browser());
 }
 
-bool BrowserViewLayoutDelegateImpl::
+bool BraveBrowserViewLayoutDelegateImpl::
     ShouldUseBraveWebViewRoundedCornersForContents() const {
   return browser_view().browser() &&
          BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser_view().browser());
 }
 
-int BrowserViewLayoutDelegateImpl::GetRoundedCornersWebViewMargin() {
+int BraveBrowserViewLayoutDelegateImpl::GetRoundedCornersWebViewMargin() {
   return browser_view().browser()
              ? BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
                    browser_view().browser())
              : 0;
 }
 
-bool BrowserViewLayoutDelegateImpl::IsBookmarkBarOnByPref() const {
+bool BraveBrowserViewLayoutDelegateImpl::IsBookmarkBarOnByPref() const {
   return browser_view().browser() &&
          browser_view().browser()->profile()->GetPrefs()->GetBoolean(
              bookmarks::prefs::kShowBookmarkBar);
 }
 
-bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() {
+bool BraveBrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() {
   if (!browser_view().browser()) {
     return false;
   }
@@ -60,7 +61,7 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() {
       .has_value();
 }
 
-bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() {
+bool BraveBrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() {
   if (!browser_view().browser()) {
     return false;
   }
@@ -75,11 +76,12 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() {
          fullscreen_controller->IsFullscreenForBrowser();
 }
 
-bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
-  return const_cast<BrowserViewLayoutDelegateImpl*>(this)->IsFullscreenForTab();
+bool BraveBrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
+  return const_cast<BraveBrowserViewLayoutDelegateImpl*>(this)
+      ->IsFullscreenForTab();
 }
 
-bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() {
+bool BraveBrowserViewLayoutDelegateImpl::IsFullscreenForTab() {
   if (!browser_view().browser()) {
     return false;
   }
@@ -94,6 +96,6 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() {
          fullscreen_controller->IsWindowFullscreenForTabOrPending();
 }
 
-bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
+bool BraveBrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
 }

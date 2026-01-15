@@ -7,6 +7,8 @@ source_set("frame") {
   sources = [
     "brave_contents_view_util.cc",
     "brave_contents_view_util.h",
+    "layout/brave_browser_view_layout_delegate_impl.cc",
+    "layout/brave_browser_view_layout_delegate_impl.h",
   ]
 
   deps = [
@@ -15,8 +17,11 @@ source_set("frame") {
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/side_panel",
     "//chrome/common:constants",
+    "//components/bookmarks/common",
     "//components/prefs",
     "//components/tabs:public",
     "//components/tabs:split_tabs",
