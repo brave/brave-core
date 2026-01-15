@@ -123,6 +123,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.AdBlockSetting", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
+    {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
     {"Brave.Shields.UsageStatus", {}},
     {"Brave.Sidebar.Enabled", {}},
