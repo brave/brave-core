@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
@@ -30,7 +29,6 @@
 
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
-#define BrowserViewLayoutDelegateImpl BraveBrowserViewLayoutDelegateImpl
 #define ToolbarView BraveToolbarView
 #define TabStripRegionView BraveTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
@@ -76,7 +74,6 @@
 #undef BookmarkBarView
 #undef TabStripRegionView
 #undef ToolbarView
-#undef BrowserViewLayoutDelegateImpl
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
