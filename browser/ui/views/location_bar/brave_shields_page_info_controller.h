@@ -9,19 +9,17 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "content/public/browser/web_contents_observer.h"
 
 class LocationIconView;
-class TabStripModel;
 
 // Controller that listens for Brave Shields events for the current active tab
 // and opens the Page Info bubble when appropriate.
 class BraveShieldsPageInfoController
     : public brave_shields::BraveShieldsTabHelper::Observer,
-      public TabStripModelObserver {
+      public content::WebContentsObserver {
  public:
-  BraveShieldsPageInfoController(TabStripModel* tab_strip_model,
-                                 LocationIconView* location_icon_view);
+  explicit BraveShieldsPageInfoController(LocationIconView* location_icon_view);
 
   BraveShieldsPageInfoController(const BraveShieldsPageInfoController&) =
       delete;
@@ -30,20 +28,19 @@ class BraveShieldsPageInfoController
 
   ~BraveShieldsPageInfoController() override;
 
-  // TabStripModelObserver:
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
+  void UpdateWebContents(content::WebContents* web_contents);
+
+  // content::WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
 
   // brave_shields::BraveShieldsTabHelper::Observer:
   void OnResourcesChanged() override;
   void OnRepeatedReloadsDetected() override;
 
  private:
+  void MaybeShowShieldsIPH();
   void ShowBubbleForRepeatedReloads();
 
-  raw_ref<TabStripModel> tab_strip_model_;
   raw_ref<LocationIconView> location_icon_view_;
   base::WeakPtrFactory<BraveShieldsPageInfoController> weak_factory_{this};
 };
