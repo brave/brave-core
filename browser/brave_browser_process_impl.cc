@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -25,7 +24,7 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
@@ -63,6 +62,11 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -146,8 +150,10 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   p3a_service();
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // initialize ads stats helper
   ads_brave_stats_helper();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // early initialize brave stats
   brave_stats_updater();
@@ -211,7 +217,9 @@ void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_stats_helper_.reset();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
   if (ntp_background_images_service_) {
@@ -258,7 +266,9 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // eagerly initialize for component updater
   https_upgrade_exceptions_service();
@@ -450,6 +460,7 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   return brave_stats_updater_.get();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
   if (!brave_stats_helper_) {
     brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>(
@@ -465,6 +476,7 @@ brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
   }
   return resource_component_.get();
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 void BraveBrowserProcessImpl::CreateProfileManager() {
   DCHECK(!created_profile_manager_ && !profile_manager_);

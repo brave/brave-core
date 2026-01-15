@@ -11,6 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,8 +36,10 @@ inline constexpr char kSwitchSearchEngineMetric[] =
     "Brave.Search.SwitchEngine.2";
 inline constexpr char kWebDiscoveryEnabledMetric[] =
     "Brave.Search.WebDiscoveryEnabled";
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 inline constexpr char kWebDiscoveryAndAdsMetric[] =
     "Brave.Search.WebDiscoveryAndAds";
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 inline constexpr char kWebDiscoveryDefaultEngineMetric[] =
     "Brave.Search.WebDiscoveryDefaultEngine";
 inline constexpr char kRewardsDefaultEngineMetric[] =

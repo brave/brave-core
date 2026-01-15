@@ -7,7 +7,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
@@ -22,6 +22,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
@@ -80,10 +84,12 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   bool HasOptedInToNotificationAds() {
     return browser()->profile()->GetPrefs()->GetBoolean(
         brave_ads::prefs::kOptedInToNotificationAds);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   void WaitForRewardsServiceInitialized() {
     auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
@@ -101,7 +107,9 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   EXPECT_TRUE(SpeedreaderIsEnabled());
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   EXPECT_TRUE(HasOptedInToNotificationAds());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   EXPECT_TRUE(BraveNewsAreEnabled());
 #endif

@@ -16,11 +16,9 @@
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -31,10 +29,15 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
+
 namespace {
 
 constexpr int kPartialLogMaxLines = 5000;
-constexpr size_t kAdDiagnosticIdMaxLength = 36;
 
 class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
  public:
@@ -78,7 +81,6 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
       nullptr;                                            // NOT OWNED
-  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
   raw_ptr<Profile> profile_ = nullptr;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 };
@@ -140,7 +142,6 @@ void RewardsInternalsDOMHandler::Init() {
   profile_ = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
 void RewardsInternalsDOMHandler::OnJavascriptAllowed() {}
@@ -396,19 +397,24 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
 
 void RewardsInternalsDOMHandler::GetAdDiagnostics(
     const base::Value::List& args) {
-  if (!ads_service_) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  brave_ads::AdsService* ads_service =
+      brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service) {
     return;
   }
 
   AllowJavascript();
 
-  ads_service_->GetDiagnostics(
+  ads_service->GetDiagnostics(
       base::BindOnce(&RewardsInternalsDOMHandler::OnGetAdDiagnostics,
                      weak_ptr_factory_.GetWeakPtr()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
     std::optional<base::Value::List> diagnosticsEntries) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -432,12 +438,15 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
 
     diagnostics.Set("entries", std::move(*diagnosticsEntries));
   }
-
   CallJavascriptFunction("brave_rewards_internals.adDiagnostics", diagnostics);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsInternalsDOMHandler::SetAdDiagnosticId(
     const base::Value::List& args) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  constexpr size_t kAdDiagnosticIdMaxLength = 36;
+
   if (args.empty() || !args[0].is_string() ||
       args[0].GetString().size() > kAdDiagnosticIdMaxLength) {
     return;
@@ -445,6 +454,7 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
 
   PrefService* prefs = profile_->GetPrefs();
   prefs->SetString(brave_ads::prefs::kDiagnosticId, args[0].GetString());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {

@@ -12,14 +12,13 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -36,8 +35,11 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/event_router.h"
 
-using brave_ads::AdsService;
-using brave_ads::AdsServiceFactory;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#endif
+
 using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
@@ -697,8 +699,10 @@ BraveRewardsGetAdsAccountStatementFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsAccountStatementFunction::Run() {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  brave_ads::AdsService* ads_service =
+      brave_ads::AdsServiceFactory::GetForProfile(profile);
 
   if (!ads_service) {
     return RespondNow(Error("Ads service is not initialized"));
@@ -710,10 +714,14 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
       &BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement,
       this));
   return RespondLater();
+#else
+  return RespondNow(Error("Brave Ads is not available"));
+#endif
 }
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     brave_ads::mojom::StatementInfoPtr statement) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!statement) {
     Respond(WithArguments(false));
   } else {
@@ -734,6 +742,7 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
   }
 
   Release();  // Balanced in Run()
+#endif
 }
 
 BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
@@ -851,10 +860,13 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
 
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  brave_ads::AdsService* ads_service =
+      brave_ads::AdsServiceFactory::GetForProfile(profile);
   if (ads_service && params->result) {
     ads_service->NotifyDidSolveAdaptiveCaptcha();
   }
+#endif
 
   return RespondNow(NoArguments());
 }
