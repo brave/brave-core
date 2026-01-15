@@ -1,8 +1,8 @@
 diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
-index 986fa7d68f00500534ddc45caa293911b72740ed..f3e7173e51da554d4b1b3624f291d1b8289cfe7c 100755
+index 87b78b2502bf4556f24f5e955293ec0704edd2af..31f714900c3460597ef5f091739317eb1e81d39f 100755
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
-@@ -201,6 +201,8 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
+@@ -202,6 +202,8 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
        # The nicest way to do this would be by passing a filter to extractall,
        # but that functionality is not available in macOS system Python (3.9.6).
        for m in members:
