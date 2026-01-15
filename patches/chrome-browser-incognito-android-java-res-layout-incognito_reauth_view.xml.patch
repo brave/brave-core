@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
-index 249326638c059c9b8b7f57107b6b05cf51b6e337..127694637bf0119bf1aa6890483186a613bd529d 100644
+index 249326638c059c9b8b7f57107b6b05cf51b6e337..ef9abd56457adcd79deba951cb880fc25d9d7e9b 100644
 --- a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
 +++ b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
 @@ -12,7 +12,7 @@ found in the LICENSE file.
@@ -41,14 +41,13 @@ index 249326638c059c9b8b7f57107b6b05cf51b6e337..127694637bf0119bf1aa6890483186a6
  
          <org.chromium.ui.widget.ButtonCompat
              android:id="@+id/incognito_reauth_see_other_tabs_label"
-@@ -70,6 +69,12 @@ found in the LICENSE file.
+@@ -70,6 +69,11 @@ found in the LICENSE file.
              android:layout_marginTop="16dp"
              android:text="@string/incognito_reauth_page_see_other_tabs_label"
              android:textAppearance="@style/TextAppearance.TextMedium.Blue.Baseline.Light"
 -            app:buttonTextColor="@color/default_icon_color_blue_light" />
 +            app:buttonTextColor="@android:color/white" />
      </LinearLayout>
-+
 +    <Space
 +        android:layout_width="0dp"
 +        android:layout_height="0dp"
