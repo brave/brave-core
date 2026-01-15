@@ -93,6 +93,16 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart labels must be an object");
   }
+
+  // Unexpected chart keys
+  {
+    auto value = base::test::ParseJson(
+        R"({"data": [{"x": "A", "value": 10}], "extra": {}})");
+    auto result = chart_plugin.ValidateArtifact(value);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(),
+              "Chart may only contain 'data' and optional 'labels' fields");
+  }
 }
 
 }  // namespace ai_chat

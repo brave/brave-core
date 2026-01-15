@@ -111,6 +111,10 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
       }
     }
   }
+  const size_t expected_size = labels ? 2u : 1u;
+  if (chart_dict->size() != expected_size) {
+    return "Chart may only contain 'data' and optional 'labels' fields";
+  }
 
   return std::nullopt;
 }
