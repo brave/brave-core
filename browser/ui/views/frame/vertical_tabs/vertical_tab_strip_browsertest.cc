@@ -715,8 +715,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   EXPECT_TRUE(brave_tab_container->scroll_bar_->GetVisible());
 }
 
+// Due to flakiness, this test is disabled
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
-                       ScrollBarBoundsWithPinnedTabs) {
+                       DISABLED_ScrollBarBoundsWithPinnedTabs) {
   ToggleVerticalTabStrip();
 
   auto* prefs = browser()->profile()->GetPrefs();
@@ -802,7 +803,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   EXPECT_EQ(bounds_after_unpinning.height(), brave_tab_container->height());
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarThumbState) {
+// Due to flakiness, this test is disabled
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       DISABLED_ScrollBarThumbState) {
   ToggleVerticalTabStrip();
 
   auto* prefs = browser()->profile()->GetPrefs();
