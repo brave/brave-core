@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -179,6 +180,45 @@ void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
     base::expected<std::vector<uint8_t>, std::string> signed_extrinsic) {
   polkadot_sign_transactions_.erase(transaction_state);
   std::move(callback).Run(std::move(signed_extrinsic));
+}
+
+void PolkadotWalletService::SignAndSendTransaction(
+    std::string chain_id,
+    mojom::AccountIdPtr account_id,
+    uint128_t send_amount,
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    SignAndSendTransactionCallback callback) {
+  GenerateSignedTransferExtrinsic(
+      std::move(chain_id), std::move(account_id), send_amount, recipient,
+      base::BindOnce(&PolkadotWalletService::OnGenerateSignedTransfer,
+                     weak_ptr_factory_.GetWeakPtr(), std::string(chain_id),
+                     std::move(callback)));
+}
+
+void PolkadotWalletService::OnGenerateSignedTransfer(
+    std::string chain_id,
+    SignAndSendTransactionCallback callback,
+    base::expected<std::vector<uint8_t>, std::string> signed_extrinsic) {
+  if (!signed_extrinsic.has_value()) {
+    return std::move(callback).Run(
+        base::unexpected(std::move(signed_extrinsic.error())));
+  }
+
+  polkadot_substrate_rpc_.SubmitExtrinsic(
+      chain_id, base::HexEncodeLower(signed_extrinsic.value()),
+      base::BindOnce(&PolkadotWalletService::OnSubmitSignedExtrinsic,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotWalletService::OnSubmitSignedExtrinsic(
+    SignAndSendTransactionCallback callback,
+    std::optional<std::string> transaction_hash,
+    std::optional<std::string> error_str) {
+  if (error_str) {
+    return std::move(callback).Run(base::unexpected(*error_str));
+  }
+
+  std::move(callback).Run(base::ok(transaction_hash.value()));
 }
 
 }  // namespace brave_wallet

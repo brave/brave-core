@@ -365,6 +365,10 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
     return mojom::CoinType::ADA;
   }
 
+  if (tx_data_union.is_polkadot_tx_data()) {
+    return mojom::CoinType::DOT;
+  }
+
   NOTREACHED();
 }
 
