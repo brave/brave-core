@@ -20,7 +20,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // TODO(https://github.com/brave/brave-browser/issues/46337): Re-enable
     // scrim views if needed.
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kTabstripComboButton, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 bool HasTabSearchToolbarButton() {
