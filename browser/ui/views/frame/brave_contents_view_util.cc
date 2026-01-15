@@ -48,7 +48,17 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
   return shadow;
 }
 
+// static
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
+  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+             browser)
+             ? BraveContentsViewUtil::kMarginThickness
+             : 0;
+}
+
+// static
+int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
+    const Browser* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
              ? BraveContentsViewUtil::kMarginThickness

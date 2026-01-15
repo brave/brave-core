@@ -28,9 +28,12 @@ class BraveNewTabButton : public NewTabButton {
 
   BraveNewTabButton(PressedCallback callback,
                     const gfx::VectorIcon& icon /* this won't be used */,
-                    Edge fixed_flat_edge = Edge::kNone,
-                    Edge animated_flat_edge = Edge::kNone,
-                    BrowserWindowInterface* browser = nullptr);
+                    Edge fixed_flat_edge,
+                    Edge animated_flat_edge,
+                    BrowserWindowInterface* browser_window_interface);
+  BraveNewTabButton(PressedCallback callback,
+                    const gfx::VectorIcon& icon /* this won't be used */,
+                    BrowserWindowInterface* browser_window_interface);
   ~BraveNewTabButton() override;
 
  protected:
