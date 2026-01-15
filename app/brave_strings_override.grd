@@ -101,6 +101,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_macosx or is_linux">
         </if>
+      <if expr="is_linux">
+        </if>
       <if expr="is_chromeos">
         </if>
       <if expr="is_win">
@@ -108,6 +110,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_macosx or is_chromeos">
         </if>
       <if expr="not is_macosx and not is_chromeos">
+        </if>
+      <if expr="not is_android">
+        </if>
+      <if expr="is_android">
         </if>
       <if expr="not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
@@ -451,7 +457,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="not is_android">
         </if>
 
-      <if expr="enable_glic">
+      <if expr="enable_glic or enable_glic_android">
         </if>
 
       <if expr="enable_extensions">

@@ -129,6 +129,8 @@
     </if>
   <if expr="not is_chromeos">
     </if>
+  <if expr="not is_chromeos and _google_chrome">
+    </if>
 
   <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_SUBHEADER" desc="The subheader of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">
     Private mode keeps <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>your browsing private from others<ph name="END_LINK">&lt;/a&gt;</ph> who use your device
