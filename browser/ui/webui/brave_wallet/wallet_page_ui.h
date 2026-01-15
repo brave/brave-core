@@ -7,20 +7,21 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 
-class WalletPageUI : public ui::MojoWebUIController,
+class WalletPageUI : public TopChromeWebUIController,
                      public brave_wallet::mojom::PageHandlerFactory {
  public:
   explicit WalletPageUI(content::WebUI* web_ui);
@@ -35,6 +36,8 @@ class WalletPageUI : public ui::MojoWebUIController,
 
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
+
+  static constexpr std::string_view GetWebUIName() { return "WalletPanel"; }
 
  private:
   // brave_wallet::mojom::PageHandlerFactory:
@@ -86,7 +89,7 @@ class WalletPageUI : public ui::MojoWebUIController,
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-class WalletPageUIConfig : public content::DefaultWebUIConfig<WalletPageUI> {
+class WalletPageUIConfig : public DefaultTopChromeWebUIConfig<WalletPageUI> {
  public:
   WalletPageUIConfig();
 

@@ -6,7 +6,7 @@ index 9da2b68be3f3a5b98f3c7ec604352143f6bcac07..5005dd1361cf157a677afefce09866c9
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-+  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) \
++  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) E(kActionSidePanelShowWallet) \
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome) \
