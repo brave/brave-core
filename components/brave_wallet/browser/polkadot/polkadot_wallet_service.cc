@@ -79,6 +79,10 @@ void PolkadotWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
+PolkadotSubstrateRpc* PolkadotWalletService::GetPolkadotRpc() {
+  return &polkadot_substrate_rpc_;
+}
+
 void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
                                            GetNetworkNameCallback callback) {
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
@@ -140,6 +144,41 @@ void PolkadotWalletService::OnInitializeChainMetadata(
     }
     mainnet_chain_metadata_callbacks_.clear();
   }
+}
+
+void PolkadotWalletService::GenerateSignedTransferExtrinsic(
+    std::string_view chain_id,
+    const mojom::AccountIdPtr& account_id,
+    uint128_t send_amount,
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    GenerateSignedTransferExtrinsicCallback callback) {
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  if (!pubkey) {
+    return std::move(callback).Run(
+        base::unexpected(WalletInternalErrorMessage()));
+  }
+
+  auto transaction_state = std::make_unique<PolkadotSignedTransferTask>(
+      *this, *keyring_service_, account_id.Clone(), chain_id, send_amount,
+      *pubkey, recipient);
+
+  auto& transaction = *transaction_state;
+
+  auto [pos, inserted] =
+      polkadot_sign_transactions_.insert(std::move(transaction_state));
+  CHECK(inserted);
+
+  transaction.Start(base::BindOnce(
+      &PolkadotWalletService::OnGenerateSignedTransferExtrinsic,
+      weak_ptr_factory_.GetWeakPtr(), pos->get(), std::move(callback)));
+}
+
+void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
+    PolkadotSignedTransferTask* transaction_state,
+    GenerateSignedTransferExtrinsicCallback callback,
+    base::expected<std::string, std::string> signed_extrinsic) {
+  polkadot_sign_transactions_.erase(transaction_state);
+  std::move(callback).Run(std::move(signed_extrinsic));
 }
 
 }  // namespace brave_wallet

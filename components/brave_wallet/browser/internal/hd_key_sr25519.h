@@ -7,21 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
 #include <array>
-#include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
 
 struct CxxSchnorrkelKeyPair;
-
-// https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/index.html#constants
-inline constexpr size_t kSr25519SeedSize = 32;
-inline constexpr size_t kSr25519SecretKeySize = 64;
-inline constexpr size_t kSr25519PublicKeySize = 32;
-inline constexpr size_t kSr25519SignatureSize = 64;
-inline constexpr size_t kSr25519Pkcs8Size = 117;
 
 // This class implements basic sr25519 functionality, which is a scheme for
 // signing and key derivation using Schnorr signatures, using Ristretto as a
