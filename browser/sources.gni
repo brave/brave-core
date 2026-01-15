@@ -50,6 +50,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -801,4 +802,34 @@ if (is_mac) {
   brave_chrome_browser_deps += [ "//brave/browser/upgrade_when_idle" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/upgrade_when_idle" ]
+}
+
+# Deps for chrome/browser/prefs:impl
+brave_chrome_browser_prefs_impl_deps = [
+  "//brave/components/brave_ads/buildflags",
+  "//brave/components/brave_news/common/buildflags",
+  "//brave/components/brave_wallet/common/buildflags",
+]
+
+if (enable_brave_ads) {
+  brave_chrome_browser_prefs_impl_deps +=
+      [ "//brave/components/brave_ads/core/public:headers" ]
+}
+
+if (enable_brave_news) {
+  brave_chrome_browser_prefs_impl_deps += [
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+  ]
+}
+
+if (enable_brave_wallet) {
+  brave_chrome_browser_prefs_impl_deps += [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/decentralized_dns/core",
+  ]
+}
+
+if (deprecate_ipfs) {
+  brave_chrome_browser_prefs_impl_deps += [ "//brave/components/ipfs" ]
 }
