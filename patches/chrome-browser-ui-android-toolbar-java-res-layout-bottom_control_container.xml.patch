@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/bottom_control_container.xml b/chrome/browser/ui/android/toolbar/java/res/layout/bottom_control_container.xml
-index f5420c8bdeb9dc0065a33a9af772efefba6e0feb..4d5132e21266ee4c92221c138fbda0384d82f9c4 100644
+index f5420c8bdeb9dc0065a33a9af772efefba6e0feb..a7430d9077179200349af539d4fb9cc4a5d3721c 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/bottom_control_container.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/bottom_control_container.xml
 @@ -5,7 +5,7 @@ Use of this source code is governed by a BSD-style license that can be
@@ -11,12 +11,11 @@ index f5420c8bdeb9dc0065a33a9af772efefba6e0feb..4d5132e21266ee4c92221c138fbda038
      xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:tools="http://schemas.android.com/tools"
      android:layout_width="match_parent"
-@@ -31,6 +31,8 @@ found in the LICENSE file.
+@@ -31,6 +31,7 @@ found in the LICENSE file.
              android:layout_height="match_parent"
              android:id="@+id/bottom_container_slot" />
  
 +        <include layout="@layout/bottom_toolbar" />
-+
      </LinearLayout>
  
 -</org.chromium.chrome.browser.toolbar.bottom.ScrollingBottomViewResourceFrameLayout>
