@@ -140,7 +140,9 @@ export class SettingsBraveSystemPageIndexElement extends
       views.push('origin-onboarding')
     }
 
-    this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
+    queueMicrotask(() => {
+      this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
+    });
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
