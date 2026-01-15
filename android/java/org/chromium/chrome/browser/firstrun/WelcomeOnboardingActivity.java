@@ -16,6 +16,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.RemoteException;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.constraintlayout.widget.Guideline;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -38,6 +41,7 @@ import com.android.installreferrer.api.ReferrerDetails;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
@@ -83,6 +87,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 
     private static final String TAG = "WelcomeOnboarding";
+    private static final String DAY_ZERO_DEFAULT_VARIANT = "a";
+    private static final String DAY_ZERO_VARIANT_B = "b";
 
     private static final float LEAF_SCALE_ANIMATION = 1.5f;
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
@@ -109,6 +115,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private CheckBox mCheckboxCrash;
     private CheckBox mCheckboxP3a;
 
+    private TextView mVariantBTitle;
+    private TextView mVariantBSubtitle;
+    private ImageView mOnboardingIllustration;
+    private Guideline mSplashAnchorGuideline;
+    private Button mLater;
+    private Button mSure;
+
     private String mDayZeroVariant;
 
     private enum CurrentOnboardingPage {
@@ -127,6 +140,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
      */
     private void initializeViews() {
         setContentView(R.layout.activity_welcome_onboarding);
+
+        mVariantBTitle = findViewById(R.id.brave_onboarding_title);
+        mVariantBSubtitle = findViewById(R.id.brave_onboarding_subtitle);
+        setDdpContent(mVariantBSubtitle);
+        mOnboardingIllustration = findViewById(R.id.onboarding_illustration);
+        mSplashAnchorGuideline = findViewById(R.id.splash_anchor);
+        mLater = findViewById(R.id.onboarding_later);
+        mLater.setClipToOutline(true);
+        mSure = findViewById(R.id.onboarding_sure);
+        mSure.setClipToOutline(true);
 
         mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
         mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
@@ -316,7 +339,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
 
         mCurrentOnboardingPage = CurrentOnboardingPage.WDP_PAGE;
-        if (mIvBrave != null) {
+        if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT) && mIvBrave != null) {
             mIvBrave.setVisibility(View.VISIBLE);
         }
         showWDPPage();
@@ -456,63 +479,73 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void showWDPPage() {
-        int margin = mIsTablet ? 250 : 60;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
+        if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
+            int margin = mIsTablet ? 250 : 60;
+            setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
+            setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
 
-        if (mLayoutCard != null) {
-            mLayoutCard.setVisibility(View.GONE);
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.GONE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.GONE);
+            }
+
+            if (mTvCard != null) {
+                mTvCard.setText(getResources().getString(R.string.wdp_title));
+            }
+
+            setDdpContent(mTvDefault);
+
+            if (mBtnPositive != null) {
+                mBtnPositive.setText(getResources().getString(R.string.sure_ill_help_onboarding));
+            }
+            if (mBtnNegative != null) {
+                mBtnNegative.setText(getResources().getString(R.string.maybe_later));
+                mBtnNegative.setVisibility(View.VISIBLE);
+            }
+
+            if (mTvCard != null) {
+                mTvCard.setVisibility(View.VISIBLE);
+            }
+
+            if (mTvDefault != null) {
+                mTvDefault.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.VISIBLE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.VISIBLE);
+            }
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setVisibility(View.GONE);
+            }
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setVisibility(View.GONE);
+            }
         }
-        if (mIvArrowDown != null) {
-            mIvArrowDown.setVisibility(View.GONE);
+    }
+
+    private void setDdpContent(@Nullable final TextView wdpTextView) {
+        if (wdpTextView == null) {
+            return;
         }
 
-        if (mTvCard != null) {
-            mTvCard.setText(getResources().getString(R.string.wdp_title));
-        }
-        if (mTvDefault != null) {
-            ChromeClickableSpan wdpLearnMoreClickableSpan =
-                    new ChromeClickableSpan(
-                            WelcomeOnboardingActivity.this.getColor(R.color.brave_blue_tint_color),
-                            (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
-            String wdpText = getResources().getString(R.string.wdp_text);
+        final ChromeClickableSpan wdpLearnMoreClickableSpan =
+                new ChromeClickableSpan(
+                        WelcomeOnboardingActivity.this.getColor(R.color.brave_blue_tint_color),
+                        (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
+        final String wdpText = getResources().getString(R.string.wdp_text);
 
-            SpannableString wdpLearnMoreSpannableString =
-                    SpanApplier.applySpans(
-                            wdpText,
-                            new SpanInfo(
-                                    "<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
+        SpannableString wdpLearnMoreSpannableString =
+                SpanApplier.applySpans(
+                        wdpText,
+                        new SpanInfo(
+                                "<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
-            mTvDefault.setMovementMethod(LinkMovementMethod.getInstance());
-            mTvDefault.setText(wdpLearnMoreSpannableString);
-        }
-        if (mBtnPositive != null) {
-            mBtnPositive.setText(getResources().getString(R.string.sure_ill_help_onboarding));
-        }
-        if (mBtnNegative != null) {
-            mBtnNegative.setText(getResources().getString(R.string.maybe_later));
-            mBtnNegative.setVisibility(View.VISIBLE);
-        }
-
-        if (mTvCard != null) {
-            mTvCard.setVisibility(View.VISIBLE);
-        }
-
-        if (mTvDefault != null) {
-            mTvDefault.setVisibility(View.VISIBLE);
-        }
-        if (mLayoutCard != null) {
-            mLayoutCard.setVisibility(View.VISIBLE);
-        }
-        if (mIvArrowDown != null) {
-            mIvArrowDown.setVisibility(View.VISIBLE);
-        }
-        if (mCheckboxCrash != null) {
-            mCheckboxCrash.setVisibility(View.GONE);
-        }
-        if (mCheckboxP3a != null) {
-            mCheckboxP3a.setVisibility(View.GONE);
-        }
+        wdpTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        wdpTextView.setText(wdpLearnMoreSpannableString);
     }
 
     private void setLeafAnimation(
@@ -575,7 +608,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         super.finishNativeInitialization();
 
         mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
-        if (mDayZeroVariant.equals("b")) {
+        if (TextUtils.isEmpty(mDayZeroVariant)) {
+            mDayZeroVariant = DAY_ZERO_DEFAULT_VARIANT;
+        }
+
+        if (mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
             mVariantBConstraintLayout.setVisibility(View.VISIBLE);
             final AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable) mBraveSplash.getDrawable();
             vectorDrawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
@@ -588,11 +625,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
                @Override
                public void onAnimationEnd(Drawable drawable) {
-                   super.onAnimationEnd(drawable);
                    vectorDrawable.clearAnimationCallbacks();
 
                    final View parent = (View) mBraveSplash.getParent();
-                   final float deltaY   = parent.getPaddingTop() - mBraveSplash.getY();
+                   final float deltaY = parent.getPaddingTop() - mBraveSplash.getY();
                    // Compensate because shrinking around center moves the top edge down.
                    final float compensation = (mBraveSplash.getHeight() * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
 
@@ -610,6 +646,23 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
                                @Override
                                public void onAnimationEnd(@NonNull Animator animation) {
+                                   // Splash visual bottom in parent coordinates (center pivot scaling).
+                                   final float splashBottomPx =
+                                           mBraveSplash.getBottom()
+                                                   + mBraveSplash.getTranslationY()
+                                                   - mBraveSplash.getHeight() * (1f - mBraveSplash.getScaleY()) / 2f;
+
+                                   ConstraintLayout.LayoutParams guidelineLayoutParams =
+                                           (ConstraintLayout.LayoutParams) mSplashAnchorGuideline.getLayoutParams();
+                                   guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
+                                   mSplashAnchorGuideline.setLayoutParams(guidelineLayoutParams);
+
+                                   mVariantBTitle.setVisibility(View.VISIBLE);
+                                   mVariantBSubtitle.setVisibility(View.VISIBLE);
+                                   mOnboardingIllustration.setVisibility(View.VISIBLE);
+                                   mLater.setVisibility(View.VISIBLE);
+                                   mSure.setVisibility(View.VISIBLE);
+
                                    nextOnboardingStep();
                                }
 

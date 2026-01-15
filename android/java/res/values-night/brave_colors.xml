@@ -193,12 +193,12 @@
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>
 
-    <color name="schemes_surface">#141415</color>
     <color name="text_primary">#e4e4e5</color>
     <color name="text_secondary">#c9c9ca</color>
     <color name="text_tertiary">#909093</color>
     <color name="primary_20">#271e93</color>
     <color name="button_background">#bcc6f3</color>
+    <color name="button_background_10">#19BCC6F3</color>
     <color name="systemfeedback_error_text">#ff7f72</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
@@ -211,6 +211,7 @@
     <color name="schemes_on_primary">#20197f</color>
     <color name="schemes_surface_container_highest">#343438</color>
     <color name="schemes_surface_container_lowest">#0f0f0f</color>
+    <color name="schemes_surface_container">#1F1F23</color>
     <color name="text_interactive">#bcc6f3</color>
 
     <color name="button_background_widget_promo">#C1C6FF</color>
