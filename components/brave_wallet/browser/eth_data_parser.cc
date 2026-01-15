@@ -1236,8 +1236,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // determined.
     swap_info->destination_token_address = "";
     swap_info->destination_amount = "";
-    swap_info->recipient = bridge_data->receiver;
     swap_info->destination_amount_min = "";
+    swap_info->recipient = bridge_data->receiver;
     swap_info->provider = mojom::SwapProvider::kLiFi;
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
@@ -1302,8 +1302,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // destination_token_address and destination_amount are unavailable.
     swap_info->destination_token_address = "";
     swap_info->destination_amount = "";
-    swap_info->recipient = bridge_data->receiver;
     swap_info->destination_amount_min = "";
+    swap_info->recipient = bridge_data->receiver;
     swap_info->provider = mojom::SwapProvider::kLiFi;
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
