@@ -98,7 +98,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (ShouldPushBookmarkBarForVerticalTabs()) {
       return views().bookmark_bar->y();
     }
-    if (IsInfobarVisible()) {
+    if (delegate().IsInfobarVisible()) {
       return views().infobar_container->y();
     }
     return views().top_container->bounds().bottom() -
@@ -390,7 +390,7 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
   // information.
   BrowserView* browser_view = static_cast<BrowserView*>(views().browser_view);
   if (browser_view->GetTabStripVisible() || browser_view->IsToolbarVisible() ||
-      browser_view->IsBookmarkBarVisible() || IsInfobarVisible()) {
+      browser_view->IsBookmarkBarVisible() || delegate().IsInfobarVisible()) {
     margins.set_top(0);
   }
 
