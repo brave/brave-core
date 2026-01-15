@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_CUSTOMIZE_CHROME_DARKER_THEME_TOGGLE_LABEL" desc="Title for a toggle button to show or hide Midnight Theme in Customize Chrome sidebar." formatter_data="webui=CustomizeChrome">
-    Midnight theme
+  <message name="IDS_CUSTOMIZE_CHROME_DARKER_THEME_TOGGLE_LABEL" desc="Title for a toggle button to show or hide Ultra dark theme in Customize Chrome sidebar." formatter_data="webui=CustomizeChrome">
+    Ultra dark theme
   </message>
 </grit-part>
