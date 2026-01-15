@@ -2504,6 +2504,9 @@
 # These tests fail because we enable features::kTabstripComboButton and stub
 # features::HasTabSearchToolbarButton() to return true
 -HorizontalTabStripRegionViewWithTabstripTabSearchTest.TabSearchPositionLoggedOnConstruction
+
+# These tests fail because we stub features::HasTabSearchToolbarButton() to
+# return true
 -TabSearchButtonBrowserTest.ButtonClickCreatesBubble
 -TabSearchButtonBrowserUITest.InvokeUi_default
 -TabStripComboButtonBrowserTest.BuildsComboButton

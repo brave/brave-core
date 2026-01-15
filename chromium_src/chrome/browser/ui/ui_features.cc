@@ -23,7 +23,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPopupBrowserUseNewLayout, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabbedBrowserUseNewLayout, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kTabstripComboButton, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 bool HasTabSearchToolbarButton() {
