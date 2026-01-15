@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
@@ -31,21 +32,10 @@
 
 namespace misc_metrics {
 
-class PageMetricsUnitTest : public testing::Test
-#if !BUILDFLAG(IS_ANDROID)
-    ,
-                            public DefaultBrowserMonitor::Delegate
-#endif
-{
+class PageMetricsUnitTest : public testing::Test {
  public:
   PageMetricsUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-
-#if !BUILDFLAG(IS_ANDROID)
-  // DefaultBrowserMonitor::Delegate:
-  bool IsDefaultBrowser() override { return mocked_is_default_; }
-  bool IsFirstRun() override { return false; }
-#endif
 
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -70,7 +60,8 @@ class PageMetricsUnitTest : public testing::Test
     default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>();
     default_browser_monitor_->OnDefaultBrowserStateReceived(mocked_is_default_);
 #else
-    default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(this);
+    default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(
+        std::make_unique<TestDelegate>(&mocked_is_default_));
     default_browser_monitor_->Start();
     task_environment_.FastForwardBy(base::Minutes(5));
 #endif
@@ -99,6 +90,20 @@ class PageMetricsUnitTest : public testing::Test
 
   base::Time first_run_time_;
   bool mocked_is_default_ = false;
+
+ private:
+#if !BUILDFLAG(IS_ANDROID)
+  class TestDelegate : public DefaultBrowserMonitor::Delegate {
+   public:
+    explicit TestDelegate(bool* is_default) : is_default_(is_default) {}
+
+    bool IsDefaultBrowser() override { return *is_default_; }
+    bool IsFirstRun() override { return false; }
+
+   private:
+    raw_ptr<bool> is_default_;
+  };
+#endif
 };
 
 TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {

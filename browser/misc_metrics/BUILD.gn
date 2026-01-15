@@ -75,6 +75,8 @@ static_library("misc_metrics_impl") {
 
   if (!is_android) {
     sources += [
+      "//brave/browser/misc_metrics/default_browser_monitor_delegate_impl.cc",
+      "//brave/browser/misc_metrics/default_browser_monitor_delegate_impl.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",

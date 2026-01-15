@@ -7,15 +7,15 @@
 
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/default_browser_monitor_delegate_impl.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
-#include "chrome/browser/shell_integration.h"
 #else
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
@@ -23,17 +23,14 @@
 
 namespace misc_metrics {
 
-ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
-#if !BUILDFLAG(IS_ANDROID)
-    : local_state_(local_state)
-#endif
-{
+ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   menu_metrics_ = std::make_unique<MenuMetrics>(local_state);
   new_tab_metrics_ = std::make_unique<NewTabMetrics>(local_state);
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
   split_view_metrics_ = std::make_unique<SplitViewMetrics>(local_state);
-  default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(this);
+  default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(
+      std::make_unique<DefaultBrowserMonitorDelegateImpl>(local_state));
   default_browser_monitor_->Start();
 #else
   default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>();
@@ -43,18 +40,6 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
 }
-
-#if !BUILDFLAG(IS_ANDROID)
-bool ProcessMiscMetrics::IsDefaultBrowser() {
-  auto state = shell_integration::GetDefaultBrowser();
-  return state == shell_integration::IS_DEFAULT ||
-         state == shell_integration::OTHER_MODE_IS_DEFAULT;
-}
-
-bool ProcessMiscMetrics::IsFirstRun() {
-  return brave_stats::IsFirstRun(local_state_);
-}
-#endif
 
 ProcessMiscMetrics::~ProcessMiscMetrics() = default;
 

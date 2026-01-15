@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/raw_ptr.h"
-#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
@@ -26,17 +24,14 @@ class SplitViewMetrics;
 class PrivacyHubMetrics;
 class TabMetrics;
 #endif
+class DefaultBrowserMonitor;
 class DohMetrics;
 class UptimeMonitorImpl;
 
-class ProcessMiscMetrics
-#if !BUILDFLAG(IS_ANDROID)
-    : public DefaultBrowserMonitor::Delegate
-#endif
-{
+class ProcessMiscMetrics {
  public:
   explicit ProcessMiscMetrics(PrefService* local_state);
-  ~ProcessMiscMetrics() override;
+  ~ProcessMiscMetrics();
 
   ProcessMiscMetrics(const ProcessMiscMetrics&) = delete;
   ProcessMiscMetrics& operator=(const ProcessMiscMetrics&) = delete;
@@ -48,10 +43,6 @@ class ProcessMiscMetrics
   NewTabMetrics* new_tab_metrics();
   VerticalTabMetrics* vertical_tab_metrics();
   SplitViewMetrics* split_view_metrics();
-
-  // DefaultBrowserMonitor::Delegate:
-  bool IsDefaultBrowser() override;
-  bool IsFirstRun() override;
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
   TabMetrics* tab_metrics();
@@ -61,7 +52,6 @@ class ProcessMiscMetrics
 
  private:
 #if !BUILDFLAG(IS_ANDROID)
-  raw_ptr<PrefService> local_state_;
   std::unique_ptr<MenuMetrics> menu_metrics_;
   std::unique_ptr<NewTabMetrics> new_tab_metrics_;
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;

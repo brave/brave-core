@@ -6,16 +6,14 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_DEFAULT_BROWSER_MONITOR_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_DEFAULT_BROWSER_MONITOR_H_
 
+#include <memory>
 #include <optional>
 
 #include "base/observer_list.h"
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/timer/wall_clock_timer.h"
 #endif
 
@@ -43,7 +41,7 @@ class DefaultBrowserMonitor {
     virtual bool IsFirstRun() = 0;
   };
 
-  explicit DefaultBrowserMonitor(Delegate* delegate);
+  explicit DefaultBrowserMonitor(std::unique_ptr<Delegate> delegate);
 #else
   DefaultBrowserMonitor();
 #endif
@@ -72,8 +70,7 @@ class DefaultBrowserMonitor {
 #if !BUILDFLAG(IS_ANDROID)
   void CheckDefaultBrowserState();
 
-  raw_ptr<Delegate> delegate_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  std::unique_ptr<Delegate> delegate_;
   base::WallClockTimer timer_;
 #endif
 

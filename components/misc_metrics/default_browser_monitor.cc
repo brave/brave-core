@@ -28,11 +28,8 @@ constexpr base::TimeDelta kSubsequentStartupDelay = base::Seconds(10);
 #if BUILDFLAG(IS_ANDROID)
 DefaultBrowserMonitor::DefaultBrowserMonitor() = default;
 #else
-DefaultBrowserMonitor::DefaultBrowserMonitor(Delegate* delegate)
-    : delegate_(delegate),
-      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
+DefaultBrowserMonitor::DefaultBrowserMonitor(std::unique_ptr<Delegate> delegate)
+    : delegate_(std::move(delegate)) {}
 #endif
 
 DefaultBrowserMonitor::~DefaultBrowserMonitor() = default;
@@ -48,9 +45,12 @@ void DefaultBrowserMonitor::Start() {
 }
 
 void DefaultBrowserMonitor::CheckDefaultBrowserState() {
-  task_runner_->PostTaskAndReplyWithResult(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&Delegate::IsDefaultBrowser, base::Unretained(delegate_)),
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&Delegate::IsDefaultBrowser,
+                     base::Unretained(delegate_.get())),
       base::BindOnce(&DefaultBrowserMonitor::OnDefaultBrowserStateReceived,
                      weak_factory_.GetWeakPtr()));
 }
