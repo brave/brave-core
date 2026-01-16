@@ -117,7 +117,7 @@
     "@types/chrome": "0.0.241",
     "@types/diff": "7.0.1",
     "@types/dom-navigation": "1.0.3",
-    "@types/jest": "28.1.6",
+    "@types/jest": "28.1.8",
     "@types/jszip": "3.4.1",
     "@types/node": "25.0.3",
     "@types/qr-image": "3.2.5",
