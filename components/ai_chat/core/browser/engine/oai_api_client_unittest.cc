@@ -92,10 +92,9 @@ class MockCallbacks {
 class TestOAIAPIClient : public OAIAPIClient {
  public:
   TestOAIAPIClient() : OAIAPIClient(nullptr) {
-    auto mock_helper =
-        std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
-            net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
-            nullptr);
+    auto mock_helper = std::make_unique<MockAPIRequestHelper>(
+        net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+        nullptr);
     SetAPIRequestHelperForTesting(std::move(mock_helper));
   }
   ~TestOAIAPIClient() override = default;
