@@ -496,6 +496,7 @@ struct TabGridView: View {
       } label: {
         Text(Strings.done)
           .padding(4)
+          .lineLimit(1)
       }
       .keyboardShortcut(.defaultAction)
       .frame(maxWidth: .infinity, alignment: .trailing)
