@@ -117,7 +117,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private TextView mVariantBTitle;
     private TextView mVariantBSubtitle;
     private ImageView mOnboardingIllustration;
-    private Guideline mSplashAnchorGuideline;
+    private Guideline mSplashGuideline;
     private Button mLater;
     private Button mSure;
 
@@ -144,7 +144,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mVariantBSubtitle = findViewById(R.id.brave_onboarding_subtitle);
         setDdpContent(mVariantBSubtitle);
         mOnboardingIllustration = findViewById(R.id.onboarding_illustration);
-        mSplashAnchorGuideline = findViewById(R.id.splash_anchor);
+        mSplashGuideline = findViewById(R.id.splash_anchor);
         mLater = findViewById(R.id.onboarding_later);
         mLater.setClipToOutline(true);
         mSure = findViewById(R.id.onboarding_sure);
@@ -613,79 +613,86 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         if (mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
             mVariantBConstraintLayout.setVisibility(View.VISIBLE);
-            final AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable) mBraveSplash.getDrawable();
-            vectorDrawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
-
-                @Override
-                public void onAnimationStart(Drawable drawable) {
-                    super.onAnimationStart(drawable);
-                    mBraveSplash.setAlpha(1f);
-                }
-
-               @Override
-               public void onAnimationEnd(Drawable drawable) {
-                   vectorDrawable.clearAnimationCallbacks();
-
-                   final View parent = (View) mBraveSplash.getParent();
-                   final float deltaY = parent.getPaddingTop() - mBraveSplash.getY();
-                   // Compensate because shrinking around center moves the top edge down.
-                   final float compensation = (mBraveSplash.getHeight() * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
-
-                   mBraveSplash.animate()
-                           .translationY(deltaY - compensation)
-                           .scaleX(BRAVE_SPLASH_SCALE_ANIMATION)
-                           .scaleY(BRAVE_SPLASH_SCALE_ANIMATION)
-                           .setDuration(BRAVE_SPLASH_ANIMATION_DURATION_MS)
-                           .setInterpolator(new OvershootInterpolator(REDUCED_TENSION_OVERSHOOT_INTERPOLATOR))
-                           .setListener(new Animator.AnimatorListener() {
-                               @Override
-                               public void onAnimationCancel(@NonNull Animator animation) {
-                                    /* No-op. */
-                               }
-
-                               @Override
-                               public void onAnimationEnd(@NonNull Animator animation) {
-                                   // Splash visual bottom in parent coordinates (center pivot scaling).
-                                   final float splashBottomPx =
-                                           mBraveSplash.getBottom()
-                                                   + mBraveSplash.getTranslationY()
-                                                   - mBraveSplash.getHeight() * (1f - mBraveSplash.getScaleY()) / 2f;
-
-                                   ConstraintLayout.LayoutParams guidelineLayoutParams =
-                                           (ConstraintLayout.LayoutParams) mSplashAnchorGuideline.getLayoutParams();
-                                   guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
-                                   mSplashAnchorGuideline.setLayoutParams(guidelineLayoutParams);
-
-                                   mVariantBTitle.setVisibility(View.VISIBLE);
-                                   mVariantBSubtitle.setVisibility(View.VISIBLE);
-                                   mOnboardingIllustration.setVisibility(View.VISIBLE);
-                                   mLater.setVisibility(View.VISIBLE);
-                                   mSure.setVisibility(View.VISIBLE);
-
-                                   nextOnboardingStep();
-                               }
-
-                               @Override
-                               public void onAnimationRepeat(@NonNull Animator animation) {
-                                   /* No-op. */
-                               }
-
-                               @Override
-                               public void onAnimationStart(@NonNull Animator animation) {
-                                   /* No-op. */
-                               }
-                           })
-                           .start();
-               }});
+            final AnimatedVectorDrawable vectorDrawable = getAnimatedVectorDrawable();
             vectorDrawable.start();
 
         } else {
             mDefaultConstraintLayout.setVisibility(View.VISIBLE);
             nextOnboardingStep();
         }
+    }
 
+    private AnimatedVectorDrawable getAnimatedVectorDrawable() {
+        final AnimatedVectorDrawable result = (AnimatedVectorDrawable) mBraveSplash.getDrawable();
+        result.registerAnimationCallback(new Animatable2.AnimationCallback() {
 
+            @Override
+            public void onAnimationStart(Drawable drawable) {
+                super.onAnimationStart(drawable);
+                mBraveSplash.setAlpha(1f);
+            }
 
+           @Override
+           public void onAnimationEnd(Drawable drawable) {
+                animateBraveSplash(result);
+           }});
+        return result;
+    }
+
+    private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
+        vectorDrawable.clearAnimationCallbacks();
+
+        final View parent = (View) mBraveSplash.getParent();
+        final float deltaY = parent.getPaddingTop() - mBraveSplash.getY();
+        final int splashHeight = mBraveSplash.getHeight();
+        // Compensate because shrinking around center moves the top edge down.
+        final float compensation = (splashHeight * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
+
+        mBraveSplash.animate()
+                .translationY(deltaY - compensation)
+                .scaleX(BRAVE_SPLASH_SCALE_ANIMATION)
+                .scaleY(BRAVE_SPLASH_SCALE_ANIMATION)
+                .setDuration(BRAVE_SPLASH_ANIMATION_DURATION_MS)
+                .setInterpolator(new OvershootInterpolator(REDUCED_TENSION_OVERSHOOT_INTERPOLATOR))
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animation) {
+                        // Splash visual bottom in parent coordinates (center pivot scaling).
+                        final float splashBottomPx =
+                                mBraveSplash.getBottom()
+                                        + mBraveSplash.getTranslationY()
+                                        - splashHeight * (1f - mBraveSplash.getScaleY()) / 2f;
+
+                        ConstraintLayout.LayoutParams guidelineLayoutParams =
+                                (ConstraintLayout.LayoutParams) mSplashGuideline.getLayoutParams();
+                        guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
+                        mSplashGuideline.setLayoutParams(guidelineLayoutParams);
+
+                        mVariantBTitle.setVisibility(View.VISIBLE);
+                        mVariantBSubtitle.setVisibility(View.VISIBLE);
+                        mOnboardingIllustration.setVisibility(View.VISIBLE);
+                        mLater.setVisibility(View.VISIBLE);
+                        mSure.setVisibility(View.VISIBLE);
+
+                        nextOnboardingStep();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+
+                    @Override
+                    public void onAnimationStart(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+                })
+                .start();
     }
 
     @Override
