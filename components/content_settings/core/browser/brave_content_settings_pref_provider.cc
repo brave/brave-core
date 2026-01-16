@@ -21,6 +21,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
@@ -49,6 +50,8 @@ constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 constexpr char kCosmeticFilteringMigration[] =
     "brave.cosmetic_filtering_migration";
+constexpr char kBraveRemember1PStorageMigration[] =
+    "brave.brave_remember_1p_storage_migration";
 
 constexpr char kExpirationPath[] = "expiration";
 constexpr char kLastModifiedPath[] = "last_modified";
@@ -118,6 +121,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   MigrateShieldsSettings(off_the_record_);
   MigrateFingerprintingSetingsToOriginScoped();
   MigrateCosmeticFilteringSettings();
+  MigrateBraveRemember1PStorageToAutoShred();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
@@ -159,6 +163,7 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(GetShieldsSettingUserPrefsPath(
       brave_shields::kObsoleteCosmeticFiltering));
   registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
+  registry->RegisterBooleanPref(kBraveRemember1PStorageMigration, false);
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -538,6 +543,37 @@ void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
                                 ContentSettingToValue(CONTENT_SETTING_ASK), {});
     }
   }
+}
+
+void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
+  if (off_the_record_ || prefs_->GetBoolean(kBraveRemember1PStorageMigration) ||
+      !base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return;
+  }
+
+  std::vector<std::unique_ptr<Rule>> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
+  }
+  rule_iterator.reset();
+
+  for (const auto& fp_rule : rules) {
+    const auto content_settings_value = ValueToContentSetting(fp_rule->value);
+    auto auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER;
+    if (content_settings_value == CONTENT_SETTING_BLOCK) {
+      auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
+    }
+
+    SetWebsiteSettingInternal(
+        fp_rule->primary_pattern, fp_rule->secondary_pattern,
+        ContentSettingsType::BRAVE_AUTO_SHRED,
+        brave_shields::AutoShredSetting::ToValue(auto_shred_mode), {});
+  }
+  prefs_->SetBoolean(kBraveRemember1PStorageMigration, true);
 }
 
 void BravePrefProvider::MigrateCosmeticFilteringSettings() {

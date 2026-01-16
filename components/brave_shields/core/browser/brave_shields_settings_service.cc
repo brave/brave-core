@@ -232,6 +232,35 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
+std::vector<std::string>
+BraveShieldsSettingsService::GetEphemeralDomainsForAutoShredMode(
+    mojom::AutoShredMode mode) {
+  std::vector<std::string> result;
+
+  ContentSettingsForOneType all_auto_shred_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          AutoShredSetting::kContentSettingsType);
+
+  for (const auto& setting : all_auto_shred_settings) {
+    if (!setting.primary_pattern.IsValid()) {
+      continue;
+    }
+
+    auto setting_mode = AutoShredSetting::FromValue(setting.setting_value);
+    if (setting_mode != mode) {
+      continue;
+    }
+
+    GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
+    if (pattern_url.is_valid() &&
+        !IsShieldsDisabledOnAnyHostMatchingDomainOf(pattern_url)) {
+      result.push_back(net::URLToEphemeralStorageDomain(pattern_url));
+    }
+  }
+
+  return result;
+}
+
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
   const auto js_content_settings_overridden_data =
       GetJsContentSettingOverriddenData(url);

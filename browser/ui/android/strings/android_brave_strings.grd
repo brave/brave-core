@@ -1459,6 +1459,27 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENT_TEXT" desc="Shields block element button label.">
         Block element
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_TEXT" desc="Shields menu shred site's data item text.">
+        Shred Site Data
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_SUB_TEXT" desc="Shields menu shred site's data item sub text.">
+        Auto shred: <ph name="AUTO_SHRED_MODE_TEXT">%1$s</ph>
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_NOW_TEXT" desc="Shields menu shred site's data now item text.">
+        Shred Site Data Now
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITES_DATA_TEXT" desc="Shields menu auto shred site's data item text.">
+        Auto Shred
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_TEXT" desc="Shields menu auto shred never mode item text.">
+        Never
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_TEXT" desc="Shields menu auto shred site tab closed mode item text.">
+        Site tab closed
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
+        App close
+      </message>   
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>
@@ -3606,7 +3627,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Shredding will delete site data and close all '<ph name="SITE_NAME">%1$s</ph>' tabs. This cannot be undone.
     </message>
     <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
-      Shred
+      Shred site data
     </message>
     <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
       Shred data

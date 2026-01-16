@@ -14,12 +14,18 @@
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
+#include "build/build_config.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_observer.h"
+#endif
 
 namespace content {
 class BrowserContext;
@@ -35,6 +41,9 @@ namespace ephemeral_storage {
 // this storage is cleared.
 class EphemeralStorageTabHelper
     : public content::WebContentsObserver,
+#if BUILDFLAG(IS_ANDROID)
+      public TabModelObserver,
+#endif
       public content::WebContentsUserData<EphemeralStorageTabHelper> {
  public:
   explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
@@ -57,7 +66,6 @@ class EphemeralStorageTabHelper
       content::NavigationHandle* navigation_handle) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void WebContentsDestroyed() override;
 
   void CreateProvisionalTLDEphemeralLifetime(
       content::NavigationHandle* navigation_handle);
@@ -65,6 +73,11 @@ class EphemeralStorageTabHelper
                                                   const GURL& new_url);
 
   void UpdateShieldsState(const GURL& url);
+
+#if BUILDFLAG(IS_ANDROID)
+  // TabModelObserver
+  void WillCloseTab(TabAndroid* tab) override;
+#endif
 
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
