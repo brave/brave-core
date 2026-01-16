@@ -355,7 +355,7 @@ TEST(HDKeySr25519, GetExportKeyPkcs8) {
 }
 
 TEST(HDKeySr25519, CreateFromPkcs8) {
-  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8;
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8 = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(
       "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
       "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
