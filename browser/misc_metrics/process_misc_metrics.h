@@ -20,11 +20,11 @@ class MenuMetrics;
 class NewTabMetrics;
 class VerticalTabMetrics;
 class SplitViewMetrics;
-class DefaultBrowserMonitor;
 #else
 class PrivacyHubMetrics;
 class TabMetrics;
 #endif
+class DefaultBrowserMonitor;
 class DohMetrics;
 class UptimeMonitorImpl;
 
@@ -47,6 +47,7 @@ class ProcessMiscMetrics {
   PrivacyHubMetrics* privacy_hub_metrics();
   TabMetrics* tab_metrics();
 #endif
+  DefaultBrowserMonitor* default_browser_monitor();
   UptimeMonitorImpl* uptime_monitor();
 
  private:
@@ -55,11 +56,11 @@ class ProcessMiscMetrics {
   std::unique_ptr<NewTabMetrics> new_tab_metrics_;
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
   std::unique_ptr<SplitViewMetrics> split_view_metrics_;
-  std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
   std::unique_ptr<TabMetrics> tab_metrics_;
 #endif
+  std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
 };
