@@ -60,6 +60,10 @@
   Help make Brave better.
 </message>
 
+<message name="IDS_BRAVE_WELCOME_STABILITY_DIAGNOSTICS_TITLE" desc="A title for screen that asks user to opt-in for diagnostic reports (Brave Origin)">
+  Stability &amp; Diagnostics
+</message>
+
 <message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="A checkbox label for user to opt-in opt-out to send diagnostic reports">
   Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">/$1</ph>
 </message>

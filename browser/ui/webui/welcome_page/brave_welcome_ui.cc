@@ -72,6 +72,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WELCOME_SELECT_ALL_BUTTON_LABEL},
     {"braveWelcomeHelpImproveBraveTitle",
      IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_TITLE},
+    {"braveWelcomeStabilityDiagnosticsTitle",
+     IDS_BRAVE_WELCOME_STABILITY_DIAGNOSTICS_TITLE},
     {"braveWelcomeSendReportsLabel", IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL},
     {"braveWelcomeSendInsightsLabel", IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL},
     {"braveWelcomeSetupCompleteLabel", IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL},
