@@ -23,8 +23,6 @@ void BraveRemoveSiteSettingsData(NSDate* delete_begin,
   CHECK(host_content_settings_map);
 
   browsing_data::BraveRemoveSiteSettingsData(
-      base::Time::FromSecondsSinceUnixEpoch(
-          [delete_begin timeIntervalSince1970]),
-      base::Time::FromSecondsSinceUnixEpoch([delete_end timeIntervalSince1970]),
+      base::Time::FromNSDate(delete_begin), base::Time::FromNSDate(delete_end),
       host_content_settings_map);
 }
