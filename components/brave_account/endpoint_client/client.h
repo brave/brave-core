@@ -161,15 +161,41 @@ class Client {
       response.headers = std::move(headers);
     }
 
+    // Two cases:
+    //
+    // 1. No body expected (std::is_empty_v<SuccessBody/ErrorBody>):
+    //    Whatever the server returns is ignored. We replace it with "{}" so
+    //    response.body is always a valid instance of the empty type, never
+    //    std::nullopt. This also means parsing failures are ignored, which
+    //    makes sense: if you don't expect data from the server, you shouldn't
+    //    care whether what it sent was parseable or not.
+    //
+    // 2. Body expected (!std::is_empty_v<SuccessBody/ErrorBody>):
+    //    response.body is std::nullopt (parsing failure) when response_body is:
+    //      - std::nullopt (no body received)
+    //      - empty string
+    //      - plain text (not JSON)
+    //      - invalid JSON
+    //      - valid JSON with wrong structure
+    //    In all these cases, either JSONReader::Read() or FromValue() fails.
+    //
+    //    response.body is non-std::nullopt only when response_body contains
+    //    valid JSON matching the expected SuccessBody/ErrorBody structure.
+
+    const bool is_2xx = network::IsSuccessfulStatus(*response.status_code);
+    if (is_2xx ? std::is_empty_v<typename Response::SuccessBody>
+               : std::is_empty_v<typename Response::ErrorBody>) {
+      response_body = "{}";
+    }
+
     const auto value =
         base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
             .value_or(base::Value());
-    // Intentionally kept as an if-else block for symmetry.
-    if (network::IsSuccessfulStatus(*response.status_code)) {  // 2xx
+    if (is_2xx) {
       if (auto success_body = Response::SuccessBody::FromValue(value)) {
         response.body = std::move(*success_body);
       }
-    } else {  // non-2xx
+    } else {
       if (auto error_body = Response::ErrorBody::FromValue(value)) {
         response.body = base::unexpected(std::move(*error_body));
       }
