@@ -23,6 +23,9 @@ inline constexpr const size_t kPolkadotSubstrateAccountIdSize = 32;
 
 inline constexpr const size_t kPolkadotBlockHashSize = 32;
 
+// TODO(https://github.com/brave/brave-browser/issues/52054): Eventually
+// refactor this class to fail at construction and remove the `std::optional`
+// from `ToString()`.
 struct PolkadotAddress {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   std::optional<uint16_t> ss58_prefix;
