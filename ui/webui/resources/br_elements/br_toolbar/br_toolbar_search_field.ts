@@ -115,7 +115,7 @@ export class BrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
 
   /** @private */
   onInputBlur_() {
-    this.isBlurring_ = true
+    // Prevent blur from blocking search input focus after menu navigation.
     this.searchFocused_ = false
   }
 
