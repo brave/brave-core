@@ -465,7 +465,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   {
     // The synthetic variant: if straight is false positive.
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-        GURL("https://test-request.com"), a_page->GetFrameTreeNodeId(), kAds);
+        GURL("https://test-request.com"), a_page->GetGlobalFrameToken(), kAds);
     auto* tab_helper = BraveShieldsTabHelper::FromWebContents(GetWebContents());
     EXPECT_EQ(0u, tab_helper->GetBlockedAdsList().size());
   }
