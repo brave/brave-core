@@ -13,7 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "content/public/browser/frame_tree_node_id.h"
+#include "content/public/browser/global_routing_id.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
@@ -87,7 +87,7 @@ struct BraveRequestInfo {
   bool aggressive_blocking = false;
   bool allow_http_upgradable_resource = false;
   bool allow_referrers = false;
-  content::FrameTreeNodeId frame_tree_node_id;
+  content::GlobalRenderFrameHostToken render_frame_token;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
 
@@ -128,7 +128,7 @@ struct BraveRequestInfo {
 
   static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
-      content::FrameTreeNodeId frame_tree_node_id,
+      content::GlobalRenderFrameHostToken render_frame_token,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
       std::shared_ptr<brave::BraveRequestInfo> old_ctx);

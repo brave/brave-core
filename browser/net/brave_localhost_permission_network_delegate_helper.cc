@@ -24,14 +24,14 @@
 namespace brave {
 
 void OnPermissionRequestStatus(
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     const std::vector<content::PermissionResult>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   // Once permission status has been updated, reload the page.
   // We do this so as to let the user know that they should retry
   // an action. Also just makes state management easier.
-  auto* contents =
-      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+  auto* contents = content::WebContents::FromRenderFrameHost(
+      content::RenderFrameHost::FromFrameToken(render_frame_token));
   if (contents &&
       permission_statuses[0].status == content::PermissionStatus::GRANTED) {
     contents->GetController().Reload(content::ReloadType::NORMAL, true);
@@ -109,8 +109,8 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
     return net::OK;
   }
 
-  auto* contents =
-      content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+  auto* contents = content::WebContents::FromRenderFrameHost(
+      content::RenderFrameHost::FromFrameToken(ctx->render_frame_token));
 
   if (!contents) {
     return HandleLocalhostRequestsWithNoWebContents(request_initiator_url,
@@ -146,7 +146,7 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
                   CreatePermissionDescriptorForPermissionType(
                       blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
               /*user_gesture*/ true),
-          base::BindOnce(&OnPermissionRequestStatus, ctx->frame_tree_node_id));
+          base::BindOnce(&OnPermissionRequestStatus, ctx->render_frame_token));
       return net::ERR_ACCESS_DENIED;
     }
   }
