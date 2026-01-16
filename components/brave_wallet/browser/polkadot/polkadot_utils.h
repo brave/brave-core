@@ -31,6 +31,10 @@ struct PolkadotAddress {
   std::optional<uint16_t> ss58_prefix;
 
   std::optional<std::string> ToString() const;
+
+  // TODO(https://github.com/brave/brave-browser/issues/52056): Implement
+  // FromString() once we have an infallible ToString() implementation which
+  // enables us to reshape the JSON used by the PolkadotTransaction class.
 };
 
 // Parse a string provided from the front-end that's intended to be used as a
