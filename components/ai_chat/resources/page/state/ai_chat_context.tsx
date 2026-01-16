@@ -12,6 +12,8 @@ import useMediaQuery from '$web-common/useMediaQuery'
 export interface ConversationEntriesProps {
   onIsContentReady: (isContentReady: boolean) => void
   onHeightChanged: () => void
+  onSelectionMouseMove: (mouseY: number, iframeHeight: number) => void
+  onSelectionEnded: () => void
 }
 
 type AIChatContextProps = {

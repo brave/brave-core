@@ -11,6 +11,7 @@ import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 import { untrustedFrameDragHandlingSetup } from './hooks/useUntrustedFrameDragHandling'
+import { selectionEdgeScrollSetup } from './hooks/useSelectionEdgeScroll'
 
 import '../common/strings'
 
@@ -18,6 +19,10 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 // Set up drag handling at module level
 untrustedFrameDragHandlingSetup()
+
+// Set up selection edge scroll handling to enable auto-scroll during text
+// selection when dragging near the iframe edges
+selectionEdgeScrollSetup()
 
 function App() {
   return (
