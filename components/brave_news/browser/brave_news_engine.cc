@@ -18,6 +18,7 @@
 #include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
@@ -30,6 +31,19 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
+
+MojomPublishers ConvertToMojomPublishers(Publishers publishers) {
+  std::vector<std::pair<std::string, mojom::PublisherPtr>> pairs;
+  pairs.reserve(publishers.size());
+
+  for (auto& [key, value_ptr] : publishers) {
+    pairs.emplace_back(std::move(key), std::move(value_ptr));
+  }
+
+  // Create a flat map using O(N log N) ctor instead of O(N^2) insertion.
+  return MojomPublishers(std::move(pairs));
+}
+
 BraveNewsEngine::BraveNewsEngine(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_shared_url_loader_factory,
@@ -64,8 +78,15 @@ void BraveNewsEngine::GetSignals(SubscriptionsSnapshot snapshot,
 void BraveNewsEngine::GetPublishers(SubscriptionsSnapshot snapshot,
                                     m::GetPublishersCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Convert from internal absl::flat_hash_map to mojom base::flat_map
+  auto wrapped_callback = base::BindOnce(
+      [](m::GetPublishersCallback callback, Publishers publishers) {
+        std::move(callback).Run(
+            ConvertToMojomPublishers(std::move(publishers)));
+      },
+      std::move(callback));
   GetPublishersController()->GetOrFetchPublishers(snapshot,
-                                                  std::move(callback));
+                                                  std::move(wrapped_callback));
 }
 
 void BraveNewsEngine::GetPublisherForSite(SubscriptionsSnapshot snapshot,
