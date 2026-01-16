@@ -1,4 +1,4 @@
-use crate::base::Bytes;
+use crate::base::{Bytes, BytesCow};
 use crate::errors::RewritingError;
 use crate::html::escape_double_quotes_only;
 use crate::parser::AttributeBuffer;
@@ -36,8 +36,8 @@ pub enum AttributeNameError {
 ///
 /// [`Element`]: struct.Element.html
 pub struct Attribute<'i> {
-    name: Bytes<'i>,
-    value: Bytes<'i>,
+    name: BytesCow<'i>,
+    value: BytesCow<'i>,
     raw: Option<Bytes<'i>>,
     encoding: &'static Encoding,
 }
@@ -46,8 +46,8 @@ impl<'i> Attribute<'i> {
     #[inline]
     #[must_use]
     const fn new(
-        name: Bytes<'i>,
-        value: Bytes<'i>,
+        name: BytesCow<'i>,
+        value: BytesCow<'i>,
         raw: Bytes<'i>,
         encoding: &'static Encoding,
     ) -> Self {
@@ -63,7 +63,7 @@ impl<'i> Attribute<'i> {
     fn name_from_str(
         name: &str,
         encoding: &'static Encoding,
-    ) -> Result<Bytes<'static>, AttributeNameError> {
+    ) -> Result<BytesCow<'static>, AttributeNameError> {
         if name.is_empty() {
             Err(AttributeNameError::Empty)
         } else if let Some(ch) = name.as_bytes().iter().copied().find(|&ch| {
@@ -78,9 +78,9 @@ impl<'i> Attribute<'i> {
             // encoding then encoding_rs replaces it with a numeric
             // character reference. Character references are not
             // supported in attribute names, so we need to bail.
-            Bytes::from_str_without_replacements(name, encoding)
+            BytesCow::from_str_without_replacements(name, encoding)
                 .map_err(|_| AttributeNameError::UnencodableCharacter)
-                .map(Bytes::into_owned)
+                .map(BytesCow::into_owned)
         }
     }
 
@@ -92,13 +92,13 @@ impl<'i> Attribute<'i> {
     ) -> Result<Self, AttributeNameError> {
         Ok(Attribute {
             name: Attribute::name_from_str(name, encoding)?,
-            value: Bytes::from_str(value, encoding).into_owned(),
+            value: BytesCow::from_str(value, encoding).into_owned(),
             raw: None,
             encoding,
         })
     }
 
-    /// Returns the name of the attribute.
+    /// Returns the name of the attribute, always ASCII lowercased.
     #[inline]
     #[must_use]
     pub fn name(&self) -> String {
@@ -112,7 +112,7 @@ impl<'i> Attribute<'i> {
         self.name.as_string(self.encoding)
     }
 
-    /// Returns the value of the attribute.
+    /// Returns the value of the attribute. The value may have HTML/XML entities.
     #[inline]
     #[must_use]
     pub fn value(&self) -> String {
@@ -121,7 +121,7 @@ impl<'i> Attribute<'i> {
 
     #[inline]
     fn set_value(&mut self, value: &str) {
-        self.value = Bytes::from_str(value, self.encoding).into_owned();
+        self.value = BytesCow::from_str(value, self.encoding).into_owned();
         self.raw = None;
     }
 }
@@ -134,7 +134,7 @@ impl Serialize for &Attribute<'_> {
         } else {
             output_handler(&self.name);
             output_handler(b"=\"");
-            escape_double_quotes_only(&self.value, output_handler);
+            escape_double_quotes_only(self.value.as_ref(), output_handler);
             output_handler(b"\"");
         }
         Ok(())
@@ -155,7 +155,7 @@ pub(crate) struct Attributes<'i> {
     input: &'i Bytes<'i>,
     attribute_buffer: &'i AttributeBuffer,
     items: OnceCell<Vec<Attribute<'i>>>,
-    encoding: &'static Encoding,
+    pub(crate) encoding: &'static Encoding,
 }
 
 impl<'i> Attributes<'i> {
@@ -174,6 +174,9 @@ impl<'i> Attributes<'i> {
         }
     }
 
+    /// Adds or replaces the attribute. The value may have HTML/XML entities.
+    ///
+    /// Quotes will be escaped if needed. Other entities won't be changed.
     pub fn set_attribute(
         &mut self,
         name: &str,
@@ -215,8 +218,8 @@ impl<'i> Attributes<'i> {
             .iter()
             .map(|a| {
                 Attribute::new(
-                    self.input.slice(a.name),
-                    self.input.slice(a.value),
+                    self.input.slice(a.name).into(),
+                    self.input.slice(a.value).into(),
                     self.input.slice(a.raw_range),
                     self.encoding,
                 )
