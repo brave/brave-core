@@ -73,6 +73,38 @@ class OllamaModelFetcher {
                            FetchModelsHandlesEmptyResponse);
   FRIEND_TEST_ALL_PREFIXES(OllamaModelFetcherTest,
                            FetchModelsHandlesInvalidJSON);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_RemovesLatestSuffix);
+  FRIEND_TEST_ALL_PREFIXES(
+      OllamaModelNameFormattingTest,
+      FormatOllamaModelName_ReplacesColonsAndHyphensWithSpaces);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_CapitalizesWords);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_PreservesSingleLetterVersions);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_PreservesParameterSizes);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_HandlesMultipleWords);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_TrimsSpaces);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_HandlesEmptyString);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_HandlesComplexNames);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_HandlesNumbersInMiddle);
+  FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
+                           FormatOllamaModelName_PreservesOriginalOnAllSpaces);
+
+  // Formats Ollama model names for display in the UI.
+  // Examples:
+  //   "llama2:7b" -> "Llama 2 7B"
+  //   "mistral:latest" -> "Mistral"
+  //   "codellama-13b" -> "Codellama 13B"
+  static std::string FormatOllamaModelName(const std::string& raw_name);
 
   void OnOllamaFetchEnabledChanged();
   void FetchModels();
