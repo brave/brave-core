@@ -106,5 +106,93 @@ extension Strings {
       value: "Reset to Defaults",
       comment: "A button label to reset all Origin settings to their default values"
     )
+    public static let paywallDescription = NSLocalizedString(
+      "paywallDescription",
+      bundle: .module,
+      value: """
+        **Customize your browser while still supporting Brave**
+
+        Brave Origin is a paid version of the browser for users who don't need all of the features that  support Brave as a business, but still want the privacy that only Brave offers. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They’ll also unlock the option to disable features like AI, Rewards, Wallet, VPN, Web3 domains, and more.
+
+        **Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Origin can be purchased as an upgrade to your existing release version.** On desktop, Origin is also available as a separate, standalone app. Whether purchased as an upgrade or separate app, Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.*
+
+        * Note that if you’ve purchased Origin as an upgrade to your existing version of Brave, Origin will not disable browser features that you currently use. For both the upgrade and standalone version, Origin will not affect Brave Search features or Brave Search Ads.
+        """,
+      comment:
+        "A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated."
+    )
+    public static let alreadyPurchasedTitle = NSLocalizedString(
+      "alreadyPurchasedTitle",
+      bundle: .module,
+      value: "Already purchased on brave.com?",
+      comment: "A title asking if the user already purchased on brave.com"
+    )
+    public static let getLoginCodeButton = NSLocalizedString(
+      "getLoginCodeButton",
+      bundle: .module,
+      value: "Get A Login Code",
+      comment: "A button label to get a login code for users who purchased on brave.com"
+    )
+    public static let promoCodeTitle = NSLocalizedString(
+      "promoCodeTitle",
+      bundle: .module,
+      value: "Have a promo code?",
+      comment: "A title asking if the user has a promo code"
+    )
+    public static let redeemPromoCodeButton = NSLocalizedString(
+      "redeemPromoCodeButton",
+      bundle: .module,
+      value: "Redeem Promo Code",
+      comment: "A button label to redeem a promo code"
+    )
+    public static let restoreButton = NSLocalizedString(
+      "restoreButton",
+      bundle: .module,
+      value: "Restore",
+      comment: "A button label to restore previous purchases"
+    )
+    public static let purchaseErrorMessage = NSLocalizedString(
+      "purchaseErrorMessage",
+      bundle: .module,
+      value:
+        "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
+      comment: "An error message displayed when a purchase fails"
+    )
+    public static let buyNowButton = NSLocalizedString(
+      "buyNowButton",
+      bundle: .module,
+      value: "Buy Now",
+      comment: "A button label to purchase Brave Origin"
+    )
+    public static let upsellSupportMission = NSLocalizedString(
+      "upsellSupportMission",
+      bundle: .module,
+      value: "Support our mission & open-source work",
+      comment: "An upsell point about supporting Brave's mission and open-source work"
+    )
+    public static let upsellMinimalUI = NSLocalizedString(
+      "upsellMinimalUI",
+      bundle: .module,
+      value: "Minimal browser UI centered on Shields",
+      comment: "An upsell point about minimal browser UI"
+    )
+    public static let upsellCoreFeatures = NSLocalizedString(
+      "upsellCoreFeatures",
+      bundle: .module,
+      value: "Maintain core adblock, privacy, & speed",
+      comment: "An upsell point about maintaining core features like adblock, privacy, and speed"
+    )
+    public static let upsellOneTimePurchase = NSLocalizedString(
+      "upsellOneTimePurchase",
+      bundle: .module,
+      value: "One-time purchase, no additional subscription cost",
+      comment: "An upsell point about the one-time purchase model"
+    )
+    public static let oneTimePurchaseLabel = NSLocalizedString(
+      "oneTimePurchaseLabel",
+      bundle: .module,
+      value: "One Time Purchase",
+      comment: "A label indicating this is a one-time purchase product"
+    )
   }
 }
