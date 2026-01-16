@@ -9,7 +9,10 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "buildflags",
+    "//base",
+  ]
 }
 
 source_set("pref_names") {

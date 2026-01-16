@@ -6,10 +6,15 @@
 #include "brave/components/brave_origin/features.h"
 
 #include "base/feature_list.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 namespace brave_origin::features {
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+BASE_FEATURE(kBraveOrigin, base::FEATURE_ENABLED_BY_DEFAULT);
+#else
 BASE_FEATURE(kBraveOrigin, base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 }  // namespace brave_origin::features
