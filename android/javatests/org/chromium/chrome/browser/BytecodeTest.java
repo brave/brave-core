@@ -203,6 +203,7 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeManager;
@@ -1939,7 +1940,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         Consumer.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        Clipboard.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
