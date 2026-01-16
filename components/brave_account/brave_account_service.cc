@@ -154,6 +154,7 @@ void BraveAccountService::RegisterInitialize(
 
   auto request = MakeRequest<PasswordInit::Request>();
   request.blinded_message = blinded_message;
+  request.initiating_service_name = "accounts";
   request.new_account_email = email;
   request.serialize_response = true;
   Client<PasswordInit>::Send(
@@ -206,6 +207,7 @@ void BraveAccountService::LoginInitialize(const std::string& email,
 
   auto request = MakeRequest<LoginInit::Request>();
   request.email = email;
+  request.initiating_service_name = "accounts";
   request.serialized_ke1 = serialized_ke1;
   Client<LoginInit>::Send(
       url_loader_factory_, std::move(request),
