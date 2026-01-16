@@ -1939,7 +1939,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         Consumer.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        Clipboard.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
