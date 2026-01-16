@@ -94,10 +94,10 @@ const chromiumConfigs = {
     },
   },
   'android': {
-    buildTargets: ['monochrome_64_public_apk'],
+    buildTargets: ['chrome_public_apk'],
     processArtifacts: () => {
       fs.moveSync(
-        path.join(config.outputDir, 'apks', 'MonochromePublic64.apk'),
+        path.join(config.outputDir, 'apks', 'ChromePublic.apk'),
         path.join(config.outputDir, `${getOutputFilename()}.apk`),
       )
     },
