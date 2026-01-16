@@ -966,6 +966,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // Policy-controlled items (Leo, Rewards) are handled by updateMenuItemsBasedOnPolicy()
         // They are not added here to avoid showing them if policy disables them
         // The async policy check will add them if policy allows
+        // In JUnit tests, add Leo synchronously since native code isn't available
+        if (mJunitIsTesting && BraveLeoPrefUtils.isLeoEnabled()) {
+            Tab tab = mActivityTabProvider.get();
+            if (tab == null || !tab.isIncognito()) {
+                insertMenuItemBefore(
+                        modelList,
+                        buildBraveLeoItem(),
+                        Arrays.asList(
+                                R.id.recent_tabs_menu_id,
+                                R.id.page_zoom_id,
+                                R.id.find_in_page_id,
+                                R.id.set_default_browser));
+            }
+        }
         modelList.add(buildBraveNewsItem());
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
