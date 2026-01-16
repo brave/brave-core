@@ -120,7 +120,7 @@
     "@types/jest": "28.1.6",
     "@types/jszip": "3.4.1",
     "@types/node": "25.0.3",
-    "@types/qr-image": "3.2.5",
+    "@types/qr-image": "3.2.9",
     "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",
     "@types/react-redux": "7.1.25",
