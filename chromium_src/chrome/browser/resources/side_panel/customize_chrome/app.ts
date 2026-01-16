@@ -5,7 +5,12 @@
 
 import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
 
-import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
+import {
+  css,
+  html,
+  CrLitElement,
+  type CSSResultGroup
+} from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { ColorSchemeMode } from '//resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom-webui.js'
@@ -60,7 +65,7 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
 
   private accessor usingDarkerTheme_ = false
 
-  static override get styles() {
+  static override get styles(): CSSResultGroup {
     return css`
       #darker-theme-toggle-container {
         display: flex;
