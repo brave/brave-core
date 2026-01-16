@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+
+source_set("wallet") {
+  sources = [
+    "wallet_side_panel_coordinator.cc",
+    "wallet_side_panel_coordinator.h",
+  ]
+
+  # Note: wallet_page_ui.h is included from //brave/browser/ui target
+  # which depends on this target. The header is accessible through
+  # include paths.
+  deps = [
+    "//base",
+    "//brave/browser/ui/sidebar",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/sidebar/browser",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//ui/views",
+    "//url",
+  ]
+}

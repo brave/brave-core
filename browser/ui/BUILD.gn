@@ -938,6 +938,7 @@ source_set("ui") {
 
   if (enable_brave_wallet) {
     deps += [
+      "//brave/browser/ui/views/side_panel/wallet",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:constants",
       "//brave/components/brave_wallet/browser:pref_names",
@@ -1517,6 +1518,19 @@ source_set("browser_tests") {
       deps += [
         "//brave/browser/ui/sidebar",
         "//brave/components/playlist/core/common",
+        "//chrome/browser/ui/browser_window",
+        "//chrome/browser/web_applications:web_applications_test_support",
+      ]
+    }
+
+    if (enable_brave_wallet) {
+      sources += [
+        "views/side_panel/wallet/wallet_side_panel_coordinator_browsertest.cc",
+      ]
+
+      deps += [
+        "//brave/browser/ui/sidebar",
+        "//brave/components/brave_wallet/browser:utils",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",
       ]
