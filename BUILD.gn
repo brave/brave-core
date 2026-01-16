@@ -609,14 +609,13 @@ if (should_generate_symbols) {
 }
 
 group("create_symbols_dist") {
-  # Currently on some platforms (Android, Linux) this target generate more
-  # than just symbols, so always depend on it.
-  public_deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
+  public_deps = []
 
   if (should_generate_symbols) {
     public_deps += [
       ":create_brave_symbols_dist",
       ":create_native_symbols_dist",
+      "//brave/app/$current_os:symbol_dist_resources",
     ]
   }
 }
