@@ -122,7 +122,9 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
 
   auto subresource = request_url.spec();
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
-  DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
+  if (rfh->IsActive()) {
+    DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
+  }
 
   if (web_contents) {
     BraveShieldsWebContentsObserver* observer =
@@ -147,8 +149,10 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       }
     }
   }
-  brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-      request_url.spec(), web_contents);
+  if (rfh->IsActive()) {
+    brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
+        request_url.spec(), web_contents);
+  }
 }
 
 #if !BUILDFLAG(IS_ANDROID)
