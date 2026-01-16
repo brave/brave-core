@@ -8,7 +8,9 @@
 
 #include <string_view>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"
 
@@ -26,8 +28,14 @@ class EphemeralStorageServiceDelegate {
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
+  // Registers a callback to be called when the browser started and becomes
+  // active.
+  virtual void RegisterOnBecomeActiveCallback(
+      base::OnceCallback<void(const base::flat_set<std::string>)> callback) = 0;
+  // Finds all tabs related to the ephemeral_domains list, prepares them for
+  // first party storage cleanup, and closes them.
   virtual void PrepareTabsForFirstPartyStorageCleanup(
-      const std::string& ephemeral_domain) = 0;
+      const std::vector<std::string>& ephemeral_domains) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const = 0;
 #if BUILDFLAG(IS_ANDROID)

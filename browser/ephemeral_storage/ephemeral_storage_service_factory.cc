@@ -75,7 +75,9 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
-          BraveShieldsSettingsServiceFactory::GetForProfile(profile)));
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile)),
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(
