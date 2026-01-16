@@ -117,15 +117,10 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoPtr swap_info;
-  mojom::SwapInfoPtr swap_info_from_data;
+  mojom::SwapInfoPtr swap_info = swap_info_.Clone();
   std::vector<uint8_t> data{0x0};
   if (tx_->data().size() > 0) {
     data = tx_->data();
-  }
-
-  if (swap_info_) {
-    swap_info = swap_info_.Clone();
   }
 
   std::optional<std::string> final_recipient;
@@ -133,6 +128,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
+    mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
     final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
