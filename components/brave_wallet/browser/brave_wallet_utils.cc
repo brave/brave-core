@@ -433,6 +433,8 @@ std::string EncodeSwapProvider(mojom::SwapProvider provider) {
       return "SQUID";
     case mojom::SwapProvider::kNearIntents:
       return "NEAR_INTENTS";
+    case mojom::SwapProvider::kCowSwap:
+      return "COW_SWAP";
     default:
       return "AUTO";
   }
@@ -461,6 +463,10 @@ mojom::SwapProvider DecodeSwapProvider(const std::string& provider_str) {
 
   if (provider_str == "NEAR_INTENTS") {
     return mojom::SwapProvider::kNearIntents;
+  }
+
+  if (provider_str == "COW_SWAP") {
+    return mojom::SwapProvider::kCowSwap;
   }
 
   return mojom::SwapProvider::kAuto;
