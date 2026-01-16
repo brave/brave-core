@@ -306,11 +306,10 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
 // request can be configured, in which case additional DNS queries should be
 // avoided as well.
 //
-// For some reason, when DoH is enabled alongside a system HTTPS proxy, the
-// CNAME queries here are also not proxied. So uncloaking is disabled in that
-// case as well.
-bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
-                                  bool doh_enabled) {
+// Ideally, this should use |ConfiguredProxyResolutionService| to get an
+// accurate answer on a per-URL basis. This may require extending the
+// |NetworkContext| mojom interface.
+bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
   DCHECK(browser_context);
 
   bool can_uncloak = true;
@@ -339,6 +338,10 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
         !config.value().proxy_rules().proxies_for_https.IsEmpty()) {
       can_uncloak = false;
     }
+
+    if (config.value().has_pac_url()) {
+      can_uncloak = false;
+    }
   }
 
   return can_uncloak;
@@ -354,20 +357,15 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  SecureDnsConfig secure_dns_config =
-      SystemNetworkContextManager::GetStubResolverConfigReader()
-          ->GetSecureDnsConfiguration(false);
-
-  bool doh_enabled = (secure_dns_config.mode() == net::SecureDnsMode::kSecure);
-
-  // DoH or standard DNS queries won't be routed through Tor, so we need to
-  // skip it.
-  // Also, skip CNAME uncloaking if there is currently a configured proxy.
+  // DNS queries won't be routed through Tor or proxies, so we need to
+  // skip requests in those contexts.
+  // This could be reconsidered if there is a reliable way to route DoH traffic
+  // through the same channel.
   bool should_check_uncloaked =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
       ctx->browser_context && !ctx->browser_context->IsTor() &&
-      ProxySettingsAllowUncloaking(ctx->browser_context, doh_enabled);
+      ProxySettingsAllowUncloaking(ctx->browser_context);
 
   // When default 1p blocking is disabled, first-party requests should not be
   // CNAME uncloaked unless using aggressive blocking mode.
