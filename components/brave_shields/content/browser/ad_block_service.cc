@@ -28,12 +28,13 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/service_process_host.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -62,34 +63,17 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     // Skip updates of another engine.
     return;
   }
-  auto on_loaded_cb = base::BindOnce(
-      &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
-      weak_factory_.GetWeakPtr());
-  filters_provider_manager_->LoadFilterSetForEngine(is_default_engine,
-                                                    std::move(on_loaded_cb));
+  auto on_loaded_cb =
+      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATCreated,
+                     weak_factory_.GetWeakPtr());
+  filters_provider_manager_->LoadFiltersForEngine(is_default_engine,
+                                                  std::move(on_loaded_cb));
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
-    base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-  task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-            auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-                adblock::new_filter_set());
-            std::move(cb).Run(filter_set.get());
-            return filter_set;
-          },
-          std::move(cb)),
-      base::BindOnce(
-          &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
-          weak_factory_.GetWeakPtr()));
-}
-
-void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
-  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  filter_set_ = std::move(filter_set);
+void AdBlockService::SourceProviderObserver::OnDATCreated(
+    const std::vector<unsigned char>& verified_engine_dat) {
+  TRACE_EVENT("brave.adblock", "OnDATCreated");
+  pending_dat_ = std::move(verified_engine_dat);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
@@ -98,7 +82,7 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  if (!filter_set_) {
+  if (pending_dat_.empty()) {
     task_runner_->PostTask(
         FROM_HERE, base::BindOnce(
                        [](base::WeakPtr<AdBlockEngine> engine,
@@ -111,13 +95,13 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
-           std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+           std::vector<unsigned char> dat_buffer,
            AdblockResourceStorageBox storage) {
           if (engine) {
-            engine->Load(std::move(*filter_set.get()), *storage);
+            engine->Load(true, dat_buffer, *storage);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(filter_set_),
+        adblock_engine_->AsWeakPtr(), std::move(pending_dat_),
         std::move(storage));
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
@@ -342,7 +326,14 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
+  mojo::Remote<filter_set::mojom::UtilParseFilterSet> filter_set_service =
+      content::ServiceProcessHost::Launch<
+          filter_set::mojom::UtilParseFilterSet>(
+          content::ServiceProcessHost::Options()
+              .WithDisplayName("Adblock Filter Parsing")
+              .Pass());
+  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
+      std::move(filter_set_service));
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,

@@ -160,17 +160,17 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
   // platforms
   ASSERT_TRUE(base::test::RunUntil([&]() {
     auto counts = histogram_tester_.GetTotalCountsForPrefix(
-        "Brave.Adblock.MakeEngineWithRules.Default");
-    return counts.find("Brave.Adblock.MakeEngineWithRules.Default") !=
+        "Brave.Adblock.EngineDeserialize.Default");
+    return counts.find("Brave.Adblock.EngineDeserialize.Default") !=
                counts.end() &&
-           counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
+           counts.at("Brave.Adblock.EngineDeserialize.Default") >= 1;
   })) << "Timeout waiting for initial engine creation";
 
-  histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 1);
+  histogram_tester_.ExpectTotalCount("Brave.Adblock.EngineDeserialize.Default",
+                                     1);
   InstallDefaultAdBlockComponent();
-  histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 2);
+  histogram_tester_.ExpectTotalCount("Brave.Adblock.EngineDeserialize.Default",
+                                     2);
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -537,20 +537,20 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultStartupWithCookieList) {
   // The empty ruleset building until the components are loaded.
   // TODO(matuchin): remove that excessive work.
+  histogram_tester_.ExpectTotalCount("Brave.Adblock.EngineDeserialize.Default",
+                                     2);
   histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 2);
-  histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Additional", 1);
+      "Brave.Adblock.EngineDeserialize.Additional", 1);
 
   // Loads the default list first, then the additional cookie list.
   InstallRegionalAdBlockComponent(brave_shields::kCookieListUuid, true);
 
   // Only one new rebuild is expected. Loading the extra list must not
   // trigger another rebuilding of the default engine and vice versa.
+  histogram_tester_.ExpectTotalCount("Brave.Adblock.EngineDeserialize.Default",
+                                     2);
   histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 2);
-  histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Additional", 2);
+      "Brave.Adblock.EngineDeserialize.Additional", 2);
 }
 
 // Load a page with an ad image, and make sure it is blocked by a filter from a
