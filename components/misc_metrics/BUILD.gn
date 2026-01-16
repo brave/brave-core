@@ -7,6 +7,8 @@ static_library("misc_metrics") {
   sources = [
     "autofill_metrics.cc",
     "autofill_metrics.h",
+    "default_browser_monitor.cc",
+    "default_browser_monitor.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
     "language_metrics.cc",
@@ -54,6 +56,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "default_browser_monitor_unittest.cc",
     "general_browser_usage_unittest.cc",
     "language_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
