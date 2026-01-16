@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -53,6 +54,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
+    "//brave/components/ai_chat/core/common/buildflags",
 
     # Unconditional for gn check since the mojom-forward header is included
     # in brave_new_tab_page_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
@@ -86,6 +88,17 @@ source_set("brave_new_tab_page_refresh") {
     "//ui/shell_dialogs",
     "//ui/webui",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ai_chat",
+      "//brave/browser/ui/webui/ai_chat",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
+      "//chrome/browser/history",
+    ]
+  }
 
   if (enable_brave_vpn) {
     deps += [

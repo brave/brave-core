@@ -757,6 +757,17 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif
       ;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled()) {
+    ntp_refresh_registration.Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::Service>()
+        .Add<ai_chat::mojom::TabTrackerService>()
+        .Add<ai_chat::mojom::BookmarksPageHandler>()
+        .Add<ai_chat::mojom::HistoryUIHandler>();
+  }
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     ntp_refresh_registration.Add<brave_vpn::mojom::ServiceHandler>();
