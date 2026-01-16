@@ -7,35 +7,39 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { formatString } from '$web-common/formatString'
-import { useShieldsState, useShieldsActions } from '../lib/shields_context'
-import { getString } from '../lib/strings'
+import { useShieldsApi } from '../api/shields_api_context'
+import { getString } from './strings'
 import { style } from './footer.style'
 
 export function Footer() {
-  const actions = useShieldsActions()
-  const shieldsEnabled = useShieldsState(
-    (s) => s.siteBlockInfo.isBraveShieldsEnabled,
-  )
-  const adblockOnlyEnabled = useShieldsState(
-    (s) => s.siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled,
-  )
-  const showAdvancedSettings = useShieldsState((s) => s.showAdvancedSettings)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: showAdvancedView } = api.useGetAdvancedViewEnabled()
+
+  if (!siteBlockInfo) {
+    return null
+  }
+
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const adblockOnlyEnabled = siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled
 
   function renderActions() {
-    if (shieldsEnabled && !showAdvancedSettings && !adblockOnlyEnabled) {
+    if (shieldsEnabled && !showAdvancedView && !adblockOnlyEnabled) {
       return null
     }
     return (
       <div className='actions'>
         <Button
           kind='outline'
-          onClick={() => actions.openTab('chrome://settings/shields/filters')}
+          onClick={() =>
+            api.actions.openTab('chrome://settings/shields/filters')
+          }
         >
           {getString('BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS')}
         </Button>
         <Button
           kind='outline'
-          onClick={() => actions.openTab('chrome://settings/shields')}
+          onClick={() => api.actions.openTab('chrome://settings/shields')}
         >
           {getString('BRAVE_SHIELDS_GLOBAL_SETTINGS')}
         </Button>
@@ -55,7 +59,7 @@ export function Footer() {
             $1: (content) => (
               <button
                 onClick={() => {
-                  actions.openTab('https://brave.com/privacy-features/')
+                  api.actions.openTab('https://brave.com/privacy-features/')
                 }}
               >
                 {content}

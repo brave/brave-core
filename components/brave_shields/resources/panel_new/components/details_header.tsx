@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useShieldsState } from '../lib/shields_context'
+import { useShieldsApi } from '../api/shields_api_context'
 
 import { style } from './details_header.style'
 
@@ -17,7 +17,9 @@ interface Props {
 }
 
 export function DetailsHeader(props: Props) {
-  const host = useShieldsState((s) => s.siteBlockInfo.host)
+  const api = useShieldsApi()
+  const { getSiteBlockInfoData } = api.useGetSiteBlockInfo()
+  const host = getSiteBlockInfoData?.host ?? ''
 
   return (
     <div data-css-scope={style.scope}>

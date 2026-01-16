@@ -6,18 +6,21 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useShieldsState } from '../lib/shields_context'
-import { getString } from '../lib/strings'
+import { useShieldsApi } from '../api/shields_api_context'
+import { getString } from './strings'
 
 import { style } from './adblock_only_notice.style'
 
 export function AdBlockOnlyNotice() {
-  const shieldsEnabled = useShieldsState(
-    (s) => s.siteBlockInfo.isBraveShieldsEnabled,
-  )
-  const adblockOnlyEnabled = useShieldsState(
-    (s) => s.siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled,
-  )
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+
+  if (!siteBlockInfo) {
+    return null
+  }
+
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const adblockOnlyEnabled = siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled
 
   const showNotice = shieldsEnabled && adblockOnlyEnabled
   if (!showNotice) {

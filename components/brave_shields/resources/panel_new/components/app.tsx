@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useShieldsState, useShieldsActions } from '../lib/shields_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { MainCard } from './main_card'
 import { Footer } from './footer'
 import { AdvancedSettingsToggle } from './advanced_settings_toggle'
@@ -15,6 +15,8 @@ import { AdsBlockedDetails } from './ads_blocked_details'
 import { FingerprintingDetails } from './fingerprinting_details'
 import { ScriptsBlockedDetails } from './scripts_blocked_details'
 import { AdblockOnlyPrompt } from './adblock_only_prompt'
+import { useInitializedStatus } from './use_initialized_status'
+import { useCacheInvalidator } from './use_cache_invalidator'
 
 import { style } from './app.style'
 
@@ -25,16 +27,17 @@ type AppView =
   | 'fingerprinting-details'
 
 export function App() {
-  const actions = useShieldsActions()
-  const browserWindowHeight = useShieldsState((s) => s.browserWindowHeight)
-  const initialized = useShieldsState((s) => s.initialized)
+  useCacheInvalidator()
+
+  const api = useShieldsApi()
+  const { data: browserWindowHeight } = api.useGetBrowserWindowHeight()
+  const initialized = useInitializedStatus()
   const [view, setView] = React.useState<AppView>('main')
+
   const onBack = () => setView('main')
 
   React.useEffect(() => {
     if (initialized) {
-      actions.notifyAppReady()
-    } else {
       setView('main')
     }
   }, [initialized])
@@ -62,7 +65,7 @@ export function App() {
   }
 
   const inlineStyles = {
-    '--browser-window-height': Math.max(browserWindowHeight, 600) + 'px',
+    '--browser-window-height': Math.max(browserWindowHeight ?? 0, 600) + 'px',
   }
 
   return (

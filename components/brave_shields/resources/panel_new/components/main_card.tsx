@@ -8,28 +8,30 @@ import Button from '@brave/leo/react/button'
 import Toggle from '@brave/leo/react/toggle'
 
 import { formatString } from '$web-common/formatString'
-import { useShieldsState, useShieldsActions } from '../lib/shields_context'
-import { getString } from '../lib/strings'
+import { useShieldsApi } from '../api/shields_api_context'
+import { getString } from './strings'
 
 import { style } from './main_card.style'
 
 export function MainCard() {
-  const actions = useShieldsActions()
-  const favicon = useShieldsState((s) => s.siteBlockInfo?.faviconUrl.url ?? '')
-  const siteHost = useShieldsState((s) => s.siteBlockInfo?.host ?? '')
-  const shieldsEnabled = useShieldsState((s) => {
-    return s.siteBlockInfo?.isBraveShieldsEnabled ?? false
-  })
-  const trackersAndAdsBlocked = useShieldsState((s) => {
-    return s.siteBlockInfo?.totalBlockedResources ?? 0
-  })
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+
+  if (!siteBlockInfo) {
+    return null
+  }
+
+  const favicon = siteBlockInfo.faviconUrl.url
+  const siteHost = siteBlockInfo.host
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const trackersAndAdsBlocked = siteBlockInfo.totalBlockedResources
 
   function renderBlockInfo() {
     if (!shieldsEnabled) {
       return (
         <div className='report-prompt'>
           {getString('BRAVE_SHIELDS_SITE_NOT_WORKING')}
-          <Button onClick={actions.openWebCompatReporter}>
+          <Button onClick={api.actions.openWebCompatWindow}>
             {getString('BRAVE_SHIELDS_REPORT')}
           </Button>
         </div>
@@ -66,7 +68,7 @@ export function MainCard() {
         </div>
         <Toggle
           checked={shieldsEnabled}
-          onChange={(event) => actions.setShieldsEnabled(event.checked)}
+          onChange={(event) => api.setBraveShieldsEnabled([event.checked])}
         />
       </div>
       {renderBlockInfo()}

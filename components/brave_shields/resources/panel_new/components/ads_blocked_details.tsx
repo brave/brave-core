@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { useShieldsState } from '../lib/shields_context'
-import { getString } from '../lib/strings'
+import { useShieldsApi } from '../api/shields_api_context'
+import { getString } from './strings'
 import { DetailsHeader } from './details_header'
 import { ResourceListView } from './resource_list_view'
 
@@ -17,7 +17,9 @@ interface Props {
 }
 
 export function AdsBlockedDetails(props: Props) {
-  const adsList = useShieldsState((s) => s.siteBlockInfo.adsList)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const adsList = siteBlockInfo?.adsList ?? []
   const title = getString('BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED_TITLE')
   return (
     <main data-css-scope={style.scope}>
