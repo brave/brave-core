@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+
+source_set("browser") {
+  sources = [
+    "content_settings_browsing_data_utils.h",
+    "content_settings_browsing_data_utils.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/profile",
+    "//components/content_settings/core/browser",
+    "//ios/chrome/browser/content_settings/model",
+  ]
+}

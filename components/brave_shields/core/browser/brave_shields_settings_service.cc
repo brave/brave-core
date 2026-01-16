@@ -10,7 +10,6 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/browser/permission_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -294,38 +293,6 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
   }
 
   return false;
-}
-
-void BraveShieldsSettingsService::RemoveBraveShieldsSiteSettingsData(
-    const base::Time& delete_begin,
-    const base::Time& delete_end) {
-  // Remove content settings (shields enabled/disabled, block scripts,
-  // fingerprinting)
-  const auto* permission_settings_registry =
-      content_settings::PermissionSettingsRegistry::GetInstance();
-  for (const content_settings::PermissionSettingsInfo* info :
-       *permission_settings_registry) {
-    host_content_settings_map_->ClearSettingsForOneTypeWithPredicate(
-        info->website_settings_info()->type(), delete_begin, delete_end,
-        HostContentSettingsMap::PatternSourcePredicate());
-  }
-
-  // Remove website settings (cosmetic filtering, auto shred)
-  static constexpr ContentSettingsType kBraveWebSettings[] = {
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      ContentSettingsType::BRAVE_AUTO_SHRED, ContentSettingsType::BRAVE_PSST};
-
-  for (const auto type : kBraveWebSettings) {
-    if (!content_settings::WebsiteSettingsRegistry::GetInstance()->Get(type)) {
-      // If setting isn't registered for some reason (e.g. feature is disabled)
-      // then skip it.
-      continue;
-    }
-
-    host_content_settings_map_->ClearSettingsForOneTypeWithPredicate(
-        type, delete_begin, delete_end,
-        HostContentSettingsMap::PatternSourcePredicate());
-  }
 }
 
 }  // namespace brave_shields

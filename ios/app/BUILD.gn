@@ -37,6 +37,7 @@ source_set("app") {
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
+    "//brave/components/content_settings/ios/browser",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",

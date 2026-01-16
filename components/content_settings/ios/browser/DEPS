@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/ios/browser/api/profile",
+  "+ios/chrome/browser/content_settings/model",
+]

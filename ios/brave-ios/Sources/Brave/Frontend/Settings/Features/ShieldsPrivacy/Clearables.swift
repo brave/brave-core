@@ -168,9 +168,7 @@ class SiteAndShieldsSettingsClearable: Clearable {
         continuation.resume()
       })
     }
-    BraveShieldsSettingsServiceFactory.get(
-      profile: profile
-    )?.removeBraveShieldsSiteSettingsData()
+    BraveRemoveSiteSettingsData(Date.distantPast, Date.distantFuture, profile)
   }
 }
 
