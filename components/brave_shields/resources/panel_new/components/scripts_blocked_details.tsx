@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState, useAppActions } from './app_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { getString } from '../lib/strings'
 import { DetailsHeader } from './details_header'
 import { ResourceListView } from './resource_list_view'
@@ -17,13 +17,11 @@ interface Props {
 }
 
 export function ScriptsBlockedDetails(props: Props) {
-  const actions = useAppActions()
-  const allowedList = useAppState((s) =>
-    s.siteBlockInfo.allowedJsList.map((item) => item.url),
-  )
-  const blockedList = useAppState((s) =>
-    s.siteBlockInfo.blockedJsList.map((item) => item.url),
-  )
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+
+  const allowedList = siteBlockInfo.allowedJsList.map((item) => item.url)
+  const blockedList = siteBlockInfo.blockedJsList.map((item) => item.url)
 
   return (
     <main data-css-scope={style.scope}>
@@ -37,7 +35,7 @@ export function ScriptsBlockedDetails(props: Props) {
             <div className='list-header allow-header'>
               {getString('BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL')} (
               {allowedList.length})
-              <button onClick={() => actions.blockAllowedScripts(allowedList)}>
+              <button onClick={() => api.blockAllowedScripts.mutate(allowedList)}>
                 {getString('BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL')}
               </button>
             </div>
@@ -45,7 +43,7 @@ export function ScriptsBlockedDetails(props: Props) {
               <ResourceListView
                 urls={allowedList}
                 actionText={getString('BRAVE_SHIELDS_SCRIPT_BLOCK')}
-                actionHandler={(url) => actions.blockAllowedScripts([url])}
+                actionHandler={(url) => api.blockAllowedScripts.mutate([url])}
               />
             </div>
           </>
@@ -55,7 +53,7 @@ export function ScriptsBlockedDetails(props: Props) {
             <div className='list-header block-header'>
               {getString('BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL')} (
               {blockedList.length})
-              <button onClick={() => actions.allowScriptsOnce(blockedList)}>
+              <button onClick={() => api.allowScriptsOnce.mutate(blockedList)}>
                 {getString('BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL')}
               </button>
             </div>
@@ -63,7 +61,7 @@ export function ScriptsBlockedDetails(props: Props) {
               <ResourceListView
                 urls={blockedList}
                 actionText={getString('BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE')}
-                actionHandler={(url) => actions.allowScriptsOnce([url])}
+                actionHandler={(url) => api.allowScriptsOnce.mutate([url])}
               />
             </div>
           </>

@@ -7,8 +7,8 @@ import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../lib/strings'
-import { ContentSettingsType } from '../state/app_state'
-import { useAppState, useAppActions } from './app_context'
+import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m'
+import { useShieldsApi } from '../api/shields_api_context'
 import { DetailsHeader } from './details_header'
 
 import { style } from './fingerprinting_details.style'
@@ -38,9 +38,12 @@ interface Props {
 }
 
 export function FingerprintingDetails(props: Props) {
-  const actions = useAppActions()
-  const invokedList = useAppState((s) => s.siteBlockInfo.invokedWebcompatList)
-  const webcompatSettings = useAppState((s) => s.siteSettings.webcompatSettings)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: siteSettings } = api.useGetSiteSettings()
+
+  const invokedList = siteBlockInfo.invokedWebcompatList
+  const webcompatSettings = siteSettings.webcompatSettings
 
   // Build the list of toggles that will be displayed from invokedWebcompatList.
   // Note that the toggle is *on* if the webcompat setting is *off*. (Enabling
@@ -67,7 +70,7 @@ export function FingerprintingDetails(props: Props) {
       >
         <p className='header-text'>
           {getString('BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION')}
-          <button onClick={() => actions.openTab(learnMoreUrl)}>
+          <button onClick={() => api.actions.openTab(learnMoreUrl)}>
             {getString('BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT')}
           </button>
         </p>
@@ -80,7 +83,7 @@ export function FingerprintingDetails(props: Props) {
               size='small'
               checked={entry.enabled}
               onChange={(event) => {
-                actions.setWebcompatEnabled(entry.value, !event.checked)
+                api.setWebcompatEnabled.mutate(entry.value, !event.checked)
               }}
             />
           </div>

@@ -19,6 +19,10 @@ export class ShieldsPanelProxy {
     )
   }
 
+  createUIHandlerRemote(impl: mojom.UIHandlerInterface): mojom.UIHandlerRemote {
+    return new mojom.UIHandlerReceiver(impl).$.bindNewPipeAndPassRemote()
+  }
+
   static getInstance(): ShieldsPanelProxy {
     if (!instance) {
       instance = new this()

@@ -6,20 +6,18 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useAppState, useAppActions } from './app_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { getString } from '../lib/strings'
 
 import { style } from './advanced_settings_toggle.style'
 
 export function AdvancedSettingsToggle() {
-  const actions = useAppActions()
-  const shieldsEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsEnabled,
-  )
-  const adblockOnlyEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled,
-  )
-  const showAdvancedSettings = useAppState((s) => s.showAdvancedSettings)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: showAdvancedView } = api.useGetAdvancedViewEnabled()
+
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const adblockOnlyEnabled = siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled
 
   if (!shieldsEnabled || adblockOnlyEnabled) {
     return null
@@ -28,17 +26,17 @@ export function AdvancedSettingsToggle() {
   return (
     <div
       data-css-scope={style.scope}
-      data-expanded={showAdvancedSettings}
+      data-expanded={showAdvancedView}
     >
       <button
         className='view-toggle'
         onClick={() => {
-          actions.setShowAdvancedSettings(!showAdvancedSettings)
+          api.setAdvancedViewEnabled.mutate(!showAdvancedView)
         }}
       >
         <Icon name='settings' />
         <span>{getString('BRAVE_SHIELDS_ADVANCED_OPTIONS')}</span>
-        <Icon name={showAdvancedSettings ? 'carat-up' : 'carat-down'} />
+        <Icon name={showAdvancedView ? 'carat-up' : 'carat-down'} />
       </button>
     </div>
   )

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-import { useAppState, useAppActions } from './app_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { getString } from '../lib/strings'
 import { formatString } from '$web-common/formatString'
 
@@ -16,16 +16,13 @@ const learnMoreURL =
   'https://support.brave.app/hc/en-us/articles/38076796692109'
 
 export function AdblockOnlyPrompt() {
-  const shieldsEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsEnabled,
-  )
-  const adblockOnlyEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled,
-  )
-  const showDisabledPrompt = useAppState(
-    (s) => s.siteBlockInfo.showShieldsDisabledAdBlockOnlyModePrompt,
-  )
-  const repeatedReloadsDetected = useAppState((s) => s.repeatedReloadsDetected)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: repeatedReloadsDetected } = api.useRepeatedReloadsDetected()
+
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const adblockOnlyEnabled = siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled
+  const showDisabledPrompt = siteBlockInfo.showShieldsDisabledAdBlockOnlyModePrompt
 
   if (!adblockOnlyEnabled && shieldsEnabled && repeatedReloadsDetected) {
     return <AdblockOnlyEnablePrompt />
@@ -43,7 +40,7 @@ export function AdblockOnlyPrompt() {
 }
 
 function AdblockOnlyEnablePrompt() {
-  const actions = useAppActions()
+  const api = useShieldsApi()
   return (
     <div data-css-scope={style.scope}>
       <h4>
@@ -58,7 +55,7 @@ function AdblockOnlyEnablePrompt() {
           ),
           {
             $1: (content) => (
-              <button onClick={() => actions.openTab(learnMoreURL)}>
+              <button onClick={() => api.actions.openTab(learnMoreURL)}>
                 {content}
               </button>
             ),
@@ -66,12 +63,12 @@ function AdblockOnlyEnablePrompt() {
         )}
       </p>
       <div className='actions'>
-        <Button onClick={() => actions.setAdBlockOnlyModeEnabled(true)}>
+        <Button onClick={() => api.setBraveShieldsAdBlockOnlyModeEnabled.mutate(true)}>
           {getString('BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE')}
         </Button>
         <Button
           kind='plain'
-          onClick={actions.dismissAdBlockOnlyModePrompt}
+          onClick={() => api.setBraveShieldsAdBlockOnlyModePromptDismissed.mutate()}
         >
           {getString('BRAVE_SHIELDS_DISMISS_ALERT')}
         </Button>
@@ -81,7 +78,7 @@ function AdblockOnlyEnablePrompt() {
 }
 
 function AdblockOnlyFeedbackPrompt() {
-  const actions = useAppActions()
+  const api = useShieldsApi()
   return (
     <div data-css-scope={style.scope}>
       <h4>
@@ -91,14 +88,14 @@ function AdblockOnlyFeedbackPrompt() {
         {getString('BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_DESC')}
       </p>
       <div className='actions'>
-        <Button onClick={actions.closeUI}>
+        <Button onClick={api.actions.closeUI}>
           {getString(
             'BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_LOOKS_GOOD',
           )}
         </Button>
         <Button
           kind='plain'
-          onClick={actions.openWebCompatReporter}
+          onClick={api.actions.openWebCompatWindow}
         >
           {getString(
             'BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_REPORT_SITE',

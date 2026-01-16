@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 
-import { createAppHandler } from '../state/app_handler_mock'
-import { AppProvider } from '../components/app_context'
+import { createMockShieldsAPI } from '../api/shields_api_mock'
+import { ShieldsApiProvider } from '../api/shields_api_context'
 import { App } from '../components/app'
 
 interface StorybookAppProps {}
@@ -15,9 +15,9 @@ interface StorybookAppProps {}
 function StorybookApp(props: StorybookAppProps) {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <AppProvider createHandler={createAppHandler}>
+      <ShieldsApiProvider api={createMockShieldsAPI()}>
         <App />
-      </AppProvider>
+      </ShieldsApiProvider>
     </div>
   )
 }

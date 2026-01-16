@@ -7,17 +7,18 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppState, useAppActions } from './app_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { getString } from '../lib/strings'
 
 import {
   AdBlockMode,
   HttpsUpgradeMode,
-  ContentSetting,
-  ContentSettingSource,
   FingerprintMode,
   CookieBlockMode,
-} from '../state/app_state'
+  ContentSettingSource,
+} from 'gen/brave/components/brave_shields/core/common/shields_settings.mojom.m.js'
+
+import { ContentSetting } from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 
 import { style } from './advanced_settings.style'
 
@@ -28,22 +29,21 @@ interface Props {
 }
 
 export function AdvancedSettings(props: Props) {
-  const shieldsEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsEnabled,
-  )
-  const adblockOnlyEnabled = useAppState(
-    (s) => s.siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled,
-  )
-  const showAdvancedSettings = useAppState((s) => s.showAdvancedSettings)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: showAdvancedView } = api.useGetAdvancedViewEnabled()
 
-  if (!shieldsEnabled || !showAdvancedSettings || adblockOnlyEnabled) {
+  const shieldsEnabled = siteBlockInfo.isBraveShieldsEnabled
+  const adblockOnlyEnabled = siteBlockInfo.isBraveShieldsAdBlockOnlyModeEnabled
+
+  if (!shieldsEnabled || !showAdvancedView || adblockOnlyEnabled) {
     return null
   }
 
   return (
     <div
       data-css-scope={style.scope}
-      data-expanded={showAdvancedSettings}
+      data-expanded={showAdvancedView}
       className='scrollable'
     >
       <AdBlockControl showDetails={props.showAdsBlocked} />
@@ -58,10 +58,14 @@ export function AdvancedSettings(props: Props) {
 }
 
 function AdBlockControl(props: { showDetails: () => void }) {
-  const actions = useAppActions()
-  const adBlockMode = useAppState((s) => s.siteSettings.adBlockMode)
-  const adsBlocked = useAppState((s) => s.siteBlockInfo.adsList.length)
-  const isManaged = useAppState((s) => s.siteBlockInfo.isBraveShieldsManaged)
+  const api = useShieldsApi()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+
+  const adBlockMode = siteSettings.adBlockMode
+  const adsBlocked = siteBlockInfo.adsList.length
+  const isManaged = siteBlockInfo.isBraveShieldsManaged
+
   return (
     <div>
       <Icon name='hand-raised' />
@@ -69,7 +73,7 @@ function AdBlockControl(props: { showDetails: () => void }) {
         value={adBlockMode}
         disabled={isManaged}
         onChange={(event) => {
-          actions.setAdBlockMode(parseInt(event.currentTarget.value))
+          api.setAdBlockMode.mutate(parseInt(event.currentTarget.value))
         }}
       >
         <SelectButton>
@@ -96,10 +100,12 @@ function AdBlockControl(props: { showDetails: () => void }) {
 }
 
 function HttpsUpgradeControls() {
-  const actions = useAppActions()
-  const httpsUpgradeMode = useAppState((s) => s.siteSettings.httpsUpgradeMode)
-  const isHttpsByDefaultEnabled = useAppState((s) => s.isHttpsByDefaultEnabled)
-  const isTorProfile = useAppState((s) => s.isTorProfile)
+  const api = useShieldsApi()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: isHttpsByDefaultEnabled } = api.useIsHttpsByDefaultEnabled()
+  const { data: isTorProfile } = api.useIsTorProfile()
+
+  const httpsUpgradeMode = siteSettings.httpsUpgradeMode
 
   if (!isHttpsByDefaultEnabled || isTorProfile) {
     return null
@@ -111,7 +117,7 @@ function HttpsUpgradeControls() {
       <select
         value={httpsUpgradeMode}
         onChange={(event) => {
-          actions.setHttpsUpgradeMode(parseInt(event.currentTarget.value))
+          api.setHttpsUpgradeMode.mutate(parseInt(event.currentTarget.value))
         }}
       >
         <SelectButton />
@@ -131,19 +137,20 @@ function HttpsUpgradeControls() {
 }
 
 function BlockScriptsControls(props: { showDetails: () => void }) {
-  const actions = useAppActions()
-  const jsBlocked = useAppState((s) => s.siteBlockInfo.blockedJsList.length)
-  const jsAllowed = useAppState((s) => s.siteBlockInfo.allowedJsList.length)
-  const isNoscriptEnabled = useAppState((s) => s.siteSettings.isNoscriptEnabled)
-  const isManaged = useAppState((s) => s.siteBlockInfo.isBraveShieldsManaged)
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: siteSettings } = api.useGetSiteSettings()
+
+  const jsBlocked = siteBlockInfo.blockedJsList.length
+  const jsAllowed = siteBlockInfo.allowedJsList.length
+  const isNoscriptEnabled = siteSettings.isNoscriptEnabled
+  const isManaged = siteBlockInfo.isBraveShieldsManaged
   const hasBlockedOrAllowed = jsBlocked > 0 || jsAllowed > 0
 
-  const overrideSource = useAppState(
-    (s) => s.siteSettings.scriptsBlockedOverrideStatus?.overrideSource,
-  )
+  const overrideSource = siteSettings.scriptsBlockedOverrideStatus?.overrideSource
 
-  const scriptsBlockedEnforced = useAppState((s) => {
-    const overrideStatus = s.siteSettings.scriptsBlockedOverrideStatus
+  const scriptsBlockedEnforced = (() => {
+    const overrideStatus = siteSettings.scriptsBlockedOverrideStatus
     if (!overrideStatus) {
       return false
     }
@@ -155,7 +162,7 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
       return false
     }
     return true
-  })
+  })()
 
   const enforcedDescription = () => {
     switch (overrideSource) {
@@ -198,7 +205,7 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
           disabled={isManaged || scriptsBlockedEnforced}
           size='small'
           onChange={(event) => {
-            actions.setIsNoScriptsEnabled(event.checked)
+            api.setIsNoScriptsEnabled.mutate(event.checked)
           }}
         />
       </div>
@@ -215,16 +222,15 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
 }
 
 function FingerprintingControls(props: { showDetails: () => void }) {
-  const actions = useAppActions()
-  const showStrictMode = useAppState((s) => s.showStrictFingerprintingMode)
-  const webcompatExceptionsEnabled = useAppState(
-    (s) => s.isWebcompatExceptionsServiceEnabled,
-  )
-  const isManaged = useAppState((s) => s.siteBlockInfo.isBraveShieldsManaged)
-  const fingerprintMode = useAppState((s) => s.siteSettings.fingerprintMode)
-  const invokedWebcompatCount = useAppState(
-    (s) => s.siteBlockInfo.invokedWebcompatList.length,
-  )
+  const api = useShieldsApi()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: showStrictMode } = api.useShowStrictFingerprintingMode()
+  const { data: webcompatExceptionsEnabled } = api.useIsWebcompatExceptionsServiceEnabled()
+
+  const isManaged = siteBlockInfo.isBraveShieldsManaged
+  const fingerprintMode = siteSettings.fingerprintMode
+  const invokedWebcompatCount = siteBlockInfo.invokedWebcompatList.length
 
   return (
     <div>
@@ -234,7 +240,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
           value={fingerprintMode}
           disabled={isManaged}
           onChange={(event) => {
-            actions.setFingerprintMode(parseInt(event.currentTarget.value))
+            api.setFingerprintMode.mutate(parseInt(event.currentTarget.value))
           }}
         >
           <SelectButton />
@@ -256,7 +262,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
             disabled={isManaged}
             size='small'
             onChange={(event) => {
-              actions.setFingerprintMode(
+              api.setFingerprintMode.mutate(
                 event.checked
                   ? FingerprintMode.STANDARD_MODE
                   : FingerprintMode.ALLOW_MODE,
@@ -280,9 +286,13 @@ function FingerprintingControls(props: { showDetails: () => void }) {
 }
 
 function CookieBlockControls() {
-  const actions = useAppActions()
-  const cookieBlockMode = useAppState((s) => s.siteSettings.cookieBlockMode)
-  const isManaged = useAppState((s) => s.siteBlockInfo.isBraveShieldsManaged)
+  const api = useShieldsApi()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+
+  const cookieBlockMode = siteSettings.cookieBlockMode
+  const isManaged = siteBlockInfo.isBraveShieldsManaged
+
   return (
     <div>
       <Icon name='cookie' />
@@ -290,7 +300,7 @@ function CookieBlockControls() {
         value={cookieBlockMode}
         disabled={isManaged}
         onChange={(event) => {
-          actions.setCookieBlockMode(parseInt(event.currentTarget.value))
+          api.setCookieBlockMode.mutate(parseInt(event.currentTarget.value))
         }}
       >
         <SelectButton />
@@ -310,14 +320,13 @@ function CookieBlockControls() {
 }
 
 function ForgetFirstPartyStorageControls() {
-  const actions = useAppActions()
-  const forgetFeatureEnabled = useAppState(
-    (s) => s.isBraveForgetFirstPartyStorageFeatureEnabled,
-  )
-  const isForgetEnabled = useAppState(
-    (s) => s.siteSettings.isForgetFirstPartyStorageEnabled,
-  )
-  const isManaged = useAppState((s) => s.siteBlockInfo.isBraveShieldsManaged)
+  const api = useShieldsApi()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const { data: forgetFeatureEnabled } = api.useIsBraveForgetFirstPartyStorageFeatureEnabled()
+
+  const isForgetEnabled = siteSettings.isForgetFirstPartyStorageEnabled
+  const isManaged = siteBlockInfo.isBraveShieldsManaged
 
   if (!forgetFeatureEnabled) {
     return null
@@ -333,7 +342,7 @@ function ForgetFirstPartyStorageControls() {
           disabled={isManaged}
           size='small'
           onChange={(event) => {
-            actions.setForgetFirstPartyStorageEnabled(event.checked)
+            api.setForgetFirstPartyStorageEnabled.mutate(event.checked)
           }}
         />
       </div>
@@ -343,8 +352,8 @@ function ForgetFirstPartyStorageControls() {
 }
 
 function BlockElementsControls() {
-  const actions = useAppActions()
-  const blockedElementsPresent = useAppState((s) => s.blockedElementsPresent)
+  const api = useShieldsApi()
+  const { data: blockedElementsPresent } = api.useAreAnyBlockedElementsPresent()
 
   if (!blockedElementsPresent) {
     return null
@@ -355,7 +364,7 @@ function BlockElementsControls() {
       <Icon name='disable-outline' />
       <div className='block-elements'>
         <div>{getString('BRAVE_SHIELDS_BLOCK_ELEMENTS')}</div>
-        <button onClick={actions.resetBlockedElements}>
+        <button onClick={() => api.resetBlockedElements.mutate()}>
           {getString('BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS')}
         </button>
       </div>

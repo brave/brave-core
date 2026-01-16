@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState } from './app_context'
+import { useShieldsApi } from '../api/shields_api_context'
 import { MainCard } from './main_card'
 import { Footer } from './footer'
 import { AdvancedSettingsToggle } from './advanced_settings_toggle'
@@ -15,6 +15,8 @@ import { AdsBlockedDetails } from './ads_blocked_details'
 import { FingerprintingDetails } from './fingerprinting_details'
 import { ScriptsBlockedDetails } from './scripts_blocked_details'
 import { AdblockOnlyPrompt } from './adblock_only_prompt'
+import { useVisibilityObserver } from './use_visibility_observer'
+import { useInitializedStatus } from './use_initialized_status'
 
 import { style } from './app.style'
 
@@ -25,8 +27,13 @@ type AppView =
   | 'fingerprinting-details'
 
 export function App() {
-  const browserWindowHeight = useAppState((s) => s.browserWindowHeight)
+  const api = useShieldsApi()
+  const { data: browserWindowHeight } = api.useGetBrowserWindowHeight()
+  const initialized = useInitializedStatus()
   const [view, setView] = React.useState<AppView>('main')
+
+  useVisibilityObserver()
+
   const onBack = () => setView('main')
 
   React.useEffect(() => {
@@ -36,6 +43,10 @@ export function App() {
     document.addEventListener('visibilitychange', listener)
     return () => document.removeEventListener('visibilitychange', listener)
   }, [])
+
+  if (!initialized) {
+    return
+  }
 
   function renderContent() {
     switch (view) {
