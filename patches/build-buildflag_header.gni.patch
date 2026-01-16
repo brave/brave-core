@@ -1,0 +1,19 @@
+diff --git a/build/buildflag_header.gni b/build/buildflag_header.gni
+index f7b42f724dd78f7af6d715c6368b80e2550964e7..4863d959576a3d498df480fa469b2ca13a178925 100644
+--- a/build/buildflag_header.gni
++++ b/build/buildflag_header.gni
+@@ -127,11 +127,13 @@ template("buildflag_header") {
+     forward_variables_from(invoker,
+                            [
+                              "deps",
+-                             "public_deps",
+                              "testonly",
+                              "visibility",
+                            ])
+ 
+     public_deps = [ "//build:buildflag_header_h" ]
++    if (defined(invoker.public_deps)) {
++      public_deps += invoker.public_deps
++    }
+   }
+ }
