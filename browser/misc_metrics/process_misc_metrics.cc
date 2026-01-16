@@ -7,10 +7,11 @@
 
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/misc_metrics/default_browser_monitor.h"
+#include "brave/browser/misc_metrics/default_browser_monitor_delegate_impl.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
@@ -28,17 +29,16 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   new_tab_metrics_ = std::make_unique<NewTabMetrics>(local_state);
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
   split_view_metrics_ = std::make_unique<SplitViewMetrics>(local_state);
-  default_browser_monitor_ =
-      std::make_unique<misc_metrics::DefaultBrowserMonitor>(local_state);
+  default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>(
+      std::make_unique<DefaultBrowserMonitorDelegateImpl>(local_state));
   default_browser_monitor_->Start();
 #else
-  privacy_hub_metrics_ =
-      std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);
-  tab_metrics_ = std::make_unique<misc_metrics::TabMetrics>(local_state);
+  default_browser_monitor_ = std::make_unique<DefaultBrowserMonitor>();
+  privacy_hub_metrics_ = std::make_unique<PrivacyHubMetrics>(local_state);
+  tab_metrics_ = std::make_unique<TabMetrics>(local_state);
 #endif
-  doh_metrics_ = std::make_unique<misc_metrics::DohMetrics>(local_state);
-  uptime_monitor_ =
-      std::make_unique<misc_metrics::UptimeMonitorImpl>(local_state);
+  doh_metrics_ = std::make_unique<DohMetrics>(local_state);
+  uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
 }
 
 ProcessMiscMetrics::~ProcessMiscMetrics() = default;
@@ -68,6 +68,10 @@ TabMetrics* ProcessMiscMetrics::tab_metrics() {
   return tab_metrics_.get();
 }
 #endif
+
+DefaultBrowserMonitor* ProcessMiscMetrics::default_browser_monitor() {
+  return default_browser_monitor_.get();
+}
 
 UptimeMonitorImpl* ProcessMiscMetrics::uptime_monitor() {
   return uptime_monitor_.get();

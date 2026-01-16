@@ -7,15 +7,18 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_H_
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
-#include "base/functional/callback_forward.h"
+#include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -47,8 +50,10 @@ inline constexpr char kPagesLoadedRewardsWalletHistogramName[] =
     "Brave.Core.PagesLoaded.RewardsWallet";
 inline constexpr char kPagesReloadedHistogramName[] =
     "Brave.Core.PagesReloaded";
-inline constexpr char kDomainsLoadedHistogramName[] =
-    "Brave.Core.DomainsLoaded";
+inline constexpr char kDomainsLoadedDefaultHistogramName[] =
+    "Brave.Core.DomainsLoaded.Default";
+inline constexpr char kDomainsLoadedNonDefaultHistogramName[] =
+    "Brave.Core.DomainsLoaded.NonDefault";
 inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
     "Brave.Core.FailedHTTPSUpgrades.2";
 inline constexpr char kBookmarkCountHistogramName[] =
@@ -56,11 +61,11 @@ inline constexpr char kBookmarkCountHistogramName[] =
 inline constexpr char kFirstPageLoadTimeHistogramName[] =
     "Brave.Core.FirstPageLoadTime";
 inline constexpr char kSearchBraveDailyHistogramName[] =
-    "Brave.Search.BraveDaily";
+    "Brave.Search.BraveDaily.2";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
-class PageMetrics {
+class PageMetrics : public DefaultBrowserMonitor::Observer {
  public:
   using FirstRunTimeCallback = base::RepeatingCallback<base::Time(void)>;
 
@@ -69,14 +74,18 @@ class PageMetrics {
               HostContentSettingsMap* host_content_settings_map,
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
+              DefaultBrowserMonitor* default_browser_monitor,
               FirstRunTimeCallback first_run_time_callback);
-  ~PageMetrics();
+  ~PageMetrics() override;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void IncrementPagesLoadedCount(bool is_reload);
 
-  void OnBraveQuery();
+  void ReportBraveQuery();
+
+  // DefaultBrowserMonitor::Observer:
+  void OnDefaultBrowserStatusChanged() override;
 
  private:
   void InitStorage();
@@ -103,6 +112,8 @@ class PageMetrics {
   void OnBookmarkCountResult(
       std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result);
 
+  void ReportDomainsLoadedWithStatus();
+
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
   std::unique_ptr<WeeklyStorage> interstitial_allow_decisions_storage_;
@@ -127,6 +138,14 @@ class PageMetrics {
 
   FirstRunTimeCallback first_run_time_callback_;
   base::Time first_run_time_;
+
+  std::optional<int> current_domain_count_;
+  bool has_pending_brave_query_ = false;
+
+  raw_ptr<DefaultBrowserMonitor> default_browser_monitor_;
+  base::ScopedObservation<DefaultBrowserMonitor,
+                          DefaultBrowserMonitor::Observer>
+      default_browser_observation_{this};
 
   PrefChangeRegistrar pref_change_registrar_;
 
