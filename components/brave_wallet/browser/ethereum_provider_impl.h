@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/container/node_hash_map.h"
 #include "url/origin.h"
 
 class HostContentSettingsMap;
@@ -146,6 +147,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                            RequestEthereumPermissionsNoWallet);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsLocked);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
+                           RequestEthereumPermissionsLockedCallbackCaching);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, RequestEthCoinbase);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsWithAccounts);
@@ -154,6 +157,24 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
+
+  struct PendingRequestEthereumPersmissionsCallback {
+    PendingRequestEthereumPersmissionsCallback();
+    ~PendingRequestEthereumPersmissionsCallback();
+
+    PendingRequestEthereumPersmissionsCallback(
+        PendingRequestEthereumPersmissionsCallback&&);
+
+    PendingRequestEthereumPersmissionsCallback(RequestCallback in_callback,
+                                               base::Value in_id,
+                                               url::Origin in_origin,
+                                               std::string in_method);
+
+    RequestCallback callback;
+    base::Value id;
+    url::Origin origin;
+    std::string method;
+  };
 
   void SetupMethodHandlers();
 
@@ -342,10 +363,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   base::flat_map<std::string, base::Value> chain_ids_;
   base::flat_map<std::string, RequestCallback> add_tx_callbacks_;
   base::flat_map<std::string, base::Value> add_tx_ids_;
-  RequestCallback pending_request_ethereum_permissions_callback_;
-  base::Value pending_request_ethereum_permissions_id_;
-  url::Origin pending_request_ethereum_permissions_origin_;
-  std::string pending_request_ethereum_permissions_method_;
+  absl::node_hash_map<url::Origin, PendingRequestEthereumPersmissionsCallback>
+      pending_request_ethereum_permissions_callbacks_;
   mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
