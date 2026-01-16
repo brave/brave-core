@@ -111,13 +111,17 @@ void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     const GURL& request_url,
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  auto* rfh = content::RenderFrameHost::FromFrameToken(render_frame_token);
+  if (!rfh) {
+    return;
+  }
+
   auto subresource = request_url.spec();
-  WebContents* web_contents =
-      WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+  WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
 
   if (web_contents) {
@@ -144,7 +148,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     }
   }
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-      request_url.spec(), frame_tree_node_id);
+      request_url.spec(), web_contents);
 }
 
 #if !BUILDFLAG(IS_ANDROID)

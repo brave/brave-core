@@ -47,8 +47,7 @@ class RenderFrameHost;
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
-class BraveProxyingURLLoaderFactory
-    : public network::mojom::URLLoaderFactory {
+class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
  public:
   using DisconnectCallback =
       base::OnceCallback<void(BraveProxyingURLLoaderFactory*)>;
@@ -60,7 +59,7 @@ class BraveProxyingURLLoaderFactory
         BraveProxyingURLLoaderFactory& factory,
         uint64_t request_id,
         int32_t network_service_request_id,
-        content::FrameTreeNodeId frame_tree_node_id,
+        content::GlobalRenderFrameHostToken render_frame_token,
         uint32_t options,
         const network::ResourceRequest& request,
         content::BrowserContext* browser_context,
@@ -125,7 +124,7 @@ class BraveProxyingURLLoaderFactory
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
-    const content::FrameTreeNodeId frame_tree_node_id_;
+    const content::GlobalRenderFrameHostToken render_frame_token_;
     const uint32_t options_;
 
     raw_ptr<content::BrowserContext> browser_context_ = nullptr;
@@ -184,7 +183,7 @@ class BraveProxyingURLLoaderFactory
   BraveProxyingURLLoaderFactory(
       BraveRequestHandler& request_handler,
       content::BrowserContext* browser_context,
-      content::FrameTreeNodeId frame_tree_node_id,
+      content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect,
@@ -226,7 +225,7 @@ class BraveProxyingURLLoaderFactory
 
   const raw_ref<BraveRequestHandler> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
-  const content::FrameTreeNodeId frame_tree_node_id_;
+  const content::GlobalRenderFrameHostToken render_frame_token_;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
   mojo::Remote<network::mojom::URLLoaderFactory> target_factory_;

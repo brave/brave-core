@@ -32,7 +32,7 @@
 namespace content {
 class BrowserContext;
 class RenderFrameHost;
-}
+}  // namespace content
 
 // Ensures that all web socket requests go through Brave network request
 // handling framework. Cargoculted from |WebRequestProxyingWebSocket|.
@@ -42,17 +42,15 @@ class BraveProxyingWebSocket
       public network::mojom::TrustedHeaderClient {
  public:
   using WebSocketFactory = content::ContentBrowserClient::WebSocketFactory;
-  using DisconnectCallback =
-      base::OnceCallback<void(BraveProxyingWebSocket*)>;
+  using DisconnectCallback = base::OnceCallback<void(BraveProxyingWebSocket*)>;
 
-  BraveProxyingWebSocket(
-      WebSocketFactory factory,
-      const network::ResourceRequest& request,
-      content::FrameTreeNodeId frame_tree_node_id,
-      content::BrowserContext* browser_context,
-      scoped_refptr<RequestIDGenerator> request_id_generator,
-      BraveRequestHandler& handler,
-      DisconnectCallback on_disconnect);
+  BraveProxyingWebSocket(WebSocketFactory factory,
+                         const network::ResourceRequest& request,
+                         content::GlobalRenderFrameHostToken render_frame_token,
+                         content::BrowserContext* browser_context,
+                         scoped_refptr<RequestIDGenerator> request_id_generator,
+                         BraveRequestHandler& handler,
+                         DisconnectCallback on_disconnect);
   BraveProxyingWebSocket(const BraveProxyingWebSocket&) = delete;
   BraveProxyingWebSocket& operator=(const BraveProxyingWebSocket&) = delete;
   ~BraveProxyingWebSocket() override;
@@ -132,7 +130,7 @@ class BraveProxyingWebSocket
   // TODO(iefremov): Init this only once.
   std::shared_ptr<brave::BraveRequestInfo> ctx_;
 
-  const content::FrameTreeNodeId frame_tree_node_id_;
+  const content::GlobalRenderFrameHostToken render_frame_token_;
   content::ContentBrowserClient::WebSocketFactory factory_;
   const raw_ptr<content::BrowserContext> browser_context_;
   scoped_refptr<RequestIDGenerator> request_id_generator_;

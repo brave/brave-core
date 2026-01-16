@@ -103,8 +103,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     // Explicitly specify source when DNS over HTTPS is enabled to avoid
     // using `HostResolverProc` which will be handled by system resolver
     // See https://crbug.com/872665
-    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
+    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure) {
       optional_parameters->source = net::HostResolverSource::DNS;
+    }
 
     elapsed_timer_ = {};
 
@@ -115,8 +116,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           network_anonymization_key, std::move(optional_parameters),
           receiver_.BindNewPipeAndPassRemote());
     } else {
-      auto* web_contents =
-          content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+      auto* web_contents = content::WebContents::FromRenderFrameHost(
+          content::RenderFrameHost::FromFrameToken(ctx->render_frame_token));
       if (!web_contents) {
         elapsed_timer_ = {};
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
@@ -248,7 +249,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
     }
 
     content::devtools_instrumentation::SendAdblockInfo(
-        ctx->frame_tree_node_id, ctx->devtools_request_id.value(), info);
+        ctx->render_frame_token, ctx->devtools_request_id.value(), info);
   }
 
   return previous_result;
@@ -263,7 +264,7 @@ void OnShouldBlockRequestResult(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-        ctx->request_url, ctx->frame_tree_node_id, brave_shields::kAds);
+        ctx->request_url, ctx->render_frame_token, brave_shields::kAds);
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
     new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
@@ -393,9 +394,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() ||
-      ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
-      !ctx->allow_brave_shields || ctx->allow_ads ||
+  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
+      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
+      ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }

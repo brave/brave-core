@@ -63,7 +63,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
 
   static void StartProxying(
       content::BrowserContext* browser_context,
-      content::FrameTreeNodeId frame_tree_node_id,
+      content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
@@ -73,8 +73,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
       const net::SiteForCookies& site_for_cookies,
       const std::optional<std::string>& user_agent,
       content::BrowserContext* browser_context,
-      int frame_id,
-      content::FrameTreeNodeId frame_tree_node_id,
+      content::GlobalRenderFrameHostToken render_frame_token,
       const url::Origin& origin);
 
   void RemoveProxy(BraveProxyingURLLoaderFactory* proxy);
@@ -90,8 +89,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
            base::UniquePtrComparator>
       proxies_;
 
-  std::set<std::unique_ptr<BraveProxyingWebSocket>,
-           base::UniquePtrComparator>
+  std::set<std::unique_ptr<BraveProxyingWebSocket>, base::UniquePtrComparator>
       websocket_proxies_;
 
   base::WeakPtrFactory<ResourceContextData> weak_factory_;

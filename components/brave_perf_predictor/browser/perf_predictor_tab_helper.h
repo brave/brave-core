@@ -55,7 +55,7 @@ class PerfPredictorTabHelper
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   // Called from Brave Shields
   static void DispatchBlockedEvent(const std::string& subresource,
-                                   content::FrameTreeNodeId frame_tree_node_id);
+                                   content::WebContents* web_contents);
 
  private:
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;

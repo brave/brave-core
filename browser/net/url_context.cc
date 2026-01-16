@@ -50,7 +50,7 @@ BraveRequestInfo::~BraveRequestInfo() = default;
 // static
 std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
@@ -70,7 +70,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->resource_type =
       static_cast<blink::mojom::ResourceType>(request.resource_type);
 
-  ctx->frame_tree_node_id = frame_tree_node_id;
+  ctx->render_frame_token = render_frame_token;
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
@@ -89,11 +89,11 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
-    content::WebContents* contents =
-        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
-    if (contents) {
+    auto* rfh =
+        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token);
+    if (rfh) {
       ctx->tab_origin =
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
+          url::Origin::Create(rfh->GetLastCommittedURL()).GetURL();
     }
   }
 
