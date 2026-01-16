@@ -64,6 +64,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
@@ -150,6 +151,7 @@ import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
@@ -1552,6 +1554,7 @@ public class BytecodeTest {
                         TabObscuringHandler.class,
                         DesktopWindowStateManager.class,
                         OneshotSupplier.class,
+                        TabStripTransitionHandler.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
                         NullableObservableSupplier.class,
@@ -1560,7 +1563,7 @@ public class BytecodeTest {
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
                         TopControlsStacker.class,
-                        BrowserControlsStateProvider.class,
+                        BrowserControlsVisibilityManager.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(

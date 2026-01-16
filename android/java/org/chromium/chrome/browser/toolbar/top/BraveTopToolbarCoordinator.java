@@ -18,7 +18,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
+import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
@@ -85,6 +86,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             TabObscuringHandler tabObscuringHandler,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
+            TabStripTransitionHandler tabStripTransitionHandler,
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
             NullableObservableSupplier<Tab> tabSupplier,
@@ -93,7 +95,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,
             TopControlsStacker topControlsStacker,
-            BrowserControlsStateProvider browserControlsStateProvider,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
             Supplier<Integer> incognitoWindowCountSupplier) {
         super(
                 controlContainer,
@@ -121,6 +123,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabObscuringHandler,
                 desktopWindowStateManager,
                 tabStripTransitionDelegateSupplier,
+                tabStripTransitionHandler,
                 onLongClickListener,
                 progressBar,
                 tabSupplier,
@@ -129,7 +132,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 forwardButtonCoordinator,
                 homeButtonDisplay,
                 topControlsStacker,
-                browserControlsStateProvider,
+                browserControlsVisibilityManager,
                 incognitoWindowCountSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
