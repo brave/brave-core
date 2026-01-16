@@ -64,7 +64,7 @@ function SearchSummary(props: { searchQueries: string[] }) {
   return (
     <div className={styles.searchSummary}>
       <Icon name='brave-icon-search-color' />
-      <span>
+      <span data-test-id='search-summary'>
         {message}{' '}
         <a
           className={styles.searchLearnMoreLink}

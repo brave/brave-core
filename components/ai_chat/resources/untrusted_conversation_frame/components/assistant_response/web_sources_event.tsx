@@ -51,7 +51,10 @@ export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
   const hiddenSources = props.sources?.slice(UNEXPANDED_SOURCES_COUNT)
 
   return (
-    <div className={styles.sources}>
+    <div
+      className={styles.sources}
+      data-test-id='web-sources-event'
+    >
       <h4>{getLocale(S.CHAT_UI_SOURCES)}</h4>
       <ul>
         {unhiddenSources.map((source, index) => (
