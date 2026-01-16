@@ -715,6 +715,13 @@ if (enable_brave_ai_chat_agent_profile) {
       [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
 }
 
+if (enable_tab_management_tool) {
+  brave_chrome_browser_deps +=
+      [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
+}
+
 if (toolkit_views) {
   brave_chrome_browser_deps += [
     "//brave/browser/ui/sidebar",

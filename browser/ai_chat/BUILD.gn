@@ -31,6 +31,10 @@ static_library("ai_chat") {
     "upload_file_helper.h",
   ]
 
+  if (enable_tab_management_tool) {
+    sources += [ "tools/tab_management_tool.h" ]
+  }
+
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",
@@ -148,6 +152,36 @@ if (enable_print_preview) {
   }
 }
 
+if (enable_tab_management_tool) {
+  source_set("ai_chat_tab_management_tool_impl") {
+    visibility = [
+      ":browser_tests",
+      ":unit_tests",
+      "//chrome/browser",
+    ]
+
+    sources = [ "tools/tab_management_tool.cc" ]
+
+    public_deps = [ ":ai_chat" ]
+
+    deps = [
+      "//base",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common/mojom",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/profiles:profile_util",
+      "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_list",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//components/tab_groups",
+      "//components/tabs:public",
+      "//content/public/browser",
+      "//services/data_decoder/public/cpp",
+    ]
+  }
+}
+
 if (enable_brave_ai_chat_agent_profile) {
   source_set("ai_chat_agent_profile") {
     sources = [ "ai_chat_agent_profile_helper.h" ]
@@ -255,6 +289,11 @@ source_set("unit_tests") {
     "//url",
   ]
 
+  if (enable_tab_management_tool) {
+    sources += [ "tools/tab_management_tool_unittest.cc" ]
+    deps += [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
+  }
+
   if (enable_print_preview) {
     sources += [ "print_preview_extractor_unittest.cc" ]
     deps += [
@@ -341,6 +380,15 @@ source_set("browser_tests") {
       "//printing/buildflags",
       "//services/screen_ai/public/cpp:utilities",
     ]
+
+    if (enable_tab_management_tool) {
+      sources += [ "tools/tab_management_tool_browsertest.cc" ]
+      deps += [
+        ":ai_chat_tab_management_tool_impl",
+        "//chrome/browser/ui/tabs:tabs_public",
+        "//components/tab_groups",
+      ]
+    }
 
     if (enable_print_preview) {
       sources += [
