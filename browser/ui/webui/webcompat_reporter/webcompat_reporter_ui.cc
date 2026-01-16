@@ -247,7 +247,7 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
   }
 
   render_widget_host_view->CopyFromSurface(
-      {}, output_size,
+      {}, output_size, base::TimeDelta(),
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
              scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
