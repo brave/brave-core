@@ -29,6 +29,7 @@ import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import {
   getReasoningText,
+  getToolArtifacts,
   groupConversationEntries,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
@@ -156,6 +157,12 @@ function ConversationEntries() {
 
         const groupIsTask = isAssistantGroupTask(group)
 
+        const shouldOmitArtifacts =
+          isLastGroup && conversationContext.isGenerating
+        const toolArtifacts = !shouldOmitArtifacts
+          ? getToolArtifacts(group)
+          : null
+
         return (
           <div key={firstEntryEdit.uuid || index}>
             <div
@@ -219,6 +226,9 @@ function ConversationEntries() {
                               isEntryInProgress={isEntryInProgress}
                               allowedLinks={allowedLinksForEntry}
                               isLeoModel={conversationContext.isLeoModel}
+                              toolArtifacts={
+                                i === group.length - 1 ? toolArtifacts : null
+                              }
                             />
                           </>
                         )}
