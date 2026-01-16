@@ -5,10 +5,10 @@
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 
-#include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
 
@@ -58,10 +58,8 @@ void MiscAndroidMetrics::RecordBrowserUsageDuration(base::TimeDelta duration) {
 }
 
 void MiscAndroidMetrics::RecordSetAsDefault(bool is_default) {
-  UMA_HISTOGRAM_BOOLEAN(kBraveCoreIsDefaultHistogramName, is_default);
-  int express_answer = is_default ? 1 : INT_MAX - 1;
-  UMA_HISTOGRAM_EXACT_LINEAR(kBraveCoreIsDefaultDailyHistogramName,
-                             express_answer, 2);
+  misc_metrics_->default_browser_monitor()->OnDefaultBrowserStateReceived(
+      is_default);
 }
 
 }  // namespace misc_metrics

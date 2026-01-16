@@ -37,7 +37,8 @@ class PageMetricsTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  bool CheckNavigationEvent(content::NavigationHandle* navigation_handle);
+  bool IsRelevantNavigationEvent(content::NavigationHandle* navigation_handle);
+  bool IsPrivateWindowEvent();
 
   raw_ptr<content::BrowserContext> browser_context_;
   raw_ptr<PageMetrics> page_metrics_ = nullptr;

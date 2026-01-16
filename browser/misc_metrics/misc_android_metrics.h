@@ -15,11 +15,6 @@ class SearchEngineTracker;
 
 namespace misc_metrics {
 
-inline constexpr char kBraveCoreIsDefaultHistogramName[] =
-    "Brave.Core.IsDefault";
-inline constexpr char kBraveCoreIsDefaultDailyHistogramName[] =
-    "Brave.Core.IsDefaultDaily";
-
 class ProcessMiscMetrics;
 
 class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
