@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/brave_channel.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
@@ -76,7 +77,14 @@ if (is_win) {
       "_$chrome_version_major" + "_$brave_version_major" +
       "_$brave_version_minor" + "_$brave_version_build"
   _channel = ""
-  brave_app_guid = "{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}"
+
+  # Brave Origin uses separate app GUIDs from Brave Browser to allow
+  # side-by-side installation and independent update infrastructure.
+  if (is_brave_origin_branded) {
+    brave_app_guid = "{F1EF32DE-F987-4289-81D2-6C4780027F9B}"
+  } else {
+    brave_app_guid = "{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}"
+  }
   if (brave_channel == "nightly") {
     # Temporary support PR's non-Release builds on nightly channel.
     # CI expect the installer files (*Setup.exe) in the output dir are
@@ -84,37 +92,59 @@ if (is_win) {
     # we should set _channel to "Nightly".
     # TODO(atuchin): revert after PRs start to use the development channel.
     _channel = "Nightly"
-    brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
+    if (is_brave_origin_branded) {
+      brave_app_guid = "{50474E96-9CD2-4BC8-B0A7-0D4B6EF2E709}"
+    } else {
+      brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
+    }
   } else if (is_official_build) {
     if (brave_channel == "beta") {
       _channel = "Beta"
-      brave_app_guid = "{103BD053-949B-43A8-9120-2E424887DE11}"
+      if (is_brave_origin_branded) {
+        brave_app_guid = "{56DA94FD-D872-416B-BFC4-1D7011DA7473}"
+      } else {
+        brave_app_guid = "{103BD053-949B-43A8-9120-2E424887DE11}"
+      }
     } else if (brave_channel == "dev") {
       _channel = "Dev"
-      brave_app_guid = "{CB2150F2-595F-4633-891A-E39720CE0531}"
+      if (is_brave_origin_branded) {
+        brave_app_guid = "{716D6A4A-D071-47A8-AC64-DBDE3EE3797B}"
+      } else {
+        brave_app_guid = "{CB2150F2-595F-4633-891A-E39720CE0531}"
+      }
     } else {
       assert(brave_channel == "", "Unknown channel name")
     }
   } else {
     _channel = "Development"
   }
+
   _arch = ""
   if (target_cpu == "x86") {
     _arch = "32"
   }
+
+  # Use different installer executable names for Brave Origin
+  if (is_brave_origin_branded) {
+    _installer_brand = "BraveOrigin"
+  } else {
+    _installer_brand = "BraveBrowser"
+  }
+
   brave_installer_exe = "brave_installer.exe"
-  brave_stub_installer_exe =
-      "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
+  brave_stub_installer_exe = "$_installer_brand$_channel" +
+                             "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe =
-      "BraveBrowserUntagged$_channel" +
+      "${_installer_brand}Untagged$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
   brave_standalone_installer_exe =
-      "BraveBrowserStandalone$_channel" +
+      "${_installer_brand}Standalone$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
-  brave_silent_installer_exe = "BraveBrowserStandaloneSilent$_channel" +
+  brave_silent_installer_exe = "${_installer_brand}StandaloneSilent$_channel" +
                                "Setup$_arch$brave_underline_full_version.exe"
-  brave_untagged_installer_exe = "BraveBrowserStandaloneUntagged$_channel" +
-                                 "Setup$_arch$brave_underline_full_version.exe"
+  brave_untagged_installer_exe =
+      "${_installer_brand}StandaloneUntagged$_channel" +
+      "Setup$_arch$brave_underline_full_version.exe"
 } else if (is_mac) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
@@ -134,12 +164,23 @@ if (is_win) {
   } else {
     brave_product_dir_name_suffix = "-Development"
   }
-  brave_product_dir_name =
-      "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+
+  if (is_brave_origin_branded) {
+    brave_product_dir_name =
+        "BraveSoftware/Brave-Origin$brave_product_dir_name_suffix"
+  } else {
+    brave_product_dir_name =
+        "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+  }
 
   if (base_sparkle_update_url == "") {
-    base_sparkle_update_url =
-        "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+    if (is_brave_origin_branded) {
+      base_sparkle_update_url =
+          "https://updates.bravesoftware.com/sparkle/Brave-Origin"
+    } else {
+      base_sparkle_update_url =
+          "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+    }
   }
 }
 

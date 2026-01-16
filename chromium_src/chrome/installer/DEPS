@@ -3,6 +3,7 @@ inline_file("//chrome/installer/DEPS", globals(), locals())
 
 include_rules += [
   "+brave/browser/brave_vpn/win",
+  "+brave/components/brave_origin/buildflags",
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",

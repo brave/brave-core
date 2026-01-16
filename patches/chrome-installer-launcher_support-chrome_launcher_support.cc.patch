@@ -1,31 +1,24 @@
 diff --git a/chrome/installer/launcher_support/chrome_launcher_support.cc b/chrome/installer/launcher_support/chrome_launcher_support.cc
-index 8f4e27ca20e17096f1ad23c6d161e8ffcb1d0d24..3ac3c361b4b78fe40a28a8b2d12753199d5c0aba 100644
+index 8f4e27ca20e17096f1ad23c6d161e8ffcb1d0d24..94c8492523ab7165be61fa0b363295e763daaf58 100644
 --- a/chrome/installer/launcher_support/chrome_launcher_support.cc
 +++ b/chrome/installer/launcher_support/chrome_launcher_support.cc
-@@ -27,12 +27,22 @@ const wchar_t kUpdateClientsRegKey[] = L"Software\\Google\\Update\\Clients";
- // Copied from google_chrome_install_modes.cc.
- const wchar_t kBrowserAppGuid[] = L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
- const wchar_t kSxSBrowserAppGuid[] = L"{4ea16ac7-fd5a-47c3-875b-dbf4a2008c20}";
-+#elif defined(OFFICIAL_BUILD)
-+const wchar_t kInstallationRegKey[] =
-+    L"Software\\BraveSoftware\\Update\\ClientState";
-+// Copied from
-+// brave/chromium_src/chrome_install_static/chromium_install_modes.cc
-+const wchar_t kBrowserAppGuid[] =  L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
-+const wchar_t kSxSBrowserAppGuid[] = L"{C6CB981E-DB30-4876-8639-109F8933582C}";
- #else
- const wchar_t kInstallationRegKey[] = L"Software\\Chromium";
- #endif
+@@ -18,6 +18,7 @@ namespace chrome_launcher_support {
+ namespace {
+ 
+ // TODO(huangs) Refactor the constants: http://crbug.com/148538
++#if 0
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+ const wchar_t kUpdateClientStateRegKey[] =
+     L"Software\\Google\\Update\\ClientState";
+@@ -33,6 +34,7 @@ const wchar_t kInstallationRegKey[] = L"Software\\Chromium";
  
  // Copied from util_constants.cc.
-+const wchar_t kChromeExe[] = L"brave.exe";
-+#if 0
  const wchar_t kChromeExe[] = L"chrome.exe";
 +#endif
  const wchar_t kUninstallStringField[] = L"UninstallString";
  const wchar_t kVersionStringField[] = L"pv";
  
-@@ -96,7 +106,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
+@@ -96,7 +98,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
  // Returns the path to an existing setup.exe at the specified level, if it can
  // be found via the registry.
  base::FilePath GetSetupExeForInstallationLevel(InstallationLevel level) {
@@ -34,7 +27,7 @@ index 8f4e27ca20e17096f1ad23c6d161e8ffcb1d0d24..3ac3c361b4b78fe40a28a8b2d1275319
    // Look in the registry for Chrome.
    return GetSetupExeFromRegistry(level, kBrowserAppGuid);
  #else
-@@ -132,7 +142,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
+@@ -132,7 +134,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
  base::FilePath GetChromePathForInstallationLevel(InstallationLevel level,
                                                   bool is_sxs) {
    if (is_sxs) {
