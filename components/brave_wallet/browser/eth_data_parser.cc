@@ -1019,7 +1019,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     swap_info->destination_amount_min = decoded_calldata.value()[3].GetString();
     swap_info->recipient =
         TransformEoaAddress(decoded_calldata.value()[1].GetString());
-    swap_info->provider = mojom::SwapProvider::kAuto;
+    swap_info->provider = mojom::SwapProvider::kCowSwap;
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
                            std::vector<std::string>{},

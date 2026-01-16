@@ -58,6 +58,7 @@ import SynthetixIcon from '../assets/lp-icons/synthetix.svg'
 import UniswapIcon from '../assets/lp-icons/uniswap.svg'
 import WaultSwapIcon from '../assets/lp-icons/waultswap.png'
 import WOOFiIcon from '../assets/lp-icons/woofi.svg'
+import CowSwapIcon from '../assets/lp-icons/cowswap.svg'
 
 const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kAuto]: BraveIcon,
@@ -66,6 +67,7 @@ const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
   [BraveWallet.SwapProvider.kSquid]: SquidIncon,
   [BraveWallet.SwapProvider.kNearIntents]: NearIntentsIcon,
+  [BraveWallet.SwapProvider.kCowSwap]: CowSwapIcon,
 }
 
 type LPMetadataType = {

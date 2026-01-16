@@ -1076,6 +1076,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kLiFi]: 'LI.FI',
   [BraveWallet.SwapProvider.kSquid]: 'Squid',
   [BraveWallet.SwapProvider.kNearIntents]: 'NEAR Intents',
+  [BraveWallet.SwapProvider.kCowSwap]: 'CoW Swap',
 }
 
 export const SupportedSwapProviders = [

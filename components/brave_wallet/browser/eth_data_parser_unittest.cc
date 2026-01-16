@@ -1146,7 +1146,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
   EXPECT_EQ(swap_info->destination_amount_min, "0x4f1e");  // 0.020254 USDC
 
   EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
-  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kAuto);
+  EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kCowSwap);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {

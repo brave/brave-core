@@ -543,12 +543,16 @@ enum RoutePriority {
 };
 
 enum SwapProvider {
+  // Providers supported by Gate3
   kAuto,
+  kNearIntents,
+
+  // Providers not supported by Gate3
   kLiFi,
   kZeroEx,
   kJupiter,
   kSquid,
-  kNearIntents,
+  kCowSwap,
 };
 
 struct SwapQuoteParams {
