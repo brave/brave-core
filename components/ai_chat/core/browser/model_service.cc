@@ -127,28 +127,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "DeepSeek";
-      options->name = "bedrock-us.deepseek-r1-v1:0";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = mojom::ModelAccess::PREMIUM;
-      options->max_associated_content_length = 64000;
-      options->long_conversation_warning_character_limit = 64000;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-deepseek-r1";
-      model->display_name = "DeepSeek R1";
-      model->vision_support = false;
-      model->supports_tools = false;
-      model->is_suggested_model = false;
-      model->is_near_model = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Anthropic";
       options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
@@ -228,34 +206,10 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-qwen";
-      model->display_name = "Qwen 14B";
-      model->vision_support = false;
-      model->supports_tools = false;
-      model->is_suggested_model = true;
-      model->is_near_model = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Google DeepMind";
-      options->name = "gemma-3-12b-it";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = features::kFreemiumAvailable.Get()
-                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
-                            : mojom::ModelAccess::BASIC;
-      options->max_associated_content_length = 64000;
-      options->long_conversation_warning_character_limit = 9700;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-gemma";
-      model->display_name = "Gemma 12B";
+      model->display_name = "Qwen VL 30B";
       model->vision_support = true;
       model->supports_tools = false;
-      model->is_suggested_model = false;
+      model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -407,7 +361,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Qwen 3 235B
+    // Qwen VL 235B
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Alibaba Cloud";
@@ -419,8 +373,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-qwen-3-235b";
-      model->display_name = "Qwen 3 235B";
-      model->vision_support = false;
+      model->display_name = "Qwen VL 235B";
+      model->vision_support = true;
       model->supports_tools = false;
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -798,18 +752,12 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-qwen") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-deepseek-r1") {
-        model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
       } else if (model->key == "chat-near-deepseek-v3-1") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_NEAR_DEEPSEEK_V3_1_SUBTITLE);
       } else if (model->key == "chat-automatic") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
-      } else if (model->key == "chat-gemma") {
-        model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
       } else if (model->key == "chat-llama-4-scout") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE);
