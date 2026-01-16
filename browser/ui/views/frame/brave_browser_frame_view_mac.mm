@@ -29,7 +29,7 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
-  if (tabs::utils::SupportsVerticalTabs(browser)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser)) {
     auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
@@ -63,7 +63,7 @@ void BraveBrowserFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_view()->browser())) {
     if (ShouldShowWindowTitleForVerticalTabs()) {
       // Set minimum top inset to show caption buttons on frame.
       return 30;
@@ -130,7 +130,7 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleAndControls() {
 }
 
 gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_view()->browser())) {
     // In order to ignore tab strip height, skip BrowserFrameViewMac's
     // implementation.
     auto size = browser_widget()->client_view()->GetMinimumSize();

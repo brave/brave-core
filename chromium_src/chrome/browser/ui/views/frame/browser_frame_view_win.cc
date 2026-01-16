@@ -20,7 +20,7 @@
 #define SupportsWindowFeature(feature)                        \
   SupportsWindowFeature(feature) ||                           \
       (feature == Browser::WindowFeature::kFeatureTitleBar && \
-       tabs::utils::SupportsVerticalTabs(browser))
+       tabs::utils::SupportsBraveVerticalTabs(browser))
 
 #define SupportsTouchableTabStrip(browser)                                  \
   SupportsTouchableTabStrip(browser);                                       \
@@ -28,7 +28,7 @@
       supports_title_bar ||                                                 \
       (WebUITabStripContainerView::SupportsTouchableTabStrip(browser)       \
            ? WebUITabStripContainerView::SupportsTouchableTabStrip(browser) \
-           : tabs::utils::SupportsVerticalTabs(browser))
+           : tabs::utils::SupportsBraveVerticalTabs(browser))
 
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.cc>
 

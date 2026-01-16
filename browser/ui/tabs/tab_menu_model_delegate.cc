@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 
-bool TabMenuModelDelegate::ShouldShowVerticalTab() {
+bool TabMenuModelDelegate::ShouldShowBraveVerticalTab() {
   NOTREACHED();
 }
 

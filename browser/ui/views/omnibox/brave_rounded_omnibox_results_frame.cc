@@ -47,7 +47,7 @@ void BraveRoundedOmniboxResultsFrame::UpdateShadowBorder() {
       views::BubbleBorder::Shadow::STANDARD_SHADOW);
   border->set_rounded_corners(gfx::RoundedCornersF(corner_radius));
   border->set_md_shadow_elevation(GetShadowElevation());
-  if (tabs::utils::ShouldShowVerticalTabs(browser_) &&
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_)) {
     // Remove top shadow inset so that omnibox popup stays inside browser
     // widget. Especially on Mac, Widgets can't be out of screen so we need to

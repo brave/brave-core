@@ -232,7 +232,7 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
 
-  if (tabs::utils::SupportsVerticalTabs(browser_)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -439,7 +439,7 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   DCHECK(location_bar_ && location_bar_->parent());
   views::View* container_view = location_bar_->parent();
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
     container_view->SetBorder(nullptr);
   } else {

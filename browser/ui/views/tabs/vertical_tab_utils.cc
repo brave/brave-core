@@ -38,7 +38,7 @@
 
 namespace tabs::utils {
 
-bool SupportsVerticalTabs(const Browser* browser) {
+bool SupportsBraveVerticalTabs(const Browser* browser) {
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableVerticalTabsSwitch)) {
     return false;
@@ -53,8 +53,8 @@ bool SupportsVerticalTabs(const Browser* browser) {
   return browser->is_type_normal();
 }
 
-bool ShouldShowVerticalTabs(const Browser* browser) {
-  if (!SupportsVerticalTabs(browser)) {
+bool ShouldShowBraveVerticalTabs(const Browser* browser) {
+  if (!SupportsBraveVerticalTabs(browser)) {
     return false;
   }
 
@@ -63,7 +63,7 @@ bool ShouldShowVerticalTabs(const Browser* browser) {
 }
 
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
-  if (!ShouldShowVerticalTabs(browser)) {
+  if (!ShouldShowBraveVerticalTabs(browser)) {
     return false;
   }
 
@@ -72,7 +72,7 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
 }
 
 bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
-  if (!ShouldShowVerticalTabs(browser)) {
+  if (!ShouldShowBraveVerticalTabs(browser)) {
     return false;
   }
 

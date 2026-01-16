@@ -76,7 +76,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
 }
 
 std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
-  if (!tab_menu_model_delegate_->ShouldShowVerticalTab()) {
+  if (!tab_menu_model_delegate_->ShouldShowBraveVerticalTab()) {
     return TabMenuModel::GetLabelAt(index);
   }
 
@@ -121,7 +121,7 @@ void BraveTabMenuModel::Build(Browser* browser,
 
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  if (tabs::utils::SupportsVerticalTabs(browser)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser)) {
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }

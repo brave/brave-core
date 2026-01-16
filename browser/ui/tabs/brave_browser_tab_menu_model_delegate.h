@@ -48,7 +48,7 @@ class BraveBrowserTabMenuModelDelegate
       const BraveBrowserTabMenuModelDelegate&) = delete;
 
   // TabMenuModelDelegate overrides for Brave-specific functionality:
-  bool ShouldShowVerticalTab() override;
+  bool ShouldShowBraveVerticalTab() override;
   ContainersMenuModelDelegate* GetContainersMenuModelDelegate() override;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

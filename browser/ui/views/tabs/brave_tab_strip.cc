@@ -315,7 +315,7 @@ void BraveTabStrip::UpdateOrientation() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
+  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowser());
 }
 
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {

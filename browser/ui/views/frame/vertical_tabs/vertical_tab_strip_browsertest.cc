@@ -262,19 +262,19 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
   // Pre-conditions
   // The default orientation is horizontal.
-  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   ASSERT_EQ(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 
   // Show vertical tab strip. This will move tabstrip to its own widget.
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  EXPECT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   EXPECT_NE(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 
   // Hide vertical tab strip and restore to the horizontal tabstrip.
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 }
@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   constexpr bool kWindowTitleVisibleByDefault = false;
 #endif
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   ASSERT_EQ(kWindowTitleVisibleByDefault,
             tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   ASSERT_EQ(kWindowTitleVisibleByDefault,
@@ -659,7 +659,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarMode) {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                        ScrollBarDisabledWhenHorizontal) {
   // Pre-condition: horizontal tab strip
-  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
       views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
@@ -1757,12 +1757,12 @@ class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
-  EXPECT_FALSE(tabs::utils::SupportsVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::SupportsBraveVerticalTabs(browser()));
 
-  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   // Even when we toggle on the tab strip, this state should persist.
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 }
 
 class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {

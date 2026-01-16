@@ -34,10 +34,10 @@
 // vertical tabs mode this will prevent the favicon and close button from
 // appearing. As a workaround, use `tabs::kVerticalTabHeight` instead of
 // TAB_HEIGHT when in vertical tabs mode.
-#define GetLayoutConstant(COMPONENT)                                 \
-  ((COMPONENT == TAB_HEIGHT &&                                       \
-    tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) \
-       ? tabs::kVerticalTabHeight                                    \
+#define GetLayoutConstant(COMPONENT)                                      \
+  ((COMPONENT == TAB_HEIGHT &&                                            \
+    tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) \
+       ? tabs::kVerticalTabHeight                                         \
        : GetLayoutConstant(COMPONENT))
 
 #include <chrome/browser/ui/views/tabs/tab.cc>

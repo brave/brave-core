@@ -152,7 +152,7 @@ void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
     views::Widget* widget,
     bool visible) {
   if (widget == GetWidget()) {
-    if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
+    if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser()) &&
         visible) {
       // This happens when restoring browser window. The upstream implementation
       // make child widgets visible regardless of their previous visibility.
@@ -191,7 +191,7 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
   widget_bounds.set_width(region_view_->GetPreferredSize().width() +
                           insets.width());
   if (!region_view_->GetVisible() || widget_bounds.IsEmpty() ||
-      !tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
+      !tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser())) {
     widget->Hide();
     return;
   }

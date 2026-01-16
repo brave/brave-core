@@ -32,7 +32,7 @@ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
 }
 
 SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
-  if (!ShouldShowVerticalTabs()) {
+  if (!ShouldShowBraveVerticalTabs()) {
     return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
   }
 
@@ -68,7 +68,7 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
   if (!tabs::HorizontalTabsUpdateEnabled()) {
     return insets;
   }
-  if (!ShouldShowVerticalTabs()) {
+  if (!ShouldShowBraveVerticalTabs()) {
     return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
                            tabs::GetTabGroupTitleHorizontalInset());
   }
@@ -84,8 +84,9 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(
                     tabs::kHorizontalTabVerticalSpacing);
 }
 
-bool TabGroupStyle::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
+  return tabs::utils::ShouldShowBraveVerticalTabs(
+      tab_group_views_->GetBrowser());
 }
 
 float TabGroupStyle::GetEmptyChipSize() const {

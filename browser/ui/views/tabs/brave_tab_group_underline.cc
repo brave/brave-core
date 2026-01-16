@@ -30,8 +30,9 @@ BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
                                           const views::View* trailing_view) {
   TabGroupUnderline::UpdateBounds(leading_view, trailing_view);
-  if (!ShouldShowVerticalTabs() || !GetVisible())
+  if (!ShouldShowBraveVerticalTabs() || !GetVisible()) {
     return;
+  }
 
   const gfx::Rect tab_group_underline_bounds =
       CalculateTabGroupUnderlineBounds(this, leading_view, trailing_view);
@@ -48,7 +49,7 @@ void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
     const views::View* sibling_view) const {
-  if (ShouldShowVerticalTabs()) {
+  if (ShouldShowBraveVerticalTabs()) {
     return {};
   }
 
@@ -68,7 +69,7 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
     const views::View* const underline_view,
     const views::View* const leading_view,
     const views::View* const trailing_view) const {
-  if (!ShouldShowVerticalTabs()) {
+  if (!ShouldShowBraveVerticalTabs()) {
     return TabGroupUnderline::CalculateTabGroupUnderlineBounds(
         underline_view, leading_view, trailing_view);
   }
@@ -99,7 +100,7 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
   }
 
   SkColor color = tab_group_views_->GetGroupColor();
-  if (!ShouldShowVerticalTabs()) {
+  if (!ShouldShowBraveVerticalTabs()) {
     color = SkColorSetA(color, 0.6 * 255);
   }
 
@@ -111,8 +112,9 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
   canvas->DrawPath(path, flags);
 }
 
-bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+bool BraveTabGroupUnderline::ShouldShowBraveVerticalTabs() const {
+  return tabs::utils::ShouldShowBraveVerticalTabs(
+      tab_group_views_->GetBrowser());
 }
 
 // static

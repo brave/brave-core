@@ -88,7 +88,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     return;
   }
 
-  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (!browser() || !tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     vertical_tab_strip_host_->SetBorder(nullptr);
     vertical_tab_strip_host_->SetBoundsRect({});
     return;
@@ -142,7 +142,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 }
 
 void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
-  if (browser() && tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (browser() && tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     // In case we're using vertical tabstrip, we can decide the position
     // after we finish laying out views in top container.
     return;
@@ -254,7 +254,7 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
 
     // When vertical tabs and the sidebar are adjacent, add a separator between
     // them.
-    if (browser() && tabs::utils::ShouldShowVerticalTabs(browser()) &&
+    if (browser() && tabs::utils::ShouldShowBraveVerticalTabs(browser()) &&
         sidebar_separator_ && !sidebar_bounds.IsEmpty()) {
       separator_bounds = sidebar_bounds;
       separator_bounds.set_width(kSidebarSeparatorWidth);
@@ -325,7 +325,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // can see some space between vertical tab and contents. However, If we don't
   // have margin from contents, vertical tab side contents shadow isn't visible.
   // So, having half of margin from vertical tab and half from contents.
-  if (browser() && tabs::utils::ShouldShowVerticalTabs(browser()) &&
+  if (browser() && tabs::utils::ShouldShowBraveVerticalTabs(browser()) &&
       (vertical_tab_strip_host_ &&
        vertical_tab_strip_host_->GetPreferredSize().width() != 0) &&
       !IsFullscreenForBrowser()) {
@@ -472,7 +472,7 @@ gfx::Insets BraveBrowserViewLayout::AddFrameBorderInsets(
   // We need more care about frame border when vertical tab is visible.
   // Frame border is not drawn in fullscreen.
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+  if (!browser() || !tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       (browser_view && browser_view->IsFullscreen())) {
     return insets;
   }
@@ -492,7 +492,7 @@ gfx::Insets BraveBrowserViewLayout::AddFrameBorderInsets(
 gfx::Insets BraveBrowserViewLayout::AddVerticalTabFrameBorderInsets(
     const gfx::Insets& insets) const {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+  if (!browser() || !tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       (browser_view && browser_view->IsFullscreen())) {
     return insets;
   }
