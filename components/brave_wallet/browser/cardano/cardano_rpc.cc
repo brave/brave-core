@@ -172,6 +172,23 @@ GURL MakeGetTransactionUrl(const GURL& base_url, std::string_view txid) {
   return base_url.ReplaceComponents(replacements);
 }
 
+GURL MakeGetAssetInfoUrl(const GURL& base_url, std::string_view asset_id_hex) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path = base::StrCat(
+      {base_url.path(),
+       base::JoinString({"assets", base::EscapePath(asset_id_hex)}, "/")});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 bool ShouldThrottleEndpoint(const GURL& request_url) {
   // Don't throttle requests if host matches brave proxy.
   return !brave_wallet::IsEndpointUsingBraveWalletProxy(request_url);
@@ -411,6 +428,36 @@ void CardanoRpc::OnGetTransaction(GetTransactionCallback callback,
   std::move(callback).Run(base::ok(std::move(*transaction)));
 }
 
+void CardanoRpc::GetAssetInfo(const cardano_rpc::TokenId& token_id,
+                              GetAssetInfoCallback callback) {
+  GURL request_url =
+      MakeGetAssetInfoUrl(GetNetworkURL(), base::HexEncodeLower(token_id));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&CardanoRpc::OnGetAssetInfo,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  DoGetRequestInternal(request_url, std::move(internal_callback));
+}
+
+void CardanoRpc::OnGetAssetInfo(GetAssetInfoCallback callback,
+                                APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto asset_info = AssetInfo::FromBlockfrostApiValue(
+      blockfrost_api::Asset::FromValue(api_request_result.value_body()));
+  if (!asset_info) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::move(callback).Run(base::ok(std::move(*asset_info)));
+}
+
 void CardanoRpc::DoGetRequestInternal(
     const GURL& request_url,
     RequestIntermediateCallback callback,
@@ -482,6 +529,10 @@ void CardanoRpc::MaybeStartQueuedRequest() {
       MakeCardanoRpcHeaders(chain_id_, request.request_url),
       {.auto_retry_on_network_change = true},
       std::move(request.conversion_callback));
+}
+
+bool CardanoRpc::HasPendingRequestsForTesting() {
+  return !requests_queue_.empty() || active_requests_ > 0u;
 }
 
 void CardanoRpc::SetUrlLoaderFactoryForTesting(

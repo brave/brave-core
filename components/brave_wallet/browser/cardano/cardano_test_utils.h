@@ -74,6 +74,11 @@ class CardanoTestRpcServer {
     return utxos_map_;
   }
 
+  std::vector<cardano_rpc::blockfrost_api::Asset>& assets() { return assets_; }
+  const std::vector<cardano_rpc::blockfrost_api::Asset>& assets() const {
+    return assets_;
+  }
+
  private:
   void RequestInterceptor(const network::ResourceRequest& request);
   std::string ExtractApiRequestPath(const GURL& request_url);
@@ -84,9 +89,12 @@ class CardanoTestRpcServer {
   bool IsTxSubmitRequest(const network::ResourceRequest& request);
   std::optional<std::string> IsGetTransactionRequest(
       const network::ResourceRequest& request);
+  std::optional<std::string> IsAssetInfoRequest(
+      const network::ResourceRequest& request);
   std::array<uint8_t, 32> CreateNewTxHash();
 
   std::map<std::string, UnspentOutputs> utxos_map_;
+  std::vector<cardano_rpc::blockfrost_api::Asset> assets_;
   std::array<uint8_t, 32> next_tx_hash_ = {};
 
   std::string captured_raw_tx_;

@@ -9,10 +9,12 @@
 #include <optional>
 #include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -165,6 +167,155 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
   std::tie(balance, error) = balance_future.Take();
   EXPECT_FALSE(error);
   EXPECT_EQ(balance->total_balance, 969750u + 2000000u + 7000000u);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetUtxos) {
+  SetupCardanoAccount();
+  auto& token1 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token1.quantity = "12345";
+  token1.unit = base::HexEncodeLower(GetMockTokenId("foo"));
+
+  auto& token2 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token2.quantity = "100";
+  token2.unit = base::HexEncodeLower(GetMockTokenId("bar"));
+
+  auto& token3 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][1]
+                     .amount.emplace_back();
+  token3.quantity = "200";
+  token3.unit = base::HexEncodeLower(GetMockTokenId("bar"));
+
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
+      utxos_future;
+
+  cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
+
+  auto utxos = utxos_future.Take();
+  EXPECT_TRUE(utxos.has_value());
+  EXPECT_EQ(utxos->size(), 3u);
+
+  EXPECT_EQ(utxos->at(0).lovelace_amount, 969750u);
+  EXPECT_EQ(utxos->at(0).address_to.ToString(),
+            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+  EXPECT_EQ(utxos->at(0).output_index, 13u);
+  EXPECT_EQ(utxos->at(0).tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("foo"), 12345u},
+                                 {GetMockTokenId("bar"), 100u}}));
+  EXPECT_EQ(base::HexEncodeLower(utxos->at(0).tx_hash),
+            "0000000000000000000000000000000000000000000000000000000000000000");
+
+  EXPECT_EQ(utxos->at(1).lovelace_amount, 2000000u);
+  EXPECT_EQ(utxos->at(1).address_to.ToString(),
+            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+  EXPECT_EQ(utxos->at(1).output_index, 13u);
+  EXPECT_EQ(utxos->at(1).tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("bar"), 200u}}));
+  EXPECT_EQ(base::HexEncodeLower(utxos->at(1).tx_hash),
+            "0100000000000000000000000000000000000000000000000000000000000000");
+
+  EXPECT_EQ(utxos->at(2).lovelace_amount, 7000000u);
+  EXPECT_EQ(utxos->at(2).address_to.ToString(),
+            "addr1q99ed78r27qyyqdmmce2gupzzeansmnf70jake3cmgt4hjahwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpqv7f05j");
+  EXPECT_EQ(utxos->at(2).output_index, 13u);
+  EXPECT_EQ(utxos->at(2).tokens, cardano_rpc::Tokens{});
+  EXPECT_EQ(base::HexEncodeLower(utxos->at(2).tx_hash),
+            "0200000000000000000000000000000000000000000000000000000000000000");
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetUtxosRunsTokenDiscovery) {
+  SetupCardanoAccount();
+  auto& token1 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token1.quantity = "12345";
+  token1.unit = base::HexEncodeLower(GetMockTokenId("foo"));
+
+  auto& token2 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][0]
+                     .amount.emplace_back();
+  token2.quantity = "100";
+  token2.unit = base::HexEncodeLower(GetMockTokenId("bar"));
+
+  auto& token3 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][1]
+                     .amount.emplace_back();
+  token3.quantity = "200";
+  token3.unit = base::HexEncodeLower(GetMockTokenId("bar"));
+
+  auto& foo_asset = cardano_test_rpc_server_->assets().emplace_back();
+  foo_asset.asset = base::HexEncodeLower(GetMockTokenId("foo"));
+  foo_asset.metadata.decimals = 6;
+  foo_asset.metadata.name = "Foo token";
+  foo_asset.metadata.ticker = "foo";
+
+  auto& bar_asset = cardano_test_rpc_server_->assets().emplace_back();
+  bar_asset.asset = base::HexEncodeLower(GetMockTokenId("bar"));
+  bar_asset.metadata.decimals = 6;
+  bar_asset.metadata.name = "Bar token";
+  bar_asset.metadata.ticker = "bar";
+
+  TestFuture<mojom::BlockchainTokenPtr> token_discovery_future;
+  cardano_wallet_service_->SetNewTokenDiscoveredCallback(
+      token_discovery_future.GetRepeatingCallback());
+
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
+      utxos_future;
+
+  cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
+  EXPECT_EQ(utxos_future.Take()->size(), 3u);
+  EXPECT_TRUE(cardano_wallet_service_->GetCardanoRpc(mojom::kCardanoMainnet)
+                  ->HasPendingRequestsForTesting());
+
+  auto token_bar = token_discovery_future.Take();
+  EXPECT_EQ(
+      token_bar,
+      mojom::BlockchainToken::New(
+          "62626262626262626262626262626262626262626262626262626262626172",
+          "Bar token", "", false, false, false, false,
+          mojom::SPLTokenProgram::kUnknown, false, false, "bar", 6, true, "",
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
+
+  auto token_foo = token_discovery_future.Take();
+  EXPECT_EQ(
+      token_foo,
+      mojom::BlockchainToken::New(
+          "66666666666666666666666666666666666666666666666666666666666f6f",
+          "Foo token", "", false, false, false, false,
+          mojom::SPLTokenProgram::kUnknown, false, false, "foo", 6, true, "",
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
+
+  // Request same set of utxos again, no tokens appear.
+  cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
+  EXPECT_EQ(utxos_future.Take()->size(), 3u);
+  EXPECT_FALSE(cardano_wallet_service_->GetCardanoRpc(mojom::kCardanoMainnet)
+                   ->HasPendingRequestsForTesting());
+
+  // Add a new token to one of utxos.
+  auto& token4 = cardano_test_rpc_server_->utxo_map()[kExternal0Address][1]
+                     .amount.emplace_back();
+  token4.quantity = "4200";
+  token4.unit = base::HexEncodeLower(GetMockTokenId("baz"));
+  auto& baz_asset = cardano_test_rpc_server_->assets().emplace_back();
+  baz_asset.asset = base::HexEncodeLower(GetMockTokenId("baz"));
+  baz_asset.metadata.decimals = 6;
+  baz_asset.metadata.name = "Baz token";
+  baz_asset.metadata.ticker = "baz";
+
+  // Request utxos - new token will be discovered.
+  cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
+  EXPECT_EQ(utxos_future.Take()->size(), 3u);
+  EXPECT_TRUE(cardano_wallet_service_->GetCardanoRpc(mojom::kCardanoMainnet)
+                  ->HasPendingRequestsForTesting());
+
+  auto token_baz = token_discovery_future.Take();
+  EXPECT_EQ(
+      token_baz,
+      mojom::BlockchainToken::New(
+          "6262626262626262626262626262626262626262626262626262626262617a",
+          "Baz token", "", false, false, false, false,
+          mojom::SPLTokenProgram::kUnknown, false, false, "baz", 6, true, "",
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {

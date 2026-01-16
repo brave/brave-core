@@ -64,15 +64,16 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                         account_id.keyring_id);
 }
 
-bool ContainsToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
-                   mojom::CoinType coin,
-                   const std::string& chain_id,
-                   bool is_shielded) {
-  return std::ranges::find_if(
-             tokens, [&](const mojom::BlockchainTokenPtr& token) {
-               return token->coin == coin && token->chain_id == chain_id &&
-                      token->is_shielded == is_shielded;
-             }) != tokens.end();
+bool ContainsNativeToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
+                         mojom::CoinType coin,
+                         const std::string& chain_id,
+                         bool is_shielded) {
+  return std::ranges::any_of(
+      tokens, [&](const mojom::BlockchainTokenPtr& token) {
+        return token->coin == coin && token->chain_id == chain_id &&
+               token->is_shielded == is_shielded &&
+               token->contract_address.empty();
+      });
 }
 
 // Ensure token list contains native tokens when appears empty. Only for BTC,
@@ -87,17 +88,17 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
   }
 
   if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id) &&
-      !ContainsToken(tokens, coin, chain_id, false)) {
+      !ContainsNativeToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetBitcoinNativeToken(chain_id));
   }
 
   if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
-    if (!ContainsToken(tokens, coin, chain_id, false)) {
+    if (!ContainsNativeToken(tokens, coin, chain_id, false)) {
       tokens.push_back(GetZcashNativeToken(chain_id));
     }
 #if BUILDFLAG(ENABLE_ORCHARD)
     if (IsZCashShieldedTransactionsEnabled()) {
-      if (!ContainsToken(tokens, coin, chain_id, true)) {
+      if (!ContainsNativeToken(tokens, coin, chain_id, true)) {
         tokens.push_back(GetZcashNativeShieldedToken(chain_id));
       }
     }
@@ -105,12 +106,12 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
   }
 
   if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id) &&
-      !ContainsToken(tokens, coin, chain_id, false)) {
+      !ContainsNativeToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
   if (coin == mojom::CoinType::DOT && IsPolkadotNetwork(chain_id) &&
-      !ContainsToken(tokens, coin, chain_id, false)) {
+      !ContainsNativeToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetPolkadotNativeToken(chain_id));
   }
 
@@ -220,6 +221,9 @@ BraveWalletService::BraveWalletService(
   if (IsCardanoEnabled()) {
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
         *keyring_service(), *network_manager(), url_loader_factory);
+    cardano_wallet_service_->SetNewTokenDiscoveredCallback(
+        base::BindRepeating(&BraveWalletService::OnNewCardanoTokenDiscovered,
+                            weak_ptr_factory_.GetWeakPtr()));
   }
 
   if (IsPolkadotEnabled()) {
@@ -1421,6 +1425,11 @@ void BraveWalletService::OnGetImportInfo(
             std::move(callback).Run(true /* is_valid_mnemonic */, std::nullopt);
           },
           std::move(callback)));
+}
+
+void BraveWalletService::OnNewCardanoTokenDiscovered(
+    mojom::BlockchainTokenPtr token) {
+  AddUserAssetInternal(std::move(token));
 }
 
 void BraveWalletService::AddSignMessageRequest(
