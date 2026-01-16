@@ -30,6 +30,11 @@ class EphemeralStorageServiceDelegate {
       const std::string& ephemeral_domain) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const = 0;
+#if BUILDFLAG(IS_ANDROID)
+  // Triggers notification of current app state on Android. We need to call it
+  // at the beginning of the TLD ephemeral lifetime.
+  virtual void TriggerCurrentAppStateNotification() = 0;
+#endif
 };
 
 }  // namespace ephemeral_storage
