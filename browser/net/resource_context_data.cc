@@ -34,7 +34,7 @@ ResourceContextData::~ResourceContextData() = default;
 // static
 void ResourceContextData::StartProxying(
     content::BrowserContext* browser_context,
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     network::URLLoaderFactoryBuilder& factory_builder,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -44,7 +44,7 @@ void ResourceContextData::StartProxying(
   if (!self) {
     self = new ResourceContextData();
     browser_context->SetUserData(kResourceContextUserDataKey,
-                                  base::WrapUnique(self));
+                                 base::WrapUnique(self));
   }
 
   if (!self->request_handler_) {
@@ -52,7 +52,7 @@ void ResourceContextData::StartProxying(
   }
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
-      *self->request_handler_, browser_context, frame_tree_node_id,
+      *self->request_handler_, browser_context, render_frame_token,
       factory_builder, self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
                      self->weak_factory_.GetWeakPtr()),
@@ -68,8 +68,7 @@ BraveProxyingWebSocket* ResourceContextData::CreateProxyingWebSocket(
     const net::SiteForCookies& site_for_cookies,
     const std::optional<std::string>& user_agent,
     content::BrowserContext* browser_context,
-    int frame_id,
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     const url::Origin& origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -78,7 +77,7 @@ BraveProxyingWebSocket* ResourceContextData::CreateProxyingWebSocket(
   if (!self) {
     self = new ResourceContextData();
     browser_context->SetUserData(kResourceContextUserDataKey,
-                                  base::WrapUnique(self));
+                                 base::WrapUnique(self));
   }
 
   if (!self->request_handler_) {
@@ -96,7 +95,7 @@ BraveProxyingWebSocket* ResourceContextData::CreateProxyingWebSocket(
   request.request_initiator = origin;
 
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
-      std::move(factory), request, frame_tree_node_id, browser_context,
+      std::move(factory), request, render_frame_token, browser_context,
       self->request_id_generator_, *self->request_handler_,
       base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
                      self->weak_factory_.GetWeakPtr()));

@@ -56,10 +56,10 @@ class BraveShieldsWebContentsObserver
   static void DispatchWebcompatFeatureInvokedForWebContents(
       ContentSettingsType webcompat_content_settings,
       content::WebContents* web_contents);
-  static void DispatchBlockedEvent(const GURL& request_url,
-                                   content::FrameTreeNodeId frame_tree_node_id,
-                                   const std::string& block_type);
-  static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
+  static void DispatchBlockedEvent(
+      const GURL& request_url,
+      content::GlobalRenderFrameHostToken render_frame_token,
+      const std::string& block_type);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
   bool IsBlockedSubresource(const std::string& subresource);
