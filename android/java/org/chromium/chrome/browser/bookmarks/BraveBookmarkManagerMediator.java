@@ -34,6 +34,7 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -80,7 +81,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
             BookmarkManagerOpener bookmarkManagerOpener,
-            PriceDropNotificationManager priceDropNotificationManager) {
+            PriceDropNotificationManager priceDropNotificationManager,
+            Clipboard clipboard) {
         super(
                 activity,
                 lifecycleOwner,
@@ -104,7 +106,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 canShowSigninPromo,
                 onScrollListenerConsumer,
                 bookmarkManagerOpener,
-                priceDropNotificationManager);
+                priceDropNotificationManager,
+                clipboard);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
