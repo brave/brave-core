@@ -265,12 +265,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
-      &kDesktopMediaPickerMultiLineTitle,
-#endif
-  // We are following upstream's field trial with this feature and they only
-  // enabled it on desktop platforms.
-#if BUILDFLAG(ENABLE_SCREEN_CAPTURE) && !BUILDFLAG(IS_ANDROID)
-      &kDisplayMediaRejectLongDomains,
 #endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
