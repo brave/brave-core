@@ -21,7 +21,7 @@ namespace brave_shields {
 class FilterListCatalogEntry;
 
 inline constexpr char kFilterListUsageHistogramName[] =
-    "Brave.Shields.FilterLists";
+    "Brave.Shields.FilterLists.2";
 inline constexpr char kAdBlockOnlyModeEnabledHistogramName[] =
     "Brave.Shields.AdBlockOnlyModeEnabled";
 
@@ -36,7 +36,8 @@ class AdBlockListP3A {
   void ReportFilterListUsage();
 
   void OnFilterListCatalogLoaded(
-      const std::vector<FilterListCatalogEntry>& entries);
+      const std::vector<FilterListCatalogEntry>& entries,
+      const std::string& locale);
 
  private:
   void ReportAdBlockOnlyEnabled();
