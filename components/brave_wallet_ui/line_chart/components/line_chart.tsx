@@ -73,7 +73,7 @@ export function LineChart({
   isLoading,
   isDisabled,
   customStyle,
-  showTooltip,
+  showTooltip = true,
   defaultFiatCurrency,
   hidePortfolioBalances,
 }: Props) {
@@ -177,7 +177,10 @@ export function LineChart({
                   }}
                   content={(props) => (
                     <CustomTooltip
-                      {...props}
+                      active={props.active}
+                      coordinate={props.coordinate}
+                      label={props.label}
+                      payload={props.payload}
                       viewBoxWidth={viewBoxWidth}
                       defaultFiatCurrency={defaultFiatCurrency}
                       hidePortfolioBalances={hidePortfolioBalances}
