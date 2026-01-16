@@ -58,17 +58,19 @@ import XCTest
   func testRemoveUnicodeFromFilename() {
     let files = [
       "foo-\u{200F}cod.jpg",
+      "foo-\u{200F}cod\u{0627}.jpg",
       "regedt\u{202e}gpj.apk",
     ]
 
     let nounicodes = [
       "foo-cod.jpg",
+      "foo-cod%D8%A7.jpg",
       "regedtgpj.apk",
     ]
 
     for (file, nounicode) in zip(files, nounicodes) {
       XCTAssert(file != nounicode)
-      let strip = file.strippingUnicodeControlCharacters
+      let strip = file.sanitizedAndPercentEncoded
       XCTAssert(strip == nounicode)
     }
   }
