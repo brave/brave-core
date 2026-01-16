@@ -25,7 +25,7 @@ enum {
   kSyncedDefaultPrivateSearchProviderGUID = 1000,
   kSyncedDefaultPrivateSearchProviderData = 1001,
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  kContainersList = 1002,
+  kContainersDict = 1002,
 #endif
 };
 }  // namespace brave_syncable_prefs_ids
@@ -53,12 +53,12 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
     },
 #if BUILDFLAG(ENABLE_CONTAINERS)
     {
-        containers::prefs::kContainersList,
+        containers::prefs::kContainersDict,
         {
-            brave_syncable_prefs_ids::kContainersList,
+            brave_syncable_prefs_ids::kContainersDict,
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
-            MergeBehavior::kNone,
+            MergeBehavior::kMergeableDict,
         },
     },
 #endif

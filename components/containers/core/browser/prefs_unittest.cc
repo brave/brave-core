@@ -30,12 +30,12 @@ class ContainersPrefsTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
-TEST_F(ContainersPrefsTest, GetEmptyContainerList) {
+TEST_F(ContainersPrefsTest, GetEmptyContainersDict) {
   auto containers = GetContainersFromPrefs(prefs_);
   EXPECT_TRUE(containers.empty());
 }
 
-TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
+TEST_F(ContainersPrefsTest, SetAndGetContainersDict) {
   std::vector<mojom::ContainerPtr> test_containers;
   test_containers.push_back(mojom::Container::New(
       "test-id-1", "Test Container 1", mojom::Icon::kPersonal, SK_ColorWHITE));
@@ -58,50 +58,42 @@ TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
   EXPECT_EQ(retrieved_containers[1]->background_color, SK_ColorBLACK);
 }
 
-TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
-  // Test with invalid list items
-  base::Value::List invalid_list;
-  invalid_list.Append(base::Value(42));  // Not a dictionary
-  invalid_list.Append(
+TEST_F(ContainersPrefsTest, GetContainersDictInvalidData) {
+  // Test with invalid dict items
+  base::Value::Dict invalid_dict;
+  invalid_dict.Set("test-id-1", base::Value(42));  // Not a dictionary
+  invalid_dict.Set(
+      "test-id-2",
       base::Value::Dict()
           // Missing name field
-          .Set("id", "test-id")
           .Set("icon", base::to_underlying(mojom::Icon::kPersonal))
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
-  invalid_list.Append(
-      base::Value::Dict()
-          // Missing id field
-          .Set("name", "Test Container")
-          .Set("icon", base::to_underlying(mojom::Icon::kPersonal))
-          .Set("background_color", static_cast<int>(SK_ColorWHITE)));
+  invalid_dict.Set("test-id-3", base::Value::Dict()
+                                    // Missing icon field
+                                    .Set("name", "Test Container")
+                                    .Set("background_color",
+                                         static_cast<int>(SK_ColorWHITE)));
 
-  invalid_list.Append(
-      base::Value::Dict()
-          // Missing icon field
-          .Set("id", "test-id")
-          .Set("name", "Test Container")
-          .Set("background_color", static_cast<int>(SK_ColorWHITE)));
-
-  invalid_list.Append(
+  invalid_dict.Set(
+      "test-id-4",
       base::Value::Dict()
           // Missing background_color field
-          .Set("id", "test-id")
           .Set("name", "Test Container")
           .Set("icon", base::to_underlying(mojom::Icon::kPersonal)));
 
-  prefs_.SetList(prefs::kContainersList, std::move(invalid_list));
+  prefs_.SetDict(prefs::kContainersDict, std::move(invalid_dict));
 
   auto containers = GetContainersFromPrefs(prefs_);
   EXPECT_TRUE(containers.empty());
 }
 
-TEST_F(ContainersPrefsTest, SetContainerListEmpty) {
+TEST_F(ContainersPrefsTest, SetContainersDictEmpty) {
   std::vector<mojom::ContainerPtr> empty_containers;
   SetContainersToPrefs(empty_containers, prefs_);
 
-  const base::Value::List& list = prefs_.GetList(prefs::kContainersList);
-  EXPECT_TRUE(list.empty());
+  const base::Value::Dict& dict = prefs_.GetDict(prefs::kContainersDict);
+  EXPECT_TRUE(dict.empty());
 }
 
 }  // namespace containers

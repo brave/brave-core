@@ -40,7 +40,7 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
   pref_change_registrar_.Init(prefs);
   // Watch for external changes to containers list (e.g. sync, other windows)
   pref_change_registrar_.Add(
-      prefs::kContainersList,
+      prefs::kContainersDict,
       base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
 }
