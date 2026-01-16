@@ -30,6 +30,12 @@ import java.util.ArrayList;
 public class BraveRadioButtonGroupAdaptiveToolbarPreference
         extends RadioButtonGroupAdaptiveToolbarPreference {
     private static boolean sIsJunitTesting;
+    private static boolean sLeoDisabledByPolicy;
+
+    /** Set by AppearancePreferences when Leo is disabled by Brave Origin policy. */
+    public static void setLeoDisabledByPolicy(boolean disabled) {
+        sLeoDisabledByPolicy = disabled;
+    }
 
     // Variables below are to be removed in the bytecode, variables from the parent class will be
     // used instead.
@@ -67,7 +73,8 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_leo);
         if (!sIsJunitTesting
                 && mBraveLeoButton != null
-                && !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+                && (!ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
+                        || sLeoDisabledByPolicy)) {
             mBraveLeoButton.setVisibility(View.GONE);
         }
         mBraveWalletButton =

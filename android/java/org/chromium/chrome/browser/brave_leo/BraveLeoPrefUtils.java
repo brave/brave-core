@@ -20,6 +20,21 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveLeoPrefUtils {
     private static final String TAG = "BraveLeoPrefUtils";
 
+    // Cached policy value, updated every time BraveActivity is foregrounded
+    // (in onResumeWithNative). This ensures the value is fresh when user returns
+    // from Settings where the policy could have been changed.
+    private static boolean sLeoDisabledByPolicy;
+
+    /** Set by BraveActivity.onResumeWithNative() when Leo is disabled by Brave Origin policy. */
+    public static void setLeoDisabledByPolicy(boolean disabled) {
+        sLeoDisabledByPolicy = disabled;
+    }
+
+    /** Returns true if Leo is disabled by Brave Origin policy. */
+    public static boolean isLeoDisabledByPolicy() {
+        return sLeoDisabledByPolicy;
+    }
+
     private static Profile getProfile() {
         Profile profile = null;
         try {

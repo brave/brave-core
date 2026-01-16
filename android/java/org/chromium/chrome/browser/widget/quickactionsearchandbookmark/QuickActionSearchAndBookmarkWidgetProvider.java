@@ -37,12 +37,16 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.IntentHandler;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
 import org.chromium.chrome.browser.document.ChromeLauncherActivity;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.searchwidget.SearchActivityClientImpl;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
@@ -180,6 +184,19 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void updateAppWidgets(int[] appWidgetIds) {
+        // Widgets are top-level entry points similar to Activities, so
+        // accessing the last used profile here is acceptable since
+        // there's no existing Profile context to pass through.
+        BraveOriginSubscriptionPrefs.checkPolicyAsync(
+                ProfileManager.getLastUsedRegularProfile(),
+                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
+                (isLeoDisabledByPolicy) -> {
+                    updateAppWidgetsWithPolicy(appWidgetIds, isLeoDisabledByPolicy);
+                });
+    }
+
+    private static void updateAppWidgetsWithPolicy(
+            int[] appWidgetIds, boolean isLeoDisabledByPolicy) {
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         List<WidgetTile> widgetTileList = DataManager.readWidgetTiles();
@@ -189,7 +206,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             int maxHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-            setSearchBarPendingIntent(context, views);
+            setSearchBarPendingIntent(context, views, isLeoDisabledByPolicy);
 
             // Determine if we should show tiles
             // Use maxHeight in portrait, minHeight in landscape
@@ -249,7 +266,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         views.setPendingIntentTemplate(R.id.bookmarksGridView, clickPendingIntent);
     }
 
-    private static void setSearchBarPendingIntent(Context context, RemoteViews views) {
+    private static void setSearchBarPendingIntent(
+            Context context, RemoteViews views, boolean isLeoDisabledByPolicy) {
         // Request code should be unique. By using distinct request codes,
         // we allow the system to differentiate between the intents,
         // ensuring that each button triggers its respective action.
@@ -260,8 +278,14 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                 R.id.layoutSearchWithBrave, createIntent(context, false, ++requestCode));
         views.setOnClickPendingIntent(
                 R.id.ivVoiceSearch, createIntent(context, true, ++requestCode));
-        views.setOnClickPendingIntent(
-                R.id.ibLeo, createPendingIntent(context, createLeoIntent(context), ++requestCode));
+        if (BraveLeoPrefUtils.isLeoEnabled() && !isLeoDisabledByPolicy) {
+            views.setViewVisibility(R.id.ibLeo, View.VISIBLE);
+            views.setOnClickPendingIntent(
+                    R.id.ibLeo,
+                    createPendingIntent(context, createLeoIntent(context), ++requestCode));
+        } else {
+            views.setViewVisibility(R.id.ibLeo, View.GONE);
+        }
     }
 
     private static void setDynamicLayout(RemoteViews views, int tilesSize, int currentHeight) {

@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -142,6 +143,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (mAccountController != null) {
             mAccountController.updateUI();
         }
+
+        // Check if Leo is disabled by policy
+        checkLeoPolicyAndUpdatePreference();
 
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
@@ -599,5 +603,18 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         return true;
+    }
+
+    /** Checks if Leo AI is disabled by policy via Brave Origin and removes the preference if so. */
+    private void checkLeoPolicyAndUpdatePreference() {
+        BraveOriginSubscriptionPrefs.checkPolicyAsync(
+                getProfile(),
+                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
+                (isDisabled) -> {
+                    if (getActivity() == null || getActivity().isFinishing() || !isDisabled) {
+                        return;
+                    }
+                    removePreferenceIfPresent(PREF_BRAVE_LEO);
+                });
     }
 }
