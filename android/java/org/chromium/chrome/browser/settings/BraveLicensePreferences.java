@@ -29,6 +29,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
+    @SuppressWarnings("ScannerUseDelimiter")
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
         // These strings are not used in Brave, but we get them from automated string translation
