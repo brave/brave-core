@@ -46,10 +46,6 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kQuestionPrompt[] =
-    "Propose up to 3 very short questions that a reader may ask about the "
-    "content. Wrap each in <question> tags.";
-
 constexpr char kTitlePrompt[] =
     "Generate a concise and descriptive title for the given conversation. The "
     "title should be a single short sentence summarizing the main topic or "
@@ -137,33 +133,15 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  base::Value::List messages;
+  auto messages = BuildOAIQuestionSuggestionsMessages(
+      page_contents, max_associated_content_length_,
+      [this](std::string& input) { SanitizeInput(input); });
 
-  auto remaining_length = max_associated_content_length_;
-  for (auto& message :
-       BuildPageContentMessages(page_contents, remaining_length,
-                                IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT,
-                                IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT)) {
-    messages.Append(std::move(message));
-  }
+  messages.push_back(BuildOAISeedMessage(
+      "Here are three questions the user may ask about the content "
+      "in <question> tags:\n"));
 
-  {
-    base::Value::Dict message;
-    message.Set("role", "user");
-    message.Set("content", kQuestionPrompt);
-    messages.Append(std::move(message));
-  }
-
-  {
-    base::Value::Dict message;
-    message.Set("role", "assistant");
-    message.Set("content",
-                "Here are three questions the user may ask about the content "
-                "in <question> tags:\n");
-    messages.Append(std::move(message));
-  }
-
-  api_->PerformRequest(
+  api_->PerformRequestWithOAIMessages(
       model_options_, std::move(messages), base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
