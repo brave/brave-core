@@ -5,7 +5,7 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { SettingsBraveContentContainersIconElement } from './containers_icon'
+import { SettingsBraveContentContainersIconElement } from './containers_icon.js'
 
 export function getHtml(this: SettingsBraveContentContainersIconElement) {
   return html`
