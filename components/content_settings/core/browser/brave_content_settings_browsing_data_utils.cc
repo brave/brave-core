@@ -7,7 +7,9 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"
 
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#if BUILDFLAG(IS_IOS)
 #include "components/content_settings/core/browser/permission_settings_registry.h"
+#endif
 #include "components/content_settings/core/browser/website_settings_registry.h"
 
 namespace browsing_data {
