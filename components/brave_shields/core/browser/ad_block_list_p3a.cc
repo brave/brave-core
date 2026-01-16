@@ -10,6 +10,7 @@
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -17,6 +18,7 @@ namespace brave_shields {
 namespace {
 
 constexpr char kEnabledDictKey[] = "enabled";
+constexpr int kFilterListCountBuckets[] = {0, 1, 2, 5};
 
 }  // namespace
 
@@ -37,55 +39,33 @@ AdBlockListP3A::~AdBlockListP3A() = default;
 void AdBlockListP3A::ReportFilterListUsage() {
   const auto& regional_filter_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
-  const auto& subscription_filter_dict =
-      local_state_->GetDict(prefs::kAdBlockListSubscriptions);
 
-  bool regional_filter_enabled = false;
-  bool subscription_filter_enabled = false;
-
+  int count = 0;
   for (const auto [uuid, dict_value] : regional_filter_dict) {
     const auto* dict = dict_value.GetIfDict();
-    if (!dict) {
+    if (!dict || !dict->FindBool(kEnabledDictKey).value_or(false)) {
       continue;
     }
-    if (!dict->FindBool(kEnabledDictKey).value_or(false)) {
-      break;
-    }
-    if (!default_filter_list_uuids_.contains(uuid)) {
-      regional_filter_enabled = true;
-      break;
-    }
-  }
-
-  for (const auto [_url, dict_value] : subscription_filter_dict) {
-    const auto* dict = dict_value.GetIfDict();
-    if (!dict) {
+    if (default_filter_list_uuids_.contains(uuid)) {
       continue;
     }
-    if (dict->FindBool(kEnabledDictKey).value_or(false)) {
-      subscription_filter_enabled = true;
-      break;
-    }
+    count++;
   }
 
-  int answer = 0;
-  if (regional_filter_enabled && !subscription_filter_enabled) {
-    answer = 1;
-  } else if (!regional_filter_enabled && subscription_filter_enabled) {
-    answer = 2;
-  } else if (regional_filter_enabled && subscription_filter_enabled) {
-    answer = 3;
-  }
-
-  UMA_HISTOGRAM_EXACT_LINEAR(kFilterListUsageHistogramName, answer, 4);
+  p3a_utils::RecordToHistogramBucket(kFilterListUsageHistogramName,
+                                     kFilterListCountBuckets, count);
 }
 
 void AdBlockListP3A::OnFilterListCatalogLoaded(
-    const std::vector<FilterListCatalogEntry>& entries) {
+    const std::vector<FilterListCatalogEntry>& entries,
+    const std::string& locale) {
   for (const auto& entry : entries) {
     if (entry.default_enabled) {
       default_filter_list_uuids_.insert(entry.uuid);
     }
+  }
+  for (const auto& entry : FindAdBlockFilterListsByLocale(entries, locale)) {
+    default_filter_list_uuids_.insert(entry.get().uuid);
   }
   ReportFilterListUsage();
 }
