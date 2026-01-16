@@ -13,9 +13,6 @@
         android:fragment="org.chromium.components.browser_ui.site_settings.SingleCategorySettings"
         android:key="brave_google_sign_in" />
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.components.browser_ui.site_settings.SingleCategorySettings"
-        android:key="brave_localhost_access" />
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites"
         android:key="ethereum_connected_sites"
         android:title="@string/settings_ethereum_title"

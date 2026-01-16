@@ -212,7 +212,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
       &network::features::kInterestGroupStorage,
-      &network::features::kLocalNetworkAccessChecks,
       &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
@@ -293,6 +292,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kSideBySide,
       &sharing_hub::kDesktopScreenshots,
 #endif
+      &network::features::kLocalNetworkAccessChecksWebSockets,
   };
 
   for (const auto* feature : enabled_features) {
