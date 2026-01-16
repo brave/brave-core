@@ -1,30 +1,30 @@
-Total size 82392K
+Total size 83310K
 
-GROUP chromium [56307K total]
+GROUP chromium [56370K total]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
    217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
-   723K crl-set-11945569436565505236.data 10262 [CertificateRevocation]
+   701K crl-set-3239798186814284577.data 10275 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
      3K Cookie Readiness List 2024.11.26.0 [CookieReadinessList]
-    53K Crowd Deny 2026.1.5.121 [Crowd Deny]
+    51K Crowd Deny 2026.1.8.120 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
   1079K Open Cookie Database 2024.10.17.0 [OpenCookieDatabase]
-   346K Optimization Hints 599 [OptimizationHints]
-   377K pkiMetadata 1542 [PKIMetadata]
+   438K Optimization Hints 603 [OptimizationHints]
+   377K pkiMetadata 1547 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
-   181K safetyTips 3089 [SafetyTips]
+   181K safetyTips 3091 [SafetyTips]
    238K Subresource Filtering Rules 9.64.0 [Subresource Filter]
     34K Third-Party Cookie Deprecation Metadata 2025.10.7.1 [TpcdMetadata]
     11K trustToken 2025.9.29.1 [TrustTokenKeyCommitments]
- 22451K WASM TTS Engine 20251215.1 [WasmTtsEngine]
+ 22446K WASM TTS Engine 20260105.1 [WasmTtsEngine]
  19392K WidevineCdm 4.10.2934.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
   1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [19966K total]
-  1858K Safe Browsing\ChromeExtMalware.store.32_13412104540350054
- 18107K Safe Browsing\UrlSoceng.store.4_13412104540068394
+GROUP large_files [20797K total]
+  1858K Safe Browsing\ChromeExtMalware.store.32_13412637737420182
+ 18938K Safe Browsing\UrlSoceng.store.4_13412637737119471
