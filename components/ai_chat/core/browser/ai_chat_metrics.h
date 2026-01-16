@@ -183,6 +183,7 @@ class AIChatMetrics : public mojom::Metrics,
   // Metrics:
   void OnSendingPromptWithFullPage() override;
   void OnQuickActionStatusChange(bool is_enabled) override;
+  void RecordSkillClick(const std::string& skill_id) override;
 
   // AIChatTabFocusMetrics::Delegate:
   bool IsPremium() const override;

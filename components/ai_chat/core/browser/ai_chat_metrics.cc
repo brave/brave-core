@@ -422,6 +422,10 @@ void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {
   prompted_via_quick_action_ = is_enabled;
 }
 
+void AIChatMetrics::RecordSkillClick(const std::string& skill_shortcut) {
+  EnsureSkillsMetrics()->RecordSkillClick(skill_shortcut);
+}
+
 SkillsMetrics* AIChatMetrics::EnsureSkillsMetrics() {
   if (!skills_metrics_) {
     skills_metrics_ =
