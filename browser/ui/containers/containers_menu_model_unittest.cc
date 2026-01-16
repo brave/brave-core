@@ -54,7 +54,7 @@ MATCHER_P(EqId, id, "") {
 }
 
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
-  MockContainerMenuModelDelegate delegate;
+  MockContainersMenuModelDelegate delegate;
 
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
@@ -77,7 +77,7 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 }
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
-  MockContainerMenuModelDelegate delegate;
+  MockContainersMenuModelDelegate delegate;
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
@@ -87,7 +87,7 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
 }
 
 TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
-  MockContainerMenuModelDelegate delegate;
+  MockContainersMenuModelDelegate delegate;
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
