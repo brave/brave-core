@@ -18,7 +18,7 @@
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_response.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -32,6 +32,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 // npm run test -- brave_browser_tests --filter=RewardsP3ABrowserTest.*
 
@@ -139,16 +143,20 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
   histogram_tester_->ExpectTotalCount(p3a::kAutoContributionsStateHistogramName,
                                       0);
   histogram_tester_->ExpectTotalCount(p3a::kTipsSentHistogramName, 0);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectUniqueSample(p3a::kAdTypesEnabledHistogramName,
                                         INT_MAX - 1, 1);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsReset) {
   test_util::StartProcess(rewards_service_);
   WaitForRewardsInitialization();
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectUniqueSample(p3a::kAdTypesEnabledHistogramName,
                                         INT_MAX - 1, 1);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   TurnOnRewards();
 
   histogram_tester_->ExpectUniqueSample(
@@ -157,6 +165,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsReset) {
                                         INT_MAX - 1, 1);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
   test_util::StartProcess(rewards_service_);
   WaitForRewardsInitialization();
@@ -182,6 +191,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 0, 1);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {

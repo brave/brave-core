@@ -12,7 +12,7 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"
-#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -42,6 +42,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -201,8 +205,10 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2023-09
   ntp_background_images::MigrateObsoleteProfilePrefs(profile_prefs);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Added 2023-11
   brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);
+#endif
 
   brave_shields::MigrateObsoleteProfilePrefs(profile_prefs);
 
@@ -275,7 +281,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   brave_l10n::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(local_state);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
   ntp_background_images::NTPBackgroundImagesService::
       MigrateObsoleteLocalStatePrefs(local_state);
 

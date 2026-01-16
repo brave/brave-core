@@ -3,17 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_browser_notifications_sources = [
-  "//brave/browser/notifications/ads_notification_handler.cc",
-  "//brave/browser/notifications/ads_notification_handler.h",
-]
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 
-brave_browser_notifications_deps = [
-  "//base",
-  "//chrome/browser/notifications",
-  "//third_party/abseil-cpp:absl",
-  "//url",
-]
+brave_browser_notifications_sources = []
+brave_browser_notifications_deps = []
+
+if (enable_brave_ads) {
+  brave_browser_notifications_sources += [
+    "//brave/browser/notifications/ads_notification_handler.cc",
+    "//brave/browser/notifications/ads_notification_handler.h",
+  ]
+
+  brave_browser_notifications_deps += [
+    "//base",
+    "//chrome/browser/notifications",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+}
 
 if (is_android) {
   brave_browser_notifications_sources += [

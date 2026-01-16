@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -23,6 +23,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace brave_rewards {
 
@@ -75,14 +79,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, GetRewardsAndAdsServices) {
     const brave_l10n::test::ScopedDefaultLocale locale("en_CA");  // "Canada"
     EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 
   {
     const brave_l10n::test::ScopedDefaultLocale locale("es_CU");  // "Cuba"
     EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 }
 
