@@ -262,6 +262,9 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
   }
 
   const base::Value::Dict* encoding_dict = json_dict->FindDict("encoding");
+  if (!encoding_dict) {
+    return std::nullopt;
+  }
 
   // Validate "type" JSON field.
   const base::Value::List* type_list = encoding_dict->FindList("type");
@@ -302,14 +305,13 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
 
   base::SpanReader reader(base::as_byte_span(encoded_bytes));
 
-  std::array<uint8_t, kScryptSaltSize> salt;
-  if (auto salt_span = reader.Read(kScryptSaltSize)) {
-    base::span(salt).copy_from_nonoverlapping(*salt_span);
-  } else {
+  std::array<uint8_t, kScryptSaltSize> salt = {};
+
+  if (!reader.ReadCopy(salt)) {
     return std::nullopt;
   }
 
-  uint32_t scrypt_n, scrypt_r, scrypt_p;
+  uint32_t scrypt_n = 0, scrypt_r = 0, scrypt_p = 0;
   if (!reader.ReadU32LittleEndian(scrypt_n) ||
       !reader.ReadU32LittleEndian(scrypt_p) ||
       !reader.ReadU32LittleEndian(scrypt_r)) {
@@ -328,24 +330,20 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
     return std::nullopt;
   }
 
-  std::array<uint8_t, kSecretboxNonceSize> nonce;
-  if (auto nonce_span = reader.Read(kSecretboxNonceSize)) {
-    base::span(nonce).copy_from_nonoverlapping(*nonce_span);
-  } else {
+  std::array<uint8_t, kSecretboxNonceSize> nonce = {};
+  if (!reader.ReadCopy(nonce)) {
     return std::nullopt;
   }
 
   auto encrypted_data = reader.remaining_span();
-  if (encrypted_data.size() != kSr25519Pkcs8Size + kSecretboxAuthTagSize) {
-    return std::nullopt;
-  }
+  CHECK_EQ(encrypted_data.size(), kSr25519Pkcs8Size + kSecretboxAuthTagSize);
 
   auto decrypt_result = XSalsaPolyDecrypt(encrypted_data, nonce, *scrypt_key);
   if (!decrypt_result || decrypt_result->size() != kSr25519Pkcs8Size) {
     return std::nullopt;
   }
 
-  std::array<uint8_t, kSr25519Pkcs8Size> secret_key;
+  std::array<uint8_t, kSr25519Pkcs8Size> secret_key = {};
   base::span(secret_key).copy_from_nonoverlapping(base::span(*decrypt_result));
 
   return secret_key;

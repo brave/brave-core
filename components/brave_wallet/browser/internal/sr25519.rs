@@ -65,6 +65,8 @@ fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>
 }
 
 fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+    // Export in PKCS8 format: PAIR_HDR + secretKey + PAIR_DIV + publicKey.
+    // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L19
     assert!(pkcs8.len() == 117);
     let secret_key =
         schnorrkel::SecretKey::from_bytes(&pkcs8[PAIR_HDR.len()..PAIR_HDR.len() + 64]).unwrap();

@@ -577,19 +577,6 @@ TEST(PolkadotKeyring, DecodePrivateKeyFromExport_InvalidJSON) {
   }
 }
 
-TEST(PolkadotKeyring, DecodePrivateKeyFromExport_InvalidBase64) {
-  const std::string kPassword = "test_password_123";
-
-  // Test with invalid base64 in "encoded" field
-  {
-    const std::string json_invalid_base64 =
-        R"({"encoded":"!!!invalid base64!!!","encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"},"address":"test"})";
-    auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
-        json_invalid_base64, kPassword);
-    EXPECT_FALSE(decoded_secret_key.has_value());
-  }
-}
-
 TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Testnet) {
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
@@ -618,113 +605,165 @@ TEST(PolkadotKeyring, MissingParts) {
   PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                           mojom::KeyringId::kPolkadotTestnet);
 
+  // Generate a valid JSON export
+  auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(valid_json.has_value());
+
+  // Parse the valid JSON into a base::Value::Dict
+  auto valid_dict = base::JSONReader::ReadDict(*valid_json, 0);
+  ASSERT_TRUE(valid_dict.has_value());
+
+  // Helper function to convert dict back to JSON string
+  auto dict_to_json = [](const base::Value::Dict& dict) -> std::string {
+    std::string json_string;
+    base::JSONWriter::Write(dict, &json_string);
+    return json_string;
+  };
+
   // Missing pkcs8 in content.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    // Remove "pkcs8" from content, keep only "sr25519"
+    content_list->clear();
+    content_list->Append("sr25519");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing sr25519 in content.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    // Remove "sr25519" from content, keep only "pkcs8"
+    content_list->clear();
+    content_list->Append("pkcs8");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing scrypt in type.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    // Remove "scrypt" from type, keep only "xsalsa20-poly1305"
+    type_list->clear();
+    type_list->Append("xsalsa20-poly1305");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing xsalsa20-poly1305 in type.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    // Remove "xsalsa20-poly1305" from type, keep only "scrypt"
+    type_list->clear();
+    type_list->Append("scrypt");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Version mismatch.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"2"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Change version from "3" to "2"
+    encoding_dict->Set("version", "2");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing content.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Remove "content" field
+    encoding_dict->Remove("content");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing encoding.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    // Remove "encoding" field
+    test_dict.Remove("encoding");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing type.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Remove "type" field
+    encoding_dict->Remove("type");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Missing encoded.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    // Remove "encoded" field
+    test_dict.Remove("encoded");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
-  // Corrupted encoded.
+  // Corrupted encoded - invalid base64.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    // Replace encoded with invalid base64
+    test_dict.Set(
+        "encoded",
+        "00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAg"
+        "ICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+"
+        "Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHR"
+        "B7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/"
+        "WROki1+SZ1OLWclpgVjEDift12grx7X");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 
   // Corrupted encoded - wrong length.
   {
-    constexpr const char json[] =
-        R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
-            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+    auto test_dict = valid_dict->Clone();
+    const std::string* original_encoded = test_dict.FindString("encoded");
+    ASSERT_TRUE(original_encoded);
+    // Shorten the encoded string to make it wrong length
+    std::string shortened_encoded =
+        original_encoded->substr(0, original_encoded->size() - 10);
+    test_dict.Set("encoded", shortened_encoded);
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 }
 
