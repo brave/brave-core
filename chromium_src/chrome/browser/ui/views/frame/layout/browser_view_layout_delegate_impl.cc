@@ -76,19 +76,15 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() {
 }
 
 bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
-  return const_cast<BrowserViewLayoutDelegateImpl*>(this)->IsFullscreenForTab();
-}
-
-bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() {
   if (!browser_view().browser()) {
     return false;
   }
-  ExclusiveAccessManager* exclusive_access_manager =
+  const ExclusiveAccessManager* exclusive_access_manager =
       browser_view().browser()->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
     return false;
   }
-  auto* fullscreen_controller =
+  const auto* fullscreen_controller =
       exclusive_access_manager->fullscreen_controller();
   return fullscreen_controller &&
          fullscreen_controller->IsWindowFullscreenForTabOrPending();

@@ -16,7 +16,6 @@
   virtual bool IsBookmarkBarOnByPref() const = 0;                          \
   virtual bool IsContentTypeSidePanelVisible() = 0;                        \
   virtual bool IsFullscreenForBrowser() = 0;                               \
-  virtual bool IsFullscreenForTab() = 0;                                   \
   virtual bool IsFullscreenForTab() const = 0;                             \
   virtual bool IsFullscreen()
 

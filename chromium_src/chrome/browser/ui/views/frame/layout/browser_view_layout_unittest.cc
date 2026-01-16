@@ -34,9 +34,6 @@
   bool IsFullscreenForBrowser() override {                               \
     return false;                                                        \
   }                                                                      \
-  bool IsFullscreenForTab() override {                                   \
-    return false;                                                        \
-  }                                                                      \
   bool IsFullscreenForTab() const override {                             \
     return false;                                                        \
   }                                                                      \

@@ -17,7 +17,6 @@
   bool IsBookmarkBarOnByPref() const override;                          \
   bool IsContentTypeSidePanelVisible() override;                        \
   bool IsFullscreenForBrowser() override;                               \
-  bool IsFullscreenForTab() override;                                   \
   bool IsFullscreenForTab() const override;                             \
   bool IsFullscreen()
 
