@@ -30,6 +30,7 @@ source_set("android_browser_process") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
