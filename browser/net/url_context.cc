@@ -89,11 +89,15 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
-    content::WebContents* contents =
-        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
-    if (contents) {
-      ctx->tab_origin =
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
+    if (ctx->request_url.SchemeIsWSOrWSS()) {
+      content::WebContents* contents =
+          content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+      if (contents) {
+        ctx->tab_origin =
+            url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
+      }
+    } else if (request.request_initiator.has_value()) {
+      ctx->tab_origin = request.request_initiator->GetURL();
     }
   }
 
