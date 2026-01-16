@@ -5,26 +5,23 @@
 
 import '//resources/brave/leo.bundle.js'
 
-import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
-import { getHtml } from './cr_toggle.html.js';
+import {CrLitElement, css, type CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js';
+
+import {getHtml} from './cr_toggle.html.js';
 
 export const MOVE_THRESHOLD_PX: number = 5;
-
-export interface CrToggleElement {
-  $: {
-    toggle: HTMLElement
-    knob: HTMLElement
-  }
-}
 
 export class CrToggleElement extends CrLitElement {
   static get is() {
     return 'cr-toggle';
   }
 
-  static override get styles() {
-    return css``
+  declare $: {
+    toggle: HTMLElement
+    knob: HTMLElement
   }
+
+  static override get styles(): CSSResultGroup{ return css`` }
 
   override render() {
     return getHtml.bind(this)();

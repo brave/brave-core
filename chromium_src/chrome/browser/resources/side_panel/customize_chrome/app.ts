@@ -5,7 +5,7 @@
 
 import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
 
-import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement, html, css, type CSSResultGroup } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/customize_color_scheme_mode/browser_proxy.js'
@@ -56,7 +56,7 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
 
   private accessor usingDarkerTheme_ = false
 
-  static override get styles() {
+  static override get styles(): CSSResultGroup {
     return css`
       #darker-theme-toggle-container {
         display: flex;
@@ -70,7 +70,7 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
       }
 
       /* Hide the darker theme toggle container if the color scheme is light.
-         This is to avoid showing the toggle button when user is using System 
+         This is to avoid showing the toggle button when user is using System
          color scheme mode and the system is using light color scheme. */
       @media (prefers-color-scheme: light) {
         #darker-theme-toggle-container {
