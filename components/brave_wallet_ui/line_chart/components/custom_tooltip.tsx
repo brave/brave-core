@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { TooltipProps } from 'recharts'
+import { TooltipContentProps } from 'recharts'
 
 // utils
 import Amount from '../../utils/amount'
@@ -17,8 +17,11 @@ import {
   ChartDate,
 } from './custom_tooltip.styles'
 
-type Props = TooltipProps<number, number> & {
-  onUpdateViewBoxHeight: (value: number) => void
+type Props = Pick<
+  TooltipContentProps<number, number>,
+  'active' | 'coordinate' | 'label' | 'payload'
+> & {
+  viewBoxWidth: number
   defaultFiatCurrency: string
   hidePortfolioBalances: boolean
 }
@@ -27,46 +30,34 @@ export function CustomTooltip({
   active,
   coordinate,
   label,
-  onUpdateViewBoxHeight,
   payload,
-  viewBox,
+  viewBoxWidth,
   defaultFiatCurrency,
   hidePortfolioBalances,
 }: Props) {
-  // Effects
-  React.useLayoutEffect(() => {
-    if (viewBox?.height !== undefined) {
-      onUpdateViewBoxHeight(Math.trunc(viewBox.height))
-    }
-  }, [onUpdateViewBoxHeight, viewBox])
-
-  if (active && payload && payload[0].value) {
-    // Computed
-    const xLeftCoordinate = Math.trunc(coordinate?.x ?? 0)
-    const viewBoxWidth = Math.trunc(viewBox?.width ?? 0)
-    const xRightCoordinate = xLeftCoordinate - viewBoxWidth
-    const isEndOrMiddle = xRightCoordinate >= -62 ? 'end' : 'middle'
-    const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
-    const middleEndTranslate =
-      xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) - 4
-    const balance = new Amount(payload[0].value).formatAsFiat(
-      defaultFiatCurrency,
-    )
-
-    return (
-      <TooltipWrapper
-        labelTranslate={
-          labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate
-        }
-        labelPosition={labelPosition}
-      >
-        <ChartBalance>
-          {hidePortfolioBalances ? '******' : balance}
-        </ChartBalance>
-        <ChartDate>{formatTimelineDate(label)}</ChartDate>
-      </TooltipWrapper>
-    )
+  if (!active || !payload || payload.length === 0 || !payload[0].value) {
+    return null
   }
 
-  return null
+  const xLeftCoordinate = Math.trunc(coordinate?.x ?? 0)
+  const xRightCoordinate = xLeftCoordinate - viewBoxWidth
+  const isEndOrMiddle = xRightCoordinate >= -62 ? 'end' : 'middle'
+  const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
+  const middleEndTranslate =
+    xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) - 4
+  const balance = new Amount(payload[0].value).formatAsFiat(defaultFiatCurrency)
+
+  return (
+    <TooltipWrapper
+      labelTranslate={
+        labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate
+      }
+      labelPosition={labelPosition}
+    >
+      <ChartBalance>{hidePortfolioBalances ? '******' : balance}</ChartBalance>
+      {label && (
+        <ChartDate>{formatTimelineDate(new Date(label as number))}</ChartDate>
+      )}
+    </TooltipWrapper>
+  )
 }
