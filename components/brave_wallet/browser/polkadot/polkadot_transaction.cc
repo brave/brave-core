@@ -33,7 +33,6 @@ std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
   uint128_t amount = 0;
   uint128_t fee = 0;
   bool transfer_all = false;
-  PolkadotAddress recipient;
 
   const auto* json_amount = value.FindString("amount");
   if (!json_amount) {
@@ -65,18 +64,19 @@ std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
     return std::nullopt;
   }
 
+  PolkadotAddress recipient;
+
   if (!base::HexStringToSpan(*json_recipient, recipient.pubkey)) {
     return std::nullopt;
   }
 
   const auto ss58_prefix_json = value.FindInt("ss58_prefix");
   if (ss58_prefix_json) {
-    auto prefix = base::CheckedNumeric<uint16_t>(*ss58_prefix_json);
-    if (!prefix.IsValid()) {
+    recipient.ss58_prefix.emplace();
+    if (!base::CheckedNumeric<uint16_t>(*ss58_prefix_json)
+             .AssignIfValid(&recipient.ss58_prefix.value())) {
       return std::nullopt;
     }
-
-    recipient.ss58_prefix = prefix.ValueOrDie();
   } else if (value.contains("ss58_prefix")) {
     return std::nullopt;
   }
