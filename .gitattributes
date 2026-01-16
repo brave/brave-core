@@ -20,7 +20,7 @@
 *.json  text eol=lf
 *.json5 text eol=lf
 *.md    text eol=lf
-*.mm    text eol=lf
+*.mm    text eol=lf diff=cpp
 *.mojom text eol=lf
 *.patch text eol=lf
 *.pdf -diff
@@ -36,8 +36,6 @@
 *.xml   text eol=lf
 *.xslt  text eol=lf
 *.xtb   text eol=lf
-
-*.mm diff=cpp
 
 .ci_features             text eol=lf linguist-language=ini
 .clang*                  text eol=lf
