@@ -6,6 +6,7 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
+import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
@@ -86,75 +87,118 @@ function AssistantEvent(
 ) {
   const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
   const context = useUntrustedConversationContext()
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const [animationKey, setAnimationKey] = React.useState(0)
 
-  if (event.completionEvent) {
-    const numberedLinks =
-      allowedLinks.length > 0
-        ? allowedLinks
-            .map((url: string, index: number) => `[${index + 1}]: ${url}`)
-            .join('\n') + '\n\n'
-        : ''
+  React.useEffect(() => {
+    if (!wrapperRef.current || !contentRef.current) return
 
-    // Remove citations with missing links
-    const filteredOutCitationsWithMissingLinks =
-      removeCitationsWithMissingLinks(
-        event.completionEvent.completion,
-        allowedLinks,
+    // Get the actual height of the content
+    const contentHeight = contentRef.current.scrollHeight
+
+    // Animate to the actual height
+    wrapperRef.current.style.maxHeight = `${contentHeight}px`
+  })
+
+  // Reset animation whenever content changes during streaming
+  React.useEffect(() => {
+    if (isEntryInProgress && event.completionEvent?.completion) {
+      setAnimationKey((prev) => prev + 1)
+    }
+  }, [isEntryInProgress, event.completionEvent?.completion])
+
+  const renderContent = () => {
+    if (event.completionEvent) {
+      const numberedLinks =
+        allowedLinks.length > 0
+          ? allowedLinks
+              .map((url: string, index: number) => `[${index + 1}]: ${url}`)
+              .join('\n') + '\n\n'
+          : ''
+
+      // Remove citations with missing links
+      const filteredOutCitationsWithMissingLinks =
+        removeCitationsWithMissingLinks(
+          event.completionEvent.completion,
+          allowedLinks,
+        )
+
+      // Replaces 2 consecutive citations with a separator and also
+      // adds a space before the citation and the text.
+      const completion = filteredOutCitationsWithMissingLinks.replace(
+        /(\w|\S)\[(\d+)\]/g,
+        '$1 [$2]',
       )
 
-    // Replaces 2 consecutive citations with a separator and also
-    // adds a space before the citation and the text.
-    const completion = filteredOutCitationsWithMissingLinks.replace(
-      /(\w|\S)\[(\d+)\]/g,
-      '$1 [$2]',
-    )
+      const fullText = `${numberedLinks}${removeReasoning(completion)}`
 
-    const fullText = `${numberedLinks}${removeReasoning(completion)}`
-
-    return (
-      <MarkdownRenderer
-        shouldShowTextCursor={isEntryInProgress}
-        text={fullText}
-        allowedLinks={allowedLinks}
-        disableLinkRestrictions={!isLeoModel}
-      />
-    )
-  }
-  if (
-    props.event.searchStatusEvent
-    && props.isEntryInProgress
-    && !props.hasCompletionStarted
-  ) {
-    return (
-      <div className={styles.actionInProgress}>
-        <ProgressRing />
-        Improving answer with Brave Search…
-      </div>
-    )
-  }
-  if (props.event.toolUseEvent) {
-    if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
-      return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+      return (
+        <MarkdownRenderer
+          shouldShowTextCursor={isEntryInProgress}
+          text={fullText}
+          allowedLinks={allowedLinks}
+          disableLinkRestrictions={!isLeoModel}
+        />
+      )
     }
-    return (
-      <ToolEvent
-        toolUseEvent={props.event.toolUseEvent}
-        isEntryActive={props.isEntryInteractivityAllowed}
-        isExecuting={context.isToolExecuting}
-      />
-    )
+    if (
+      props.event.searchStatusEvent
+      && props.isEntryInProgress
+      && !props.hasCompletionStarted
+    ) {
+      return (
+        <div className={styles.actionInProgress}>
+          <ProgressRing />
+          Improving answer with Brave Search…
+        </div>
+      )
+    }
+    if (props.event.toolUseEvent) {
+      if (
+        props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME
+      ) {
+        return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+      }
+      return (
+        <ToolEvent
+          toolUseEvent={props.event.toolUseEvent}
+          isEntryActive={props.isEntryInteractivityAllowed}
+          isExecuting={context.isToolExecuting}
+        />
+      )
+    }
+
+    // TODO(petemill): Consider displaying in-progress queries if the API
+    // timing improves (or worsens for the completion events).
+    // if (event.searchQueriesEvent && props.isEntryInProgress) {
+    //   return (<>
+    //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
+    //   </>)
+    // }
+
+    // Unknown events should be ignored
+    return null
   }
 
-  // TODO(petemill): Consider displaying in-progress queries if the API
-  // timing improves (or worsens for the completion events).
-  // if (event.searchQueriesEvent && props.isEntryInProgress) {
-  //   return (<>
-  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-  //   </>)
-  // }
+  const content = renderContent()
+  if (!content) return null
 
-  // Unknown events should be ignored
-  return null
+  const isSearching =
+    event.searchStatusEvent && isEntryInProgress && !props.hasCompletionStarted
+
+  return (
+    <div
+      ref={wrapperRef}
+      data-animation-key={animationKey}
+      className={classnames(styles.assistantEventWrapper, {
+        [styles.complete]: !isEntryInProgress,
+        [styles.searching]: isSearching,
+      })}
+    >
+      <div ref={contentRef}>{content}</div>
+    </div>
+  )
 }
 
 export type AssistantResponseProps = BaseProps & {
