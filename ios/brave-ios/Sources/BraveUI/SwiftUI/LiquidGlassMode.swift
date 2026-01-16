@@ -22,3 +22,38 @@ public enum LiquidGlassMode {
     return false
   }
 }
+
+extension UIView {
+  /// Returns the appropriate layout guide for horizontal constraints, accounting for iOS 26+   window controls
+  public var osAvailableHorizontalSafeAreaLayoutGuide: UILayoutGuide {
+    if #available(iOS 26.0, *) {
+      return layoutGuide(for: .safeArea(cornerAdaptation: .horizontal))
+    }
+    return safeAreaLayoutGuide
+  }
+}
+
+struct OSAvailableContainerCornerOffset: ViewModifier {
+  var edges: Edge.Set = .leading
+  var sizeToFit: Bool = true
+  init(_ edges: Edge.Set = .leading, sizeToFit: Bool = false) {
+    self.edges = edges
+    self.sizeToFit = sizeToFit
+  }
+  func body(content: Content) -> some View {
+    if #available(iOS 26.0, *) {
+      content
+        .containerCornerOffset(edges, sizeToFit: sizeToFit)
+    } else {
+      content
+    }
+  }
+}
+
+extension View {
+  public func osAvailableContainerConerOffset(
+    _ edges: Edge.Set, sizeToFit: Bool = false
+  ) -> some View {
+    modifier(OSAvailableContainerCornerOffset(edges, sizeToFit: sizeToFit))
+  }
+}
