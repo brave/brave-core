@@ -129,7 +129,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
     @Override
     public boolean isLeoEnabled() {
-        return BraveLeoPrefUtils.isLeoEnabled();
+        return BraveLeoPrefUtils.isLeoEnabled() && !BraveLeoPrefUtils.isLeoDisabledByPolicy();
     }
 
     @Override

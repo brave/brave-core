@@ -119,6 +119,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
@@ -159,6 +160,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
@@ -383,6 +385,13 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
+
+        // Check Leo policy and cache the result for quick search engines and omnibox suggestions
+        BraveOriginSubscriptionPrefs.checkPolicyAsync(
+                getCurrentProfile(),
+                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
+                BraveLeoPrefUtils::setLeoDisabledByPolicy);
+
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().addObserver(this);
@@ -2755,7 +2764,8 @@ public abstract class BraveActivity extends ChromeActivity
         searchEngines.add(0, defaultQuickSearchEnginesModel);
 
         if (!getCurrentProfile().isOffTheRecord()
-                && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()) {
+                && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()
+                && !BraveLeoPrefUtils.isLeoDisabledByPolicy()) {
             QuickSearchEnginesModel leoQuickSearchEnginesModel =
                     new QuickSearchEnginesModel(
                             "",

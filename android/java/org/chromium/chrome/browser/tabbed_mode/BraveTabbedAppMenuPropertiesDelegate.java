@@ -99,8 +99,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      * R.id.brave_news_id) - policyKey: The policy constant (e.g.,
      * BravePolicyConstants.BRAVE_NEWS_DISABLED) - itemBuilder: Method reference to build the menu
      * item (e.g., this::buildBraveNewsItem) - isSupportedChecker: Lambda to check if feature is
-     * supported (e.g., () -> true) - insertBeforeItemId: Menu item ID to insert before (e.g.,
-     * R.id.brave_customize_id)
+     * supported (e.g., () -> true) - insertBeforeItemIds: List of menu item IDs to try inserting
+     * before (first match wins, e.g., Arrays.asList(R.id.set_default_browser, R.id.brave_news_id))
      *
      * <p>The item will automatically be hidden/shown in the app menu based on policy ({@link
      * #updateMenuItemsBasedOnPolicy}) and hidden/shown in the settings screen menu based on policy
@@ -111,19 +111,19 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         final String mPolicyKey;
         final Supplier<MVCListAdapter.ListItem> mItemBuilder;
         final Supplier<Boolean> mIsSupportedChecker;
-        final int mInsertBeforeItemId;
+        final List<Integer> mInsertBeforeItemIds;
 
         PolicyControlledMenuItem(
                 int menuItemId,
                 String policyKey,
                 Supplier<MVCListAdapter.ListItem> itemBuilder,
                 Supplier<Boolean> isSupportedChecker,
-                int insertBeforeItemId) {
+                List<Integer> insertBeforeItemIds) {
             mMenuItemId = menuItemId;
             mPolicyKey = policyKey;
             mItemBuilder = itemBuilder;
             mIsSupportedChecker = isSupportedChecker;
-            mInsertBeforeItemId = insertBeforeItemId;
+            mInsertBeforeItemIds = insertBeforeItemIds;
         }
     }
 
@@ -134,6 +134,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     private List<PolicyControlledMenuItem> getPolicyControlledMenuItems() {
         return Arrays.asList(
                 new PolicyControlledMenuItem(
+                        R.id.brave_leo_id,
+                        BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
+                        this::buildBraveLeoItem,
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return BraveLeoPrefUtils.isLeoEnabled()
+                                    && (tab == null || !tab.isIncognito());
+                        },
+                        Arrays.asList(
+                                R.id.recent_tabs_menu_id,
+                                R.id.page_zoom_id,
+                                R.id.find_in_page_id,
+                                R.id.set_default_browser)),
+                new PolicyControlledMenuItem(
                         R.id.brave_rewards_id,
                         BravePolicyConstants.BRAVE_REWARDS_DISABLED,
                         this::buildBraveRewardsItem,
@@ -142,7 +156,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     BraveRewardsNativeWorker.getInstance();
                             return worker != null && worker.isSupported();
                         },
-                        R.id.brave_news_id));
+                        Arrays.asList(
+                                R.id.brave_news_id,
+                                CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,
+                                R.id.exit_id)));
     }
 
     public BraveTabbedAppMenuPropertiesDelegate(
@@ -239,22 +256,30 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Inserts a menu item before a specified item in the menu list.
+     * Inserts a menu item before the first matching item in the menu list.
      *
      * @param modelList The menu model list to modify
      * @param itemToInsert The menu item to insert
-     * @param beforeItemId The menu item ID to insert before
+     * @param beforeItemIds List of menu item IDs to try inserting before (priority order - first ID
+     *     in the list that exists in the menu wins)
      */
     private void insertMenuItemBefore(
             MVCListAdapter.ModelList modelList,
             MVCListAdapter.ListItem itemToInsert,
-            int beforeItemId) {
-        int insertIndex = modelList.size() - 1; // Default to end if beforeItemId not found
-        for (int i = 0; i < modelList.size(); i++) {
-            MVCListAdapter.ListItem item = modelList.get(i);
-            if (item.model.get(AppMenuItemProperties.MENU_ITEM_ID) == beforeItemId) {
-                insertIndex = i;
-                break;
+            List<Integer> beforeItemIds) {
+        int insertIndex = modelList.size(); // Default to end if no match found
+        // Try each ID in priority order - first one found in menu wins
+        for (int targetId : beforeItemIds) {
+            for (int i = 0; i < modelList.size(); i++) {
+                MVCListAdapter.ListItem item = modelList.get(i);
+                int itemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
+                if (itemId == targetId) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            if (insertIndex != modelList.size()) {
+                break; // Found a match, stop searching
             }
         }
         modelList.add(insertIndex, itemToInsert);
@@ -287,7 +312,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     insertMenuItemBefore(
                                             modelList,
                                             item.mItemBuilder.get(),
-                                            item.mInsertBeforeItemId);
+                                            item.mInsertBeforeItemIds);
                                 }
                             }
                         }
@@ -632,10 +657,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(buildBravePlaylistItem());
             modelList.add(buildBraveAddToPlaylistItem());
         }
-        if (BraveLeoPrefUtils.isLeoEnabled()) {
-            modelList.add(buildBraveLeoItem());
-        }
-
         modelList.add(buildSetDefaultBrowserItem());
 
         if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
@@ -645,12 +666,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 modelList.add(buildBraveVpnLocationIconItem());
             }
         }
-        // Add policy-controlled items based on policy states
+        // Add policy-controlled items based on policy states, respecting their position
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
             // Check if item is disabled by policy (default to false/not disabled if not in map)
             boolean isDisabled = policyStates.getOrDefault(item.mMenuItemId, false);
             if (!isDisabled && item.mIsSupportedChecker.get()) {
-                modelList.add(item.mItemBuilder.get());
+                insertMenuItemBefore(modelList, item.mItemBuilder.get(), item.mInsertBeforeItemIds);
             }
         }
 
@@ -930,19 +951,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             R.id.brave_wallet_id,
                             R.id.all_bookmarks_menu_id));
         }
-        if (BraveLeoPrefUtils.isLeoEnabled()) {
-            Tab tab = mActivityTabProvider.get();
-            if (tab != null && !tab.isIncognito()) {
-                addMenuItemAfter(
-                        modelList,
-                        buildBraveLeoItem(),
-                        Arrays.asList(
-                                R.id.add_to_playlist_id,
-                                R.id.brave_playlist_id,
-                                R.id.brave_wallet_id,
-                                R.id.all_bookmarks_menu_id));
-            }
-        }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
@@ -955,9 +963,23 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 }
             }
         }
-        // Policy-controlled items (like Rewards) are handled by updateMenuItemsBasedOnPolicy()
+        // Policy-controlled items (Leo, Rewards) are handled by updateMenuItemsBasedOnPolicy()
         // They are not added here to avoid showing them if policy disables them
         // The async policy check will add them if policy allows
+        // In JUnit tests, add Leo synchronously since native code isn't available
+        if (mJunitIsTesting && BraveLeoPrefUtils.isLeoEnabled()) {
+            Tab tab = mActivityTabProvider.get();
+            if (tab == null || !tab.isIncognito()) {
+                insertMenuItemBefore(
+                        modelList,
+                        buildBraveLeoItem(),
+                        Arrays.asList(
+                                R.id.recent_tabs_menu_id,
+                                R.id.page_zoom_id,
+                                R.id.find_in_page_id,
+                                R.id.set_default_browser));
+            }
+        }
         modelList.add(buildBraveNewsItem());
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
