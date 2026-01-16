@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -102,17 +103,14 @@ void WalletPanelHandler::RequestPermission(
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, rfh,
-      {brave_wallet::GetAccountPermissionIdentifier(account_id)},
+  permissions::BraveWalletPermissionContext::RequestWalletPermission(
+      brave_wallet::GetAccountPermissionIdentifier(account_id), *permission,
+      rfh,
       base::BindOnce(
           [](RequestPermissionCallback cb,
-             const std::vector<content::PermissionResult>& responses) {
-            if (responses.empty() || responses.size() != 1u) {
-              std::move(cb).Run(false);
-            } else {
-              std::move(cb).Run(true);
-            }
+             const content::PermissionResult& result) {
+            std::move(cb).Run(result.status ==
+                              content::PermissionStatus::GRANTED);
           },
           std::move(callback)));
 }

@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -35,26 +36,39 @@ bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
   return false;
 }
 
-void OnRequestPermissions(
-    const std::vector<std::string>& accounts,
-    BraveWalletProviderDelegate::RequestPermissionsCallback callback,
-    const std::vector<content::PermissionResult>& responses) {
-  DCHECK(responses.empty() || responses.size() == accounts.size());
+struct PermissionResultsTracker {
+  std::vector<std::string> accounts;
+  base::flat_set<std::string> granted_accounts;
+  int32_t requests_pending = 0;
+  base::OnceClosure cb;
+};
 
+void OnPermissionResult(PermissionResultsTracker* results_tracker,
+                        const std::string& account,
+                        const content::PermissionResult& result) {
+  if (result.status == blink::mojom::PermissionStatus::GRANTED) {
+    results_tracker->granted_accounts.emplace(account);
+  }
+
+  if (--results_tracker->requests_pending == 0) {
+    std::move(results_tracker->cb).Run();
+    // `results_tracker` is deleted now.
+  }
+}
+
+void PermissionResultsTrackerDone(
+    std::unique_ptr<PermissionResultsTracker> results_tracker,
+    BraveWalletProviderDelegate::RequestPermissionsCallback callback) {
+  // Fill `granted_accounts` based on original `accounts` order.
   std::vector<std::string> granted_accounts;
-  for (size_t i = 0; i < responses.size(); i++) {
-    if (responses[i].status == blink::mojom::PermissionStatus::GRANTED) {
-      granted_accounts.push_back(accounts[i]);
+  for (auto& account : results_tracker->accounts) {
+    if (results_tracker->granted_accounts.contains(account)) {
+      granted_accounts.push_back(account);
     }
   }
-  // The responses array will be empty if operation failed.
-  if (responses.empty()) {
-    std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                            std::nullopt);
-  } else {
-    std::move(callback).Run(mojom::RequestPermissionsError::kNone,
-                            granted_accounts);
-  }
+
+  std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                          granted_accounts);
 }
 
 }  // namespace
@@ -144,9 +158,19 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, content::RenderFrameHost::FromID(host_id_), accounts,
-      base::BindOnce(&OnRequestPermissions, accounts, std::move(callback)));
+  auto results_tracker = std::make_unique<PermissionResultsTracker>();
+  auto* results_tracker_ptr = results_tracker.get();
+  results_tracker_ptr->requests_pending = accounts.size();
+  results_tracker_ptr->accounts = accounts;
+  results_tracker_ptr->cb =
+      base::BindOnce(&PermissionResultsTrackerDone, std::move(results_tracker),
+                     std::move(callback));
+
+  for (auto& address : accounts) {
+    permissions::BraveWalletPermissionContext::RequestWalletPermission(
+        address, *permission, content::RenderFrameHost::FromID(host_id_),
+        base::BindOnce(&OnPermissionResult, results_tracker_ptr, address));
+  }
 }
 
 bool BraveWalletProviderDelegateImpl::IsAccountAllowed(
