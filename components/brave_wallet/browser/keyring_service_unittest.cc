@@ -24,6 +24,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
@@ -61,6 +62,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJsonDict;
+using base::test::TestFuture;
 using ::testing::_;
 using ::testing::AnyNumber;
 using ::testing::ElementsAre;
@@ -1385,7 +1387,7 @@ TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
             "LNWjgQq8NhxWTUhz9jAD7koZfsKDwdJuLmVHyMxfjaFAamqXbtyUd3TcYQV2vPeRoM"
             "58gw7Ez8qsvKSZee6KdUQ");
 
-  // Polkadot keyring
+  // Polkadot keyring fails.
   {
     base::test::ScopedFeatureList feature_list{
         features::kBraveWalletPolkadotFeature};
@@ -1395,50 +1397,92 @@ TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
         RestoreWallet(&keyring_service, kMnemonicDivideCruise, "brave", false));
     auto* polkadot_keyring = keyring_service.GetKeyring<PolkadotKeyring>(
         mojom::KeyringId::kPolkadotMainnet);
-    auto* polkadot_keyring_testnet =
-        keyring_service.GetKeyring<PolkadotKeyring>(
-            mojom::KeyringId::kPolkadotTestnet);
     ASSERT_TRUE(polkadot_keyring);
-    {
-      std::array<uint8_t, 24> nonce_bytes;
-      nonce_bytes.fill(2);
-      std::array<uint8_t, 32> seed_bytes;
-      seed_bytes.fill(32);
-      polkadot_keyring->SetRandBytesForTesting(seed_bytes, nonce_bytes);
-      polkadot_keyring_testnet->SetRandBytesForTesting(seed_bytes, nonce_bytes);
-    }
-
-    // Account 1.
-    auto polkadot_account =
-        AddAccount(&keyring_service, mojom::CoinType::DOT,
-                   mojom::KeyringId::kPolkadotMainnet, "Polkadot Account");
-
-    EXPECT_FALSE(EncodePrivateKeyForExport(&keyring_service,
-                                           polkadot_account->account_id.Clone(),
-                                           kPasswordBrave123));
-    auto polkadot_private_key = EncodePrivateKeyForExport(
-        &keyring_service, polkadot_account->account_id.Clone());
-    EXPECT_EQ(polkadot_keyring->EncodePrivateKeyForExport(
-                  polkadot_account->account_id->account_index, kPasswordBrave),
-              *polkadot_private_key);
-
-    // Account 2.
     auto polkadot_account_2 =
         AddAccount(&keyring_service, mojom::CoinType::DOT,
                    mojom::KeyringId::kPolkadotMainnet, "Polkadot Account 2");
-    auto polkadot_private_key2 = EncodePrivateKeyForExport(
-        &keyring_service, polkadot_account_2->account_id.Clone());
+    EXPECT_FALSE(EncodePrivateKeyForExport(
+        &keyring_service, polkadot_account_2->account_id.Clone()));
+  }
+}
+
+TEST_F(KeyringServiceUnitTest, EncodePolkadotPrivateKeyForExport) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
+
+  auto* polkadot_keyring =
+      service.GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotMainnet);
+  auto* polkadot_keyring_testnet =
+      service.GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(polkadot_keyring);
+  ASSERT_TRUE(polkadot_keyring_testnet);
+
+  {
+    std::array<uint8_t, 24> nonce_bytes;
+    nonce_bytes.fill(2);
+    std::array<uint8_t, 32> seed_bytes;
+    seed_bytes.fill(32);
+    polkadot_keyring->SetRandBytesForTesting(seed_bytes, nonce_bytes);
+    polkadot_keyring_testnet->SetRandBytesForTesting(seed_bytes, nonce_bytes);
+  }
+
+  // Account 1.
+  {
+    auto polkadot_account =
+        AddAccount(&service, mojom::CoinType::DOT,
+                   mojom::KeyringId::kPolkadotMainnet, "Polkadot Account");
+
+    TestFuture<const std::optional<std::string>&> future1;
+    service.EncodePolkadotKeyForExport(polkadot_account->account_id.Clone(),
+                                       kPasswordBrave123, "encryptpassword",
+                                       future1.GetCallback());
+    EXPECT_FALSE(future1.Get().has_value());
+
+    TestFuture<const std::optional<std::string>&> future2;
+    service.EncodePolkadotKeyForExport(polkadot_account->account_id.Clone(),
+                                       kPasswordBrave, "encryptpassword",
+                                       future2.GetCallback());
+    auto polkadot_private_key = future2.Get();
+    ASSERT_TRUE(polkadot_private_key.has_value());
     EXPECT_EQ(
         polkadot_keyring->EncodePrivateKeyForExport(
-            polkadot_account_2->account_id->account_index, kPasswordBrave),
-        *polkadot_private_key2);
+            polkadot_account->account_id->account_index, "encryptpassword"),
+        *polkadot_private_key);
+  }
 
-    // Testnet.
-    auto testnet_account = AddAccount(&keyring_service, mojom::CoinType::DOT,
+  // Account 2.
+  {
+    auto polkadot_account_2 =
+        AddAccount(&service, mojom::CoinType::DOT,
+                   mojom::KeyringId::kPolkadotMainnet, "Polkadot Account 2");
+    TestFuture<const std::optional<std::string>&> future3;
+    service.EncodePolkadotKeyForExport(polkadot_account_2->account_id.Clone(),
+                                       kPasswordBrave, "encryptpassword",
+                                       future3.GetCallback());
+    auto polkadot_private_key2 = future3.Get();
+    ASSERT_TRUE(polkadot_private_key2.has_value());
+    EXPECT_EQ(
+        polkadot_keyring->EncodePrivateKeyForExport(
+            polkadot_account_2->account_id->account_index, "encryptpassword"),
+        *polkadot_private_key2);
+  }
+
+  // Testnet.
+  {
+    auto testnet_account = AddAccount(&service, mojom::CoinType::DOT,
                                       mojom::KeyringId::kPolkadotTestnet,
                                       "Polkadot Testnet Account");
-    auto testnet_private_key = EncodePrivateKeyForExport(
-        &keyring_service, testnet_account->account_id.Clone());
+    TestFuture<const std::optional<std::string>&> future4;
+    service.EncodePolkadotKeyForExport(testnet_account->account_id.Clone(),
+                                       kPasswordBrave, "encryptpassword",
+                                       future4.GetCallback());
+    auto testnet_private_key = future4.Get();
+    EXPECT_EQ(
+        polkadot_keyring_testnet->EncodePrivateKeyForExport(
+            testnet_account->account_id->account_index, "encryptpassword"),
+        *testnet_private_key);
   }
 }
 
