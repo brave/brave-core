@@ -525,7 +525,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     mainStackView.snp.remakeConstraints { make in
       make.top.bottom.equalTo(self)
-      make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+      make.leading.trailing.equalTo(self.liquidGlassHorizontalSafeAreaLayoutGuide)
     }
 
     scrollToTopButton.snp.makeConstraints { make in
