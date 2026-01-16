@@ -5,8 +5,9 @@
 
 import '//resources/brave/leo.bundle.js';
 
-import { getHtml } from './cr_button.html.js';
-import { CrLitElement, css, type PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
+import {CrLitElement, css, type CSSResultGroup, type PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
+
+import {getHtml} from './cr_button.html.js';
 
 export interface CrButtonElement {
   $: {
@@ -21,24 +22,24 @@ export class CrButtonElement extends CrLitElement {
     return 'cr-button';
   }
 
-  static override get styles() {
+  static override get styles(): CSSResultGroup {
     return css`
-:host {
-  display: inline-block;
-  height: min-content;
-}
+      :host {
+        display: inline-block;
+        height: min-content;
+      }
 
-:host(.cancel-button) {
-  margin-inline-end: var(--leo-spacing-m);
-}
+      :host(.cancel-button) {
+        margin-inline-end: var(--leo-spacing-m);
+      }
 
-leo-button {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-}
-`;
+      leo-button {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
+    `;
   }
 
   override render() {

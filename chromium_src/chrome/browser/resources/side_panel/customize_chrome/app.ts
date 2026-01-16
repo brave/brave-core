@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
+import {CustomizeColorSchemeModeBrowserProxy} from '//resources/cr_components/customize_color_scheme_mode/browser_proxy.js'
+import {ColorSchemeMode} from '//resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom-webui.js'
+import {I18nMixinLit} from '//resources/cr_elements/i18n_mixin_lit.js'
+import {loadTimeData} from '//resources/js/load_time_data.js'
+import {CrLitElement, css, type CSSResultGroup, html} from '//resources/lit/v3_0/lit.rollup.js'
 
-import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
-import { ColorSchemeMode } from '//resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom-webui.js'
-import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/customize_color_scheme_mode/browser_proxy.js'
+import {CustomizeChromeApiProxy} from './customize_chrome_api_proxy.js'
 
 export * from './app-chromium.js'
 
@@ -54,14 +54,13 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
     }
   }
 
-  private setColorSchemeModeListenerId_: number | null = null
+  private setColorSchemeModeListenerId_: number|null = null;
 
-  private accessor shouldShowDarkerThemeToggle_: boolean = false
+  private accessor shouldShowDarkerThemeToggle_: boolean = false;
 
-  private accessor usingDarkerTheme_ = false
+  private accessor usingDarkerTheme_ = false;
 
-  static override get styles() {
-    return css`
+  static override get styles(): CSSResultGroup{ return css`
       #darker-theme-toggle-container {
         display: flex;
         align-items: center;
@@ -76,8 +75,7 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
       #darker-theme-toggle-container > span {
         flex: 1;
       }
-    `
-  }
+    ` }
 
   override connectedCallback() {
     super.connectedCallback()
