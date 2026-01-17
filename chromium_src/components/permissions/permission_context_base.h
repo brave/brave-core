@@ -43,8 +43,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
           PermissionLifetimeManager*(content::BrowserContext*)>& factory);
 
  private:
-  void PermissionDecided(PermissionDecision decision,
-                         bool is_final_decision,
+  void PermissionDecided(const permissions::PermissionPromptDecision& decision,
                          const PermissionRequestData& request_data) override;
 
   base::RepeatingCallback<PermissionLifetimeManager*(content::BrowserContext*)>

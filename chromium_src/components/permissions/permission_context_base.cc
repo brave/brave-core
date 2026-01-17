@@ -37,8 +37,7 @@ void PermissionContextBase::SetPermissionLifetimeManagerFactory(
 }
 
 void PermissionContextBase::PermissionDecided(
-    PermissionDecision decision,
-    bool is_final_decision,
+    const permissions::PermissionPromptDecision& decision,
     const PermissionRequestData& request_data) {
   if (permission_lifetime_manager_factory_) {
     const auto request_it = pending_requests_.find(request_data.id.ToString());
@@ -50,13 +49,12 @@ void PermissionContextBase::PermissionDecided(
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
             *permission_request, request_data.requesting_origin,
-            request_data.embedding_origin, decision);
+            request_data.embedding_origin, decision.overall_decision);
       }
     }
   }
 
-  PermissionContextBase_ChromiumImpl::PermissionDecided(
-      decision, is_final_decision, request_data);
+  PermissionContextBase_ChromiumImpl::PermissionDecided(decision, request_data);
 }
 
 }  // namespace permissions
