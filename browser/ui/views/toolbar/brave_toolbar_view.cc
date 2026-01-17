@@ -394,19 +394,6 @@ void BraveToolbarView::LoadImages() {
 #endif
 }
 
-CustomCornersBackground::Corners BraveToolbarView::GetCorners() const {
-  const bool webui_tabstrip = browser_view_->webui_tab_strip();
-  const bool vertical_tabstrip = browser_view_->ShouldDrawVerticalTabStrip();
-  if (vertical_tabstrip || webui_tabstrip) {
-    return ToolbarView::GetCorners();
-  }
-
-  // Always show rounded corners for horizontal tabs
-  return CustomCornersBackground::Corners(
-      ToolbarView::CornerStyle::kTabstripCurve,
-      ToolbarView::CornerStyle::kTabstripCurve);
-}
-
 void BraveToolbarView::Update(content::WebContents* tab) {
   ToolbarView::Update(tab);
 
