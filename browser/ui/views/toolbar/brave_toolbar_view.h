@@ -12,7 +12,6 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -72,8 +71,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
-
-  CustomCornersBackground::Corners GetCorners() const override;
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
