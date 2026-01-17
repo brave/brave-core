@@ -470,7 +470,7 @@ void OnScreenshot(FetchPageContentCallback callback,
                   const content::CopyFromSurfaceResult& result) {
   if (!result.has_value()) {
     LOG(ERROR) << "RenderWidgetHostView::CopyFromSurface failed with: "
-               << result.error();
+               << static_cast<int>(result.error());
     std::move(callback).Run("", false, "");
     return;
   }
