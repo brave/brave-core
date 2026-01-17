@@ -8,11 +8,11 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h"
 
 class SidebarContainerView;
 
-class BraveBrowserViewLayout : public BrowserViewLayoutImplOld {
+class BraveBrowserViewLayout : public BrowserViewLayoutImpl {
  public:
   BraveBrowserViewLayout(std::unique_ptr<BrowserViewLayoutDelegate> delegate,
                          Browser* browser,
@@ -44,11 +44,11 @@ class BraveBrowserViewLayout : public BrowserViewLayoutImplOld {
 
   // BrowserViewLayout:
   void Layout(views::View* host) override;
-  void LayoutTabStripRegion(gfx::Rect& available_bounds) override;
-  void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
-  void LayoutInfoBar(gfx::Rect& available_bounds) override;
-  void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
-  bool IsImmersiveModeEnabledWithoutToolbar() const override;
+//  void LayoutTabStripRegion(gfx::Rect& available_bounds) override;
+//  void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
+//  void LayoutInfoBar(gfx::Rect& available_bounds) override;
+//  void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
+//  bool IsImmersiveModeEnabledWithoutToolbar() const override;
 
  private:
   void LayoutVerticalTabs();
