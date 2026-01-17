@@ -17,16 +17,12 @@
 #include "ui/views/background.h"
 
 BraveTabSearchButton::BraveTabSearchButton(
-    TabStripController* tab_strip_controller,
     BrowserWindowInterface* browser_window_interface,
     Edge fixed_flat_edge,
-    Edge animated_flat_edge,
-    TabStrip* tab_strip)
-    : TabSearchButton(tab_strip_controller,
-                      browser_window_interface,
+    Edge animated_flat_edge)
+    : TabSearchButton(browser_window_interface,
                       fixed_flat_edge,
-                      animated_flat_edge,
-                      tab_strip) {
+                      animated_flat_edge) {
   // Apply toolbar's icon color to search button.
   SetForegroundFrameActiveColorId(kColorToolbarButtonIcon);
   SetForegroundFrameInactiveColorId(kColorToolbarButtonIcon);
