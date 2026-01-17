@@ -1,13 +1,13 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index b1e7f9e855483c4fcf88e6376ec30b5b1293eabd..b4e345440059f3542695927e2c37e2b5f7021eb7 100644
+index 8f15b6be44b7a35ee18fe51500bf0624358edc30..7bc52a960e2e4328daec388ec3d793f06a1cc946 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
-@@ -130,7 +130,7 @@
-                   "enableReportingApi",
-                   "setCookieControls"
+@@ -133,7 +133,7 @@
+                   "setCookieControls",
+                   "configureDurableMessages"
                  ],
--                "include_events": ["requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
-+                "include_events": ["requestAdblockInfoReceived", "requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
+-                "include_events": ["requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin", "deviceBoundSessionsAdded", "deviceBoundSessionEventOccurred"],
++                "include_events": ["requestAdblockInfoReceived", "requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin", "deviceBoundSessionsAdded", "deviceBoundSessionEventOccurred"],
                  "async": [
+                   "configureDurableMessages",
                    "clearBrowserCookies",
-                   "clearBrowserCache",

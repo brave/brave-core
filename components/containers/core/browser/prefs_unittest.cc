@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/test/scoped_feature_list.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/common/features.h"
@@ -66,14 +65,14 @@ TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
       base::Value::Dict()
           // Missing name field
           .Set("id", "test-id")
-          .Set("icon", base::to_underlying(mojom::Icon::kPersonal))
+          .Set("icon", std::to_underlying(mojom::Icon::kPersonal))
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
   invalid_list.Append(
       base::Value::Dict()
           // Missing id field
           .Set("name", "Test Container")
-          .Set("icon", base::to_underlying(mojom::Icon::kPersonal))
+          .Set("icon", std::to_underlying(mojom::Icon::kPersonal))
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
   invalid_list.Append(
@@ -88,7 +87,7 @@ TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
           // Missing background_color field
           .Set("id", "test-id")
           .Set("name", "Test Container")
-          .Set("icon", base::to_underlying(mojom::Icon::kPersonal)));
+          .Set("icon", std::to_underlying(mojom::Icon::kPersonal)));
 
   prefs_.SetList(prefs::kContainersList, std::move(invalid_list));
 

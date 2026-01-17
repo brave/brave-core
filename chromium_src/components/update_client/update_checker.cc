@@ -9,7 +9,9 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/task/single_thread_task_runner.h"
 #include "components/update_client/update_client.h"
 
 #include <components/update_client/update_checker.cc>

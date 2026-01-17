@@ -14,7 +14,7 @@ namespace chrome {
 namespace android {
 static jlong JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   if (profile == nullptr) {
     return static_cast<jlong>(-1);
@@ -28,3 +28,5 @@ static jlong JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveVpnServiceFactoryAndroid)

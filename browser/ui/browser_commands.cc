@@ -137,7 +137,7 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
   auto* model = browser->tab_strip_model();
-  const auto selection = model->selection_model();
+  const auto& selection = model->selection_model().GetListSelectionModel();
   auto indices = std::vector<int>(selection.selected_indices().begin(),
                                   selection.selected_indices().end());
   CHECK(!indices.empty())
@@ -580,7 +580,7 @@ bool HasUngroupedTabs(Browser* browser) {
   }
 
   auto* tsm = browser->tab_strip_model();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (!tsm->GetTabGroupForTab(i)) {
       return true;
     }
@@ -595,7 +595,7 @@ void GroupUngroupedTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   std::vector<int> group_indices;
 
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (tsm->GetTabGroupForTab(i)) {
       continue;
     }
@@ -670,7 +670,7 @@ bool CanUngroupAllTabs(Browser* browser) {
     return false;
   }
   auto* tsm = browser->tab_strip_model();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (tsm->GetTabGroupForTab(i)) {
       return true;
     }
@@ -683,7 +683,7 @@ void UngroupAllTabs(Browser* browser) {
     return;
   }
 
-  std::vector<int> indices(browser->tab_strip_model()->GetTabCount());
+  std::vector<int> indices(browser->tab_strip_model()->count());
   std::iota(indices.begin(), indices.end(), 0);
   browser->tab_strip_model()->RemoveFromGroup(indices);
 }
@@ -714,7 +714,7 @@ void CloseUngroupedTabs(Browser* browser) {
 
   std::vector<int> indices;
 
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     if (!tsm->GetTabGroupForTab(i)) {
       indices.push_back(i);
     }
@@ -741,7 +741,7 @@ void CloseTabsNotInCurrentGroup(Browser* browser) {
   }
 
   std::vector<int> indices;
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     if (tsm->GetTabGroupForTab(i) != *group_id) {
       indices.push_back(i);
     }
@@ -860,7 +860,7 @@ bool HasDuplicateTabs(Browser* browser) {
   }
 
   auto url = active_web_contents->GetVisibleURL();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     // Don't check the active tab.
     if (tsm->active_index() == i) {
       continue;
@@ -879,7 +879,7 @@ void CloseDuplicateTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();
 
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     // Don't close the active tab.
     if (tsm->active_index() == i) {
       continue;
@@ -899,7 +899,8 @@ bool CanCloseTabsToLeft(Browser* browser) {
     return false;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   return left_selected > 0;
 }
 
@@ -910,7 +911,8 @@ void CloseTabsToLeft(Browser* browser) {
     return;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   for (int i = left_selected - 1; i >= 0; --i) {
     tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
                                    TabCloseTypes::CLOSE_USER_GESTURE);

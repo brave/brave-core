@@ -84,6 +84,7 @@ class SearchPage implements PageInterface {
   updateLensSearchEligibility(eligible: boolean): void {}
   updateAimEligibility(eligible: boolean): void {}
   onShowAiModePrefChanged(canShow: boolean): void {}
+  updateContentSharingPolicy(enabled: boolean): void {}
 }
 
 export const search = new SearchPage()

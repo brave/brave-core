@@ -13,7 +13,6 @@ import org.jni_zero.JniType;
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.signin.base.CoreAccountInfo;
@@ -85,7 +84,6 @@ public class BraveSigninManager implements SigninManager {
     @CalledByNative
     static SigninManager create(
             long nativeSigninManagerAndroid,
-            @JniType("Profile*") Profile profile,
             @JniType("PrefService*") PrefService prefService,
             @JniType("signin::IdentityManager*") IdentityManager identityManager,
             IdentityMutator identityMutator) {

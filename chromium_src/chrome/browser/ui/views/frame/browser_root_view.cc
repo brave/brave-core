@@ -11,7 +11,8 @@
 #define ConvertPointToTarget(THIS, TARGET_GETTER, POINT)                    \
   if (views::View* target_v = TARGET_GETTER;                                \
       tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser()) && \
-      (target_v == tabstrip() || !THIS->Contains(target_v))) {              \
+      (target_v == browser_view_->tab_strip_view() ||                       \
+       !THIS->Contains(target_v))) {                                        \
     ConvertPointToScreen(THIS, POINT);                                      \
     ConvertPointFromScreen(target_v, POINT);                                \
   } else {                                                                  \

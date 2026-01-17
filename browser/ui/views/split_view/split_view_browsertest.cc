@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -161,7 +162,8 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   }
 
   TabStrip* tab_strip() {
-    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
   BraveBrowserView* brave_browser_view() const {
@@ -459,7 +461,7 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   bool GetIsWebContentsBlockedFromTabAt(int index) {
     auto* tab_strip_model = browser()->tab_strip_model();
     return static_cast<tabs::TabModel*>(tab_strip_model->GetTabAtIndex(index))
-        ->blocked();
+        ->IsBlocked();
   }
 
   web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
@@ -519,7 +521,8 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   }
 
   TabStrip* tab_strip() {
-    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
  private:

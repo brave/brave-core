@@ -51,7 +51,7 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserView()->browser())) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
       return button && button->GetVisible() &&
@@ -72,7 +72,7 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto res = brave::NonClientHitTest(browser_view(), point);
+  if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;
   }
@@ -84,8 +84,8 @@ void BraveOpaqueBrowserFrameView::
     UpdateCaptionButtonPlaceholderContainerBackground() {
   OpaqueBrowserFrameView::UpdateCaptionButtonPlaceholderContainerBackground();
 
-  DCHECK(browser_view());
-  auto* browser = browser_view()->browser();
+  DCHECK(GetBrowserView());
+  auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
   const bool should_window_caption_buttons_overlap_toolbar =
       tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
@@ -112,7 +112,7 @@ void BraveOpaqueBrowserFrameView::
 
   // Notify toolbar view that caption button's width changed so that it can
   // make space for caption buttons.
-  static_cast<BraveToolbarView*>(browser_view()->toolbar())
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
       ->UpdateHorizontalPadding();
 }
 
@@ -146,8 +146,8 @@ int BraveOpaqueBrowserFrameView::GetTopAreaHeight() const {
 }
 
 bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
-  DCHECK(browser_view());
-  auto* browser = browser_view()->browser();
+  DCHECK(GetBrowserView());
+  auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
   return tabs::utils::ShouldShowBraveVerticalTabs(browser);
 }

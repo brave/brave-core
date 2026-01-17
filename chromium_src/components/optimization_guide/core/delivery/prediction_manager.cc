@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "components/optimization_guide/core/delivery/optimization_target_model_observer.h"
 #include "components/optimization_guide/core/delivery/prediction_model_download_manager.h"
@@ -24,14 +25,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace optimization_guide {
-
-namespace {
-proto::ModelCacheKey GetModelCacheKey(const std::string& locale) {
-  proto::ModelCacheKey model_cache_key;
-  model_cache_key.set_locale(locale);
-  return model_cache_key;
-}
-}  // namespace
 
 PredictionManager::PredictionManager(
     PredictionModelStore* prediction_model_store,
@@ -47,7 +40,7 @@ PredictionManager::PredictionManager(
       unzipper_factory_(std::move(unzipper_factory)),
       prediction_model_fetch_timer_(local_state, base::DoNothing()),
       application_locale_(application_locale),
-      model_cache_key_(GetModelCacheKey(application_locale_)) {}
+      model_cache_key_(ClientCacheKey::FromLocale(application_locale_)) {}
 
 PredictionManager::~PredictionManager() {}
 

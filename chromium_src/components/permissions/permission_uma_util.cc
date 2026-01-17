@@ -8,7 +8,7 @@
 #include "components/permissions/permissions_client.h"
 
 // We do not record permissions UKM and this can save us from patching
-// in RecordPermissionAction for unhandling switch cases for Brave's content
+// in RecordPermissionAction for unhandled switch cases for Brave's content
 // settings type.
 #define GetUkmSourceId             \
   GetSettingsMap(browser_context); \
@@ -22,6 +22,10 @@
   break;                            \
   case SettingSource::kTpcdGrant
 
+// Don't let GetPermissionStringForUma hit NOTREACHED for missing Brave types.
+#define BRAVE_GET_PERMISSION_STRING_FOR_UMA return "";
+
 #include <components/permissions/permission_uma_util.cc>
+#undef BRAVE_GET_PERMISSION_STRING_FOR_UMA
 #undef GetUkmSourceId
 #undef kTpcdGrant

@@ -20,9 +20,7 @@ bool SidePanelWebUIView::HandleContextMenu(
     const content::ContextMenuParams& params) {
   // For AI Chat, allow context menus to show (return false)
   // This enables features like spell check, autocorrect, copy/paste, etc.
-  GURL url = contents_wrapper_
-                 ? contents_wrapper_->web_contents()->GetLastCommittedURL()
-                 : GURL();
+  GURL url = web_contents()->GetLastCommittedURL();
   if (brave::ShouldEnableContextMenu(url)) {
     return false;  // Allow context menu
   }
@@ -34,10 +32,10 @@ bool SidePanelWebUIView::HandleContextMenu(
 void SidePanelWebUIView::AddedToWidget() {
   WebView::AddedToWidget();
 
-  DCHECK(contents_wrapper_->web_contents());
+  DCHECK(web_contents());
 
-  auto* profile = Profile::FromBrowserContext(
-      contents_wrapper_->web_contents()->GetBrowserContext());
+  auto* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   if (profile->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     holder()->SetCornerRadii(gfx::RoundedCornersF(
         views::LayoutProvider::Get()->GetCornerRadiusMetric(

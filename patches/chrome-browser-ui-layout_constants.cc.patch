@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/layout_constants.cc b/chrome/browser/ui/layout_constants.cc
+index c7424d55cfef168acea31b22f47b4648a873645c..438e440859db4f04260a41d3d6af3f013dae823d 100644
+--- a/chrome/browser/ui/layout_constants.cc
++++ b/chrome/browser/ui/layout_constants.cc
+@@ -20,6 +20,7 @@
+ #endif
+ 
+ int GetLayoutConstant(LayoutConstant constant) {
++  BRAVE_LAYOUT_CONSTANTS_GET_LAYOUT_CONSTANT
+   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
+   switch (constant) {
+     case LayoutConstant::kAppMenuProfileRowAvatarIconSize:

@@ -31,13 +31,17 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
       const VerticalTabStripRootViewBrowserTest&) = delete;
   ~VerticalTabStripRootViewBrowserTest() override = default;
 
-  Tab* GetTabAt(int index) { return tab_strip()->tab_at(index); }
+  Tab* GetTabAt(int index) {
+    return horizontal_tab_strip_for_testing()->tab_at(index);
+  }
 
   BrowserView* browser_view() {
     return BrowserView::GetBrowserViewForBrowser(browser());
   }
 
-  TabStrip* tab_strip() { return browser_view()->tabstrip(); }
+  TabStrip* horizontal_tab_strip_for_testing() {
+    return browser_view()->horizontal_tab_strip_for_testing();
+  }
 
   VerticalTabStripRootView* vtab_strip_root_view() {
     if (vtab_tab_strip_widget_delegate_view()) {

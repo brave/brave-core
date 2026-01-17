@@ -100,7 +100,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
             SkColorSetRGB(0x7D, 0x00, 0x1A));
 
-  EXPECT_EQ(GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT),
+  EXPECT_EQ(GetLayoutConstant(LayoutConstant::kToolbarButtonHeight),
             brave_menu_button->height());
   EXPECT_EQ(::GetLayoutInsets(TOOLBAR_BUTTON), brave_menu_button->GetInsets());
 }

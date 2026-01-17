@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/functional/callback_helpers.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 #define SetShowCloseButton(...) SetShowCloseButton(false)

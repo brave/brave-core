@@ -21,10 +21,10 @@
 //               If custom padding is provided(text_left is not null), respect
 //               it. Otherwise, set our design value - 5px.
 // Both value could be updated when |should_indent| is true.
-#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS         \
-  icon_left = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);     \
-  if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) { \
-    text_left = 5;                                                 \
+#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS                   \
+  icon_left = GetLayoutConstant(LayoutConstant::kLocationBarElementPadding); \
+  if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) {           \
+    text_left = 5;                                                           \
   }
 
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS \

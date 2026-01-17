@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/BUILD.gn b/components/sync_device_info/BUILD.gn
-index 0e10f92412fdbd9755d3ab802150a9e4f4705fc2..98d774230b4ac28d426c97bc184ee75a06fc6d0e 100644
+index 2ce756e2131fa7e4b6472a78939ab41878e887cb..93f35cbf015bc23c3fe72a79fe30fcaf1fadb1d3 100644
 --- a/components/sync_device_info/BUILD.gn
 +++ b/components/sync_device_info/BUILD.gn
-@@ -88,6 +88,7 @@ static_library("sync_device_info") {
+@@ -89,6 +89,7 @@ static_library("sync_device_info") {
    if (is_win) {
      sources += [ "local_device_info_util_win.cc" ]
    }

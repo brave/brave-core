@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 
 #include <ostream>  // IWYU pragma: keep
+#include <utility>
 
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 
 namespace brave_ads {
@@ -42,7 +42,7 @@ std::string ToString(CreativeNewTabPageAdWallpaperType wallpaper_type) {
   }
 
   NOTREACHED() << "Unexpected value for CreativeNewTabPageAdWallpaperType: "
-               << base::to_underlying(wallpaper_type);
+               << std::to_underlying(wallpaper_type);
 }
 
 }  // namespace brave_ads

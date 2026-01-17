@@ -157,9 +157,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
             static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSigninAllowedOnNextStartup));
-  // Verify cloud print is disabled.
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      prefs::kCloudPrintProxyEnabled));
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       ntp_prefs::kNtpCustomLinksVisible));

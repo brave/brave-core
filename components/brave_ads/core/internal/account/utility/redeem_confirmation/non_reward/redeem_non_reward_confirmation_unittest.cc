@@ -63,8 +63,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   const test::URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)}}}};
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   std::optional<ConfirmationInfo> confirmation =

@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/numerics/byte_conversions.h"
 #include "base/sys_byteorder.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"

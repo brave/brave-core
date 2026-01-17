@@ -22,15 +22,9 @@
 #define NormalBrowserSupportsWindowFeature \
   virtual NormalBrowserSupportsWindowFeature
 
-// Override to create new BraveBrowser object instead of Browser.
-#define DeprecatedCreateOwnedForTesting(...)           \
-  DeprecatedCreateOwnedForTesting_Unused(__VA_ARGS__); \
-  static std::unique_ptr<Browser> DeprecatedCreateOwnedForTesting(__VA_ARGS__)
-
 #include <chrome/browser/ui/browser.h>  // IWYU pragma: export
 
 #undef NormalBrowserSupportsWindowFeature
-#undef DeprecatedCreateOwnedForTesting
 #undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow
 #undef TryToCloseWindow

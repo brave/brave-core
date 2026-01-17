@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_VIEWS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_VIEWS_H_
 
-#define OnGroupVisualsChanged        \
-  OnGroupVisualsChanged_Unused() {}  \
-  const Browser* GetBrowser() const; \
+#define OnGroupVisualsChanged                                      \
+  OnGroupVisualsChanged_Unused() {}                                \
+  const BrowserWindowInterface* GetBrowserWindowInterface() const; \
   void OnGroupVisualsChanged
 
 #include <chrome/browser/ui/views/tabs/tab_group_views.h>  // IWYU pragma: export

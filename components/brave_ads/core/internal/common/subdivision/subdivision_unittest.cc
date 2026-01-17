@@ -166,7 +166,8 @@ TEST_F(BraveAdsSubdivisionTest,
   const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_FORBIDDEN,
-         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN)}}}};
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
@@ -186,8 +187,8 @@ TEST_F(BraveAdsSubdivisionTest,
   const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))},
         {net::HTTP_OK,
          test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};

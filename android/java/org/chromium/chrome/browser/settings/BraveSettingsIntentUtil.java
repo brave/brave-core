@@ -29,9 +29,18 @@ public class BraveSettingsIntentUtil {
             @Nullable String fragmentName,
             @Nullable Bundle fragmentArgs,
             boolean addToBackStack) {
+        return createIntent(context, fragmentName, fragmentArgs, addToBackStack, /* tag= */ null);
+    }
+
+    public static Intent createIntent(
+            Context context,
+            @Nullable String fragmentName,
+            @Nullable Bundle fragmentArgs,
+            boolean addToBackStack,
+            @Nullable String tag) {
         Intent intent =
                 SettingsIntentUtil.createIntent(
-                        context, fragmentName, fragmentArgs, addToBackStack);
+                        context, fragmentName, fragmentArgs, addToBackStack, tag);
         intent.setClass(context, BraveSettingsActivity.class);
         /*
          * Password settings and credential edit fragments are not used in the upstream anymore and

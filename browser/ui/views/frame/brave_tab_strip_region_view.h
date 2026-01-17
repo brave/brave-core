@@ -6,22 +6,23 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_VIEW_H_
 
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-// `TabStripRegionView` is customized to insert a medium-sized gap before the
-// first tab when the browser frame is not fullscreen or maximized.
-class BraveTabStripRegionView : public TabStripRegionView {
-  METADATA_HEADER(BraveTabStripRegionView, TabStripRegionView)
+// `HorizontalTabStripRegionView` is customized to insert a medium-sized gap
+// before the first tab when the browser frame is not fullscreen or maximized.
+class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
+  METADATA_HEADER(BraveHorizontalTabStripRegionView,
+                  HorizontalTabStripRegionView)
 
  public:
   template <typename... Args>
-  explicit BraveTabStripRegionView(Args&&... args)
-      : TabStripRegionView(std::forward<Args>(args)...) {
+  explicit BraveHorizontalTabStripRegionView(Args&&... args)
+      : HorizontalTabStripRegionView(std::forward<Args>(args)...) {
     Initialize();
   }
 
-  ~BraveTabStripRegionView() override;
+  ~BraveHorizontalTabStripRegionView() override;
 
   void Layout(PassKey) override;
 

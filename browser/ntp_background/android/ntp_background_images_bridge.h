@@ -40,14 +40,14 @@ class NTPBackgroundImagesBridge
 
   void WallpaperLogoClicked(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& obj,
-      const base::android::JavaParamRef<jstring>& jwallpaperId,
-      const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
-      const base::android::JavaParamRef<jstring>& jdestinationUrl,
+      const base::android::JavaRef<jobject>& obj,
+      const base::android::JavaRef<jstring>& jwallpaperId,
+      const base::android::JavaRef<jstring>& jcreativeInstanceId,
+      const base::android::JavaRef<jstring>& jdestinationUrl,
       int metricType);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& obj,
+      const base::android::JavaRef<jobject>& obj,
       jboolean allow_sponsored_image);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();

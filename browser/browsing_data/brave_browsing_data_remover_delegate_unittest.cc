@@ -276,7 +276,7 @@ TEST_F(DataTypeContentSettings_Clearing, CheckAll) {
 
   for (auto type = ContentSettingsType::BRAVE_START;
        type < ContentSettingsType::kMaxValue;
-       type = static_cast<ContentSettingsType>(base::to_underlying(type) + 1)) {
+       type = static_cast<ContentSettingsType>(std::to_underlying(type) + 1)) {
     const auto* web_setting = web_settings_registry->Get(type);
     if (ShouldNotBeRegistered(type)) {
       // Registration is skipped for some reason.

@@ -5,6 +5,7 @@
 
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/task_environment.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/ui/tabs/tab_group_desktop.h"

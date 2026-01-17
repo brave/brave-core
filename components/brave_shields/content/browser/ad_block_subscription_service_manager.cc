@@ -16,6 +16,7 @@
 #include "base/containers/map_util.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_value_converter.h"
 #include "base/json/values_util.h"
 #include "base/task/thread_pool.h"

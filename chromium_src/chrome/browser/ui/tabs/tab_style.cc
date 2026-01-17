@@ -59,7 +59,7 @@ class BraveTabStyle : public TabStyle {
   }
 
   gfx::Size GetSeparatorSize() const override {
-    return gfx::Size(1, GetLayoutConstant(TAB_SEPARATOR_HEIGHT));
+    return gfx::Size(1, GetLayoutConstant(LayoutConstant::kTabSeparatorHeight));
   }
 
   gfx::Insets GetSeparatorMargins() const override {

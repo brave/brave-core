@@ -39,8 +39,12 @@ base::Value::Dict GetResponsePayload(bool valid, const std::string& message) {
 
 class TestBraveSiteSettingsHandlerUnittest : public testing::Test {
  public:
-  TestBraveSiteSettingsHandlerUnittest() {
-    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
+  TestBraveSiteSettingsHandlerUnittest() = default;
+  ~TestBraveSiteSettingsHandlerUnittest() override = default;
+
+  void SetUp() override {
+    TestingBrowserProcess::GetGlobal()->SetUpGlobalFeaturesForTesting(
+        /*profile_manager=*/false);
     TestingProfile::Builder builder;
 
     profile_ = builder.Build();
@@ -53,11 +57,14 @@ class TestBraveSiteSettingsHandlerUnittest : public testing::Test {
     handler_->set_web_ui(&test_web_ui_);
     handler_->RegisterMessages();
   }
-  ~TestBraveSiteSettingsHandlerUnittest() override {
+
+  void TearDown() override {
+    testing::Test::TearDown();
     // The test handler unusually owns its own TestWebUI, so we make sure to
     // unbind it from the base class before the derived class is destroyed.
     handler_->set_web_ui(nullptr);
     handler_.reset();
+    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }

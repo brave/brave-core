@@ -392,16 +392,16 @@ void SharedPinnedTabService::OnTabStripModelChanged(
   }
 }
 
-void SharedPinnedTabService::TabPinnedStateChanged(
-    TabStripModel* tab_strip_model,
-    content::WebContents* contents,
-    int index) {
+void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
+                                                     int index) {
   if (change_source_model_) {
     return;
   }
 
+  auto* tab_strip_model = tab->GetBrowserWindowInterface()->GetTabStripModel();
   DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
            << tab_strip_model->IsTabPinned(index);
+  auto* contents = tab->GetContents();
   if (tab_strip_model->IsTabPinned(index)) {
     LOCK_REENTRANCE(tab_strip_model);
     SharedContentsData::CreateForWebContents(contents);
@@ -422,19 +422,19 @@ void SharedPinnedTabService::TabPinnedStateChanged(
   }
 }
 
-void SharedPinnedTabService::TabChangedAt(content::WebContents* contents,
-                                          int index,
-                                          TabChangeType change_type) {
+void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
+                                            int index,
+                                            TabChangeType change_type) {
   if (change_source_model_) {
     return;
   }
 
-  if (DummyContentsData::FromWebContents(contents)) {
+  if (DummyContentsData::FromWebContents(tab->GetContents())) {
     // We don't need to propagate changes from dummy contentses.
     return;
   }
 
-  auto iter = std::ranges::find(pinned_tab_data_, contents,
+  auto iter = std::ranges::find(pinned_tab_data_, tab->GetContents(),
                                 &PinnedTabData::shared_contents);
   if (iter == pinned_tab_data_.end()) {
     return;
@@ -885,12 +885,13 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
     auto* tab_strip_model = browser->tab_strip_model();
     for (int i = 0; i < tab_strip_model->IndexOfFirstNonPinnedTab(); ++i) {
       auto* contents = tab_strip_model->GetWebContentsAt(i);
+      auto* tab = tab_strip_model->GetTabForWebContents(contents);
       if (IsDummyContents(contents)) {
         // This tab is dummy tab created inside this loop from another
         // browser.
         continue;
       }
-      TabPinnedStateChanged(tab_strip_model, contents, i);
+      OnTabPinnedStateChanged(tab, i);
     }
   }
 }

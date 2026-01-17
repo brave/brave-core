@@ -86,7 +86,7 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(
 
 bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
   return tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_group_views_->GetBrowser());
+      tab_group_views_->GetBrowserWindowInterface());
 }
 
 float TabGroupStyle::GetEmptyChipSize() const {

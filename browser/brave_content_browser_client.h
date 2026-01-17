@@ -53,7 +53,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::RenderFrameHost& render_frame_host,
       blink::AssociatedInterfaceRegistry& associated_registry) override;
 
-  void RegisterWebUIInterfaceBrokers(
+  void RegisterTrustedWebUIInterfaceBrokers(
+      content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
+  void RegisterUntrustedWebUIInterfaceBrokers(
       content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
 
   bool HandleExternalProtocol(
@@ -74,10 +76,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
       content::RenderFrameHost* render_frame_host,
-      const url::Origin& origin) override;
-
-  bool CanThirdPartyStoragePartitioningBeDisabled(
-      content::BrowserContext* browser_context,
       const url::Origin& origin) override;
 
   bool AllowWorkerFingerprinting(

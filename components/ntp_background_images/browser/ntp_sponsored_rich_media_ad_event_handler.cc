@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -35,7 +35,7 @@ bool ShouldReportNewTabPageAdEvent(
   }
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdEventType: "
-               << base::to_underlying(mojom_ad_event_type);
+               << std::to_underlying(mojom_ad_event_type);
 }
 
 }  // namespace

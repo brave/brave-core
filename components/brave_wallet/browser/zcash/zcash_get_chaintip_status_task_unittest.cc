@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
 #include "base/task/thread_pool.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"

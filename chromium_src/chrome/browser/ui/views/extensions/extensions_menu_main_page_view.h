@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 
-#define GetActiveWebContents                    \
-  GetActiveWebContents_Unused();                \
+#define GetExtensionRequestEntry                \
+  GetExtensionRequestEntry_Unused();            \
   friend class BraveExtensionsMenuMainPageView; \
-  content::WebContents* GetActiveWebContents
+  views::View* GetExtensionRequestEntry
 
 #include <chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h>  // IWYU pragma: export
 
-#undef GetActiveWebContents
+#undef GetExtensionRequestEntry
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_

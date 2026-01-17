@@ -22,8 +22,7 @@ class BraveVpnNativeWorker {
   BraveVpnNativeWorker(const BraveVpnNativeWorker&) = delete;
   BraveVpnNativeWorker& operator=(const BraveVpnNativeWorker&) = delete;
 
-  void Destroy(JNIEnv* env,
-               const base::android::JavaParamRef<jobject>& jcaller);
+  void Destroy(JNIEnv* env, const base::android::JavaRef<jobject>& jcaller);
 
   void GetTimezonesForRegions(JNIEnv* env);
 
@@ -32,16 +31,16 @@ class BraveVpnNativeWorker {
 
   void GetHostnamesForRegion(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& region,
-      const base::android::JavaParamRef<jstring>& region_precision);
+      const base::android::JavaRef<jstring>& region,
+      const base::android::JavaRef<jstring>& region_precision);
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 
   void GetWireguardProfileCredentials(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& subscriber_credential,
-      const base::android::JavaParamRef<jstring>& public_key,
-      const base::android::JavaParamRef<jstring>& hostname);
+      const base::android::JavaRef<jstring>& subscriber_credential,
+      const base::android::JavaRef<jstring>& public_key,
+      const base::android::JavaRef<jstring>& hostname);
 
   void OnGetWireguardProfileCredentials(
       const std::string& wireguard_profile_credentials_json,
@@ -49,30 +48,30 @@ class BraveVpnNativeWorker {
 
   void VerifyCredentials(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& hostname,
-      const base::android::JavaParamRef<jstring>& client_id,
-      const base::android::JavaParamRef<jstring>& subscriber_credential,
-      const base::android::JavaParamRef<jstring>& api_auth_token);
+      const base::android::JavaRef<jstring>& hostname,
+      const base::android::JavaRef<jstring>& client_id,
+      const base::android::JavaRef<jstring>& subscriber_credential,
+      const base::android::JavaRef<jstring>& api_auth_token);
 
   void OnVerifyCredentials(const std::string& verify_credentials_json,
                            bool success);
   void InvalidateCredentials(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& hostname,
-      const base::android::JavaParamRef<jstring>& client_id,
-      const base::android::JavaParamRef<jstring>& subscriber_credential,
-      const base::android::JavaParamRef<jstring>& api_auth_token);
+      const base::android::JavaRef<jstring>& hostname,
+      const base::android::JavaRef<jstring>& client_id,
+      const base::android::JavaRef<jstring>& subscriber_credential,
+      const base::android::JavaRef<jstring>& api_auth_token);
 
   void OnInvalidateCredentials(const std::string& invalidate_credentials_json,
                                bool success);
 
   void GetSubscriberCredential(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& product_type,
-      const base::android::JavaParamRef<jstring>& product_id,
-      const base::android::JavaParamRef<jstring>& validation_method,
-      const base::android::JavaParamRef<jstring>& purchase_token,
-      const base::android::JavaParamRef<jstring>& bundle_id);
+      const base::android::JavaRef<jstring>& product_type,
+      const base::android::JavaRef<jstring>& product_id,
+      const base::android::JavaRef<jstring>& validation_method,
+      const base::android::JavaRef<jstring>& purchase_token,
+      const base::android::JavaRef<jstring>& bundle_id);
 
   void GetSubscriberCredentialV12(JNIEnv* env);
 
@@ -81,10 +80,10 @@ class BraveVpnNativeWorker {
 
   void VerifyPurchaseToken(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& purchase_token,
-      const base::android::JavaParamRef<jstring>& product_id,
-      const base::android::JavaParamRef<jstring>& product_type,
-      const base::android::JavaParamRef<jstring>& bundle_id);
+      const base::android::JavaRef<jstring>& purchase_token,
+      const base::android::JavaRef<jstring>& product_id,
+      const base::android::JavaRef<jstring>& product_type,
+      const base::android::JavaRef<jstring>& bundle_id);
 
   void OnVerifyPurchaseToken(const std::string& purchase_token,
                              const std::string& product_id,
