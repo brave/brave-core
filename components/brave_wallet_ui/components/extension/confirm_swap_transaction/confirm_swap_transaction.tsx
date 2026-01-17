@@ -19,6 +19,7 @@ import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.ext
 import { getLocale } from '../../../../common/locale'
 import { isBridgeTransaction } from '../../../utils/tx-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Constants
 import { SwapProviderMetadata } from '../../../page/screens/swap/constants/metadata'
@@ -72,6 +73,7 @@ import {
 import { Column, Row, VerticalDivider, Text } from '../../shared/style'
 import {
   ConfirmationButtonLink,
+  ConfirmationIconButton,
   ConfirmationInfoLabel,
   ScrollableColumn,
 } from '../shared-panel-styles'
@@ -83,6 +85,8 @@ export function ConfirmSwapTransaction() {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [showTransactionDetails, setShowTransactionDetails] =
+    React.useState<boolean>(false)
+  const [isContractAddressCopied, setIsContractAddressCopied] =
     React.useState<boolean>(false)
 
   // Queries
@@ -318,6 +322,26 @@ export function ConfirmSwapTransaction() {
                         {reduceAddress(transactionDetails.recipient)}
                         <Icon name='arrow-diagonal-up-right' />
                       </ConfirmationButtonLink>
+                    </Tooltip>
+                    <Tooltip
+                      text={
+                        isContractAddressCopied
+                          ? getLocale('braveWalletButtonCopied')
+                          : ''
+                      }
+                    >
+                      <ConfirmationIconButton
+                        onClick={() => {
+                          copyToClipboard(transactionDetails.recipient)
+                          setIsContractAddressCopied(true)
+                          setTimeout(
+                            () => setIsContractAddressCopied(false),
+                            1500,
+                          )
+                        }}
+                      >
+                        <Icon name='copy' />
+                      </ConfirmationIconButton>
                     </Tooltip>
                   </Row>
                 </Row>

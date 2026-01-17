@@ -104,6 +104,9 @@ export function ConfirmationTokenInfo(props: Props) {
     isAssociatedTokenAccountCreation,
   } = props
 
+  // State
+  const [isAddressCopied, setIsAddressCopied] = React.useState<boolean>(false)
+
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(network)
 
@@ -329,10 +332,22 @@ export function ConfirmationTokenInfo(props: Props) {
             {getLabelText(label)}
           </ConfirmationInfoLabel>
           <Tooltip
-            text={account ? (account?.address ?? '') : (receiveAddress ?? '')}
+            text={
+              isAddressCopied
+                ? getLocale('braveWalletButtonCopied')
+                : account
+                  ? (account?.address ?? '')
+                  : (receiveAddress ?? '')
+            }
           >
             <AccountButton
-              onClick={() => copyToClipboard(account?.address ?? '')}
+              onClick={() => {
+                copyToClipboard(
+                  account ? account.address : (receiveAddress ?? ''),
+                )
+                setIsAddressCopied(true)
+                setTimeout(() => setIsAddressCopied(false), 1500)
+              }}
             >
               <Label>
                 {account ? (
