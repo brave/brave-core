@@ -6,9 +6,11 @@
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
 
+#define BrowserViewTabbedLayoutImpl BraveBrowserViewTabbedLayoutImpl
 #define BrowserViewLayoutImplOld BraveBrowserViewLayout
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.cc>
+#undef BrowserViewTabbedLayoutImpl
 #undef BrowserViewLayoutImplOld
 
 void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
