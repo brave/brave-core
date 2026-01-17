@@ -179,12 +179,9 @@ END_METADATA
 class VerticalTabNewTabButton : public BraveNewTabButton {
   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-  VerticalTabNewTabButton(TabStripController* tab_strip_controller,
-                          PressedCallback callback,
+  VerticalTabNewTabButton(PressedCallback callback,
                           const std::u16string& shortcut_text)
-      : BraveNewTabButton(tab_strip_controller,
-                          std::move(callback),
-                          kLeoPlusAddIcon) {
+      : BraveNewTabButton(std::move(callback), kLeoPlusAddIcon) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
@@ -425,7 +422,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   separator_->SetBackground(
       views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
-      original_region_view_->tab_strip_->controller(),
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
       GetShortcutTextForNewTabButton(browser_view)));
