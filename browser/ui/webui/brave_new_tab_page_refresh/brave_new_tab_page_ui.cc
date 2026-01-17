@@ -180,7 +180,8 @@ BraveNewTabPageUI::GetContextualSessionHandle() {
           std::make_unique<
               contextual_search::ContextualSearchContextController::
                   ConfigParams>(),
-          contextual_search::ContextualSearchSource::kOmnibox);
+          contextual_search::ContextualSearchSource::kOmnibox,
+          /*invocation_source=*/std::nullopt);
     }
   }
   return session_handle_.get();
