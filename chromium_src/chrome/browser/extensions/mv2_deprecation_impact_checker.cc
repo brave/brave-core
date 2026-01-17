@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "extensions/browser/extension_util.h"
-#include "extensions/common/extension.h"
+#include "extensions/common/constants.h"
+#include "extensions/common/extension_features.h"
 
-#define Contains(...)      \
-  Contains(__VA_ARGS__) || \
-      extensions_mv2::IsKnownBraveHostedExtension(extension_id)
+// Combine the upstream MV2 exception list with all Brave-hosted MV2 extension
+// hashes so that our extensions are always exempt from deprecation
+#define kExtensionManifestV2ExceptionListParam         \
+  kExtensionManifestV2ExceptionListParam.Get() + "," + \
+      extensions_mv2::BuildBraveMV2ExceptionList();    \
+  extensions_features::kExtensionManifestV2ExceptionListParam
 
 #include <chrome/browser/extensions/mv2_deprecation_impact_checker.cc>
 
-#undef Contains
+#undef kExtensionManifestV2ExceptionListParam
