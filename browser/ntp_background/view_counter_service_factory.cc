@@ -8,10 +8,8 @@
 #include <memory>
 
 #include "base/no_destructor.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_image_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
@@ -26,6 +24,12 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/url_data_source.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
@@ -49,7 +53,9 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "ViewCounterService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   DependsOn(BraveNTPCustomBackgroundServiceFactory::GetInstance());
 #endif
@@ -68,10 +74,15 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
   if (auto* service =
           g_brave_browser_process->ntp_background_images_service()) {
     Profile* profile = Profile::FromBrowserContext(browser_context);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     brave_ads::AdsService* const ads_service =
         brave_ads::AdsServiceFactory::GetForProfile(profile);
     const bool is_supported_locale =
         ads_service && brave_ads::IsSupportedRegion();
+#else
+    brave_ads::AdsService* const ads_service = nullptr;
+    const bool is_supported_locale = false;
+#endif
 
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
