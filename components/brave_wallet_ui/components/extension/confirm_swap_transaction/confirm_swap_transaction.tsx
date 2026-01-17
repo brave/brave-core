@@ -151,14 +151,14 @@ export function ConfirmSwapTransaction() {
     }
 
     if (sourceToken?.coin === BraveWallet.CoinType.ETH) {
-      return getLocale('braveWalletSwapContractAddress')
+      return getLocale('braveWalletNFTDetailContractAddress')
     }
 
     if (sourceToken?.coin === BraveWallet.CoinType.SOL) {
       return getLocale('braveWalletSwapProgramAddress')
     }
 
-    return getLocale('braveWalletSwapContractAddress')
+    return getLocale('braveWalletNFTDetailContractAddress')
   }, [provider, sourceToken])
 
   if (
