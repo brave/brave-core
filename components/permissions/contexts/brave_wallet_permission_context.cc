@@ -19,6 +19,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
+#include "components/permissions/permission_prompt_decision.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
