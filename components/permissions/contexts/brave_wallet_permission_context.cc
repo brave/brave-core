@@ -16,6 +16,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
+#include "components/permissions/permission_prompt_decision.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
@@ -90,8 +91,11 @@ void BraveWalletPermissionContext::RequestPermission(
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
     NotifyPermissionSet(*request_data, std::move(callback),
-                        /*persist=*/false, PermissionDecision::kDeny,
-                        /*is_final_decision=*/true);
+                        /*persist=*/false,
+                        permissions::PermissionPromptDecision{
+                            .overall_decision = PermissionDecision::kDeny,
+                            .prompt_options = request_data->prompt_options,
+                            .is_final = true});
     return;
   }
   if (is_new_id) {
