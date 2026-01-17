@@ -111,7 +111,6 @@ provideStrings({
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
   braveWalletNewQuoteIn: 'New quote in $1',
-  braveWalletSwapContractAddress: 'Contract address',
   braveWalletSwapProgramAddress: 'Program address',
   braveWalletSwapDepositAddress: 'Deposit address',
 
