@@ -9,7 +9,6 @@
 #include <string_view>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
@@ -118,7 +117,7 @@ bool DoesETLDPlusOneContainWildcards(const GURL& url) {
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-  return base::Contains(domain_and_registry, kUrlEncodedAsteriskWildcard);
+  return domain_and_registry.contains(kUrlEncodedAsteriskWildcard);
 }
 
 }  // namespace brave_ads

@@ -5,7 +5,11 @@
 
 import '//resources/brave/leo.bundle.js'
 
-import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
+import {
+  css,
+  CrLitElement,
+  type CSSResultGroup }
+from '//resources/lit/v3_0/lit.rollup.js';
 import { getHtml } from './cr_toggle.html.js';
 
 export const MOVE_THRESHOLD_PX: number = 5;
@@ -22,7 +26,7 @@ export class CrToggleElement extends CrLitElement {
     return 'cr-toggle';
   }
 
-  static override get styles() {
+  static override get styles(): CSSResultGroup {
     return css``
   }
 

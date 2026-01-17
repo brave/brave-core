@@ -241,11 +241,11 @@ TEST_F(AssociatedContentManagerUnitTest,
   // associated turns.
   auto contents_map = conversation_handler_->associated_content_manager()
                           ->GetCachedContentsMap();
-  EXPECT_TRUE(base::Contains(contents_map, "turn-1"));
+  EXPECT_TRUE(contents_map.contains("turn-1"));
   ASSERT_EQ(1u, contents_map.at("turn-1").size());
   EXPECT_EQ("Page 1 content", contents_map.at("turn-1")[0].get().content);
 
-  EXPECT_TRUE(base::Contains(contents_map, "turn-2"));
+  EXPECT_TRUE(contents_map.contains("turn-2"));
   ASSERT_EQ(1u, contents_map.at("turn-2").size());
   EXPECT_EQ("Page 2 content", contents_map.at("turn-2")[0].get().content);
 }

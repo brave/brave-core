@@ -1,5 +1,5 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 52bedd7c7c510f869e21352bab98ceb84b6f587d..46d078d09954e05115368e80059b92f6831b9a56 100644
+index 4f4d7fea094af9dc3b90240af3f9d69cde6483f0..4c9a1a735d3e4e6593e7a2050f192d72874d95c8 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
 @@ -23,6 +23,7 @@ enum class KeyType {

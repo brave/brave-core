@@ -95,7 +95,7 @@ are declared in tools/grit/grit_args.gni.
 
       <part file="bookmarks_strings_override.grdp" />
 
-      <if expr="enable_glic">
+      <if expr="enable_glic or enable_glic_android">
         </if>
 
       <part file="profiles_strings_override.grdp" />
@@ -708,6 +708,12 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="not use_titlecase">
           </if>
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="not is_android">

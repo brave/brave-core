@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -31,7 +30,7 @@ SolanaBlockTracker::~SolanaBlockTracker() = default;
 
 void SolanaBlockTracker::Start(const std::string& chain_id,
                                base::TimeDelta interval) {
-  if (!base::Contains(timers_, chain_id)) {
+  if (!timers_.contains(chain_id)) {
     timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
   }
   timers_[chain_id]->Start(
@@ -44,11 +43,11 @@ void SolanaBlockTracker::Start(const std::string& chain_id,
 void SolanaBlockTracker::GetLatestBlockhash(const std::string& chain_id,
                                             GetLatestBlockhashCallback callback,
                                             bool try_cached_value) {
-  if (try_cached_value && base::Contains(latest_blockhash_map_, chain_id) &&
+  if (try_cached_value && latest_blockhash_map_.contains(chain_id) &&
       !latest_blockhash_map_[chain_id].empty() &&
-      base::Contains(latest_blockhash_expired_time_map_, chain_id) &&
+      latest_blockhash_expired_time_map_.contains(chain_id) &&
       latest_blockhash_expired_time_map_[chain_id] > base::Time::Now() &&
-      base::Contains(last_valid_block_height_map_, chain_id)) {
+      last_valid_block_height_map_.contains(chain_id)) {
     std::move(callback).Run(latest_blockhash_map_[chain_id],
                             last_valid_block_height_map_[chain_id],
                             mojom::SolanaProviderError::kSuccess, "");
@@ -79,7 +78,7 @@ void SolanaBlockTracker::OnGetLatestBlockhash(
     return;
   }
 
-  if (base::Contains(latest_blockhash_map_, chain_id) &&
+  if (latest_blockhash_map_.contains(chain_id) &&
       latest_blockhash_map_[chain_id] == latest_blockhash) {
     return;
   }

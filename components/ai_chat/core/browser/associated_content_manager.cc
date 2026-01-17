@@ -15,7 +15,6 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -217,7 +216,7 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
   CHECK(turn->uuid.has_value());
 
   for (const auto& content : content_delegates_) {
-    if (base::Contains(content_uuid_to_conversation_turns_, content->uuid())) {
+    if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
       continue;
     }
     content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();

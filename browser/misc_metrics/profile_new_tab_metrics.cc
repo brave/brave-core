@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/containers/contains.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/components/constants/pref_names.h"
@@ -50,9 +49,9 @@ void ProfileNewTabMetrics::ReportNewTabPageDefault() {
       std::string_view host = homepage_url.host();
       if (host == "search.brave.com") {
         type = NewTabPageDefaultType::kHomepageBraveSearch;
-      } else if (base::Contains(host, "google")) {
+      } else if (host.contains("google")) {
         type = NewTabPageDefaultType::kHomepageGoogle;
-      } else if (base::Contains(host, "duckduckgo")) {
+      } else if (host.contains("duckduckgo")) {
         type = NewTabPageDefaultType::kHomepageDuckDuckGo;
       } else {
         type = NewTabPageDefaultType::kHomepageOther;

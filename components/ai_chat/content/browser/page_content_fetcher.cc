@@ -571,7 +571,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
     if (view) {
       gfx::Size content_size = web_contents_->GetSize();
       gfx::Rect capture_area(0, 0, content_size.width(), content_size.height());
-      view->CopyFromSurface(capture_area, content_size,
+      view->CopyFromSurface(capture_area, content_size, base::TimeDelta(),
                             base::BindOnce(&OnScreenshot, std::move(callback)));
       return;
     }

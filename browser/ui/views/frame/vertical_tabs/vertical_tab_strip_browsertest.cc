@@ -1111,9 +1111,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     // tab strip
     EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
-      return base::Contains(label, u"Below");
+      return label.contains(u"Below");
 #else
-      return base::Contains(label, u"below");
+      return label.contains(u"below");
 #endif
     }));
   }
@@ -1125,10 +1125,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     // BraveTabMenuModel::GetLabelAt().
     EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
-      return base::Contains(label, u"Right") || base::Contains(label, u"Left");
+      return label.contains(u"Right") || label.contains(u"Left");
 #else
-      return base::Contains(label, u"right") ||
-          base::Contains(label, u"left");
+      return label.contains(u"right") ||
+          label.contains(u"left");
 #endif
     }));
   }

@@ -84,8 +84,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     size_t next_callback_index_ = 0;
   };
 
-  void PermissionDecided(PermissionDecision decision,
-                         bool is_final_decision,
+  void PermissionDecided(const permissions::PermissionPromptDecision& decision,
                          const PermissionRequestData& request_data) override;
   void CleanUpRequest(content::WebContents* web_contents,
                       const PermissionRequestID& id) override;

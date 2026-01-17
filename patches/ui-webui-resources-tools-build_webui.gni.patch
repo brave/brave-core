@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index bf274ddd2d529b63d239c6f8c537198bd88904f2..9a4f7bcad9d0f5c94c2596c2707b8bd9db7590c4 100644
+index 5426f2e86e3f35014a4db156308e96ffb702523c..758392abfb3cc89aa5b4ab00b2211324b188b2e6 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
-@@ -221,6 +221,7 @@ template("build_webui") {
+@@ -222,6 +222,7 @@ template("build_webui") {
          enable_removal_comments = enable_source_maps
        }
        in_files = all_ts_files
@@ -10,7 +10,7 @@ index bf274ddd2d529b63d239c6f8c537198bd88904f2..9a4f7bcad9d0f5c94c2596c2707b8bd9
      }
    }
  
-@@ -271,6 +272,7 @@ template("build_webui") {
+@@ -273,6 +274,7 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
@@ -18,7 +18,7 @@ index bf274ddd2d529b63d239c6f8c537198bd88904f2..9a4f7bcad9d0f5c94c2596c2707b8bd9
      }
    }
  
-@@ -510,7 +512,7 @@ template("build_webui") {
+@@ -518,7 +520,7 @@ template("build_webui") {
        }
  
        # Enable by default on non-Ash WebUIs.
@@ -27,7 +27,7 @@ index bf274ddd2d529b63d239c6f8c537198bd88904f2..9a4f7bcad9d0f5c94c2596c2707b8bd9
        if (is_ash_webui) {
          enable_web_component_missing_deps = false
        }
-@@ -709,7 +711,7 @@ template("build_webui") {
+@@ -727,7 +729,7 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {

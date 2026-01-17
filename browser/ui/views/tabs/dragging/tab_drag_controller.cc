@@ -59,19 +59,18 @@ TabDragController::Liveness TabDragController::Init(
     TabDragContext* source_context,
     TabSlotView* source_view,
     const std::vector<TabSlotView*>& dragging_views,
-    const gfx::Point& offset_from_first_dragged_view,
     const gfx::Point& offset_from_source_view,
     ui::ListSelectionModel initial_selection_model,
     ui::mojom::DragEventSource event_source) {
-  if (TabDragControllerChromium::Init(
-          source_context, source_view, dragging_views,
-          offset_from_first_dragged_view, offset_from_source_view,
-          initial_selection_model, event_source) ==
+  if (TabDragControllerChromium::Init(source_context, source_view,
+                                      dragging_views, offset_from_source_view,
+                                      initial_selection_model, event_source) ==
       TabDragController::TabDragController::Liveness::kDeleted) {
     return TabDragController::TabDragController::Liveness::kDeleted;
   }
 
-  offset_from_first_dragged_view_ = offset_from_first_dragged_view;
+  offset_from_first_dragged_view_ =
+      views::View::ConvertPointToScreen(source_view, offset_from_source_view);
 
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
@@ -105,10 +104,10 @@ TabDragController::Liveness TabDragController::Init(
   was_source_fullscreen_ = top_level_widget->IsFullscreen();
 
   // Adjust coordinate for vertical mode.
-  const int x = offset_from_first_dragged_view.x() -
+  const int x = offset_from_source_view.x() -
                 GetXCoordinateAdjustmentForMultiSelectedTabs(
                     dragging_views, drag_data_.source_view_index_);
-  start_point_in_screen_ = gfx::Point(x, offset_from_first_dragged_view.y());
+  start_point_in_screen_ = gfx::Point(x, offset_from_source_view.y());
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;

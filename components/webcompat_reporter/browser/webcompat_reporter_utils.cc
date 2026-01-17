@@ -7,7 +7,6 @@
 
 #include <string_view>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 
@@ -34,7 +33,7 @@ constexpr auto kComponentIdsToReport =
 namespace webcompat_reporter {
 
 bool SendComponentVersionInReport(std::string_view component_id) {
-  return base::Contains(kComponentIdsToReport, component_id);
+  return kComponentIdsToReport.contains(component_id);
 }
 
 std::string BoolToString(bool value) {
