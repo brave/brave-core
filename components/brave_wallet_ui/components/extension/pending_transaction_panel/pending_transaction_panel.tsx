@@ -236,9 +236,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   }
 
   // Safer-Sign (Brave Swap)
-  if (
-    selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSwap
-  ) {
+  if (selectedPendingTransaction.swapInfo) {
     return <ConfirmSwapTransaction />
   }
 
