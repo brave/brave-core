@@ -109,8 +109,11 @@ void PermissionContextBase::PermissionDecided(
 
   auto callback = grouped_request->second->GetNextCallback();
   if (callback) {
-    NotifyPermissionSet(request_data, std::move(callback), persist, decision,
-                        is_final_decision);
+    NotifyPermissionSet(request_data, std::move(callback), persist,
+                        permissions::PermissionPromptDecision{
+                            .overall_decision = decision,
+                            .prompt_options = request_data.prompt_options,
+                            .is_final = is_final_decision});
   }
 }
 
