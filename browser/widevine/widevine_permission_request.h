@@ -41,8 +41,7 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   std::u16string GetMessageTextFragment() const override;
 #endif
   void PermissionDecided(
-      PermissionDecision decision,
-      bool is_final_decision,
+      const permissions::PermissionPromptDecision& decision,
       const permissions::PermissionRequestData& request_data);
 
   raw_ptr<PrefService> prefs_ = nullptr;

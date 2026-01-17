@@ -51,8 +51,7 @@ void PermissionContextBase::SetPermissionLifetimeManagerFactory(
 }
 
 void PermissionContextBase::PermissionDecided(
-    PermissionDecision decision,
-    bool is_final_decision,
+    const permissions::PermissionPromptDecision& decision,
     const PermissionRequestData& request_data) {
   if (permission_lifetime_manager_factory_) {
     const auto request_it = pending_requests_.find(request_data.id.ToString());
@@ -64,7 +63,7 @@ void PermissionContextBase::PermissionDecided(
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
             *permission_request, request_data.requesting_origin,
-            request_data.embedding_origin, decision);
+            request_data.embedding_origin, decision.overall_decision);
       }
     }
     const auto group_request_it =
@@ -77,26 +76,27 @@ void PermissionContextBase::PermissionDecided(
                 permission_lifetime_manager_factory_.Run(browser_context_)) {
           permission_lifetime_manager->PermissionDecided(
               *permission_request, request_data.requesting_origin,
-              request_data.embedding_origin, decision);
+              request_data.embedding_origin, decision.overall_decision);
         }
       }
     }
   }
 
   if (!IsGroupedPermissionType(content_settings_type())) {
-    PermissionContextBase_ChromiumImpl::PermissionDecided(
-        decision, is_final_decision, request_data);
+    PermissionContextBase_ChromiumImpl::PermissionDecided(decision,
+                                                          request_data);
     return;
   }
 
-  DCHECK(decision == PermissionDecision::kAllow ||
-         decision == PermissionDecision::kDeny ||
-         decision == PermissionDecision::kNone);
+  DCHECK(decision.overall_decision == PermissionDecision::kAllow ||
+         decision.overall_decision == PermissionDecision::kDeny ||
+         decision.overall_decision == PermissionDecision::kNone);
   UserMadePermissionDecision(request_data.id, request_data.requesting_origin,
-                             request_data.embedding_origin, decision);
+                             request_data.embedding_origin,
+                             decision.overall_decision);
 
-  bool persist = (decision == PermissionDecision::kAllow ||
-                  decision == PermissionDecision::kDeny);
+  bool persist = (decision.overall_decision == PermissionDecision::kAllow ||
+                  decision.overall_decision == PermissionDecision::kDeny);
 
   auto grouped_request =
       pending_grouped_requests_.find(request_data.id.ToString());
@@ -109,11 +109,7 @@ void PermissionContextBase::PermissionDecided(
 
   auto callback = grouped_request->second->GetNextCallback();
   if (callback) {
-    NotifyPermissionSet(request_data, std::move(callback), persist,
-                        permissions::PermissionPromptDecision{
-                            .overall_decision = decision,
-                            .prompt_options = request_data.prompt_options,
-                            .is_final = is_final_decision});
+    NotifyPermissionSet(request_data, std::move(callback), persist, decision);
   }
 }
 
