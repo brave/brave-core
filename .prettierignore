@@ -48,7 +48,7 @@ components/brave_wallet/resources/solana_web3_script.js
 # Ignore components folders with a lot of formatting issues
 /components/brave_new_tab_ui/
 /components/brave_rewards/resources/shared
-/components/brave_shields/
+/components/brave_shields/resources/panel
 /components/brave_vpn/
 /components/brave_news/
 /components/web-components/
