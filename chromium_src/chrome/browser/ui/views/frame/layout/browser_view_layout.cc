@@ -4,14 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
-#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h"
 
 #define BrowserViewTabbedLayoutImpl BraveBrowserViewTabbedLayoutImpl
-#define BrowserViewLayoutImplOld BraveBrowserViewLayout
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.cc>
+
 #undef BrowserViewTabbedLayoutImpl
-#undef BrowserViewLayoutImplOld
 
 void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
   dialog_host_->NotifyPositionRequiresUpdate();
