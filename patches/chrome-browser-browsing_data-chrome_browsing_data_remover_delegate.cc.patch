@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-index 6f1b8b32583798122074bf5b6ca9189b94468540..601d684b73a0cb893ac7b8725649a506625fa35f 100644
+index 5c8dfc39aac46320dc1fd51539619f001be89660..868734de6a86afa685b47faae388bdc80e37df27 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 @@ -1625,6 +1625,7 @@ const char* ChromeBrowsingDataRemoverDelegate::GetHistogramSuffix(

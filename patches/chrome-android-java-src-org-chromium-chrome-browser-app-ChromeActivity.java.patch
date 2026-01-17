@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 6c4fea5e7d968b7db28fc9018dc6ac1730a02c15..797314e1447b4e0ca60d24a95b475f3b26f23210 100644
+index 37ba32e8f8a1ba837230a339ec8d637f4a5663dd..e20795b7ea1ed44e1d6e1d70f25253d0bffaca77 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -660,7 +660,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -666,7 +666,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
              mBottomContainer = findViewById(R.id.bottom_container);
  
              mSnackbarManager =

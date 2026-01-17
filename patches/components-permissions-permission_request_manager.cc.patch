@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 0b2228b8b12275eb2a602609620790a017d17887..1588e8000748da0b41af2fd5cf557bdcc768ac2a 100644
+index 04735b09c65de87f4ab20bb59bb4ae6336c0c6a2..6a7ea6744148ffd1b8d205a01c16c0deb77b232f 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -577,6 +577,7 @@ void PermissionRequestManager::OnVisibilityChanged(
+@@ -576,6 +576,7 @@ void PermissionRequestManager::OnVisibilityChanged(
    }
    bool prior_tab_is_active_ = tab_is_active_;
    tab_is_active_ = visibility != content::Visibility::HIDDEN;
@@ -10,7 +10,7 @@ index 0b2228b8b12275eb2a602609620790a017d17887..1588e8000748da0b41af2fd5cf557bdc
    if (prior_tab_is_active_ != tab_is_active_) {
      OnTabActiveChanged();
    }
-@@ -592,6 +593,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+@@ -591,6 +592,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
    GURL origin = requests_.front()->requesting_origin();
    if (DCHECK_IS_ON()) {
      for (const auto& request : requests_) {
@@ -18,7 +18,7 @@ index 0b2228b8b12275eb2a602609620790a017d17887..1588e8000748da0b41af2fd5cf557bdc
        DCHECK_EQ(origin, request->requesting_origin());
      }
    }
-@@ -934,7 +936,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+@@ -933,7 +935,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
    // only after the camera request is resolved. This is caused by code in
    // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
    // need two permission queues, so resolve the duplication.
@@ -27,7 +27,7 @@ index 0b2228b8b12275eb2a602609620790a017d17887..1588e8000748da0b41af2fd5cf557bdc
        IsRequestInProgress()) {
      return;
    }
-@@ -1032,7 +1034,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1031,7 +1033,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  

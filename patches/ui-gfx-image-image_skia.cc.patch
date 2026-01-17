@@ -1,5 +1,5 @@
 diff --git a/ui/gfx/image/image_skia.cc b/ui/gfx/image/image_skia.cc
-index be9d17a5c51b139456c378bb8f618295f969fbee..181c5897aeecca4487b6f3d5f027fa32db8831ef 100644
+index 1d56eed3beeeeb28153bac1dfc42db027964f87d..65c4b0d192af3aecf3af573a1475a12b24ff0c00 100644
 --- a/ui/gfx/image/image_skia.cc
 +++ b/ui/gfx/image/image_skia.cc
 @@ -51,10 +51,14 @@ ImageSkiaRep ScaleImageSkiaRep(const ImageSkiaRep& rep, float target_scale) {
