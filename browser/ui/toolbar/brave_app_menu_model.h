@@ -66,6 +66,9 @@ class BraveAppMenuModel : public AppMenuModel {
   // sub menu.
   void BuildMoreToolsSubMenu();
 
+  // Inserts items under Passwords and Autofill submenu.
+  void BuildPasswordsAndAutofillSubmenu();
+
   // About brave, help center and report broken site items.
   void BuildHelpSubMenu();
 
