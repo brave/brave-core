@@ -51,7 +51,6 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
-import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -91,6 +90,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
@@ -213,7 +213,7 @@ public class BraveToolbarManager extends ToolbarManager
             MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
-            MonotonicObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
+            MonotonicObservableSupplier<TopInsetProvider> topInsetProviderSupplier,
             @Nullable MonotonicObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             PageZoomManager pageZoomManager,
             SnackbarManager snackbarManager) {
@@ -265,7 +265,7 @@ public class BraveToolbarManager extends ToolbarManager
                 tabBookmarkerSupplier,
                 menuButtonVisibilityDelegate,
                 topControlsStacker,
-                topInsetCoordinatorSupplier,
+                topInsetProviderSupplier,
                 xrSpaceModeObservableSupplier,
                 pageZoomManager,
                 snackbarManager);
