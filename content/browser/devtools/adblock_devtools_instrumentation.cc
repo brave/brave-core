@@ -8,30 +8,34 @@
 #include "content/browser/devtools/devtools_agent_host_impl.h"
 #include "content/browser/devtools/protocol/network_handler.h"
 #include "content/browser/devtools/render_frame_devtools_agent_host.h"
+#include "content/browser/renderer_host/frame_tree_node.h"
 #include "content/browser/renderer_host/navigation_request.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/frame_tree_node_id.h"
 
 namespace {
 
 void SendAdblockInfoInternal(
-    content::GlobalRenderFrameHostToken render_frame_token,
+    content::FrameTreeNodeId frame_tree_node_id,
     const std::string& request_id,
     const content::devtools_instrumentation::AdblockInfo& info) {
   if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
     content::GetUIThreadTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&SendAdblockInfoInternal, render_frame_token,
+        FROM_HERE, base::BindOnce(&SendAdblockInfoInternal, frame_tree_node_id,
                                   request_id, info));
     return;
   }
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto* rfh = content::RenderFrameHostImpl::FromFrameToken(render_frame_token);
+  content::FrameTreeNode* frame_tree_node =
+      content::FrameTreeNode::GloballyFindByID(frame_tree_node_id);
 
-  if (!rfh) {
+  if (!frame_tree_node) {
     return;
   }
+
   content::DevToolsAgentHostImpl* agent_host =
-      content::RenderFrameDevToolsAgentHost::GetFor(rfh);
+      content::RenderFrameDevToolsAgentHost::GetFor(frame_tree_node);
   if (!agent_host) {
     return;
   }
@@ -62,6 +66,26 @@ void SendAdblockInfoInternal(
   }
 }
 
+void SendAdblockInfoRFTInternal(
+    content::GlobalRenderFrameHostToken render_frame_token,
+    const std::string& request_id,
+    const content::devtools_instrumentation::AdblockInfo& info) {
+  if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
+    content::GetUIThreadTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(&SendAdblockInfoRFTInternal,
+                                  render_frame_token, request_id, info));
+    return;
+  }
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  auto* render_frame_host =
+      content::RenderFrameHost::FromFrameToken(render_frame_token);
+  if (render_frame_host) {
+    SendAdblockInfoInternal(render_frame_host->GetFrameTreeNodeId(), request_id,
+                            info);
+  }
+}
+
 }  // namespace
 
 namespace content::devtools_instrumentation {
@@ -76,18 +100,17 @@ AdblockInfo& AdblockInfo::operator=(AdblockInfo&&) = default;
 void SendAdblockInfo(content::GlobalRenderFrameHostToken render_frame_token,
                      const std::string& request_id,
                      const AdblockInfo& info) {
-  SendAdblockInfoInternal(render_frame_token, request_id, info);
+  SendAdblockInfoRFTInternal(render_frame_token, request_id, info);
 }
 
 void SendAdblockInfo(content::NavigationHandle* handle,
                      const AdblockInfo& info) {
   content::NavigationRequest* request =
       content::NavigationRequest::From(handle);
-  if (!request || !request->devtools_navigation_token() ||
-      !request->GetRenderFrameHost()) {
+  if (!request || !request->devtools_navigation_token()) {
     return;
   }
-  SendAdblockInfoInternal(request->GetRenderFrameHost()->GetGlobalFrameToken(),
+  SendAdblockInfoInternal(request->GetFrameTreeNodeId(),
                           request->devtools_navigation_token().ToString(),
                           info);
 }
