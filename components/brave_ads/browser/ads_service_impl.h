@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/browser/network/network_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
-#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
+#include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
