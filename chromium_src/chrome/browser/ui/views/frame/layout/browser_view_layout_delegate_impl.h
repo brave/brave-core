@@ -13,10 +13,10 @@
   bool ShouldShowVerticalTabs() const override;                         \
   bool IsVerticalTabOnRight() const override;                           \
   bool ShouldUseBraveWebViewRoundedCornersForContents() const override; \
-  int GetRoundedCornersWebViewMargin() override;                        \
+  int GetRoundedCornersWebViewMargin() const override;                  \
   bool IsBookmarkBarOnByPref() const override;                          \
-  bool IsContentTypeSidePanelVisible() override;                        \
-  bool IsFullscreenForBrowser() override;                               \
+  bool IsContentTypeSidePanelVisible() const override;                  \
+  bool IsFullscreenForBrowser() const override;                         \
   bool IsFullscreenForTab() const override;                             \
   bool IsFullscreen()
 

@@ -154,9 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Check bookmark bar/contents container position.
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             bookmark_bar()->bounds().origin());
-  EXPECT_EQ(bookmark_bar()->bounds().bottom_left() +
-                gfx::Vector2d(0, top_contents_separator_height),
-            contents_area_origin());
+  EXPECT_EQ(bookmark_bar()->bounds().bottom_left(), contents_area_origin());
 
   // Hide bookmark bar always.
   // Check contents container is positioned right after the vertical tab.
@@ -197,9 +195,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_FALSE(infobar_container()->GetVisible());
   EXPECT_TRUE(bookmark_bar()->GetVisible());
+  // In this case, top container will be shown by multi contents view,
+  // so we don't have to consider top contents separator height.
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
-            bookmark_bar()->bounds().bottom_left() +
-                gfx::Vector2d(0, top_contents_separator_height));
+            bookmark_bar()->bounds().bottom_left());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
 }

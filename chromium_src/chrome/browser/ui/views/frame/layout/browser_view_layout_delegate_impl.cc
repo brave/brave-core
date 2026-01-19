@@ -34,7 +34,7 @@ bool BrowserViewLayoutDelegateImpl::
              browser_view().browser());
 }
 
-int BrowserViewLayoutDelegateImpl::GetRoundedCornersWebViewMargin() {
+int BrowserViewLayoutDelegateImpl::GetRoundedCornersWebViewMargin() const {
   return browser_view().browser()
              ? BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
                    browser_view().browser())
@@ -47,7 +47,7 @@ bool BrowserViewLayoutDelegateImpl::IsBookmarkBarOnByPref() const {
              bookmarks::prefs::kShowBookmarkBar);
 }
 
-bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() {
+bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
   if (!browser_view().browser()) {
     return false;
   }
@@ -60,16 +60,16 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() {
       .has_value();
 }
 
-bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() {
+bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() const {
   if (!browser_view().browser()) {
     return false;
   }
-  ExclusiveAccessManager* exclusive_access_manager =
+  const ExclusiveAccessManager* exclusive_access_manager =
       browser_view().browser()->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
     return false;
   }
-  auto* fullscreen_controller =
+  const auto* fullscreen_controller =
       exclusive_access_manager->fullscreen_controller();
   return fullscreen_controller &&
          fullscreen_controller->IsFullscreenForBrowser();

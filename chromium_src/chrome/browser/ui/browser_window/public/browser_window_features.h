@@ -28,8 +28,14 @@ using BraveBrowserWindowFeatures = BrowserWindowFeatures;
   }                                         \
   const ExclusiveAccessManager* exclusive_access_manager() const
 
+// Add const version of side_panel_ui()
+#define side_panel_ui() \
+  side_panel_ui();      \
+  const SidePanelUI* side_panel_ui() const
+
 #include <chrome/browser/ui/browser_window/public/browser_window_features.h>  // IWYU pragma: export
 
+#undef side_panel_ui
 #undef exclusive_access_manager
 #undef TearDownPreBrowserWindowDestruction
 #undef InitPostWindowConstruction

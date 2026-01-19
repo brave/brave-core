@@ -31,16 +31,27 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize(
   return size;
 }
 
-BraveNewTabButton::BraveNewTabButton(PressedCallback callback,
-                                     const gfx::VectorIcon& icon,
-                                     Edge fixed_flat_edge,
-                                     Edge animated_flat_edge,
-                                     BrowserWindowInterface* browser)
+BraveNewTabButton::BraveNewTabButton(
+    PressedCallback callback,
+    const gfx::VectorIcon& icon,
+    Edge fixed_flat_edge,
+    Edge animated_flat_edge,
+    BrowserWindowInterface* browser_window_interface)
     : NewTabButton(std::move(callback),
                    kLeoPlusAddIcon,
                    fixed_flat_edge,
                    animated_flat_edge,
-                   browser) {}
+                   browser_window_interface) {}
+
+BraveNewTabButton::BraveNewTabButton(
+    PressedCallback callback,
+    const gfx::VectorIcon& icon /* this won't be used */,
+    BrowserWindowInterface* browser_window_interface)
+    : BraveNewTabButton(std::move(callback),
+                        icon,
+                        Edge::kNone,
+                        Edge::kNone,
+                        browser_window_interface) {}
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
