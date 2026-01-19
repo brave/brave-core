@@ -534,7 +534,10 @@ test("brave_unit_tests") {
       "//brave/chromium_src/chrome/browser/shell_integration_unittest_mac.cc",
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
     ]
-    deps += [ "//brave/browser/upgrade_when_idle:unit_tests" ]
+    deps += [
+      "//brave/browser/upgrade_when_idle:unit_tests",
+      "//brave/components/brave_origin/buildflags",
+    ]
   }
 
   if (toolkit_views) {
