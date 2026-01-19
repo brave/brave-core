@@ -595,8 +595,13 @@ const setShowRulesHiddenBtnState = (
 }
 
 const setMinimizeState = (minimized: boolean) => {
-  if (!pickerDiv) return
-  pickerDiv.classList.toggle('minimized', minimized)
+  if (!shadowRoot) {
+    return
+  }
+  const mainSection = shadowRoot.getElementById('main-section')
+  if (mainSection) {
+    mainSection.classList.toggle('minimized', minimized)
+  }
 }
 
 function initSlider(
@@ -962,5 +967,6 @@ if (!active) {
     },
   )
 } else {
-  active.classList.toggle('minimized', false)
+  // Re-opening existing picker
+  setMinimizeState(false)
 }
