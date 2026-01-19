@@ -54,8 +54,6 @@ constexpr int kDefaultBatchSize = 50;
 // overflow issues during delay calculations.
 constexpr int kMaximumRetryCount = (std::numeric_limits<int>::digits) - 1;
 
-constexpr base::TimeDelta kMaximumRetryAfter = base::Hours(1);
-
 void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
 
@@ -360,8 +358,8 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
 
   const std::string retry_after =
       base::NumberToString(RetryProcessingConfirmationAfter().InMicroseconds());
-  const std::string max_retry_after =
-      base::NumberToString(kMaximumRetryAfter.InMicroseconds());
+  const std::string max_retry_after = base::NumberToString(
+      kProcessConfirmationMaxBackoffDelay.Get().InMicroseconds());
   Execute(
       mojom_db_transaction, R"(
           UPDATE
