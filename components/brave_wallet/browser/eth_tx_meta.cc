@@ -117,36 +117,49 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  mojom::SwapInfoDeprecatedPtr swap_info;
+  mojom::SwapInfoPtr swap_info = swap_info_.Clone();
   std::vector<uint8_t> data{0x0};
   if (tx_->data().size() > 0) {
     data = tx_->data();
   }
 
-  auto tx_info = GetTransactionInfoFromData(data);
   std::optional<std::string> final_recipient;
+  auto tx_info = GetTransactionInfoFromData(data);
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
-    std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+    mojom::SwapInfoPtr swap_info_from_data;
+    std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
+        std::move(*tx_info);
     final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
                                         tx_type, tx_args);
+
+    if (!swap_info && swap_info_from_data) {
+      swap_info = std::move(swap_info_from_data);
+    }
   }
+
   std::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
   }
 
+  // Apply defaults to swap_info extracted from non-data parts of the
+  // transaction, if they are not set.
   if (swap_info) {
-    swap_info->from_chain_id = chain_id_;
-
-    if (swap_info->to_chain_id.empty()) {
-      swap_info->to_chain_id = chain_id_;
+    if (swap_info->source_chain_id.empty()) {
+      swap_info->source_chain_id = chain_id_;
     }
 
-    if (swap_info->from_amount.empty() &&
-        swap_info->from_asset == kNativeEVMAssetContractAddress) {
-      swap_info->from_amount = Uint256ValueToHex(tx_->value());
+    if (swap_info->destination_chain_id.empty()) {
+      swap_info->destination_chain_id = chain_id_;
+    }
+
+    if (swap_info->source_amount.empty() &&
+        (swap_info->source_token_address == kNativeEVMAssetContractAddress ||
+         swap_info->source_token_address.empty())) {
+      swap_info->source_amount = Uint256ValueToHex(tx_->value());
+      swap_info->source_token_address = "";
     }
   }
 
@@ -166,7 +179,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      final_recipient, IsRetriable(), std::move(swap_info));
+      final_recipient, IsRetriable(), std::move(swap_info), nullptr);
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {
