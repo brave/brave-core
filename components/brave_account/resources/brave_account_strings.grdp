@@ -102,13 +102,13 @@
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog">
     We encountered an error while processing your request.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="">
     error
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_CLIENT_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="">
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_SERVER_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="">

@@ -48,6 +48,15 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked">
     Resend confirmation email
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in a toast notification after successfully resending the confirmation email">
+    Confirmation email resent.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in a toast notification when the maximum number of confirmation emails has been exceeded">
+    Too many verification emails have been sent already. Please check your spam folder.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in a toast notification when the email has already been verified">
+    Email already verified. Try reloading the page.
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked">
     Cancel registration
   </message>

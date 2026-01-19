@@ -1230,6 +1230,15 @@ void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE},
       {"braveAccountLogOutButtonLabel",
        IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL},
+      {"braveAccountError", IDS_BRAVE_ACCOUNT_ERROR},
+      {"braveAccountClientError", IDS_BRAVE_ACCOUNT_CLIENT_ERROR},
+      {"braveAccountServerError", IDS_BRAVE_ACCOUNT_SERVER_ERROR},
+      {"braveAccountResendConfirmationEmailSuccess",
+       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS},
+      {"braveAccountResendConfirmationEmailMaximumSendAttemptsExceeded",
+       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED},
+      {"braveAccountResendConfirmationEmailAlreadyVerified",
+       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
