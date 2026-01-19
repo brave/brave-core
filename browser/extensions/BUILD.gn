@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -96,7 +97,6 @@ source_set("extensions") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
     "//brave/browser/brave_adaptive_captcha",
-    "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/brave_search",
@@ -107,8 +107,8 @@ source_set("extensions") {
     "//brave/common/extensions/api",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_ads/core/browser/service",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/content",
@@ -168,6 +168,14 @@ source_set("extensions") {
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_ads/core/public:headers",
+    ]
   }
 
   if (enable_brave_news) {
