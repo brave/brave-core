@@ -29,7 +29,7 @@ const VerifyResendTestCase* Success() {
        .raw_response_body = "",
        .expected_response = {.net_error = net::OK,
                              .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+                             .body = VerifyResend::Response::SuccessBody()}});
 
   return kSuccess.get();
 }
