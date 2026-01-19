@@ -28,7 +28,7 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
   """
 
   def CreateStorySet(self, options):
-    return BravePerfUtilsStorySet(30, options)
+    return BravePerfUtilsStorySet(30, False, options)
 
   @classmethod
   def Name(cls):
@@ -56,7 +56,7 @@ class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
       cls._delay = args.delay
 
   def CreateStorySet(self, options):
-    return BravePerfUtilsStorySet(self._delay, options)
+    return BravePerfUtilsStorySet(self._delay, True, options)
 
   def SetExtraBrowserOptions(self, options):
     # To enable Safe Browsing updates:
