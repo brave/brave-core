@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ai_chat/ai_chat_settings_helper.h"
 
 #include <memory>
+#include <string>
 
 #include "base/apple/foundation_util.h"
 #include "base/functional/bind.h"
@@ -23,8 +24,13 @@
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ui/base/l10n/l10n_util.h"
+
+NSInteger const AIChatDefaultCustomModelContextSize =
+    ai_chat::kDefaultCustomModelContextSize;
 
 namespace {
 
@@ -148,6 +154,7 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     // examine the value more closely, and notify the user.
     handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
                                 : AiChatOperationResultInvalidUrl);
+    return;
   }
 
   _modelService->AddCustomModel(std::move(model));
@@ -172,7 +179,6 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     // examine the value more closely, and notify the user.
     handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
                                 : AiChatOperationResultInvalidUrl);
-
     return;
   }
 
@@ -182,6 +188,13 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
 
 - (void)deleteCustomModelAtIndex:(NSInteger)index {
   _modelService->DeleteCustomModel(index);
+}
+
+- (NSString*)defaultCustomModelSystemPrompt {
+  std::string prompt = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+      {"%datetime%"}, nullptr);
+  return base::SysUTF8ToNSString(prompt);
 }
 
 - (void)resetLeoData {
