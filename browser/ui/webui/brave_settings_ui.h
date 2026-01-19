@@ -11,7 +11,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
-#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
+#include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"

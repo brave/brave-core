@@ -29,7 +29,7 @@ static_library("brave_origin") {
 
   public_deps = [
     "buildflags",
-    "common/mojom",
+    "mojom",
     "//base",
     "//mojo/public/cpp/bindings",
   ]
