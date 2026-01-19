@@ -15,6 +15,7 @@ import {
   StyledAlert,
   ActionsSlotWrapper,
 } from './style'
+import styles from '../alerts.module.scss'
 
 const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault()
@@ -93,20 +94,22 @@ export function AdBlockOnlyModePromptAfterShieldsDisabled() {
         <div>
           {getLocale('braveShieldsAreYouExperiencingIssuesWithThisSiteDesc2')}
         </div>
-        <ActionsSlotWrapper slot='actions'>
-          <Button
-            size="medium"
-            onClick={() => onEnableAdBlockOnlyModeClick(/* enableShields: */ true)}
-          >
-            {getLocale('braveShieldsEnableAdBlockOnlyMode')}
-          </Button>
-          <Button
-            kind="plain"
-            size="medium"
-            onClick={() => onDismissShieldsDisabledAdBlockOnlyModePromptClick()}
-          >
-            {getLocale('braveShieldsDismissAlert')}
-          </Button>
+        <ActionsSlotWrapper slot='actions' className={styles.actionsWrapper}>
+          <div className={styles.buttonsWrapper}>
+            <Button
+              size="medium"
+              onClick={() => onEnableAdBlockOnlyModeClick(/* enableShields: */ true)}
+            >
+              {getLocale('braveShieldsEnableAdBlockOnlyMode')}
+            </Button>
+            <Button
+              kind="plain"
+              size="medium"
+              onClick={() => onDismissShieldsDisabledAdBlockOnlyModePromptClick()}
+            >
+              {getLocale('braveShieldsDismissAlert')}
+            </Button>
+          </div>
         </ActionsSlotWrapper>
       </StyledAlert>
   )

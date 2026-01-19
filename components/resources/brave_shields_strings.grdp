@@ -69,7 +69,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled.">
-    You're currently using Adblock-Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.
+    You're currently using Adblock-Only mode. This mode only offers ad blocking protection (if Shields are UP). If you wish to return to full Shields mode, disable this mode from settings.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADS_BLOCKED_NOTE" desc="Description to convey advertisements are being blocked.">

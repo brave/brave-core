@@ -230,7 +230,7 @@ function MainPanel () {
       }
       {siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled && (
         <AdBlockOnlyModeControlsContent
-          showGlobalSettings={siteBlockInfo?.isBraveShieldsEnabled}
+          isBraveShieldsEnabled={siteBlockInfo?.isBraveShieldsEnabled}
         />
       )}
       {advancedControlButtonElement}
