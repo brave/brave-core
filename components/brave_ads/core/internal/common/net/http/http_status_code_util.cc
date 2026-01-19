@@ -7,7 +7,6 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_number_conversions.h"
-#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
@@ -30,9 +29,8 @@ constexpr auto kAllowedHttpStatusCodes = base::MakeFixedFlatSet<int>({
 });
 
 std::optional<std::string> HttpStatusCodeClassToString(
-    int http_status_code_class) {
-  if (http_status_code_class < 1 || http_status_code_class > 5) {
-    // Nonsensical HTTP status code class.
+    HttpStatusCodeClassType http_status_code_class) {
+  if (http_status_code_class == HttpStatusCodeClassType::kNonsensical) {
     return std::nullopt;
   }
 
@@ -41,13 +39,33 @@ std::optional<std::string> HttpStatusCodeClassToString(
 
 }  // namespace
 
+HttpStatusCodeClassType HttpStatusCodeClass(int http_status_code) {
+  switch (http_status_code / 100) {
+    case 1:
+      return HttpStatusCodeClassType::kInformationalResponse;
+    case 2:
+      return HttpStatusCodeClassType::kSuccess;
+    case 3:
+      return HttpStatusCodeClassType::kRedirection;
+    case 4:
+      return HttpStatusCodeClassType::kClientError;
+    case 5:
+      return HttpStatusCodeClassType::kServerError;
+    default:
+      return HttpStatusCodeClassType::kNonsensical;
+  }
+}
+
 bool IsSuccessfulHttpStatusCode(int http_status_code) {
-  return http_status_code >= /*200*/ net::HTTP_OK &&
-         http_status_code < /*400*/ net::HTTP_BAD_REQUEST;
+  return HttpStatusCodeClass(http_status_code) ==
+             HttpStatusCodeClassType::kSuccess ||
+         HttpStatusCodeClass(http_status_code) ==
+             HttpStatusCodeClassType::kRedirection;
 }
 
 std::optional<std::string> HttpStatusCodeToString(int http_status_code) {
-  const int http_status_code_class = http_status_code / 100;
+  const HttpStatusCodeClassType http_status_code_class =
+      HttpStatusCodeClass(http_status_code);
 
   // Check if the HTTP status code is in the allowed list of codes.
   if (const auto iter = kAllowedHttpStatusCodes.find(http_status_code);

@@ -393,6 +393,7 @@ static_library("internal") {
     "common/logging_util.h",
     "common/logging_util_internal.cc",
     "common/logging_util_internal.h",
+    "common/net/http/http_status_code_class_types.h",
     "common/net/http/http_status_code_util.cc",
     "common/net/http/http_status_code_util.h",
     "common/platform/platform_helper.cc",
