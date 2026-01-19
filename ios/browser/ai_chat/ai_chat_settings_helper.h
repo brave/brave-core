@@ -20,6 +20,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// The default context size to display to the user when they are adding a
+/// custom model
+OBJC_EXPORT NSInteger const AIChatDefaultCustomModelContextSize;
+
 @protocol AIChatSettingsHelperDelegate
 - (void)defaultModelChangedFromOldKey:(NSString*)oldKey toKey:(NSString*)toKey;
 - (void)modelListUpdated;
@@ -50,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
                    (void (^)(AiChatOperationResult result))handler;
 /// Deletes a custom model found at a given index
 - (void)deleteCustomModelAtIndex:(NSInteger)index;
+/// The default custom model system prompt
+@property(readonly) NSString* defaultCustomModelSystemPrompt;
 @end
 
 /// A concrete implementation of the AIChatSettingsHelper
