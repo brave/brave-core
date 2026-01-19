@@ -149,7 +149,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   // Arrange
   const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
-       {{net::HTTP_NOT_FOUND,
+       {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
