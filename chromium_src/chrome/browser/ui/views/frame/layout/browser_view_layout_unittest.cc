@@ -22,16 +22,16 @@
   bool ShouldUseBraveWebViewRoundedCornersForContents() const override { \
     return false;                                                        \
   }                                                                      \
-  int GetRoundedCornersWebViewMargin() override {                        \
+  int GetRoundedCornersWebViewMargin() const override {                  \
     return 0;                                                            \
   }                                                                      \
   bool IsBookmarkBarOnByPref() const override {                          \
     return false;                                                        \
   }                                                                      \
-  bool IsContentTypeSidePanelVisible() override {                        \
+  bool IsContentTypeSidePanelVisible() const override {                  \
     return false;                                                        \
   }                                                                      \
-  bool IsFullscreenForBrowser() override {                               \
+  bool IsFullscreenForBrowser() const override {                         \
     return false;                                                        \
   }                                                                      \
   bool IsFullscreenForTab() const override {                             \

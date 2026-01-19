@@ -7,6 +7,8 @@ source_set("frame") {
   sources = [
     "brave_contents_view_util.cc",
     "brave_contents_view_util.h",
+    "layout/brave_browser_view_tabbed_layout_impl.cc",
+    "layout/brave_browser_view_tabbed_layout_impl.h",
   ]
 
   deps = [

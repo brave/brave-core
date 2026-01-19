@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
-#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
@@ -28,7 +27,6 @@
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 
 #define InfoBarContainerView BraveInfoBarContainerView
-#define BrowserViewLayout BraveBrowserViewLayout
 #define ToolbarView BraveToolbarView
 #define HorizontalTabStripRegionView BraveHorizontalTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
@@ -74,7 +72,6 @@
 #undef BookmarkBarView
 #undef HorizontalTabStripRegionView
 #undef ToolbarView
-#undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 
