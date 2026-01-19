@@ -13,12 +13,13 @@
 namespace brave_ads {
 
 namespace {
-constexpr base::TimeDelta kDebugRetryProcessingAfter = base::Seconds(5);
+constexpr base::TimeDelta kDebugInitialBackoffDelay = base::Seconds(5);
 }  // namespace
 
 base::TimeDelta RetryProcessingConfirmationAfter() {
-  return ShouldDebug() ? kDebugRetryProcessingAfter
-                       : RandTimeDelta(kRetryProcessingConfirmationAfter.Get());
+  return ShouldDebug()
+             ? kDebugInitialBackoffDelay
+             : RandTimeDelta(kProcessConfirmationInitialBackoffDelay.Get());
 }
 
 }  // namespace brave_ads
