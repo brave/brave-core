@@ -148,6 +148,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_SWAP" desc="Confirm swap title">Confirm swap</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER " desc="Swap provider label">Provider</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
@@ -577,6 +578,8 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND" desc="Swap review text for spending asset">You spend</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE" desc="Swap review text for receiving asset">You'll receive</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER" desc="Swap review header title">Confirm order</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROGRAM_ADDRESS" desc="Swap program address label">Program address</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_DEPOSIT_ADDRESS" desc="Swap deposit address label">Deposit address</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SWAP" desc="Generic Solana Swap message">Solana Swap</message>
   <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="ACCOUNT_NUMBER">$1<ex>1</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
@@ -764,6 +767,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION" desc="Transaction intent for dapp interactions">Dapp interaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_BRIDGE" desc="Transaction intent for bridges">Bridge <ph name="SOURCE">$1<ex>1000 USDC</ex></ph> to <ph name="DESTINATION">$2<ex>990 USDT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for creating associated token account">Creating associated token account</message>
   <message name="IDS_BRAVE_WALLET_FAILED_TO_CREATE_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for failed to create associated token account">Failed to create associated token account</message>
   <message name="IDS_BRAVE_WALLET_ASSOCIATED_TOKEN_ACCOUNT_CREATED" desc="Transaction intent for associated token account created">Associated token account created</message>
@@ -1018,6 +1022,7 @@
   <message name="IDS_BRAVE_SWAP_ENTER_AN_AMOUNT" desc="Text prompting to enter an amount">Enter an amount</message>
   <message name="IDS_BRAVE_WALLET_FETCHING_QUOTE" desc="Loader text while quotes are fetched">Fetching quote</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE_ESTIMATE" desc="Swap receive estimate label">Receive (est.)</message>
+  <message name="IDS_BRAVE_WALLET_RECEIVE_MINIMUM" desc="Swap receive minimum label">Receive (min.)</message>
   <message name="IDS_BRAVE_WALLET_FROM_TOKEN" desc="Swap from token label">From token</message>
   <message name="IDS_BRAVE_WALLET_TO_TOKEN" desc="Swap to token label">To token</message>
   <message name="IDS_BRAVE_WALLET_NEW_QUOTE_IN" desc="Swap new quote in label">New quote in <ph name="COUNTDOWN">$1<ex>00:05</ex></ph></message>

@@ -218,6 +218,19 @@ export function useGate3(params: SwapParams) {
             data: hexStrToNumberArray(data),
             network: fromNetwork,
             gasLimit: new Amount(21000).toHex(),
+            swapInfo: {
+              sourceCoin: fromToken.coin,
+              sourceChainId: fromToken.chainId,
+              sourceTokenAddress: fromToken.contractAddress,
+              sourceAmount: firmRoute.sourceAmount,
+              destinationCoin: toToken.coin,
+              destinationChainId: toToken.chainId,
+              destinationTokenAddress: toToken.contractAddress,
+              destinationAmountMin: firmRoute.destinationAmountMin,
+              destinationAmount: firmRoute.destinationAmount,
+              recipient: toAccountAddress,
+              provider: firmRoute.provider,
+            } satisfies BraveWallet.SwapInfo,
           })
           return
         }
@@ -238,6 +251,19 @@ export function useGate3(params: SwapParams) {
               accountId: fromAccount.accountId,
               txType: BraveWallet.TransactionType.SolanaSwap,
               encodedTransaction: versionedTransaction,
+              swapInfo: {
+                sourceCoin: fromToken.coin,
+                sourceChainId: fromToken.chainId,
+                sourceTokenAddress: fromToken.contractAddress,
+                sourceAmount: firmRoute.sourceAmount,
+                destinationCoin: toToken.coin,
+                destinationChainId: toToken.chainId,
+                destinationTokenAddress: toToken.contractAddress,
+                destinationAmountMin: firmRoute.destinationAmountMin,
+                destinationAmount: firmRoute.destinationAmount,
+                recipient: toAccountAddress,
+                provider: firmRoute.provider,
+              } satisfies BraveWallet.SwapInfo,
             })
             return
           }
@@ -252,6 +278,19 @@ export function useGate3(params: SwapParams) {
               splTokenMintAddress: splTokenMint,
               decimals: Number(decimals),
               isCompressedNft: false,
+              swapInfo: {
+                sourceCoin: fromToken.coin,
+                sourceChainId: fromToken.chainId,
+                sourceTokenAddress: fromToken.contractAddress,
+                sourceAmount: firmRoute.sourceAmount,
+                destinationCoin: toToken.coin,
+                destinationChainId: toToken.chainId,
+                destinationTokenAddress: toToken.contractAddress,
+                destinationAmountMin: firmRoute.destinationAmountMin,
+                destinationAmount: firmRoute.destinationAmount,
+                recipient: toAccountAddress,
+                provider: firmRoute.provider,
+              } satisfies BraveWallet.SwapInfo,
             })
             return
           }
@@ -262,6 +301,19 @@ export function useGate3(params: SwapParams) {
             fromAccount,
             to,
             value: new Amount(lamports).toHex(),
+            swapInfo: {
+              sourceCoin: fromToken.coin,
+              sourceChainId: fromToken.chainId,
+              sourceTokenAddress: fromToken.contractAddress,
+              sourceAmount: firmRoute.sourceAmount,
+              destinationCoin: toToken.coin,
+              destinationChainId: toToken.chainId,
+              destinationTokenAddress: toToken.contractAddress,
+              destinationAmountMin: firmRoute.destinationAmountMin,
+              destinationAmount: firmRoute.destinationAmount,
+              recipient: toAccountAddress,
+              provider: firmRoute.provider,
+            } satisfies BraveWallet.SwapInfo,
           })
           return
         }
@@ -275,6 +327,19 @@ export function useGate3(params: SwapParams) {
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
+            swapInfo: {
+              sourceCoin: fromToken.coin,
+              sourceChainId: fromToken.chainId,
+              sourceTokenAddress: fromToken.contractAddress,
+              sourceAmount: firmRoute.sourceAmount,
+              destinationCoin: toToken.coin,
+              destinationChainId: toToken.chainId,
+              destinationTokenAddress: toToken.contractAddress,
+              destinationAmountMin: firmRoute.destinationAmountMin,
+              destinationAmount: firmRoute.destinationAmount,
+              recipient: toAccountAddress,
+              provider: firmRoute.provider,
+            } satisfies BraveWallet.SwapInfo,
           })
           return
         }
@@ -288,6 +353,19 @@ export function useGate3(params: SwapParams) {
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
+            swapInfo: {
+              sourceCoin: fromToken.coin,
+              sourceChainId: fromToken.chainId,
+              sourceTokenAddress: fromToken.contractAddress,
+              sourceAmount: firmRoute.sourceAmount,
+              destinationCoin: toToken.coin,
+              destinationChainId: toToken.chainId,
+              destinationTokenAddress: toToken.contractAddress,
+              destinationAmountMin: firmRoute.destinationAmountMin,
+              destinationAmount: firmRoute.destinationAmount,
+              recipient: toAccountAddress,
+              provider: firmRoute.provider,
+            } satisfies BraveWallet.SwapInfo,
           })
           return
         }
@@ -303,6 +381,19 @@ export function useGate3(params: SwapParams) {
             sendingMaxAmount: false,
             useShieldedPool: false,
             memo: undefined,
+            swapInfo: {
+              sourceCoin: fromToken.coin,
+              sourceChainId: fromToken.chainId,
+              sourceTokenAddress: fromToken.contractAddress,
+              sourceAmount: firmRoute.sourceAmount,
+              destinationCoin: toToken.coin,
+              destinationChainId: toToken.chainId,
+              destinationTokenAddress: toToken.contractAddress,
+              destinationAmountMin: firmRoute.destinationAmountMin,
+              destinationAmount: firmRoute.destinationAmount,
+              recipient: toAccountAddress,
+              provider: firmRoute.provider,
+            } satisfies BraveWallet.SwapInfo,
           })
         }
 

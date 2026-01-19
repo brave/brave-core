@@ -24,22 +24,22 @@ import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'
 import {
   findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
   getTransactionApprovalTargetAddress,
   getTransactionToAddress,
   getTransactionIntent,
+  parseSwapInfo,
 } from './tx-utils'
 
 export type SearchableTransaction = TransactionInfo & {
   approvalTarget: string
   approvalTargetLabel: string
-  buyToken?: BraveWallet.BlockchainToken
+  destinationToken?: BraveWallet.BlockchainToken
   erc721BlockchainToken?: BraveWallet.BlockchainToken
   intent: string
   nativeAsset?: BraveWallet.BlockchainToken
   recipient: string
   recipientLabel: string
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
   senderAddress: string
   senderLabel: string
   token?: BraveWallet.BlockchainToken
@@ -47,7 +47,7 @@ export type SearchableTransaction = TransactionInfo & {
 
 export const makeSearchableTransaction = (
   tx: SerializableTransactionInfo,
-  combinedTokensListForSelectedChain: BraveWallet.BlockchainToken[],
+  tokensList: BraveWallet.BlockchainToken[],
   networksRegistry: NetworksRegistry | undefined,
   accountInfosRegistry: EntityState<AccountInfoEntity>,
 ): SearchableTransaction => {
@@ -61,7 +61,7 @@ export const makeSearchableTransaction = (
 
   const nativeAsset = makeNetworkAsset(txNetwork)
 
-  const token = findTransactionToken(tx, combinedTokensListForSelectedChain)
+  const token = findTransactionToken(tx, tokensList)
 
   const erc721BlockchainToken = [
     BraveWallet.TransactionType.ERC721TransferFrom,
@@ -70,10 +70,10 @@ export const makeSearchableTransaction = (
     ? token
     : undefined
 
-  const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
-    nativeAsset,
-    tokensList: combinedTokensListForSelectedChain,
-    tx,
+  const { sourceToken, destinationToken } = parseSwapInfo({
+    networksRegistry,
+    tokensList,
+    swapInfo: tx.swapInfo,
   })
 
   const approvalTarget = getTransactionApprovalTargetAddress(tx)
@@ -93,11 +93,11 @@ export const makeSearchableTransaction = (
   const intent = getTransactionIntent({
     normalizedTransferredValue: '',
     tx,
-    buyAmount: emptyAmount,
-    buyToken,
+    sourceAmount: emptyAmount,
+    sourceToken,
     erc721TokenId: erc721BlockchainToken?.tokenId,
-    sellAmount: emptyAmount,
-    sellToken,
+    destinationAmount: emptyAmount,
+    destinationToken,
     token,
     transactionNetwork: txNetwork,
   })
@@ -106,13 +106,13 @@ export const makeSearchableTransaction = (
     ...tx,
     approvalTarget,
     approvalTargetLabel,
-    buyToken,
+    destinationToken,
     erc721BlockchainToken,
     intent,
     nativeAsset,
     recipient,
     recipientLabel,
-    sellToken,
+    sourceToken,
     senderAddress,
     senderLabel,
     token,
@@ -142,10 +142,10 @@ export const filterTransactionsBySearchValue = (
     return (
       // Tokens
       findTokenBySearchValue(lowerCaseSearchValue, tx.token)
-      // Buy Token
-      || findTokenBySearchValue(lowerCaseSearchValue, tx.buyToken)
-      // Sell Token
-      || findTokenBySearchValue(lowerCaseSearchValue, tx.sellToken)
+      // Swap source token
+      || findTokenBySearchValue(lowerCaseSearchValue, tx.sourceToken)
+      // Swap destination token
+      || findTokenBySearchValue(lowerCaseSearchValue, tx.destinationToken)
       // ERC721 NFTs
       || findTokenBySearchValue(lowerCaseSearchValue, tx.erc721BlockchainToken)
       // Sender
