@@ -27,7 +27,6 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
-import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -39,6 +38,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -86,7 +86,7 @@ public class BraveNewTabPage extends NewTabPage {
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
-            MonotonicObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
+            MonotonicObservableSupplier<TopInsetProvider> topInsetProviderSupplier,
             StartupMetricsTracker startupMetricsTracker,
             MultiInstanceManager multiInstanceManager) {
         super(
@@ -113,7 +113,7 @@ public class BraveNewTabPage extends NewTabPage {
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
-                topInsetCoordinatorSupplier,
+                topInsetProviderSupplier,
                 startupMetricsTracker,
                 multiInstanceManager);
 
