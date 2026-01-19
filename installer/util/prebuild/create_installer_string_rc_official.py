@@ -16,12 +16,22 @@ MODE_SPECIFIC_STRINGS = {
             'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
             'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
         ],
+        'brave_origin': [
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
+        ],
     },
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
         'brave': [
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
+        ],
+        'brave_origin': [
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
         ],
     },
@@ -32,12 +42,22 @@ MODE_SPECIFIC_STRINGS = {
             'IDS_INBOUND_MDNS_RULE_NAME_DEV',
             'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
         ],
+        'brave_origin': [
+            'IDS_INBOUND_MDNS_RULE_NAME',
+            'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+            'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+        ],
     },
     'IDS_PRODUCT_NAME': {
         'brave': [
             'IDS_PRODUCT_NAME',
             'IDS_SHORTCUT_NAME_BETA',
             'IDS_SHORTCUT_NAME_DEV',
+            'IDS_SXS_SHORTCUT_NAME',
+        ],
+        'brave_origin': [
+            'IDS_PRODUCT_NAME',
+            'IDS_SHORTCUT_NAME_BETA',
             'IDS_SXS_SHORTCUT_NAME',
         ],
     },
