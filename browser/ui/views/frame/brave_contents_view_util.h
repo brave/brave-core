@@ -36,6 +36,7 @@ class BraveContentsViewUtil {
   // If rounded corners are enabled, returns the additional margin required to
   // get the shadow to display properly. Otherwise 0.
   static int GetRoundedCornersWebViewMargin(Browser* browser);
+  static int GetRoundedCornersWebViewMargin(const Browser* browser);
 
   // Pass content's tab to |tab| if it needs to consider split view state.
   static gfx::RoundedCornersF GetRoundedCornersForContentsView(
