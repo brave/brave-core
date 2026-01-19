@@ -12,12 +12,11 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "crypto/kdf.h"
 #include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
-
-using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 inline constexpr uint8_t kScryptSaltSize = 32u;
 // NaCl secretbox nonce size (24 bytes) equal to tweetnacl

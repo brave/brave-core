@@ -15,6 +15,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -41,8 +42,6 @@ inline constexpr char const kPolkadotMainnet[] =
     "\x20"
     "polkadot";
 
-using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
-
 // Allowed scrypt parameters matching Polkadot.js wallet standards.
 // These are the only parameter combinations that should be accepted.
 struct AllowedScryptParams {
@@ -51,6 +50,8 @@ struct AllowedScryptParams {
   uint32_t r;
 };
 
+// List of allowed scrypt params defined in Polkadot-js:
+// https://github.com/polkadot-js/common/blob/fe0886be239526e6c559e98d1099815d4b4f4a7f/packages/util-crypto/src/scrypt/defaults.ts#L10
 constexpr AllowedScryptParams kAllowedScryptParams[] = {
     {1 << 13, 10, 8},  // n: 8192, p: 10, r: 8
     {1 << 14, 5, 8},   // n: 16384, p: 5, r: 8

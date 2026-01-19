@@ -10,6 +10,7 @@
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/process_bound_string.h"
 
