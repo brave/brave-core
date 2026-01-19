@@ -145,6 +145,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/ntp_background",
   "//brave/browser/policy/handlers",
+  "//brave/browser/serp_metrics",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
@@ -712,6 +713,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+  "//brave/browser/serp_metrics",
 ]
 
 if (enable_ai_chat) {

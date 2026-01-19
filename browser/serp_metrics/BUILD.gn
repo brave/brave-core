@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("serp_metrics") {
+  sources = [
+    "serp_metrics_tab_helper.cc",
+    "serp_metrics_tab_helper.h",
+  ]
+
+  deps = [
+    "//brave/browser/misc_metrics",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//chrome/browser:browser_process",
+    "//components/prefs",
+    "//components/search_engines",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  if (!is_android) {
+    sources = [ "serp_metrics_tab_helper_browsertest.cc" ]
+
+    deps = [
+      ":serp_metrics",
+      "//brave/browser/serp_metrics",
+      "//chrome/test:test_support",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
+}
