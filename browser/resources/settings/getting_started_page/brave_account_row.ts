@@ -48,8 +48,11 @@ export class SettingsBraveAccountRow extends CrLitElement {
     this.browserProxy.authentication.logOut()
   }
 
-  protected onResendConfirmationEmailButtonClicked() {
-    this.browserProxy.authentication.resendConfirmationEmail()
+  protected async onResendConfirmationEmailButtonClicked() {
+    try {
+      await this.browserProxy.authentication.resendConfirmationEmail()
+    } catch (error) {
+    }
   }
 
   protected onCancelRegistrationButtonClicked() {

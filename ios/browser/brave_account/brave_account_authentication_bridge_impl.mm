@@ -7,6 +7,7 @@
 
 #include "base/apple/foundation_util.h"
 #include "base/check_deref.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -41,7 +42,7 @@ NSString* const BraveAccountVerificationTokenPref = base::SysUTF8ToNSString(
 }
 
 - (void)resendConfirmationEmail {
-  _authentication->ResendConfirmationEmail();
+  _authentication->ResendConfirmationEmail(base::DoNothing());
 }
 
 - (void)cancelRegistration {
