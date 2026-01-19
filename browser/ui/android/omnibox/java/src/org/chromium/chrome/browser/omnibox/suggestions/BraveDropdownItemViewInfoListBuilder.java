@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider.ControlsPosition;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -50,7 +50,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     BraveDropdownItemViewInfoListBuilder(
             Supplier<@Nullable Tab> tabSupplier,
             BookmarkState bookmarkState,
-            ObservableSupplier<@ControlsPosition Integer> toolbarPositionSupplier) {
+            MonotonicObservableSupplier<@ControlsPosition Integer> toolbarPositionSupplier) {
         super(tabSupplier, bookmarkState, toolbarPositionSupplier);
 
         mActivityTabSupplier = tabSupplier;

@@ -26,7 +26,7 @@ import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.Callback;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.library_loader.LibraryLoader;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
@@ -87,7 +87,7 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private final AppMenuDelegate mBraveAppMenuDelegate;
-    private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private boolean mJunitIsTesting;
     private final Context mBraveContext;
 
@@ -171,7 +171,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             View decorView,
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             WebFeedSnackbarController.FeedLauncher feedLauncher,
             ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,

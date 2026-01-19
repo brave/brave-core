@@ -74,8 +74,8 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.SettableObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.ui.KeyboardUtils;
@@ -315,7 +315,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
-    private SettableObservableSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
+    private SettableMonotonicObservableSupplier<BrowserControlsManager>
+            mBrowserControlsManagerSupplier;
 
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
@@ -2377,7 +2378,7 @@ public abstract class BraveActivity extends ChromeActivity
         editor.apply();
     }
 
-    public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
+    public MonotonicObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
         return mBrowserControlsManagerSupplier;
     }
 

@@ -18,12 +18,12 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.SettableObservableSupplier;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
@@ -112,7 +112,7 @@ public class BraveToolbarManager extends ToolbarManager
     private static final String TAG = "BraveToolbarManager";
 
     // To delete in bytecode, members from parent class will be used instead.
-    private SettableObservableSupplier<BottomControlsCoordinator>
+    private SettableMonotonicObservableSupplier<BottomControlsCoordinator>
             mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
     private BottomControlsStacker mBottomControlsStacker;
@@ -126,7 +126,7 @@ public class BraveToolbarManager extends ToolbarManager
     private ActionModeController mActionModeController;
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
-    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
@@ -137,7 +137,7 @@ public class BraveToolbarManager extends ToolbarManager
     private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider mLayoutStateProvider;
-    private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
+    private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
     private TopUiThemeColorProvider mTopUiThemeColorProvider;
     private int mCurrentOrientation;
     private boolean mInitializedWithNative;
@@ -146,7 +146,7 @@ public class BraveToolbarManager extends ToolbarManager
 
     // Own members.
     private boolean mIsBraveBottomControlsVisible;
-    private final ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
+    private final MonotonicObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private final HomepageManager.HomepageStateListener mBraveHomepageStateListener;
     private final AppCompatActivity mActivity;
@@ -155,14 +155,14 @@ public class BraveToolbarManager extends ToolbarManager
     private final Object mLock = new Object();
     private boolean mBottomControlsEnabled;
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
-    private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
-    private final ObservableSupplier<Profile> mProfileSupplier;
+    private final MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private final MonotonicObservableSupplier<Profile> mProfileSupplier;
     private final BrowserControlsSizer mBrowserControlsSizer;
     private final DataSharingTabManager mDataSharingTabManager;
-    private final ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
+    private final MonotonicObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private Runnable mOpenGridTabSwitcherHandler;
-    private final ObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
+    private final MonotonicObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
     private final Supplier<ShareDelegate> mShareDelegateSupplier;
 
     public BraveToolbarManager(
@@ -170,26 +170,26 @@ public class BraveToolbarManager extends ToolbarManager
             BottomControlsStacker bottomControlsStacker,
             BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ToolbarControlContainer controlContainer,
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
             TopUiThemeColorProvider topUiThemeColorProvider,
             @Nullable AdjustedTopUiThemeColorProvider adjustedTopUiThemeColorProvider,
             TabObscuringHandler tabObscuringHandler,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
+            MonotonicObservableSupplier<ShareDelegate> shareDelegateSupplier,
             List<ButtonDataProvider> buttonDataProviders,
             ActivityTabProvider tabProvider,
             ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager,
-            ObservableSupplier<@Nullable Profile> profileSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            MonotonicObservableSupplier<@Nullable Profile> profileSupplier,
+            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean canShowUpdateBadge,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            ObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            MonotonicObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier,
             WindowAndroid windowAndroid,
             OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
@@ -207,14 +207,14 @@ public class BraveToolbarManager extends ToolbarManager
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
-            ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
+            MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
-            ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
-            ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            MonotonicObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
+            @Nullable MonotonicObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             PageZoomManager pageZoomManager,
             SnackbarManager snackbarManager) {
         super(
@@ -452,7 +452,7 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OnClickListener bookmarkClickHandler,
             @Nullable OnClickListener customTabsBackClickHandler,
             @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
-            ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
+            MonotonicObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
             @Nullable UndoBarThrottle undoBarThrottle) {
 
         super.initializeWithNative(

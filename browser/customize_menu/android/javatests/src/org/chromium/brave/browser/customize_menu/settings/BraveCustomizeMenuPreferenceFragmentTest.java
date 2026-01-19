@@ -24,7 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
@@ -71,7 +71,7 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
 
         scenario.onFragment(
                 fragment -> {
-                    ObservableSupplier<String> pageTitle = fragment.getPageTitle();
+                    MonotonicObservableSupplier<String> pageTitle = fragment.getPageTitle();
                     assertNotNull(pageTitle);
                     assertNotNull(pageTitle.get());
                     assertTrue(pageTitle.get().contains("Customize"));

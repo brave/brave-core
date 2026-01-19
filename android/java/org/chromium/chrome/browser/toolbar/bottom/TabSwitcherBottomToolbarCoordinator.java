@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
@@ -66,7 +66,7 @@ public class TabSwitcherBottomToolbarCoordinator {
             ThemeColorProvider themeColorProvider,
             OnClickListener newTabClickListener,
             OnClickListener closeTabsClickListener,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            MonotonicObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             Profile profile) {
         final ViewGroup root = (ViewGroup) stub.inflate();
 
