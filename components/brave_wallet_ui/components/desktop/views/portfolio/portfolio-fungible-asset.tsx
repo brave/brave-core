@@ -319,7 +319,6 @@ export const PortfolioFungibleAsset = () => {
   }, [
     selectedAssetFromParams,
     transactionsByNetwork,
-    selectedAssetsNetwork,
     tokensList,
     networksRegistry,
   ])
