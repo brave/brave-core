@@ -22,3 +22,10 @@ export function bigIntToUint128(amount: bigint) {
 
   return sendAmount
 }
+
+export function Uint128ToBigInt(amount: BraveWallet.uint128 | undefined) {
+  if (!amount) return
+  const high = amount.high
+  const low = amount.low
+  return (high << BigInt(64)) | low
+}

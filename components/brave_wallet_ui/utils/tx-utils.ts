@@ -48,6 +48,7 @@ import {
   NetworksRegistry,
   networkEntityAdapter,
 } from '../common/slices/entities/network.entity'
+import { Uint128ToBigInt } from './polkadot-utils'
 
 export type FileCoinTransactionInfo = TransactionInfo & {
   txDataUnion: {
@@ -681,9 +682,9 @@ export function getTransactionBaseValue(tx: TransactionInfo) {
   }
 
   if (isPolkadotTransaction(tx)) {
-    const high = tx.txDataUnion.polkadotTxData?.amount?.high || BigInt(0)
-    const low = tx.txDataUnion.polkadotTxData?.amount?.low || BigInt(0)
-    return ((high << BigInt(64)) | low).toString() ?? ''
+    return (
+      Uint128ToBigInt(tx.txDataUnion.polkadotTxData?.amount)?.toString() ?? ''
+    )
   }
 
   assertNotReached('Unknown transaction type')
