@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import android.content.Context;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -47,13 +47,13 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             Supplier<@Nullable TabCreatorManager> tabCreatorManagerSupplier,
             Supplier<TabBookmarker> tabBookmarkerSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             ActivityTabProvider activityTabProvider,
             Runnable registerVoiceSearchRunnable,
             Supplier<GroupSuggestionsButtonController> groupSuggestionsButtonController,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            ObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier) {
+            MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier) {
         super(
                 context,
                 activityLifecycleDispatcher,

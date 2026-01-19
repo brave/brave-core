@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -64,7 +64,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     public BraveLocationBarCoordinator(
             View locationBarLayout,
             View autocompleteAnchorView,
-            ObservableSupplier<Profile> profileObservableSupplier,
+            MonotonicObservableSupplier<Profile> profileObservableSupplier,
             LocationBarDataProvider locationBarDataProvider,
             ActionMode.@Nullable Callback actionModeCallback,
             WindowAndroid windowAndroid,
@@ -88,7 +88,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable BackPressManager backPressManager,
             @Nullable OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             LocationBarEmbedder locationBarEmbedder,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,

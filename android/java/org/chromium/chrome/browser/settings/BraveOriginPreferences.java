@@ -14,7 +14,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
@@ -143,7 +143,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

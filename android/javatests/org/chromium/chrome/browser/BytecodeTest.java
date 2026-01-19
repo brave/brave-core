@@ -45,14 +45,14 @@ import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
-import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -1339,7 +1339,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper",
                         "getObservableConstraints",
                         MethodModifier.STATIC,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         Tab.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
@@ -1382,7 +1382,7 @@ public class BytecodeTest {
                         View.class,
                         AppMenuDelegate.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
@@ -1409,26 +1409,26 @@ public class BytecodeTest {
                         BottomControlsStacker.class,
                         BrowserControlsSizer.class,
                         FullscreenManager.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ToolbarControlContainer.class,
                         CompositorViewHolder.class,
                         Callback.class,
                         TopUiThemeColorProvider.class,
                         AdjustedTopUiThemeColorProvider.class,
                         TabObscuringHandler.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         List.class,
                         ActivityTabProvider.class,
                         ScrimManager.class,
                         ToolbarActionModeCallback.class,
                         FindToolbarManager.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         boolean.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         OneshotSupplier.class,
                         WindowAndroid.class,
                         OneshotSupplier.class,
@@ -1446,14 +1446,14 @@ public class BytecodeTest {
                         Supplier.class,
                         boolean.class,
                         BackPressManager.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         DesktopWindowStateManager.class,
                         MultiInstanceManager.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         PageZoomManager.class,
                         SnackbarManager.class));
         Assert.assertTrue(
@@ -1468,8 +1468,8 @@ public class BytecodeTest {
                         TabObscuringHandler.class,
                         int.class,
                         int.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1483,7 +1483,7 @@ public class BytecodeTest {
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
                         ScrimManager.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         BottomSheetController.class,
                         DataSharingTabManager.class,
                         TabModelSelector.class,
@@ -1493,7 +1493,7 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         ThemeColorProvider.class,
                         UndoBarThrottle.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1528,11 +1528,11 @@ public class BytecodeTest {
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ActivityResultTracker.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         StartupMetricsTracker.class,
                         MultiInstanceManager.class));
         Assert.assertTrue(
@@ -1549,16 +1549,16 @@ public class BytecodeTest {
                         ThemeColorProvider.class,
                         IncognitoStateProvider.class,
                         MenuButtonCoordinator.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ToggleTabStackButtonCoordinator.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
                         NullableObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
@@ -1568,7 +1568,7 @@ public class BytecodeTest {
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
                         NullableObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         BackButtonCoordinator.class,
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
@@ -1634,10 +1634,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
                         "org/chromium/chrome/browser/multiwindow/BraveMultiInstanceManagerApi31",
                         Activity.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         MultiWindowModeStateDispatcher.class,
                         ActivityLifecycleDispatcher.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1695,7 +1695,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
                         BookmarkState.class,
-                        ObservableSupplier.class));
+                        MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -1708,7 +1708,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator",
                         View.class,
                         View.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         LocationBarDataProvider.class,
                         ActionMode.Callback.class,
                         WindowAndroid.class,
@@ -1729,7 +1729,7 @@ public class BytecodeTest {
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
@@ -1750,7 +1750,7 @@ public class BytecodeTest {
                         LocationBarLayout.class,
                         LocationBarDataProvider.class,
                         LocationBarEmbedderUiOverrides.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         OverrideUrlLoadingDelegate.class,
                         BraveLocationBarMediator.getLocaleManagerClass(),
                         OneshotSupplier.class,
@@ -1761,10 +1761,10 @@ public class BytecodeTest {
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         MultiInstanceManager.class,
@@ -1835,12 +1835,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
                         AppCompatActivity.class,
                         Callback.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ActivityTabProvider.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
@@ -1850,10 +1850,10 @@ public class BytecodeTest {
                         ActivityWindowAndroid.class,
                         OneshotSupplier.class,
                         ActivityLifecycleDispatcher.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         AppMenuBlocker.class,
                         BooleanSupplier.class,
                         BooleanSupplier.class,
@@ -1869,7 +1869,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        SettableObservableSupplier.class,
+                        SettableMonotonicObservableSupplier.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1879,11 +1879,11 @@ public class BytecodeTest {
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         EdgeToEdgeManager.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1988,7 +1988,7 @@ public class BytecodeTest {
                         Profile.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2028,7 +2028,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
                         Context.class,
-                        ObservableSupplier.class));
+                        MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
@@ -2059,7 +2059,7 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
                         TopUiThemeColorProvider.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ViewGroup.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2090,13 +2090,13 @@ public class BytecodeTest {
                         Activity.class,
                         boolean.class,
                         StatusBarColorProvider.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
                         DesktopWindowStateManager.class,
-                        ObservableSupplier.class));
+                        MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
@@ -2113,10 +2113,10 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         DoubleConsumer.class,
                         UserEducationHelper.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         TabGroupCreationUiDelegate.class,
-                        ObservableSupplier.class));
+                        MonotonicObservableSupplier.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -2140,7 +2140,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat", // presubmit: ignore-long-line
                         Activity.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(
@@ -2148,7 +2148,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy", // presubmit: ignore-long-line
                         Activity.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(
@@ -2158,14 +2158,14 @@ public class BytecodeTest {
                         Context.class,
                         InfoBarContainerView.ContainerViewObserver.class,
                         BrowserControlsStateProvider.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarLongPressMenuHandler",
                         "org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler",
                         Context.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         boolean.class,
                         BooleanSupplier.class,
                         ActivityLifecycleDispatcher.class,
@@ -2198,13 +2198,13 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
                         Supplier.class,
-                        ObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         ActivityTabProvider.class,
                         Runnable.class,
                         Supplier.class,
                         Supplier.class,
                         Supplier.class,
-                        ObservableSupplier.class));
+                        MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",

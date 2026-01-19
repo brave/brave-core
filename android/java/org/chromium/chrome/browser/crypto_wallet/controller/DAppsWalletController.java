@@ -18,7 +18,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -90,7 +90,7 @@ public class DAppsWalletController implements ConnectionErrorHandler {
             BraveActivity activity = BraveActivity.getBraveActivity();
             webContents = activity.getCurrentWebContents();
 
-            ObservableSupplier<BrowserControlsManager> managerSupplier =
+            MonotonicObservableSupplier<BrowserControlsManager> managerSupplier =
                     activity.getBrowserControlsManagerSupplier();
             mFullscreenManager = managerSupplier.get().getFullscreenManager();
         } catch (BraveActivity.BraveActivityNotFoundException | NullPointerException e) {
