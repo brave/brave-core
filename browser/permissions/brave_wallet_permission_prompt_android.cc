@@ -61,7 +61,7 @@ void BraveWalletPermissionPrompt::Delegate::Closing() {
   if (!permission_prompt_) {
     return;
   }
-  permission_prompt_->Dismiss();
+  permission_prompt_->Dismiss(/*prompt_options=*/std::monostate());
 }
 
 BraveWalletPermissionPrompt::Delegate::~Delegate() {
