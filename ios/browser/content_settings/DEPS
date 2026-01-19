@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/content_settings/core/browser",
   "+brave/ios/browser/api/profile",
   "+ios/chrome/browser/content_settings/model",
 ]

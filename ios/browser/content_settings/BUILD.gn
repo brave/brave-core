@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("browser") {
+source_set("content_settings") {
   sources = [
     "content_settings_browsing_data_utils.h",
     "content_settings_browsing_data_utils.mm",

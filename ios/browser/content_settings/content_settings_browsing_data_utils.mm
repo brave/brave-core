@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#import "brave/components/content_settings/ios/browser/content_settings_browsing_data_utils.h"
+#import "brave/ios/browser/content_settings/content_settings_browsing_data_utils.h"
 
 #import <Foundation/Foundation.h>
 
