@@ -801,6 +801,9 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
           test_case.auto_shred_mode.value(), url);
     }
 
+#if BUILDFLAG(IS_ANDROID)
+    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
+#endif
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
     EXPECT_EQ(
@@ -811,9 +814,6 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
       ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
       TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-#if BUILDFLAG(IS_ANDROID)
-      EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
       EXPECT_CALL(mock_observer_, OnCleanupTLDEphemeralArea(key))
           .Times(test_case.should_cleanup);
       EXPECT_CALL(*mock_delegate_, CleanupTLDEphemeralArea(key))
@@ -898,6 +898,9 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
           test_case.auto_shred_mode.value(), url);
     }
 
+#if BUILDFLAG(IS_ANDROID)
+    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
+#endif
     // Create tld ephemeral lifetime.
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
