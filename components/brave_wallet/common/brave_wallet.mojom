@@ -2613,8 +2613,8 @@ struct CardanoTxData {
 struct PolkadotTxdata {
   string to;
   uint128 amount;
+  uint128 fee;
   bool sending_max_amount;
-  uint64 fee;
 };
 
 union TxDataUnion {

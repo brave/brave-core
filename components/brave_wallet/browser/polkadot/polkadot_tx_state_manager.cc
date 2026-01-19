@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_state_manager.h"
 
-#include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -25,7 +24,25 @@ mojom::CoinType PolkadotTxStateManager::GetCoinType() const {
 
 std::unique_ptr<TxMeta> PolkadotTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
-  return nullptr;
+  auto tx_meta = std::make_unique<PolkadotTxMeta>();
+
+  if (!ValueToBaseTxMeta(value, tx_meta.get())) {
+    return nullptr;
+  }
+
+  const auto* tx_json = value.FindDict("tx");
+  if (!tx_json) {
+    return nullptr;
+  }
+
+  auto tx = PolkadotTransaction::FromValue(*tx_json);
+  if (!tx) {
+    return nullptr;
+  }
+
+  tx_meta->set_tx(std::move(*tx));
+
+  return tx_meta;
 }
 
 }  // namespace brave_wallet

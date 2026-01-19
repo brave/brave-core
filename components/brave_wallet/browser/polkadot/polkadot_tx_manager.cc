@@ -98,10 +98,15 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
-  PolkadotTxMeta tx_metadata(
-      params->from, chain_metadata.value(),
-      PolkadotUnsignedTransfer(*recipient, MojomToUint128(params->amount)));
+  PolkadotTxMeta tx_metadata;
 
+  PolkadotTransaction tx;
+  tx.set_amount(MojomToUint128(params->amount));
+  tx.set_recipient(*recipient);
+  tx.set_transfer_all(params->sending_max_amount);
+  tx_metadata.set_tx(std::move(tx));
+
+  tx_metadata.set_from(params->from);
   tx_metadata.set_id(TxMeta::GenerateMetaID());
   tx_metadata.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
