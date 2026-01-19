@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("serp_metrics") {
+  sources = [
+    "search_engine_constants.h",
+    "search_engine_info.h",
+    "search_engine_util.cc",
+    "search_engine_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//third_party/re2",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "search_engine_util_unittest.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//testing/gtest",
+    "//url",
+  ]
+}
