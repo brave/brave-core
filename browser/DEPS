@@ -88,6 +88,7 @@ include_rules += [
   "+brave/components/brave_sync",
   "+brave/components/brave_talk",
   "+brave/components/ipfs",
+  "+brave/components/serp_metrics",
   "+brave/components/tor",
   "-brave/components/tor/renderer",
   "+brave/components/brave_referrals/browser",

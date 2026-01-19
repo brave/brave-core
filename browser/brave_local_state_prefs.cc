@@ -36,6 +36,7 @@
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/rotation_scheduler.h"
+#include "brave/components/serp_metrics/pref_registry.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -234,6 +235,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_ads::RegisterLocalStatePrefs(registry);
 #endif
 
+  metrics::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
   brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
