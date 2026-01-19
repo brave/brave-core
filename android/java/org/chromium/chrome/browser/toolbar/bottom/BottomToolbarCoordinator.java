@@ -21,7 +21,7 @@ import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
@@ -72,7 +72,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
             new ObservableSupplierImpl<>();
     private final CallbackController mCallbackController = new CallbackController();
-    ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
+    MonotonicObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private final Runnable mOriginalHomeButtonRunnable;
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
@@ -80,7 +80,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private MaterialButton mNewTabButton;
     private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
-    private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private final LocationBarModel mLocationBarModel;
     private final HomepageManager mHomepageManager;
     private final BookmarkManagerOpener mBookmarkManagerOpener;
@@ -88,14 +88,18 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView, View root,
-            ActivityTabProvider tabProvider, OnLongClickListener tabsSwitcherLongClickListner,
-            ThemeColorProvider themeColorProvider, Runnable openHomepageAction,
+    BottomToolbarCoordinator(
+            ScrollingBottomViewResourceFrameLayout scrollingBottomView,
+            View root,
+            ActivityTabProvider tabProvider,
+            OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider,
+            Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            MonotonicObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel) {
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));

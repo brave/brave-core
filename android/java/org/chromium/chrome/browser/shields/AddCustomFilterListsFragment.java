@@ -21,7 +21,7 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
@@ -47,7 +47,7 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment {
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

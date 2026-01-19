@@ -5,14 +5,14 @@
 
 package org.chromium.chrome.browser.tab;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 @NullMarked
 public class BraveTabBrowserControlsConstraintsHelper {
     /** Returns the constraints delegate for a particular tab with destroy guard. */
-    public static @Nullable ObservableSupplier<Integer> getObservableConstraints(Tab tab) {
+    public static @Nullable MonotonicObservableSupplier<Integer> getObservableConstraints(Tab tab) {
         if (tab == null || tab.isDestroyed()) return null;
         return TabBrowserControlsConstraintsHelper.getObservableConstraints(tab);
     }

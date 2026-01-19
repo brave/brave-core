@@ -13,7 +13,7 @@ import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -132,7 +132,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.components.infobars.InfoBar;
@@ -21,13 +21,13 @@ import org.chromium.components.infobars.R;
 
 public class BraveInfoBarContainerView extends InfoBarContainerView {
     // To be deleted in bytecode and super field to be used
-    @Nullable private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
+    @Nullable private MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
 
     BraveInfoBarContainerView(
             @NonNull Context context,
             @NonNull ContainerViewObserver containerViewObserver,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            @Nullable ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            @Nullable MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             boolean isTablet) {
         super(
                 context,

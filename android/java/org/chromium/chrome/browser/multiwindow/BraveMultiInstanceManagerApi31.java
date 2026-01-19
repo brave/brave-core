@@ -9,7 +9,7 @@ import static org.chromium.build.NullUtil.assertNonNull;
 
 import android.app.Activity;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -42,10 +42,10 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
 
     BraveMultiInstanceManagerApi31(
             Activity activity,
-            ObservableSupplier<TabModelOrchestrator> tabModelOrchestratorSupplier,
+            MonotonicObservableSupplier<TabModelOrchestrator> tabModelOrchestratorSupplier,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            ObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
+            MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
             Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
         super(

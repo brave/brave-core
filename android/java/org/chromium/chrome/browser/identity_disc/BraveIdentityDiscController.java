@@ -7,13 +7,13 @@ package org.chromium.chrome.browser.identity_disc;
 
 import android.content.Context;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
 
 /** Brave's implementation for IdentityDiscController. */
 public class BraveIdentityDiscController extends IdentityDiscController {
     public BraveIdentityDiscController(
-            Context context, ObservableSupplier<Profile> profileSupplier) {
+            Context context, MonotonicObservableSupplier<Profile> profileSupplier) {
         super(context, profileSupplier);
     }
 

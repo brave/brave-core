@@ -26,7 +26,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowPackageManager;
 
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Restriction;
 import org.chromium.chrome.R;
@@ -59,7 +60,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
     @Mock private DisplayAndroid mDisplayAndroid;
 
     private ToolbarLongPressMenuHandler mToolbarLongPressMenuHandler;
-    private ObservableSupplierImpl mProfileSupplier;
+    private MonotonicObservableSupplier<Profile> mProfileSupplier;
 
     private Activity mActivity;
     private boolean mShouldSuppress;
@@ -72,8 +73,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
         ShadowPackageManager shadowPackageManager = Shadows.shadowOf(mActivity.getPackageManager());
         shadowPackageManager.setSystemFeature(PackageManager.FEATURE_SENSOR_HINGE_ANGLE, false);
 
-        mProfileSupplier = new ObservableSupplierImpl<>();
-        mProfileSupplier.set(mProfile);
+        mProfileSupplier = ObservableSuppliers.createMonotonic(mProfile);
 
         doReturn(mDisplayAndroid).when(mWindowAndroid).getDisplay();
         doReturn(1.0f).when(mDisplayAndroid).getDipScale();

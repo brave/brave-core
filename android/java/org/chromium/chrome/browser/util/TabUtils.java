@@ -32,7 +32,7 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -60,7 +60,7 @@ public class TabUtils {
     public static void showBookmarkTabPopupMenu(
             Context context,
             View view,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel,
             BookmarkManagerOpener bookmarkManagerOpener) {
         Context wrapper = new ContextThemeWrapper(context, R.style.BookmarkTabPopupMenu);
@@ -215,7 +215,8 @@ public class TabUtils {
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
         if (braveActivity == null) return;
 
-        ObservableSupplier<TabModelSelector> supplier = braveActivity.getTabModelSelectorSupplier();
+        MonotonicObservableSupplier<TabModelSelector> supplier =
+                braveActivity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
         if (selector == null) {
             return;
@@ -237,7 +238,7 @@ public class TabUtils {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
 
-            ObservableSupplier<TabModelSelector> supplier =
+            MonotonicObservableSupplier<TabModelSelector> supplier =
                     braveActivity.getTabModelSelectorSupplier();
             TabModelSelector selector = supplier.get();
 

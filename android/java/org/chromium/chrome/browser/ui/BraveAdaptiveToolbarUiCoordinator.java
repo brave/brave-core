@@ -10,7 +10,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -38,7 +38,7 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
     @Nullable private Context mContext;
     @Nullable private ActivityTabProvider mActivityTabProvider;
     @Nullable private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
-    @Nullable private ObservableSupplier<Profile> mProfileSupplier;
+    @Nullable private MonotonicObservableSupplier<Profile> mProfileSupplier;
     @Nullable private AdaptiveToolbarButtonController mAdaptiveToolbarButtonController;
 
     public BraveAdaptiveToolbarUiCoordinator(

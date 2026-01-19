@@ -14,7 +14,7 @@ import androidx.annotation.DrawableRes;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
@@ -118,7 +118,7 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

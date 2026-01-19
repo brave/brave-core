@@ -10,7 +10,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
@@ -28,10 +28,10 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
             boolean isIncognito,
             DoubleConsumer onToolbarAlphaChange,
             UserEducationHelper userEducationHelper,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
             TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            @Nullable MonotonicObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 paneId,
                 context,

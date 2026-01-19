@@ -14,7 +14,7 @@ import com.google.android.material.button.MaterialButton;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -77,7 +77,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     @Nullable private Callback<OnClickListener> mShareButtonListenerSupplierCallback;
 
     /** The supplier for the share button on click listener. */
-    @Nullable private ObservableSupplier<OnClickListener> mShareButtonListenerSupplier;
+    @Nullable private MonotonicObservableSupplier<OnClickListener> mShareButtonListenerSupplier;
 
     /** The activity tab provider that used for making the IPH. */
     private final ActivityTabProvider mTabProvider;
@@ -91,7 +91,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener,
             OnClickListener searchAcceleratorListener,
-            ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
+            MonotonicObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
         mToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
@@ -173,7 +173,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     void initializeWithNative(
             OnClickListener newTabListener,
             OnClickListener tabSwitcherListener,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            MonotonicObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             TabModelSelector tabModelSelector,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider) {

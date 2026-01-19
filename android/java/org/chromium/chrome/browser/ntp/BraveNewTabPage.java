@@ -10,8 +10,8 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -82,11 +82,11 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Toolbar> toolbarSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
             ActivityResultTracker activityResultTracker,
-            ObservableSupplier<TabContentManager> tabContentManagerSupplier,
+            MonotonicObservableSupplier<TabContentManager> tabContentManagerSupplier,
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
-            ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            MonotonicObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
             StartupMetricsTracker startupMetricsTracker,
             MultiInstanceManager multiInstanceManager) {
         super(
@@ -152,7 +152,7 @@ public class BraveNewTabPage extends NewTabPage {
             boolean isInNightMode,
             Supplier<ShareDelegate> shareDelegateSupplier,
             String url,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             StartupMetricsTracker startupMetricsTracker) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());

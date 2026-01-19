@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.settings;
 import android.os.Bundle;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -56,7 +56,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 }
