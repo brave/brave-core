@@ -58,6 +58,8 @@ class BraveShieldsSettingsService : public KeyedService {
 
   void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
   mojom::AutoShredMode GetAutoShredMode(const GURL& url);
+  // Returns the list of ephemeral domains with the specified auto shred option
+  // enabled
   std::vector<std::string> GetEphemeralDomainsForAutoShredMode(
       mojom::AutoShredMode mode);
 

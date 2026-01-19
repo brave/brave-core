@@ -15,7 +15,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
-#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -329,38 +328,6 @@ void JNI_BraveShieldsContentSettings_SetAllowElementBlockerInPrivateModeEnabled(
     jboolean enabled) {
   brave_shields::SetAllowElementBlockerInPrivateModeEnabled(
       g_browser_process->local_state(), enabled);
-}
-
-void JNI_BraveShieldsContentSettings_SetAutoShredMode(
-    JNIEnv* env,
-    jint mode,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
-  std::optional<brave_shields::mojom::AutoShredMode> maybe_mode =
-      brave_shields::traits::SettingTraits<
-          brave_shields::mojom::AutoShredMode>::From(mode);
-  CHECK(maybe_mode.has_value());
-
-  auto* brave_shields_settings =
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile));
-  brave_shields_settings->SetAutoShredMode(
-      maybe_mode.value(),
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-}
-
-jint JNI_BraveShieldsContentSettings_GetAutoShredMode(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
-  auto* brave_shields_settings =
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile));
-  const auto mode = brave_shields_settings->GetAutoShredMode(
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-
-  return brave_shields::traits::SettingTraits<
-      brave_shields::mojom::AutoShredMode>::To(mode);
 }
 
 }  // namespace android

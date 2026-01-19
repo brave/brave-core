@@ -100,6 +100,8 @@ bool PrepareTabForFirstPartyStorageCleanup(
   return false;
 }
 
+// Filters the given ephemeral domains to only those that have opened tabs in
+// the current profile
 base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
     content::BrowserContext* context,
     const std::vector<std::string>& ephemeral_domains) {
