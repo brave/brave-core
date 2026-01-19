@@ -370,7 +370,7 @@ void AdBlockComponentServiceManager::SetFilterListCatalog(
   filter_list_catalog_ = std::move(catalog);
   LoadComponentFiltersProviders();
 
-  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_);
+  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_, locale_);
 }
 
 const std::vector<FilterListCatalogEntry>&
