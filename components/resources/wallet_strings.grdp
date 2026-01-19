@@ -578,7 +578,6 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND" desc="Swap review text for spending asset">You spend</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE" desc="Swap review text for receiving asset">You'll receive</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER" desc="Swap review header title">Confirm order</message>
-  <message name="IDS_BRAVE_WALLET_SWAP_CONTRACT_ADDRESS" desc="Swap contract address label">Contract address</message>
   <message name="IDS_BRAVE_WALLET_SWAP_PROGRAM_ADDRESS" desc="Swap program address label">Program address</message>
   <message name="IDS_BRAVE_WALLET_SWAP_DEPOSIT_ADDRESS" desc="Swap deposit address label">Deposit address</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SWAP" desc="Generic Solana Swap message">Solana Swap</message>
