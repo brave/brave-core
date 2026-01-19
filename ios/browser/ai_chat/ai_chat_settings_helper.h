@@ -10,8 +10,10 @@
 
 #ifdef __cplusplus
 #include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/settings_helper.mojom.objc.h"
 #else
-#include "ai_chat.mojom.objc.h"  // NOLINT
+#include "ai_chat.mojom.objc.h"          // NOLINT
+#include "settings_helper.mojom.objc.h"  // NOLINT
 #endif
 
 @protocol ProfileBridge;
@@ -36,6 +38,18 @@ NS_ASSUME_NONNULL_BEGIN
                                      AiChatPremiumInfo* _Nullable info))handler;
 /// Deletes user preferences & data related to Leo
 - (void)resetLeoData;
+/// A list of custom models the user has added
+@property(readonly) NSArray<AiChatModel*>* customModels;
+/// Adds a custom model to the custom models list if it passes validation
+- (void)addCustomModel:(AiChatModel*)model
+     completionHandler:(void (^)(AiChatOperationResult result))handler;
+/// Updates a custom model found at a given index it passes validation
+- (void)updateCustomModelAtIndex:(NSInteger)index
+                           model:(AiChatModel*)model
+               completionHandler:
+                   (void (^)(AiChatOperationResult result))handler;
+/// Deletes a custom model found at a given index
+- (void)deleteCustomModelAtIndex:(NSInteger)index;
 @end
 
 /// A concrete implementation of the AIChatSettingsHelper
