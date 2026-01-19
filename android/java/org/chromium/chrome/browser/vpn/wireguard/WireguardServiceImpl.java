@@ -27,6 +27,8 @@ import com.wireguard.config.Config;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.base.SplitCompatService;
@@ -39,6 +41,7 @@ import java.util.TimerTask;
 
 public class WireguardServiceImpl extends SplitCompatService.Impl
         implements TunnelModel.TunnelStateUpdateListener {
+    private static final String TAG = "WireguardService";
     private Backend mBackend;
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
@@ -69,7 +72,7 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
         try {
             mBackend = new GoBackend(mContext);
         } catch (Exception e) {
-            Log.e("WireguardServiceImpl::onCreate", e.getMessage());
+            Log.e(TAG, "onCreate failed", e);
         }
     }
 
@@ -202,13 +205,28 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
 
     @Override
     public void onDestroy() {
-        try {
-            mBackend.setState(mTunnelModel, Tunnel.State.DOWN, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Cancel timers first to stop any pending callbacks.
         cancelVpnStatisticsTimer();
         cancelVpnRecordStatisticsTimer();
+
+        // Capture references for the background task since member variables
+        // may become invalid after onDestroy returns.
+        final Backend backend = mBackend;
+        final TunnelModel tunnelModel = mTunnelModel;
+
+        // Offload the potentially blocking tunnel shutdown to a background thread.
+        // This prevents ForegroundServiceDidNotStopInTimeException on Android 14+
+        // which enforces strict timeouts for dataSync foreground services.
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    try {
+                        backend.setState(tunnelModel, Tunnel.State.DOWN, null);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error shutting down tunnel", e);
+                    }
+                });
+
         super.onDestroy();
     }
 
