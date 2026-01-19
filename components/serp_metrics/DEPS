@@ -1,3 +1,6 @@
 include_rules = [
+  "+brave/components/constants",
+  "+brave/components/time_period_storage",
+  "+components/prefs",
   "+third_party/re2/src/re2",
 ]

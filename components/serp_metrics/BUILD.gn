@@ -5,14 +5,22 @@
 
 source_set("serp_metrics") {
   sources = [
+    "pref_names.h",
+    "pref_registry.cc",
+    "pref_registry.h",
     "search_engine_constants.h",
     "search_engine_info.h",
     "search_engine_util.cc",
     "search_engine_util.h",
+    "serp_metrics.cc",
+    "serp_metrics.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/constants",
+    "//brave/components/time_period_storage",
+    "//components/prefs",
     "//net",
     "//third_party/re2",
     "//url",
@@ -22,7 +30,10 @@ source_set("serp_metrics") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "search_engine_util_unittest.cc" ]
+  sources = [
+    "search_engine_util_unittest.cc",
+    "serp_metrics_unittest.cc",
+  ]
 
   deps = [
     ":serp_metrics",
