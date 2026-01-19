@@ -5,14 +5,20 @@
 
 use rand_chacha::rand_core::SeedableRng;
 use schnorrkel::Signature;
+use std::fmt;
 
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     extern "Rust" {
         type CxxSchnorrkelKeyPair;
+        type CxxSchnorrkelKeyPairResult;
+
+        fn is_ok(self: &CxxSchnorrkelKeyPairResult) -> bool;
+        fn error_message(self: &CxxSchnorrkelKeyPairResult) -> String;
+        fn unwrap(self: &mut CxxSchnorrkelKeyPairResult) -> Box<CxxSchnorrkelKeyPair>;
 
         fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
-        fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
+        fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyPairResult>;
         fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
 
@@ -28,7 +34,51 @@ mod ffi {
 
 #[derive(Clone, Debug)]
 pub enum Error {
+    /// The Result has already been unwrapped.
+    AlreadyUnwrapped,
     Schnorrkel(schnorrkel::SignatureError),
+    /// Invalid PKCS8 header found.
+    InvalidPkcs8Header,
+    /// Invalid PKCS8 divider found.
+    InvalidPkcs8Divider,
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Error::AlreadyUnwrapped => write!(f, "Already unwrapped."),
+            Error::Schnorrkel(e) => write!(f, "Schnorrkel error: {}", e),
+            Error::InvalidPkcs8Header => write!(f, "Invalid PKCS8 header."),
+            Error::InvalidPkcs8Divider => write!(f, "Invalid PKCS8 divider."),
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! impl_result {
+    ($t:ident, $r:ident) => {
+        struct $r(Result<$t, Error>);
+
+        impl $r {
+            fn error_message(self: &$r) -> String {
+                match &self.0 {
+                    Err(e) => e.to_string(),
+                    Ok(_) => String::new(),
+                }
+            }
+
+            fn is_ok(self: &$r) -> bool {
+                self.0.is_ok()
+            }
+
+            fn unwrap(self: &mut $r) -> Box<$t> {
+                match std::mem::replace(&mut self.0, Err(Error::AlreadyUnwrapped)) {
+                    Ok(v) => Box::new(v),
+                    Err(e) => panic!("{}", e.to_string()),
+                }
+            }
+        }
+    };
 }
 
 #[derive(Clone)]
@@ -64,14 +114,35 @@ fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>
     })
 }
 
-fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+impl_result!(CxxSchnorrkelKeyPair, CxxSchnorrkelKeyPairResult);
+
+fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyPairResult> {
     // Export in PKCS8 format: PAIR_HDR + secretKey + PAIR_DIV + publicKey.
     // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L19
-    assert!(pkcs8.len() == 117);
+
+    // Validate PAIR_HDR at the beginning
+    if &pkcs8[..PAIR_HDR.len()] != PAIR_HDR {
+        return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8Header)));
+    }
+
+    // Extract secret key (64 bytes after PAIR_HDR)
+    let secret_key_start = PAIR_HDR.len();
+    let secret_key_end = secret_key_start + 64;
     let secret_key =
-        schnorrkel::SecretKey::from_bytes(&pkcs8[PAIR_HDR.len()..PAIR_HDR.len() + 64]).unwrap();
+        match schnorrkel::SecretKey::from_bytes(&pkcs8[secret_key_start..secret_key_end]) {
+            Ok(key) => key,
+            Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
+        };
+
+    // Validate PAIR_DIV after secret key
+    let div_start = secret_key_end;
+    let div_end = div_start + PAIR_DIV.len();
+    if &pkcs8[div_start..div_end] != PAIR_DIV {
+        return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8Divider)));
+    }
+
     let keypair = schnorrkel::Keypair::from(secret_key);
-    Box::new(CxxSchnorrkelKeyPair { keypair, use_mock_rng: false })
+    Box::new(CxxSchnorrkelKeyPairResult(Ok(CxxSchnorrkelKeyPair { keypair, use_mock_rng: false })))
 }
 
 impl CxxSchnorrkelKeyPair {

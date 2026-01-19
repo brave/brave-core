@@ -489,7 +489,8 @@ TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Roundtrip) {
     // Verify we can create a keypair from the decoded secret key
     auto decoded_keypair =
         HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
-    auto decoded_public_key = decoded_keypair.GetPublicKey();
+    ASSERT_TRUE(decoded_keypair.has_value());
+    auto decoded_public_key = decoded_keypair->GetPublicKey();
     auto original_public_key = keyring.GetPublicKey(0);
     EXPECT_EQ(decoded_public_key, original_public_key);
   }

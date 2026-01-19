@@ -13,8 +13,11 @@
 
 #include "base/containers/span.h"
 #include "crypto/kdf.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
+
+using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 inline constexpr uint8_t kScryptSaltSize = 32u;
 // NaCl secretbox nonce size (24 bytes) equal to tweetnacl
@@ -35,14 +38,15 @@ std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
 // Decrypts data encrypted with ScryptEncrypt.
 // Returns the decrypted plaintext, or std::nullopt if decryption fails
 // (e.g., wrong key, corrupted data).
-std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
+std::optional<SecureVector> XSalsaPolyDecrypt(
     base::span<const uint8_t> data,
     base::span<const uint8_t, kSecretboxNonceSize> nonce,
     base::span<const uint8_t, kScryptKeyBytes> key);
 
 // Derives an encryption key from a password using scrypt key derivation.
-// Returns the derived key, or std::nullopt if key derivation fails.
-std::optional<std::array<uint8_t, kScryptKeyBytes>> ScryptDeriveKey(
+// Returns the derived key size of kScryptKeyBytes,
+// or std::nullopt if key derivation fails.
+std::optional<SecureVector> ScryptDeriveKey(
     std::string_view password,
     base::span<const uint8_t> salt,
     const crypto::kdf::ScryptParams& scrypt_params);

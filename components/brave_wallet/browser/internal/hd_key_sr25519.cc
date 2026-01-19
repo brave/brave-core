@@ -33,6 +33,7 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
+// static
 HDKeySr25519 HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t, kSr25519SeedSize> seed) {
   auto bytes = base::SpanToRustSlice(seed);
@@ -40,10 +41,16 @@ HDKeySr25519 HDKeySr25519::GenerateFromSeed(
   return HDKeySr25519(std::move(mk));
 }
 
-HDKeySr25519 HDKeySr25519::CreateFromPkcs8(
+// static
+std::optional<HDKeySr25519> HDKeySr25519::CreateFromPkcs8(
     base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key) {
-  auto pkcs8_key_slice = base::SpanToRustSlice(pkcs8_key);
-  auto mk = create_sr25519_keypair_from_pkcs8(pkcs8_key_slice);
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8_array;
+  base::span(pkcs8_array).copy_from_nonoverlapping(pkcs8_key);
+  auto result = create_sr25519_keypair_from_pkcs8(pkcs8_array);
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  auto mk = result->unwrap();
   return HDKeySr25519(std::move(mk));
 }
 

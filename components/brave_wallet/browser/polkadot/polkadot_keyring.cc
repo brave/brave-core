@@ -43,6 +43,32 @@ inline constexpr char const kPolkadotMainnet[] =
 
 using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
+// Allowed scrypt parameters matching Polkadot.js wallet standards.
+// These are the only parameter combinations that should be accepted.
+struct AllowedScryptParams {
+  uint32_t n;
+  uint32_t p;
+  uint32_t r;
+};
+
+constexpr AllowedScryptParams kAllowedScryptParams[] = {
+    {1 << 13, 10, 8},  // n: 8192, p: 10, r: 8
+    {1 << 14, 5, 8},   // n: 16384, p: 5, r: 8
+    {1 << 15, 3, 8},   // n: 32768, p: 3, r: 8
+    {1 << 15, 1, 8},   // n: 32768, p: 1, r: 8
+    {1 << 16, 2, 8},   // n: 65536, p: 2, r: 8
+    {1 << 17, 1, 8},   // n: 131072, p: 1, r: 8
+};
+
+bool IsAllowedScryptParams(uint32_t n, uint32_t p, uint32_t r) {
+  for (const auto& allowed : kAllowedScryptParams) {
+    if (allowed.n == n && allowed.p == p && allowed.r == r) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace
 
 PolkadotKeyring::PolkadotKeyring(
@@ -180,9 +206,12 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     return std::nullopt;
   }
 
+  CHECK_EQ(derived_key->size(), kScryptKeyBytes);
+
   // Encrypt message.
-  auto encrypt_result = XSalsaPolyEncrypt(base::as_byte_span(pkcs8_key_secure),
-                                          *derived_key, nonce_bytes);
+  auto encrypt_result = XSalsaPolyEncrypt(
+      base::as_byte_span(pkcs8_key_secure),
+      base::span(*derived_key).first<kScryptKeyBytes>(), nonce_bytes);
   if (!encrypt_result.has_value()) {
     return std::nullopt;
   }
@@ -294,7 +323,8 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
   }
 
   std::string encoded_bytes;
-  if (!base::Base64Decode(*encoded_str, &encoded_bytes)) {
+  if (!base::Base64Decode(*encoded_str, &encoded_bytes,
+                          base::Base64DecodePolicy::kStrict)) {
     return std::nullopt;
   }
 
@@ -318,6 +348,11 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
     return std::nullopt;
   }
 
+  // Validate that scrypt parameters are in the allowed list.
+  if (!IsAllowedScryptParams(scrypt_n, scrypt_p, scrypt_r)) {
+    return std::nullopt;
+  }
+
   crypto::kdf::ScryptParams scrypt_params = {
       .cost = scrypt_n,
       .block_size = scrypt_r,
@@ -330,6 +365,8 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
     return std::nullopt;
   }
 
+  CHECK_EQ(scrypt_key->size(), kScryptKeyBytes);
+
   std::array<uint8_t, kSecretboxNonceSize> nonce = {};
   if (!reader.ReadCopy(nonce)) {
     return std::nullopt;
@@ -338,7 +375,8 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
   auto encrypted_data = reader.remaining_span();
   CHECK_EQ(encrypted_data.size(), kSr25519Pkcs8Size + kSecretboxAuthTagSize);
 
-  auto decrypt_result = XSalsaPolyDecrypt(encrypted_data, nonce, *scrypt_key);
+  auto decrypt_result = XSalsaPolyDecrypt(
+      encrypted_data, nonce, base::span(*scrypt_key).first<kScryptKeyBytes>());
   if (!decrypt_result || decrypt_result->size() != kSr25519Pkcs8Size) {
     return std::nullopt;
   }
