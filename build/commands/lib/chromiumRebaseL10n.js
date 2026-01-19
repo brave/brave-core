@@ -22,29 +22,74 @@ const resetChromeStringFiles = () => {
 
 // Copy post-processed Brave strings to Brave Origin strings.
 const copyBraveStringsToOrigin = () => {
-  const braveOriginCopies = [
-    [
-      path.join(srcDir, 'brave', 'app', 'brave_strings.grd'),
-      path.join(srcDir, 'brave', 'app', 'brave_origin_strings.grd'),
-    ],
-    [
-      path.join(srcDir, 'brave', 'components', 'components_brave_strings.grd'),
-      path.join(
-        srcDir,
-        'brave',
-        'components',
-        'components_brave_origin_strings.grd',
-      ),
-    ],
-  ]
-  for (const [sourcePath, destPath] of braveOriginCopies) {
-    console.log(
-      'Copying Brave Origin strings: '
-        + path.relative(srcDir, destPath)
-        + ' <- '
-        + path.relative(srcDir, sourcePath),
+  // Copy components_brave_strings.grd to components_brave_origin_strings.grd
+  // (no XTB path changes needed as they share the same XTB files).
+  const componentsSrc = path.join(
+    srcDir,
+    'brave',
+    'components',
+    'components_brave_strings.grd',
+  )
+  const componentsDest = path.join(
+    srcDir,
+    'brave',
+    'components',
+    'components_brave_origin_strings.grd',
+  )
+  console.log(
+    'Copying Brave Origin strings: '
+      + path.relative(srcDir, componentsDest)
+      + ' <- '
+      + path.relative(srcDir, componentsSrc),
+  )
+  fs.copyFileSync(componentsSrc, componentsDest)
+
+  // Copy brave_strings.grd to brave_origin_strings.grd and update XTB paths.
+  const braveStringsSrc = path.join(srcDir, 'brave', 'app', 'brave_strings.grd')
+  const braveStringsDest = path.join(
+    srcDir,
+    'brave',
+    'app',
+    'brave_origin_strings.grd',
+  )
+  console.log(
+    'Copying Brave Origin strings: '
+      + path.relative(srcDir, braveStringsDest)
+      + ' <- '
+      + path.relative(srcDir, braveStringsSrc),
+  )
+  let grdContent = fs.readFileSync(braveStringsSrc, 'utf8')
+  // Update XTB file paths from brave_strings_*.xtb to
+  // brave_origin_strings_*.xtb
+  grdContent = grdContent.replace(
+    /brave_strings_([^"]+\.xtb)/g,
+    'brave_origin_strings_$1',
+  )
+  fs.writeFileSync(braveStringsDest, grdContent, 'utf8')
+
+  // Copy XTB files for brave_strings (brave_origin_strings uses different XTB
+  // files than brave_strings, unlike components which share the same XTB
+  // files).
+  const resourcesDir = path.join(srcDir, 'brave', 'app', 'resources')
+  const xtbFiles = fs
+    .readdirSync(resourcesDir)
+    .filter(
+      (file) => file.startsWith('brave_strings_') && file.endsWith('.xtb'),
     )
-    fs.copyFileSync(sourcePath, destPath)
+  for (const sourceFile of xtbFiles) {
+    const sourceXtb = path.join(resourcesDir, sourceFile)
+    const destFile = sourceFile.replace(
+      'brave_strings_',
+      'brave_origin_strings_',
+    )
+    const destXtb = path.join(resourcesDir, destFile)
+    console.log(
+      'Copying Brave Origin XTB: '
+        + path.relative(srcDir, destXtb)
+        + ' <- '
+        + path.relative(srcDir, sourceXtb),
+    )
+    fs.copyFileSync(sourceXtb, destXtb)
   }
 }
 
