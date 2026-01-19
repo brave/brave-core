@@ -14,10 +14,12 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "build/build_config.h"
 #include "chrome/browser/headless/headless_mode_util.h"
 #include "components/prefs/pref_service.h"
@@ -40,8 +42,10 @@ bool IsHeadlessOrAutomationMode() {
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
+    misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service,
     const ProcessArch arch)
     : BraveStatsUpdaterParams(stats_pref_service,
+                              profile_misc_metrics_service,
                               arch,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
@@ -49,11 +53,13 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
+    misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service,
     const ProcessArch arch,
     const std::string& ymd,
     int woy,
     int month)
     : stats_pref_service_(stats_pref_service),
+      profile_misc_metrics_service_(profile_misc_metrics_service),
       arch_(arch),
       ymd_(ymd),
       woy_(woy),
@@ -205,6 +211,34 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
+
+  if (profile_misc_metrics_service_ && ymd_ != last_check_ymd_) {
+    if (metrics::SerpMetrics* serp_metrics =
+            profile_misc_metrics_service_->GetSerpMetrics()) {
+      update_url = net::AppendQueryParameter(
+          update_url, "brave-search",
+          base::NumberToString(
+              serp_metrics->GetBraveSearchCountForYesterday()));
+
+      update_url = net::AppendQueryParameter(
+          update_url, "google-search",
+          base::NumberToString(
+              serp_metrics->GetGoogleSearchCountForYesterday()));
+
+      update_url = net::AppendQueryParameter(
+          update_url, "other-search",
+          base::NumberToString(
+              serp_metrics->GetOtherSearchCountForYesterday()));
+
+      update_url = net::AppendQueryParameter(
+          update_url, "stale-search",
+          base::NumberToString(
+              serp_metrics->GetBraveSearchCountForStalePeriod() +
+              serp_metrics->GetGoogleSearchCountForStalePeriod() +
+              serp_metrics->GetOtherSearchCountForStalePeriod()));
+    }
+  }
+
   return update_url;
 }
 

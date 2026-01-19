@@ -22,6 +22,8 @@
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -328,9 +330,16 @@ void BraveStatsUpdater::SendServerPing() {
   auto traffic_annotation = AnonymousStatsAnnotation();
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
+  misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service;
+  if (profile_manager_) {
+    profile_misc_metrics_service =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            profile_manager_->GetLastUsedProfile());
+  }
+
   auto stats_updater_params =
-      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_,
-                                                             arch_);
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(
+          pref_service_, profile_misc_metrics_service, arch_);
 
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);

@@ -13,6 +13,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterTest;
@@ -27,13 +28,17 @@ bool IsHeadlessOrAutomationMode();
 
 class BraveStatsUpdaterParams {
  public:
-  explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                                   const ProcessArch arch);
-  BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                          const ProcessArch arch,
-                          const std::string& ymd,
-                          int woy,
-                          int month);
+  explicit BraveStatsUpdaterParams(
+      PrefService* stats_pref_service,
+      misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service,
+      const ProcessArch arch);
+  BraveStatsUpdaterParams(
+      PrefService* stats_pref_service,
+      misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service,
+      const ProcessArch arch,
+      const std::string& ymd,
+      int woy,
+      int month);
   BraveStatsUpdaterParams(const BraveStatsUpdaterParams&) = delete;
   BraveStatsUpdaterParams& operator=(const BraveStatsUpdaterParams&) = delete;
   ~BraveStatsUpdaterParams();
@@ -58,6 +63,8 @@ class BraveStatsUpdaterParams {
   friend class ::BraveStatsUpdaterTest;
 
   raw_ptr<PrefService> stats_pref_service_ = nullptr;
+  const raw_ptr<misc_metrics::ProfileMiscMetricsService>
+      profile_misc_metrics_service_;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;
