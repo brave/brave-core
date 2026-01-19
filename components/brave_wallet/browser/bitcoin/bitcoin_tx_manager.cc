@@ -120,12 +120,21 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
+  auto meta = std::make_unique<BitcoinTxMeta>();
+  meta->set_id(TxMeta::GenerateMetaID());
+  meta->set_from(params->from);
+  meta->set_chain_id(chain_id);
+  meta->set_origin(
+      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
+  meta->set_swap_info(std::move(params->swap_info));
+  meta->set_created_time(base::Time::Now());
+  meta->set_status(mojom::TransactionStatus::Unapproved);
+
   bitcoin_wallet_service_->CreateTransaction(
       params->from.Clone(), params->to, params->amount,
       params->sending_max_amount,
       base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
-                     origin, std::move(params->swap_info),
+                     weak_factory_.GetWeakPtr(), std::move(meta),
                      std::move(callback)));
 }
 
@@ -140,10 +149,7 @@ void BitcoinTxManager::AddUnapprovedTransaction(
 }
 
 void BitcoinTxManager::ContinueAddUnapprovedTransaction(
-    const std::string& chain_id,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
+    std::unique_ptr<BitcoinTxMeta> meta,
     AddUnapprovedTransactionCallback callback,
     base::expected<BitcoinTransaction, std::string> bitcoin_transaction) {
   if (!bitcoin_transaction.has_value()) {
@@ -151,21 +157,14 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
     return;
   }
 
-  BitcoinTxMeta meta(from, std::make_unique<BitcoinTransaction>(
-                               std::move(bitcoin_transaction.value())));
-  meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta.set_created_time(base::Time::Now());
-  meta.set_status(mojom::TransactionStatus::Unapproved);
-  meta.set_chain_id(chain_id);
-  meta.set_swap_info(std::move(swap_info));
+  meta->set_tx(std::make_unique<BitcoinTransaction>(
+      std::move(bitcoin_transaction.value())));
 
-  if (!tx_state_manager().AddOrUpdateTx(meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
-  std::move(callback).Run(true, meta.id(), "");
+  std::move(callback).Run(true, meta->id(), "");
 }
 
 void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
