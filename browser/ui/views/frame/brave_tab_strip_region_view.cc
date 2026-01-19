@@ -36,7 +36,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // correct amount of padding.
     if (new_tab_button_) {
       new_tab_button_->SetX(
-          tab_strip_container_->bounds().right() +
+          tab_strip_->bounds().right() +
           GetLayoutConstant(LayoutConstant::kTabStripPadding));
     }
     return;
@@ -44,7 +44,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 
   // in vertical tabs mode, we make tab strip's height is the same with this
   // view's height to avoid extra gaps.
-  tab_strip_container_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
+  tab_strip_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
 }
 
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
@@ -57,7 +57,7 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   // In horizontal mode, take the current right margin. It is required so that
   // the new tab button will not be covered by the frame grab handle.
   if (!vertical_tabs) {
-    if (auto* current = tab_strip_container_->GetProperty(views::kMarginsKey)) {
+    if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       margins.set_right(current->right());
     }
   }
@@ -74,7 +74,7 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
     }
   }
 
-  tab_strip_container_->SetProperty(views::kMarginsKey, margins);
+  tab_strip_->SetProperty(views::kMarginsKey, margins);
 }
 
 void BraveHorizontalTabStripRegionView::Initialize() {
