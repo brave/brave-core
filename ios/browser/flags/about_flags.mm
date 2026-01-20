@@ -145,28 +145,35 @@
               brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
       })
 
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                 \
-  EXPAND_FEATURE_ENTRIES(                                             \
-      {                                                               \
-          "brave-ai-chat",                                            \
-          "Brave AI Chat",                                            \
-          "Summarize articles and engage in conversation with AI",    \
-          flags_ui::kOsIos,                                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),             \
-      },                                                              \
-      {                                                               \
-          "brave-ai-chat-history",                                    \
-          "Brave AI Chat History",                                    \
-          "Enables AI Chat History persistence and management",       \
-          flags_ui::kOsIos,                                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),      \
-      },                                                              \
-      {                                                               \
-          "brave-ai-chat-webui",                                      \
-          "Brave AI Chat WebUI",                                      \
-          "Enables the use of Leo via WebUI",                         \
-          flags_ui::kOsIos,                                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled), \
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                       \
+  EXPAND_FEATURE_ENTRIES(                                                   \
+      {                                                                     \
+          "brave-ai-chat",                                                  \
+          "Brave AI Chat",                                                  \
+          "Summarize articles and engage in conversation with AI",          \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                   \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-history",                                          \
+          "Brave AI Chat History",                                          \
+          "Enables AI Chat History persistence and management",             \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),            \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-webui",                                            \
+          "Brave AI Chat WebUI",                                            \
+          "Enables the use of Leo via WebUI",                               \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled),       \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-allow-private-ips",                                \
+          "Private IP Addresses for Custom Model Endpoints",                \
+          "Permits the use of private IP addresses as model endpoint URLs", \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),          \
       })
 
 #define BRAVE_WALLET_FEATURE_ENTRIES                                    \
@@ -190,7 +197,8 @@
       {                                                                        \
           "use-dev-updater-url",                                               \
           "Use dev updater url",                                               \
-          "Use the dev url for the component updater. This is for internal "   \
+          "Use the dev url for the component updater. This is "                \
+          "for internal "                                                      \
           "testing only.",                                                     \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
@@ -241,7 +249,8 @@
       {                                                                        \
           "brave-debounce",                                                    \
           "Enable debouncing",                                                 \
-          "Enable support for skipping top-level redirect tracking URLs",      \
+          "Enable support for skipping top-level redirect "                    \
+          "tracking URLs",                                                     \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(debounce::features::kBraveDebounce),              \
       },                                                                       \
@@ -255,10 +264,14 @@
       {                                                                        \
           "brave-rewards-verbose-logging",                                     \
           "Enable Brave Rewards verbose logging",                              \
-          "Enables detailed logging of Brave Rewards system events to a log "  \
-          "file stored on your device. Please note that this log file could "  \
-          "include information such as browsing history and credentials such " \
-          "as passwords and access tokens depending on your activity. Please " \
+          "Enables detailed logging of Brave Rewards system "                  \
+          "events to a log "                                                   \
+          "file stored on your device. Please note that this log "             \
+          "file could "                                                        \
+          "include information such as browsing history and "                  \
+          "credentials such "                                                  \
+          "as passwords and access tokens depending on your "                  \
+          "activity. Please "                                                  \
           "do not share it unless asked to by Brave staff.",                   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature), \
