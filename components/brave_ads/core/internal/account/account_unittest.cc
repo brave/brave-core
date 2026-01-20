@@ -16,19 +16,13 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_test_constants.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
@@ -38,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds
 
@@ -213,15 +206,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const test::URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
-                                            test::kCredentialBase64Url),
-       {{net::HTTP_CREATED,
-         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
-       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
-
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
@@ -257,15 +241,6 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
-
-  const test::URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
-                                            test::kCredentialBase64Url),
-       {{net::HTTP_CREATED,
-         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
-       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);

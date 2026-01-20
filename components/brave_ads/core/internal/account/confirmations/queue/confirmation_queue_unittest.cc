@@ -20,12 +20,10 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -94,18 +92,19 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const test::URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
-                                            test::kCredentialBase64Url),
-       {{net::HTTP_CREATED,
-         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
-       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
-
   std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
+
+  const test::URLResponseMap url_responses = {
+      {BuildCreateRewardConfirmationUrlPath(
+           confirmation->transaction_id,
+           confirmation->reward->credential_base64url),
+       {{net::HTTP_CREATED,
+         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
+      {BuildFetchPaymentTokenUrlPath(confirmation->transaction_id),
+       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   base::RunLoop run_loop_add;
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation))

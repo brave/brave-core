@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate_mock.h"
@@ -39,15 +38,15 @@ class BraveAdsRedeemNonRewardConfirmationTest : public test::TestBase {
 
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   // Arrange
-  const test::URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
-       {{net::HTTP_NO_CONTENT,
-         test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
-
   std::optional<ConfirmationInfo> confirmation =
       test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
+
+  const test::URLResponseMap url_responses = {
+      {BuildCreateNonRewardConfirmationUrlPath(confirmation->transaction_id),
+       {{net::HTTP_NO_CONTENT,
+         test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(*confirmation));
@@ -60,16 +59,16 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
 
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   // Arrange
+  std::optional<ConfirmationInfo> confirmation =
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+  ASSERT_TRUE(confirmation);
+
   const test::URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(confirmation->transaction_id),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
-
-  std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
-  ASSERT_TRUE(confirmation);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
