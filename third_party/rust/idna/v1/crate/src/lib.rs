@@ -39,6 +39,7 @@ mod ffi {
 
     unsafe extern "C++" {
         include!("brave/third_party/rust/idna/v1/crate/idna.h");
+        #[allow(dead_code)]
         fn InitializeICUForTesting();
         fn DomainToASCII(domain: &str) -> IdnaResult;
     }
