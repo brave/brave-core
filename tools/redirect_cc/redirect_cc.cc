@@ -6,9 +6,9 @@
 #include <iostream>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -124,7 +124,8 @@ class RedirectCC {
     for (size_t arg_idx = first_compiler_arg_idx; arg_idx < args_.size();
          ++arg_idx) {
       const base::FilePath::StringViewType arg_piece = args_[arg_idx];
-      if (!compile_file_found && base::Contains(kCompileFileFlags, arg_piece)) {
+      if (!compile_file_found &&
+          std::ranges::contains(kCompileFileFlags, arg_piece)) {
         compile_file_found = true;
         if (arg_idx + 1 >= args_.size()) {
           LOG(ERROR) << "No arg after compile flag " << arg_piece;

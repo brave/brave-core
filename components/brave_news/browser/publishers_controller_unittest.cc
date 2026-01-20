@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
@@ -113,8 +112,9 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {
-    return base::Contains(pref_manager_->GetSubscriptions().direct_feeds(),
-                          publisher_id, &DirectFeed::id);
+    return std::ranges::contains(
+        pref_manager_->GetSubscriptions().direct_feeds(), publisher_id,
+        &DirectFeed::id);
   }
 
   Publishers GetPublishers() {

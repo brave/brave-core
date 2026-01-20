@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -36,7 +35,7 @@ using component_updater::ComponentUpdateService;
 namespace {
 #if !BUILDFLAG(IS_ANDROID)
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
-  return base::Contains(cus->GetComponentIDs(), kWidevineComponentId);
+  return std::ranges::contains(cus->GetComponentIDs(), kWidevineComponentId);
 }
 #if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {

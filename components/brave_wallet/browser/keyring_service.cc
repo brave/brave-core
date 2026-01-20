@@ -17,7 +17,6 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
-#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
@@ -1165,7 +1164,7 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
 }
 
 bool KeyringService::IsKeyringEnabled(mojom::KeyringId keyring_id) const {
-  return base::Contains(enabled_keyrings_, keyring_id);
+  return std::ranges::contains(enabled_keyrings_, keyring_id);
 }
 
 void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {

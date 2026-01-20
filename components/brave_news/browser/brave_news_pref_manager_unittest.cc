@@ -6,8 +6,8 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 
 #include <memory>
+#include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -81,8 +81,8 @@ TEST_F(BraveNewsPrefManagerTest, ChannelsDiffIsSane) {
 
   diff = five.DiffChannels(four);
   EXPECT_EQ(2u, diff.changed.size());
-  EXPECT_TRUE(base::Contains(diff.changed, "Politics"));
-  EXPECT_TRUE(base::Contains(diff.changed, "FooBar"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Politics"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "FooBar"));
 }
 
 TEST_F(BraveNewsPrefManagerTest, PublishersDiffIsSane) {
@@ -120,7 +120,7 @@ TEST_F(BraveNewsPrefManagerTest, PublishersDiffIsSane) {
   EXPECT_TRUE(distinct_changes.contains(direct_three));
 
   EXPECT_EQ(1u, diff.removed.size());
-  EXPECT_TRUE(base::Contains(diff.removed, direct_one));
+  EXPECT_TRUE(std::ranges::contains(diff.removed, direct_one));
 }
 
 TEST_F(BraveNewsPrefManagerTest, DirectFeedCanBeInspectedAndRemoved) {

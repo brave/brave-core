@@ -8,11 +8,11 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -60,8 +60,8 @@ inline constexpr char kZCashDataFolderName[] = "zcash_data";
 bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                                 mojom::CoinType coin,
                                 const std::string& chain_id) {
-  return base::Contains(GetSupportedKeyringsForNetwork(coin, chain_id),
-                        account_id.keyring_id);
+  return std::ranges::contains(GetSupportedKeyringsForNetwork(coin, chain_id),
+                               account_id.keyring_id);
 }
 
 bool ContainsNativeToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,

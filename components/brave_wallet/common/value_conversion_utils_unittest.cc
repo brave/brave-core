@@ -7,9 +7,9 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -209,15 +209,17 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
             chain.decimals);
   auto* rpc_urls = value.FindList("rpcUrls");
   for (const auto& entry : *rpc_urls) {
-    ASSERT_TRUE(base::Contains(chain.rpc_endpoints, GURL(entry.GetString())));
+    ASSERT_TRUE(
+        std::ranges::contains(chain.rpc_endpoints, GURL(entry.GetString())));
   }
 
   for (const auto& entry : *value.FindList("iconUrls")) {
-    ASSERT_TRUE(base::Contains(chain.icon_urls, entry.GetString()));
+    ASSERT_TRUE(std::ranges::contains(chain.icon_urls, entry.GetString()));
   }
   auto* blocked_urls = value.FindList("blockExplorerUrls");
   for (const auto& entry : *blocked_urls) {
-    ASSERT_TRUE(base::Contains(chain.block_explorer_urls, entry.GetString()));
+    ASSERT_TRUE(
+        std::ranges::contains(chain.block_explorer_urls, entry.GetString()));
   }
 
   auto result = ValueToNetworkInfo(base::Value(value.Clone()));

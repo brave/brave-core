@@ -5,7 +5,8 @@
 
 #include "brave/app/command_utils.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "base/containers/flat_set.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
@@ -24,7 +25,7 @@ TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   const auto& commands = commands::GetCommands();
 
   for (const auto& accelerator : accelerators) {
-    EXPECT_TRUE(base::Contains(commands, accelerator.command_id))
+    EXPECT_TRUE(std::ranges::contains(commands, accelerator.command_id))
         << "Accelerated command '" << accelerator.command_id
         << "' was not present in the list of commands.";
   }

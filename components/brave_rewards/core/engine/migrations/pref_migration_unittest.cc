@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "brave/components/brave_rewards/core/engine/migrations/pref_migration_manager.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
@@ -103,8 +104,8 @@ TEST_F(RewardsPrefMigrationTest, Migration13) {
 
   ExecuteMigration(13);
 
-  EXPECT_TRUE(base::Contains(client().GetObserverEventsForTesting(),
-                             "external-wallet-connected"));
+  EXPECT_TRUE(std::ranges::contains(client().GetObserverEventsForTesting(),
+                                    "external-wallet-connected"));
 }
 
 TEST_F(RewardsPrefMigrationTest, Migration14) {

@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -71,7 +70,8 @@ mojom::Result GetMe::ParseBody(const std::string& body,
   const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    user->bat_not_allowed = !base::Contains(*currencies, base::Value(currency));
+    user->bat_not_allowed =
+        !std::ranges::contains(*currencies, base::Value(currency));
   }
 
   return mojom::Result::OK;
