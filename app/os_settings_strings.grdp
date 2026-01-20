@@ -107,9 +107,6 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
     Update schedule
   </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME" desc="Title of the line item on the about page that allows the user to edit the device hostname.">
-    Device name
-  </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back ChromeOS or ChromeOS.">
     <ph name="MANAGER">$1<ex>google.com</ex></ph> is putting this device on a previous version (<ph name="PROGRESS_PERCENT">$2<ex>90%</ex></ph>)
   </message>
@@ -202,33 +199,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES_DESCRIPTION" desc="Sublabel description shown for See What's New button.">
     Automatic updates provide you with the latest features. Explore highlights from recent updates.
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_EDIT_DEVICE_NAME" desc="The title of the dialog that allows the user to edit the device hostname.">
-    Edit device name
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_INFO" desc="Label describing which areas of the ChromeOS system broadcast the device hostname to external networks.">
-    This name is visible to other devices for Bluetooth and network connections
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_CONSTRAINTS" desc="Label describing the requirements for the text of the device hostname.">
-    Name can use letters, numbers, and hyphens (-)
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_CONSTRAINTS_A11Y_DESCRIPTION" desc="Label describing the requirements for the text of the device hostname.">
-    Name can use letters, numbers, and hyphens (-), and must be between 1 and 15 characters inclusive.
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_INPUT_COUNT" desc="Label for the dialog input for the device name, informing the user the number of characters they have inputted compared to the maximum number of characters allowed.">
-    <ph name="CURRENT_CHARACTER_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHARACTER_COUNT">$2<ex>15</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_INPUT_A11Y_LABEL" desc="The a11y label for the edit device name dialog input, informing the user that they are currently naming the device">
-    Name device
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_DONE_BTN_A11Y_LABEL" desc="The a11y label for the done button in the edit device name dialog">
-    Name device to <ph name="DEVICE_NAME">$1<ex>MyChromebook</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_EDIT_BTN_A11Y_LABEL" desc="The a11y label for the edit button for device name on the detailed build into page">
-    Change device name
-  </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_EDIT_BTN_A11Y_DESCRIPTION" desc="The a11y description for the edit button for device name on the detailed build into page">
-    Current device name is <ph name="DEVICE_NAME">$1<ex>MyChromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (ChromeOS/ChromeOS)">
     Couldn't update your Chromebook. Please try again later.
@@ -852,16 +822,16 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SPACE_INPUT_STYLE_HALFWIDTH" desc="The label for input modes option to set the space input style for the Japanese keyboard to Halfwidth mode. In Japanese, this string should be '半角'.">
     Halfwidth
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SECTION_SHORTCUT" desc="The label for the Japanese keyboard settings dropdown to set the shortcut selection hotkeys for Japanese candidate selection. In Japanese, this string should be '候補選択ショートカット'.">
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SELECTION_SHORTCUT" desc="The label for the Japanese keyboard settings dropdown to set the shortcut selection hotkeys for Japanese candidate selection. In Japanese, this string should be '候補選択ショートカット'.">
     Selection shortcut
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SECTION_SHORTCUT_NO_SHORTCUT" desc="The label for the Japanese keyboard settings option to set that there is no shortcut set for the Japanese keyboard candidate selection. In Japanese, this string should be 'なし'.">
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SELECTION_SHORTCUT_NO_SHORTCUT" desc="The label for the Japanese keyboard settings option to set that there is no shortcut set for the Japanese keyboard candidate selection. In Japanese, this string should be 'なし'.">
     No shortcut
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SECTION_SHORTCUT_123456789" translateable="false">
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SELECTION_SHORTCUT_123456789" translateable="false">
     1 -- 9
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SECTION_SHORTCUT_ASDFGHJKL" translateable="false">
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SELECTION_SHORTCUT_ASDFGHJKL" translateable="false">
     A -- L
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE" desc="The label for Japanese keyboard settings dropdown within the settings page to set the keymap style for the Japanese keyboard. The available dropdown values are 'Custom keymap', 'ATOK', 'MS-IME', 'Kotoeri', and 'ChromeOS'. In Japanese, this string should be 'キー設定の選択'.">

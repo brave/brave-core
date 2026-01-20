@@ -230,6 +230,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SEARCH_IN_SETTINGS_NO_MATCH" desc="Guide message when there is no match for search in settings. [CHAR_LIMIT=32]">
         No results found
       </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_CLEAR_QUERY" desc="Label for the icon clearing the query text of settings. [CHAR_LIMIT=32]">
+        Clear search query
+      </message>
       <message name="IDS_SEARCH_IN_SETTINGS_HELP_CENTER" desc="Message suggesting user search help center when there is no match in search. [CHAR_LIMIT=32]">
         Try searching the help center
       </message>
@@ -306,7 +309,7 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_SECTION_ACCOUNT_AND_GOOGLE_SERVICES" desc="Title for the group of account-related entries and google services in Settings. [CHAR_LIMIT=32]">
         You and Brave
       </message>
-      <message name="IDS_SIGN_IN_TO_CHROME" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR_LIMIT=27]">
+      <message name="IDS_SIGN_IN_TO_CHROME" meaning="Button" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
       <message name="IDS_PREFS_MANAGE_SYNC_SETTINGS_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the 'Manage Sync Settings' page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
@@ -624,14 +627,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Restart Brave
       </message>
-      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TITLE" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
-        Restart Brave?
-      </message>
       <message name="IDS_AUTOFILL_OPTIONS_CHANGE_AUTOFILL_SERVICE_TITLE" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
         Change autofill service?
-      </message>
-      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
-        To finish setting up autofill, restart Brave now. Your tabs will automatically reopen.
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_PARAGRAPH_1_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
         After Brave restarts, your info saved from your new provider will be used to autofill passwords, passkeys, addresses, payment methods, and other info.
@@ -1683,23 +1680,24 @@ Your Brave account may have other forms of browsing history like searches and ac
         =1 {Brave found a reused password that you could improve}
         other {Brave found # reused passwords that you could improve}}
       </message>
-      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_TITLE" desc="Title for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
-        {NUM_REVOKED_PERMISSIONS, plural,
-        =1 {Unsubscribed from one unused site}
-        other {Unsubscribed from # unused sites}}
+       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_DISRUPTIVE_AND_SUSPICIOUS_NOTIFICATIONS_NOTIFICATION_TITLE_SINGULAR" desc="Title for the notification sent from Safety Hub for telling the user that the site's notifications have been unsubscribed.">
+        Unsubscribed from <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>
       </message>
-       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_DISRUPTIVE_AND_SUSPICIOUS_NOTIFICATIONS_NOTIFICATION_TITLE" desc="Title for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
-        {NUM_REVOKED_PERMISSIONS, plural,
-        =1 {Unsubscribed from one site}
-        other {Unsubscribed from # sites}}
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_DISRUPTIVE_AND_SUSPICIOUS_NOTIFICATIONS_NOTIFICATION_TITLE_PLURAL" desc="Title for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
+        Unsubscribed from <ph name="COUNT">%1$d<ex>2</ex></ph> sites
       </message>
-      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
-        {NUM_REVOKED_PERMISSIONS, plural,
-        =1 {Brave stopped notifications from this site. You can review and manage.}
-        other {Brave stopped notifications from these sites. You can review and manage.}}
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_DISRUPTIVE_AND_SUSPICIOUS_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed, due to disruptive and suspicious content." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
+        Brave stopped abusive and unused sites from sending notifications
       </message>
-      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_ACK" desc="Button to acknowledge the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
-        Got it
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_DISRUPTIVE_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed, due to disruptive content." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
+        {NUM_REVOKED_PERMISSIONS, plural,
+        =1 {Brave stopped a site you haven’t visited recently from sending you notifications}
+        other {Brave stopped sites you haven’t visited recently from sending you notifications}}
+      </message>
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_SUSPICIOUS_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed, due to suspicious content." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
+        {NUM_REVOKED_PERMISSIONS, plural,
+        =1 {Brave stopped this site from sending notifications because of spam or deceptive content}
+        other {Brave stopped these sites from sending notifications because of spam or deceptive content}}
       </message>
       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_REVIEW" desc="Button to review revoked notifications on the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
         Review
@@ -3025,11 +3023,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SEPIA_MODE" desc="Title of button that will change theme of distilled pages to sepia mode.">
         Sepia
       </message>
-      <message name="IDS_SANS_SERIF" desc="Title of the selector button that will change the typeface of distilled pages to use a SansSerif font.">
+      <message name="IDS_SANS_SERIF" desc="Title of the selector button that will change the typeface of distilled pages to use a Sans Serif font.">
         Sans Serif
       </message>
       <message name="IDS_SANS_SERIF_LOWERCASE" desc="Title of the font style selection button in reader mode preferences. Differs in capitalization from IDS_SANS_SERIF. No translation needed since this is a proper noun.">
         Sans serif
+      </message>
+      <message name="IDS_LEXEND" desc="Title of the selector button that will change the typeface of distilled pages to use a Lexend font.">
+        Lexend
       </message>
       <message name="IDS_SERIF" desc="Title of the selector button that will change the typeface of distilled pages to use a Serif font.">
         Serif
@@ -3401,6 +3402,13 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_DOWNLOAD_MANAGER_DANGEROUS_BLOCKED" desc="Caption shown below a file that was blocked for being dangerous.">
         Dangerous download blocked
       </message>
+      <message name="IDS_DOWNLOAD_MANAGER_ASYNC_SCANNING_TITLE" desc="Title shown for a download that is currently being scanned for its content.">
+        Scanning <ph name="FILE_NAME">%1$s<ex>test.pdf</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_ASYNC_SCANNING_DESCRIPTION" desc="Description on download home showing below the download about that the download is undergoing content check due to enterpise policies.">
+        Your download will complete if the file meets your organization’s policies
+      </message>
+
 
       <!-- Browsing History UI -->
       <message name="IDS_HISTORY_MANAGER_EMPTY_STATE" desc="Indicates that there are no browsing history items.">
@@ -3552,11 +3560,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_FRE_SUBTITLE" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
         Sign in to get your bookmarks, passwords, and more on all your devices
       </message>
+      <message name="IDS_SIGNED_IN_FRE_TITLE" desc="Title welcoming signed-in user to Brave.">
+        Welcome back, <ph name="USER_NAME">%s<ex>Alice</ex></ph>!
+      </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE_WITHOUT_SYNC" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). However, we introduce a caveat, because the user has a managed account (such as Enterprise); this means that, depending on their organization's settings, the user might not be able to save all types of data in their Brave sync chain. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
         Sign in to get the most out of Brave
       </message>
       <message name="IDS_FRE_SIGNING_IN" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress.">
         Signing in\u2026
+      </message>
+      <message name="IDS_FRE_SIGNING_IN_2" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress and that the user's data is being fetched.">
+        Getting your stuff\u2026
       </message>
 
       <!-- Account Signin Strings -->
@@ -3638,10 +3652,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_ACCOUNT_LABEL_FOR_NON_SELECTED_ACCOUNT" is_accessibility_with_no_ui="true" desc="The content description for each account in the expanded account picker. Names the account that will be selected.">
         <ph name="NAME">%1$s<ex>John Doe</ex></ph>, <ph name="EMAIL">%2$s<ex>john.doe@example.com</ex></ph>.
       </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_SEND_TAB_TO_SELF" desc="The title for the bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts, when send-tab-to-self triggered the UI. [CHAR_LIMIT=27]">
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_SEND_TAB_TO_SELF" meaning="Title" desc="The title for the bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts, when send-tab-to-self triggered the UI. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE" desc="The default title for the sign-in bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR_LIMIT=27]">
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE" meaning="Title" desc="The default title for the sign-in bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
       <message name="IDS_ACCOUNT_PICKER_BOTTOM_SHEET_ACCESSIBILITY_OPENED" is_accessibility_with_no_ui="true" desc="The accessibility text to read when account picker bottom sheet is opened.">
@@ -3674,7 +3688,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_BUTTON" desc="Button text of the account picker bottom sheet when something went wrong in the sign-in process. User can try again if they click it.">
         Try again
       </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_BACK_OF_CARD_MENU_SIGNIN" desc="The title for the bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts, when signin from BoC triggered the UI. [CHAR_LIMIT=27]">
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_BACK_OF_CARD_MENU_SIGNIN" meaning="Title" desc="The title for the bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts, when signin from BoC triggered the UI. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_BACK_OF_CARD_MENU_SIGNIN" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the Continue button is clicked, when signin from BoC triggered the UI.">
@@ -3929,6 +3943,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_FEED_MANAGE_INTERESTS_DESCRIPTION" desc="Content description to manage interested sites.">
         Manage content you follow and suggested topics and searches
       </message>
+      <message name="IDS_NEW_TAB_PAGE_THEME_CUSTOMIZATION_IPH" desc="In-product help that points at the app menu 3-dot icon in new tab page to make users aware of the ntp theme customization.">
+        Personalize the background of this page
+      </message>
       <message name="IDS_FOLLOW_MANAGE_FOLLOWING" desc="Header for Following Management activity.">
         Following
       </message>
@@ -4017,6 +4034,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> tab - <ph name="URL_LIST">%2$s<ex>example.com</ex></ph>}
           other {<ph name="TAB_COUNT_MANY">%1$s<ex>5</ex></ph> tabs - <ph name="URL_LIST">%2$s<ex>example.com</ex></ph>}
+        }
+      </message>
+      <message name="IDS_RECENT_TABS_WINDOW_CLOSURE_DOMAIN_TEXT" desc="Description text for a Recent Tabs Page &gt; Recently Closed row item that represents a single window with more than 1 tab. OTHER_TAB_COUNT is one less than the total number of tabs closed in the window. URL is the url of the tab that was last active in the window.">
+        {OTHER_TAB_COUNT, plural,
+          =1 {<ph name="URL">%1$s<ex>example.com</ex></ph> and 1 other tab}
+          other {<ph name="URL">%1$s<ex>example.com</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s<ex>2</ex></ph> other tabs}
         }
       </message>
       <message name="IDS_RECENT_TABS_BULK_CLOSURE_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently closed row item that represents multiple tabs/groups closed together. TAB_COUNT is the total number of tabs closed in the action including grouped tabs.">
@@ -5680,6 +5703,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_WINDOW" desc="A text label that appears next to a keyboard shortcut to open a new window in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Open a new window in Private mode
+      </message>
        <message name="IDS_KEYBOARD_SHORTCUT_SPECIFIC_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to a specific tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to a specific tab (1–8)
       </message>
@@ -5811,6 +5837,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
         Manage windows
       </message>
+      <message name="IDS_INSTANCE_SWITCHER_WINDOWS_SELECTED_HEADER" desc="The header of multi-instance switcher dialog when at least one window is selected.">
+        {WINDOW_COUNT, plural,
+          =1 {<ph name="WINDOW_COUNT_ONE">%1$s</ph> Window Selected}
+          other {<ph name="WINDOW_COUNT_NORMAL">%1$s<ex>2</ex></ph> Windows Selected}}
+      </message>
       <message name="IDS_INSTANCE_SWITCHER_TITLE_INCOGNITO_WINDOW" desc="Title of an instance entry that has private tabs in it.">
         Private window
       </message>
@@ -5819,6 +5850,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_INSTANCE_SWITCHER_TABS_INACTIVE" desc="The title of the inactive instances tab header on the multi-instance switcher dialog.">
         Inactive (<ph name="ITEM_COUNT">%1$s<ex>2</ex></ph>)
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_NO_INACTIVE_WINDOWS" desc="Text shown in the instance switcher when there are no inactive windows.">
+        No inactive windows
       </message>
       <message name="IDS_INSTANCE_SWITCHER_ENTRY_EMPTY_WINDOW" desc="Title of an instance entry that has no tabs in it.">
         Empty window
@@ -5847,17 +5881,23 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
        <message name="IDS_INSTANCE_SWITCHER_NAME_WINDOW_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming to name the selected window.">
         Name this window
       </message>
+      <message name="IDS_INSTANCE_SWITCHER_SELECT_ALL" desc="The menu item for the 3-dot more button to select all instances.">
+        Select all
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESELECT_ALL" desc="The menu item for the 3-dot more button to deselect all instances.">
+        Deselect all
+      </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_WINDOW" desc="The menu item for the 3-dot more button to close the instance.">
         Close window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_WINDOWS" desc="The menu item for the 3-dot more button to close all selected instances.">
+        Close windows
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CURRENT_WINDOW" desc="The description for an instance entry saying that it is the entry for the current window.">
         Current
       </message>
       <message name="IDS_INSTANCE_SWITCHER_ADJACENT_WINDOW" desc="The description for an instance entry running in the foreground.">
         Window is open
-      </message>
-      <message name="IDS_INSTANCE_SWITCHER_ALREADY_RUNNING_FOREGROUND" desc="Toast message to show when user tries to switch to a window that is already running in the foreground.">
-        Brave is already running here.
       </message>
       <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
         Move tab
@@ -5959,9 +5999,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_TAB_SWITCHER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page. The 'open tabs' button name should match TC 3108541343994525384">
         To open tabs and visit different pages at the same time, tap the open tabs button
-      </message>
-      <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT" desc="The in-product-help text for the android tab declutter feature.">
-        Review your inactive tabs here
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT_WITH_TAB_GROUPS" desc="The in-product-help text for the android tab declutter feature.">
         Review your inactive tabs and groups here
@@ -6573,7 +6610,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_SUBTITLE" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Sign in' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
               Sign in to get your passwords and more on all your devices
             </message>
-      <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_TITLE" desc="This string is the title of a message promotion about signing in to Brave with the user's Brave sync chain.">
+      <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_TITLE" meaning="Title" desc="This string is the title of a message promotion about signing in to Brave with the user's Brave sync chain.">
         Sign in to Brave
       </message>
       <message name="IDS_CUSTOM_TAB_CANT_PERFORM_ACTION_TOAST" desc="Toast displayed when the URL currently being displayed in the Custom Tab cannot be opened in the regular browser.">
@@ -7231,14 +7268,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           =1 {(1) inactive item}
           other {(#) inactive items}}
       </message>
-      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been inactive for.">
-        Unused or duplicate tabs
-      </message>
       <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user of their inactive tabs and groups. [CHAR_LIMIT=32]">
         Unused or duplicate tabs and groups
-      </message>
-      <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE" desc="In product help shown as a message in the archived tabs dialog.">
-        Duplicate tabs or those unused for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and closed after 3 months</ex></ph>. You can change this anytime in <ph name="DECLUTTER_SETTINGS_TITLE">%3$s<ex>settings</ex></ph>.
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="In product help shown as a message in the archived tabs dialog.">
         Duplicate tabs and groups or those unused for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and closed after 3 months</ex></ph>. You can change this anytime in <ph name="DECLUTTER_SETTINGS_TITLE">%3$s<ex>settings</ex></ph>.
@@ -7422,7 +7453,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Tips notifications opt in opened at full height
       </message>
       <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT" desc="Button text for the Tips Opt In bottom sheet to go to the notifications settings page.">
-        Turn on Tips notifications
+        Turn on tips notifications
       </message>
       <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_NEGATIVE_BUTTON_TEXT" desc="Button text for the Tips Opt In bottom sheet to exit the promo.">
         Close
