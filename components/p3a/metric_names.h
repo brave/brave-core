@@ -55,7 +55,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Ads.ClearData", MetricConfig{.ephemeral = true}},
     {"Brave.Core.BookmarkCount", {}},
     {"Brave.Core.CrashReportsEnabled", {}},
-    {"Brave.Core.DomainsLoaded", {}},
+    {"Brave.Core.DomainsLoaded.Default", {}},
+    {"Brave.Core.DomainsLoaded.NonDefault", {}},
     {"Brave.Core.FailedHTTPSUpgrades.2", MetricConfig{.ephemeral = true}},
     {"Brave.Core.FirstPageLoadTime", MetricConfig{.ephemeral = true}},
     {"Brave.Core.IsDefault", MetricConfig{
@@ -220,7 +221,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Search.BraveDaily", MetricConfig{.ephemeral = true}},
+    {"Brave.Search.BraveDaily.2", MetricConfig{.ephemeral = true}},
     {"Brave.Search.DefaultEngine.4", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kLocaleCountryCode},
     }},
