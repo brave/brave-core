@@ -141,7 +141,8 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
-// void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
+// void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect&
+// available_bounds) {
 //   if (browser() && tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
 //     // In case we're using vertical tabstrip, we can decide the position
 //     // after we finish laying out views in top container.
@@ -159,8 +160,8 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 //
 //   // Set insets for vertical tab and restore after finishing infobar layout.
 //   // Each control's layout will consider vertical tab.
-//   // On macOS, it can have bottom insets but it doesn't need for bookmarks bar.
-//   auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+//   // On macOS, it can have bottom insets but it doesn't need for bookmarks
+//   bar. auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
 //   insets_for_vertical_tab.set_bottom(0);
 //   available_bounds.Inset(insets_for_vertical_tab);
 //   BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
@@ -204,7 +205,8 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 //   }
 //
 //   if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
-//     // The WebUI tab strip container should "push" the tab contents down without
+//     // The WebUI tab strip container should "push" the tab contents down
+//     without
 //     // resizing it.
 //     contents_container_bounds.Inset(
 //         gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));

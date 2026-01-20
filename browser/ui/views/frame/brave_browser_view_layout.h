@@ -44,11 +44,11 @@ class BraveBrowserViewLayout : public BrowserViewLayoutImpl {
 
   // BrowserViewLayout:
   void Layout(views::View* host) override;
-//  void LayoutTabStripRegion(gfx::Rect& available_bounds) override;
-//  void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
-//  void LayoutInfoBar(gfx::Rect& available_bounds) override;
-//  void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
-//  bool IsImmersiveModeEnabledWithoutToolbar() const override;
+  //  void LayoutTabStripRegion(gfx::Rect& available_bounds) override;
+  //  void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
+  //  void LayoutInfoBar(gfx::Rect& available_bounds) override;
+  //  void LayoutContentsContainerView(const gfx::Rect& available_bounds)
+  //  override; bool IsImmersiveModeEnabledWithoutToolbar() const override;
 
  private:
   void LayoutVerticalTabs();
