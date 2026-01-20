@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -47,6 +48,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/features.h"
@@ -189,6 +194,21 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
   source_->AddInteger("maxCustomTopSites", ntp_tiles::kMaxNumCustomLinks);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  bool ai_chat_input_enabled =
+      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
+
+  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
+
+  // Required by Brave AI Chat UI.
+  source_->AddBoolean("isMobile", false);
+  source_->AddBoolean("isHistoryEnabled", false);
+  source_->AddBoolean("isAIChatAgentProfileFeatureEnabled",
+                      ai_chat::features::IsAIChatAgentProfileEnabled());
+  source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
+#endif
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -196,6 +216,7 @@ void NewTabPageInitializer::AddStrings() {
   source_->AddLocalizedStrings(webui::kBraveNewsStrings);
   source_->AddLocalizedStrings(webui::kBraveRewardsStrings);
   source_->AddLocalizedStrings(webui::kBraveOmniboxStrings);
+  source_->AddLocalizedStrings(webui::kAiChatStrings);
 }
 
 void NewTabPageInitializer::AddPluralStrings() {
