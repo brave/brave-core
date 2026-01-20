@@ -21,8 +21,16 @@ using BraveBrowserWindowFeatures = BrowserWindowFeatures;
   virtual TearDownPreBrowserWindowDestruction(__VA_ARGS__); \
   friend BraveBrowserWindowFeatures
 
+// Add const version of exclusive_access_manager()
+#define exclusive_access_manager()          \
+  exclusive_access_manager() {              \
+    return exclusive_access_manager_.get(); \
+  }                                         \
+  const ExclusiveAccessManager* exclusive_access_manager() const
+
 #include <chrome/browser/ui/browser_window/public/browser_window_features.h>  // IWYU pragma: export
 
+#undef exclusive_access_manager
 #undef TearDownPreBrowserWindowDestruction
 #undef InitPostWindowConstruction
 #undef InitPostBrowserViewConstruction
