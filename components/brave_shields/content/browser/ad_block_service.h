@@ -24,7 +24,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -71,9 +71,7 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnFilterSetCallbackLoaded(
-        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
-    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnDATCreated(const std::vector<unsigned char>& verified_engine_dat);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;
@@ -81,7 +79,7 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
+    std::vector<unsigned char> pending_dat_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =

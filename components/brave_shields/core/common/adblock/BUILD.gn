@@ -10,6 +10,7 @@ group("adblock") {
     "//brave/components/brave_shields/content/test:unit_tests",
     "//brave/components/brave_shields/core/browser:*",
     "//brave/components/brave_shields/core/common:*",
+    "//brave/components/services/brave_shields:filter_set",
     "//brave/fuzzers:*",
     "//brave/ios/browser/api/brave_shields:*",
   ]

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/core/browser/adblock/resolver/adblock_domain_resolver.h"
+#include "brave/components/brave_shields/core/common/adblock/resolver/adblock_domain_resolver.h"
 
 #include <string>
 
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace adblock {

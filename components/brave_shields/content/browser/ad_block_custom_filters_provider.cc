@@ -15,7 +15,6 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -23,15 +22,6 @@
 namespace brave_shields {
 
 namespace {
-
-void AddDATBufferToFilterSet(uint8_t permission_mask,
-                             DATFileDataBuffer buffer,
-                             uint64_t flow_id,
-                             rust::Box<adblock::FilterSet>* filter_set) {
-  TRACE_EVENT("brave.adblock", "AddDATBufferToFilterSet_CustomFiltersProvider",
-              perfetto::TerminatingFlow::ProcessScoped(flow_id));
-  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
-}
 
 // Custom filters get all permissions granted, i.e. all bits of the mask set,
 // i.e. the maximum possible uint8_t.
@@ -117,11 +107,13 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
   return UpdateCustomFilters(custom_filters);
 }
 
-void AdBlockCustomFiltersProvider::LoadFilterSet(
+void AdBlockCustomFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)>)> cb) {
   const uint64_t flow_id = base::RandUint64();
-  TRACE_EVENT("brave.adblock", "AdBlockCustomFiltersProvider::LoadFilterSet",
+  TRACE_EVENT("brave.adblock", "AdBlockCustomFiltersProvider::LoadFilters",
               perfetto::TerminatingFlow::ProcessScoped(flow_id));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto custom_filters = GetCustomFilters();
@@ -131,10 +123,9 @@ void AdBlockCustomFiltersProvider::LoadFilterSet(
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb),
-                                base::BindOnce(&AddDATBufferToFilterSet,
-                                               kCustomFiltersPermissionLevel,
-                                               buffer, flow_id)));
+      FROM_HERE,
+      base::BindOnce(std::move(cb), buffer, kCustomFiltersPermissionLevel,
+                     base::DoNothing()));
 }
 
 }  // namespace brave_shields

@@ -4,9 +4,26 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+
+#include "base/test/task_environment.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/services/brave_shields/mojom/filter_set.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "brave/components/brave_shields/content/test/test_filters_provider.h"
+class FakeFilterSetService : public filter_set::mojom::UtilParseFilterSet {
+ public:
+  FakeFilterSetService() {}
+  FakeFilterSetService(const FakeFilterSetService&) = delete;
+  FakeFilterSetService& operator=(const FakeFilterSetService&) = delete;
+  ~FakeFilterSetService() override {}
+
+ private:
+  void ParseFilters(std::vector<filter_set::mojom::FilterListInputPtr> filters,
+                    ParseFiltersCallback callback) override {
+    // no-op
+  }
+};
 
 class FiltersProviderManagerTestObserver
     : public brave_shields::AdBlockFiltersProvider::Observer {
@@ -20,8 +37,17 @@ class FiltersProviderManagerTestObserver
 };
 
 TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
+  base::test::SingleThreadTaskEnvironment task_environment;
+
   FiltersProviderManagerTestObserver test_observer;
-  brave_shields::AdBlockFiltersProviderManager m;
+
+  FakeFilterSetService fake_service;
+
+  mojo::Receiver<filter_set::mojom::UtilParseFilterSet> receiver{&fake_service};
+
+  mojo::Remote<filter_set::mojom::UtilParseFilterSet> service;
+  service.Bind(receiver.BindNewPipeAndPassRemote());
+  brave_shields::AdBlockFiltersProviderManager m(std::move(service));
   m.AddObserver(&test_observer);
 
   brave_shields::TestFiltersProvider provider1("", true, 0);

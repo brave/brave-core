@@ -18,16 +18,6 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-namespace {
-
-void AddDATBufferToFilterSet(uint8_t permission_mask,
-                             DATFileDataBuffer buffer,
-                             rust::Box<adblock::FilterSet>* filter_set) {
-  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
-}
-
-}  // namespace
-
 TestFiltersProvider::TestFiltersProvider(const std::string& rules)
     : TestFiltersProvider(rules, true, 0) {}
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
@@ -59,12 +49,14 @@ std::string TestFiltersProvider::GetNameForDebugging() {
   return "TestFiltersProvider";
 }
 
-void TestFiltersProvider::LoadFilterSet(
+void TestFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+        void(std::vector<unsigned char> filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+        cb) {
   auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-  std::move(cb).Run(
-      base::BindOnce(&AddDATBufferToFilterSet, permission_mask_, buffer));
+  std::move(cb).Run(buffer, permission_mask_, base::DoNothing());
 }
 
 void TestFiltersProvider::Initialize() {
