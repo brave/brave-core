@@ -1,12 +1,12 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index d335c6e2ea9edc45acd7af8e25d2d356a0063e30..f368f79e242159c31e205ff44e2fb7849fcd8677 100644
+index d335c6e2ea9edc45acd7af8e25d2d356a0063e30..0778c602f8a0d3c1b8de4c9e3eac01c7c8cfacdc 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -83,6 +83,7 @@ public class SiteSettingsCategory {
          Type.AUTO_PICTURE_IN_PICTURE,
          Type.LOCAL_NETWORK,
          Type.LOOPBACK_NETWORK,
-+        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN
++        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN,
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
