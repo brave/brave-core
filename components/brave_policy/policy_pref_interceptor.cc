@@ -9,8 +9,9 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -26,6 +27,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 namespace brave_policy {
@@ -44,8 +49,8 @@ constexpr const char* kNonDynamicPrefs[] = {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     brave_vpn::prefs::kManagedBraveVPNDisabled,
 #endif
-    brave_wallet::prefs::kDisabledByPolicy,
-    kBraveTalkDisabledByPolicy,
+    brave_wallet::kBraveWalletDisabledByPolicy,
+    brave_talk::prefs::kDisabledByPolicy,
     playlist::kPlaylistEnabledPref,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     speedreader::kSpeedreaderEnabled,
