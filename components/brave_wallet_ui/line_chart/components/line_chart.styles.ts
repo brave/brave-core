@@ -31,6 +31,16 @@ export const AreaWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
+  outline: none;
+
+  & *:focus {
+    outline: none;
+  }
+
+  & .recharts-wrapper,
+  & .recharts-surface {
+    outline: none;
+  }
 `
 
 export const LoadingOverlay = styled.div<{
