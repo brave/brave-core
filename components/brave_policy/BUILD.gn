@@ -8,11 +8,13 @@ import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
-static_library("policy_pref_interceptor") {
+component("policy_pref_interceptor") {
   sources = [
     "policy_pref_interceptor.cc",
     "policy_pref_interceptor.h",
   ]
+
+  defines = [ "IS_POLICY_PREF_INTERCEPTOR_IMPL" ]
 
   deps = [
     "//base",
