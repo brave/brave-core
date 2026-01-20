@@ -20,20 +20,6 @@ source_set("service") {
   ]
 }
 
-source_set("new_tab_page_ad") {
-  sources = [
-    "new_tab_page_ad_prefetcher.cc",
-    "new_tab_page_ad_prefetcher.h",
-  ]
-
-  public_deps = [
-    "//base",
-    "//brave/components/brave_ads/core/mojom",
-  ]
-
-  deps = [ "//brave/components/brave_ads/core/browser/service" ]
-}
-
 source_set("virtual_pref") {
   sources = [
     "virtual_pref_provider.cc",
@@ -56,15 +42,9 @@ source_set("virtual_pref") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "new_tab_page_ad_prefetcher_unittest.cc",
-    "virtual_pref_provider_unittest.cc",
-  ]
+  sources = [ "virtual_pref_provider_unittest.cc" ]
 
   deps = [
-    ":new_tab_page_ad",
-    ":service",
-    ":test_support",
     ":virtual_pref",
     "//base",
     "//base/test:test_support",
