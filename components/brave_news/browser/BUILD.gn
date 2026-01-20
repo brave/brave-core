@@ -73,7 +73,6 @@ static_library("browser") {
     "//base",
     "//brave/brave_domains",
     "//brave/components/api_request_helper",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_news/api",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_rewards/core",

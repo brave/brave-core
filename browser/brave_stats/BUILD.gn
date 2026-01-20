@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/browser/brave_stats/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 
@@ -30,7 +31,7 @@ source_set("brave_stats") {
     "//brave/browser:browser_process",
     "//brave/browser/brave_stats:buildflags",
     "//brave/common",
-    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/common/buildflags",
@@ -47,6 +48,10 @@ source_set("brave_stats") {
     "//net",
     "//services/network/public/cpp",
   ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [
@@ -80,9 +85,8 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    "//brave/browser/brave_ads",
     "//brave/browser/brave_stats",
-    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_stats/browser",
@@ -93,6 +97,13 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/prefs",
   ]
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/core",
+    ]
+  }
 
   if (enable_brave_wallet) {
     deps += [
