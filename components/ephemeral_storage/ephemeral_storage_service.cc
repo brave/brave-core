@@ -469,7 +469,8 @@ void EphemeralStorageService::FinishStorageCleanupOnBecomeActive(
   for (const auto& domain : ephemeral_domains) {
     const GURL url(GetFirstPartyStorageURL(domain));
     const content::StoragePartitionConfig storage_partition_config =
-        content::StoragePartitionConfig::CreateDefault(context_);
+        content::StoragePartitionConfig::Create(context_, domain, domain,
+                                                context_->IsOffTheRecord());
     const TLDEphemeralAreaKey key(domain, storage_partition_config);
     CleanupTLDEphemeralArea(key, true, true);
   }
