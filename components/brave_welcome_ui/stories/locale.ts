@@ -21,6 +21,7 @@ provideStrings({
   braveWelcomeSetDefaultButtonLabel: 'Set Brave as default browser',
   braveWelcomeSelectAllButtonLabel: 'Select All',
   braveWelcomeHelpImproveBraveTitle: 'Help make Brave better.',
+  braveWelcomeStabilityDiagnosticsTitle: 'Stability & Diagnostics',
   braveWelcomeSendReportsLabel: 'Send diagnostic reports if you experience a crash or freeze. $1Learn more.$1',
   braveWelcomeSendInsightsLabel: 'Share private and anonymous product insights about what features are being used by Brave\'s users. $1Learn more.$1',
   braveWelcomeSetupCompleteLabel: 'Setup complete',
