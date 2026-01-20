@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccbeb3eaafd 100644
+index a09649f0147d0cb554336f5baf55cc0706819ab1..3a6608cf1532b768b431b9ae4f368244710b9de3 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -162,6 +162,7 @@ if (_is_default_toolchain) {
@@ -34,7 +34,7 @@ index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccb
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -950,6 +954,7 @@ if (_is_default_toolchain) {
+@@ -951,6 +955,7 @@ if (_is_default_toolchain) {
        # TODO(crbug.com/434123514): see if we can remove these stub targets.
        deps += [ "//chrome/browser/ui/android/extensions/windowing/stub:java" ]
      }
@@ -42,7 +42,7 @@ index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccb
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1674,6 +1679,7 @@ if (_is_default_toolchain) {
+@@ -1697,6 +1702,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccb
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1826,6 +1832,7 @@ if (_is_default_toolchain) {
+@@ -1849,6 +1855,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccb
      }
    }
  
-@@ -2084,6 +2091,7 @@ if (_is_default_toolchain) {
+@@ -2107,6 +2114,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -66,7 +66,7 @@ index c4e1dcef78b14a66fbb43f374dd6ac551486ee76..3b9a41b787dbfc7014cf4aaf843d6ccb
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -3062,6 +3070,7 @@ if (_is_default_toolchain) {
+@@ -3086,6 +3094,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
      ]

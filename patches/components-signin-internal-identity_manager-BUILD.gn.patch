@@ -1,5 +1,5 @@
 diff --git a/components/signin/internal/identity_manager/BUILD.gn b/components/signin/internal/identity_manager/BUILD.gn
-index 2057c470b967476ffdbbea54745d33da8688a6e5..8d8ab4508056439e9c8a3461e61dfc9c5e20ab97 100644
+index bafdf1a81c74df1998c09cc84ff8bc9e9e350732..d4fd5c6bd12a02f0d16f033ff48a9b4f522cde35 100644
 --- a/components/signin/internal/identity_manager/BUILD.gn
 +++ b/components/signin/internal/identity_manager/BUILD.gn
 @@ -141,6 +141,7 @@ source_set("identity_manager") {
