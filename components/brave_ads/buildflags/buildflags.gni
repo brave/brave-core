@@ -3,8 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
 declare_args() {
   # Set `enable_brave_ads=!is_brave_origin_branded` once all PRs migrating
   # Brave Ads code under ENABLE_BRAVE_ADS build flag have landed.
-  enable_brave_ads = true
+  enable_brave_ads = !is_brave_origin_branded
 }

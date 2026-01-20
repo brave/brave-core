@@ -40,10 +40,6 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
 class PrefService;
 
-namespace brave_ads {
-class AdsService;
-}  // namespace brave_ads
-
 namespace history {
 class HistoryService;
 }  // namespace history
@@ -63,7 +59,6 @@ class BraveNewsController
  public:
   BraveNewsController(
       PrefService* prefs,
-      brave_ads::AdsService* ads_service,
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<DirectFeedFetcher::Delegate>
@@ -172,8 +167,6 @@ class BraveNewsController
   void NotifyFeedChanged(const std::string& hash);
 
   BackgroundHistoryQuerier MakeHistoryQuerier();
-
-  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
 
 #if BUILDFLAG(IS_ANDROID)
   // Note: This is only used by Android, to load padded images from the Private
