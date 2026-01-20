@@ -14,7 +14,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/logging.h"
@@ -124,7 +123,7 @@ ArticleInfos GetArticleInfos(const std::string& locale,
     auto channels = GetChannelsForPublisher(locale, publisher);
     if (std::ranges::any_of(kSensitiveChannels,
                             [&](const std::string& channel) {
-                              return base::Contains(channels, channel);
+                              return std::ranges::contains(channels, channel);
                             })) {
       non_discoverable_publishers.insert(publisher_id);
     }

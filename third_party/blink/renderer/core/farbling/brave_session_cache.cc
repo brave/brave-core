@@ -6,10 +6,10 @@
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
-#include "base/containers/contains.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
@@ -117,7 +117,7 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
       "chrome-extension",
       "chrome-untrusted",
   };
-  if (protocol.empty() || base::Contains(kExcludedProtocols, protocol) ||
+  if (protocol.empty() || std::ranges::contains(kExcludedProtocols, protocol) ||
       blink::SchemeRegistry::ShouldTreatURLSchemeAsDisplayIsolated(protocol)) {
     return nullptr;
   }

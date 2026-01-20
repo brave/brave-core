@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_util.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
@@ -26,11 +27,11 @@ ComputeSegmentInputVariable(
   CreativeAdModelBasedPredictorSegmentInputVariablesInfo segment_input_variable;
 
   segment_input_variable.child_matches.value =
-      base::Contains(top_child_segments, segment);
+      std::ranges::contains(top_child_segments, segment);
   segment_input_variable.child_matches.weight = weights.child;
 
   segment_input_variable.parent_matches.value =
-      base::Contains(top_parent_segments, GetParentSegment(segment));
+      std::ranges::contains(top_parent_segments, GetParentSegment(segment));
   segment_input_variable.parent_matches.weight = weights.parent;
 
   return segment_input_variable;

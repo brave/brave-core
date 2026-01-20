@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ref.h"
 #include "base/notreached.h"
@@ -390,7 +389,7 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
     const std::vector<mojom::KeyringId>& keyring_ids) {
   std::vector<mojom::AccountInfoPtr> result;
   for (auto& acc : keyring_service_->GetAllAccountInfos()) {
-    if (base::Contains(keyring_ids, acc->account_id->keyring_id)) {
+    if (std::ranges::contains(keyring_ids, acc->account_id->keyring_id)) {
       result.push_back(acc->Clone());
     }
   }

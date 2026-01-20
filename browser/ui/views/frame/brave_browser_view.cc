@@ -10,10 +10,10 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
@@ -693,7 +693,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
 
     // Unregister removed accelerators
     for (const auto& old_accelerator : old_accelerators) {
-      if (base::Contains(accelerators, old_accelerator)) {
+      if (std::ranges::contains(accelerators, old_accelerator)) {
         continue;
       }
       focus_manager->UnregisterAccelerator(old_accelerator, this);

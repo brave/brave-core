@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -320,8 +319,9 @@ void BraveNewsTabHelper::OnPublishersChanged() {
     feed.subscribed =
         subscriptions.enabled_publishers().contains(
             feed.combined_publisher_id) ||
-        base::Contains(subscriptions.direct_feeds(), feed.feed_url,
-                       [](const auto& direct_feed) { return direct_feed.url; });
+        std::ranges::contains(
+            subscriptions.direct_feeds(), feed.feed_url,
+            [](const auto& direct_feed) { return direct_feed.url; });
   }
   controller_->GetPublishers(
       base::BindOnce(&BraveNewsTabHelper::OnReceivedNewPublishers,

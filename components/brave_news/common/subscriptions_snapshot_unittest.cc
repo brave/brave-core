@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_news {
@@ -30,10 +31,10 @@ TEST(BraveNewsSubscriptionsSnapshot, DirectFeedsAreDiffed) {
 
   auto diff = two.DiffPublishers(one);
   EXPECT_EQ(1u, diff.changed.size());
-  EXPECT_TRUE(base::Contains(diff.changed, "three"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "three"));
 
   EXPECT_EQ(1u, diff.removed.size());
-  EXPECT_TRUE(base::Contains(diff.removed, "two"));
+  EXPECT_TRUE(std::ranges::contains(diff.removed, "two"));
 }
 
 TEST(BraveNewsSubscriptionsSnapshot, ChannelsAreDiffed) {
@@ -43,8 +44,8 @@ TEST(BraveNewsSubscriptionsSnapshot, ChannelsAreDiffed) {
   // Note: Channels aren't removed, their status is changed.
   auto diff = two.DiffChannels(one);
   EXPECT_EQ(2u, diff.changed.size());
-  EXPECT_TRUE(base::Contains(diff.changed, "Two"));
-  EXPECT_TRUE(base::Contains(diff.changed, "Three"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Two"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Three"));
 }
 
 TEST(BraveNewsSubscriptionsSnapshot, PublishersAreDiffed) {
@@ -54,10 +55,10 @@ TEST(BraveNewsSubscriptionsSnapshot, PublishersAreDiffed) {
   // Note: Publishers aren't removed but their status is changed.
   auto diff = two.DiffPublishers(one);
   EXPECT_EQ(4u, diff.changed.size());
-  EXPECT_TRUE(base::Contains(diff.changed, "Five"));
-  EXPECT_TRUE(base::Contains(diff.changed, "Six"));
-  EXPECT_TRUE(base::Contains(diff.changed, "Two"));
-  EXPECT_TRUE(base::Contains(diff.changed, "Four"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Five"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Six"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Two"));
+  EXPECT_TRUE(std::ranges::contains(diff.changed, "Four"));
 }
 
 TEST(BraveNewsSubscriptionsSnapshot, NoopHasNoDiff) {
