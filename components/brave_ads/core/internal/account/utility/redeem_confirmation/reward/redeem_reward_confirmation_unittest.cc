@@ -232,7 +232,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
-       RetryRedeemingIfInvalidResponseBody) {
+       DoNotRetryRedeemingIfInvalidResponseBody) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -258,7 +258,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
 
   EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
-                                           /*should_retry=*/true));
+                                           /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
