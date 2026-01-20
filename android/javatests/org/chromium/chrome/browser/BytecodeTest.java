@@ -467,18 +467,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "setSearchProviderTopMargin",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "setSearchProviderBottomMargin",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "getLogoMargin",
                         MethodModifier.REGULAR,
                         int.class,

@@ -49,8 +49,6 @@
     *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
-    *** setSearchProviderTopMargin(...);
-    *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
     *** calculateTabletMvtWidth(...);
     *** updateMvtOnTablet(...);

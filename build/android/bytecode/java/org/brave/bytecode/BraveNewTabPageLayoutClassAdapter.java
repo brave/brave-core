@@ -31,18 +31,6 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
                 "initializeSiteSectionView",
                 "Ljava/lang/Override;");
 
-        makePublicMethod(sNewTabPageLayoutClassName, "setSearchProviderTopMargin");
-        addMethodAnnotation(
-                sBraveNewTabPageLayoutClassName,
-                "setSearchProviderTopMargin",
-                "Ljava/lang/Override;");
-
-        makePublicMethod(sNewTabPageLayoutClassName, "setSearchProviderBottomMargin");
-        addMethodAnnotation(
-                sBraveNewTabPageLayoutClassName,
-                "setSearchProviderBottomMargin",
-                "Ljava/lang/Override;");
-
         makePublicMethod(sNewTabPageLayoutClassName, "calculateTabletMvtWidth");
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "calculateTabletMvtWidth", "Ljava/lang/Override;");
