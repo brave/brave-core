@@ -22,6 +22,11 @@ transpile_web_ui("ai_chat_ui") {
       rebase_path(
           "untrusted_conversation_frame/untrusted_conversation_frame.tsx"),
     ],
+    [
+      "chart_display",
+      rebase_path(
+          "untrusted_conversation_frame/chart_display/chart_display.tsx"),
+    ],
   ]
 
   imports_from = [
@@ -41,6 +46,7 @@ preprocess_if_expr("preprocess_html") {
   in_files = [
     "code_sandbox/code_sandbox.html",
     "page/ai_chat_ui.html",
+    "untrusted_conversation_frame/chart_display/chart_display.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]
   out_folder = "$target_gen_dir/preprocessed"

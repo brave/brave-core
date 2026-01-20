@@ -356,14 +356,19 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
 
-  // If the feature is not enabled then don't add the origin to the CSP.
+  // Add chart display HTML as an additional resource path.
+  source->AddResourcePath("chart_display.html", IDR_AI_CHAT_CHART_DISPLAY_HTML);
+
+  std::string rich_search_widgets_csp;
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
-    source->OverrideContentSecurityPolicy(
-        network::mojom::CSPDirectiveName::FrameSrc,
-        base::StrCat({"frame-src ",
-                      ai_chat::features::kRichSearchWidgetsOrigin.Get(),
-                      "/embed.html;"}));
+    rich_search_widgets_csp =
+        base::StrCat({" ", ai_chat::features::kRichSearchWidgetsOrigin.Get(),
+                      "/embed.html"});
   }
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      base::StrCat({"frame-src ", kAIChatUntrustedConversationUIURL,
+                    "chart_display.html", rich_search_widgets_csp, ";"}));
 
   // If the feature is not enabled don't specify an origin for loading the rich
   // search widgets.
@@ -386,7 +391,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
+      base::StrCat({"frame-ancestors ", kAIChatUIURL, " ",
+                    kAIChatUntrustedConversationUIURL, ";"}));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
