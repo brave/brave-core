@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
-#define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_SETTINGS_HANDLER_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_SETTINGS_HANDLER_IMPL_H_
 
 #include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -46,4 +46,4 @@ class BraveOriginSettingsHandlerImpl
 
 }  // namespace brave_origin
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_SETTINGS_HANDLER_IMPL_H_
