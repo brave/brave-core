@@ -44,7 +44,7 @@ brave_chrome_java_deps = [
   "//brave/components/brave_account/mojom:mojom_java",
   "//brave/components/brave_ads/core/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
-  "//brave/components/brave_origin/common/mojom:mojom_java",
+  "//brave/components/brave_origin/mojom:mojom_java",
   "//brave/components/brave_rewards/core/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
   "//brave/components/brave_vpn/common/mojom:mojom_java",

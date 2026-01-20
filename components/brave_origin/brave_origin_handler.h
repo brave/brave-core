@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
 
-#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
+#include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
