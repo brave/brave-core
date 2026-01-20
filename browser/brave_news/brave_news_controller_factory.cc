@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/no_destructor.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -51,7 +50,6 @@ BraveNewsControllerFactory::BraveNewsControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveNewsControllerFactory",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(brave_ads::AdsServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
@@ -72,14 +70,12 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
   if (!profile) {
     return nullptr;
   }
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
   return std::make_unique<BraveNewsController>(
-      profile->GetPrefs(), ads_service, history_service,
-      profile->GetURLLoaderFactory(),
+      profile->GetPrefs(), history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
           host_content_settings_map));
 }

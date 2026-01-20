@@ -79,13 +79,15 @@ RegisterPolymerTemplateModifications({
       saveButton.textContent = loadTimeData.getString('save')
     }
 
-    // Append clear Brave Ads data link
     const body = templateContent.querySelector('[slot="body"]')
     if (!body) {
       console.error(
         '[Settings] missing \'slot="body"\' in clear-browsing-data-dialog')
       return
     }
+
+    // Append clear Brave Ads data link
+// <if expr="enable_brave_ads">
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
@@ -103,6 +105,7 @@ RegisterPolymerTemplateModifications({
       clearBraveAdsLink.textContent =
         loadTimeData.getString('clearBraveAdsData')
     }
+// </if>
 
     // Append reset Brave Rewards data link
     body.insertAdjacentHTML(

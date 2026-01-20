@@ -4,13 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
-brave_ui_allow_circular_includes_from =
-    [ "//brave/browser/ui/webui/ads_internals" ]
+brave_ui_allow_circular_includes_from = []
+
 if (enable_ai_chat) {
   brave_ui_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/ai_chat" ]
@@ -61,6 +62,11 @@ if (toolkit_views) {
     brave_ui_allow_circular_includes_from +=
         [ "//brave/browser/ui/views/speedreader" ]
   }
+}
+
+if (enable_brave_ads) {
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/ads_internals" ]
 }
 
 if (enable_speedreader) {

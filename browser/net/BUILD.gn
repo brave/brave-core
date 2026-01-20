@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -71,12 +72,9 @@ source_set("unit_tests") {
     "brave_static_redirect_network_delegate_helper_unittest.cc",
     "brave_system_request_handler_unittest.cc",
     "brave_user_agent_network_delegate_helper_unittest.cc",
-    "search_ads_header_network_delegate_helper_unittest.cc",
   ]
 
   deps = [
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
@@ -99,4 +97,9 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]
+
+  if (enable_brave_ads) {
+    sources += [ "search_ads_header_network_delegate_helper_unittest.cc" ]
+    deps += [ "//brave/components/brave_ads/core" ]
+  }
 }

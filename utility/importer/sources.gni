@@ -7,10 +7,8 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_utility_importer_sources = []
 brave_utility_importer_deps = []
-brave_utility_importer_public_deps = [
-  "//brave/components/services/bat_ads:lib",
-  "//brave/components/services/bat_rewards:lib",
-]
+brave_utility_importer_public_deps =
+    [ "//brave/components/services/bat_rewards:lib" ]
 
 if (!is_android) {
   brave_utility_importer_sources += [

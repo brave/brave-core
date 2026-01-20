@@ -20,7 +20,7 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/brave_user_agent_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/browser/net/search_ads_header_network_delegate_helper.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -34,6 +34,10 @@
 #include "net/base/features.h"
 #include "net/base/net_errors.h"
 #include "third_party/blink/public/common/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/net/search_ads_header_network_delegate_helper.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
@@ -103,9 +107,11 @@ void BraveRequestHandler::SetupCallbacks() {
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {
