@@ -81,7 +81,10 @@ void ApplicationStateObserver::OnBrowserAdded(Browser* browser) {
   }
 
   if (!has_notified_active_) {
-    NotifyApplicationBecameActive();
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&ApplicationStateObserver::NotifyApplicationBecameActive,
+                       weak_ptr_factory_.GetWeakPtr()));
     has_notified_active_ = true;
 
     // No need to observe anymore.

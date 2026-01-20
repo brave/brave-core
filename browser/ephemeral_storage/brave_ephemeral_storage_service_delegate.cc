@@ -109,6 +109,16 @@ base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
   auto* profile = Profile::FromBrowserContext(context);
   CHECK(profile);
 
+  auto maybe_add_tab_ephemeral_domain =
+      [&result, &ephemeral_domains](tabs::TabHandle tab_handle) {
+        auto tab_web_contents_result =
+            GetTabWebContentsForTld(tab_handle, ephemeral_domains);
+        if (!tab_web_contents_result) {
+          return;
+        }
+        result.emplace(std::move(tab_web_contents_result->ephemeral_domain));
+      };
+
 #if !BUILDFLAG(IS_ANDROID)
   for (auto* browser : GetAllBrowserWindowInterfaces()) {
     if (profile != browser->GetProfile()) {
@@ -124,13 +134,7 @@ base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
       if (!tab) {
         continue;
       }
-      const auto tab_web_contents_result =
-          GetTabWebContentsForTld(tab->GetHandle(), ephemeral_domains);
-      if (!tab_web_contents_result) {
-        continue;
-      }
-
-      result.emplace(tab_web_contents_result->ephemeral_domain);
+      maybe_add_tab_ephemeral_domain(tab->GetHandle());
     }
   }
 #else
@@ -143,12 +147,7 @@ base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
       if (!tab || profile != tab->profile()) {
         continue;
       }
-      const auto tab_web_contents_result =
-          GetTabWebContentsForTld(tab->GetHandle(), ephemeral_domains);
-      if (!tab_web_contents_result) {
-        continue;
-      }
-      result.emplace(tab_web_contents_result->ephemeral_domain);
+      maybe_add_tab_ephemeral_domain(tab->GetHandle());
     }
   }
 #endif

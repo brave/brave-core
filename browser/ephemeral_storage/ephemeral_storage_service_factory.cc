@@ -70,14 +70,15 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
     return nullptr;
   }
   Profile* profile = Profile::FromBrowserContext(context);
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   return std::make_unique<ephemeral_storage::EphemeralStorageService>(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
-          BraveShieldsSettingsServiceFactory::GetForProfile(profile)),
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(context)));
+          brave_shields_settings_service),
+      brave_shields_settings_service);
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(
