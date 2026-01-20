@@ -93,10 +93,7 @@ class BitcoinTxManager : public TxManager,
       const std::optional<std::string>& chain_id) override;
 
   void ContinueAddUnapprovedTransaction(
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
-      mojom::SwapInfoPtr swap_info,
+      std::unique_ptr<BitcoinTxMeta> meta,
       AddUnapprovedTransactionCallback callback,
       base::expected<BitcoinTransaction, std::string> bitcoin_transaction);
 
