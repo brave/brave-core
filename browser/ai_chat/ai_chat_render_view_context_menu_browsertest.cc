@@ -190,10 +190,9 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
           ai_engine = static_cast<MockEngineConsumer*>(
               brave_context_menu->GetAIEngineForTesting());
           // Verify that rewrite is requested
-          EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _, _))
+          EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _))
               .WillOnce(
                   [&](const std::string& text, mojom::ActionType action_type,
-                      const std::string& selected_language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback) {
                     ASSERT_TRUE(callback);

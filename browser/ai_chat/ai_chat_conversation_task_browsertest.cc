@@ -285,7 +285,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     auto on_generate_called = run_loop->QuitClosure();
     auto& expect =
         EXPECT_CALL(*mock_engine_,
-                    GenerateAssistantResponse(_, _, _, _, _, _, _, _, _))
+                    GenerateAssistantResponse(_, _, _, _, _, _, _, _))
             .Description(base::StrCat({"GenerateAssistantResponse mocked from ",
                                        location.ToString()}));
     if (sequence) {
@@ -296,7 +296,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
          on_called = std::move(on_generate_called)](
             PageContentsMap page_contents,
             const EngineConsumer::ConversationHistory& history,
-            const std::string& selected_language, bool is_temporary,
+            bool is_temporary,
             const std::vector<base::WeakPtr<Tool>>& provided_tools,
             std::optional<std::string_view> preferred_tool_name,
             mojom::ConversationCapability capability,

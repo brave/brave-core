@@ -288,10 +288,6 @@ struct CompletionEvent {
   string completion;
 };
 
-struct SelectedLanguageEvent {
-  string selected_language;
-};
-
 struct ContentReceiptEvent {
   uint64 total_tokens;
   uint64 trimmed_tokens;
@@ -311,7 +307,6 @@ union ConversationEntryEvent {
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
-  SelectedLanguageEvent selected_language_event;
   ContentReceiptEvent content_receipt_event;
   ConversationTitleEvent conversation_title_event;
 };

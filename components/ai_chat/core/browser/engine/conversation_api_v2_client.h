@@ -56,7 +56,6 @@ class ConversationAPIV2Client {
 
   virtual void PerformRequest(
       std::vector<OAIMessage> messages,
-      const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
@@ -77,7 +76,6 @@ class ConversationAPIV2Client {
 
   std::string CreateJSONRequestBody(
       std::vector<OAIMessage> messages,
-      const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
@@ -93,7 +91,6 @@ class ConversationAPIV2Client {
 
   void PerformRequestWithCredentials(
       std::vector<OAIMessage> messages,
-      const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
