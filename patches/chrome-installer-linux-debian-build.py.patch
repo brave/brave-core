@@ -2,7 +2,16 @@ diff --git a/chrome/installer/linux/debian/build.py b/chrome/installer/linux/deb
 index 0f5000cb022f04cafdcec3cf119cf0aa2f85ea5a..076e4785b6fc8747efbda01cbba3d3267d7bdff3 100755
 --- a/chrome/installer/linux/debian/build.py
 +++ b/chrome/installer/linux/debian/build.py
-@@ -198,6 +198,8 @@ def main():
+@@ -189,6 +189,8 @@ def main():
+     logging.info(f"Packaging {args.arch}...")
+     inst.context["PREDEPENDS"] = inst.context["COMMON_PREDEPS"]
+     inst.context["DEPENDS"] = inst.context["COMMON_DEPS"]
++    # Ensure that our signing key is up-to-date (brave/brave-browser#4205).
++    inst.context["DEPENDS"] = f"brave-keyring, {inst.context['COMMON_DEPS']}"
+     inst.context["PROVIDES"] = "www-browser"
+ 
+     installer.gen_changelog(inst.context, staging_dir, deb_changelog)
+@@ -198,6 +200,8 @@ def main():
  
      os.environ["DEB_HOST_ARCH"] = args.arch
      pkg_name = f"{inst.context['PACKAGE_ORIG']}-{channel}"
