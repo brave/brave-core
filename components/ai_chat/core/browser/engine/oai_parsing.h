@@ -26,6 +26,11 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
 std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
 
+// Extract the content container (delta or message) from an OpenAI response.
+// Returns nullptr if the response doesn't follow OpenAI format.
+const base::Value::Dict* GetOAIContentContainer(
+    const base::Value::Dict& response);
+
 // Parse OpenAI-format completion response for both streaming and
 // non-streaming requests. Response can have either delta.content (streaming)
 // or message.content (non-streaming).

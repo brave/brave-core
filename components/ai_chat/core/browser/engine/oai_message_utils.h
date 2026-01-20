@@ -31,6 +31,12 @@ struct OAIMessage {
 
   std::string role;
   std::vector<mojom::ContentBlockPtr> content;
+
+  // For assistant messages with tool calls
+  std::vector<mojom::ToolUseEventPtr> tool_calls;
+
+  // For tool result messages (role="tool")
+  std::string tool_call_id;
 };
 
 std::vector<OAIMessage> BuildOAIMessages(

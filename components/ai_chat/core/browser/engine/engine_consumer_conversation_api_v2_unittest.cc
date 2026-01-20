@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -2392,6 +2393,546 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   // Wait for the response
   auto result = future.Take();
   EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUse) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+  tool_output_content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(tool_output_content_blocks), nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_123",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, one tool turn
+        EXPECT_EQ(messages.size(), 3u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUse) {
+  // Responses can contain multiple tool use events
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+
+  std::vector<mojom::ContentBlockPtr> temperature_tool_output_content_blocks;
+  temperature_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_temperature", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(temperature_tool_output_content_blocks), nullptr)));
+
+  std::vector<mojom::ContentBlockPtr> wind_tool_output_content_blocks;
+  wind_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+          "{ \"speed\":\"25mph\", \"direction\":\"NW\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_wind", "call_1234", "{\"location\":\"Santa Barbara\"}",
+          std::move(wind_tool_output_content_blocks), nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_temperature",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        },
+        {
+          "id": "call_1234",
+          "type": "function",
+          "function": {
+            "name": "get_wind",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_123",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1234",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"speed\":\"25mph\", \"direction\":\"NW\" }"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, two tool turns
+        EXPECT_EQ(messages.size(), 4u);
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUseWithLargeContent) {
+  EngineConsumer::ConversationHistory history;
+
+  // Generate 3 tool use requests and the first one should be removed
+  // since kMaxCountLargeToolUseEvents is 2.
+  // Content considered as "large" is any image, or text if its size is > 1000,
+  // so we'll include both those types.
+  // This test also covers multiple tool use events and different content types,
+  // ensuring the order of calls is preserved as well as accompanying completion
+  // text.
+  std::string large_text_content(1500, 'a');
+  std::string image_url = "data:image/png;base64,ABC=";
+  for (int i = 0; i < 3; ++i) {
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3), mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "What is this web page about?",
+        std::nullopt /* prompt */, std::nullopt, std::nullopt,
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
+        false, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */));
+    std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+    if (i == 0 || i == 2) {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(GURL(image_url))));
+    } else {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New(large_text_content)));
+    }
+    std::vector<mojom::ConversationEntryEventPtr> response_events;
+    response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("First I'll look up the page...")));
+    response_events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "get_page_content", base::StrCat({"call_123", base::ToString(i)}),
+            "{}", std::move(tool_output_content_blocks), nullptr)));
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3 + 1),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "First I'll look up the page...", std::nullopt /* prompt */,
+        std::nullopt, std::move(response_events), base::Time::Now(),
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
+        std::nullopt /* model_key */, nullptr /* near_verification_status */));
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3 + 2),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "The page has some great content", std::nullopt /* prompt */,
+        std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+        std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */));
+  }
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1230",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1230",
+      "content": [
+        {
+          "type": "text",
+          "text": "[Large result removed to save space for subsequent results]"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1231",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1231",
+      "content": [
+        {
+          "type": "text",
+          "text": ")" + large_text_content +
+                                  R"("
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1232",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1232",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,ABC="
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUseNoOutput) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::nullopt, nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  // If somehow the conversation is sent without the tool output, the
+  // request should not include the tool request, since most LLM APIs will fail
+  // in that scenario. This should be prevented by the callers.
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(messages.size(), 2u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
