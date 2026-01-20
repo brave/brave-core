@@ -14,7 +14,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -24,6 +24,10 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 namespace {
 
@@ -219,11 +223,14 @@ SearchEngineTracker::SearchEngineTracker(
       kWebDiscoveryEnabled,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
                           base::Unretained(this)));
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS) ||
+        // BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 }
 
 SearchEngineTracker::~SearchEngineTracker() = default;
@@ -269,10 +276,12 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
   bool enabled = profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   UMA_HISTOGRAM_BOOLEAN(
       kWebDiscoveryAndAdsMetric,
       enabled && profile_prefs_->GetBoolean(
                      brave_ads::prefs::kOptedInToNotificationAds));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // Record web discovery default engine metric
   int answer = INT_MAX - 1;

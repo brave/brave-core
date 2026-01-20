@@ -10,8 +10,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -36,6 +35,11 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 using extensions::ExtensionBrowserTest;
 using RequestExpectationsCallback =
     base::RepeatingCallback<void(const net::test_server::HttpRequest& request)>;
@@ -49,8 +53,6 @@ constexpr char kNotAllowedDomain[] = "brave.com";
 constexpr char kBraveSearchPath[] = "/bravesearch.html";
 constexpr char kPageWithCookie[] = "/simple_page_with_cookie.html";
 constexpr char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
-constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
-constexpr char kSearchAdsDisabledValue[] = "?0";
 constexpr char kBackupSearchRedirectContent[] = R"(
 <html>
 <head>
@@ -83,6 +85,11 @@ constexpr char kScriptDefaultAPIGetValue[] = R"(
     }, 1200)
   });
 )";
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
+constexpr char kSearchAdsDisabledValue[] = "?0";
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 std::string GetChromeFetchBackupResultsAvailScript() {
   return absl::StrFormat(R"(
@@ -344,6 +351,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
   EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIExists));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
@@ -518,6 +526,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderIncognitoBrowser) {
 
   run_loop.Run();
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckNoCookieForFallback) {
   // Sets cookie for the search backup provider domain

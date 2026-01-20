@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
@@ -20,6 +19,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -49,6 +49,10 @@
 #include "brave/browser/user_education/brave_user_education_utils.h"
 #include "chrome/browser/user_education/user_education_service_factory.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -198,7 +202,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
 #endif
 
   perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::AdsServiceFactory::GetForProfile(profile);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
