@@ -312,9 +312,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SIGN_IN_TO_CHROME" meaning="Button" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
-      <message name="IDS_PREFS_MANAGE_SYNC_SETTINGS_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the 'Manage Sync Settings' page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
-        You are currently customizing your Sync settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
-      </message>
       <message name="IDS_SIGN_IN_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="This is the title of a setting that directs users to other settings where they can control how Brave history can be used to personalize other Brave services. It appears in Brave’s Advanced Sync settings and is before the “Control how browsing history is used with your other data across Brave services” string. [CHAR_LIMIT=30]">
         Personalization
       </message>
@@ -653,6 +650,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs.">
         All security codes saved on your device and in your Brave sync chain will be deleted
+      </message>
+      <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_IN_WALLET_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs in Brave Wallet.">
+        All security codes saved on your device and in Brave Wallet will be deleted
       </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_DELETE_BUTTON_LABEL" desc="Label shown on the button that the user clicks on to delete their saved CVCs.">
         Delete
@@ -2309,12 +2309,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_RECENT_TABS_SIGN_IN_ON_OTHER_DEVICES" desc="Text appearing on an empty recent tab page that indicates user can see tabs from other devices here">
         To see your tabs from wherever you use Brave, sign in on all your devices
-      </message>
-      <message name="IDS_SEARCH_AND_BROWSE_CATEGORY" desc="Category to show the search and browse improvement toggle. [CHAR_LIMIT=32]">
-        Search and browse
-      </message>
-      <message name="IDS_SYNCING_CATEGORY" desc="Category to separate search and browse section with sync related data types. [CHAR_LIMIT=32]">
-        Syncing
       </message>
       <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables sync'ing of all data types. [CHAR_LIMIT=32]">
         Sync everything
@@ -4436,6 +4430,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_BOOKMARK_ITEM_EDIT" desc="Menu item text for showing bookmark editing page [CHAR_LIMIT=24]">
         Edit
       </message>
+      <message name="IDS_BOOKMARK_ITEM_COPY_LINK" desc="Menu item text for copying a bookmark link [CHAR_LIMIT=24]">
+        Copy link
+      </message>
       <message name="IDS_BOOKMARK_ITEM_MOVE" desc="Menu item for moving a bookmark to a new folder [CHAR_LIMIT=24]">
         Move to…
       </message>
@@ -5727,6 +5724,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_TAB" desc="A text label that appears next to the keyboard shortcut that will close the current tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Close current tab
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_PINNED_TAB" desc="A text label that appears when user tries to close a pinned tab via Ctrl+W shortcut. The warning informs the user that confirming the closure requires a second press of the keyboard shortcut. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Press ^W again to close the pinned tab
+      </message>
       <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Find Bar
       </message>
@@ -5832,6 +5832,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MODULE_INSTALL_FAILURE_TEXT" desc="Text shown on an infobar when Brave failed to install a dynamic feature module.">
         Unable to install <ph name="module">%1$s<ex>augmented reality</ex></ph> for Brave
       </message>
+      <message name="IDS_XR_MODULE_TITLE" desc="Text shown when the XR module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing XR for Brave…').">
+        XR
+      </message>
 
       <!-- Multi-instance Switcher Dialog strings -->
       <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
@@ -5893,15 +5896,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_WINDOWS" desc="The menu item for the 3-dot more button to close all selected instances.">
         Close windows
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_CURRENT_WINDOW" desc="The description for an instance entry saying that it is the entry for the current window.">
-        Current
-      </message>
-      <message name="IDS_INSTANCE_SWITCHER_ADJACENT_WINDOW" desc="The description for an instance entry running in the foreground.">
-        Window is open
-      </message>
-      <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
-        Move tab
-      </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming close operation for a non-current window.">
         Close window?
       </message>
@@ -5911,16 +5905,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ZERO" desc="The phrase used in the message when there is a single tab to delete.">
         The window will be closed
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE" desc="The phrase used in the message when there is a single tab to delete.">
-        The tab <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
-      </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE_V2" desc="The phrase used in the message when there is a single tab to delete.">
         <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
-      </message>
-      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY" desc="The phrase used in the message when there are multiple tabs to delete.">
-        {TAB_COUNT, plural,
-          =1 {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_ONE">%2$s</ph> more tab will be closed}
-          other {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s</ph> more tabs will be closed}}
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY_V2" desc="The phrase used in the message when there are multiple tabs to delete.">
         {TAB_COUNT, plural,
@@ -5931,11 +5917,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
           other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
-      </message>
-      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED" desc="The phrase used in the message for deleting private-selected instance.">
-        {TAB_COUNT, plural,
-          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
-          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
       </message>
       <message name="IDS_INSTANCE_LAST_ACCESSED_CURRENT" desc="The current window indicator text.">
         Current window

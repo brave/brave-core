@@ -288,7 +288,7 @@ are declared in tools/grit/grit_args.gni.
       <part file="bookmarks_strings.grdp" />
 
       <!-- Glic specific strings -->
-      <if expr="enable_glic">
+      <if expr="enable_glic or enable_glic_android">
         <part file="glic_strings.grdp" />
       </if>
 
@@ -355,6 +355,9 @@ are declared in tools/grit/grit_args.gni.
       <if expr="enable_printing">
         <part file="printing_strings.grdp" />
       </if>
+
+      <!-- Skills specific strings -->
+      <part file="skills_strings.grdp" />
 
       <!-- Strings that are only used when VR devices are supported -->
       <if expr="enable_vr">
@@ -453,6 +456,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_HOVER_CARD_BLOB_URL_SOURCE" desc="The text to be displayed in the source line of a hover card when viewing BLOB data.">
         temporary data
+      </message>
+      <message name="IDS_HOVER_CARD_VIEW_SOURCE_URL_SOURCE" desc="The text to be displayed in the source line of a hover card when viewing a view-source: version of a website.">
+        view source
       </message>
       <message name="IDS_HOVER_CARD_CRASHED_TITLE" desc="The title text to display on a hover card when a tab has crashed without loading.">
         Crashed.
@@ -1961,6 +1967,9 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_BLOCKED" desc="The download was blocked due to security policy.">
         Blocked
       </message>
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_LOCAL_DOWNLOAD_BLOCKED" desc="The local download was blocked and redirected to cloud storage">
+        Your organization blocked the local download of this file.
+      </message>
       <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_BLOCKED" desc="Download page message: The download was blocked due to security policy on this machine.">
         Security settings on your computer blocked this file.
       </message>
@@ -2183,7 +2192,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_PROMPT_DOWNLOAD_SENSITIVE_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
         Your organization's policies aren't met
       </message>
-      <message name="IDS_PROMPT_DOWNLOAD_FORCED_SAVE_TO_GDRIVE" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
+      <message name="IDS_PROMPT_DOWNLOAD_FORCED_SAVE_TO_CLOUD" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
         Failed - Local download blocked
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_SCAN_FAILED" desc="Message shown in the download shelf when the deep scan of the file fails and the admin has chosen to block the file">
@@ -2228,7 +2237,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_SENSITIVE_CONTENT_BLOCKED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it contains sensitive content">
         Your organization's policies aren't met
       </message>
-      <message name="IDS_FORCED_SAVE_TO_GDRIVE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to GDrive">
+      <message name="IDS_FORCED_SAVE_TO_CLOUD_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to Cloud Storage">
         Your organization's policies aren't met
       </message>
       <message name="IDS_BLOCKED_TOO_LARGE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is too large for deep scanning">
@@ -10022,6 +10031,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_EXPAND_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that expands the vertical tab strip.">
             Expand Vertical Tabs
           </message>
+          <message name="IDS_VERTICAL_TAB_GROUP_MORE_OPTIONS" is_accessibility_with_no_ui="true" desc="In Title Case: The accessibility label for the button in the tab group header that opens the editor bubble.">
+            More Options
+          </message>
         </then>
         <else>
           <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
@@ -10036,6 +10048,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_EXPAND_VERTICAL_TABS" desc="The tooltip for the button in the top container that expands the vertical tab strip.">
             Expand vertical tabs
           </message>
+          <message name="IDS_VERTICAL_TAB_GROUP_MORE_OPTIONS" is_accessibility_with_no_ui="true" desc="In Title Case: The accessibility label for the button in the tab group header that opens the editor bubble.">
+            More options
+          </message>
         </else>
       </if>
       <!-- /Vertical Tab Strings -->
@@ -10049,6 +10064,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_HIDE_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the projects panel.">
             Hide Projects
           </message>
+          <message name="IDS_TAB_GROUPS_TITLE" desc="In Title Case: The title for the tab groups container in the projects panel.">
+            Tab Groups
+          </message>
         </then>
         <else>
           <message name="IDS_VIEW_PROJECTS_PANEL" desc="The tooltip for the button in the top container that shows the projects panel.">
@@ -10056,6 +10074,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
           <message name="IDS_HIDE_PROJECTS_PANEL" desc="The tooltip for the button in the top container that hides the projects panel.">
             Hide projects
+          </message>
+          <message name="IDS_TAB_GROUPS_TITLE" desc="The title for the tab groups container in the projects panel.">
+            Tab groups
           </message>
         </else>
       </if>
@@ -10271,6 +10292,44 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Lens promo notification.">
           Shop, translate, and identify what you see with your camera.
+        </message>
+      </if>
+
+      <!--Desktop to iOS Price Tracking promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Price Tracking promo bubble with a reminder button.">
+          Keep up with all your price drops on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
+          Get price tracking alerts on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Price Tracking promo bubble with a reminder button.">
+          Get price tracking alerts on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Price Tracking promo notification.">
+          Keep up with all your price drops on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Price Tracking promo notification.">
+          Enable price tracking alerts
+        </message>
+      </if>
+
+      <!--Desktop to iOS Tab Groups promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Tab Groups promo bubble with a reminder button.">
+          You can pick up where you left off or create new tab groups on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Tab Groups promo bubble with a QR Code.">
+          Use your tab groups on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Tab Groups promo bubble with a reminder button.">
+          Use your tab groups on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Tab Groups promo notification.">
+          You can pick up where you left off or create new tab groups on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Tab Groups promo notification.">
+          Reminder: Your tab groups
         </message>
       </if>
 
@@ -19387,6 +19446,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_UPDATER_DURATION" desc="Text indicating the duration of a Brave Updater event in a log.">
         Duration: <ph name="DURATION">$1<ex>1m 12s</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_EFFECTIVE_POLICY_SET" desc="Label for an expandable section which displays the enterprise policies which controlled the behavior of an action taken by the Brave Updater in its event log.">
+        Enterprise Policies
       </message>
       <message name="IDS_UPDATER_END_DATE" desc="Label for the end date input field.">
         End Date:
