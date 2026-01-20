@@ -10,6 +10,7 @@ ios_objc_mojom_wrappers("mojom") {
   sources = [
     "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
     "//brave/components/ai_chat/core/common/mojom/common.mojom",
+    "//brave/components/ai_chat/core/common/mojom/settings_helper.mojom",
     "//brave/components/ai_chat/core/common/mojom/tab_tracker.mojom",
     "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
   ]
@@ -20,6 +21,7 @@ ios_objc_mojom_wrappers("mojom") {
   # supported in objc_mojom_wrappers, but should be refactored to support
   # binding to them for iOS.
   exclude_types = [
+    "AIChatSettingsHelper",
     "AIChatUIHandler",
     "ChatUI",
     "ConversationEntriesState",
