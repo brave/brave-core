@@ -91,12 +91,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_GOOGLE_SIGN_IN =
         r.SITE_SETTINGS.createChild('googleSignIn')
     }
-    const isLocalhostAccessFeatureEnabled =
-      loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
-    if (isLocalhostAccessFeatureEnabled) {
-      r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
-        .createChild('localhostAccess')
-    }
     // <if expr="enable_ai_chat">
     const isOpenAIChatFromBraveSearchEnabled =
       loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')

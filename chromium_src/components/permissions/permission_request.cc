@@ -45,9 +45,6 @@
   case RequestType::kBraveGoogleSignInPermission:          \
     message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT;   \
     break;                                                 \
-  case RequestType::kBraveLocalhostAccessPermission:       \
-    message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
-    break;                                                 \
   case RequestType::kBraveOpenAIChat:                      \
     message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
     break;
@@ -56,9 +53,6 @@
   BRAVE_ENUM_ITEMS_FOR_SWITCH                        \
   case RequestType::kBraveGoogleSignInPermission:    \
     message_id = IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT;    \
-    break;                                           \
-  case RequestType::kBraveLocalhostAccessPermission: \
-    message_id = IDS_LOCALHOST_ACCESS_INFOBAR_TEXT;  \
     break;                                           \
   case RequestType::kBraveOpenAIChat:                \
     message_id = IDS_OPEN_AI_CHAT_INFOBAR_TEXT;      \

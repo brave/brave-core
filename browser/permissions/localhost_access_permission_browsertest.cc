@@ -12,7 +12,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,7 +19,6 @@
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -36,7 +34,9 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
-#include "net/test/test_data_directory.h"
+#include "services/network/public/cpp/features.h"
+#include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;
@@ -52,8 +52,22 @@ constexpr char kSimplePage[] = "/simple.html";
 class LocalhostAccessBrowserTest : public InProcessBrowserTest {
  public:
   LocalhostAccessBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveLocalhostAccessPermission);
+    feature_list_.InitWithFeaturesAndParameters(
+        {{network::features::kLocalNetworkAccessChecksWebSockets, {}},
+         {network::features::kLocalNetworkAccessChecks,
+          {{"LocalNetworkAccessChecksWarn", "false"}}}},
+        {});
+    // Embedding website server
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    content::SetupCrossSiteRedirector(https_server_.get());
+    CHECK(https_server_->InitializeAndListen());
+    // Localhost server
+    localhost_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    net::test_server::InstallDefaultWebSocketHandlers(localhost_server_.get());
+    content::SetupCrossSiteRedirector(localhost_server_.get());
+    CHECK(localhost_server_->InitializeAndListen());
   }
 
   void SetUpOnMainThread() override {
@@ -62,20 +76,13 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
 
-    // Embedding website server
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_->ServeFilesFromDirectory(test_data_dir);
-    content::SetupCrossSiteRedirector(https_server_.get());
-    ASSERT_TRUE(https_server_->Start());
-    // Localhost server
-    localhost_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    localhost_server_->ServeFilesFromDirectory(test_data_dir);
-    content::SetupCrossSiteRedirector(localhost_server_.get());
-    ASSERT_TRUE(localhost_server_->Start());
+    https_server_->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    localhost_server_->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+
+    https_server_->StartAcceptingConnections();
+    localhost_server_->StartAcceptingConnections();
 
     permissions::PermissionRequestManager* manager =
         GetPermissionRequestManager();
@@ -101,6 +108,11 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
+    network::AddIpAddressSpaceOverridesToCommandLine(
+        {network::GenerateIpAddressSpaceOverride(*https_server_),
+         network::GenerateIpAddressSpaceOverride(
+             *localhost_server_, network::mojom::IPAddressSpace::kLocal)},
+        *command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -168,14 +180,14 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   void CheckCurrentStatusIs(ContentSetting content_setting) {
     EXPECT_EQ(content_settings()->GetContentSetting(
                   embedding_url_, embedding_url_,
-                  ContentSettingsType::BRAVE_LOCALHOST_ACCESS),
+                  ContentSettingsType::LOCAL_NETWORK_ACCESS),
               content_setting);
   }
 
   void SetCurrentStatus(ContentSetting content_setting) {
     content_settings()->SetContentSettingDefaultScope(
         embedding_url_, embedding_url_,
-        ContentSettingsType::BRAVE_LOCALHOST_ACCESS, content_setting);
+        ContentSettingsType::LOCAL_NETWORK_ACCESS, content_setting);
   }
 
   void CheckAskAndAcceptFlow(GURL localhost_url, int prompt_count = 0) {
@@ -186,7 +198,7 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     prompt_factory()->set_response_type(
         permissions::PermissionRequestManager::ACCEPT_ALL);
     // Load subresource.
-    InsertImage(localhost_url.spec(), false);
+    InsertImage(localhost_url.spec(), true);
     // Make sure prompt came up.
     EXPECT_EQ(prompt_count + 1, prompt_factory()->show_count());
     // Check content setting is now ALLOWed.
@@ -228,14 +240,14 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     // Load subresource
     InsertImage(localhost_url.spec(), false);
     // Make sure prompt came up.
-    EXPECT_EQ(prompt_count + 1, prompt_factory()->show_count());
+    EXPECT_EQ(prompt_count + 2, prompt_factory()->show_count());
     // Check content setting is still ASK.
     CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
     // Access to localhost resources should be denied.
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     InsertImage(localhost_url.spec(), false);
     // Still ask for prompt.
-    EXPECT_EQ(prompt_count + 2, prompt_factory()->show_count());
+    EXPECT_EQ(prompt_count + 3, prompt_factory()->show_count());
   }
 
   void CheckNoPromptFlow(const bool expected, GURL localhost_url) {
@@ -288,7 +300,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, Localhost) {
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, DotLocalhost) {
   std::string test_domain = "test.localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   // Reset content setting.
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
@@ -301,7 +314,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, DotLocalhost) {
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, OneTwoSeven) {
   std::string test_domain = "127.0.0.1";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   // Reset content setting
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
@@ -315,7 +329,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, IncognitoModeInheritAllow) {
   // Allowed permission for a website is ASK in incognito.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   // Check incognito mode.
   Profile* profile = browser()->profile();
@@ -328,7 +343,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, IncognitoModeInheritBlock) {
   // Blocked permission for a website is ASK in incognito.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndDenyFlow(target_url);
   // Check Incognito mode.
   Profile* profile = browser()->profile();
@@ -345,7 +361,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, IncognitoModeDoesNotLeak) {
   SetPromptFactory(GetPermissionRequestManager());
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   // Check permission did not leak.
   SetBrowser(original_browser);
@@ -364,11 +381,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, NoPermissionPrompt) {
 // Test that WebSocket connections to localhost are blocked/allowed.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   // Start a WebSocket server.
-  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
-  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
-  ASSERT_TRUE(ws_server.Start());
-  auto ws_url = net::test_server::GetWebSocketURL(ws_server, "localhost",
-                                                  "/echo-with-no-extension");
+  auto ws_url = net::test_server::GetWebSocketURL(
+      *localhost_server_, "localhost", "/echo-with-no-extension");
   // Script to connect to ws server.
   std::string ws_open_script_template = R"(
     new Promise(resolve => {
@@ -381,16 +395,21 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
   prompt_factory()->set_response_type(
-      permissions::PermissionRequestManager::ACCEPT_ALL);
+      permissions::PermissionRequestManager::DISMISS);
   // Run script to open WebSocket, it should error out.
   const std::string& ws_open_script =
       content::JsReplace(ws_open_script_template, ws_url);
   ASSERT_EQ("error", EvalJs(contents(), ws_open_script));
   EXPECT_EQ(1, prompt_factory()->show_count());
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  contents()->GetController().Reload(content::ReloadType::NORMAL, false);
   // Wait for tab to reload after permission grant.
   WaitForLoadStop(contents());
-  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
   ASSERT_EQ("open", EvalJs(contents(), ws_open_script));
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
 }
 
 // Test that service worker connections are blocked/allowed correctly.
@@ -484,8 +503,9 @@ class LocalhostAccessBrowserTestFeatureDisabled
  public:
   LocalhostAccessBrowserTestFeatureDisabled() {
     feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(
-        brave_shields::features::kBraveLocalhostAccessPermission);
+    feature_list_.InitAndEnableFeatureWithParameters(
+        network::features::kLocalNetworkAccessChecks,
+        {{"LocalNetworkAccessChecksWarn", "true"}});
   }
 };
 

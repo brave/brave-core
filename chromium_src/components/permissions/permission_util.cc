@@ -17,12 +17,11 @@
   case RequestType::kBraveCardano:
 
 // Since we don't do UMA just reuse an existing UMA type instead of adding one.
-#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE         \
-  case RequestType::kWidevine:                       \
-    BRAVE_WALLET_UMA_CASES                           \
-  case RequestType::kBraveGoogleSignInPermission:    \
-  case RequestType::kBraveLocalhostAccessPermission: \
-  case RequestType::kBraveOpenAIChat:                \
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE      \
+  case RequestType::kWidevine:                    \
+    BRAVE_WALLET_UMA_CASES                        \
+  case RequestType::kBraveGoogleSignInPermission: \
+  case RequestType::kBraveOpenAIChat:             \
     return RequestTypeForUma::PERMISSION_VR;
 
 // These requests may be batched together, so we must handle them explicitly as
@@ -69,8 +68,6 @@
     return ContentSettingsType::BRAVE_SPEEDREADER;               \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
-    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
     return ContentSettingsType::BRAVE_OPEN_AI_CHAT;              \
     BRAVE_WALLET_PERMISSION_TYPE_CASES
@@ -99,8 +96,6 @@ std::string PermissionUtil::GetPermissionString(
 #endif
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return "BraveGoogleSignInPermission";
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
-      return "BraveLocalhostAccessPermission";
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return "BraveOpenAIChatPermission";
     default:
@@ -123,10 +118,6 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::BRAVE_GOOGLE_SIGN_IN;
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
-    *out = PermissionType::BRAVE_LOCALHOST_ACCESS;
-    return true;
-  }
   if (type == ContentSettingsType::BRAVE_OPEN_AI_CHAT) {
     *out = PermissionType::BRAVE_OPEN_AI_CHAT;
     return true;
@@ -145,7 +136,6 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
       return true;
 #endif
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return true;
     default:
@@ -182,8 +172,6 @@ PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
 #endif
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
-      return PermissionType::BRAVE_LOCALHOST_ACCESS;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return PermissionType::BRAVE_OPEN_AI_CHAT;
     default:

@@ -17,8 +17,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_block_safebrowsing_urls.h",
   "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.cc",
   "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.h",
-  "//brave/browser/net/brave_localhost_permission_network_delegate_helper.cc",
-  "//brave/browser/net/brave_localhost_permission_network_delegate_helper.h",
   "//brave/browser/net/brave_proxying_url_loader_factory.cc",
   "//brave/browser/net/brave_proxying_url_loader_factory.h",
   "//brave/browser/net/brave_proxying_web_socket.cc",

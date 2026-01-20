@@ -31,13 +31,12 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:
 
-#define IDR_ANDROID_STORAGE_ACCESS                   \
-  kAndroidStorageAccess;                             \
-  case RequestType::kWidevine:                       \
-    BRAVE_WALLET_ANDROID_CASES                       \
-  case RequestType::kBraveGoogleSignInPermission:    \
-  case RequestType::kBraveLocalhostAccessPermission: \
-  case RequestType::kBraveOpenAIChat:                \
+#define IDR_ANDROID_STORAGE_ACCESS                \
+  kAndroidStorageAccess;                          \
+  case RequestType::kWidevine:                    \
+    BRAVE_WALLET_ANDROID_CASES                    \
+  case RequestType::kBraveGoogleSignInPermission: \
+  case RequestType::kBraveOpenAIChat:             \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
@@ -46,13 +45,12 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:
 
-#define kStorageAccessIcon                           \
-  kStorageAccessIcon;                                \
-  case RequestType::kWidevine:                       \
-    BRAVE_WALLET_DESKTOP_CASES                       \
-  case RequestType::kBraveGoogleSignInPermission:    \
-  case RequestType::kBraveLocalhostAccessPermission: \
-  case RequestType::kBraveOpenAIChat:                \
+#define kStorageAccessIcon                        \
+  kStorageAccessIcon;                             \
+  case RequestType::kWidevine:                    \
+    BRAVE_WALLET_DESKTOP_CASES                    \
+  case RequestType::kBraveGoogleSignInPermission: \
+  case RequestType::kBraveOpenAIChat:             \
     return vector_icons::kExtensionIcon
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -71,15 +69,13 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
     NOTREACHED();
 #endif
 
-#define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                     \
-  case permissions::RequestType::kWidevine:                       \
-    return "widevine";                                            \
-    BRAVE_WALLET_PERMISSION_KEYS                                  \
-  case permissions::RequestType::kBraveGoogleSignInPermission:    \
-    return "brave_google_sign_in";                                \
-  case permissions::RequestType::kBraveLocalhostAccessPermission: \
-    return "brave_localhost_access";                              \
-  case permissions::RequestType::kBraveOpenAIChat:                \
+#define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                  \
+  case permissions::RequestType::kWidevine:                    \
+    return "widevine";                                         \
+    BRAVE_WALLET_PERMISSION_KEYS                               \
+  case permissions::RequestType::kBraveGoogleSignInPermission: \
+    return "brave_google_sign_in";                             \
+  case permissions::RequestType::kBraveOpenAIChat:             \
     return "brave_ai_chat";
 
 #define ContentSettingsTypeToRequestType \
@@ -117,8 +113,6 @@ RequestType ContentSettingsTypeToRequestType(
 #endif
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
-      return RequestType::kBraveLocalhostAccessPermission;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return RequestType::kBraveOpenAIChat;
     case ContentSettingsType::DEFAULT:
@@ -137,8 +131,6 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
   switch (request_type) {
     case RequestType::kBraveGoogleSignInPermission:
       return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
-    case RequestType::kBraveLocalhostAccessPermission:
-      return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case RequestType::kBraveEthereum:
       return ContentSettingsType::BRAVE_ETHEREUM;
@@ -157,7 +149,6 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
 bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:

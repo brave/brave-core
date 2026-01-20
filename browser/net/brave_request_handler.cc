@@ -14,7 +14,6 @@
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
@@ -43,8 +42,9 @@
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme))
+  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme)) {
     return true;
+  }
 #endif
   return ctx->request_url.SchemeIs(content::kChromeUIScheme);
 }
@@ -73,13 +73,6 @@ void BraveRequestHandler::SetupCallbacks() {
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
-
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    callback =
-        base::BindRepeating(brave::OnBeforeURLRequest_LocalhostPermissionWork);
-    before_url_request_callbacks_.push_back(callback);
-  }
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);

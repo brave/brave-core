@@ -127,10 +127,6 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean(
       "isGoogleSignInFeatureEnabled",
       google_sign_in_permission::IsGoogleSignInFeatureEnabled());
-  data_source->AddBoolean(
-      "isLocalhostAccessFeatureEnabled",
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission));
 #if BUILDFLAG(ENABLE_AI_CHAT)
   data_source->AddBoolean(
       "isOpenAIChatFromBraveSearchEnabled",

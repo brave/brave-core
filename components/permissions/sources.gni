@@ -11,8 +11,6 @@ brave_components_permissions_sources = [
   "//brave/components/permissions/brave_permission_manager.h",
   "//brave/components/permissions/contexts/brave_google_sign_in_permission_context.cc",
   "//brave/components/permissions/contexts/brave_google_sign_in_permission_context.h",
-  "//brave/components/permissions/contexts/brave_localhost_permission_context.cc",
-  "//brave/components/permissions/contexts/brave_localhost_permission_context.h",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.cc",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
   "//brave/components/permissions/permission_expiration_key.cc",
