@@ -1,5 +1,5 @@
 diff --git a/ui/base/accelerators/accelerator.cc b/ui/base/accelerators/accelerator.cc
-index 5ad9332dd27ceda7d67cd3f571b12218a4415a40..bdfa4ee7d88c76ee74bf4228920ee98a052a6a69 100644
+index 46b49a484fc7d42facf494733ca21e451fc54e25..ac8573f00bcb7776498eb86fde424f67267f33a9 100644
 --- a/ui/base/accelerators/accelerator.cc
 +++ b/ui/base/accelerators/accelerator.cc
 @@ -326,6 +326,7 @@ std::u16string Accelerator::KeyCodeToName() const {

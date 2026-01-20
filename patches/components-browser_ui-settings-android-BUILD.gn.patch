@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/settings/android/BUILD.gn b/components/browser_ui/settings/android/BUILD.gn
-index 11293455a188a0075bd9e276d387424410bea350..784f1e83eb23af194850fe711e2976ffcf2b0b73 100644
+index 9093d7063c5e38a7997a105d2ba35f162538a72c..ab4497700fb2fd23ce9b805008f1d8212cf51a54 100644
 --- a/components/browser_ui/settings/android/BUILD.gn
 +++ b/components/browser_ui/settings/android/BUILD.gn
-@@ -56,6 +56,7 @@ android_library("java") {
+@@ -61,6 +61,7 @@ android_library("java") {
      "//ui/android:ui_no_recycler_view_java",
    ]
    resources_package = "org.chromium.components.browser_ui.settings"

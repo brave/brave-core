@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 469efd3937321fd9d971cfcd7003cb46f87826c7..9e379e4e91c0a1a87db0767e9d8526bbea87270e 100644
+index e78c6b1e873beaa596a4c75e0efe15cd9c362ed1..0bf32869e47e5f1ad75e15dd51eec6999324e56f 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -154,6 +154,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
+@@ -152,6 +152,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
        "images/batch_upload_bookmarks_promo_dark.svg",
        IDR_BOOKMARKS_IMAGES_BATCH_UPLOAD_BOOKMARKS_PROMO_DARK_SVG);
  
