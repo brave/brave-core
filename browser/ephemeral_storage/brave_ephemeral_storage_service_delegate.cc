@@ -21,6 +21,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
@@ -55,7 +56,7 @@ namespace {
 
 struct TabWebContentsForTldResult {
   raw_ptr<content::WebContents> web_contents = nullptr;
-  std::string ephemeral_domain;
+  ephemeral_storage::TLDEphemeralAreaKey key;
 };
 
 std::optional<TabWebContentsForTldResult> GetTabWebContentsForTld(
@@ -79,8 +80,13 @@ std::optional<TabWebContentsForTldResult> GetTabWebContentsForTld(
   if (tab_tld.empty() || !base::Contains(etldplusones, tab_tld)) {
     return std::nullopt;
   }
+  auto* site_instance = contents->GetSiteInstance();
+  if (!site_instance) {
+    return std::nullopt;
+  }
 
-  return TabWebContentsForTldResult{contents, tab_tld};
+  return TabWebContentsForTldResult{
+      contents, {tab_tld, site_instance->GetStoragePartitionConfig()}};
 }
 
 bool PrepareTabForFirstPartyStorageCleanup(
@@ -102,10 +108,11 @@ bool PrepareTabForFirstPartyStorageCleanup(
 
 // Filters the given ephemeral domains to only those that have opened tabs in
 // the current profile
-base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
+base::flat_set<ephemeral_storage::TLDEphemeralAreaKey>
+FilterEphemeralDomainsToCleanup(
     content::BrowserContext* context,
     const std::vector<std::string>& ephemeral_domains) {
-  base::flat_set<std::string> result;
+  base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> result;
   auto* profile = Profile::FromBrowserContext(context);
   CHECK(profile);
 
@@ -116,7 +123,7 @@ base::flat_set<std::string> FilterEphemeralDomainsToCleanup(
         if (!tab_web_contents_result) {
           return;
         }
-        result.emplace(std::move(tab_web_contents_result->ephemeral_domain));
+        result.emplace(std::move(tab_web_contents_result->key));
       };
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -278,7 +285,8 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
 }
 
 void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(
-    base::OnceCallback<void(const base::flat_set<std::string>)> callback) {
+    base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
+        callback) {
   DCHECK(callback);
   on_become_active_callback_ = std::move(callback);
 }

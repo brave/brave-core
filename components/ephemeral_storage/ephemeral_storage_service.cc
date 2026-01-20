@@ -465,14 +465,9 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 }
 
 void EphemeralStorageService::FinishStorageCleanupOnBecomeActive(
-    const base::flat_set<std::string> ephemeral_domains) {
-  for (const auto& domain : ephemeral_domains) {
-    const GURL url(GetFirstPartyStorageURL(domain));
-    const content::StoragePartitionConfig storage_partition_config =
-        content::StoragePartitionConfig::Create(context_, domain, domain,
-                                                context_->IsOffTheRecord());
-    const TLDEphemeralAreaKey key(domain, storage_partition_config);
-    CleanupTLDEphemeralArea(key, true, true);
+    const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> keys) {
+  for (const auto& key : keys) {
+    CleanupTLDEphemeralArea({key.first, key.second}, true, true);
   }
 }
 

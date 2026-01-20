@@ -50,8 +50,8 @@ class BraveEphemeralStorageServiceDelegate
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
   void RegisterOnBecomeActiveCallback(
-      base::OnceCallback<void(const base::flat_set<std::string>)> callback)
-      override;
+      base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
+          callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains) override;
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
@@ -66,7 +66,7 @@ class BraveEphemeralStorageServiceDelegate
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   base::OnceClosure first_window_opened_callback_;
-  base::OnceCallback<void(const base::flat_set<std::string>)>
+  base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
       on_become_active_callback_;
   std::unique_ptr<ApplicationStateObserver> application_state_observer_;
   raw_ptr<brave_shields::BraveShieldsSettingsService>

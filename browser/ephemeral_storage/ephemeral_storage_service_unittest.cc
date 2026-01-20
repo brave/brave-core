@@ -74,11 +74,11 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               PrepareTabsForFirstPartyStorageCleanup,
               (const std::vector<std::string>& ephemeral_domains),
               (override));
-  MOCK_METHOD(
-      void,
-      RegisterOnBecomeActiveCallback,
-      (base::OnceCallback<void(const base::flat_set<std::string>)> callback),
-      (override));
+  MOCK_METHOD(void,
+              RegisterOnBecomeActiveCallback,
+              (base::OnceCallback<
+                  void(const base::flat_set<TLDEphemeralAreaKey>)> callback),
+              (override));
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
 #endif
@@ -101,8 +101,8 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
     EXPECT_CALL(*this, RegisterOnBecomeActiveCallback(_))
         .WillOnce(
             [this, trigger_callback](
-                base::OnceCallback<void(const base::flat_set<std::string>)>
-                    callback) {
+                base::OnceCallback<void(
+                    const base::flat_set<TLDEphemeralAreaKey>)> callback) {
               if (trigger_callback) {
                 std::move(callback).Run({});
               } else {
@@ -118,7 +118,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
 
  private:
   base::OnceClosure first_window_opened_callback_;
-  base::OnceCallback<void(const base::flat_set<std::string>)>
+  base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
       on_become_active_callback_;
 };
 
@@ -950,7 +950,7 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       task_environment_.FastForwardBy(base::Seconds(5));
       if (test_case.auto_shred_mode ==
           brave_shields::mojom::AutoShredMode::APP_EXIT) {
-        service_->FinishStorageCleanupOnBecomeActive({ephemeral_domain});
+        service_->FinishStorageCleanupOnBecomeActive({key});
       }
       EXPECT_EQ(profile_.GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)

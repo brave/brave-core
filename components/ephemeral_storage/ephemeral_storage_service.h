@@ -140,7 +140,7 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   void FinishStorageCleanupOnBecomeActive(
-      const base::flat_set<std::string> ephemeral_domains);
+      const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> keys);
 
   size_t FireCleanupTimersForTesting();
 
