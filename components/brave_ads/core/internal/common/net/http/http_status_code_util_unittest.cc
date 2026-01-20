@@ -15,6 +15,23 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeClass) {
+  // Act & Assert
+  EXPECT_EQ(HttpStatusCodeClassType::kInformationalResponse,
+            HttpStatusCodeClass(100));
+  EXPECT_EQ(HttpStatusCodeClassType::kSuccess,
+            HttpStatusCodeClass(/*200*/ net::HTTP_OK));
+  EXPECT_EQ(HttpStatusCodeClassType::kRedirection,
+            HttpStatusCodeClass(/*304*/ net::HTTP_NOT_MODIFIED));
+  EXPECT_EQ(HttpStatusCodeClassType::kClientError,
+            HttpStatusCodeClass(/*404*/ net::HTTP_NOT_FOUND));
+  EXPECT_EQ(HttpStatusCodeClassType::kServerError,
+            HttpStatusCodeClass(/*500*/ net::HTTP_INTERNAL_SERVER_ERROR));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(600));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(99));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(-1));
+}
+
 TEST(BraveAdsHttpStatusCodeUtilTest, IsSuccessfulHttpStatusCode) {
   // Act & Assert
   for (int i = /*200*/ net::HTTP_OK; i < net::HTTP_STATUS_CODE_MAX; ++i) {
