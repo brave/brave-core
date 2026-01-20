@@ -24,6 +24,7 @@
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/endpoints/service_token.h"
+#include "brave/components/brave_account/endpoints/verify_resend.h"
 #include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
@@ -39,6 +40,7 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyResend;
 using endpoints::VerifyResult;
 
 struct RegisterInitializeTestCase {
@@ -741,6 +743,259 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterFinalizeUnknown(),
                     RegisterFinalizeSuccess()),
     BraveAccountServiceRegisterFinalizeTest::kNameGenerator);
+
+struct ResendConfirmationEmailTestCase {
+  using Endpoint = VerifyResend;
+  using EndpointResponse = Endpoint::Response;
+  using MojoExpected = base::expected<mojom::ResendConfirmationEmailResultPtr,
+                                      mojom::ResendConfirmationEmailErrorPtr>;
+
+  static void Run(const ResendConfirmationEmailTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
+                  mojom::Authentication& authentication,
+                  base::OnceCallback<void(MojoExpected)> callback) {
+    if (!test_case.encrypted_verification_token.empty()) {
+      pref_service.SetString(prefs::kBraveAccountVerificationToken,
+                             test_case.encrypted_verification_token);
+    }
+
+    authentication.ResendConfirmationEmail(std::move(callback));
+  }
+
+  std::string test_name;
+  std::string encrypted_verification_token;
+  bool fail_decryption;
+  std::optional<EndpointResponse> endpoint_response;
+  MojoExpected mojo_expected;
+};
+
+namespace {
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailVerificationTokenEmpty() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailVerificationTokenEmpty({
+          .test_name = "resend_confirmation_email_verification_token_empty",
+          .encrypted_verification_token = "",
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                                    kUserNotInTheVerificationState)),
+      });
+  return kResendConfirmationEmailVerificationTokenEmpty.get();
+}
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailVerificationTokenFailedToDecrypt({
+          .test_name =
+              "resend_confirmation_email_verification_token_failed_to_decrypt",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = true,
+          .endpoint_response = {},  // not used
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                                    kVerificationTokenDecryptionFailed)),
+      });
+  return kResendConfirmationEmailVerificationTokenFailedToDecrypt.get();
+}
+
+const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailNetworkError({
+          .test_name = "resend_confirmation_email_network_error",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
+                                 .status_code = std::nullopt,
+                                 .body = std::nullopt}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::ERR_CONNECTION_REFUSED, std::nullopt)),
+      });
+  return kResendConfirmationEmailNetworkError.get();
+}
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailBodyMissingOrFailedToParse({
+          .test_name =
+              "resend_confirmation_email_body_missing_or_failed_to_parse",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kResendConfirmationEmailBodyMissingOrFailedToParse.get();
+}
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailBadRequestWithNullErrorCode() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailBadRequestWithNullErrorCode({
+          .test_name =
+              "resend_confirmation_email_bad_request_with_null_error_code",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_BAD_REQUEST, std::nullopt)),
+      });
+  return kResendConfirmationEmailBadRequestWithNullErrorCode.get();
+}
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailMaximumEmailSendAttemptsExceeded({
+          .test_name =
+              "resend_confirmation_email_maximum_email_send_attempts_exceeded",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value(13008);
+                                   return body;
+                                 }())}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_BAD_REQUEST,
+                  mojom::ResendConfirmationEmailErrorCode::
+                      kMaximumEmailSendAttemptsExceeded)),
+      });
+  return kResendConfirmationEmailMaximumEmailSendAttemptsExceeded.get();
+}
+
+const ResendConfirmationEmailTestCase*
+ResendConfirmationEmailEmailAlreadyVerified() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailEmailAlreadyVerified({
+          .test_name = "resend_confirmation_email_email_already_verified",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value(13009);
+                                   return body;
+                                 }())}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_BAD_REQUEST,
+                  mojom::ResendConfirmationEmailErrorCode::
+                      kEmailAlreadyVerified)),
+      });
+  return kResendConfirmationEmailEmailAlreadyVerified.get();
+}
+
+const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailServerError({
+          .test_name = "resend_confirmation_email_server_error",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kResendConfirmationEmailServerError.get();
+}
+
+const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailUnknown({
+          .test_name = "resend_confirmation_email_unknown",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_TOO_EARLY,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value(42);
+                                   return body;
+                                 }())}},
+          .mojo_expected =
+              base::unexpected(mojom::ResendConfirmationEmailError::New(
+                  net::HTTP_TOO_EARLY, std::nullopt)),
+      });
+  return kResendConfirmationEmailUnknown.get();
+}
+
+const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailSuccess({
+          .test_name = "resend_confirmation_email_success",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_NO_CONTENT,
+                                 .body =
+                                     VerifyResend::Response::SuccessBody()}},
+          .mojo_expected = mojom::ResendConfirmationEmailResult::New(),
+      });
+  return kResendConfirmationEmailSuccess.get();
+}
+
+using BraveAccountServiceResendConfirmationEmailTest =
+    BraveAccountServiceTest<ResendConfirmationEmailTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceResendConfirmationEmailTest,
+       MapsEndpointExpectedToMojoExpected) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceResendConfirmationEmailTest,
+    testing::Values(ResendConfirmationEmailVerificationTokenEmpty(),
+                    ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
+                    ResendConfirmationEmailNetworkError(),
+                    ResendConfirmationEmailBodyMissingOrFailedToParse(),
+                    ResendConfirmationEmailBadRequestWithNullErrorCode(),
+                    ResendConfirmationEmailMaximumEmailSendAttemptsExceeded(),
+                    ResendConfirmationEmailEmailAlreadyVerified(),
+                    ResendConfirmationEmailServerError(),
+                    ResendConfirmationEmailUnknown(),
+                    ResendConfirmationEmailSuccess()),
+    BraveAccountServiceResendConfirmationEmailTest::kNameGenerator);
 
 struct VerifyResultTestCase {
   using Endpoint = VerifyResult;

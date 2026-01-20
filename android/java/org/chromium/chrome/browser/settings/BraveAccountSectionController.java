@@ -110,7 +110,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
             resendConfirmationEmailPreference.setOnPreferenceClickListener(
                     preference -> {
                         assert mBraveAccountService != null;
-                        mBraveAccountService.resendConfirmationEmail();
+                        mBraveAccountService.resendConfirmationEmail(result -> {});
                         return true;
                     });
         }
