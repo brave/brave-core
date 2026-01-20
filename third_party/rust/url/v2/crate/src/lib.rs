@@ -12,7 +12,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use std::cmp;
-use std::fmt::{self, Write};
+use std::fmt::{self};
 use std::hash;
 use std::str;
 use std::error::Error;
@@ -83,6 +83,7 @@ mod ffi {
 
     unsafe extern "C++" {
         include!("brave/third_party/rust/url/v2/crate/parse.h");
+        #[allow(dead_code)]
         fn InitializeICUForTesting();
         fn ParseURL(url: &str) -> ParseResult;
         fn Resolve(base: &ParseResult, relative: &str) -> ParseResult;

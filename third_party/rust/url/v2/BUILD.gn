@@ -4,7 +4,21 @@
 
 import("//build/rust/cargo_crate.gni")
 
-static_library("parse") {
+group("lib") {
+  public_deps = [ ":url_rust" ]
+  deps = [ ":url_cpp" ]
+}
+
+rust_static_library("url_rust") {
+  visibility = [ ":*" ]
+  crate_name = "url"
+  crate_root = "crate/src/lib.rs"
+  allow_unsafe = true
+  sources = [ "crate/src/lib.rs" ]
+  cxx_bindings = [ "crate/src/lib.rs" ]
+}
+
+static_library("url_cpp") {
   visibility = [ ":*" ]
   sources = [
     "crate/parse.cc",
@@ -12,48 +26,8 @@ static_library("parse") {
   ]
 
   deps = [
-    ":cxx_generated",
+    ":url_rust",
     "//base:i18n",
-    "//build/rust:cxx_cppdeps",
     "//url",
-  ]
-}
-
-# cargo_crate target has to depend on `parse` for rust unit tests so we can't
-# use the auto-generated target from `cargo_crate` as that would create a
-# circular dependency
-rust_cxx("cxx_generated") {
-  visibility = [ ":*" ]
-  sources = [ "crate/src/lib.rs" ]
-  export_symbols = is_component_build
-}
-
-cargo_crate("lib") {
-  visibility = [ ":*" ]
-  crate_name = "url"
-  epoch = "2"
-  crate_type = "rlib"
-  crate_root = "crate/src/lib.rs"
-  sources = [ "crate/src/lib.rs" ]
-  inputs = []
-  build_native_rust_unit_tests = true
-  edition = "2018"
-  cargo_pkg_version = "2.5.0"
-  cargo_pkg_authors = "The rust-url developers, the brave-core developers"
-  cargo_pkg_name = "url"
-  cargo_pkg_description = "Stub of URL library for Rust to use chromium code"
-  library_configs -= [ "//build/config/compiler:chromium_code" ]
-  library_configs += [ "//build/config/compiler:no_chromium_code" ]
-  executable_configs -= [ "//build/config/compiler:chromium_code" ]
-  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
-  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [
-    ":cxx_generated",
-    ":parse",
-    "//build/rust:cxx_rustdeps",
-  ]
-  rustflags = [
-    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
 }
