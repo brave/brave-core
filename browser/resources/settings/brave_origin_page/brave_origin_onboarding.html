@@ -1,0 +1,42 @@
+<style include="settings-shared cr-shared-style">
+  :host {
+    display: block;
+    padding-bottom: var(--leo-spacing-2xl);
+  }
+
+  .label.primary-title {
+    font: var(--leo-font-large-regular);
+    padding-top: var(--leo-spacing-xl);
+  }
+
+  .label.secondary-title {
+    padding-bottom: var(--leo-spacing-m);
+  }
+
+  #learnMoreLink {
+    color: var(--cr-link-color);
+    cursor: pointer;
+    font: var(--cr-button-font);
+    margin-inline-start: var(--leo-spacing-xl);
+  }
+</style>
+
+<settings-section page-title="$i18n{braveOriginOnboardingTitle}">
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginOnboardingHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginOnboardingDescription1}</p>
+        <p>$i18n{braveOriginOnboardingDescription2}</p>
+      </div>
+    </div>
+  </div>
+  <div class="cr-row">
+    <cr-button class="action-button" on-click="onBuyNowClick_">
+      $i18n{braveOriginOnboardingBuyNow}
+    </cr-button>
+    <a id="learnMoreLink" on-click="onLearnMoreClick_">
+      $i18n{braveOriginOnboardingLearnMore}
+    </a>
+  </div>
+</settings-section>
