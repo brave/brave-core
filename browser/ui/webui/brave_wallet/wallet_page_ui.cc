@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
@@ -23,6 +22,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -50,6 +50,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -117,8 +121,12 @@ void WalletPageUI::BindInterface(
   rewards_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
       std::move(receiver), nullptr,
       brave_rewards::RewardsServiceFactory::GetForProfile(profile),
-      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
-      profile->GetPrefs());
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+      nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+      nullptr, profile->GetPrefs());
 }
 
 void WalletPageUI::CreatePageHandler(
