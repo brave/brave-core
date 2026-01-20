@@ -1,0 +1,57 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+source_set("network") {
+  sources = [
+    "network_client.cc",
+    "network_client.h",
+    "network_client_callback.h",
+    "network_client_util.cc",
+    "network_client_util.h",
+    "oblivious_http_client_impl.cc",
+    "oblivious_http_client_impl.h",
+    "oblivious_http_constants.h",
+    "oblivious_http_feature.cc",
+    "oblivious_http_feature.h",
+    "oblivious_http_key_config.cc",
+    "oblivious_http_key_config.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//services/network/public/cpp",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/core/public:headers",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "network_client_util_unittest.cc",
+    "oblivious_http_feature_unittest.cc",
+  ]
+
+  deps = [
+    ":network",
+    "//base",
+    "//net",
+    "//testing/gtest",
+    "//url",
+  ]
+}

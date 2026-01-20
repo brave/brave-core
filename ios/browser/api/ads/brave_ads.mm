@@ -28,7 +28,7 @@
 #include "base/types/optional_ref.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_ads/core/browser/service/network_client.h"
+#include "brave/components/brave_ads/core/browser/network/network_client.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
