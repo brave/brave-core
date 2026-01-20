@@ -10,11 +10,11 @@
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
-#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -30,6 +30,10 @@
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -136,11 +140,13 @@ void NewTabPageHandler::GetSponsoredImageBackground(
   }
 
   auto sponsored_background = background_facade_->GetSponsoredImageBackground();
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (sponsored_background) {
     ntp_background_images::NewTabTakeoverInfoBarDelegate::
         MaybeDisplayAndIncrementCounter(base::to_address(web_contents_),
                                         &pref_service_.get());
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   std::move(callback).Run(std::move(sponsored_background));
 }
 
