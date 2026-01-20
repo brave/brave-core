@@ -29,6 +29,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -111,8 +112,35 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
+  const auto handle_url_response_result =
+      HandleCreateConfirmationUrlResponse(mojom_url_response);
+  if (!handle_url_response_result.has_value()) {
+    const auto& [failure, should_retry] = handle_url_response_result.error();
+
+    BLOG(0, failure);
+
+    return redeem_confirmation.FailedToRedeemConfirmation(confirmation,
+                                                          should_retry);
+  }
+
   FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
                          std::move(redeem_confirmation), confirmation);
+}
+
+// static
+base::expected<void, std::tuple<std::string, bool>>
+RedeemRewardConfirmation::HandleCreateConfirmationUrlResponse(
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (HttpStatusCodeClass(mojom_url_response.code) ==
+          HttpStatusCodeClassType::kSuccess ||
+      mojom_url_response.code == 418 /* I'm a teapot */) {
+    return base::ok();
+  }
+
+  const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                            HttpStatusCodeClassType::kClientError;
+  return base::unexpected(
+      std::make_tuple("Failed to create confirmation", should_retry));
 }
 
 // static
@@ -178,24 +206,11 @@ base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
 RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& mojom_url_response) {
-  if (mojom_url_response.code == net::HTTP_NOT_FOUND) {
-    return base::unexpected(
-        std::make_tuple("Confirmation not found", /*should_retry=*/false));
-  }
-
-  if (mojom_url_response.code == net::HTTP_BAD_REQUEST) {
-    return base::unexpected(
-        std::make_tuple("Credential is invalid", /*should_retry=*/false));
-  }
-
-  if (mojom_url_response.code == net::HTTP_ACCEPTED) {
-    return base::unexpected(
-        std::make_tuple("Payment token is not ready", /*should_retry=*/true));
-  }
-
   if (mojom_url_response.code != net::HTTP_OK) {
-    return base::unexpected(std::make_tuple("Failed to fetch payment token",
-                                            /*should_retry=*/true));
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return base::unexpected(
+        std::make_tuple("Failed to fetch payment token", should_retry));
   }
 
   std::optional<base::Value::Dict> dict =
@@ -203,7 +218,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
   if (!dict) {
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
-        /*should_retry=*/true));
+        /*should_retry=*/false));
   }
 
   const std::string* const id = dict->FindString("id");
