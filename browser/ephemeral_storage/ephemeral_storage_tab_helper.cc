@@ -32,20 +32,21 @@ using content::WebContents;
 
 namespace ephemeral_storage {
 
-namespace {
 
 #if BUILDFLAG(IS_ANDROID)
-void SetTabModelObserver(WebContents* web_contents,
-                         EphemeralStorageTabHelper* tab_helper,
-                         const bool remove_observer) {
+namespace {
+
+// Returns the TabModel that was used, or nullptr if none found.
+TabModel* AddTabModelObserver(WebContents* web_contents,
+                              EphemeralStorageTabHelper* tab_helper) {
   if (!web_contents) {
-    return;
+    return nullptr;
   }
 
   auto* current_profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   if (!current_profile) {
-    return;
+    return nullptr;
   }
 
   for (TabModel* tab_model : TabModelList::models()) {
@@ -58,18 +59,31 @@ void SetTabModelObserver(WebContents* web_contents,
       if (!tab) {
         continue;
       }
-      if (!remove_observer) {
-        tab_model->AddObserver(tab_helper);
-      } else {
-        tab_model->RemoveObserver(tab_helper);
-      }
+      tab_model->AddObserver(tab_helper);
+      return tab_model;
+    }
+  }
+
+  return nullptr;
+}
+
+void RemoveTabModelObserver(TabModel* tab_model,
+                            EphemeralStorageTabHelper* tab_helper) {
+  if (!tab_model) {
+    return;
+  }
+  // Verify TabModel is still valid (not destroyed) before using it.
+  // This protects against dangling pointers during browser shutdown.
+  for (TabModel* model : TabModelList::models()) {
+    if (model == tab_model) {
+      tab_model->RemoveObserver(tab_helper);
       return;
     }
   }
 }
-#endif
 
 }  // namespace
+#endif
 
 // EphemeralStorageTabHelper helps to manage the lifetime of ephemeral storage.
 // For more information about the design of ephemeral storage please see the
@@ -84,7 +98,7 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 #if BUILDFLAG(IS_ANDROID)
-  SetTabModelObserver(web_contents, this, false);
+  registered_tab_model_ = AddTabModelObserver(web_contents, this);
 #endif
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
@@ -95,7 +109,13 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   UpdateShieldsState(url);
 }
 
-EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
+EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {
+#if BUILDFLAG(IS_ANDROID)
+  // Always remove observer in destructor using the stored TabModel pointer.
+  // We can't rely on web_contents() here as it may already be destroyed.
+  RemoveTabModelObserver(registered_tab_model_, this);
+#endif
+}
 
 std::optional<base::UnguessableToken>
 EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
@@ -232,7 +252,8 @@ void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   provisional_tld_ephemeral_lifetimes_.clear();
   tld_ephemeral_lifetime_.reset();
   weak_factory_.InvalidateWeakPtrs();
-  SetTabModelObserver(web_contents(), this, true);
+  RemoveTabModelObserver(registered_tab_model_, this);
+  registered_tab_model_ = nullptr;
 }
 #endif
 
