@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/containers/flat_map.h"
 
 class PrefValueMap;
@@ -16,7 +17,7 @@ namespace brave_policy {
 
 // PolicyPrefInterceptor is responsible for ensuring that policy pref values
 // that don't support dynamic refresh never get changed at runtime.
-class PolicyPrefInterceptor {
+class COMPONENT_EXPORT(POLICY_PREF_INTERCEPTOR) PolicyPrefInterceptor {
  public:
   PolicyPrefInterceptor();
   ~PolicyPrefInterceptor();
@@ -28,6 +29,8 @@ class PolicyPrefInterceptor {
   // refreshed. On first call for each pref, caches the initial value. On
   // subsequent calls, overrides the pref value with the cached value.
   void InterceptPrefValues(PrefValueMap* pref_value_map);
+
+  static void DisableCachingForTesting();
 
  private:
   // Cache of pref values that should remain stable across policy updates.

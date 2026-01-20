@@ -37,6 +37,8 @@ namespace brave_policy {
 
 namespace {
 
+bool g_disable_caching_for_testing = false;
+
 // Preference names that do not support dynamic refresh.
 // All policy values will be initialized at browser start
 // and cached for the lifetime of the browser process.
@@ -63,8 +65,13 @@ PolicyPrefInterceptor::PolicyPrefInterceptor() = default;
 
 PolicyPrefInterceptor::~PolicyPrefInterceptor() = default;
 
+// static
+void PolicyPrefInterceptor::DisableCachingForTesting() {
+  g_disable_caching_for_testing = true;
+}
+
 void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map) {
-  if (!pref_value_map) {
+  if (!pref_value_map || g_disable_caching_for_testing) {
     return;
   }
 

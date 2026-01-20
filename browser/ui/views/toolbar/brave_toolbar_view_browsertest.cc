@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_policy/policy_pref_interceptor.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -101,6 +102,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BlockVPNByPolicy(bool value) {
+    brave_policy::PolicyPrefInterceptor::DisableCachingForTesting();
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveVPNDisabled, policy::POLICY_LEVEL_MANDATORY,
                  policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
@@ -114,6 +116,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void BlockAIChatByPolicy(bool value) {
+    brave_policy::PolicyPrefInterceptor::DisableCachingForTesting();
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveAIChatEnabled,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_MACHINE,
