@@ -26,9 +26,9 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_observer.h"
-#endif
 
 class TabModel;
+#endif
 
 namespace content {
 class BrowserContext;
