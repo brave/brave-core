@@ -77,11 +77,19 @@ public struct UserAgentBuilder {
   }
 
   private var osVersion: String {
-    var version = "\(os.majorVersion)_\(os.minorVersion)"
-    if os.patchVersion > 0 {
-      version += "_\(os.patchVersion)"
+    if os.majorVersion >= 26 {
+      // Starting with iOS/iPadOS 26, Safari freezes the os version in their
+      // user agent string to the last version released before iOS 26.
+      // We align with this to help protect against fingerprinting and for
+      // improved webcompatibility.
+      return "18_7"
+    } else {
+      var version = "\(os.majorVersion)_\(os.minorVersion)"
+      if os.patchVersion > 0 {
+        version += "_\(os.patchVersion)"
+      }
+      return version
     }
-    return version
   }
 
   // These user agents are taken from iOS Safari in desktop mode and hardcoded.
