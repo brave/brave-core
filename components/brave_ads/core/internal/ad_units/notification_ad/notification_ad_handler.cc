@@ -154,7 +154,7 @@ void NotificationAdHandler::OnBrowserDidEnterBackground() {
 }
 
 void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
-    const SegmentList& segments) {
+    const SegmentList& /*segments*/) {
   BLOG(1, "Opportunity arose to serve a notification ad");
 }
 
