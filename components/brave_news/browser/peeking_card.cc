@@ -14,7 +14,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -152,12 +151,13 @@ std::optional<size_t> PickPeekingCardWithMax(
     const auto& article = get_article(index);
     // In the morning, weight news higher
     if (6 <= exploded.hour && exploded.hour < 10 &&
-        base::Contains(article->channels, kTopNewsChannel)) {
+        std::ranges::contains(article->channels, kTopNewsChannel)) {
       score += kMorningNewsBoost;
 
       // In the evening, weight entertainment higher
     } else if (17 <= exploded.hour && exploded.hour <= 22 &&
-               base::Contains(article->channels, kEntertainmentChannel)) {
+               std::ranges::contains(article->channels,
+                                     kEntertainmentChannel)) {
       score += kEveningEntertainmentBoost;
     }
   }

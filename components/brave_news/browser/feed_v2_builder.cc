@@ -15,7 +15,6 @@
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
@@ -219,7 +218,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
               if (/*is_channel*/ content_group.second) {
                 auto channels =
                     publisher_id_to_channels->data.find(article->publisher_id);
-                if (base::Contains(channels->second, content_group.first)) {
+                if (std::ranges::contains(channels->second,
+                                          content_group.first)) {
                   return meta.weighting;
                 }
 
@@ -694,7 +694,8 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
                 continue;
               }
 
-              if (!base::Contains(locale_info_it->get()->channels, channel)) {
+              if (!std::ranges::contains(locale_info_it->get()->channels,
+                                         channel)) {
                 continue;
               }
 
@@ -1014,7 +1015,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
             for (const auto& [channel_id, channel] :
                  builder->channels_controller_->GetChannelsFromPublishers(
                      publishers, builder->current_update_->subscriptions)) {
-              if (base::Contains(channel->subscribed_locales, locale)) {
+              if (std::ranges::contains(channel->subscribed_locales, locale)) {
                 channels.push_back(channel_id);
               }
             }

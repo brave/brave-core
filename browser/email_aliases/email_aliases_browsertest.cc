@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <memory>
 
-#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
@@ -329,8 +329,8 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserNoFeatureTest, NoContextMenuItem) {
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
-  EXPECT_FALSE(base::Contains(menu_waiter.GetCapturedEnabledCommandIds(),
-                              IDC_NEW_EMAIL_ALIAS));
+  EXPECT_FALSE(std::ranges::contains(menu_waiter.GetCapturedEnabledCommandIds(),
+                                     IDC_NEW_EMAIL_ALIAS));
   EXPECT_FALSE(menu_waiter.IsCommandExecuted());
 }
 
@@ -341,8 +341,8 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest,
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-url");
   menu_waiter.WaitForMenuOpenAndClose();
-  EXPECT_FALSE(base::Contains(menu_waiter.GetCapturedEnabledCommandIds(),
-                              IDC_NEW_EMAIL_ALIAS));
+  EXPECT_FALSE(std::ranges::contains(menu_waiter.GetCapturedEnabledCommandIds(),
+                                     IDC_NEW_EMAIL_ALIAS));
   EXPECT_FALSE(menu_waiter.IsCommandExecuted());
 }
 

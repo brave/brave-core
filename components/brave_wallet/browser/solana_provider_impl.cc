@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -160,7 +159,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
         delegate_->GetAllowedAccounts(mojom::CoinType::SOL, identifiers);
     if (allowed_accounts) {
       std::erase_if(identifiers, [&allowed_accounts](const auto& identifier) {
-        return base::Contains(*allowed_accounts, identifier);
+        return std::ranges::contains(*allowed_accounts, identifier);
       });
     }
     delegate_->RequestPermissions(

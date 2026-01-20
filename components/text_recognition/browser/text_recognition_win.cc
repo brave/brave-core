@@ -17,7 +17,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
@@ -186,7 +185,7 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
 
     const auto code =
         brave_l10n::GetISOLanguageCode(ScopedHString(text).GetAsUTF8());
-    if (base::Contains(language_codes, code)) {
+    if (std::ranges::contains(language_codes, code)) {
       continue;
     }
 

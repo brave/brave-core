@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <optional>
 #include <string>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/contains.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 #define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
@@ -83,10 +83,10 @@ void PermissionRequestManager::AcceptDenyCancel(
           cancelled_requests.size()) == requests_.size());
 
   for (const auto& request : requests_) {
-    if (base::Contains(accepted_requests, request.get())) {
+    if (std::ranges::contains(accepted_requests, request.get())) {
       PermissionGrantedIncludingDuplicates(request.get(),
                                            /*is_one_time=*/false);
-    } else if (base::Contains(denied_requests, request.get())) {
+    } else if (std::ranges::contains(denied_requests, request.get())) {
       PermissionDeniedIncludingDuplicates(request.get());
     } else {
       CancelRequestIncludingDuplicates(request.get());

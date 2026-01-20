@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
@@ -252,11 +251,11 @@ TEST_F(BraveNewsSuggestionsControllerTest,
   EXPECT_EQ(3u, suggestions.size());
   // Note: Don't care about order here - we're going to be tweaking the weights
   // and we don't want the test to fail all the time.
-  EXPECT_TRUE(base::Contains(suggestions, "1"));  // Visited
-  EXPECT_TRUE(
-      base::Contains(suggestions, "2"));  // Similar to P3 (which is subscribed)
-  EXPECT_TRUE(
-      base::Contains(suggestions, "4"));  // Similar to P1 (which was visited)
+  EXPECT_TRUE(std::ranges::contains(suggestions, "1"));  // Visited
+  EXPECT_TRUE(std::ranges::contains(
+      suggestions, "2"));  // Similar to P3 (which is subscribed)
+  EXPECT_TRUE(std::ranges::contains(suggestions,
+                                    "4"));  // Similar to P1 (which was visited)
 }
 
 TEST_F(BraveNewsSuggestionsControllerTest,

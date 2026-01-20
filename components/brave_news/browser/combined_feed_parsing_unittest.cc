@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/values.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -69,9 +68,9 @@ TEST(BraveNewsCombinedFeedParsing, GetItemWithChannels) {
 
   auto channels = feed_items[0]->get_article()->data->channels;
   EXPECT_EQ(3u, channels.size());
-  EXPECT_TRUE(base::Contains(channels, "One"));
-  EXPECT_TRUE(base::Contains(channels, "Two"));
-  EXPECT_TRUE(base::Contains(channels, "Three"));
+  EXPECT_TRUE(std::ranges::contains(channels, "One"));
+  EXPECT_TRUE(std::ranges::contains(channels, "Two"));
+  EXPECT_TRUE(std::ranges::contains(channels, "Three"));
 }
 
 TEST(BraveNewsCombinedFeedParsing, FailBadProtocol) {

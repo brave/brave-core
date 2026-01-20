@@ -11,7 +11,6 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
@@ -119,8 +118,8 @@ bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
   std::string country_code = brave_rewards_service_->GetCountryCode();
   const std::vector<std::string> providers =
       brave_rewards_service_->GetExternalWalletProviders();
-  if (!base::Contains(providers,
-                      brave_rewards::internal::constant::kWalletSolana)) {
+  if (!std::ranges::contains(
+          providers, brave_rewards::internal::constant::kWalletSolana)) {
     return false;
   }
 
@@ -135,8 +134,8 @@ bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
     return true;
   }
 
-  return base::Contains(allow, country_code) ||
-         (!block.empty() && !base::Contains(block, country_code));
+  return std::ranges::contains(allow, country_code) ||
+         (!block.empty() && !std::ranges::contains(block, country_code));
 }
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(
@@ -494,8 +493,8 @@ bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
           return true;
         }
 
-        return base::Contains(allow, country_code) ||
-               (!block.empty() && !base::Contains(block, country_code));
+        return std::ranges::contains(allow, country_code) ||
+               (!block.empty() && !std::ranges::contains(block, country_code));
       });
 }
 

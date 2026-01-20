@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
@@ -163,7 +162,7 @@ void AcceleratorService::UpdateDefaultAccelerators() {
     std::ranges::copy_if(
         new_accelerators, std::back_inserter(added[command_id]),
         [&old_accelerators, &system_managed](const auto& accelerator) {
-          return !base::Contains(old_accelerators, accelerator) ||
+          return !std::ranges::contains(old_accelerators, accelerator) ||
                  // If the accelerator is marked as a system command, be sure to
                  // reset it.
                  system_managed.contains(accelerator);
@@ -173,7 +172,7 @@ void AcceleratorService::UpdateDefaultAccelerators() {
     std::ranges::copy_if(
         old_accelerators, std::back_inserter(removed[command_id]),
         [&new_accelerators](const auto& accelerator) {
-          return !base::Contains(new_accelerators, accelerator);
+          return !std::ranges::contains(new_accelerators, accelerator);
         });
   }
 
@@ -344,8 +343,8 @@ std::vector<int> AcceleratorService::AssignAccelerator(
     if (std::erase_if(
             accelerators, [&accelerator, &system_managed, &default_accelerators,
                            other_command_id](const auto& other) {
-              bool is_default_accelerator =
-                  base::Contains(default_accelerators[other_command_id], other);
+              bool is_default_accelerator = std::ranges::contains(
+                  default_accelerators[other_command_id], other);
               // Note: We don't erase system managed default accelerators, as
               // the system can register the same accelerator for multiple
               // commands, and we don't want resetting one to reset the other.

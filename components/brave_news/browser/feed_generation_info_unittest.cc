@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
@@ -135,8 +134,8 @@ TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
   EXPECT_EQ(3u, content_groups.size());
 
   auto has_group = [&content_groups](const std::string& group) {
-    return base::Contains(content_groups, group,
-                          [](const auto& other) { return other.first; });
+    return std::ranges::contains(content_groups, group,
+                                 [](const auto& other) { return other.first; });
   };
   EXPECT_TRUE(has_group(kTopNewsChannel));
   EXPECT_TRUE(has_group(kFooChannel));
@@ -198,7 +197,7 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
 
   auto channels = info.EligibleChannels();
   EXPECT_EQ(1u, channels.size());
-  EXPECT_TRUE(base::Contains(channels, kFooChannel));
+  EXPECT_TRUE(std::ranges::contains(channels, kFooChannel));
 }
 
 TEST(BraveNewsFeedSampling, GetArticleInfosSkipsNull) {

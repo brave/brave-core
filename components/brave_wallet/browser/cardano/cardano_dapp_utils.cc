@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -48,8 +47,9 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   auto selected_account = keyring_service->GetSelectedCardanoDappAccount();
   bool is_selected_account_allowed =
       selected_account &&
-      base::Contains(*allowed_accounts, GetAccountPermissionIdentifier(
-                                            selected_account->account_id));
+      std::ranges::contains(
+          *allowed_accounts,
+          GetAccountPermissionIdentifier(selected_account->account_id));
   if (is_selected_account_allowed) {
     return selected_account->account_id.Clone();
   }
@@ -58,7 +58,7 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   // we use first allowed account.
   // Similar behavior implemented in EthereumProviderImpl.
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
-    bool is_account_allowed = base::Contains(
+    bool is_account_allowed = std::ranges::contains(
         *allowed_accounts, GetAccountPermissionIdentifier(account->account_id));
     if (is_account_allowed) {
       return account->account_id.Clone();

@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -164,9 +163,9 @@ void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(
   const auto hidden_items = service->GetHiddenDefaultSidebarItems();
   AllowJavascript();
   ResolveJavascriptCallback(
-      args[0], !base::Contains(hidden_items,
-                               sidebar::SidebarItem::BuiltInItemType::kChatUI,
-                               &sidebar::SidebarItem::built_in_item_type));
+      args[0], !std::ranges::contains(
+                   hidden_items, sidebar::SidebarItem::BuiltInItemType::kChatUI,
+                   &sidebar::SidebarItem::built_in_item_type));
 }
 
 void BraveLeoAssistantHandler::HandleResetLeoData(

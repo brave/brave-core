@@ -5,13 +5,13 @@
 
 #include "brave/components/commands/common/accelerator_parsing.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -119,7 +119,7 @@ ui::KeyEventFlags GetModifierFromKeys(
     const std::vector<std::string>& modifiers) {
   ui::KeyEventFlags result = ui::EF_NONE;
   for (const auto& [modifier, name] : GetAllModifierNames()) {
-    if (base::Contains(modifiers, name)) {
+    if (std::ranges::contains(modifiers, name)) {
       result |= modifier;
     }
   }

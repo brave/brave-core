@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
@@ -66,7 +65,8 @@ Channels ChannelsController::GetChannelsFromPublishers(
     for (const auto& locale_info : it.second->locales) {
       for (auto& [channel_id, channel] : channels) {
         // We already know we're subscribed to this channel in this locale.
-        if (base::Contains(channel->subscribed_locales, locale_info->locale)) {
+        if (std::ranges::contains(channel->subscribed_locales,
+                                  locale_info->locale)) {
           continue;
         }
 

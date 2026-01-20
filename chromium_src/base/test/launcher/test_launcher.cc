@@ -74,7 +74,7 @@ void TestLauncher::MaybeSaveSummaryAsJSON(
   // This may be called from TestLauncher_ChromiumImpl::OnTestFinished() when a
   // lot of test has failed and the TestLauncher decides to do an early exit.
   if (teamcity_reporter_ &&
-      Contains(additional_tags, "BROKEN_TEST_EARLY_EXIT")) {
+      std::ranges::contains(additional_tags, "BROKEN_TEST_EARLY_EXIT")) {
     // TestLauncher will call exit(1) before returning from OnTestFinished(), so
     // log the test suite shutdown here while we can.
     teamcity_reporter_->OnBrokenTestEarlyExit();

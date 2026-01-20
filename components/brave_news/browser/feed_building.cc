@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
@@ -293,8 +292,8 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
       for (const auto& channel_id : locale_info->channels) {
         if (channels.contains(channel_id)) {
           const auto& channel = channels.at(channel_id);
-          if (base::Contains(channel->subscribed_locales,
-                             locale_info->locale)) {
+          if (std::ranges::contains(channel->subscribed_locales,
+                                    locale_info->locale)) {
             VLOG(2) << "Showing article because publisher "
                     << data->publisher_id << ": " << publisher->publisher_name
                     << " is in channel " << locale_info->locale << "."

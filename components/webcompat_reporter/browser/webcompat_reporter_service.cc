@@ -13,7 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/version_info/version_info.h"
@@ -185,22 +184,25 @@ constexpr char kHideChatCategoryForComponentId[] =
 bool HideIssueCategory(const std::vector<std::string>& component_ids,
                        const WebcompatCategory category) {
   if (category == WebcompatCategory::kCookieNotice &&
-      !base::Contains(component_ids, kHideCookieNoticeCategoryForComponentId)) {
+      !std::ranges::contains(component_ids,
+                             kHideCookieNoticeCategoryForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kNewsletter &&
-      !base::Contains(component_ids, kHideNewsletterCategoryForComponentId)) {
+      !std::ranges::contains(component_ids,
+                             kHideNewsletterCategoryForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kSocial &&
-      !base::Contains(component_ids, kHideSocialCategoryForComponentId)) {
+      !std::ranges::contains(component_ids,
+                             kHideSocialCategoryForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kChat &&
-      !base::Contains(component_ids, kHideChatCategoryForComponentId)) {
+      !std::ranges::contains(component_ids, kHideChatCategoryForComponentId)) {
     return true;
   }
 

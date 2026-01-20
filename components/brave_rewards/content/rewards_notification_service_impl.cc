@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -45,7 +44,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   if (id.empty()) {
     id = GenerateRewardsNotificationID();
   } else if (only_once) {
-    if (base::Contains(rewards_notifications_displayed_, id)) {
+    if (std::ranges::contains(rewards_notifications_displayed_, id)) {
       return;
     }
   }

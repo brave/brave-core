@@ -20,7 +20,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/checked_iterators.h"
-#include "base/containers/contains.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/field_trial_params.h"
@@ -982,7 +981,7 @@ void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
 void ModelService::SetDefaultModelKey(const std::string& new_key) {
   const auto& models = GetModels();
 
-  bool does_model_exist = base::Contains(
+  bool does_model_exist = std::ranges::contains(
       models, new_key, [](const mojom::ModelPtr& model) { return model->key; });
 
   if (!does_model_exist) {

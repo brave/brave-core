@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <functional>
 #include <set>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
@@ -190,10 +190,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
       if (request.headers.contains(header)) {
-        if (base::Contains(default_hints_, header)) {
+        if (std::ranges::contains(default_hints_, header)) {
           default_client_hints_headers_seen_.insert(header);
           continue;
-        } else if (base::Contains(allowed_hints_, header)) {
+        } else if (std::ranges::contains(allowed_hints_, header)) {
           allowed_client_hints_headers_seen_.insert(header);
           continue;
         }
