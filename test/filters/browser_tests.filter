@@ -3424,4 +3424,4 @@
 # set to 'off'. It's still configurable by user. We have our own browser test
 # covering this - safe to disable the upstream one.
 # For more info, see https://github.com/brave/brave-browser/issues/46011
-- SecureDnsHandlerTest.OtherPoliciesSet
+-SecureDnsHandlerTest.OtherPoliciesSet
