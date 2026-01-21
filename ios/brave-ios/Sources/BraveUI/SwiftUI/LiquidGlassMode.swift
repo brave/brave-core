@@ -51,7 +51,7 @@ struct LiquidGlassLayoutTrafficLightPadding: ViewModifier {
         .padding(.leading, trafficLightsVisible ? leadingInset : 0)
         .background(
           TrafficLightDetector { visible, inset in
-            withAnimation(.easeInOut(duration: 0.25)) {
+            withAnimation(.easeIn(duration: 0.1)) {
               trafficLightsVisible = visible
               layoutGuideInset = inset
             }
@@ -109,7 +109,7 @@ class TrafficLightDetectorViewController: UIViewController {
   private func startMonitoring() {
     displayLink?.invalidate()
     displayLink = CADisplayLink(target: self, selector: #selector(checkTrafficLights))
-    displayLink?.preferredFramesPerSecond = 10  // Check 10 times per second
+    displayLink?.preferredFramesPerSecond = 2
     displayLink?.add(to: .main, forMode: .common)
 
     checkTrafficLights()
@@ -144,10 +144,15 @@ class TrafficLightDetectorViewController: UIViewController {
   }
 
   private func updateVisibility(_ visible: Bool) {
-    if let onVisibilityChange, lastVisibilityState != visible {
-      lastVisibilityState = visible
+    guard let onVisibilityChange, lastVisibilityState != visible else { return }
+    lastVisibilityState = visible
+
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
       let inset =
-        view.bounds.width > 0 ? view.liquidGlassHorizontalSafeAreaLayoutGuide.layoutFrame.minX : 0
+        self.view.bounds.width > 0
+        ? self.view.liquidGlassHorizontalSafeAreaLayoutGuide.layoutFrame.minX
+        : 0
       onVisibilityChange(visible, inset)
     }
   }
