@@ -8,6 +8,7 @@
 
 #include <string_view>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 
 class Browser;
@@ -29,7 +30,9 @@ void ShowShortcutsPage(Browser* browser);
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 void ShowBraveTalk(Browser* browser);
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void ShowFullpageChat(Browser* browser);
+#endif
 
 void ShowAppsPage(Browser* browser);
 
