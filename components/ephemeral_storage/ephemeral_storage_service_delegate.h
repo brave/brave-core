@@ -11,6 +11,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"
 
@@ -20,6 +21,9 @@ namespace ephemeral_storage {
 class EphemeralStorageServiceDelegate {
  public:
   virtual ~EphemeralStorageServiceDelegate() = default;
+
+  using OnBecomeActiveCallback =
+      base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>&)>;
 
   // Cleanups ephemeral storages (local storage, cookies).
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
@@ -31,14 +35,18 @@ class EphemeralStorageServiceDelegate {
   // Registers a callback to be called when the browser started and becomes
   // active.
   virtual void RegisterOnBecomeActiveCallback(
-      base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
-          callback) = 0;
+      OnBecomeActiveCallback callback) = 0;
   // Finds all tabs related to the ephemeral_domains list, prepares them for
   // first party storage cleanup, and closes them.
   virtual void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const = 0;
+  // Returns the AutoShredMode configuration for the given URL when the
+  // auto-shred feature is enabled by feature flags, otherwise returns
+  // std::nullopt.
+  virtual std::optional<brave_shields::mojom::AutoShredMode> GetAutoShredMode(
+      const GURL& url) = 0;
 #if BUILDFLAG(IS_ANDROID)
   // Triggers notification of current app state on Android. We need to call it
   // at the beginning of the TLD ephemeral lifetime.

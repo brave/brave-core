@@ -49,13 +49,13 @@ class BraveEphemeralStorageServiceDelegate
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
-  void RegisterOnBecomeActiveCallback(
-      base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
-          callback) override;
+  void RegisterOnBecomeActiveCallback(OnBecomeActiveCallback callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains) override;
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const override;
+  std::optional<brave_shields::mojom::AutoShredMode> GetAutoShredMode(
+      const GURL& url) override;
 #if BUILDFLAG(IS_ANDROID)
   // Initiates the notification of the current app state on Android.
   void TriggerCurrentAppStateNotification() override;
@@ -66,8 +66,7 @@ class BraveEphemeralStorageServiceDelegate
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   base::OnceClosure first_window_opened_callback_;
-  base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
-      on_become_active_callback_;
+  OnBecomeActiveCallback on_become_active_callback_;
   std::unique_ptr<ApplicationStateObserver> application_state_observer_;
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;

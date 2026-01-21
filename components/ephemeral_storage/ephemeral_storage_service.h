@@ -53,9 +53,7 @@ class EphemeralStorageService : public KeyedService {
   EphemeralStorageService(
       content::BrowserContext* context,
       HostContentSettingsMap* host_content_settings_map,
-      std::unique_ptr<EphemeralStorageServiceDelegate> delegate,
-      brave_shields::BraveShieldsSettingsService*
-          brave_shields_settings_service);
+      std::unique_ptr<EphemeralStorageServiceDelegate> delegate);
   ~EphemeralStorageService() override;
 
   void Shutdown() override;
@@ -140,14 +138,12 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   void FinishStorageCleanupOnBecomeActive(
-      const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> keys);
+      const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey>& keys);
 
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
-  raw_ptr<brave_shields::BraveShieldsSettingsService>
-      brave_shields_settings_service_ = nullptr;
   std::unique_ptr<EphemeralStorageServiceDelegate> delegate_;
   raw_ptr<PrefService> prefs_ = nullptr;
   // These patterns are removed on service Shutdown.

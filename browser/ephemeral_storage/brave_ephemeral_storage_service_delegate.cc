@@ -24,6 +24,7 @@
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -285,8 +286,7 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
 }
 
 void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(
-    base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>)>
-        callback) {
+    OnBecomeActiveCallback callback) {
   DCHECK(callback);
   on_become_active_callback_ = std::move(callback);
 }
@@ -371,6 +371,18 @@ bool BraveEphemeralStorageServiceDelegate::
     IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
   return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
       url);
+}
+
+std::optional<brave_shields::mojom::AutoShredMode>
+BraveEphemeralStorageServiceDelegate::GetAutoShredMode(const GURL& url) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage) ||
+      !base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return std::nullopt;
+  }
+
+  return shields_settings_service_->GetAutoShredMode(url);
 }
 
 }  // namespace ephemeral_storage

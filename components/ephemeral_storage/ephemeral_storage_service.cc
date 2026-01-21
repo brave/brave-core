@@ -79,37 +79,20 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
           browser_context, *partition_domain, *partition_name, false));
 }
 
-std::optional<brave_shields::mojom::AutoShredMode> GetAutoShredMode(
-    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service,
-    const GURL& url) {
-  if (!brave_shields_settings_service ||
-      !base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage) ||
-      !base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShredFeature)) {
-    return std::nullopt;
-  }
-
-  return brave_shields_settings_service->GetAutoShredMode(url);
-}
-
 }  // namespace
 
 EphemeralStorageService::EphemeralStorageService(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
-    std::unique_ptr<EphemeralStorageServiceDelegate> delegate,
-    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service)
+    std::unique_ptr<EphemeralStorageServiceDelegate> delegate)
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
-      brave_shields_settings_service_(brave_shields_settings_service),
       delegate_(std::move(delegate)),
       prefs_(user_prefs::UserPrefs::Get(context_)) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(delegate_);
   DCHECK(prefs_);
-  DCHECK(brave_shields_settings_service_);
 
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
@@ -261,8 +244,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
-  const auto auto_shred_mode =
-      GetAutoShredMode(brave_shields_settings_service_, url);
+  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
   if (!first_party_storage_cleanup_enforced && auto_shred_mode.has_value() &&
       (auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::NEVER ||
        auto_shred_mode.value() ==
@@ -465,9 +447,9 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 }
 
 void EphemeralStorageService::FinishStorageCleanupOnBecomeActive(
-    const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> keys) {
+    const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey>& keys) {
   for (const auto& key : keys) {
-    CleanupTLDEphemeralArea({key.first, key.second}, true, true);
+    CleanupTLDEphemeralArea(key, true, true);
   }
 }
 

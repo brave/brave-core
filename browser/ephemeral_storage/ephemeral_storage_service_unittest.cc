@@ -76,8 +76,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
   MOCK_METHOD(void,
               RegisterOnBecomeActiveCallback,
-              (base::OnceCallback<
-                  void(const base::flat_set<TLDEphemeralAreaKey>)> callback),
+              (OnBecomeActiveCallback callback),
               (override));
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
@@ -99,16 +98,13 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
       base::OnceCallback<void(const std::vector<std::string>&)> callback,
       bool trigger_callback) {
     EXPECT_CALL(*this, RegisterOnBecomeActiveCallback(_))
-        .WillOnce(
-            [this, trigger_callback](
-                base::OnceCallback<void(
-                    const base::flat_set<TLDEphemeralAreaKey>)> callback) {
-              if (trigger_callback) {
-                std::move(callback).Run({});
-              } else {
-                on_become_active_callback_ = std::move(callback);
-              }
-            });
+        .WillOnce([this, trigger_callback](OnBecomeActiveCallback callback) {
+          if (trigger_callback) {
+            std::move(callback).Run({});
+          } else {
+            on_become_active_callback_ = std::move(callback);
+          }
+        });
   }
 
   void TriggerFirstWindowOpenedCallback() {
