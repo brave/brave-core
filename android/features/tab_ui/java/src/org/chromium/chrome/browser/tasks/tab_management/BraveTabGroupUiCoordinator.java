@@ -9,10 +9,9 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -42,19 +41,19 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private final TabModelSelector mTabModelSelector;
 
     public BraveTabGroupUiCoordinator(
-            @NonNull Activity activity,
-            @NonNull ViewGroup parentView,
-            @NonNull BrowserControlsStateProvider browserControlsStateProvider,
-            @NonNull ScrimManager scrimManager,
-            @NonNull MonotonicObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            @NonNull BottomSheetController bottomSheetController,
-            @NonNull DataSharingTabManager dataSharingTabManager,
-            @NonNull TabModelSelector tabModelSelector,
-            @NonNull TabContentManager tabContentManager,
-            @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            @NonNull ModalDialogManager modalDialogManager,
-            @NonNull ThemeColorProvider themeColorProvider,
+            Activity activity,
+            ViewGroup parentView,
+            BrowserControlsStateProvider browserControlsStateProvider,
+            ScrimManager scrimManager,
+            NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            BottomSheetController bottomSheetController,
+            DataSharingTabManager dataSharingTabManager,
+            TabModelSelector tabModelSelector,
+            TabContentManager tabContentManager,
+            TabCreatorManager tabCreatorManager,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
+            ModalDialogManager modalDialogManager,
+            ThemeColorProvider themeColorProvider,
             UndoBarThrottle undoBarThrottle,
             MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             Supplier<ShareDelegate> shareDelegateSupplier) {

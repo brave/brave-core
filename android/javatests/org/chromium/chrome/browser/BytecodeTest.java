@@ -48,7 +48,6 @@ import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -1409,7 +1408,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         boolean.class,
                         MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         WindowAndroid.class,
                         OneshotSupplier.class,
@@ -1464,7 +1463,7 @@ public class BytecodeTest {
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
                         ScrimManager.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         BottomSheetController.class,
                         DataSharingTabManager.class,
                         TabModelSelector.class,
@@ -1843,8 +1842,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         Supplier.class,
-                        ObservableSupplierImpl.class,
-                        ObservableSupplierImpl.class,
+                        SettableMonotonicObservableSupplier.class,
+                        SettableMonotonicObservableSupplier.class,
                         OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
