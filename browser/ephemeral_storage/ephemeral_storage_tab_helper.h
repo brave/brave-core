@@ -23,8 +23,11 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_observer.h"
+
+class TabModel;
 #endif
 
 namespace content {
@@ -77,6 +80,10 @@ class EphemeralStorageTabHelper
 #if BUILDFLAG(IS_ANDROID)
   // TabModelObserver
   void WillCloseTab(TabAndroid* tab) override;
+
+  // Store the TabModel we registered with, so we can remove ourselves in
+  // destructor even after WebContents is destroyed.
+  raw_ptr<TabModel> registered_tab_model_ = nullptr;
 #endif
 
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
