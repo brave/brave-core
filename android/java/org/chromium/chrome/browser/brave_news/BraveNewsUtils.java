@@ -134,13 +134,15 @@ public class BraveNewsUtils {
         }
     }
 
-    public static boolean shouldDisplayNewsFeed() {
-        return BravePrefServiceBridge.getInstance().getShowNews()
+    public static boolean shouldDisplayNewsFeed(@Nullable Profile profile) {
+        return !BraveNewsPolicy.isDisabledByPolicy(profile)
+                && BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn();
     }
 
-    public static boolean shouldDisplayNewsOptin() {
-        return BravePrefServiceBridge.getInstance().getShowNews()
+    public static boolean shouldDisplayNewsOptin(@Nullable Profile profile) {
+        return !BraveNewsPolicy.isDisabledByPolicy(profile)
+                && BravePrefServiceBridge.getInstance().getShowNews()
                 && !BravePrefServiceBridge.getInstance().getNewsOptIn()
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);

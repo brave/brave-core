@@ -25,6 +25,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -144,8 +145,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             mAccountController.updateUI();
         }
 
-        // Check if Leo is disabled by policy
+        // Check if features are disabled by policy
         checkLeoPolicyAndUpdatePreference();
+        checkNewsPolicyAndUpdatePreference();
 
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
@@ -616,5 +618,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     }
                     removePreferenceIfPresent(PREF_BRAVE_LEO);
                 });
+    }
+
+    /** Checks if News is disabled by policy via Brave Origin and removes the preference if so. */
+    private void checkNewsPolicyAndUpdatePreference() {
+        if (BraveNewsPolicy.isDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
+        }
     }
 }

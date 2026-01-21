@@ -38,6 +38,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/ai_chat/core/common/pref_names.h",
     "//brave/components/brave_account/pref_names.h",
     "//brave/components/brave_adaptive_captcha/pref_names.h",
+    "//brave/components/brave_news/common/pref_names.h",
     "//brave/components/brave_origin/pref_names.h",
     "//brave/components/brave_rewards/core/pref_names.h",
     "//brave/components/brave_shields/core/common/pref_names.h",

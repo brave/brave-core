@@ -43,9 +43,11 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl.MenuGroup;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.commerce.ShoppingServiceFactory;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtils;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtilsJni;
@@ -61,6 +63,7 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.offlinepages.OfflinePageUtils;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -288,6 +291,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @After
     public void tearDown() {
         AccessibilityState.setIsKnownScreenReaderEnabledForTesting(false);
+        BraveLeoPrefUtils.setLeoDisabledByPolicy(false);
+        BraveRewardsPolicy.setDisabledByPolicy(false);
     }
 
     private void assertMenuItemsAreEqual(
@@ -384,6 +389,52 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.exit_id);
 
         assertMenuItemsAreEqual(modelList, expectedItems.toArray(new Integer[0]));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    public void testBravePageMenuItems_FeaturesDisabledByPolicy() {
+        setUpMocksForPageMenu();
+        when(mTab.getUrl()).thenReturn(JUnitTestGURLs.NTP_URL);
+        when(mTab.isNativePage()).thenReturn(true);
+        when(mNativePage.isPdf()).thenReturn(false);
+        when(mTab.getNativePage()).thenReturn(mNativePage);
+        doReturn(false)
+                .when(mTabbedAppMenuPropertiesDelegate)
+                .shouldShowTranslateMenuItem(any(Tab.class));
+
+        // Set features as disabled by policy
+        // News policy is checked via UserPrefs directly
+        when(mPrefService.isManagedPreference(BravePref.BRAVE_NEWS_DISABLED_BY_POLICY))
+                .thenReturn(true);
+        when(mPrefService.getBoolean(BravePref.BRAVE_NEWS_DISABLED_BY_POLICY)).thenReturn(true);
+        BraveLeoPrefUtils.setLeoDisabledByPolicy(true);
+        BraveRewardsPolicy.setDisabledByPolicy(true);
+
+        assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        // brave_news_id, brave_leo_id, brave_rewards_id should NOT be in the menu
+        Integer[] expectedItems = {
+            R.id.new_tab_menu_id,
+            R.id.new_incognito_tab_menu_id,
+            R.id.add_to_group_menu_id,
+            R.id.divider_line_id,
+            R.id.open_history_menu_id,
+            R.id.downloads_menu_id,
+            R.id.all_bookmarks_menu_id,
+            R.id.brave_wallet_id,
+            // R.id.brave_leo_id is NOT included - disabled by policy
+            // R.id.brave_rewards_id is NOT included - disabled by policy
+            R.id.recent_tabs_menu_id,
+            R.id.divider_line_id,
+            R.id.preferences_id,
+            R.id.set_default_browser,
+            // R.id.brave_news_id is NOT included - disabled by policy
+            R.id.brave_customize_menu_id,
+            R.id.exit_id,
+        };
+        assertMenuItemsAreEqual(modelList, expectedItems);
     }
 
     private void setUpMocksForPageMenu() {

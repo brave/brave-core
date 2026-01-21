@@ -279,8 +279,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
 
-        mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin();
-        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed();
+        mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin(mProfile);
+        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
 
         initPreferenceObserver();
         if (mPreferenceListener != null) {
@@ -1089,7 +1089,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void refreshFeed() {
         boolean isShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
-        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed();
+        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
         if (!isShowNewsOn) {
             mNtpAdapter.setDisplayNewsFeed(false);
 
@@ -1223,7 +1223,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         ((BraveActivity) mActivity).setNewTabPageManager(manager);
         mFeedHash = "";
         initBraveNewsController(null);
-        if (BraveNewsUtils.shouldDisplayNewsFeed() && ((BraveActivity) mActivity).isLoadedFeed()) {
+        if (BraveNewsUtils.shouldDisplayNewsFeed(mProfile)
+                && ((BraveActivity) mActivity).isLoadedFeed()) {
             CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                     ((BraveActivity) mActivity).getNewsItemsFeedCards();
             if (existingNewsFeedObject != null) {
