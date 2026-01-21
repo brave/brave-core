@@ -157,9 +157,11 @@ function ConversationEntries() {
 
         const groupIsTask = isAssistantGroupTask(group)
 
-        const shouldOmitArtifacts =
+        // Omit artifacts until generation is complete so we show
+        // the artifacts and the final response text at the same time.
+        const shouldOmitToolArtifacts =
           isLastGroup && conversationContext.isGenerating
-        const toolArtifacts = !shouldOmitArtifacts
+        const toolArtifacts = !shouldOmitToolArtifacts
           ? getToolArtifacts(group)
           : null
 

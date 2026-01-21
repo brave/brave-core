@@ -37,6 +37,7 @@ export function getToolUseEvent(
     ...eventTemplate,
     toolUseEvent: {
       output: undefined,
+      artifacts: undefined,
       permissionChallenge: undefined,
       ...toolUseEvent,
     },
