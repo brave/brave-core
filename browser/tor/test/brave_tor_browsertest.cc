@@ -450,6 +450,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, PRE_ResetBridges) {
   bridges_config.use_bridges = tor::BridgesConfig::Usage::kNotUsed;
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
   WaitProcessExit(tor::kSnowflakeExecutableName);
+  WaitForUpdaterThread(
+      g_brave_browser_process->tor_pluggable_transport_updater());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, ResetBridges) {
