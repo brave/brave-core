@@ -1,0 +1,48 @@
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/partition_root.h b/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
+index 1caebdad99986d967341f14b0035df16549806c2..ab2a2523e564a5c84c375d4326f908e672b3db5f 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
++++ b/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
+@@ -2191,27 +2191,27 @@ PA_ALWAYS_INLINE void* PartitionRoot::AllocInternal(size_t requested_size,
+   static_assert(!ContainsFlags(
+       flags, AllocFlags::kMemoryShouldBeTaggedForMte));  // Internal only.
+ 
++#if defined(MEMORY_TOOL_REPLACES_ALLOCATOR)
++  if constexpr (!ContainsFlags(flags, AllocFlags::kNoMemoryToolOverride)) {
++    if (!PartitionRoot::AllocWithMemoryToolProlog<flags>(requested_size)) {
++      // Early return if AllocWithMemoryToolProlog returns false
++      return nullptr;
++    }
++    constexpr bool zero_fill = ContainsFlags(flags, AllocFlags::kZeroFill);
++    void* result =
++        zero_fill ? calloc(1, requested_size) : malloc(requested_size);
++    if constexpr (!ContainsFlags(flags, AllocFlags::kReturnNull)) {
++      PA_CHECK(result);
++    }
++    return result;
++  }
++#endif  // defined(MEMORY_TOOL_REPLACES_ALLOCATOR)
++
+   constexpr bool no_hooks = ContainsFlags(flags, AllocFlags::kNoHooks);
+   bool hooks_enabled;
+ 
+   if constexpr (!no_hooks) {
+     PA_DCHECK(initialized);
+-
+-#if defined(MEMORY_TOOL_REPLACES_ALLOCATOR)
+-    if constexpr (!ContainsFlags(flags, AllocFlags::kNoMemoryToolOverride)) {
+-      if (!PartitionRoot::AllocWithMemoryToolProlog<flags>(requested_size)) {
+-        // Early return if AllocWithMemoryToolProlog returns false
+-        return nullptr;
+-      }
+-      constexpr bool zero_fill = ContainsFlags(flags, AllocFlags::kZeroFill);
+-      void* result =
+-          zero_fill ? calloc(1, requested_size) : malloc(requested_size);
+-      if constexpr (!ContainsFlags(flags, AllocFlags::kReturnNull)) {
+-        PA_CHECK(result);
+-      }
+-      return result;
+-    }
+-#endif  // defined(MEMORY_TOOL_REPLACES_ALLOCATOR)
+     void* object = nullptr;
+     hooks_enabled = PartitionAllocHooks::AreHooksEnabled();
+     if (hooks_enabled) {
