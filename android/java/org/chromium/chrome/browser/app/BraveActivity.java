@@ -103,6 +103,7 @@ import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
@@ -251,6 +252,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -386,11 +388,14 @@ public abstract class BraveActivity extends ChromeActivity
     public void onResumeWithNative() {
         super.onResumeWithNative();
 
-        // Check Leo policy and cache the result for quick search engines and omnibox suggestions
-        BraveOriginSubscriptionPrefs.checkPolicyAsync(
+        // Check policies and cache results (single subscription check for all policies)
+        BraveOriginSubscriptionPrefs.checkPoliciesAsync(
                 getCurrentProfile(),
-                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
-                BraveLeoPrefUtils::setLeoDisabledByPolicy);
+                Map.of(
+                        BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
+                        BraveLeoPrefUtils::setLeoDisabledByPolicy,
+                        BravePolicyConstants.BRAVE_REWARDS_DISABLED,
+                        BraveRewardsPolicy::setDisabledByPolicy));
 
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
@@ -473,22 +478,17 @@ public abstract class BraveActivity extends ChromeActivity
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
 
-            // Use async version to ensure policy values are checked before building menu
-            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
-                    (mainMenuList) -> {
-                        final Bundle bundle =
-                                CustomizeBraveMenu.populateBundle(
-                                        getResources(),
-                                        new Bundle(),
-                                        mainMenuList,
-                                        braveTabbedAppMenuPropertiesDelegate
-                                                .buildPageActionsModelList());
-                        SettingsNavigation settingsNavigation =
-                                SettingsNavigationFactory.createSettingsNavigation();
-                        // Follow upstream code and pass null as fragment to show
-                        // that defaults to main settings screen.
-                        settingsNavigation.startSettings(BraveActivity.this, null, bundle);
-                    });
+            final Bundle bundle =
+                    CustomizeBraveMenu.populateBundle(
+                            getResources(),
+                            new Bundle(),
+                            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy(),
+                            braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+            SettingsNavigation settingsNavigation =
+                    SettingsNavigationFactory.createSettingsNavigation();
+            // Follow upstream code and pass null as fragment to show
+            // that defaults to main settings screen.
+            settingsNavigation.startSettings(BraveActivity.this, null, bundle);
             return true;
         }
 
@@ -551,15 +551,10 @@ public abstract class BraveActivity extends ChromeActivity
             assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
-            // Use async version to ensure policy values are checked before building menu
-            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
-                    (mainMenuList) -> {
-                        // Get full menu items and pass them to settings.
-                        CustomizeBraveMenu.openCustomizeMenuSettings(
-                                BraveActivity.this,
-                                mainMenuList,
-                                braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
-                    });
+            CustomizeBraveMenu.openCustomizeMenuSettings(
+                    BraveActivity.this,
+                    braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy(),
+                    braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else if (id == R.id.brave_shred_id) {
             shredData(currentTab);
         } else {

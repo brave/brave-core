@@ -145,7 +145,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Added 05/2021
-  profile_prefs->ClearPref(kBraveNewsIntroDismissed);
+  profile_prefs->ClearPref(brave_news::prefs::kBraveNewsIntroDismissed);
 #endif
   // Added 07/2021
   profile_prefs->ClearPref(prefs::kNetworkPredictionOptions);

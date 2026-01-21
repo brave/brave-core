@@ -297,8 +297,11 @@ void RegisterProfilePrefsForMigration(
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Added 05/2021
-  registry->RegisterBooleanPref(kBraveNewsIntroDismissed, false);
+  registry->RegisterBooleanPref(brave_news::prefs::kBraveNewsIntroDismissed,
+                                false);
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Added 11/2022

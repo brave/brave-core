@@ -431,11 +431,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if ((position == statsCount + topSitesCount && !mIsNewContent)
                 || (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsNewContent)) {
             return TYPE_IMAGE_CREDIT;
-        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsDisplayNewsOptin
+        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
+                && mIsDisplayNewsOptin
                 && !mIsNewContent) {
             return TYPE_NEWS_OPTIN;
         } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
-                && shouldDisplayNewsLoading() && !mIsNewContent) {
+                && shouldDisplayNewsLoading()
+                && !mIsNewContent) {
             return TYPE_NEWS_LOADING;
         } else if (!shouldDisplayNewsLoading() && mNewsItems.size() == 0) {
             return TYPE_NEWS_NO_CONTENT_SOURCES;
