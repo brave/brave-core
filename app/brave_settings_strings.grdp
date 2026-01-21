@@ -677,6 +677,26 @@
     Reset to defaults
   </message>
 
+  <!-- Settings / Brave Origin Onboarding -->
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_TITLE" desc="The section title for the Brave Origin onboarding in settings">
+    Origin
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_HEADING_TITLE" desc="The heading title for the Brave Origin onboarding section">
+    Customize your browser while still supporting Brave
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION1" desc="The first paragraph describing Brave Origin in the onboarding section">
+    Brave Origin is a paid version of the browser for users who don't need all of the features that support Brave as a business, but still want the privacy that only Brave offers. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like AI, Rewards, Wallet, VPN, Web3 domains, and more.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION2" desc="The second paragraph describing Brave Origin availability in the onboarding section">
+    Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Origin can be purchased as an upgrade to your existing release version. On desktop, Origin is also available as a separate, standalone app. Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW" desc="The label for the Buy now button in Brave Origin onboarding">
+    Buy now
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE" desc="The label for the Learn more link in Brave Origin onboarding">
+    Learn more
+  </message>
+
   <!-- Settings / Brave Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
     Brave Rewards

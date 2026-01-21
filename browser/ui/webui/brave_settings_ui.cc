@@ -34,6 +34,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -275,6 +276,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_account::features::IsBraveAccountEnabled());
   html_source->AddBoolean("isOriginAllowed",
                           brave_origin::IsBraveOriginEnabled());
+  html_source->AddBoolean("isBraveOriginBrandedBuild",
+                          BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean("isTreeTabsFlagEnabled",
                           base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",

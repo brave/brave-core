@@ -25,6 +25,7 @@ import { getTemplate } from './brave_system_page_index.html.js';
 // <if expr="enable_brave_vpn_wireguard">
 import '../brave_system_page/brave_vpn_page.js'
 // </if>
+import '../brave_origin_page/brave_origin_onboarding.js'
 import '../shortcuts_page/shortcuts_page.js'
 
 export interface SettingsBraveSystemPageIndexElement {
@@ -77,12 +78,18 @@ export class SettingsBraveSystemPageIndexElement extends
         // </if>
       },
       // </if>
+      showOriginOnboarding_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isOriginAllowed') &&
+                     !loadTimeData.getBoolean('isBraveOriginBrandedBuild'),
+      },
     };
   }
 
   declare prefs: { [key: string]: any };
   declare private showBatterySettings_: boolean;
   declare private showShortcutsPage_: boolean;
+  declare private showOriginOnboarding_: boolean;
 
   // <if expr="enable_brave_vpn_wireguard">
   declare private showVPNPage_: boolean;
@@ -127,6 +134,10 @@ export class SettingsBraveSystemPageIndexElement extends
 
     if (this.showBatterySettings_) {
       views.push('battery')
+    }
+
+    if (this.showOriginOnboarding_) {
+      views.push('origin-onboarding')
     }
 
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
