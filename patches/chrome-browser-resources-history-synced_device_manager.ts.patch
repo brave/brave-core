@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
-index 9a98032a14a071b6b8e2b6a36be1165034f82b9b..b56546f192a8404db95e5ca49fa3a2e99c449d30 100644
+index 9a98032a14a071b6b8e2b6a36be1165034f82b9b..47cb457b8f7d38d366a96d22b2f06ce35347a391 100644
 --- a/chrome/browser/resources/history/synced_device_manager.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.ts
-@@ -363,6 +363,7 @@ export class HistorySyncedDeviceManagerElement extends
-    */
-   protected showSignInGuide_(): boolean {
-     const show = this.isSignInState_(HistorySignInState.SIGNED_OUT) &&
-+        false &&
-         !this.guestSession_ && this.signInAllowed_;
-     if (show) {
-       BrowserServiceImpl.getInstance().recordAction(
-@@ -441,8 +442,6 @@ export class HistorySyncedDeviceManagerElement extends
+@@ -441,8 +441,6 @@ export class HistorySyncedDeviceManagerElement extends
        }
      } else if (this.isSignInState_(HistorySignInState.SIGNED_OUT)) {
        // User signed out, clear synced device list and show the sign in promo.
