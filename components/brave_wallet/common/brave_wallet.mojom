@@ -1137,10 +1137,6 @@ struct SquidEvmTransaction {
   string target;
   string value;
   string gas_limit;
-  string gas_price;
-  string last_base_fee_per_gas;
-  string max_fee_per_gas;
-  string max_priority_fee_per_gas;
   string chain_id;
 };
 
