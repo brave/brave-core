@@ -33,7 +33,7 @@ export const style = scoped.css`
   section {
     flex: 1 1 auto;
     padding: 16px;
-    height: 380px;
+    height: 400px;
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
