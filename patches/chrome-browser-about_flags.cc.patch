@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 683307e285640064b73cd3c7f9baae6727e48889..c0e6a5b9acd49742b4b4fabdaf2c12df0d6ec9a7 100644
+index 74b1c0a630f63d1bba7843de6cfc72ea2fb0e654..2a85238ca0860e1dfdde641837c78630257afeda 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -5266,6 +5266,7 @@ const FeatureEntry::Choice kOmniboxAutofocusOnIncognitoNtpChoices[] = {
+@@ -5315,6 +5315,7 @@ const FeatureEntry::Choice kOmniboxAutofocusOnIncognitoNtpChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
