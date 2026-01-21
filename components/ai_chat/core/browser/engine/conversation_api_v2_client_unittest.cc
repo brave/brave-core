@@ -1115,11 +1115,10 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
+TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
   std::string expected_completion_response = "Verified response";
-  auto events_and_body = GetMockEventsAndExpectedEventsBody();
-  std::vector<ConversationAPIClient::ConversationEvent> events =
-      std::move(events_and_body.first);
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -1133,11 +1132,15 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
                     ResultCallback result_callback,
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
-        base::Value result(base::Value::Type::DICT);
-        result.GetDict().Set("type", "completion");
-        result.GetDict().Set("model", "llama-3-8b-instruct");
-        result.GetDict().Set("completion", expected_completion_response);
-        data_received_callback.Run(base::ok(std::move(result)));
+        // Simulate completion
+        auto completion_dict = base::test::ParseJsonDict(R"({
+          "model": "llama-3-8b-instruct",
+          "choices": [{
+            "delta": {"content": "Verified response"}
+          }]
+        })");
+        data_received_callback.Run(
+            base::ok(base::Value(std::move(completion_dict))));
 
         base::flat_map<std::string, std::string> response_headers;
         response_headers[kBraveNearVerifiedHeader] = "true";
@@ -1160,12 +1163,12 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result.value().is_near_verified.has_value());
-        EXPECT_TRUE(result.value().is_near_verified.value());
+        EXPECT_TRUE(result->is_near_verified.has_value());
+        EXPECT_TRUE(result->is_near_verified.value());
       });
 
   client_->PerformRequest(
-      std::move(events), "" /* selected_language */,
+      std::move(messages), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
       mojom::ConversationCapability::CONTENT_AGENT,
