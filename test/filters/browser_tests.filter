@@ -2490,6 +2490,7 @@
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDefault
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDisabled
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkEnabled
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
 -All/PermissionElementOriginTrialBrowserTest.WithoutOriginTrialToken/BaseDefault_BlinkEnabled
 
 # This test fails because they hardcode "Incognito" in the expected window
