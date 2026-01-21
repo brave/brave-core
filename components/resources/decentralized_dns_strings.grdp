@@ -43,7 +43,7 @@
     Brave will be using a third-party to resolve <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domains but nothing else. For more information about which third-parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK">&lt;a target="_blank" href="$2"&gt;</ph>help page<ph name="END_SNS_WIKI_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_PROVIDER_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for a provider.">
-    Proceed using <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> server
+    Proceed using <ph name="PROVIDER_NAME">$1<ex>Chainstack</ex></ph> server
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SNS_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for SNS server.">
     Proceed using an SNS server
