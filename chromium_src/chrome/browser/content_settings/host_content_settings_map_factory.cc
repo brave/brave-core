@@ -7,7 +7,7 @@
 
 #include "brave/components/content_settings/core/browser/remote_list_provider.h"
 #include "build/buildflag.h"
-#include "chrome/browser/supervised_user/supervised_user_settings_service_factory.h"
+#include "chrome/browser/supervised_user/family_link_settings_service_factory.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/simple_keyed_service_factory.h"
 #include "extensions/buildflags/buildflags.h"
