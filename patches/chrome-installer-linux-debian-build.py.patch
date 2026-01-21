@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/build.py b/chrome/installer/linux/debian/build.py
-index 0f5000cb022f04cafdcec3cf119cf0aa2f85ea5a..076e4785b6fc8747efbda01cbba3d3267d7bdff3 100755
+index 0f5000cb022f04cafdcec3cf119cf0aa2f85ea5a..39f69ceda30735ce9e756972ffc7ab07c46c963d 100755
 --- a/chrome/installer/linux/debian/build.py
 +++ b/chrome/installer/linux/debian/build.py
-@@ -189,6 +189,8 @@ def main():
+@@ -190,6 +190,8 @@ def main():
      logging.info(f"Packaging {args.arch}...")
      inst.context["PREDEPENDS"] = inst.context["COMMON_PREDEPS"]
      inst.context["DEPENDS"] = inst.context["COMMON_DEPS"]
