@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  html as braveHtml,
   RegisterPolymerComponentBehaviors,
+  RegisterPolymerTemplateModifications,
   RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
 
@@ -174,4 +176,14 @@ RegisterPolymerComponentBehaviors({
     BraveClearSettingsMenuHighlightBehavior,
     BraveSetGlobalScrollTargetBehavior
   ]
+})
+
+RegisterPolymerTemplateModifications({
+  'settings-ui': (templateContent) => {
+    templateContent.prepend(braveHtml`
+      <leo-alertcenter style="position: fixed;
+                              z-index: 1;">
+      </leo-alertcenter>
+    `)
+  }
 })

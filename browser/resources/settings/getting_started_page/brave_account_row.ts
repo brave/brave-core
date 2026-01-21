@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement, html, render } from '//resources/lit/v3_0/lit.rollup.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+// @ts-expect-error
+import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
 import { AccountState } from '../brave_account_row.mojom-webui.js'
 import {
@@ -18,7 +20,7 @@ import {
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export class SettingsBraveAccountRow extends CrLitElement {
+export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'settings-brave-account-row'
   }
@@ -41,7 +43,6 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  private toastContainer: HTMLDivElement | undefined = undefined
 
   override connectedCallback() {
     super.connectedCallback()
@@ -56,20 +57,25 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 
   protected async onResendConfirmationEmailButtonClicked() {
-    let details: ResendConfirmationEmailError | undefined
+    let error: ResendConfirmationEmailError | undefined
 
     try {
       await this.browserProxy.authentication.resendConfirmationEmail()
-    } catch (error) {
-      if (error && typeof error === 'object') {
-        details = error as ResendConfirmationEmailError
+    } catch (e) {
+      if (e && typeof e === 'object') {
+        error = e as ResendConfirmationEmailError
       } else {
-        console.error('Unexpected error:', error)
-        details = { netErrorOrHttpStatus: null, errorCode: null }
+        console.error('Unexpected error:', e)
+        error = { netErrorOrHttpStatus: null, errorCode: null }
       }
     }
 
-    this.showToast(details)
+    leoShowAlert({
+      type: error ? 'error' : 'success',
+      content: error
+        ? this.getErrorMessage(error)
+        : this.i18n('braveAccountResendConfirmationEmailSuccess')
+    }, 30000)
   }
 
   protected onCancelRegistrationButtonClicked() {
@@ -85,53 +91,15 @@ export class SettingsBraveAccountRow extends CrLitElement {
     this.state = state
   }
 
-  private showToast(details: ResendConfirmationEmailError | undefined) {
-    const hideToast = (container: HTMLDivElement | undefined) => {
-      container?.remove()
-    }
-
-    hideToast(this.toastContainer)
-    this.toastContainer = document.createElement('div')
-    document.body.appendChild(this.toastContainer)
-
-    // Capture the container for this specific toast.
-    const container = this.toastContainer
-    render(html`
-      <leo-alert type="${details ? 'error' : 'success'}"
-                 isToast="true"
-                 style="left: 50%;
-                        position: fixed;
-                        top: var(--leo-spacing-5xl);
-                        transform: translateX(-50%);">
-        ${details
-          ? this.getErrorMessage(details)
-          : loadTimeData.getString(
-                'braveAccountResendConfirmationEmailSuccess')}
-        <leo-button slot="content-after"
-                    fab="true"
-                    kind="plain-faint"
-                    size="tiny"
-                    style="align-items: center;
-                           display: flex;
-                           height: 100%;"
-                    @click=${() => hideToast(container)}>
-          <leo-icon name="close"></leo-icon>
-        </leo-button>
-      </leo-alert>
-    `, container)
-
-    setTimeout(() => hideToast(container), 30000)
-  }
-
   private getErrorMessage(details: ResendConfirmationEmailError): string {
     const ERROR_STRINGS: Partial<
       Record<ResendConfirmationEmailErrorCode, string>
     > = {
       [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
-        loadTimeData.getString(
+        this.i18n(
             'braveAccountResendConfirmationEmailMaximumSendAttemptsExceeded'),
       [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
-        loadTimeData.getString(
+        this.i18n(
             'braveAccountResendConfirmationEmailAlreadyVerified'),
     }
 
@@ -139,10 +107,10 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
     if (netErrorOrHttpStatus == null) {
       // client-side error
-      return loadTimeData.getStringF(
+      return this.i18n(
           'braveAccountClientError',
           errorCode != null
-            ? ` (${loadTimeData.getString('braveAccountError')}=${errorCode})`
+            ? ` (${this.i18n('braveAccountError')}=${errorCode})`
             : '',
       )
     }
@@ -150,11 +118,11 @@ export class SettingsBraveAccountRow extends CrLitElement {
     // server-side error
     return (
       (errorCode != null ? ERROR_STRINGS[errorCode] : null)
-      ?? loadTimeData.getStringF(
+      ?? this.i18n(
         'braveAccountServerError',
         netErrorOrHttpStatus,
         errorCode != null
-          ? `, ${loadTimeData.getString('braveAccountError')}=${errorCode}`
+          ? `, ${this.i18n('braveAccountError')}=${errorCode}`
           : '',
       )
     )
