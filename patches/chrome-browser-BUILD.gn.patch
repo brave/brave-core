@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 1bc112f86e95410a97c8600fa32c0b61e81f2722..ec29789c83eb8242d31cc291927fa82bf2a44d1e 100644
+index 61ea8e60d7d26433a847c208aff58632e04d61df..32c4cfd76db22b2d97f138d936cc9570c286fad3 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2656,6 +2656,7 @@ static_library("browser") {
@@ -10,7 +10,7 @@ index 1bc112f86e95410a97c8600fa32c0b61e81f2722..ec29789c83eb8242d31cc291927fa82b
  
    if (is_android) {
      sources += [
-@@ -8593,6 +8594,7 @@ static_library("browser_public_dependencies") {
+@@ -8595,6 +8596,7 @@ static_library("browser_public_dependencies") {
        "//rlz:rlz_lib",
      ]
    }

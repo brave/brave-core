@@ -1,8 +1,8 @@
 diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
-index 000a1d75f5b84b9fcd62c25df22eb8375f3b291b..7a2e62f2e3d63995ef0b6c9c6e7928babcbbe654 100644
+index fd51d73707698b5eda40793cf9a45c5fabcc9a62..73e0e43f5f93006f01a62b4ae1228775d8c5511d 100644
 --- a/components/feature_engagement/public/feature_list.h
 +++ b/components/feature_engagement/public/feature_list.h
-@@ -607,12 +607,14 @@ DEFINE_VARIATION_PARAM(kIPHiOSLensPromoDesktopFeature,
+@@ -611,12 +611,14 @@ DEFINE_VARIATION_PARAM(kIPHiOSLensPromoDesktopFeature,
  DEFINE_VARIATION_PARAM(kIPHiOSEnhancedBrowsingDesktopFeature,
                         "IPH_iOSEnhancedBrowsingDesktop");
  #endif  // !BUILDFLAG(IS_ANDROID)
