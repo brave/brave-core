@@ -670,7 +670,13 @@ var package = Package(
     ),
     .target(
       name: "Origin",
-      dependencies: ["DesignSystem", "Strings"]
+      dependencies: [
+        "DesignSystem",
+        "Strings",
+        "BraveCore",
+        "BraveStore",
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+      ]
     ),
   ],
   cxxLanguageStandard: .cxx17
