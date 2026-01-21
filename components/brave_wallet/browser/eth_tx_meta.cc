@@ -96,7 +96,6 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   std::string chain_id;
   std::string max_priority_fee_per_gas;
   std::string max_fee_per_gas;
-
   mojom::GasEstimation1559Ptr gas_estimation_1559_ptr = nullptr;
   if (tx_->type() == 1) {
     // When type is 1 it's always Eip2930Transaction
@@ -113,7 +112,6 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
         Eip1559Transaction::GasEstimation::ToMojomGasEstimation1559(
             tx1559->gas_estimation());
   }
-
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
@@ -131,7 +129,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
-    final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
+    final_recipient = GetFinalRecipient(chain_id, tx_->GetToChecksumAddress(),
                                         tx_type, tx_args);
 
     if (!swap_info && swap_info_from_data) {
@@ -169,9 +167,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
           mojom::TxData::New(
               tx_->nonce() ? Uint256ValueToHex(tx_->nonce().value()) : "",
               Uint256ValueToHex(tx_->gas_price()),
-              Uint256ValueToHex(tx_->gas_limit()),
-              tx_->to().ToChecksumAddress(), Uint256ValueToHex(tx_->value()),
-              tx_->data(), sign_only_, signed_transaction),
+              Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
+              Uint256ValueToHex(tx_->value()), tx_->data(), sign_only_,
+              signed_transaction),
           chain_id, max_priority_fee_per_gas, max_fee_per_gas,
           std::move(gas_estimation_1559_ptr))),
       status_, tx_type, tx_params, tx_args,

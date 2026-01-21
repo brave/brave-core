@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/to_vector.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -100,16 +101,17 @@ Eip1559Transaction::Eip1559Transaction()
   type_ = 2;
 }
 
-Eip1559Transaction::Eip1559Transaction(std::optional<uint256_t> nonce,
-                                       uint256_t gas_price,
-                                       uint256_t gas_limit,
-                                       const EthAddress& to,
-                                       uint256_t value,
-                                       const std::vector<uint8_t>& data,
-                                       uint256_t chain_id,
-                                       uint256_t max_priority_fee_per_gas,
-                                       uint256_t max_fee_per_gas,
-                                       GasEstimation gas_estimation)
+Eip1559Transaction::Eip1559Transaction(
+    std::optional<uint256_t> nonce,
+    uint256_t gas_price,
+    uint256_t gas_limit,
+    const std::variant<EthAddress, EthContractCreation>& to,
+    uint256_t value,
+    const std::vector<uint8_t>& data,
+    uint256_t chain_id,
+    uint256_t max_priority_fee_per_gas,
+    uint256_t max_fee_per_gas,
+    GasEstimation gas_estimation)
     : Eip2930Transaction(nonce,
                          gas_price,
                          gas_limit,
@@ -282,7 +284,8 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlob(max_fee_per_gas_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(GetToBytes());
+
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
@@ -348,7 +351,7 @@ std::vector<uint8_t> Eip1559Transaction::Serialize() const {
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlob(max_fee_per_gas_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));

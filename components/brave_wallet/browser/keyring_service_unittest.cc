@@ -450,12 +450,14 @@ class KeyringServiceUnitTest : public testing::Test {
     return result;
   }
 
-  static std::string GetChecksumEthAddress(KeyringService* service,
-                                           const std::string& address) {
-    std::string checksum_address;
+  static std::optional<std::string> GetChecksumEthAddress(
+      KeyringService* service,
+      const std::string& address) {
+    std::optional<std::string> checksum_address;
     base::RunLoop run_loop;
     service->GetChecksumEthAddress(
-        address, base::BindLambdaForTesting([&](const std::string& v) {
+        address,
+        base::BindLambdaForTesting([&](const std::optional<std::string>& v) {
           checksum_address = v;
           run_loop.Quit();
         }));
@@ -2690,23 +2692,27 @@ TEST_F(KeyringServiceUnitTest, IsStrongPassword) {
 
 TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  EXPECT_EQ(GetChecksumEthAddress(&service,
-                                  "0x0D8775F648430679A709E98D2B0CB6250D2887EF"),
+  EXPECT_EQ(*GetChecksumEthAddress(
+                &service, "0x0D8775F648430679A709E98D2B0CB6250D2887EF"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  EXPECT_EQ(GetChecksumEthAddress(&service,
-                                  "0x0d8775f648430679a709e98d2b0cb6250d2887ef"),
+
+  EXPECT_EQ(*GetChecksumEthAddress(
+                &service, "0x0d8775f648430679a709e98d2b0cb6250d2887ef"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  EXPECT_EQ(GetChecksumEthAddress(&service,
-                                  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"),
+
+  EXPECT_EQ(*GetChecksumEthAddress(
+                &service, "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  EXPECT_EQ(GetChecksumEthAddress(&service,
-                                  "0x0000000000000000000000000000000000000000"),
+
+  EXPECT_EQ(*GetChecksumEthAddress(
+                &service, "0x0000000000000000000000000000000000000000"),
             "0x0000000000000000000000000000000000000000");
+
   // Invalid input
-  EXPECT_EQ(GetChecksumEthAddress(&service, ""), "0x");
-  EXPECT_EQ(GetChecksumEthAddress(&service, "0"), "0x");
-  EXPECT_EQ(GetChecksumEthAddress(&service, "0x"), "0x");
-  EXPECT_EQ(GetChecksumEthAddress(&service, "hello"), "0x");
+  EXPECT_FALSE(GetChecksumEthAddress(&service, ""));
+  EXPECT_FALSE(GetChecksumEthAddress(&service, "0"));
+  EXPECT_FALSE(GetChecksumEthAddress(&service, "0x"));
+  EXPECT_FALSE(GetChecksumEthAddress(&service, "hello"));
 }
 
 TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {

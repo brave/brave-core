@@ -71,7 +71,7 @@ class Eip2930Transaction : public EthTransaction {
   Eip2930Transaction(std::optional<uint256_t> nonce,
                      uint256_t gas_price,
                      uint256_t gas_limit,
-                     const EthAddress& to,
+                     std::variant<EthAddress, EthContractCreation> to,
                      uint256_t value,
                      const std::vector<uint8_t>& data,
                      uint256_t chain_id);

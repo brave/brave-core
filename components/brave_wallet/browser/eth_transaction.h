@@ -34,6 +34,18 @@ enum EthTransactionType : uint8_t {
   kEip1559 = 2   // https://eips.ethereum.org/EIPS/eip-1559#specification
 };
 
+class EthContractCreation {
+ public:
+  EthContractCreation();
+  ~EthContractCreation();
+
+  std::string ToHex() const { return "0x"; }
+
+  std::vector<uint8_t> ToBytes() const { return std::vector<uint8_t>(); }
+
+  bool operator==(const EthContractCreation&) const;
+};
+
 class EthTransaction {
  public:
   EthTransaction();
@@ -52,14 +64,15 @@ class EthTransaction {
   std::optional<uint256_t> nonce() const { return nonce_; }
   uint256_t gas_price() const { return gas_price_; }
   uint256_t gas_limit() const { return gas_limit_; }
-  EthAddress to() const { return to_; }
+  std::variant<EthAddress, EthContractCreation> to() const { return to_; }
   uint256_t value() const { return value_; }
   std::vector<uint8_t> data() const { return data_; }
   uint256_t v() const { return v_; }
   std::vector<uint8_t> r() const { return r_; }
   std::vector<uint8_t> s() const { return s_; }
 
-  void set_to(EthAddress to) { to_ = to; }
+  void set_to(const EthAddress& to) { to_ = to; }
+  void set_to(const EthContractCreation& to) { to_ = to; }
   void set_value(uint256_t value) { value_ = value; }
   void set_nonce(std::optional<uint256_t> nonce) { nonce_ = nonce; }
   void set_data(const std::vector<uint8_t>& data) { data_ = data; }
@@ -68,7 +81,9 @@ class EthTransaction {
   bool ProcessVRS(const std::vector<uint8_t>& v,
                   const std::vector<uint8_t>& r,
                   const std::vector<uint8_t>& s);
-  bool IsToCreationAddress() const { return to_.IsEmpty(); }
+  bool IsToCreationAddress() const {
+    return !!std::get_if<EthContractCreation>(&to_);
+  }
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
@@ -97,6 +112,10 @@ class EthTransaction {
   // Gas paid for the data.
   virtual uint256_t GetDataFee() const;
 
+  std::vector<uint8_t> GetToBytes() const;
+  std::string GetToHex() const;
+  std::string GetToChecksumAddress() const;
+
  protected:
   // type 0 would be LegacyTransaction
   uint8_t type_ = 0;
@@ -104,7 +123,7 @@ class EthTransaction {
   std::optional<uint256_t> nonce_;
   uint256_t gas_price_;
   uint256_t gas_limit_;
-  EthAddress to_;
+  std::variant<EthAddress, EthContractCreation> to_;
   uint256_t value_;
   std::vector<uint8_t> data_;
 
@@ -116,7 +135,7 @@ class EthTransaction {
   EthTransaction(std::optional<uint256_t> nonce,
                  uint256_t gas_price,
                  uint256_t gas_limit,
-                 const EthAddress& to,
+                 std::variant<EthAddress, EthContractCreation> to,
                  uint256_t value,
                  const std::vector<uint8_t>& data);
 

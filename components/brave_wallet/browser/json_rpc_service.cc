@@ -1580,10 +1580,9 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
   std::string error_message = task_error ? task_error->error_message : "";
 
   if (task_result && !task_result->resolved_result.empty()) {
-    EthAddress eth_address =
-        eth_abi::ExtractAddress(task_result->resolved_result);
-    if (eth_address.IsValid() && !eth_address.IsZeroAddress()) {
-      address = eth_address.ToHex();
+    auto eth_address = eth_abi::ExtractAddress(task_result->resolved_result);
+    if (eth_address && !eth_address->IsZeroAddress()) {
+      address = eth_address->ToHex();
     } else {
       error = mojom::ProviderError::kInvalidParams;
       error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
@@ -2178,7 +2177,7 @@ void JsonRpcService::GetERC721TokenBalance(
     const std::string& chain_id,
     GetERC721TokenBalanceCallback callback) {
   const auto eth_account_address = EthAddress::FromHex(account_address);
-  if (eth_account_address.IsEmpty()) {
+  if (!eth_account_address) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -2187,7 +2186,7 @@ void JsonRpcService::GetERC721TokenBalance(
 
   auto internal_callback = base::BindOnce(
       &JsonRpcService::ContinueGetERC721TokenBalance,
-      weak_ptr_factory_.GetWeakPtr(), eth_account_address.ToChecksumAddress(),
+      weak_ptr_factory_.GetWeakPtr(), eth_account_address->ToChecksumAddress(),
       std::move(callback));
   GetERC721OwnerOf(contract_address, token_id, chain_id,
                    std::move(internal_callback));
@@ -2318,7 +2317,7 @@ void JsonRpcService::GetERC1155TokenBalance(
   const auto eth_account_address = EthAddress::FromHex(owner_address);
   auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
 
-  if (eth_account_address.IsEmpty() || !network_url.is_valid()) {
+  if (!eth_account_address || !network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));

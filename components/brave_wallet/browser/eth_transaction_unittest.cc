@@ -220,8 +220,7 @@ TEST(EthTransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
-  EXPECT_EQ(tx->to(),
-            EthAddress::FromHex("0x3535353535353535353535353535353535353535"));
+  EXPECT_EQ(tx->GetToHex(), "0x3535353535353535353535353535353535353535");
   EXPECT_EQ(tx->value(), uint256_t(42));
   EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
 

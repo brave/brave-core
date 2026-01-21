@@ -178,11 +178,7 @@ FilAddress FilAddress::FromUncompressedPublicKey(
 // static
 FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
                                        const EthAddress& fevm_address) {
-  if (!fevm_address.IsValid()) {
-    return FilAddress();
-  }
-
-  auto payload = fevm_address.bytes();
+  auto payload = base::ToVector(fevm_address.bytes());
   base::Extend(payload,
                Blake2bHash<kChecksumSize>(
                    {std::vector<uint8_t>({4, 10}), fevm_address.bytes()}));

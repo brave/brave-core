@@ -70,7 +70,7 @@ bool EthTxManager::ValidateTxData(const mojom::TxDataPtr& tx_data,
     return false;
   }
   // to must be a valid address if specified
-  if (!tx_data->to.empty() && EthAddress::FromHex(tx_data->to).IsEmpty()) {
+  if (!tx_data->to.empty() && !EthAddress::FromHex(tx_data->to)) {
     *error = l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_TO_INVALID);
     return false;
   }
@@ -1023,7 +1023,12 @@ void EthTxManager::SpeedupOrCancelTransaction(
     auto tx = std::make_unique<Eip1559Transaction>(
         *static_cast<Eip1559Transaction*>(meta->tx()));
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()->address));
+      auto addr = EthAddress::FromHex(meta->from()->address);
+      if (!addr) {
+        std::move(callback).Run(false, "", "Wrong addr");
+        return;
+      }
+      tx->set_to(*addr);
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }
@@ -1038,7 +1043,12 @@ void EthTxManager::SpeedupOrCancelTransaction(
   } else {
     auto tx = std::make_unique<EthTransaction>(*meta->tx());
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()->address));
+      auto addr = EthAddress::FromHex(meta->from()->address);
+      if (!addr) {
+        std::move(callback).Run(false, "", "");
+        return;
+      }
+      tx->set_to(*addr);
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }

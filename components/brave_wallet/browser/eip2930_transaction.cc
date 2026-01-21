@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/to_vector.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -46,14 +47,15 @@ bool Eip2930Transaction::AccessListItem::operator==(
 }
 
 Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
-Eip2930Transaction::Eip2930Transaction(std::optional<uint256_t> nonce,
-                                       uint256_t gas_price,
-                                       uint256_t gas_limit,
-                                       const EthAddress& to,
-                                       uint256_t value,
-                                       const std::vector<uint8_t>& data,
-                                       uint256_t chain_id)
-    : EthTransaction(nonce, gas_price, gas_limit, to, value, data),
+Eip2930Transaction::Eip2930Transaction(
+    std::optional<uint256_t> nonce,
+    uint256_t gas_price,
+    uint256_t gas_limit,
+    std::variant<EthAddress, EthContractCreation> to,
+    uint256_t value,
+    const std::vector<uint8_t>& data,
+    uint256_t chain_id)
+    : EthTransaction(nonce, gas_price, gas_limit, std::move(to), value, data),
       chain_id_(chain_id) {
   type_ = 1;
 }
@@ -167,7 +169,7 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
@@ -224,7 +226,7 @@ std::vector<uint8_t> Eip2930Transaction::Serialize() const {
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));

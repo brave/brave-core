@@ -53,7 +53,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta.tx()->gas_limit()));
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->to,
-            meta.tx()->to().ToHex());
+            meta.tx()->GetToHex());
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->value,
             Uint256ValueToHex(meta.tx()->value()));
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->data,
@@ -100,7 +100,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta1.tx()->gas_limit()));
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->to,
-            meta1.tx()->to().ToHex());
+            meta1.tx()->GetToHex());
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->value,
             Uint256ValueToHex(meta1.tx()->value()));
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->data,
@@ -144,7 +144,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta2.tx()->gas_limit()));
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->to,
-            meta2.tx()->to().ToHex());
+            meta2.tx()->GetToHex());
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->value,
             Uint256ValueToHex(meta2.tx()->value()));
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->data,

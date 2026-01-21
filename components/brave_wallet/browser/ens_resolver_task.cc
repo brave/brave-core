@@ -174,13 +174,12 @@ std::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
   auto callback_function = eth_abi::ExtractFixedBytesFromTuple<4>(args, 3);
   auto extra_data = eth_abi::ExtractBytesFromTuple(args, 4);
 
-  if (!sender.IsValid() || !urls || !call_data || !callback_function ||
-      !extra_data) {
+  if (!sender || !urls || !call_data || !callback_function || !extra_data) {
     return std::nullopt;
   }
 
   OffchainLookupData result;
-  result.sender = sender;
+  result.sender = *sender;
   result.urls = urls.value();
   result.call_data = call_data.value();
   result.callback_function = callback_function.value();
@@ -258,7 +257,7 @@ void EnsResolverTask::WorkOnTask() {
     return;
   }
 
-  if (!resolver_address_.IsValid()) {
+  if (!resolver_address_) {
     FetchEnsResolver();
     return;
   }
@@ -281,7 +280,7 @@ void EnsResolverTask::WorkOnTask() {
 }
 
 void EnsResolverTask::FetchEnsResolver() {
-  DCHECK(resolver_address_.IsEmpty());
+  DCHECK(!resolver_address_);
   const std::string contract_address =
       GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
 
@@ -308,12 +307,12 @@ void EnsResolverTask::OnFetchEnsResolverDone(
   }
 
   auto resolver_address = eth_abi::ExtractAddressFromTuple(*bytes_result, 0);
-  if (!resolver_address.IsValid()) {
+  if (!resolver_address) {
     task_error_.emplace(MakeInternalError());
     return;
   }
 
-  if (resolver_address.IsZeroAddress()) {
+  if (resolver_address->IsZeroAddress()) {
     auto parent = GetParent(resolver_domain_);
     if (parent.empty()) {
       task_error_.emplace(MakeInternalError());
@@ -328,12 +327,12 @@ void EnsResolverTask::OnFetchEnsResolverDone(
 }
 
 void EnsResolverTask::FetchEnsip10Support() {
-  DCHECK(resolver_address_.IsValid());
+  DCHECK(resolver_address_);
 
   // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
   auto call = erc165::SupportsInterface(kResolveBytesBytesSelector);
 
-  RequestInternal(eth::GetCallPayload(resolver_address_.ToHex(), ToHex(call)),
+  RequestInternal(eth::GetCallPayload(resolver_address_->ToHex(), ToHex(call)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
                                  weak_ptr_factory_.GetWeakPtr()));
 }
@@ -357,7 +356,7 @@ void EnsResolverTask::OnFetchEnsip10SupportDone(
 }
 
 void EnsResolverTask::FetchEnsRecord() {
-  DCHECK(resolver_address_.IsValid());
+  DCHECK(resolver_address_);
   DCHECK(supports_ensip_10_);
   DCHECK(!supports_ensip_10_.value());
   DCHECK(!task_result_);
@@ -370,7 +369,7 @@ void EnsResolverTask::FetchEnsRecord() {
   }
 
   RequestInternal(
-      eth::GetCallPayload(resolver_address_.ToHex(), ToHex(ens_call_)),
+      eth::GetCallPayload(resolver_address_->ToHex(), ToHex(ens_call_)),
       base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -401,7 +400,7 @@ void EnsResolverTask::OnFetchEnsRecordDone(
 }
 
 void EnsResolverTask::FetchWithEnsip10Resolve() {
-  DCHECK(resolver_address_.IsValid());
+  DCHECK(resolver_address_);
   DCHECK(supports_ensip_10_);
   DCHECK(supports_ensip_10_.value());
   DCHECK(!task_result_);
@@ -421,7 +420,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
                               .EncodeWithSelector(kResolveBytesBytesSelector);
 
   RequestInternal(
-      eth::GetCallPayload(resolver_address_.ToHex(), ToHex(ens_resolve_call)),
+      eth::GetCallPayload(resolver_address_->ToHex(), ToHex(ens_resolve_call)),
       base::BindOnce(&EnsResolverTask::OnFetchWithEnsip10ResolveDone,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -499,7 +498,7 @@ void EnsResolverTask::FetchOffchainData() {
   // https://eips.ethereum.org/EIPS/eip-3668#client-lookup-protocol #9.
   for (auto url_string : offchain_lookup_data_->urls) {
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{sender}",
-                                       offchain_lookup_data_->sender.ToHex());
+                                       offchain_lookup_data_->sender->ToHex());
     data_substituted = base::Contains(url_string, "{data}");
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{data}",
                                        ToHex(offchain_lookup_data_->call_data));
@@ -520,7 +519,7 @@ void EnsResolverTask::FetchOffchainData() {
   std::string payload;
   if (!data_substituted) {
     base::Value::Dict payload_dict;
-    payload_dict.Set("sender", offchain_lookup_data_->sender.ToHex());
+    payload_dict.Set("sender", offchain_lookup_data_->sender->ToHex());
     payload_dict.Set("data", ToHex(offchain_lookup_data_->call_data));
     base::JSONWriter::Write(payload_dict, &payload);
   }
@@ -559,12 +558,12 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
 }
 
 void EnsResolverTask::FetchOffchainCallback() {
-  DCHECK(resolver_address_.IsValid());
+  DCHECK(resolver_address_);
   DCHECK(!offchain_lookup_data_);
   DCHECK(offchain_callback_call_);
   DCHECK(!task_result_);
 
-  RequestInternal(eth::GetCallPayload(resolver_address_.ToHex(),
+  RequestInternal(eth::GetCallPayload(resolver_address_->ToHex(),
                                       ToHex(*offchain_callback_call_)),
                   base::BindOnce(&EnsResolverTask::OnFetchOffchainCallbackDone,
                                  weak_ptr_factory_.GetWeakPtr()));
