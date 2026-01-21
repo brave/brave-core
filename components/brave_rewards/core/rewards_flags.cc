@@ -72,6 +72,8 @@ RewardsFlags Parse(const std::string& input) {
       flags.reconcile_interval = ReadPositiveInt(value);
     } else if (name == "retry-interval") {
       flags.retry_interval = ReadPositiveInt(value);
+    } else if (name == "check-linkage-interval") {
+      flags.check_linkage_interval = ReadPositiveInt(value);
     } else if (name == "persist-logs") {
       flags.persist_logs = ReadBoolFlag(value);
     }

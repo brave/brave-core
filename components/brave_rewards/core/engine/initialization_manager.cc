@@ -87,7 +87,7 @@ void InitializationManager::InitializeHelpers() {
   engine().contribution()->Initialize();
   engine().Get<RewardsParametersProvider>().StartAutoUpdate();
   engine().uphold()->CheckEligibility();
-  engine().Get<LinkageChecker>().CheckLinkage();
+  engine().Get<LinkageChecker>().Start();
 }
 
 void InitializationManager::OnContributionsFinished(ShutdownCallback callback,
