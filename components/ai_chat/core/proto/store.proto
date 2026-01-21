@@ -21,17 +21,16 @@ message TextContentBlockProto {
   string text = 1;
 }
 
-message ToolArtifactContentBlockProto {
-  string type = 1;
-  string content_json = 2;
-}
-
 message ContentBlockProto {
   oneof content {
     ImageContentBlockProto image_content_block = 1;
     TextContentBlockProto text_content_block = 2;
-    ToolArtifactContentBlockProto tool_artifact_content_block = 3;
   }
+}
+
+message ToolArtifactProto {
+  string type = 1;
+  string content_json = 2;
 }
 
 message ToolUseEventProto {
@@ -43,6 +42,7 @@ message ToolUseEventProto {
   // to DictionaryValue.
   string arguments_json = 3;
   repeated ContentBlockProto output = 4;
+  repeated ToolArtifactProto artifacts = 5;
 }
 
 message WebSourceProto {

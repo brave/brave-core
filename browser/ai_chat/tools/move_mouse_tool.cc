@@ -55,7 +55,7 @@ void MoveMouseTool::UseTool(const std::string& input_json,
 
   if (!input.has_value()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: failed to parse input JSON"));
+        CreateContentBlocksForText("Error: failed to parse input JSON"), {});
     return;
   }
 
@@ -63,14 +63,15 @@ void MoveMouseTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing 'target' property"));
+        CreateContentBlocksForText("Error: missing 'target' property"), {});
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        base::StrCat({"Invalid 'target': ", target.error()})));
+    std::move(callback).Run(CreateContentBlocksForText(base::StrCat(
+                                {"Invalid 'target': ", target.error()})),
+                            {});
     return;
   }
 

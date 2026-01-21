@@ -54,29 +54,29 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   void ExecuteCodeRaw(
       const std::string& input_json,
       std::string* output,
-      std::vector<mojom::ContentBlockPtr>* artifacts = nullptr) {
+      std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::RunLoop run_loop;
-    tool_->UseTool(input_json,
-                   base::BindLambdaForTesting(
-                       [&run_loop, output,
-                        artifacts](std::vector<mojom::ContentBlockPtr> result) {
-                         ASSERT_FALSE(result.empty());
-                         ASSERT_TRUE(result[0]->is_text_content_block());
-                         *output = result[0]->get_text_content_block()->text;
+    tool_->UseTool(
+        input_json,
+        base::BindLambdaForTesting(
+            [&run_loop, output, artifacts](
+                std::vector<mojom::ContentBlockPtr> result,
+                std::vector<mojom::ToolArtifactPtr> result_artifacts) {
+              ASSERT_FALSE(result.empty());
+              ASSERT_TRUE(result[0]->is_text_content_block());
+              *output = result[0]->get_text_content_block()->text;
 
-                         if (artifacts) {
-                           for (size_t i = 1; i < result.size(); ++i) {
-                             artifacts->push_back(std::move(result[i]));
-                           }
-                         }
-                         run_loop.Quit();
-                       }));
+              if (artifacts) {
+                *artifacts = std::move(result_artifacts);
+              }
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
   void ExecuteCode(const std::string& script,
                    std::string* output,
-                   std::vector<mojom::ContentBlockPtr>* artifacts = nullptr) {
+                   std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::Value::Dict input;
     input.Set("script", script);
     std::string input_json;
@@ -234,15 +234,14 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
   )";
 
   std::string output;
-  std::vector<mojom::ContentBlockPtr> artifacts;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
   ExecuteCode(script, &output, &artifacts);
 
   EXPECT_EQ(output, "Chart created");
   ASSERT_EQ(artifacts.size(), 1u);
 
-  ASSERT_TRUE(artifacts[0]->is_tool_artifact_content_block());
-  const auto& artifact = artifacts[0]->get_tool_artifact_content_block();
-  EXPECT_EQ(artifact->type, "chart");
+  const auto& artifact = artifacts[0];
+  EXPECT_EQ(artifact->type, mojom::kChartArtifactType);
   EXPECT_FALSE(artifact->content_json.empty());
 }
 
@@ -257,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   )";
 
   std::string output;
-  std::vector<mojom::ContentBlockPtr> artifacts;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
   ExecuteCode(script, &output, &artifacts);
 
   EXPECT_THAT(

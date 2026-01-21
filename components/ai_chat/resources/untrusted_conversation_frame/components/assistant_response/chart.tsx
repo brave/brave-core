@@ -8,7 +8,7 @@ import * as Mojom from '../../../common/mojom'
 import styles from './chart.module.scss'
 
 interface ChartProps {
-  artifact: Mojom.ToolArtifactContentBlock
+  artifact: Mojom.ToolArtifact
 }
 
 export default function Chart({ artifact }: ChartProps) {

@@ -198,8 +198,8 @@ struct SimpleRequestContentBlock {
   SimpleRequestType type;
 };
 
-// Artifact generated from tool call, will be omitted from API requests
-struct ToolArtifactContentBlock {
+// Artifact generated from tool call
+struct ToolArtifact {
   string type;
   string content_json;
 };
@@ -217,7 +217,6 @@ union ContentBlock {
   RequestTitleContentBlock request_title_content_block;
   ChangeToneContentBlock change_tone_content_block;
   MemoryContentBlock memory_content_block;
-  ToolArtifactContentBlock tool_artifact_content_block;
 
   // Brave customized content blocks for tab focus
   FilterTabsContentBlock filter_tabs_content_block;
@@ -258,6 +257,9 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  // Artifacts generated from the Tool.
+  array<ToolArtifact>? artifacts;
 
   // Permission challenge that blocks execution until user approves.
   // Can be set by server (alignment check) or client tool.

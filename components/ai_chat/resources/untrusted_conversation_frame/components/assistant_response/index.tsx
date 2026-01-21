@@ -160,7 +160,7 @@ function AssistantEvent(
 
 export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
-  toolArtifacts?: Mojom.ToolArtifactContentBlock[] | null
+  toolArtifacts?: Mojom.ToolArtifact[] | null
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {

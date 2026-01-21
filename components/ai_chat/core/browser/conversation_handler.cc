@@ -1060,7 +1060,8 @@ void ConversationHandler::OnUserOptedIn() {
 
 void ConversationHandler::RespondToToolUseRequest(
     const std::string& tool_use_id,
-    std::vector<mojom::ContentBlockPtr> output) {
+    std::vector<mojom::ContentBlockPtr> output,
+    std::vector<mojom::ToolArtifactPtr> artifacts) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
@@ -1080,6 +1081,7 @@ void ConversationHandler::RespondToToolUseRequest(
   DVLOG(0) << "got output for tool: " << tool_use->tool_name;
 
   tool_use->output = std::move(output);
+  tool_use->artifacts = std::move(artifacts);
 
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
 
@@ -2154,7 +2156,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
                 base::StrCat({"The ", tool_use_event->tool_name,
                               " tool is not available."}))));
 
-        RespondToToolUseRequest(tool_use_event->id, std::move(result));
+        RespondToToolUseRequest(tool_use_event->id, std::move(result), {});
         break;
       }
 

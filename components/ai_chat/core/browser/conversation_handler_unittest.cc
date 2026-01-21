@@ -2775,7 +2775,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Mock engine to return no new entry after the tool is used
@@ -3031,7 +3031,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second call to engine receives the tool output and provides the next
@@ -3181,7 +3181,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second call to engine (sending the tool output)returns an error
@@ -3291,7 +3291,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool1")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*tool2, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
@@ -3300,7 +3300,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool2")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
@@ -3528,7 +3528,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool1")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*tool2, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
@@ -3536,7 +3536,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool2")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second assistant response should ask for the second tool to be run
@@ -5428,7 +5428,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second generation should be called after tool executes
@@ -5544,7 +5544,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool 1 result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Setup second tool to execute (should happen exactly once)
@@ -5555,7 +5555,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool 2 result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Final generation should be called exactly once

@@ -48,7 +48,7 @@ interface TabProps {
   taskData: TaskData
 
   // Tool call artifacts to pass to AssistantResponse
-  toolArtifacts: Mojom.ToolArtifactContentBlock[] | null
+  toolArtifacts: Mojom.ToolArtifact[] | null
 }
 
 /**

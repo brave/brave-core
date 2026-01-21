@@ -44,6 +44,7 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
       context.conversationHandler?.respondToToolUseRequest(
         props.toolUseEvent.id,
         [createTextContentBlock(choice)],
+        [],
       )
     }
 

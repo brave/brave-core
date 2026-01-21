@@ -124,7 +124,7 @@ void CodeExecutionTool::ResolveRequest(
     base::Value::List artifacts) {
   requests_.erase(request_it);
 
-  std::vector<mojom::ContentBlockPtr> artifact_blocks;
+  std::vector<mojom::ToolArtifactPtr> artifact_ptrs;
   std::optional<std::string> error;
 
   // Process artifacts
@@ -172,9 +172,9 @@ void CodeExecutionTool::ResolveRequest(
       break;
     }
 
-    // Add artifact content block
-    artifact_blocks.push_back(mojom::ContentBlock::NewToolArtifactContentBlock(
-        mojom::ToolArtifactContentBlock::New(*type, std::move(content_json))));
+    // Add artifact
+    artifact_ptrs.push_back(
+        mojom::ToolArtifact::New(*type, std::move(content_json)));
   }
 
   // Construct final content blocks
@@ -183,15 +183,12 @@ void CodeExecutionTool::ResolveRequest(
   // If error occurred, use error message instead of console logs
   if (error) {
     content_blocks = CreateContentBlocksForText(std::move(*error));
+    artifact_ptrs.clear();
   } else {
     content_blocks = CreateContentBlocksForText(std::move(console_logs));
-
-    content_blocks.insert(content_blocks.end(),
-                          std::make_move_iterator(artifact_blocks.begin()),
-                          std::make_move_iterator(artifact_blocks.end()));
   }
 
-  std::move(callback).Run(std::move(content_blocks));
+  std::move(callback).Run(std::move(content_blocks), std::move(artifact_ptrs));
 }
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
@@ -293,8 +290,10 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
   auto input_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: Invalid JSON input, input must be a JSON object"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: Invalid JSON input, input must be a JSON object"),
+        {});
     return;
   }
 
@@ -302,7 +301,8 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 
   if (!script || script->empty()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: Missing or empty 'script' field"));
+        CreateContentBlocksForText("Error: Missing or empty 'script' field"),
+        {});
     return;
   }
 

@@ -125,12 +125,13 @@ GetMockEventsAndExpectedEventsBody() {
   events.emplace_back(
       ConversationEventRole::kAssistant, ConversationEventType::kChatMessage,
       std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
-      MakeToolUseEvents({mojom::ToolUseEvent::New("get_weather", "123",
-                                                  "{\"location\":\"New York\"}",
-                                                  std::nullopt, nullptr),
-                         mojom::ToolUseEvent::New("get_screenshot", "456",
-                                                  "{\"type\":\"tab\"}",
-                                                  std::nullopt, nullptr)}));
+      MakeToolUseEvents(
+          {mojom::ToolUseEvent::New("get_weather", "123",
+                                    "{\"location\":\"New York\"}", std::nullopt,
+                                    std::nullopt, nullptr),
+           mojom::ToolUseEvent::New("get_screenshot", "456",
+                                    "{\"type\":\"tab\"}", std::nullopt,
+                                    std::nullopt, nullptr)}));
 
   // First answer from a tool
   events.emplace_back(
@@ -1155,13 +1156,13 @@ TEST_F(ConversationAPIUnitTest,
   auto expected_tool_use_event_1 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
-          std::nullopt,
+          std::nullopt, std::nullopt,
           mojom::PermissionChallenge::New(std::nullopt, std::nullopt)));
 
   auto expected_tool_use_event_2 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_456", "{\"location\":\"New York\"}",
-          std::nullopt, nullptr));
+          std::nullopt, std::nullopt, nullptr));
 
   // This test is focused on the correctness of the ToolUseEvent,
   // we can leave verifying other events are also sent in another test.

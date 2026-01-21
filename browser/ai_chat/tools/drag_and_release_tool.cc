@@ -60,8 +60,10 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
                                           base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: failed to parse input JSON. Please try again."),
+        {});
     return;
   }
 
@@ -69,14 +71,16 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   const base::Value::Dict* from_dict = input->FindDict(kPropertyNameFrom);
   if (!from_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing 'from' target object"));
+        CreateContentBlocksForText("Error: missing 'from' target object"), {});
     return;
   }
 
   auto from_target = target_util::ParseTargetInput(*from_dict);
   if (!from_target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        base::StrCat({"Invalid 'from' target: ", from_target.error()})));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            base::StrCat({"Invalid 'from' target: ", from_target.error()})),
+        {});
     return;
   }
 
@@ -84,14 +88,15 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   const base::Value::Dict* to_dict = input->FindDict(kPropertyNameTo);
   if (!to_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing 'to' target object"));
+        CreateContentBlocksForText("Error: missing 'to' target object"), {});
     return;
   }
 
   auto to_target = target_util::ParseTargetInput(*to_dict);
   if (!to_target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        base::StrCat({"Invalid 'to' target: ", to_target.error()})));
+    std::move(callback).Run(CreateContentBlocksForText(base::StrCat(
+                                {"Invalid 'to' target: ", to_target.error()})),
+                            {});
     return;
   }
 
