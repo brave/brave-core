@@ -20,45 +20,6 @@ source_set("service") {
   ]
 }
 
-source_set("virtual_pref") {
-  sources = [
-    "virtual_pref_provider.cc",
-    "virtual_pref_provider.h",
-    "virtual_pref_provider_util.cc",
-    "virtual_pref_provider_util.h",
-  ]
-
-  public_deps = [ "//base" ]
-
-  deps = [
-    "//base/version_info",
-    "//brave/components/brave_ads/core/public:headers",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/skus/browser",
-    "//components/prefs",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "virtual_pref_provider_unittest.cc" ]
-
-  deps = [
-    ":virtual_pref",
-    "//base",
-    "//base/test:test_support",
-    "//base/version_info",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core/public:test_support",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/skus/browser",
-    "//components/prefs:test_support",
-    "//testing/gmock",
-    "//testing/gtest",
-  ]
-}
-
 source_set("test_support") {
   testonly = true
 
