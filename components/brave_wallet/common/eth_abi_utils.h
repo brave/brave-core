@@ -40,8 +40,8 @@ std::optional<Span32> ExtractFixedBytesRowFromTuple(Span data,
 std::optional<std::pair<Span4, Span>> ExtractFunctionSelectorAndArgsFromCall(
     Span data);
 
-EthAddress ExtractAddress(Span address_encoded);
-EthAddress ExtractAddressFromTuple(Span data, size_t tuple_pos);
+std::optional<EthAddress> ExtractAddress(Span address_encoded);
+std::optional<EthAddress> ExtractAddressFromTuple(Span data, size_t tuple_pos);
 std::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded);
 std::optional<std::string> ExtractString(Span string_encoded);
 

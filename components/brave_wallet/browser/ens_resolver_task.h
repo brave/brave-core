@@ -55,7 +55,7 @@ struct OffchainLookupData {
   static std::optional<OffchainLookupData> ExtractFromEthAbiPayload(
       eth_abi::Span bytes);
 
-  EthAddress sender;
+  std::optional<EthAddress> sender;
   std::vector<std::string> urls;
   std::vector<uint8_t> call_data;
   eth_abi::Bytes4 callback_function;
@@ -159,7 +159,7 @@ class EnsResolverTask {
   std::optional<EnsResolverTaskResult> task_result_;
   std::optional<EnsResolverTaskError> task_error_;
 
-  EthAddress resolver_address_;
+  std::optional<EthAddress> resolver_address_;
   std::optional<bool> supports_ensip_10_;
 
   std::optional<std::vector<uint8_t>> offchain_callback_call_;

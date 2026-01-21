@@ -43,6 +43,7 @@ bool EthTxManager::ValidateTxData(const mojom::TxDataPtr& tx_data,
   CHECK(error);
   // To cannot be empty if data is not specified
   if (tx_data->data.size() == 0 && tx_data->to.empty()) {
+    LOG(ERROR) << "XXXZZZ 1";
     *error =
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA);
     return false;
@@ -70,7 +71,8 @@ bool EthTxManager::ValidateTxData(const mojom::TxDataPtr& tx_data,
     return false;
   }
   // to must be a valid address if specified
-  if (!tx_data->to.empty() && EthAddress::FromHex(tx_data->to).IsEmpty()) {
+  if (!tx_data->to.empty() && !EthAddress::From0xHex(tx_data->to)) {
+    LOG(ERROR) << "XXXZZZ 1";
     *error = l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_TO_INVALID);
     return false;
   }
@@ -148,6 +150,7 @@ void EthTxManager::AddUnapprovedTransaction(
   auto origin_val =
       origin.value_or(url::Origin::Create(GURL("chrome://wallet")));
   if (tx_data_union->is_eth_tx_data()) {
+    LOG(ERROR) << "XXXZZZ 1";
     AddUnapprovedTransaction(
         chain_id, std::move(tx_data_union->get_eth_tx_data()), from,
         std::move(origin_val), std::move(swap_info), std::move(callback));
@@ -192,11 +195,13 @@ void EthTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   std::string error;
   if (!EthTxManager::ValidateTxData(tx_data, &error)) {
+    LOG(ERROR) << "XXXZZZ 1";
     std::move(callback).Run(false, "", error);
     return;
   }
   auto tx = EthTransaction::FromTxData(tx_data, false);
   if (!tx) {
+    LOG(ERROR) << "XXXZZZ 1";
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_CONVERT_TX_DATA));
@@ -211,6 +216,7 @@ void EthTxManager::AddUnapprovedTransaction(
   const std::string data = tx_data->data.empty() ? "" : ToHex(tx_data->data);
 
   if (!tx_ptr->gas_price()) {
+    LOG(ERROR) << "XXXZZZ 1";
     json_rpc_service_->GetGasPrice(
         chain_id,
         base::BindOnce(&EthTxManager::OnGetGasPrice, weak_factory_.GetWeakPtr(),
@@ -219,6 +225,7 @@ void EthTxManager::AddUnapprovedTransaction(
                        std::move(callback), tx_data->sign_only,
                        std::move(swap_info)));
   } else if (!tx_ptr->gas_limit()) {
+    LOG(ERROR) << "XXXZZZ 1";
     json_rpc_service_->GetEstimateGas(
         chain_id, from->address, tx_data->to, "" /* gas */, "" /* gas_price */,
         tx_data->value, data,
@@ -227,6 +234,7 @@ void EthTxManager::AddUnapprovedTransaction(
                        origin, std::move(tx_ptr), std::move(callback),
                        tx_data->sign_only, std::move(swap_info)));
   } else {
+    LOG(ERROR) << "XXXZZZ 1";
     ContinueAddUnapprovedTransaction(chain_id, from, origin, std::move(tx_ptr),
                                      std::move(callback), tx_data->sign_only,
                                      std::move(swap_info), gas_limit,
@@ -336,11 +344,13 @@ void EthTxManager::AddUnapproved1559Transaction(
     AddUnapprovedTransactionCallback callback) {
   std::string error;
   if (!EthTxManager::ValidateTxData1559(tx_data, &error)) {
+    LOG(ERROR) << "XXXZZZ 1";
     std::move(callback).Run(false, "", error);
     return;
   }
   auto tx = Eip1559Transaction::FromTxData(tx_data, false);
   if (!tx) {
+    LOG(ERROR) << "XXXZZZ 1";
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_CONVERT_TX_DATA));
@@ -1023,7 +1033,12 @@ void EthTxManager::SpeedupOrCancelTransaction(
     auto tx = std::make_unique<Eip1559Transaction>(
         *static_cast<Eip1559Transaction*>(meta->tx()));
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()->address));
+      auto addr = EthAddress::From0xHex(meta->from()->address);
+      if (!addr) {
+        std::move(callback).Run(false, "", "Wrong 'to' address");
+        return;
+      }
+      tx->set_to(*addr);
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }
@@ -1038,7 +1053,12 @@ void EthTxManager::SpeedupOrCancelTransaction(
   } else {
     auto tx = std::make_unique<EthTransaction>(*meta->tx());
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()->address));
+      auto addr = EthAddress::From0xHex(meta->from()->address);
+      if (!addr) {
+        std::move(callback).Run(false, "", "Wrong 'to' address");
+        return;
+      }
+      tx->set_to(*addr);
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }

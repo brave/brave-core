@@ -704,7 +704,7 @@ class JsonRpcEndpointHandler {
     auto& transaction_params = params_list->begin()->GetDict();
     auto* data_param = transaction_params.FindString("data");
     auto* to_param = transaction_params.FindString("to");
-    if (!data_param || !to_param || !EthAddress::FromHex(*to_param).IsValid()) {
+    if (!data_param || !to_param || !EthAddress::From0xHex(*to_param)) {
       return std::nullopt;
     }
 
@@ -713,8 +713,9 @@ class JsonRpcEndpointHandler {
       return std::nullopt;
     }
 
+    auto hex_to = EthAddress::From0xHex(*to_param).value();
     for (auto* handler : eth_call_handlers_) {
-      if (!handler->CallSupported(EthAddress::FromHex(*to_param), *call_data)) {
+      if (!handler->CallSupported(hex_to, *call_data)) {
         continue;
       }
 
@@ -3202,33 +3203,36 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     JsonRpcServiceUnitTest::SetUp();
     eth_mainnet_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
-    eth_mainnet_getmany_call_handler_ =
-        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+    eth_mainnet_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
+        EthAddress::From0xHex(
             JsonRpcService::
                 GetUnstoppableDomainsProxyReaderContractAddressForTesting(
-                    mojom::kMainnetChainId)));
+                    mojom::kMainnetChainId))
+            .value());
     eth_mainnet_endpoint_handler_->AddEthCallHandler(
         eth_mainnet_getmany_call_handler_.get());
 
     polygon_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kPolygonMainnetChainId));
-    polygon_getmany_call_handler_ =
-        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+    polygon_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
+        EthAddress::From0xHex(
             JsonRpcService::
                 GetUnstoppableDomainsProxyReaderContractAddressForTesting(
-                    mojom::kPolygonMainnetChainId)));
+                    mojom::kPolygonMainnetChainId))
+            .value());
     polygon_endpoint_handler_->AddEthCallHandler(
         polygon_getmany_call_handler_.get());
 
     base_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kBaseMainnetChainId));
-    base_getmany_call_handler_ =
-        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+    base_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
+        EthAddress::From0xHex(
             JsonRpcService::
                 GetUnstoppableDomainsProxyReaderContractAddressForTesting(
-                    mojom::kBaseMainnetChainId)));
+                    mojom::kBaseMainnetChainId))
+            .value());
     base_endpoint_handler_->AddEthCallHandler(base_getmany_call_handler_.get());
 
     url_loader_factory_.SetInterceptor(base::BindRepeating(
@@ -5622,8 +5626,9 @@ class EnsGetResolverHandler : public EthCallHandler {
  public:
   EnsGetResolverHandler(const std::string& host_name,
                         const EthAddress& resolver_address)
-      : EthCallHandler(EthAddress::FromHex(GetEnsRegistryContractAddress(
-                           mojom::kMainnetChainId)),
+      : EthCallHandler(EthAddress::From0xHex(GetEnsRegistryContractAddress(
+                                                 mojom::kMainnetChainId))
+                           .value(),
                        GetFunctionHashBytes4("resolver(bytes32)")),
         host_name_(host_name),
         resolver_address_(resolver_address) {}
@@ -5842,7 +5847,7 @@ class OffchainGatewayHandler {
       return std::nullopt;
     }
     auto* sender = payload->FindString("sender");
-    EXPECT_EQ(EthAddress::FromHex(*sender), resolver_address_);
+    EXPECT_EQ(EthAddress::From0xHex(*sender), resolver_address_);
 
     auto* data = payload->FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
@@ -5934,19 +5939,22 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
   void SetUp() override {
     JsonRpcServiceUnitTest::SetUp();
-
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
     ens_resolver_handler_ =
         std::make_unique<EnsGetResolverHandler>(ens_host(), resolver_address());
+
     ens_get_record_handler_ = std::make_unique<EnsGetRecordHandler>(
         resolver_address(), ens_host(), onchain_eth_addr(),
         onchain_contenthash());
+
     ensip10_support_handler_ =
         std::make_unique<Ensip10SupportHandler>(resolver_address());
+
     ensip10_resolve_handler_ = std::make_unique<Ensip10ResolveHandler>(
         resolver_address(), ens_host(), gateway_url());
+
     ensip10_resolve_callback_handler_ =
         std::make_unique<OffchainCallbackHandler>(resolver_address());
 
@@ -5978,17 +5986,21 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::string ens_subdomain_host() { return "test.offchainexample.eth"; }
   GURL gateway_url() { return GURL("https://gateway.brave.com/"); }
   EthAddress resolver_address() {
-    return EthAddress::FromHex("0xc1735677a60884abbcf72295e88d47764beda282");
+    return EthAddress::From0xHex("0xc1735677a60884abbcf72295e88d47764beda282")
+        .value();
   }
   EthAddress offchain_eth_addr() {
-    return EthAddress::FromHex("0xaabbccddeeaabbccddeeaabbccddeeaabbccddee");
+    return EthAddress::From0xHex("0xaabbccddeeaabbccddeeaabbccddeeaabbccddee")
+        .value();
   }
   EthAddress offchain_subdomain_eth_addr() {
-    return EthAddress::FromHex("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    return EthAddress::From0xHex("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        .value();
   }
 
   EthAddress onchain_eth_addr() {
-    return EthAddress::FromHex("0x1234567890123456789012345678901234567890");
+    return EthAddress::From0xHex("0x1234567890123456789012345678901234567890")
+        .value();
   }
 
   std::vector<uint8_t> offchain_contenthash() {
@@ -6206,9 +6218,12 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+
   EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
+
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+
   task_environment_.RunUntilIdle();
 }
 
@@ -8232,10 +8247,10 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
     nft_identifier->token_id = "";
     nft_identifiers.push_back(std::move(nft_identifier));
   }
+
   TestGetNftMetadatas(std::move(nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
-
   // Add Ethereum NFT identifiers with non-checksum addresses
   auto eth_nft_identifier1 = mojom::NftIdentifier::New();
   eth_nft_identifier1->chain_id = EthMainnetChainId();
@@ -8315,7 +8330,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
       },
       {
         "chain": "ethereum",
-        "contract_address": "0xAbC1230000000000000000000000000000000000",
+        "contract_address": "0xAbc1230000000000000000000000000000000000",
         "token_id": "1234",
         "name": "NFT #1234",
         "description": "Description of NFT #1234",

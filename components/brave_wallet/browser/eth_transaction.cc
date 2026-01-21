@@ -27,13 +27,21 @@ constexpr uint256_t kTxDataZeroCostPerByte = 4;
 constexpr uint256_t kTxDataCostPerByte = 16;
 }  // namespace
 
-EthTransaction::EthTransaction() : gas_price_(0), gas_limit_(0), value_(0) {}
+EthContractCreation::EthContractCreation() = default;
+EthContractCreation::~EthContractCreation() = default;
+
+bool EthContractCreation::operator==(const EthContractCreation&) const {
+  return true;
+}
+
+EthTransaction::EthTransaction()
+    : gas_price_(0), gas_limit_(0), to_(EthContractCreation()), value_(0) {}
 
 EthTransaction::EthTransaction(const EthTransaction&) = default;
 EthTransaction::EthTransaction(std::optional<uint256_t> nonce,
                                uint256_t gas_price,
                                uint256_t gas_limit,
-                               const EthAddress& to,
+                               std::variant<EthAddress, EthContractCreation> to,
                                uint256_t value,
                                const std::vector<uint8_t>& data)
     : nonce_(nonce),
@@ -66,7 +74,16 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
   if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_) && strict) {
     return std::nullopt;
   }
-  tx.to_ = EthAddress::FromHex(tx_data->to);
+
+  if (tx_data->to.empty() || tx_data->to == EthContractCreation().ToHex()) {
+    tx.to_ = EthContractCreation();
+  } else {
+    auto addr = EthAddress::From0xHex(tx_data->to);
+    if (!addr) {
+      return std::nullopt;
+    }
+    tx.to_ = *addr;
+  }
   if (!HexValueToUint256(tx_data->value, &tx.value_) && strict) {
     return std::nullopt;
   }
@@ -76,7 +93,7 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
 
 // static
 std::optional<EthTransaction> EthTransaction::FromValue(
-    const base::DictValue& value) {
+    const base::Value::Dict& value) {
   EthTransaction tx;
   const std::string* nonce = value.FindString("nonce");
   if (!nonce) {
@@ -111,7 +128,16 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   if (!to) {
     return std::nullopt;
   }
-  tx.to_ = EthAddress::FromHex(*to);
+
+  if (to->empty() || *to == EthContractCreation().ToHex()) {
+    tx.set_to(EthContractCreation());
+  } else {
+    auto addr = EthAddress::From0xHex(*to);
+    if (!addr) {
+      return std::nullopt;
+    }
+    tx.set_to(*addr);
+  }
 
   const std::string* tx_value = value.FindString("value");
   if (!tx_value) {
@@ -169,11 +195,11 @@ std::optional<EthTransaction> EthTransaction::FromValue(
 std::vector<uint8_t> EthTransaction::GetMessageToSign(
     uint256_t chain_id) const {
   DCHECK(nonce_);
-  base::ListValue list;
+  base::Value::List list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   if (chain_id) {
@@ -243,12 +269,12 @@ bool EthTransaction::IsSigned() const {
   return v_ != (uint256_t)0 && r_.size() != 0 && s_.size() != 0;
 }
 
-base::DictValue EthTransaction::ToValue() const {
-  base::DictValue dict;
+base::Value::Dict EthTransaction::ToValue() const {
+  base::Value::Dict dict;
   dict.Set("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
   dict.Set("gas_price", Uint256ValueToHex(gas_price_));
   dict.Set("gas_limit", Uint256ValueToHex(gas_limit_));
-  dict.Set("to", to_.ToHex());
+  dict.Set("to", GetToHex());
   dict.Set("value", Uint256ValueToHex(value_));
   dict.Set("data", base::Base64Encode(data_));
   dict.Set("v", static_cast<int>(v_));
@@ -281,11 +307,11 @@ bool EthTransaction::VIsRecid() const {
 }
 
 base::Value EthTransaction::Serialize() const {
-  base::ListValue list;
+  base::Value::List list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(RLPUint256ToBlob(v_));
@@ -293,6 +319,39 @@ base::Value EthTransaction::Serialize() const {
   list.Append(base::Value(s_));
 
   return base::Value(std::move(list));
+}
+
+std::vector<uint8_t> EthTransaction::GetToBytes() const {
+  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* eth_addr = std::get_if<EthAddress>(&to_);
+  CHECK(contract_creation || eth_addr);
+  if (contract_creation) {
+    return contract_creation->bytes();
+  } else {
+    return base::ToVector(eth_addr->bytes());
+  }
+}
+
+std::string EthTransaction::GetToHex() const {
+  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* eth_addr = std::get_if<EthAddress>(&to_);
+  CHECK(contract_creation || eth_addr);
+  if (contract_creation) {
+    return contract_creation->ToHex();
+  } else {
+    return eth_addr->ToHex();
+  }
+}
+
+std::string EthTransaction::GetToChecksumAddress() const {
+  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* eth_addr = std::get_if<EthAddress>(&to_);
+  CHECK(contract_creation || eth_addr);
+  if (contract_creation) {
+    return contract_creation->ToHex();
+  } else {
+    return eth_addr->ToChecksumAddress();
+  }
 }
 
 }  // namespace brave_wallet

@@ -19,10 +19,22 @@
 
 namespace brave_wallet {
 
-EthAddress::EthAddress(std::vector<uint8_t> bytes) : bytes_(std::move(bytes)) {}
-EthAddress::EthAddress(base::span<const uint8_t> bytes)
-    : bytes_(bytes.begin(), bytes.end()) {}
+namespace {
+
+bool HasMixedCaseLetters(std::string_view address_without_prefix) {
+  return std::ranges::any_of(address_without_prefix,
+                             [](auto b) { return b >= 'A' && b <= 'Z'; }) &&
+         std::ranges::any_of(address_without_prefix,
+                             [](auto b) { return b >= 'a' && b <= 'z'; });
+}
+
+}  // namespace
+
 EthAddress::EthAddress() = default;
+
+EthAddress::EthAddress(base::span<const uint8_t, kEthAddressLength> bytes) {
+  base::span(bytes_).copy_from_nonoverlapping(bytes);
+}
 EthAddress::EthAddress(const EthAddress& other) = default;
 EthAddress::~EthAddress() = default;
 
@@ -31,41 +43,35 @@ bool EthAddress::operator==(const EthAddress& other) const {
 }
 
 // static
-EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
-  // TODO(apaymyshev): should be a fixed-size span.
-  if (public_key.size() != 64) {
-    return EthAddress();
-  }
-
+EthAddress EthAddress::FromPublicKey(
+    base::span<const uint8_t, kEthPublicKeyLength> public_key) {
   return EthAddress(
-      base::as_byte_span(KeccakHash(public_key)).last(kEthAddressLength));
+      base::as_byte_span(KeccakHash(public_key)).last<kEthAddressLength>());
 }
 
 // static
-EthAddress EthAddress::FromHex(std::string_view input) {
+EthAddress EthAddress::FromBytes(
+    base::span<const uint8_t, kEthAddressLength> bytes) {
+  return EthAddress(bytes);
+}
+
+// static
+std::optional<EthAddress> EthAddress::From0xHex(std::string_view input) {
   if (!IsValidAddress(input)) {
-    return EthAddress();
+    return std::nullopt;
   }
 
-  std::vector<uint8_t> bytes;
-  if (!PrefixedHexStringToBytes(input, &bytes)) {
-    return EthAddress();
+  std::array<uint8_t, kEthAddressLength> bytes = {};
+  if (!PrefixedHexStringToFixed(input, base::span(bytes))) {
+    return std::nullopt;
   }
 
-  return EthAddress(std::move(bytes));
-}
-
-// static
-EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
-  if (bytes.size() != kEthAddressLength) {
-    return EthAddress();
-  }
   return EthAddress(bytes);
 }
 
 // static
 EthAddress EthAddress::ZeroAddress() {
-  return EthAddress(std::vector<uint8_t>(kEthAddressLength, 0));
+  return EthAddress(std::array<uint8_t, kEthAddressLength>{});
 }
 
 // static
@@ -73,9 +79,24 @@ bool EthAddress::IsValidAddress(std::string_view input) {
   if (!IsValidHexString(input)) {
     return false;
   }
+
   if (input.size() - 2 != kEthAddressLength * 2) {
     return false;
   }
+
+  // Validate EIP-55.
+  if (HasMixedCaseLetters(input.substr(2))) {
+    auto decoded_addr = EthAddress::From0xHex(base::ToLowerASCII(input));
+
+    if (!decoded_addr) {
+      return false;
+    }
+
+    if (decoded_addr->ToChecksumAddress() != input) {
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -91,8 +112,8 @@ std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
     return "";
   }
 
-  const auto eth_addr = EthAddress::FromHex(address);
-  if (eth_addr.IsEmpty()) {
+  const auto eth_addr = EthAddress::From0xHex(address);
+  if (!eth_addr) {
     return std::nullopt;
   }
   uint256_t chain;
@@ -100,7 +121,7 @@ std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
     return std::nullopt;
   }
 
-  return eth_addr.ToChecksumAddress(chain);
+  return eth_addr->ToChecksumAddress(chain);
 }
 
 std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
@@ -133,17 +154,8 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   return result;
 }
 
-bool EthAddress::IsEmpty() const {
-  return bytes_.empty();
-}
-
-bool EthAddress::IsValid() const {
-  return !bytes_.empty();
-}
-
 bool EthAddress::IsZeroAddress() const {
-  return IsValid() &&
-         std::ranges::all_of(bytes_, [](auto b) { return b == 0; });
+  return std::ranges::all_of(bytes_, [](auto b) { return b == 0; });
 }
 
 }  // namespace brave_wallet
