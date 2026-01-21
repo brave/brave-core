@@ -298,8 +298,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential;
-  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+  std::string credential = base::UTF16ToUTF8(unescaped.view());
   if (credential.empty()) {
     // Not purchased.
     std::move(callback).Run(std::nullopt);

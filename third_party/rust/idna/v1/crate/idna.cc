@@ -35,8 +35,7 @@ IdnaResult DomainToASCII(rust::Str domain_str) {
   if (!url::IDNToASCII(base::UTF8ToUTF16(domain), &punycode)) {
     return res;
   } else {
-    res.domain = base::UTF16ToASCII(
-            std::u16string(punycode.data(), punycode.length()));
+    res.domain = base::UTF16ToASCII(punycode.view());
     res.valid = true;
     return res;
   }

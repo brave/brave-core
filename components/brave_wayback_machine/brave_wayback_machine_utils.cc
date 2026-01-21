@@ -61,8 +61,7 @@ GURL FixupWaybackQueryURL(const GURL& url) {
     url::RawCanonOutputW<1024> canonOutput;
     url::DecodeURLEscapeSequences(key, url::DecodeURLMode::kUTF8OrIsomorphic,
                                   &canonOutput);
-    const std::string decoded_key = base::UTF16ToUTF8(
-        std::u16string_view(canonOutput.data(), canonOutput.length()));
+    const std::string decoded_key = base::UTF16ToUTF8(canonOutput.view());
     // Skip target keys.
     if (decoded_key == kTimeStampKey || decoded_key == kCallbackKey)
       continue;
@@ -77,4 +76,3 @@ GURL FixupWaybackQueryURL(const GURL& url) {
   replacements.SetQueryStr(query);
   return url.ReplaceComponents(replacements);
 }
-
