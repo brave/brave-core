@@ -146,7 +146,7 @@ public class BraveToolbarManager extends ToolbarManager
 
     // Own members.
     private boolean mIsBraveBottomControlsVisible;
-    private final MonotonicObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
+    private final NonNullObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private final HomepageManager.HomepageStateListener mBraveHomepageStateListener;
     private final AppCompatActivity mActivity;
@@ -189,7 +189,7 @@ public class BraveToolbarManager extends ToolbarManager
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean canShowUpdateBadge,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            MonotonicObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier,
             WindowAndroid windowAndroid,
             OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
