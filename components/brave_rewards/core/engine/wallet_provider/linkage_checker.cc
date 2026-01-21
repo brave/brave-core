@@ -28,8 +28,15 @@ void LinkageChecker::Start() {
   if (timer_.IsRunning()) {
     return;
   }
+
   CheckLinkage();
-  timer_.Start(FROM_HERE, base::Hours(24), this, &LinkageChecker::CheckLinkage);
+
+  base::TimeDelta interval = base::Hours(24);
+  if (engine().options().check_linkage_interval) {
+    interval = base::Seconds(engine().options().check_linkage_interval);
+  }
+
+  timer_.Start(FROM_HERE, interval, this, &LinkageChecker::CheckLinkage);
 }
 
 void LinkageChecker::Stop() {

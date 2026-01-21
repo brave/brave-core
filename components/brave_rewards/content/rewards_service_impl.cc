@@ -1499,6 +1499,10 @@ mojom::RewardsEngineOptionsPtr RewardsServiceImpl::HandleFlags(
     options->retry_interval = *flags.retry_interval;
   }
 
+  if (flags.check_linkage_interval) {
+    options->check_linkage_interval = *flags.check_linkage_interval;
+  }
+
   // The "persist-logs" command-line flag is deprecated and will be removed
   // in a future version. Use --enable-features=BraveRewardsVerboseLogging
   // instead.

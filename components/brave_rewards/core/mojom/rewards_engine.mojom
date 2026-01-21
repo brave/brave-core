@@ -14,6 +14,7 @@ struct RewardsEngineOptions {
   bool is_testing = false;
   int32 reconcile_interval = 0;
   int32 retry_interval = 0;
+  int32 check_linkage_interval = 0;
 };
 
 interface RewardsEngine {
