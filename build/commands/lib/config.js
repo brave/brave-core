@@ -1141,8 +1141,17 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // Restrict remote execution jobs.
-      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 900)
+      // Restrict remote execution jobs to x1.2 of available executors. This is
+      // a slight overprovisioning to ensure that network latency does not cause
+      // remote execution starvation.
+      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 720)
+
+      // Set SISO_REAPI_PRIORITY to 4 for interactive builds according to
+      // EngFlow's recommended priority system:
+      // https://blog.engflow.com/2025/04/07/not-all-builds-are-made-equal-using-priorities-to-expedite-remote-execution-of-the-builds-and-tests-that-matter-most/#from-workflow-to-priorities
+      if (!this.isCI) {
+        env.SISO_REAPI_PRIORITY = '4'
+      }
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'
