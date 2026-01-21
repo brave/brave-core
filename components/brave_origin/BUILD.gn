@@ -3,6 +3,27 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("pref_names") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
+}
+
 static_library("brave_origin") {
   sources = [
     "brave_origin_policy_info.cc",
@@ -17,10 +38,6 @@ static_library("brave_origin") {
     "brave_origin_settings_handler_impl.h",
     "brave_origin_utils.cc",
     "brave_origin_utils.h",
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
     "profile_id.cc",
     "profile_id.h",
   ]
@@ -28,6 +45,8 @@ static_library("brave_origin") {
   friend = [ ":unit_tests" ]
 
   public_deps = [
+    ":features",
+    ":pref_names",
     "buildflags",
     "mojom",
     "//base",
