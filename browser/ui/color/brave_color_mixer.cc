@@ -682,7 +682,7 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
 
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorLocationBarFocusRing] = {SkColorSetRGB(0xCF, 0xAB, 0xE2)};
+  mixer[kColorLocationBarFocusRing] = {nala::kColorPrimitiveTorWindow80};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateTorFrame};
@@ -693,21 +693,20 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
 
-  // TODO(simonhong): Get color from leo when it's available.
   mixer[kColorTabForegroundActiveFrameActive] = {
-      SkColorSetRGB(0xFA, 0xF3, 0xFF)};
+      nala::kColorPrimitiveTorWindow95};
   mixer[kColorTabForegroundActiveFrameInactive] = {
-      SkColorSetRGB(0xE3, 0xB3, 0xFF)};
+      nala::kColorPrimitiveTorWindow80};
   mixer[kColorTabForegroundInactiveFrameActive] = {
-      SkColorSetRGB(0xE3, 0xB3, 0xFF)};
-  mixer[kColorToolbar] = {nala::kColorPrimitiveTorWindow10};
+      nala::kColorPrimitiveTorWindow80};
+  mixer[kColorToolbar] = {nala::kColorPrimitiveTorWindow20};
   mixer[kColorToolbarButtonIcon] = {nala::kColorPrimitiveTorWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[ui::kColorFrameActive] = {kPrivateTorFrame};
   mixer[ui::kColorFrameInactive] = {kPrivateTorFrame};
-  mixer[kColorTabDividerFrameInactive] = {SkColorSetRGB(0x5A, 0x53, 0x66)};
-  mixer[kColorTabDividerFrameActive] = {SkColorSetRGB(0x5A, 0x53, 0x66)};
+  mixer[kColorTabDividerFrameInactive] = {nala::kColorPrimitiveTorWindow35};
+  mixer[kColorTabDividerFrameActive] = {nala::kColorPrimitiveTorWindow35};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
