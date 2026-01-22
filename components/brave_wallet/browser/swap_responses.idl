@@ -355,10 +355,6 @@ namespace swap_responses {
     DOMString target;
     DOMString value;
     DOMString gasLimit;
-    DOMString gasPrice;
-    DOMString lastBaseFeePerGas;
-    DOMString maxFeePerGas;
-    DOMString maxPriorityFeePerGas;
   };
 
   dictionary SquidRoute {
