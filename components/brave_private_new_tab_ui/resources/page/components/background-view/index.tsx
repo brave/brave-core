@@ -14,7 +14,7 @@ const Box = styled.div<BoxProps>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", sans-serif;
   font-weight: 400;
   color: white;
   width: 100%;
