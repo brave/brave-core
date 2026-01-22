@@ -25,6 +25,7 @@ import { keyringIdForNewAccount } from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkEntityAdapter } from '../entities/network.entity'
+import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom.m'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -481,7 +482,18 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const result = await api.keyringService.unlock(password)
+
+          const buf = new BraveWallet.SecureBuffer()
+          const bytes = new TextEncoder().encode(password)
+
+          buf.data = { bytes: bytes as unknown as number[] } as unknown as BigBuffer
+
+          const task = api.keyringService.unlock(buf)
+
+          // Because of JS' reference semantics, this also clears what's in `buf.data`.
+          bytes.fill(0)
+
+          const result = await task
           return {
             data: result.success,
           }

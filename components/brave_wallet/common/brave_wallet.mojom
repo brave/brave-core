@@ -6,12 +6,17 @@
 module brave_wallet.mojom;
 
 import "brave/components/brave_wallet/common/meld_integration.mojom";
+import "mojo/public/mojom/base/big_buffer.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
 
 const int8 kAccountNameMaxCharacterLength = 30;
+
+struct SecureBuffer {
+    mojo_base.mojom.BigBuffer data;
+};
 
 // Used to notify the renderer of provider information for use in
 // window.ethereum events
@@ -1430,7 +1435,7 @@ interface KeyringService {
   Lock();
 
   // Unlocks the keyring.
-  Unlock(string password) => (bool success);
+  Unlock(SecureBuffer password) => (bool success);
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);

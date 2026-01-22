@@ -90,7 +90,8 @@ class KeyringService : public mojom::KeyringService {
   bool RestoreWalletSync(const std::string& mnemonic,
                          const std::string& password,
                          bool is_legacy_eth_seed_format);
-  void Unlock(const std::string& password, UnlockCallback callback) override;
+  void Unlock(const crypto::SecureString& password,
+              UnlockCallback callback) override;
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(mojom::CoinType coin,

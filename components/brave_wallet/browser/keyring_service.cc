@@ -1523,7 +1523,8 @@ bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
   MaybeRunPasswordMigrations(profile_prefs_, password);
 
   if (CanResumeWallet(mnemonic, password, is_legacy_eth_seed_format)) {
-    Unlock(password, base::DoNothing());
+    crypto::SecureString password_copy(password);
+    Unlock(password_copy, base::DoNothing());
     return true;
   }
 
@@ -2364,12 +2365,12 @@ void KeyringService::Lock() {
   StopAutoLockTimer();
 }
 
-void KeyringService::Unlock(const std::string& password,
+void KeyringService::Unlock(const crypto::SecureString& password,
                             KeyringService::UnlockCallback callback) {
-  MaybeRunPasswordMigrations(profile_prefs_, password);
+  MaybeRunPasswordMigrations(profile_prefs_, std::string(password));
 
   auto encryptor = PasswordEncryptor::CreateEncryptor(
-      password, GetSaltFromPrefs(profile_prefs_));
+      std::string(password), GetSaltFromPrefs(profile_prefs_));
   if (!encryptor) {
     std::move(callback).Run(false);
     return;
@@ -3442,7 +3443,7 @@ void KeyringService::MaybeUnlockWithCommandLine() {
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           switches::kDevWalletPassword);
   if (!dev_wallet_password.empty()) {
-    Unlock(dev_wallet_password, base::DoNothing());
+    Unlock(crypto::SecureString(dev_wallet_password), base::DoNothing());
   }
 #endif  // !defined(OFFICIAL_BUILD)
 }
