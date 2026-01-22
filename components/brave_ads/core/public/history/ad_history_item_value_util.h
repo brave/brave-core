@@ -7,6 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_ITEM_VALUE_UTIL_H_
 
 #include "base/values.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

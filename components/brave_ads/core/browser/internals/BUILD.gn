@@ -17,6 +17,7 @@ source_set("internals") {
 
   public_deps = [
     "//base",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/prefs",

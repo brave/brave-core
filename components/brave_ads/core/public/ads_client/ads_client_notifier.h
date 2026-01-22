@@ -13,8 +13,11 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_interface.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 class GURL;
 

@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_OBSOLETE_PREF_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_OBSOLETE_PREF_UTIL_H_
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
 class PrefRegistrySimple;
 class PrefService;
 

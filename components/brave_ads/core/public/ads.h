@@ -10,9 +10,12 @@
 #include <string>
 
 #include "base/values.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace base {
 class Time;

@@ -25,6 +25,12 @@ class GURL;
 
 namespace brave_ads {
 
+// AdsService is the key interface for the Brave Ads component, managing ad
+// serving, user interactions, and ad-related events. It handles all ad types
+// including notification ads, new tab page ads, and search result ads.
+// Note: This header can be included even when Brave Ads is disabled by build
+// flag. When Brave Ads is disabled, the pointer to AdsService should be
+// nullptr and no ads functionality should be available.
 class AdsService : public KeyedService {
  public:
   class Delegate {
