@@ -72,6 +72,9 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
     leoShowAlert({
       type: error ? 'error' : 'success',
+      title: this.i18n(
+        error ? 'braveAccountResendConfirmationEmailErrorTitle' :
+                'braveAccountResendConfirmationEmailSuccessTitle'),
       content: error
         ? this.getErrorMessage(error)
         : this.i18n('braveAccountResendConfirmationEmailSuccess')

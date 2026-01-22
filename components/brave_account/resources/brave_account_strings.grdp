@@ -140,4 +140,20 @@
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields">
     Enter your password
   </message>
+
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email">
+    Done
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email">
+    Confirmation email resent.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails">
+    Unable to resend
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded">
+    Too many verification emails have been sent already. Please check your spam folder.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified">
+    Email already verified.
+  </message>
 </grit-part>
