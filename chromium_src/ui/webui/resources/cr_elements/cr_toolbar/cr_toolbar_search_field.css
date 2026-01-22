@@ -35,14 +35,14 @@
 
 /* Input text styling to match Figma */
 input {
-  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
 }
 
 #prompt {
-  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
