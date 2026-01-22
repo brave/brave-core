@@ -1,0 +1,12 @@
+diff --git a/front_end/panels/application/BUILD.gn b/front_end/panels/application/BUILD.gn
+index b0be3bdbc40028cef67062ed08d9ec8dcd60939d..20b81546d8839917ffed356fdd83fb573f4f06fe 100644
+--- a/front_end/panels/application/BUILD.gn
++++ b/front_end/panels/application/BUILD.gn
+@@ -178,6 +178,7 @@ devtools_ui_module("unittests") {
+     "../../core/sdk:bundle",
+     "../../testing",
+     "../../ui/components/render_coordinator:bundle",
++    "../../ui/legacy:bundle",
+     "./components",
+     "./preloading/components",
+   ]
