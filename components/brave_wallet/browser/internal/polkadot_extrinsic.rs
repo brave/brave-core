@@ -116,6 +116,8 @@ mod ffi {
             block_number: u32,
             sender_nonce: u32,
         ) -> Vec<u8>;
+
+        fn parse_fee_info(mut input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
     }
 }
 
@@ -446,4 +448,42 @@ fn make_signed_extrinsic(
     });
 
     buf
+}
+
+// Definition of the type's binary representation is provided here:
+// https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L66282-L66305
+//
+// The general shape of the octets sent from the RPC nodes is:
+// {weight, class, partial_fee}
+// weight = {ref_time (as Compact<u64>), proof_size (as Compact<u64>)}
+// class = 0x00, 0x01, or 0x02
+// partial_fee = LE bytes representing U128
+fn parse_fee_info(mut input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
+    let ref_time = <Compact<u64>>::decode(&mut input);
+    if ref_time.is_err() {
+        return false;
+    }
+
+    let proof_size = <Compact<u64>>::decode(&mut input);
+    if proof_size.is_err() {
+        return false;
+    }
+
+    let Ok(class) = next_n_bytes(&mut input, 1) else { return false };
+    match class[0] {
+        // These are the only valid values
+        // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L1330-L1349
+        0 | 1 | 2 => {}
+        _ => return false,
+    }
+
+    let Ok(fee_le_bytes) = next_n_bytes(&mut input, 16) else { return false };
+    if !input.is_empty() {
+        // Trailing octets, assume invalid input.
+        return false;
+    }
+
+    fee_bytes.copy_from_slice(fee_le_bytes);
+
+    true
 }
