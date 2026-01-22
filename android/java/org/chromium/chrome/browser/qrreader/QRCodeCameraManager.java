@@ -12,7 +12,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.display.DisplayManager;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
 
@@ -165,16 +164,9 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
             Log.w(TAG, "Detector dependencies are not yet available.");
         }
 
-        // Creates and starts the camera. Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
         CameraSource.Builder builder =
                 new CameraSource.Builder(context, barcodeDetector)
                         .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
                         .setRequestedFps(24.0f);
 
         // Make sure that auto focus is an available option
