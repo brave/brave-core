@@ -86,6 +86,8 @@ void ApplicationStateObserver::OnBrowserAdded(Browser* browser) {
     // No need to observe anymore.
     BrowserList::RemoveObserver(this);
 
+    // Trigger the callback notifications after a cycle of the main loop to
+    // handle all windows
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&ApplicationStateObserver::NotifyApplicationBecameActive,

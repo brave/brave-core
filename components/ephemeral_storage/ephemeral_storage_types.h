@@ -19,9 +19,9 @@ using TLDEphemeralAreaKey =
     std::pair<std::string, content::StoragePartitionConfig>;
 
 // Defines which source initiated the storage cleanup enforcement.
-enum class StorageCleanupSource {
+enum class StorageCleanupMode {
   kDefault,
-  kManualShred,
+  kImmediateShred,
   kOnExitShred,
 };
 

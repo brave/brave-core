@@ -57,7 +57,7 @@ namespace {
 
 bool PrepareTabForFirstPartyStorageCleanup(
     tabs::TabHandle tab_handle,
-    const std::vector<std::string>& etldplusones,
+    const std::vector<std::string>& ephemeral_domains,
     const bool enforced_by_user) {
   if (tab_handle == tabs::TabHandle::Null()) {
     return false;
@@ -73,7 +73,7 @@ bool PrepareTabForFirstPartyStorageCleanup(
   }
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (tab_tld.empty() || !base::Contains(etldplusones, tab_tld)) {
+  if (tab_tld.empty() || !base::Contains(ephemeral_domains, tab_tld)) {
     return false;
   }
 
@@ -82,8 +82,8 @@ bool PrepareTabForFirstPartyStorageCleanup(
               tab_handle.Get()->GetContents())) {
     ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup(
         enforced_by_user
-            ? ephemeral_storage::StorageCleanupSource::kManualShred
-            : ephemeral_storage::StorageCleanupSource::kOnExitShred);
+            ? ephemeral_storage::StorageCleanupMode::kImmediateShred
+            : ephemeral_storage::StorageCleanupMode::kOnExitShred);
     return true;
   }
   return false;
@@ -222,7 +222,8 @@ void BraveEphemeralStorageServiceDelegate::
 
 void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
-        const std::vector<std::string>& ephemeral_domains, const bool enforced_by_user) {
+        const std::vector<std::string>& ephemeral_domains,
+        const bool enforced_by_user) {
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
@@ -238,8 +239,8 @@ void BraveEphemeralStorageServiceDelegate::
 
     base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
-      if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
-                                                         ephemeral_domains, enforced_by_user)) {
+      if (!tab || !PrepareTabForFirstPartyStorageCleanup(
+                      tab->GetHandle(), ephemeral_domains, enforced_by_user)) {
         continue;
       }
       tab_handlers.emplace(tab->GetHandle());
@@ -267,8 +268,8 @@ void BraveEphemeralStorageServiceDelegate::
         continue;
       }
 
-      if (!PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
-                                                 ephemeral_domains, enforced_by_user)) {
+      if (!PrepareTabForFirstPartyStorageCleanup(
+              tab->GetHandle(), ephemeral_domains, enforced_by_user)) {
         continue;
       }
       tabs_to_close.emplace_back(tab->GetHandle());

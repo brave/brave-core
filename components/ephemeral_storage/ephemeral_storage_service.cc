@@ -232,12 +232,12 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig& storage_partition_config,
     bool shields_disabled_on_one_of_hosts,
-    StorageCleanupSource source) {
+    StorageCleanupMode source) {
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-  if (source != StorageCleanupSource::kManualShred &&
+  if (source != StorageCleanupMode::kImmediateShred &&
       auto_shred_mode.has_value() &&
       auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::NEVER) {
     return;
@@ -245,14 +245,15 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
-      !shields_disabled_on_one_of_hosts || source != StorageCleanupSource::kDefault;
+      !shields_disabled_on_one_of_hosts ||
+      source != StorageCleanupMode::kDefault;
   const bool cleanup_first_party_storage_area =
       FirstPartyStorageAreaNotInUse(ephemeral_domain, storage_partition_config,
                                     shields_disabled_on_one_of_hosts,
                                     auto_shred_mode) ||
-      source != StorageCleanupSource::kDefault;
+      source != StorageCleanupMode::kDefault;
 
-  if (source == StorageCleanupSource::kOnExitShred &&
+  if (source == StorageCleanupMode::kOnExitShred &&
       cleanup_first_party_storage_area && auto_shred_mode.has_value() &&
       auto_shred_mode.value() ==
           brave_shields::mojom::AutoShredMode::APP_EXIT) {
@@ -262,14 +263,14 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     return;
   }
 
-  if (source != StorageCleanupSource::kDefault ||
+  if (source != StorageCleanupMode::kDefault ||
       base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive)) {
     auto cleanup_timer = std::make_unique<base::OneShotTimer>();
     cleanup_timer->Start(
         FROM_HERE,
-        source != StorageCleanupSource::kDefault ? base::Milliseconds(500)
-                                             : tld_ephemeral_area_keep_alive_,
+        source != StorageCleanupMode::kDefault ? base::Milliseconds(500)
+                                               : tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,
@@ -460,6 +461,7 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
     if (!url.is_valid()) {
       continue;
     }
+
     delegate_->CleanupFirstPartyStorageArea(
         {std::string(url.host()), storage_partition_config});
   }
