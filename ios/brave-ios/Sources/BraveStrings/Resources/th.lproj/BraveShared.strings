@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "บัญชี Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "เกือบถึงแล้ว!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "อีเมลยืนยันกำลังจะมาถึง คลิกปุ่มในอีเมลนั้นเพื่อเปิดใช้งานบัญชีของคุณ";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "ยกเลิกการลงทะเบียน";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Get Started";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "ส่งอีเมลยืนยันอีกครั้ง";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "ไม่เห็นอีเมล? ตรวจสอบโฟลเดอร์สแปมของคุณหรือคลิกปุ่มเพื่อส่งอีเมลยืนยันอีกครั้ง";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "ออกจากระบบ";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Panel";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "ข้อผิดพลาด";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Get Started";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "บล็อกเว็บไซต์อันตราย";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "เปิด";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "โฟกัสแอดเดรสบาร์โดยอัตโนมัติเมื่อสร้างแท็บใหม่";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "เปิดคีย์บอร์ดโดยอัตโนมัติ";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "เปิดแท็บการท่องเว็บแบบส่วนตัวเอาไว้เมื่อคุณปิดแอป เพื่อให้แน่ใจว่าเซสชันการท่องเว็บแบบส่วนตัวจะดำเนินต่อไปได้อย่างราบรื่น";
