@@ -288,8 +288,10 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   EXPECT_EQ(bounds[0].bottom() + kVerticalTabsSpacing, bounds[1].y());
   EXPECT_EQ(bounds[1].bottom() + kVerticalTabsSpacing, bounds[2].y());
 
-  // Unpinned tabs should continue the vertical layout
-  EXPECT_EQ(bounds[2].bottom() + kVerticalTabsSpacing, bounds[3].y());
+  // Unpinned tabs should continue the vertical layout after separator.
+  EXPECT_EQ(bounds[2].bottom() + kVerticalTabsSpacing +
+                kPinnedUnpinnedSeparatorHeight + kVerticalTabsSpacing,
+            bounds[3].y());
   EXPECT_EQ(bounds[3].bottom() + kVerticalTabsSpacing, bounds[4].y());
 
   // All tabs should have the same width
