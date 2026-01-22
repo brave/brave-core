@@ -123,6 +123,12 @@ def configure_sisorc():
         ninja_flags.append(f'-cache_dir "{cache_dir}" -local_cache_enable')
         os.makedirs(cache_dir, exist_ok=True)
 
+    if reapi_priority := os.environ.get('SISO_REAPI_PRIORITY'):
+        # `-reapi_priority` to set the priority of the reapi requests.
+        assert reapi_priority.isdigit(), \
+            f'SISO_REAPI_PRIORITY must be an integer, got {reapi_priority}'
+        ninja_flags.append(f'-reapi_priority {reapi_priority}')
+
     FileUtils.write_text_file(
         f'{Paths.src_dir}/build/config/siso/.sisorc',
         f'ninja {" ".join(ninja_flags)}\n' if ninja_flags else '')
