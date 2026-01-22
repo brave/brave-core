@@ -415,6 +415,12 @@ program
     'iPhone 17',
   )
   .option(
+    '--ninja <opt>',
+    'Additional Ninja command-line options, in the form <key>:<value>',
+    collect,
+    [],
+  )
+  .option(
     '--ios_simulator_version <simulator_version>',
     'ios version for simulator',
     '26.2',
