@@ -624,7 +624,7 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
   mixer[kColorForTest] = {kPrivateColorForTest};
 
-  mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
+  mixer[kColorToolbarButtonActivated] = {nala::kColorPrimitivePrivateWindow80};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
   mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorPrimitiveNeutral20};
