@@ -137,6 +137,7 @@ struct TabGridView: View {
           .transition(.opacity)
         }
       } else {
+        let isGridHidden = viewModel.isPrivateBrowsing && !viewModel.isSceneActive
         TabGridContainerViewRepresentable(
           viewModel: viewModel,
           containerView: containerView,
@@ -148,6 +149,8 @@ struct TabGridView: View {
           },
           selectedTabList: $selectedTabs
         )
+        .opacity(isGridHidden ? 0 : 1)
+        .accessibilityHidden(isGridHidden)
       }
     }
     .environment(\.editMode, $editMode)
