@@ -16,12 +16,10 @@
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
@@ -34,6 +32,12 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 #define DEFAULT_ADS_PER_HOUR 2
 
@@ -436,6 +440,7 @@ BraveRewardsNativeWorker::GetExternalWalletType(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (!ads_service) {
@@ -444,6 +449,7 @@ void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
   ads_service->GetStatementOfAccounts(
       base::BindOnce(&BraveRewardsNativeWorker::OnGetAdsAccountStatement,
                      weak_factory_.GetWeakPtr()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
@@ -719,20 +725,26 @@ void BraveRewardsNativeWorker::OnNotificationDeleted(
 }
 
 int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (!ads_service_) {
+  if (!ads_service) {
     return DEFAULT_ADS_PER_HOUR;
   }
-  return ads_service_->GetMaximumNotificationAdsPerHour();
+  return ads_service->GetMaximumNotificationAdsPerHour();
+#else
+  return DEFAULT_ADS_PER_HOUR;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   ProfileManager::GetActiveUserProfile()
       ->GetOriginalProfile()
       ->GetPrefs()
       ->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
                  static_cast<int64_t>(value));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {

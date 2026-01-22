@@ -28,12 +28,10 @@ NewTabTakeoverUIConfig::NewTabTakeoverUIConfig()
 std::unique_ptr<content::WebUIController>
 NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                               const GURL& url) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-
   auto rich_media_ad_event_handler = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-      brave_ads::AdsServiceFactory::GetForProfile(profile)
+      brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui))
 #else
       nullptr
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

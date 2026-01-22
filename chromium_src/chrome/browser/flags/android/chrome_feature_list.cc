@@ -9,7 +9,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
@@ -27,6 +27,10 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
 #endif
@@ -37,6 +41,12 @@
 
 #define BRAVE_AI_CHAT_FLAGS \
   &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#define BRAVE_NEW_TAB_PAGE_AD_FLAG &brave_ads::kNewTabPageAdFeature,
+#else
+#define BRAVE_NEW_TAB_PAGE_AD_FLAG
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/components/web_discovery/common/features.h"
@@ -61,6 +71,7 @@
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
     BRAVE_AI_CHAT_FLAGS                                                        \
+    BRAVE_NEW_TAB_PAGE_AD_FLAG                                                 \
     BRAVE_WEB_DISCOVERY_FLAG                                                   \
     BRAVE_VPN_FLAG                                                             \
     &brave_rewards::features::kBraveRewards,                                   \
@@ -83,7 +94,6 @@
     &brave_shields::features::kBraveShieldsElementPicker,                      \
     &features::kBraveAndroidDynamicColors,                                     \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
-    &brave_ads::kNewTabPageAdFeature,                                          \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_account::features::kBraveAccount,                                   \
     &brave_shields::features::kBraveShredFeature,                              \
@@ -94,6 +104,7 @@
 #include <chrome/browser/flags/android/chrome_feature_list.cc>
 #undef kForceWebContentsDarkMode
 #undef BRAVE_AI_CHAT_FLAGS
+#undef BRAVE_NEW_TAB_PAGE_AD_FLAG
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
 #undef BRAVE_WALLET_FLAG

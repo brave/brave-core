@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 
 assert(is_android)
 
@@ -23,11 +24,10 @@ source_set("android_browser_process") {
     "//brave/brave_domains/android:jni_headers",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
-    "//brave/browser/brave_ads/android:jni_headers",
     "//brave/browser/brave_origin/android:jni_headers",
     "//brave/browser/skus/android:jni_headers",
     "//brave/build/android:jni_headers",
-    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
@@ -53,6 +53,13 @@ source_set("android_browser_process") {
     "//components/webui/flags",
     "//url",
   ]
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads/android:jni_headers",
+      "//brave/components/brave_ads/browser",
+    ]
+  }
 }
 
 source_set("tabs_public") {
