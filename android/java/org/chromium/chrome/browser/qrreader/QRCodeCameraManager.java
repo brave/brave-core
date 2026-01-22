@@ -32,7 +32,9 @@ import java.io.IOException;
  * lifecycle management, and 180-degree rotation handling for QR code scanning.
  */
 @NullMarked
-public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+public class QRCodeCameraManager
+        implements BarcodeTracker.BarcodeGraphicTrackerCallback,
+                CameraSourcePreview.WindowFocusListener {
     private static final String TAG = "QRCodeCameraManager";
     private static final int INITIAL_ROTATION = -1;
     private static final int RC_HANDLE_GMS = 9001;
@@ -110,6 +112,7 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
      */
     public void init(CameraSourcePreview cameraSourcePreview) {
         mCameraSourcePreview = cameraSourcePreview;
+        mCameraSourcePreview.setWindowFocusListener(this);
 
         Activity activity = mHostProvider.getHostActivity();
         if (activity != null) {
@@ -235,6 +238,21 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
     public void stopCameraSource() {
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.stop();
+        }
+    }
+
+    // CameraSourcePreview.WindowFocusListener implementation
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (!hasFocus) {
+            stopCameraSource();
+            return;
+        }
+
+        try {
+            startCameraSource();
+        } catch (SecurityException e) {
+            Log.e(TAG, "Security exception when restarting camera on focus", e);
         }
     }
 
