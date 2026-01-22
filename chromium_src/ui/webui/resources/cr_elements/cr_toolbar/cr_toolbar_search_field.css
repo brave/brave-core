@@ -53,3 +53,7 @@ input {
 cr-icon-button {
   --cr-icon-button-fill-color: var(--leo-color-icon-default, #464649);
 }
+
+:host(:hover:not([search-focused_], [narrow])) #stateBackground {
+  background: rgba(0, 0, 0, 0.05);
+}
