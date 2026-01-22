@@ -806,8 +806,6 @@ void BraveRenderViewContextMenu::OnContainerSelected(
 
 base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
-  // TODO(https://github.com/brave/brave-browser/issues/47118) If the tab is in
-  // a container, return the container ID.
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
   const auto& storage_partition_config =
