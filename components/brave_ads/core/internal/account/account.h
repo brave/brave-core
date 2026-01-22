@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
@@ -23,13 +24,14 @@
 
 namespace brave_ads {
 
+class AdsClient;
 class Confirmations;
 struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationDelegate {
  public:
-  Account();
+  explicit Account(AdsClient& ads_client);
 
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
@@ -110,6 +112,8 @@ class Account final : public AdsClientNotifierObserver,
   // ConfirmationDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
   void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
+
+  const raw_ref<AdsClient> ads_client_;
 
   base::ObserverList<AccountObserver> observers_;
 

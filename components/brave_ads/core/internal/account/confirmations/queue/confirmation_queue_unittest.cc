@@ -41,7 +41,7 @@ class BraveAdsConfirmationQueueTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    confirmation_queue_ = std::make_unique<ConfirmationQueue>();
+    confirmation_queue_ = std::make_unique<ConfirmationQueue>(ads_client_mock_);
     confirmation_queue_->SetDelegate(&delegate_mock_);
   }
 

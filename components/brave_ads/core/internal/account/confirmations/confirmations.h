@@ -17,12 +17,13 @@
 
 namespace brave_ads {
 
+class AdsClient;
 struct TransactionInfo;
 
 class Confirmations final : public ConfirmationQueueDelegate,
                             public RedeemConfirmationDelegate {
  public:
-  Confirmations();
+  explicit Confirmations(AdsClient& ads_client);
 
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
