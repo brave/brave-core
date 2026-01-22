@@ -1,0 +1,20 @@
+diff --git a/src/gn/header_checker.cc b/src/gn/header_checker.cc
+index 1ecc90ab3faded479be6de8deaa183a9936d553d..1c727f96e98950ebddd63cac06482fb40609cffc 100644
+--- a/src/gn/header_checker.cc
++++ b/src/gn/header_checker.cc
+@@ -301,8 +301,14 @@ SourceFile HeaderChecker::SourceFileForInclude(
+ }
+ 
+ bool HeaderChecker::CheckFile(const Target* from_target,
+-                              const SourceFile& file,
++                              const SourceFile& file_orig,
+                               std::vector<Err>* errors) const {
++  SourceFile chromium_src_override(base::JoinString(
++      {"//brave/chromium_src", file_orig.SourceAbsoluteWithOneSlash()}, ""));
++  base::FilePath override_file =
++      build_settings_->GetFullPath(chromium_src_override);
++  const SourceFile& file =
++      base::PathExists(override_file) ? chromium_src_override : file_orig;
+   ScopedTrace trace(TraceItem::TRACE_CHECK_HEADER, file.value());
+ 
+   // Sometimes you have generated source files included as sources in another

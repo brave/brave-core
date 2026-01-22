@@ -28,6 +28,7 @@ patches/**/*.patchinfo
 /third_party/brave-vpn-wireguard-tunnel-dlls/
 /third_party/bip39wally-core-native/
 /third_party/ethash/src
+/third_party/gn/
 /third_party/bitcoin-core/src
 /third_party/playlist_component/src
 /third_party/reclient_configs/src
