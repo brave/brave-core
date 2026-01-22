@@ -36,6 +36,7 @@ import android.content.res.Resources;
 import androidx.annotation.IntDef;
 
 import org.chromium.base.Callback;
+import org.chromium.base.CallbackUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
@@ -259,7 +260,8 @@ public class CredentialEditMediator implements UiActionHandler {
                 () -> {
                     recordDeleted();
                     mCredentialActionDelegate.deleteCredential();
-                });
+                },
+                CallbackUtils.emptyRunnable());
     }
 
     @Override
