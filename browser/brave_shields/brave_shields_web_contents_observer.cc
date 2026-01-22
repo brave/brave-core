@@ -151,7 +151,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
   }
   if (rfh->IsActive()) {
     brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-        request_url.spec(), web_contents);
+        request_url.spec(), render_frame_token);
   }
 }
 

@@ -55,8 +55,10 @@ void PerfPredictorTabHelper::RegisterProfilePrefs(
 // static
 void PerfPredictorTabHelper::DispatchBlockedEvent(
     const std::string& subresource,
-    content::WebContents* web_contents) {
+    content::GlobalRenderFrameHostToken render_frame_token) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  auto* web_contents = content::WebContents::FromRenderFrameHost(
+      content::RenderFrameHost::FromFrameToken(render_frame_token));
   if (!web_contents) {
     return;
   }
