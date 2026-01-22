@@ -14,6 +14,8 @@ import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProp
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProperties.UI_ACTION_HANDLER;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProperties.URL_OR_APP;
 
+import android.content.res.Resources;
+
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherFactory;
@@ -58,10 +60,13 @@ class CredentialEditCoordinator implements ComponentStateDelegate {
         mReauthenticationHelper =
                 new PasswordAccessReauthenticationHelper(
                         fragmentView.getActivity(), fragmentView.getParentFragmentManager());
+        Resources resources = mFragmentView.getContext().getResources();
+
         mMediator =
                 new CredentialEditMediator(
                         mReauthenticationHelper,
                         new ConfirmationDialogHelper(mFragmentView.getContext()),
+                        resources,
                         credentialActionDelegate,
                         this::handleHelp,
                         fragmentView instanceof BlockedCredentialFragmentView);
