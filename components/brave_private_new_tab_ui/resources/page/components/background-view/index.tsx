@@ -10,7 +10,7 @@ interface BoxProps {
 }
 
 const Box = styled.div<BoxProps>`
-  --bg-gr: linear-gradient(180deg, #0C041E -8.41%, #4E21B7 98.85%);
+  --bg-gr: linear-gradient(180deg, #1F1629 -8.41%, #322443 98.85%);
 
   display: flex;
   align-items: center;
