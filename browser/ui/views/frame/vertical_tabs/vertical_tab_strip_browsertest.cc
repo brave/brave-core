@@ -54,6 +54,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
+#include "ui/views/test/views_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -230,6 +231,15 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   void RunLoop() {
     run_loop_ = std::make_unique<base::RunLoop>();
     run_loop_->Run();
+  }
+
+  void InvalidateAndRunLayoutForVerticalTabStrip() {
+    auto* widget_delegate_view =
+        browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+    ASSERT_TRUE(widget_delegate_view);
+    widget_delegate_view->vertical_tab_strip_region_view()->InvalidateLayout();
+    views::test::RunScheduledLayout(
+        widget_delegate_view->vertical_tab_strip_region_view());
   }
 
  protected:
@@ -620,6 +630,37 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             brave_tab_container->GetScrollBarMode());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
+  // Regression test for https://github.com/brave/brave-browser/issues/52044
+  // Given that rich animation is disabled,
+  auto scoped_mode = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  ASSERT_FALSE(gfx::Animation::ShouldRenderRichAnimation());
+
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+
+  EXPECT_TRUE(brave_tab_container);
+
+  // Add many tabs to make scrollbar visible and enable scrolling
+  for (int i = 0; i < 30; i++) {
+    AppendTab(browser());
+  }
+  browser_view()->tabstrip()->StopAnimating();
+  brave_tab_container->SetScrollOffset(
+      brave_tab_container->GetMaxScrollOffset());
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  // When closing the last tab from the scrollable vertical tab strip,
+  // It should not fall to infinite loop.
+  auto* model = browser()->tab_strip_model();
+  model->CloseWebContentsAt(model->count() - 1,
+                            TabCloseTypes::CLOSE_USER_GESTURE);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
