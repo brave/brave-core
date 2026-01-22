@@ -951,9 +951,6 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   feature_list.InitAndEnableFeature(
       brave_shields::features::kBraveShredFeature);
 
-  constexpr char kBraveRemember1PStorageMigration[] =
-      "brave.brave_remember_1p_storage_migration";
-
   constexpr char kAllowPattern[] = "brave.allow";
   constexpr char kBlockPattern[] = "brave.block";
 
@@ -967,7 +964,8 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
   remember_1p_storage.Write();
 
-  testing_profile()->GetPrefs()->ClearPref(kBraveRemember1PStorageMigration);
+  testing_profile()->GetPrefs()->ClearPref(
+      content_settings::kBraveRemember1PStorageMigration);
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);
@@ -988,7 +986,7 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
       brave_shields::mojom::AutoShredMode::NEVER);
   EXPECT_EQ(never, auto_shred_settings.GetSettingDirectly(kAllowPattern, "*"));
   EXPECT_TRUE(testing_profile()->GetPrefs()->GetBoolean(
-      kBraveRemember1PStorageMigration));
+      content_settings::kBraveRemember1PStorageMigration));
 
   provider.ShutdownOnUIThread();
 }
@@ -997,9 +995,6 @@ TEST_F(BravePrefProviderTest, SkipRemember1pStorageMigration) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(
       brave_shields::features::kBraveShredFeature);
-
-  constexpr char kBraveRemember1PStorageMigration[] =
-      "brave.brave_remember_1p_storage_migration";
 
   constexpr char kAllowPattern[] = "brave.allow";
   constexpr char kBlockPattern[] = "brave.block";
@@ -1014,7 +1009,8 @@ TEST_F(BravePrefProviderTest, SkipRemember1pStorageMigration) {
   EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
   remember_1p_storage.Write();
 
-  testing_profile()->GetPrefs()->ClearPref(kBraveRemember1PStorageMigration);
+  testing_profile()->GetPrefs()->ClearPref(
+      content_settings::kBraveRemember1PStorageMigration);
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);

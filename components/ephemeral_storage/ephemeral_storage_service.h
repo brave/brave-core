@@ -82,7 +82,7 @@ class EphemeralStorageService : public KeyedService {
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config,
       bool shields_disabled_on_one_of_hosts,
-      bool first_party_storage_cleanup_enforced);
+      StorageCleanupSource source);
 
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
@@ -136,9 +136,6 @@ class EphemeralStorageService : public KeyedService {
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
-
-  void FinishStorageCleanupOnBecomeActive(
-      const base::flat_set<ephemeral_storage::TLDEphemeralAreaKey>& keys);
 
   size_t FireCleanupTimersForTesting();
 

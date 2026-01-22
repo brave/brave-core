@@ -18,6 +18,13 @@ namespace ephemeral_storage {
 using TLDEphemeralAreaKey =
     std::pair<std::string, content::StoragePartitionConfig>;
 
+// Defines which source initiated the storage cleanup enforcement.
+enum class StorageCleanupSource {
+  kDefault,
+  kManualShred,
+  kOnExitShred,
+};
+
 }  // namespace ephemeral_storage
 
 #endif  // BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_TYPES_H_

@@ -127,9 +127,9 @@ EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
   return std::nullopt;
 }
 
-void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup() {
+void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(StorageCleanupSource source) {
   if (tld_ephemeral_lifetime_) {
-    tld_ephemeral_lifetime_->EnforceFirstPartyStorageCleanup();
+    tld_ephemeral_lifetime_->EnforceFirstPartyStorageCleanup(source);
   }
 }
 

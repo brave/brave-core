@@ -50,8 +50,6 @@ constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 constexpr char kCosmeticFilteringMigration[] =
     "brave.cosmetic_filtering_migration";
-constexpr char kBraveRemember1PStorageMigration[] =
-    "brave.brave_remember_1p_storage_migration";
 
 constexpr char kUnusedSitePermissions[] = "unused_site_permissions";
 

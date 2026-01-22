@@ -55,111 +55,38 @@
 
 namespace {
 
-struct TabWebContentsForTldResult {
-  raw_ptr<content::WebContents> web_contents = nullptr;
-  ephemeral_storage::TLDEphemeralAreaKey key;
-};
-
-std::optional<TabWebContentsForTldResult> GetTabWebContentsForTld(
+bool PrepareTabForFirstPartyStorageCleanup(
     tabs::TabHandle tab_handle,
-    const std::vector<std::string>& etldplusones) {
+    const std::vector<std::string>& etldplusones,
+    const bool enforced_by_user) {
   if (tab_handle == tabs::TabHandle::Null()) {
-    return std::nullopt;
+    return false;
   }
   auto* tab = tab_handle.Get();
   if (!tab) {
-    return std::nullopt;
+    return false;
   }
 
   content::WebContents* contents = tab->GetContents();
   if (!contents) {
-    return std::nullopt;
+    return false;
   }
-
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
   if (tab_tld.empty() || !base::Contains(etldplusones, tab_tld)) {
-    return std::nullopt;
-  }
-  auto* site_instance = contents->GetSiteInstance();
-  if (!site_instance) {
-    return std::nullopt;
-  }
-
-  return TabWebContentsForTldResult{
-      contents, {tab_tld, site_instance->GetStoragePartitionConfig()}};
-}
-
-bool PrepareTabForFirstPartyStorageCleanup(
-    tabs::TabHandle tab_handle,
-    const std::vector<std::string>& etldplusones) {
-  auto tab_web_contents_result =
-      GetTabWebContentsForTld(tab_handle, etldplusones);
-  if (!tab_web_contents_result) {
     return false;
   }
+
   if (auto* ephemeral_storage_tab_helper =
           ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-              tab_web_contents_result->web_contents)) {
-    ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
+              tab_handle.Get()->GetContents())) {
+    ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup(
+        enforced_by_user
+            ? ephemeral_storage::StorageCleanupSource::kManualShred
+            : ephemeral_storage::StorageCleanupSource::kOnExitShred);
     return true;
   }
   return false;
-}
-
-// Filters the given ephemeral domains to only those that have opened tabs in
-// the current profile
-base::flat_set<ephemeral_storage::TLDEphemeralAreaKey>
-FilterEphemeralDomainsToCleanup(
-    content::BrowserContext* context,
-    const std::vector<std::string>& ephemeral_domains) {
-  base::flat_set<ephemeral_storage::TLDEphemeralAreaKey> result;
-  auto* profile = Profile::FromBrowserContext(context);
-  CHECK(profile);
-
-  auto maybe_add_tab_ephemeral_domain =
-      [&result, &ephemeral_domains](tabs::TabHandle tab_handle) {
-        auto tab_web_contents_result =
-            GetTabWebContentsForTld(tab_handle, ephemeral_domains);
-        if (!tab_web_contents_result) {
-          return;
-        }
-        result.emplace(std::move(tab_web_contents_result->key));
-      };
-
-#if !BUILDFLAG(IS_ANDROID)
-  for (auto* browser : GetAllBrowserWindowInterfaces()) {
-    if (profile != browser->GetProfile()) {
-      continue;
-    }
-    auto* tab_strip = browser->GetTabStripModel();
-    if (!tab_strip) {
-      continue;
-    }
-
-    base::flat_set<tabs::TabHandle> tab_handlers;
-    for (auto* tab : *tab_strip) {
-      if (!tab) {
-        continue;
-      }
-      maybe_add_tab_ephemeral_domain(tab->GetHandle());
-    }
-  }
-#else
-  for (TabModel* model : TabModelList::models()) {
-    const size_t tab_count = model->GetTabCount();
-    std::vector<tabs::TabHandle> tabs_to_close;
-    for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = model->GetTabAt(index);
-      // Do not process tabs from other profiles.
-      if (!tab || profile != tab->profile()) {
-        continue;
-      }
-      maybe_add_tab_ephemeral_domain(tab->GetHandle());
-    }
-  }
-#endif
-  return result;
 }
 
 }  // namespace
@@ -266,14 +193,6 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
-  if (on_become_active_callback_) {
-    auto filtered_list = FilterEphemeralDomainsToCleanup(
-        context_,
-        shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
-            brave_shields::mojom::AutoShredMode::APP_EXIT));
-    std::move(on_become_active_callback_).Run(std::move(filtered_list));
-  }
-
   if (first_window_opened_callback_) {
     std::move(first_window_opened_callback_).Run();
   }
@@ -285,17 +204,11 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
   first_window_opened_callback_ = std::move(callback);
 }
 
-void BraveEphemeralStorageServiceDelegate::RegisterOnBecomeActiveCallback(
-    OnBecomeActiveCallback callback) {
-  DCHECK(callback);
-  on_become_active_callback_ = std::move(callback);
-}
-
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
   const auto ephemeral_domains =
       shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
           brave_shields::mojom::AutoShredMode::APP_EXIT);
-  PrepareTabsForFirstPartyStorageCleanup(ephemeral_domains);
+  PrepareTabsForFirstPartyStorageCleanup(ephemeral_domains, false);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -309,7 +222,7 @@ void BraveEphemeralStorageServiceDelegate::
 
 void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
-        const std::vector<std::string>& ephemeral_domains) {
+        const std::vector<std::string>& ephemeral_domains, const bool enforced_by_user) {
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
@@ -326,7 +239,7 @@ void BraveEphemeralStorageServiceDelegate::
     base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
       if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
-                                                         ephemeral_domains)) {
+                                                         ephemeral_domains, enforced_by_user)) {
         continue;
       }
       tab_handlers.emplace(tab->GetHandle());
@@ -355,7 +268,7 @@ void BraveEphemeralStorageServiceDelegate::
       }
 
       if (!PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
-                                                 ephemeral_domains)) {
+                                                 ephemeral_domains, enforced_by_user)) {
         continue;
       }
       tabs_to_close.emplace_back(tab->GetHandle());

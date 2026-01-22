@@ -50,14 +50,15 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
         key_.storage_domain, key_.storage_partition_config,
         shields_disabled_on_one_of_hosts,
-        first_party_storage_cleanup_enforced_);
+        enforce_cleanup_source_);
   }
 
   ActiveTLDStorageAreas().erase(key_);
 }
 
-void TLDEphemeralLifetime::EnforceFirstPartyStorageCleanup() {
-  first_party_storage_cleanup_enforced_ = true;
+void TLDEphemeralLifetime::EnforceFirstPartyStorageCleanup(
+    StorageCleanupSource source) {
+  enforce_cleanup_source_ = source;
 }
 
 // static
