@@ -22,6 +22,7 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Utils
 import { getLocale } from '$web-common/locale'
+import { getDominantColorFromImageURL } from '../../../utils/style.utils'
 
 // Components
 import { FromAsset } from '../composer_ui/from_asset/from_asset'
@@ -49,6 +50,9 @@ import {
   AlertMessage,
   AlertMessageButton,
   AlertMessageWrapper,
+  ToSectionWrapper,
+  ToSectionBackground,
+  ReviewButtonBackground,
 } from '../composer_ui/shared_composer.style'
 
 export const Swap = () => {
@@ -129,6 +133,11 @@ export const Swap = () => {
     showPrivacyModal,
   )
 
+  // Memos
+  const tokenColor = React.useMemo(() => {
+    return getDominantColorFromImageURL(toToken?.logo ?? '')
+  }, [toToken?.logo])
+
   // render
   return (
     <>
@@ -170,42 +179,48 @@ export const Swap = () => {
           selectedProvider={selectedProvider}
           flipAssetsDisabled={!fromToken || !toToken}
         />
-        <ToAsset
-          onInputChange={handleOnSetToAmount}
-          onRefreshQuote={handleQuoteRefresh}
-          inputValue={toAmount}
-          onClickSelectToken={() => setSelectingFromOrTo('to')}
-          token={toToken}
-          inputDisabled={false}
-          hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
-          network={toNetwork}
-          selectedSendOption='#token'
-          isFetchingQuote={isFetchingQuote}
-          buttonDisabled={!fromToken}
-          timeUntilNextQuote={timeUntilNextQuote}
+        <ToSectionBackground
+          tokenColor={tokenColor}
+          fullWidth={true}
+          justifyContent='space-between'
         >
-          <Column
-            fullWidth={true}
-            fullHeight={true}
-            justifyContent='space-between'
-          >
-            {quoteOptions.length > 0 ? (
-              <>
-                <QuoteInfo
-                  onSelectQuoteOption={onSelectQuoteOption}
-                  selectedQuoteOptionId={selectedQuoteOptionId}
-                  fromToken={fromToken}
-                  toToken={toToken}
-                  swapFees={swapFees}
-                  isBridge={isBridge}
-                  toAccount={toAccount}
-                  onChangeRecipient={onChangeRecipient}
-                  slippageTolerance={slippageTolerance}
-                  onChangeSlippageTolerance={onChangeSlippageTolerance}
-                  quoteOptions={quoteOptions}
-                />
-                <VerticalSpace space='12px' />
-                {/* TODO: Swap and Send is currently unavailable
+          <ToSectionWrapper fullWidth={true}>
+            <ToAsset
+              onInputChange={handleOnSetToAmount}
+              onRefreshQuote={handleQuoteRefresh}
+              inputValue={toAmount}
+              onClickSelectToken={() => setSelectingFromOrTo('to')}
+              token={toToken}
+              inputDisabled={false}
+              hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
+              network={toNetwork}
+              selectedSendOption='#token'
+              isFetchingQuote={isFetchingQuote}
+              buttonDisabled={!fromToken}
+              timeUntilNextQuote={timeUntilNextQuote}
+            >
+              <Column
+                fullWidth={true}
+                fullHeight={true}
+                justifyContent='space-between'
+              >
+                {quoteOptions.length > 0 ? (
+                  <>
+                    <QuoteInfo
+                      onSelectQuoteOption={onSelectQuoteOption}
+                      selectedQuoteOptionId={selectedQuoteOptionId}
+                      fromToken={fromToken}
+                      toToken={toToken}
+                      swapFees={swapFees}
+                      isBridge={isBridge}
+                      toAccount={toAccount}
+                      onChangeRecipient={onChangeRecipient}
+                      slippageTolerance={slippageTolerance}
+                      onChangeSlippageTolerance={onChangeSlippageTolerance}
+                      quoteOptions={quoteOptions}
+                    />
+                    <VerticalSpace space='12px' />
+                    {/* TODO: Swap and Send is currently unavailable
                 <SwapAndSend
                   onChangeSwapAndSendSelected={setSwapAndSendSelected}
                   handleOnSetToAnotherAddress={handleOnSetToAnotherAddress}
@@ -218,47 +233,51 @@ export const Swap = () => {
                   toAnotherAddress={toAnotherAddress}
                   userConfirmedAddress={userConfirmedAddress}
                 /> */}
-              </>
-            ) : (
-              <VerticalSpace space='2px' />
-            )}
-            <Column fullWidth={true}>
-              {swapValidationError === 'providerNotSupported' && (
-                <AlertMessage type='info'>
-                  <AlertMessageWrapper
-                    width='unset'
-                    justifyContent='flex-start'
-                    gap='4px'
-                  >
-                    {getLocale('braveWalletProviderNotSupported').replace(
-                      '$1',
-                      SwapProviderNameMapping[selectedProvider],
-                    )}
-                    <div>
-                      <AlertMessageButton
-                        kind='plain-faint'
-                        size='tiny'
-                        onClick={() => setShowSwapProviders(true)}
+                  </>
+                ) : (
+                  <VerticalSpace space='2px' />
+                )}
+                <Column fullWidth={true}>
+                  {swapValidationError === 'providerNotSupported' && (
+                    <AlertMessage type='info'>
+                      <AlertMessageWrapper
+                        width='unset'
+                        justifyContent='flex-start'
+                        gap='4px'
                       >
-                        {getLocale('braveWalletChangeProvider')}
-                      </AlertMessageButton>
-                    </div>
-                  </AlertMessageWrapper>
-                </AlertMessage>
-              )}
-              <ReviewButtonRow width='100%'>
-                <LeoSquaredButton
-                  onClick={onSubmit}
-                  size='large'
-                  isDisabled={isSubmitButtonDisabled}
-                  isLoading={isFetchingQuote || isSubmittingSwap}
-                >
-                  {submitButtonText}
-                </LeoSquaredButton>
-              </ReviewButtonRow>
-            </Column>
-          </Column>
-        </ToAsset>
+                        {getLocale('braveWalletProviderNotSupported').replace(
+                          '$1',
+                          SwapProviderNameMapping[selectedProvider],
+                        )}
+                        <div>
+                          <AlertMessageButton
+                            kind='plain-faint'
+                            size='tiny'
+                            onClick={() => setShowSwapProviders(true)}
+                          >
+                            {getLocale('braveWalletChangeProvider')}
+                          </AlertMessageButton>
+                        </div>
+                      </AlertMessageWrapper>
+                    </AlertMessage>
+                  )}
+                </Column>
+              </Column>
+            </ToAsset>
+          </ToSectionWrapper>
+          <ReviewButtonRow isMobile={isMobile}>
+            <ReviewButtonBackground>
+              <LeoSquaredButton
+                onClick={onSubmit}
+                size='large'
+                isDisabled={isSubmitButtonDisabled}
+                isLoading={isFetchingQuote || isSubmittingSwap}
+              >
+                {submitButtonText}
+              </LeoSquaredButton>
+            </ReviewButtonBackground>
+          </ReviewButtonRow>
+        </ToSectionBackground>
       </WalletPageWrapper>
       {selectingFromOrTo && (
         <SelectTokenModal
