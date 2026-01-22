@@ -164,26 +164,26 @@ exports.update = () => {
       path.join(braveAppVectorIconsDir, 'vector_icons', branding),
       path.join(chromeComponentsDir, 'vector_icons', branding),
     ])
-  }
 
-  // Copy to make our ${branding_path_product}_behaviors.cc
-  fileMap.add([
-    path.join(
-      config.braveCoreDir,
-      'chromium_src',
-      'chrome',
-      'installer',
-      'setup',
-      'brave_behaviors.cc',
-    ),
-    path.join(
-      config.srcDir,
-      'chrome',
-      'installer',
-      'setup',
-      'brave_behaviors.cc',
-    ),
-  ])
+    // Copy to make our ${branding_path_product}_behaviors.cc
+    fileMap.add([
+      path.join(
+        config.braveCoreDir,
+        'chromium_src',
+        'chrome',
+        'installer',
+        'setup',
+        `${branding}_behaviors.cc`,
+      ),
+      path.join(
+        config.srcDir,
+        'chrome',
+        'installer',
+        'setup',
+        `${branding}_behaviors.cc`,
+      ),
+    ])
+  }
   // Replace webui CSS to use our fonts.
   fileMap.add([
     path.join(
