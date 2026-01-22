@@ -267,6 +267,9 @@
   <message name="IDS_CHAT_UI_COPY_BUTTON_LABEL" desc="Button label to copy text" formatter_data="webui=AiChat">
     Copy
   </message>
+  <message name="IDS_CHAT_UI_CONVERSATION_COPIED" desc="Toast message shown when conversation is copied to clipboard" formatter_data="webui=AiChat">
+    Conversation copied to clipboard
+  </message>
   <message name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer" formatter_data="webui=AiChat">
     Like answer
   </message>
@@ -413,6 +416,12 @@
   </message>
   <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation" formatter_data="webui=AiChat">
     Rename conversation
+  </message>
+  <message name="IDS_CHAT_UI_MENU_COPY_CONVERSATION" desc="Menu entry for copying entire conversation to clipboard" formatter_data="webui=AiChat">
+    Copy entire conversation
+  </message>
+  <message name="IDS_CHAT_UI_COPY_LABEL_YOU" desc="Label for user messages when copying conversation to clipboard" formatter_data="webui=AiChat">
+    You
   </message>
   <message name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation" formatter_data="webui=AiChat">
     Delete conversation
