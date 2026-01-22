@@ -650,8 +650,8 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
 
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorBookmarkBarForeground] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
-  mixer[kColorLocationBarFocusRing] = {SkColorSetRGB(0xC6, 0xB3, 0xFF)};
+  mixer[kColorBookmarkBarForeground] = {nala::kColorPrimitivePrivateWindow100};
+  mixer[kColorLocationBarFocusRing] = {nala::kColorPrimitivePrivateWindow80};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateFrame};
@@ -662,14 +662,13 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
 
-  // TODO(simonhong): Get color from leo when it's available.
   mixer[kColorTabForegroundActiveFrameActive] = {
-      SkColorSetRGB(0xF5, 0xF3, 0xFF)};
+      nala::kColorPrimitivePrivateWindow95};
   mixer[kColorTabForegroundActiveFrameInactive] = {
-      SkColorSetRGB(0xCC, 0xBE, 0xFE)};
+      nala::kColorPrimitivePrivateWindow80};
   mixer[kColorTabForegroundInactiveFrameActive] = {
-      SkColorSetRGB(0xCC, 0xBE, 0xFE)};
-  mixer[kColorToolbar] = {nala::kColorPrimitivePrivateWindow10};
+      nala::kColorPrimitivePrivateWindow80};
+  mixer[kColorToolbar] = {nala::kColorPrimitivePrivateWindow20};
   mixer[kColorToolbarButtonIcon] = {nala::kColorPrimitivePrivateWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
