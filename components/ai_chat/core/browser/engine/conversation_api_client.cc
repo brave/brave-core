@@ -448,7 +448,7 @@ void ConversationAPIClient::OnQueryDataReceived(
     mojom::PermissionChallengePtr permission_challenge = nullptr;
     if (const base::Value::Dict* alignment_dict =
             result_params.FindDict("alignment_check")) {
-      if (alignment_dict->FindBool("allowed").value_or(true) == false) {
+      if (!alignment_dict->FindBool("allowed").value_or(true)) {
         const std::string* assessment = alignment_dict->FindString("reasoning");
         permission_challenge = mojom::PermissionChallenge::New(
             assessment ? std::make_optional(*assessment) : std::nullopt,

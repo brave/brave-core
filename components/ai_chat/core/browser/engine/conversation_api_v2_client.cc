@@ -484,6 +484,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     if (const base::Value::List* tool_calls =
             content_container->FindList("tool_calls")) {
       // Provide any valid tool use events to the callback
+      // ToolUseEventFromToolCallsResponse handles per-tool alignment_check
       for (auto& tool_use_event :
            ToolUseEventFromToolCallsResponse(tool_calls)) {
         auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(

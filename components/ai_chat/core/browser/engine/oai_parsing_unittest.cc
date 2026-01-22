@@ -192,6 +192,103 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_EmptyList) {
   EXPECT_EQ(result.size(), 0u);
 }
 
+TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
+  // Test parsing alignment_check in tool calls covering all scenarios
+  constexpr char kToolCallsJson[] = R"([
+    {
+      "id": "no_check",
+      "type": "function",
+      "function": {
+        "name": "allowed_by_default",
+        "arguments": "{}"
+      }
+    },
+    {
+      "id": "explicit_allow",
+      "type": "function",
+      "function": {
+        "name": "explicitly_allowed",
+        "arguments": "{}"
+      },
+      "alignment_check": {
+        "allowed": true,
+        "reasoning": "This is fine"
+      }
+    },
+    {
+      "id": "deny_with_reason",
+      "type": "function",
+      "function": {
+        "name": "denied_tool",
+        "arguments": "{}"
+      },
+      "alignment_check": {
+        "allowed": false,
+        "reasoning": "Security risk"
+      }
+    },
+    {
+      "id": "deny_no_reason",
+      "type": "function",
+      "function": {
+        "name": "denied_no_explanation",
+        "arguments": "{}"
+      },
+      "alignment_check": {
+        "allowed": false
+      }
+    },
+    {
+      "id": "malformed_check",
+      "type": "function",
+      "function": {
+        "name": "invalid_alignment",
+        "arguments": "{}"
+      },
+      "alignment_check": {
+        "some_field": "value"
+      }
+    }
+  ])";
+
+  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+
+  ASSERT_EQ(result.size(), 5u);
+
+  EXPECT_MOJOM_EQ(result[0],
+                  mojom::ToolUseEvent::New("allowed_by_default", "no_check",
+                                           "{}", std::nullopt, nullptr))
+      << "No alignment_check should result in no PermissionChallenge";
+
+  EXPECT_MOJOM_EQ(result[1], mojom::ToolUseEvent::New("explicitly_allowed",
+                                                      "explicit_allow", "{}",
+                                                      std::nullopt, nullptr))
+      << "alignment_check.allowed=true should not create PermissionChallenge";
+
+  EXPECT_MOJOM_EQ(
+      result[2],
+      mojom::ToolUseEvent::New(
+          "denied_tool", "deny_with_reason", "{}", std::nullopt,
+          mojom::PermissionChallenge::New("Security risk", std::nullopt)))
+      << "alignment_check.allowed=false with reasoning should create "
+         "PermissionChallenge with reasoning";
+
+  EXPECT_MOJOM_EQ(
+      result[3],
+      mojom::ToolUseEvent::New(
+          "denied_no_explanation", "deny_no_reason", "{}", std::nullopt,
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt)))
+      << "alignment_check.allowed=false without reasoning should create "
+         "PermissionChallenge with null reasoning";
+
+  EXPECT_MOJOM_EQ(result[4], mojom::ToolUseEvent::New("invalid_alignment",
+                                                      "malformed_check", "{}",
+                                                      std::nullopt, nullptr))
+      << "alignment_check without allowed field should be treated as allowed, "
+         "no PermissionChallenge";
+}
+
 // Tests for ToolApiDefinitionsFromTools
 
 TEST(OaiParsingTest, ToolApiDefinitionsFromTools_EmptyTools) {
