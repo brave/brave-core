@@ -850,7 +850,18 @@ void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
   }
 
   UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
-  ClampScrollOffset();
+
+  if (!bounds_animator_.IsAnimating()) {
+    // Do not try clamp scroll offset when there's ongoing animation.
+    // This could cause infinite loop.
+    // More specifically, when ShouldRenderRichAnimation() returns false,
+    // then we could be in the middle of canceling animation, and checking if
+    // animation queue is empty in a while loop - see BoundsAnimator::Cancel. As
+    // ClampScrollOffset() could queue another animation for slot views, we
+    // should not try clamp scroll offset.
+    // https://github.com/brave/brave-browser/issues/52044
+    ClampScrollOffset();
+  }
 }
 
 void BraveTabContainer::SetActiveTab(std::optional<size_t> prev_active_index,
