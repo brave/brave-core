@@ -87,6 +87,10 @@ struct BraveRequestInfo {
   bool aggressive_blocking = false;
   bool allow_http_upgradable_resource = false;
   bool allow_referrers = false;
+  // GlobalRenderFrameHostToken: Uniquely identifies a RenderFrameHost instance.
+  // FrameTreeNodeId: Identifies a persistent location in the frame tree
+  // (remains constant across navigations) and is the primary handle for frame
+  // tree manipulation.
   content::GlobalRenderFrameHostToken render_frame_token;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
