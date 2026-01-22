@@ -1,5 +1,5 @@
 /* About settings section title */
-"About" = "О";
+"About" = "О нас";
 
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "О щитах Brave";
@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Учетная запись Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Почти готово!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Письмо с подтверждением отправляется. Нажмите кнопку в этом письме, чтобы активировать вашу учетную запись.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Отменить регистрацию";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Начать";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Отправить письмо с подтверждением повторно";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Не видите письмо? Проверьте папку спама или нажмите кнопку, чтобы отправить письмо с подтверждением повторно.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Выйти";
+
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
 
@@ -209,13 +230,13 @@
 "BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щиты Brave";
+"BraveShieldsStatusTitle" = "Защита Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "выключены";
+"BraveShieldsStatusValueDown" = "выкл";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "включены";
+"BraveShieldsStatusValueUp" = "вкл";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Ошибка";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Начать";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Блокировать опасные сайты";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "ВКЛ";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Автоматически фокусировать адресную строку при создании новой вкладки";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Автоматически открывать клавиатуру";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Приватные вкладки будут оставаться открытыми при закрытии приложения, сохраняя возможность продолжить сеанс.";

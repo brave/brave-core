@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave 계정";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "거의 다 왔어요!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "확인 이메일이 곧 전송됩니다. 해당 이메일의 버튼을 클릭하여 계정을 활성화하세요.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "등록 취소";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "시작하기";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "확인 이메일 다시 보내기";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "이메일을 받지 못하셨나요? 스팸 폴더를 확인하거나 버튼을 클릭하여 확인 이메일을 다시 보내세요.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "로그아웃";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave 패널";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "오류";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "시작하기";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "위험한 웹사이트 차단";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "켬";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "새 탭을 만들 때 주소 표시줄에 자동으로 포커스";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "키보드 자동으로 열기";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "앱을 닫아도 비공개 브라우징 탭을 열린 상태로 유지하여 비공개 브라우징 세션이 매끄럽게 이어지도록 합니다.";
