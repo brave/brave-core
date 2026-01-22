@@ -39,8 +39,6 @@ namespace ai_chat {
 class AIChatCredentialManager;
 struct CredentialCacheEntry;
 
-inline constexpr char kBraveNearVerifiedHeader[] = "brave-near-verified";
-
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIClient {
  public:

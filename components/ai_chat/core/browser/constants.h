@@ -76,6 +76,8 @@ inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
 // Model name to send to the server for Claude Sonnet model.
 inline constexpr char kClaudeSonnetModelName[] = "claude-3-sonnet";
 
+inline constexpr char kBraveNearVerifiedHeader[] = "brave-near-verified";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_

@@ -13,11 +13,13 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -422,10 +424,18 @@ void ConversationAPIV2Client::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
+    std::optional<bool> is_near_verified = std::nullopt;
+    const auto& headers = result.headers();
+    if (const auto* header_value =
+            base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
+      is_near_verified = *header_value == "true";
+    }
+
     // Parse OAI-format response for non-streaming API results
     if (result.value_body().is_dict()) {
       if (auto parsed_result = ParseOAICompletionResponse(
               result.value_body().GetDict(), model_service_)) {
+        parsed_result->is_near_verified = is_near_verified;
         std::move(callback).Run(base::ok(std::move(*parsed_result)));
         return;
       }
@@ -433,7 +443,8 @@ void ConversationAPIV2Client::OnQueryCompleted(
 
     // Return null event if no completion was provided in response body, can
     // happen when server send them all via OnQueryDataReceived.
-    std::move(callback).Run(GenerationResultData{nullptr, std::nullopt});
+    std::move(callback).Run(
+        GenerationResultData{nullptr, std::nullopt, is_near_verified});
     return;
   }
 
