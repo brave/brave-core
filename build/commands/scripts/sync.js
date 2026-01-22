@@ -14,6 +14,7 @@ const util = require('../lib/util')
 const Log = require('../lib/logging')
 const depotTools = require('../lib/depotTools')
 const syncUtil = require('../lib/syncUtils')
+const gn = require('../lib/gn')
 
 program
   .version(process.env.npm_package_version)
@@ -135,6 +136,11 @@ async function RunCommand() {
       util.runGclient(['runhooks'])
     })
   }
+
+  await Log.progressScopeAsync('building patched gn', async () => {
+    await gn.gen()
+    await gn.build()
+  })
 }
 
 function commaSeparatedToList(value, defaultValue) {
