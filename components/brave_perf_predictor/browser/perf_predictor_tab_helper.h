@@ -54,8 +54,9 @@ class PerfPredictorTabHelper
       const page_load_metrics::mojom::PageLoadTiming& timing);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   // Called from Brave Shields
-  static void DispatchBlockedEvent(const std::string& subresource,
-                                   content::FrameTreeNodeId frame_tree_node_id);
+  static void DispatchBlockedEvent(
+      const std::string& subresource,
+      content::GlobalRenderFrameHostToken render_frame_token);
 
  private:
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;

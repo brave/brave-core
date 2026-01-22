@@ -23,13 +23,13 @@
 BraveProxyingWebSocket::BraveProxyingWebSocket(
     WebSocketFactory factory,
     const network::ResourceRequest& request,
-    content::FrameTreeNodeId frame_tree_node_id,
+    content::GlobalRenderFrameHostToken render_frame_token,
     content::BrowserContext* browser_context,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     BraveRequestHandler& handler,
     DisconnectCallback on_disconnect)
     : request_handler_(handler),
-      frame_tree_node_id_(frame_tree_node_id),
+      render_frame_token_(render_frame_token),
       factory_(std::move(factory)),
       browser_context_(browser_context),
       request_id_generator_(std::move(request_id_generator)),
@@ -64,8 +64,8 @@ BraveProxyingWebSocket* BraveProxyingWebSocket::ProxyWebSocket(
 
   return ResourceContextData::CreateProxyingWebSocket(
       std::move(factory), url, site_for_cookies, user_agent,
-      frame->GetProcess()->GetBrowserContext(), frame->GetRoutingID(),
-      frame->GetFrameTreeNodeId(), frame->GetLastCommittedOrigin());
+      frame->GetProcess()->GetBrowserContext(), frame->GetGlobalFrameToken(),
+      frame->GetLastCommittedOrigin());
 }
 
 void BraveProxyingWebSocket::Start(
@@ -82,19 +82,19 @@ void BraveProxyingWebSocket::Start(
   // send these events before the request starts.
   base::RepeatingCallback<void(int)> continuation;
   if (proxy_has_extra_headers()) {
-    continuation = base::BindRepeating(
-        &BraveProxyingWebSocket::ContinueToStartRequest,
-        weak_factory_.GetWeakPtr());
+    continuation =
+        base::BindRepeating(&BraveProxyingWebSocket::ContinueToStartRequest,
+                            weak_factory_.GetWeakPtr());
   } else {
-    continuation = base::BindRepeating(
-        &BraveProxyingWebSocket::OnBeforeRequestComplete,
-        weak_factory_.GetWeakPtr());
+    continuation =
+        base::BindRepeating(&BraveProxyingWebSocket::OnBeforeRequestComplete,
+                            weak_factory_.GetWeakPtr());
   }
 
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                           request_id_, browser_context_, ctx_);
-  int result = request_handler_->OnBeforeURLRequest(
-      ctx_, continuation, &redirect_url_);
+  int result =
+      request_handler_->OnBeforeURLRequest(ctx_, continuation, &redirect_url_);
   // TODO(bridiver) - need to handle general case for redirect_url
 
   if (result == net::ERR_BLOCKED_BY_CLIENT ||
@@ -135,8 +135,9 @@ void BraveProxyingWebSocket::WebSocketFactoryRun(
   proxy_url_ = url;
   proxy_auth_handler_.Bind(std::move(auth_handler));
 
-  if (trusted_header_client)
+  if (trusted_header_client) {
     proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
+  }
 
   if (!proxy_has_extra_headers()) {
     for (const auto& header : additional_headers) {
@@ -154,14 +155,14 @@ void BraveProxyingWebSocket::OnOpeningHandshakeStarted(
 }
 
 void BraveProxyingWebSocket::ContinueToHeadersReceived() {
-  auto continuation = base::BindRepeating(
-      &BraveProxyingWebSocket::OnHeadersReceivedComplete,
-      weak_factory_.GetWeakPtr());
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+  auto continuation =
+      base::BindRepeating(&BraveProxyingWebSocket::OnHeadersReceivedComplete,
+                          weak_factory_.GetWeakPtr());
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                           request_id_, browser_context_, ctx_);
   int result = request_handler_->OnHeadersReceived(
-      ctx_, continuation, response_.headers.get(),
-      &override_headers_, &redirect_url_);
+      ctx_, continuation, response_.headers.get(), &override_headers_,
+      &redirect_url_);
 
   if (result == net::ERR_BLOCKED_BY_CLIENT ||
       // handle adblock kEmptyDataURI
@@ -171,8 +172,9 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
   }
 
   PauseIncomingMethodCallProcessing();
-  if (result == net::ERR_IO_PENDING)
+  if (result == net::ERR_IO_PENDING) {
     return;
+  }
 
   DCHECK_EQ(net::OK, result);
   OnHeadersReceivedComplete(net::OK);
@@ -203,8 +205,8 @@ void BraveProxyingWebSocket::OnAuthRequired(
     const scoped_refptr<net::HttpResponseHeaders>& headers,
     const net::IPEndPoint& remote_endpoint,
     OnAuthRequiredCallback callback) {
-  proxy_auth_handler_->OnAuthRequired(
-      auth_info, headers, remote_endpoint, std::move(callback));
+  proxy_auth_handler_->OnAuthRequired(auth_info, headers, remote_endpoint,
+                                      std::move(callback));
 }
 
 void BraveProxyingWebSocket::OnBeforeSendHeaders(
@@ -246,8 +248,7 @@ void BraveProxyingWebSocket::OnBeforeRequestComplete(int error_code) {
             &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
   } else {
-    OnBeforeSendHeadersCompleteFromProxy(
-        net::OK, request_.headers);
+    OnBeforeSendHeadersCompleteFromProxy(net::OK, request_.headers);
   }
 }
 
@@ -262,27 +263,29 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
   }
 
   // update the headers from the proxy
-  if (headers)
+  if (headers) {
     request_.headers = *headers;
-  else
+  } else {
     request_.headers.Clear();
+  }
 
-  auto continuation = base::BindRepeating(
-      &BraveProxyingWebSocket::OnBeforeSendHeadersComplete,
-      weak_factory_.GetWeakPtr());
+  auto continuation =
+      base::BindRepeating(&BraveProxyingWebSocket::OnBeforeSendHeadersComplete,
+                          weak_factory_.GetWeakPtr());
 
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                           request_id_, browser_context_, ctx_);
-  int result = request_handler_->OnBeforeStartTransaction(
-      ctx_, continuation, &request_.headers);
+  int result = request_handler_->OnBeforeStartTransaction(ctx_, continuation,
+                                                          &request_.headers);
 
   if (result == net::ERR_BLOCKED_BY_CLIENT) {
     OnError(result);
     return;
   }
 
-  if (result == net::ERR_IO_PENDING)
+  if (result == net::ERR_IO_PENDING) {
     return;
+  }
 
   DCHECK_EQ(net::OK, result);
   continuation.Run(net::OK);
@@ -297,13 +300,15 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
     return;
   }
 
-  if (on_before_send_headers_callback_)
+  if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)
         .Run(error_code,
              std::optional<net::HttpRequestHeaders>(request_.headers));
+  }
 
-  if (!proxy_has_extra_headers())
+  if (!proxy_has_extra_headers()) {
     ContinueToStartRequest(error_code);
+  }
 }
 
 void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
@@ -323,9 +328,10 @@ void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
 
   mojo::PendingRemote<network::mojom::TrustedHeaderClient>
       trusted_header_client = mojo::NullRemote();
-  if (proxy_has_extra_headers())
+  if (proxy_has_extra_headers()) {
     trusted_header_client =
         receiver_as_header_client_.BindNewPipeAndPassRemote();
+  }
 
   std::move(factory_).Run(
       request_.url, std::move(additional_headers),
@@ -345,9 +351,10 @@ void BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy(
     int error_code,
     const std::optional<std::string>& headers,
     const std::optional<GURL>& url) {
-  if (on_headers_received_callback_)
+  if (on_headers_received_callback_) {
     std::move(on_headers_received_callback_)
         .Run(net::OK, headers, std::nullopt);
+  }
 
   if (override_headers_) {
     response_.headers = override_headers_;
@@ -364,8 +371,9 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
   }
 
   std::string headers;
-  if (override_headers_)
+  if (override_headers_) {
     headers = override_headers_->raw_headers();
+  }
 
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnHeadersReceived(
@@ -381,14 +389,16 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
 
 void BraveProxyingWebSocket::PauseIncomingMethodCallProcessing() {
   receiver_as_handshake_client_.Pause();
-  if (proxy_has_extra_headers())
+  if (proxy_has_extra_headers()) {
     receiver_as_header_client_.Pause();
+  }
 }
 
 void BraveProxyingWebSocket::ResumeIncomingMethodCallProcessing() {
   receiver_as_handshake_client_.Resume();
-  if (proxy_has_extra_headers())
+  if (proxy_has_extra_headers()) {
     receiver_as_header_client_.Resume();
+  }
 }
 
 void BraveProxyingWebSocket::OnError(int error_code) {
