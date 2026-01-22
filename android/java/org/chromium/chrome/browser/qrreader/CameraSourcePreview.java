@@ -35,6 +35,11 @@ import java.io.IOException;
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = CameraSourcePreview.class.getSimpleName();
 
+    /** Listener for window focus changes. */
+    public interface WindowFocusListener {
+        void onWindowFocusChanged(boolean hasFocus);
+    }
+
     public boolean mCameraExist = true;
 
     private final Context mContext;
@@ -42,6 +47,7 @@ public class CameraSourcePreview extends ViewGroup {
     private boolean mStartRequested;
     private boolean mSurfaceAvailable;
     private CameraSource mCameraSource;
+    private WindowFocusListener mWindowFocusListener;
 
     public CameraSourcePreview(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -78,6 +84,19 @@ public class CameraSourcePreview extends ViewGroup {
         if (mCameraSource != null) {
             mCameraSource.release();
             mCameraSource = null;
+        }
+    }
+
+    /** Sets a listener to be notified of window focus changes. */
+    public void setWindowFocusListener(WindowFocusListener listener) {
+        mWindowFocusListener = listener;
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (mWindowFocusListener != null) {
+            mWindowFocusListener.onWindowFocusChanged(hasWindowFocus);
         }
     }
 
