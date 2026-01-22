@@ -337,7 +337,8 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
         !config.value().proxy_rules().proxies_for_https.IsEmpty()) {
       can_uncloak = false;
     }
-
+// Check if PAC script is configured.
+// Better solution is to use |ConfiguredProxyResolutionService|.
     if (config.value().has_pac_url()) {
       can_uncloak = false;
     }
