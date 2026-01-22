@@ -3,31 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 interface BoxProps {
   isTor?: boolean
 }
 
 const Box = styled.div<BoxProps>`
-  --bg-gr: linear-gradient(180deg, #0C041E -8.41%, #4E21B7 98.85%);
-
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", sans-serif;
   font-weight: 400;
   color: white;
   width: 100%;
   height: 100%;
   min-height: 100vh;
-  background: var(--bg-gr);
   position: relative;
-
-  ${p => p.isTor && css`
-    --bg-gr: linear-gradient(180deg, #0C041E -9.18%, #5F0D89 98.85%);
-  `}
 `
 
 const SVGBoxTop = styled.div`

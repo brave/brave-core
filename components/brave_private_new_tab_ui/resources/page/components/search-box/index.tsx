@@ -24,7 +24,7 @@ const Form = styled.form`
   align-items: center;
   width: 100%;
   height: 52px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", sans-serif;
   color: white;
   font-size: 14px;
   font-weight: 400;
