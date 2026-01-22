@@ -62,7 +62,8 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            ScrollBarBoundsWithPinnedTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarThumbState);
-
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
 

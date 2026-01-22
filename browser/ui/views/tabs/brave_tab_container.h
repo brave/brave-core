@@ -109,6 +109,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarDisabledWhenHorizontal);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            ScrollBarVisibilityWithManyTabs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
