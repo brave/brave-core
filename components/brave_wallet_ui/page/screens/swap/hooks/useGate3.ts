@@ -230,6 +230,7 @@ export function useGate3(params: SwapParams) {
               destinationAmount: firmRoute.destinationAmount,
               recipient: toAccountAddress,
               provider: firmRoute.provider,
+              routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
           return
@@ -263,6 +264,7 @@ export function useGate3(params: SwapParams) {
                 destinationAmount: firmRoute.destinationAmount,
                 recipient: toAccountAddress,
                 provider: firmRoute.provider,
+                routeId: firmRoute.id,
               } satisfies BraveWallet.SwapInfo,
             })
             return
@@ -290,6 +292,7 @@ export function useGate3(params: SwapParams) {
                 destinationAmount: firmRoute.destinationAmount,
                 recipient: toAccountAddress,
                 provider: firmRoute.provider,
+                routeId: firmRoute.id,
               } satisfies BraveWallet.SwapInfo,
             })
             return
@@ -313,6 +316,7 @@ export function useGate3(params: SwapParams) {
               destinationAmount: firmRoute.destinationAmount,
               recipient: toAccountAddress,
               provider: firmRoute.provider,
+              routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
           return
@@ -339,6 +343,7 @@ export function useGate3(params: SwapParams) {
               destinationAmount: firmRoute.destinationAmount,
               recipient: toAccountAddress,
               provider: firmRoute.provider,
+              routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
           return
@@ -365,6 +370,7 @@ export function useGate3(params: SwapParams) {
               destinationAmount: firmRoute.destinationAmount,
               recipient: toAccountAddress,
               provider: firmRoute.provider,
+              routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
           return
@@ -393,6 +399,7 @@ export function useGate3(params: SwapParams) {
               destinationAmount: firmRoute.destinationAmount,
               recipient: toAccountAddress,
               provider: firmRoute.provider,
+              routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
         }

@@ -277,6 +277,7 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_Basic) {
   swap_info->destination_amount_min = "1950000";
   swap_info->recipient = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
   swap_info->provider = mojom::SwapProvider::kZeroEx;
+  swap_info->route_id = "test-route-id";
 
   base::Value::Dict value = SwapInfoToValue(swap_info);
 
@@ -295,6 +296,7 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_Basic) {
   EXPECT_EQ(*value.FindString("recipient"),
             "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
   EXPECT_EQ(*value.FindString("provider"), "ZERO_EX");
+  EXPECT_EQ(*value.FindString("route_id"), "test-route-id");
 }
 
 TEST(BraveWalletUtilsUnitTest, SwapInfoToValueAndBack_RoundTrip) {
@@ -312,6 +314,7 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValueAndBack_RoundTrip) {
   swap_info->destination_amount_min = "49000000";
   swap_info->recipient = "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9";
   swap_info->provider = mojom::SwapProvider::kJupiter;
+  swap_info->route_id = "test-route-id";
 
   base::Value::Dict value = SwapInfoToValue(swap_info);
   auto swap_info_from_value = ValueToSwapInfo(value);
@@ -346,6 +349,7 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
     swap_info->destination_amount_min = "";
     swap_info->recipient = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
     swap_info->provider = provider;
+    swap_info->route_id = "test-route-id";
 
     base::Value::Dict value = SwapInfoToValue(swap_info);
     auto swap_info_from_value = ValueToSwapInfo(value);
@@ -367,6 +371,7 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_InvalidCoin) {
   value.Set("destination_amount", "2000000000000000000");
   value.Set("recipient", "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
   value.Set("provider", "AUTO");
+  value.Set("route_id", "test-route-id");
 
   auto swap_info = ValueToSwapInfo(value);
   EXPECT_FALSE(swap_info);
@@ -404,6 +409,7 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
   base_value.Set("destination_amount", "2000000000000000000");
   base_value.Set("recipient", "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
   base_value.Set("provider", "AUTO");
+  base_value.Set("route_id", "test-route-id");
 
   // The valid dict should be accepted
   EXPECT_TRUE(ValueToSwapInfo(base_value));
