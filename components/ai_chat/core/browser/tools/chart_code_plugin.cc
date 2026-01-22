@@ -47,14 +47,14 @@ const chartUtil = {
     if (labels) {
       chartData.labels = labels;
     }
-    codeExecArtifacts.push({ type: 'chart', content: chartData });
+    codeExecArtifacts.push({ type: 'line_chart', content: chartData });
   }
 };
 )";
 }
 
 std::string_view ChartCodePlugin::ArtifactType() const {
-  return mojom::kChartArtifactType;
+  return mojom::kLineChartArtifactType;
 }
 
 std::optional<std::string> ChartCodePlugin::ValidateArtifact(

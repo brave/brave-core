@@ -12,7 +12,7 @@ interface ChartProps {
 }
 
 export default function Chart({ artifact }: ChartProps) {
-  if (artifact.type !== Mojom.CHART_ARTIFACT_TYPE) {
+  if (artifact.type !== Mojom.LINE_CHART_ARTIFACT_TYPE) {
     return null
   }
 

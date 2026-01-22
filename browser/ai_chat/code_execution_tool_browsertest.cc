@@ -241,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
   ASSERT_EQ(artifacts.size(), 1u);
 
   const auto& artifact = artifacts[0];
-  EXPECT_EQ(artifact->type, mojom::kChartArtifactType);
+  EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
   EXPECT_FALSE(artifact->content_json.empty());
 }
 

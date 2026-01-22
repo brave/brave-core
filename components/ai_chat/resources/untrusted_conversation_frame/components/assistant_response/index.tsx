@@ -187,7 +187,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           />
         ))}
       {props.toolArtifacts
-        ?.filter((artifact) => artifact.type === Mojom.CHART_ARTIFACT_TYPE)
+        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
         .map((artifact, i) => (
           <Chart
             key={i}

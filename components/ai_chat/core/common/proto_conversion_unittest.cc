@@ -255,7 +255,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
                                std::vector<mojom::ToolArtifactPtr>(), nullptr);
 
   auto artifact = mojom::ToolArtifact::New();
-  artifact->type = mojom::kChartArtifactType;
+  artifact->type = mojom::kLineChartArtifactType;
   artifact->content_json = content_json;
   mojom_event->artifacts->push_back(std::move(artifact));
 
@@ -265,7 +265,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
 
   EXPECT_TRUE(success);
   EXPECT_EQ(proto_event.artifacts_size(), 1);
-  EXPECT_EQ(proto_event.artifacts(0).type(), mojom::kChartArtifactType);
+  EXPECT_EQ(proto_event.artifacts(0).type(), mojom::kLineChartArtifactType);
   EXPECT_EQ(proto_event.artifacts(0).content_json(), content_json);
 
   // Deserialize back to mojom
