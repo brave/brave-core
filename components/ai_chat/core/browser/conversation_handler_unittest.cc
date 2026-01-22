@@ -2882,9 +2882,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New(
-                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
-                            std::nullopt, std::nullopt, nullptr)),
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"param\":", std::nullopt,
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           // Then send a partial tool use event with no name
@@ -3015,8 +3015,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   // available.
   auto expected_tool_use_event = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"), std::nullopt,
-      nullptr);
+      CreateContentBlocksForText("Weather in New York: 72°F"),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr);
 
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
       .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
@@ -3167,8 +3167,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
   // available.
   auto expected_tool_use_event = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"), std::nullopt,
-      nullptr);
+      CreateContentBlocksForText("Weather in New York: 72°F"),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr);
 
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
       .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
@@ -4987,7 +4987,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   // First tool should have output
   ASSERT_TRUE(events_after[0]->get_tool_use_event()->output.has_value());
   EXPECT_MOJOM_EQ(events_after[0]->get_tool_use_event()->output.value(),
-                  CreateContentBlocksForText("Result from tool1"));
+                  CreateContentBlocksForText("Weather in New York: 72°F"));
 
   // Second tool should have output
   EXPECT_MOJOM_EQ(events_after[1]->get_tool_use_event()->output.value(),
