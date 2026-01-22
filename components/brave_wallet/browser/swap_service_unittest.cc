@@ -1776,7 +1776,6 @@ TEST_F(SwapServiceUnitTest, GetSquidQuote) {
           "data": "0xdeadbeef",
           "value": "1000368231439378717",
           "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
           "maxFeePerGas": "1520000000",
           "maxPriorityFeePerGas": "1500000000",
           "gasPrice": "10000000",
@@ -1862,7 +1861,6 @@ TEST_F(SwapServiceUnitTest, GetSquidTransaction) {
           "data": "0xdeadbeef",
           "value": "1000368231439378717",
           "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
           "maxFeePerGas": "1520000000",
           "maxPriorityFeePerGas": "1500000000",
           "gasPrice": "10000000",
@@ -1877,10 +1875,6 @@ TEST_F(SwapServiceUnitTest, GetSquidTransaction) {
   expected_transaction->target = "0xce16F69375520ab01377ce7B88f5BA8C48F8D666";
   expected_transaction->value = "1000368231439378717";
   expected_transaction->gas_limit = "995464";
-  expected_transaction->last_base_fee_per_gas = "10000000";
-  expected_transaction->max_fee_per_gas = "1520000000";
-  expected_transaction->max_priority_fee_per_gas = "1500000000";
-  expected_transaction->gas_price = "10000000";
   expected_transaction->chain_id = mojom::kArbitrumMainnetChainId;
 
   auto quote_params = GetCannedSwapQuoteParams(

@@ -1120,12 +1120,6 @@ mojom::SquidTransactionUnionPtr ParseTransactionResponse(
   result->target = value->route.transaction_request->target;
   result->value = value->route.transaction_request->value;
   result->gas_limit = value->route.transaction_request->gas_limit;
-  result->gas_price = value->route.transaction_request->gas_price;
-  result->last_base_fee_per_gas =
-      value->route.transaction_request->last_base_fee_per_gas;
-  result->max_priority_fee_per_gas =
-      value->route.transaction_request->max_priority_fee_per_gas;
-  result->max_fee_per_gas = value->route.transaction_request->max_fee_per_gas;
 
   auto chain_id = ChainIdToHex(value->route.estimate.from_token.chain_id);
   if (!chain_id) {
