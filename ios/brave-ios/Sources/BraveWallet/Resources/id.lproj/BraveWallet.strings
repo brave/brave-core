@@ -1028,7 +1028,7 @@
 "wallet.module" = "Dompet Brave";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
-"wallet.more" = "Lebih lanjut";
+"wallet.more" = "Lainnya";
 
 /* The title displayed on the view to filter by a network / all networks. */
 "wallet.networkFilterTitle" = "Pilih Jaringan";

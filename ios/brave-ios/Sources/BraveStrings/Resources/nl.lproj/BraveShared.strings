@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave-account";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Bijna daar!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Een bevestigingse-mail is onderweg. Klik op de knop in die e-mail om uw account te activeren.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Registratie annuleren";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Aan de slag";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Bevestigingse-mail opnieuw verzenden";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Ziet u de e-mail niet? Controleer uw spammap of klik op de knop om de bevestigingse-mail opnieuw te verzenden.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Uitloggen";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave-paneel";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Fout";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Aan de slag";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Blokkeer gevaarlijke websites";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Zichtbaarheid tijdens browsen";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "privétabblad";
+"tabGrid.privateBrowsingInfoTitle" = "Privétabblad";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privémodus";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Aan";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Focus automatisch op de adresbalk wanneer u een nieuw tabblad maakt";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Open toetsenbord automatisch";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Houd privétabbladen geopend wanneer je de app sluit, zodat je later makkelijk kunt verdergaan met je privésessies.";
