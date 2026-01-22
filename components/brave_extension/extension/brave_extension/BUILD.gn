@@ -40,8 +40,10 @@ transpile_web_ui("brave_extension") {
 
   sync_wasm = true
 
-  imports_from =
-      [ "//brave/components/brave_extension/extension/brave_extension/" ]
+  imports_from = [
+    "//brave/components/brave_extension/extension/brave_extension/",
+    "//brave/vendor/web-discovery-project/modules/parser/",
+  ]
   deps =
       [ "//brave/components/brave_extension:web_discovery_project_resources" ]
 }
