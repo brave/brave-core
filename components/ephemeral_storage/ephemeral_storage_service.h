@@ -21,7 +21,6 @@
 #include "base/timer/timer.h"
 #include "base/unguessable_token.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
