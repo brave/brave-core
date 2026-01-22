@@ -234,7 +234,7 @@ extension BrowserViewController: TabDownloadDelegate {
     // Truncate the file-name after stripping any unicode control characters
     // Max file name length of 33 characters (same as Chromium)
     let filename = suggestedFileName
-      .strippingUnicodeControlCharacters
+      .sanitizedAndPercentEncoded
       .truncatingMiddle(maxLength: 33)
 
     let totalBytesExpected = download.totalBytesExpected

@@ -112,11 +112,15 @@ extension String {
   }
 
   // Strips unicode control characters such as LTR, RTL, New-Lines, and illegal Characters
-  public var strippingUnicodeControlCharacters: String {
+  // percent encodes the remaining string
+  public var sanitizedAndPercentEncoded: String {
     let validFilenameSet = CharacterSet(charactersIn: ":/")
       .union(.newlines)
       .union(.controlCharacters)
       .union(.illegalCharacters)
-    return self.components(separatedBy: validFilenameSet).joined()
+    let stripped = self.components(separatedBy: validFilenameSet).joined()
+    let allowed = CharacterSet.alphanumerics
+      .union(CharacterSet(charactersIn: "._-"))
+    return stripped.addingPercentEncoding(withAllowedCharacters: allowed) ?? ""
   }
 }
