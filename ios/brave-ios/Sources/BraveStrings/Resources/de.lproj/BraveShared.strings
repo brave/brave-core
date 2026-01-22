@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave Konto";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Fast schon da!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Eine Bestätigungsmail ist unterwegs. Klicken Sie auf die Schaltfläche in dieser E-Mail, um Ihr Konto zu aktivieren.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Registrierung abbrechen";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Loslegen";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Bestätigungsmail erneut senden";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "E-Mail nicht erhalten? Überprüfen Sie Ihren Spam-Ordner oder klicken Sie auf die Schaltfläche, um die Bestätigungsmail erneut zu senden.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Abmelden";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Menü";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Fehler";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Loslegen";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Gefährliche Websites blockieren";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Ein";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Adressleiste automatisch fokussieren, wenn ein neuer Tab erstellt wird";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Tastatur automatisch öffnen";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Private Browsing-Tabs bleiben geöffnet, wenn du die App schließt, damit private Browsing-Sitzungen nahtlos fortgesetzt werden können.";

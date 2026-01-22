@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Braveアカウント";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "もうすぐです!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "確認メールが送信されました。そのメール内のボタンをクリックしてアカウントを有効化してください。";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "登録をキャンセル";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "始める";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "確認メールを再送信";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "メールが見つかりませんか?迷惑メールフォルダを確認するか、ボタンをクリックして確認メールを再送信してください。";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "サインアウト";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave パネル";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "エラー";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "始める";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "危険なウェブサイトをブロック";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "オン";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "新しいタブを作成するときにアドレスバーに自動的にフォーカスする";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "自動的にキーボードを開く";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "アプリを閉じる際にプライベートブラウジングタブを保持し、プライベートブラウジングのセッションをシームレスに継続できるようにします。";
