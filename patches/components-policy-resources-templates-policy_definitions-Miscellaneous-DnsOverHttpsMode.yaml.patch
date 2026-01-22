@@ -1,5 +1,5 @@
 diff --git a/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml b/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
-index 6a8fe80e2d410fc87277a39f66b1d42d6643bcdf..cd47d817b9ad23449d4e84e2b20d2a0dd97490b5 100644
+index 6a8fe80e2d410fc87277a39f66b1d42d6643bcdf..95d7175dfd8424a5fc623b255205f4bc17242f5c 100644
 --- a/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
 +++ b/components/policy/resources/templates/policy_definitions/Miscellaneous/DnsOverHttpsMode.yaml
 @@ -1,5 +1,4 @@
@@ -8,3 +8,14 @@ index 6a8fe80e2d410fc87277a39f66b1d42d6643bcdf..cd47d817b9ad23449d4e84e2b20d2a0d
  desc: |-
    Controls the mode of the DNS-over-HTTPS resolver. Please note that this
    policy will only set the default mode for each query. The mode may be
+@@ -19,10 +18,6 @@ desc: |-
+   On <ph name="ANDROID_VERSION">Android Pie</ph> and above, if DNS-over-TLS
+   is active, <ph name="PRODUCT_NAME">$1<ex>Google Chrome</ex></ph> will not
+   send insecure DNS requests.
+-
+-  If this policy is unset, for managed devices DNS-over-HTTPS queries will not
+-  be sent. Otherwise, the browser may send DNS-over-HTTPS requests to a
+-  resolver associated with the user's configured system resolver.
+ default: null
+ example_value: 'off'
+ features:

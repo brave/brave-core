@@ -155,8 +155,15 @@ std::vector<net::IPEndPoint> MaybeOverrideFallbackDohNameservers(
                                           FALLBACK_DOH_NAMESERVERS))
 
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#define StubResolverConfigReader StubResolverConfigReader_ChromiumImpl
 #include <chrome/browser/net/stub_resolver_config_reader.cc>
+#undef StubResolverConfigReader
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef ConfigureStubHostResolver
 #undef SecureDnsConfig
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+
+bool StubResolverConfigReader::ShouldDisableDohForManaged() {
+  return false;
+}
