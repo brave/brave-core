@@ -63,6 +63,9 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::optional<std::string>,
                               std::optional<std::string>)>;
 
+  using GetPaymentInfoCallback =
+      base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
+
   // Get the name of the chain pointed to by the current network
   // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
   // the mainnet.
@@ -122,6 +125,20 @@ class PolkadotSubstrateRpc {
                        std::string_view signed_extrinsic,
                        SubmitExtrinsicCallback callback);
 
+  // Query the block chain for the estimated fee of running the given extrinsic.
+  // Note that this method is deliberately ignorant of any extra associated
+  // extrinsic costs (such as when executing smart contracts). This method gives
+  // a reliable fee estimate for a "normal" extrinsic such as
+  // transfer_allow_death and only accounts for weight, length and base fee and
+  // the current fee multiplier of the running node being used. The signed
+  // extrinsic can be signed with a dummy signature (i.e. 64 bytes of 0x01).
+  // This is because the extrinsic itself is not evaluated by the block chain
+  // but is only checked in terms of its format. Note that public key addresses
+  // must be valid otherwise the nodes seem to error.
+  void GetPaymentInfo(std::string_view chain_id,
+                      base::span<const uint8_t> extrinsic,
+                      GetPaymentInfoCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -139,6 +156,7 @@ class PolkadotSubstrateRpc {
                            APIRequestResult res);
   void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
                          APIRequestResult res);
+  void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

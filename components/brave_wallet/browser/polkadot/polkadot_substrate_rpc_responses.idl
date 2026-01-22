@@ -105,4 +105,22 @@ namespace polkadot_substrate_rpc_responses {
     DOMString? result;
     Error? error;
   };
+
+  // We're not using the formal RPC call but instead the raw TransactionPaymentApi's query_info method which is defined here:
+  // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-json.json#L9167-L9170
+  //
+  // We receive a hex string containing all the information we need to construct what we'd normally get from payment_queryInfo defined here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1142-payment_queryinfo
+  //
+  // but without the `partialFee` having a string representation.
+  // The PSP docs are incorrect in that the return a U128. Actual RPC nodes return:
+  // {"jsonrpc":"2.0","id":10,"result":{"weight":{"ref_time":497036000,"proof_size":10779},"class":"normal","partialFee":"15937408476"}}
+
+  dictionary PolkadotPaymentInfo {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString? result;
+    Error? error;
+  };
 };
