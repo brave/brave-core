@@ -6,19 +6,17 @@
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 
 brave_browser_notifications_sources = []
-brave_browser_notifications_deps = []
+brave_browser_notifications_deps = [
+  "//base",
+  "//chrome/browser/notifications",
+  "//third_party/abseil-cpp:absl",
+  "//url",
+]
 
 if (enable_brave_ads) {
   brave_browser_notifications_sources += [
     "//brave/browser/notifications/ads_notification_handler.cc",
     "//brave/browser/notifications/ads_notification_handler.h",
-  ]
-
-  brave_browser_notifications_deps += [
-    "//base",
-    "//chrome/browser/notifications",
-    "//third_party/abseil-cpp:absl",
-    "//url",
   ]
 }
 
