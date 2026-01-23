@@ -393,8 +393,8 @@ namespace swap_responses {
     DOMString to;
     DOMString value;
     DOMString data;
+    DOMString gasLimit;
 
-    any gasLimit;
     any gasPrice;
   };
 

@@ -1305,7 +1305,7 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     evm_result->to = evm_params->to;
     evm_result->value = evm_params->value;
     evm_result->data = evm_params->data;
-    evm_result->gas_limit = ParseNullableString(evm_params->gas_limit);
+    evm_result->gas_limit = evm_params->gas_limit;
     evm_result->gas_price = ParseNullableString(evm_params->gas_price);
     return mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
         std::move(evm_result));
