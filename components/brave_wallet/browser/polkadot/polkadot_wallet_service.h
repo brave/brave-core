@@ -66,8 +66,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // author_submitExtrinsic or payment information can be queried using
   // payment_queryInfo.
   void GenerateSignedTransferExtrinsic(
-      std::string_view chain_id,
-      const mojom::AccountIdPtr& account_id,
+      std::string chain_id,
+      mojom::AccountIdPtr account_id,
       uint128_t send_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);

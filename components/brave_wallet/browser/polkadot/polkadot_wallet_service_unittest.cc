@@ -587,7 +587,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   // clang-format on
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -643,7 +643,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
   url_loader_factory_.ClearResponses();
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -736,7 +736,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -857,7 +857,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1011,7 +1011,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1148,7 +1148,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1326,7 +1326,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1552,7 +1552,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1750,7 +1750,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
@@ -1960,7 +1960,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
-      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id,
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,

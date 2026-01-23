@@ -24,7 +24,7 @@ struct PolkadotSignedTransferTask {
       PolkadotWalletService& polkadot_wallet_service,
       KeyringService& keyring_service,
       mojom::AccountIdPtr sender_account_id,
-      std::string_view chain_id,
+      std::string chain_id,
       uint128_t send_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient);
