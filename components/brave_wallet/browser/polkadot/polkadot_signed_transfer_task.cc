@@ -31,7 +31,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
 
 PolkadotSignedTransferTask::~PolkadotSignedTransferTask() = default;
 
-bool PolkadotSignedTransferTask::IsDone() const {
+bool PolkadotSignedTransferTask::IsReadyToSign() const {
   return !account_info_.is_null() && signing_header_ && genesis_hash_ &&
          signing_block_hash_ && runtime_version_ && chain_metadata_;
 }
@@ -90,7 +90,7 @@ void PolkadotSignedTransferTask::OnGetMetadataForSigning(
   }
 
   chain_metadata_ = &chain_metadata.value();
-  OnFinalizeSignTransaction();
+  MaybeFinalizeSignTransaction();
 }
 
 void PolkadotSignedTransferTask::OnGetAccountNonce(
@@ -103,7 +103,7 @@ void PolkadotSignedTransferTask::OnGetAccountNonce(
   CHECK(account_info);
   account_info_ = std::move(account_info);
 
-  OnFinalizeSignTransaction();
+  MaybeFinalizeSignTransaction();
 }
 
 void PolkadotSignedTransferTask::OnGetChainHeader(
@@ -201,7 +201,7 @@ void PolkadotSignedTransferTask::OnGetGenesisHash(
 
   CHECK(genesis_hash);
   genesis_hash_ = genesis_hash;
-  OnFinalizeSignTransaction();
+  MaybeFinalizeSignTransaction();
 }
 
 void PolkadotSignedTransferTask::OnGetSigningBlockHash(
@@ -213,7 +213,7 @@ void PolkadotSignedTransferTask::OnGetSigningBlockHash(
 
   CHECK(block_hash);
   signing_block_hash_ = block_hash;
-  OnFinalizeSignTransaction();
+  MaybeFinalizeSignTransaction();
 }
 
 void PolkadotSignedTransferTask::OnGetRuntimeVersion(
@@ -226,11 +226,11 @@ void PolkadotSignedTransferTask::OnGetRuntimeVersion(
   CHECK(runtime_version);
 
   runtime_version_ = runtime_version;
-  OnFinalizeSignTransaction();
+  MaybeFinalizeSignTransaction();
 }
 
-void PolkadotSignedTransferTask::OnFinalizeSignTransaction() {
-  if (!IsDone()) {
+void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
+  if (!IsReadyToSign()) {
     return;
   }
 
