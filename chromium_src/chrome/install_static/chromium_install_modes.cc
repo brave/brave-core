@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/install_static/install_modes.h"
 
 namespace install_static {
@@ -14,7 +15,13 @@ namespace install_static {
 const wchar_t kCompanyPathName[] = L"BraveSoftware";
 
 #if defined(OFFICIAL_BUILD)
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+// Brave Origin uses "Brave-Origin" instead of "Brave-Browser" to allow
+// side-by-side installation with Brave Browser.
+const wchar_t kProductPathName[] = L"Brave-Origin";
+#else
 const wchar_t kProductPathName[] = L"Brave-Browser";
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #else
 // If you change this, then you also need to change occurrences of this string
 // in mini_installer_constants.cc.

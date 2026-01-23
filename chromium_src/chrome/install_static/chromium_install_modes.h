@@ -48,7 +48,7 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .install_switch =
             "",  // No install switch for the primary install mode.
         .install_suffix =
-            L"-Origin",  // Install suffix for side-by-side with Brave Browser.
+            L"",  // Empty install suffix - "Origin" is in kProductPathName.
         .logo_suffix = L"",  // No logo suffix for the primary install mode.
         .app_guid = L"{F1EF32DE-F987-4289-81D2-6C4780027F9B}",
         .base_app_name = L"Brave Origin",         // A distinct base_app_name.
@@ -95,9 +95,9 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
     {
         .size = sizeof(InstallConstants),
         .index = BETA_INDEX,  // The mode for the side-by-side beta channel.
-        .install_switch = "chrome-beta",    // Install switch.
-        .install_suffix = L"-Origin-Beta",  // Install suffix.
-        .logo_suffix = L"Beta",             // Logo suffix.
+        .install_switch = "chrome-beta",  // Install switch.
+        .install_suffix = L"-Beta",       // Install suffix.
+        .logo_suffix = L"Beta",           // Logo suffix.
         .app_guid =
             L"{56DA94FD-D872-416B-BFC4-1D7011DA7473}",  // A distinct app GUID.
         .base_app_name = L"Brave Origin Beta",     // A distinct base_app_name.
@@ -142,9 +142,9 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
     {
         .size = sizeof(InstallConstants),
         .index = DEV_INDEX,  // The mode for the side-by-side dev channel.
-        .install_switch = "chrome-dev",    // Install switch.
-        .install_suffix = L"-Origin-Dev",  // Install suffix.
-        .logo_suffix = L"Dev",             // Logo suffix.
+        .install_switch = "chrome-dev",  // Install switch.
+        .install_suffix = L"-Dev",       // Install suffix.
+        .logo_suffix = L"Dev",           // Logo suffix.
         .app_guid =
             L"{716D6A4A-D071-47A8-AC64-DBDE3EE3797B}",  // A distinct app GUID.
         .base_app_name = L"Brave Origin Dev",      // A distinct base_app_name.
@@ -190,9 +190,9 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .size = sizeof(InstallConstants),
         .index =
             NIGHTLY_INDEX,  // The mode for the side-by-side nightly channel.
-        .install_switch = "chrome-sxs",        // Install switch.
-        .install_suffix = L"-Origin-Nightly",  // Install suffix.
-        .logo_suffix = L"Canary",              // Logo suffix.
+        .install_switch = "chrome-sxs",  // Install switch.
+        .install_suffix = L"-Nightly",   // Install suffix.
+        .logo_suffix = L"Canary",        // Logo suffix.
         .app_guid =
             L"{50474E96-9CD2-4BC8-B0A7-0D4B6EF2E709}",  // A distinct app GUID.
         .base_app_name = L"Brave Origin Nightly",  // A distinct base_app_name.

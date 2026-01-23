@@ -294,8 +294,13 @@ class InstallStaticUtilTest
 
   void SetMetricsReportingPolicy(DWORD value) {
 #if defined(OFFICIAL_BUILD)
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+    static constexpr wchar_t kPolicyKey[] =
+        L"Software\\Policies\\BraveSoftware\\Brave-Origin";
+#else
     static constexpr wchar_t kPolicyKey[] =
         L"Software\\Policies\\BraveSoftware\\Brave-Browser";
+#endif
 #else
     static constexpr wchar_t kPolicyKey[] =
         L"Software\\Policies\\BraveSoftware\\Brave-Browser-Development";
@@ -337,12 +342,13 @@ TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {
 #if defined(OFFICIAL_BUILD)
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // The directory strings for the brand's install modes; parallel to
-  // kInstallModes.
+  // kInstallModes. Brave Origin uses "Brave-Origin" as the product path name
+  // instead of "Brave-Browser" to allow side-by-side installation.
   static constexpr const wchar_t* kInstallDirs[] = {
-      L"BraveSoftware\\Brave-Browser-Origin",
-      L"BraveSoftware\\Brave-Browser-Origin-Beta",
-      L"BraveSoftware\\Brave-Browser-Origin-Dev",
-      L"BraveSoftware\\Brave-Browser-Origin-Nightly",
+      L"BraveSoftware\\Brave-Origin",
+      L"BraveSoftware\\Brave-Origin-Beta",
+      L"BraveSoftware\\Brave-Origin-Dev",
+      L"BraveSoftware\\Brave-Origin-Nightly",
   };
 #else
   // The directory strings for the brand's install modes; parallel to
@@ -371,12 +377,12 @@ TEST_P(InstallStaticUtilTest, GetRegistryPath) {
 #if defined(OFFICIAL_BUILD)
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // The registry path strings for the brand's install modes; parallel to
-  // kInstallModes.
+  // kInstallModes. Brave Origin uses "Brave-Origin" as the product path name.
   static constexpr const wchar_t* kRegistryPaths[] = {
-      L"Software\\BraveSoftware\\Brave-Browser-Origin",
-      L"Software\\BraveSoftware\\Brave-Browser-Origin-Beta",
-      L"Software\\BraveSoftware\\Brave-Browser-Origin-Dev",
-      L"Software\\BraveSoftware\\Brave-Browser-Origin-Nightly",
+      L"Software\\BraveSoftware\\Brave-Origin",
+      L"Software\\BraveSoftware\\Brave-Origin-Beta",
+      L"Software\\BraveSoftware\\Brave-Origin-Dev",
+      L"Software\\BraveSoftware\\Brave-Origin-Nightly",
   };
 #else
   // The registry path strings for the brand's install modes; parallel to
@@ -405,16 +411,17 @@ TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
 #if defined(OFFICIAL_BUILD)
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // The uninstall registry path strings for the brand's install modes; parallel
-  // to kInstallModes.
+  // to kInstallModes. Brave Origin uses "Brave-Origin" as the product path
+  // name.
   static constexpr const wchar_t* kUninstallRegistryPaths[] = {
       L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"  // (cont'd)
-      L"BraveSoftware Brave-Browser-Origin",
+      L"BraveSoftware Brave-Origin",
       L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"  // (cont'd)
-      L"BraveSoftware Brave-Browser-Origin-Beta",
+      L"BraveSoftware Brave-Origin-Beta",
       L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"  // (cont'd)
-      L"BraveSoftware Brave-Browser-Origin-Dev",
+      L"BraveSoftware Brave-Origin-Dev",
       L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"  // (cont'd)
-      L"BraveSoftware Brave-Browser-Origin-Nightly",
+      L"BraveSoftware Brave-Origin-Nightly",
   };
 #else
   // The uninstall registry path strings for the brand's install modes; parallel
