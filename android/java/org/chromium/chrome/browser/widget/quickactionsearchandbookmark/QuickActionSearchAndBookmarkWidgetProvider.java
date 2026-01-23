@@ -38,13 +38,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
-import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
 import org.chromium.chrome.browser.document.ChromeLauncherActivity;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
@@ -187,12 +185,10 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         // Widgets are top-level entry points similar to Activities, so
         // accessing the last used profile here is acceptable since
         // there's no existing Profile context to pass through.
-        BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                ProfileManager.getLastUsedRegularProfile(),
-                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
-                (isLeoDisabledByPolicy) -> {
-                    updateAppWidgetsWithPolicy(appWidgetIds, isLeoDisabledByPolicy);
-                });
+        updateAppWidgetsWithPolicy(
+                appWidgetIds,
+                BraveLeoPrefUtils.isLeoDisabledByPolicy(
+                        ProfileManager.getLastUsedRegularProfile()));
     }
 
     private static void updateAppWidgetsWithPolicy(

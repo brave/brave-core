@@ -103,7 +103,6 @@ import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
@@ -120,7 +119,6 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
-import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
@@ -161,7 +159,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
@@ -252,7 +249,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -387,15 +383,6 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
-
-        // Check policies and cache results (single subscription check for all policies)
-        BraveOriginSubscriptionPrefs.checkPoliciesAsync(
-                getCurrentProfile(),
-                Map.of(
-                        BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
-                        BraveLeoPrefUtils::setLeoDisabledByPolicy,
-                        BravePolicyConstants.BRAVE_REWARDS_DISABLED,
-                        BraveRewardsPolicy::setDisabledByPolicy));
 
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
@@ -2751,16 +2738,17 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void quickSearchEnginesReady(RecyclerView recyclerView, int keypadHeight) {
+        Profile profile = getCurrentProfile();
         List<QuickSearchEnginesModel> searchEngines =
-                QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
+                QuickSearchEnginesUtil.getQuickSearchEnginesForView(profile);
 
         QuickSearchEnginesModel defaultQuickSearchEnginesModel =
-                QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
+                QuickSearchEnginesUtil.getDefaultSearchEngine(profile);
         searchEngines.add(0, defaultQuickSearchEnginesModel);
 
-        if (!getCurrentProfile().isOffTheRecord()
+        if (!profile.isOffTheRecord()
                 && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()
-                && !BraveLeoPrefUtils.isLeoDisabledByPolicy()) {
+                && !BraveLeoPrefUtils.isLeoDisabledByPolicy(profile)) {
             QuickSearchEnginesModel leoQuickSearchEnginesModel =
                     new QuickSearchEnginesModel(
                             "",

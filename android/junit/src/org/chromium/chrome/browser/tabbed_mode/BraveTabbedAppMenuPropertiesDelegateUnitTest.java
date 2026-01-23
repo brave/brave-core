@@ -43,11 +43,9 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl.MenuGroup;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
-import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.commerce.ShoppingServiceFactory;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtils;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtilsJni;
@@ -291,8 +289,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @After
     public void tearDown() {
         AccessibilityState.setIsKnownScreenReaderEnabledForTesting(false);
-        BraveLeoPrefUtils.setLeoDisabledByPolicy(false);
-        BraveRewardsPolicy.setDisabledByPolicy(false);
     }
 
     private void assertMenuItemsAreEqual(
@@ -403,13 +399,17 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowTranslateMenuItem(any(Tab.class));
 
-        // Set features as disabled by policy
-        // News policy is checked via UserPrefs directly
+        // Set features as disabled by policy via UserPrefs
+        // News: BRAVE_NEWS_DISABLED_BY_POLICY = true means disabled
         when(mPrefService.isManagedPreference(BravePref.BRAVE_NEWS_DISABLED_BY_POLICY))
                 .thenReturn(true);
         when(mPrefService.getBoolean(BravePref.BRAVE_NEWS_DISABLED_BY_POLICY)).thenReturn(true);
-        BraveLeoPrefUtils.setLeoDisabledByPolicy(true);
-        BraveRewardsPolicy.setDisabledByPolicy(true);
+        // Leo: ENABLED_BY_POLICY = false means disabled (inverted)
+        when(mPrefService.isManagedPreference(BravePref.ENABLED_BY_POLICY)).thenReturn(true);
+        when(mPrefService.getBoolean(BravePref.ENABLED_BY_POLICY)).thenReturn(false);
+        // Rewards: DISABLED_BY_POLICY = true means disabled
+        when(mPrefService.isManagedPreference(BravePref.DISABLED_BY_POLICY)).thenReturn(true);
+        when(mPrefService.getBoolean(BravePref.DISABLED_BY_POLICY)).thenReturn(true);
 
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();

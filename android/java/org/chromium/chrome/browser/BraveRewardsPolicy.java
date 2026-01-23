@@ -6,27 +6,22 @@
 package org.chromium.chrome.browser;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.prefs.PrefService;
+import org.chromium.components.user_prefs.UserPrefs;
 
-/**
- * Holds the cached policy state for Brave Rewards.
- *
- * <p>The cached value is updated every time BraveActivity is foregrounded (in onResumeWithNative).
- * This ensures the value is fresh when user returns from Settings where the policy could have been
- * changed.
- */
+/** Provides policy state for Brave Rewards. */
 @NullMarked
 public class BraveRewardsPolicy {
-    private static boolean sDisabledByPolicy;
-
-    /**
-     * Set by BraveActivity.onResumeWithNative() when Rewards is disabled by Brave Origin policy.
-     */
-    public static void setDisabledByPolicy(boolean disabled) {
-        sDisabledByPolicy = disabled;
-    }
-
-    /** Returns true if Rewards is disabled by Brave Origin policy. */
-    public static boolean isDisabledByPolicy() {
-        return sDisabledByPolicy;
+    /** Returns true if Rewards is disabled by policy for the given profile. */
+    public static boolean isDisabledByPolicy(@Nullable Profile profile) {
+        if (profile == null) {
+            return false;
+        }
+        PrefService prefService = UserPrefs.get(profile);
+        return prefService.isManagedPreference(BravePref.DISABLED_BY_POLICY)
+                && prefService.getBoolean(BravePref.DISABLED_BY_POLICY);
     }
 }

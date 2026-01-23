@@ -143,7 +143,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             return BraveLeoPrefUtils.isLeoEnabled()
                                     && (tab == null || !tab.isIncognito());
                         },
-                        BraveLeoPrefUtils::isLeoDisabledByPolicy,
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveLeoPrefUtils.isLeoDisabledByPolicy(tab.getProfile());
+                        },
                         Arrays.asList(
                                 R.id.recent_tabs_menu_id,
                                 R.id.page_zoom_id,
@@ -161,7 +165,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     BraveRewardsNativeWorker.getInstance();
                             return worker != null && worker.isSupported();
                         },
-                        BraveRewardsPolicy::isDisabledByPolicy,
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveRewardsPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
                         Arrays.asList(
                                 R.id.brave_news_id,
                                 CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,

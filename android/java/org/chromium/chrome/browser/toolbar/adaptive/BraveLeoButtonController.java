@@ -63,8 +63,9 @@ public class BraveLeoButtonController extends BaseButtonDataProvider {
 
         // Show the Leo AI button only if Leo is enabled, not disabled by policy,
         // and not in incognito mode
+        Profile profile = tab != null ? tab.getProfile() : null;
         return BraveLeoPrefUtils.isLeoEnabled()
-                && !BraveLeoPrefUtils.isLeoDisabledByPolicy()
+                && !BraveLeoPrefUtils.isLeoDisabledByPolicy(profile)
                 && (tab == null || !tab.isIncognito());
     }
 }

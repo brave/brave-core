@@ -55,8 +55,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
@@ -77,7 +77,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
@@ -1373,26 +1372,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && NtpUtil.shouldShowRewardsIcon()) {
             // Check policy before showing rewards icon
             Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
-            BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                    profile,
-                    BravePolicyConstants.BRAVE_REWARDS_DISABLED,
-                    (isDisabled) -> {
-                        Context context = getContext();
-                        if ((context instanceof Activity
-                                        && (((Activity) context).isFinishing()
-                                                || ((Activity) context).isDestroyed()))
-                                || mRewardsLayout == null) {
-                            return;
-                        }
-
-                        if (!isDisabled) {
-                            mRewardsLayout.setVisibility(View.VISIBLE);
-                            updateShieldsLayoutBackground(false);
-                        } else {
-                            mRewardsLayout.setVisibility(View.GONE);
-                            updateShieldsLayoutBackground(true);
-                        }
-                    });
+            boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
+            if (!isDisabled) {
+                mRewardsLayout.setVisibility(View.VISIBLE);
+                updateShieldsLayoutBackground(false);
+            } else {
+                mRewardsLayout.setVisibility(View.GONE);
+                updateShieldsLayoutBackground(true);
+            }
         }
     }
 
@@ -1795,35 +1782,23 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * Checks if Brave Rewards is disabled by policy via Brave Origin and updates the toolbar
-     * rewards button visibility accordingly. This ensures that when Brave Rewards is disabled by
-     * policy, the rewards icon in the toolbar is force-hidden regardless of user preference.
+     * Checks if Brave Rewards is disabled by policy and updates the toolbar rewards button
+     * visibility accordingly. This ensures that when Brave Rewards is disabled by policy, the
+     * rewards icon in the toolbar is force-hidden regardless of user preference.
      */
     private void checkRewardsPolicyAndUpdateToolbarButton() {
         Tab currentTab = getToolbarDataProvider().getTab();
         Profile profile =
                 currentTab != null ? Profile.fromWebContents(currentTab.getWebContents()) : null;
 
-        BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                profile,
-                BravePolicyConstants.BRAVE_REWARDS_DISABLED,
-                (isDisabled) -> {
-                    Context context = getContext();
-                    if ((context instanceof Activity
-                                    && (((Activity) context).isFinishing()
-                                            || ((Activity) context).isDestroyed()))
-                            || mRewardsLayout == null) {
-                        return;
-                    }
+        boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
+        // Only show if policy allows (not disabled)
+        if (!isDisabled && mRewardsLayout != null) {
+            mRewardsLayout.setVisibility(View.VISIBLE);
+        }
+        // If policy disables rewards, keep it hidden (default is GONE)
 
-                    // Only show if policy allows (not disabled)
-                    if (!isDisabled) {
-                        mRewardsLayout.setVisibility(View.VISIBLE);
-                    }
-                    // If policy disables rewards, keep it hidden (default is GONE)
-
-                    // Complete the rest of initialization after policy check
-                    completeRewardsInitialization();
-                });
+        // Complete the rest of initialization after policy check
+        completeRewardsInitialization();
     }
 }

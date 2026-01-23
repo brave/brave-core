@@ -35,7 +35,6 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -607,17 +606,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         return true;
     }
 
-    /** Checks if Leo AI is disabled by policy via Brave Origin and removes the preference if so. */
+    /** Checks if Leo AI is disabled by policy and removes the preference if so. */
     private void checkLeoPolicyAndUpdatePreference() {
-        BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                getProfile(),
-                BravePolicyConstants.BRAVE_AI_CHAT_ENABLED,
-                (isDisabled) -> {
-                    if (getActivity() == null || getActivity().isFinishing() || !isDisabled) {
-                        return;
-                    }
-                    removePreferenceIfPresent(PREF_BRAVE_LEO);
-                });
+        if (BraveLeoPrefUtils.isLeoDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_BRAVE_LEO);
+        }
     }
 
     /** Checks if News is disabled by policy via Brave Origin and removes the preference if so. */
