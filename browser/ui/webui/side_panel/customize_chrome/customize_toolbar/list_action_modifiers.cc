@@ -12,10 +12,10 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -36,6 +36,10 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
@@ -54,9 +58,11 @@ namespace {
 
 void AddActionsForAddressBarCategory(Profile* profile,
                                      std::vector<BraveAction>& brave_actions) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::IsSupportedForProfile(profile)) {
     brave_actions.push_back(kShowReward);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (!profile->GetPrefs()->GetBoolean(

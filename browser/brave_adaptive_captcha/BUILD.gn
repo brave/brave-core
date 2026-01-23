@@ -13,6 +13,7 @@ source_set("impl") {
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/components/brave_adaptive_captcha",
+    "//brave/components/brave_rewards/core/buildflags",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//components/keyed_service/content",

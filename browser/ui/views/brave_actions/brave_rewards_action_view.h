@@ -18,12 +18,15 @@
 #include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/widget/widget_observer.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
 class Profile;
 class TabStripModel;

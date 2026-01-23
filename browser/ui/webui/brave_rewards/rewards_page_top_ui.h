@@ -9,10 +9,13 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
 namespace content {
 class BrowserContext;

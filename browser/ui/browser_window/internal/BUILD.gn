@@ -16,6 +16,7 @@ source_set("internal") {
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/browser/email_aliases",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/tab_group_sync:factories",

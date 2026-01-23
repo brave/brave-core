@@ -42,9 +42,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return sidebar_controller_.get();
   }
 
-  brave_rewards::RewardsPanelCoordinator* rewards_panel_coordinator() {
-    return rewards_panel_coordinator_.get();
-  }
+  brave_rewards::RewardsPanelCoordinator* rewards_panel_coordinator();
 
   BraveVPNController* brave_vpn_controller();
 

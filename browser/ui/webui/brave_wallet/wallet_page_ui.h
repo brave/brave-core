@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
-#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
@@ -19,6 +19,10 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
+#endif
 
 class WalletPageUI : public ui::MojoWebUIController,
                      public brave_wallet::mojom::PageHandlerFactory {
@@ -33,8 +37,10 @@ class WalletPageUI : public ui::MojoWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
+#endif
 
  private:
   // brave_wallet::mojom::PageHandlerFactory:
@@ -78,7 +84,9 @@ class WalletPageUI : public ui::MojoWebUIController,
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
+#endif
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
       page_factory_receiver_{this};

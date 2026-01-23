@@ -54,6 +54,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
 
     # Unconditional for gn check since the mojom-forward header is included
     # in brave_new_tab_page_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).

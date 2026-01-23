@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<std::string> pages{
-      "rewards",
+      "welcome",
   };
 
   std::vector<std::string> schemes{

@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
@@ -19,9 +18,9 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
@@ -46,6 +45,11 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #endif
 
 namespace {
@@ -133,6 +137,7 @@ void BraveNewTabPageUI::BindInterface(
                           base::Unretained(this)));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
@@ -146,6 +151,7 @@ void BraveNewTabPageUI::BindInterface(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       nullptr, profile->GetPrefs());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 void BraveNewTabPageUI::BindInterface(

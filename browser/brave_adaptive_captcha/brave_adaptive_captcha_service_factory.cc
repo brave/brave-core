@@ -14,12 +14,13 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -38,7 +39,7 @@ class CaptchaDelegate
                             const std::string& captcha_id) override {
 #if BUILDFLAG(IS_ANDROID)
     return true;
-#else
+#elif BUILDFLAG(ENABLE_BRAVE_REWARDS)
     // Because this is triggered from the adaptive captcha tooltip, this call
     // isn't associated with any particular `Browser` instance and we can use
     // the last active browser for this profile.
@@ -52,6 +53,8 @@ class CaptchaDelegate
       return false;
     }
     return coordinator->OpenRewardsPanel();
+#else
+    return false;
 #endif
   }
 

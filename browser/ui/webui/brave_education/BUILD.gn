@@ -37,6 +37,7 @@ source_set("brave_education") {
   deps = [
     "//brave/browser/resources/brave_education:resources",
     "//brave/browser/ui/webui/brave_browser_command",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
@@ -69,6 +70,7 @@ source_set("browser_tests") {
     ":brave_education",
     "//base/test:test_support",
     "//brave/components/brave_education",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",

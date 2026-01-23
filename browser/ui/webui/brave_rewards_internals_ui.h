@@ -8,7 +8,10 @@
 
 #include <string>
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "content/public/browser/web_ui_controller.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
 class BraveRewardsInternalsUI : public content::WebUIController {
  public:
