@@ -19,9 +19,6 @@ class EphemeralStorageServiceDelegate {
  public:
   virtual ~EphemeralStorageServiceDelegate() = default;
 
-  using OnBecomeActiveCallback =
-      base::OnceCallback<void(const base::flat_set<TLDEphemeralAreaKey>&)>;
-
   // Cleanups ephemeral storages (local storage, cookies).
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
