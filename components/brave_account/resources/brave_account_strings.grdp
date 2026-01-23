@@ -102,13 +102,13 @@
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog">
     We encountered an error while processing your request.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="">
     error
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_CLIENT_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="">
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_SERVER_ERROR" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="">
@@ -139,5 +139,21 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields">
     Enter your password
+  </message>
+
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email">
+    Done
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email">
+    Confirmation email resent.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails">
+    Unable to resend
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded">
+    Too many verification emails have been sent already. Please check your spam folder.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified">
+    Email already verified.
   </message>
 </grit-part>

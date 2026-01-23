@@ -6,6 +6,7 @@
 // Import web components here. They will be available on the page
 // as <leo-{component}></leo-{component}>.
 import '@brave/leo/web-components/alert'
+import '@brave/leo/web-components/alertCenter'
 import '@brave/leo/web-components/button'
 import '@brave/leo/web-components/checkbox'
 import '@brave/leo/web-components/dropdown'
@@ -19,6 +20,10 @@ import '@brave/leo/web-components/tooltip'
 import '@brave/leo/web-components/radioButton'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'
+
+export {
+  showAlert as leoShowAlert
+} from '@brave/leo/web-components/alertCenter'
 
 // Note: This file is loaded for some extensions, and on those pages we fall back
 // to loading icons from the `chrome://` scheme.

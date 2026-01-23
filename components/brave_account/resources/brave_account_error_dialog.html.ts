@@ -45,9 +45,9 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
           if (statusCode == null) {
             // client-side error
             return loadTimeData.getStringF(
-              'braveAccountErrorDialogClientError',
+              'braveAccountClientError',
               errorCode != null
-                ? ` ($i18n{braveAccountErrorDialogError}=${errorCode})`
+                ? ` ($i18n{braveAccountError}=${errorCode})`
                 : '',
             )
           }
@@ -56,10 +56,10 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
           return (
             (errorCode != null ? errorStrings[errorCode] : null)
             ?? loadTimeData.getStringF(
-              'braveAccountErrorDialogServerError',
+              'braveAccountServerError',
               statusCode,
               errorCode != null
-                ? `, $i18n{braveAccountErrorDialogError}=${errorCode}`
+                ? `, $i18n{braveAccountError}=${errorCode}`
                 : '',
             )
           )
