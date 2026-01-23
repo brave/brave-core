@@ -269,8 +269,9 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     auto cleanup_timer = std::make_unique<base::OneShotTimer>();
     cleanup_timer->Start(
         FROM_HERE,
-        cleanup_mode != StorageCleanupMode::kDefault ? base::Milliseconds(500)
-                                               : tld_ephemeral_area_keep_alive_,
+        cleanup_mode != StorageCleanupMode::kDefault
+            ? base::Milliseconds(500)
+            : tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,
