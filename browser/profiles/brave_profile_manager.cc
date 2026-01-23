@@ -143,12 +143,6 @@ size_t BraveProfileManager::GetNumberOfProfiles() {
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
-  // migrate obsolete plugin prefs to temporary migration pref because otherwise
-  // they get deleteed by PrefProvider before we can migrate them in
-  // BravePrefProvider
-  content_settings::BravePrefProvider::CopyPluginSettingsForMigration(
-      profile->GetPrefs());
-
 // Chromecast is enabled by default on Android.
 #if !BUILDFLAG(IS_ANDROID)
   auto* pref_service = profile->GetPrefs();

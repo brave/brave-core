@@ -5,33 +5,15 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
-#include <memory>
 #include <optional>
 
-#include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 using content_settings::ConvertPatternToWildcardSchemeAndPort;
 
-class BraveContentSettingsUtilsTest : public testing::Test {
- public:
-  BraveContentSettingsUtilsTest() = default;
-  BraveContentSettingsUtilsTest(const BraveContentSettingsUtilsTest&) = delete;
-  BraveContentSettingsUtilsTest& operator=(
-      const BraveContentSettingsUtilsTest&) = delete;
-  ~BraveContentSettingsUtilsTest() override = default;
-
-  void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
-
-  TestingProfile* profile() { return profile_.get(); }
-
- private:
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<TestingProfile> profile_;
-};
+using BraveContentSettingsUtilsTest = testing::Test;
 
 TEST_F(BraveContentSettingsUtilsTest,
        TestConvertPatternToWildcardSchemeAndPort) {
