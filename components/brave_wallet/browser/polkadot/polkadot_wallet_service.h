@@ -27,8 +27,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   using GetChainMetadataCallback = base::OnceCallback<void(
       base::expected<PolkadotChainMetadata, std::string>)>;
 
-  using GenerateSignedTransferExtrinsicCallback =
-      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
+      base::expected<std::vector<uint8_t>, std::string>)>;
 
   PolkadotWalletService(
       KeyringService& keyring_service,
@@ -60,9 +60,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetChainMetadata(std::string_view chain_id,
                         GetChainMetadataCallback callback);
 
-  // Generates a hex-encoded string representing a transfer_allow_death call,
-  // suitable for sending over the network, signed using the account's private
-  // key. The signed extrinsic can be submitted directly using
+  // Generates an encoded byte array representing a transfer_allow_death call,
+  // suitable for sending over the network as hex, signed using the account's
+  // private key. The signed extrinsic can be submitted directly using
   // author_submitExtrinsic or payment information can be queried using
   // payment_queryInfo.
   void GenerateSignedTransferExtrinsic(
@@ -92,7 +92,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void OnGenerateSignedTransferExtrinsic(
       PolkadotSignedTransferTask* transaction_state,
       GenerateSignedTransferExtrinsicCallback callback,
-      base::expected<std::string, std::string> signed_extrinsic);
+      base::expected<std::vector<uint8_t>, std::string> signed_extrinsic);
 
   const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;

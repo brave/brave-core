@@ -176,7 +176,7 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsic(
 void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
     PolkadotSignedTransferTask* transaction_state,
     GenerateSignedTransferExtrinsicCallback callback,
-    base::expected<std::string, std::string> signed_extrinsic) {
+    base::expected<std::vector<uint8_t>, std::string> signed_extrinsic) {
   polkadot_sign_transactions_.erase(transaction_state);
   std::move(callback).Run(std::move(signed_extrinsic));
 }

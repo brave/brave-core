@@ -71,7 +71,7 @@ The nature of the RPC calls looks roughly akin to this:
 struct PolkadotSignedTransferTask {
  public:
   using GenerateSignedTransferExtrinsicCallback =
-      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+      base::OnceCallback<void(base::expected<std::vector<uint8_t>, std::string>)>;
 
   PolkadotSignedTransferTask(
       PolkadotWalletService& polkadot_wallet_service,

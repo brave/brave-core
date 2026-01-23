@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
@@ -260,14 +259,14 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
 
   CHECK(signature);
 
-  auto signed_extrinsic_bytes = make_signed_extrinsic(
+  auto signed_extrinsic = make_signed_extrinsic(
       **chain_metadata_,
       *keyring_service_->GetPolkadotPubKey(sender_account_id_), recipient_,
       send_amount_bytes, *signature, signing_header_->block_number,
       account_info_->nonce);
 
-  std::move(callback_).Run(
-      base::ok(base::HexEncodeLower(signed_extrinsic_bytes)));
+  std::move(callback_).Run(base::ok(
+      std::vector<uint8_t>(signed_extrinsic.begin(), signed_extrinsic.end())));
 }
 
 }  // namespace brave_wallet
