@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.brave_leo;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -20,19 +21,20 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveLeoPrefUtils {
     private static final String TAG = "BraveLeoPrefUtils";
 
-    // Cached policy value, updated every time BraveActivity is foregrounded
-    // (in onResumeWithNative). This ensures the value is fresh when user returns
-    // from Settings where the policy could have been changed.
-    private static boolean sLeoDisabledByPolicy;
-
-    /** Set by BraveActivity.onResumeWithNative() when Leo is disabled by Brave Origin policy. */
-    public static void setLeoDisabledByPolicy(boolean disabled) {
-        sLeoDisabledByPolicy = disabled;
-    }
-
-    /** Returns true if Leo is disabled by Brave Origin policy. */
-    public static boolean isLeoDisabledByPolicy() {
-        return sLeoDisabledByPolicy;
+    /**
+     * Returns true if Leo is disabled by policy for the given profile.
+     *
+     * <p>Note: The pref is "enabled_by_policy", so we check if it's managed AND false (disabled).
+     */
+    public static boolean isLeoDisabledByPolicy(@Nullable Profile profile) {
+        if (profile == null) {
+            return false;
+        }
+        PrefService prefService = UserPrefs.get(profile);
+        // kEnabledByPolicy: true = enabled, false = disabled
+        // We return true (disabled) if it's managed AND the value is false
+        return prefService.isManagedPreference(BravePref.ENABLED_BY_POLICY)
+                && !prefService.getBoolean(BravePref.ENABLED_BY_POLICY);
     }
 
     private static Profile getProfile() {
