@@ -71,8 +71,8 @@ namespace swap_responses {
     DOMString outputMint;
     DOMString inAmount;
     DOMString outAmount;
-    DOMString feeAmount;
-    DOMString feeMint;
+    DOMString? feeAmount;
+    DOMString? feeMint;
   };
 
   dictionary JupiterRouteStep {
