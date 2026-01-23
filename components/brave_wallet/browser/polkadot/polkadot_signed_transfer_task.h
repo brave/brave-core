@@ -15,6 +15,59 @@ namespace brave_wallet {
 class PolkadotWalletService;
 class KeyringService;
 
+// clang-format off
+/*
+
+We need several different RPC calls to create a reliable signing payload as
+described by the spec.
+
+* We need a usable sender nonce to calculate the mortality of the extrinsic.
+* We need the genesis hash of the chain.
+* We need the block hash and number of the block in the chain we're using to
+  start the mortality period.
+* We need the runtime info which provides the spec version and transaction
+  version.
+
+We also chain dependent tasks. For example, we fetch the parent block of the
+latest current block when doing signing block selection.
+The nature of the RPC calls looks roughly akin to this:
+
+                                         ┌───────────┐
+                                         │   Start   │
+                                         └─────┬─────┘
+                                               │
+      ┌──────────────────┬─────────────────────┴─────────────────────────┬───────────────────┐
+      │                  │                                               │                   │
+┌─────▼──────┐  ┌────────▼────────┐                               ┌──────▼───────┐  ┌────────▼────────┐
+│  GetNonce  │  │GetSigningHeader │                               │GetGenesisHash│  │GetChainMetadata │
+└─────┬──────┘  └────────┬────────┘                               └───────┬──────┘  └────────┬────────┘
+      │                  │───────────────────┐                            │                  │
+┌─────▼──────┐  ┌────────▼────────┐ ┌────────▼──────────┐        ┌────────▼───────┐  ┌───────▼───────────────┐
+│OnGetAccount│  │OnGetChainHeader │ │OnGetFinalizedHead │        │OnGetGenesisHash│  │OnGetMetadataForSigning│
+│   Nonce    │  └────────┬────────┘ └────────┬──────────┘        └────────┬───────┘  └───────┬───────────────┘
+└─────┬──────┘           │                   │                            │                  │
+      │        ┌─────────▼───────┐  ┌────────▼────────────────┐           │                  │
+      │        │OnGetParentHeader│  │OnGetFinalizedBlockHeader│           │                  │
+      │        └──────┬──────────┘  └──────┬──────────────────┘           │                  │
+      │               │                    │                              │                  │
+      │               └──────────┬─────────┘                              │                  │
+      │                     ┌────▼──────────────┐                         │                  │
+      │                     │UpdateSigningHeader│                         │                  │
+      │                     └────┬──────────────┘                         │                  │
+      │                 ┌────────┴───────────────┐                        │                  │
+      │            ┌────▼────────────────┐ ┌─────▼─────────────┐          │                  │
+      │            │OnGetSigningBlockHash│ │OnGetRuntimeVersion│          │                  │
+      │            └────┬────────────────┘ └─────┬─────────────┘          │                  │
+      │                 │                        │                        │                  │
+      │                 └─────────┬──────────────┘                        │                  │
+      │                           │                                       │                  │
+      │                  ┌────────▼───────────────────┐                   │                  │
+      └──────────────────│MaybeFinalizeSignTransaction│───────────────────┴──────────────────┘
+                         └────────────────────────────┘
+
+                         // clang-format on
+*/
+
 struct PolkadotSignedTransferTask {
  public:
   using GenerateSignedTransferExtrinsicCallback =
