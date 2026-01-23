@@ -11,6 +11,7 @@
 #include "absl/strings/str_format.h"
 #include "base/byte_count.h"
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -18,6 +19,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
@@ -98,13 +100,16 @@ GURL EmailAliasesService::GetEmailAliasesServiceURL() {
 }
 
 EmailAliasesService::EmailAliasesService(
+    brave_account::BraveAccountService* brave_account_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* pref_service,
     os_crypt_async::OSCryptAsync* os_crypt_async)
-    : url_loader_factory_(url_loader_factory),
+    : brave_account_service_(brave_account_service),
+      url_loader_factory_(url_loader_factory),
       pref_service_(pref_service),
       email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
+  CHECK(brave_account_service_);
   CHECK(pref_service_);
 
   os_crypt_async->GetInstance(base::BindOnce(
@@ -128,19 +133,33 @@ void EmailAliasesService::BindInterface(
 
 void EmailAliasesService::NotifyObserversAuthStateChanged(
     mojom::AuthenticationStatus status) {
-  const auto email = auth_ ? auth_->GetAuthEmail() : std::string();
   for (auto& observer : observers_) {
-    observer->OnAuthStateChanged(mojom::AuthState::New(status, email));
+    observer->OnAuthStateChanged(mojom::AuthState::New(status, GetAuthEmail()));
   }
 }
 
 void EmailAliasesService::OnEncryptorReady(
     os_crypt_async::Encryptor encryptor) {
   CHECK(!auth_);
+  brave_account::mojom::Authentication& brave_account_auth =
+      CHECK_DEREF(brave_account_service_);
+
+  brave_account_auth.GetServiceToken(
+      brave_account::mojom::Service::kEmailAliases,
+      base::BindOnce(&EmailAliasesService::OnServiceToken,
+                     weak_factory_.GetWeakPtr()));
+
   auth_.emplace(pref_service_.get(), std::move(encryptor),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
-  OnAuthChanged();
+}
+
+void EmailAliasesService::OnServiceToken(
+    base::expected<brave_account::mojom::GetServiceTokenResultPtr,
+                   brave_account::mojom::GetServiceTokenErrorPtr> result) {
+  if (result.has_value()) {
+    service_token_ = result.value()->serviceToken;
+  }
 }
 
 std::string EmailAliasesService::GetAuthEmail() const {
@@ -150,11 +169,11 @@ std::string EmailAliasesService::GetAuthEmail() const {
   return auth_->GetAuthEmail();
 }
 
-std::string EmailAliasesService::GetAuthToken() {
+std::string EmailAliasesService::GetServiceToken() {
   if (!auth_) {
     return {};
   }
-  return auth_->GetAuthToken();
+  return service_token_;
 }
 
 mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
@@ -234,7 +253,10 @@ bool EmailAliasesService::IsAuthenticated() const {
 }
 
 std::string EmailAliasesService::GetAuthTokenForTesting() {
-  return GetAuthToken();
+  if (!auth_) {
+    return {};
+  }
+  return auth_->GetAuthToken();
 }
 
 void EmailAliasesService::ApiFetch(const GURL& url,
@@ -263,7 +285,7 @@ void EmailAliasesService::ApiFetchInternal(
     const std::string_view method,
     std::optional<std::string> serialized_body,
     BodyAsStringCallback callback) {
-  const auto auth_token = GetAuthToken();
+  const auto auth_token = GetServiceToken();
   if (auth_token.empty()) {
     return;
   }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
@@ -20,6 +21,7 @@ class EmailAliasesAuth {
   using OnChangedCallback = base::RepeatingClosure;
 
   explicit EmailAliasesAuth(PrefService* prefs_service,
+
                             os_crypt_async::Encryptor encryptor,
                             OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth();
