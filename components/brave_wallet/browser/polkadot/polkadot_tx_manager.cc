@@ -83,7 +83,7 @@ void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
 void PolkadotTxManager::OnGetChainMetadataForUnapproved(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback,
-    const base::expected<PolkadotChainMetadata, std::string>& chain_metadata) {
+    base::expected<PolkadotChainMetadata, std::string> chain_metadata) {
   if (!chain_metadata.has_value()) {
     return std::move(callback).Run(false, "", chain_metadata.error());
   }

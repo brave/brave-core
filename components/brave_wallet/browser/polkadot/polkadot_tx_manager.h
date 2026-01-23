@@ -79,7 +79,7 @@ class PolkadotTxManager : public TxManager,
   void OnGetChainMetadataForUnapproved(
       mojom::NewPolkadotTransactionParamsPtr params,
       AddUnapprovedPolkadotTransactionCallback callback,
-      const base::expected<PolkadotChainMetadata, std::string>& chain_metadata);
+      base::expected<PolkadotChainMetadata, std::string> chain_metadata);
 
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;
