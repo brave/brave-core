@@ -6,11 +6,8 @@
 #ifndef BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
-#include <string_view>
-
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"

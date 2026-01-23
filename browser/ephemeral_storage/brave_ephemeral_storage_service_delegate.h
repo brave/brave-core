@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/containers/flat_set.h"
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/ephemeral_storage/application_state_observer.h"

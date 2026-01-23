@@ -641,7 +641,7 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
       auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
     }
 
-    SetWebsiteSettingInternal(
+    PrefProvider::SetWebsiteSetting(
         fp_rule->primary_pattern, fp_rule->secondary_pattern,
         ContentSettingsType::BRAVE_AUTO_SHRED,
         brave_shields::AutoShredSetting::ToValue(auto_shred_mode), {});

@@ -49,15 +49,15 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
         shields_state_on_hosts_, [](const auto& v) { return !v.second; });
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
         key_.storage_domain, key_.storage_partition_config,
-        shields_disabled_on_one_of_hosts, enforce_cleanup_source_);
+        shields_disabled_on_one_of_hosts, mode_);
   }
 
   ActiveTLDStorageAreas().erase(key_);
 }
 
 void TLDEphemeralLifetime::EnforceFirstPartyStorageCleanup(
-    StorageCleanupMode source) {
-  enforce_cleanup_source_ = source;
+    StorageCleanupMode mode) {
+  mode_ = mode;
 }
 
 // static

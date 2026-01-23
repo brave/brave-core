@@ -55,7 +55,7 @@ class EphemeralStorageTabHelper
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
       const url::Origin& origin);
 
-  void EnforceFirstPartyStorageCleanup(StorageCleanupMode source);
+  void EnforceFirstPartyStorageCleanup(StorageCleanupMode mode);
 
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
