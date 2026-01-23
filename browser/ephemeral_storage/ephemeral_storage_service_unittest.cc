@@ -99,7 +99,6 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
 
  private:
   base::OnceClosure first_window_opened_callback_;
-  OnBecomeActiveCallback on_become_active_callback_;
 };
 
 class MockObserver : public EphemeralStorageServiceObserver {

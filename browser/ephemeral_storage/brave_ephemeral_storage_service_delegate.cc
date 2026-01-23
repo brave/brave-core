@@ -205,6 +205,11 @@ void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return;
+  }
+
   const auto ephemeral_domains =
       shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
           brave_shields::mojom::AutoShredMode::APP_EXIT);
