@@ -105,9 +105,10 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     std::vector<std::string> webcompat_errors{"Could not create screenshot"};
     auto report_info = webcompat_reporter::mojom::ReportInfo::New(
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
-        "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-        "languages", "true", "true", "category", "details", contact, "block",
-        "true", std::move(components), screenshot, webcompat_errors);
+        /*adblock_only_mode_enabled=*/"true", "ad_block_setting",
+        "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
+        "category", "details", contact, "block", "true", std::move(components),
+        screenshot, webcompat_errors);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -115,6 +116,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
           EXPECT_EQ(report->brave_version, "brave_version");
           EXPECT_EQ(report->report_url, "https://abc.url/p1/p2");
           EXPECT_EQ(report->shields_enabled, "true");
+          EXPECT_EQ(report->adblock_only_mode_enabled, "true");
           EXPECT_EQ(report->ad_block_setting, "ad_block_setting");
           EXPECT_EQ(report->fp_block_setting, "fp_block_setting");
           EXPECT_EQ(report->ad_block_list_names, "ad_block_list_names");
@@ -234,6 +236,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         // check values, which we pass to the service
         EXPECT_FALSE(report->report_url);
         EXPECT_FALSE(report->shields_enabled);
+        EXPECT_FALSE(report->adblock_only_mode_enabled);
         EXPECT_FALSE(report->category);
         EXPECT_FALSE(report->details);
         EXPECT_FALSE(report->contact);

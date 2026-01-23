@@ -290,10 +290,13 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
-bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
-  return IsAdBlockOnlyModeSupportedAndFeatureEnabled() &&
-         g_browser_process->local_state()->GetBoolean(
-             brave_shields::prefs::kAdBlockOnlyModeEnabled);
+std::optional<bool>
+BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
+  if (!IsAdBlockOnlyModeSupportedAndFeatureEnabled()) {
+    return std::nullopt;
+  }
+  return g_browser_process->local_state()->GetBoolean(
+      brave_shields::prefs::kAdBlockOnlyModeEnabled);
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(

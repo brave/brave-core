@@ -346,6 +346,12 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   pending_report_->shields_enabled = BoolToString(
       submission_args.FindBool(kShieldsEnabledField).value_or(false));
 
+  if (auto adblock_only_mode_enabled_arg =
+          submission_args.FindBool(kAdblockOnlyModeEnabledField)) {
+    pending_report_->adblock_only_mode_enabled =
+        BoolToString(*adblock_only_mode_enabled_arg);
+  }
+
   const auto ui_source_int = submission_args.FindInt(kUISourceField);
   if (ui_source_int) {
     UISource ui_source = static_cast<UISource>(*ui_source_int);
