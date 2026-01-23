@@ -6,23 +6,20 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/timer/elapsed_timer.h"
-#include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
 namespace os_crypt_async {
@@ -33,6 +30,10 @@ class OSCryptAsync;
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace brave_account {
+class BraveAccountService;
+}
 
 namespace email_aliases {
 
@@ -47,6 +48,7 @@ class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
   EmailAliasesService(
+      brave_account::BraveAccountService* brave_account_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* pref_service,
       os_crypt_async::OSCryptAsync* os_crypt_async);
@@ -98,8 +100,12 @@ class EmailAliasesService : public KeyedService,
 
   void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
 
+  void OnServiceToken(
+      base::expected<brave_account::mojom::GetServiceTokenResultPtr,
+                     brave_account::mojom::GetServiceTokenErrorPtr> result);
+
   std::string GetAuthEmail() const;
-  std::string GetAuthToken();
+  std::string GetServiceToken();
 
   mojom::AuthenticationStatus GetCurrentStatus();
 
@@ -150,6 +156,10 @@ class EmailAliasesService : public KeyedService,
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 
   std::optional<EmailAliasesAuth> auth_;
+  std::string service_token_;
+
+  const raw_ptr<brave_account::BraveAccountService> brave_account_service_ =
+      nullptr;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

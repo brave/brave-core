@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/browser_process.h"
@@ -46,7 +47,9 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()
     : ProfileKeyedServiceFactory(
           "EmailAliasesService",
-          ProfileSelections::BuildRedirectedInIncognito()) {}
+          ProfileSelections::BuildRedirectedInIncognito()) {
+  DependsOn(brave_account::BraveAccountServiceFactory::GetInstance());
+}
 
 EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 
@@ -54,6 +57,7 @@ std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   return std::make_unique<EmailAliasesService>(
+      brave_account::BraveAccountServiceFactory::GetFor(context),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       user_prefs::UserPrefs::Get(context), g_browser_process->os_crypt_async());
