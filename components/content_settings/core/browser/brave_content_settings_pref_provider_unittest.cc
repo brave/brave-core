@@ -315,6 +315,13 @@ class DirectAccessContentSettings {
     prefs_value_.Set(primary + "," + secondary, std::move(value));
   }
 
+  void AddRule(const std::string& primary,
+               const std::string& secondary,
+               base::Value::Dict setting) {
+    prefs_value_.Set(primary + "," + secondary,
+                     base::DictValue().Set("setting", std::move(setting)));
+  }
+
   void AddRuleWithoutSettingValue(const std::string& primary,
                                   const std::string& secondary) {
     prefs_value_.Set(primary + "," + secondary, base::Value::Dict());
@@ -876,6 +883,63 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
             cosmetic_filtering_v2.GetSettingDirectly("brave.block", "*"));
   EXPECT_EQ(block, cosmetic_filtering_v2.GetContentSetting(
                        &provider, GURL("https://brave.block")));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, ObsoleteBraveLocalhostPermission) {
+  constexpr const char kBraveLocalhostPermission[] = "brave_localhost_access";
+
+  DirectAccessContentSettings brave_localhost_access(
+      testing_profile()->GetPrefs(), ContentSettingsType::DEFAULT,
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission));
+  brave_localhost_access.AddRule("brave.block", "*", CONTENT_SETTING_BLOCK);
+  brave_localhost_access.Write();
+
+  testing_profile()->GetPrefs()->SetDict(
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission),
+      base::Value::Dict().Set("test", "value"));
+
+  DirectAccessContentSettings unused_site_permissions(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS);
+
+  base::Value::Dict value;
+  value.Set("string", "string");
+  value.Set("int", 10);
+  value.Set("dict", base::DictValue().Set("test", "test"));
+  value.Set("revoked", base::ListValue()
+                           .Append(kBraveLocalhostPermission)
+                           .Append(kBraveLocalhostPermission)
+                           .Append("other"));
+  value.Set("revoked-chooser-permissions",
+            base::ListValue().Append(1).Append(kBraveLocalhostPermission));
+  value.Set("list",
+            base::ListValue().Append(2).Append(kBraveLocalhostPermission));
+
+  unused_site_permissions.AddRule("brave.block", "*", value.Clone());
+  unused_site_permissions.Write();
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  // Obsolete settings have been removed.
+  EXPECT_FALSE(testing_profile()->GetPrefs()->HasPrefPath(
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission)));
+
+  unused_site_permissions.Refresh();
+  const auto changed_value =
+      unused_site_permissions.GetSettingDirectly("brave.block");
+  EXPECT_EQ(*value.Find("string"), *changed_value.GetDict().Find("string"));
+  EXPECT_EQ(*value.Find("int"), *changed_value.GetDict().Find("int"));
+  EXPECT_EQ(*value.Find("dict"), *changed_value.GetDict().Find("dict"));
+  EXPECT_EQ(base::ListValue().Append("other"),
+            *changed_value.GetDict().FindList("revoked"));
+  EXPECT_EQ(base::ListValue().Append(1),
+            *changed_value.GetDict().FindList("revoked-chooser-permissions"));
+  EXPECT_EQ(base::ListValue().Append(2),
+            *changed_value.GetDict().FindList("list"));
 
   provider.ShutdownOnUIThread();
 }

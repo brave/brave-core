@@ -50,6 +50,10 @@ constexpr char kBraveShieldsFPSettingsMigration[] =
 constexpr char kCosmeticFilteringMigration[] =
     "brave.cosmetic_filtering_migration";
 
+constexpr char kUnusedSitePermissions[] = "unused_site_permissions";
+
+constexpr char kObsoleteBraveLocalhostPermission[] = "brave_localhost_access";
+
 constexpr char kExpirationPath[] = "expiration";
 constexpr char kLastModifiedPath[] = "last_modified";
 constexpr char kSessionModelPath[] = "model";
@@ -108,6 +112,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       initialized_(false),
       store_last_modified_(store_last_modified),
       weak_factory_(this) {
+  DiscardObsoletePreferences();
+
   pref_change_registrar_.Init(prefs);
 
   pref_change_registrar_.Add(
@@ -159,6 +165,75 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(GetShieldsSettingUserPrefsPath(
       brave_shields::kObsoleteCosmeticFiltering));
   registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
+  registry->RegisterDictionaryPref(
+      GetShieldsSettingUserPrefsPath(kObsoleteBraveLocalhostPermission));
+}
+
+void BravePrefProvider::DiscardObsoletePreferences() {
+  if (off_the_record_) {
+    return;
+  }
+
+  prefs_->ClearPref(
+      GetShieldsSettingUserPrefsPath(kObsoleteBraveLocalhostPermission));
+
+  // https://github.com/brave/brave-browser/issues/52220
+  // When a permission is deleted, a references to the non-existent permission
+  // may remain in the UNUSED_SITE_PERMISSIONS content settings. It has the
+  // following structure under the `profile.content_settings.exceptions` path:
+  //     "unused_site_permissions": {
+  //           "host, *": {
+  //               "expiration": "time",
+  //               "last_modified": "time",
+  //               "lifetime": "time",
+  //               "setting":
+  //               {
+  //                   "revoked": [ "content setting name", ... ]
+  //                   "revoked-chooser-permissions": [ "content setting name",
+  //                   ... ],
+  //                   possible other data
+  //               }
+  //           },
+  //           --- // ---
+  //     }
+  // The code below iterates through all lists within UNUSED_SITE_PERMISSIONS
+  // and removes references to obsolete permissions.
+
+  base::Value::Dict unused_site_permissions =
+      prefs_->GetDict(GetShieldsSettingUserPrefsPath(kUnusedSitePermissions))
+          .Clone();
+
+  constexpr std::string_view kObsoletePermissions[] = {
+      kObsoleteBraveLocalhostPermission};
+
+  bool need_update = false;
+  for (std::string_view obsolete_permission : kObsoletePermissions) {
+    const base::Value obsolete_value(obsolete_permission);
+
+    for (auto&& value : unused_site_permissions) {
+      if (!value.second.is_dict()) {
+        continue;
+      }
+      base::Value::Dict* setting =
+          value.second.GetDict().FindDict(kSettingPath);
+      if (!setting) {
+        continue;
+      }
+      for (auto&& list : *setting) {
+        if (!list.second.is_list()) {
+          continue;
+        }
+        if (list.second.GetList().EraseValue(obsolete_value) > 0) {
+          need_update = true;
+        }
+      }
+    }
+  }
+
+  if (need_update) {
+    prefs_->SetDict(GetShieldsSettingUserPrefsPath(kUnusedSitePermissions),
+                    std::move(unused_site_permissions));
+  }
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {

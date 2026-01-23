@@ -82,6 +82,7 @@ class BravePrefProvider : public PrefProvider, public Observer {
                            TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, MigrateFPShieldsSettings);
+  void DiscardObsoletePreferences();
   void MigrateShieldsSettings(bool incognito);
   void EnsureNoWildcardEntries(ContentSettingsType content_type);
   void MigrateShieldsSettingsFromResourceIds();
