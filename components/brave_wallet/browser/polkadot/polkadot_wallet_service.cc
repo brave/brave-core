@@ -147,8 +147,8 @@ void PolkadotWalletService::OnInitializeChainMetadata(
 }
 
 void PolkadotWalletService::GenerateSignedTransferExtrinsic(
-    std::string_view chain_id,
-    const mojom::AccountIdPtr& account_id,
+    std::string chain_id,
+    mojom::AccountIdPtr account_id,
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
@@ -159,8 +159,8 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsic(
   }
 
   auto transaction_state = std::make_unique<PolkadotSignedTransferTask>(
-      *this, *keyring_service_, account_id.Clone(), chain_id, send_amount,
-      *pubkey, recipient);
+      *this, *keyring_service_, std::move(account_id), std::move(chain_id),
+      send_amount, *pubkey, recipient);
 
   auto& transaction = *transaction_state;
 

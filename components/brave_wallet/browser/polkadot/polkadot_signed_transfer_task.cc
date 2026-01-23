@@ -16,14 +16,14 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
     PolkadotWalletService& polkadot_wallet_service,
     KeyringService& keyring_service,
     mojom::AccountIdPtr sender_account_id,
-    std::string_view chain_id,
+    std::string chain_id,
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient)
     : polkadot_wallet_service_(polkadot_wallet_service),
       keyring_service_(keyring_service),
       sender_account_id_(std::move(sender_account_id)),
-      chain_id_(std::string(chain_id)),
+      chain_id_(std::move(chain_id)),
       send_amount_{send_amount} {
   base::span(sender_).copy_from_nonoverlapping(sender);
   base::span(recipient_).copy_from_nonoverlapping(recipient);
