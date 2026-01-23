@@ -25,7 +25,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                               public KeyringServiceObserverBase {
  public:
   using GetChainMetadataCallback = base::OnceCallback<void(
-      const base::expected<PolkadotChainMetadata, std::string>&)>;
+      base::expected<PolkadotChainMetadata, std::string>)>;
 
   using GenerateSignedTransferExtrinsicCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;

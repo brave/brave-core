@@ -179,8 +179,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
           mojom::kPolkadotTestnet,
           base::BindOnce(
               [](base::RepeatingClosure quit_closure,
-                 const base::expected<PolkadotChainMetadata, std::string>&
-                     metadata) {
+                 base::expected<PolkadotChainMetadata, std::string> metadata) {
                 EXPECT_TRUE(metadata.has_value());
                 VerifyTestnet(*metadata);
                 std::move(quit_closure).Run();
@@ -198,8 +197,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
           mojom::kPolkadotMainnet,
           base::BindOnce(
               [](base::RepeatingClosure quit_closure,
-                 const base::expected<PolkadotChainMetadata, std::string>&
-                     metadata) {
+                 base::expected<PolkadotChainMetadata, std::string> metadata) {
                 EXPECT_TRUE(metadata.has_value());
                 VerifyMainnet(*metadata);
                 std::move(quit_closure).Run();
@@ -238,8 +236,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
           mojom::kPolkadotTestnet,
           base::BindOnce(
               [](base::RepeatingCallback<void()> quit_closure,
-                 const base::expected<PolkadotChainMetadata, std::string>&
-                     metadata) {
+                 base::expected<PolkadotChainMetadata, std::string> metadata) {
                 EXPECT_FALSE(metadata.has_value());
                 std::move(quit_closure).Run();
               },
@@ -255,8 +252,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
           mojom::kPolkadotMainnet,
           base::BindOnce(
               [](base::RepeatingCallback<void()> quit_closure,
-                 const base::expected<PolkadotChainMetadata, std::string>&
-                     metadata) {
+                 base::expected<PolkadotChainMetadata, std::string> metadata) {
                 EXPECT_FALSE(metadata.has_value());
                 std::move(quit_closure).Run();
               },
@@ -310,8 +306,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
         mojom::kPolkadotTestnet,
         base::BindOnce(
             [](base::RepeatingClosure quit_closure, int* num_reqs,
-               const base::expected<PolkadotChainMetadata, std::string>&
-                   metadata) {
+               base::expected<PolkadotChainMetadata, std::string> metadata) {
               EXPECT_TRUE(*num_reqs > 0);
               EXPECT_TRUE(metadata.has_value());
               VerifyTestnet(*metadata);
@@ -330,8 +325,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
         mojom::kPolkadotMainnet,
         base::BindOnce(
             [](base::RepeatingClosure quit_closure, int* num_reqs,
-               const base::expected<PolkadotChainMetadata, std::string>&
-                   metadata) {
+               base::expected<PolkadotChainMetadata, std::string> metadata) {
               EXPECT_TRUE(*num_reqs > 0);
               EXPECT_TRUE(metadata.has_value());
               VerifyMainnet(*metadata);

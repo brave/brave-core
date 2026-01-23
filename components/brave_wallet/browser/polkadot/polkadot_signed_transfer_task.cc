@@ -84,12 +84,12 @@ void PolkadotSignedTransferTask::GetGenesisHash() {
 }
 
 void PolkadotSignedTransferTask::OnGetMetadataForSigning(
-    const base::expected<PolkadotChainMetadata, std::string>& chain_metadata) {
+    base::expected<PolkadotChainMetadata, std::string> chain_metadata) {
   if (!chain_metadata.has_value()) {
     return StopWithError(chain_metadata.error());
   }
 
-  chain_metadata_ = &chain_metadata.value();
+  chain_metadata_ = std::move(chain_metadata.value());
   MaybeFinalizeSignTransaction();
 }
 

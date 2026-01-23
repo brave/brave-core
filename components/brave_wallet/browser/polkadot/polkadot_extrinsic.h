@@ -36,6 +36,7 @@ namespace brave_wallet {
 class PolkadotChainMetadata {
  public:
   PolkadotChainMetadata() = delete;
+  PolkadotChainMetadata(const PolkadotChainMetadata&);
   PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept;
   ~PolkadotChainMetadata();
 

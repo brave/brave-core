@@ -64,7 +64,7 @@ struct PolkadotSignedTransferTask {
   // Associates the chain metadata (pallet indices, call indices) with the
   // current in-flight transaction.
   void OnGetMetadataForSigning(
-      const base::expected<PolkadotChainMetadata, std::string>&);
+      base::expected<PolkadotChainMetadata, std::string>);
 
   // Associate the account information with the current in-flight transaction.
   // Note that only the nonce is currently used but it may prove useful later
@@ -124,7 +124,7 @@ struct PolkadotSignedTransferTask {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};
   GenerateSignedTransferExtrinsicCallback callback_;
 
-  raw_ptr<const PolkadotChainMetadata> chain_metadata_;
+  std::optional<PolkadotChainMetadata> chain_metadata_;
 
   mojom::PolkadotAccountInfoPtr account_info_;
 
