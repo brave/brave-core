@@ -171,11 +171,23 @@ void PolkadotSignedTransferTask::UpdateSigningHeader() {
     return;
   }
 
-  auto current = chain_header_->block_number;
-  auto finalized = finalized_header_->block_number;
+  // The polkadot-js api library chooses which block to use for the signature by
+  // comparing the difference in block numbers from the latest block in the
+  // chain and the finalized head. If the current head's block number is
+  // sufficiently advanced from the finalized head, we use that block to mark
+  // the start of the mortality period. Otherwise, we start the mortality period
+  // using the finalized head.
+  // "determine the hash to use, current when lag > max, else finalized"
+  // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/api-derive/src/tx/signingInfo.ts#L41-L71
+  base::CheckedNumeric<uint32_t> current = chain_header_->block_number;
+  base::CheckedNumeric<uint32_t> finalized = finalized_header_->block_number;
 
+  // Copy what polkadot-js does:
+  // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/api-derive/src/tx/constants.ts#L11
   constexpr uint32_t kMaxFinalityLag = 5;
-  if (current - finalized > kMaxFinalityLag) {
+
+  auto lag = current - finalized;
+  if (lag.IsValidAnd([](uint32_t lag) { return lag > kMaxFinalityLag; })) {
     signing_header_ = chain_header_;
   } else {
     signing_header_ = finalized_header_;
