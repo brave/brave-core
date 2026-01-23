@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -903,6 +904,58 @@ TEST_F(OAIMessageUtilsTest,
 
     EXPECT_FALSE(messages);
   }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIPageContentBlocks_UTF8Truncation) {
+  // Tests that content truncation correctly handles UTF-8 character boundaries
+  // and that remaining length is calculated using actual truncated size.
+  //
+  // Note: BuildOAIPageContentBlocks processes contents in REVERSE order
+  // (newer content first).
+  //
+  // Scenario:
+  // - max_associated_content_length = kMaxContextCharsForTitleGeneration
+  // - Content 1 (older): Will get remaining bytes after content 2
+  // - Content 2 (newer): (kMaxContextCharsForTitleGeneration - 2) 'a' + emoji
+  //   → Processed first, UTF-8 safe truncation stops before emoji
+  //   → Returns (kMaxContextCharsForTitleGeneration - 2) bytes
+  //   → Content 1 gets remaining 2 bytes
+
+  std::string content1_str = std::string(100, 'b');
+
+  // Content 2 (newer): 4-byte emoji at truncation boundary
+  std::string content2_str =
+      std::string(kMaxContextCharsForTitleGeneration - 2, 'a') +
+      "\xF0\x9F\x98\x80";
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content2_str));
+
+  PageContent content1(content1_str, false);
+  PageContent content2(content2_str, false);
+  PageContents page_contents = {std::cref(content1), std::cref(content2)};
+
+  uint32_t remaining_length = kMaxContextCharsForTitleGeneration;
+  auto blocks = BuildOAIPageContentBlocks(page_contents, remaining_length,
+                                          [](std::string&) {});
+
+  ASSERT_EQ(blocks.size(), 2u);
+
+  // blocks[0] = Content 2 (processed first): Truncated before emoji
+  ASSERT_TRUE(blocks[0]->is_page_text_content_block());
+  const std::string& truncated2 =
+      blocks[0]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated2,
+            std::string(kMaxContextCharsForTitleGeneration - 2, 'a'));
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated2));
+
+  // blocks[1] = Content 1 (processed second): Gets remaining 2 bytes
+  ASSERT_TRUE(blocks[1]->is_page_text_content_block());
+  const std::string& truncated1 =
+      blocks[1]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated1, "bb");
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated1));
+
+  // Remaining length should be 0
+  EXPECT_EQ(remaining_length, 0u);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIDedupeTopicsMessages) {

@@ -9,6 +9,7 @@
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
 #include "base/strings/escape.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -35,7 +36,8 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     const PageContent& content,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
-  std::string truncated = content.content.substr(0, remaining_length);
+  std::string truncated(
+      base::TruncateUTF8ToByteSize(content.content, remaining_length));
   sanitize_input(truncated);
   if (content.is_video) {
     return mojom::ContentBlock::NewVideoTranscriptContentBlock(
@@ -44,44 +46,6 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     return mojom::ContentBlock::NewPageTextContentBlock(
         mojom::PageTextContentBlock::New(std::move(truncated)));
   }
-}
-
-std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
-    const PageContents& page_contents,
-    uint32_t& max_associated_content_length,
-    base::FunctionRef<void(std::string&)> sanitize_input,
-    std::optional<uint32_t> max_per_content_length = std::nullopt) {
-  std::vector<mojom::ContentBlockPtr> blocks;
-
-  // Note: We iterate in reverse so that we prefer more recent page content
-  // (i.e. the oldest content will be truncated when we run out of context).
-  for (const auto& page_content : base::Reversed(page_contents)) {
-    uint32_t effective_length_limit = max_associated_content_length;
-    if (max_per_content_length.has_value()) {
-      effective_length_limit =
-          std::min(effective_length_limit, max_per_content_length.value());
-    }
-
-    auto block = GetContentBlockFromAssociatedContent(
-        page_content, effective_length_limit, sanitize_input);
-    uint32_t truncated_size = 0;
-    if (block->is_video_transcript_content_block()) {
-      truncated_size = block->get_video_transcript_content_block()->text.size();
-    } else if (block->is_page_text_content_block()) {
-      truncated_size = block->get_page_text_content_block()->text.size();
-    }
-
-    blocks.push_back(std::move(block));
-
-    if (truncated_size >= max_associated_content_length) {
-      max_associated_content_length = 0;
-      break;
-    } else {
-      max_associated_content_length -= truncated_size;
-    }
-  }
-
-  return blocks;
 }
 
 std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
@@ -124,6 +88,44 @@ OAIMessage::OAIMessage(OAIMessage&&) = default;
 OAIMessage& OAIMessage::operator=(OAIMessage&&) = default;
 
 OAIMessage::~OAIMessage() = default;
+
+std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
+    const PageContents& page_contents,
+    uint32_t& max_associated_content_length,
+    base::FunctionRef<void(std::string&)> sanitize_input,
+    std::optional<uint32_t> max_per_content_length) {
+  std::vector<mojom::ContentBlockPtr> blocks;
+
+  // Note: We iterate in reverse so that we prefer more recent page content
+  // (i.e. the oldest content will be truncated when we run out of context).
+  for (const auto& page_content : base::Reversed(page_contents)) {
+    uint32_t effective_length_limit = max_associated_content_length;
+    if (max_per_content_length.has_value()) {
+      effective_length_limit =
+          std::min(effective_length_limit, max_per_content_length.value());
+    }
+
+    auto block = GetContentBlockFromAssociatedContent(
+        page_content, effective_length_limit, sanitize_input);
+    uint32_t truncated_size = 0;
+    if (block->is_video_transcript_content_block()) {
+      truncated_size = block->get_video_transcript_content_block()->text.size();
+    } else if (block->is_page_text_content_block()) {
+      truncated_size = block->get_page_text_content_block()->text.size();
+    }
+
+    blocks.push_back(std::move(block));
+
+    if (truncated_size >= max_associated_content_length) {
+      max_associated_content_length = 0;
+      break;
+    } else {
+      max_associated_content_length -= truncated_size;
+    }
+  }
+
+  return blocks;
+}
 
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
