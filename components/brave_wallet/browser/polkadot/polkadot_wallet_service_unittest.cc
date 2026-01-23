@@ -585,8 +585,10 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.value(), kExpectedExtrinsic);
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
+            EXPECT_EQ(base::HexEncodeLower(signed_extrinsic.value()),
+                      kExpectedExtrinsic);
             quit_closure.Run();
           },
           task_environment_.QuitClosure()));
@@ -641,7 +643,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -734,7 +737,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -855,7 +859,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1009,7 +1014,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1146,7 +1152,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1324,7 +1331,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1550,7 +1558,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1748,7 +1757,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
@@ -1958,7 +1968,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
       uint128_t{1234}, recipient_pubkey,
       base::BindOnce(
           [](base::RepeatingClosure quit_closure,
-             base::expected<std::string, std::string> signed_extrinsic) {
+             base::expected<std::vector<uint8_t>, std::string>
+                 signed_extrinsic) {
             EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
             quit_closure.Run();
           },
