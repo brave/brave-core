@@ -11,8 +11,8 @@
 NS_SWIFT_NAME(BraveAccountAuthentication)
 @protocol BraveAccountAuthenticationBridge
 
-- (void)resendConfirmationEmail:(void (^)(NSString* alert_title,
-                                          NSString* alert_message))callback;
+- (void)resendConfirmationEmail:(void (^)(NSString* alertTitle,
+                                          NSString* alertMessage))callback;
 - (void)cancelRegistration;
 - (void)logOut;
 

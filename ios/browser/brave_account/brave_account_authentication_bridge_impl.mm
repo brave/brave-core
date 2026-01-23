@@ -109,8 +109,8 @@ NSString* GetAlertMessage(
   return self;
 }
 
-- (void)resendConfirmationEmail:(void (^)(NSString* alert_title,
-                                          NSString* alert_message))callback {
+- (void)resendConfirmationEmail:(void (^)(NSString* alertTitle,
+                                          NSString* alertMessage))callback {
   _authentication->ResendConfirmationEmail(base::BindOnce(
       ^(base::expected<brave_account::mojom::ResendConfirmationEmailResultPtr,
                        brave_account::mojom::ResendConfirmationEmailErrorPtr>

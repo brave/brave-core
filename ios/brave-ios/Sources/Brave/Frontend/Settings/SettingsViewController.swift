@@ -404,7 +404,8 @@ class SettingsViewController: TableViewController {
             text: Strings.braveAccountResendConfirmationEmail,
             detailText: Strings.braveAccountResendConfirmationEmailDetail,
             selection: { [unowned self] in
-              braveAccountAuthentication.resendConfirmationEmail { title, message in
+              braveAccountAuthentication.resendConfirmationEmail { [weak self] title, message in
+                guard let self else { return }
                 DispatchQueue.main.async {
                   let alert = UIAlertController(
                     title: title,
