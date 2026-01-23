@@ -61,6 +61,7 @@ brave_browser_net_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
   "//brave/common",
+  "//brave/components/brave_ads/buildflags",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_referrals/browser",
   "//brave/components/brave_rewards/core",

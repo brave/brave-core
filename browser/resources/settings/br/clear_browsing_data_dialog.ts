@@ -86,8 +86,8 @@ RegisterPolymerTemplateModifications({
       return
     }
 
-    // Append clear Brave Ads data link
 // <if expr="enable_brave_ads">
+    // Append clear Brave Ads data link
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`

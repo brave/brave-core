@@ -8,6 +8,7 @@ import("//brave/components/brave_ads/buildflags/buildflags.gni")
 brave_browser_notifications_sources = []
 brave_browser_notifications_deps = [
   "//base",
+  "//brave/components/brave_ads/buildflags",
   "//chrome/browser/notifications",
   "//third_party/abseil-cpp:absl",
   "//url",

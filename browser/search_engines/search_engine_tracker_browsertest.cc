@@ -9,6 +9,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
