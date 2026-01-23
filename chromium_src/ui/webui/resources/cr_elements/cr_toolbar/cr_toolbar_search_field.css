@@ -14,22 +14,22 @@
 
 :host(:not([narrow])) {
   /* Match Figma design: 8px border radius, 44px height */
-  border-radius: var(--leo-radius-m, 8px);
+  border-radius: var(--leo-radius-m);
   height: 44px;
 }
 
 :host(:not([narrow])) #background {
   /* Add outlined border to match Figma design */
-  border: 1px solid var(--leo-color-divider-subtle, #e4e4e5);
-  border-radius: var(--leo-radius-m, 8px);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
   /* Use a lighter/transparent background for outlined style */
-  background: var(--leo-color-container-background, #ffffff);
+  background: var(--leo-color-container-background);
 }
 
 @media (prefers-color-scheme: dark) {
   :host(:not([narrow])) #background {
     background: transparent;
-    border-color: var(--leo-color-divider-subtle, rgba(255, 255, 255, 0.1));
+    border-color: var(--leo-color-divider-subtle);
   }
 }
 
@@ -46,12 +46,12 @@ input {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
-  color: var(--leo-color-text-tertiary, #78787c);
+  color: var(--leo-color-text-tertiary);
 }
 
 /* Icon styling */
 cr-icon-button {
-  --cr-icon-button-fill-color: var(--leo-color-icon-default, #464649);
+  --cr-icon-button-fill-color: var(--leo-color-icon-default);
 }
 
 :host(:hover:not([search-focused_], [narrow])) #stateBackground {
