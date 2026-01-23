@@ -379,6 +379,34 @@ export const getTransactionToAddress = (
   assertNotReached('Unknown transaction type')
 }
 
+/**
+ * Extracts the memo from a transaction if available.
+ * Currently only ZCash shielded transactions support memos.
+ *
+ * @param tx - The transaction to extract memo from
+ * @returns The memo as a string, or empty string if not available
+ */
+export const getTransactionMemo = (
+  tx?: TransactionInfo | SerializableTransactionInfo,
+): string => {
+  if (!tx) {
+    return ''
+  }
+
+  // ZCash shielded transactions have a memo field (byte array)
+  if (isZCashTransaction(tx) && tx.txDataUnion.zecTxData?.memo) {
+    try {
+      return new TextDecoder().decode(
+        new Uint8Array(tx.txDataUnion.zecTxData.memo),
+      )
+    } catch {
+      return ''
+    }
+  }
+
+  return ''
+}
+
 export function getTransactionInteractionAddress(
   tx: Pick<TransactionInfo, 'txDataUnion' | 'txType'>,
 ): string {

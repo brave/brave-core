@@ -1897,4 +1897,55 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAllCoinTypes) {
   }
 }
 
+TEST(SwapRequestHelperUnitTest, EncodeGate3StatusParams) {
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "route-123-abc";
+  params->tx_hash = "0xdeadbeef1234567890";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDepositAddress";
+  params->deposit_memo = "";
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded = gate3::EncodeStatusParams(std::move(params));
+  ASSERT_TRUE(encoded.has_value());
+
+  std::string expected = R"({
+    "routeId": "route-123-abc",
+    "txHash": "0xdeadbeef1234567890",
+    "sourceCoin": "ETH",
+    "sourceChainId": "0x1",
+    "destinationCoin": "SOL",
+    "destinationChainId": "0x65",
+    "depositAddress": "0xDepositAddress",
+    "depositMemo": "",
+    "provider": "NEAR_INTENTS"
+  })";
+  EXPECT_EQ(ParseJson(*encoded), ParseJson(expected));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3StatusParamsCrossChainZecToEth) {
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "zec-eth-route";
+  params->tx_hash = "zec-tx-hash";
+  params->source_coin = mojom::CoinType::ZEC;
+  params->source_chain_id = mojom::kZCashMainnet;
+  params->destination_coin = mojom::CoinType::ETH;
+  params->destination_chain_id = mojom::kMainnetChainId;
+  params->deposit_address = "t1deposit";
+  params->deposit_memo = "memo123";
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  auto encoded = gate3::EncodeStatusParams(std::move(params));
+  ASSERT_TRUE(encoded.has_value());
+
+  auto parsed = ParseJson(*encoded);
+  ASSERT_TRUE(parsed.is_dict());
+  EXPECT_EQ(*parsed.GetDict().FindString("sourceCoin"), "ZEC");
+  EXPECT_EQ(*parsed.GetDict().FindString("destinationCoin"), "ETH");
+  EXPECT_EQ(*parsed.GetDict().FindString("depositMemo"), "memo123");
+}
+
 }  // namespace brave_wallet

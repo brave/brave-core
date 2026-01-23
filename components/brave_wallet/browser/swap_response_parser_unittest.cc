@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/swap_response_parser.h"
+
 #include <memory>
 #include <utility>
 
@@ -10,9 +12,9 @@
 #include "base/json/json_reader.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using base::test::ParseJson;
 
@@ -3448,6 +3450,62 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseInvalidJson) {
   )");
   quote = gate3::ParseQuoteResponse(ParseJson(json_invalid_provider));
   EXPECT_FALSE(quote);
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3StatusResponse) {
+  struct TestCase {
+    std::string status_string;
+    std::string internal_status;
+    std::string explorer_url;
+    mojom::Gate3SwapStatusCode expected_code;
+  };
+  std::vector<TestCase> cases = {
+      {"PENDING", "awaiting_deposit", "", mojom::Gate3SwapStatusCode::kPending},
+      {"PROCESSING", "swap_in_progress", "https://explorer.example.com/tx/123",
+       mojom::Gate3SwapStatusCode::kProcessing},
+      {"SUCCESS", "completed", "https://solscan.io/tx/abc123",
+       mojom::Gate3SwapStatusCode::kSuccess},
+      {"FAILED", "swap_failed", "", mojom::Gate3SwapStatusCode::kFailed},
+      {"REFUNDED", "refund_complete", "https://etherscan.io/tx/refund123",
+       mojom::Gate3SwapStatusCode::kRefunded},
+  };
+
+  for (const auto& tc : cases) {
+    std::string json =
+        absl::StrFormat(R"({
+      "status": "%s",
+      "internalStatus": "%s",
+      "explorerUrl": "%s"
+    })",
+                        tc.status_string, tc.internal_status, tc.explorer_url);
+
+    auto status = gate3::ParseStatusResponse(ParseJson(json));
+    ASSERT_TRUE(status) << "Failed to parse status: " << tc.status_string;
+    EXPECT_EQ(status->status, tc.expected_code);
+    EXPECT_EQ(status->internal_status, tc.internal_status);
+    EXPECT_EQ(status->explorer_url, tc.explorer_url);
+  }
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3StatusResponseInvalidJson) {
+  // Missing status field
+  std::string json_no_status = R"({
+    "internalStatus": "test",
+    "explorerUrl": ""
+  })";
+  EXPECT_FALSE(gate3::ParseStatusResponse(ParseJson(json_no_status)));
+
+  // Empty JSON
+  EXPECT_FALSE(gate3::ParseStatusResponse(ParseJson("{}")));
+
+  // Invalid status value
+  std::string json_invalid_status = R"({
+    "status": "INVALID_STATUS",
+    "internalStatus": "test",
+    "explorerUrl": ""
+  })";
+  auto status = gate3::ParseStatusResponse(ParseJson(json_invalid_status));
+  EXPECT_FALSE(status);
 }
 
 }  // namespace brave_wallet

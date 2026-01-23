@@ -651,6 +651,39 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
 
   return GetJSON(base::Value(std::move(result)));
 }
+
+std::optional<std::string> EncodeStatusParams(
+    mojom::Gate3SwapStatusParamsPtr params) {
+  base::Value::Dict result;
+
+  result.Set("routeId", params->route_id);
+  result.Set("txHash", params->tx_hash);
+
+  auto source_coin = EncodeCoinType(params->source_coin);
+  if (!source_coin) {
+    return std::nullopt;
+  }
+  result.Set("sourceCoin", *source_coin);
+  result.Set("sourceChainId", params->source_chain_id);
+
+  auto destination_coin = EncodeCoinType(params->destination_coin);
+  if (!destination_coin) {
+    return std::nullopt;
+  }
+  result.Set("destinationCoin", *destination_coin);
+  result.Set("destinationChainId", params->destination_chain_id);
+
+  result.Set("depositAddress", params->deposit_address);
+  result.Set("depositMemo", params->deposit_memo);
+
+  auto provider = EncodeProvider(params->provider);
+  if (!provider) {
+    return std::nullopt;
+  }
+  result.Set("provider", *provider);
+
+  return GetJSON(base::Value(std::move(result)));
+}
 }  // namespace gate3
 
 }  // namespace brave_wallet

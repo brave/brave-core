@@ -70,5 +70,45 @@ export const swapEndpoints = ({
         }
       },
     }),
+
+    getSwapStatus: query<
+      {
+        response: BraveWallet.Gate3SwapStatus | null
+        error: BraveWallet.Gate3SwapError | null
+        errorString: string
+      },
+      BraveWallet.Gate3SwapStatusParams | undefined
+    >({
+      queryFn: async (params, { endpoint }, extraOptions, baseQuery) => {
+        if (!params) {
+          return {
+            data: {
+              response: null,
+              error: null,
+              errorString: '',
+            },
+          }
+        }
+
+        const { swapService } = baseQuery(undefined).data
+        try {
+          const result = await swapService.getStatus(params)
+
+          if (result.errorString) {
+            console.log(`getSwapStatus API error: ${result.errorString}`)
+          }
+
+          return {
+            data: result,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to get swap status',
+            error,
+          )
+        }
+      },
+    }),
   }
 }

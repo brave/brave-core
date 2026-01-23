@@ -1531,6 +1531,44 @@ mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value) {
   return result;
 }
 
+mojom::Gate3SwapStatusPtr ParseStatusResponse(const base::Value& json_value) {
+  auto value = swap_responses::Gate3StatusResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::Gate3SwapStatus::New();
+
+  // Map the status code
+  switch (value->status) {
+    case swap_responses::Gate3StatusCode::kPending:
+      result->status = mojom::Gate3SwapStatusCode::kPending;
+      break;
+    case swap_responses::Gate3StatusCode::kProcessing:
+      result->status = mojom::Gate3SwapStatusCode::kProcessing;
+      break;
+    case swap_responses::Gate3StatusCode::kSuccess:
+      result->status = mojom::Gate3SwapStatusCode::kSuccess;
+      break;
+    case swap_responses::Gate3StatusCode::kFailed:
+      result->status = mojom::Gate3SwapStatusCode::kFailed;
+      break;
+    case swap_responses::Gate3StatusCode::kRefunded:
+      result->status = mojom::Gate3SwapStatusCode::kRefunded;
+      break;
+    case swap_responses::Gate3StatusCode::kNone:
+    default:
+      // Invalid/unknown status, default to pending
+      result->status = mojom::Gate3SwapStatusCode::kPending;
+      break;
+  }
+
+  result->internal_status = value->internal_status;
+  result->explorer_url = value->explorer_url;
+
+  return result;
+}
+
 }  // namespace gate3
 
 }  // namespace brave_wallet

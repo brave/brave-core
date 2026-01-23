@@ -14,6 +14,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -2243,6 +2244,96 @@ TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
           std::move(quote_params)),
       callback.Get());
   run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Status) {
+  std::string response = R"({
+    "status": "SUCCESS",
+    "internalStatus": "completed",
+    "explorerUrl": "https://solscan.io/tx/abc123"
+  })";
+  SetInterceptor(response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "test-route-id";
+  params->tx_hash = "0xdeadbeef";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = "";
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  ASSERT_TRUE(status);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(status->status, mojom::Gate3SwapStatusCode::kSuccess);
+  EXPECT_EQ(status->internal_status, "completed");
+  EXPECT_EQ(status->explorer_url, "https://solscan.io/tx/abc123");
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusError) {
+  std::string error_response = R"({
+    "message": "Route not found",
+    "kind": "UNKNOWN"
+  })";
+  SetErrorInterceptor(error_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "invalid-route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = "";
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  ASSERT_TRUE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(error->message, "Route not found");
+  EXPECT_EQ(error->kind, mojom::Gate3SwapErrorKind::kUnknown);
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusParsingError) {
+  std::string malformed_response = R"({"invalid": "json"})";
+  SetInterceptor(malformed_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = "";
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  EXPECT_FALSE(error);
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 }  // namespace brave_wallet

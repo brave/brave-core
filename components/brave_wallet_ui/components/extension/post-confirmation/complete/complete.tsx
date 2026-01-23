@@ -31,17 +31,21 @@ import {
   ErrorOrSuccessIcon,
 } from '../common/common.style'
 import { Column, Row, Text } from '../../../shared/style'
-import { SerializableTransactionInfo } from '../../../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+} from '../../../../constants/types'
 import { TransactionIntent } from '../common/transaction_intent'
 
 interface Props {
   transaction: SerializableTransactionInfo
   onClose: () => void
   onClickViewInActivity: () => void
+  swapStatus?: BraveWallet.Gate3SwapStatus
 }
 
 export const TransactionComplete = (props: Props) => {
-  const { transaction, onClose, onClickViewInActivity } = props
+  const { transaction, onClose, onClickViewInActivity, swapStatus } = props
 
   // Hooks
   const { transactionsQueueLength } = usePendingTransactions()
@@ -73,7 +77,10 @@ export const TransactionComplete = (props: Props) => {
           />
         </ErrorOrSuccessIconWrapper>
         <Title>{getLocale('braveWalletTransactionCompleteTitle')}</Title>
-        <TransactionIntent transaction={transaction} />
+        <TransactionIntent
+          transaction={transaction}
+          swapStatus={swapStatus}
+        />
       </Column>
       <Column
         fullWidth={true}

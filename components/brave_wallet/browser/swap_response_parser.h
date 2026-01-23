@@ -69,6 +69,13 @@ mojom::Gate3SwapQuotePtr ParseQuoteResponse(const base::Value& json_value);
 // underlying response format.
 mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value);
 
+// Parse a Gate3 status response JSON into a structured Gate3SwapStatus object.
+// Return nullptr if parsing fails.
+//
+// See swap_responses.idl and https://gate3.bsg.brave.com/docs for the
+// underlying response format.
+mojom::Gate3SwapStatusPtr ParseStatusResponse(const base::Value& json_value);
+
 }  // namespace gate3
 
 }  // namespace brave_wallet

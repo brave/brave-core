@@ -735,6 +735,9 @@
   <message name="IDS_BRAVE_WALLET_BRIDGING" desc="Transaction intent Bridging label">Bridging</message>
   <message name="IDS_BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK" desc="Transaction intent Swapping or Bridging on network description"><ph name="SWAPPING_OR_BRIDGING"><ex>Swapping</ex>$1</ph> on <ph name="NETWORK"><ex>Solana Mainnet Beta</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT_ON_NETWORK" desc="Transaction intent error attempting to Swap or Bride on network description">There was an error attempting to <ph name="SWAP_OR_BRIDGE"><ex>swap</ex>$1</ph> on <ph name="NETWORK"><ex>Solana Mainnet Beta</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROCESSING" desc="Swap transaction processing title">Processing</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PENDING" desc="Swap transaction pending title">Pending</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_REFUNDED" desc="Swap transaction refunded title">Refunded</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_AMOUNT" desc="Transaction intent shielding amount description">Shielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_AMOUNT" desc="Transaction intent unshielding amount description">Unshielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_SHIELDED" desc="Transaction intent amount has been shielded description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been shielded</message>
