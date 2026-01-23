@@ -36,7 +36,7 @@ struct PolkadotSignedTransferTask {
  private:
   void StopWithError(std::string error_string);
 
-  bool IsDone() const;
+  bool IsReadyToSign() const;
 
   PolkadotSubstrateRpc* GetPolkadotRpc();
 
@@ -113,7 +113,7 @@ struct PolkadotSignedTransferTask {
   // The finalization process that actually generates the signature payload,
   // signs it using the sender's private key and then invoking the user's
   // callback with the result of the operation.
-  void OnFinalizeSignTransaction();
+  void MaybeFinalizeSignTransaction();
 
   base::raw_ref<PolkadotWalletService> polkadot_wallet_service_;
   base::raw_ref<KeyringService> keyring_service_;
