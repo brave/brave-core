@@ -29,6 +29,7 @@
         "chrome/common/chrome_constants_unittest_mac.cc",
         "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
         "chrome/installer/setup/brave_behaviors.cc",
+        "chrome/installer/setup/brave_origin_behaviors.cc",
         "chrome/installer/setup/test/install_worker_vpn_unittest.cc",
         "chrome/install_static/brave_install_details_unittest.cc",
         "chrome/install_static/brave_install_modes_unittest.cc",
