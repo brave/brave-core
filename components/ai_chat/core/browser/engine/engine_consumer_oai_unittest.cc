@@ -2755,4 +2755,59 @@ INSTANTIATE_TEST_SUITE_P(
       return info.param.name;
     });
 
+TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_UTF8Truncation) {
+  // Tests that BuildPageContentMessages correctly handles UTF-8 character
+  // boundaries when truncating content and that remaining length is calculated
+  // using actual truncated size.
+  //
+  // Content 1 (newer): (max_length - 2) 'a' + 4-byte emoji
+  //   → Truncated to (max_length - 2) bytes before emoji
+  // Content 2 (older): 100 'b'
+  //   → Gets remaining 2 bytes
+
+  constexpr uint32_t max_length = 100;
+  std::string content1_str =
+      std::string(max_length - 2, 'a') + "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content1_str.size(), max_length + 2);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content1_str));
+
+  std::string content2_str = std::string(max_length, 'b');
+
+  PageContent content1(content1_str, false);
+  PageContent content2(content2_str, false);
+  // BuildPageContentMessages processes in reverse, so put content1 last
+  // to process it first
+  PageContents page_contents = {content2, content1};
+
+  uint32_t remaining_length = max_length;
+  auto messages = engine_->BuildPageContentMessages(
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
+
+  ASSERT_EQ(messages.size(), 2u);
+
+  // Message 0: Content 1 (processed first, has emoji, truncated before it)
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "user");
+  const std::string* content_msg0 = messages[0].GetDict().FindString("content");
+  ASSERT_TRUE(content_msg0);
+  size_t start0 = content_msg0->find("<page>\n") + 7;
+  size_t end0 = content_msg0->find("\n</page>");
+  std::string truncated0 = content_msg0->substr(start0, end0 - start0);
+  EXPECT_EQ(truncated0, std::string(max_length - 2, 'a'));
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated0));
+
+  // Message 1: Content 2 (processed second, gets remaining 2 bytes)
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  const std::string* content_msg1 = messages[1].GetDict().FindString("content");
+  ASSERT_TRUE(content_msg1);
+  size_t start1 = content_msg1->find("<page>\n") + 7;
+  size_t end1 = content_msg1->find("\n</page>");
+  std::string truncated1 = content_msg1->substr(start1, end1 - start1);
+  EXPECT_EQ(truncated1, "bb");
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated1));
+
+  // All remaining length consumed
+  EXPECT_EQ(remaining_length, 0u);
+}
+
 }  // namespace ai_chat

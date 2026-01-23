@@ -117,6 +117,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(
       EngineConsumerOAIUnitTest,
       BuildMessages_MultiplePageContents_MultipleTurns_TooLong);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildPageContentMessages_UTF8Truncation);
 
   base::Value::List BuildPageContentMessages(
       const PageContents& page_contents,
