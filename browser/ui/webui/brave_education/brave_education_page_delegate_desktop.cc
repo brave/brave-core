@@ -6,12 +6,16 @@
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
@@ -34,11 +38,13 @@ void BraveEducationPageDelegateDesktop::OpenURL(
 }
 
 void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   auto* panel_coordinator =
       window_interface_->GetFeatures().rewards_panel_coordinator();
   if (panel_coordinator) {
     panel_coordinator->OpenRewardsPanel();
   }
+#endif
 }
 
 void BraveEducationPageDelegateDesktop::OpenVPNPanel() {

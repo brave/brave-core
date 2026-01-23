@@ -39,7 +39,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -52,7 +51,7 @@
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
-#include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
@@ -153,7 +152,6 @@
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
@@ -167,6 +165,14 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -725,24 +731,33 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   registry.ForWebUI<brave_rewards::RewardsPageUI>()
       .Add<brave_rewards::mojom::RewardsPageHandler>();
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   registry.ForWebUI<WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
-      .Add<brave_rewards::mojom::RewardsPageHandler>();
-
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      .Add<brave_rewards::mojom::RewardsPageHandler>()
+#endif
+      ;
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
-      .Add<brave_rewards::mojom::RewardsPageHandler>();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      .Add<brave_rewards::mojom::RewardsPageHandler>()
+#endif
+      ;
 #endif
 
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
           .Add<brave_rewards::mojom::RewardsPageHandler>()
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           .Add<brave_news::mojom::BraveNewsController>()
 #endif
@@ -981,9 +996,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);
+#endif
 
   map->Add<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
@@ -1302,9 +1319,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 void BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationThrottleRegistry& registry) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
   brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
+#endif
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 

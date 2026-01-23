@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
@@ -17,10 +18,9 @@ source_set("customize_chrome") {
 
   deps = [
     "//base",
-    "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
@@ -37,6 +37,13 @@ source_set("customize_chrome") {
     "//components/user_prefs",
     "//content/public/browser",
   ]
+
+  if (enable_brave_rewards) {
+    deps += [
+      "//brave/browser/brave_rewards:util",
+      "//brave/components/brave_rewards/core",
+    ]
+  }
 
   if (enable_brave_news) {
     deps += [ "//brave/components/brave_news/common" ]
@@ -88,10 +95,9 @@ source_set("unit_tests") {
   deps = [
     ":customize_chrome",
     "//base",
-    "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
@@ -107,6 +113,13 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_brave_rewards) {
+    deps += [
+      "//brave/browser/brave_rewards:util",
+      "//brave/components/brave_rewards/core",
+    ]
+  }
 
   if (enable_brave_news) {
     deps += [ "//brave/components/brave_news/common" ]

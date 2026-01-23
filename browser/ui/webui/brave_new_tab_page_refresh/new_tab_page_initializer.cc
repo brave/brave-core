@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
@@ -19,6 +18,7 @@
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -51,6 +51,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -157,8 +161,12 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       GetSearchDefaultHost(
           RegionalCapabilitiesServiceFactory::GetForProfile(profile)));
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   source_->AddBoolean("rewardsFeatureEnabled",
                       brave_rewards::IsSupportedForProfile(profile));
+#else
+  source_->AddBoolean("rewardsFeatureEnabled", false);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(prefs);

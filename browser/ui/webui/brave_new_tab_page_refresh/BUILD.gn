@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -48,19 +49,17 @@ source_set("brave_new_tab_page_refresh") {
   deps = [
     ":mojom",
     "//brave/browser:browser_process",
-    "//brave/browser/brave_rewards",
-    "//brave/browser/brave_rewards:util",
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
 
     # Unconditional for gn check since the mojom-forward header is included
     # in brave_new_tab_page_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
     "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_perf_predictor/common",
-    "//brave/components/brave_rewards/core/mojom:webui",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
@@ -106,6 +105,14 @@ source_set("brave_new_tab_page_refresh") {
 
   if (enable_brave_news) {
     deps += [ "//brave/components/brave_news/browser" ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [
+      "//brave/browser/brave_rewards",
+      "//brave/browser/brave_rewards:util",
+      "//brave/components/brave_rewards/core/mojom:webui",
+    ]
   }
 }
 

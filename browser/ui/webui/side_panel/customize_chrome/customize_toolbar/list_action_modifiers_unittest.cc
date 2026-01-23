@@ -9,10 +9,9 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -51,6 +50,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #endif
 
 using ActionId = side_panel::customize_chrome::mojom::ActionId;
@@ -335,6 +339,7 @@ TEST_F(ListActionModifiersUnitTest,
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_RewardsShouldNotBeAddedWhenDisabled) {
   // Rewards should be added by default(Rewards enabled by default)
@@ -361,6 +366,7 @@ TEST_F(ListActionModifiersUnitTest,
   // Show Rewards action should not be present
   EXPECT_EQ(rewards_action_it, modified_actions.end());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ShareMenuShouldNotBeAddedWhenDisabled) {
@@ -399,8 +405,10 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   ASSERT_TRUE(
       !prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
@@ -424,7 +432,9 @@ TEST_F(ListActionModifiersUnitTest,
           EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
           EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
           EqId(ActionId::kShowReward),
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           EqId(ActionId::kShowBraveNews),
 #endif

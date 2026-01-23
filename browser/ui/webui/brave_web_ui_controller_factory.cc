@@ -13,16 +13,13 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
-#include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -95,6 +92,13 @@
 #endif
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
+#include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
+#endif
+
 using content::WebUI;
 using content::WebUIController;
 
@@ -119,6 +123,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
         brave_ads::AdsServiceFactory::GetForProfile(profile),
         *profile->GetPrefs());
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -133,6 +138,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kRewardsInternalsHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (base::FeatureList::IsEnabled(
@@ -210,8 +216,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return nullptr;
   }
 
-  if ((url.host() == kSkusInternalsHost &&
-       base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
+  if (
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
       (url.is_valid() && url.host() == kWalletPageHost) ||
 #elif !BUILDFLAG(IS_ANDROID)
@@ -234,11 +239,14 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host() == kRewriterUIHost &&
        ai_rewriter::features::IsAIRewriterEnabled()) ||
 #endif
-      url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-      || (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile())
+      (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile()) ||
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-  ) {
+      (url.host() == kSkusInternalsHost &&
+       base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
     return &NewWebUI;
   }
 
@@ -271,9 +279,11 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     content::BrowserContext* browser_context,
     const GURL& url) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (ShouldBlockWalletWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;

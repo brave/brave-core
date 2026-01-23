@@ -10,6 +10,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -106,6 +107,7 @@ IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenWalletOnboarding) {
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenRewardsOnboarding) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
@@ -118,6 +120,7 @@ IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenRewardsOnboarding) {
   auto* new_web_contents = added_observer.GetWebContents();
   EXPECT_EQ(new_web_contents->GetVisibleURL(), GURL(kRewardsPageTopURL));
 }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 
