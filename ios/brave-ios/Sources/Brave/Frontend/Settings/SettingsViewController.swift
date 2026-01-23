@@ -403,7 +403,20 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.braveAccountResendConfirmationEmail,
             detailText: Strings.braveAccountResendConfirmationEmailDetail,
-            selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
+            selection: { [unowned self] in
+              braveAccountAuthentication.resendConfirmationEmail { [weak self] title, message in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                  let alert = UIAlertController(
+                    title: title,
+                    message: message,
+                    preferredStyle: .alert
+                  )
+                  alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
+                  self.present(alert, animated: true)
+                }
+              }
+            },
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.titleColorKey: view.tintColor
