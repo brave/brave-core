@@ -874,6 +874,7 @@ export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
   id: 'mock-eth-swap-tx',
   txStatus: BraveWallet.TransactionStatus.Unapproved,
   swapInfo: {
+    routeId: 'test-route-id',
     sourceAmount: '0xde0b6b3a7640000',
     sourceTokenAddress: '',
     sourceCoin: BraveWallet.CoinType.ETH,

@@ -500,6 +500,7 @@ base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
 
   dict.Set("recipient", swap_info->recipient);
   dict.Set("provider", EncodeSwapProvider(swap_info->provider));
+  dict.Set("route_id", swap_info->route_id);
 
   return dict;
 }
@@ -586,6 +587,12 @@ mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value) {
   }
 
   swap_info->provider = DecodeSwapProvider(*provider_str);
+
+  const std::string* route_id = value.FindString("route_id");
+  if (!route_id) {
+    return nullptr;
+  }
+  swap_info->route_id = *route_id;
 
   return swap_info;
 }

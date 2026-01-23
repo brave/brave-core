@@ -2642,6 +2642,7 @@ struct SwapInfo {
   // An empty string indicates that the recipient is not known.
   string recipient;
   SwapProvider provider;
+  string route_id;
 };
 
 // Deprecated in favour of SwapInfo
