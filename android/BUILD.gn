@@ -751,6 +751,8 @@ android_resources("java_resources") {
     "java/brave-res/values/brave_ids.xml",
     "java/brave-res/values/brave_styles.xml",
     "java/brave-res/values/shimmer_attrs.xml",
+    "java/brave-res/raw/no_video_ads.json",
+    "java/brave-res/raw-night/no_video_ads.json",
     "java/brave-res/xml/background_images_preferences.xml",
     "java/brave-res/xml/brave_appearance_preferences.xml",
     "java/brave-res/xml/brave_download_preferences.xml",
