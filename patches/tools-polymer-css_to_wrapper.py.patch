@@ -1,8 +1,8 @@
 diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
-index dacd795f840c6f2cb6df659f393109b151574df8..af94e96a75fe662837e72618097169c19d3c5424 100644
+index 20705c0c6d44b6b50e28bbedef3f3877cec0cd6a..03d923178b1508e8bd4eabeca996196c2ec538ba 100644
 --- a/tools/polymer/css_to_wrapper.py
 +++ b/tools/polymer/css_to_wrapper.py
-@@ -266,7 +266,7 @@ def main(argv):
+@@ -268,7 +268,7 @@ def main(argv):
  
      content = ''
  
@@ -11,7 +11,7 @@ index dacd795f840c6f2cb6df659f393109b151574df8..af94e96a75fe662837e72618097169c1
      if metadata['type'] == 'style' and lit_in_file in args.in_files:
        # When a Polymer file has an equivalent "_lit.css" file, use the latter to
        # extract the CSS content from, to facilitate migration without having to
-@@ -340,5 +340,6 @@ def main(argv):
+@@ -342,5 +342,6 @@ def main(argv):
    return
  
  

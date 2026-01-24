@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/hub/internal/BUILD.gn b/chrome/browser/hub/internal/BUILD.gn
-index f2250a35fbb7674e87f86f178ffd28d5c0b4bd8f..ddb9497bcf9403321510bc976a5c26f8dab144f9 100644
+index 93beb778a450109024a263fa35af1717d7acb412..765d17bc07426bd196a888aee0011ff1edcb9ec7 100644
 --- a/chrome/browser/hub/internal/BUILD.gn
 +++ b/chrome/browser/hub/internal/BUILD.gn
-@@ -102,6 +102,7 @@ android_library("java") {
+@@ -103,6 +103,7 @@ android_library("java") {
      "//ui/edge_to_edge:java",
      "//url:url_java",
    ]
