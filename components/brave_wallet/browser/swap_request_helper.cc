@@ -121,8 +121,12 @@ std::optional<std::string> EncodeTransactionParams(
     swap_info_value.Set("outputMint", step->swap_info->output_mint);
     swap_info_value.Set("inAmount", step->swap_info->in_amount);
     swap_info_value.Set("outAmount", step->swap_info->out_amount);
-    swap_info_value.Set("feeAmount", step->swap_info->fee_amount);
-    swap_info_value.Set("feeMint", step->swap_info->fee_mint);
+    if (step->swap_info->fee_amount.has_value()) {
+      swap_info_value.Set("feeAmount", step->swap_info->fee_amount.value());
+    }
+    if (step->swap_info->fee_mint.has_value()) {
+      swap_info_value.Set("feeMint", step->swap_info->fee_mint.value());
+    }
 
     step_value.Set("swapInfo", std::move(swap_info_value));
     route_plan_value.Append(std::move(step_value));

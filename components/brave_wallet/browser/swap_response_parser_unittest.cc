@@ -409,8 +409,10 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4");
   EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->in_amount, "997500");
   EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->out_amount, "4052482154");
-  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_amount, "2500");
-  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(0)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(0)->swap_info->fee_amount, "2500");
+  ASSERT_TRUE(swap_quote->route_plan.at(0)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(0)->swap_info->fee_mint,
             "So11111111111111111111111111111111111111112");
   EXPECT_EQ(swap_quote->route_plan.at(1)->percent, "100");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->amm_key,
@@ -422,8 +424,10 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->in_amount, "4052482154");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->out_amount, "834185227");
-  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_amount, "10131205");
-  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(1)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(1)->swap_info->fee_amount, "10131205");
+  ASSERT_TRUE(swap_quote->route_plan.at(1)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(1)->swap_info->fee_mint,
             "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
   EXPECT_EQ(swap_quote->route_plan.at(2)->percent, "100");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->amm_key,
@@ -435,9 +439,41 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->in_amount, "834185227");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->out_amount, "781469842");
-  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_amount, "2085463");
-  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(2)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(2)->swap_info->fee_amount, "2085463");
+  ASSERT_TRUE(swap_quote->route_plan.at(2)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(2)->swap_info->fee_mint,
             "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+
+  // OK: missing optional feeAmount and feeMint fields
+  auto quote_without_fees = jupiter::ParseQuoteResponse(ParseJson(R"({
+    "inputMint": "So11111111111111111111111111111111111111112",
+    "inAmount": "1000000",
+    "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    "outAmount": "781469842",
+    "otherAmountThreshold": "781391696",
+    "swapMode": "ExactIn",
+    "slippageBps": "1",
+    "platformFee": null,
+    "priceImpactPct": "0",
+    "routePlan": [
+      {
+        "swapInfo": {
+          "ammKey": "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da",
+          "label": "Raydium",
+          "inputMint": "So11111111111111111111111111111111111111112",
+          "outputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+          "inAmount": "997500",
+          "outAmount": "4052482154"
+        },
+        "percent": "100"
+      }
+    ]
+  })"));
+  ASSERT_TRUE(quote_without_fees);
+  ASSERT_EQ(quote_without_fees->route_plan.size(), 1UL);
+  EXPECT_FALSE(quote_without_fees->route_plan.at(0)->swap_info->fee_amount);
+  EXPECT_FALSE(quote_without_fees->route_plan.at(0)->swap_info->fee_mint);
 
   // OK: null platformFee value
   EXPECT_TRUE(jupiter::ParseQuoteResponse(ParseJson(R"({
