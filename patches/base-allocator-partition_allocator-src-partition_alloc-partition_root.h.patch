@@ -1,8 +1,8 @@
 diff --git a/base/allocator/partition_allocator/src/partition_alloc/partition_root.h b/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
-index 1caebdad99986d967341f14b0035df16549806c2..ab2a2523e564a5c84c375d4326f908e672b3db5f 100644
+index 83324de76992c5d18e7c757499f33ca09e1a0ae9..f6732be717ce7d2e63bf58c62eae91e6af52ca4d 100644
 --- a/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
 +++ b/base/allocator/partition_allocator/src/partition_alloc/partition_root.h
-@@ -2191,27 +2191,27 @@ PA_ALWAYS_INLINE void* PartitionRoot::AllocInternal(size_t requested_size,
+@@ -2254,27 +2254,27 @@ PA_ALWAYS_INLINE void* PartitionRoot::AllocInternal(size_t requested_size,
    static_assert(!ContainsFlags(
        flags, AllocFlags::kMemoryShouldBeTaggedForMte));  // Internal only.
  

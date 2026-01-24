@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..129598d1a22484a9d14987213ce47bf013717a32 100644
+index e93fd54830bd105424109e9ec1ab418c2f71305f..1811121c39b8db70029b73f34917e8bfb8194768 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -376,6 +376,7 @@ void Tab::Layout(PassKey) {
@@ -10,7 +10,7 @@ index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..129598d1a22484a9d14987213ce47bf0
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -475,6 +476,7 @@ void Tab::Layout(PassKey) {
+@@ -476,6 +477,7 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
@@ -18,7 +18,7 @@ index 722f2832b44b4fe57fe1738edd7ccfecc7f629ab..129598d1a22484a9d14987213ce47bf0
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -621,7 +623,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
+@@ -622,7 +624,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
    // Close tab on middle click, but only if the button is released over the tab
    // (normal windows behavior is to discard presses of a UI element where the
    // releases happen off the element).
