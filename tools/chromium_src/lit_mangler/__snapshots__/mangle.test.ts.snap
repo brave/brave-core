@@ -651,10 +651,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/component
 -      html\`<li><a href=\\"#\\">chrome://chrome-urls</a></li>\` :
 +      html\`<li><a href=\\"#\\">brave://chrome-urls</a></li>\` :
        html\`\${info.enabled ?
--        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url}</a></li>\` :
--        html\`<li>\${info.url.url}</li>\`
-+        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
-+        html\`<li>\${info.url.url.replace(/chrome:/, \\"brave:\\")}</li>\`
+-        html\`<li><a href=\\"\${info.url}\\">\${info.url}</a></li>\` :
+-        html\`<li>\${info.url}</li>\`
++        html\`<li><a href=\\"\${info.url}\\">\${info.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
++        html\`<li>\${info.url.replace(/chrome:/, \\"brave:\\")}</li>\`
        }\`
      }\`)}
  </ul>
@@ -664,10 +664,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/component
    <ul>
      \${this.internalUrlInfos_.map(info => html\`
        \${this.isInternalUiEnabled_(info) ?
--        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url}</a></li>\` :
--        html\`<li>\${info.url.url}</li>\`
-+        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
-+        html\`<li>\${info.url.url.replace(/chrome:/, \\"brave:\\")}</li>\`
+-        html\`<li><a href=\\"\${info.url}\\">\${info.url}</a></li>\` :
+-        html\`<li>\${info.url}</li>\`
++        html\`<li><a href=\\"\${info.url}\\">\${info.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
++        html\`<li>\${info.url.replace(/chrome:/, \\"brave:\\")}</li>\`
        }\`)}
    </ul>\` : ''}
  \${this.commandUrls_.length ? html\`
@@ -677,8 +677,8 @@ exports[`mangled files should have up to date snapshots ./chromium_src/component
      address bar if you need them.
    </p>
    <ul>
--    \${this.commandUrls_.map(url => html\`<li>\${url.url}</li>\`)}
-+    \${this.commandUrls_.map(url => html\`<li>\${url.url.replace(/chrome:/, \\"brave:\\")}</li>\`)}
+-    \${this.commandUrls_.map(url => html\`<li>\${url}</li>\`)}
++    \${this.commandUrls_.map(url => html\`<li>\${url.replace(/chrome:/, \\"brave:\\")}</li>\`)}
    </ul>\` : ''}\`;
  }
 "

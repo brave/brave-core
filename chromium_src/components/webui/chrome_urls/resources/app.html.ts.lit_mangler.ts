@@ -35,11 +35,11 @@ mangleAll((element) => {
   if (!anchor) {
     throw new Error('[chrome_urls override] Missing anchor element')
   }
-  if (anchor.textContent !== '\${info.url.url}') {
+  if (anchor.textContent !== '\${info.url}') {
     throw new Error('[chrome_urls override] Unexpected anchor textContent')
   }
-  anchor.textContent = '\${info.url.url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('href="${info.url.url}"'))
+  anchor.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
+}, x => x.text.includes('href="${info.url}"'))
 
 // Rewrite inactive chrome URLs to use brave: scheme (these also appear under
 // the "List of Brave URLs" header) and rewrite internal debugging page URLs to
@@ -50,11 +50,11 @@ mangleAll((element) => {
   if (!listItem) {
     throw new Error('[chrome_urls override] Missing list item element')
   }
-  if (listItem.textContent !== '\${info.url.url}') {
+  if (listItem.textContent !== '\${info.url}') {
     throw new Error('[chrome_urls override] Unexpected list item textContent')
   }
-  listItem.textContent = '\${info.url.url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('<li>${info.url.url}</li>'))
+  listItem.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
+}, x => x.text.includes('<li>${info.url}</li>'))
 
 // Rewrite command URLs to use brave: scheme (these appear under the
 // "Command URLs for Debug" header)
@@ -63,8 +63,8 @@ mangle((element) => {
   if (!listItem) {
     throw new Error('[chrome_urls override] Missing list item element')
   }
-  if (listItem.textContent !== '\${url.url}') {
+  if (listItem.textContent !== '\${url}') {
     throw new Error('[chrome_urls override] Unexpected list item textContent')
   }
-  listItem.textContent = '\${url.url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('<li>${url.url}</li>'))
+  listItem.textContent = '\${url.replace(/chrome:/, "brave:")}'
+}, x => x.text.includes('<li>${url}</li>'))
