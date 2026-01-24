@@ -50,8 +50,12 @@ const char kToolResultSuccessSubstring[] = "successful";
 class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
   ContentAgentToolsTest() {
-    scoped_feature_list_.InitWithFeatures(
-        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        /*enabled_features=*/{{::features::kGlicActor,
+                               {{::features::kGlicActorPolicyControlExemption
+                                     .name,
+                                 "true"}}},
+                              {features::kAIChatAgentProfile, {}}},
         /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
@@ -78,7 +82,6 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     auto* actor_service =
         actor::ActorKeyedServiceFactory::GetActorKeyedService(GetProfile());
     ASSERT_NE(actor_service, nullptr);
-    actor_service->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Get the browser tool provider
     tool_provider_ =
