@@ -171,7 +171,7 @@ class ModelListSection extends ModelListSectionBase {
     // 2. Ollama sync preference is enabled
     // 3. Ollama is actually connected
     const isOllamaEndpoint =
-        model.options.customModelOptions?.endpoint.url === OLLAMA_ENDPOINT
+        model.options.customModelOptions?.endpoint === OLLAMA_ENDPOINT
     return !!(isOllamaEndpoint && ollamaSyncEnabled && isOllamaConnected)
   }
 }
