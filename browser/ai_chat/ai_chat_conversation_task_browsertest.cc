@@ -35,6 +35,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -80,8 +81,11 @@ namespace ai_chat {
 class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
  public:
   AIChatConversationTaskBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{::features::kGlicActor,
+          {{::features::kGlicActorPolicyControlExemption.name, "false"}}},
+         {features::kAIChatAgentProfile, {}}},
+        {});
   }
 
   ~AIChatConversationTaskBrowserTest() override = default;
@@ -106,7 +110,6 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     agent_profile_ = agent_browser->profile();
     agent_browser_window_ = agent_browser;
 
-    GetActorService()->GetPolicyChecker().set_act_on_web_for_testing(true);
     actor::InitActionBlocklist(agent_profile_);
 
     // Get the AI Chat service from the agent profile
