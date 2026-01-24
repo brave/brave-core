@@ -17,6 +17,7 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/ui/test_support/mock_actor_ui_state_manager.h"
 #include "chrome/common/actor/action_result.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -52,9 +53,12 @@ class ContentAgentToolProviderTest : public testing::Test {
   ContentAgentToolProviderTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
-    // Enable the AI Chat Agent Profile feature
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+    // Enable the AI Chat Agent Profile feature and allow acting on web
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{::features::kGlicActor,
+          {{::features::kGlicActorPolicyControlExemption.name, "true"}}},
+         {ai_chat::features::kAIChatAgentProfile, {}}},
+        {});
   }
   ~ContentAgentToolProviderTest() override = default;
 
