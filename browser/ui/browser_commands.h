@@ -147,6 +147,9 @@ void RemoveSplitWithSideBySide(Browser* browser);
 // Swap tabs in active tab.
 void SwapTabsInSplitWithSideBySide(Browser* browser);
 
+// Force pastes into the active web contents if focused.
+void ForcePasteInWebContents(Browser* browser);
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates a new tab with the given tab's URL in the specified container.
 void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
