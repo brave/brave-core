@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
@@ -30,6 +32,7 @@ import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.omnibox.AutocompleteRequestType;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
@@ -214,6 +217,27 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             braveLocationBarQRDialogFragment.show(
                     ((AppCompatActivity) mContext).getSupportFragmentManager(),
                     "BraveLocationBarQRDialogFragment");
+        }
+    }
+
+    // This method was removed at upstream's LocationBarMediator.
+    // Backported it here to still have ability immediately jump to search
+    // result when QR code is scanned for the regular strings, not the URLs.
+    // See BraveLocationBarQRDialogFragment.onDetectedQrCode.
+    public void performSearchQuery(String query) {
+        if (TextUtils.isEmpty(query)) return;
+
+        TemplateUrlService templateUrlService = mTemplateUrlServiceSupplier.get();
+        assert templateUrlService != null;
+        String queryUrl = templateUrlService.getUrlForSearchQuery(query, null);
+
+        if (!TextUtils.isEmpty(queryUrl)) {
+            loadUrl(
+                    new OmniboxLoadUrlParams.Builder(queryUrl, PageTransition.GENERATED)
+                            .setOpenInNewTab(false)
+                            .build());
+        } else {
+            setSearchQuery(query);
         }
     }
 }
