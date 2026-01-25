@@ -66,7 +66,7 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
     return false;
   }
 
-  auto* browser = GetBrowser();
+  auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser));
@@ -169,7 +169,7 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
 
-  if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
+  if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
     // Schedule UpdateOrientation(). At this point, BrowserWindow could still
@@ -245,7 +245,7 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 
 void BraveTabStrip::UpdateOrientation() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
-  auto* browser = GetBrowser();
+  auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
 
   if (using_vertical_tabs) {
@@ -278,7 +278,7 @@ void BraveTabStrip::UpdateOrientation() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowser());
+  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserWindowInterface());
 }
 
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
