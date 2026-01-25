@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -75,7 +76,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
-            MonotonicObservableSupplier<@AutocompleteRequestType Integer>
+            SettableMonotonicObservableSupplier<@AutocompleteRequestType Integer>
                     autocompleteRequestTypeSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
