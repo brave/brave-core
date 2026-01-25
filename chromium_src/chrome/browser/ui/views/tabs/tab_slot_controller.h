@@ -6,11 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
-#define IsGroupCollapsed(...)                                  \
-  IsGroupCollapsed(__VA_ARGS__) const = 0;                     \
-  virtual void SetCustomTitleForTab(                           \
-      Tab* tab, const std::optional<std::u16string>& title) {} \
-  virtual const Browser* GetBrowser()
+#define ShiftGroupLeft(...)                                                    \
+  SetCustomTitleForTab(Tab* tab, const std::optional<std::u16string>& title) { \
+  }                                                                            \
+  virtual void ShiftGroupLeft(__VA_ARGS__)
 
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
@@ -35,6 +34,6 @@
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge
-#undef IsGroupCollapsed
+#undef ShiftGroupLeft
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
