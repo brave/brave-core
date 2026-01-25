@@ -298,8 +298,6 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
-      "webui/navigation_bar_data_provider.cc",
-      "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
       "webui/new_tab_page/brave_new_tab_message_handler.h",
       "webui/new_tab_page/brave_new_tab_page_handler.cc",

@@ -21,7 +21,6 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -73,7 +72,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   plural_string_handler->AddLocalizedString(
       "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
-  NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(source, base::span(kBraveWalletPageGenerated),
                               IDR_WALLET_PAGE_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
