@@ -32,7 +32,7 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     private static final String TAG = "Scan QR Code Dialog";
 
     private QRCodeCameraManager mCameraManager;
-    private LocationBarMediator mLocationBarMediator;
+    private BraveLocationBarMediator mLocationBarMediator;
 
     // The Android Fragment framework requires a zero-argument constructor to
     // instantiate fragments. It usually happens on a fragment re-creation
@@ -41,12 +41,12 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
         super();
     }
 
-    private BraveLocationBarQRDialogFragment(LocationBarMediator locationBarMediator) {
+    private BraveLocationBarQRDialogFragment(BraveLocationBarMediator locationBarMediator) {
         mLocationBarMediator = locationBarMediator;
     }
 
     public static BraveLocationBarQRDialogFragment newInstance(
-            LocationBarMediator locationBarMediator) {
+            BraveLocationBarMediator locationBarMediator) {
         return new BraveLocationBarQRDialogFragment(locationBarMediator);
     }
 
@@ -148,7 +148,7 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
                                 if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
                                     mLocationBarMediator.setSearchQuery(barcodeValue);
                                 } else {
-                                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
+                                    mLocationBarMediator.performSearchQuery(barcodeValue);
                                 }
                             });
 
