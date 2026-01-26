@@ -23,22 +23,22 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
     ChromeViewsTestBase::SetUp();
 
     controller_ = new FakeBaseTabStripController;
-    auto unique_tab_strip = std::make_unique<TabStrip>(
-        std::unique_ptr<TabStripController>(controller_));
-    controller_->set_tab_strip(unique_tab_strip.get());
+    tab_strip_ = new TabStrip(std::unique_ptr<TabStripController>(controller_));
+    tab_strip_->Initialize();
+    controller_->set_tab_strip(tab_strip_);
     // Do this to force TabStrip to create the buttons.
     auto tab_strip_parent = std::make_unique<views::View>();
     views::FlexLayout* layout_manager = tab_strip_parent->SetLayoutManager(
         std::make_unique<views::FlexLayout>());
     // Scale the tabstrip between zero and its preferred width to match the
-    // context it operates in in TabStripRegionView (with tab scrolling off).
+    // context it operates in in HorizontalTabStripRegionView (with tab
+    // scrolling off).
     layout_manager->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetDefault(
             views::kFlexBehaviorKey,
             views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                      views::MaximumFlexSizeRule::kPreferred));
-    tab_strip_ = tab_strip_parent->AddChildView(std::move(unique_tab_strip));
-
+    tab_strip_parent->AddChildViewRaw(tab_strip_.get());
     // The tab strip is free to use all of the space in its parent view, since
     // there are no sibling controls such as the NTB in the test context.
     tab_strip_->SetAvailableWidthCallback(base::BindRepeating(
@@ -47,7 +47,8 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
         },
         tab_strip_parent.get()));
 
-    widget_ = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    widget_ =
+        CreateTestWidget(views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET);
     tab_strip_parent_ = widget_->SetContentsView(std::move(tab_strip_parent));
 
     // Prevent hover cards from appearing when the mouse is over the tab. Tests
