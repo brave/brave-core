@@ -51,18 +51,18 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-bool ReadU128(base::SpanReader<const uint8_t>& reader, mojom::uint128Ptr& out) {
-  auto val = mojom::uint128::New(0, 0);
+bool ReadU128(base::SpanReader<const uint8_t>& reader, uint128_t& out) {
+  uint64_t high = 0, low = 0;
 
-  if (!reader.ReadU64LittleEndian(val->low)) {
+  if (!reader.ReadU64LittleEndian(low)) {
     return false;
   }
 
-  if (!reader.ReadU64LittleEndian(val->high)) {
+  if (!reader.ReadU64LittleEndian(high)) {
     return false;
   }
 
-  out = std::move(val);
+  out = (uint128_t{high} << 64) | uint128_t{low};
   return true;
 }
 
@@ -121,10 +121,10 @@ mojom::PolkadotAccountInfoPtr MakeDefaultAccount() {
   account->providers = 0;
   account->sufficients = 0;
 
-  account->data->free = mojom::uint128::New(0, 0);
-  account->data->reserved = mojom::uint128::New(0, 0);
-  account->data->frozen = mojom::uint128::New(0, 0);
-  account->data->flags = mojom::uint128::New(0x8000000000000000, 0);
+  account->data->free = 0;
+  account->data->reserved = 0;
+  account->data->frozen = 0;
+  account->data->flags = uint128_t{0x8000000000000000} << 64;
   return account;
 }
 

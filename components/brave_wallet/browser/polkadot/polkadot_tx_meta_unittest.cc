@@ -107,8 +107,8 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
   const auto& tx_data = ti->tx_data_union->get_polkadot_tx_data();
 
   EXPECT_EQ(tx_data->to, "0x" + std::string(kBob));
-  EXPECT_EQ(tx_data->amount, Uint128ToMojom(1234));
-  EXPECT_EQ(tx_data->fee, Uint128ToMojom(0));
+  EXPECT_EQ(tx_data->amount, 1234u);
+  EXPECT_EQ(tx_data->fee, 0u);
 }
 
 }  // namespace brave_wallet

@@ -31,9 +31,9 @@ base::optional_ref<PolkadotTransaction> PolkadotTxMeta::tx() {
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
-      mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
-          tx_->recipient().ToString().value_or(""),
-          Uint128ToMojom(tx_->amount()), Uint128ToMojom(tx_->fee()), false)),
+      mojom::TxDataUnion::NewPolkadotTxData(
+          mojom::PolkadotTxdata::New(tx_->recipient().ToString().value_or(""),
+                                     tx_->amount(), tx_->fee(), false)),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

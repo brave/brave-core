@@ -133,6 +133,21 @@ mojom("mojom") {
     "//url/mojom:url_mojom_gurl",
     "//url/mojom:url_mojom_origin",
   ]
+
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "brave_wallet.mojom.uint128"
+          cpp = "::brave_wallet::uint128_t"
+        },
+      ]
+
+      traits_headers = [
+        "//brave/components/brave_wallet/common/mojom/uint128_mojom_traits.h",
+      ]
+    },
+  ]
 }
 
 source_set("unit_tests") {

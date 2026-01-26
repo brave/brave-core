@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction.h"
 
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace brave_wallet {
