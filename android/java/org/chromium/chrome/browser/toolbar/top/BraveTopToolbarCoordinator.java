@@ -13,6 +13,7 @@ import androidx.annotation.ColorInt;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
@@ -73,13 +74,13 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             MonotonicObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             MonotonicObservableSupplier<Integer> tabCountSupplier,
-            MonotonicObservableSupplier<Boolean> homepageEnabledSupplier,
-            MonotonicObservableSupplier<Boolean> homepageNonNtpSupplier,
+            NonNullObservableSupplier<Boolean> homepageEnabledSupplier,
+            NonNullObservableSupplier<Boolean> homepageNonNtpSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
             NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
-            MonotonicObservableSupplier<Boolean> compositorInMotionSupplier,
+            NonNullObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
@@ -90,7 +91,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
             NullableObservableSupplier<Tab> tabSupplier,
-            MonotonicObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
+            NonNullObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,

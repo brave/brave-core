@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -77,7 +78,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             ScrollingBottomViewResourceFrameLayout root,
             OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
-            MonotonicObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(

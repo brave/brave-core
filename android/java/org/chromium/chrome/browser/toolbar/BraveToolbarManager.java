@@ -452,7 +452,7 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OnClickListener bookmarkClickHandler,
             @Nullable OnClickListener customTabsBackClickHandler,
             @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
-            MonotonicObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
+            NonNullObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
             @Nullable UndoBarThrottle undoBarThrottle) {
 
         super.initializeWithNative(
