@@ -390,7 +390,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_COPY_CLEAN_LINK:
       return params_.link_url.is_valid() ||
              GetSelectedURL(GetProfile(), params_.selection_text).has_value();
-    case IDC_FORCE_PASTE:
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE:
       // only enable if there is plain text data to paste - this is what
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
       // allows non text types
@@ -458,8 +458,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       }
       brave::CopyLinkWithStrictCleaning(GetBrowser(), link_url);
     }; break;
-    case IDC_FORCE_PASTE: {
-      brave::ForcePasteInWebContents(GetBrowser());
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
+      brave::ForcePasteInWebContents(source_web_contents_);
     }; break;
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
@@ -831,8 +831,8 @@ void BraveRenderViewContextMenu::InitMenu() {
   std::optional<size_t> index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
   if (index.has_value()) {
-    menu_model_.InsertItemWithStringIdAt(index.value() + 1, IDC_FORCE_PASTE,
-                                         IDS_FORCE_PASTE);
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_FORCE_PASTE, IDS_FORCE_PASTE);
   }
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   const bool media_image = content_type_->SupportsGroup(

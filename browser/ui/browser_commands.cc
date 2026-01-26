@@ -1104,13 +1104,17 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
 
-void ForcePasteInWebContents(Browser* browser) {
+void ForcePasteInBrowser(Browser* browser) {
   CHECK(browser);
-
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents) {
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
     return;
   }
+  ForcePasteInWebContents(contents);
+}
+
+void ForcePasteInWebContents(content::WebContents* web_contents) {
+  CHECK(web_contents);
 
   // Check the WebContents is focused.
   auto* frame = web_contents->GetFocusedFrame();

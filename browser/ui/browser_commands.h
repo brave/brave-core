@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -147,8 +148,11 @@ void RemoveSplitWithSideBySide(Browser* browser);
 // Swap tabs in active tab.
 void SwapTabsInSplitWithSideBySide(Browser* browser);
 
-// Force pastes into the active web contents if focused.
-void ForcePasteInWebContents(Browser* browser);
+// Force pastes into the active web contents in the browser, if focused.
+void ForcePasteInBrowser(Browser* browser);
+
+// Force pastes into the web contents if focused.
+void ForcePasteInWebContents(content::WebContents* contents);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates a new tab with the given tab's URL in the specified container.
