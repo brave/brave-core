@@ -44,6 +44,12 @@ bool SupportsBraveVerticalTabs(const Browser* browser) {
     return false;
   }
 
+  if (tabs::IsVerticalTabsFeatureEnabled()) {
+    // In case that Chromium's vertical tabs feature is enabled, we should not
+    // show Brave's vertical tabs.
+    return false;
+  }
+
   if (!browser) {
     // During unit tests, |browser| can be null.
     CHECK_IS_TEST();
