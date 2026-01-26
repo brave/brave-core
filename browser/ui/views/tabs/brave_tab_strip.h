@@ -40,8 +40,6 @@ class BraveTabStrip : public TabStrip {
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
-  std::optional<int> GetCustomBackgroundId(
-      BrowserFrameActiveState active_state) const override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
