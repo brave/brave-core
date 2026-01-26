@@ -670,8 +670,8 @@ struct JupiterSwapInfo {
   string output_mint;
   string in_amount;
   string out_amount;
-  string fee_amount;
-  string fee_mint;
+  string? fee_amount;
+  string? fee_mint;
 };
 
 struct JupiterRouteStep {
