@@ -128,7 +128,7 @@ void BraveWalletPermissionContext::Cancel(content::WebContents* web_contents) {
   }
 
   // Dismiss all requests.
-  manager->Dismiss();
+  manager->Dismiss(/*prompt_options=*/std::monostate());
 }
 
 // static
