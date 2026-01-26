@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/android/guest_view/BUILD.gn b/chrome/browser/android/guest_view/BUILD.gn
+index f5fe8b14b831ed70ccab40c217c4f8a1721c8c13..f7e1b45a367e257f819bb338115ebdbbca14f2ca 100644
+--- a/chrome/browser/android/guest_view/BUILD.gn
++++ b/chrome/browser/android/guest_view/BUILD.gn
+@@ -21,11 +21,11 @@ source_set("guest_view") {
+   ]
+   deps = [
+     "//chrome/browser:chrome_content_browser_client_parts",
+-    "//chrome/browser/glic",
+     "//chrome/browser/task_manager",
+     "//components/guest_view/browser",
+     "//components/guest_view/browser/slim_web_view",
+     "//components/guest_view/common:mojom",
+     "//content/public/browser",
+   ]
++  import("//chrome/common/features.gni") if (enable_glic) { deps += [ "//chrome/browser/glic" ] }
+ }
