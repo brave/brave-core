@@ -2662,6 +2662,12 @@
 # This test fails because dragging is not enabled on Brave's NTP.
 -MultiContentsViewBrowserTest.DragAndDropDisabledForChromePages
 
+# These tests fail because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc.
+-PermissionRequestManagerBrowserTest.PrePromptSessionDuration_Geolocation_*
+-PermissionRequestManagerBrowserTest.PrePromptSessionDuration_Notification_*
+-PermissionRequestManagerPostPromptBrowserTest.PostPromptSessionDuration_*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*

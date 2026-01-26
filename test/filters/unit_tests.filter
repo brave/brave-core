@@ -445,12 +445,12 @@
 -PeopleHandlerWithExplicitBrowserSigninTest.*
 
 # These tests fail because we do not record permissions UKM, see
-# brave/chromium_src/components/permissions/permission_uma_util.cc
-# GetUkmSourceId override.
+# brave/chromium_src/components/permissions/permission_uma_util.cc.
 -All/RevokedPermissionsServiceTest.RevokedPermissionsServiceTest/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/1
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/3
 -DisruptiveNotificationPermissionsManagerRevocationTest.RevocationPermissionUKMMetrics
+-PermissionRequestManagerTest.*
 -SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
