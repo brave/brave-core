@@ -143,4 +143,17 @@ public final class BraveReturnToChromeUtil {
         return ReturnToChromeUtil.createNewTabAndShowHomeSurfaceUi(
                 tabCreator, homeSurfaceTracker, tabModelSelector, lastActiveTabUrl, lastActiveTab);
     }
+
+    /**
+     * Shows the home surface UI on the given NTP. This is a wrapper around the upstream method that
+     * adds a null check for homeSurfaceTracker to prevent crashes when the tracker is not
+     * initialized.
+     */
+    static void showHomeSurfaceUiOnNtp(
+            Tab ntpTab, Tab lastActiveTab, @Nullable HomeSurfaceTracker homeSurfaceTracker) {
+        if (homeSurfaceTracker == null) {
+            return;
+        }
+        ReturnToChromeUtil.showHomeSurfaceUiOnNtp(ntpTab, lastActiveTab, homeSurfaceTracker);
+    }
 }
