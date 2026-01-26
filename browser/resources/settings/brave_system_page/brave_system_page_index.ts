@@ -8,10 +8,7 @@ import '/shared/settings/prefs/prefs.js';
 import '../settings_shared.css.js';
 
 import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import {
-  afterNextRender,
-  PolymerElement
-} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { loadTimeData } from '../i18n_setup.js'
 
 import { PerformanceBrowserProxy, PerformanceBrowserProxyImpl } from '../performance_page/performance_browser_proxy.js'
@@ -143,9 +140,9 @@ export class SettingsBraveSystemPageIndexElement extends
       views.push('origin-onboarding')
     }
 
-    afterNextRender(this, () => {
+    queueMicrotask(() => {
       this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
-    })
+    });
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
