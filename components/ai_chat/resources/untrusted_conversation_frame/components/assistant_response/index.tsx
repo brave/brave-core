@@ -186,14 +186,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
             jsonData={r}
           />
         ))}
-      {props.toolArtifacts
-        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
-        .map((artifact, i) => (
-          <Chart
-            key={i}
-            artifact={artifact}
-          />
-        ))}
       {props.events?.map((event, i) => (
         <AssistantEvent
           key={i}
@@ -214,6 +206,14 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           )}
         </>
       )}
+      {props.toolArtifacts
+        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
+        .map((artifact, i) => (
+          <Chart
+            key={i}
+            artifact={artifact}
+          />
+        ))}
     </>
   )
 }
