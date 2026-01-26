@@ -12,6 +12,9 @@ namespace {
 
 // A subclass of TabStyle used to customize tab layout and visuals to support
 // Brave specifics including horizontal tabs.
+// Note that this class will be used instead of new TabStyle() in
+// TabStyle::Get() using plaster patch. See
+// rewrite/chrome/browser/ui/tabs/tab_style.cc.toml
 class BraveTabStyle : public TabStyle {
  public:
   int GetTabOverlap() const override {
@@ -82,6 +85,4 @@ class BraveTabStyle : public TabStyle {
 
 }  // namespace
 
-#define BRAVE_TAB_STYLE_GET return new BraveTabStyle();
 #include <chrome/browser/ui/tabs/tab_style.cc>
-#undef BRAVE_TAB_STYLE_GET
