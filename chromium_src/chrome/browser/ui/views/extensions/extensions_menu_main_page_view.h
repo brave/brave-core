@@ -6,13 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 
-#define GetExtensionRequestEntry                \
-  GetExtensionRequestEntry_Unused();            \
-  friend class BraveExtensionsMenuMainPageView; \
-  views::View* GetExtensionRequestEntry
+#define CreateHeaderBuilder(...)    \
+  CreateHeaderBuilder(__VA_ARGS__); \
+  friend class BraveExtensionsMenuMainPageView
 
 #include <chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h>  // IWYU pragma: export
 
-#undef GetExtensionRequestEntry
+#undef CreateHeaderBuilder
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_EXTENSIONS_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
