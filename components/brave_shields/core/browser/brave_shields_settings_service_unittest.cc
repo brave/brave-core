@@ -313,7 +313,19 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
             brave_shields::ControlType::ALLOW);
 }
 
-TEST_F(BraveShieldsSettingsServiceTest, AutoShredMode) {
+class BraveShieldsSettingsServiceShredFeatureTest
+    : public BraveShieldsSettingsServiceTest {
+ public:
+  BraveShieldsSettingsServiceShredFeatureTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShredFeature);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveShieldsSettingsServiceShredFeatureTest, AutoShredMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
             AutoShredMode::NEVER);
@@ -351,7 +363,7 @@ TEST_F(BraveShieldsSettingsServiceTest, AutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
-TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
+TEST_F(BraveShieldsSettingsServiceShredFeatureTest, DefaultAutoShredMode) {
   // explicitly set so we can verify this is unchanged by updating default
   brave_shields_settings()->SetAutoShredMode(AutoShredMode::NEVER, kTestUrl);
 

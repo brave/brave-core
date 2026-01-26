@@ -14,12 +14,14 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/unguessable_token.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -30,6 +32,7 @@
 
 class EphemeralStorageBrowserTest;
 class EphemeralStorageQaBrowserTest;
+class EphemeralStorageServiceAutoShredForgetFirstPartyTest;
 class HostContentSettingsMap;
 class PrefService;
 
@@ -78,7 +81,7 @@ class EphemeralStorageService : public KeyedService {
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config,
       bool shields_disabled_on_one_of_hosts,
-      bool first_party_storage_cleanup_enforced);
+      StorageCleanupMode cleanup_mode);
 
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
@@ -89,9 +92,19 @@ class EphemeralStorageService : public KeyedService {
       const bool enforced_by_user);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
+                           CleanupOnRestart);
   friend EphemeralStorageBrowserTest;
   friend EphemeralStorageQaBrowserTest;
   friend permissions::PermissionLifetimeManagerBrowserTest;
+  friend EphemeralStorageServiceAutoShredForgetFirstPartyTest;
+
+  void RunForgetfulStorageCleaning(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config,
+      bool shields_disabled_on_one_of_hosts,
+      bool forgetful_storage_cleanup_enabled,
+      bool first_party_storage_cleanup_enforced);
 
   void FirstPartyStorageAreaInUse(
       const std::string& ephemeral_domain,
@@ -99,7 +112,9 @@ class EphemeralStorageService : public KeyedService {
   bool FirstPartyStorageAreaNotInUse(
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config,
-      bool shields_disabled_on_one_of_hosts);
+      bool shields_disabled_on_one_of_hosts,
+      const std::optional<brave_shields::mojom::AutoShredMode>&
+          auto_shred_mode);
 
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
