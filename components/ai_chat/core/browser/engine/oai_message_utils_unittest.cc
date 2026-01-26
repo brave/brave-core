@@ -958,6 +958,40 @@ TEST_F(OAIMessageUtilsTest, BuildOAIPageContentBlocks_UTF8Truncation) {
   EXPECT_EQ(remaining_length, 0u);
 }
 
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIPageContentBlocks_UTF8Truncation_FitsExactly) {
+  // Tests that when a multi-byte UTF-8 character (emoji) fits exactly at the
+  // truncation boundary, it is kept (not dropped).
+  //
+  // Content: (kMaxContextCharsForTitleGeneration - 4) 'a' + 4-byte emoji
+  // Total: exactly kMaxContextCharsForTitleGeneration bytes
+  // Result: All content should be kept, including the emoji
+
+  std::string content_str =
+      std::string(kMaxContextCharsForTitleGeneration - 4, 'a') +
+      "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content_str.size(), kMaxContextCharsForTitleGeneration);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
+
+  PageContent content(content_str, false);
+  PageContents page_contents = {std::cref(content)};
+
+  uint32_t remaining_length = kMaxContextCharsForTitleGeneration;
+  auto blocks = BuildOAIPageContentBlocks(page_contents, remaining_length,
+                                          [](std::string&) {});
+
+  ASSERT_EQ(blocks.size(), 1u);
+
+  // Content should be kept in full, including the emoji
+  ASSERT_TRUE(blocks[0]->is_page_text_content_block());
+  const std::string& truncated = blocks[0]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated, content_str);
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated));
+
+  // All remaining length consumed
+  EXPECT_EQ(remaining_length, 0u);
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIDedupeTopicsMessages) {
   // Create test topics
   std::vector<std::string> topics = {"Shopping", "News", "Entertainment",
