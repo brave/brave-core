@@ -220,9 +220,16 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     return;
   }
 
+  const auto& last_turn = conversation_history.back();
+  std::optional<std::string> selected_text = std::nullopt;
+  if (last_turn->selected_text.has_value()) {
+    selected_text = base::TruncateUTF8ToByteSize(
+        *last_turn->selected_text, max_associated_content_length_);
+  }
+
   base::Value::List messages = BuildMessages(
       model_options_, page_contents, BuildUserMemoryMessage(is_temporary_chat),
-      conversation_history.back()->selected_text, conversation_history);
+      selected_text, conversation_history);
 
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
