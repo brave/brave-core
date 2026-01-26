@@ -82,7 +82,7 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   // the frame edge so that the leftmost tab can be selected at the edge of the
   // screen.
   if (tabs::HorizontalTabsUpdateEnabled()) {
-    if (!tab_strip_->controller()->IsFrameCondensed() && !vertical_tabs) {
+    if (/*!tab_strip_->controller()->IsFrameCondensed() &&*/ !vertical_tabs) {
       margins.set_left(tabs::kHorizontalTabStripLeftMargin);
     } else {
       margins.set_left(0);
