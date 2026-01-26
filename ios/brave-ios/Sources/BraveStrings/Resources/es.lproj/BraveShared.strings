@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Cuenta de Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "¡Casi llegamos!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Un correo de confirmación está en camino. Haz clic en el botón en ese correo para activar tu cuenta.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Cancelar registro";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Empezar";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Reenviar correo de confirmación";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "¿No ves el correo? Revisa tu carpeta de spam o haz clic en el botón para reenviar el correo de confirmación.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Cerrar sesión";
+
 /* Button to show the brave panel */
 "BravePanel" = "Panel de Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Error";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Empezar";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Bloquear sitios web peligrosos";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Visibilidad de la navegación";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "pestaña privada";
+"tabGrid.privateBrowsingInfoTitle" = "Pestaña privada";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Navegación privada";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Activado";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Enfocar automáticamente la barra de direcciones al crear una pestaña nueva";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Abrir teclado automáticamente";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Mantén abiertas las pestañas de navegación privada cuando cierres la aplicación para que no se interrumpan las sesiones de navegación.";
