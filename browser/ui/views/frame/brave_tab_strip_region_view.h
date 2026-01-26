@@ -26,7 +26,11 @@ class BraveTabStripRegionView : public TabStripRegionView {
   void Layout(PassKey) override;
 
  private:
+  // TabStripRegionView:
   void UpdateTabStripMargin() override;
+  void OnDragEntered(const ui::DropTargetEvent& event) override;
+  int OnDragUpdated(const ui::DropTargetEvent& event) override;
+
   void Initialize();
 };
 
