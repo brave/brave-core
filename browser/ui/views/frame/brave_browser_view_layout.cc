@@ -41,7 +41,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
     Browser* browser,
     BrowserViewLayoutViews views)
-    : BrowserViewLayoutImpl(std::move(delegate), browser, std::move(views)) {
+    : BrowserViewLayoutImplOld(std::move(delegate), browser, std::move(views)) {
   // TODO(anyone): consider a possibility of not passing the browser ptr in
   // since upstream is actively working on removing the browser from being
   // passed around. https://github.com/brave/brave-browser/issues/50815
@@ -79,7 +79,7 @@ int BraveBrowserViewLayout::GetIdealSideBarWidth(int available_width) const {
 }
 
 void BraveBrowserViewLayout::Layout(views::View* host) {
-  BrowserViewLayoutImpl::Layout(host);
+  BrowserViewLayoutImplOld::Layout(host);
   LayoutVerticalTabs();
 }
 
@@ -141,93 +141,91 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
-// void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect&
-// available_bounds) {
-//   if (browser() && tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
-//     // In case we're using vertical tabstrip, we can decide the position
-//     // after we finish laying out views in top container.
-//     return;
-//   }
-//
-//   return BrowserViewLayoutImplOld::LayoutTabStripRegion(available_bounds);
-// }
+void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
+  if (delegate().ShouldShowVerticalTabs()) {
+    // In case we're using vertical tabstrip, we can decide the position
+    // after we finish laying out views in top container.
+    return;
+  }
 
-// void BraveBrowserViewLayout::LayoutBookmarkBar(gfx::Rect& available_bounds) {
-//   if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
-//     BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
-//     return;
-//   }
-//
-//   // Set insets for vertical tab and restore after finishing infobar layout.
-//   // Each control's layout will consider vertical tab.
-//   // On macOS, it can have bottom insets but it doesn't need for bookmarks
-//   bar. auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
-//   insets_for_vertical_tab.set_bottom(0);
-//   available_bounds.Inset(insets_for_vertical_tab);
-//   BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
-//   gfx::Outsets outsets_for_restore_insets;
-//   outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
-//                                             insets_for_vertical_tab.right());
-//   available_bounds.Outset(outsets_for_restore_insets);
-// }
+  return BrowserViewLayoutImplOld::LayoutTabStripRegion(available_bounds);
+}
 
-// void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
-//   if (!vertical_tab_strip_host_) {
-//     BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
-//     return;
-//   }
-//
-//   // Set insets for vertical tab and restore after finishing infobar layout.
-//   // Each control's layout will consider vertical tab.
-//   // On macOS, it can have bottom insets but it doesn't need for info bar.
-//   auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
-//   insets_for_vertical_tab.set_bottom(0);
-//   available_bounds.Inset(insets_for_vertical_tab);
-//   BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
-//   gfx::Outsets outsets_for_restore_insets;
-//   outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
-//                                             insets_for_vertical_tab.right());
-//   available_bounds.Outset(outsets_for_restore_insets);
-// }
+void BraveBrowserViewLayout::LayoutBookmarkBar(gfx::Rect& available_bounds) {
+  if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
+    BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
+    return;
+  }
 
-// void BraveBrowserViewLayout::LayoutContentsContainerView(
-//     const gfx::Rect& available_bounds) {
-//   if (contents_background_) {
-//     contents_background_->SetBoundsRect(available_bounds);
-//   }
-//
-//   gfx::Rect contents_container_bounds = available_bounds;
-//   if (vertical_tab_strip_host_) {
-//     // Both vertical tab impls should not be enabled together.
-//     // https://github.com/brave/brave-browser/issues/48373
-//     CHECK(!tabs::IsVerticalTabsFeatureEnabled());
-//     contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
-//   }
-//
-//   if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
-//     // The WebUI tab strip container should "push" the tab contents down
-//     without
-//     // resizing it.
-//     contents_container_bounds.Inset(
-//         gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
-//   }
-//
-//   LayoutSideBar(contents_container_bounds);
-//   UpdateContentsContainerInsets(contents_container_bounds);
-//
-//   views().contents_container->SetBoundsRect(contents_container_bounds);
-// }
+  // Set insets for vertical tab and restore after finishing infobar layout.
+  // Each control's layout will consider vertical tab.
+  // On macOS, it can have bottom insets but it doesn't need for bookmarks bar.
+  auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  insets_for_vertical_tab.set_bottom(0);
+  available_bounds.Inset(insets_for_vertical_tab);
+  BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
+  gfx::Outsets outsets_for_restore_insets;
+  outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
+                                            insets_for_vertical_tab.right());
+  available_bounds.Outset(outsets_for_restore_insets);
+}
 
-// bool BraveBrowserViewLayout::IsImmersiveModeEnabledWithoutToolbar() const {
-//   // When return true here, BrowserViewLayout::LayoutBookmarkAndInfoBars()
-//   // makes |top_container_separator_| visible.
-//   // We want to use |top_container_separator_| as a separator between
-//   // top container and contents instead of MultiContentsContainer's top
-//   // separator to cover whole browser window width.
-//   // Althought it's always visible, it's only shown when rounded corners
-//   // is not applied by controlling its bounds from BraveBrowserView.
-//   return true;
-// }
+void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
+  if (!vertical_tab_strip_host_) {
+    BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
+    return;
+  }
+
+  // Set insets for vertical tab and restore after finishing infobar layout.
+  // Each control's layout will consider vertical tab.
+  // On macOS, it can have bottom insets but it doesn't need for info bar.
+  auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  insets_for_vertical_tab.set_bottom(0);
+  available_bounds.Inset(insets_for_vertical_tab);
+  BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
+  gfx::Outsets outsets_for_restore_insets;
+  outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
+                                            insets_for_vertical_tab.right());
+  available_bounds.Outset(outsets_for_restore_insets);
+}
+
+void BraveBrowserViewLayout::LayoutContentsContainerView(
+    const gfx::Rect& available_bounds) {
+  if (contents_background_) {
+    contents_background_->SetBoundsRect(available_bounds);
+  }
+
+  gfx::Rect contents_container_bounds = available_bounds;
+  if (vertical_tab_strip_host_) {
+    // Both vertical tab impls should not be enabled together.
+    // https://github.com/brave/brave-browser/issues/48373
+    CHECK(!tabs::IsVerticalTabsFeatureEnabled());
+    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
+  }
+
+  if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
+    // The WebUI tab strip container should "push" the tab contents down without
+    // resizing it.
+    contents_container_bounds.Inset(
+        gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
+  }
+
+  LayoutSideBar(contents_container_bounds);
+  UpdateContentsContainerInsets(contents_container_bounds);
+
+  views().contents_container->SetBoundsRect(contents_container_bounds);
+}
+
+bool BraveBrowserViewLayout::IsImmersiveModeEnabledWithoutToolbar() const {
+  // When return true here, BrowserViewLayout::LayoutBookmarkAndInfoBars()
+  // makes |top_container_separator_| visible.
+  // We want to use |top_container_separator_| as a separator between
+  // top container and contents instead of MultiContentsContainer's top
+  // separator to cover whole browser window width.
+  // Althought it's always visible, it's only shown when rounded corners
+  // is not applied by controlling its bounds from BraveBrowserView.
+  return true;
+}
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   if (!sidebar_container_) {
