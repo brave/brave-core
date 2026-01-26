@@ -354,4 +354,54 @@ TEST(HDKeySr25519, GetExportKeyPkcs8) {
   EXPECT_EQ(ToHex(keypair.GetExportKeyPkcs8()), ToHex(data));
 }
 
+TEST(HDKeySr25519, CreateFromPkcs8) {
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8 = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
+      "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
+      "b7473a03f08f96f5a38e9287e01f8fa12303210044a996beb1eef7bdcab976ab6d"
+      "2ca26104834164ecf28fb375600576fcc6eb0f",
+      base::span(pkcs8)));
+
+  auto keypair = HDKeySr25519::CreateFromPkcs8(pkcs8);
+  ASSERT_TRUE(keypair.has_value());
+  EXPECT_EQ(keypair->GetSecretKey(),
+            HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed).GetSecretKey());
+}
+
+TEST(HDKeySr25519, CreateFromPkcs8InvalidHeader) {
+  // Start with a valid PKCS8.
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8 = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
+      "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
+      "b7473a03f08f96f5a38e9287e01f8fa12303210044a996beb1eef7bdcab976ab6d"
+      "2ca26104834164ecf28fb375600576fcc6eb0f",
+      base::span(pkcs8)));
+
+  // Corrupt the header (PAIR_HDR starts at index 0, change first byte).
+  pkcs8[0] = 0xFF;
+
+  auto keypair = HDKeySr25519::CreateFromPkcs8(pkcs8);
+  EXPECT_FALSE(keypair.has_value());
+}
+
+TEST(HDKeySr25519, CreateFromPkcs8InvalidDivider) {
+  // Start with a valid PKCS8.
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8 = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
+      "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
+      "b7473a03f08f96f5a38e9287e01f8fa12303210044a996beb1eef7bdcab976ab6d"
+      "2ca26104834164ecf28fb375600576fcc6eb0f",
+      base::span(pkcs8)));
+
+  // PAIR_HDR is 16 bytes, secret key is 64 bytes, so PAIR_DIV starts at index
+  // 80 Corrupt the divider (change first byte of PAIR_DIV).
+  pkcs8[80] = 0xFF;
+
+  auto keypair = HDKeySr25519::CreateFromPkcs8(pkcs8);
+  EXPECT_FALSE(keypair.has_value());
+}
+
 }  // namespace brave_wallet

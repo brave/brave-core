@@ -10,7 +10,9 @@
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
@@ -18,6 +20,10 @@ static_assert(kSecretboxNonceSize == crypto_secretbox_NONCEBYTES,
               "kSecretboxNonceSize must equal crypto_secretbox_NONCEBYTES");
 static_assert(kScryptKeyBytes == crypto_secretbox_KEYBYTES,
               "kScryptKeyBytes must be equal crypto_secretbox_KEYBYTES");
+static_assert(kSecretboxAuthTagSize ==
+                  crypto_secretbox_ZEROBYTES - crypto_secretbox_BOXZEROBYTES,
+              "kSecretboxAuthTagSize must equal crypto_secretbox_ZEROBYTES - "
+              "crypto_secretbox_BOXZEROBYTES");
 
 std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
     base::span<const uint8_t> plaintext,
@@ -46,7 +52,7 @@ std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
   return base::ToVector(payload);
 }
 
-std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
+std::optional<SecureVector> XSalsaPolyDecrypt(
     base::span<const uint8_t> data,
     base::span<const uint8_t, kSecretboxNonceSize> nonce,
     base::span<const uint8_t, kScryptKeyBytes> key) {
@@ -66,11 +72,12 @@ std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
   // Extract the payload (skip the zero bytes prefix).
   auto payload = base::span(decrypted).subspan(
       base::checked_cast<size_t>(crypto_secretbox_ZEROBYTES));
-
-  return base::ToVector(payload);
+  SecureVector secure_payload(payload.begin(), payload.end());
+  crypto::internal::SecureZeroBuffer(decrypted);
+  return secure_payload;
 }
 
-std::optional<std::array<uint8_t, crypto_secretbox_KEYBYTES>> ScryptDeriveKey(
+std::optional<SecureVector> ScryptDeriveKey(
     std::string_view password,
     base::span<const uint8_t> salt,
     const crypto::kdf::ScryptParams& scrypt_params) {
@@ -84,7 +91,9 @@ std::optional<std::array<uint8_t, crypto_secretbox_KEYBYTES>> ScryptDeriveKey(
     return std::nullopt;
   }
 
-  return derived_key;
+  SecureVector secure_key(derived_key.begin(), derived_key.end());
+  crypto::internal::SecureZeroBuffer(derived_key);
+  return secure_key;
 }
 
 }  // namespace brave_wallet
