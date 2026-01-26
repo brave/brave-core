@@ -117,7 +117,7 @@ extension URL {
     public static let aiChat = URL(string: "brave://leo-ai")!
 
     public enum Wallet {
-      public static let home = URL(string: "brave://wallet")!
+      public static let home = URL(string: "brave://wallet/crypto/portfolio/assets")!
       public static let buy = URL(string: "brave://wallet/crypto/fund-wallet")!
       public static let send = URL(string: "brave://wallet/send")!
       public static let swap = URL(string: "brave://wallet/swap")!
