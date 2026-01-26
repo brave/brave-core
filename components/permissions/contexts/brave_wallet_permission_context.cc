@@ -90,12 +90,11 @@ void BraveWalletPermissionContext::RequestPermission(
         content::WebContents::FromRenderFrameHost(rfh);
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(*request_data, std::move(callback),
-                        /*persist=*/false,
-                        permissions::PermissionPromptDecision{
-                            .overall_decision = PermissionDecision::kDeny,
-                            .prompt_options = request_data->prompt_options,
-                            .is_final = true});
+    NotifyPermissionSet(
+        *request_data, std::move(callback),
+        /*persist=*/false,
+        permissions::PermissionPromptDecision{
+            .overall_decision = PermissionDecision::kDeny, .is_final = true});
     return;
   }
   if (is_new_id) {
@@ -166,7 +165,7 @@ void BraveWalletPermissionContext::Cancel(content::WebContents* web_contents) {
   }
 
   // Dismiss all requests.
-  manager->Dismiss();
+  manager->Dismiss(/*prompt_options=*/std::monostate());
 }
 
 // static
