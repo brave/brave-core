@@ -50,7 +50,7 @@ public struct WalletConstants {
 
   /// The url to learn more about Unstoppable Domains resolve methods.
   public static let braveWalletUnstoppableDomainsURL = URL(
-    string: "https://github.com/brave/brave-browser/wiki/Resolve-Methods-for-Unstoppable-Domains"
+    string: "https://github.com/brave/brave-browser/wiki/Web3-Top-Level-Domains"
   )!
 
   /// The url to the privacy policy for 0x swaps
