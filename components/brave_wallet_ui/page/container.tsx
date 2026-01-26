@@ -107,6 +107,9 @@ export const Container = () => {
   const [acceptedPartnerConsentTerms, setAcceptedPartnerConsentTerms] =
     useLocalStorage(LOCAL_STORAGE_KEYS.HAS_ACCEPTED_PARTNER_TERMS, false)
 
+  // ref to track previous location for route history
+  const previousLocationRef = React.useRef<string | null>(null)
+
   // computed
   const walletNotYetCreated = !isWalletCreated || setupStillInProgress
   const defaultRedirect = walletNotYetCreated
@@ -142,6 +145,23 @@ export const Container = () => {
         walletLocation,
       )
       setSessionRoute(walletLocation)
+    }
+
+    // Save the previous location (from ref) before updating it with
+    // current location.
+    if (
+      previousLocationRef.current
+      && isPersistableSessionRoute(previousLocationRef.current, isPanel)
+    ) {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.PREVIOUS_LOCATION_ROUTE,
+        previousLocationRef.current,
+      )
+    }
+
+    // Update the ref with current location for next route change
+    if (isPersistableSessionRoute(walletLocation, isPanel)) {
+      previousLocationRef.current = walletLocation
     }
     // clean recovery phrase if not backing up or onboarding on route change
     if (
