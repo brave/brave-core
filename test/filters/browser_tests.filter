@@ -2664,9 +2664,15 @@
 
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc.
+-PermissionPromptBubbleBaseViewBrowserTest.AcceptedOnceDispositionNoAbusiveTest
+-PermissionPromptBubbleBaseViewBrowserTest.DispositionNoAbusiveTest
+-PermissionRequestChipGestureSensitiveBrowserTest.PermissionRequestIsAutoIgnored
+-PermissionRequestManagerApproximateLocationBrowserTest.RequestApproximateGeolocation
+-PermissionRequestManagerApproximateLocationBrowserTest.RequestGeolocationAndApproximateLocationGranted
 -PermissionRequestManagerBrowserTest.PrePromptSessionDuration_Geolocation_*
 -PermissionRequestManagerBrowserTest.PrePromptSessionDuration_Notification_*
 -PermissionRequestManagerPostPromptBrowserTest.PostPromptSessionDuration_*
+-PermissionUkmBrowserTest.IgnoredPromptRecordedInUkm
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
