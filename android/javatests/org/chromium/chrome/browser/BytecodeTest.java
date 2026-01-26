@@ -1735,6 +1735,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         MonotonicObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
