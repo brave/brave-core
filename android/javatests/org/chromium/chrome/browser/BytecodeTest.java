@@ -738,6 +738,15 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "showHomeSurfaceUiOnNtp",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Tab.class,
+                        Tab.class,
+                        HomeSurfaceTracker.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
                         "getUrlForCustomTab",
                         MethodModifier.STATIC,
