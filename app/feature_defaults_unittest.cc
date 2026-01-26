@@ -162,8 +162,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
-      &features::kKAnonymityService,
-      &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kPopupBrowserUseNewLayout,
       &features::kPrivacySandboxAdsAPIsOverride,
