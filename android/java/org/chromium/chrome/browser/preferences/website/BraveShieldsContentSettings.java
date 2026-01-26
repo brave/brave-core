@@ -28,6 +28,7 @@ public class BraveShieldsContentSettings {
     public static final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
     public static final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
             "forgetFirstPartyStorage";
+    public static final String RESOURCE_IDENTIFIER_SHRED_SITE_DATA = "shredSiteData";
     public static final String RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE =
             "allowElementBlockerInPrivate";
 
@@ -36,6 +37,11 @@ public class BraveShieldsContentSettings {
     public static final String DEFAULT = "default";
     public static final String ALLOW_RESOURCE = "allow";
     public static final String AGGRESSIVE = "aggressive";
+
+    // Auto Shred Modes, must be in consistent with brave_shields::mojom::AutoShredMode
+    public static final String AUTO_SHRED_MODE_NEVER = "0";
+    public static final String AUTO_SHRED_MODE_LAST_TAB_CLOSED = "1";
+    public static final String AUTO_SHRED_MODE_APP_EXIT = "2";
 
     public static final int ALWAYS = 0;
     public static final int ASK = 1;
@@ -129,12 +135,23 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
-            BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(
-                    DEFAULT.equals(settingOption) ? BLOCK_THIRDPARTY_RESOURCE : settingOption, host,
-                    profile);
-            BraveShieldsContentSettingsJni.get().setAdControlType(
-                    BLOCK_THIRDPARTY_RESOURCE.equals(settingOption) ? DEFAULT : settingOption, host,
-                    profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setCosmeticFilteringControlType(
+                            DEFAULT.equals(settingOption)
+                                    ? BLOCK_THIRDPARTY_RESOURCE
+                                    : settingOption,
+                            host,
+                            profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setAdControlType(
+                            BLOCK_THIRDPARTY_RESOURCE.equals(settingOption)
+                                    ? DEFAULT
+                                    : settingOption,
+                            host,
+                            profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_SHRED_SITE_DATA)) {
+            BraveShieldsContentSettingsJni.get()
+                    .setAutoShredMode(Integer.parseInt(settingOption), host, profile);
         }
     }
 
@@ -172,6 +189,9 @@ public class BraveShieldsContentSettings {
             if (settings.equals(BLOCK_THIRDPARTY_RESOURCE)) {
                 settings = DEFAULT;
             }
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_SHRED_SITE_DATA)) {
+            int mode = BraveShieldsContentSettingsJni.get().getAutoShredMode(host, profile);
+            settings = Integer.toString(mode);
         }
         return settings;
     }
@@ -332,5 +352,9 @@ public class BraveShieldsContentSettings {
         boolean getAllowElementBlockerInPrivateModeEnabled();
 
         void setAllowElementBlockerInPrivateModeEnabled(boolean enabled);
+
+        void setAutoShredMode(int mode, String url, Profile profile);
+
+        int getAutoShredMode(String url, Profile profile);
     }
 }

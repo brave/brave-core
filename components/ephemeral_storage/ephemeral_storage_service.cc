@@ -221,11 +221,6 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   tld_ephemeral_areas_to_cleanup_.erase(key);
   FirstPartyStorageAreaInUse(ephemeral_domain, storage_partition_config);
-#if BUILDFLAG(IS_ANDROID)
-  // Triggers notification of current app state on Android. We need to call it
-  // at the beginning of the TLD ephemeral lifetime.
-  delegate_->TriggerCurrentAppStateNotification();
-#endif
 }
 
 void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
@@ -293,6 +288,12 @@ void EphemeralStorageService::RemoveObserver(
   observer_list_.RemoveObserver(observer);
 }
 
+#if BUILDFLAG(IS_ANDROID)
+void EphemeralStorageService::TriggerCurrentAppStateNotification() {
+  delegate_->TriggerCurrentAppStateNotification();
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 void EphemeralStorageService::CleanupTLDFirstPartyStorage(
     const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config,
@@ -328,6 +329,12 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
     const base::Value value_to_cleanup =
         GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
+    auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+    if (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() ==
+            brave_shields::mojom::AutoShredMode::APP_EXIT) {
+      return;
+    }
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
     pref_update->EraseValue(value_to_cleanup);

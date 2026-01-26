@@ -159,6 +159,14 @@
 			layout="@layout/brave_shields_option_layout"/>
 
 		<include
+			android:id="@+id/brave_shields_shred_site_data_layout_id"
+			layout="@layout/brave_shields_shred_site_data_layout"/>
+
+		<include
+			android:id="@+id/brave_shields_auto_shred_options_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include
 			android:id="@+id/brave_shields_about_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
