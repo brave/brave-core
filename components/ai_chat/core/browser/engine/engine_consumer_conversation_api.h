@@ -93,6 +93,10 @@ class EngineConsumerConversationAPI : public EngineConsumer {
                     GetFocusTabsCallback callback) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(
+      EngineConsumerConversationAPIUnitTest,
+      GetAssociatedContentConversationEvent_UTF8Truncation);
+
   // Processes the tab chunks and sends the merge callback with the results.
   // Used by GetSuggestedTopics and GetFocusTabs where the tabs are split into
   // chunks and processed.

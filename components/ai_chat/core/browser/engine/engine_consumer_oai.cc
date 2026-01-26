@@ -223,8 +223,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   const auto& last_turn = conversation_history.back();
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
-    selected_text =
-        last_turn->selected_text->substr(0, max_associated_content_length_);
+    selected_text = base::TruncateUTF8ToByteSize(
+        *last_turn->selected_text, max_associated_content_length_);
   }
 
   base::Value::List messages = BuildMessages(
@@ -264,8 +264,8 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
           std::min(effective_length_limit, max_per_content_length.value());
     }
 
-    std::string truncated_page_content =
-        page_content.get().content.substr(0, effective_length_limit);
+    std::string truncated_page_content(base::TruncateUTF8ToByteSize(
+        page_content.get().content, effective_length_limit));
     uint32_t truncated_page_content_size = truncated_page_content.size();
 
     SanitizeInput(truncated_page_content);

@@ -63,6 +63,21 @@ struct GenerateRewriteTestParam {
   std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
+std::string_view ExtractPageContent(std::string_view content) {
+  constexpr std::string_view kOpen = "<page>\n";
+  constexpr std::string_view kClose = "\n</page>";
+  size_t start = content.find(kOpen);
+  if (start == std::string_view::npos) {
+    return {};
+  }
+  start += kOpen.size();
+  size_t end = content.find(kClose, start);
+  if (end == std::string_view::npos) {
+    return {};
+  }
+  return content.substr(start, end - start);
+}
+
 }  // namespace
 
 class MockCallback {
@@ -2754,5 +2769,91 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
       return info.param.name;
     });
+
+TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_UTF8Truncation) {
+  // Tests that BuildPageContentMessages correctly handles UTF-8 character
+  // boundaries when truncating content and that remaining length is calculated
+  // using actual truncated size.
+  //
+  // Content 1 (newer): (max_length - 2) 'a' + 4-byte emoji
+  //   → Truncated to (max_length - 2) bytes before emoji
+  // Content 2 (older): 100 'b'
+  //   → Gets remaining 2 bytes
+
+  constexpr uint32_t max_length = 100;
+  std::string content1_str =
+      std::string(max_length - 2, 'a') + "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content1_str.size(), max_length + 2);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content1_str));
+
+  std::string content2_str = std::string(max_length, 'b');
+
+  PageContent content1(content1_str, false);
+  PageContent content2(content2_str, false);
+  // BuildPageContentMessages processes in reverse, so put content1 last
+  // to process it first
+  PageContents page_contents = {content2, content1};
+
+  uint32_t remaining_length = max_length;
+  auto messages = engine_->BuildPageContentMessages(
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
+
+  ASSERT_EQ(messages.size(), 2u);
+
+  // Message 0: Content 1 (processed first, has emoji, truncated before it)
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "user");
+  const std::string* content_msg0 = messages[0].GetDict().FindString("content");
+  ASSERT_TRUE(content_msg0);
+  std::string_view truncated0 = ExtractPageContent(*content_msg0);
+  EXPECT_EQ(truncated0, std::string(max_length - 2, 'a'));
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated0));
+
+  // Message 1: Content 2 (processed second, gets remaining 2 bytes)
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  const std::string* content_msg1 = messages[1].GetDict().FindString("content");
+  ASSERT_TRUE(content_msg1);
+  std::string_view truncated1 = ExtractPageContent(*content_msg1);
+  EXPECT_EQ(truncated1, "bb");
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated1));
+
+  // All remaining length consumed
+  EXPECT_EQ(remaining_length, 0u);
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildPageContentMessages_UTF8Truncation_FitsExactly) {
+  // Tests that when a multi-byte emoji fits exactly at the boundary,
+  // it's kept in the truncated output.
+  //
+  // Content: (max_length - 4) 'a' + 4-byte emoji = exactly max_length bytes
+  //   → Should keep the emoji since it fits exactly
+
+  constexpr uint32_t max_length = 100;
+  std::string content_str =
+      std::string(max_length - 4, 'a') + "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content_str.size(), max_length);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
+
+  PageContent content(content_str, false);
+  PageContents page_contents = {content};
+
+  uint32_t remaining_length = max_length;
+  auto messages = engine_->BuildPageContentMessages(
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
+
+  ASSERT_EQ(messages.size(), 1u);
+
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "user");
+  const std::string* content_msg = messages[0].GetDict().FindString("content");
+  ASSERT_TRUE(content_msg);
+  std::string_view truncated = ExtractPageContent(*content_msg);
+  EXPECT_EQ(truncated, content_str);
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated));
+
+  // All remaining length consumed
+  EXPECT_EQ(remaining_length, 0u);
+}
 
 }  // namespace ai_chat

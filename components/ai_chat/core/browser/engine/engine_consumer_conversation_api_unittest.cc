@@ -3463,4 +3463,36 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   EXPECT_TRUE(result.has_value());
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GetAssociatedContentConversationEvent_UTF8Truncation) {
+  // Tests that GetAssociatedContentConversationEvent correctly handles UTF-8
+  // character boundaries when truncating content.
+  //
+  // Content: (max_length - 2) 'a' + 4-byte emoji
+  // Truncation at max_length should stop before emoji
+
+  constexpr uint32_t max_length = 100;
+  std::string content_str =
+      std::string(max_length - 2, 'a') + "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content_str.size(), max_length + 2);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
+
+  PageContent page_content(content_str, false);
+
+  auto event =
+      engine_->GetAssociatedContentConversationEvent(page_content, max_length);
+
+  EXPECT_EQ(event.role, ConversationEventRole::kUser);
+  EXPECT_EQ(event.type, ConversationEventType::kPageText);
+
+  // Content is a variant, access the vector<string> variant
+  const auto& content_vec = std::get<std::vector<std::string>>(event.content);
+  ASSERT_EQ(content_vec.size(), 1u);
+
+  // Should be truncated before emoji (UTF-8 safe)
+  const std::string& truncated = content_vec[0];
+  EXPECT_EQ(truncated, std::string(max_length - 2, 'a'));
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated));
+}
+
 }  // namespace ai_chat
