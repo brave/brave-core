@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -39,7 +40,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
             int bottomControlsShadowHeight,
-            MonotonicObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
