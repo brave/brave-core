@@ -462,13 +462,8 @@ void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
 
-  // Upstream has two more children |background_view_left_| and
-  // |background_view_right_| behind the container view.
-  const int container_view_index = 2;
-
-  if (details.is_add && children().size() > container_view_index &&
-      details.parent == children()[container_view_index]) {
-    // Mark children of the container view as client area so that they are not
+  if (details.is_add && details.parent == this) {
+    // Mark children of the toolbar view as client area so that they are not
     // perceived as caption area. See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);
   }
