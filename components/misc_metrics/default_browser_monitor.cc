@@ -62,12 +62,8 @@ void DefaultBrowserMonitor::OnDefaultBrowserStateReceived(bool is_default) {
 
   cached_default_status_ = is_default;
 
-  int typical_answer = is_default ? 1 : 0;
-  int express_answer = is_default ? 1 : (INT_MAX - 1);
-
-  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultBrowserHistogramName, typical_answer, 2);
-  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultBrowserDailyHistogramName, express_answer,
-                             2);
+  UMA_HISTOGRAM_BOOLEAN(kDefaultBrowserHistogramName, is_default);
+  UMA_HISTOGRAM_BOOLEAN(kDefaultBrowserDailyHistogramName, is_default);
 
   if (status_changed) {
     for (auto& observer : observers_) {

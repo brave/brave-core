@@ -66,8 +66,7 @@ TEST_F(DefaultBrowserMonitorUnitTest, ReportsIsNotDefaultState) {
   CreateMonitor();
 
   histogram_tester_.ExpectUniqueSample(kDefaultBrowserHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kDefaultBrowserDailyHistogramName,
-                                       INT_MAX - 1, 1);
+  histogram_tester_.ExpectUniqueSample(kDefaultBrowserDailyHistogramName, 0, 1);
 }
 
 TEST_F(DefaultBrowserMonitorUnitTest, ReportsIsDefaultState) {
@@ -84,8 +83,7 @@ TEST_F(DefaultBrowserMonitorUnitTest, SwitchingBetweenNoAndYesStates) {
   CreateMonitor();
 
   histogram_tester_.ExpectUniqueSample(kDefaultBrowserHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kDefaultBrowserDailyHistogramName,
-                                       INT_MAX - 1, 1);
+  histogram_tester_.ExpectUniqueSample(kDefaultBrowserDailyHistogramName, 0, 1);
 
   // Switch to "yes" state (true) and fast forward to trigger next check
   SetMockedDefaultBrowserStatus(true);
@@ -103,8 +101,7 @@ TEST_F(DefaultBrowserMonitorUnitTest, SwitchingBetweenNoAndYesStates) {
 #endif
 
   histogram_tester_.ExpectBucketCount(kDefaultBrowserHistogramName, 0, 2);
-  histogram_tester_.ExpectBucketCount(kDefaultBrowserDailyHistogramName,
-                                      INT_MAX - 1, 2);
+  histogram_tester_.ExpectBucketCount(kDefaultBrowserDailyHistogramName, 0, 2);
 
   histogram_tester_.ExpectTotalCount(kDefaultBrowserHistogramName, 3);
   histogram_tester_.ExpectTotalCount(kDefaultBrowserDailyHistogramName, 3);
