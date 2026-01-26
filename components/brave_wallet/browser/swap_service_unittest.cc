@@ -2117,7 +2117,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
               "data": "0xdeadbeef",
-              "gasLimit": null,
+              "gasLimit": "0xfde8",
               "gasPrice": null
             },
             "solana": null,
@@ -2140,6 +2140,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_evm_params->to = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
   expected_evm_params->value = "0";
   expected_evm_params->data = "0xdeadbeef";
+  expected_evm_params->gas_limit = "0xfde8";
 
   // Create expected route step
   auto expected_step = mojom::Gate3SwapRouteStep::New();

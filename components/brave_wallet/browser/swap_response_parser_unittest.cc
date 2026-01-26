@@ -2957,7 +2957,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
               "data": "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54ef95e96700000000000000000000000000000000000000000000000000000000000f4240",
-              "gasLimit": null,
+              "gasLimit": "0xfde8",
               "gasPrice": null
             },
             "solana": null,

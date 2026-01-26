@@ -209,7 +209,8 @@ export function useGate3(params: SwapParams) {
         }
 
         if (transactionParams.evmTransactionParams) {
-          const { data, to, value } = transactionParams.evmTransactionParams
+          const { data, to, value, gasLimit } =
+            transactionParams.evmTransactionParams
 
           await sendEvmTransaction({
             fromAccount,
@@ -217,7 +218,7 @@ export function useGate3(params: SwapParams) {
             value: new Amount(value).toHex(),
             data: hexStrToNumberArray(data),
             network: fromNetwork,
-            gasLimit: new Amount(21000).toHex(),
+            gasLimit: new Amount(gasLimit).toHex(),
             swapInfo: {
               sourceCoin: fromToken.coin,
               sourceChainId: fromToken.chainId,

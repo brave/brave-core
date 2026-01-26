@@ -640,7 +640,7 @@ struct Gate3SwapEvmTransactionParams {
   string to;
   string value;
   string data;
-  string? gas_limit;
+  string gas_limit;
   string? gas_price;
 };
 
