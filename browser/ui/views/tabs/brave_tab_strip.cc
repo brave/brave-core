@@ -269,7 +269,7 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
 }
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
-  return &tab_container_.get();  // IN-TEST
+  return tab_container_.get();  // IN-TEST
 }
 
 BEGIN_METADATA(BraveTabStrip)
