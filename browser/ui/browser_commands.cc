@@ -1112,13 +1112,9 @@ void ForcePasteInWebContents(Browser* browser) {
     return;
   }
 
+  // Check the WebContents is focused.
   auto* frame = web_contents->GetFocusedFrame();
   if (!frame) {
-    return;
-  }
-
-  auto* target = content::WebContents::FromRenderFrameHost(frame);
-  if (!target) {
     return;
   }
 
@@ -1131,12 +1127,13 @@ void ForcePasteInWebContents(Browser* browser) {
   ui::Clipboard::GetForCurrentThread()->ReadText(
       ui::ClipboardBuffer::kCopyPaste, data.get(), &result);
 
+  // If there's no text in the clipboard don't do anything.
   if (result.empty()) {
     return;
   }
 
   // Replace works just like Paste, but it doesn't trigger onpaste handlers
-  target->Replace(result);
+  web_contents->Replace(result);
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
