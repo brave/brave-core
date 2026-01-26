@@ -7,6 +7,6 @@
 
 // This override removes the account storage check since our version can use
 // profile stored passwords
-#define IsAccountStorageEnabled() IsAccountStorageEnabled() && false
+#define IsAccountStorageActive() IsAccountStorageActive() && false
 #include <ios/web_view/internal/passwords/web_view_password_manager_client.mm>
-#undef IsAccountStorageEnabled
+#undef IsAccountStorageActive
