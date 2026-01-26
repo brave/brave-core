@@ -1,15 +1,15 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f937a36aea3 100644
+index c61ced6f1334eccd5d2f605a621ebea50856e835..c994d029f79e9a4dd38c51264e0880b4e2232109 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
    "chrome/app/chromium_strings.grd": {
      "messages": [800],
    },
-+  "chrome/app/brave_strings.grd": {
++  "brave/app/brave_strings.grd": {
 +    "messages": [800],
 +  },
-+  "chrome/app/brave_origin_strings.grd": {
++  "brave/app/brave_origin_strings.grd": {
 +    "messages": [800],
 +  },
    "chrome/app/google_chrome_strings.grd": {
@@ -55,10 +55,10 @@ index c61ced6f1334eccd5d2f605a621ebea50856e835..7e8b116e3a40a5d4607db9d6ed3d8f93
      "META": {"join": 2},
      "messages": [7020],
    },
-+  "components/components_brave_strings.grd": {
++  "brave/components/components_brave_strings.grd": {
 +    "messages": [7020],
 +  },
-+  "components/components_brave_origin_strings.grd": {
++  "brave/components/components_brave_origin_strings.grd": {
 +    "messages": [7020],
 +  },
    "components/components_google_chrome_strings.grd": {

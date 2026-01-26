@@ -1,7 +1,16 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index aea260e71822d4d4e99a82350759329726bcabfe..9ddc05abbc925b835b9d8e17bd519fd530fb0567 100644
+index aea260e71822d4d4e99a82350759329726bcabfe..83673abc7a4754642c5eff16a5b8233e7f5fc783 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
+@@ -53,7 +53,7 @@ if (is_win) {
+ 
+   static_library("lib") {
+     sources = [
+-      "${branding_path_product}_behaviors.cc",
++      "//brave/installer/setup/${branding_path_product}_behaviors.cc",
+       "brand_behaviors.h",
+       "configure_app_container_sandbox.cc",
+       "configure_app_container_sandbox.h",
 @@ -133,6 +133,7 @@ if (is_win) {
          "channel_override_work_item.h",
        ]

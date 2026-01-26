@@ -1,0 +1,15 @@
+diff --git a/components/vector_icons/BUILD.gn b/components/vector_icons/BUILD.gn
+index 19853662ce4bb98d9ab3bd71518deb65cf87c7aa..48924f6fbc8fc5fc177b223787600dd1960d1043 100644
+--- a/components/vector_icons/BUILD.gn
++++ b/components/vector_icons/BUILD.gn
+@@ -14,8 +14,8 @@ if (current_toolchain == default_toolchain) {
+     generate_unittests = true
+ 
+     sources = [
+-      "${branding_path_component}/product.icon",
+-      "${branding_path_component}/product_refresh.icon",
++      "//brave/components/vector_icons/${branding_path_component}/product.icon",
++      "//brave/components/vector_icons/${branding_path_component}/product_refresh.icon",
+       "account_circle.icon",
+       "account_circle_chrome_refresh.icon",
+       "account_circle_off_chrome_refresh.icon",

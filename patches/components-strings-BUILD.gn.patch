@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index d408e22cc89bf87981eea2a2780cf8da4f46b670..91ddf4c7b9be75de43e700271bfd3f6013856d29 100644
+index d408e22cc89bf87981eea2a2780cf8da4f46b670..dfa98037582edc458f7949c54fac406579cea3c6 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -43,6 +43,7 @@ grit_strings("components_strings") {
@@ -10,3 +10,12 @@ index d408e22cc89bf87981eea2a2780cf8da4f46b670..91ddf4c7b9be75de43e700271bfd3f60
  }
  
  if (is_android) {
+@@ -52,7 +53,7 @@ if (is_android) {
+ }
+ 
+ grit_strings("components_branded_strings") {
+-  source = "../components_${branding_path_product}_strings.grd"
++  source = "../../brave/components/components_${branding_path_product}_strings.grd"
+   outputs = [ "grit/components_branded_strings.h" ]
+ }
+ 

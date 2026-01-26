@@ -359,9 +359,9 @@ if (!is_ios) {
   }
 }
 
-branding_dir = "//chrome/app/theme/$branding_path_component"
+branding_dir = "//brave/app/theme/$branding_path_component"
 branding_dir_100 =
-    "//chrome/app/theme/default_100_percent/$branding_path_component"
+    "//brave/app/theme/default_100_percent/$branding_path_component"
 copy("theme_files") {
   visibility = [ ":*" ]
   if (is_linux) {
