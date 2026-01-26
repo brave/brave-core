@@ -16,7 +16,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.signin.base.CoreAccountInfo;
-import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
@@ -87,14 +86,11 @@ public class BraveSigninManager implements SigninManager {
             @JniType("PrefService*") PrefService prefService,
             @JniType("signin::IdentityManager*") IdentityManager identityManager,
             IdentityMutator identityMutator) {
-        AccountInfoServiceProvider.init(identityManager);
         return new BraveSigninManager(identityManager);
     }
 
     @CalledByNative
-    void destroy() {
-        AccountInfoServiceProvider.get().destroy();
-    }
+    void destroy() {}
 
     @Override
     public void wipeSyncUserData(Runnable wipeDataCallback, @DataWipeOption int dataWipeOption) {}
