@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave 账户";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "快到了！";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "确认电子邮件即将发送。点击该电子邮件中的按钮以激活您的账户。";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "取消注册";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "开始使用";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "重新发送确认电子邮件";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "没有看到电子邮件？请检查您的垃圾邮件文件夹或点击按钮重新发送确认电子邮件。";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "退出";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "错误";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "开始使用";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "屏蔽危险网站";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "浏览可见性";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "无痕标签页";
+"tabGrid.privateBrowsingInfoTitle" = "私人标签";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "私人浏览";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "开启";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "创建新标签页时自动聚焦地址栏";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "自動開啟鍵盤";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "关闭应用时，无痕浏览标签页仍保持打开状态，确保私人浏览页面无缝继续。";
