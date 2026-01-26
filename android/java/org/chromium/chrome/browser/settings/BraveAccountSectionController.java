@@ -6,7 +6,12 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -14,8 +19,12 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_account.mojom.Authentication;
+import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
+import org.chromium.brave_account.mojom.ResendConfirmationEmailErrorCode;
+import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_account.BraveAccountServiceFactory;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -26,10 +35,21 @@ import org.chromium.components.prefs.PrefChangeRegistrar;
 import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.bindings.Result;
 import org.chromium.mojo.system.MojoException;
+
+import java.util.Locale;
+import java.util.Map;
 
 @NullMarked
 public class BraveAccountSectionController implements PrefObserver, ConnectionErrorHandler {
+    private static final Map<Integer, Integer> ERROR_STRINGS =
+            Map.of(
+                    ResendConfirmationEmailErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
+                    R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
+                    ResendConfirmationEmailErrorCode.EMAIL_ALREADY_VERIFIED,
+                    R.string.brave_account_resend_confirmation_email_already_verified);
+
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_SIGN_OUT = "sign_out";
@@ -110,7 +130,8 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
             resendConfirmationEmailPreference.setOnPreferenceClickListener(
                     preference -> {
                         assert mBraveAccountService != null;
-                        mBraveAccountService.resendConfirmationEmail(result -> {});
+                        mBraveAccountService.resendConfirmationEmail(
+                                result -> showAlertDialog(result));
                         return true;
                     });
         }
@@ -213,5 +234,88 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
             mBraveAccountService.close();
             mBraveAccountService = null;
         }
+    }
+
+    private String getAlertTitle(@Nullable ResendConfirmationEmailError error) {
+        return mFragment.getString(
+                error == null
+                        ? R.string.brave_account_resend_confirmation_email_success_title
+                        : R.string.brave_account_resend_confirmation_email_error_title);
+    }
+
+    private String getAlertMessage(@Nullable ResendConfirmationEmailError error) {
+        if (error == null) {
+            return mFragment.getString(R.string.brave_account_resend_confirmation_email_success);
+        }
+
+        if (error.netErrorOrHttpStatus == null) {
+            // client-side error
+            return mFragment
+                    .getString(R.string.brave_account_client_error)
+                    .replace(
+                            "$1",
+                            error.errorCode != null
+                                    ? String.format(
+                                            Locale.ROOT,
+                                            " (%s=%d)",
+                                            mFragment.getString(R.string.brave_account_error),
+                                            error.errorCode)
+                                    : "");
+        }
+
+        // server-side error
+        if (error.errorCode != null) {
+            Integer stringId = ERROR_STRINGS.get(error.errorCode);
+            if (stringId != null) {
+                return mFragment.getString(stringId);
+            }
+        }
+
+        return mFragment
+                .getString(R.string.brave_account_server_error)
+                .replace("$1", String.valueOf(error.netErrorOrHttpStatus))
+                .replace(
+                        "$2",
+                        error.errorCode != null
+                                ? String.format(
+                                        Locale.ROOT,
+                                        ", %s=%d",
+                                        mFragment.getString(R.string.brave_account_error),
+                                        error.errorCode)
+                                : "");
+    }
+
+    private void showAlertDialog(
+            Result<ResendConfirmationEmailResult, ResendConfirmationEmailError> result) {
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    if (!mFragment.isAdded() || mFragment.isDetached()) {
+                        return;
+                    }
+
+                    Activity activity = mFragment.getActivity();
+                    if (activity == null || activity.isFinishing()) {
+                        return;
+                    }
+
+                    ResendConfirmationEmailError error =
+                            result.isSuccess() ? null : result.getError();
+                    String title = getAlertTitle(error);
+                    String message = getAlertMessage(error);
+
+                    LayoutInflater inflater =
+                            (LayoutInflater)
+                                    activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.brave_account_alert_dialog, null);
+                    TextView messageView = view.findViewById(R.id.brave_account_alert_message);
+                    messageView.setText(message);
+
+                    new AlertDialog.Builder(activity, R.style.ThemeOverlay_BrowserUI_AlertDialog)
+                            .setTitle(title)
+                            .setView(view)
+                            .setPositiveButton(R.string.ok, null)
+                            .show();
+                });
     }
 }

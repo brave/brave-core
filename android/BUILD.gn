@@ -561,6 +561,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/bottom_toolbar_browsing.xml",
     "java/brave-res/layout/bottom_toolbar_menu_button.xml",
     "java/brave-res/layout/bottom_toolbar_tab_switcher.xml",
+    "java/brave-res/layout/brave_account_alert_dialog.xml",
     "java/brave-res/layout/brave_ads_custom_notification.xml",
     "java/brave-res/layout/brave_ads_custom_notification_dark.xml",
     "java/brave-res/layout/brave_ads_existing_user_dialog_layout.xml",
