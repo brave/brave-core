@@ -8,3 +8,8 @@
 # The test hardcodes "GoogleUpdateIsMachine" in a non-easily-replaceable way,
 # when we would need "BraveUpdateIsMachine".
 -InitialPreferencesTest.GoogleUpdateIsMachine
+
+# This test fails because the isolation attribute name is
+# BRAVESOFTWAREBRAVE-BROWSER-DEVELOPMENT://ISOLATION (or similar) instead of
+# CHROMIUM://ISOLATION
+-IsolationSupportTest.ExpectedValue
