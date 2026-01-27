@@ -255,17 +255,17 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Send
   if (
-    selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSend
-    || selectedPendingTransaction.txType
-      === BraveWallet.TransactionType.ERC20Transfer
-    || selectedPendingTransaction.txType
-      === BraveWallet.TransactionType.SolanaSystemTransfer
-    || selectedPendingTransaction.txType
-      === BraveWallet.TransactionType.SolanaSPLTokenTransfer
-    || selectedPendingTransaction.txType
-      === BraveWallet.TransactionType
-        .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-    || selectedPendingTransaction.txType === BraveWallet.TransactionType.Other
+    [
+      BraveWallet.TransactionType.ETHSend,
+      BraveWallet.TransactionType.ERC20Transfer,
+      BraveWallet.TransactionType.SolanaSystemTransfer,
+      BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+      BraveWallet.TransactionType
+        .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      BraveWallet.TransactionType.Other,
+      BraveWallet.TransactionType.CardanoSendLovelace,
+      BraveWallet.TransactionType.CardanoSendToken,
+    ].includes(selectedPendingTransaction.txType)
   ) {
     return <ConfirmSendTransaction />
   }

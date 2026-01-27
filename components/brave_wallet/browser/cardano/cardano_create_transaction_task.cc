@@ -19,7 +19,8 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_lovelace_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_token_send_solver.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
@@ -32,7 +33,7 @@ namespace brave_wallet {
 
 // Transaction is valid for 2 hours.
 // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/src/ensureValidityInterval.ts#L3
-constexpr uint32_t kTxValiditySeconds = 2 * 3600;
+constexpr uint64_t kTxValiditySeconds = 2 * 3600;
 
 namespace {
 static bool g_arrange_tx_for_test = false;
@@ -47,17 +48,14 @@ CardanoCreateTransactionTask::CardanoCreateTransactionTask(
     CardanoWalletService& cardano_wallet_service,
     const mojom::AccountIdPtr& account_id,
     const CardanoAddress& address_to,
-    uint64_t amount,
-    bool sending_max_amount)
+    std::optional<uint64_t> amount_to_send,
+    std::optional<cardano_rpc::TokenId> token_to_send)
     : cardano_wallet_service_(cardano_wallet_service),
       account_id_(account_id.Clone()),
       address_to_(address_to),
-      sending_max_amount_(sending_max_amount) {
+      amount_to_send_(amount_to_send),
+      token_to_send_(token_to_send) {
   CHECK(IsCardanoAccount(account_id));
-
-  transaction_.set_to(address_to);
-  transaction_.set_amount(amount);
-  transaction_.set_sending_max_amount(sending_max_amount);
 }
 
 CardanoCreateTransactionTask::~CardanoCreateTransactionTask() = default;
@@ -70,17 +68,6 @@ void CardanoCreateTransactionTask::SetArrangeTransactionForTesting(bool value) {
 void CardanoCreateTransactionTask::Start(Callback callback) {
   callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
   FetchAllRequiredData();
-}
-
-CardanoTransaction::TxOutput
-CardanoCreateTransactionTask::CreateTargetOutput() {
-  CardanoTransaction::TxOutput target_output;
-  target_output.type = CardanoTransaction::TxOutputType::kTarget;
-  target_output.amount =
-      transaction_.sending_max_amount() ? 0 : transaction_.amount();
-  target_output.address = transaction_.to();
-
-  return target_output;
 }
 
 cardano_rpc::CardanoRpc* CardanoCreateTransactionTask::GetCardanoRpc() {
@@ -119,18 +106,27 @@ void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
 void CardanoCreateTransactionTask::RunSolverForTransaction() {
   CHECK(IsAllRequiredDataFetched());
 
-  transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
-  transaction_.AddOutput(CreateTargetOutput());
+  TxBuilderParms builder_params;
+  builder_params.amount_to_send = amount_to_send_;
+  builder_params.token_to_send = token_to_send_;
+  builder_params.send_to_address = address_to_;
+  builder_params.change_address = *change_address_;
+  builder_params.epoch_parameters = *latest_epoch_parameters_;
+  builder_params.invalid_after = latest_block_->slot + kTxValiditySeconds;
 
   base::expected<CardanoTransaction, std::string> solved_transaction;
-  if (sending_max_amount_) {
-    CardanoMaxSendSolver solver(transaction_, *change_address_,
-                                *latest_epoch_parameters_,
-                                TxInputsFromUtxos(*utxos_));
-    solved_transaction = solver.Solve();
+  if (!builder_params.amount_to_send) {
+    if (!builder_params.token_to_send) {
+      CardanoMaxLovelaceSendSolver solver(std::move(builder_params),
+                                          TxInputsFromUtxos(*utxos_));
+      solved_transaction = solver.Solve();
+    } else {
+      CardanoMaxTokenSendSolver solver(std::move(builder_params),
+                                       TxInputsFromUtxos(*utxos_));
+      solved_transaction = solver.Solve();
+    }
   } else {
-    CardanoKnapsackSolver solver(transaction_, *change_address_,
-                                 *latest_epoch_parameters_,
+    CardanoKnapsackSolver solver(std::move(builder_params),
                                  TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   }
@@ -143,12 +139,7 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
   CHECK(CardanoTransactionSerializer::ValidateAmounts(
       *solved_transaction, *latest_epoch_parameters_));
 
-  transaction_ = std::move(*solved_transaction);
-  if (g_arrange_tx_for_test) {
-    transaction_.ArrangeTransactionForTesting();  // IN-TEST
-  }
-
-  StopWithResult(std::move(transaction_));
+  StopWithResult(std::move(*solved_transaction));
 }
 
 void CardanoCreateTransactionTask::StopWithError(std::string error_string) {

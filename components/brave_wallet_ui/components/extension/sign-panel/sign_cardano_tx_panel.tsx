@@ -183,6 +183,18 @@ export const SignCardanoTxPanel = ({
                     <DetailText>{`${input.outpointTxid}:${input.outpointIndex}`}</DetailText>
                     <LabelText>{getLocale('braveWalletValue')}:</LabelText>
                     <DetailText>{`${input.value ? input.value : 'N/A'}`}</DetailText>
+                    {input.tokens.map((token) => {
+                      return (
+                        <DetailColumn key={token.tokenIdHex}>
+                          <LabelText>
+                            {getLocale('braveWalletToken')}:
+                          </LabelText>
+                          <DetailText>
+                            {token.tokenIdHex}:{`${token.value}`}
+                          </DetailText>
+                        </DetailColumn>
+                      )
+                    })}
                     <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
                     <DetailText>{`${input.address ? input.address : 'N/A'}`}</DetailText>
                     <DividerLine />
@@ -203,6 +215,18 @@ export const SignCardanoTxPanel = ({
                     <DetailText>{`${output.address}`}</DetailText>
                     <LabelText>{getLocale('braveWalletValue')}:</LabelText>
                     <DetailText>{`${output.value}`}</DetailText>
+                    {output.tokens.map((token) => {
+                      return (
+                        <DetailColumn key={token.tokenIdHex}>
+                          <LabelText>
+                            {getLocale('braveWalletToken')}:
+                          </LabelText>
+                          <DetailText>
+                            {token.tokenIdHex}:{`${token.value}`}
+                          </DetailText>
+                        </DetailColumn>
+                      )
+                    })}
                   </DetailColumn>
                 )
               })}

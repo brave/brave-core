@@ -485,11 +485,16 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
   // Fill destination address and value of known inputs.
   for (const auto& input : decoded_tx.tx.tx_body.inputs) {
     auto& inserted = inputs.emplace_back(mojom::CardanoTxInput::New(
-        "", base::HexEncode(input.tx_hash), input.index, 0u));
+        "", base::HexEncode(input.tx_hash), input.index, 0u,
+        std::vector<mojom::CardanoTxTokenValuePtr>()));
 
     if (auto utxo = FindUtxoByOutpoint(utxos, input)) {
       inserted->address = utxo->address_to.ToString();
       inserted->value = utxo->lovelace_amount;
+      for (auto& token : utxo->tokens) {
+        inserted->tokens.push_back(mojom::CardanoTxTokenValue::New(
+            base::HexEncodeLower(token.first), token.second));
+      }
     }
   }
 
@@ -499,7 +504,12 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
       return nullptr;
     }
     outputs.emplace_back(mojom::CardanoTxOutput::New(
-        cardano_address->ToString(), output.amount));
+        cardano_address->ToString(), output.amount,
+        std::vector<mojom::CardanoTxTokenValuePtr>()));
+    for (auto& token : output.tokens) {
+      outputs.back()->tokens.push_back(mojom::CardanoTxTokenValue::New(
+          base::HexEncodeLower(token.token_id), token.amount));
+    }
   }
 
   return mojom::SignCardanoTransactionRequest::New(

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_lovelace_send_solver.h"
 
 #include <utility>
 
@@ -33,30 +33,25 @@ uint64_t MinFeeForTxSize(uint64_t min_fee_coefficient,
 
 }  // namespace
 
-class CardanoMaxSendSolverUnitTest : public testing::Test {
+class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
  public:
-  CardanoMaxSendSolverUnitTest() = default;
-  ~CardanoMaxSendSolverUnitTest() override = default;
+  CardanoMaxLovelaceSendSolverUnitTest() = default;
+  ~CardanoMaxLovelaceSendSolverUnitTest() override = default;
 
  protected:
-  CardanoTransaction MakeMockTransaction(uint32_t receive_index = 123) {
-    CardanoTransaction transaction;
-    transaction.set_to(*CardanoAddress::FromString(
+  TxBuilderParms MakeTxBuilderParams() {
+    TxBuilderParms builder_params;
+    builder_params.send_to_address = *CardanoAddress::FromString(
         keyring_
-            .GetAddress(1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal,
-                                               receive_index))
-            ->address_string));
-    transaction.set_invalid_after(12345);
+            .GetAddress(
+                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 123))
+            ->address_string);
+    builder_params.invalid_after = 12345;
+    builder_params.epoch_parameters = latest_epoch_parameters();
+    builder_params.amount_to_send = std::nullopt;
+    builder_params.change_address = GetChangeAddress();
 
-    CardanoTransaction::TxOutput target_output;
-    target_output.type = CardanoTransaction::TxOutputType::kTarget;
-    target_output.amount = transaction.amount();
-    target_output.address = transaction.to();
-    transaction.AddOutput(std::move(target_output));
-
-    transaction.set_sending_max_amount(true);
-
-    return transaction;
+    return builder_params;
   }
 
   CardanoTransaction::TxInput MakeMockTxInput(uint64_t amount) {
@@ -103,32 +98,30 @@ class CardanoMaxSendSolverUnitTest : public testing::Test {
   uint32_t next_input_id_ = 0;
 };
 
-TEST_F(CardanoMaxSendSolverUnitTest, NoInputs) {
-  auto base_tx = MakeMockTransaction();
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoInputs) {
+  auto builder_params = MakeTxBuilderParams();
 
-  CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                              latest_epoch_parameters(), {});
+  CardanoMaxLovelaceSendSolver solver(builder_params, {});
 
   // Can't send exactly what we have as we need to add some fee.
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
             solver.Solve().error());
 }
 
-TEST_F(CardanoMaxSendSolverUnitTest, NotEnoughInputsForFee) {
-  auto base_tx = MakeMockTransaction();
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NotEnoughInputsForFee) {
+  auto builder_params = MakeTxBuilderParams();
 
   std::vector<CardanoTransaction::TxInput> inputs;
   inputs.push_back(MakeMockTxInput(send_amount()));
-  CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                              latest_epoch_parameters(), inputs);
+  CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
 
   // Can't send exact amount of coin we have as we need to add some fee.
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
             solver.Solve().error());
 }
 
-TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
-  auto base_tx = MakeMockTransaction();
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoChangeNeeded) {
+  auto builder_params = MakeTxBuilderParams();
 
   {
     uint32_t min_fee =
@@ -138,8 +131,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -162,8 +154,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     uint32_t total_input = 2 * send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -186,8 +177,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     uint32_t total_input = send_amount() - 1000 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -210,8 +200,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     uint32_t total_input = send_amount() / 10 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_FALSE(tx.has_value());
 
@@ -219,8 +208,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
   }
 }
 
-TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
-  auto base_tx = MakeMockTransaction();
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, ManyInputs) {
+  auto builder_params = MakeTxBuilderParams();
 
   uint32_t min_fee =
       MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 3886u);
@@ -233,8 +222,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
     for (int i = 1; i < 100; ++i) {
       inputs.push_back(MakeMockTxInput(send_amount()));
     }
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -251,7 +239,7 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
   }
 }
 
-TEST_F(CardanoMaxSendSolverUnitTest, TokensGoToChange) {
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, TokensGoToChange) {
   auto foo_token = GetMockTokenId("foo");
   auto bar_token = GetMockTokenId("bar");
   auto baz_token = GetMockTokenId("baz");
@@ -281,10 +269,9 @@ TEST_F(CardanoMaxSendSolverUnitTest, TokensGoToChange) {
         MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 497u);
     EXPECT_EQ(fee, 177249u);
 
-    auto base_tx = MakeMockTransaction();
+    auto builder_params = MakeTxBuilderParams();
 
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -319,10 +306,9 @@ TEST_F(CardanoMaxSendSolverUnitTest, TokensGoToChange) {
         MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 460u);
     EXPECT_EQ(fee, 175621u);
 
-    auto base_tx = MakeMockTransaction();
+    auto builder_params = MakeTxBuilderParams();
 
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -356,10 +342,9 @@ TEST_F(CardanoMaxSendSolverUnitTest, TokensGoToChange) {
         MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 447u);
     EXPECT_EQ(fee, 175049u);
 
-    auto base_tx = MakeMockTransaction();
+    auto builder_params = MakeTxBuilderParams();
 
-    CardanoMaxSendSolver solver(base_tx, GetChangeAddress(),
-                                latest_epoch_parameters(), inputs);
+    CardanoMaxLovelaceSendSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 

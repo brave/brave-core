@@ -19,7 +19,10 @@ import {
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getTransactionTypeName } from '../../../utils/tx-utils'
+import {
+  getTransactionTypeName,
+  isCardanoTransaction,
+} from '../../../utils/tx-utils'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
 import { findAccountByAddress } from '../../../utils/account-utils'
 import { getSolanaProgramIdName } from '../../../utils/solana-program-id-utils'
@@ -43,6 +46,83 @@ interface Props {
   instructions?: TypedSolanaInstructionWithParams[]
 }
 
+interface CardanoTransactionDetailsProps {
+  cardanoTxData: BraveWallet.CardanoTxData
+}
+
+function CardanoTransactionDetails({
+  cardanoTxData,
+}: CardanoTransactionDetailsProps) {
+  return (
+    <StyledWrapper>
+      {cardanoTxData.inputs?.map((input, index) => {
+        return (
+          <DetailColumn
+            gap='8px'
+            key={'input' + index}
+          >
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletInput')}:</LabelText>
+              <DetailText>{`${index}`}</DetailText>
+            </DetailColumn>
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+              <DetailText>{`${input.value}`}</DetailText>
+            </DetailColumn>
+            {input.tokens.map((token) => {
+              return (
+                <DetailColumn key={token.tokenIdHex}>
+                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <DetailText>
+                    {token.tokenIdHex}:{`${token.value}`}
+                  </DetailText>
+                </DetailColumn>
+              )
+            })}
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+              <DetailText>{`${input.address}`}</DetailText>
+            </DetailColumn>
+            <VerticalDivider />
+          </DetailColumn>
+        )
+      })}
+      {cardanoTxData.outputs?.map((output, index) => {
+        return (
+          <DetailColumn
+            gap='8px'
+            key={'output' + index}
+          >
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletOutput')}:</LabelText>
+              <DetailText>{`${index}`}</DetailText>
+            </DetailColumn>
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+              <DetailText>{`${output.value}`}</DetailText>
+            </DetailColumn>
+            {output.tokens.map((token) => {
+              return (
+                <DetailColumn key={token.tokenIdHex}>
+                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <DetailText>
+                    {token.tokenIdHex}:{`${token.value}`}
+                  </DetailText>
+                </DetailColumn>
+              )
+            })}
+            <DetailColumn>
+              <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+              <DetailText>{`${output.address}`}</DetailText>
+            </DetailColumn>
+            <VerticalDivider />
+          </DetailColumn>
+        )
+      })}
+    </StyledWrapper>
+  )
+}
+
 export function PendingTransactionDetails(props: Props) {
   const { transactionInfo, instructions } = props
   const { txArgs, txParams, txType, txDataUnion } = transactionInfo
@@ -52,15 +132,14 @@ export function PendingTransactionDetails(props: Props) {
   const sendOptions = solData?.sendOptions
   const btcData = txDataUnion.btcTxData
   const zecData = txDataUnion.zecTxData
-  const adaData = txDataUnion.cardanoTxData
-  const btcZecOrAdaData = btcData || zecData || adaData
+  const btcOrZecData = btcData || zecData
   const dataArray = txDataUnion.ethTxData1559?.baseData.data || []
 
-  // BTC, ZEC, Cardano
-  if (btcZecOrAdaData) {
+  // BTC, ZEC
+  if (btcOrZecData) {
     return (
       <StyledWrapper>
-        {btcZecOrAdaData.inputs?.map((input, index) => {
+        {btcOrZecData.inputs?.map((input, index) => {
           return (
             <DetailColumn
               gap='8px'
@@ -82,7 +161,7 @@ export function PendingTransactionDetails(props: Props) {
             </DetailColumn>
           )
         })}
-        {btcZecOrAdaData.outputs?.map((output, index) => {
+        {btcOrZecData.outputs?.map((output, index) => {
           return (
             <DetailColumn
               gap='8px'
@@ -105,6 +184,15 @@ export function PendingTransactionDetails(props: Props) {
           )
         })}
       </StyledWrapper>
+    )
+  }
+
+  // Cardano
+  if (isCardanoTransaction(transactionInfo)) {
+    return (
+      <CardanoTransactionDetails
+        cardanoTxData={transactionInfo.txDataUnion.cardanoTxData}
+      />
     )
   }
 

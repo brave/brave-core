@@ -178,14 +178,14 @@ void CardanoWalletService::OnGetUtxosTaskDone(
 void CardanoWalletService::CreateCardanoTransaction(
     mojom::AccountIdPtr account_id,
     const CardanoAddress& address_to,
-    uint64_t amount,
-    bool sending_max_amount,
+    std::optional<uint64_t> amount_to_send,
+    std::optional<cardano_rpc::TokenId> token_to_send,
     CardanoCreateTransactionTaskCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
   auto [task_it, inserted] = create_transaction_tasks_.insert(
       std::make_unique<CardanoCreateTransactionTask>(
-          *this, account_id, address_to, amount, sending_max_amount));
+          *this, account_id, address_to, amount_to_send, token_to_send));
   CHECK(inserted);
   auto* task_ptr = task_it->get();
 

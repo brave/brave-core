@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_lovelace_send_solver.h"
 
 #include <utility>
 
@@ -20,10 +20,10 @@ namespace {
 
 // If any of inputs have tokens attached to corresponding utxos make sure there
 // is a valid change output having these tokens set to it.
-bool MaybeSetupChangeOutputForTokens(
-    CardanoTransaction& tx,
-    const CardanoAddress& change_address,
-    const cardano_rpc::EpochParameters& latest_epoch_parameters) {
+bool SetupOutputs(CardanoTransaction& tx,
+                  const TxBuilderParms& builder_params) {
+  tx.SetupTargetOutput(builder_params.send_to_address);
+
   auto tokens = tx.GetTotalInputTokensAmount();
   if (!tokens) {
     return false;
@@ -32,7 +32,7 @@ bool MaybeSetupChangeOutputForTokens(
     return true;
   }
 
-  tx.SetupChangeOutput(change_address);
+  tx.SetupChangeOutput(builder_params.change_address);
   if (!tx.EnsureTokensInChangeOutput()) {
     return false;
   }
@@ -40,7 +40,7 @@ bool MaybeSetupChangeOutputForTokens(
   // Adjust change output amount so it can cover size of output increased by
   // tokens.
   auto min_ada_required = CardanoTransactionSerializer::CalcMinAdaRequired(
-      *tx.ChangeOutput(), latest_epoch_parameters);
+      *tx.ChangeOutput(), builder_params.epoch_parameters);
   if (!min_ada_required.has_value()) {
     return false;
   }
@@ -51,41 +51,33 @@ bool MaybeSetupChangeOutputForTokens(
 
 }  // namespace
 
-CardanoMaxSendSolver::CardanoMaxSendSolver(
-    CardanoTransaction base_transaction,
-    CardanoAddress change_address,
-    cardano_rpc::EpochParameters latest_epoch_parameters,
+CardanoMaxLovelaceSendSolver::CardanoMaxLovelaceSendSolver(
+    TxBuilderParms builder_params,
     std::vector<CardanoTransaction::TxInput> inputs)
-    : base_transaction_(std::move(base_transaction)),
-      change_address_(std::move(change_address)),
-      latest_epoch_parameters_(std::move(latest_epoch_parameters)),
-      inputs_(std::move(inputs)) {}
-CardanoMaxSendSolver::~CardanoMaxSendSolver() = default;
+    : builder_params_(std::move(builder_params)), inputs_(std::move(inputs)) {}
+CardanoMaxLovelaceSendSolver::~CardanoMaxLovelaceSendSolver() = default;
 
-base::expected<CardanoTransaction, std::string> CardanoMaxSendSolver::Solve() {
-  DCHECK_EQ(base_transaction_.inputs().size(), 0u);
-  DCHECK(base_transaction_.TargetOutput());
-  DCHECK(!base_transaction_.ChangeOutput());
-  DCHECK(base_transaction_.sending_max_amount());
+base::expected<CardanoTransaction, std::string>
+CardanoMaxLovelaceSendSolver::Solve() {
+  CHECK(!builder_params_.amount_to_send);
+  CHECK(!builder_params_.token_to_send);
 
-  auto tx = base_transaction_;
+  CardanoTransaction tx;
+  tx.set_invalid_after(builder_params_.invalid_after);
   tx.AddInputs(inputs_);
 
-  if (!MaybeSetupChangeOutputForTokens(tx, change_address_,
-                                       latest_epoch_parameters_)) {
+  if (!SetupOutputs(tx, builder_params_)) {
     return base::unexpected(WalletInternalErrorMessage());
   }
 
   auto found_valid_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-      tx, latest_epoch_parameters_);
+      std::move(tx), builder_params_.epoch_parameters, true);
   if (!found_valid_tx) {
     return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
   CHECK(CardanoTransactionSerializer::ValidateAmounts(
-      *found_valid_tx, latest_epoch_parameters_));
-
-  found_valid_tx->set_amount(found_valid_tx->TargetOutput()->amount);
+      *found_valid_tx, builder_params_.epoch_parameters));
 
   return base::ok(*found_valid_tx);
 }

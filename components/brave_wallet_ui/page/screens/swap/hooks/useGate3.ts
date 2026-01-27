@@ -357,6 +357,7 @@ export function useGate3(params: SwapParams) {
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
+            tokenId: undefined,
             swapInfo: {
               sourceCoin: fromToken.coin,
               sourceChainId: fromToken.chainId,

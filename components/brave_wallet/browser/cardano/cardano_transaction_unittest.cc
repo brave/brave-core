@@ -137,11 +137,13 @@ TEST(CardanoTransaction, Value) {
   CardanoTransaction::TxOutput output1;
   output1.address = *CardanoAddress::FromString(kAddress1);
   output1.amount = 5;
+  output1.type = CardanoTransaction::TxOutputType::kTarget;
   tx.AddOutput(std::move(output1));
 
   CardanoTransaction::TxOutput output2;
   output2.address = *CardanoAddress::FromString(kAddress2);
   output2.amount = 50;
+  output2.type = CardanoTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness1;
@@ -152,10 +154,7 @@ TEST(CardanoTransaction, Value) {
   witness2.signature.fill(3);
   tx.SetWitnesses({witness1, witness2});
 
-  tx.set_to(*CardanoAddress::FromString(kAddress1));
-  tx.set_amount(12345);
   tx.set_invalid_after(777);
-  tx.set_sending_max_amount(true);
   tx.set_fee(1000);
 
   auto parsed = CardanoTransaction::FromValue(tx.ToValue());
@@ -164,11 +163,10 @@ TEST(CardanoTransaction, Value) {
   EXPECT_EQ(parsed->inputs(), tx.inputs());
   EXPECT_EQ(parsed->outputs(), tx.outputs());
   EXPECT_EQ(parsed->witnesses(), tx.witnesses());
-  EXPECT_EQ(parsed->to(), tx.to());
-  EXPECT_EQ(parsed->amount(), tx.amount());
   EXPECT_EQ(parsed->fee(), tx.fee());
   EXPECT_EQ(parsed->invalid_after(), tx.invalid_after());
-  EXPECT_EQ(parsed->sending_max_amount(), tx.sending_max_amount());
+  EXPECT_EQ(parsed->GetToAddress()->ToString(), kAddress1);
+  EXPECT_FALSE(parsed->IsSendTokenTransaction());
 
   // Legacy format without fee.
   auto value_no_fee = tx.ToValue();

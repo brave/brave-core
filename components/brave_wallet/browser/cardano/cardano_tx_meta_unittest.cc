@@ -10,7 +10,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -24,8 +23,6 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
 
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
-  tx->set_amount(200000);
-  tx->set_to(*CardanoAddress::FromString(kMockCardanoAddress2));
   CardanoTransaction::TxInput input;
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress1);
   input.utxo_value = 200000;
@@ -62,7 +59,7 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   const auto& tx_data = ti->tx_data_union->get_cardano_tx_data();
 
   EXPECT_EQ(tx_data->to, kMockCardanoAddress2);
-  EXPECT_EQ(tx_data->amount, 200000ULL);
+  EXPECT_EQ(tx_data->sending_amount, 199000ULL);
   EXPECT_EQ(tx_data->fee, 1000ULL);
   EXPECT_EQ(tx_data->inputs.size(), 1u);
   EXPECT_EQ(tx_data->inputs[0]->address, kMockCardanoAddress1);
@@ -79,8 +76,6 @@ TEST(CardanoTxMeta, ToValue) {
 
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
-  tx->set_amount(200000);
-  tx->set_to(*CardanoAddress::FromString(kMockCardanoAddress1));
 
   CardanoTransaction::TxInput input;
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);

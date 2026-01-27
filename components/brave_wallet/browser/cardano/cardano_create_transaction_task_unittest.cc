@@ -11,8 +11,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -110,7 +108,7 @@ class CardanoCreateTransactionTaskUnitTest : public testing::Test {
 TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, std::nullopt);
 
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
   task.Start(tx_future.GetCallback());
@@ -133,7 +131,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
   {
     CardanoCreateTransactionTask task(
         *cardano_wallet_service_, account_id(),
-        *CardanoAddress::FromString(kMockCardanoAddress1), 0, false);
+        *CardanoAddress::FromString(kMockCardanoAddress1), 0, std::nullopt);
 
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
@@ -145,7 +143,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     CardanoCreateTransactionTask task(
         *cardano_wallet_service_, account_id(),
         *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue / 2,
-        false);
+        std::nullopt);
 
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
@@ -157,7 +155,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     CardanoCreateTransactionTask task(
         *cardano_wallet_service_, account_id(),
         *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue - 1,
-        false);
+        std::nullopt);
 
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
@@ -169,7 +167,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     CardanoCreateTransactionTask task(
         *cardano_wallet_service_, account_id(),
         *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue,
-        false);
+        std::nullopt);
 
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
@@ -186,7 +184,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     CardanoCreateTransactionTask task(
         *cardano_wallet_service_, account_id(),
         *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue + 1,
-        false);
+        std::nullopt);
 
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
@@ -203,7 +201,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
 TEST_F(CardanoCreateTransactionTaskUnitTest, MaxValue) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 0, true);
+      *CardanoAddress::FromString(kMockCardanoAddress1), std::nullopt,
+      std::nullopt);
 
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
   task.Start(tx_future.GetCallback());
@@ -219,7 +218,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, MaxValue) {
 TEST_F(CardanoCreateTransactionTaskUnitTest, InsufficientBalance) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 10000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 10000000,
+      std::nullopt);
 
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
   task.Start(tx_future.GetCallback());
@@ -233,7 +233,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, EmptyAccount) {
       GetAccountUtils()
           .EnsureAccount(mojom::KeyringId::kCardanoMainnet, 33)
           ->account_id,
-      *CardanoAddress::FromString(kMockCardanoAddress1), 10000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 10000000,
+      std::nullopt);
 
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
   task.Start(tx_future.GetCallback());
@@ -244,7 +245,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, EmptyAccount) {
 TEST_F(CardanoCreateTransactionTaskUnitTest, FailedLatestEpochParameters) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, std::nullopt);
 
   cardano_test_rpc_server_->set_fail_latest_epoch_parameters_request(true);
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
@@ -256,7 +257,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FailedLatestEpochParameters) {
 TEST_F(CardanoCreateTransactionTaskUnitTest, FailedLatestBlock) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, std::nullopt);
 
   cardano_test_rpc_server_->set_fail_latest_block_request(true);
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
@@ -268,7 +269,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FailedLatestBlock) {
 TEST_F(CardanoCreateTransactionTaskUnitTest, FailedUtxo) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),
-      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, false);
+      *CardanoAddress::FromString(kMockCardanoAddress1), 1000000, std::nullopt);
 
   cardano_test_rpc_server_->set_fail_address_utxo_request(true);
   TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;

@@ -686,6 +686,7 @@ BraveWallet.SignCardanoTransactionRequest = {
         'a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925',
       outpointIndex: 0,
       value: BigInt(10000000),
+      tokens: [],
     },
     {
       address:
@@ -694,6 +695,7 @@ BraveWallet.SignCardanoTransactionRequest = {
         'addr1v83gkkw3nqzakg5xynlurqcfqhgd65vkfvf5xv8tx25ufds2yvy2h',
       outpointIndex: 1,
       value: BigInt(12345678),
+      tokens: [],
     },
   ],
   outputs: [
@@ -701,11 +703,13 @@ BraveWallet.SignCardanoTransactionRequest = {
       address:
         'addr1qy8ampwn98c9y6gcea9cturevw2njm9pcs8apt8aunljymuy88wktx2awyus6hccdu76k3n6gjvkvl3zunyc47k4tgns5k87m6',
       value: BigInt(10000000),
+      tokens: [],
     },
     {
       address:
         'addr1q9dl94auumrxp5vxtlxq3e24tfugw6fx05tvqd8rueaa4vz5d8cwkwqtlz2xuvequaczm98tccrcrxfeeu4049fxdqgqccrkze',
       value: BigInt(1234567),
+      tokens: [],
     },
   ],
 }

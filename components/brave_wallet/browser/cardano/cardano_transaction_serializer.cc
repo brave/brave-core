@@ -142,37 +142,38 @@ bool CardanoTransactionSerializer::ValidateMinValue(
 // static
 std::optional<CardanoTransaction>
 CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-    const CardanoTransaction& base_tx,
-    const cardano_rpc::EpochParameters& epoch_parameters) {
-  CardanoTransaction result = base_tx;
-
-  base::CheckedNumeric<uint64_t> spendable_amount =
-      result.GetTotalInputsAmount();
-  if (result.sending_max_amount() && result.ChangeOutput()) {
-    CHECK_GT(result.ChangeOutput()->amount, 0u);
-    // We are sending max amount but have change output for tokens. This output
-    // has minimal ADA value set so we need to subtract it from spendable
-    // amount.
-    spendable_amount =
-        base::CheckSub(spendable_amount, result.ChangeOutput()->amount);
-  }
-
+    CardanoTransaction result,
+    const cardano_rpc::EpochParameters& epoch_parameters,
+    bool adjust_target_amount) {
   // These values are not supposed to be set before.
   CHECK_EQ(result.fee(), 0u);
-  if (result.sending_max_amount()) {
-    CHECK_EQ(result.TargetOutput()->amount, 0u);
-  }
   CHECK(result.witnesses().empty());
+
+  // Output amount we are going to adjust must be initialized as 0.
+  CHECK(result.TargetOutput());
+  CardanoTransaction::TxOutput* adjusted_output = nullptr;
+  if (adjust_target_amount) {
+    adjusted_output = result.TargetOutput();
+  } else if (result.ChangeOutput()) {
+    // There might be no change output, so we'll just set fee.
+    adjusted_output = result.ChangeOutput();
+  }
+  if (adjusted_output) {
+    CHECK_EQ(adjusted_output->amount, 0u);
+  }
+
+  // Do not distribute input amount which already designated to outputs.
+  base::CheckedNumeric<uint64_t> amount_to_distribute =
+      result.GetTotalInputsAmount();
+  amount_to_distribute -= result.TargetOutput()->amount;
+  if (result.ChangeOutput()) {
+    amount_to_distribute -= result.ChangeOutput()->amount;
+  }
 
   // Add dummy witness set based on number of signatures we need. This ensures
   // result transaction could be encoded to its final size and we can calculate
   // correct fee for it.
   SetupDummyWitnessSet(result);
-
-  // We must move all tokens from inputs into change output.
-  if (!result.EnsureTokensInChangeOutput()) {
-    return std::nullopt;
-  }
 
   // This is starting fee based on minimum size of tx as fee and outputs are 0.
   if (auto start_fee = CardanoTransactionSerializer::CalcMinTransactionFee(
@@ -183,16 +184,11 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   }
 
   for (int i = 0; i < kFeeSearchMaxIterations; i++) {
-    // Adjust outputs based on current tx fee.
-    if (result.sending_max_amount()) {
-      if (!base::CheckSub(spendable_amount, result.fee())
-               .AssignIfValid(&result.TargetOutput()->amount)) {
-        return std::nullopt;
-      }
-    } else if (result.ChangeOutput()) {
-      if (!base::CheckSub(spendable_amount, result.fee(),
-                          result.TargetOutput()->amount)
-               .AssignIfValid(&result.ChangeOutput()->amount)) {
+    // Adjust output amount based on current tx fee:
+    // Basically: adjusted_output->amount = amount_to_distribute - fee
+    if (adjusted_output) {
+      if (!base::CheckSub(amount_to_distribute, result.fee())
+               .AssignIfValid(&adjusted_output->amount)) {
         return std::nullopt;
       }
     }
