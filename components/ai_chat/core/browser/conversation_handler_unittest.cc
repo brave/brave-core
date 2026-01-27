@@ -4280,7 +4280,8 @@ TEST_F(ConversationHandlerUnitTest,
 TEST_F(ConversationHandlerUnitTest,
        SubmitHumanConversationEntry_TriggersConversationTitle) {
   // Test the title generation would be triggered for engines requiring
-  // title generation when submitting the first human turn.
+  // title generation when submitting the first human turn. Title generation
+  // happens in the background and doesn't block request completion.
   conversation_handler_->associated_content_manager()->ClearContent();
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -4298,6 +4299,9 @@ TEST_F(ConversationHandlerUnitTest,
   // generation
   base::RunLoop run_loop;
   testing::Sequence assistant_title_seq;
+
+  // Store title callback to execute after request completes
+  EngineConsumer::GenerationCompletedCallback stored_title_callback;
 
   // API request progress callbacks
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -4325,20 +4329,21 @@ TEST_F(ConversationHandlerUnitTest,
                         std::nullopt)));
               })));
 
-  // Then title generation is triggered
+  // Then title generation is triggered (store callback for later execution)
   EXPECT_CALL(*engine, GenerateConversationTitle)
       .InSequence(assistant_title_seq)
       .WillOnce(testing::WithArg<2>(
-          [](EngineConsumer::GenerationCompletedCallback callback) {
-            // Mock successful title generation
-            std::move(callback).Run(
-                base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewConversationTitleEvent(
-                        mojom::ConversationTitleEvent::New("Generated Title")),
-                    std::nullopt)));
+          [this, &stored_title_callback](
+              EngineConsumer::GenerationCompletedCallback callback) {
+            // At this point, request is already complete (no longer in
+            // progress)
+            EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
+            // Store callback, don't execute yet - simulates async network
+            // request
+            stored_title_callback = std::move(callback);
           }));
 
-  // Title change notification
+  // Title change notification (happens after we manually call callback)
   EXPECT_CALL(observer, OnConversationTitleChanged(_, StrEq("Generated Title")))
       .Times(1);
 
@@ -4346,6 +4351,15 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
   run_loop.Run();
+
+  // Execute title callback after OnAPIRequestInProgress(false) is called. This
+  // simulates the async network response arriving later, verifying title
+  // generation doesn't block request completion.
+  std::move(stored_title_callback)
+      .Run(base::ok(EngineConsumer::GenerationResultData(
+          mojom::ConversationEntryEvent::NewConversationTitleEvent(
+              mojom::ConversationTitleEvent::New("Generated Title")),
+          std::nullopt)));
 
   // Verify conversation has 2 turns (human + assistant)
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -4513,6 +4527,9 @@ TEST_F(ConversationHandlerUnitTest,
 
   base::RunLoop run_loop;
 
+  // Store title callback to execute after request completes
+  EngineConsumer::GenerationCompletedCallback stored_title_callback;
+
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
           testing::WithArg<6>(
@@ -4533,11 +4550,14 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_CALL(*engine, GenerateConversationTitle)
       .WillOnce(testing::WithArg<2>(
-          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
-            // Mock title generation failure
-            std::move(callback).Run(
-                base::unexpected(mojom::APIError::ConnectionIssue));
-            run_loop.QuitWhenIdle();
+          [this, &stored_title_callback](
+              EngineConsumer::GenerationCompletedCallback callback) {
+            // At this point, request is already complete (no longer in
+            // progress)
+            EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
+            // Store callback, don't execute yet - simulates async network
+            // request
+            stored_title_callback = std::move(callback);
           }));
 
   // Title failure should be handled silently - no error should be set
@@ -4546,13 +4566,19 @@ TEST_F(ConversationHandlerUnitTest,
       .Times(testing::AtLeast(1))
       .InSequence(request_in_progress_seq);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
-      .Times(testing::AtLeast(1))
-      .InSequence(request_in_progress_seq);
+      .InSequence(request_in_progress_seq)
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
   EXPECT_CALL(observer, OnConversationTitleChanged).Times(0);
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
   run_loop.Run();
+
+  // Execute title callback after OnAPIRequestInProgress(false) is called. Even
+  // though title generation fails, it doesn't affect the main request which
+  // already completed successfully.
+  std::move(stored_title_callback)
+      .Run(base::unexpected(mojom::APIError::ConnectionIssue));
 
   // Verify conversation still completes successfully despite title failure
   const auto& history = conversation_handler_->GetConversationHistory();

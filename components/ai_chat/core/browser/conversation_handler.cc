@@ -1607,18 +1607,6 @@ void ConversationHandler::OnEngineCompletionComplete(
   }
   OnConversationEntryAdded(chat_history_.back());
 
-  // Check if we need title generation (after assistant response is added)
-  if (engine_->RequiresClientSideTitleGeneration() &&
-      chat_history_.size() == 2) {
-    // Keep the request active and complete the generation in OnTitleGenerated.
-    engine_->GenerateConversationTitle(
-        associated_content_manager_->GetCachedContentsMap(), chat_history_,
-        base::BindOnce(&ConversationHandler::OnTitleGenerated,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  // Complete the generation if we don't need title generation.
   CompleteGeneration(true);
 }
 
@@ -1630,14 +1618,24 @@ void ConversationHandler::OnTitleGenerated(
     OnConversationTitleChanged(
         result->event->get_conversation_title_event()->title);
   }
-
-  CompleteGeneration(true);
 }
 
 void ConversationHandler::CompleteGeneration(bool success) {
   is_request_in_progress_ = false;
   OnAPIRequestInProgressChanged();
+
   if (success) {
+    // Trigger title generation in background after request completes but
+    // before pending requests or tool handling. This is independent of request
+    // progress.
+    if (engine_->RequiresClientSideTitleGeneration() &&
+        chat_history_.size() == 2) {
+      engine_->GenerateConversationTitle(
+          associated_content_manager_->GetCachedContentsMap(), chat_history_,
+          base::BindOnce(&ConversationHandler::OnTitleGenerated,
+                         weak_ptr_factory_.GetWeakPtr()));
+    }
+
     MaybePopPendingRequests();
     if (!MaybeRespondToNextToolUseRequest()) {
       // Inform tool providers that there are no more tool use requests to
