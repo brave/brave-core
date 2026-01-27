@@ -14,6 +14,8 @@ import android.view.animation.PathInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import org.chromium.build.annotations.NullMarked;
+
 /**
  * Drives programmatic {@link ViewPager2} transitions with a smooth, elastic feel by animating its
  * internal {@link RecyclerView} directly. This keeps the scroll math deterministic and lets us add
@@ -21,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
  * {@link ViewPager2} is built on top of {@link RecyclerView}, so using its internal child here is
  * safe and consistent with the platform implementation.
  */
+@NullMarked
 public class PageBounceAnimator {
    /** Duration of the page transition animation. */
    private static final int ANIMATION_DURATION_MS = 520;

@@ -697,4 +697,10 @@
         <item name="android:textColor">@color/text_interactive</item>
         <item name="android:background">@drawable/button_outline</item>
     </style>
+
+    <style name="BraveCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/brave_checkbox_background_color_selector</item>
+        <item name="buttonIconTint">@color/brave_checkbox_color_selector</item>
+        <item name="android:textSize">@dimen/default_regular</item>
+    </style>
 </resources>
