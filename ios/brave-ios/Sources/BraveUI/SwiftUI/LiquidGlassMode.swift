@@ -35,11 +35,9 @@ extension UIView {
 }
 
 struct LiquidGlassLayoutTrafficLightPadding: ViewModifier {
-  let leadingInset: CGFloat = 8
   func body(content: Content) -> some View {
     if #available(iOS 26.0, *) {
       content
-        .padding(.leading, leadingInset)
         .containerCornerOffset(.leading, sizeToFit: true)
     } else {
       content
