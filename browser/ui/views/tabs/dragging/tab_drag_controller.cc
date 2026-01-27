@@ -225,15 +225,6 @@ void TabDragController::DetachAndAttachToNewContext(
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.
   attached_context_->ForceLayout();
-
-  std::vector<TabSlotView*> views(drag_data_.tab_drag_data_.size());
-  for (size_t i = 0; i < drag_data_.tab_drag_data_.size(); ++i) {
-    views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
-  }
-
-  attached_context_->LayoutDraggedViewsAt(
-      std::move(views), drag_data_.source_view_drag_data()->attached_view,
-      GetCursorScreenPoint(), false);
 }
 
 gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
