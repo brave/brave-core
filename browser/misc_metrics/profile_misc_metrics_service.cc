@@ -17,6 +17,7 @@
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -60,6 +61,9 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
           std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
     }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  }
+  if (local_state) {
+    serp_metrics_ = std::make_unique<metrics::SerpMetrics>(local_state);
   }
   auto* profile = Profile::FromBrowserContext(context);
   auto* history_service = HistoryServiceFactory::GetForProfile(
@@ -153,5 +157,9 @@ ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
   return ai_chat_metrics_.get();
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+metrics::SerpMetrics* ProfileMiscMetricsService::GetSerpMetrics() {
+  return serp_metrics_.get();
+}
 
 }  // namespace misc_metrics

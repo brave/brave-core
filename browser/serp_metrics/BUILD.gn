@@ -1,0 +1,57 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("serp_metrics") {
+  sources = [
+    "serp_metrics_tab_helper.cc",
+    "serp_metrics_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
+    "//components/prefs",
+    "//components/search_engines",
+    "//content/public/browser",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "serp_metrics_tab_helper_browsertest.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//brave/components/time_period_storage",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles/keep_alive",
+    "//chrome/browser/sessions",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/keep_alive_registry",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//testing/gtest",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

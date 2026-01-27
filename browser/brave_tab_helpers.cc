@@ -19,6 +19,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -191,6 +192,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
+
+  metrics::SerpMetricsTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);

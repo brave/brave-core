@@ -13,6 +13,10 @@
 class PrefRegistrySimple;
 class PrefService;
 
+namespace metrics {
+class SerpMetrics;
+}  // namespace metrics
+
 namespace misc_metrics {
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -49,6 +53,7 @@ class ProcessMiscMetrics {
 #endif
   DefaultBrowserMonitor* default_browser_monitor();
   UptimeMonitorImpl* uptime_monitor();
+  metrics::SerpMetrics* serp_metrics() const;
 
  private:
 #if !BUILDFLAG(IS_ANDROID)
@@ -63,6 +68,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
+  std::unique_ptr<metrics::SerpMetrics> serp_metrics_;
 };
 
 }  // namespace misc_metrics
