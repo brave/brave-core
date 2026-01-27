@@ -79,7 +79,8 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:textColor="@color/shield_text_color"/>
+            android:textColor="@color/shield_text_color"
+            android:layoutDirection="rtl"/>
 
         <RadioButton
             android:id="@+id/option2"
@@ -87,15 +88,16 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:textColor="@color/shield_text_color"/>
-
+            android:textColor="@color/shield_text_color"
+            android:layoutDirection="rtl"/>
         <RadioButton
             android:id="@+id/option3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:textColor="@color/shield_text_color"/>
+            android:textColor="@color/shield_text_color"
+            android:layoutDirection="rtl"/>
 
     </RadioGroup>
 
