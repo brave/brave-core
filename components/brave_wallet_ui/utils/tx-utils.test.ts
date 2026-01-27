@@ -1312,7 +1312,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: undefined,
         },
       },
@@ -1332,7 +1332,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: Array.from(paddedMemo),
         },
       },
@@ -1348,7 +1348,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: memoBytes,
         },
       },
@@ -1376,7 +1376,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo,
         },
       },
@@ -1396,7 +1396,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: Array.from(noMemoMarker),
         },
       },
@@ -1414,7 +1414,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: arbitraryData,
         },
       },
@@ -1430,7 +1430,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: Array.from(emptyMemo),
         },
       },
@@ -1450,7 +1450,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: Array.from(paddedMemo),
         },
       },
@@ -1466,7 +1466,7 @@ describe('getTransactionMemo', () => {
       ...mockZecSendTransaction,
       txDataUnion: {
         zecTxData: {
-          ...mockZecSendTransaction.txDataUnion.zecTxData!,
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
           memo: invalidUtf8,
         },
       },
