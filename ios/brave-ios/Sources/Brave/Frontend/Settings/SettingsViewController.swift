@@ -998,6 +998,7 @@ class SettingsViewController: TableViewController {
                   request,
                   isPrivate: false
                 )
+                self.dismiss(animated: true)
               }
             ),
             animated: true
