@@ -2183,7 +2183,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_route->gasless = false;
   expected_route->deposit_address =
       "0x16a0FdeB69D821753440dFA092316F54eF95E967";
-  expected_route->deposit_memo = {};
+  expected_route->deposit_memo = std::nullopt;
   expected_route->expires_at = "1767810375";
   expected_route->slippage_percentage = "0.5";
   expected_route->transaction_params =
@@ -2262,7 +2262,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Status) {
   params->destination_coin = mojom::CoinType::SOL;
   params->destination_chain_id = "0x65";
   params->deposit_address = "0xDeposit";
-  params->deposit_memo = {};
+  params->deposit_memo = std::nullopt;
   params->provider = mojom::SwapProvider::kNearIntents;
 
   base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
@@ -2294,7 +2294,7 @@ TEST_F(SwapServiceUnitTest, GetGate3StatusError) {
   params->destination_coin = mojom::CoinType::SOL;
   params->destination_chain_id = "0x65";
   params->deposit_address = "0xDeposit";
-  params->deposit_memo = {};
+  params->deposit_memo = std::nullopt;
   params->provider = mojom::SwapProvider::kNearIntents;
 
   base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
@@ -2322,7 +2322,7 @@ TEST_F(SwapServiceUnitTest, GetGate3StatusParsingError) {
   params->destination_coin = mojom::CoinType::SOL;
   params->destination_chain_id = "0x65";
   params->deposit_address = "0xDeposit";
-  params->deposit_memo = {};
+  params->deposit_memo = std::nullopt;
   params->provider = mojom::SwapProvider::kNearIntents;
 
   base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,

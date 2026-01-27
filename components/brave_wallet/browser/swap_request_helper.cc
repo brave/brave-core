@@ -674,8 +674,12 @@ std::optional<std::string> EncodeStatusParams(
   result.Set("destinationChainId", params->destination_chain_id);
 
   result.Set("depositAddress", params->deposit_address);
-  result.Set("depositMemo", std::string(params->deposit_memo.begin(),
-                                        params->deposit_memo.end()));
+  if (params->deposit_memo) {
+    result.Set("depositMemo", std::string(params->deposit_memo->begin(),
+                                          params->deposit_memo->end()));
+  } else {
+    result.Set("depositMemo", "");
+  }
 
   auto provider = EncodeProvider(params->provider);
   if (!provider) {

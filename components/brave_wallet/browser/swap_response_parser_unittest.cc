@@ -2862,7 +2862,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   ASSERT_TRUE(route->price_impact.has_value());
   EXPECT_EQ(*route->price_impact, "-28.561424569827942");
   EXPECT_FALSE(route->deposit_address.has_value());
-  EXPECT_TRUE(route->deposit_memo.empty());
+  EXPECT_FALSE(route->deposit_memo.has_value());
   EXPECT_FALSE(route->expires_at.has_value());
   EXPECT_TRUE(route->has_post_submit_hook);
   EXPECT_FALSE(route->requires_token_allowance);

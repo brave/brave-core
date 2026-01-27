@@ -1906,7 +1906,7 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3StatusParams) {
   params->destination_coin = mojom::CoinType::SOL;
   params->destination_chain_id = "0x65";
   params->deposit_address = "0xDepositAddress";
-  params->deposit_memo = {};
+  params->deposit_memo = std::nullopt;
   params->provider = mojom::SwapProvider::kNearIntents;
 
   auto encoded = gate3::EncodeStatusParams(std::move(params));

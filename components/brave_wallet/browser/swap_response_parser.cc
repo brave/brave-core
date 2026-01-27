@@ -46,10 +46,14 @@ std::optional<std::string> ParseNullableString(const base::Value& value) {
   return std::nullopt;
 }
 
-std::vector<uint8_t> ParseStringAsBytes(const base::Value& value) {
+std::optional<std::vector<uint8_t>> ParseStringAsBytes(
+    const base::Value& value) {
   auto str = ParseNullableString(value);
-  if (!str || str->empty()) {
-    return {};
+  if (!str) {
+    return std::nullopt;
+  }
+  if (str->empty()) {
+    return std::nullopt;
   }
   return std::vector<uint8_t>(str->begin(), str->end());
 }

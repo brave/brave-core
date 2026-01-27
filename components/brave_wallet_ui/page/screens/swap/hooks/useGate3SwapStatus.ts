@@ -44,7 +44,7 @@ export function useGate3SwapStatus(
   const memoString = transaction ? getTransactionMemo(transaction) : ''
   const depositMemo = memoString
     ? Array.from(new TextEncoder().encode(memoString))
-    : []
+    : undefined
 
   // Only query if we have a valid swap transaction with Gate3 provider
   const shouldQuery =
