@@ -783,7 +783,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         With Brave as default, every link you tap opens with Brave's privacy protections.
       </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
-        Help make Brave better.
+        Help make Brave better
+      </message>
+        <message name="IDS_P3A_SUBTITLE" desc="Text for p3a subtitle onboarding">
+        Let us know which features you're enjoying the most.
       </message>
       <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
         Send diagnostic reports if you experience a crash or freeze.
@@ -794,11 +797,29 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_WDP_TITLE" desc="Text for WDP title onboarding">
         Help Brave Search grow
       </message>
+      <message name="IDS_BLOCK_INTERRUPTIONS" desc="Block video ads title onboarding">
+        Block interruptions when you stream
+      </message>
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
         Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
       </message>
+      <message name="IDS_BLOCK_INTERRUPTIONS_SUBTITLE" desc="Block video ads subtitle onboarding">
+        Block annoying interruptions on your favorite streaming sites.
+      </message>
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help
+      </message>
+      <message name="IDS_SEND_REPORTS_TITLE" desc="Title for sending anonymous diagnostic reports during onboarding phase">
+        Send crash reports
+      </message>
+      <message name="IDS_SEND_REPORTS" desc="Text for sending anonymous diagnostic reports during onboarding phase">
+        Send anonymous diagnostic reports if you experience a crash or freeze.
+      </message>
+      <message name="IDS_SEND_P3A" desc="Text for sending anonymous product insight during onboarding phase">
+        Share completely private and anonymous product insights about what features are being used by Brave's users.
+      </message>
+      <message name="IDS_SEND_P3A_TITLE" desc="Title for sending anonymous product insight during onboarding phase">
+        Private product insights
       </message>
       <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
         Tap to view Brave Shields
