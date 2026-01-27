@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createReducer, createAction } from 'redux-act'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AccountModalTypes, BraveWallet } from '../../constants/types'
 
 export interface AccountsTabState {
@@ -25,78 +25,46 @@ const defaultState: AccountsTabState = {
   accountToRemove: undefined,
 }
 
-export const AccountsTabActions = {
-  setSelectedAccount: createAction<BraveWallet.AccountInfo | undefined>(
-    'setSelectedAccount',
-  ),
-  setShowAccountModal: createAction<boolean>('setShowAccountModal'),
-  setAccountModalType: createAction<AccountModalTypes>('setAccountModalType'),
-  setAccountToRemove: createAction<
-    | {
-        accountId: BraveWallet.AccountId
-        name: string
-      }
-    | undefined
-  >('setAccountToRemove'),
-}
-
-export const createAccountsTabReducer = (initialState: AccountsTabState) => {
-  const reducer = createReducer<AccountsTabState>({}, initialState)
-
-  reducer.on(
-    AccountsTabActions.setSelectedAccount,
-    (
-      state: AccountsTabState,
-      payload: BraveWallet.AccountInfo | undefined,
-    ): AccountsTabState => {
-      return {
-        ...state,
-        selectedAccount: payload,
-      }
+const accountsTabSlice = createSlice({
+  name: 'accountsTab',
+  initialState: defaultState,
+  reducers: {
+    setSelectedAccount(
+      state,
+      action: PayloadAction<BraveWallet.AccountInfo | undefined>,
+    ) {
+      state.selectedAccount = action.payload
     },
-  )
-
-  reducer.on(
-    AccountsTabActions.setShowAccountModal,
-    (state: AccountsTabState, payload: boolean): AccountsTabState => {
-      return {
-        ...state,
-        showAccountModal: payload,
-      }
+    setShowAccountModal(state, action: PayloadAction<boolean>) {
+      state.showAccountModal = action.payload
     },
-  )
-
-  reducer.on(
-    AccountsTabActions.setAccountModalType,
-    (state: AccountsTabState, payload: AccountModalTypes): AccountsTabState => {
-      return {
-        ...state,
-        accountModalType: payload,
-      }
+    setAccountModalType(state, action: PayloadAction<AccountModalTypes>) {
+      state.accountModalType = action.payload
     },
-  )
-
-  reducer.on(
-    AccountsTabActions.setAccountToRemove,
-    (
-      state: AccountsTabState,
-      payload:
+    setAccountToRemove(
+      state,
+      action: PayloadAction<
         | {
             accountId: BraveWallet.AccountId
             name: string
           }
-        | undefined,
-    ): AccountsTabState => {
-      return {
-        ...state,
-        accountToRemove: payload,
-      }
+        | undefined
+      >,
+    ) {
+      state.accountToRemove = action.payload
     },
-  )
+  },
+})
 
-  return reducer
+export const AccountsTabActions = accountsTabSlice.actions
+
+export const createAccountsTabReducer = (initialState: AccountsTabState) => {
+  return (
+    state: AccountsTabState = initialState,
+    action: Parameters<typeof accountsTabSlice.reducer>[1],
+  ) => {
+    return accountsTabSlice.reducer(state, action)
+  }
 }
 
-const accountsTabReducer = createAccountsTabReducer(defaultState)
-
-export default accountsTabReducer
+export default accountsTabSlice.reducer
