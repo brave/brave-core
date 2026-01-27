@@ -5,7 +5,6 @@
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
-import { ThunkDispatch } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
 
 // utils
@@ -22,7 +21,7 @@ import {
 
 // hooks
 import useInterval from '../../../common/hooks/interval'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
@@ -81,7 +80,7 @@ function getAppName(coinType: BraveWallet.CoinType): string {
 
 export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   // redux
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  const dispatch = useAppDispatch()
   const history = useHistory()
 
   const selectedPendingTransactionId = useSafeUISelector(

@@ -4,9 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // types
 import {
@@ -137,7 +139,7 @@ export const PortfolioFungibleAsset = () => {
   const isRewardsToken = assetId ? isRewardsAssetId(assetId) : false
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // Local-Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
