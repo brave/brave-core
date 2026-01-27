@@ -6,6 +6,8 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
+import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
+
 import { getString } from '../../lib/strings'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import {
@@ -17,6 +19,7 @@ import { useVpnState, useVpnActions } from '../../context/vpn_context'
 import { style } from './widgets_panel.style'
 
 export function WidgetsPanel() {
+  const braveNews = useBraveNews()
   const newTabActions = useNewTabActions()
   const rewardsActions = useRewardsActions()
   const vpnActions = useVpnActions()
@@ -24,6 +27,7 @@ export function WidgetsPanel() {
   const showStats = useNewTabState((s) => s.showShieldsStats)
   const talkFeatureEnabled = useNewTabState((s) => s.talkFeatureEnabled)
   const showTalkWidget = useNewTabState((s) => s.showTalkWidget)
+  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
@@ -73,6 +77,18 @@ export function WidgetsPanel() {
             checked={showTalkWidget}
             onChange={({ checked }) => {
               newTabActions.setShowTalkWidget(checked)
+            }}
+          />
+        </div>
+      )}
+      {newsFeatureEnabled && (
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}</label>
+          <Toggle
+            size='small'
+            checked={braveNews.isShowOnNTPPrefEnabled}
+            onChange={({ checked }) => {
+              braveNews.toggleBraveNewsOnNTP(checked)
             }}
           />
         </div>
