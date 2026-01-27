@@ -8,6 +8,7 @@
 
 #include <string_view>
 
+#include "base/time/time.h"
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -60,6 +61,7 @@ struct Request : T {
   }
 
   net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
+  base::TimeDelta timeout_duration;
 };
 
 }  // namespace brave_account::endpoint_client::detail

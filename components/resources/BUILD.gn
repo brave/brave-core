@@ -196,6 +196,16 @@ brave_grit("strings") {
   }
 
   output_dir = "$root_gen_dir/components"
+
+  if (is_android) {
+    create_android_resources = true
+  }
+}
+
+if (is_android) {
+  java_strings_grd_prebuilt("brave_components_strings_grd") {
+    generating_target = ":strings"
+  }
 }
 
 action("about_credits") {
