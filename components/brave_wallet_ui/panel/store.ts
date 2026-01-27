@@ -17,7 +17,7 @@ import { walletApi } from '../common/slices/api.slice'
 import walletReducer from '../common/slices/wallet.slice'
 import pageReducer from '../page/reducers/page_reducer'
 import accountsTabReducer from '../page/reducers/accounts-tab-reducer'
-import { panelReducer } from './reducers/panel_reducer'
+import { panelReducer } from './slices/panel.slice'
 import { uiReducer, defaultUIState } from '../common/slices/ui.slice'
 
 // utils
