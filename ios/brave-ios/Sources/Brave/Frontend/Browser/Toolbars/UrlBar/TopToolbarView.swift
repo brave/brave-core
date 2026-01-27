@@ -523,7 +523,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.height.greaterThanOrEqualTo(UX.locationHeight)
     }
 
-    remakeMainStackViewConstraints()
+    updateMainStackViewConstraints()
 
     scrollToTopButton.snp.makeConstraints { make in
       make.top.equalTo(self)
@@ -536,7 +536,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
 
-  private func remakeMainStackViewConstraints() {
+  func updateMainStackViewConstraints() {
     mainStackView.snp.remakeConstraints { make in
       make.top.bottom.equalTo(self)
       make.leading.trailing.equalTo(self.liquidGlassHorizontalSafeAreaLayoutGuide)
@@ -553,6 +553,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       bottom: 0,
       right: horizontalInset
     )
+    updateMainStackViewConstraints()
 
     locationContainer.layoutIfNeeded()
     locationContainer.layer.shadowPath =
@@ -567,7 +568,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
         roundedRect: secondLocationShadowView.bounds.insetBy(dx: 2, dy: 2),  // -2 spread in Figma
         cornerRadius: locationContainer.layer.cornerRadius
       ).cgPath
-    setupConstraints()
   }
 
   override func becomeFirstResponder() -> Bool {
