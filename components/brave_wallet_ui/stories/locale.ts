@@ -1277,6 +1277,9 @@ provideStrings({
   braveWalletSwapping: 'Swapping',
   braveWalletBridging: 'Bridging',
   braveWalletSwappingOrBridgingOnNetwork: '$1 on $2',
+  braveWalletSwapProcessing: 'Processing',
+  braveWalletSwapPending: 'Pending',
+  braveWalletSwapRefunded: 'Refunded',
   braveWalletErrorAttemptingToTransactOnNetwork:
     'There was an error attempting to $1 on $2',
   braveWalletShieldingAmount: 'Shielding $1',
