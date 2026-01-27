@@ -127,6 +127,9 @@
 # GetUkmSourceId override.
 -Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
 
+# These tests fail because we override WalletHttpClientImpl.
+-WalletHttpClientImplTest.*
+
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
