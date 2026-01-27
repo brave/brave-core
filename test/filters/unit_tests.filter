@@ -17,13 +17,27 @@
 # identity_manager->AreRefreshTokensLoaded()
 -All/AppMenuModelSigninPromoTest.SignedIn/*
 -All/CanOfferSigninWithSigninToSyncFeatureTest.*
+-All/ContextualCueingHelperResponseCodeTest.Committed404Page/*
+-All/GlicEnablingAnyFreModeTest.Consented_ReturnsReady/*
+-All/GlicEnablingAnyFreModeTest.IsEnabledAndConsentForProfile_*/*
+-All/GlicEnablingAnyFreModeTest.NotSignedIn_ReturnsIneligible/*
+-AppMenuModelTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_*
 -BrowsingHistoryHandlerTest.RequestAccountInfo
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
 -CanOfferSigninTest.ProfileConnected
 -ChromeAutofillAiClientTest.EligibilityOf*
+-GlicButtonControllerTest.*
+-GlicEnablingStandardFreTest.NotConsented_Returns*
+-GlicEnablingTrustFirstOnboardingTest.*
+-GlicMetricsFeaturesEnabledTest.*
+-GlicMetricsTest.*
+-GlicMetricsTrustFirstOnboardingTest.*
 -TabOrganizationServiceTest.*
+-TabStripActionContainerTest.GlicButton*
+-TabStripActionContainerTest*.OrdersButtonsCorrectly*
 
-# This test fails because we don't use kChromeUINewTabPageThirdPartyURL
+# These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
 -PermissionSubscriptionTest.SubscribeUnsubscribeForNewTabPage
 
 # These tests fail because:
@@ -59,6 +73,8 @@
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
+-GoogleChromeSchemeUtilTest.ExtractGoogleChromeSchemeInnerUrl
+-GoogleChromeSchemeUtilTest.StripGoogleChromeScheme
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
@@ -255,6 +271,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-AccountExtensionTrackerSyncToSigninMigrationTest.ShouldNotMigrateAccountExtensionInstalledSignedIn
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeResetWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
@@ -315,6 +332,7 @@
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
+-All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
 -All/LastDownloadFinderTest.AddProfileAfterStarting/1
 -All/LastDownloadFinderTest.NonBinaryOnly/1
@@ -347,10 +365,12 @@
 -ExtensionDataCollectionTest.CollectExtensionDataWithExtension
 -ExtensionDataCollectionTest.CollectsLastInstalledExtension
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
--GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
+-GeminiAntiscamProtectionServiceFactoryTest.*
+-GeminiAntiscamProtectionServiceTest.*
 -GeneratedSafeBrowsingPrefTest.ManagementState
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
+-GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
@@ -581,6 +601,7 @@
 
 # These tests fail because we disable contextual cueing service.
 -ContextualCueingHelperTest.*
+-ContextualCueingServiceTestZeroStateSuggestions.*
 
 # These tests fail because we disable kTpcdMetadataGrants.
 -ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveSome
