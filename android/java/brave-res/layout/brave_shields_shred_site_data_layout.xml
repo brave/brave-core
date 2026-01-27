@@ -39,7 +39,8 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:ellipsize="start"
-            android:text="@string/brave_shields_shred_sites_data_text"/>
+            android:text="@string/brave_shields_shred_sites_data_text"
+            android:textColor="@color/schemes_on_surface"/>
     </LinearLayout>
 
     <include
@@ -69,7 +70,8 @@
             android:contentDescription="@null"
             android:paddingHorizontal="8dp"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_brave_shred"/>
+            app:srcCompat="@drawable/ic_brave_shred"
+            app:tint="@color/schemes_primary"/>
 
         <TextView
             android:id="@+id/manual_shred_text"
@@ -79,7 +81,7 @@
 		    android:textSize="14sp"
 		    android:fontFamily="sans-serif"
 		    android:layout_gravity="center_vertical"
-            android:textColor="@color/shield_text_color"
+            android:textColor="@color/schemes_primary"
             android:text="@string/brave_shields_shred_sites_data_now_text"/>
     </LinearLayout>
 

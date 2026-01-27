@@ -393,7 +393,23 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                             });
         } else {
             popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndTop);
-            popupWindow.showAsDropDown(mAnchorView);
+
+            // Add 8dp margin from right edge for showAsDropDown case
+            int marginRightDp = 8;
+            int marginRightPx =
+                    (int) (marginRightDp * mContext.getResources().getDisplayMetrics().density);
+            int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+            int[] anchorLocation = new int[2];
+            mAnchorView.getLocationOnScreen(anchorLocation);
+            int anchorX = anchorLocation[0];
+
+            if (anchorX + width > screenWidth - marginRightPx) {
+                // Calculate offset to keep popup within bounds
+                int xOffset = screenWidth - width - marginRightPx - anchorX;
+                popupWindow.showAsDropDown(mAnchorView, xOffset, 0);
+            } else {
+                popupWindow.showAsDropDown(mAnchorView);
+            }
         }
 
         return popupWindow;
@@ -918,6 +934,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 });
 
         // Autoshred menu item's icon
+        View braveShieldsAutoShredToggleDivider =
+                braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_top_divider);
+                braveShieldsAutoShredToggleDivider.setVisibility(View.GONE);
         ImageView braveShieldsAutoShredButtonIcon =
                 braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_button_icon);
         braveShieldsAutoShredButtonIcon.setVisibility(View.VISIBLE);
