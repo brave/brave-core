@@ -465,17 +465,14 @@ std::string GetDescriptionFromAppcastItem(id item) {
         command->GetSwitchValueASCII(switches::kUpdateFeedURL));
   }
 
+  return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
+                                    @"sparkle/%s/%s/appcast.xml",
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
-                                    @"sparkle/Brave-Origin/%s/appcast.xml",
-                                    GetUpdateChannel().c_str()];
+                                    @"Brave-Origin",
 #else
-  return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
-                                    @"sparkle/Brave-Browser/%s/appcast.xml",
-                                    GetUpdateChannel().c_str()];
+                                    @"Brave-Browser",
 #endif
-}
-@end
+                                    GetUpdateChannel().c_str()];
 
 namespace sparkle_glue {
 
