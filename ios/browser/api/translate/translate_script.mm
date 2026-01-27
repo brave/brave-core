@@ -23,7 +23,6 @@
   // Dependencies
   const web::JavaScriptFeature* features[] = {
       web::java_script_features::GetBaseJavaScriptFeature(),
-      web::java_script_features::GetCommonJavaScriptFeature(),
       web::NavigationJavaScriptFeature::GetInstance(),
       web::AnnotationsJavaScriptFeature::GetInstance(),
       language::LanguageDetectionJavaScriptFeature::GetInstance()};
