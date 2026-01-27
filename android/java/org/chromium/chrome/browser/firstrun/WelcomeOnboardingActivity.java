@@ -79,7 +79,8 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
  * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
  * and privacy-focused approach.
  */
-public class WelcomeOnboardingActivity extends FirstRunActivityBase implements OnboardingStepAdapter.OnboardingNavigationListener {
+public class WelcomeOnboardingActivity extends FirstRunActivityBase
+        implements OnboardingStepAdapter.OnboardingNavigationListener {
     private static final String P3A_URL =
             "https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
     private static final String WDP_LINK =
@@ -151,8 +152,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         mWdpLearnMore =
                 SpanApplier.applySpans(
                         wdpText,
-                        new SpanInfo(
-                                "<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
+                        new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
         if (mVariantBPager != null) {
             mVariantBPager.setUserInputEnabled(false);
@@ -291,7 +291,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
     }
 
     private void enableWebDiscoverPreference() {
-        if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) || mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
+        if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE)
+                || mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
@@ -313,6 +314,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
             finalStep(false);
         }
     }
+
     private void finalStep(final boolean showSearchWidgetPromoPanel) {
         if (showSearchWidgetPromoPanel) {
             ChromeSharedPreferences.getInstance()
@@ -469,8 +471,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
     public static void setMetricsReportingConsent(final boolean consent) {
         try {
             UmaSessionStats.changeMetricsReportingConsent(
-                    consent,
-                    ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                    consent, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
         } catch (Exception e) {
             Log.e(TAG, "CrashReportingOnboarding", e);
         }
@@ -479,8 +480,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
     public static void setP3aConsent(final boolean consent) {
         try {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, consent);
-            BraveLocalState.get()
-                    .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+            BraveLocalState.get().setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
             BraveLocalState.commitPendingWrite();
         } catch (Exception e) {
             Log.e(TAG, "P3aOnboarding", e);
@@ -629,18 +629,20 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
 
     private AnimatedVectorDrawable getAnimatedVectorDrawable() {
         final AnimatedVectorDrawable result = (AnimatedVectorDrawable) mBraveSplash.getDrawable();
-        result.registerAnimationCallback(new Animatable2.AnimationCallback() {
+        result.registerAnimationCallback(
+                new Animatable2.AnimationCallback() {
 
-            @Override
-            public void onAnimationStart(Drawable drawable) {
-                super.onAnimationStart(drawable);
-                mBraveSplash.setAlpha(1f);
-            }
+                    @Override
+                    public void onAnimationStart(Drawable drawable) {
+                        super.onAnimationStart(drawable);
+                        mBraveSplash.setAlpha(1f);
+                    }
 
-           @Override
-           public void onAnimationEnd(Drawable drawable) {
-                animateBraveSplash(result);
-           }});
+                    @Override
+                    public void onAnimationEnd(Drawable drawable) {
+                        animateBraveSplash(result);
+                    }
+                });
         return result;
     }
 
@@ -653,51 +655,58 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         // Compensate because shrinking around center moves the top edge down.
         final float compensation = (splashHeight * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
 
-        mBraveSplash.animate()
+        mBraveSplash
+                .animate()
                 .translationY(deltaY - compensation)
                 .scaleX(BRAVE_SPLASH_SCALE_ANIMATION)
                 .scaleY(BRAVE_SPLASH_SCALE_ANIMATION)
                 .setDuration(BRAVE_SPLASH_ANIMATION_DURATION_MS)
                 .setInterpolator(new OvershootInterpolator(REDUCED_TENSION_OVERSHOOT_INTERPOLATOR))
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationCancel(@NonNull Animator animation) {
-                        /* No-op. */
-                    }
+                .setListener(
+                        new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationCancel(@NonNull Animator animation) {
+                                /* No-op. */
+                            }
 
-                    @Override
-                    public void onAnimationEnd(@NonNull Animator animation) {
-                        // Splash visual bottom in parent coordinates (center pivot scaling).
-                        final float splashBottomPx =
-                                mBraveSplash.getBottom()
-                                        + mBraveSplash.getTranslationY()
-                                        - splashHeight * (1f - mBraveSplash.getScaleY()) / 2f;
+                            @Override
+                            public void onAnimationEnd(@NonNull Animator animation) {
+                                // Splash visual bottom in parent coordinates (center pivot
+                                // scaling).
+                                final float splashBottomPx =
+                                        mBraveSplash.getBottom()
+                                                + mBraveSplash.getTranslationY()
+                                                - splashHeight
+                                                        * (1f - mBraveSplash.getScaleY())
+                                                        / 2f;
 
-                        ConstraintLayout.LayoutParams guidelineLayoutParams =
-                                (ConstraintLayout.LayoutParams) mSplashGuideline.getLayoutParams();
-                        guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
-                        mSplashGuideline.setLayoutParams(guidelineLayoutParams);
+                                ConstraintLayout.LayoutParams guidelineLayoutParams =
+                                        (ConstraintLayout.LayoutParams)
+                                                mSplashGuideline.getLayoutParams();
+                                guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
+                                mSplashGuideline.setLayoutParams(guidelineLayoutParams);
 
-                        if (mVariantBPager != null) {
-                            mVariantBPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
-                            mVariantBPager.setVisibility(View.VISIBLE);
-                        }
+                                if (mVariantBPager != null) {
+                                    mVariantBPager.setCurrentItem(
+                                            isWDPSettingAvailable() ? 0 : 1, false);
+                                    mVariantBPager.setVisibility(View.VISIBLE);
+                                }
 
-                        if (!isBraveSetAsDefaultBrowser(WelcomeOnboardingActivity.this)) {
-                            setDefaultBrowser(WelcomeOnboardingActivity.this);
-                        }
-                    }
+                                if (!isBraveSetAsDefaultBrowser(WelcomeOnboardingActivity.this)) {
+                                    setDefaultBrowser(WelcomeOnboardingActivity.this);
+                                }
+                            }
 
-                    @Override
-                    public void onAnimationRepeat(@NonNull Animator animation) {
-                        /* No-op. */
-                    }
+                            @Override
+                            public void onAnimationRepeat(@NonNull Animator animation) {
+                                /* No-op. */
+                            }
 
-                    @Override
-                    public void onAnimationStart(@NonNull Animator animation) {
-                        /* No-op. */
-                    }
-                })
+                            @Override
+                            public void onAnimationStart(@NonNull Animator animation) {
+                                /* No-op. */
+                            }
+                        })
                 .start();
     }
 
