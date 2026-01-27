@@ -1082,7 +1082,7 @@ std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program) {
   }
 }
 
-const std::string& GetAccountPermissionIdentifier(
+std::string GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
   if (account_id->coin == mojom::CoinType::ADA) {

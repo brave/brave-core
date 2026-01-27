@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -36,25 +37,10 @@ bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
 }
 
 void OnRequestPermissions(
-    const std::vector<std::string>& accounts,
     BraveWalletProviderDelegate::RequestPermissionsCallback callback,
-    const std::vector<content::PermissionResult>& responses) {
-  DCHECK(responses.empty() || responses.size() == accounts.size());
-
-  std::vector<std::string> granted_accounts;
-  for (size_t i = 0; i < responses.size(); i++) {
-    if (responses[i].status == blink::mojom::PermissionStatus::GRANTED) {
-      granted_accounts.push_back(accounts[i]);
-    }
-  }
-  // The responses array will be empty if operation failed.
-  if (responses.empty()) {
-    std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                            std::nullopt);
-  } else {
-    std::move(callback).Run(mojom::RequestPermissionsError::kNone,
-                            granted_accounts);
-  }
+    std::vector<std::string> allowed_addresses) {
+  std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                          std::move(allowed_addresses));
 }
 
 }  // namespace
@@ -144,9 +130,9 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, content::RenderFrameHost::FromID(host_id_), accounts,
-      base::BindOnce(&OnRequestPermissions, accounts, std::move(callback)));
+  permissions::BraveWalletPermissionContext::RequestWalletPermissions(
+      accounts, *permission, content::RenderFrameHost::FromID(host_id_),
+      base::BindOnce(&OnRequestPermissions, std::move(callback)));
 }
 
 bool BraveWalletProviderDelegateImpl::IsAccountAllowed(

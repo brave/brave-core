@@ -31,13 +31,13 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -135,7 +135,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         shared_url_loader_factory_);
     keyring_service_ = brave_wallet_service_->keyring_service();
     profile_.SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+        base::WrapUnique(static_cast<permissions::PermissionManager*>(
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));
@@ -502,7 +502,7 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   // permissions::BraveWalletPermissionContext::RequestPermissions failed
   std::string account = Connect(std::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
-  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
   EXPECT_FALSE(IsConnected());
 
   GURL url("https://brave.com");
