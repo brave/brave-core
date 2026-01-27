@@ -95,10 +95,13 @@ void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
 void BrowserView::ExclusiveAccessContextImpl::UpdateExclusiveAccessBubble(
     const ExclusiveAccessBubbleParams& params,
     ExclusiveAccessBubbleHideCallback first_hide_callback) {
-  // Show/Hide full screen reminder bubble based on our settings preference
-  // for tab-initiated ones.
-  if (!GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder) &&
-      params.type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION) {
+  // Show/Hide full screen reminder bubble based on our settings preference for
+  // tab and browser initiated fullscreen.
+  if ((params.type ==
+           EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION ||
+       params.type ==
+           EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION) &&
+      !GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder)) {
     return;
   }
   UpdateExclusiveAccessBubble_ChromiumImpl(params,
