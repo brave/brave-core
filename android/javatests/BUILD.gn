@@ -76,6 +76,7 @@ android_library(
 
   deps = [
     ":brave_test_java_helper",
+    "//base/test:public_transit_java",
     "//brave/browser/password_manager/android:test_support_java",
     "//chrome/android:chrome_app_java_resources",
     "//chrome/browser/password_manager/android:java",
