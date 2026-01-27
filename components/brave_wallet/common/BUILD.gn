@@ -105,7 +105,7 @@ source_set("common_constants") {
     "brave_wallet_constants.h",
     "web3_provider_constants.h",
   ]
-  deps = [ ":mojom" ]
+  public_deps = [ ":mojom" ]
 }
 
 generated_types("generated_json_rpc_requests") {
