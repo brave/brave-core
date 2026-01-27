@@ -217,7 +217,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
                             setDefaultBrowser(this);
                         } else {
                             enableWebDiscoverPreference();
-                            nextOnboardingStep();
+                            nextOnboardingStepForDefaultVariant();
                         }
                     });
         }
@@ -229,7 +229,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
                                 == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
-                            nextOnboardingStep();
+                            nextOnboardingStepForDefaultVariant();
                         }
                     });
         }
@@ -297,7 +297,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         }
     }
 
-    private void nextOnboardingStep() {
+    private void nextOnboardingStepForDefaultVariant() {
         if (isActivityFinishingOrDestroyed()) {
             return;
         }
@@ -333,13 +333,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         if (!isBraveSetAsDefaultBrowser(this)) {
             setDefaultBrowser(this);
         } else {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
     private void handleWDPStep() {
         if (!isWDPSettingAvailable()) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
             return;
         }
 
@@ -367,7 +367,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
 
         // If both settings are managed by policy, skip this page entirely
         if (isP3aManaged && isCrashReportingManaged) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
             return;
         }
 
@@ -580,7 +580,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE) {
             if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
-                nextOnboardingStep();
+                nextOnboardingStepForDefaultVariant();
             }
         }
     }
@@ -590,7 +590,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
         super.onActivityResult(requestCode, resultCode, data);
         assert requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE;
         if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
@@ -623,7 +623,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase implements O
 
         } else {
             mDefaultConstraintLayout.setVisibility(View.VISIBLE);
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
