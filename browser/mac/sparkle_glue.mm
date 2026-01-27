@@ -466,13 +466,15 @@ std::string GetDescriptionFromAppcastItem(id item) {
   }
 
   return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
-                                    @"sparkle/%s/%s/appcast.xml",
+                                    @"sparkle/%@/%s/appcast.xml",
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
                                     @"Brave-Origin",
 #else
                                     @"Brave-Browser",
 #endif
                                     GetUpdateChannel().c_str()];
+}
+@end
 
 namespace sparkle_glue {
 

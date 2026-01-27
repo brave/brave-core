@@ -23,6 +23,8 @@ brave_chrome_common_deps = [
 
 brave_chrome_common_public_deps = [ "//brave/components/constants" ]
 
+brave_chrome_constants_deps = [ "//brave/components/brave_origin/buildflags" ]
+
 if (is_android) {
   brave_chrome_common_deps += [ "//components/user_data_importer/common" ]
 }

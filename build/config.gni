@@ -71,6 +71,14 @@ if (brave_exe == "") {
 }
 
 brave_dist_dir = "$root_out_dir/dist"
+
+# Use different installer/product names for Brave Origin
+if (is_brave_origin_branded) {
+  _product_brand = "Origin"
+} else {
+  _product_brand = "Browser"
+}
+
 if (is_win) {
   brave_exe = "$brave_exe.exe"
   brave_underline_full_version =
@@ -124,26 +132,20 @@ if (is_win) {
     _arch = "32"
   }
 
-  # Use different installer executable names for Brave Origin
-  if (is_brave_origin_branded) {
-    _installer_brand = "BraveOrigin"
-  } else {
-    _installer_brand = "BraveBrowser"
-  }
-
   brave_installer_exe = "brave_installer.exe"
-  brave_stub_installer_exe = "$_installer_brand$_channel" +
+  brave_stub_installer_exe = "Brave$_product_brand$_channel" +
                              "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe =
-      "${_installer_brand}Untagged$_channel" +
+      "Brave${_product_brand}Untagged$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
   brave_standalone_installer_exe =
-      "${_installer_brand}Standalone$_channel" +
+      "Brave${_product_brand}Standalone$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
-  brave_silent_installer_exe = "${_installer_brand}StandaloneSilent$_channel" +
-                               "Setup$_arch$brave_underline_full_version.exe"
+  brave_silent_installer_exe =
+      "Brave${_product_brand}StandaloneSilent$_channel" +
+      "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_installer_exe =
-      "${_installer_brand}StandaloneUntagged$_channel" +
+      "Brave${_product_brand}StandaloneUntagged$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
 } else if (is_mac) {
   brave_exe = "$chrome_product_full_name.app"
@@ -165,22 +167,12 @@ if (is_win) {
     brave_product_dir_name_suffix = "-Development"
   }
 
-  if (is_brave_origin_branded) {
-    brave_product_dir_name =
-        "BraveSoftware/Brave-Origin$brave_product_dir_name_suffix"
-  } else {
-    brave_product_dir_name =
-        "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
-  }
+  brave_product_dir_name =
+      "BraveSoftware/Brave-$_product_brand$brave_product_dir_name_suffix"
 
   if (base_sparkle_update_url == "") {
-    if (is_brave_origin_branded) {
-      base_sparkle_update_url =
-          "https://updates.bravesoftware.com/sparkle/Brave-Origin"
-    } else {
-      base_sparkle_update_url =
-          "https://updates.bravesoftware.com/sparkle/Brave-Browser"
-    }
+    base_sparkle_update_url =
+        "https://updates.bravesoftware.com/sparkle/Brave-$_product_brand"
   }
 }
 
