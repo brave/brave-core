@@ -92,7 +92,8 @@ class BraveTabContainer : public TabContainerImpl {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            GetMaxScrollOffsetWithGroups);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
-
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
