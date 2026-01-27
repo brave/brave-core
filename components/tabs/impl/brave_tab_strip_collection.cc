@@ -24,14 +24,44 @@ void BraveTabStripCollection::SetDelegate(
   delegate_ = std::move(delegate);
 }
 
+tabs::TabCollection* BraveTabStripCollection::GetParentCollection(
+    TabInterface* tab,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) const {
+  return tab->GetParentCollection(GetPassKey());
+}
+
+const ChildrenVector& BraveTabStripCollection::GetChildrenForDelegate(
+    const TabCollection& collection,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) const {
+  return GetChildrenStatic(collection);
+}
+
 void BraveTabStripCollection::AddTabRecursive(
     std::unique_ptr<TabInterface> tab,
     size_t index,
     std::optional<tab_groups::TabGroupId> new_group_id,
-    bool new_pinned_state) {
+    bool new_pinned_state,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  TabStripCollection::AddTabRecursive(std::move(tab), index, new_group_id,
+                                      new_pinned_state);
+}
+
+std::unique_ptr<TabInterface>
+BraveTabStripCollection::RemoveTabAtIndexRecursive(
+    size_t index,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  return TabStripCollection::RemoveTabAtIndexRecursive(index);
+}
+
+void BraveTabStripCollection::AddTabRecursive(
+    std::unique_ptr<TabInterface> tab,
+    size_t index,
+    std::optional<tab_groups::TabGroupId> new_group_id,
+    bool new_pinned_state,
+    TabInterface* opener) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
     delegate_->AddTabRecursive(std::move(tab), index, new_group_id,
-                               new_pinned_state, /*opener*/ nullptr);
+                               new_pinned_state, opener);
     return;
   }
 

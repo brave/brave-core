@@ -15,6 +15,7 @@ source_set("browser_tests") {
   deps = [
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/constants",
+    "//brave/components/tabs",
     "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
