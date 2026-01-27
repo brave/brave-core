@@ -12,7 +12,10 @@
 
 #include "base/observer_list_types.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "url/gurl.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
 source_set("brave_search") {
   sources = [
     "backup_results_navigation_throttle.cc",
@@ -43,7 +45,7 @@ if (!is_android) {
     deps = [
       ":brave_search",
       "//base/test:test_support",
-      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/brave_ads/buildflags",
       "//brave/components/brave_rewards/core",
       "//brave/components/brave_search/browser",
       "//brave/components/brave_search/common",
@@ -55,6 +57,10 @@ if (!is_android) {
       "//content/test:test_support",
       "//net:test_support",
     ]
+
+    if (enable_brave_ads) {
+      deps += [ "//brave/components/brave_ads/core/public:headers" ]
+    }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

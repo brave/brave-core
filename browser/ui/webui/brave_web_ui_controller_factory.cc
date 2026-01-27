@@ -15,7 +15,6 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
-#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
@@ -77,6 +76,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -110,13 +110,15 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
   CHECK(profile);
-  if (host == kAdsInternalsHost) {
+  if (host == kSkusInternalsHost) {
+    return new SkusInternalsUI(web_ui, url.host());
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  } else if (host == kAdsInternalsHost) {
     return new AdsInternalsUI(
         web_ui, url.host(),
         brave_ads::AdsServiceFactory::GetForProfile(profile),
         *profile->GetPrefs());
-  } else if (host == kSkusInternalsHost) {
-    return new SkusInternalsUI(web_ui, url.host());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -232,8 +234,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host() == kRewriterUIHost &&
        ai_rewriter::features::IsAIRewriterEnabled()) ||
 #endif
-      url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
-      (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile())) {
+      url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      || (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile())
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  ) {
     return &NewWebUI;
   }
 

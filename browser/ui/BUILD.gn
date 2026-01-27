@@ -816,7 +816,6 @@ source_set("ui") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
-    "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
@@ -1009,11 +1008,14 @@ source_set("ui") {
     ]
 
     deps += [
-      "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
+
+    if (enable_brave_ads) {
+      deps += [ "//brave/browser/ui/views/brave_ads" ]
+    }
   }
 
   if (enable_text_recognition) {

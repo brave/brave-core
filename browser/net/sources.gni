@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -43,8 +44,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
   "//brave/browser/net/resource_context_data.cc",
   "//brave/browser/net/resource_context_data.h",
-  "//brave/browser/net/search_ads_header_network_delegate_helper.cc",
-  "//brave/browser/net/search_ads_header_network_delegate_helper.h",
   "//brave/browser/net/url_context.cc",
   "//brave/browser/net/url_context.h",
 ]
@@ -62,7 +61,7 @@ brave_browser_net_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
   "//brave/common",
-  "//brave/components/brave_ads/browser",
+  "//brave/components/brave_ads/buildflags",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_referrals/browser",
   "//brave/components/brave_rewards/core",
@@ -115,4 +114,13 @@ if (enable_brave_wallet) {
 
 if (enable_extensions) {
   brave_browser_net_deps += [ "//extensions/common:common_constants" ]
+}
+
+if (enable_brave_ads) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/search_ads_header_network_delegate_helper.cc",
+    "//brave/browser/net/search_ads_header_network_delegate_helper.h",
+  ]
+
+  brave_browser_net_deps += [ "//brave/components/brave_ads/core" ]
 }

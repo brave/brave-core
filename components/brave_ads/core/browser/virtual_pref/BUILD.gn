@@ -19,6 +19,7 @@ source_set("virtual_pref") {
 
   deps = [
     "//base/version_info",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/ntp_background_images/common",
     "//brave/components/skus/browser",

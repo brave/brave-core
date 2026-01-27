@@ -9,7 +9,10 @@
 #include <cstdint>
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "build/build_config.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

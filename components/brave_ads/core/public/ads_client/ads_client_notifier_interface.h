@@ -10,6 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
 class GURL;
 
 namespace base {

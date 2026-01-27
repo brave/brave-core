@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# The target provides the AdsService interface and related types without
+# depending on Brave Ads implementation targets, allowing it to be used even
+# when Brave Ads is disabled by build flag.
 source_set("service") {
   sources = [
     "ads_service.cc",
