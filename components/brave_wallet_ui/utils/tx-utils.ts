@@ -394,11 +394,13 @@ export const getTransactionMemo = (
   }
 
   // ZCash shielded transactions have a memo field (byte array)
+  // Orchard memos may have trailing zeros that need to be trimmed
   if (isZCashTransaction(tx) && tx.txDataUnion.zecTxData?.memo) {
     try {
-      return new TextDecoder().decode(
-        new Uint8Array(tx.txDataUnion.zecTxData.memo),
-      )
+      const memoBytes = new Uint8Array(tx.txDataUnion.zecTxData.memo)
+      const end = memoBytes.indexOf(0)
+      const slice = end === -1 ? memoBytes : memoBytes.slice(0, end)
+      return new TextDecoder('utf-8').decode(slice)
     } catch {
       return ''
     }
