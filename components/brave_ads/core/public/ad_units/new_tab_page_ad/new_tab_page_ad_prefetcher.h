@@ -8,7 +8,10 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 
