@@ -18,7 +18,10 @@ WalletPageHandler::WalletPageHandler(
 WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {
-  // No need for iOS since it's handled on the Swift side.
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
+          ->bridge();
+  [bridge showApprovePanelUI];
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {

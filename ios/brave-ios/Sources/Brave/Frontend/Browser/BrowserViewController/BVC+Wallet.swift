@@ -734,6 +734,16 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
 
 // MARK: Wallet WebUI action handlers
 extension BrowserViewController {
+  func showApprovePanelUI(tab: (any TabState)?) {
+    guard let tab,
+      let origin = tab.browserData?.getOrigin(),
+      let tabDappStore = tab.tabDappStore
+    else {
+      return
+    }
+    presentWalletPanel(from: origin, with: tabDappStore)
+  }
+
   func showWalletBackupUI() {
     presentNativeWallet(webUIAction: .backup)
   }
