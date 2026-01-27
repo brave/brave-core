@@ -52,7 +52,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -351,16 +351,13 @@
+@@ -346,16 +346,13 @@
                @change=\\"\${this.onPinnedToToolbarChange_}\\">
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>\` : ''}
@@ -136,7 +136,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id=\\"errors-button\\"
-@@ -172,25 +167,14 @@
+@@ -172,20 +167,11 @@
        <cr-button id=\\"terminated-reload-button\\" @click=\\"\${this.onReloadClick_}\\"
            aria-describedby=\\"a11yAssociation\\" class=\\"action-button\\">
          $i18n{itemReload}
@@ -148,19 +148,13 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -        icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
 +    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\" ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\" tooltip-text=\\"$i18n{parentDisabledPermissions}\\" icon-class=\\"cr20:kite\\" icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
      </cr-tooltip-icon>
--    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\"
--        position=\\"\${this.enableToggleTooltipPosition_}\\"
--        aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds>
-+    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"\${this.enableToggleTooltipPosition_}\\" aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds=\\"\\">
-       \${this.getEnableToggleTooltipText_()}
-     </cr-tooltip>
 -    <cr-toggle id=\\"enableToggle\\"
 -        aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\"
--        aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\"
+-        aria-describedby=\\"a11yAssociation\\"
 -        ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\"
 -        ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\"
 -        ?hidden=\\"\${!this.showEnableToggle_()}\\">
-+    <cr-toggle id=\\"enableToggle\\" aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\" aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\" ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\" ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\" ?hidden=\\"\${!this.showEnableToggle_()}\\">
++    <cr-toggle id=\\"enableToggle\\" aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\" aria-describedby=\\"a11yAssociation\\" ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\" ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\" ?hidden=\\"\${!this.showEnableToggle_()}\\">
      </cr-toggle>
    </div>
  </div>
