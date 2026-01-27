@@ -71,9 +71,9 @@
 #include "ios/chrome/browser/signin/model/identity_manager_factory.h"
 #include "ios/chrome/browser/signin/model/signin_client_factory.h"
 #include "ios/chrome/browser/supervised_user/model/child_account_service_factory.h"
+#include "ios/chrome/browser/supervised_user/model/family_link_settings_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/list_family_members_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/supervised_user_service_factory.h"
-#include "ios/chrome/browser/supervised_user/model/supervised_user_settings_service_factory.h"
 #include "ios/chrome/browser/sync/model/data_type_store_service_factory.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/ios_user_event_service_factory.h"
@@ -125,6 +125,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ChildAccountServiceFactory::GetInstance();
   ConsentAuditorFactory::GetInstance();
   DeviceInfoSyncServiceFactory::GetInstance();
+  supervised_user::FamilyLinkSettingsServiceFactory::GetInstance();
   GoogleGroupsManagerFactory::GetInstance();
   HttpsUpgradeServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
@@ -166,7 +167,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   SessionSyncServiceFactory::GetInstance();
   SigninClientFactory::GetInstance();
   SupervisedUserServiceFactory::GetInstance();
-  SupervisedUserSettingsServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
   UrlLanguageHistogramFactory::GetInstance();
