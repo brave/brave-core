@@ -776,7 +776,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     }
     case IDC_FORCE_PASTE: {
-      brave::ForcePasteInBrowser(&*browser_);
+      brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
     default:
