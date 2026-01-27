@@ -1,0 +1,28 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("history_embeddings") {
+  sources = [
+    "brave_embedder.cc",
+    "brave_embedder.h",
+    "brave_passage_embeddings_service_controller.cc",
+    "brave_passage_embeddings_service_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/local_ai",
+    "//brave/components/constants",
+    "//brave/components/local_ai/browser",
+    "//brave/components/local_ai/common:mojom",
+    "//chrome/browser/profiles",
+    "//components/history_embeddings",
+    "//components/passage_embeddings",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/passage_embeddings/public/mojom",
+    "//ui/base",
+  ]
+}
