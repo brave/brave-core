@@ -649,7 +649,7 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
   }
   result.Set("routePriority", *route_priority);
 
-  return GetJSON(base::Value(std::move(result)));
+  return GetJSON(result);
 }
 
 std::optional<std::string> EncodeStatusParams(
@@ -682,7 +682,7 @@ std::optional<std::string> EncodeStatusParams(
   }
   result.Set("provider", *provider);
 
-  return GetJSON(base::Value(std::move(result)));
+  return GetJSON(result);
 }
 }  // namespace gate3
 
