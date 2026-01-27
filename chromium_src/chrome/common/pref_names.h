@@ -18,6 +18,10 @@ inline constexpr char kBraveVpnDnsConfig[] = "brave.brave_vpn.dns_config";
 #if defined(TOOLKIT_VIEWS)
 // Whether to show the share menu on the location bar.
 inline constexpr char kPinShareMenuButton[] = "brave.pin_share_menu_button";
+
+// A boolean specifying whether the PWA install button should be shown in the
+// address bar.
+inline constexpr char kPinPwaInstallButton[] = "browser.pin_pwa_install_button";
 #endif  // defined(TOOLKIT_VIEWS)
 }  // namespace prefs
 

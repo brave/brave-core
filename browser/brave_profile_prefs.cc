@@ -597,6 +597,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(prefs::kPinShareMenuButton, true);
+  registry->RegisterBooleanPref(prefs::kPinPwaInstallButton, true);
 #endif  // defined(TOOLKIT_VIEWS)
 
   OverrideDefaultPrefValues(registry);

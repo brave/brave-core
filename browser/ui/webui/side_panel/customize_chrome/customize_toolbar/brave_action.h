@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -124,6 +125,16 @@ inline constexpr BraveAction kShowShareMenuAction = {
     .pref_name = prefs::kPinShareMenuButton,
     .icon = omnibox::kShareChromeRefreshIcon};
 
+inline constexpr BraveAction kShowPwaInstallAction = {
+    .id = side_panel::customize_chrome::mojom::ActionId::kShowPwaInstall,
+    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_PWA_INSTALL,
+    .anchor = side_panel::customize_chrome::mojom::ActionId::
+        kShowPwaInstall,  // assign id of itself to append to the end of the
+                          // list
+    .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+    .pref_name = prefs::kPinPwaInstallButton,
+    .icon = kInstallDesktopChromeRefreshIcon};
+
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
                            const BraveAction*>({
@@ -143,6 +154,7 @@ inline constexpr auto kBraveActions =
         {kShowBraveNews.id, &kShowBraveNews},
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
         {kShowShareMenuAction.id, &kShowShareMenuAction},
+        {kShowPwaInstallAction.id, &kShowPwaInstallAction},
     });
 
 }  // namespace customize_chrome

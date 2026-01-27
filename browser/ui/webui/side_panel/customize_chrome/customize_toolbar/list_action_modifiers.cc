@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -67,6 +68,9 @@ void AddActionsForAddressBarCategory(Profile* profile,
   if (!sharing_hub::SharingIsDisabledByPolicy(profile)) {
     brave_actions.push_back(kShowShareMenuAction);
   }
+
+  // PWA install button is always available (pref controls visibility)
+  brave_actions.push_back(kShowPwaInstallAction);
 }
 
 }  // namespace
