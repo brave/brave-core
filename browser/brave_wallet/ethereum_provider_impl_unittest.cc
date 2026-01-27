@@ -41,7 +41,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -49,6 +48,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -62,6 +62,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/display/test/test_screen.h"
 #include "url/origin.h"
 
 using base::test::ParseJson;
@@ -195,6 +196,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void TearDown() override {
+    display::Screen::SetScreenInstance(nullptr);
     provider_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
@@ -202,6 +204,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
+    display::Screen::SetScreenInstance(&test_screen_);
+
     // Resetting this test callback, as it gets stored in a discreet global, and
     // in some cases it was causing stack-use-after-return.
     SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
@@ -229,7 +233,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+        base::WrapUnique(static_cast<permissions::PermissionManager*>(
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));
@@ -908,6 +912,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
+  display::test::TestScreen test_screen_;
   TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
