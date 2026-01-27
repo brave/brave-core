@@ -633,6 +633,19 @@ Config.prototype.buildArgs = function () {
       args.enable_java_asserts = false
     }
 
+    // Fix for inconsistency of enable_glic / enable_glic_android:
+    // #if BUILDFLAG(ENABLE_GLIC)
+    //   std::unique_ptr<glic::GlicProfileManager> glic_profile_manager_;
+    // #endif
+    // #if BUILDFLAG(ENABLE_GLIC) || BUILDFLAG(ENABLE_GLIC_ANDROID)
+    //   if (glic::GlicEnabling::IsEnabledByFlags()) {
+    //     glic_profile_manager_ = std::make_unique<glic::GlicProfileManager>();
+    // Caused
+    // ../../chrome/browser/global_features.cc:111:5: error: use of undeclared identifier 'glic_profile_manager_'
+    //   111 |     glic_profile_manager_ = std::make_unique<glic::GlicProfileManager>();
+    //       |     ^~~~~~~~~~~~~~~~~~~~~
+    args.enable_glic_android = false
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_hangout_services_extension
