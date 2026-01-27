@@ -725,8 +725,8 @@ struct Gate3SwapRoute {
   // Address to deposit funds (may not be available for indicative quotes)
   string? deposit_address;
 
-  // Memo required for deposit (if applicable)
-  string? deposit_memo;
+  // Memo required for deposit (empty bytes if not applicable)
+  array<uint8> deposit_memo;
 
   // Quote expiration time (Unix timestamp in seconds); may be unset.
   string? expires_at;
@@ -752,7 +752,8 @@ struct Gate3SwapStatusParams {
   CoinType destination_coin;
   string destination_chain_id;
   string deposit_address;
-  string deposit_memo;  // use empty string if not applicable
+  // Memo required for deposit (empty bytes if not applicable)
+  array<uint8> deposit_memo;
   SwapProvider provider;
 };
 

@@ -41,7 +41,10 @@ export function useGate3SwapStatus(
 
   // Extract deposit address and memo from transaction
   const depositAddress = transaction ? getTransactionToAddress(transaction) : ''
-  const depositMemo = transaction ? getTransactionMemo(transaction) : ''
+  const memoString = transaction ? getTransactionMemo(transaction) : ''
+  const depositMemo = memoString
+    ? Array.from(new TextEncoder().encode(memoString))
+    : []
 
   // Only query if we have a valid swap transaction with Gate3 provider
   const shouldQuery =

@@ -46,6 +46,14 @@ std::optional<std::string> ParseNullableString(const base::Value& value) {
   return std::nullopt;
 }
 
+std::vector<uint8_t> ParseStringAsBytes(const base::Value& value) {
+  auto str = ParseNullableString(value);
+  if (!str || str->empty()) {
+    return {};
+  }
+  return std::vector<uint8_t>(str->begin(), str->end());
+}
+
 }  // namespace
 
 namespace zeroex {
@@ -1473,7 +1481,7 @@ mojom::Gate3SwapRoutePtr ParseRoute(
 
   result->gasless = value.gasless;
   result->deposit_address = ParseNullableString(value.deposit_address);
-  result->deposit_memo = ParseNullableString(value.deposit_memo);
+  result->deposit_memo = ParseStringAsBytes(value.deposit_memo);
   result->expires_at = ParseNullableString(value.expires_at);
   result->slippage_percentage = value.slippage_percentage;
 
