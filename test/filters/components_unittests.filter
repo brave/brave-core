@@ -107,25 +107,9 @@
 -WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
 
 # These tests fail because we do not record permissions UKM, see
-# brave/chromium_src/components/permissions/permission_uma_util.cc.
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
 -PermissionsDelegationUmaUtilTest.PermissionAiRelevanceModelUkmTest
--PermissionActionHistoryTest.EntryFilterTest
--PermissionContextBaseTests.ActorBypass_WhenActive_DeniesPermission
--PermissionContextBaseTests.ActorBypass_WhenInactive_RespectsPermission
--PermissionContextBaseTests.TestDismissUntilBlocked
--PermissionContextBaseTests.TestDismissVariations
--PermissionContextBaseTests.TestDismissVariationsWithoutEmbargo
--PermissionIndicatorsTabDataTest.CameraUsageRecord
--PermissionIndicatorsTabDataTest.GeolocationUsageRecord
--PermissionIndicatorsTabDataTest.GeolocationUsageRecordAfterNavigation
--PermissionIndicatorsTabDataTest.GeolocationWatchUsageRecord
--PermissionIndicatorsTabDataTest.MicrophoneUsageRecord
--PermissionRequestManagerTest.UMAForSimpleDeniedBubbleAlternatePath
--PermissionRequestManagerTest.UMAForTabSwitching
--PermissionRequestManagerTest.UiSelectorUsedForGeolocation
--PermissionUmaUtilTest.*
--PermissionsDelegationUmaUtilTest.*
--TopLevelFrame/PermissionsDelegationUmaUtilTest.TopLevelFrame/*
 
 # This test fails because we override GetTypesWithTemporaryGrantsInHcsm to
 # return an empty vector.
@@ -162,8 +146,6 @@
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)
 -BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
-
-
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
