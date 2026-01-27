@@ -704,8 +704,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
 #if BUILDFLAG(IS_ANDROID)
   EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
 #endif
-  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
-      .Times(0);
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url)).Times(0);
   // Create tld ephemeral lifetime.
   otr_service->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                            storage_partition_config);
