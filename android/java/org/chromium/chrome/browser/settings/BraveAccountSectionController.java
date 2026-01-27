@@ -129,9 +129,10 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         if (resendConfirmationEmailPreference != null) {
             resendConfirmationEmailPreference.setOnPreferenceClickListener(
                     preference -> {
+                        preference.setEnabled(false);
                         assert mBraveAccountService != null;
                         mBraveAccountService.resendConfirmationEmail(
-                                result -> showAlertDialog(result));
+                                result -> showAlertDialog(preference, result));
                         return true;
                     });
         }
@@ -286,6 +287,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
     }
 
     private void showAlertDialog(
+            Preference preference,
             Result<ResendConfirmationEmailResult, ResendConfirmationEmailError> result) {
         PostTask.postTask(
                 TaskTraits.UI_DEFAULT,
@@ -316,6 +318,8 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
                             .setView(view)
                             .setPositiveButton(R.string.ok, null)
                             .show();
+
+                    preference.setEnabled(true);
                 });
     }
 }

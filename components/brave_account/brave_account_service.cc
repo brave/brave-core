@@ -214,6 +214,7 @@ void BraveAccountService::ResendConfirmationEmail(
   // Server side will determine locale based on the Accept-Language request
   // header (which is included automatically by upstream).
   request.locale = "";
+  request.timeout_duration = kVerifyResendTimeout;
   Client<VerifyResend>::Send(
       url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnResendConfirmationEmail,

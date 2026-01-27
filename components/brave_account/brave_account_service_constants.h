@@ -12,6 +12,7 @@ namespace brave_account {
 
 inline constexpr base::TimeDelta kVerifyResultPollInterval = base::Seconds(5);
 inline constexpr base::TimeDelta kAuthValidatePollInterval = base::Minutes(2);
+inline constexpr base::TimeDelta kVerifyResendTimeout = base::Seconds(10);
 
 // If a polling request (VerifyResult or AuthValidate) doesn't complete within
 // this interval, it will be canceled and retried to prevent hung requests from

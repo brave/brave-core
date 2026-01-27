@@ -129,6 +129,8 @@ class Client {
                                                "application/json");
     }
 
+    simple_url_loader->SetTimeoutDuration(request.timeout_duration);
+
     simple_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory.get(),
         base::BindOnce(OnResponse<Response>, std::move(callback),
