@@ -168,6 +168,7 @@ source_set("unit_tests") {
     "//components/subresource_filter/core/common",
     "//components/sync/base:features",
     "//components/user_education/common",
+    "//components/variations/net:omnibox_autofocus_http_headers",
     "//components/webapps/browser",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
