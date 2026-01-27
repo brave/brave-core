@@ -117,6 +117,10 @@ export function RenderLink(props: RenderLinkProps) {
   }, [context, href])
 
   if (!isLinkAllowed) {
+    // Completely hide relative links.
+    if (href?.startsWith('/')) {
+      return null
+    }
     return <span>{children}</span>
   }
 
