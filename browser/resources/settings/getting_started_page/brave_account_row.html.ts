@@ -60,6 +60,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       <div class="second-row">
         <leo-button kind="outline"
                     size="small"
+                    ?isDisabled=${this.isResendingConfirmationEmail}
                     @click=${this.onResendConfirmationEmailButtonClicked}>
           ${loadTimeData.getString(
             'braveAccountResendConfirmationEmailButtonLabel')}

@@ -36,10 +36,12 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
   static override get properties() {
     return {
       state: { type: Object },
+      isResendingConfirmationEmail: { type: Boolean },
     }
   }
 
   protected accessor state: AccountState | undefined = undefined
+  protected accessor isResendingConfirmationEmail: boolean = false
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
@@ -57,6 +59,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
   }
 
   protected async onResendConfirmationEmailButtonClicked() {
+    this.isResendingConfirmationEmail = true
+
     let error: ResendConfirmationEmailError | undefined
 
     try {
@@ -79,6 +83,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
         ? this.getErrorMessage(error)
         : this.i18n('braveAccountResendConfirmationEmailSuccess')
     }, 30000)
+
+    this.isResendingConfirmationEmail = false
   }
 
   protected onCancelRegistrationButtonClicked() {
