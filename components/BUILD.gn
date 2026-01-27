@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -81,6 +82,10 @@ test("brave_components_unittests") {
         "//brave/components/brave_wallet/browser:unit_tests",
         "//brave/components/brave_wallet/renderer/test:unit_tests",
       ]
+    }
+
+    if (enable_containers) {
+      deps += [ "//brave/components/containers/content/browser:unit_tests" ]
     }
   }
 

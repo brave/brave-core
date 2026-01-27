@@ -319,6 +319,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
+#endif
+
 #if BUILDFLAG(ENABLE_OMAHA4)
 #include "brave/browser/brave_browser_main_extra_parts_p3a.h"
 #endif
@@ -1531,6 +1535,16 @@ bool BraveContentBrowserClient::IsWindowsRecallDisabled() {
 #else
   return false;
 #endif
+}
+
+bool BraveContentBrowserClient::ShouldInheritStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return containers::ContainedTabHandlerRegistry::GetInstance()
+      .ShouldInheritStoragePartition(partition_config);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(

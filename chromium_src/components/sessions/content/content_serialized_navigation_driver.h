@@ -11,11 +11,17 @@
 #include "components/sessions/core/serialized_navigation_driver.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 
-#define GetSanitizedPageStateForPickle                    \
-  GetSanitizedPageStateForPickle_ChromiumImpl(            \
-      const SerializedNavigationEntry* navigation) const; \
-  std::string GetSanitizedPageStateForPickle
+#define GetSanitizedPageStateForPickle(...)                       \
+  GetSanitizedPageStateForPickle_ChromiumImpl(__VA_ARGS__) const; \
+  std::string GetSanitizedPageStateForPickle(__VA_ARGS__)
+
+#define Sanitize(...)                       \
+  Sanitize_ChromiumImpl(__VA_ARGS__) const; \
+  void Sanitize(__VA_ARGS__)
+
 #include <components/sessions/content/content_serialized_navigation_driver.h>  // IWYU pragma: export
+
 #undef GetSanitizedPageStateForPickle
+#undef Sanitize
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SESSIONS_CONTENT_CONTENT_SERIALIZED_NAVIGATION_DRIVER_H_
