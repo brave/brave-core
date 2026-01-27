@@ -88,7 +88,8 @@ class BraveTabContainer : public TabContainerImpl {
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            BraveTabContainerSeparator);
-
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };

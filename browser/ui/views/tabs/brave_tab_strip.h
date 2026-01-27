@@ -47,7 +47,8 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            BraveTabContainerSeparator);
-
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
 
