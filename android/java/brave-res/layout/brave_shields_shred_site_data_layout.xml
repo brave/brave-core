@@ -36,8 +36,7 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@color/shield_option_text_color"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"/>
 
     <TextView
@@ -46,8 +45,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/shield_text_color"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="24dp"
         android:visibility="gone"
         android:text="@string/shields_about_text"/>
@@ -77,8 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingHorizontal="8dp"
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/ic_brave_shred"/>
 
