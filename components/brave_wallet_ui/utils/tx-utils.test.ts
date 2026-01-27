@@ -1359,9 +1359,17 @@ describe('getTransactionMemo', () => {
   it('should handle memo with embedded zeros followed by more text', () => {
     // "Hello" + null byte + "World" - should only return "Hello"
     const memo = [
-      0x48, 0x65, 0x6c, 0x6c, 0x6f, // "Hello"
+      0x48,
+      0x65,
+      0x6c,
+      0x6c,
+      0x6f, // "Hello"
       0x00, // null terminator
-      0x57, 0x6f, 0x72, 0x6c, 0x64, // "World" (should be ignored)
+      0x57,
+      0x6f,
+      0x72,
+      0x6c,
+      0x64, // "World" (should be ignored)
     ]
 
     const tx: SerializableTransactionInfo = {
