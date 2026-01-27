@@ -79,7 +79,6 @@ export function RegenerateAnswerMenu(props: Props) {
       <div className={styles.menuHeader}>
         {getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TITLE)}
       </div>
-      <div className={styles.headerGap} />
       <Button
         slot='anchor-content'
         kind='plain-faint'
@@ -106,34 +105,34 @@ export function RegenerateAnswerMenu(props: Props) {
           />
         </div>
       </Button>
-      {freeModels.map((model) => (
-        <ModelMenuItem
-          key={model.key}
-          model={model}
-          isCurrent={model.key === turnModelKey}
-          onClick={() => handleRegenerate(model.key)}
-          showPremiumLabel={!isPremiumUser}
-        />
-      ))}
-      {premiumModels.map((model) => (
-        <ModelMenuItem
-          key={model.key}
-          model={model}
-          isCurrent={model.key === turnModelKey}
-          onClick={() => handleRegenerate(model.key)}
-          showPremiumLabel={!isPremiumUser}
-        />
-      ))}
-      <div className={styles.footerGap} />
-      <div className={styles.menuFooter}>
-        <leo-menu-item
-          onClick={() => handleRegenerate(turnModelKey)}
-          data-key='retrySameModel'
-        >
-          <Icon name='refresh' />
-          {getLocale(S.CHAT_UI_RETRY_SAME_MODEL_BUTTON_LABEL)}
-        </leo-menu-item>
-      </div>
+      <leo-menu-section class={styles.section}>
+        {freeModels.map((model) => (
+          <ModelMenuItem
+            key={model.key}
+            model={model}
+            isCurrent={model.key === turnModelKey}
+            onClick={() => handleRegenerate(model.key)}
+            showPremiumLabel={!isPremiumUser}
+          />
+        ))}
+        {premiumModels.map((model) => (
+          <ModelMenuItem
+            key={model.key}
+            model={model}
+            isCurrent={model.key === turnModelKey}
+            onClick={() => handleRegenerate(model.key)}
+            showPremiumLabel={!isPremiumUser}
+          />
+        ))}
+      </leo-menu-section>
+      <hr />
+      <leo-menu-item
+        onClick={() => handleRegenerate(turnModelKey)}
+        data-key='retrySameModel'
+      >
+        <Icon name='refresh' />
+        {getLocale(S.CHAT_UI_RETRY_SAME_MODEL_BUTTON_LABEL)}
+      </leo-menu-item>
     </ButtonMenu>
   )
 }
