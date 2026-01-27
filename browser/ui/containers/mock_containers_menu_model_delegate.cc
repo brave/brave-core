@@ -5,6 +5,6 @@
 
 #include "brave/browser/ui/containers/mock_containers_menu_model_delegate.h"
 
-MockContainerMenuModelDelegate::MockContainerMenuModelDelegate() = default;
+MockContainersMenuModelDelegate::MockContainersMenuModelDelegate() = default;
 
-MockContainerMenuModelDelegate::~MockContainerMenuModelDelegate() = default;
+MockContainersMenuModelDelegate::~MockContainersMenuModelDelegate() = default;

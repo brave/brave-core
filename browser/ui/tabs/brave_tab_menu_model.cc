@@ -30,7 +30,7 @@
 #include "ui/menus/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -134,8 +134,7 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainers(*browser->profile()->GetPrefs(), tab_strip_model,
-                           indices);
+    BuildItemForContainers(browser, tab_strip_model, indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -164,9 +163,9 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabMenuModel::BuildItemForContainers(
-    const PrefService& prefs,
+    Browser* browser,
     TabStripModel* tab_strip_model,
-    const std::vector<int>& indices) {
+    const std::vector<int>& selected_tab_indices) {
   // There are multiple command ids that could be used to find the right
   // insertion point for the containers submenu. The command ids could be absent
   // depending on the tab state. So we check for multiple commands.
@@ -183,8 +182,18 @@ void BraveTabMenuModel::BuildItemForContainers(
   CHECK(index.has_value());
   index = *index + 1;
 
+  std::vector<tabs::TabHandle> selected_tab_handles;
+  for (auto selected_tab_index : selected_tab_indices) {
+    auto* tab = tab_strip_model->GetTabAtIndex(selected_tab_index);
+    CHECK(tab);
+    selected_tab_handles.push_back(tab->GetHandle());
+  }
+
+  containers_menu_delegate_ =
+      std::make_unique<brave::ContainersTabMenuModelDelegate>(
+          browser, selected_tab_handles);
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      *tab_menu_model_delegate_->GetContainersMenuModelDelegate(), prefs);
+      *containers_menu_delegate_, *browser->profile()->GetPrefs());
   InsertSubMenuWithStringIdAt(*index, TabStripModel::CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());
