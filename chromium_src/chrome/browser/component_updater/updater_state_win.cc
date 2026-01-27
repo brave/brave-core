@@ -25,17 +25,10 @@ const wchar_t kChromeUpdatePolicyOverride[] =
 const int kCheckPeriodOverrideMinutesMax = 60 * 24 * 7 * 6;
 
 // Brave Update registry settings.
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\UpdateOrigin";
-const wchar_t kRegPathClientsGoogleUpdate[] =
-    L"Software\\BraveSoftware\\UpdateOrigin\\Clients\\"
-    L"{46BBAE1F-E77B-4E0F-9D2A-7FE08B9A5CD8}";
-#else
 const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
 const wchar_t kRegPathClientsGoogleUpdate[] =
     L"Software\\BraveSoftware\\Update\\Clients\\"
     L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 }  // namespace
 }  // namespace component_updater
