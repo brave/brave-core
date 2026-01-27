@@ -27,8 +27,6 @@ static_library("common") {
     "bitcoin_utils.h",
     "brave_wallet_response_helpers.cc",
     "brave_wallet_response_helpers.h",
-    "brave_wallet_types.cc",
-    "brave_wallet_types.h",
     "btc_like_serializer_stream.cc",
     "btc_like_serializer_stream.h",
     "cardano_address.cc",
@@ -69,6 +67,7 @@ static_library("common") {
   ]
   deps = [
     ":common_constants",
+    ":common_types",
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
     ":rust_lib",
@@ -86,6 +85,18 @@ static_library("common") {
   public_deps = [
     ":mojom",
     "//base",
+  ]
+}
+
+source_set("common_types") {
+  sources = [
+    "brave_wallet_types.cc",
+    "brave_wallet_types.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common/buildflags",
   ]
 }
 
@@ -146,6 +157,9 @@ mojom("mojom") {
       traits_headers = [
         "//brave/components/brave_wallet/common/mojom/uint128_mojom_traits.h",
       ]
+
+      traits_public_deps =
+          [ "//brave/components/brave_wallet/common:common_types" ]
     },
   ]
 }
