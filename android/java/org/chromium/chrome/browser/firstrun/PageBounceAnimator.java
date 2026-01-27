@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 
 /**
  * Drives programmatic {@link ViewPager2} transitions with a smooth, elastic feel by animating its
@@ -40,9 +41,10 @@ public class PageBounceAnimator {
    private final RecyclerView mRecyclerView;
    private final float mAmplitude;
 
+   @Nullable
    private ValueAnimator mPageAnimator;
+   @Nullable
    private ValueAnimator mBounceAnimator;
-   private OnPageShownListener mOnPageShownListener;
 
    /**
     * Listener called when a page finishes settling.
@@ -77,16 +79,6 @@ public class PageBounceAnimator {
             }
          }
       });
-   }
-
-   /**
-    * Registers a listener that is notified when a page is shown after a transition.
-    */
-   public void setOnPageShownListener(final OnPageShownListener listener) {
-      mOnPageShownListener = listener;
-      if (mOnPageShownListener != null) {
-         mOnPageShownListener.onPageShown(mViewPager.getCurrentItem());
-      }
    }
 
    /**
@@ -177,8 +169,5 @@ public class PageBounceAnimator {
    private void finalizeTransition(int targetPosition, boolean smoothScroll) {
       mRecyclerView.setTranslationX(0f);
       mViewPager.setCurrentItem(targetPosition, smoothScroll);
-      if (mOnPageShownListener != null) {
-         mOnPageShownListener.onPageShown(targetPosition);
-      }
    }
 }
