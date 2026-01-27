@@ -37,6 +37,7 @@ interface Props {
   onClose: () => void
   onShowCancelTransaction: () => void
   onClickViewInActivity: () => void
+  swapStatus?: BraveWallet.Gate3SwapStatus
 }
 
 export const TransactionSubmittedOrSigned = (props: Props) => {
@@ -45,6 +46,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
     onClose,
     onShowCancelTransaction,
     onClickViewInActivity,
+    swapStatus,
   } = props
 
   // State
@@ -53,6 +55,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
   // Computed
   const isBridge = isBridgeTransaction(transaction)
   const isSwap = isSwapTransaction(transaction)
+  const isSwapOrBridge = isBridge || isSwap
   const isERC20Approval =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
@@ -70,6 +73,17 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
     }
     return 'send-filled'
   }, [isERC20Approval, isBridge, isSwap])
+
+  // Title for swap transactions based on status
+  const swapTitle = React.useMemo(() => {
+    if (!isSwapOrBridge || !swapStatus) {
+      return undefined
+    }
+    if (swapStatus.status === BraveWallet.Gate3SwapStatusCode.kProcessing) {
+      return getLocale('braveWalletSwapProcessing')
+    }
+    return getLocale('braveWalletSwapPending')
+  }, [isSwapOrBridge, swapStatus])
 
   React.useEffect(() => {
     const timeId = setTimeout(() => {
@@ -102,11 +116,25 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
             <StatusIcon name={statusIconName} />
           </LoadingRing>
           <Title>
-            {transaction.txStatus === BraveWallet.TransactionStatus.Submitted
-              ? getLocale('braveWalletTransactionSubmittedTitle')
-              : getLocale('braveWalletTransactionSignedTitle')}
+            {swapTitle
+              ?? (transaction.txStatus
+              === BraveWallet.TransactionStatus.Submitted
+                ? getLocale('braveWalletTransactionSubmittedTitle')
+                : getLocale('braveWalletTransactionSignedTitle'))}
           </Title>
-          <TransactionIntent transaction={transaction} />
+          <TransactionIntent
+            transaction={transaction}
+            swapStatus={swapStatus}
+          />
+          {isSwapOrBridge && swapStatus?.internalStatus && (
+            <Text
+              textSize='14px'
+              textColor='secondary'
+              isBold={true}
+            >
+              {swapStatus.internalStatus}
+            </Text>
+          )}
         </Column>
       </Column>
       <Column

@@ -649,7 +649,45 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
   }
   result.Set("routePriority", *route_priority);
 
-  return GetJSON(base::Value(std::move(result)));
+  return GetJSON(result);
+}
+
+std::optional<std::string> EncodeStatusParams(
+    mojom::Gate3SwapStatusParamsPtr params) {
+  base::Value::Dict result;
+
+  result.Set("routeId", params->route_id);
+  result.Set("txHash", params->tx_hash);
+
+  auto source_coin = EncodeCoinType(params->source_coin);
+  if (!source_coin) {
+    return std::nullopt;
+  }
+  result.Set("sourceCoin", *source_coin);
+  result.Set("sourceChainId", params->source_chain_id);
+
+  auto destination_coin = EncodeCoinType(params->destination_coin);
+  if (!destination_coin) {
+    return std::nullopt;
+  }
+  result.Set("destinationCoin", *destination_coin);
+  result.Set("destinationChainId", params->destination_chain_id);
+
+  result.Set("depositAddress", params->deposit_address);
+  if (params->deposit_memo) {
+    result.Set("depositMemo", std::string(params->deposit_memo->begin(),
+                                          params->deposit_memo->end()));
+  } else {
+    result.Set("depositMemo", "");
+  }
+
+  auto provider = EncodeProvider(params->provider);
+  if (!provider) {
+    return std::nullopt;
+  }
+  result.Set("provider", *provider);
+
+  return GetJSON(result);
 }
 }  // namespace gate3
 

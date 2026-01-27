@@ -247,6 +247,7 @@ export const {
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
   useGetSolanaSignTransactionsRequestSimulationQuery,
+  useGetSwapStatusQuery,
   useGetSwapSupportedNetworksQuery,
   useGetTokenBalancesForChainIdQuery,
   useGetTokenBalancesRegistryQuery,

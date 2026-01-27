@@ -53,6 +53,7 @@ import {
   getTransactionFormattedSendCurrencyTotal,
   findTransactionToken,
   isBridgeTransaction,
+  getTransactionMemo,
 } from '../../../../utils/tx-utils'
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
@@ -405,9 +406,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     accountInfosRegistry,
   )
 
-  const memoFromTransaction = transaction.txDataUnion.zecTxData?.memo
-
-  const memoText = String.fromCharCode(...(memoFromTransaction ?? []))
+  const memoText = getTransactionMemo(transaction)
 
   // render
   return (

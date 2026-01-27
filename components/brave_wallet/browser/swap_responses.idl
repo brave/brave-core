@@ -513,6 +513,20 @@ namespace swap_responses {
     Gate3SwapRoute[] routes;
   };
 
+  enum Gate3StatusCode {
+    PENDING,
+    PROCESSING,
+    SUCCESS,
+    FAILED,
+    REFUNDED
+  };
+
+  dictionary Gate3StatusResponse {
+    Gate3StatusCode status;
+    DOMString internalStatus;
+    DOMString explorerUrl;
+  };
+
   enum Gate3ErrorKind {
     INSUFFICIENT_LIQUIDITY,
     UNKNOWN

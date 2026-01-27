@@ -725,8 +725,8 @@ struct Gate3SwapRoute {
   // Address to deposit funds (may not be available for indicative quotes)
   string? deposit_address;
 
-  // Memo required for deposit (if applicable)
-  string? deposit_memo;
+  // Memo required for deposit (null if not applicable)
+  array<uint8>? deposit_memo;
 
   // Quote expiration time (Unix timestamp in seconds); may be unset.
   string? expires_at;
@@ -742,6 +742,33 @@ struct Gate3SwapRoute {
 
 struct Gate3SwapQuote {
   array<Gate3SwapRoute> routes;
+};
+
+struct Gate3SwapStatusParams {
+  string route_id;
+  string tx_hash;
+  CoinType source_coin;
+  string source_chain_id;
+  CoinType destination_coin;
+  string destination_chain_id;
+  string deposit_address;
+  // Memo required for deposit (null if not applicable)
+  array<uint8>? deposit_memo;
+  SwapProvider provider;
+};
+
+enum Gate3SwapStatusCode {
+  kPending,
+  kProcessing,
+  kSuccess,
+  kFailed,
+  kRefunded,
+};
+
+struct Gate3SwapStatus {
+  Gate3SwapStatusCode status;
+  string internal_status;
+  string explorer_url;
 };
 
 struct ZeroExFee {
@@ -1627,6 +1654,10 @@ interface SwapService {
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
+
+  GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
+                                              Gate3SwapError? error,
+                                              string error_string);
 
   // Get LiFi status for a given transaction meta id
   GetLiFiStatus(string tx_hash) => (LiFiStatus? response,

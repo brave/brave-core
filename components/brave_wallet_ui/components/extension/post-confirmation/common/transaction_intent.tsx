@@ -56,15 +56,17 @@ import { Row, Text } from '../../../shared/style'
 
 interface Props {
   transaction: SerializableTransactionInfo
+  swapStatus?: BraveWallet.Gate3SwapStatus
 }
 
 export const TransactionIntent = (props: Props) => {
-  const { transaction } = props
+  const { transaction, swapStatus } = props
 
   // Computed & Queries
   const isBridge = isBridgeTransaction(transaction)
   const isSwap = isSwapTransaction(transaction)
   const isSwapOrBridge = isBridge || isSwap
+  const hasSwapInfo = !!transaction.swapInfo
   const isERC20Approval =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
   const isTxApprovalUnlimited = getIsTxApprovalUnlimited(transaction)
@@ -335,6 +337,123 @@ export const TransactionIntent = (props: Props) => {
     isSolanaATACreation,
   ])
 
+  // Derive swap status states
+  const swapSuccess =
+    swapStatus?.status === BraveWallet.Gate3SwapStatusCode.kSuccess
+  const swapFailed =
+    swapStatus?.status === BraveWallet.Gate3SwapStatusCode.kFailed
+    || swapStatus?.status === BraveWallet.Gate3SwapStatusCode.kRefunded
+
+  const swapInfoDescription = React.useMemo(() => {
+    if (!hasSwapInfo) {
+      return null
+    }
+
+    const destNetworkName = bridgeToNetwork?.chainName ?? txNetwork?.chainName
+
+    // Success: "The amount of 100 USDC has been added to your account 0x123 on Polygon"
+    if (swapSuccess) {
+      return getLocale('braveWalletAmountAddedToAccount')
+        .replace('$1', formattedDestinationAmount)
+        .replace(
+          '$2',
+          `${recipientLabel} ${getLocale(
+            'braveWalletSwappingOrBridgingOnNetwork',
+          )
+            .replace('$1', '')
+            .replace('$2', destNetworkName ?? '')
+            .trim()}`,
+        )
+    }
+
+    // Non-terminal & Failed states share the same format, only the action word differs
+    // Failed: "Swap/Bridge", Non-terminal: "Swapping/Bridging"
+    const actionLocale = isBridge
+      ? getLocale(swapFailed ? 'braveWalletBridge' : 'braveWalletBridging')
+      : getLocale(swapFailed ? 'braveWalletSwap' : 'braveWalletSwapping')
+
+    if (isBridge) {
+      // "{action} 0.5 ETH on Ethereum to USDC on Polygon"
+      const sourceWithNetwork = `${formattedSourceAmount} ${getLocale(
+        'braveWalletSwappingOrBridgingOnNetwork',
+      )
+        .replace('$1', '')
+        .replace('$2', txNetwork?.chainName ?? '')
+        .trim()}`
+      const destWithNetwork = `${destinationToken?.symbol ?? ''} ${getLocale(
+        'braveWalletSwappingOrBridgingOnNetwork',
+      )
+        .replace('$1', '')
+        .replace('$2', bridgeToNetwork?.chainName ?? '')
+        .trim()}`
+      return `${actionLocale} ${sourceWithNetwork} to ${destWithNetwork}`
+    }
+
+    // "{action} 0.5 ETH to USDC on Ethereum"
+    const onNetwork = getLocale('braveWalletSwappingOrBridgingOnNetwork')
+      .replace('$1', '')
+      .replace('$2', txNetwork?.chainName ?? '')
+      .trim()
+    return `${actionLocale} ${formattedSourceAmount} to ${destinationToken?.symbol ?? ''} ${onNetwork}`
+  }, [
+    hasSwapInfo,
+    swapSuccess,
+    swapFailed,
+    isBridge,
+    formattedSourceAmount,
+    formattedDestinationAmount,
+    destinationToken?.symbol,
+    recipientLabel,
+    txNetwork?.chainName,
+    bridgeToNetwork?.chainName,
+  ])
+
+  // Handler for explorer button click
+  const onExplorerClick = React.useCallback(() => {
+    // Use swap explorer URL if provided
+    if (swapStatus?.explorerUrl) {
+      window.open(swapStatus.explorerUrl, '_blank', 'noreferrer')
+      return
+    }
+    // Fallback to existing block explorer logic
+    onClickViewOnBlockExplorer(
+      isSwapOrBridge
+        && transaction.swapInfo?.provider === BraveWallet.SwapProvider.kLiFi
+        ? 'lifi'
+        : 'tx',
+      transaction.txHash,
+    )()
+  }, [
+    swapStatus?.explorerUrl,
+    onClickViewOnBlockExplorer,
+    isSwapOrBridge,
+    transaction.swapInfo?.provider,
+    transaction.txHash,
+  ])
+
+  // If both swapInfo and swapStatus exist, the transaction was
+  // created via gate3.
+  if (hasSwapInfo && swapInfoDescription && swapStatus) {
+    return (
+      <Row
+        gap='4px'
+        flexWrap='wrap'
+        padding='16px'
+      >
+        <Text
+          textColor='secondary'
+          textSize='14px'
+        >
+          {swapInfoDescription}
+        </Text>
+        <Button onClick={onExplorerClick}>
+          <ExplorerIcon />
+        </Button>
+      </Row>
+    )
+  }
+
+  // Legacy locales
   const description = formatLocale(
     descriptionLocale,
     {
@@ -359,16 +478,7 @@ export const TransactionIntent = (props: Props) => {
           >
             {secondDuringValue}
           </Text>
-          <Button
-            onClick={onClickViewOnBlockExplorer(
-              isSwapOrBridge
-                && transaction.swapInfo?.provider
-                  === BraveWallet.SwapProvider.kLiFi
-                ? 'lifi'
-                : 'tx',
-              transaction.txHash,
-            )}
-          >
+          <Button onClick={onExplorerClick}>
             <ExplorerIcon />
           </Button>
         </Row>
