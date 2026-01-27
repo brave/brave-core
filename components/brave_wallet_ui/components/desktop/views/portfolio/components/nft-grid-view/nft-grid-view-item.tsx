@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+
+// redux
+import { useAppDispatch } from '../../../../../../common/hooks/use-redux'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -81,7 +83,7 @@ export const NFTGridViewItem = ({
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
 
   // hooks
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()

@@ -5,8 +5,10 @@
 
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
+
+// redux
+import { useAppDispatch } from '../../../../../common/hooks/use-redux'
 
 // types
 import { BraveWallet } from '../../../../../constants/types'
@@ -121,7 +123,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted,
   )

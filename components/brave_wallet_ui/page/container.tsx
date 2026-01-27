@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+
+// redux
+import { useAppDispatch } from '../common/hooks/use-redux'
 
 import ProgressRing from '@brave/leo/react/progressRing'
 
@@ -77,7 +79,7 @@ export const Container = () => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // wallet selectors (safe)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
