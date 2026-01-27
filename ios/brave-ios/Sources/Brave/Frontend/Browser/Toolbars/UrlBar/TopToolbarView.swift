@@ -545,15 +545,19 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    // Increase the inset of the main stack view if there's no additional space from safe areas
-    let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : 12
-    mainStackView.layoutMargins = .init(
-      top: 0,
-      left: horizontalInset,
-      bottom: 0,
-      right: horizontalInset
-    )
-    updateMainStackViewConstraints()
+
+    if LiquidGlassMode.isEnabled {
+      updateMainStackViewConstraints()
+    } else {
+      // Increase the inset of the main stack view if there's no additional space from safe areas
+      let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : 12
+      mainStackView.layoutMargins = .init(
+        top: 0,
+        left: horizontalInset,
+        bottom: 0,
+        right: horizontalInset
+      )
+    }
 
     locationContainer.layoutIfNeeded()
     locationContainer.layer.shadowPath =
