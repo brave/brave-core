@@ -39,23 +39,32 @@ public class BraveAccountPreference extends ChromeBasePreference {
         super.onBindViewHolder(holder);
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
-            if (mTitleTextColorResId != 0) {
-                titleView.setTextColor(getContext().getColor(mTitleTextColorResId));
-            } else if (!isSelectable()) {
+            if (!isSelectable()) {
                 // Restore the default primary text color when the preference is non-selectable.
-                TypedArray ta =
-                        getContext()
-                                .obtainStyledAttributes(
-                                        new int[] {android.R.attr.textColorPrimary});
-                int defaultTitleColor = ta.getColor(0, titleView.getCurrentTextColor());
-                ta.recycle();
-                titleView.setTextColor(defaultTitleColor);
+                setColorFromAttr(titleView, android.R.attr.textColorPrimary);
+            } else if (!isEnabled()) {
+                // Use tertiary text color when preference is disabled.
+                setColorFromRes(titleView, R.color.text_tertiary);
+            } else {
+                setColorFromRes(titleView, mTitleTextColorResId);
             }
         }
 
-        if (mSummaryTextColorResId != 0
-                && holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
-            summaryView.setTextColor(getContext().getColor(mSummaryTextColorResId));
+        if (holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
+            setColorFromRes(summaryView, mSummaryTextColorResId);
+        }
+    }
+
+    private void setColorFromAttr(TextView textView, int attr) {
+        TypedArray ta = getContext().obtainStyledAttributes(new int[] {attr});
+        int color = ta.getColor(0, textView.getCurrentTextColor());
+        ta.recycle();
+        textView.setTextColor(color);
+    }
+
+    private void setColorFromRes(TextView textView, int colorResId) {
+        if (colorResId != 0) {
+            textView.setTextColor(getContext().getColor(colorResId));
         }
     }
 }
