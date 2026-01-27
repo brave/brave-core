@@ -3,19 +3,32 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { createSelector } from '@reduxjs/toolkit'
+
 import { WalletPanelState } from '../../constants/types'
 
 type State = Omit<WalletPanelState, 'wallet'>
+
+const selectPanelState = (state: State) => state.panel
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ panel }: State) => panel.hasInitialized
 export const selectedPanel = ({ panel }: State) => panel.selectedPanel
 
-// unsafe selectors (will cause re-render if not strictly equal "===") (objects
-// and lists)
-export const connectToSiteOrigin = ({ panel }: State) =>
-  panel.connectToSiteOrigin
-export const connectingAccounts = ({ panel }: State) => panel.connectingAccounts
-export const hardwareWalletCode = ({ panel }: State) => panel.hardwareWalletCode
-export const selectedTransactionId = ({ panel }: State) =>
-  panel.selectedTransactionId
+// memoized selectors (safe for objects and arrays)
+export const connectToSiteOrigin = createSelector(
+  [selectPanelState],
+  (panel) => panel.connectToSiteOrigin,
+)
+export const connectingAccounts = createSelector(
+  [selectPanelState],
+  (panel) => panel.connectingAccounts,
+)
+export const hardwareWalletCode = createSelector(
+  [selectPanelState],
+  (panel) => panel.hardwareWalletCode,
+)
+export const selectedTransactionId = createSelector(
+  [selectPanelState],
+  (panel) => panel.selectedTransactionId,
+)

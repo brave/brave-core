@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { createSelector } from '@reduxjs/toolkit'
+
 import { WalletPageState } from '../../constants/types'
 
 type State = Omit<WalletPageState, 'page'>
+
+const selectWalletState = (state: State) => state.wallet
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
@@ -31,7 +35,8 @@ export const isZCashShieldedTransactionsEnabled = ({ wallet }: State) =>
   wallet.isZCashShieldedTransactionsEnabled
 export const isPolkadotEnabled = ({ wallet }: State) => wallet.isPolkadotEnabled
 
-// unsafe selectors (will cause re-render if not strictly equal "===") (objects
-// and lists)
-export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
-  wallet.allowedNewWalletAccountTypeNetworkIds
+// memoized selectors (safe for objects and arrays)
+export const allowedNewWalletAccountTypeNetworkIds = createSelector(
+  [selectWalletState],
+  (wallet) => wallet.allowedNewWalletAccountTypeNetworkIds,
+)
