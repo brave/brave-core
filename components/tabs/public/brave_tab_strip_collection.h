@@ -27,11 +27,30 @@ class BraveTabStripCollection : public TabStripCollection {
   // Ownership of the |delegate| is transferred to the BraveTabStripCollection.
   void SetDelegate(std::unique_ptr<BraveTabStripCollectionDelegate> delegate);
 
+  // Exposes APIs for delegate to override behaviors ---------------------------
+  // Theses methods call the default behavior of TabStripCollection for on
+  // behalf of the delegate.
+  tabs::TabCollection* GetParentCollection(
+      TabInterface* tab,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
+  const ChildrenVector& GetChildrenForDelegate(
+      const TabCollection& collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
+  void AddTabRecursive(std::unique_ptr<TabInterface> tab,
+                       size_t index,
+                       std::optional<tab_groups::TabGroupId> new_group_id,
+                       bool new_pinned_state,
+                       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
+      size_t index,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+
   // TabStripCollection:
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
                        size_t index,
                        std::optional<tab_groups::TabGroupId> new_group_id,
-                       bool new_pinned_state) override;
+                       bool new_pinned_state,
+                       TabInterface* opener) override;
   void MoveTabsRecursive(
       const std::vector<int>& tab_indices,
       size_t destination_index,

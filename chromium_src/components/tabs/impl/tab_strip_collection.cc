@@ -44,4 +44,16 @@ std::unique_ptr<TabInterface> TabStripCollection::RemoveTabAtIndexRecursive(
   return RemoveTabAtIndexRecursive_Chromium(index);
 }
 
+void TabStripCollection::AddTabRecursive(
+    std::unique_ptr<TabInterface> tab,
+    size_t index,
+    std::optional<tab_groups::TabGroupId> new_group_id,
+    bool new_pinned_state,
+    TabInterface* opener) {
+  // Default implementation just calls the base class method without opener.
+  // This method will be overriden in BraveTabStripCollection and use opener
+  // for tree tab mod
+  AddTabRecursive(std::move(tab), index, new_group_id, new_pinned_state);
+}
+
 }  // namespace tabs
