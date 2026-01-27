@@ -26,7 +26,7 @@
             android:gravity="start|center_vertical"
             android:padding="16dp"
             app:srcCompat="@drawable/ic_back"
-            app:tint="@color/shield_back_button_tint"/>
+            app:tint="@color/schemes_on_surface_variant"/>
 
         <TextView
             android:id="@+id/option_title"
@@ -36,10 +36,10 @@
             android:textSize="16sp"
             android:layout_marginEnd="16dp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="2"
             android:ellipsize="start"
-            android:textColor="@color/shield_title_color"/>
+            android:textColor="@color/schemes_on_surface"/>
 
     </LinearLayout>
 
@@ -70,7 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
 
         <RadioButton
             android:id="@+id/option1"
@@ -97,18 +98,5 @@
             android:textColor="@color/shield_text_color"/>
 
     </RadioGroup>
-
-    <android.widget.Button
-        android:id="@+id/done_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/brave_sync_btn_done"
-        android:textAllCaps="false"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/brave_theme_color" />
 
 </LinearLayout>

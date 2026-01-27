@@ -26,29 +26,21 @@
             android:gravity="start|center_vertical"
             android:padding="16dp"
             app:srcCompat="@drawable/ic_back"
-            app:tint="@color/shield_back_button_tint"/>
+            app:tint="@color/schemes_on_surface_variant"/>
 
+        <TextView
+            android:id="@+id/shred_site_data_option_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:ellipsize="start"
+            android:text="@string/brave_shields_shred_sites_data_text"/>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/shred_site_data_option_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/shield_option_text_color"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:id="@+id/shred_site_data_about_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/shield_text_color"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="24dp"
-        android:visibility="gone"
-        android:text="@string/shields_about_text"/>
 
     <include
         android:id="@+id/brave_shields_auto_shred_site_data_layout_id"

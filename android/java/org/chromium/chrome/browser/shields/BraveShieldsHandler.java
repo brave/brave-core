@@ -700,8 +700,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             mBlockShieldsOption2.setText(option2StringId);
             RadioButton mBlockShieldsOption3 = mBlockShieldsLayout.findViewById(R.id.option3);
             mBlockShieldsOption3.setText(option3StringId);
-            Button mBlockShieldsDoneButton = mBlockShieldsLayout.findViewById(R.id.done_button);
-            mBlockShieldsDoneButton.setOnClickListener(mDoneClickListener);
             ImageView mBlockShieldsBackButton = mBlockShieldsLayout.findViewById(R.id.back_button);
             mBlockShieldsBackButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -969,8 +967,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         autoShredOption3.setChecked(
                 autoShredSettingOption.equals(
                         BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT));
-        Button autoShredDoneButton = mAutoShredOptionsLayout.findViewById(R.id.done_button);
-        autoShredDoneButton.setOnClickListener(mDoneClickListener);
 
         // Handle Auto shred options selection
         RadioGroup autoShredOptionGroup =
@@ -1097,8 +1093,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mOptionText.setVisibility(View.GONE);
         RadioGroup mOptionGroup = mAboutLayout.findViewById(R.id.options_radio_group);
         mOptionGroup.setVisibility(View.GONE);
-        Button mDoneButton = mAboutLayout.findViewById(R.id.done_button);
-        mDoneButton.setOnClickListener(mDoneClickListener);
         ImageView mBackButton = mAboutLayout.findViewById(R.id.back_button);
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1658,12 +1652,4 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             });
         }
     }
-
-    private final View.OnClickListener mDoneClickListener =
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideBraveShieldsMenu();
-                }
-            };
 }
