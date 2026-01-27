@@ -1,7 +1,16 @@
 diff --git a/chrome/android/features/tab_ui/BUILD.gn b/chrome/android/features/tab_ui/BUILD.gn
-index a47da223c5a005ef631e9ff17197b02934998796..c2a0b31d9cd6a28020d371beccfa80cf9a33cc65 100644
+index a47da223c5a005ef631e9ff17197b02934998796..c1c6b4782fcd4925f19042c8db59eaba95915af3 100644
 --- a/chrome/android/features/tab_ui/BUILD.gn
 +++ b/chrome/android/features/tab_ui/BUILD.gn
+@@ -9,7 +9,7 @@ import("//tools/grit/grit_rule.gni")
+ 
+ java_strings_grd("java_strings_grd") {
+   defines = chrome_grit_defines
+-  grd_file = "java/strings/android_chrome_tab_ui_strings.grd"
++  grd_file = "//brave/chrome/android/features/tab_ui/java/strings/android_chrome_tab_ui_strings.grd"
+ }
+ 
+ android_resources("java_resources") {
 @@ -132,6 +132,7 @@ android_resources("java_resources") {
      "java/res/xml/tab_archive_time_delta_preference.xml",
      "java/res/xml/tabs_settings.xml",

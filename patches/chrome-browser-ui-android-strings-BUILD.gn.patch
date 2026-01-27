@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/ui/android/strings/BUILD.gn b/chrome/browser/ui/android/strings/BUILD.gn
+index 21d1230172e87c2a63a6155fe85f67858bcd5190..7cf5a10775fe51ea805413d5a38029c2c0297f2f 100644
+--- a/chrome/browser/ui/android/strings/BUILD.gn
++++ b/chrome/browser/ui/android/strings/BUILD.gn
+@@ -7,5 +7,5 @@ import("//tools/grit/grit_rule.gni")
+ 
+ java_strings_grd("ui_strings_grd") {
+   defines = chrome_grit_defines
+-  grd_file = "android_chrome_strings.grd"
++  grd_file = "//brave/browser/ui/android/strings/android_chrome_strings.grd"
+ }

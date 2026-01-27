@@ -1,5 +1,5 @@
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
-index 99758f6df440fbbadcf639c164f5d137b7f5652e..e1900fef458a1cb0c79cabc62b2ac5e412d90416 100644
+index 99758f6df440fbbadcf639c164f5d137b7f5652e..6f3b4dbc24118ef3cda8ab7103a45f8c31dda407 100644
 --- a/build/config/chrome_build.gni
 +++ b/build/config/chrome_build.gni
 @@ -1,6 +1,7 @@
@@ -10,3 +10,12 @@ index 99758f6df440fbbadcf639c164f5d137b7f5652e..e1900fef458a1cb0c79cabc62b2ac5e4
  
  import("//build/config/gclient_args.gni")
  import("//build_overrides/build.gni")
+@@ -99,7 +100,7 @@ declare_args() {
+ 
+ declare_args() {
+   # The path to the BRANDING file in chrome/app/theme.
+-  branding_file_path = "//chrome/app/theme/$branding_path_component/BRANDING"
++  branding_file_path = "//brave/app/theme/$branding_path_component/BRANDING"
+ }
+ 
+ # Whether to enable built-in branding assets (logos & marketing snippets) for

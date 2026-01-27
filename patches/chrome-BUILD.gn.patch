@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index f8d29b704ab491524175e773062c624dfd59db0a..ea473a15b66901447def78c532ccdc61a6367ad0 100644
+index f8d29b704ab491524175e773062c624dfd59db0a..97a28d8f82b8741b25de57cb6da1a78d8edc75b2 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -195,6 +195,7 @@ if (!is_android && !is_mac) {
@@ -32,6 +32,21 @@ index f8d29b704ab491524175e773062c624dfd59db0a..ea473a15b66901447def78c532ccdc61
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
+@@ -626,12 +629,12 @@ if (is_win) {
+   }
+ 
+   bundle_data("chrome_app_icon") {
+-    sources = [ "app/theme/$branding_path_component/mac/app.icns" ]
++    sources = [ "//brave/app/theme/$branding_path_component/mac/$brave_channel/app.icns" ]
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+   }
+ 
+   bundle_data("chrome_asset_catalog") {
+-    sources = [ "app/theme/$branding_path_component/mac/Assets.car" ]
++    sources = [ "//brave/app/theme/$branding_path_component/mac/$brave_channel/Assets.car" ]
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+   }
+ 
 @@ -669,6 +672,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
@@ -68,6 +83,15 @@ index f8d29b704ab491524175e773062c624dfd59db0a..ea473a15b66901447def78c532ccdc61
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
+@@ -946,7 +954,7 @@ if (is_win) {
+       # Authorization Services uses.  Also, Authorization Services
+       # can't deal with .icns files.
+       "$root_gen_dir/chrome/browser/mac/install.sh",
+-      "app/theme/default_100_percent/$branding_path_component/product_logo_32.png",
++      "//brave/app/theme/default_100_percent/$branding_path_component/product_logo_32.png",
+     ]
+ 
+     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
 @@ -1208,6 +1216,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
@@ -93,6 +117,34 @@ index f8d29b704ab491524175e773062c624dfd59db0a..ea473a15b66901447def78c532ccdc61
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
+@@ -1475,19 +1485,19 @@ if (is_win) {
+ 
+ copy("visual_elements_resources") {
+   sources = [
+-    "//chrome/app/theme/$branding_path_component/win/tiles/Logo.png",
+-    "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogo.png",
++    "//brave/app/theme/$branding_path_component/win/tiles/Logo.png",
++    "//brave/app/theme/$branding_path_component/win/tiles/SmallLogo.png",
+     "app/visual_elements_resources/chrome.VisualElementsManifest.xml",
+   ]
+ 
+   if (is_chrome_branded) {
+     sources += [
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoBeta.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoCanary.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/LogoDev.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoBeta.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoCanary.png",
+-      "//chrome/app/theme/$branding_path_component/win/tiles/SmallLogoDev.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/LogoBeta.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/LogoCanary.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/LogoDev.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/SmallLogoBeta.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/SmallLogoCanary.png",
++      "//brave/app/theme/$branding_path_component/win/tiles/SmallLogoDev.png",
+     ]
+   }
+ 
 @@ -1499,6 +1509,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
@@ -109,3 +161,17 @@ index f8d29b704ab491524175e773062c624dfd59db0a..ea473a15b66901447def78c532ccdc61
      }
  
      if (is_chrome_branded && !is_mac) {
+@@ -1818,11 +1830,11 @@ if (is_linux || is_chromeos) {
+     ]
+     if (is_linux) {
+       sources += [
+-        "//chrome/app/theme/$branding_path_component/linux/product_logo_48.png",
++        "//brave/app/theme/$branding_path_component/linux/product_logo_48.png",
+       ]
+     } else {
+       sources +=
+-          [ "//chrome/app/theme/$branding_path_component/product_logo_48.png" ]
++          [ "//brave/app/theme/$branding_path_component/product_logo_48.png" ]
+     }
+     outputs = [ "$root_out_dir/{{source_file_part}}" ]
+   }
