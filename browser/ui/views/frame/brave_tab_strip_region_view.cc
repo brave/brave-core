@@ -17,6 +17,21 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
+namespace {
+
+#if BUILDFLAG(IS_LINUX)
+ui::DropTargetEvent ConvertRootLocation(views::View* view,
+                                        const ui::DropTargetEvent& event) {
+  ui::DropTargetEvent converted_event = event;
+  auto root_location = event.location();
+  views::View::ConvertPointToScreen(view, &root_location);
+  converted_event.set_root_location(root_location);
+  return converted_event;
+}
+#endif
+
+}  // namespace
+
 BraveTabStripRegionView::~BraveTabStripRegionView() = default;
 
 void BraveTabStripRegionView::Layout(PassKey) {
@@ -72,6 +87,36 @@ void BraveTabStripRegionView::UpdateTabStripMargin() {
   }
 
   tab_strip_container_->SetProperty(views::kMarginsKey, margins);
+}
+
+void BraveTabStripRegionView::OnDragEntered(const ui::DropTargetEvent& event) {
+#if BUILDFLAG(IS_LINUX)
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) {
+    return TabStripRegionView::OnDragEntered(event);
+  }
+
+  // Upstream calls TabDragController::Drag() with event.root_location().
+  // It should be screen cooridanated location but
+  // |event|'s root_location() gives vertical tab widget coordinated location.
+  return TabStripRegionView::OnDragEntered(ConvertRootLocation(this, event));
+#else
+  return TabStripRegionView::OnDragEntered(event);
+#endif
+}
+
+int BraveTabStripRegionView::OnDragUpdated(const ui::DropTargetEvent& event) {
+#if BUILDFLAG(IS_LINUX)
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) {
+    return TabStripRegionView::OnDragUpdated(event);
+  }
+
+  // Upstream calls TabDragController::Drag() with event.root_location().
+  // It should be screen cooridanated location but
+  // |event|'s root_location() gives vertical tab widget coordinated location.
+  return TabStripRegionView::OnDragUpdated(ConvertRootLocation(this, event));
+#else
+  return TabStripRegionView::OnDragUpdated(event);
+#endif
 }
 
 void BraveTabStripRegionView::Initialize() {
