@@ -131,7 +131,6 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
               textSize='14px'
               textColor='secondary'
               isBold={true}
-              style={{ textAlign: 'center' }}
             >
               {swapStatus.internalStatus}
             </Text>
