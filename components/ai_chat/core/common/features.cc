@@ -150,6 +150,9 @@ BASE_FEATURE(kCodeExecutionTool,
              "AIChatCodeExecutionTool",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+const base::FeatureParam<bool> kCodeExecutionToolCharts{&kCodeExecutionTool,
+                                                        "charts", true};
+
 bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);
 }

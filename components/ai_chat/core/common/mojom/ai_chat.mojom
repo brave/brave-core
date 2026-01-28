@@ -30,6 +30,9 @@ const string kSelectDropdownToolName = "select_dropdown";
 const string kTypeTextToolName = "type_text";
 const string kWaitToolName = "wait";
 
+// Tool artifact types
+const string kLineChartArtifactType = "line_chart";
+
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;

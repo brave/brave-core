@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -193,6 +194,10 @@ void CodeExecutionTool::ResolveRequest(
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
       execution_time_limit_(kExecutionTimeLimit) {
+  if (ChartCodePlugin::IsEnabled()) {
+    code_plugins_.push_back(std::make_unique<ChartCodePlugin>());
+  }
+
   // Build the description with plugin information
   std::vector<std::string_view> plugin_descriptions;
   for (const auto& plugin : code_plugins_) {
