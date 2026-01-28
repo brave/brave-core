@@ -34,6 +34,7 @@ export const _ToolPermissionChallenge = {
       argumentsJson: 'toolArguments',
       output: undefined,
       isServerResult: false,
+      artifacts: undefined,
       permissionChallenge: {
         assessment: args.hasAssessment
           ? 'This is not at all what you asked for. The agent may have been misled by untrusted content.'

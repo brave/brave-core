@@ -24,7 +24,9 @@ namespace ai_chat {
 class Tool {
  public:
   using ToolResult = std::vector<mojom::ContentBlockPtr>;
-  using UseToolCallback = base::OnceCallback<void(ToolResult output)>;
+  using ToolArtifacts = std::vector<mojom::ToolArtifactPtr>;
+  using UseToolCallback =
+      base::OnceCallback<void(ToolResult output, ToolArtifacts artifacts)>;
 
   Tool();
   virtual ~Tool();

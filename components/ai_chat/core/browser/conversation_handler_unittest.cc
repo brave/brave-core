@@ -2690,7 +2690,8 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -2707,7 +2708,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Mock engine to return no new entry after the tool is used
@@ -2813,9 +2814,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "id1",
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
                                                  "{\"param\":", std::nullopt,
-                                                 nullptr, false)),
+                                                 std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           // Then send a partial tool use event with no name
@@ -2824,7 +2825,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("", "", "\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           // Then send another tool use event with a name
@@ -2832,9 +2834,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool2", "id2",
-                                                 "{\"other\":true}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool2", "id2", "{\"other\":true}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           // Complete the request
@@ -2923,7 +2925,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -2944,7 +2947,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   // available.
   auto expected_tool_use_event = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"), nullptr, false);
+      CreateContentBlocksForText("Weather in New York: 72°F"),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr, false);
 
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
       .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
@@ -2963,7 +2967,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second call to engine receives the tool output and provides the next
@@ -3073,7 +3077,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3094,7 +3099,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
   // available.
   auto expected_tool_use_event = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"), nullptr, false);
+      CreateContentBlocksForText("Weather in New York: 72°F"),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr, false);
 
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
       .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
@@ -3113,7 +3119,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second call to engine (sending the tool output)returns an error
@@ -3193,18 +3199,18 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"location\":\"NYC\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"location\":\"NYC\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool2", "tool_id_2",
-                                                 "{\"input1\":\"val1\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool2", "tool_id_2", "{\"input1\":\"val1\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3223,7 +3229,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool1")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*tool2, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
@@ -3232,7 +3238,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool2")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
@@ -3324,9 +3330,9 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"param\":\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3441,9 +3447,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("tool1", "tool_id_1",
-                                                 "{\"param1\":\"value1\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "tool1", "tool_id_1", "{\"param1\":\"value1\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3460,7 +3466,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool1")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   EXPECT_CALL(*tool2, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
@@ -3468,7 +3474,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Result from tool2")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second assistant response should ask for the second tool to be run
@@ -3479,9 +3485,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("tool2", "tool_id_2",
-                                                 "{\"param2\":\"value2\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "tool2", "tool_id_2", "{\"param2\":\"value2\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3600,9 +3606,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("nonexistent_tool",
-                                                 "test_tool_id", "{}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "nonexistent_tool", "test_tool_id", "{}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           // Complete with empty completion event (like working test)
@@ -4847,7 +4853,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool", "tool_id_1", "{\"input\":\"test1\"}",
-                    std::nullopt,
+                    std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server determined this tool use "
                         "is off-topic",  // assessment
@@ -4862,7 +4868,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool2", "tool_id_2", "{\"input\":\"test2\"}",
-                    std::nullopt, nullptr, false);
+                    std::nullopt, std::nullopt, nullptr, false);
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         std::move(tool_use)),
@@ -4909,15 +4915,15 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
         std::move(callback).Run(
-            CreateContentBlocksForText("Result from tool1"));
+            CreateContentBlocksForText("Weather in New York: 72°F"), {});
       }));
 
   // Tool2 should be called automatically after tool1 completes
   EXPECT_CALL(*tool2, UseTool(StrEq("{\"input\":\"test2\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
-        std::move(callback).Run(
-            CreateContentBlocksForText("Result from tool2"));
+        std::move(callback).Run(CreateContentBlocksForText("Result from tool2"),
+                                {});
       }));
 
   // Expect final generation to be triggered after both tools complete
@@ -4940,7 +4946,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   // First tool should have output
   ASSERT_TRUE(events_after[0]->get_tool_use_event()->output.has_value());
   EXPECT_MOJOM_EQ(events_after[0]->get_tool_use_event()->output.value(),
-                  CreateContentBlocksForText("Result from tool1"));
+                  CreateContentBlocksForText("Weather in New York: 72°F"));
 
   // Second tool should have output
   EXPECT_MOJOM_EQ(events_after[1]->get_tool_use_event()->output.value(),
@@ -4986,9 +4992,9 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"param\":\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -5059,6 +5065,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New(
                             "tool1", "tool_id_1", "{}", std::nullopt,
+                            std::nullopt,
                             mojom::PermissionChallenge::New(
                                 "Server determined this tool use "
                                 "is off-topic",  // assessment
@@ -5069,7 +5076,8 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("tool2", "tool_id_2", "{}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -5166,7 +5174,7 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool", "tool_id_1", "{\"param\":\"value\"}",
-                    std::nullopt,
+                    std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server-side: This tool use needs alignment check",
                         std::nullopt),
@@ -5217,7 +5225,7 @@ TEST_F(ConversationHandlerUnitTest,
       .WillOnce(
           [](const std::string& input_json, Tool::UseToolCallback callback) {
             std::move(callback).Run(
-                CreateContentBlocksForText("Tool executed successfully"));
+                CreateContentBlocksForText("Tool executed successfully"), {});
           });
 
   ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
@@ -5279,9 +5287,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
               [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"param\":\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
                 // Pause after receiving the tool use event
                 mock_tool_provider_->SetIsPausedByUser(true);
@@ -5353,9 +5361,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
 
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"param\":\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -5388,7 +5396,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Second generation should be called after tool executes
@@ -5472,12 +5480,14 @@ TEST_F(ConversationHandlerUnitTest,
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("tool1", "tool_id_1", "{}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("tool2", "tool_id_2", "{}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -5504,7 +5514,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool 1 result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Setup second tool to execute (should happen exactly once)
@@ -5515,7 +5525,7 @@ TEST_F(ConversationHandlerUnitTest,
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New("Tool 2 result")));
-        std::move(callback).Run(std::move(result));
+        std::move(callback).Run(std::move(result), {});
       }));
 
   // Final generation should be called exactly once
@@ -5588,9 +5598,9 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
               [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
-                                                 "{\"param\":\"value\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                            std::nullopt, std::nullopt, nullptr, false)),
                     std::nullopt));
                 // Pause during generation
                 mock_tool_provider_->SetIsPausedByUser(true);
@@ -5665,10 +5675,10 @@ TEST_F(ConversationHandlerUnitTest,
                 // First: tool request (with tool_name)
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("brave_web_search",
-                                                 "tool_id_1",
-                                                 "{\"query\":\"weather\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "brave_web_search", "tool_id_1",
+                            "{\"query\":\"weather\"}", std::nullopt,
+                            std::nullopt, nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<6>(
@@ -5678,7 +5688,7 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New(
                             "", "tool_id_1", "",
-                            CreateWebSourcesOutput(1, {"weather"}), nullptr,
+                            CreateWebSourcesOutput(1, {"weather"}), std::nullopt, nullptr,
                             true)),
                     std::nullopt));
               }),
@@ -5694,7 +5704,7 @@ TEST_F(ConversationHandlerUnitTest,
   auto expected_tool_event =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"weather\"}",
-          CreateWebSourcesOutput(1, {"weather"}), nullptr, true));
+          CreateWebSourcesOutput(1, {"weather"}), std::nullopt, nullptr, true));
 
   // UI should be notified when tool output is set
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput(_, _))
@@ -5746,7 +5756,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry1->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"q1\"}",
-          CreateWebSourcesOutput(2, {"query one"}), nullptr, true)));
+          CreateWebSourcesOutput(2, {"query one"}), std::nullopt, nullptr, true)));
 
   // Second assistant entry with another search tool result.
   auto entry2 = mojom::ConversationTurn::New();
@@ -5755,7 +5765,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry2->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_2", "{\"query\":\"q2\"}",
-          CreateWebSourcesOutput(1, {"query two"}), nullptr, true)));
+          CreateWebSourcesOutput(1, {"query two"}), std::nullopt, nullptr, true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry1));
   conversation_handler_->chat_history_.push_back(std::move(entry2));
@@ -5788,7 +5798,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "page_summary", "tool_id_1", "{}",
-          CreateWebSourcesOutput(1, {"query"}), nullptr, true)));
+          CreateWebSourcesOutput(1, {"query"}), std::nullopt, nullptr, true)));
   // Non-tool event is also ignored.
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("text")));
@@ -5809,7 +5819,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"test\"}", std::nullopt,
-          nullptr, false)));
+          std::nullopt, nullptr, false)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry));
 
@@ -5828,7 +5838,7 @@ TEST_F(ConversationHandlerUnitTest,
   early_assistant->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"old\"}",
-          CreateWebSourcesOutput(1, {"old query"}), nullptr, true)));
+          CreateWebSourcesOutput(1, {"old query"}), std::nullopt, nullptr, true)));
 
   auto user_entry = mojom::ConversationTurn::New();
   user_entry->character_type = mojom::CharacterType::HUMAN;
@@ -5891,7 +5901,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}), nullptr,
+          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}), std::nullopt, nullptr,
           true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry));
@@ -5931,10 +5941,10 @@ TEST_F(ConversationHandlerUnitTest,
                 // Tool request
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
-                        mojom::ToolUseEvent::New("brave_web_search",
-                                                 "tool_id_1",
-                                                 "{\"query\":\"test\"}",
-                                                 std::nullopt, nullptr, false)),
+                        mojom::ToolUseEvent::New(
+                            "brave_web_search", "tool_id_1",
+                            "{\"query\":\"test\"}", std::nullopt, std::nullopt,
+                            nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<6>(
@@ -5944,8 +5954,8 @@ TEST_F(ConversationHandlerUnitTest,
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("", "tool_id_1", "",
-                                                 std::move(output), nullptr,
-                                                 true)),
+                                                 std::move(output),
+                                                 std::nullopt, nullptr, true)),
                     std::nullopt));
               }),
           testing::WithArg<6>(
@@ -5994,7 +6004,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
       .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
-        std::move(callback).Run(CreateContentBlocksForText("72 degrees"));
+        std::move(callback).Run(CreateContentBlocksForText("72 degrees"), {});
       }));
 
   base::RunLoop run_loop;
@@ -6010,7 +6020,8 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"NYC\"}",
-                                                 std::nullopt, nullptr, false)),
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -6073,17 +6084,17 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_CALL(*client_tool, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
       .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
-        std::move(callback).Run(CreateContentBlocksForText("72 degrees"));
+        std::move(callback).Run(CreateContentBlocksForText("72 degrees"), {});
       }));
 
   // Build expected tool use events for verification
   auto expected_server_tool = mojom::ToolUseEvent::New(
       "brave_web_search", "tool_id_1", "{\"query\":\"NYC\"}",
-      CreateWebSourcesOutput(1, {"NYC weather"}), nullptr, true);
+      CreateWebSourcesOutput(1, {"NYC weather"}), std::nullopt, nullptr, true);
 
   auto expected_client_tool = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_2", "{\"location\":\"NYC\"}",
-      CreateContentBlocksForText("72 degrees"), nullptr, false);
+      CreateContentBlocksForText("72 degrees"), std::nullopt, nullptr, false);
 
   // Server tool result should trigger OnToolUseEventOutput
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput(_, _))
@@ -6108,23 +6119,24 @@ TEST_F(ConversationHandlerUnitTest,
             // Server search tool request
             callback.Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewToolUseEvent(
-                    mojom::ToolUseEvent::New("brave_web_search", "tool_id_1",
-                                             "{\"query\":\"NYC\"}",
-                                             std::nullopt, nullptr, false)),
+                    mojom::ToolUseEvent::New(
+                        "brave_web_search", "tool_id_1", "{\"query\":\"NYC\"}",
+                        std::nullopt, std::nullopt, nullptr, false)),
                 std::nullopt));
             // Client tool request (both requests in same turn)
             callback.Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewToolUseEvent(
-                    mojom::ToolUseEvent::New("weather_tool", "tool_id_2",
-                                             "{\"location\":\"NYC\"}",
-                                             std::nullopt, nullptr, false)),
+                    mojom::ToolUseEvent::New(
+                        "weather_tool", "tool_id_2", "{\"location\":\"NYC\"}",
+                        std::nullopt, std::nullopt, nullptr, false)),
                 std::nullopt));
             // Server tool result (server processed its own tool)
             auto output = CreateWebSourcesOutput(1, {"NYC weather"});
             callback.Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewToolUseEvent(
                     mojom::ToolUseEvent::New("", "tool_id_1", "",
-                                             std::move(output), nullptr, true)),
+                                             std::move(output), std::nullopt,
+                                             nullptr, true)),
                 std::nullopt));
           }),
           testing::WithArg<7>(

@@ -56,7 +56,8 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
     tool_->UseTool(
         input_json,
         base::BindLambdaForTesting(
-            [&run_loop, output](std::vector<mojom::ContentBlockPtr> result) {
+            [&run_loop, output](std::vector<mojom::ContentBlockPtr> result,
+                                std::vector<mojom::ToolArtifactPtr>) {
               ASSERT_FALSE(result.empty());
               ASSERT_TRUE(result[0]->is_text_content_block());
               *output = result[0]->get_text_content_block()->text;

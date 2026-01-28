@@ -40,6 +40,7 @@ export function getToolUseEvent(
     ...eventTemplate,
     toolUseEvent: {
       output: undefined,
+      artifacts: undefined,
       permissionChallenge: undefined,
       isServerResult: false, // default value
       ...toolUseEvent,

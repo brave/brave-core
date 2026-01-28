@@ -210,7 +210,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_ValidData) {
   // Create mojom ToolUseEvent
   auto mojom_event = mojom::ToolUseEvent::New(
       "test_tool", "tool_id_123", "anything for arguments_json",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   // mixed content blocks
   auto text_block = mojom::TextContentBlock::New();
@@ -250,10 +250,39 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_ValidData) {
   EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
+TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
+  const std::string content_json = R"({"data": [1, 2, 3]})";
+  // Create mojom ToolUseEvent with artifacts
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "test_tool", "tool_id_123", "{}", std::vector<mojom::ContentBlockPtr>(),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr, false);
+
+  auto artifact = mojom::ToolArtifact::New();
+  artifact->type = "chart";
+  artifact->content_json = content_json;
+  mojom_event->artifacts->push_back(std::move(artifact));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  EXPECT_EQ(proto_event.artifacts_size(), 1);
+  EXPECT_EQ(proto_event.artifacts(0).type(), "chart");
+  EXPECT_EQ(proto_event.artifacts(0).content_json(), content_json);
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  // Verify deserialized data
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_NoOutput) {
   // Create mojom ToolUseEvent without output
-  auto mojom_event = mojom::ToolUseEvent::New("test_tool", "tool_id_123", "{}",
-                                              std::nullopt, nullptr, false);
+  auto mojom_event =
+      mojom::ToolUseEvent::New("test_tool", "tool_id_123", "{}", std::nullopt,
+                               std::nullopt, nullptr, false);
 
   // Serialize to proto
   store::ToolUseEventProto proto_event;
@@ -272,8 +301,8 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_NoOutput) {
 TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidId) {
   store::ToolUseEventProto proto_event;
 
-  auto mojom_event = mojom::ToolUseEvent::New("test_tool", "", "{}",
-                                              std::nullopt, nullptr, false);
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "test_tool", "", "{}", std::nullopt, std::nullopt, nullptr, false);
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
 
   EXPECT_FALSE(success);
@@ -285,8 +314,8 @@ TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidId) {
 TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidToolName) {
   store::ToolUseEventProto proto_event;
 
-  auto mojom_event = mojom::ToolUseEvent::New("", "tool_id_123", "{}",
-                                              std::nullopt, nullptr, false);
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "", "tool_id_123", "{}", std::nullopt, std::nullopt, nullptr, false);
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
 
   EXPECT_FALSE(success);
@@ -324,7 +353,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_IsServerResult) {
   // Test is_server_result = true
   auto mojom_event_server = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_server", R"({"query": "test"})",
-      std::nullopt, nullptr, true);
+      std::nullopt, std::nullopt, nullptr, true);
 
   store::ToolUseEventProto proto_event;
   EXPECT_TRUE(SerializeToolUseEvent(mojom_event_server, &proto_event));
@@ -334,8 +363,9 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_IsServerResult) {
   EXPECT_TRUE(deserialized->is_server_result);
 
   // Test is_server_result = false (default)
-  auto mojom_event_client = mojom::ToolUseEvent::New(
-      "client_tool", "tooluse_client", "{}", std::nullopt, nullptr, false);
+  auto mojom_event_client =
+      mojom::ToolUseEvent::New("client_tool", "tooluse_client", "{}",
+                               std::nullopt, std::nullopt, nullptr, false);
 
   store::ToolUseEventProto proto_event2;
   EXPECT_TRUE(SerializeToolUseEvent(mojom_event_client, &proto_event2));
@@ -351,7 +381,7 @@ TEST(ProtoConversionTest,
   auto mojom_event = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_search123",
       R"({"query": "weather", "country": "US"})",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   // Create WebSourcesContentBlock
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
@@ -413,7 +443,7 @@ TEST(ProtoConversionTest,
   // Create mojom ToolUseEvent with WebSourcesContentBlock without query
   auto mojom_event = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_456", R"({"query": "test"})",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   // No query set
@@ -446,7 +476,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_MixedContentBlocks) {
   // Test with mixed content blocks including WebSourcesContentBlock
   auto mojom_event = mojom::ToolUseEvent::New(
       "multi_tool", "tooluse_mixed", "{}",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   // Add text block
   auto text_block = mojom::TextContentBlock::New();
@@ -491,7 +521,7 @@ TEST(ProtoConversionTest,
   // Test that invalid URLs in WebSourcesContentBlock are skipped
   auto mojom_event = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_789", "{}",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
 
@@ -592,7 +622,7 @@ TEST(ProtoConversionTest,
   auto mojom_event = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_page_content",
       R"({"query": "test page content"})",
-      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
 
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   web_sources_block->queries = std::vector<std::string>{"test page content"};

@@ -149,14 +149,15 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
 // Test ExecuteActions with empty action sequence is handled from result
 // of ActorKeyedService::PerformActions.
 TEST_F(ContentAgentToolProviderTest, ExecuteActions_EmptyActionSequence) {
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
 
   optimization_guide::proto::Actions actions;
   actions.set_task_id(tool_provider_->GetTaskId().value());
 
   tool_provider_->ExecuteActions(actions, result_future.GetCallback());
 
-  auto result = result_future.Take();
+  auto [result, artifacts] = result_future.Take();
+  EXPECT_TRUE(artifacts.empty());
 
   ASSERT_GT(result.size(), 0u);
   EXPECT_TRUE(result[0]->is_text_content_block());
@@ -167,7 +168,7 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_EmptyActionSequence) {
 // Text ExecuteActions with an invalid action is handled before sending to
 // ActorKeyedService::PerformActions.
 TEST_F(ContentAgentToolProviderTest, ExecuteActions_InvalidAction) {
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
 
   // Create an Actions proto with an invalid action (no target)
   optimization_guide::proto::Actions actions;
@@ -179,7 +180,8 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_InvalidAction) {
 
   tool_provider_->ExecuteActions(actions, result_future.GetCallback());
 
-  auto result = result_future.Take();
+  auto [result, artifacts] = result_future.Take();
+  EXPECT_TRUE(artifacts.empty());
 
   ASSERT_GT(result.size(), 0u);
   EXPECT_TRUE(result[0]->is_text_content_block());

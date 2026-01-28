@@ -54,27 +54,32 @@ void NavigationTool::UseTool(const std::string& input_json,
 
   if (!input.has_value()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: failed to parse input JSON"));
+        CreateContentBlocksForText("Error: failed to parse input JSON"), {});
     return;
   }
 
   const auto* website_url = input->FindString(kPropertyNameWebsiteUrl);
   if (!website_url) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing 'website_url' property"));
+        CreateContentBlocksForText("Error: missing 'website_url' property"),
+        {});
     return;
   }
 
   GURL url(*website_url);
   if (!url.is_valid()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: 'website_url' property did not contain a valid URL"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: 'website_url' property did not contain a valid URL"),
+        {});
     return;
   }
 
   if (!url.SchemeIs(url::kHttpsScheme)) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: 'website_url' property must start with https://"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: 'website_url' property must start with https://"),
+        {});
     return;
   }
 
