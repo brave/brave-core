@@ -3,7 +3,32 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
 brave_browser_brave_rewards_android_sources = [
   "//brave/browser/brave_rewards/android/brave_rewards_native_worker.cc",
   "//brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
 ]
+
+brave_browser_brave_rewards_android_deps = [
+  "//base",
+  "//brave/components/brave_adaptive_captcha",
+  "//brave/components/brave_ads/buildflags",
+  "//brave/components/brave_ads/core/browser/service",
+  "//brave/components/brave_ads/core/mojom",
+  "//brave/components/brave_rewards/content",
+  "//brave/components/brave_rewards/core",
+  "//brave/components/brave_rewards/core/mojom",
+  "//chrome/android:chrome_jni_headers",
+  "//chrome/browser/profiles:profile",
+  "//components/prefs",
+  "//content/public/browser",
+  "//third_party/abseil-cpp:absl",
+]
+
+if (enable_brave_ads) {
+  brave_browser_brave_rewards_android_deps += [
+    "//brave/browser/brave_ads",
+    "//brave/components/brave_ads/core/public:headers",
+  ]
+}
