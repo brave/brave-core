@@ -378,6 +378,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
         Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
       </message>
+      <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_TOO_MANY_BOOKMARKS_BODY" desc="Body of the signout confirmation dialog when the user has too many bookmarks.">
+      You reached Brave’s limit of <ph name="BOOKMARK_LIMIT">$1<ex>100,000</ex></ph> bookmarks, so some of your bookmarks haven’t been saved in your Brave sync chain yet.
+
+New bookmarks can’t be saved in your account until you delete some. If you sign out now, unsaved bookmarks will be deleted.
+      </message>
       <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
         This action will:
         <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
@@ -494,7 +499,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="is_macosx">
         <message name="IDS_MACOS_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
-          To get future Brave updates, you'll need macOS 12 or later. This computer is using macOS 11.
+          To get future Brave updates, you'll need macOS 13 or later. This computer is using macOS 12.
         </message>
       </if>
       <if expr="is_win">
@@ -531,6 +536,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave is unresponsive. Relaunch now?
         </message>
       </if>
+      <!-- General app failure messages -->
+      <if expr="not is_chromeos and not is_android">
+        <message name="IDS_COULDNT_STARTUP_PROFILE_ERROR" desc="Error displayed when Brave cannot start because profiles were not opened correctly.">
+          Cannot start Brave because something went wrong when opening your profile. Try to restart Brave.
+        </message>
+      </if>
       <!-- Sharing messages -->
       <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
         To send a number from here to your Android phone, sign in to Brave on both devices.
@@ -555,6 +566,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER" desc="Default browser checkbox label">
         Make Brave the default browser
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_CHANGED_MESSAGE" desc="Body of the notification shown when Brave is no longer the default browser.">
+        Brave is no longer your default browser. Make Brave the default browser?
       </message>
       <if expr="use_titlecase">
         <message name="IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND" desc="In Title Case: The checkbox in the status tray context menu that controls whether chrome keeps running in the background after the last window is closed">
@@ -1129,6 +1143,9 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- NTP strings -->
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
+        Your Brave
+      </message>
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Brave for Testing browser.">
@@ -1144,6 +1161,19 @@ Brave is unable to recover your settings.
       <message name="IDS_NTP_MODULES_SETUP_LIST_TITLE" desc="Title shown at the top of the Setup List card.">
         Make Brave Yours
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_LABEL" desc="The label for the button for resetting theme back to default chrome in the New Tab Page customize chrome side panel.">
+        Reset to Default Brave
+      </message>
+
+      <!-- New Tab Page browser feature promotions. -->
+      <if expr="not is_android">
+        <message name="IDS_NTP_CUSTOMIZATION_PROMO" desc="The text shown in the body of the New Tab Page browser customization promotion">
+          Customize Brave to give your browser a new look
+        </message>
+        <message name="IDS_NTP_SIGN_IN_PROMO_WITH_BOOKMARKS" desc="The text shown in the body of the New Tab Page sign in promotion">
+          Sign in to Brave to get your passwords, bookmarks, and more on all your devices
+        </message>
+      </if>
 
       <!-- Customize Brave Auto Promo Strings -->
       <message name="IDS_IPH_CUSTOMIZE_CHROME_AUTO_OPEN_BODY" desc="The description of the IPH to auto open Customize Brave">
@@ -1306,7 +1336,7 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Profile Menu -->
-      <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
+      <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" meaning="Button" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
         Sign in to Brave
       </message>
       <message name="IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME" desc="Placeholder profile name, used when the user did not enter a name for their profile.">
@@ -1983,8 +2013,7 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_CSB_DESCRIPTION" desc="Text that is shown in the Lens permission bubble, giving examples of what Lens can do and informing uawea what information will be sent to the server. Includes placeholder for learn more link.">
           When you use Image Search, the page title, URL, and content, including PDFs, are sent to the server. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
-        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
-        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_NON_BLOCKING_DESCRIPTION" translateable="false" desc="Text that is shown in the Lens non-blocking privacy notice, giving examples of what Lens can do and informing users what information will be sent to Brave. Includes placeholder for learn more link.">
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_NON_BLOCKING_DESCRIPTION" desc="Text that is shown in the Lens non-blocking privacy notice, giving examples of what Lens can do and informing users what information will be sent to Brave. Includes placeholder for learn more link.">
           When you open Image Search, the page title, URL, and content, including PDFs, will automatically be sent to the server. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_DESCRIPTION" desc="Text that is shown in the Lens permission bubble, giving examples of what Lens can do and informing users that their screenshot will be sent to the server. Includes placeholder for learn more link.">
@@ -2002,12 +2031,10 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_TAB_TO_CONTINUE" desc="Instructs the user to press Tab to begin using the feature.">
           Tab to continue
         </message>
-        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
-        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_GOT_IT" translateable="false" desc="Text on button in privacy notice, indicating that user understands that information will be sent to Brave.">
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_GOT_IT" desc="Text on button in privacy notice, indicating that user understands that information will be sent to Brave.">
           Got it
         </message>
-        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
-        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_REMIND_ME_LATER" translateable="false" desc="Text on button to dismiss privacy notice, indicating that the privacy notice will be shown again later.">
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_REMIND_ME_LATER" desc="Text on button to dismiss privacy notice, indicating that the privacy notice will be shown again later.">
           Remind me later
         </message>
 
@@ -2294,7 +2321,7 @@ Brave is unable to recover your settings.
         </message>
 
         <!-- First Run Experience -->
-        <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+        <message name="IDS_FRE_SIGN_IN_TITLE_0" meaning="Title" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
           Sign in to Brave
         </message>
 
@@ -2762,10 +2789,10 @@ Brave is unable to recover your settings.
         <message name="IDS_SETTINGS_GLIC_ROW_LABEL" translateable="false" desc="Label of the Glic row button on the AI settings page leading to the Glic subpage.">
           Gemini in Brave
         </message>
-        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" translateable="false" desc="Title for the Gemini feature introduction screen">
+        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
           Let Brave browse for you
         </message>
-        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" translateable="false" desc="Subheader explaining what the Gemini feature does">
+        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
           Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
         </message>
 
@@ -2844,20 +2871,44 @@ Brave is unable to recover your settings.
 
       <!--Desktop to iOS promo strings-->
       <if expr="not is_android">
-        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop ESB promo bubble with a QR code.">
-          Download Brave on your phone to add an extra layer of protection when you're on the go
-        </message>
         <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop ESB promo bubble with a reminder button.">
           Stay safer on the go with Enhanced Safe Browsing on Brave for iOS
         </message>
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop ESB promo bubble with a QR code.">
+          Extend Enhanced Safe Browsing with Brave on your phone
+        </message>
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_REMINDER" desc="The description for the footer of the iOS desktop password promo bubble.">
           Sign in faster to sites using saved passwords for Brave on iOS
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
+          Use your passwords with Brave on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
+          Get the Brave app
         </message>
         <message name="IDS_IOS_DESKTOP_PROMO_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after uses choose to be reminded of the feature on their iOS device. The placeholder will be replaced by the name of the feature.">
           You'll see a prompt to try <ph name="FEATURE_NAME">$1<ex>Google Lens</ex></ph> next time you open Brave iOS.
         </message>
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after uses choose to be reminded of the Password Manager on their iOS device.">
           Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you'll see a prompt to use Brave Password Manager.
+        </message>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Lens promo bubble.">
+          Shop, translate and identify what you see with your camera on the Brave iOS app
+        </message>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Lens promo bubble with a QR code.">
+          Try Google Lens with Brave on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS desktop password promo bubble footer which lets the user know how to use their saved passwords on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
+          To use your saved passwords, follow the QR code, download Brave for iOS and sign in to your Brave sync chain
+        </message>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Lens promo notification.">
+          Brave Tip: Search With Lens
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Password promo notification.">
+          Brave Tip: Save Passwords
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFE_BROWSING_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Enhanced Safe Browsing promo notification.">
+          Brave Tip: Enhanced Safe Browsing
         </message>
       </if>
 
