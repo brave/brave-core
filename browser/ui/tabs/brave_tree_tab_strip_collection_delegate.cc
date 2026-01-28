@@ -146,6 +146,7 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
   CHECK(target_index);
 
   auto detached_tab = unpinned_tab_collection->MaybeRemoveTab(added_tab);
+  CHECK(detached_tab);
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_));
