@@ -42,15 +42,6 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value);
 
 }  // namespace lifi
 
-namespace squid {
-
-mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value);
-mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value);
-mojom::SquidTransactionUnionPtr ParseTransactionResponse(
-    const base::Value& json_value);
-
-}  // namespace squid
-
 namespace gate3 {
 
 // Parse a Gate3 quote response JSON into a structured Gate3SwapQuote object.

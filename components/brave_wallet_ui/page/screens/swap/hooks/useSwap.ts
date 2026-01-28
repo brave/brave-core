@@ -14,7 +14,6 @@ import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
 import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useLifi } from './useLifi'
-import { useSquid } from './useSquid'
 import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
@@ -55,9 +54,6 @@ import {
   getLiFiQuoteOptions,
   getLiFiFromAmount,
   getLiFiToAmount,
-  getSquidFromAmount,
-  getSquidToAmount,
-  getSquidQuoteOptions,
   getGate3FromAmount,
   getGate3ToAmount,
   getGate3QuoteOptions,
@@ -352,15 +348,6 @@ export const useSwap = () => {
       })
     }
 
-    if (quoteUnion.squidQuote) {
-      return getSquidQuoteOptions({
-        quote: quoteUnion.squidQuote,
-        fromNetwork,
-        spotPrices,
-        defaultFiatCurrency,
-      })
-    }
-
     if (quoteUnion.gate3Quote) {
       return getGate3QuoteOptions({
         quote: quoteUnion.gate3Quote,
@@ -419,7 +406,6 @@ export const useSwap = () => {
   const jupiter = useJupiter(swapProviderHookParams)
   const zeroEx = useZeroEx(swapProviderHookParams)
   const lifi = useLifi(swapProviderHookParams)
-  const squid = useSquid(swapProviderHookParams)
   const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
@@ -663,31 +649,6 @@ export const useSwap = () => {
             account: fromAccount,
             spendAmount: fromAssetBalance.format(),
             spenderAddress: quoteResponse.response.zeroExQuote.allowanceTarget,
-            token: params.fromToken,
-          })
-        }
-
-        if (quoteResponse.response.squidQuote) {
-          if (params.editingFromOrToAmount === 'from') {
-            setToAmount(
-              getSquidToAmount({
-                quote: quoteResponse.response.squidQuote,
-                toToken: params.toToken,
-              }).format(6),
-            )
-          } else {
-            setFromAmount(
-              getSquidFromAmount({
-                quote: quoteResponse.response.squidQuote,
-                fromToken: params.fromToken,
-              }).format(6),
-            )
-          }
-
-          await checkAllowance({
-            account: fromAccount,
-            spendAmount: fromAssetBalance.format(),
-            spenderAddress: quoteResponse.response.squidQuote.allowanceTarget,
             token: params.fromToken,
           })
         }
@@ -1145,14 +1106,6 @@ export const useSwap = () => {
           : 'unknownError'
       }
 
-      if (quoteErrorUnion?.squidError) {
-        if (quoteErrorUnion.squidError.isInsufficientLiquidity) {
-          return 'insufficientLiquidity'
-        }
-
-        return 'unknownError'
-      }
-
       // Gate3 specific validations
       if (quoteErrorUnion?.gate3Error) {
         if (
@@ -1189,9 +1142,7 @@ export const useSwap = () => {
 
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote
-          || quoteUnion?.lifiQuote
-          || quoteUnion?.squidQuote)
+        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote)
         && fromToken.coin === BraveWallet.CoinType.ETH
         && fromToken.contractAddress
         && !hasAllowance
@@ -1229,7 +1180,6 @@ export const useSwap = () => {
       quoteUnion?.zeroExQuote,
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
-      quoteUnion?.squidQuote,
       quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
@@ -1321,28 +1271,6 @@ export const useSwap = () => {
       }
     }
 
-    if (quoteUnion.squidQuote) {
-      if (hasAllowance) {
-        const error = await squid.exchange()
-        if (error) {
-          console.log('squid.exchange error', error.squidError)
-          setQuoteErrorUnion(error)
-        } else {
-          setFromAmount('')
-          setToAmount('')
-          reset()
-        }
-      } else {
-        await approveSpendAllowance({
-          account: fromAccount,
-          network: fromNetwork,
-          spenderAddress: quoteUnion.squidQuote.allowanceTarget,
-          token: fromToken,
-          spendAmount: fromAssetBalance.format(),
-        })
-      }
-    }
-
     if (quoteUnion.gate3Quote) {
       const route = selectedQuoteOptionId
         ? quoteUnion.gate3Quote.routes.find(
@@ -1397,7 +1325,6 @@ export const useSwap = () => {
     approveSpendAllowance,
     lifi,
     jupiter,
-    squid,
     gate3,
   ])
 

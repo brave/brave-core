@@ -1775,9 +1775,6 @@ inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
-// Squid constants
-inline constexpr char kSquidBaseAPIURL[] = "https://squid.wallet.brave.com";
-
 inline constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 inline constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
 inline constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 2;

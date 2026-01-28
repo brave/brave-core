@@ -134,7 +134,6 @@ export function useGate3(params: SwapParams) {
                 jupiterTransactionParams: undefined,
                 lifiTransactionParams: undefined,
                 zeroExTransactionParams: undefined,
-                squidTransactionParams: undefined,
               },
               'gate3TransactionParams',
             ),
@@ -174,7 +173,6 @@ export function useGate3(params: SwapParams) {
           jupiterError: undefined,
           zeroExError: undefined,
           lifiError: undefined,
-          squidError: undefined,
           gate3Error: {
             message,
             kind: BraveWallet.Gate3SwapErrorKind.kUnknown,

@@ -546,12 +546,12 @@ enum SwapProvider {
   // Providers supported by Gate3
   kAuto,
   kNearIntents,
+  kSquid,
 
   // Providers not supported by Gate3
   kLiFi,
   kZeroEx,
   kJupiter,
-  kSquid,
   kCowSwap,
 };
 
@@ -582,7 +582,6 @@ union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
   LiFiStep lifi_transaction_params;
-  SwapQuoteParams squid_transaction_params;
   SwapQuoteParams gate3_transaction_params;
 };
 
@@ -590,7 +589,6 @@ union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
   LiFiQuote lifi_quote;
-  SquidQuote squid_quote;
   Gate3SwapQuote gate3_quote;
 };
 
@@ -598,7 +596,6 @@ union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
-  SquidTransactionUnion squid_transaction;
   Gate3SwapRoute gate3_route;
 };
 
@@ -827,7 +824,6 @@ union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
   LiFiError lifi_error;
-  SquidError squid_error;
   Gate3SwapError gate3_error;
 };
 
@@ -1088,83 +1084,6 @@ struct LifiToolError {
 struct LiFiError {
   string message;
   LiFiErrorCode code;
-};
-
-// Squid types
-enum SquidActionType {
-  kWrap,
-  kUnwrap,
-  kSwap,
-  kBridge,
-  kUnknown,
-};
-
-struct SquidAction {
-  SquidActionType type;
-  string description;
-  string provider;
-  string logo_uri;
-
-  string from_amount;
-  BlockchainToken from_token;
-
-  string to_amount;
-  string to_amount_min;
-  BlockchainToken to_token;
-};
-
-struct SquidGasCost {
-  string amount;
-  string gas_limit;
-  BlockchainToken token;
-};
-
-struct SquidFeeCost {
-  string amount;
-  string description;
-  string name;
-  BlockchainToken token;
-};
-
-struct SquidQuote {
-  array<SquidAction> actions;
-  string aggregate_price_impact;
-  string aggregate_slippage;
-  string estimated_route_duration;
-  string exchange_rate;
-  array<SquidFeeCost> fee_costs;
-  array<SquidGasCost> gas_costs;
-  bool is_boost_supported;
-  string from_amount;
-  BlockchainToken from_token;
-  string to_amount;
-  string to_amount_min;
-  BlockchainToken to_token;
-  string allowance_target;
-};
-
-enum SquidErrorType {
-  kBadRequest,
-  kSchemaValidationError,
-  kUnknownError,
-};
-
-struct SquidError {
-  string message;
-  SquidErrorType type;
-  bool is_insufficient_liquidity;
-};
-
-union SquidTransactionUnion {
-  SquidEvmTransaction evm_transaction;
-};
-
-struct SquidEvmTransaction {
-  string data;
-  string target;
-  string value;
-  string gas_limit;
-  string chain_id;
 };
 
 enum SwapDiscountCode {
