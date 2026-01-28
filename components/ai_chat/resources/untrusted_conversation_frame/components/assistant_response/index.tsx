@@ -13,6 +13,7 @@ import MarkdownRenderer from '../markdown_renderer'
 import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
+import Chart from './chart'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -156,6 +157,7 @@ function AssistantEvent(
 
 export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
+  toolArtifacts?: Mojom.ToolArtifact[] | null
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {
@@ -195,13 +197,19 @@ export default function AssistantResponse(props: AssistantResponseProps) {
         />
       ))}
 
-      {!props.isEntryInProgress && (
-        <>
-          {allSources.length > 0 && <WebSourcesEvent sources={allSources} />}
-          {allSearchQueries.length > 0 && (
-            <SearchSummary searchQueries={allSearchQueries} />
-          )}
-        </>
+      {!props.isEntryInProgress && allSources.length > 0 && (
+        <WebSourcesEvent sources={allSources} />
+      )}
+      {props.toolArtifacts
+        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
+        .map((artifact, i) => (
+          <Chart
+            key={i}
+            artifact={artifact}
+          />
+        ))}
+      {!props.isEntryInProgress && allSearchQueries.length > 0 && (
+        <SearchSummary searchQueries={allSearchQueries} />
       )}
     </AssistantResponseContextProvider>
   )
