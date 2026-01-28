@@ -1456,6 +1456,7 @@ if (is_android) {
       "//chrome/browser/hub:java",
       "//chrome/browser/keyboard_accessory/android/java",
       "//chrome/browser/language/android:java",
+      "//chrome/browser/open_in_app/android:java",
       "//chrome/browser/password_manager/android:java",
       "//chrome/browser/prefetch/android:java",
       "//chrome/browser/profiles/android:java",

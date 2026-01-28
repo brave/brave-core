@@ -115,6 +115,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.open_in_app.OpenInAppMenuItemProvider;
 import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -1405,7 +1406,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         OneshotSupplier.class,
                         Supplier.class,
-                        PageZoomManager.class));
+                        PageZoomManager.class,
+                        OpenInAppMenuItemProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",

@@ -266,7 +266,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mSnackbarManager,
                         mIncognitoReauthControllerSupplier,
                         mReadAloudControllerSupplier,
-                        mPageZoomManagerMock);
+                        mPageZoomManagerMock,
+                        /* openInAppMenuItemProvider= */ null);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
