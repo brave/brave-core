@@ -52,7 +52,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/onboarding_illustration_margin_top"
-        android:src="@drawable/onboarding_illustration"
         android:contentDescription="@null"
         android:padding="@dimen/onboarding_illustration_padding"
         android:background="@drawable/onboarding_rounded_corners"
