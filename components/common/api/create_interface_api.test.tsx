@@ -3,15 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { expect, jest, test, describe, it } from '@jest/globals'
 import { act, renderHook } from '@testing-library/react'
 import * as React from 'react'
 import { createInterfaceApi, state, event } from "./create_interface_api"
-
-// function ResolveIn<T>(ms: number, value: T): Promise<T> {
-//   return new Promise(resolve => {
-//     window.setTimeout(() => resolve(value), ms)
-//   })
-// }
 
 describe('createInterfaceApi', () => {
   it('should return results keyed by parameters', async () => {
@@ -236,22 +231,24 @@ describe('createInterfaceApi', () => {
 
     const api = createMyApi()
 
-    expect(api.doSomething.useMutation).toBeDefined()
-    // @ts-expect-error - current is not defined for mutations
+    expect(api.useDoSomething).toBeDefined()
+    expect(typeof api.doSomething).toBe('function')
+
+    // @ts-expect-error - non-mutation query properties current is not defined for mutations
     expect(api.doSomething.current).toBeUndefined()
 
     function useMutate() {
-      const result = api.doSomething.useMutation({
+      const result = api.useDoSomething({
         // @ts-ignore - verify defining a handler here does not work or prevent
         // global event handler from firing
-        onMutate(variables) {
+        onSettled(result, error, variables) {
           hookOnMutateObserver(variables)
         }
       })
       return result
     }
-
     const hookResult = await renderHook(useMutate)
+
     // Should not be called when only rendered
     expect(mutationFn).not.toHaveBeenCalled()
     expect(globalOnMutateObserver).not.toHaveBeenCalled()
@@ -260,7 +257,7 @@ describe('createInterfaceApi', () => {
     await act(async () => hookResult.result.current.doSomething([true], {
       // Define a local event handler
       onSettled(result, error, input) {
-        callOnMutateObserver(input)
+        callOnMutateObserver(input, result)
       }
     }))
 
@@ -276,29 +273,42 @@ describe('createInterfaceApi', () => {
 
     // Verify the global and local event handlers
     expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
-    expect(callOnMutateObserver).toHaveBeenCalledWith([true])
+    expect(callOnMutateObserver).toHaveBeenCalledWith([true], { isThing: true })
     expect(hookOnMutateObserver).not.toHaveBeenCalled()
 
     // Verify direct mutation (not a react hook)
     {
       globalOnMutateObserver.mockClear()
+      callOnMutateObserver.mockClear()
       mutationFn.mockClear()
-      const directResult = await api.doSomething.mutate(true)
+      const directResult = await api.doSomething([true], {
+        onSettled(data, error, variables, context) {
+          callOnMutateObserver(variables, data)
+        },
+      })
+      expect(directResult).toEqual({ isThing: true })
       expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
+      expect(callOnMutateObserver).toHaveBeenCalledWith([true], { isThing: true })
       expect(mutationFn).toHaveBeenCalledWith(true)
     }
 
-
     {
       globalOnMutateObserver.mockClear()
+      callOnMutateObserver.mockClear()
       mutationFn.mockClear()
-      const directResult = await api.doSomething.mutate(false)
+      const directResult = await api.doSomething([false], {
+        onSettled(data, error, variables, context) {
+          callOnMutateObserver(variables, data)
+        },
+      })
+      expect(directResult).toEqual({ isThing: false })
       expect(globalOnMutateObserver).toHaveBeenCalledWith([false])
+      expect(callOnMutateObserver).toHaveBeenCalledWith([false], { isThing: false })
       expect(mutationFn).toHaveBeenCalledWith(false)
     }
   })
 
-  it('can create void mutations', async () => {
+  it('can create void mutations with no parameters', async () => {
     const mutationFn = jest.fn(() => {
       return Promise.resolve()
     })
@@ -318,12 +328,12 @@ describe('createInterfaceApi', () => {
     }
 
     const api = createMyApi()
-    expect(api.doSomething.mutate).toBeDefined()
-    // expect(api.useDoSomething).toBeUndefined()
+    expect(api.doSomething).toBeDefined()
+    expect(api.useDoSomething).toBeDefined()
     // @ts-expect-error - current is not defined for mutations
     expect(api.doSomething.current).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(0)
-    const result = await api.doSomething.mutate()
+    const result = await api.doSomething()
     expect(result).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(1)
   })
@@ -348,11 +358,12 @@ describe('createInterfaceApi', () => {
     }
 
     const api = createMyApi()
-    api.doSomething.useMutation
-    expect(api.doSomething.mutate).toBeDefined()
+    expect(api.doSomething).toBeDefined()
+    expect(typeof api.doSomething).toBe('function')
+    expect(api.endpoints.doSomething.mutate).toBeDefined()
     // expect(api.useDoSomething).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(0)
-    const result = await api.doSomething.mutate('4')
+    const result = await api.doSomething(['4'])
     expect(result).toEqual(undefined)
     expect(mutationFn).toHaveBeenCalledTimes(1)
     expect(mutationFn).toHaveBeenCalledWith('4')

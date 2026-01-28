@@ -14,6 +14,8 @@ import {
   UseMutationOptions,
   QueryObserverOptions,
   MutationOptions,
+  MutationObserver,
+  MutateOptions,
 } from '@tanstack/react-query'
 
 //
@@ -55,6 +57,11 @@ import {
 // - Creates api.handledOnMyEvent(arg1, arg2) to reset the event data for that key
 //   so that subscribers will no longer receive the payload.
 //
+
+type ChangeReturnType<T extends (...args: any[]) => any, R> =
+  T extends (...args: infer P) => any
+    ? (...args: P) => R
+    : never;
 
 export type NoPlaceholderQueryEndpointDefinition<
   P extends readonly any[],
@@ -259,7 +266,10 @@ export function createInterfaceApi<
     DataOf<K>,
     unknown,
     ArgsOf<K>
-  >
+  > & {
+    // Nicer version of mutate where args are optional if no parameters
+    mutate: ArgsOf<K> extends [] ? () => ReturnType<ReactQueryUseMutationResult<DataOf<K>, unknown, ArgsOf<K>>['mutate']> : ReactQueryUseMutationResult<DataOf<K>, unknown, ArgsOf<K>>['mutate']
+  }
   type UseMutationResult<K extends ValidKey> = BaseUseMutationResult<K> & {
     // Convenience - a nicer name for mutate, e.g.
     // `const { saveSomething } = useSaveSomething()`
@@ -356,7 +366,7 @@ export function createInterfaceApi<
             /**
              * Call the underlying `raw[K].mutation(...args)` and return the data.
              */
-            mutate: (...args: ArgsOf<K>) => Promise<DataOf<K>>
+            mutate: ChangeReturnType<BaseUseMutationResult<K>['mutate'], Promise<DataOf<K>>>
 
             /**
              * Hook: runs `useMutation` for this mutation endpoint.
@@ -516,15 +526,6 @@ export function createInterfaceApi<
         useQuery: useQ,
         update: updater,
       }
-
-      // Idea for a more convenient hook but we can do that with a convience
-      // property on the useQuery result.
-
-      // if ('placeholderData' in endpointDef) {
-      //   (endpoints as any)[name].useData = (...args: QArgs) => {
-      //     return useQ(...args).data
-      //   }
-      // }
     } else if ('mutation' in endpointDef) {
       const { mutation, ...mutationOptions } = endpointDef
       type MArgs = ArgsOf<typeof name> | never
@@ -533,18 +534,14 @@ export function createInterfaceApi<
       // Allow the caller to e.g. handle mutation results
       queryClient.setMutationDefaults(baseKey, mutationOptions)
 
-      // mutate(...args): call the underlying mutation function
-      const mutator = async (...args: MArgs): Promise<MData> => {
-        const data = await mutation(...args)
-        return data
-      }
+      type EndpointUseMutationOptions = UseMutationOptions<MData, unknown, MArgs>
 
       // useMutation(): wrap React-Query's useMutation
       const useMut = (
         options?: APIUseMutationOptions<typeof name>,
         ...args: MArgs
       ): UseMutationResult<typeof name> => {
-        type EndpointUseMutationOptions = UseMutationOptions<MData, unknown, MArgs>
+
         const mutationOptions: EndpointUseMutationOptions = {...options}
         // Do not allow overriding the events - they can be specified in the
         // endpoint definition or at the mutation call. The typescript type prohibits
@@ -570,12 +567,14 @@ export function createInterfaceApi<
         } as UseMutationResult<typeof name>
       }
 
-      const directMutateFn = (...args: MArgs) => {
-        const mutationFn = queryClient.getMutationCache().build<MData, unknown, MArgs, unknown>(queryClient, {
-          mutationKey: [...baseKey, ...args],
+      const directMutateFn = (args: MArgs, options?: MutateOptions<MData, unknown, MArgs, unknown>) => {
+        const observer = new MutationObserver<MData, unknown, MArgs, unknown>(queryClient, {
+          ...options,
+          mutationKey: [...baseKey, ...args ?? []],
           mutationFn: (variables) => mutation(...variables),
         })
-        return mutationFn.execute(args)
+
+        return observer.mutate(args ?? [])
       }
 
       ;(endpoints as any)[name] = {
@@ -786,21 +785,45 @@ export function createInterfaceApi<
     }
   })
 
-  // Build `use${Capitalize<EndpointName>}` hooks at the top level for query endpoints
-  type HookMethods = {
-    [K in ValidKey as RawEndpoints[K] extends { query: any }
-      ? `use${Capitalize<string & K>}`
-      : never]: (...args: ArgsOf<K>) => UseQueryResult<K>
+  type MutationKeys = {
+    [K in keyof RawEndpoints]: RawEndpoints[K] extends MutationEndpointDefinition<any, any> ? K : never
+  }[keyof RawEndpoints] & string
+
+  type QueryKeys = {
+    [K in keyof RawEndpoints]: RawEndpoints[K] extends QueryEndpointDefinition<any, any> ? K : never
+  }[keyof RawEndpoints] & string
+
+  // Build convenience root access to endpoints
+  type RootEndpointMethods =
+  // Queries
+  {
+    // Named query React hook
+    [K in QueryKeys as `use${Capitalize<string & K>}`]:
+      (...args: ArgsOf<K>) => UseQueryResult<K>
   } & {
-    [K in ValidKey as RawEndpoints[K] extends PlaceholderQueryEndpointDefinition<
-      any,
-      any
-    >
-      ? `use${Capitalize<string & K>}Data`
-      : never]: (...args: ArgsOf<K>) => DataOf<K>
+    // Direct access to endpoint to get non-hook current data, invalidate the query, etc.
+    [K in QueryKeys]: APIEndpoints[K]
+  } & {
+      // Queries with placeholder data always have data, so we can have a
+      // named data convenience hook if components don't need progress state.
+      [K in ValidKey as RawEndpoints[K] extends PlaceholderQueryEndpointDefinition<
+        any,
+        any
+      >
+        ? `use${Capitalize<string & K>}Data`
+        : never]: (...args: ArgsOf<K>) => DataOf<K>
+  } &
+  // Mutations
+  {
+    // useDoSomething: endpoints.doSomething.useMutation
+    [K in MutationKeys as `use${Capitalize<string & K>}`]:
+      (options?: APIUseMutationOptions<K>) => UseMutationResult<K>
+  } & {
+    // doSomething: endpoints.doSomething.mutate
+    [K in MutationKeys]: Extract<APIEndpoints[K], { mutate: any }>['mutate']
   }
 
-  const hooks = {} as HookMethods
+  const rootEndpointProperties = {} as RootEndpointMethods
 
   ;(Object.keys(config.endpoints) as Array<keyof RawEndpoints>).forEach(
     (name) => {
@@ -810,13 +833,14 @@ export function createInterfaceApi<
 
       if ('query' in config.endpoints[name]) {
         // @ts-expect-error: generated hook name
-        hooks[hookName] = (...args: any[]) => {
-          return (endpoints as any)[name].useQuery(...args)
-        }
+        rootEndpointProperties[hookName] = (endpoints as any)[name].useQuery
+
+        // @ts-expect-error
+        rootEndpointProperties[name] = (endpoints as any)[name]
 
         if ('placeholderData' in config.endpoints[name]) {
           // @ts-expect-error: generated hook name
-          hooks[`use${capitalized}Data`] = (...args: any[]) => {
+          rootEndpointProperties[`use${capitalized}Data`] = (...args: any[]) => {
             return (endpoints as any)[name].useQuery(...args).data
           }
         }
@@ -824,9 +848,9 @@ export function createInterfaceApi<
 
       if ('mutation' in config.endpoints[name]) {
         // @ts-expect-error: we know that `endpoints[name].useMutation` matches the signature
-        hooks[hookName] = (...args: any[]) => {
-          return (endpoints as any)[name].useMutation(...args)
-        }
+        rootEndpointProperties[hookName] = (endpoints as any)[name].useMutation
+        // @ts-expect-error
+        rootEndpointProperties[name] = (endpoints as any)[name].mutate
       }
     },
   )
@@ -836,13 +860,14 @@ export function createInterfaceApi<
   // @ts-expect-error
   window.queryClient = queryClient
 
+  // Convenient access to query endpoint child functions
+
   const api = {
     endpoints,
     emitEvent,
     actions,
-    ...hooks,
+    ...rootEndpointProperties,
     ...eventHooks,
-    ...endpoints,
     close: () => {
       queryClient.cancelQueries()
       queryClient.clear()
