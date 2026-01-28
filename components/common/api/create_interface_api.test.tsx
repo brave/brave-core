@@ -6,7 +6,7 @@
 import { expect, jest, test, describe, it } from '@jest/globals'
 import { act, renderHook } from '@testing-library/react'
 import * as React from 'react'
-import { createInterfaceApi, state, event } from "./create_interface_api"
+import { createInterfaceApi, state, event } from './create_interface_api'
 
 describe('createInterfaceApi', () => {
   it('should return results keyed by parameters', async () => {
@@ -16,9 +16,9 @@ describe('createInterfaceApi', () => {
         getData: {
           query: (id: string) => {
             return Promise.resolve({ id })
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
     // Check fetch is keyed by parameter
@@ -46,9 +46,9 @@ describe('createInterfaceApi', () => {
           query: (id: string) => {
             return Promise.resolve({ id })
           },
-          placeholderData: { id: 'initial' }
-        }
-      }
+          placeholderData: { id: 'initial' },
+        },
+      },
     })
 
     expect(api.getData.current('1')).toEqual({ id: 'initial' })
@@ -73,9 +73,9 @@ describe('createInterfaceApi', () => {
       actions: {},
       endpoints: {
         getData: {
-          query: mockedQuery
-        }
-      }
+          query: mockedQuery,
+        },
+      },
     })
 
     // Should not initially fetch
@@ -102,8 +102,8 @@ describe('createInterfaceApi', () => {
       endpoints: {
         myData: state({
           myValue: 'initial',
-        })
-      }
+        }),
+      },
     })
 
     expect(api.myData.current()).toEqual({ myValue: 'initial' })
@@ -119,9 +119,9 @@ describe('createInterfaceApi', () => {
       actions: {},
       endpoints: {
         getData: {
-          query: mockedQuery
-        }
-      }
+          query: mockedQuery,
+        },
+      },
     })
 
     // Should not initially fetch
@@ -151,14 +151,14 @@ describe('createInterfaceApi', () => {
         getData: {
           query: (id: string) => {
             return Promise.resolve({ id })
-          }
+          },
         },
         getList: {
           query: () => {
             return Promise.resolve([{ id: '1' }, { id: '2' }])
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
     function useTestQueryData() {
@@ -180,17 +180,16 @@ describe('createInterfaceApi', () => {
         getData: {
           query: (id: string) => {
             return Promise.resolve({ id })
-          }
+          },
         },
         getList: {
           query: () => {
             return Promise.resolve([{ id: '1' }, { id: '2' }])
           },
-          placeholderData: [] as { id: string }[]
-        }
-      }
+          placeholderData: [] as { id: string }[],
+        },
+      },
     })
-
 
     function useTestQueryData() {
       const query = api.useGetList()
@@ -218,11 +217,12 @@ describe('createInterfaceApi', () => {
       const api = createInterfaceApi({
         endpoints: {
           doSomething: {
-            mutation: (isThing: boolean): Promise<{ isThing: boolean }> => mutationFn(isThing),
+            mutation: (isThing: boolean): Promise<{ isThing: boolean }> =>
+              mutationFn(isThing),
             onMutate(variables) {
               globalOnMutateObserver(variables)
             },
-          }
+          },
         },
         actions: {},
       })
@@ -243,7 +243,7 @@ describe('createInterfaceApi', () => {
         // global event handler from firing
         onSettled(result, error, variables) {
           hookOnMutateObserver(variables)
-        }
+        },
       })
       return result
     }
@@ -254,12 +254,14 @@ describe('createInterfaceApi', () => {
     expect(globalOnMutateObserver).not.toHaveBeenCalled()
 
     // Perform mutation side-effect
-    await act(async () => hookResult.result.current.doSomething([true], {
-      // Define a local event handler
-      onSettled(result, error, input) {
-        callOnMutateObserver(input, result)
-      }
-    }))
+    await act(async () =>
+      hookResult.result.current.doSomething([true], {
+        // Define a local event handler
+        onSettled(result, error, input) {
+          callOnMutateObserver(input, result)
+        },
+      }),
+    )
 
     // Verify the hook gets the updated data when re-rendered. It might be available
     // earlier but it definitely should be on re-render given our "fetch" returns
@@ -288,7 +290,9 @@ describe('createInterfaceApi', () => {
       })
       expect(directResult).toEqual({ isThing: true })
       expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
-      expect(callOnMutateObserver).toHaveBeenCalledWith([true], { isThing: true })
+      expect(callOnMutateObserver).toHaveBeenCalledWith([true], {
+        isThing: true,
+      })
       expect(mutationFn).toHaveBeenCalledWith(true)
     }
 
@@ -303,7 +307,9 @@ describe('createInterfaceApi', () => {
       })
       expect(directResult).toEqual({ isThing: false })
       expect(globalOnMutateObserver).toHaveBeenCalledWith([false])
-      expect(callOnMutateObserver).toHaveBeenCalledWith([false], { isThing: false })
+      expect(callOnMutateObserver).toHaveBeenCalledWith([false], {
+        isThing: false,
+      })
       expect(mutationFn).toHaveBeenCalledWith(false)
     }
   })
@@ -320,7 +326,7 @@ describe('createInterfaceApi', () => {
             mutation: () => {
               return mutationFn()
             },
-          }
+          },
         },
         actions: {},
       })
@@ -350,7 +356,7 @@ describe('createInterfaceApi', () => {
             mutation: (hi: string) => {
               return mutationFn(hi)
             },
-          }
+          },
         },
         actions: {},
       })
@@ -369,7 +375,6 @@ describe('createInterfaceApi', () => {
     expect(mutationFn).toHaveBeenCalledWith('4')
   })
 
-
   it('creates actions', () => {
     const doSomething = jest.fn((hi: string) => {})
     function createMyApi() {
@@ -380,9 +385,9 @@ describe('createInterfaceApi', () => {
             return doSomething(hi)
           },
           moreThings: {
-            doAnotherThing() {}
-          }
-        }
+            doAnotherThing() {},
+          },
+        },
       })
       return api
     }
@@ -402,14 +407,14 @@ describe('createInterfaceApi', () => {
         getData: {
           query: (id: string) => {
             return Promise.resolve({ id })
-          }
+          },
         },
         getList: {
           query: () => {
             return Promise.resolve([{ id: '1' }, { id: '2' }])
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
     // initially undefined
@@ -423,7 +428,6 @@ describe('createInterfaceApi', () => {
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
     expect(api.getData.current('1')).toEqual({ id: '1' })
 
-
     // update object
     api.getData.update('1', { id: '3' })
     expect(api.getData.current('1')).toEqual({ id: '3' })
@@ -435,17 +439,18 @@ describe('createInterfaceApi', () => {
   })
 
   it('creates state queries with no query fetching', async () => {
-    const queryFn = jest.fn(() => Promise.resolve({ aProp: 'fetched', bProp: false }))
+    const queryFn = jest.fn(() =>
+      Promise.resolve({ aProp: 'fetched', bProp: false }),
+    )
     const api = createInterfaceApi({
       actions: {},
       endpoints: {
         state: state({
           aProp: 'initial',
-          bProp: true
-        })
-      }
+          bProp: true,
+        }),
+      },
     })
-
 
     // Should not fetch the query
     expect(queryFn).not.toHaveBeenCalled()
@@ -471,10 +476,10 @@ describe('createInterfaceApi', () => {
       actions: {},
       endpoints: {},
       events: {
-        myEvent: event<[], [String, number]>(emit => {
+        myEvent: event<[], [String, number]>((emit) => {
           emitter = emit
-        })
-      }
+        }),
+      },
     })
 
     const observer = jest.fn()
@@ -498,5 +503,4 @@ describe('createInterfaceApi', () => {
     emitter('5', 5)
     expect(observer).toHaveBeenCalledTimes(2)
   })
-
 })
