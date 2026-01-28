@@ -276,6 +276,10 @@ export function createInterfaceApi<
         }
   }
 
+  // Don't allow individual hook uses to specify events since those are specified either at the endpoint
+  // definition or by the mutation function call.
+  type APIUseMutationOptions<K extends ValidKey> = Omit<UseMutationOptions<DataOf<K>, unknown, ArgsOf<K>>, 'onMutate' | 'onError' | 'onSuccess' | 'onSettled'>
+
   // Build out methods for every K in RawEndpoints, depending on whether it's a query or mutation
   type APIEndpoints = {
     [K in ValidKey]: RawEndpoints[K] extends QueryEndpointDefinition<any, any>
@@ -359,7 +363,7 @@ export function createInterfaceApi<
              * You can call `mutate(variables)` or `mutateAsync(variables)` on the result.
              */
             useMutation: (
-              options?: UseMutationOptions<DataOf<K>, unknown, ArgsOf<K>>,
+              options?: APIUseMutationOptions<K>,
             ) => UseMutationResult<K>
           }
         : never
@@ -537,14 +541,25 @@ export function createInterfaceApi<
 
       // useMutation(): wrap React-Query's useMutation
       const useMut = (
-        options?: UseMutationOptions<MData, unknown, MArgs>,
+        options?: APIUseMutationOptions<typeof name>,
         ...args: MArgs
       ): UseMutationResult<typeof name> => {
+        type EndpointUseMutationOptions = UseMutationOptions<MData, unknown, MArgs>
+        const mutationOptions: EndpointUseMutationOptions = {...options}
+        // Do not allow overriding the events - they can be specified in the
+        // endpoint definition or at the mutation call. The typescript type prohibits
+        // this but we should enforce it at runtime for JS or ignored TS errors in order
+        // to avoid unexpected behavior.
+        for (const key of ['onSuccess', 'onSettled', 'onError', 'onMutate'] as Partial<keyof EndpointUseMutationOptions>[]) {
+          if (Object.hasOwn(mutationOptions, key)) {
+            delete mutationOptions[key]
+          }
+        }
         const useMutationResult = useMutation<MData, unknown, MArgs>(
           {
             mutationKey: [...baseKey, ...args],
             mutationFn: (variables) => mutation(...variables),
-            ...options,
+            ...mutationOptions,
           },
           queryClient,
         )
