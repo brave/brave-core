@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { act, renderHook } from '@testing-library/react'
+import * as React from 'react'
 import { createInterfaceApi, state, event } from "./create_interface_api"
 
 // function ResolveIn<T>(ms: number, value: T): Promise<T> {
@@ -136,15 +137,15 @@ describe('createInterfaceApi', () => {
       const query = api.endpoints.getData.useQuery('1')
       return query.data
     }
-    // Hook result should be undefined initially
-    let hookResult = await act(() => renderHook(useTestQueryData))
-    expect(hookResult.result.current).toBeUndefined()
-    // But having the hook should trigger the query
+
+    let hookResult = await act(async () => renderHook(useTestQueryData))
+
+    // Having the hook should trigger the query immediately
     expect(mockedQuery).toHaveBeenCalledWith('1')
     expect(mockedQuery).toHaveBeenCalledTimes(1)
     expect(api.getData.current('1')).toEqual({ id: '1' })
     // And now the hook should have the data
-    await act(() => hookResult.rerender())
+    await act(async () => hookResult.rerender())
     expect(hookResult.result.current).toEqual({ id: '1' })
   })
 
@@ -169,12 +170,11 @@ describe('createInterfaceApi', () => {
       const query = api.useGetList()
       return query.data
     }
-    let hookResult = await act(() => renderHook(useTestQueryData))
-    expect(hookResult.result.current).toBeUndefined()
+    let hookResult = await act(async () => renderHook(useTestQueryData))
 
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
 
-    await act(() => hookResult.rerender())
+    await act(async () => hookResult.rerender())
     expect(hookResult.result.current).toEqual([{ id: '1' }, { id: '2' }])
   })
 
@@ -201,7 +201,7 @@ describe('createInterfaceApi', () => {
       const query = api.useGetList()
       return query.data
     }
-    let hookResult = await act(() => renderHook(useTestQueryData))
+    let hookResult = await act(async () => renderHook(useTestQueryData))
     expect(hookResult.result.current).toEqual([])
 
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
@@ -214,11 +214,19 @@ describe('createInterfaceApi', () => {
     const mutationFn = jest.fn((isThing: boolean) => {
       return Promise.resolve({ isThing })
     })
+
+    const globalOnMutateObserver = jest.fn()
+    const hookOnMutateObserver = jest.fn()
+    const callOnMutateObserver = jest.fn()
+
     function createMyApi() {
       const api = createInterfaceApi({
         endpoints: {
           doSomething: {
-            mutation: mutationFn,
+            mutation: (isThing: boolean): Promise<{ isThing: boolean }> => mutationFn(isThing),
+            onMutate(variables) {
+              globalOnMutateObserver(variables)
+            },
           }
         },
         actions: {},
@@ -227,20 +235,49 @@ describe('createInterfaceApi', () => {
     }
 
     const api = createMyApi()
-    expect(api.doSomething.mutate).toBeDefined()
-    // expect(api.useDoSomething).toBeUndefined()
+
+    expect(api.doSomething.useMutation).toBeDefined()
     // @ts-expect-error - current is not defined for mutations
     expect(api.doSomething.current).toBeUndefined()
-    expect(mutationFn).toHaveBeenCalledTimes(0)
-    const result = await api.doSomething.mutate(true)
-    expect(result).toEqual({ isThing: true })
-    expect(mutationFn).toHaveBeenCalledWith(true)
+
+    function useMutate() {
+      const result = api.doSomething.useMutation({
+        // @ts-ignore - verify defining a handler here does not work or prevent
+        // global event handler from firing
+        onMutate(variables) {
+          hookOnMutateObserver(variables)
+        }
+      })
+      return result
+    }
+
+    const hookResult = await renderHook(useMutate)
+    // Should not be called when only rendered
+    expect(mutationFn).not.toHaveBeenCalled()
+    expect(globalOnMutateObserver).not.toHaveBeenCalled()
+
+    // Perform mutation side-effect
+    await act(async () => hookResult.result.current.doSomething([true], {
+      // Define a local event handler
+      onSettled(result, error, input) {
+        callOnMutateObserver(input)
+      }
+    }))
+
+    // Verify the hook gets the updated data when re-rendered. It might be available
+    // earlier but it definitely should be on re-render given our "fetch" returns
+    // immediately.
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current.data).toEqual({ isThing: true })
+
+    // Verify we used our mutation function with the expected args
     expect(mutationFn).toHaveBeenCalledTimes(1)
-    // mutate should call every time
-    const result2 = await api.doSomething.mutate(false)
-    expect(result2).toEqual({ isThing: false })
-    expect(mutationFn).toHaveBeenCalledWith(false)
-    expect(mutationFn).toHaveBeenCalledTimes(2)
+    expect(mutationFn).toHaveBeenCalledWith(true)
+
+    // Verify the global and local event handlers
+    expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
+    expect(callOnMutateObserver).toHaveBeenCalledWith([true])
+    expect(hookOnMutateObserver).not.toHaveBeenCalled()
   })
 
   it('can create void mutations', async () => {
@@ -293,6 +330,7 @@ describe('createInterfaceApi', () => {
     }
 
     const api = createMyApi()
+    api.doSomething.useMutation
     expect(api.doSomething.mutate).toBeDefined()
     // expect(api.useDoSomething).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(0)
@@ -390,10 +428,10 @@ describe('createInterfaceApi', () => {
       const stateData = api.state.useQuery()
       return stateData.data
     }
-    let hookResult = await act(() => renderHook(useStateData))
+    let hookResult = await act(async () => renderHook(useStateData))
     expect(hookResult.result.current).toEqual({ aProp: 'initial', bProp: true })
     expect(queryFn).not.toHaveBeenCalled()
-    await act(() => hookResult.rerender())
+    await act(async () => hookResult.rerender())
     expect(hookResult.result.current).toEqual({ aProp: 'initial', bProp: true })
     expect(queryFn).not.toHaveBeenCalled()
   })
