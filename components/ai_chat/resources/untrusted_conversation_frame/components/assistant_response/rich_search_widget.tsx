@@ -80,7 +80,7 @@ export default function RichSearchWidget(props: { jsonData: string }) {
     <iframe
       className={styles.richSearchWidget}
       sandbox='allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox'
-      src={`${RICH_SEARCH_WIDGETS_ORIGIN}/embed.html`}
+      src={`${RICH_SEARCH_WIDGETS_ORIGIN}/embed.html?aiChatHost=${encodeURIComponent(loadTimeData.getString('apiHost'))}`}
       ref={frameHandler}
     />
   )

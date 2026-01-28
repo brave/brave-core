@@ -21,6 +21,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -372,6 +373,10 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)
           ? ai_chat::features::kRichSearchWidgetsOrigin.Get()
           : "");
+
+  // Note: For the current usages of this API there is no difference between the
+  // premium and non-premium API host.
+  source->AddString("apiHost", ai_chat::GetEndpointUrl(false, "").spec());
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
