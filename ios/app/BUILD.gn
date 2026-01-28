@@ -76,6 +76,7 @@ source_set("app") {
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/brave_shields",
+    "//brave/ios/browser/content_settings",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",

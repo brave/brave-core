@@ -33,6 +33,8 @@ class TestBraveShieldsSettings: BraveShieldsSettings {
 
   var _isShieldsDisabledOnAnyHostMatchingDomain: ((URL) -> Bool)?
 
+  var _removeBraveShieldsSiteSettingsData: (() -> Void)?
+
   // MARK: Brave ShieldsEnabled
 
   func isBraveShieldsEnabled(for url: URL) -> Bool {
@@ -112,5 +114,9 @@ class TestBraveShieldsSettings: BraveShieldsSettings {
 
   func isShieldsDisabledOnAnyHostMatchingDomain(of url: URL) -> Bool {
     return _isShieldsDisabledOnAnyHostMatchingDomain?(url) ?? false
+  }
+
+  func removeBraveShieldsSiteSettingsData() {
+    _removeBraveShieldsSiteSettingsData?()
   }
 }

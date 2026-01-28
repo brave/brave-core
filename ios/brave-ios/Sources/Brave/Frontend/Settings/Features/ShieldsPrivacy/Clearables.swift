@@ -153,6 +153,10 @@ class PasswordsClearable: Clearable {
 }
 
 class SiteAndShieldsSettingsClearable: Clearable {
+  private let profile: Profile
+  init(profile: Profile) {
+    self.profile = profile
+  }
 
   var label: String {
     return Strings.siteAndShieldsSettings
@@ -164,6 +168,7 @@ class SiteAndShieldsSettingsClearable: Clearable {
         continuation.resume()
       })
     }
+    BraveRemoveSiteSettingsData(Date.distantPast, Date.distantFuture, profile)
   }
 }
 

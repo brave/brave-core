@@ -268,7 +268,7 @@ import os
       ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
       ClearableSetting(
         id: .siteAndShieldsSettings,
-        clearable: SiteAndShieldsSettingsClearable(),
+        clearable: SiteAndShieldsSettingsClearable(profile: braveCore.profile),
         isEnabled: false
       ),
     ])
