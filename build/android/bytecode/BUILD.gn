@@ -70,6 +70,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHttpURLConnectionFactoryImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHubManagerImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIdentityDiscControllerClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoNewTabPageClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoTabSwitcherPaneClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveInfoBarContainerViewClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIntentHandlerClassAdapter.java",

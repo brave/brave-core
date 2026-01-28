@@ -62,6 +62,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -86,8 +87,8 @@ import java.util.function.Supplier;
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private final AppMenuDelegate mBraveAppMenuDelegate;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
-    private boolean mJunitIsTesting;
     private final Context mBraveContext;
+    private boolean mJunitIsTesting;
 
     /**
      * Represents a menu item that can be controlled by policy.
@@ -182,6 +183,32 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             Tab tab = mActivityTabProvider.get();
                             return tab != null
                                     && BraveNewsPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)),
+                // VPN feature checks call native code, so assume supported in JUnit tests
+                new PolicyControlledMenuItem(
+                        R.id.request_brave_vpn_id,
+                        this::buildBraveVpnItem,
+                        () -> mJunitIsTesting || BraveVpnUtils.isVpnFeatureSupported(mBraveContext),
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveVpnPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)),
+                // VPN location requires actual subscription/region data, don't assume in tests
+                new PolicyControlledMenuItem(
+                        R.id.request_vpn_location_id,
+                        this::buildBraveVpnLocationIconItem,
+                        () ->
+                                !mJunitIsTesting
+                                        && BraveVpnUtils.isVpnFeatureSupported(mBraveContext)
+                                        && BraveVpnPrefUtils.isSubscriptionPurchase()
+                                        && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode()),
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveVpnPolicy.isDisabledByPolicy(tab.getProfile());
                         },
                         Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)));
     }
@@ -621,13 +648,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
         modelList.add(buildSetDefaultBrowserItem());
 
-        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
-            modelList.add(buildBraveVpnItem());
-            if (BraveVpnPrefUtils.isSubscriptionPurchase()
-                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                modelList.add(buildBraveVpnLocationIconItem());
-            }
-        }
         // Add policy-controlled items based on policy states, respecting their position
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
             // Check if item is disabled by policy (default to false/not disabled if not in map)
@@ -915,32 +935,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
-        if (!mJunitIsTesting) {
-            if (BraveVpnUtils.isVpnFeatureSupported(mBraveContext)) {
-                modelList.add(buildBraveVpnItem());
-                if (BraveVpnPrefUtils.isSubscriptionPurchase()
-                        && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                    modelList.add(buildBraveVpnLocationIconItem());
-                }
-            }
-        }
-        // Policy-controlled items (Leo, Rewards, News) are handled by
-        // updateMenuItemsBasedOnPolicy()
-        // They are not added here to avoid showing them if policy disables them
-        // In JUnit tests, add Leo synchronously since native code isn't available
-        if (mJunitIsTesting && BraveLeoPrefUtils.isLeoEnabled()) {
-            Tab tab = mActivityTabProvider.get();
-            if (tab == null || !tab.isIncognito()) {
-                insertMenuItemBefore(
-                        modelList,
-                        buildBraveLeoItem(),
-                        Arrays.asList(
-                                R.id.recent_tabs_menu_id,
-                                R.id.page_zoom_id,
-                                R.id.find_in_page_id,
-                                R.id.set_default_browser));
-            }
-        }
+        // Policy-controlled items (Leo, Rewards, News, VPN) are handled by
+        // updateMenuItemsBasedOnPolicy() - they are not added here to avoid showing them
+        // if policy disables them
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
     }
@@ -1136,10 +1133,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Method to ensure that the object is created for junit tests to avoid calling the native
-     * portion of code.
+     * Sets whether we're running in JUnit tests to avoid calling native code.
      *
-     * @param isJunitTesting flag indicating whether the native code should be avoided.
+     * @param isJunitTesting flag indicating whether native code should be avoided.
      */
     @VisibleForTesting
     public void setIsJunitTesting(boolean isJunitTesting) {
