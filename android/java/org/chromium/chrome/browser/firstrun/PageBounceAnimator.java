@@ -15,170 +15,162 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 
 /**
  * Drives programmatic {@link ViewPager2} transitions with a smooth, elastic feel by animating its
  * internal {@link RecyclerView} directly. This keeps the scroll math deterministic and lets us add
- * a lightweight visual bounce without overshooting the target page.
- * {@link ViewPager2} is built on top of {@link RecyclerView}, so using its internal child here is
- * safe and consistent with the platform implementation.
+ * a lightweight visual bounce without overshooting the target page. {@link ViewPager2} is built on
+ * top of {@link RecyclerView}, so using its internal child here is safe and consistent with the
+ * platform implementation.
  */
 @NullMarked
 public class PageBounceAnimator {
-   /** Duration of the page transition animation. */
-   private static final int ANIMATION_DURATION_MS = 520;
-   /** Visual bounce distance in dp applied after alignment. */
-   private static final float BOUNCE_DISTANCE_DP = 8f;
-   /** Duration for the visual bounce. */
-   private static final int BOUNCE_DURATION_MS = 180;
-   /** Interpolator for a smooth, non-overshooting curve. */
-   private static final TimeInterpolator PATH_INTERPOLATOR = new PathInterpolator(0.6f, 0f, 0.2f, 1f);
+    /** Duration of the page transition animation. */
+    private static final int ANIMATION_DURATION_MS = 520;
 
-   /** ViewPager2 hosting the pages. */
-   private final ViewPager2 mViewPager;
-   /** RecyclerView inside ViewPager2 that actually scrolls. */
-   private final RecyclerView mRecyclerView;
-   private final float mAmplitude;
+    /** Visual bounce distance in dp applied after alignment. */
+    private static final float BOUNCE_DISTANCE_DP = 8f;
 
-   private ValueAnimator mPageAnimator;
-   private ValueAnimator mBounceAnimator;
-   private OnPageShownListener mOnPageShownListener;
+    /** Duration for the visual bounce. */
+    private static final int BOUNCE_DURATION_MS = 180;
 
-   /**
-    * Listener called when a page finishes settling.
-    */
-   public interface OnPageShownListener {
-      void onPageShown(final int position);
-   }
+    /** Interpolator for a smooth, non-overshooting curve. */
+    private static final TimeInterpolator PATH_INTERPOLATOR =
+            new PathInterpolator(0.6f, 0f, 0.2f, 1f);
 
-   /**
-    * Creates a new animator bound to the provided ViewPager2.
-    */
-   public PageBounceAnimator(final ViewPager2 viewPager) {
-      mViewPager = viewPager;
-      final View child = viewPager.getChildAt(0);
-      mRecyclerView = (RecyclerView) child;
-      final float density = mViewPager.getResources().getDisplayMetrics().density;
-      mAmplitude = BOUNCE_DISTANCE_DP * density;
-      mViewPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-         @Override
-         public void onViewAttachedToWindow(View view) {
-            /* No-op. */
-         }
+    /** ViewPager2 hosting the pages. */
+    private final ViewPager2 mViewPager;
 
-         @Override
-         public void onViewDetachedFromWindow(View view) {
-            // Stop any running animation to avoid leaks or callbacks into a detached view.
-            if (mPageAnimator != null && mPageAnimator.isRunning()) {
-               mPageAnimator.cancel();
-            }
-            if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
-               mBounceAnimator.cancel();
-            }
-         }
-      });
-   }
+    /** RecyclerView inside ViewPager2 that actually scrolls. */
+    private final RecyclerView mRecyclerView;
 
-   /**
-    * Registers a listener that is notified when a page is shown after a transition.
-    */
-   public void setOnPageShownListener(final OnPageShownListener listener) {
-      mOnPageShownListener = listener;
-      if (mOnPageShownListener != null) {
-         mOnPageShownListener.onPageShown(mViewPager.getCurrentItem());
-      }
-   }
+    private final float mAmplitude;
 
-   /**
-    * Animates to the target adapter position with a bouncy overshoot.
-    */
-   public void animateToPosition(final int targetPosition) {
-      if (mPageAnimator != null && mPageAnimator.isRunning()) {
-         return;
-      }
-      if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
-         return;
-      }
+    @Nullable private ValueAnimator mPageAnimator;
+    @Nullable private ValueAnimator mBounceAnimator;
 
-      final int current = mViewPager.getCurrentItem();
-      if (targetPosition == current) {
-         return;
-      }
+    /** Listener called when a page finishes settling. */
+    public interface OnPageShownListener {
+        void onPageShown(final int position);
+    }
 
-      final int pageWidth = mViewPager.getWidth() - mViewPager.getPaddingLeft() - mViewPager.getPaddingRight();
-      final int startX = mRecyclerView.computeHorizontalScrollOffset();
-      final int targetX = targetPosition * pageWidth;
-      if (pageWidth == 0) {
-         mViewPager.setCurrentItem(targetPosition, false);
-         return;
-      }
+    /** Creates a new animator bound to the provided ViewPager2. */
+    public PageBounceAnimator(final ViewPager2 viewPager) {
+        mViewPager = viewPager;
+        final View child = viewPager.getChildAt(0);
+        mRecyclerView = (RecyclerView) child;
+        final float density = mViewPager.getResources().getDisplayMetrics().density;
+        mAmplitude = BOUNCE_DISTANCE_DP * density;
+        mViewPager.addOnAttachStateChangeListener(
+                new View.OnAttachStateChangeListener() {
+                    @Override
+                    public void onViewAttachedToWindow(View view) {
+                        /* No-op. */
+                    }
 
-      mPageAnimator = ValueAnimator.ofFloat(0f, 1f);
-      mPageAnimator.setDuration(ANIMATION_DURATION_MS);
-      mPageAnimator.setInterpolator(PATH_INTERPOLATOR);
+                    @Override
+                    public void onViewDetachedFromWindow(View view) {
+                        // Stop any running animation to avoid leaks or callbacks into a detached
+                        // view.
+                        if (mPageAnimator != null && mPageAnimator.isRunning()) {
+                            mPageAnimator.cancel();
+                        }
+                        if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
+                            mBounceAnimator.cancel();
+                        }
+                    }
+                });
+    }
 
-      mPageAnimator.addUpdateListener(animation -> {
-         final float t = (float) animation.getAnimatedValue();
-         final float desired = startX + (targetX - startX) * t;
-         final int desiredInt = Math.round(desired);
-         final int currentX = mRecyclerView.computeHorizontalScrollOffset();
-         final int delta = desiredInt - currentX;
-         if (delta != 0) {
-            mRecyclerView.scrollBy(delta, 0);
-         }
-      });
+    /** Animates to the target adapter position with a bouncy overshoot. */
+    public void animateToPosition(final int targetPosition) {
+        if (mPageAnimator != null && mPageAnimator.isRunning()) {
+            return;
+        }
+        if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
+            return;
+        }
 
-      mPageAnimator.addListener(new AnimatorListenerAdapter() {
-         @Override
-         public void onAnimationEnd(Animator animation) {
-            playBounce(targetPosition);
-         }
+        final int current = mViewPager.getCurrentItem();
+        if (targetPosition == current) {
+            return;
+        }
 
-         @Override
-         public void onAnimationCancel(Animator animation) {
-            playBounce(targetPosition);
-         }
-      });
+        final int pageWidth =
+                mViewPager.getWidth() - mViewPager.getPaddingLeft() - mViewPager.getPaddingRight();
+        final int startX = mRecyclerView.computeHorizontalScrollOffset();
+        final int targetX = targetPosition * pageWidth;
+        if (pageWidth == 0) {
+            mViewPager.setCurrentItem(targetPosition, false);
+            return;
+        }
 
-      mPageAnimator.start();
-   }
+        mPageAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mPageAnimator.setDuration(ANIMATION_DURATION_MS);
+        mPageAnimator.setInterpolator(PATH_INTERPOLATOR);
 
-   /**
-    * Returns the adapter position of the currently snapped page.
-    */
-   public int getCurrentPosition() {
-      return mViewPager.getCurrentItem();
-   }
+        mPageAnimator.addUpdateListener(
+                animation -> {
+                    final float t = (float) animation.getAnimatedValue();
+                    final float desired = startX + (targetX - startX) * t;
+                    final int desiredInt = Math.round(desired);
+                    final int currentX = mRecyclerView.computeHorizontalScrollOffset();
+                    final int delta = desiredInt - currentX;
+                    if (delta != 0) {
+                        mRecyclerView.scrollBy(delta, 0);
+                    }
+                });
 
-   private void playBounce(final int targetPosition) {
-      if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
-         mBounceAnimator.cancel();
-      }
-      mBounceAnimator = ValueAnimator.ofFloat(0f, mAmplitude, 0f);
-      mBounceAnimator.setDuration(BOUNCE_DURATION_MS);
-      mBounceAnimator.addUpdateListener(animation -> {
-         float value = (float) animation.getAnimatedValue();
-         mRecyclerView.setTranslationX(value);
-      });
-      mBounceAnimator.addListener(new AnimatorListenerAdapter() {
-         @Override
-         public void onAnimationEnd(Animator animation) {
-            finalizeTransition(targetPosition, false);
-         }
+        mPageAnimator.addListener(
+                new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        playBounce(targetPosition);
+                    }
 
-         @Override
-         public void onAnimationCancel(Animator animation) {
-            finalizeTransition(targetPosition, true);
-         }
-      });
-      mBounceAnimator.start();
-   }
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        playBounce(targetPosition);
+                    }
+                });
 
-   private void finalizeTransition(int targetPosition, boolean smoothScroll) {
-      mRecyclerView.setTranslationX(0f);
-      mViewPager.setCurrentItem(targetPosition, smoothScroll);
-      if (mOnPageShownListener != null) {
-         mOnPageShownListener.onPageShown(targetPosition);
-      }
-   }
+        mPageAnimator.start();
+    }
+
+    /** Returns the adapter position of the currently snapped page. */
+    public int getCurrentPosition() {
+        return mViewPager.getCurrentItem();
+    }
+
+    private void playBounce(final int targetPosition) {
+        if (mBounceAnimator != null && mBounceAnimator.isRunning()) {
+            mBounceAnimator.cancel();
+        }
+        mBounceAnimator = ValueAnimator.ofFloat(0f, mAmplitude, 0f);
+        mBounceAnimator.setDuration(BOUNCE_DURATION_MS);
+        mBounceAnimator.addUpdateListener(
+                animation -> {
+                    float value = (float) animation.getAnimatedValue();
+                    mRecyclerView.setTranslationX(value);
+                });
+        mBounceAnimator.addListener(
+                new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        finalizeTransition(targetPosition, false);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        finalizeTransition(targetPosition, true);
+                    }
+                });
+        mBounceAnimator.start();
+    }
+
+    private void finalizeTransition(int targetPosition, boolean smoothScroll) {
+        mRecyclerView.setTranslationX(0f);
+        mViewPager.setCurrentItem(targetPosition, smoothScroll);
+    }
 }
