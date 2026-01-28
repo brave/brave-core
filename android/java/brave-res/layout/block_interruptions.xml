@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/onboarding_illustration_margin_top"
-        android:contentDescription="@null"
+        android:contentDescription="@string/brave_onboarding_block_interruptions_illustration_description"
         android:padding="@dimen/onboarding_illustration_padding"
         android:background="@drawable/onboarding_rounded_corners"
         app:layout_constraintTop_toBottomOf="@+id/image_top_guide"

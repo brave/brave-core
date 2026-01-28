@@ -803,6 +803,33 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
         Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
       </message>
+      <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
+        Brave logo
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BACKGROUND_DESCRIPTION" desc="Accessibility description for the onboarding background image">
+        Onboarding background
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_TOP_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding top leaf decoration">
+        Top leaf decoration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BOTTOM_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding bottom leaf decoration">
+        Bottom leaf decoration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_ARROW_DOWN_DESCRIPTION" desc="Accessibility description for the onboarding down arrow">
+        Scroll down
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding Brave logo">
+        Brave logo
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_HELP_BRAVE_SEARCH_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the help Brave Search onboarding illustration">
+        Help Brave Search illustration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BLOCK_INTERRUPTIONS_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the block interruptions onboarding illustration">
+        Block interruptions illustration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_MAKE_BRAVE_BETTER_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the make Brave better onboarding illustration">
+        Make Brave better illustration
+      </message>
       <message name="IDS_BLOCK_INTERRUPTIONS_SUBTITLE" desc="Block video ads subtitle onboarding">
         Block annoying interruptions on your favorite streaming sites.
       </message>
