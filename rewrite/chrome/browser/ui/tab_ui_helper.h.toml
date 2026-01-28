@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This substitution adds public methods to `TabUIHelper` before the `private:`
+# section in the class declaration.
+[[substitution]]
+description = "Adding public methods for custom title and to update last origin."
+re_pattern = '^(\s+)(private:)'
+replace = '''
+  void SetCustomTitle(const std::optional<std::u16string>& title);
+  bool has_custom_title() const {
+    return custom_title_.has_value();
+  }
+  void UpdateLastOrigin();
+\1\2'''
+re_flags = ['MULTILINE']
+
+# This substitution adds public methods to `TabUIHelper` after the `private:`
+# section in the class declaration.
+[[substitution]]
+description = "Adding private members for the custom title and last origin."
+re_pattern = '^(\s+private:)'
+replace = '''\1
+  std::optional<std::u16string> custom_title_;
+  std::optional<url::Origin> last_origin_;'''
+re_flags = ['MULTILINE']
