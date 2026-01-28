@@ -51,10 +51,11 @@ class MemoryStorageToolTest : public testing::Test {
 TEST_F(MemoryStorageToolTest, UseTool_ValidInput) {
   const std::string input_json = R"({"memory": "User prefers TypeScript"})";
 
-  base::test::TestFuture<Tool::ToolResult> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   memory_tool_->UseTool(input_json, future.GetCallback());
 
-  Tool::ToolResult result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 
@@ -71,10 +72,11 @@ TEST_F(MemoryStorageToolTest, UseTool_ValidInput) {
 TEST_F(MemoryStorageToolTest, UseTool_InvalidJson) {
   const std::string input_json = R"({"memory": invalid json})";
 
-  base::test::TestFuture<Tool::ToolResult> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   memory_tool_->UseTool(input_json, future.GetCallback());
 
-  Tool::ToolResult result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 
@@ -90,10 +92,11 @@ TEST_F(MemoryStorageToolTest, UseTool_InvalidJson) {
 TEST_F(MemoryStorageToolTest, UseTool_MissingMemoryField) {
   const std::string input_json = R"({"other_field": "value"})";
 
-  base::test::TestFuture<Tool::ToolResult> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   memory_tool_->UseTool(input_json, future.GetCallback());
 
-  Tool::ToolResult result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 
@@ -109,10 +112,11 @@ TEST_F(MemoryStorageToolTest, UseTool_MissingMemoryField) {
 TEST_F(MemoryStorageToolTest, UseTool_EmptyMemoryField) {
   const std::string input_json = R"({"memory": ""})";
 
-  base::test::TestFuture<Tool::ToolResult> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   memory_tool_->UseTool(input_json, future.GetCallback());
 
-  Tool::ToolResult result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 
@@ -131,10 +135,11 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
   const std::string input_json =
       absl::StrFormat(R"({"memory": "%s"})", long_memory);
 
-  base::test::TestFuture<Tool::ToolResult> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   memory_tool_->UseTool(input_json, future.GetCallback());
 
-  Tool::ToolResult result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 

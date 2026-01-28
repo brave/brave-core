@@ -46,7 +46,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidSingleToolCall) {
 
   auto expected = mojom::ToolUseEvent::New("get_weather", "call_123",
                                            "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr);
+                                           std::nullopt, std::nullopt, nullptr);
 
   EXPECT_MOJOM_EQ(result[0], expected);
 }
@@ -79,16 +79,16 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidMultipleToolCalls) {
   ASSERT_EQ(result.size(), 2u);
 
   // First tool call
-  EXPECT_MOJOM_EQ(result[0],
-                  mojom::ToolUseEvent::New("get_weather", "call_123",
-                                           "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr));
+  EXPECT_MOJOM_EQ(
+      result[0], mojom::ToolUseEvent::New("get_weather", "call_123",
+                                          "{\"location\":\"New York\"}",
+                                          std::nullopt, std::nullopt, nullptr));
 
   // Second tool call
-  EXPECT_MOJOM_EQ(result[1],
-                  mojom::ToolUseEvent::New("search_web", "call_456",
-                                           "{\"query\":\"Hello, world!\"}",
-                                           std::nullopt, nullptr));
+  EXPECT_MOJOM_EQ(
+      result[1], mojom::ToolUseEvent::New("search_web", "call_456",
+                                          "{\"query\":\"Hello, world!\"}",
+                                          std::nullopt, std::nullopt, nullptr));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
@@ -112,7 +112,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
   EXPECT_MOJOM_EQ(
       result[0],
       mojom::ToolUseEvent::New("get_weather", "", "{\"location\":\"New York\"}",
-                               std::nullopt, nullptr));
+                               std::nullopt, std::nullopt, nullptr));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
@@ -135,7 +135,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
 
   EXPECT_MOJOM_EQ(result[0], mojom::ToolUseEvent::New(
                                  "", "call_123", "{\"location\":\"New York\"}",
-                                 std::nullopt, nullptr));
+                                 std::nullopt, std::nullopt, nullptr));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionObject) {
@@ -175,10 +175,10 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_InvalidToolCall) {
   // Should only contain the valid tool call, invalid one should be skipped
   EXPECT_EQ(result.size(), 1u);
 
-  EXPECT_MOJOM_EQ(result[0],
-                  mojom::ToolUseEvent::New("get_weather", "call_123",
-                                           "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr));
+  EXPECT_MOJOM_EQ(
+      result[0], mojom::ToolUseEvent::New("get_weather", "call_123",
+                                          "{\"location\":\"New York\"}",
+                                          std::nullopt, std::nullopt, nullptr));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_EmptyList) {

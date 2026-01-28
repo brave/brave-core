@@ -111,14 +111,15 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   Tool::ToolResult ExecuteToolAndWait(base::WeakPtr<Tool> tool,
                                       const std::string& input_json,
                                       bool verify_success = true) {
-    base::test::TestFuture<Tool::ToolResult> result_future;
+    base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
     tool->UseTool(input_json, result_future.GetCallback());
-    auto result = result_future.Take();
+    auto [result, artifacts] = result_future.Take();
+    EXPECT_TRUE(artifacts.empty());
     if (verify_success) {
       EXPECT_THAT(result, ContentBlockText(
                               testing::HasSubstr(kToolResultSuccessSubstring)));
     }
-    return result;
+    return std::move(result);
   }
 
   // Helper to get the document identifier for the main frame

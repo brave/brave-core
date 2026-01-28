@@ -89,7 +89,7 @@ void TypeTool::UseTool(const std::string& input_json,
 
   if (!input.has_value()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: failed to parse input JSON"));
+        CreateContentBlocksForText("Error: failed to parse input JSON"), {});
     return;
   }
 
@@ -101,21 +101,26 @@ void TypeTool::UseTool(const std::string& input_json,
 
   if (!text) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing required 'text' property"));
+        CreateContentBlocksForText("Error: missing required 'text' property"),
+        {});
     return;
   }
 
   if (!follow_by_enter.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: missing required 'follow_by_enter' property"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: missing required 'follow_by_enter' property"),
+        {});
     return;
   }
 
   if (!mode || (*mode != kModeReplace && *mode != kModePrepend &&
                 *mode != kModeAppend)) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: invalid or missing 'mode' property. Must be 'replace', "
-        "'prepend', or 'append'."));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: invalid or missing 'mode' property. Must be 'replace', "
+            "'prepend', or 'append'."),
+        {});
     return;
   }
 
@@ -123,14 +128,15 @@ void TypeTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: missing 'target' property"));
+        CreateContentBlocksForText("Error: missing 'target' property"), {});
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        base::StrCat({"Invalid 'target': ", target.error()})));
+    std::move(callback).Run(CreateContentBlocksForText(base::StrCat(
+                                {"Invalid 'target': ", target.error()})),
+                            {});
     return;
   }
 
