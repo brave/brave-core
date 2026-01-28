@@ -252,7 +252,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     error: String?
   ) {
   }
-  
+
   func pendingSignCardanoTransactionRequests(
     completion: @escaping ([BraveWallet.SignCardanoTransactionRequest]) -> Void
   ) {
