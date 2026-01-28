@@ -89,6 +89,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly)
     Feature* kWebKitAdvancedPrivacyProtections;
 @property(class, nonatomic, readonly) Feature* kBraveOrigin;
+@property(class, nonatomic, readonly, nullable) Feature* kBraveWalletCardanoEnabled;
 @end
 
 NS_ASSUME_NONNULL_END

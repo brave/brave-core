@@ -76,6 +76,14 @@
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(brave_wallet::features::                         \
                                  kBraveWalletTransactionSimulationsFeature),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-enable-cardano",                                      \
+          "Enable Brave Wallet(WebUI) Cardano support",                       \
+          "Cardano support for Brave Wallet(WebUI)",                          \
+          flags_ui::kOsIos,                                                   \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletCardanoFeature),            \
       })
 
 #define BRAVE_SHIELDS_FEATURE_ENTRIES                                          \
