@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator_unittest.cc b/chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator_unittest.cc
-index b9f975ad23ba6ab3ccedd0267fbac5776250e76a..f6298a046840f26cf0a977540d277f23ad9469b2 100644
+index bf77ed750bb9f1f2e3c745aae4804ad190354d25..c231041f499e139db9c82bdc8e995d5c7d81a437 100644
 --- a/chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator_unittest.cc
 +++ b/chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator_unittest.cc
 @@ -114,6 +114,7 @@ class MockSidePanelUI : public SidePanelUI {

@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
-index 2e15939fb7690785fc0a565cc9a37ed6e1c1b388..c75ad7fe290e5ebf556c2b99bab791843af39dcf 100644
+index 187cb1f056f2ebfdc605e7578dbcd087557e3e01..10c0a98229a025b0af3c735593d89fce16b1ba73 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
 @@ -170,7 +170,7 @@ public class ChosenObjectSettings extends BaseSiteSettingsFragment

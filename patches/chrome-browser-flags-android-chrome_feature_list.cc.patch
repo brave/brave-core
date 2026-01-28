@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/android/chrome_feature_list.cc b/chrome/browser/flags/android/chrome_feature_list.cc
-index 08eb4fe77a1db3118de8a90f0625bf1069bff9e9..deca4572ca9b04f594d168f2925c1adf3b0708a3 100644
+index ef7a1566323ab7b232712365d6ee48bad6e015d9..11f888694e24b8fa4cd268d479d92c2eb5f0e977 100644
 --- a/chrome/browser/flags/android/chrome_feature_list.cc
 +++ b/chrome/browser/flags/android/chrome_feature_list.cc
-@@ -177,7 +177,9 @@ const base::Feature* const kFeaturesExposedToJava[] = {
+@@ -176,7 +176,9 @@ const base::Feature* const kFeaturesExposedToJava[] = {
      &features::kEnableFullscreenToAnyScreenAndroid,
      &features::kFluidResize,
      &features::kGenericSensorExtraClasses,

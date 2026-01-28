@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_delegate_desktop.cc b/chrome/browser/ui/views/extensions/extensions_menu_delegate_desktop.cc
-index 2f0b532246d50b26d6a6f95b3d24b0ef61062a04..bebf94015e7e8571ca85ea67af7c9e66f2eb7788 100644
+index 261f5df22688542e2d5949ef6c9c0dc584c5942b..a0b2020152c162302b7f8937b39c78fb019370df 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_delegate_desktop.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_delegate_desktop.cc
-@@ -315,6 +315,7 @@ void ExtensionsMenuDelegateDesktop::OnUserPermissionsSettingsChanged() {
+@@ -359,6 +359,7 @@ void ExtensionsMenuDelegateDesktop::OnUserPermissionsSettingsChanged() {
  }
  
  void ExtensionsMenuDelegateDesktop::OpenMainPage() {

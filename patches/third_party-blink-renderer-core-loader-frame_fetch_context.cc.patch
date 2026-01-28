@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_fetch_context.cc b/third_party/blink/renderer/core/loader/frame_fetch_context.cc
-index e3fd223698677c2bda9076477db30db78225e63e..bc8dde7c9c20da4efbedd7962ef0d42eb94e9e3c 100644
+index 8c3d711bc424967b5dc9940dcb89d6d0d7c99e48..17d8912b3c6c943403dcbc8a69b6ca3c6ef80ef9 100644
 --- a/third_party/blink/renderer/core/loader/frame_fetch_context.cc
 +++ b/third_party/blink/renderer/core/loader/frame_fetch_context.cc
-@@ -636,6 +636,7 @@ void FrameFetchContext::AddClientHintsIfNecessary(
+@@ -642,6 +642,7 @@ void FrameFetchContext::AddClientHintsIfNecessary(
  
    // Check if |url| is allowed to run JavaScript. If not, client hints are not
    // attached to the requests that initiate on the render side.

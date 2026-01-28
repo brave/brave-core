@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index cda88853d543e7298a5018b0bc9fe73af8507e8a..a87736c3c91cabf0dbf746958a4dc3b29a24f1dd 100644
+index 53adc464dd0f5c4734db1b40c72e44f41c7027c3..1e9f46b50a0a6c5b3441dc8472930c696429da55 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
-@@ -493,6 +493,7 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
+@@ -492,6 +492,7 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
    ClipboardPasteData data;
    data.text = text;
    ++pending_writes_;

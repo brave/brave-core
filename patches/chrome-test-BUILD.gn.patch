@@ -1,16 +1,16 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 7768516a38e7b12ae4366b70ef8dae0910d19461..962603e008596944c55fd62255154e4c35e2d71d 100644
+index 613684c6d3d67755d0c949fd3c58d3990246932b..977e1f01ca2ecc52c9d2c753fc902bd80e1a3e5d 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -692,6 +692,7 @@ static_library("test_support") {
+@@ -695,6 +695,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
-
+ 
 +  import("//brave/chromium_src/chrome/test/sources.gni") deps += brave_chromium_src_chrome_test_test_support_deps sources += brave_chromium_src_chrome_test_test_support_sources
    data = []
    data_deps = []
-
-@@ -1960,7 +1961,6 @@ if (is_android) {
+ 
+@@ -1962,7 +1963,6 @@ if (is_android) {
        "//chrome/browser/content_settings:content_settings_factory",
        "//chrome/browser/enterprise/data_controls",
        "//chrome/browser/flags:flags_android",
@@ -18,11 +18,11 @@ index 7768516a38e7b12ae4366b70ef8dae0910d19461..962603e008596944c55fd62255154e4c
        "//chrome/browser/history",
        "//chrome/browser/keyboard_accessory/android:public",
        "//chrome/browser/metrics:test_support",
-@@ -2102,6 +2102,7 @@ if (is_android) {
+@@ -2105,6 +2105,7 @@ if (is_android) {
        "//testing/android/native_test:native_test_support",
        "//third_party/federated_compute:confidential_compute",
      ]
 +    if (enable_glic) { deps += [ "//chrome/browser/glic:browser_tests" ] }
-
+ 
      deps += [
        "//chrome/browser/ui/android/tab_model",

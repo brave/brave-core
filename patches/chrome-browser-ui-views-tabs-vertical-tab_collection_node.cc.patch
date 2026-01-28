@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/vertical/tab_collection_node.cc b/chrome/browser/ui/views/tabs/vertical/tab_collection_node.cc
-index 974c97e54ea870087bdfe52849ab5092d837444b..7af50f988336a8835af41ce2ffb9a6a151001e4b 100644
+index ed4af7e6c78390e77dfe904ed7d3a8c4a9669c98..4f365dbc494db8f23446ccd502a41c34c4e4593e 100644
 --- a/chrome/browser/ui/views/tabs/vertical/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/vertical/tab_collection_node.cc
 @@ -37,6 +37,7 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
@@ -10,7 +10,7 @@ index 974c97e54ea870087bdfe52849ab5092d837444b..7af50f988336a8835af41ce2ffb9a6a1
      }
    }
    CHECK(std::holds_alternative<const tabs::TabInterface*>(node_data_));
-@@ -118,6 +119,7 @@ std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
+@@ -105,6 +106,7 @@ std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
        return std::make_unique<VerticalTabGroupView>(node_for_view);
      case Type::TAB:
        return std::make_unique<VerticalTabView>(node_for_view);
