@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
+import org.chromium.components.browser_ui.widget.dragreorder.DragTouchHandler;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
@@ -68,6 +69,7 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             SelectionDelegate<BookmarkId> selectionDelegate,
             RecyclerView recyclerView,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
+            DragTouchHandler dragTouchHandler,
             boolean isDialogUi,
             SettableNonNullObservableSupplier<Boolean> backPressStateSupplier,
             Profile profile,
@@ -93,6 +95,7 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 selectionDelegate,
                 recyclerView,
                 dragReorderableRecyclerViewAdapter,
+                dragTouchHandler,
                 isDialogUi,
                 backPressStateSupplier,
                 profile,
