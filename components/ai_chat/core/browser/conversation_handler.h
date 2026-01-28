@@ -102,9 +102,6 @@ class ConversationHandler : public mojom::ConversationHandler,
         const std::string& conversation_uuid,
         uint64_t total_tokens,
         uint64_t trimmed_tokens) {}
-    virtual void OnSelectedLanguageChanged(
-        ConversationHandler* handler,
-        const std::string& selected_language) {}
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
   };
 
@@ -325,8 +322,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnGetStagedEntriesFromContent_FailedChecks);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
-                           SelectedLanguage);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
                            ContentReceipt);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnAutoScreenshotsTaken_AppliesMaxImagesLimit);
@@ -394,7 +389,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationTokenInfoChanged(uint64_t total_tokens,
                                       uint64_t trimmed_tokens);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
-  void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAPIRequestInProgressChanged();
   void OnToolUseTaskStateChanged();
   void OnStateForConversationEntriesChanged();
@@ -423,7 +417,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
-  std::string selected_language_;
 
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.

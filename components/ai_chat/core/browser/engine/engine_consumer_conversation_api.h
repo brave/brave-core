@@ -55,12 +55,10 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   // EngineConsumer
   void GenerateQuestionSuggestions(
       PageContents page_contents,
-      const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       PageContentsMap&& page_contents,
       const ConversationHistory& conversation_history,
-      const std::string& selected_language,
       bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
@@ -70,7 +68,6 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   void GenerateRewriteSuggestion(
       const std::string& text,
       mojom::ActionType action_type,
-      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;

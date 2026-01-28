@@ -295,7 +295,6 @@ void ConversationAPIV2Client::ClearAllQueries() {
 
 void ConversationAPIV2Client::PerformRequest(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -305,7 +304,7 @@ void ConversationAPIV2Client::PerformRequest(
   // Get credentials and then perform request
   auto callback = base::BindOnce(
       &ConversationAPIV2Client::PerformRequestWithCredentials,
-      weak_ptr_factory_.GetWeakPtr(), std::move(messages), selected_language,
+      weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capability, model_name, std::move(data_received_callback),
       std::move(completed_callback));
@@ -314,7 +313,6 @@ void ConversationAPIV2Client::PerformRequest(
 
 std::string ConversationAPIV2Client::CreateJSONRequestBody(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -329,7 +327,6 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
     dict.Set("brave_capability", "content_agent");
   }
   dict.Set("model", model_name ? *model_name : model_name_);
-  dict.Set("selected_language", selected_language);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
@@ -346,7 +343,6 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
 
 void ConversationAPIV2Client::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -370,8 +366,8 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), selected_language, std::move(oai_tool_definitions),
-      preferred_tool_name, conversation_capability, model_name, is_sse_enabled);
+      std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
+      conversation_capability, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);

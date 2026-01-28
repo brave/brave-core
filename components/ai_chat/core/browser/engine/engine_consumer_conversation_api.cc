@@ -118,7 +118,6 @@ std::optional<ConversationEvent> ActionToRewriteEvent(
 void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     const std::string& text,
     mojom::ActionType action_type,
-    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   auto rewrite_event = ActionToRewriteEvent(action_type);
@@ -133,15 +132,14 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
                             ConversationEventType::kPageExcerpt,
                             std::vector<std::string>{text});
   conversation.emplace_back(std::move(*rewrite_event));
-  api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
-                       std::nullopt, mojom::ConversationCapability::CHAT,
+  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
+                       mojom::ConversationCapability::CHAT,
                        std::move(received_callback),
                        std::move(completed_callback));
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     PageContents page_contents,
-    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
   uint32_t remaining_length = max_associated_content_length_;
@@ -165,8 +163,8 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
-                       std::nullopt, mojom::ConversationCapability::CHAT,
+  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
+                       mojom::ConversationCapability::CHAT,
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -215,7 +213,6 @@ EngineConsumerConversationAPI::GetUserMemoryEvent(
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     PageContentsMap&& page_contents,
     const ConversationHistory& conversation_history,
-    const std::string& selected_language,
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
@@ -480,11 +477,10 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     model_name = model_service_->GetLeoModelNameByKey(*last_entry->model_key);
   }
 
-  api_->PerformRequest(std::move(conversation), selected_language,
-                       ToolApiDefinitionsFromTools(tools), std::nullopt,
-                       conversation_capability,
-                       std::move(data_received_callback),
-                       std::move(completed_callback), model_name);
+  api_->PerformRequest(
+      std::move(conversation), ToolApiDefinitionsFromTools(tools), std::nullopt,
+      conversation_capability, std::move(data_received_callback),
+      std::move(completed_callback), model_name);
 }
 
 void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {
@@ -530,8 +526,8 @@ void EngineConsumerConversationAPI::DedupeTopics(
        std::vector<std::string>{
            base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
-      std::move(conversation), "" /* selected_language */, std::nullopt,
-      std::nullopt, mojom::ConversationCapability::CHAT,
+      std::move(conversation), std::nullopt, std::nullopt,
+      mojom::ConversationCapability::CHAT,
       base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
@@ -577,8 +573,7 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
              base::WriteJson(tab_value_list).value_or(std::string())},
          topic});
 
-    api_->PerformRequest(std::move(conversation), "" /* selected_language */,
-                         std::nullopt, std::nullopt,
+    api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
                          mojom::ConversationCapability::CHAT,
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);

@@ -102,7 +102,6 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& text,
     mojom::ActionType action_type,
-    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIRewriteSuggestionMessages(text, action_type);
@@ -122,7 +121,6 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     PageContents page_contents,
-    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   auto messages = BuildOAIQuestionSuggestionsMessages(
       page_contents, max_associated_content_length_,
@@ -181,7 +179,6 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerOAIRemote::GenerateConversationTitle(
     const PageContentsMap& page_contents,
     const ConversationHistory& conversation_history,
-    const std::string& selected_language,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIGenerateConversationTitleMessages(
       page_contents, conversation_history, max_associated_content_length_,
@@ -208,7 +205,6 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
     PageContentsMap&& page_contents,
     const ConversationHistory& conversation_history,
-    const std::string& selected_language,
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
