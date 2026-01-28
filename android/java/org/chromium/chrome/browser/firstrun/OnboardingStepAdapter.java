@@ -224,3 +224,4 @@ public class OnboardingStepAdapter
         }
     }
 }
+
