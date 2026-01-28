@@ -42,6 +42,7 @@ import com.android.installreferrer.api.ReferrerDetails;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
@@ -54,6 +55,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -134,115 +136,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private CurrentOnboardingPage mCurrentOnboardingPage;
 
-    /**
-     * Initializes the views and sets up the onboarding activity UI. This method handles the initial
-     * setup of the welcome onboarding screen, including loading the layout, initializing views and
-     * click listeners, and performing first-run setup tasks.
-     */
-    private void initializeViews() {
-        setContentView(R.layout.activity_welcome_onboarding);
-
-        mSplashGuideline = findViewById(R.id.splash_anchor);
-        mVariantBPager = findViewById(R.id.onboarding_steps_pager);
-
-        final ChromeClickableSpan wdpLearnMoreClickableSpan =
-                new ChromeClickableSpan(
-                        getColor(R.color.brave_blue_tint_color),
-                        (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
-        final String wdpText = getResources().getString(R.string.wdp_text);
-
-        mWdpLearnMore =
-                SpanApplier.applySpans(
-                        wdpText,
-                        new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
-
-        if (mVariantBPager != null) {
-            mVariantBPager.setUserInputEnabled(true);
-            mPageBounceAnimator = new PageBounceAnimator(mVariantBPager);
-            mVariantBAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
-            mVariantBPager.setAdapter(mVariantBAdapter);
-        }
-
-        mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
-        mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
-        mBraveSplash = findViewById(R.id.brave_splash);
-        mIvLeafTop = findViewById(R.id.iv_leaf_top);
-        mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
-        mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
-        mVLeafAlignBottom = findViewById(R.id.view_leaf_bottom_align);
-        mIvBrave = findViewById(R.id.iv_brave);
-        mIvArrowDown = findViewById(R.id.iv_arrow_down);
-        mLayoutCard = findViewById(R.id.layout_card);
-        mTvCard = findViewById(R.id.tv_card);
-        mTvDefault = findViewById(R.id.tv_default);
-        mCheckboxCrash = findViewById(R.id.checkbox_crash);
-        mCheckboxP3a = findViewById(R.id.checkbox_p3a);
-        mBtnPositive = findViewById(R.id.btn_positive);
-        mBtnNegative = findViewById(R.id.btn_negative);
-        LinearLayout layoutData = findViewById(R.id.layout_data);
-        LayoutTransition layoutTransition = new LayoutTransition();
-        layoutTransition.setDuration(1000);
-        if (layoutData != null) {
-            layoutData.setLayoutTransition(layoutTransition);
-        }
-
-        int margin = mIsTablet ? 200 : 50;
-
-        if (mVLeafAlignTop != null) {
-            ViewGroup.MarginLayoutParams topLeafParams =
-                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
-            topLeafParams.bottomMargin = margin;
-            mVLeafAlignTop.setLayoutParams(topLeafParams);
-        }
-
-        if (mVLeafAlignBottom != null) {
-            ViewGroup.MarginLayoutParams bottomLeafParams =
-                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
-            bottomLeafParams.topMargin = margin;
-            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
-        }
-
-        if (mBtnPositive != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mBtnPositive);
-        }
-        if (mCheckboxCrash != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mCheckboxCrash);
-        }
-        if (mCheckboxP3a != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mCheckboxP3a);
-        }
-
-        if (mBtnPositive != null) {
-            mBtnPositive.setOnClickListener(
-                    view -> {
-                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
-                            setDefaultBrowser(this);
-                        } else {
-                            enableWebDiscoverPreference();
-                            nextOnboardingStepForDefaultVariant();
-                        }
-                    });
-        }
-
-        if (mBtnNegative != null) {
-            mBtnNegative.setOnClickListener(
-                    view -> {
-                        if (mCurrentOnboardingPage
-                                == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
-                            CustomTabActivity.showInfoPage(this, P3A_URL);
-                        } else {
-                            nextOnboardingStepForDefaultVariant();
-                        }
-                    });
-        }
-        checkReferral();
-        if (PackageUtils.isFirstInstall(this)) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(
-                            BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE, false);
-        }
-    }
-
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
         referrerClient.startConnection(
@@ -293,9 +186,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     private void enableWebDiscoverPreference() {
+        final ProfileProvider profileProvider = getProfileProviderSupplier().get();
+        if (profileProvider == null) {
+            return;
+        }
         if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE)
                 || mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
-            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+            UserPrefs.get(profileProvider.getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
     }
@@ -359,7 +256,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             return false;
         }
 
-        return !UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+        final ProfileProvider profileProvider = getProfileProviderSupplier().get();
+        return profileProvider != null && !UserPrefs.get(profileProvider.getOriginalProfile())
                 .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
@@ -588,7 +486,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         assert requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE;
         if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
@@ -605,7 +503,107 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Override
     public void triggerLayoutInflation() {
         super.triggerLayoutInflation();
-        initializeViews();
+        setContentView(R.layout.activity_welcome_onboarding);
+
+        mSplashGuideline = findViewById(R.id.splash_anchor);
+        mVariantBPager = findViewById(R.id.onboarding_steps_pager);
+
+        final ChromeClickableSpan wdpLearnMoreClickableSpan =
+                new ChromeClickableSpan(
+                        getColor(R.color.brave_blue_tint_color),
+                        (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
+        final String wdpText = getResources().getString(R.string.wdp_text);
+
+        mWdpLearnMore =
+                SpanApplier.applySpans(
+                        wdpText,
+                        new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
+
+        if (mVariantBPager != null) {
+            mVariantBPager.setUserInputEnabled(true);
+            mPageBounceAnimator = new PageBounceAnimator(mVariantBPager);
+            mVariantBAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
+            mVariantBPager.setAdapter(mVariantBAdapter);
+        }
+
+        mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
+        mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
+        mBraveSplash = findViewById(R.id.brave_splash);
+        mIvLeafTop = findViewById(R.id.iv_leaf_top);
+        mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
+        mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
+        mVLeafAlignBottom = findViewById(R.id.view_leaf_bottom_align);
+        mIvBrave = findViewById(R.id.iv_brave);
+        mIvArrowDown = findViewById(R.id.iv_arrow_down);
+        mLayoutCard = findViewById(R.id.layout_card);
+        mTvCard = findViewById(R.id.tv_card);
+        mTvDefault = findViewById(R.id.tv_default);
+        mCheckboxCrash = findViewById(R.id.checkbox_crash);
+        mCheckboxP3a = findViewById(R.id.checkbox_p3a);
+        mBtnPositive = findViewById(R.id.btn_positive);
+        mBtnNegative = findViewById(R.id.btn_negative);
+        LinearLayout layoutData = findViewById(R.id.layout_data);
+        LayoutTransition layoutTransition = new LayoutTransition();
+        layoutTransition.setDuration(1000);
+        if (layoutData != null) {
+            layoutData.setLayoutTransition(layoutTransition);
+        }
+
+        int margin = mIsTablet ? 200 : 50;
+
+        if (mVLeafAlignTop != null) {
+            ViewGroup.MarginLayoutParams topLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
+            topLeafParams.bottomMargin = margin;
+            mVLeafAlignTop.setLayoutParams(topLeafParams);
+        }
+
+        if (mVLeafAlignBottom != null) {
+            ViewGroup.MarginLayoutParams bottomLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
+            bottomLeafParams.topMargin = margin;
+            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        }
+
+        if (mBtnPositive != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mBtnPositive);
+        }
+        if (mCheckboxCrash != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxCrash);
+        }
+        if (mCheckboxP3a != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxP3a);
+        }
+
+        if (mBtnPositive != null) {
+            mBtnPositive.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
+                            setDefaultBrowser(this);
+                        } else {
+                            enableWebDiscoverPreference();
+                            nextOnboardingStepForDefaultVariant();
+                        }
+                    });
+        }
+
+        if (mBtnNegative != null) {
+            mBtnNegative.setOnClickListener(
+                    view -> {
+                        if (mCurrentOnboardingPage
+                                == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
+                            CustomTabActivity.showInfoPage(this, P3A_URL);
+                        } else {
+                            nextOnboardingStepForDefaultVariant();
+                        }
+                    });
+        }
+        checkReferral();
+        if (PackageUtils.isFirstInstall(this)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE, false);
+        }
         onInitialLayoutInflationComplete();
     }
 
