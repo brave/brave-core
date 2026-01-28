@@ -128,7 +128,7 @@ void CardanoTestRpcServer::RequestInterceptor(
   }
 
   if (auto txid = IsGetTransactionRequest(request)) {
-    if (base::Contains(confirmed_transactions_, *txid)) {
+    if (std::ranges::contains(confirmed_transactions_, *txid)) {
       cardano_rpc::blockfrost_api::Transaction tx;
       tx.hash = *txid;
       url_loader_factory_.AddResponse(

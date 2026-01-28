@@ -25,12 +25,7 @@
 
 # These tests fail because we override SidePanel::UpdateWidthOnEntryChanged
 # to do nothing.
--SidePanelCoordinatorTest.ChangeSidePanelWidth
--SidePanelCoordinatorTest.ChangeSidePanelWidthMaxMin
--SidePanelCoordinatorTest.ChangeSidePanelWidthNarrowWindow
--SidePanelCoordinatorTest.ChangeSidePanelWidthRightAlign
--SidePanelCoordinatorTest.ChangeSidePanelWidthRTL
--SidePanelCoordinatorTest.ChangeSidePanelWidthMaxMinWithSplitView
+-SidePanelCoordinatorTest.ChangeSidePanelWidth*
 -SidePanelCoordinatorTest.ChangesTitleWhenActionItemChanges
 -SidePanelCoordinatorTest.ExtensionSidePanelHasPinButton
 -SidePanelCoordinatorTest.ShowOpensSidePanel
@@ -95,6 +90,8 @@
 # These tests crash/fail because we have kOptimizationHints feature disabled.
 -Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
 -Aiv4ModelTimeoutBrowserTest.PassageEmbedderTestTimeout
+-All/AutofillPrivateApiAuthToViewSensitiveEntityTest.*/*
+-All/ContextualTasksContextServiceParameterizedTest.*/*
 -All/NewTabPageUtilBrowserTest.*
 -All/NewTabPageUtilDisableFlagBrowserTest.*
 -All/NewTabPageUtilDriveHistorySyncBrowserTest.*
@@ -103,8 +100,10 @@
 -All/NewTabPageUtilSignInRequirementBrowserTest.GoogleCalendarWithSignInRequirement/*
 -All/PageContentAnnotationsServiceContentExtractionResponseCodeTest.SameDocumentNonErrorNavigation/*
 -AudioProcessMlModelForwarderBrowserTest.TriggerRegistrationWithOptimizationGuide
+-AutofillPrivateApiObfuscationUnitTest.ObfuscatedLabels
 -AutofillPrivateApiUnitTest.*
 -AutofillPrivateApiUnitTest/*.*/*
+-AutofillPrivateApiUpdateAutofillAiAuthRequirementPrefTest.*
 -ChromeRenderFrameObserverTest.OptGuideGetsText
 -ComposeSessionBrowserTest.*
 -ContextualTasksContextServiceTest.*
@@ -183,6 +182,7 @@
 -BoundSessionCookieRefreshServiceImplBrowserTest.CookieRotationOnStartup
 -BoundSessionOAuthMultiloginNewSessionTest.*/*
 -BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundTo*/*
+-BoundSessionOAuthMultiloginStandardWithPrototypeFallbackTest.StartsNewBoundSession
 -BoundSessionOAuthMultiloginTest.OverrideExistingSession
 -BoundSessionOAuthMultiloginTest.ReuseExistingSession
 -BoundSessionOAuthMultiloginTest.StartsNewBoundSession
@@ -191,6 +191,7 @@
 -All/ContextMenuBrowserTest.OpenInReadingMode/LinkPreview*
 -All/ContextMenuBrowserTest.ShowToastOnSidePanelContextMenus/LinkPreviewDisabled
 -All/ContextMenuBrowserTest.ShowToastOnSidePanelContextMenus/LinkPreviewEnabled
+-ReadAnythingAppControllerImmersiveTest.*
 -ReadAnythingAppControllerScreen2xDataCollectionModeTest.*
 -ReadAnythingAppControllerTest.*
 -ReadAnythingAppControllerV8SegmentationTest.*
@@ -1131,6 +1132,8 @@
 -All/PredictionManagerModelDownloadingBrowserTest.*
 -All/PredictionManagerModelDownloadingBrowserTest.*/*
 -All/SearchPrefetchServiceEnabledWithNVSBrowserTest.*
+-ConnectionAllowlistLoadingPredictorBrowserTest.ConnectionAllowlistDnsPrefetchFails
+-ConnectionAllowlistLoadingPredictorBrowserTest.ConnectionAllowlistDnsPrefetchSucceeds
 -Flags/LCPPAutoPreconnectTest.EnabledAllOrigins/*
 -GeolocationAccuracy/PredictionServiceGeolocationAccuracyBrowserTest.*/*
 -HoldbackProbabilityTest/SignatureModelPredictionServiceBrowserTest.CheckHoldbackProbabilitiesForDifferentSignatureModels/*
@@ -1171,8 +1174,7 @@
 # The tests below are being disabled due to current incompatibilities between
 # Chromium storage partitioning and Brave epehemeral storage.
 -All/PartitionedBlobUrlUsagePolicyBrowserTestP.FetchingPartitionedBlobUrlUsageEnterprisePolicy/1
--ChromeRegisterProtocolHandlerIsolatedWebAppsTest.Basic
--ChromeRegisterProtocolHandlerIsolatedWebAppsTest.NotAllowedFromIWA
+-ChromeRegisterProtocolHandlerIsolatedWebApp*.*
 -ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrl
 -ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrlFromDataUrl
 -ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrlPopup
@@ -1191,12 +1193,6 @@
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestCanceled/*
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestRedirected/*
 -All/ParameterizedWebAccessibleResourcesBrowserTest.DeclarativeNetRequest/*
--IsolatedWebAppBrowserCookieTest.*
--IsolatedWebAppBrowserServiceWorkerTest.
--IsolatedWebAppBrowserTest.*
--IsolatedWebAppBrowsingDataTest.*
--IsolatedWebAppPermissionsPolicyBrowserTest.*
--IsolatedWebAppUsbBrowserTest.*
 -IsolatedWebMulticastSocketsTest.DirectSocketsUDPJoinLeaveMulticastEvents
 -ManifestUpdateManagerIsolatedWebAppBrowserTest.CheckUpdateSkipped
 -PersistentBackground/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
@@ -1422,6 +1418,7 @@
 -ProfileMenuSigninAccessPointTest.ExplicitSigninAccessPoint
 -ProfileMenuSigninAccessPointTest.SigninAccessPointFromAvatarPromo
 -ProfilePickerSigninToolbarUIPixelTest.InvokeUi_default/*
+-SigninErrorProfilePickerBrowserTest.FromGoogleServiceAuthError
 
 # These tests fail because First Run is disabled and the picker is never shown.
 -FirstRunServiceBrowserTest.*
@@ -2114,79 +2111,28 @@
 -WebUrlPatternNativesBrowserTest.URLPatternToMatchPatterns
 
 # These tests fail because we disable Isolated Web Apps
--All/IsolatedWebAppFocusBrowserTest.WindowFocusNoUserActivation/*
+-All/IsolatedWebApp*.*/*
 -BorderlessBrowserTest.*
 -BorderlessIsolatedWebAppBrowserTest.*
 -BorderlessIsolatedWebAppBrowserTestDisabledFlag.AppCannotUseFeatureWhenBorderlessFlagIsDisabled
 -BrowserNavigatorIwaNewTabTest.*
 -BrowserNavigatorIwaTest.*
--BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel
--ChromeDirectSocketsApiAvailabilityIsolatedWebAppsTest.*/*
--ChromeDirectSocketsTcpIsolatedWebAppServiceWorkerTest.TcpReadWrite
--ChromeDirectSocketsTcpIsolatedWebAppSharedWorkerTest.TcpReadWrite
--ChromeDirectSocketsTcpIsolatedWebAppTest.TcpConnectionToPrivateFailsWithoutPNAContentSetting
--ChromeDirectSocketsTcpIsolatedWebAppTest.TcpConnectionToPrivateFailsWithoutPNAPermission
--ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
--ChromeDirectSocketsTcpServerIsolatedWebAppServiceWorkerTest.TcpServerExchangePacketWithTcpSocket
--ChromeDirectSocketsTcpServerIsolatedWebAppSharedWorkerTest.TcpServerExchangePacketWithTcpSocket
--ChromeDirectSocketsTcpServerIsolatedWebAppTest.*
--ChromeDirectSocketsUdpIsolatedWebAppMulticastTest.*
--ChromeDirectSocketsUdpIsolatedWebAppServiceWorkerTest.MulticastJoinLeaveGroup
--ChromeDirectSocketsUdpIsolatedWebAppServiceWorkerTest.UdpReadWrite
--ChromeDirectSocketsUdpIsolatedWebAppServiceWorkerTest.UdpServerReadWrite
--ChromeDirectSocketsUdpIsolatedWebAppSharedWorkerTest.MulticastJoinLeaveGroup
--ChromeDirectSocketsUdpIsolatedWebAppSharedWorkerTest.UdpReadWrite
--ChromeDirectSocketsUdpIsolatedWebAppSharedWorkerTest.UdpServerReadWrite
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpConnectionToPrivateFailsWithoutPNAContentSetting
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpConnectionToPrivateFailsWithoutPNAPermission
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerFailsWithoutPNAContentSetting
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerFailsWithoutPNAPermission
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerPortRestrictions
--ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerReadWrite
+-BrowsingDataModelBrowserTest.IsolatedWebApp*
+-ChromeDirectSocketsApiAvailabilityIsolatedWebApp*.*/*
+-ChromeDirectSocketsTcpIsolatedWebApp*.*
+-ChromeDirectSocketsTcpServerIsolatedWebApp*.*
+-ChromeDirectSocketsUdpIsolatedWebApp*.*
 -CleanupOrphanedBundlesTest.CleanUpSuccessfulOnSessionStart/0
--ComputeAppSizeCommandForIsolatedWebAppBrowserTest.RetrieveWebAppSize
+-ComputeAppSizeCommandForIsolatedWebApp*.*
 -ControlledFrameDisabledTest.*
 -ControlledFrameNotAvailableChannels/ControlledFrameNotAvailableChannelTest.*
 -ControlledFramePermissionRequestMediaTest.*
 -ExtensionWindowCreateIwaTest.*
 -GarbageCollectStoragePartitionsCommandBrowserTest.UninstalledAppsHaveStoragePartitionsCleanedUp
--GetIsolatedWebAppBrowsingDataCommandBrowserTest.IsolatedWebAppWithControlledFrameData
--GetIsolatedWebAppBrowsingDataCommandBrowserTest.IsolatedWebAppWithoutBrowsingData
--GetIsolatedWebAppBrowsingDataCommandBrowserTest.IsolatedWebAppsWithBrowsingData
--InstallIsolatedWebAppFromCommandLineFromFileBrowserTest.AppFromCommandLineIsInstalled
--InstallIsolatedWebAppFromCommandLineFromUrlBrowserTest.AppFromCommandLineIsInstalled
--IsolatedWebAppApiAccessBrowserTest.*
--IsolatedWebAppApplyUpdateCommandBrowserTest.*
--IsolatedWebAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDueToPushNotification
--IsolatedWebAppBrowserServiceWorkerTest.CacheTest
--IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
--IsolatedWebAppBrowsingDataClearingTest.*
--IsolatedWebAppCspBrowserTest.*
--IsolatedWebAppDevToolsTest.*
--IsolatedWebAppDevToolsTestWithPolicy.*/*
--IsolatedWebAppErrorPageTest.*
--IsolatedWebAppExtensionBrowserTest.*
--IsolatedWebAppFileHandlingBrowserTest.*
--IsolatedWebAppFrameToolbarBrowserTest.NoExtensionsInToolbarOrMenu
--IsolatedWebAppInstallerBrowserTest.*
--IsolatedWebAppInstallerViewUiPixelTest.*
--IsolatedWebAppInstallPrepareApplyUpdateCommandBrowserTest.*
--IsolatedWebAppLaunchHandlingBrowserTest.*
--IsolatedWebAppPolicyManagerBrowserTest.*/*
--IsolatedWebAppsCloseWindowBrowserTest.*
--IsolatedWebAppsOpenedTabsCounterServiceBrowserTest.*
--IsolatedWebAppsWindowOpenPermissionServiceBrowserTest.*
--IsolatedWebAppThrottleBrowserTest.ManifestWithPermissionsPolicy
--IsolatedWebAppThrottleBrowserTest.ManifestWithoutPermissionsPolicy
--IsolatedWebAppUninstallBrowserTest.*
--IsolatedWebAppUpdateManagerBrowserTest.*
--IsolatedWebAppUpdateManagerWithKeyRotationBrowserTest.*
--IsolatedWebAppUpdatePrepareAndStoreCommandBrowserTest.*
--IsolatedWebAppURLLoaderFactoryBrowserTest.*
--IsolatedWebAppURLLoaderFactoryCSPBrowserTest.*
--IsolatedWebAppURLLoaderFactoryFrameBrowserTest.*
--IsolatedWebAppWebSocketCspBrowserTest.CheckCsp/Ws*
+-GetIsolatedWebApp*.*
+-InstallIsolatedWebApp*.*
+-IsolatedWebApp*.*
+-IsolatedWebApp*.*/*
 -IWACaptivePortalBrowserTest.*
 -IwaPermissionsPolicyCacheBrowserTest.*
 -IWAProtocolTest*.*
@@ -2201,7 +2147,7 @@
 -TabDesktopMediaListWithIwaIncludedTest.*
 -WebAppInternalsIwaInstallationBrowserTest.*
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
--WebAppTagIsolatedWebAppTest.*
+-WebAppTagIsolatedWebApp*.*
 
 # These tests fail because we disable kPermissionStorageAccessAPI
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrantsAllowCookieAccess*
@@ -2464,8 +2410,8 @@
 # kClearCrossSiteCrossBrowsingContextGroupWindowName is set to
 -All/ClearWindowNameForNewBrowsingContextGroupTestP.ClearWindowNameCrossSite/0
 
-# These tests fail because we enable features::kTabstripComboButton and stub
-# features::HasTabSearchToolbarButton() to return true
+# These tests fail because we stub features::HasTabSearchToolbarButton() to
+# return true
 -TabSearchButtonBrowserTest.ButtonClickCreatesBubble
 -TabSearchButtonBrowserUITest.InvokeUi_default
 -TabStripComboButtonBrowserTest.BuildsComboButton
@@ -2552,6 +2498,7 @@
 -ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
 -ChromeAimEligibilityServiceCacheBrowserTest.RequestFromCache
 -ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
+-ChromeAimEligibilityServiceStartupRequestBrowserTest.*
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 
 # This test fails because we add our own item to omnibox contextual search
@@ -2661,6 +2608,13 @@
 
 # This test fails because dragging is not enabled on Brave's NTP.
 -MultiContentsViewBrowserTest.DragAndDropDisabledForChromePages
+
+# This test is disabled because we diverge from Chromium when it comes to
+# secure DNS. If any policies are present, we do not force secure DNS to be
+# set to 'off'. It's still configurable by user. We have our own browser test
+# covering this - safe to disable the upstream one.
+# For more info, see https://github.com/brave/brave-browser/issues/46011
+-SecureDnsHandlerTest.OtherPoliciesSet
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
@@ -2920,6 +2874,7 @@
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
 -HeadlessModeProtocolBrowserTest*.InputClipboardOps
+-HeadlessModeProtocolBrowserTest*.MoveWindowsBetweenScreens
 -HeadlessModeProtocolBrowserTest_WindowOpenOnSecondaryScreen.WindowOpenOnSecondaryScreen
 -HeadlessModeProtocolBrowserTest_WindowOpenPopupPlacement.WindowOpenPopupPlacement
 -HeadlessModeScreencastTest.ScreencastBasics
@@ -3059,7 +3014,7 @@
 -PageInfoBubbleViewAboutThisSiteBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDisabledBrowserTest.*
--PageInfoBubbleViewIsolatedWebAppBrowserTest.InvokeUi_AppNameIsDisplayedInsteadOfOriginForIsolatedWebApps_REV2
+-PageInfoBubbleViewIsolatedWebApp*.*
 -PageInfoBubbleViewSyncBrowserTest.*
 -PageLoadMetricsBrowserTest.*
 -PageLoadMetricsBrowserTestWithBackForwardCache.*
@@ -3067,9 +3022,11 @@
 -PageTextObserverSingleProcessBrowserTest.*
 -PasswordBubbleBrowserTest.*
 -PasswordManagerAnonymousIframeTest.DisablePasswordManagerOnAnonymousIframe
+-PasswordManagerAutofillPopupBrowserTest.InFrameNavigationDoesNotClearPopupState
 -PasswordManagerBackForwardCacheBrowserTest.*
--PasswordManagerBrowserTest.*
+-PasswordManagerBrowserTest*.*
 -PasswordManagerCredentiallessIframeTest.DisablePasswordManagerOnCredentiallessIframe
+-PasswordManagerCredentiallessIframeTest.NoFormsSeen
 -PasswordManagerInternalsWebUIBrowserTest.*
 -PasswordManagerOverwritePlaceholderTest.FillIfServerPredictionSaysUsernameIsPlaceholder
 -PasswordManagerVotingBrowserTest.VerifyPasswordGenerationUpload
@@ -3472,10 +3429,3 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
-
-# This test is disabled because we diverge from Chromium when it comes to
-# secure DNS. If any policies are present, we do not force secure DNS to be
-# set to 'off'. It's still configurable by user. We have our own browser test
-# covering this - safe to disable the upstream one.
-# For more info, see https://github.com/brave/brave-browser/issues/46011
--SecureDnsHandlerTest.OtherPoliciesSet

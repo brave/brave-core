@@ -37,7 +37,7 @@ class BraveTabStripCollection : public TabStripCollection {
       size_t destination_index,
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
-      const std::set<TabCollection::Type>& retain_collection_types) override;
+      const TabCollection::TypeEnumSet retain_collection_types) override;
   std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
       size_t index) override;
 

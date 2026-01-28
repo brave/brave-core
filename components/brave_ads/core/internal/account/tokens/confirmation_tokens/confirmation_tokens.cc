@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 
 namespace brave_ads {
 
@@ -58,7 +58,7 @@ void ConfirmationTokens::Remove(
   std::erase_if(
       confirmation_tokens_,
       [&confirmation_tokens](const ConfirmationTokenInfo& confirmation_token) {
-        return base::Contains(confirmation_tokens, confirmation_token);
+        return std::ranges::contains(confirmation_tokens, confirmation_token);
       });
 }
 
@@ -69,7 +69,7 @@ void ConfirmationTokens::RemoveAll() {
 
 bool ConfirmationTokens::Exists(
     const ConfirmationTokenInfo& confirmation_token) const {
-  return base::Contains(confirmation_tokens_, confirmation_token);
+  return std::ranges::contains(confirmation_tokens_, confirmation_token);
 }
 
 size_t ConfirmationTokens::Count() const {

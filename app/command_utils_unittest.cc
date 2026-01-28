@@ -5,12 +5,14 @@
 
 #include "brave/app/command_utils.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "base/containers/flat_set.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/accelerator_table.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // Note: If this test fails because an accelerated command isn't present just
@@ -23,7 +25,7 @@ TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   const auto& commands = commands::GetCommands();
 
   for (const auto& accelerator : accelerators) {
-    EXPECT_TRUE(base::Contains(commands, accelerator.command_id))
+    EXPECT_TRUE(std::ranges::contains(commands, accelerator.command_id))
         << "Accelerated command '" << accelerator.command_id
         << "' was not present in the list of commands.";
   }
@@ -35,7 +37,7 @@ TEST(CommandUtilsUnitTest, NoTranslationsIncludeAmpersand) {
 
   for (const auto& command : commands::GetCommands()) {
     auto translation = commands::GetCommandName(command);
-    EXPECT_FALSE(base::Contains(translation, "&"))
+    EXPECT_THAT(translation, testing::Not(testing::HasSubstr("&")))
         << translation
         << " contains an '&' character. If this '&' is meant to be in the "
            "translation then this might be a false positive, in which case the "

@@ -12,8 +12,9 @@ import android.view.View.OnLongClickListener;
 import androidx.annotation.ColorInt;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
@@ -70,16 +71,16 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ThemeColorProvider normalThemeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
-            ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
+            MonotonicObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
-            ObservableSupplier<Integer> tabCountSupplier,
-            ObservableSupplier<Boolean> homepageEnabledSupplier,
-            ObservableSupplier<Boolean> homepageNonNtpSupplier,
+            MonotonicObservableSupplier<Integer> tabCountSupplier,
+            NonNullObservableSupplier<Boolean> homepageEnabledSupplier,
+            NonNullObservableSupplier<Boolean> homepageNonNtpSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
             NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
-            ObservableSupplier<Boolean> compositorInMotionSupplier,
+            NonNullObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
@@ -90,7 +91,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
             NullableObservableSupplier<Tab> tabSupplier,
-            ObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
+            NonNullObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,

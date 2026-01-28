@@ -206,8 +206,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       browser()->tab_strip_model()->GetWebContentsAt(0))
       ->RemoveAllInfoBars(/*animate=*/false);
   browser_view->InvalidateLayout();
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser_view->infobar_container()->GetVisible(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser_view->top_container_separator_for_testing()->GetVisible();
+  }));
 
   // separator should not be empty and visible when split view is closed.
   EXPECT_TRUE(

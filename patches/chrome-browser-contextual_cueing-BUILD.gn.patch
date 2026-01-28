@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/contextual_cueing/BUILD.gn b/chrome/browser/contextual_cueing/BUILD.gn
+index 460cb2b6faf1743069c14becfdae777d1b3a000b..c90930275d8dabcd6a75de72e9da24c5940aee95 100644
+--- a/chrome/browser/contextual_cueing/BUILD.gn
++++ b/chrome/browser/contextual_cueing/BUILD.gn
+@@ -104,6 +104,7 @@ source_set("unit_tests") {
+     "//base/test:test_support",
+     "//chrome/browser:global_features",
+     "//chrome/browser/content_extraction",
++    "//chrome/browser/optimization_guide",
+     "//chrome/browser/optimization_guide:test_support",
+     "//chrome/browser/page_content_annotations:extraction_service",
+     "//chrome/browser/ui:ui_features",

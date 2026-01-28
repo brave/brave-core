@@ -144,7 +144,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
-      &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kDevToolsAiCodeCompletion,
@@ -163,10 +162,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
-      &features::kKAnonymityService,
-      &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
-      &features::kPopupBrowserUseNewLayout,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -176,7 +172,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
-      &features::kTabbedBrowserUseNewLayout,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
@@ -270,15 +265,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
-#endif
-      &features::kTabstripComboButton,
-#if !BUILDFLAG(IS_ANDROID)
-      &kDesktopMediaPickerMultiLineTitle,
-#endif
-  // We are following upstream's field trial with this feature and they only
-  // enabled it on desktop platforms.
-#if BUILDFLAG(ENABLE_SCREEN_CAPTURE) && !BUILDFLAG(IS_ANDROID)
-      &kDisplayMediaRejectLongDomains,
 #endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,

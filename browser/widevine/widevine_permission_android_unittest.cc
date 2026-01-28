@@ -148,7 +148,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
 
   EXPECT_TRUE(manager->has_pending_requests() &&
               GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->PermissionGranted(false /* is_one_time */);
+  GetPendingRequestQueue()->Pop()->PermissionGranted(
+      /*prompt_options=*/std::monostate(), /*is_one_time=*/false);
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Deny

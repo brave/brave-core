@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
-index ad958053aeb2082222cea33886bb578120842391..c7af5895c07e74f1a3c4836028feb9801e520dbc 100644
+index 9d53a907e2adff177cb5ee5807f96e74510e4338..7ca33211d4ddc0e2f3cd7bd0af253f09579f3869 100644
 --- a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 +++ b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 @@ -21,7 +21,7 @@ found in the LICENSE file.
@@ -11,7 +11,7 @@ index ad958053aeb2082222cea33886bb578120842391..c7af5895c07e74f1a3c4836028feb980
      android:id="@+id/hub_toolbar"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-@@ -108,6 +108,7 @@ found in the LICENSE file.
+@@ -109,6 +109,7 @@ found in the LICENSE file.
              android:tooltipText="@string/accessibility_search_loupe_tooltip_text"
              style="@style/ToolbarMenuButton"
              app:tint="@color/default_icon_color_tint_list"  />
@@ -19,7 +19,7 @@ index ad958053aeb2082222cea33886bb578120842391..c7af5895c07e74f1a3c4836028feb980
          <include layout="@layout/menu_button" />
        </LinearLayout>
  
-@@ -150,5 +151,5 @@ found in the LICENSE file.
+@@ -151,5 +152,5 @@ found in the LICENSE file.
          android:gravity="top"
          android:importantForAccessibility="no"
          android:visibility="gone"/>

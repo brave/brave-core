@@ -1,16 +1,16 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 42b9610b364ee5af34d4d03652b4e3a873f7d994..1eff1b17f7769e0dcf794200f233b9d89fdf496b 100644
+index f260db82b8b6d43c3531879e7e9661af79d5f329..3f8ea43818e8e25bbdd162d9c540b0405e963d1c 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -642,6 +642,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
-   VISIT(manufacturer);
+@@ -640,6 +640,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+   VISIT(signin_scoped_device_id);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
 +  BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
    VISIT(sharing_fields);
-   VISIT(invalidation_fields);
-   VISIT(paask_fields);
-@@ -670,6 +671,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+   VISIT(model);
+   VISIT(manufacturer);
+@@ -671,6 +672,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(desktop_to_ios_promo_receiving_enabled);
  }
  

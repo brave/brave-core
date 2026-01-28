@@ -323,7 +323,7 @@ std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
 
   std::vector<mojom::PlaylistItemPtr> unsaved_items;
   for (const auto& found_item : found_items_) {
-    if (!base::Contains(saved_items, found_item->id)) {
+    if (!saved_items.contains(found_item->id)) {
       unsaved_items.push_back(found_item->Clone());
     }
   }

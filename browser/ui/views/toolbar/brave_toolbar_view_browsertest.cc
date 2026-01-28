@@ -353,23 +353,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
-  // Check toolbar corner radius is always kTabstripCurve regardless of active
-  // tab index.
-  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
-            ToolbarView::CornerStyle::kTabstripCurve);
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
-            ToolbarView::CornerStyle::kTabstripCurve);
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
-            ToolbarView::CornerStyle::kTabstripCurve);
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
-            ToolbarView::CornerStyle::kTabstripCurve);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());

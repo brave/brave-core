@@ -10,7 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -31,7 +31,7 @@ public class BraveLeoButtonController extends BaseButtonDataProvider {
             Context context,
             Drawable buttonDrawable,
             ActivityTabProvider tabProvider,
-            ObservableSupplier<Profile> profileSupplier,
+            MonotonicObservableSupplier<Profile> profileSupplier,
             ModalDialogManager modalDialogManager) {
         super(
                 tabProvider,

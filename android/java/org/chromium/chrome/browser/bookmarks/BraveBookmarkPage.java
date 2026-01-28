@@ -5,28 +5,45 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
+import android.app.Activity;
 import android.content.ComponentName;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
 
 public class BraveBookmarkPage extends BookmarkPage {
     // Overridden Chromium's BookmarkPage.mManager
     private BookmarkManagerCoordinator mBookmarkManagerCoordinator;
 
     public BraveBookmarkPage(
-            @NonNull SnackbarManager snackbarManager,
-            @NonNull Profile profile,
-            @NonNull NativePageHost host,
+            WindowAndroid windowAndroid,
+            Activity activity,
+            SnackbarManager snackbarManager,
+            Supplier<BottomSheetController> bottomSheetControllerSupplier,
+            ActivityResultTracker activityResultTracker,
+            Profile profile,
+            NativePageHost host,
             @Nullable ComponentName componentName,
             BackPressManager backPressManager) {
-        super(snackbarManager, profile, host, componentName, backPressManager);
+        super(
+                windowAndroid,
+                activity,
+                snackbarManager,
+                bottomSheetControllerSupplier,
+                activityResultTracker,
+                profile,
+                host,
+                componentName,
+                backPressManager);
 
         if (mBookmarkManagerCoordinator instanceof BraveBookmarkManagerCoordinator
                 && BraveActivity.getChromeTabbedActivity() != null) {

@@ -7,7 +7,6 @@
 
 #include <string_view>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -46,7 +45,7 @@ std::string ReplaceAboutUIChromeURLs(std::string chrome_urls) {
   auto url_to_remove_it = kURLsToRemove.begin();
   while (html_line_it != html_lines.end() &&
          url_to_remove_it != kURLsToRemove.end()) {
-    if (base::Contains(*html_line_it, *url_to_remove_it)) {
+    if (html_line_it->contains(*url_to_remove_it)) {
       html_line_it = html_lines.erase(html_line_it);
       ++url_to_remove_it;
     } else {

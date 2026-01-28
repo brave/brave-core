@@ -34,8 +34,6 @@ class BraveTabStrip : public TabStrip {
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
-  std::optional<int> GetCustomBackgroundId(
-      BrowserFrameActiveState active_state) const override;
   void SetCustomTitleForTab(
       Tab* tab,
       const std::optional<std::u16string>& title) override;

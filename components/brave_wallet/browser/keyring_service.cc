@@ -1164,7 +1164,7 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
 }
 
 bool KeyringService::IsKeyringEnabled(mojom::KeyringId keyring_id) const {
-  return base::Contains(enabled_keyrings_, keyring_id);
+  return std::ranges::contains(enabled_keyrings_, keyring_id);
 }
 
 void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {

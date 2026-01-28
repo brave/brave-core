@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -228,7 +227,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
     }
     details.id = std::move(*id);
 
-    details.is_search_engine = base::Contains(*search_engines_list, i_str);
+    details.is_search_engine = search_engines_list->contains(i_str);
 
     auto scrape_rule_groups = ParseScrapeRules(scrape_url_dict);
     if (!scrape_rule_groups) {

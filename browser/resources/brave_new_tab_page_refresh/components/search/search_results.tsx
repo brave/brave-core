@@ -27,7 +27,7 @@ function MatchImage(props: { match: AutocompleteMatch }) {
     )
   }
   if (!imageUrl) {
-    if (!iconUrl.url) {
+    if (!iconUrl) {
       return (
         <Icon
           name='search'
@@ -38,7 +38,7 @@ function MatchImage(props: { match: AutocompleteMatch }) {
     return (
       <img
         className='icon'
-        src={iconUrl.url}
+        src={iconUrl}
       />
     )
   }

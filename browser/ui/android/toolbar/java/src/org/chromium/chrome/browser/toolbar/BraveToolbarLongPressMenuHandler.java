@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.toolbar;
 
 import android.content.Context;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -28,7 +28,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
 
     public BraveToolbarLongPressMenuHandler(
             Context context,
-            ObservableSupplier<@Nullable Profile> profileSupplier,
+            MonotonicObservableSupplier<@Nullable Profile> profileSupplier,
             boolean isCustomTab,
             BooleanSupplier suppressLongPressSupplier,
             ActivityLifecycleDispatcher lifecycleDispatcher,

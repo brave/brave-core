@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
@@ -190,10 +191,10 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetFungibleSupportedChains) {
   auto chains1 = asset_discovery_manager_->GetFungibleSupportedChains();
   auto chains2 = asset_discovery_manager_->GetFungibleSupportedChains();
   auto chains3 = asset_discovery_manager_->GetFungibleSupportedChains();
-  EXPECT_TRUE(base::Contains(
+  EXPECT_TRUE(std::ranges::contains(
       chains1,
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId)));
-  EXPECT_TRUE(base::Contains(
+  EXPECT_TRUE(std::ranges::contains(
       chains1,
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet)));
 
@@ -205,15 +206,15 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
   // Gnosis chain ID should not be included if it's not a custom network
   auto chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
   EXPECT_EQ(chains.size(), 8UL);
-  EXPECT_TRUE(base::Contains(
+  EXPECT_TRUE(std::ranges::contains(
       chains,
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId)));
-  EXPECT_TRUE(base::Contains(
+  EXPECT_TRUE(std::ranges::contains(
       chains,
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet)));
 
   // Verify none of the chain IDs == mojom::kGnosisChainId
-  EXPECT_FALSE(base::Contains(
+  EXPECT_FALSE(std::ranges::contains(
       chains,
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kGnosisChainId)));
 
@@ -225,7 +226,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
   EXPECT_EQ(chains.size(), 9UL);
 
   // Verify one of the chain IDs is mojom::kGnosisChainId
-  EXPECT_TRUE(base::Contains(
+  EXPECT_TRUE(std::ranges::contains(
       chains,
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kGnosisChainId)));
 }

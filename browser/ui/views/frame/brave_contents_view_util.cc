@@ -15,8 +15,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/split_tabs/split_tab_id.h"
 #include "components/tabs/public/split_tab_data.h"
-#include "components/tabs/public/split_tab_id.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/layout/layout_provider.h"
@@ -48,7 +48,17 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
   return shadow;
 }
 
+// static
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
+  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+             browser)
+             ? BraveContentsViewUtil::kMarginThickness
+             : 0;
+}
+
+// static
+int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
+    const Browser* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
              ? BraveContentsViewUtil::kMarginThickness

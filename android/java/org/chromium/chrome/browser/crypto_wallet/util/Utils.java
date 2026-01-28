@@ -44,7 +44,7 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
@@ -1055,7 +1055,7 @@ public class Utils {
             return getLastUsedProfile(isIncognito); // Last resort
         }
 
-        ObservableSupplier<TabModelSelector> supplier =
+        MonotonicObservableSupplier<TabModelSelector> supplier =
                 chromeActivity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
         if (selector == null) {

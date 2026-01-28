@@ -143,7 +143,7 @@ TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
 
   auto one = channels.find("One");
   ASSERT_NE(channels.end(), one);
-  EXPECT_TRUE(base::Contains(one->second->subscribed_locales, "en_US"));
+  EXPECT_TRUE(std::ranges::contains(one->second->subscribed_locales, "en_US"));
 
   auto two = channels.find("Two");
   ASSERT_NE(channels.end(), two);
@@ -155,7 +155,7 @@ TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
 
   auto five = channels.find("Five");
   ASSERT_NE(channels.end(), five);
-  EXPECT_TRUE(base::Contains(five->second->subscribed_locales, "en_US"));
+  EXPECT_TRUE(std::ranges::contains(five->second->subscribed_locales, "en_US"));
 }
 
 TEST_F(BraveNewsChannelsControllerTest,
@@ -171,13 +171,13 @@ TEST_F(BraveNewsChannelsControllerTest,
   // In the en_US region, only the channel 'One' should be subscribed.
   for (const auto& it : channels) {
     EXPECT_EQ(it.first == "One",
-              base::Contains(it.second->subscribed_locales, "en_US"));
+              std::ranges::contains(it.second->subscribed_locales, "en_US"));
   }
 
   // In the ja_JA region, only the channel 'Five' should be subscribed.
   for (const auto& it : channels) {
     EXPECT_EQ(it.first == "Five",
-              base::Contains(it.second->subscribed_locales, "ja_JA"));
+              std::ranges::contains(it.second->subscribed_locales, "ja_JA"));
   }
 }
 

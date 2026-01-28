@@ -148,7 +148,10 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
                                 if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
                                     mLocationBarMediator.setSearchQuery(barcodeValue);
                                 } else {
-                                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
+                                    // WIP(AlexeyBarabash): the code was removed from upstream
+                                    // 9b5048b5cd9efa089ef892b9f53c212f433d403b
+                                    assert false;
+                                    // mLocationBarMediator.performSearchQuery(barcodeValue, null);
                                 }
                             });
 

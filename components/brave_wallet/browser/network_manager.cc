@@ -15,7 +15,6 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
-#include "base/containers/contains.h"
 #include "base/containers/extend.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
@@ -1271,7 +1270,7 @@ void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
   base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
   std::string chain_id_lower =
       MakeChainIdLowerCase(chain_id, ToLowerCaseReason::kAddHiddenNetwork);
-  if (!base::Contains(*list, base::Value(chain_id_lower))) {
+  if (!std::ranges::contains(*list, base::Value(chain_id_lower))) {
     list->Append(chain_id_lower);
   }
 }

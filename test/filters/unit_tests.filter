@@ -248,6 +248,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-AccountExtensionTrackerSyncToSigninMigrationTest.ShouldNotMigrateAccountExtensionInstalledSignedIn
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeResetWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
@@ -340,10 +341,11 @@
 -ExtensionDataCollectionTest.CollectExtensionDataWithExtension
 -ExtensionDataCollectionTest.CollectsLastInstalledExtension
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
--GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
+-GeminiAntiscamProtectionServiceFactoryTest.*
 -GeneratedSafeBrowsingPrefTest.ManagementState
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
+-GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
@@ -661,8 +663,8 @@
 -HostContentSettingsMapTest.IncognitoChangesDoNotPersist
 -HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
-# These tests fail because we enable features::kTabstripComboButton and stub
-# features::HasTabSearchToolbarButton() to return true
+# These tests fail because we stub features::HasTabSearchToolbarButton() to
+# return true
 -TabSearchContainerTest.AnimatesToExpanded
 -TabSearchContainerTest.ButtonsHaveFlatEdges
 -TabSearchContainerTest.OrdersButtonsCorrectly

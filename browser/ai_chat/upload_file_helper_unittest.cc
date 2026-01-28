@@ -5,6 +5,8 @@
 
 #include "brave/browser/ai_chat/upload_file_helper.h"
 
+#include <utility>
+
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -125,16 +127,16 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
   EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE);
   ASSERT_TRUE(dialog_params_.file_types);
   ASSERT_EQ(1u, dialog_params_.file_types->extensions.size());
-  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
-                             FILE_PATH_LITERAL("png")));
-  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
-                             FILE_PATH_LITERAL("jpeg")));
-  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
-                             FILE_PATH_LITERAL("jpg")));
-  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
-                             FILE_PATH_LITERAL("webp")));
-  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
-                             FILE_PATH_LITERAL("pdf")));
+  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
+                                    FILE_PATH_LITERAL("png")));
+  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
+                                    FILE_PATH_LITERAL("jpeg")));
+  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
+                                    FILE_PATH_LITERAL("jpg")));
+  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
+                                    FILE_PATH_LITERAL("webp")));
+  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
+                                    FILE_PATH_LITERAL("pdf")));
 #if BUILDFLAG(IS_ANDROID)
   EXPECT_THAT(dialog_params_.accept_types,
               testing::UnorderedElementsAre(u"image/png", u"image/jpeg",

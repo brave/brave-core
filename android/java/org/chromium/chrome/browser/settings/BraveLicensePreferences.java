@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.settings;
 import android.os.Bundle;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -29,6 +29,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
+    @SuppressWarnings("ScannerUseDelimiter")
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
         // These strings are not used in Brave, but we get them from automated string translation
@@ -55,7 +56,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 }

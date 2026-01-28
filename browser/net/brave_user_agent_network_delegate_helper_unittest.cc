@@ -8,12 +8,12 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/contains.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -118,12 +118,13 @@ TEST_F(BraveUserAgentNetworkDelegateHelperTest,
   ASSERT_TRUE(res.full_version_list_header_value.has_value());
   EXPECT_EQ(res.header_value.value(), "");
   EXPECT_EQ(res.full_version_list_header_value.value(), "");
-  EXPECT_FALSE(base::Contains(res.header_value.value(), "\"Brave\""));
-  EXPECT_FALSE(
-      base::Contains(res.full_version_list_header_value.value(), "\"Brave\""));
-  EXPECT_FALSE(base::Contains(res.header_value.value(), "\"Google Chrome\""));
-  EXPECT_FALSE(base::Contains(res.full_version_list_header_value.value(),
-                              "\"Google Chrome\""));
+  EXPECT_THAT(*res.header_value, testing::Not(testing::HasSubstr("\"Brave\"")));
+  EXPECT_THAT(*res.full_version_list_header_value,
+              testing::Not(testing::HasSubstr("\"Brave\"")));
+  EXPECT_THAT(*res.header_value,
+              testing::Not(testing::HasSubstr("\"Google Chrome\"")));
+  EXPECT_THAT(res.full_version_list_header_value.value(),
+              testing::Not(testing::HasSubstr("\"Google Chrome\"")));
 }
 
 TEST_F(BraveUserAgentNetworkDelegateHelperTest,

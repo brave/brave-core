@@ -163,10 +163,10 @@ void BraveToolbarView::Init() {
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
 
-  DCHECK(location_bar_);
-  // Get ToolbarView's container_view as a parent of location_bar_ because
+  DCHECK(location_bar_view_);
+  // Get ToolbarView's container_view as a parent of location_bar_view_ because
   // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  views::View* container_view = location_bar_->parent();
+  views::View* container_view = location_bar_view_->parent();
   DCHECK(container_view);
 
   views::SetHitTestComponent(container_view, HTCAPTION);
@@ -258,7 +258,7 @@ void BraveToolbarView::Init() {
   bookmark_ = container_view->AddChildViewAt(
       std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
-      *container_view->GetIndexOf(location_bar_));
+      *container_view->GetIndexOf(location_bar_view_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
@@ -394,19 +394,6 @@ void BraveToolbarView::LoadImages() {
 #endif
 }
 
-std::pair<ToolbarView::CornerStyle, ToolbarView::CornerStyle>
-BraveToolbarView::GetCornerStyles() const {
-  const bool webui_tabstrip = browser_view_->webui_tab_strip();
-  const bool vertical_tabstrip = browser_view_->ShouldDrawVerticalTabStrip();
-  if (vertical_tabstrip || webui_tabstrip) {
-    return ToolbarView::GetCornerStyles();
-  }
-
-  // Always show rounded corners for horizontal tabs
-  return std::make_pair(ToolbarView::CornerStyle::kTabstripCurve,
-                        ToolbarView::CornerStyle::kTabstripCurve);
-}
-
 void BraveToolbarView::Update(content::WebContents* tab) {
   ToolbarView::Update(tab);
 
@@ -440,10 +427,10 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
-  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // Get ToolbarView's container_view as a parent of location_bar_view_ because
   // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  DCHECK(location_bar_ && location_bar_->parent());
-  views::View* container_view = location_bar_->parent();
+  DCHECK(location_bar_view_ && location_bar_view_->parent());
+  views::View* container_view = location_bar_view_->parent();
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
@@ -462,7 +449,7 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
   // Show BookmarkBubble attached to Brave's bookmark button
   // or the location bar if there is no bookmark button
   // (i.e. in non-normal display mode).
-  views::View* anchor_view = location_bar_;
+  views::View* anchor_view = location_bar_view_;
   if (bookmark_ && bookmark_->GetVisible()) {
     anchor_view = bookmark_;
   }
@@ -475,13 +462,8 @@ void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
 
-  // Upstream has two more children |background_view_left_| and
-  // |background_view_right_| behind the container view.
-  const int container_view_index = 2;
-
-  if (details.is_add && children().size() > container_view_index &&
-      details.parent == children()[container_view_index]) {
-    // Mark children of the container view as client area so that they are not
+  if (details.is_add && details.parent == this) {
+    // Mark children of the toolbar view as client area so that they are not
     // perceived as caption area. See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);
   }
@@ -504,7 +486,7 @@ void BraveToolbarView::Layout(PassKey) {
   // if wide address bar option is off.
   // TODO(https://github.com/brave/brave-browser/issues/48810): Refactor to do
   // layout once.
-  LayoutGuard guard(static_cast<BraveLocationBarView*>(location_bar_));
+  LayoutGuard guard(static_cast<BraveLocationBarView*>(location_bar_view_));
   if (!location_bar_is_wide_.GetValue()) {
     guard.set_ignore_layout(true);
   }
@@ -523,12 +505,13 @@ void BraveToolbarView::ResetLocationBarBounds() {
 
   // Calculate proper location bar's margin and set its bounds.
   const gfx::Insets margin = CalcLocationBarMargin(
-      width(), location_bar_->width(), location_bar_->GetMinimumSize().width(),
-      location_bar_->x());
+      width(), location_bar_view_->width(),
+      location_bar_view_->GetMinimumSize().width(), location_bar_view_->x());
 
-  location_bar_->SetBounds(
-      location_bar_->x() + margin.left(), location_bar_->y(),
-      location_bar_->width() - margin.width(), location_bar_->height());
+  location_bar_view_->SetBounds(location_bar_view_->x() + margin.left(),
+                                location_bar_view_->y(),
+                                location_bar_view_->width() - margin.width(),
+                                location_bar_view_->height());
 }
 
 void BraveToolbarView::ResetBookmarkButtonBounds() {
@@ -540,7 +523,7 @@ void BraveToolbarView::ResetBookmarkButtonBounds() {
   if (bookmark_ && bookmark_->GetVisible()) {
     const int bookmark_width = bookmark_->GetPreferredSize().width();
     const int bookmark_x =
-        location_bar_->x() - bookmark_width - button_right_margin;
+        location_bar_view_->x() - bookmark_width - button_right_margin;
     bookmark_->SetX(bookmark_x);
   }
 }

@@ -6,6 +6,7 @@
 #include "brave/components/playlist/content/browser/playlist_service.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check.h"
 #include "base/files/file_util.h"
@@ -731,7 +732,7 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
           ASSERT_EQ(item->parents.size(), 1u);
-          EXPECT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
+          EXPECT_TRUE(std::ranges::contains(item->parents, kDefaultPlaylistID));
         }));
   }
 
@@ -753,8 +754,9 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
           EXPECT_EQ(item->parents.size(), 2u);
-          EXPECT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
-          EXPECT_TRUE(base::Contains(item->parents, another_playlist_id));
+          EXPECT_TRUE(std::ranges::contains(item->parents, kDefaultPlaylistID));
+          EXPECT_TRUE(
+              std::ranges::contains(item->parents, another_playlist_id));
         }));
   }
 
@@ -809,7 +811,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
           ASSERT_EQ(item->parents.size(), 1u);
-          ASSERT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
+          ASSERT_TRUE(std::ranges::contains(item->parents, kDefaultPlaylistID));
         }));
   }
 
@@ -842,7 +844,8 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
           ASSERT_EQ(item->parents.size(), 1u);
-          ASSERT_TRUE(base::Contains(item->parents, another_playlist_id));
+          ASSERT_TRUE(
+              std::ranges::contains(item->parents, another_playlist_id));
         }));
   }
 
@@ -1100,7 +1103,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
           EXPECT_EQ(item->parents.size(), 1u);
-          EXPECT_TRUE(base::Contains(item->parents, another_playlist_id));
+          EXPECT_TRUE(
+              std::ranges::contains(item->parents, another_playlist_id));
         }));
   }
 }
@@ -1284,10 +1288,10 @@ TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
   }
 
   // Playlist order pref should have only default playlist id
-  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                             base::Value(kDefaultPlaylistID)));
-  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                              base::Value(*playlist->id)));
+  EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                    base::Value(kDefaultPlaylistID)));
+  EXPECT_FALSE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                     base::Value(*playlist->id)));
 
   // Call migration
   auto new_order_list = prefs()->GetList(kPlaylistOrderPref).Clone();
@@ -1295,8 +1299,8 @@ TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
   prefs()->SetList(kPlaylistOrderPref, std::move(new_order_list));
 
   // After migration, the order pref should have both default and new playlist
-  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                             base::Value(*playlist->id)));
+  EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                    base::Value(*playlist->id)));
 
   // Remove a playlist from playlists pref and not from order pref.
   // https://github.com/brave/brave-browser/issues/35500
@@ -1310,14 +1314,14 @@ TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
   prefs()->SetList(kPlaylistOrderPref, std::move(new_order_list));
 
   // After migration, the dangled item in the order pref should be gone.
-  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                              base::Value(*playlist->id)));
+  EXPECT_FALSE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                     base::Value(*playlist->id)));
 }
 
 TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {
   // Pre-condition: Order pref should only have the default playlist
-  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                             base::Value(kDefaultPlaylistID)));
+  EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                    base::Value(kDefaultPlaylistID)));
   EXPECT_EQ(1u, prefs()->GetList(kPlaylistOrderPref).size());
 
   // After creating a new playlist, order pref should contain that.
@@ -1327,14 +1331,14 @@ TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {
       base::BindLambdaForTesting(
           [&](mojom::PlaylistPtr playlist) { new_id = *playlist->id; }));
 
-  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                             base::Value(new_id)));
+  EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                    base::Value(new_id)));
   EXPECT_EQ(2u, prefs()->GetList(kPlaylistOrderPref).size());
 
   // After creating the playlist, order pref shouldn't contain that.
   playlist_service()->RemovePlaylist(new_id);
-  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
-                              base::Value(new_id)));
+  EXPECT_FALSE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
+                                     base::Value(new_id)));
   EXPECT_EQ(1u, prefs()->GetList(kPlaylistOrderPref).size());
 }
 

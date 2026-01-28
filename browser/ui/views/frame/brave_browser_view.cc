@@ -10,10 +10,10 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
@@ -73,6 +73,7 @@
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
@@ -693,7 +694,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
 
     // Unregister removed accelerators
     for (const auto& old_accelerator : old_accelerators) {
-      if (base::Contains(accelerators, old_accelerator)) {
+      if (std::ranges::contains(accelerators, old_accelerator)) {
         continue;
       }
       focus_manager->UnregisterAccelerator(old_accelerator, this);

@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
@@ -195,7 +194,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 
     // If this publisher isn't available in the current locale we don't want
     // it to affect our suggestions.
-    if (!base::Contains(locales, locale_)) {
+    if (!std::ranges::contains(locales, locale_)) {
       continue;
     }
 

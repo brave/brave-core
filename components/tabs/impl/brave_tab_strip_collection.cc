@@ -44,7 +44,7 @@ void BraveTabStripCollection::MoveTabsRecursive(
     size_t destination_index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
-    const std::set<TabCollection::Type>& retain_collection_types) {
+    const TabCollection::TypeEnumSet retain_collection_types) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
     delegate_->MoveTabsRecursive(tab_indices, destination_index, new_group_id,
                                  new_pinned_state, retain_collection_types);

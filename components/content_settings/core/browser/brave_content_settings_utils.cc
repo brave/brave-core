@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/map_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -65,7 +64,7 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
 }
 
 bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
-  return base::Contains(GetShieldsContentSettingsTypes(), content_type);
+  return GetShieldsContentSettingsTypes().contains(content_type);
 }
 
 bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {

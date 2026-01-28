@@ -23,7 +23,7 @@ class BraveTabHoverCardController : public TabHoverCardController {
   void OnHovercardImagesEnabledChanged() override;
 
   // TabHoverCardController:
-  void CreateHoverCard(Tab* tab) override;
+  void CreateHoverCard(HoverCardAnchorTarget* anchor_target) override;
 
   bool is_vertical_tabs_ = false;
 };

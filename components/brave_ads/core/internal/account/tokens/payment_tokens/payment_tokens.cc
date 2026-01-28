@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 
 namespace brave_ads {
 
@@ -54,7 +54,7 @@ bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
 void PaymentTokens::RemoveTokens(const PaymentTokenList& payment_tokens) {
   std::erase_if(payment_tokens_,
                 [&payment_tokens](const PaymentTokenInfo& payment_token) {
-                  return base::Contains(payment_tokens, payment_token);
+                  return std::ranges::contains(payment_tokens, payment_token);
                 });
 }
 
@@ -64,7 +64,7 @@ void PaymentTokens::RemoveAllTokens() {
 }
 
 bool PaymentTokens::TokenExists(const PaymentTokenInfo& payment_token) {
-  return base::Contains(payment_tokens_, payment_token);
+  return std::ranges::contains(payment_tokens_, payment_token);
 }
 
 size_t PaymentTokens::Count() const {
