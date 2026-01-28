@@ -154,6 +154,10 @@ export function ConfirmSendTransaction() {
     return originInfo.originSpec === 'chrome://wallet'
   }, [originInfo])
 
+  const memoText = React.useMemo(() => {
+    return String.fromCharCode(...(transactionDetails?.zcashMemo ?? []))
+  }, [transactionDetails])
+
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
   }
@@ -291,6 +295,31 @@ export function ConfirmSendTransaction() {
                     </ConfirmationInfoText>
                   </Row>
                 </Column>
+
+                {/* Transaction Memo */}
+                {memoText && (
+                  <>
+                    <VerticalDivider />
+                    <Column width='100%'>
+                      <Row justifyContent='flex-start'>
+                        <ConfirmationInfoLabel
+                          textColor='secondary'
+                          textAlign='left'
+                        >
+                          {getLocale('braveWalletMemo')}
+                        </ConfirmationInfoLabel>
+                      </Row>
+                      <Row justifyContent='flex-start'>
+                        <ConfirmationInfoText
+                          textColor='tertiary'
+                          textAlign='left'
+                        >
+                          {memoText}
+                        </ConfirmationInfoText>
+                      </Row>
+                    </Column>
+                  </>
+                )}
               </Column>
 
               {/* Transaction errors */}
