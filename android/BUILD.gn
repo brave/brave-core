@@ -757,7 +757,6 @@ android_resources("java_resources") {
     "java/brave-res/values-h765dp/dimens.xml",
     "java/brave-res/values-h820dp/dimens.xml",
     "java/brave-res/values-v21/brave_styles.xml",
-    "java/brave-res/values-w360dp/dimens.xml",
     "java/brave-res/values/array.xml",
     "java/brave-res/values/brave_attrs.xml",
     "java/brave-res/values/brave_ids.xml",
