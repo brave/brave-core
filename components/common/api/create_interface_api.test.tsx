@@ -278,6 +278,24 @@ describe('createInterfaceApi', () => {
     expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
     expect(callOnMutateObserver).toHaveBeenCalledWith([true])
     expect(hookOnMutateObserver).not.toHaveBeenCalled()
+
+    // Verify direct mutation (not a react hook)
+    {
+      globalOnMutateObserver.mockClear()
+      mutationFn.mockClear()
+      const directResult = await api.doSomething.mutate(true)
+      expect(globalOnMutateObserver).toHaveBeenCalledWith([true])
+      expect(mutationFn).toHaveBeenCalledWith(true)
+    }
+
+
+    {
+      globalOnMutateObserver.mockClear()
+      mutationFn.mockClear()
+      const directResult = await api.doSomething.mutate(false)
+      expect(globalOnMutateObserver).toHaveBeenCalledWith([false])
+      expect(mutationFn).toHaveBeenCalledWith(false)
+    }
   })
 
   it('can create void mutations', async () => {
