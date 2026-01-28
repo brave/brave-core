@@ -94,7 +94,10 @@ export function RewardsWidget() {
           <div className='actions'>
             <Button
               size='small'
-              onClick={() => openLink(urls.settingsURL)}
+              onClick={() => {
+                chrome.braveRewards.recordNTPPanelTrigger()
+                openLink(urls.settingsURL)
+              }}
             >
               {getString(S.NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL)}
             </Button>
