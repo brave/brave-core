@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main_mac.mm b/chrome/browser/chrome_browser_main_mac.mm
-index e26e3625c99c839a49620f29196ea9811c9d82bd..1bb80c9b7eb47bf9d5e99fc7d78fced9d31703f9 100644
+index 91ee1fc056fa5ce47b84643c48bc268a094dc7bd..b7b2c0c8613cbe57f5ee799bd259f9d6f1c03e09 100644
 --- a/chrome/browser/chrome_browser_main_mac.mm
 +++ b/chrome/browser/chrome_browser_main_mac.mm
 @@ -101,6 +101,7 @@ void ChromeBrowserMainPartsMac::PreCreateMainMessageLoop() {

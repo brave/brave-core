@@ -1,8 +1,8 @@
 diff --git a/tools/typescript/tsconfig_base.json b/tools/typescript/tsconfig_base.json
-index e67b7e261fdb21c4ceb675fdaa0ec1d8a31883e7..24d47787f0bfaec33bb77781dc80bba99cc34213 100644
+index 34fb1057834942043b3bee02a22fc16e6f9bc05e..1b137665485cd0f5ab6ba9a6ed320e5a6fe6f2ae 100644
 --- a/tools/typescript/tsconfig_base.json
 +++ b/tools/typescript/tsconfig_base.json
-@@ -13,7 +13,6 @@
+@@ -14,7 +14,6 @@
      "noImplicitReturns": true,
      "noPropertyAccessFromIndexSignature": true,
      "noUncheckedIndexedAccess": true,
