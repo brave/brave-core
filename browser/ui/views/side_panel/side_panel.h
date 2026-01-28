@@ -81,6 +81,10 @@ class SidePanel : public views::View,
   // Reparents the side panel animation content to the |content_parent_view_|
   // and resets the animation.
   void ResetSidePanelAnimationContent();
+
+  void SetActiveEntryUsesDefaultHorizontalAlignment(
+      bool use_default_horizontal_alignment);
+
   gfx::Rect GetContentAnimationBounds(const gfx::Rect& side_panel_final_bounds);
 
   // Only used by tests.
@@ -148,6 +152,12 @@ class SidePanel : public views::View,
   // signals toggling of the view's visiblity.
   base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
       this};
+
+  // When false, the side panel's should align to the opposite side of what it
+  // typically would based on the alignment pref and panel type. This is special
+  // case behavior that should be removed when toolbar and content height side
+  // panels are unified.
+  bool use_default_horizontal_alignment_ = true;
 
   HorizontalAlignment horizontal_alignment_;
   std::optional<int> starting_width_on_resize_;
