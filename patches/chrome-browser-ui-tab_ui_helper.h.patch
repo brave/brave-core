@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tab_ui_helper.h b/chrome/browser/ui/tab_ui_helper.h
+index ef6d3cde98738090b802e575b3a0f6297538d2d4..69eccfb0ba737d0ad7a2723367c43829e87ac826 100644
+--- a/chrome/browser/ui/tab_ui_helper.h
++++ b/chrome/browser/ui/tab_ui_helper.h
+@@ -65,8 +65,15 @@ class TabUIHelper : public tabs::ContentsObservingTabFeature {
+   bool is_created_by_session_restore_for_testing() {
+     return created_by_session_restore_;
+   }
++  void SetCustomTitle(const std::optional<std::u16string>& title);
++  bool has_custom_title() const {
++    return custom_title_.has_value();
++  }
++  void UpdateLastOrigin();
+ 
+  private:
++  std::optional<std::u16string> custom_title_;
++  std::optional<url::Origin> last_origin_;
+   bool was_active_at_least_once_ = false;
+   bool created_by_session_restore_ = false;
+ 
