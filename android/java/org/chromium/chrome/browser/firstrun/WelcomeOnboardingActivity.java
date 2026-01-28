@@ -121,10 +121,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private Guideline mSplashGuideline;
     private ViewPager2 mVariantBPager;
+    @Nullable
     private OnboardingStepAdapter mVariantBAdapter;
 
-    private String mDayZeroVariant;
+    private String mDayZeroVariant = "";
     private SpannableString mWdpLearnMore;
+    @Nullable
     private PageBounceAnimator mPageBounceAnimator;
 
     private enum CurrentOnboardingPage {
@@ -134,6 +136,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         ANALYTICS_CONSENT_PAGE
     }
 
+    @Nullable
     private CurrentOnboardingPage mCurrentOnboardingPage;
 
     private void checkReferral() {
@@ -257,8 +260,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
 
         final ProfileProvider profileProvider = getProfileProviderSupplier().get();
-        return profileProvider != null && !UserPrefs.get(profileProvider.getOriginalProfile())
-                .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
+        return profileProvider != null
+                && !UserPrefs.get(profileProvider.getOriginalProfile())
+                        .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
     private void handleAnalyticsConsentPage() {
