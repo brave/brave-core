@@ -102,6 +102,7 @@
     *** mProfile;
     *** mSearchEngineAdapter;
     *** createAdapterIfNecessary(...);
+    *** openSiteSearchSettings(...);
 }
 
 -keep class org.chromium.components.browser_ui.site_settings.SiteSettingsCategory {

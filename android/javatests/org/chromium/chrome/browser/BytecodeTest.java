@@ -613,6 +613,12 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                        "openSiteSearchSettings",
+                        MethodModifier.REGULAR,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/theme/ThemeUtils",
                         "getTextBoxColorForToolbarBackgroundInNonNativePage",
                         MethodModifier.STATIC,
