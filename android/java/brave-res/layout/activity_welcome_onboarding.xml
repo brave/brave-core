@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:src="@drawable/ic_brave_splash_animated"
-            android:contentDescription="@null"
+            android:contentDescription="@string/brave_onboarding_splash_logo_description"
             android:alpha="0"
 
             app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +56,7 @@
             android:id="@+id/iv_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@null"
+            android:contentDescription="@string/brave_onboarding_background_description"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_onboarding_bg"/>
 
@@ -76,7 +76,7 @@
             android:scaleX="1.3"
             android:scaleY="1.3"
             android:src="@drawable/ic_onboarding_top_leaf"
-            android:contentDescription="@null"/>
+            android:contentDescription="@string/brave_onboarding_top_leaf_description"/>
 
         <ImageView
             android:id="@+id/iv_leaf_bottom"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/view_leaf_bottom_align"
             android:adjustViewBounds="true"
-            android:contentDescription="@null"
+            android:contentDescription="@string/brave_onboarding_bottom_leaf_description"
             android:scaleX="1.3"
             android:scaleY="1.3"
             android:src="@drawable/ic_onboarding_bottom_leaf"/>
@@ -202,7 +202,7 @@
                     android:visibility="gone"
                     android:layout_gravity="center_horizontal"
                     app:srcCompat="@drawable/ic_onboarding_arrow_down"
-                    android:contentDescription="@null"/>
+                    android:contentDescription="@string/brave_onboarding_arrow_down_description"/>
 
                 <ImageView
                     android:id="@+id/iv_brave"
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:contentDescription="@null"
+                    android:contentDescription="@string/brave_onboarding_logo_description"
                     android:visibility="gone"
                     android:src="@drawable/ic_brave_onboarding"/>
 
