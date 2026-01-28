@@ -6,7 +6,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 // async handlers
-import walletAsyncHandler from '../common/async/handlers'
+import { listenerMiddleware } from '../common/async/listenerMiddleware'
+import '../common/async/handlers' // registers listeners
 
 // api
 import getWalletPageApiProxy from './wallet_page_api_proxy'
@@ -46,7 +47,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(walletAsyncHandler, walletApi.middleware),
+    }).concat(listenerMiddleware.middleware, walletApi.middleware),
 })
 
 export type WalletPageRootStore = typeof store
