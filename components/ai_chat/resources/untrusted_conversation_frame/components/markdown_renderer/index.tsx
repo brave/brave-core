@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkDirective from 'remark-directive'
 import type { Root, Element as HastElement } from 'hast'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Label from '@brave/leo/react/label'
@@ -16,6 +17,11 @@ import CaretSVG from '../svg/caret'
 import {
   useUntrustedConversationContext, //
 } from '../../untrusted_conversation_context'
+import {
+  ALLOWED_DIRECTIVES,
+  directiveComponents,
+  remarkDirectives,
+} from './remark_directives'
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block,
@@ -65,6 +71,9 @@ const allowedElements = [
   'tr',
   'th',
   'td',
+
+  // Directives
+  ...ALLOWED_DIRECTIVES,
 ]
 
 interface CursorDecoratorProps {
@@ -285,7 +294,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         // We only read the total lines value from AST
         // if the component is allowed to show the text cursor.
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkDirective, remarkDirectives]}
         unwrapDisallowed={true}
         children={mainProps.text}
         components={{
@@ -331,6 +340,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
             />
           ),
           ...buildTableRenderer(),
+          ...directiveComponents,
         }}
       />
     </div>
