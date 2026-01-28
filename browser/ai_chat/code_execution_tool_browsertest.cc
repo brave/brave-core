@@ -221,4 +221,48 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   EXPECT_EQ(output, "0.3");
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
+  std::string script = R"(
+    const data = [
+      {x: 'Jan', sales: 100, profit: 30},
+      {x: 'Feb', sales: 150, profit: 45},
+      {x: 'Mar', sales: 120, profit: 35}
+    ];
+    const labels = {sales: 'Sales ($)', profit: 'Profit ($)'};
+    chartUtil.createLineChart(data, labels);
+    console.log('Chart created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_EQ(output, "Chart created");
+  ASSERT_EQ(artifacts.size(), 1u);
+
+  const auto& artifact = artifacts[0];
+  EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
+  EXPECT_FALSE(artifact->content_json.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       UnsupportedArtifactType) {
+  std::string script = R"(
+    codeExecArtifacts.push({
+      type: 'unsupported_type',
+      content: {data: 'some data'}
+    });
+    console.log('Artifact created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_THAT(
+      output,
+      HasSubstr("Error: Artifact type 'unsupported_type' is not supported"));
+  EXPECT_TRUE(artifacts.empty());
+}
+
 }  // namespace ai_chat
