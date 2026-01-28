@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,8 +39,9 @@ namespace ai_chat {
 class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
  public:
   ContentAgentToolProviderBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
   ~ContentAgentToolProviderBrowserTest() override = default;
