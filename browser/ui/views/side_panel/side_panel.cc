@@ -309,6 +309,15 @@ void SidePanel::UpdateHorizontalAlignment() {
   InvalidateLayout();
 }
 
+void SidePanel::SetActiveEntryUsesDefaultHorizontalAlignment(
+    bool use_default_horizontal_alignment) {
+  if (use_default_horizontal_alignment_ == use_default_horizontal_alignment) {
+    return;
+  }
+  use_default_horizontal_alignment_ = use_default_horizontal_alignment;
+  UpdateHorizontalAlignment();
+}
+
 views::View* SidePanel::GetContentParentView() {
   return content_parent_view_;
 }
