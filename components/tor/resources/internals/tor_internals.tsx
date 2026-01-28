@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 // Components
 import App from './components/app'
@@ -15,41 +14,17 @@ import Theme from 'brave-ui/theme/brave-default'
 
 // Utils
 import store from './store'
-import * as torInternalsActions from './actions/tor_internals_actions'
-
-function getTorGeneralInfo () {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.getTorGeneralInfo()
-}
-
-function onGetTorGeneralInfo (generalInfo: TorInternals.GeneralInfo) {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.onGetTorGeneralInfo(generalInfo)
-}
-
-function onGetTorLog (log: string) {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.onGetTorLog(log)
-}
-
-function onGetTorInitPercentage (percentage: string) {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.onGetTorInitPercentage(percentage)
-}
-
-function onGetTorCircuitEstablished (success: boolean) {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.onGetTorCircuitEstablished(success)
-  getTorGeneralInfo()
-}
-
-function onGetTorControlEvent (event: string) {
-  const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
-  actions.onGetTorControlEvent(event)
-}
+import {
+  getTorGeneralInfo,
+  onGetTorGeneralInfo,
+  onGetTorLog,
+  onGetTorInitPercentage,
+  onGetTorCircuitEstablished,
+  onGetTorControlEvent
+} from './slices/tor_internals.slice'
 
 function initialize () {
-  getTorGeneralInfo()
+  store.dispatch(getTorGeneralInfo())
   render(
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
@@ -63,11 +38,22 @@ function initialize () {
 // TODO(petemill): Use event listeners instead.
 // @ts-expect-error
 window.tor_internals = {
-  onGetTorGeneralInfo,
-  onGetTorLog,
-  onGetTorInitPercentage,
-  onGetTorCircuitEstablished,
-  onGetTorControlEvent
+  onGetTorGeneralInfo: (generalInfo: TorInternals.GeneralInfo) => {
+    store.dispatch(onGetTorGeneralInfo({ generalInfo }))
+  },
+  onGetTorLog: (log: string) => {
+    store.dispatch(onGetTorLog({ log }))
+  },
+  onGetTorInitPercentage: (percentage: string) => {
+    store.dispatch(onGetTorInitPercentage({ percentage }))
+  },
+  onGetTorCircuitEstablished: (success: boolean) => {
+    store.dispatch(onGetTorCircuitEstablished({ success }))
+    store.dispatch(getTorGeneralInfo())
+  },
+  onGetTorControlEvent: (event: string) => {
+    store.dispatch(onGetTorControlEvent({ event }))
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

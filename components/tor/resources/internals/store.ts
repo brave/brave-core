@@ -3,9 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+import torInternalsReducer, {
+  listenerMiddleware
+} from './slices/tor_internals.slice'
 
-// Utils
-import reducers from './reducers'
+const store = configureStore({
+  reducer: {
+    torInternalsData: torInternalsReducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware)
+})
 
-export default createStore(reducers)
+export default store
