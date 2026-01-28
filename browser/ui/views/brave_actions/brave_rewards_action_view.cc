@@ -207,10 +207,6 @@ BraveRewardsActionView::BraveRewardsActionView(
 
   pref_change_registrar_.Init(profile->GetPrefs());
   pref_change_registrar_.Add(
-      brave_rewards::prefs::kBadgeText,
-      base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       brave_rewards::prefs::kDeclaredGeo,
       base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -411,10 +407,6 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
     return;
   }
 
-  // Clear the default-on-start badge text when the user opens the panel.
-  auto* prefs = browser_window_interface_->GetProfile()->GetPrefs();
-  prefs->SetString(brave_rewards::prefs::kBadgeText, "");
-
   bubble_manager_->ShowBubble();
 
   DCHECK(!bubble_observation_.IsObserving());
@@ -430,15 +422,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
 
 std::pair<std::string, SkColor>
 BraveRewardsActionView::GetBadgeTextAndBackground() {
-  // 1. Display the default-on-start Rewards badge text, if specified.
-  std::string text_pref =
-      browser_window_interface_->GetProfile()->GetPrefs()->GetString(
-          brave_rewards::prefs::kBadgeText);
-  if (!text_pref.empty()) {
-    return {text_pref, brave::kBadgeNotificationBG};
-  }
-
-  // 2. Display the number of current notifications, if non-zero.
+  // Display the number of current notifications, if non-zero.
   size_t notifications = GetRewardsNotificationCount();
   if (notifications > 0) {
     std::string text =
@@ -447,7 +431,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
     return {text, brave::kBadgeNotificationBG};
   }
 
-  // 3. Display a verified checkmark for verified publishers.
+  // Display a verified checkmark for verified publishers.
   if (std::get<bool>(publisher_registered_)) {
     return {"", kBadgeVerifiedBG};
   }
