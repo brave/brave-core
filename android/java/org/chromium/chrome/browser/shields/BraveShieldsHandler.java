@@ -1668,9 +1668,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                 public void run() {
                                     ImageView iv =
                                             (ImageView) mPopupView.findViewById(R.id.site_favicon);
-                                    if (iv != null)
+                                    if (iv != null) {
                                         iv.setImageBitmap(
                                                 BraveRewardsHelper.getCircularBitmap(bmp));
+                                    }
                                 }
                             });
         }
