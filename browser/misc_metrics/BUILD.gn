@@ -45,6 +45,7 @@ static_library("misc_metrics_impl") {
     "//brave/browser/profiles:util",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
+    "//brave/components/serp_metrics",
     "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser:shell_integration",
