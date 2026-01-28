@@ -9,6 +9,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -580,20 +581,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
       ;
   // clang-format on
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(base::HexEncodeLower(signed_extrinsic.value()),
-                      kExpectedExtrinsic);
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(base::HexEncodeLower(signed_extrinsic.value()), kExpectedExtrinsic);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
@@ -638,19 +634,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
 
   url_loader_factory_.ClearResponses();
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
@@ -732,19 +724,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
@@ -854,19 +842,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
@@ -1009,19 +993,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
@@ -1147,19 +1127,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,
@@ -1326,19 +1302,15 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
@@ -1553,19 +1525,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,
@@ -1752,19 +1720,15 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
@@ -1963,19 +1927,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      test_future;
+
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey,
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure,
-             base::expected<std::vector<uint8_t>, std::string>
-                 signed_extrinsic) {
-            EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
+      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
-  task_environment_.RunUntilQuit();
+  auto signed_extrinsic = test_future.Take();
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
 }  // namespace brave_wallet
