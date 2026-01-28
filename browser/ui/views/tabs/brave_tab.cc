@@ -237,6 +237,14 @@ bool BraveTab::IsActive() const {
   return controller_->IsActiveTab(this);
 }
 
+TabSizeInfo BraveTab::GetTabSizeInfo() const {
+  auto size_info = Tab::GetTabSizeInfo();
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    size_info.min_inactive_width = tab_style()->GetMinimumActiveWidth(false);
+  }
+  return size_info;
+}
+
 bool BraveTab::ShouldPaintTabAccent() const {
   return controller_->ShouldPaintTabAccent(this);
 }

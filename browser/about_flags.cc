@@ -139,8 +139,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}
-};
+     std::size(kZCashShieldedTransactionsEnabled), nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace {
@@ -480,6 +479,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables the Tree Tab feature",                                    \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
+      },                                                                     \
+      {                                                                      \
+          "brave-scrollable-tab-strip",                                      \
+          "Scrollable horizontal tab strip",                                 \
+          "Enables scrolling for horizontal tab strip when tabs overflow",   \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                \
       })
 
 #else
