@@ -258,7 +258,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     size_t destination_index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
-    const std::set<tabs::TabCollection::Type>& retain_collection_types) const {
+    const tabs::TabCollection::TypeEnumSet retain_collection_types) const {
   CHECK(!tab_indices.empty());
   std::vector<tabs::TabInterface*> moving_tabs;
   std::ranges::transform(
