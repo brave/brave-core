@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState, useAppActions } from '../lib/app_model_context'
+import { useAppState, useAppActions } from '../lib/app_context'
 
 import { style } from './rewards_events.style'
 

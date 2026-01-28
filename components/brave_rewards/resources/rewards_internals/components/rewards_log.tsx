@@ -7,13 +7,13 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppState, useAppActions, useLocale } from '../lib/app_model_context'
+import { useAppState, useAppActions } from '../lib/app_context'
 
 import { style } from './rewards_log.style'
 
 export function RewardsLog() {
-  const { getString } = useLocale()
   const actions = useAppActions()
+  const { getString } = actions
   const log = useAppState((state) => state.rewardsLog)
 
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null)

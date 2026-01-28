@@ -8,17 +8,15 @@ import * as mojom from 'gen/brave/components/brave_rewards/core/mojom/rewards.mo
 
 import { Optional, optional } from '../../shared/lib/optional'
 import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
-import { AppModel } from '../lib/app_model'
-import { createStateStore } from '$web-common/state_store'
 
 import {
-  AppState,
+  AppStore,
   Environment,
   ContributionType,
   ContributionProcessor,
   ContributionPublisher,
-  defaultState,
-} from '../lib/app_state'
+  defaultAppStore,
+} from './app_store'
 
 function parseEnvironment(env: number): Environment {
   switch (env) {
@@ -80,8 +78,8 @@ function parseContributionPublishers(list: any): ContributionPublisher[] {
     }))
 }
 
-export function createModel(): AppModel {
-  const store = createStateStore<AppState>(defaultState())
+export function createAppStore(): AppStore {
+  const store = defaultAppStore()
   let fetchLogResolver: ((value: string) => void) | null = null
 
   Object.assign(self, {
@@ -203,40 +201,42 @@ export function createModel(): AppModel {
 
   loadData()
 
-  return {
-    getString(key) {
-      return loadTimeData.getString(key)
-    },
-    getState: store.getState,
-    addListener: store.addListener,
+  store.update({
+    actions: {
+      getString(key) {
+        return loadTimeData.getString(key)
+      },
 
-    setAdDiagnosticId(diagnosticId) {
-      chrome.send('brave_rewards_internals.setAdDiagnosticId', [diagnosticId])
-      store.update({ adDiagnosticId: diagnosticId })
-    },
+      setAdDiagnosticId(diagnosticId) {
+        chrome.send('brave_rewards_internals.setAdDiagnosticId', [diagnosticId])
+        store.update({ adDiagnosticId: diagnosticId })
+      },
 
-    clearRewardsLog() {
-      chrome.send('brave_rewards_internals.clearLog')
-      store.update({ rewardsLog: '' })
-    },
+      clearRewardsLog() {
+        chrome.send('brave_rewards_internals.clearLog')
+        store.update({ rewardsLog: '' })
+      },
 
-    loadRewardsLog() {
-      chrome.send('brave_rewards_internals.getPartialLog')
-    },
+      loadRewardsLog() {
+        chrome.send('brave_rewards_internals.getPartialLog')
+      },
 
-    async fetchFullRewardsLog() {
-      return new Promise<string>((resolve) => {
-        chrome.send('brave_rewards_internals.getFullLog')
-        fetchLogResolver = resolve
-      })
-    },
+      async fetchFullRewardsLog() {
+        return new Promise<string>((resolve) => {
+          chrome.send('brave_rewards_internals.getFullLog')
+          fetchLogResolver = resolve
+        })
+      },
 
-    loadContributions() {
-      chrome.send('brave_rewards_internals.getContributions')
-    },
+      loadContributions() {
+        chrome.send('brave_rewards_internals.getContributions')
+      },
 
-    loadRewardsEvents() {
-      chrome.send('brave_rewards_internals.getEventLogs')
+      loadRewardsEvents() {
+        chrome.send('brave_rewards_internals.getEventLogs')
+      },
     },
-  }
+  })
+
+  return store
 }

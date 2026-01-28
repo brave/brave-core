@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../lib/app_model_context'
+import { useAppActions } from '../lib/app_context'
 import { useRoute, useRouter } from '../../rewards_page/lib/router'
 import { GeneralInfo } from './general_info'
 import { RewardsLog } from './rewards_log'
@@ -55,7 +55,7 @@ function NavList() {
 }
 
 export function App() {
-  const { getString } = useLocale()
+  const { getString } = useAppActions()
   const route = useRoute()
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 

@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { AppModelContext } from '../lib/app_model_context'
-import { createModel } from './storybook_model'
+import { AppContext } from '../lib/app_context'
+import { createAppStore } from '../lib/mock_app_store'
 import { scoped } from '$web-common/scoped_css'
 import { App } from '../components/app'
 
@@ -22,12 +22,11 @@ const style = scoped.css`
 `
 
 export function RewardsInternals() {
-  const model = React.useMemo(() => createModel(), [])
   return (
-    <AppModelContext.Provider value={model}>
+    <AppContext.Provider value={createAppStore()}>
       <div data-css-scope={style.scope}>
         <App />
       </div>
-    </AppModelContext.Provider>
+    </AppContext.Provider>
   )
 }

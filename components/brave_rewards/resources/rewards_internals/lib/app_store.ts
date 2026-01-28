@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
 import { ExternalWallet } from '../../shared/lib/external_wallet'
 import { Optional } from '../../shared/lib/optional'
+import { StringKey } from './locale_strings'
 
 export interface AppState {
   balance: Optional<number>
@@ -22,6 +24,15 @@ export interface AppState {
   rewardsEvents: RewardsEvent[]
   adDiagnosticId: string
   adDiagnosticEntries: AdDiagnosticsEntry[]
+  actions: {
+    getString: (key: StringKey) => string
+    setAdDiagnosticId: (diagnosticId: string) => void
+    clearRewardsLog: () => void
+    loadRewardsLog: () => void
+    fetchFullRewardsLog: () => Promise<string>
+    loadContributions: () => void
+    loadRewardsEvents: () => void
+  }
 }
 
 export type ContributionType =
@@ -64,8 +75,10 @@ export interface AdDiagnosticsEntry {
 
 export type Environment = 'development' | 'staging' | 'production'
 
-export function defaultState(): AppState {
-  return {
+export type AppStore = StateStore<AppState>
+
+export function defaultAppStore() {
+  return createStateStore<AppState>({
     balance: new Optional(),
     isKeyInfoSeedValid: true,
     paymentId: '',
@@ -81,5 +94,18 @@ export function defaultState(): AppState {
     rewardsEvents: [],
     adDiagnosticId: '',
     adDiagnosticEntries: [],
-  }
+    actions: {
+      getString(key) {
+        return ''
+      },
+      setAdDiagnosticId(diagnosticId) {},
+      clearRewardsLog() {},
+      loadRewardsLog() {},
+      async fetchFullRewardsLog() {
+        return ''
+      },
+      loadContributions() {},
+      loadRewardsEvents() {},
+    },
+  })
 }
