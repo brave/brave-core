@@ -769,6 +769,15 @@ void RewardsPageHandler::RecordOfferClick(RecordOfferClickCallback callback) {
   std::move(callback).Run();
 }
 
+void RewardsPageHandler::RecordNewTabOnboardingClick(
+    RecordNewTabOnboardingClickCallback callback) {
+  if (!prefs_->GetBoolean(prefs::kEnabled)) {
+    rewards_service_->GetP3AConversionMonitor()->RecordPanelTrigger(
+        p3a::PanelTrigger::kNTP);
+  }
+  std::move(callback).Run();
+}
+
 void RewardsPageHandler::OnUpdate(UpdateSource update_source) {
   if (page_) {
     page_->OnRewardsStateUpdated();

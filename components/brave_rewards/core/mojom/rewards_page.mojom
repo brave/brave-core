@@ -208,4 +208,7 @@ interface RewardsPageHandler {
 
   // Records metric for offer click events.
   RecordOfferClick() => ();
+
+  // Records metrics for Rewards onboarding click events on the NTP.
+  RecordNewTabOnboardingClick() => ();
 };
