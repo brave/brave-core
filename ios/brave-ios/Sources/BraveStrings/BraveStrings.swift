@@ -4281,18 +4281,9 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Sponsored images are branded backgrounds that appear in newly opened tabs in the browser. Enabling these Sponsored Images supports Brave's mission.",
-        comment: "The text description of image type which is being used NTP"
+          "Sponsored images are branded backgrounds that appear in newly opened tabs in the browser. Enabling these Sponsored Images supports Brave's mission. [Learn More](#learn-more)",
+        comment: "The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link"
       )
-    public static let imageTypeSelectionDescriptionLearnMore =
-      NSLocalizedString(
-        "ntp.imageTypeSelectionDescriptionLearnMore",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Learn more",
-        comment: "The text label of image type learn more link"
-      )
-
     public static let settingsTitle = NSLocalizedString(
       "ntp.settingsTitle",
       tableName: "BraveShared",
