@@ -10,4 +10,5 @@
     <dimen name="onboarding_buttons_vertical_margin">24dp</dimen>
     <dimen name="onboarding_illustration_margin_top">24dp</dimen>
     <dimen name="onboarding_illustration_padding">24dp</dimen>
+    <dimen name="onboarding_title_margin_top">24dp</dimen>
 </resources>
