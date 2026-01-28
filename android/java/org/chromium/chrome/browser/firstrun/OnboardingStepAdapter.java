@@ -18,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 
 /**
  * RecyclerView adapter for the variant-B onboarding ViewPager2, inflating one layout per step and
  * delegating navigation requests to the host via {@link OnboardingNavigationListener}.
  */
+@NullMarked
 public class OnboardingStepAdapter
         extends RecyclerView.Adapter<OnboardingStepAdapter.OnboardingBaseViewHolder> {
 
@@ -80,16 +82,14 @@ public class OnboardingStepAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OnboardingBaseViewHolder holder, int position) {}
+    public void onBindViewHolder(OnboardingBaseViewHolder holder, int position) {
+        /* Unused. */
+    }
 
     @Override
     public void onViewRecycled(OnboardingBaseViewHolder holder) {
         holder.viewRecycled();
     }
-
-    //        @Override
-    //        public void onBindViewHolder(@NonNull OnboardingStepViewHolder holder, int position)
-    // {}
 
     @Override
     public int getItemViewType(int position) {
