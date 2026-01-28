@@ -41,6 +41,7 @@ import com.android.installreferrer.api.ReferrerDetails;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
@@ -79,6 +80,7 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
  * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
  * and privacy-focused approach.
  */
+@NullMarked
 public class WelcomeOnboardingActivity extends FirstRunActivityBase
         implements OnboardingStepAdapter.OnboardingNavigationListener {
     private static final String P3A_URL =
