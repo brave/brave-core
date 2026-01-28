@@ -555,6 +555,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   EXPECT_EQ(opener_tab, static_cast<tabs::TabModel*>(added_tab)->opener());
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(opener_tab->GetParentCollection()->ChildCount(), 3u);
   EXPECT_EQ(static_cast<const tabs::TreeTabNodeTabCollection*>(
                 opener_tab->GetParentCollection())
                 ->GetTopLevelAncestor(),
