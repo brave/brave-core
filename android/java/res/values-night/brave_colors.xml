@@ -84,6 +84,7 @@
     <color name="news_settings_icon_bg_color">#0DFFFFFF</color>
     <color name="news_settings_following_count_color">#D9F0F2FF</color>
     <color name="news_settings_following_count_bg_color">#1AFFFFFF</color>
+    <color name="news_settings_item_highlight">@color/material_primary_20</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
