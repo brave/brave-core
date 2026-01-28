@@ -18,6 +18,7 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -356,9 +357,6 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
 
-  // Add chart display HTML as an additional resource path.
-  source->AddResourcePath("chart_display.html", IDR_AI_CHAT_CHART_DISPLAY_HTML);
-
   std::string rich_search_widgets_csp;
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
     rich_search_widgets_csp =
@@ -367,8 +365,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   }
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StrCat({"frame-src ", kAIChatUntrustedConversationUIURL,
-                    "chart_display.html", rich_search_widgets_csp, ";"}));
+      base::StrCat({"frame-src ", kAIChatChartDisplayUIURL,
+                    rich_search_widgets_csp, ";"}));
 
   // If the feature is not enabled don't specify an origin for loading the rich
   // search widgets.

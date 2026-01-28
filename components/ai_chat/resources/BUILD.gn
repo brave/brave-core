@@ -24,8 +24,7 @@ transpile_web_ui("ai_chat_ui") {
     ],
     [
       "chart_display",
-      rebase_path(
-          "untrusted_conversation_frame/chart_display/chart_display.tsx"),
+      rebase_path("chart_display/chart_display.tsx"),
     ],
   ]
 
@@ -44,9 +43,9 @@ preprocess_if_expr("preprocess_html") {
   visibility = [ ":resources_grit" ]
   in_folder = "."
   in_files = [
+    "chart_display/chart_display.html",
     "code_sandbox/code_sandbox.html",
     "page/ai_chat_ui.html",
-    "untrusted_conversation_frame/chart_display/chart_display.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]
   out_folder = "$target_gen_dir/preprocessed"

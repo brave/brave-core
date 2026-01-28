@@ -18,7 +18,7 @@ export default function Chart({ artifact }: ChartProps) {
 
   return (
     <iframe
-      src={`chart_display.html?${encodeURIComponent(artifact.contentJson)}`}
+      src={`chrome-untrusted://aichat-chart-display/?${encodeURIComponent(artifact.contentJson)}`}
       className={styles.chartIframe}
       sandbox='allow-scripts allow-same-origin'
     />
