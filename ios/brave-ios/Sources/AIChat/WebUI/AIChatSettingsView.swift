@@ -90,6 +90,7 @@ public struct AIChatSettingsView: View {
               .font(.subheadline.weight(.regular))
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         ForEach(viewModel.customModels, id: \.key) { model in
           NavigationLink {
@@ -106,6 +107,7 @@ public struct AIChatSettingsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         .onDelete { indexSet in
           guard let index = indexSet.first else { return }
@@ -118,6 +120,7 @@ public struct AIChatSettingsView: View {
         } label: {
           Text(Strings.AIChat.byomAddNewModelButtonTitle)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .sheet(isPresented: $isNewCustomModelFormPresented) {
           NavigationStack {
             CustomModelForm(helper: viewModel.helper)

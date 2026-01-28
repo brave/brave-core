@@ -53,6 +53,20 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
   }
 };
 
+AiChatOperationResult OperationalResultFromValidationResult(
+    ai_chat::ModelValidationResult result) {
+  switch (result) {
+    case ai_chat::ModelValidationResult::kSuccess:
+      return AiChatOperationResultSuccess;
+    case ai_chat::ModelValidationResult::kInvalidContextSize:
+      return AiChatOperationResultInvalidContextSize;
+    case ai_chat::ModelValidationResult::kInvalidUrl:
+      return AiChatOperationResultInvalidUrl;
+    default:
+      NOTREACHED();
+  }
+}
+
 }  // namespace
 
 @interface AIChatSettingsHelperImpl () {
@@ -150,15 +164,17 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     const auto endpoint = model->options->get_custom_model_options()->endpoint;
     const bool valid_as_private_ip =
         ai_chat::ModelValidator::IsValidEndpoint(endpoint, true);
-    // The URL is invalid, but may be valid as a private endpoint. Let's
-    // examine the value more closely, and notify the user.
+    // The URL is invalid, but may be valid as a private endpoint.
+    // Let's examine the value more closely, and notify the user.
     handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
                                 : AiChatOperationResultInvalidUrl);
     return;
   }
 
-  _modelService->AddCustomModel(std::move(model));
-  handler(AiChatOperationResultSuccess);
+  if (result == ai_chat::ModelValidationResult::kSuccess) {
+    _modelService->AddCustomModel(std::move(model));
+  }
+  handler(OperationalResultFromValidationResult(result));
 }
 
 - (void)updateCustomModelAtIndex:(NSInteger)index
@@ -175,15 +191,17 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     const auto endpoint = model->options->get_custom_model_options()->endpoint;
     const bool valid_as_private_ip =
         ai_chat::ModelValidator::IsValidEndpoint(endpoint, true);
-    // The URL is invalid, but may be valid as a private endpoint. Let's
-    // examine the value more closely, and notify the user.
+    // The URL is invalid, but may be valid as a private endpoint.
+    // Let's examine the value more closely, and notify the user.
     handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
                                 : AiChatOperationResultInvalidUrl);
     return;
   }
 
-  _modelService->SaveCustomModel(index, std::move(model));
-  handler(AiChatOperationResultSuccess);
+  if (result == ai_chat::ModelValidationResult::kSuccess) {
+    _modelService->SaveCustomModel(index, std::move(model));
+  }
+  handler(OperationalResultFromValidationResult(result));
 }
 
 - (void)deleteCustomModelAtIndex:(NSInteger)index {
