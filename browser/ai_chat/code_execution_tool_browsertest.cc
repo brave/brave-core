@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/code_execution_tool.h"
+#include "brave/browser/ai_chat/tools/code_execution_tool.h"
 
 #include <memory>
 #include <string>
@@ -51,26 +51,37 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
     return http_server_.GetURL("/test").spec();
   }
 
-  void ExecuteCodeRaw(const std::string& input_json, std::string* output) {
+  void ExecuteCodeRaw(
+      const std::string& input_json,
+      std::string* output,
+      std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::RunLoop run_loop;
     tool_->UseTool(
         input_json,
         base::BindLambdaForTesting(
-            [&run_loop, output](std::vector<mojom::ContentBlockPtr> result) {
+            [&run_loop, output, artifacts](
+                std::vector<mojom::ContentBlockPtr> result,
+                std::vector<mojom::ToolArtifactPtr> result_artifacts) {
               ASSERT_FALSE(result.empty());
               ASSERT_TRUE(result[0]->is_text_content_block());
               *output = result[0]->get_text_content_block()->text;
+
+              if (artifacts) {
+                *artifacts = std::move(result_artifacts);
+              }
               run_loop.Quit();
             }));
     run_loop.Run();
   }
 
-  void ExecuteCode(const std::string& script, std::string* output) {
+  void ExecuteCode(const std::string& script,
+                   std::string* output,
+                   std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::Value::Dict input;
     input.Set("script", script);
     std::string input_json;
     base::JSONWriter::Write(input, &input_json);
-    ExecuteCodeRaw(input_json, output);
+    ExecuteCodeRaw(input_json, output, artifacts);
   }
 
  protected:

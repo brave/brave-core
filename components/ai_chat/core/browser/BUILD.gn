@@ -71,6 +71,8 @@ static_library("browser") {
     "skills_metrics.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
+    "tools/code_plugin.cc",
+    "tools/code_plugin.h",
     "tools/memory_storage_tool.cc",
     "tools/memory_storage_tool.h",
     "tools/tool.cc",
