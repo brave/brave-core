@@ -469,6 +469,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/new_wallet.xml",
     "java/brave-res/drawable/news_button_bg.xml",
     "java/brave-res/drawable/news_settings_following_count_bg.xml",
+    "java/brave-res/drawable/news_settings_item_bg.xml",
     "java/brave-res/drawable/notification_button_rounded_bg.xml",
     "java/brave-res/drawable/notification_on_button_background.xml",
     "java/brave-res/drawable/notification_rationale_dialog_background.xml",

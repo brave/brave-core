@@ -170,6 +170,7 @@
     <color name="news_settings_following_count_bg_color">#1A000000</color>
     <color name="news_settings_optin_color">#CCCCCC</color>
     <color name="news_settings_unfollow_color">#4C54D2</color>
+    <color name="news_settings_item_highlight">@color/material_primary_95</color>
 
     <!-- Incognito mode colors -->
     <color name="toolbar_background_primary_dark">@color/primitive_private_window_5</color>
