@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tab_ui_helper.cc b/chrome/browser/ui/tab_ui_helper.cc
+index 674d8a6a5bd3d1349f83b79422e90d60f669ea3f..bb71f8bb5ef1afa759ca54d2692211c188bd29ce 100644
+--- a/chrome/browser/ui/tab_ui_helper.cc
++++ b/chrome/browser/ui/tab_ui_helper.cc
+@@ -39,6 +39,7 @@ TabUIHelper::TabUIHelper(tabs::TabInterface& tab_interface)
+ TabUIHelper::~TabUIHelper() = default;
+ 
+ std::u16string TabUIHelper::GetTitle() const {
++if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs) && has_custom_title()) { return custom_title_.value(); }
+   const tab_groups::SavedTabGroupWebContentsListener* wc_listener =
+       tab().GetTabFeatures()->saved_tab_group_web_contents_listener();
+   if (wc_listener) {

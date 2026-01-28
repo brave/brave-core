@@ -1,0 +1,10 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 1.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/1.0/.
+
+[[substitution]]
+description = 'Return custom title if enabled in TabUIHelper::GetTitlte()'
+re_pattern = '(std::u16string TabUIHelper::GetTitle\(\) const {)'
+count = 1
+replace = '\1\nif (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs) && has_custom_title()) { return custom_title_.value(); }'

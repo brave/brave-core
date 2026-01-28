@@ -10,11 +10,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "content/public/browser/navigation_controller.h"
 
-#define GetTitle GetTitle_ChromiumImpl
-
 #include <chrome/browser/ui/tab_ui_helper.cc>
-
-#undef GetTitle
 
 void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
   if (title == custom_title_) {
@@ -24,14 +20,6 @@ void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
   CHECK(!title.has_value() || !title->empty())
       << "Custom title should be std::nullopt or non-empty string";
   custom_title_ = title;
-}
-
-std::u16string TabUIHelper::GetTitle() const {
-  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
-    return GetTitle_ChromiumImpl();
-  }
-
-  return custom_title_.value_or(GetTitle_ChromiumImpl());
 }
 
 void TabUIHelper::UpdateLastOrigin() {
