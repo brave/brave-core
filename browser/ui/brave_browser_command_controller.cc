@@ -357,6 +357,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
+
+  UpdateCommandEnabled(IDC_FORCE_PASTE, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -771,6 +773,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SWAP_SPLIT_VIEW: {
       CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
+      break;
+    }
+    case IDC_FORCE_PASTE: {
+      brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
     default:

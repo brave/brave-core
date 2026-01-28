@@ -1104,6 +1104,42 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
 
+void ForcePasteInBrowser(Browser* browser) {
+  CHECK(browser);
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  ForcePasteInWebContents(contents);
+}
+
+void ForcePasteInWebContents(content::WebContents* web_contents) {
+  CHECK(web_contents);
+
+  // Check the WebContents is focused.
+  auto* frame = web_contents->GetFocusedFrame();
+  if (!frame) {
+    return;
+  }
+
+  std::u16string result;
+  auto data = std::make_unique<ui::DataTransferEndpoint>(
+      frame->GetMainFrame()->GetLastCommittedURL(),
+      ui::DataTransferEndpointOptions{
+          .notify_if_restricted = true,
+          .off_the_record = frame->GetBrowserContext()->IsOffTheRecord()});
+  ui::Clipboard::GetForCurrentThread()->ReadText(
+      ui::ClipboardBuffer::kCopyPaste, data.get(), &result);
+
+  // If there's no text in the clipboard don't do anything.
+  if (result.empty()) {
+    return;
+  }
+
+  // Replace works just like Paste, but it doesn't trigger onpaste handlers
+  web_contents->Replace(result);
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
                            const tabs::TabHandle& tab,
