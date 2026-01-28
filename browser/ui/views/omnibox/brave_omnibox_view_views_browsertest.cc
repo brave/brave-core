@@ -52,11 +52,13 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
 
 class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
  public:
-  LocationBarView* location_bar() {
+  LocationBarView* location_bar_view() {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    return browser_view->toolbar()->location_bar();
+    return browser_view->toolbar()->location_bar_view();
   }
-  OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
+  OmniboxViewViews* omnibox_view() {
+    return location_bar_view()->omnibox_view();
+  }
 
   void SetSanitizerRules(const std::string& matchers) {
     base::RunLoop loop;
@@ -148,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
   auto* private_browser_view =
       BrowserView::GetBrowserViewForBrowser(private_browser);
   auto* private_brave_omnibox_view = static_cast<BraveOmniboxViewViews*>(
-      private_browser_view->toolbar()->location_bar()->omnibox_view());
+      private_browser_view->toolbar()->location_bar_view()->omnibox_view());
 
   SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
   EXPECT_TRUE(private_brave_omnibox_view->GetClipboardTextForPasteAndSearch());
