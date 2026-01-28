@@ -7,7 +7,6 @@ import BraveCore
 import BraveShared
 import BraveUI
 import Shared
-import Static
 import UIKit
 
 private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
@@ -21,6 +20,18 @@ private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
       $0.userInterfaceStyle == .dark
         ? UIColor(white: 0.2, alpha: 1.0) : UIColor.braveBlurpleTint.withAlphaComponent(0.06)
     }
+  }
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+}
+
+private class RewardsInternalsSharableButtonCell: UITableViewCell, TableViewReusable {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+    textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
+    textLabel?.textAlignment = .center
   }
   @available(*, unavailable)
   required init(coder: NSCoder) {
@@ -73,7 +84,7 @@ class RewardsInternalsShareController: UITableViewController {
     title = Strings.RewardsInternals.shareInternalsTitle
 
     tableView.register(RewardsInternalsSharableCell.self)
-    tableView.register(ButtonCell.self, forCellReuseIdentifier: "button")
+    tableView.register(RewardsInternalsSharableButtonCell.self)
     tableView.estimatedRowHeight = UITableView.automaticDimension
 
     tableView.allowsMultipleSelectionDuringEditing = true
@@ -250,8 +261,7 @@ class RewardsInternalsShareController: UITableViewController {
       cell.detailTextLabel?.text = sharable.description
       return cell
     }
-    let cell = tableView.dequeueReusableCell(withIdentifier: "button", for: indexPath)
-    cell.textLabel?.textAlignment = .center
+    let cell = tableView.dequeueReusableCell(for: indexPath) as RewardsInternalsSharableButtonCell
     cell.textLabel?.text = Strings.RewardsInternals.share
     return cell
   }
