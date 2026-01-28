@@ -11,7 +11,8 @@ import Foundation
 class MockSwapService: BraveWalletSwapService {
   func status(
     params: BraveWallet.Gate3SwapStatusParams,
-    completion: @escaping (BraveWallet.Gate3SwapStatus?, BraveWallet.Gate3SwapError?, String) -> Void
+    completion: @escaping (BraveWallet.Gate3SwapStatus?, BraveWallet.Gate3SwapError?, String) ->
+      Void
   ) {
     completion(nil, .init(message: "Error", kind: .unknown), "Error")
   }

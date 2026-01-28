@@ -677,20 +677,20 @@
 			path = Entitlements;
 			sourceTree = "<group>";
 		};
-		272947DF29C8DE4300BF2FDC /* News Topics */ = {
+		272947DF29C8DE4300BF2FDC /* NewsTopics */ = {
 			isa = PBXGroup;
 			children = (
 				272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */,
 			);
-			path = "News Topics";
+			path = NewsTopics;
 			sourceTree = "<group>";
 		};
-		27444B6929831B9E002E1EBE /* Development Assets */ = {
+		27444B6929831B9E002E1EBE /* DevelopmentAssets */ = {
 			isa = PBXGroup;
 			children = (
 				27444B6A29831BBE002E1EBE /* topics_news.en_US.json */,
 			);
-			path = "Development Assets";
+			path = DevelopmentAssets;
 			sourceTree = "<group>";
 		};
 		279366862EB26DC000599776 /* Shared */ = {
@@ -786,8 +786,8 @@
 		CA0391B7271E1023000EB13C /* BraveWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				272947DF29C8DE4300BF2FDC /* News Topics */,
-				27444B6929831B9E002E1EBE /* Development Assets */,
+				272947DF29C8DE4300BF2FDC /* NewsTopics */,
+				27444B6929831B9E002E1EBE /* DevelopmentAssets */,
 				CA0391DA271E12D9000EB13C /* Entitlements */,
 				27E0E2132CA01629001DA292 /* WidgetAccentable.swift */,
 				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
@@ -2297,7 +2297,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Local;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Debug (AppStore).entitlements";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
@@ -2416,7 +2416,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
@@ -2513,7 +2513,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
@@ -3380,7 +3380,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
@@ -3416,7 +3416,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3450,7 +3450,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3485,7 +3485,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3519,7 +3519,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/DevelopmentAssets";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BraveWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3613,7 +3613,7 @@
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "windows 3d 80s aqua bat holo neon netscape supernova terminal popart popart-dark";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release (AppStore).entitlements";
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
@@ -3700,7 +3700,7 @@
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "windows 3d 80s aqua bat holo neon netscape supernova terminal popart popart-dark";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Nightly;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Nightly.entitlements";
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
@@ -3784,7 +3784,7 @@
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "windows 3d 80s aqua bat holo neon netscape supernova terminal popart popart-dark";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Beta;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Beta.entitlements";
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
@@ -3867,7 +3867,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/PreviewContent\"";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iOS/SupportingFiles/Info.plist;
 				PRODUCT_MODULE_NAME = Client;
