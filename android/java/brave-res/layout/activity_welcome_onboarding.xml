@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/onboarding_variant_b"
         android:visibility="gone"
-        android:paddingTop="16dp"
+        android:paddingTop="@dimen/onboarding_padding_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
