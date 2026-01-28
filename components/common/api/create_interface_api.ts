@@ -570,8 +570,16 @@ export function createInterfaceApi<
         } as UseMutationResult<typeof name>
       }
 
+      const directMutateFn = (...args: MArgs) => {
+        const mutationFn = queryClient.getMutationCache().build<MData, unknown, MArgs, unknown>(queryClient, {
+          mutationKey: [...baseKey, ...args],
+          mutationFn: (variables) => mutation(...variables),
+        })
+        return mutationFn.execute(args)
+      }
+
       ;(endpoints as any)[name] = {
-        mutate: mutator,
+        mutate: directMutateFn,
         useMutation: useMut,
       }
     }
