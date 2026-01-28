@@ -681,6 +681,15 @@ public class BrowserViewController: UIViewController {
         }
       }
     )
+
+    Task.delayed(bySeconds: 0.1) {
+      // Update top toolbar constraints and force layout/redraw during transition
+      if LiquidGlassMode.isEnabled {
+        await self.topToolbar.updateMainStackViewConstraints()
+        // Force a full layout pass to redraw the toolbar
+        await self.topToolbar.layoutIfNeeded()
+      }
+    }
   }
 
   @objc func appWillTerminateNotification() {
