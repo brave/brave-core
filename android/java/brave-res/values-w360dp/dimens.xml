@@ -6,9 +6,11 @@
 -->
 
 <resources>
+    <dimen name="onboarding_padding_top">16dp</dimen>
     <dimen name="onboarding_main_container_horizontal_margin">24dp</dimen>
     <dimen name="onboarding_buttons_vertical_margin">24dp</dimen>
     <dimen name="onboarding_illustration_margin_top">24dp</dimen>
     <dimen name="onboarding_illustration_padding">24dp</dimen>
     <dimen name="onboarding_title_margin_top">24dp</dimen>
+    <dimen name="onboarding_subtitle_margin_top">16dp</dimen>
 </resources>
