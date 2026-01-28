@@ -38,10 +38,12 @@ export function defaultRewardsState(): RewardsState {
 
 export interface RewardsActions {
   setShowRewardsWidget: (showRewardsWidget: boolean) => void
+  recordNewTabOnboardingClick: () => void
 }
 
 export function defaultRewardsActions(): RewardsActions {
   return {
-    setShowRewardsWidget(showRewardsWidget) {}
+    setShowRewardsWidget(showRewardsWidget) {},
+    recordNewTabOnboardingClick() {},
   }
 }
