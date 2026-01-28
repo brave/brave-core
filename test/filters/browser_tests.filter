@@ -95,6 +95,7 @@
 # These tests crash/fail because we have kOptimizationHints feature disabled.
 -Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
 -Aiv4ModelTimeoutBrowserTest.PassageEmbedderTestTimeout
+-All/ContextualTasksContextServiceParameterizedTest.LogSignalsAndMetricsInAllTabSelectionModes/*
 -All/NewTabPageUtilBrowserTest.*
 -All/NewTabPageUtilDisableFlagBrowserTest.*
 -All/NewTabPageUtilDriveHistorySyncBrowserTest.*
@@ -2466,6 +2467,7 @@
 
 # These tests fail because we enable features::kTabstripComboButton and stub
 # features::HasTabSearchToolbarButton() to return true
+-HorizontalTabStripRegionViewWithTabstripTabSearchTest.TabSearchPositionLoggedOnConstruction
 -TabSearchButtonBrowserTest.ButtonClickCreatesBubble
 -TabSearchButtonBrowserUITest.InvokeUi_default
 -TabStripComboButtonBrowserTest.BuildsComboButton
@@ -2552,6 +2554,8 @@
 -ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
 -ChromeAimEligibilityServiceCacheBrowserTest.RequestFromCache
 -ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
+-ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsAllowedToolsConfig
+-ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsPdfUploadConfig
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 
 # This test fails because we add our own item to omnibox contextual search
