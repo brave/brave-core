@@ -248,13 +248,22 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
       "alignment_check": {
         "some_field": "value"
       }
+    },
+    {
+      "id": "empty_check",
+      "type": "function",
+      "function": {
+        "name": "empty_alignment",
+        "arguments": "{}"
+      },
+      "alignment_check": {}
     }
   ])";
 
   auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
-  ASSERT_EQ(result.size(), 5u);
+  ASSERT_EQ(result.size(), 6u);
 
   EXPECT_MOJOM_EQ(result[0],
                   mojom::ToolUseEvent::New("allowed_by_default", "no_check",
@@ -287,6 +296,12 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
                                                       std::nullopt, nullptr))
       << "alignment_check without allowed field should be treated as allowed, "
          "no PermissionChallenge";
+
+  EXPECT_MOJOM_EQ(result[5],
+                  mojom::ToolUseEvent::New("empty_alignment", "empty_check",
+                                           "{}", std::nullopt, nullptr))
+      << "Empty alignment_check should be treated as allowed, no "
+         "PermissionChallenge";
 }
 
 // Tests for ToolApiDefinitionsFromTools
