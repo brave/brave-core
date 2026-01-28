@@ -111,6 +111,9 @@ export function createRewardsHandler(
   return {
     setShowRewardsWidget(showRewardsWidget) {
       newTabHandler.setShowRewardsWidget(showRewardsWidget)
-    }
+    },
+    recordNewTabOnboardingClick() {
+      rewardsProxy.handler.recordNewTabOnboardingClick()
+    },
   }
 }
