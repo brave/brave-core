@@ -22,8 +22,8 @@ source_set("frame") {
     "//chrome/browser/ui/views/infobars",
     "//chrome/common:constants",
     "//components/prefs",
+    "//components/split_tabs",
     "//components/tabs:public",
-    "//components/tabs:split_tabs",
     "//ui/compositor",
     "//ui/views",
   ]
