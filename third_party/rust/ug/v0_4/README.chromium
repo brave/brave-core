@@ -1,0 +1,10 @@
+Name: ug
+URL: https://crates.io/crates/ug
+Version: 0.4.0
+Revision: 854edf4f9d97c86723a48ab89362fc1339675180
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Micro compiler for tensor operations.

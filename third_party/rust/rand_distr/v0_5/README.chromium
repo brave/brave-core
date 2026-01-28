@@ -1,0 +1,11 @@
+Name: rand_distr
+URL: https://crates.io/crates/rand_distr
+Version: 0.5.1
+Revision: c5de6c776b9d7fed87138c5d1f70f5f8368aebca
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: Sampling from random number distributions
+

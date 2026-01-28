@@ -1,0 +1,10 @@
+Name: rayon
+URL: https://crates.io/crates/rayon
+Version: 1.11.0
+Revision: 7af20d7692d5decbcb4adcaa079cd607e3e50814
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: Simple work-stealing parallelism for Rust

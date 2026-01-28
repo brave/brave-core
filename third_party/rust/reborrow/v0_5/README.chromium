@@ -1,0 +1,10 @@
+Name: reborrow
+URL: https://crates.io/crates/reborrow
+Version: 0.5.5
+Revision: 6688d1cce5f1155791a30012a127b34119c4179b
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/reborrow-v0_5/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Emulate reborrowing for user types.

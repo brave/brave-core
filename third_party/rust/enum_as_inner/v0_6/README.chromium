@@ -1,0 +1,11 @@
+Name: enum-as-inner
+URL: https://crates.io/crates/enum-as-inner
+Version: 0.6.1
+Revision: 6f09fca6ece8243a7d002f7f87a015fe9139af17
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/enum-as-inner-v0_6/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: A proc-macro for deriving inner field accessor functions on enums.
+
