@@ -121,13 +121,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private Guideline mSplashGuideline;
     private ViewPager2 mVariantBPager;
-    @Nullable
-    private OnboardingStepAdapter mVariantBAdapter;
+    @Nullable private OnboardingStepAdapter mVariantBAdapter;
 
     private String mDayZeroVariant = "";
     private SpannableString mWdpLearnMore;
-    @Nullable
-    private PageBounceAnimator mPageBounceAnimator;
+    @Nullable private PageBounceAnimator mPageBounceAnimator;
 
     private enum CurrentOnboardingPage {
         SET_AS_DEFAULT,
@@ -136,8 +134,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         ANALYTICS_CONSENT_PAGE
     }
 
-    @Nullable
-    private CurrentOnboardingPage mCurrentOnboardingPage;
+    @Nullable private CurrentOnboardingPage mCurrentOnboardingPage;
 
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
