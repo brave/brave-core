@@ -35,15 +35,17 @@ void BraveTabHoverCardController::UpdateHoverCardArrow() {
   }
 }
 
-void BraveTabHoverCardController::CreateHoverCard(Tab* tab) {
+void BraveTabHoverCardController::CreateHoverCard(
+    HoverCardAnchorTarget* anchor_target) {
+  BrowserWindowInterface* browser_window_interface =
+      tab_strip_->GetBrowserWindowInterface();
+
   hover_card_image_previews_enabled_ =
       AreHoverCardImagesEnabled() ||
-      brave_tabs::AreCardPreviewsEnabled(tab->controller()
-                                             ->GetBrowserWindowInterface()
-                                             ->GetProfile()
-                                             ->GetPrefs());
+      brave_tabs::AreCardPreviewsEnabled(
+          browser_window_interface->GetProfile()->GetPrefs());
 
-  TabHoverCardController::CreateHoverCard(tab);
+  TabHoverCardController::CreateHoverCard(anchor_target);
 
   UpdateHoverCardArrow();
 }

@@ -18,7 +18,7 @@ class TabHoverCardBubbleView;
   }                                         \
                                             \
  protected:                                 \
-  void BraveUpdateCardContent(const Tab* tab);
+  void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #define UpdateCardContent virtual UpdateCardContent
@@ -39,7 +39,7 @@ class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   TabHoverCardBubbleView(const TabHoverCardBubbleView&) = delete;
   TabHoverCardBubbleView& operator=(const TabHoverCardBubbleView&) = delete;
 
-  void UpdateCardContent(const Tab* tab) override;
+  void UpdateCardContent(const HoverCardAnchorTarget* anchor_target) override;
   void SetTargetTabImage(gfx::ImageSkia preview_image) override;
   void SetPlaceholderImage() override;
 };
