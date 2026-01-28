@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/brave_onboarding_title"
-        style="@style/HeadingH3"
+        style="@style/HeadingH2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/block_interruptions"
