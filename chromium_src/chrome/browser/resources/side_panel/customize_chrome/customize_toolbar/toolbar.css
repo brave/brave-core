@@ -14,7 +14,7 @@
   height: 60px;
 }
 
-sp-heading h2[slot="heading"] {
+sp-heading h2[slot='heading'] {
   --leo-icon-color: var(--leo-gradient-icons-active);
 
   display: flex;
