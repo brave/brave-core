@@ -38,6 +38,10 @@ namespace network {
 class SimpleURLLoader;
 }
 
+namespace metrics {
+class SerpMetrics;
+}  // namespace metrics
+
 namespace misc_metrics {
 class GeneralBrowserUsage;
 }
@@ -52,7 +56,9 @@ class BraveStatsUpdaterParams;
 
 class BraveStatsUpdater : public ProfileManagerObserver {
  public:
-  BraveStatsUpdater(PrefService* pref_service, ProfileManager* profile_manager);
+  BraveStatsUpdater(PrefService* pref_service,
+                    ProfileManager* profile_manager,
+                    metrics::SerpMetrics* serp_metrics);
   BraveStatsUpdater(const BraveStatsUpdater&) = delete;
   BraveStatsUpdater& operator=(const BraveStatsUpdater&) = delete;
   ~BraveStatsUpdater() override;
@@ -106,6 +112,7 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   bool stats_startup_complete_ = false;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<ProfileManager> profile_manager_ = nullptr;
+  raw_ptr<metrics::SerpMetrics> serp_metrics_ = nullptr;
   std::string usage_server_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;

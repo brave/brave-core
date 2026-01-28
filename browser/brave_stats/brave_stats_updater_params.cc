@@ -18,6 +18,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "build/build_config.h"
 #include "chrome/browser/headless/headless_mode_util.h"
 #include "components/prefs/pref_service.h"
@@ -44,8 +45,10 @@ bool IsHeadlessOrAutomationMode() {
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
+    metrics::SerpMetrics* serp_metrics,
     const ProcessArch arch)
     : BraveStatsUpdaterParams(stats_pref_service,
+                              serp_metrics,
                               arch,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
@@ -53,11 +56,13 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
+    metrics::SerpMetrics* serp_metrics,
     const ProcessArch arch,
     const std::string& ymd,
     int woy,
     int month)
     : stats_pref_service_(stats_pref_service),
+      serp_metrics_(serp_metrics),
       arch_(arch),
       ymd_(ymd),
       woy_(woy),
@@ -213,6 +218,29 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
+
+  if (serp_metrics_ && ymd_ != last_check_ymd_) {
+    update_url = net::AppendQueryParameter(
+        update_url, "braveSearch",
+        base::NumberToString(serp_metrics_->GetBraveSearchCountForYesterday()));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "googleSearch",
+        base::NumberToString(
+            serp_metrics_->GetGoogleSearchCountForYesterday()));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "otherSearch",
+        base::NumberToString(serp_metrics_->GetOtherSearchCountForYesterday()));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "staleSearch",
+        base::NumberToString(
+            serp_metrics_->GetBraveSearchCountForStalePeriod() +
+            serp_metrics_->GetGoogleSearchCountForStalePeriod() +
+            serp_metrics_->GetOtherSearchCountForStalePeriod()));
+  }
+
   return update_url;
 }
 

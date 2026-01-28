@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 
+#include <cstddef>
 #include <memory>
 #include <utility>
 
@@ -31,6 +32,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/rpill/common/rpill.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -107,9 +109,11 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
 }  // anonymous namespace
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
-                                     ProfileManager* profile_manager)
+                                     ProfileManager* profile_manager,
+                                     metrics::SerpMetrics* serp_metrics)
     : pref_service_(pref_service),
       profile_manager_(profile_manager),
+      serp_metrics_(serp_metrics),
       testing_url_loader_factory_(nullptr) {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -337,9 +341,8 @@ void BraveStatsUpdater::SendServerPing() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
   auto stats_updater_params =
-      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_,
-                                                             arch_);
-
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(
+          pref_service_, serp_metrics_, arch_);
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
