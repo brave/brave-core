@@ -1,16 +1,45 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..ab78b6c2b23fb98f1dae417d79138f84a7dbf679 100644
+index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..6e0845f41462dcb205efaeb9a04ce214cb07cb32 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-@@ -120,6 +120,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
+@@ -81,10 +81,11 @@ export interface SettingsClearBrowsingDataDialogV2Element {
+  * The list of all available Browsing Data types in the default order they
+  * should appear in the dialog.
+  */
+-const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
++export const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
+   BrowsingDataType.HISTORY,
+   BrowsingDataType.SITE_DATA,
+   BrowsingDataType.CACHE,
++  BrowsingDataType.BRAVE_AI_CHAT,
+   BrowsingDataType.DOWNLOADS,
+   BrowsingDataType.FORM_DATA,
+   BrowsingDataType.SITE_SETTINGS,
+@@ -98,13 +99,13 @@ const DEFAULT_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
+   BrowsingDataType.CACHE,
+ ];
+ 
+-interface BrowsingDataTypeOption {
++export interface BrowsingDataTypeOption {
+   label: string;
+   subLabel?: string;
+   pref: chrome.settingsPrivate.PrefObject;
+ }
+ 
+-function getDataTypeLabel(datatypes: BrowsingDataType) {
++export function getDataTypeLabel(datatypes: BrowsingDataType) {
+   switch (datatypes) {
+     case BrowsingDataType.HISTORY:
+       return loadTimeData.getString('clearBrowsingHistory');
+@@ -120,6 +121,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
        return loadTimeData.getString('clearDownloadHistory');
      case BrowsingDataType.HOSTED_APPS_DATA:
        return loadTimeData.getString('clearHostedAppData');
-+    case BrowsingDataType.BRAVE_AI_CHAT: return loadTimeData.getString('clearBraveAIChat');
++    case BrowsingDataType.BRAVE_AI_CHAT: return loadTimeData.getString('aiChatClearHistoryData');
      default:
        assertNotReachedCase(datatypes);
    }
-@@ -141,6 +142,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
+@@ -141,6 +143,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
        return 'browser.clear_data.download_history';
      case BrowsingDataType.HOSTED_APPS_DATA:
        return 'browser.clear_data.hosted_apps_data';
