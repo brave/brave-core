@@ -20,6 +20,7 @@
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -42,6 +43,7 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyDelete;
 using endpoints::VerifyResend;
 using endpoints::VerifyResult;
 
@@ -222,7 +224,26 @@ void BraveAccountService::ResendConfirmationEmail(
 }
 
 void BraveAccountService::CancelRegistration() {
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+
   pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
+
+  if (encrypted_verification_token.empty()) {
+    return;
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return;
+  }
+
+  // Best-effort notification to the server, since the token will be cleaned up
+  // automatically after 30 minutes anyway.
+  auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
+  SetBearerToken(request, verification_token);
+  Client<VerifyDelete>::Send(url_loader_factory_, std::move(request),
+                             base::BindOnce([](VerifyDelete::Response) {}));
 }
 
 void BraveAccountService::LoginInitialize(const std::string& email,
