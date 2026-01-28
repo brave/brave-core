@@ -18,7 +18,7 @@
         android:text="@string/block_interruptions"
         android:textColor="@color/text_primary"
         android:gravity="center_horizontal"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/onboarding_title_margin_top"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintTop_toTopOf="parent"

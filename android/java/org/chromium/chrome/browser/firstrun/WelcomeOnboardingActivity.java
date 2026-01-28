@@ -155,7 +155,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
         if (mVariantBPager != null) {
-            mVariantBPager.setUserInputEnabled(false);
+            mVariantBPager.setUserInputEnabled(true);
             mPageBounceAnimator = new PageBounceAnimator(mVariantBPager);
             mVariantBAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
             mVariantBPager.setAdapter(mVariantBAdapter);
@@ -217,7 +217,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                             setDefaultBrowser(this);
                         } else {
                             enableWebDiscoverPreference();
-                            nextOnboardingStep();
+                            nextOnboardingStepForDefaultVariant();
                         }
                     });
         }
@@ -229,7 +229,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                 == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
-                            nextOnboardingStep();
+                            nextOnboardingStepForDefaultVariant();
                         }
                     });
         }
@@ -298,7 +298,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
     }
 
-    private void nextOnboardingStep() {
+    private void nextOnboardingStepForDefaultVariant() {
         if (isActivityFinishingOrDestroyed()) {
             return;
         }
@@ -335,13 +335,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (!isBraveSetAsDefaultBrowser(this)) {
             setDefaultBrowser(this);
         } else {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
     private void handleWDPStep() {
         if (!isWDPSettingAvailable()) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
             return;
         }
 
@@ -369,7 +369,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         // If both settings are managed by policy, skip this page entirely
         if (isP3aManaged && isCrashReportingManaged) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
             return;
         }
 
@@ -580,7 +580,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE) {
             if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
-                nextOnboardingStep();
+                nextOnboardingStepForDefaultVariant();
             }
         }
     }
@@ -590,7 +590,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         super.onActivityResult(requestCode, resultCode, data);
         assert requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE;
         if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
@@ -623,7 +623,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         } else {
             mDefaultConstraintLayout.setVisibility(View.VISIBLE);
-            nextOnboardingStep();
+            nextOnboardingStepForDefaultVariant();
         }
     }
 
