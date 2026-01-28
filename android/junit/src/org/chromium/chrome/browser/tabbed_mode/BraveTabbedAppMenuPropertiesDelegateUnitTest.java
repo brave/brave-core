@@ -340,6 +340,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.preferences_id,
             R.id.set_default_browser,
             R.id.brave_news_id,
+            R.id.request_brave_vpn_id,
             R.id.brave_customize_menu_id,
             R.id.exit_id,
         };
@@ -381,6 +382,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.set_default_browser);
         expectedItems.add(R.id.preferences_id);
         expectedItems.add(R.id.brave_news_id);
+        expectedItems.add(R.id.request_brave_vpn_id);
         expectedItems.add(R.id.brave_customize_menu_id);
         expectedItems.add(R.id.exit_id);
 
@@ -410,11 +412,15 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         // Rewards: DISABLED_BY_POLICY = true means disabled
         when(mPrefService.isManagedPreference(BravePref.DISABLED_BY_POLICY)).thenReturn(true);
         when(mPrefService.getBoolean(BravePref.DISABLED_BY_POLICY)).thenReturn(true);
+        // VPN: MANAGED_BRAVE_VPN_DISABLED = true means disabled
+        when(mPrefService.isManagedPreference(BravePref.MANAGED_BRAVE_VPN_DISABLED))
+                .thenReturn(true);
+        when(mPrefService.getBoolean(BravePref.MANAGED_BRAVE_VPN_DISABLED)).thenReturn(true);
 
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
-        // brave_news_id, brave_leo_id, brave_rewards_id should NOT be in the menu
+        // Policy-disabled items should NOT be in the menu
         Integer[] expectedItems = {
             R.id.new_tab_menu_id,
             R.id.new_incognito_tab_menu_id,
@@ -431,6 +437,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.preferences_id,
             R.id.set_default_browser,
             // R.id.brave_news_id is NOT included - disabled by policy
+            // R.id.request_brave_vpn_id is NOT included - disabled by policy
             R.id.brave_customize_menu_id,
             R.id.exit_id,
         };

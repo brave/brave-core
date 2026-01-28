@@ -92,6 +92,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
+import org.chromium.chrome.browser.ntp.IncognitoNtpMetrics;
 import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
@@ -1507,6 +1508,15 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         StartupMetricsTracker.class,
                         MultiInstanceManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/ntp/IncognitoNewTabPage",
+                        "org/chromium/chrome/browser/ntp/BraveIncognitoNewTabPage",
+                        Activity.class,
+                        NativePageHost.class,
+                        Tab.class,
+                        ObservableSupplier.class,
+                        IncognitoNtpMetrics.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
