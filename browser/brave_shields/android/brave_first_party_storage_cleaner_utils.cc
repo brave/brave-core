@@ -64,8 +64,7 @@ JNI_BraveFirstPartyStorageCleanerUtils_TriggerCurrentAppStateNotification(
 
 bool IsAppInTaskStack() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  return Java_BraveFirstPartyStorageCleanerUtils_isAppInTaskStack(
-      env, Java_BraveFirstPartyStorageCleanerUtils_getCurrentPackageName(env));
+  return Java_BraveFirstPartyStorageCleanerUtils_isAppInTaskStack(env);
 }
 
 }  // namespace brave_shields

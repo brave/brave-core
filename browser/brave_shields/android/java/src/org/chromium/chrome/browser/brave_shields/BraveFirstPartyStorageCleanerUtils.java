@@ -34,29 +34,22 @@ public class BraveFirstPartyStorageCleanerUtils {
     }
 
     @CalledByNative
-    public static boolean isAppInTaskStack(String packageName) {
+    public static boolean isAppInTaskStack() {
         try {
             ActivityManager am =
                     (ActivityManager)
                             ContextUtils.getApplicationContext()
                                     .getSystemService(Context.ACTIVITY_SERVICE);
-
-            List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(10);
-            for (ActivityManager.RunningTaskInfo task : tasks) {
-                if (task.baseActivity != null
-                        && packageName.equals(task.baseActivity.getPackageName())) {
-                    return true;
-                }
+            if (am == null) {
+                return false;
             }
+
+            List<ActivityManager.AppTask> appTasks = am.getAppTasks();
+            return !appTasks.isEmpty();
         } catch (Exception e) {
             Log.e(TAG, "Failed to check task stack", e);
+            return false;
         }
-        return false;
-    }
-
-    @CalledByNative
-    public static String getCurrentPackageName() {
-        return ContextUtils.getApplicationContext().getPackageName();
     }
 
     @NativeMethods

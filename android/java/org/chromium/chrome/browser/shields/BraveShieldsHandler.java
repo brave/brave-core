@@ -936,7 +936,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         // Autoshred menu item's icon
         View braveShieldsAutoShredToggleDivider =
                 braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_top_divider);
-                braveShieldsAutoShredToggleDivider.setVisibility(View.GONE);
+        braveShieldsAutoShredToggleDivider.setVisibility(View.GONE);
         ImageView braveShieldsAutoShredButtonIcon =
                 braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_button_icon);
         braveShieldsAutoShredButtonIcon.setVisibility(View.VISIBLE);
@@ -1661,14 +1661,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setFavIcon(Bitmap bmp) {
         if (bmp != null && mContext != null) {
-            ((Activity)mContext).runOnUiThread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    ImageView iv = (ImageView) mPopupView.findViewById(R.id.site_favicon);
-                    if (iv != null) iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(bmp));
-                }
-            });
+            ((Activity) mContext)
+                    .runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    ImageView iv =
+                                            (ImageView) mPopupView.findViewById(R.id.site_favicon);
+                                    if (iv != null)
+                                        iv.setImageBitmap(
+                                                BraveRewardsHelper.getCircularBitmap(bmp));
+                                }
+                            });
         }
     }
 }

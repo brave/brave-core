@@ -38,7 +38,7 @@ public class BraveShieldsContentSettings {
     public static final String ALLOW_RESOURCE = "allow";
     public static final String AGGRESSIVE = "aggressive";
 
-    // Auto Shred Modes, must be in consistent with brave_shields::mojom::AutoShredMode
+    // Auto Shred Modes, must be consistent with brave_shields::mojom::AutoShredMode
     public static final String AUTO_SHRED_MODE_NEVER = "0";
     public static final String AUTO_SHRED_MODE_LAST_TAB_CLOSED = "1";
     public static final String AUTO_SHRED_MODE_APP_EXIT = "2";
