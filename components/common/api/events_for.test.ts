@@ -21,8 +21,7 @@ describe('eventsFor', () => {
 
   it('partialReceiver should create a receiver with the provided handler', () => {
     const partialInterface = {
-      testMethod: (arg1: string, arg2: number) => {
-      },
+      testMethod: (arg1: string, arg2: number) => {},
     }
 
     const builtReceiver = partialReceiver(
@@ -65,7 +64,8 @@ describe('eventsFor', () => {
     type TestMethodArgs = Parameters<TestInterface['testMethod']>
     const testMethodArgs: TestMethodArgs = ['test', 42]
     expect(testMethodArgs).toEqual(['test', 42])
-    type GeneratedMethodArgs = typeof e1.testMethod extends EventDef<[], infer Args> ? Args : never
+    type GeneratedMethodArgs =
+      typeof e1.testMethod extends EventDef<[], infer Args> ? Args : never
     const testMethodGeneratedArgs: GeneratedMethodArgs = testMethodArgs
     expect(testMethodGeneratedArgs).toEqual(['test', 42])
 
@@ -84,12 +84,12 @@ describe('eventsFor', () => {
       events: eventsFor(
         TestInterface,
         {
-          testMethod: (arg1, arg2) => {}
+          testMethod: (arg1, arg2) => {},
         },
         (instance) => {
           eventHandler = instance
-        }
-      )
+        },
+      ),
     })
 
     expect(eventHandler).not.toBeUndefined()
@@ -103,5 +103,4 @@ describe('eventsFor', () => {
     expect(observer).not.toHaveBeenCalledWith('test', 43)
     expect(observer).toHaveBeenCalledTimes(1)
   })
-
 })

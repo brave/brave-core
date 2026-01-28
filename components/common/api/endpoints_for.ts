@@ -27,15 +27,15 @@ type MutationArgs<T, K extends keyof T> = T[K] extends (...args: any) => any
   ? Parameters<T[K]>
   : never
 
-type MutationResult<T, K extends keyof T> = K extends AsyncMethodKeys<T>
-  ? ResultOfAsyncMethod<T, K>
-  : void
+type MutationResult<T, K extends keyof T> =
+  K extends AsyncMethodKeys<T> ? ResultOfAsyncMethod<T, K> : void
 
-type BaseIncomingMutation<T, K extends keyof T, Z = MutationResult<T, K>> = Omit<
-  MutationEndpointDefinition<
-    MutationArgs<T, K>,
-    Z
-  >,
+type BaseIncomingMutation<
+  T,
+  K extends keyof T,
+  Z = MutationResult<T, K>,
+> = Omit<
+  MutationEndpointDefinition<MutationArgs<T, K>, Z>,
   'mutation' | 'response'
 >
 
@@ -43,10 +43,9 @@ type IncomingQueryDefinition<
   T,
   K extends AsyncMethodKeys<T>,
   Z,
-> =
-  BaseIncomingQuery<T, K, Z> & {
-    response: (raw: ResultOfAsyncMethod<T, K>) => Z
-  }
+> = BaseIncomingQuery<T, K, Z> & {
+  response: (raw: ResultOfAsyncMethod<T, K>) => Z
+}
 
 type IncomingMutationDefinition<
   T,
@@ -58,8 +57,8 @@ type IncomingMutationDefinition<
 
 // Helper: every possible mapper for a key of `T`
 type EndpointMapper<T, P extends keyof T, Z = any> =
-| IncomingQueryDefinition<T, P extends AsyncMethodKeys<T> ? P : never, any>
-| IncomingMutationDefinition<T, P, Z>
+  | IncomingQueryDefinition<T, P extends AsyncMethodKeys<T> ? P : never, any>
+  | IncomingMutationDefinition<T, P, Z>
 
 //
 // Create endpoints generated from some keys of an interface that can be used for createMojoAPI
@@ -95,9 +94,8 @@ export function endpointsFor<
   type MapperKeys = keyof MapperDefinitions
   type ValidKeys = Extract<MapperKeys, keyof T>
 
-  type ValidIncomingQueryDefinition<P extends keyof T, Z> = P extends AsyncMethodKeys<T>
-    ? IncomingQueryDefinition<T, P, Z> : never
-
+  type ValidIncomingQueryDefinition<P extends keyof T, Z> =
+    P extends AsyncMethodKeys<T> ? IncomingQueryDefinition<T, P, Z> : never
 
   type ResultEndpoints = {
     [P in ValidKeys]: MapperDefinitions[P] extends ValidIncomingQueryDefinition<
@@ -105,13 +103,14 @@ export function endpointsFor<
       infer Z
     >
       ? MapperDefinitions[P] extends { placeholderData: any }
-        ? P extends AsyncMethodKeys<T> ? PlaceholderQueryEndpointDefinition<ArgsOfAsyncMethod<T, P>, Z> : never
-        : P extends AsyncMethodKeys<T> ? NoPlaceholderQueryEndpointDefinition<ArgsOfAsyncMethod<T, P>, Z> : never
+        ? P extends AsyncMethodKeys<T>
+          ? PlaceholderQueryEndpointDefinition<ArgsOfAsyncMethod<T, P>, Z>
+          : never
+        : P extends AsyncMethodKeys<T>
+          ? NoPlaceholderQueryEndpointDefinition<ArgsOfAsyncMethod<T, P>, Z>
+          : never
       : MapperDefinitions[P] extends IncomingMutationDefinition<T, P, infer Z>
-        ? MutationEndpointDefinition<
-            MutationArgs<T, P>,
-            Z
-          >
+        ? MutationEndpointDefinition<MutationArgs<T, P>, Z>
         : never
   }
 
@@ -124,7 +123,9 @@ export function endpointsFor<
         ...mapper,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unnecessary-type-assertion
         query: async (...args: any[]) => {
-          const raw = await (impl[key] as (...args: any[]) => Promise<any>)(...(args as any))
+          const raw = await (impl[key] as (...args: any[]) => Promise<any>)(
+            ...(args as any),
+          )
           const mapped = mapper.response(raw)
           return mapped
         },
@@ -135,7 +136,9 @@ export function endpointsFor<
         ...mapper,
 
         mutation: async (...args: any[]) => {
-          let raw: Promise<any> | void = (impl[key] as (...args: any[]) => (Promise<any>|void))(...(args as any))
+          let raw: Promise<any> | void = (
+            impl[key] as (...args: any[]) => Promise<any> | void
+          )(...(args as any))
 
           // Repsonse type of wrapped method is
           // either Promise or void (undefined).

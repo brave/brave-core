@@ -8,7 +8,7 @@ export type Closable<T = any> = T & {
 }
 
 export type MethodKeys<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => (any|void) // it must be callable
+  [K in keyof T]: T[K] extends (...args: any[]) => any | void // it must be callable
     ? ReturnType<T[K]>
     : never
 }[keyof T]

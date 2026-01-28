@@ -43,7 +43,12 @@ export function eventsFor<
   // TODO: only bubble up events that are asked for. Some events may just want to be
   // handled in the API definition so that all events are handled in the same place.
   type Events = {
-    [K in keyof PartialInterface]: EventDef<[], PartialInterface[K] extends (...args: any) => any ? Parameters<PartialInterface[K]> : never>
+    [K in keyof PartialInterface]: EventDef<
+      [],
+      PartialInterface[K] extends (...args: any) => any
+        ? Parameters<PartialInterface[K]>
+        : never
+    >
   }
 
   // Create 'events' that can be used by createInterfaceAPI
@@ -54,19 +59,19 @@ export function eventsFor<
     let apiEventEmitter: (args: ArgsOfMethod<Interface, typeof key>) => void
     const newHandler = (...args: ArgsOfMethod<Interface, typeof key>) => {
       // Call the original handler with the arguments
-      (originalHandler as Function).call(observer, ...args)
+      ;(originalHandler as Function).call(observer, ...args)
       // Emit the event with the arguments
       if (apiEventEmitter) {
-        ;(apiEventEmitter! as any)(...args as unknown as [])
+        ;(apiEventEmitter! as any)(...(args as unknown as []))
       } else {
         console.warn('event emitter was not provided for event', key)
       }
     }
     // Original is new
-    (observer as any)[key] = newHandler
+    ;(observer as any)[key] = newHandler
 
     // Handle each event and fire to the API emitter
-    ;(events as any)[key] = event(emitter => {
+    ;(events as any)[key] = event((emitter) => {
       // register new handler for the event, so we can fire on the API
       apiEventEmitter = emitter
     })

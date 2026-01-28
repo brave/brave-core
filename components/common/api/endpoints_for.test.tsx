@@ -29,9 +29,15 @@ describe('endpointsFor', () => {
     }
 
     getMultiple(): Promise<{ multiple: { a: string }[] }> {
-      return new Promise(resolve => window.setTimeout(() => resolve({
-        multiple: [{ a: 'a' }, { a: 'b' }, { a: 'c' }],
-      }), 100))
+      return new Promise((resolve) =>
+        window.setTimeout(
+          () =>
+            resolve({
+              multiple: [{ a: 'a' }, { a: 'b' }, { a: 'c' }],
+            }),
+          100,
+        ),
+      )
     }
 
     getScreenshots(): Promise<{ screenshots: string[] }> {
@@ -40,12 +46,15 @@ describe('endpointsFor', () => {
       })
     }
 
-    mutateWithArgs(arg1: string, arg2: number): Promise<{
-      resultProperty1: string,
-      resultProperty2: string,
-      resultProperty3: number,
-      resultProperty4: number,
-      }> {
+    mutateWithArgs(
+      arg1: string,
+      arg2: number,
+    ): Promise<{
+      resultProperty1: string
+      resultProperty2: string
+      resultProperty3: number
+      resultProperty4: number
+    }> {
       return Promise.resolve({
         resultProperty1: 'some value',
         resultProperty2: 'another value',
@@ -54,13 +63,9 @@ describe('endpointsFor', () => {
       })
     }
 
-    mutatesWithNoReturn(isThing: boolean) {
+    mutatesWithNoReturn(isThing: boolean) {}
 
-    }
-
-    mutatesWithNoReturnAndNoArguments() {
-
-    }
+    mutatesWithNoReturnAndNoArguments() {}
 
     dontWant: () => Promise<{ something: string }>
   }
@@ -86,7 +91,8 @@ describe('endpointsFor', () => {
       prefetchWithArgs: [],
     },
     getScreenshots: {
-      mutationResponse: (result: { screenshots: string[] }) => result.screenshots,
+      mutationResponse: (result: { screenshots: string[] }) =>
+        result.screenshots,
     },
     mutatesWithNoReturn: {
       mutationResponse: () => {},
@@ -136,7 +142,7 @@ describe('endpointsFor', () => {
         onMutate: ([arg1, arg2]) => {
           // This won't get called until used in a createInterfaceApi
           onMutateObserver(arg1, arg2)
-        }
+        },
       },
     })
     expect(testResult.mutateWithArgs.mutation).toBeDefined()
@@ -144,7 +150,12 @@ describe('endpointsFor', () => {
     // Typescript should infer the return type from the mutationResponse
     // function
     expect(result.aResultProperty).toEqual('somevalue')
-    expect(mutationResponseObserver).toHaveBeenCalledWith('some value', 'another value', 55, 56)
+    expect(mutationResponseObserver).toHaveBeenCalledWith(
+      'some value',
+      'another value',
+      55,
+      56,
+    )
   })
 
   it('should create void mutation endpoints with arguments', async () => {
@@ -161,7 +172,7 @@ describe('endpointsFor', () => {
         onMutate: ([arg1]) => {
           // This won't get called until used in a createInterfaceApi
           onMutateObserver(arg1)
-        }
+        },
       },
     })
     expect(testResult.mutatesWithNoReturn.mutation).toBeDefined()
@@ -198,9 +209,9 @@ describe('endpointsFor', () => {
             response: (a) => {
               return a.multiple
             },
-          }
-        })
-      }
+          },
+        }),
+      },
     })
 
     function useTestQueryData() {
@@ -210,11 +221,19 @@ describe('endpointsFor', () => {
     let hookResult = await act(() => renderHook(useTestQueryData))
     expect(hookResult.result.current).toEqual(undefined)
 
-    await act(() => new Promise(resolve => setTimeout(resolve, 200))) // wait for the promise to resolve
+    await act(() => new Promise((resolve) => setTimeout(resolve, 200))) // wait for the promise to resolve
 
-    expect(api.getMultiple.current()).toEqual([{ a: 'a' }, { a: 'b' }, { a: 'c' }])
+    expect(api.getMultiple.current()).toEqual([
+      { a: 'a' },
+      { a: 'b' },
+      { a: 'c' },
+    ])
 
     await act(() => hookResult.rerender())
-    expect(hookResult.result.current).toEqual([{ a: 'a' }, { a: 'b' }, { a: 'c' }])
+    expect(hookResult.result.current).toEqual([
+      { a: 'a' },
+      { a: 'b' },
+      { a: 'c' },
+    ])
   })
 })
