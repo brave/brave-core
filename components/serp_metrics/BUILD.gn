@@ -8,6 +8,8 @@ source_set("serp_metrics") {
     "pref_names.h",
     "pref_registry.cc",
     "pref_registry.h",
+    "serp_classifier.cc",
+    "serp_classifier.h",
     "serp_metrics.cc",
     "serp_metrics.h",
     "serp_metrics_feature.cc",
@@ -22,6 +24,8 @@ source_set("serp_metrics") {
   deps = [
     "//brave/components/constants",
     "//components/prefs",
+    "//components/search_engines",
+    "//url",
   ]
 }
 
@@ -29,6 +33,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "serp_classifier_unittest.cc",
     "serp_metrics_feature_unittest.cc",
     "serp_metrics_unittest.cc",
   ]
@@ -39,10 +44,14 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/constants",
+    "//brave/components/search_engines",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//components/search_engines",
+    "//components/search_engines:test_support",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
+    "//url",
   ]
 }
 
