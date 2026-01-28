@@ -1,16 +1,24 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..ab78b6c2b23fb98f1dae417d79138f84a7dbf679 100644
+index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..448450e585b31bd46010c1710a8db5ef3fdd1b55 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-@@ -120,6 +120,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
+@@ -85,6 +85,7 @@ const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
+   BrowsingDataType.HISTORY,
+   BrowsingDataType.SITE_DATA,
+   BrowsingDataType.CACHE,
++  BrowsingDataType.BRAVE_AI_CHAT,
+   BrowsingDataType.DOWNLOADS,
+   BrowsingDataType.FORM_DATA,
+   BrowsingDataType.SITE_SETTINGS,
+@@ -120,6 +121,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
        return loadTimeData.getString('clearDownloadHistory');
      case BrowsingDataType.HOSTED_APPS_DATA:
        return loadTimeData.getString('clearHostedAppData');
-+    case BrowsingDataType.BRAVE_AI_CHAT: return loadTimeData.getString('clearBraveAIChat');
++    case BrowsingDataType.BRAVE_AI_CHAT: return loadTimeData.getString('aiChatClearHistoryData');
      default:
        assertNotReachedCase(datatypes);
    }
-@@ -141,6 +142,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
+@@ -141,6 +143,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
        return 'browser.clear_data.download_history';
      case BrowsingDataType.HOSTED_APPS_DATA:
        return 'browser.clear_data.hosted_apps_data';
@@ -18,3 +26,33 @@ index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..ab78b6c2b23fb98f1dae417d79138f84
      default:
        assertNotReachedCase(datatypes);
    }
+@@ -234,9 +237,9 @@ export class SettingsClearBrowsingDataDialogV2Element extends
+   declare private otherGoogleDataRowSubLabel_: boolean;
+   declare private showHistoryDeletionDialog_: boolean;
+   declare private showOtherGoogleDataDialog_: boolean;
+-  declare private expandedBrowsingDataTypeOptionsList_:
++  declare protected expandedBrowsingDataTypeOptionsList_:
+       BrowsingDataTypeOption[];
+-  declare private moreBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[];
++  declare protected moreBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[];
+   declare private syncStatus_: SyncStatus|undefined;
+ 
+   private clearBrowsingDataBrowserProxy_: ClearBrowsingDataBrowserProxy =
+@@ -306,7 +309,7 @@ export class SettingsClearBrowsingDataDialogV2Element extends
+     }
+   }
+ 
+-  private setUpDataTypeOptionLists_() {
++  protected setUpDataTypeOptionLists_() {
+     const expandedOptionsList: BrowsingDataTypeOption[] = [];
+     const moreOptionsList: BrowsingDataTypeOption[] = [];
+ 
+@@ -333,7 +336,7 @@ export class SettingsClearBrowsingDataDialogV2Element extends
+    * @param prefName Browsing data type deletion preference.
+    * @param text The text with which to update the counter.
+    */
+-  private updateCounterText_(prefName: string, text: string) {
++  protected updateCounterText_(prefName: string, text: string) {
+     // If the corresponding datatype is in the expanded options list, update the
+     // sub-label.
+     const expandedListIndex =
