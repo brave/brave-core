@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.components.omnibox.OmniboxFeatures;
 
 public class BraveSearchEnginePreference extends SearchEngineSettings {
     // These members will be deleted in bytecode, member from parent class will be used instead.
@@ -31,7 +33,14 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
 
     public void createAdapterIfNecessary() {
         if (mSearchEngineAdapter != null) return;
-        mSearchEngineAdapter = new BraveSearchEngineAdapter(getActivity(), getProfile(mPrivate));
+
+        Runnable siteSearchClickHandler =
+                OmniboxFeatures.sOmniboxSiteSearch.isEnabled()
+                        ? this::openSiteSearchSettings
+                        : null;
+        mSearchEngineAdapter =
+                new BraveSearchEngineAdapter(
+                        getActivity(), getProfile(mPrivate), siteSearchClickHandler);
     }
 
     private Profile getProfile(boolean isPrivate) {
@@ -40,5 +49,11 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
         } else {
             return mProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true);
         }
+    }
+
+    // WIP: this is a duplicate of SearchEngineSettings.openSiteSearchSettings
+    private void openSiteSearchSettings() {
+        SettingsNavigationFactory.createSettingsNavigation()
+                .startSettings(getContext(), SiteSearchSettings.class);
     }
 }
