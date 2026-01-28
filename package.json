@@ -236,6 +236,7 @@
     "redux-act": "1.8.0",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.4.1",
+    "remark-directive": "4.0.0",
     "remark-gfm": "4.0.1",
     "throttleit": "1.0.0",
     "webext-redux": "2.1.9"
