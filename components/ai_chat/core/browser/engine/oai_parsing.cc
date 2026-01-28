@@ -50,6 +50,17 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
       tool_use_event->arguments_json = *arguments_raw;
     }
 
+    // Check for alignment_check within this tool call
+    if (const base::Value::Dict* alignment_dict =
+            tool_call.FindDict("alignment_check")) {
+      if (!alignment_dict->FindBool("allowed").value_or(true)) {
+        const std::string* assessment = alignment_dict->FindString("reasoning");
+        tool_use_event->permission_challenge = mojom::PermissionChallenge::New(
+            assessment ? std::make_optional(*assessment) : std::nullopt,
+            std::nullopt);
+      }
+    }
+
     tool_use_events.push_back(std::move(tool_use_event));
   }
 

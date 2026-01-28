@@ -867,6 +867,217 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
+  // Tests that we correctly parse alignment_check from each tool call:
+  // - Populate PermissionChallenge when allowed is false
+  // - Don't populate PermissionChallenge when allowed is true
+  // - Handle unknown alignment_check schema (missing allowed property) by
+  //   ignoring the alignment_check
+  // - Ignore missing reasoning property and still provide PermissionChallenge
+  std::vector<OAIMessage> messages =
+      GetMockMessagesAndExpectedMessagesJson().first;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::NiceMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce(testing::WithArgs<4, 5>(
+          [&](DataReceivedCallback data_received_callback,
+              ResultCallback result_callback) {
+            auto chunk = base::test::ParseJsonDict(R"({
+              "choices": [{
+                "delta": {
+                  "content": "This is a test completion",
+                  "tool_calls": [
+                    {
+                      "id": "call_123",
+                      "type": "function",
+                      "function": {
+                        "name": "search_web",
+                        "arguments": "{\"query\":\"Hello, world!\"}"
+                      },
+                      "alignment_check": {
+                        "allowed": false,
+                        "reasoning": "Server determined this tool use is off"
+                      }
+                    },
+                    {
+                      "id": "call_456",
+                      "type": "function",
+                      "function": {
+                        "name": "get_weather",
+                        "arguments": "{\"location\":\"New York\"}"
+                      }
+                    },
+                    {
+                      "id": "call_789",
+                      "type": "function",
+                      "function": {
+                        "name": "read_file",
+                        "arguments": "{\"path\":\"/etc/passwd\"}"
+                      },
+                      "alignment_check": {
+                        "allowed": false,
+                        "reasoning": "This tool is also off-topic"
+                      }
+                    },
+                    {
+                      "id": "call_101",
+                      "type": "function",
+                      "function": {
+                        "name": "allowed_tool",
+                        "arguments": "{\"arg\":\"value\"}"
+                      },
+                      "alignment_check": {
+                        "allowed": true,
+                        "reasoning": "This is allowed"
+                      }
+                    },
+                    {
+                      "id": "call_202",
+                      "type": "function",
+                      "function": {
+                        "name": "missing_allowed_field",
+                        "arguments": "{}"
+                      },
+                      "alignment_check": {
+                        "reasoning": "Format unknown"
+                      }
+                    },
+                    {
+                      "id": "call_303",
+                      "type": "function",
+                      "function": {
+                        "name": "missing_reasoning",
+                        "arguments": "{}"
+                      },
+                      "alignment_check": {
+                        "allowed": false
+                      }
+                    }
+                  ]
+                }
+              }]
+            })");
+            data_received_callback.Run(base::ok(base::Value(std::move(chunk))));
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                          GURL()));
+            run_loop.QuitWhenIdle();
+            return Ticket();
+          }));
+
+  // This test is focused on the correctness of the ToolUseEvent,
+  // we can leave verifying other events are also sent in another test.
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(testing::AnyNumber());
+
+  auto expected_tool_use_event_1 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
+          std::nullopt,
+          mojom::PermissionChallenge::New(
+              "Server determined this tool use is off", std::nullopt)));
+  {
+    SCOPED_TRACE(
+        "Expected search_web (call_123) to have PermissionChallenge with "
+        "reasoning when alignment_check.allowed=false");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_1.get()))))
+        .Times(1);
+  }
+
+  auto expected_tool_use_event_2 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_456", "{\"location\":\"New York\"}",
+          std::nullopt, nullptr));
+  {
+    SCOPED_TRACE(
+        "Expected get_weather (call_456) to have no PermissionChallenge "
+        "when alignment_check is not present");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_2.get()))))
+        .Times(1);
+  }
+
+  auto expected_tool_use_event_3 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "read_file", "call_789", "{\"path\":\"/etc/passwd\"}", std::nullopt,
+          mojom::PermissionChallenge::New("This tool is also off-topic",
+                                          std::nullopt)));
+  {
+    SCOPED_TRACE(
+        "Expected read_file (call_789) to have PermissionChallenge with "
+        "reasoning when alignment_check.allowed=false");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_3.get()))))
+        .Times(1);
+  }
+
+  auto expected_tool_use_event_4 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "allowed_tool", "call_101", "{\"arg\":\"value\"}", std::nullopt,
+          nullptr));
+  {
+    SCOPED_TRACE(
+        "Expected allowed_tool (call_101) to have no PermissionChallenge "
+        "when alignment_check.allowed=true");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_4.get()))))
+        .Times(1);
+  }
+
+  auto expected_tool_use_event_5 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "missing_allowed_field", "call_202", "{}", std::nullopt, nullptr));
+  {
+    SCOPED_TRACE(
+        "Expected missing_allowed_field (call_202) to have no "
+        "PermissionChallenge when alignment_check.allowed field is missing");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_5.get()))))
+        .Times(1);
+  }
+
+  auto expected_tool_use_event_6 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "missing_reasoning", "call_303", "{}", std::nullopt,
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt)));
+  {
+    SCOPED_TRACE(
+        "Expected missing_reasoning (call_303) to have PermissionChallenge "
+        "without reasoning when alignment_check.allowed=false but reasoning "
+        "is missing");
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_tool_use_event_6.get()))))
+        .Times(1);
+  }
+
+  client_->PerformRequest(
+      std::move(messages), std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
 TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
   std::string expected_completion_response = "complete text";
 
