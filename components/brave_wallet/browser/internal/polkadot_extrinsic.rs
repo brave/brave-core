@@ -469,11 +469,15 @@ fn parse_fee_info(mut input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
         return false;
     }
 
+    const CLASS_NORMAL: u8 = 0;
+    const CLASS_OPERATIONAL: u8 = 1;
+    const CLASS_MANDATORY: u8 = 2;
+
     let Ok(class) = next_n_bytes(&mut input, 1) else { return false };
     match class[0] {
         // These are the only valid values
         // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L1330-L1349
-        0 | 1 | 2 => {}
+        CLASS_NORMAL | CLASS_OPERATIONAL | CLASS_MANDATORY => {}
         _ => return false,
     }
 
