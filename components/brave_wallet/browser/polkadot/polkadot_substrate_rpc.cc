@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/checked_math.h"
@@ -581,6 +583,7 @@ void PolkadotSubstrateRpc::OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
 
   return std::move(callback).Run(*res->result, std::nullopt);
 }
+
 void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
                                           base::span<const uint8_t> extrinsic,
                                           GetPaymentInfoCallback callback) {
@@ -596,9 +599,8 @@ void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
         base::unexpected(WalletInternalErrorMessage()));
   }
 
-  std::vector<uint8_t> data(extrinsic.begin(), extrinsic.end());
-  auto le_bytes = base::byte_span_from_ref(size);
-  data.insert(data.end(), le_bytes.begin(), le_bytes.end());
+  auto data = base::ToVector(extrinsic);
+  base::Extend(data, base::byte_span_from_ref(size));
 
   params.Append(base::HexEncodeLower(data));
 
