@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/flags/android/chrome_feature_list.cc b/chrome/browser/flags/android/chrome_feature_list.cc
-index ef7a1566323ab7b232712365d6ee48bad6e015d9..11f888694e24b8fa4cd268d479d92c2eb5f0e977 100644
+index ef7a1566323ab7b232712365d6ee48bad6e015d9..6d1d169d0566849d8876918c0b618d7cf95d161f 100644
 --- a/chrome/browser/flags/android/chrome_feature_list.cc
 +++ b/chrome/browser/flags/android/chrome_feature_list.cc
 @@ -176,7 +176,9 @@ const base::Feature* const kFeaturesExposedToJava[] = {
      &features::kEnableFullscreenToAnyScreenAndroid,
      &features::kFluidResize,
      &features::kGenericSensorExtraClasses,
-+#if BUILDFLAG(ENABLE_GLIC) || BUILDFLAG(ENABLE_GLIC_ANDROID)
++#if BUILDFLAG(ENABLE_GLIC)
      &features::kGlic,
 +#endif  // BUILDFLAG(ENABLE_GLIC)    
      &features::kHttpsFirstBalancedMode,
