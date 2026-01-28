@@ -250,20 +250,22 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
       .copy_from(base::byte_span_from_ref(send_amount_));
 
   auto signature_payload = generate_extrinsic_signature_payload(
-      **chain_metadata_, account_info_->nonce, send_amount_bytes, recipient_,
-      runtime_version_->spec_version, runtime_version_->transaction_version,
-      signing_header_->block_number, *genesis_hash_, *signing_block_hash_);
+      *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
+      recipient_, runtime_version_->spec_version,
+      runtime_version_->transaction_version, signing_header_->block_number,
+      *genesis_hash_, *signing_block_hash_);
 
   auto signature = keyring_service_->SignMessageByPolkadotKeyring(
       sender_account_id_, signature_payload);
 
   CHECK(signature);
 
+  auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
+  CHECK(sender_pubkey);
+
   auto signed_extrinsic = make_signed_extrinsic(
-      **chain_metadata_,
-      *keyring_service_->GetPolkadotPubKey(sender_account_id_), recipient_,
-      send_amount_bytes, *signature, signing_header_->block_number,
-      account_info_->nonce);
+      *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
+      *signature, signing_header_->block_number, account_info_->nonce);
 
   std::move(callback_).Run(base::ok(
       std::vector<uint8_t>(signed_extrinsic.begin(), signed_extrinsic.end())));
