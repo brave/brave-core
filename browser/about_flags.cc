@@ -491,6 +491,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables renaming tabs via tab context menu.",                     \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveRenamingTabs),                      \
+      },                                                                     \
+      {                                                                      \
+          "brave-scrollable-tab-strip",                                      \
+          "Scrollable horizontal tab strip",                                 \
+          "Enables scrolling for horizontal tab strip when tabs overflow",   \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                \
       })
 
 #else
