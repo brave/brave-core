@@ -1,0 +1,12 @@
+diff --git a/ui/base/l10n/l10n_util_mac_bridge.h b/ui/base/l10n/l10n_util_mac_bridge.h
+index 2f1a8ddf133defb33cb98a960c618ca1cc812605..65459ece92ed4855020a9037e35ee440f93f82c2 100644
+--- a/ui/base/l10n/l10n_util_mac_bridge.h
++++ b/ui/base/l10n/l10n_util_mac_bridge.h
+@@ -10,6 +10,7 @@
+ typedef int MessageID;
+ 
+ // An Objective-C wrapper around namespaced C++ l10n methods.
++__attribute__((visibility("default")))
+ @interface L10nUtils : NSObject
+ 
+ + (NSString*)stringForMessageID:(MessageID)messageID
