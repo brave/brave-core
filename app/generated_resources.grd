@@ -356,6 +356,9 @@ are declared in tools/grit/grit_args.gni.
         <part file="printing_strings.grdp" />
       </if>
 
+      <!-- Skills specific strings -->
+      <part file="skills_strings.grdp" />
+
       <!-- Strings that are only used when VR devices are supported -->
       <if expr="enable_vr">
         <part file="vr_strings.grdp" />
@@ -453,6 +456,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_HOVER_CARD_BLOB_URL_SOURCE" desc="The text to be displayed in the source line of a hover card when viewing BLOB data.">
         temporary data
+      </message>
+      <message name="IDS_HOVER_CARD_VIEW_SOURCE_URL_SOURCE" desc="The text to be displayed in the source line of a hover card when viewing a view-source: version of a website.">
+        view source
       </message>
       <message name="IDS_HOVER_CARD_CRASHED_TITLE" desc="The title text to display on a hover card when a tab has crashed without loading.">
         Crashed.
@@ -1961,6 +1967,12 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_BLOCKED" desc="The download was blocked due to security policy.">
         Blocked
       </message>
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_LOCAL_DOWNLOAD_BLOCKED" desc="The local download was blocked and redirected to cloud storage">
+        Your organization blocked the local download of this file.
+      </message>
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_LOCAL_DOWNLOAD_BLOCKED_DOWNLOAD_UI" desc="The local download was blocked and redirected to cloud storage due to security policy.">
+        Local download blocked
+      </message>
       <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_BLOCKED" desc="Download page message: The download was blocked due to security policy on this machine.">
         Security settings on your computer blocked this file.
       </message>
@@ -2183,7 +2195,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_PROMPT_DOWNLOAD_SENSITIVE_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
         Your organization's policies aren't met
       </message>
-      <message name="IDS_PROMPT_DOWNLOAD_FORCED_SAVE_TO_GDRIVE" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
+      <message name="IDS_PROMPT_DOWNLOAD_FORCED_SAVE_TO_CLOUD" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
         Failed - Local download blocked
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_SCAN_FAILED" desc="Message shown in the download shelf when the deep scan of the file fails and the admin has chosen to block the file">
@@ -2228,7 +2240,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_SENSITIVE_CONTENT_BLOCKED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it contains sensitive content">
         Your organization's policies aren't met
       </message>
-      <message name="IDS_FORCED_SAVE_TO_GDRIVE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to GDrive">
+      <message name="IDS_FORCED_SAVE_TO_CLOUD_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to Cloud Storage">
         Your organization's policies aren't met
       </message>
       <message name="IDS_BLOCKED_TOO_LARGE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is too large for deep scanning">
@@ -5778,9 +5790,6 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
         </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
-          Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
-        </message>
         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
           Allowed to read &amp; change
         </message>
@@ -6135,8 +6144,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_TITLE_BACK_TO_OTHER" desc="The title of the dialog informing the user that the default search engine has been overridden by an extension, and asking if they want to change back to their old provider.">
         Change back to <ph name="OLD_SEARCH_PROVIDER">$1<ex>DuckDuckGo</ex></ph>?
       </message>
+      <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_TITLE_EXPLICIT_CHOICE" desc="The title of the dialog informing the user that the default search engine has been overridden by an extension, and presenting an explicit choice on whether to use the new or previous search providers.">
+        Confirm your default search engine
+      </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_BODY_GENERIC" desc="The body of the dialog informing the user that the default search engine has been overridden by an extension, indicating which extension now controls it.">
         The "<ph name="EXTENSION_NAME">$2<ex>Some New Search</ex></ph>" extension changed search to use <ph name="SEARCH_PROVIDER_DOMAIN">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_BODY_EXPLICIT_CHOICE" desc="The title of the dialog informing the user that the default search engine has been overridden by an extension, and presenting an explicit choice on whether to use the new or previous search providers.">
+        The extension "<ph name="EXTENSION_NAME">$1<ex>Some Extension</ex></ph>" attempted to change your search engine to <ph name="SEARCH_PROVIDER">$2<ex>DuckDuckGo</ex></ph>. Confirm your preference below
+      </message>
+      <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_RECENT_CHANGE" desc="Describes why a new search provider (added by an extension) is listed as an option for which search to use.">
+        Recently changed to by <ph name="EXTENSION_NAME">$1<ex>Some Extension</ex></ph>
+      </message>
+      <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_PREVIOUS_CHOICE" desc="Describes why the previous search provider is being presented as an option for which search to use.">
+        Your previous choice
       </message>
       <!-- End Extension Settings Overridden Dialog strings. -->
       <!-- Force Installed Deprecated Apps Deletion Dialog strings. -->
@@ -6241,6 +6262,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Extensions Menu bubble -->
       <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
+          Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
+        </message>
         <message name="IDS_EXTENSIONS_MENU_TITLE" desc="Title of the Extensions Menu" formatter_data="android_java">
           Extensions
         </message>
@@ -10022,6 +10046,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_EXPAND_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that expands the vertical tab strip.">
             Expand Vertical Tabs
           </message>
+          <message name="IDS_VERTICAL_TAB_GROUP_MORE_OPTIONS" is_accessibility_with_no_ui="true" desc="In Title Case: The accessibility label for the button in the tab group header that opens the editor bubble.">
+            More Options
+          </message>
         </then>
         <else>
           <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
@@ -10036,6 +10063,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_EXPAND_VERTICAL_TABS" desc="The tooltip for the button in the top container that expands the vertical tab strip.">
             Expand vertical tabs
           </message>
+          <message name="IDS_VERTICAL_TAB_GROUP_MORE_OPTIONS" is_accessibility_with_no_ui="true" desc="In Title Case: The accessibility label for the button in the tab group header that opens the editor bubble.">
+            More options
+          </message>
         </else>
       </if>
       <!-- /Vertical Tab Strings -->
@@ -10049,6 +10079,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_HIDE_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the projects panel.">
             Hide Projects
           </message>
+          <message name="IDS_TAB_GROUPS_TITLE" desc="In Title Case: The title for the tab groups container in the projects panel.">
+            Tab Groups
+          </message>
+          <message name="IDS_RECENT_CHATS_TITLE" desc="In Title Case: The title for the recent chats container in the projects panel.">
+            Recent Chats
+          </message>
         </then>
         <else>
           <message name="IDS_VIEW_PROJECTS_PANEL" desc="The tooltip for the button in the top container that shows the projects panel.">
@@ -10056,6 +10092,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
           <message name="IDS_HIDE_PROJECTS_PANEL" desc="The tooltip for the button in the top container that hides the projects panel.">
             Hide projects
+          </message>
+          <message name="IDS_TAB_GROUPS_TITLE" desc="The title for the tab groups container in the projects panel.">
+            Tab groups
+          </message>
+          <message name="IDS_RECENT_CHATS_TITLE" desc="In Title Case: The title for the recent chats container in the projects panel.">
+            Recent chats
           </message>
         </else>
       </if>
@@ -10271,6 +10313,44 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Lens promo notification.">
           Shop, translate, and identify what you see with your camera.
+        </message>
+      </if>
+
+      <!--Desktop to iOS Price Tracking promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Price Tracking promo bubble with a reminder button.">
+          Keep up with all your price drops on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
+          Get price tracking alerts on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Price Tracking promo bubble with a reminder button.">
+          Get price tracking alerts on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Price Tracking promo notification.">
+          Keep up with all your price drops on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Price Tracking promo notification.">
+          Enable price tracking alerts
+        </message>
+      </if>
+
+      <!--Desktop to iOS Tab Groups promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Tab Groups promo bubble with a reminder button.">
+          You can pick up where you left off or create new tab groups on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Tab Groups promo bubble with a QR Code.">
+          Use your tab groups on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Tab Groups promo bubble with a reminder button.">
+          Use your tab groups on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Tab Groups promo notification.">
+          You can pick up where you left off or create new tab groups on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Tab Groups promo notification.">
+          Reminder: Your tab groups
         </message>
       </if>
 
@@ -10559,39 +10639,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_AUDIO_MUTING_PROMO" desc="Text shown on the promotional UI appearing next to the tab alert indicator.">
         Click the speaker icon to mute this tab
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="In Title Case: The title for the battery saver mode in-product promo bubble.">
-          Energy Saver Turned On
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="The title for the battery saver mode in-product promo bubble.">
-          Energy Saver turned on
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the battery saver mode in-product promo bubble.">
-          This extends battery power by limiting background activity and visual effects like smooth scrolling.
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_BATTERY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the battery saver mode in-product promo bubble.">
-          This extends battery power by limiting background activity and visual effects like smooth scrolling
-        </message>
-      </if>
+      <message name="IDS_BATTERY_SAVER_MODE_PROMO_TITLE" desc="The title for the battery saver mode in-product promo bubble.">
+        Energy Saver turned on
+      </message>
+      <message name="IDS_BATTERY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the battery saver mode in-product promo bubble.">
+        This extends battery power by limiting background activity and visual effects like smooth scrolling
+      </message>
       <message name="IDS_BATTERY_SAVER_MODE_PROMO_ACTION_TEXT" desc="The custom action button text for the battery saver mode in-product promo bubble.">
         Settings
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_MEMORY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the high efficiency mode in-product promo bubble">
-          Memory Saver frees up memory from inactive tabs so it can be used by active tabs and other apps.
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_MEMORY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the high efficiency mode in-product promo bubble">
-          Memory Saver frees up memory from inactive tabs so it can be used by active tabs and other apps
-        </message>
-      </if>
+      <message name="IDS_MEMORY_SAVER_MODE_PROMO_TEXT" desc="The text shown for the high efficiency mode in-product promo bubble">
+        Memory Saver frees up memory from inactive tabs so it can be used by active tabs and other apps
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_MEMORY_SAVER_MODE_PROMO_ACTION_TEXT" desc="In Title Case: The custom action button text for the high efficiency mode in-product promo bubble">
           Turn On
@@ -10602,16 +10661,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Turn on
         </message>
       </if>
-      <if expr="use_titlecase">
-        <message name="IDS_DISCARD_RING_PROMO_TITLE" desc="In Title Case: The title for the discard ring in-product promo bubble.">
-          Inactive Tabs Get a New Look
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_DISCARD_RING_PROMO_TITLE" desc="The title for the discard ring in-product promo bubble.">
-          Inactive tabs get a new look
-        </message>
-      </if>
+      <message name="IDS_DISCARD_RING_PROMO_TITLE" desc="The title for the discard ring in-product promo bubble.">
+        Inactive tabs get a new look
+      </message>
       <message name="IDS_DISCARD_RING_PROMO_TEXT" desc="The text shown for the discard ring in-product promo bubble.">
         See when tabs are inactive at a glance. You can turn off this new look in settings anytime.
       </message>
@@ -11692,16 +11744,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           =1 {Add Tab to New Group}
           other {Add Tabs to New Group}}
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="In Title Case: The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
           Add Tab to New Split View
         </message>
-        <message name="IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+        <message name="IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT" desc="In Title Case: The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
           New Split View with Current Tab
         </message>
-        <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="The label of the tab context menu submenu for exiting split view.">
+        <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="In Title Case: The label of the tab context menu submenu for exiting split view.">
           Arrange Split View
         </message>
-        <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="The label of the tab context menu item for swapping a tab with the current view in the split.">
+        <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="In Title Case: The label of the tab context menu item for swapping a tab with the current view in the split.">
           Move Tab into Split View
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
@@ -11710,7 +11762,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="In Title Case: The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
           Remove From Group
         </message>
-        <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
+        <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="In Title Case: The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
           {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 Other Tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # Other Tabs}}
         </message>
         <message name="IDS_TAB_CXMENU_MOVE_TABS_TO_NEW_WINDOW" desc="In Title Case: The label of the 'Move Tabs to New Window' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
@@ -11732,7 +11784,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_COMMERCE_PRODUCT_SPEC" desc="In Title Case: The text for the context menu item to compare selected tabs." translateable="false">
           Compare Tabs
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="The label for the tab context menu item to add the current tab to a new comparison table">
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="In Title Case: The label for the tab context menu item to add the current tab to a new comparison table">
           Add Tab to New Comparison Table
         </message>
       </if>
@@ -13907,21 +13959,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
       </if>
 
-      <!-- One click sign-in bubble and dialog -->
+      <!-- Used in `HomePageUndoBubble` -->
       <message name="IDS_ONE_CLICK_BUBBLE_UNDO" desc="The text for the undo button in the one click sign-in bubble.">
         Undo
-      </message>
-      <message name="IDS_ONE_CLICK_SIGNIN_BUBBLE_MESSAGE" desc="The body of the sync promo NTP bubble.">
-        Your bookmarks, history, and other settings will be synced to your Brave sync chain.
-      </message>
-      <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_OK_BUTTON" desc="The text of the OK button of the one click sign-in dialog.">
-        OK, got it
-      </message>
-      <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_UNDO_BUTTON" desc="The text of the undo button of the one click sign-in dialog.">
-        Undo
-      </message>
-      <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_ADVANCED" desc="The advanced link in the one click sign-in dialog. Clicking the link will take the user to advanced settings.">
-        Advanced
       </message>
       <!-- Enterprise sign-in profile linking -->
       <message name="IDS_ENTERPRISE_SIGNIN_CANCEL" desc="Text of the button to cancel sign-in">
@@ -19388,11 +19428,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_DURATION" desc="Text indicating the duration of a Brave Updater event in a log.">
         Duration: <ph name="DURATION">$1<ex>1m 12s</ex></ph>
       </message>
+      <message name="IDS_UPDATER_EFFECTIVE_POLICY_SET" desc="Label for an expandable section which displays the enterprise policies which controlled the behavior of an action taken by the Brave Updater in its event log.">
+        Enterprise Policies
+      </message>
       <message name="IDS_UPDATER_END_DATE" desc="Label for the end date input field.">
         End Date:
       </message>
       <message name="IDS_UPDATER_ERROR_DETAILS" desc="Details of an error encountered by the updater, including numeric category, code, and extra code values.">
         Error: Category: <ph name="CATEGORY">$1<ex>1</ex></ph>, Code: <ph name="CODE">$2<ex>2</ex></ph>, Extra Code: <ph name="EXTRA_CODE">$3<ex>0</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_EVENT_LIST_TITLE" desc="Title for a section of the chrome://updater page which displays an event log detailing the activity of Brave's updater on a user's system.">
+        Event History
       </message>
       <message name="IDS_UPDATER_EVENT_TYPE" desc="Label for a filter category allowing the user to filter logs by the type of event.">
         Event Type
@@ -19445,11 +19491,29 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_FILTER_CHIP_UPDATER_SCOPE" desc="Text displayed in a filter chip showing the selected updater scopes.">
         Updater Scope: <ph name="OUTCOMES">$1<ex>Per-system updater, Per-user updater</ex></ph>
       </message>
+      <message name="IDS_UPDATER_INACTIVE_VERSIONS_LABEL" desc="A label for a list of inactive versions of the Brave Updater. Multiple Brave Updater versions may be present on a users machine but only one may be active at a time.">
+        Inactive Versions:
+      </message>
+      <message name="IDS_UPDATER_INSTALL_PATH_LABEL" desc="A label for a filesystem path indicating where the Brave Updater is installed on a user's system.">
+        Install Path:
+      </message>
       <message name="IDS_UPDATER_INSTALL_SUMMARY" desc="Summary of an event in which software was installed, including the version.">
         Installed version <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
       </message>
       <message name="IDS_UPDATER_INTERNAL" desc="Label used to indicate that a logged Brave Updater event pertains to the updater itself and not an app managed by the updater (e.g. Brave).">
         Internal
+      </message>
+      <message name="IDS_UPDATER_LAST_CHECKED_LABEL" desc="A label for a timestamp indicating the last time the Brave Updater checked for an update.">
+        Last Update Check:
+      </message>
+      <message name="IDS_UPDATER_LAST_STARTED_LABEL" desc="A label for a timestamp indicating the last time the Brave Updater performed its periodic tasks.">
+        Last Periodic Task Run:
+      </message>
+      <message name="IDS_UPDATER_NO_UPDATER_FOUND" desc="A message indicating that Brave's updater does not appear to be installed on the user's machine.">
+        No updater installations could be found.
+      </message>
+      <message name="IDS_UPDATER_NEVER" desc="Text indicating that that an action has never happened. For instance, this is used in place of a timestamp to indicate that an instance of the Brave Updater has never checked for any updates.">
+        Never
       </message>
       <message name="IDS_UPDATER_NEXT_VERSION" desc="Label indicating the version of a software installation that the Brave Updater tried to update to.">
         Next version: <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
@@ -19472,6 +19536,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_OUTCOME_UNKNOWN" desc="Summary of an event carried out by the Brave Updater where the outcome is unknown.">
         Operation completed with unknown outcome
       </message>
+      <message name="IDS_UPDATER_PAGE_TITLE" desc="Title of the chrome://updater page, which displays information about the state and history of the Brave updater installation on the users machine.">
+        Updater
+      </message>
       <message name="IDS_UPDATER_PARSE_ERROR_EVENTS" desc="Message indicating that one or more events could not be parsed and are hidden from the Brave Updater event log.">
         {NUM_EVENTS, plural, =1 {1 event could not be parsed and is not shown} other {# events could not be parsed and are not shown}}
       </message>
@@ -19486,6 +19553,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_UPDATER_QUALIFICATION_SUCCEEDED" desc="Summary of an event in which the Brave Updater's self-check succeeded, indicating that the program is working as intended and should manage updates for Brave">
         Self test succeeded
+      </message>
+      <message name="IDS_UPDATER_QUERY_FAILED" desc="An error message indicating that Brave's updater's state could not be queried.">
+        Failed to query the updater state.
       </message>
       <message name="IDS_UPDATER_REMOVE_FILTER" desc="Accessibility label for the button that removes a specific filter chip.">
         Remove filter
@@ -19502,6 +19572,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_START_DATE" desc="Label for the start date input field.">
         Start Date:
       </message>
+      <message name="IDS_UPDATER_STATE_TITLE" desc="Title for a section of the chrome://updater page which displays information about the current state of the instances of Brave's updater on the user's system.">
+        Status
+      </message>
       <message name="IDS_UPDATER_UNDATED_EVENTS" desc="Message indicating that the timestamp of one or more events was not able to determined. Events without timestamps can't be displayed in the Brave Updater event log.">
         {NUM_EVENTS, plural, =1 {1 event could not be dated and is not shown} other {# events could not be dated and are not shown}}
       </message>
@@ -19513,6 +19586,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_UPDATER_UPDATER_VERSION" desc="Label indicating the version of the updater itself.">
         Updater version: <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_VERSION_LABEL" desc="A label for the version of the updater.">
+        Version:
       </message>
       <message name="IDS_UPDATER_UPDATE_ERROR" desc="Summary of an update event that failed.">
         Update operation failed

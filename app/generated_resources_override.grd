@@ -716,6 +716,12 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_android">
         </if>
 
+      <if expr="not is_android">
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
@@ -731,22 +737,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         To browse privately, click the dots icon menu to open a Private window
       </message>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
