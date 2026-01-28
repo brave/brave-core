@@ -154,11 +154,11 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   ads_brave_stats_helper();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
-  // early initialize brave stats
-  brave_stats_updater();
-
   // early initialize misc metrics
   process_misc_metrics();
+
+  // early initialize brave stats
+  brave_stats_updater();
 }
 
 void BraveBrowserProcessImpl::Init() {
@@ -454,7 +454,8 @@ BraveBrowserProcessImpl::brave_referrals_service() {
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_) {
     brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
-        local_state(), profile_manager());
+        local_state(), profile_manager(),
+        process_misc_metrics()->serp_metrics());
   }
   return brave_stats_updater_.get();
 }
