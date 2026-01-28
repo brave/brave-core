@@ -80,7 +80,8 @@
             android:textSize="16sp"
             android:padding="8dp"
             android:textColor="@color/shield_text_color"
-            android:layoutDirection="rtl"/>
+            android:layoutDirection="rtl"
+            app:buttonTint="@color/schemes_primary"/>
 
         <RadioButton
             android:id="@+id/option2"
@@ -89,7 +90,8 @@
             android:textSize="16sp"
             android:padding="8dp"
             android:textColor="@color/shield_text_color"
-            android:layoutDirection="rtl"/>
+            android:layoutDirection="rtl"
+            app:buttonTint="@color/schemes_primary"/>
         <RadioButton
             android:id="@+id/option3"
             android:layout_width="match_parent"
@@ -97,7 +99,8 @@
             android:textSize="16sp"
             android:padding="8dp"
             android:textColor="@color/shield_text_color"
-            android:layoutDirection="rtl"/>
+            android:layoutDirection="rtl"
+            app:buttonTint="@color/schemes_primary"/>
 
     </RadioGroup>
 
