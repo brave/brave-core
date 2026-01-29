@@ -1128,6 +1128,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI),           \
       },                                                                       \
       {                                                                        \
+          "brave-collapsed-element-attribute",                                 \
+          "Collapsed element attribute",                                       \
+          "Adds a `brave-collapsed-element` attribute to HTML image and "      \
+          "iframe elements with a source blocked by adblock filter rules",     \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              blink::features::kBraveCollapsedElementAttribute),               \
+      },                                                                       \
+      {                                                                        \
           "brave-web-bluetooth-api",                                           \
           "Web Bluetooth API",                                                 \
           "Enables the Web Bluetooth API, giving websites access to "          \
