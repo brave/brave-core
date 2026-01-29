@@ -5,6 +5,7 @@
 
 #define GetVariationsList GetVariationsList_ChromiumImpl
 #include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
 
 #include <components/webui/version/version_handler_helper.cc>
 #undef GetVariationsList
@@ -17,12 +18,11 @@ base::Value::List GetVariationsList() {
   base::FieldTrial::ActiveGroups active_groups;
   base::FieldTrialList::GetActiveFieldTrialGroups(&active_groups);
 
-  const unsigned char kNonBreakingHyphenUTF8[] = {0xE2, 0x80, 0x91, '\0'};
-  const std::string kNonBreakingHyphenUTF8String(
-      reinterpret_cast<const char*>(kNonBreakingHyphenUTF8));
+  const unsigned char kNonBreakingHyphenUTF8[] = {0xE2, 0x80, 0x91};
   for (const auto& group : active_groups) {
     std::string line = group.trial_name + ":" + group.group_name;
-    base::ReplaceChars(line, "-", kNonBreakingHyphenUTF8String, &line);
+    base::ReplaceChars(line, "-", base::as_string_view(kNonBreakingHyphenUTF8),
+                       &line);
     variations.push_back(line);
   }
 

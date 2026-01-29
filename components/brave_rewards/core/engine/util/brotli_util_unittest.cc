@@ -40,17 +40,24 @@ TEST_F(RewardsBrotliHelpersTest, TestDecode) {
   std::string uncompressed(kUncompressed);
   std::string s;
 
-  EXPECT_TRUE(DecodeBrotliString(GetInput(), uncompressed.size(), &s));
+  s.resize(uncompressed.size());
+  EXPECT_TRUE(
+      DecodeBrotliString(GetInput(), base::as_writable_bytes(base::span(s))));
   EXPECT_EQ(s, uncompressed);
 
   // Empty input
-  EXPECT_FALSE(DecodeBrotliString("", uncompressed.size(), &s));
+  s.resize(uncompressed.size());
+  EXPECT_FALSE(DecodeBrotliString("", base::as_writable_bytes(base::span(s))));
 
   // Uncompressed size not large enough
-  EXPECT_FALSE(DecodeBrotliString(GetInput(), 16, &s));
+  s.resize(16);
+  EXPECT_FALSE(
+      DecodeBrotliString(GetInput(), base::as_writable_bytes(base::span(s))));
 
   // Not Brotli
-  EXPECT_FALSE(DecodeBrotliString("not brotli", 16, &s));
+  s.resize(16);
+  EXPECT_FALSE(
+      DecodeBrotliString("not brotli", base::as_writable_bytes(base::span(s))));
 }
 
 TEST_F(RewardsBrotliHelpersTest, TestDecodeWithBuffer) {
