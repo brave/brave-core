@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import './brave_account_dialog.js'
 import { BraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
@@ -11,31 +12,31 @@ import { BraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
 export function getHtml(this: BraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="$i18n{braveAccountEntryDialogDescription}"
-      dialog-title="$i18n{braveAccountEntryDialogTitle}"
+      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION)}"
+      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE)}"
     >
       <leo-button
         slot="buttons"
         @click=${() => this.fire('create-button-clicked')}
       >
-        $i18n{braveAccountCreateBraveAccountButtonLabel}
+        ${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL)}
       </leo-button>
       <leo-button
         slot="buttons"
         kind="outline"
         @click=${() => this.fire('sign-in-button-clicked')}
       >
-        $i18n{braveAccountAlreadyHaveAccountSignInButtonLabel}
+        ${loadTimeData.getString(S.BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL)}
       </leo-button>
       <div slot="footer">
         <div class="footer-text">
-          $i18nRaw{braveAccountSelfCustodyDescription}
+          $i18nRaw{BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION}
         </div>
         <leo-button
           kind="plain-faint"
           @click=${() => this.fire('self-custody-button-clicked')}
         >
-          $i18n{braveAccountSelfCustodyButtonLabel}
+          ${loadTimeData.getString(S.BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL)}
         </leo-button>
       </div>
     </brave-account-dialog>

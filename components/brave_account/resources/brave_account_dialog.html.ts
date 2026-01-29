@@ -4,11 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
+<if expr="is_android or is_ios">
+import { loadTimeData } from '//resources/js/load_time_data.js'
+</if>
 
 import { BraveAccountDialogElement } from './brave_account_dialog.js'
 
 export function getHtml(this: BraveAccountDialogElement) {
-  return html`<!--_html_template_start_-->
+  return html`
     <div class="header">
       <div class="navigation-buttons">
         <if expr="not is_android and not is_ios">
@@ -49,13 +52,12 @@ export function getHtml(this: BraveAccountDialogElement) {
                 kind="plain-faint"
                 @click=${() => this.fire('back-button-clicked')}
               >
-                $i18n{braveAccountBackButtonLabel}
+                ${loadTimeData.getString(S.BRAVE_ACCOUNT_BACK_BUTTON_LABEL)}
               </leo-button>`
             : nothing}
         </if>
       </div>
     </div>
     ${this.isFooterSlotted ? html`<div class="divider"></div>` : nothing}
-    <slot name="footer"></slot>
-    <!--_html_template_end_-->`
+    <slot name="footer"></slot>`
 }

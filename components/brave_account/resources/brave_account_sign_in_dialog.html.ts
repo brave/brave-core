@@ -4,39 +4,40 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import './brave_account_dialog.js'
 import { onEyeIconClicked } from './brave_account_common.js'
 import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 
 export function getHtml(this: BraveAccountSignInDialogElement) {
-  return html`<!--_html_template_start_-->
+  return html`
     <brave-account-dialog
-      dialog-description="$i18n{braveAccountSignInDialogDescription}"
-      dialog-title="$i18n{braveAccountSignInDialogTitle}"
+      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION)}"
+      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE)}"
       show-back-button
     >
       <div slot="inputs">
         <leo-input
-          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER)}"
           @input=${this.onEmailInput}
         >
           <div class="label ${this.shouldShowEmailError ? 'error' : ''}">
-            $i18n{braveAccountEmailInputLabel}
+            ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
           </div>
         </leo-input>
         <leo-input
-          placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
+          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER)}"
           type="password"
           @input=${this.onPasswordInput}
         >
           <div class="password">
-            <div class="label">$i18n{braveAccountPasswordInputLabel}</div>
+            <div class="label">${loadTimeData.getString(S.BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL)}</div>
             <div
               class="forgot-password"
               @click=${() => this.fire('forgot-password-button-clicked')}
             >
-              $i18n{braveAccountForgotPasswordButtonLabel}
+              ${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL)}
             </div>
           </div>
           <leo-icon
@@ -52,8 +53,7 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
         ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
         @click=${this.onSignInButtonClicked}
       >
-        $i18n{braveAccountSignInButtonLabel}
+        ${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL)}
       </leo-button>
-    </brave-account-dialog>
-    <!--_html_template_end_-->`
+    </brave-account-dialog>`
 }

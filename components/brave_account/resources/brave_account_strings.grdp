@@ -1,190 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount android_java">
     Brave Account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccount">
     Sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" translateable="false" desc="Description explaining the benefits of a Brave Account">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" translateable="false" desc="Description explaining the benefits of a Brave Account" formatter_data="webui=BraveAccount">
     A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccount android_java">
     Get Started
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="webui=BraveAccount android_java">
     Almost there!
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccount android_java">
     A confirmation email is on the way. Click the button in that email to activate your account.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccount android_java">
     Resend confirmation email
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccount android_java">
     Don't see the email? Check your spam folder or click on the button to resend the confirmation email.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccount android_java">
     Cancel registration
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccount android_java">
     Email address
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccount android_java">
     Sign out
   </message>
 
   <!-- 'Entry' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can choose to create a Brave Account, or sign in">
+  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can choose to create a Brave Account, or sign in" formatter_data="webui=BraveAccount">
     Get started with your Brave account
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can choose to create a Brave Account, or sign in">
+  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can choose to create a Brave Account, or sign in" formatter_data="webui=BraveAccount">
     A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Create' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Create' dialog" formatter_data="webui=BraveAccount">
     Create a Brave account
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Sign In' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Sign In' dialog" formatter_data="webui=BraveAccount">
     Already have an account? Sign in
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION" translateable="false" desc="Description of the self-custody option which we provide for advanced users">
+  <message name="IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION" translateable="false" desc="Description of the self-custody option which we provide for advanced users" formatter_data="webui=BraveAccount">
     For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the self-custody settings">
+  <message name="IDS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the self-custody settings" formatter_data="webui=BraveAccount">
     Use self-custody
   </message>
 
   <!-- 'Create' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can create their Brave Account">
+  <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can create their Brave Account" formatter_data="webui=BraveAccount">
     Create your account
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can create their Brave Account">
+  <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can create their Brave Account" formatter_data="webui=BraveAccount">
     A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE" translateable="false" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account">
+  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE" translateable="false" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account" formatter_data="webui=BraveAccount">
     You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Create a password' input field">
+  <message name="IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Create a password' input field" formatter_data="webui=BraveAccount">
     Create a password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" translateable="false" desc="The password strength meter's 'weak' state">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" translateable="false" desc="The password strength meter's 'weak' state" formatter_data="webui=BraveAccount">
     Weak
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" translateable="false" desc="The password strength meter's 'medium' state">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" translateable="false" desc="The password strength meter's 'medium' state" formatter_data="webui=BraveAccount">
     Medium
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" translateable="false" desc="The password strength meter's 'strong' state">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" translateable="false" desc="The password strength meter's 'strong' state" formatter_data="webui=BraveAccount">
     Strong
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Confirm password' input field">
+  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Confirm password' input field" formatter_data="webui=BraveAccount">
     Confirm password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Confirm password' input field">
+  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Confirm password' input field" formatter_data="webui=BraveAccount">
     Confirm your password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE" translateable="false" desc="Message for a failed password confirmation">
+  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE" translateable="false" desc="Message for a failed password confirmation" formatter_data="webui=BraveAccount">
     Passwords don't match
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE" translateable="false" desc="Message for a successful password confirmation">
+  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE" translateable="false" desc="Message for a successful password confirmation" formatter_data="webui=BraveAccount">
     Passwords match
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL" translateable="false" desc="Label for the checkbox where the user consents to the Terms of service and Privacy agreement">
+  <message name="IDS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL" translateable="false" desc="Label for the checkbox where the user consents to the Terms of service and Privacy agreement" formatter_data="webui=BraveAccount">
     I have read and accept the <ph name="BEGIN_LINK_1">&lt;a target="_blank" href="$1"&gt;</ph>Terms of service<ph name="END_LINK_1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_2">&lt;a target="_blank" href="$2"&gt;</ph>Privacy agreement<ph name="END_LINK_2">&lt;/a&gt;</ph>.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Create' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Create' dialog" formatter_data="webui=BraveAccount">
     Create account
   </message>
 
   <!-- 'Sign In' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can sign in to their Brave Account">
+  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can sign in to their Brave Account" formatter_data="webui=BraveAccount">
     Sign in to your account
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can sign in to their Brave Account">
+  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can sign in to their Brave Account" formatter_data="webui=BraveAccount">
     A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Password' input field">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Password' input field" formatter_data="webui=BraveAccount">
     Password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Forgot Password' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Forgot your password?
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Sign In' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Sign In' dialog" formatter_data="webui=BraveAccount">
     Sign in
   </message>
 
   <!-- 'Forgot Password' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can reset their Brave Account password">
+  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can reset their Brave Account password" formatter_data="webui=BraveAccount">
     Forgot your password?
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can reset their Brave Account password">
+  <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can reset their Brave Account password" formatter_data="webui=BraveAccount">
     Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for 30 minutes.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ALERT_MESSAGE" translateable="false" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted">
+  <message name="IDS_BRAVE_ACCOUNT_ALERT_MESSAGE" translateable="false" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted" formatter_data="webui=BraveAccount">
     [Explain that if they reset their password without having an active login, all the user data will be deleted]
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Forgot Password' dialog">
+  <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Reset your password
   </message>
 
   <!-- 'Error' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog" formatter_data="webui=BraveAccount">
     Something went wrong
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog" formatter_data="webui=BraveAccount">
     We encountered an error while processing your request.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
     error
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="" formatter_data="webui=BraveAccount">
     No account found for that email address. Please try again, or create a new account.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD" translateable="false" desc="" formatter_data="webui=BraveAccount">
     Incorrect password. Please try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS" translateable="false" desc="" formatter_data="webui=BraveAccount">
     An account already exists for this email address. Try logging in instead of creating an account.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED" translateable="false" desc="" formatter_data="webui=BraveAccount">
     The domain of this email address is not supported. Please use a different email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS" translateable="false" desc="">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS" translateable="false" desc="" formatter_data="webui=BraveAccount">
     Email verification limit exceeded. Please wait 30 minutes before trying again.
   </message>
 
   <!-- Common: -->
-  <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button">
+  <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button" formatter_data="webui=BraveAccount">
     Go back
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL" translateable="false" desc="Label for the 'Email address' input field">
+  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL" translateable="false" desc="Label for the 'Email address' input field" formatter_data="webui=BraveAccount">
     Email address
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Email address' input field">
+  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Email address' input field" formatter_data="webui=BraveAccount">
     Enter your email address
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields" formatter_data="webui=BraveAccount">
     Enter your password
   </message>
 
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccount android_java">
     Done
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="webui=BraveAccount android_java">
     Confirmation email resent.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="webui=BraveAccount android_java">
     Unable to resend
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="webui=BraveAccount android_java">
     Too many verification emails have been sent already. Please check your spam folder.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified" formatter_data="android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount android_java">
     Email already verified.
   </message>
 </grit-part>

@@ -15,25 +15,25 @@ import {
 } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountErrorDialogElement) {
-  return html`<!--_html_template_start_-->
+  return html`
     <brave-account-dialog
       alert-message=${(() => {
         const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
           [LoginErrorCode.kIncorrectEmail]:
-            '$i18n{braveAccountErrorDialogIncorrectEmail}',
+            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL),
           [LoginErrorCode.kIncorrectPassword]:
-            '$i18n{braveAccountErrorDialogIncorrectPassword}',
+            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD),
         }
 
         const REGISTER_ERROR_STRINGS: Partial<
           Record<RegisterErrorCode, string>
         > = {
           [RegisterErrorCode.kAccountExists]:
-            '$i18n{braveAccountErrorDialogAccountExists}',
+            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS),
           [RegisterErrorCode.kEmailDomainNotSupported]:
-            '$i18n{braveAccountErrorDialogEmailDomainNotSupported}',
+            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED),
           [RegisterErrorCode.kTooManyVerifications]:
-            '$i18n{braveAccountErrorDialogTooManyVerifications}',
+            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS),
         }
 
         const getErrorMessage = <T extends LoginErrorCode | RegisterErrorCode>(
@@ -45,9 +45,9 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
           if (statusCode == null) {
             // client-side error
             return loadTimeData.getStringF(
-              'braveAccountClientError',
+              S.BRAVE_ACCOUNT_CLIENT_ERROR,
               errorCode != null
-                ? ` ($i18n{braveAccountError}=${errorCode})`
+                ? ` (${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${errorCode})`
                 : '',
             )
           }
@@ -56,10 +56,10 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
           return (
             (errorCode != null ? errorStrings[errorCode] : null)
             ?? loadTimeData.getStringF(
-              'braveAccountServerError',
+              S.BRAVE_ACCOUNT_SERVER_ERROR,
               statusCode,
               errorCode != null
-                ? `, $i18n{braveAccountError}=${errorCode}`
+                ? `, ${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${errorCode}`
                 : '',
             )
           )
@@ -72,15 +72,14 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
             return getErrorMessage(REGISTER_ERROR_STRINGS, this.error.details)
         }
       })()}
-      dialog-description="$i18n{braveAccountErrorDialogDescription}"
-      dialog-title="$i18n{braveAccountErrorDialogTitle}"
+      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION)}"
+      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_TITLE)}"
     >
       <leo-button
         slot="buttons"
         @click=${() => this.fire('back-button-clicked')}
       >
-        $i18n{braveAccountBackButtonLabel}
+        ${loadTimeData.getString(S.BRAVE_ACCOUNT_BACK_BUTTON_LABEL)}
       </leo-button>
-    </brave-account-dialog>
-    <!--_html_template_end_-->`
+    </brave-account-dialog>`
 }

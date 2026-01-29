@@ -4,21 +4,22 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import './brave_account_dialog.js'
 import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
 
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
-  return html`<!--_html_template_start_-->
+  return html`
     <brave-account-dialog
-      alert-message="$i18n{braveAccountAlertMessage}"
-      dialog-description="$i18n{braveAccountForgotPasswordDialogDescription}"
-      dialog-title="$i18n{braveAccountForgotPasswordDialogTitle}"
+      alert-message="${loadTimeData.getString(S.BRAVE_ACCOUNT_ALERT_MESSAGE)}"
+      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION)}"
+      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE)}"
       show-back-button
     >
       <div slot="inputs">
         <leo-input
-          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER)}"
           @input=${this.onEmailInput}
         >
           <div
@@ -26,7 +27,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
               ? 'error'
               : ''}"
           >
-            $i18n{braveAccountEmailInputLabel}
+            ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
           </div>
         </leo-input>
       </div>
@@ -34,8 +35,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
         slot="buttons"
         ?isDisabled=${!this.isEmailValid}
       >
-        $i18n{braveAccountResetPasswordButtonLabel}
+        ${loadTimeData.getString(S.BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL)}
       </leo-button>
-    </brave-account-dialog>
-    <!--_html_template_end_-->`
+    </brave-account-dialog>`
 }

@@ -24,11 +24,11 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
-#include "ui/base/webui/web_ui_util.h"
 
 // Template base class for Brave Account WebUI controllers.
 //
@@ -94,96 +94,13 @@ class BraveAccountUIBase {
     source->AddResourcePaths(kBraveAccountResources);
     source->AddResourcePath("", IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
-    static constexpr webui::LocalizedString kStrings[] = {
-        {"braveAccountTitle", IDS_BRAVE_ACCOUNT_TITLE},
-        // 'Entry' dialog:
-        {"braveAccountEntryDialogTitle", IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
-        {"braveAccountEntryDialogDescription",
-         IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION},
-        {"braveAccountCreateBraveAccountButtonLabel",
-         IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL},
-        {"braveAccountAlreadyHaveAccountSignInButtonLabel",
-         IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
-        {"braveAccountSelfCustodyButtonLabel",
-         IDS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL},
-        // 'Create' dialog:
-        {"braveAccountCreateDialogTitle",
-         IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE},
-        {"braveAccountCreateDialogDescription",
-         IDS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION},
-        {"braveAccountEmailInputErrorMessage",
-         IDS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE},
-        {"braveAccountCreatePasswordInputLabel",
-         IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL},
-        {"braveAccountPasswordStrengthMeterWeak",
-         IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK},
-        {"braveAccountPasswordStrengthMeterMedium",
-         IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM},
-        {"braveAccountPasswordStrengthMeterStrong",
-         IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG},
-        {"braveAccountConfirmPasswordInputLabel",
-         IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL},
-        {"braveAccountConfirmPasswordInputPlaceholder",
-         IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER},
-        {"braveAccountConfirmPasswordInputErrorMessage",
-         IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE},
-        {"braveAccountConfirmPasswordInputSuccessMessage",
-         IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE},
-        {"braveAccountCreateAccountButtonLabel",
-         IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL},
-        // 'Sign In' dialog:
-        {"braveAccountSignInDialogTitle",
-         IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE},
-        {"braveAccountSignInDialogDescription",
-         IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION},
-        {"braveAccountPasswordInputLabel",
-         IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL},
-        {"braveAccountForgotPasswordButtonLabel",
-         IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL},
-        {"braveAccountSignInButtonLabel",
-         IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
-        // 'Forgot Password' dialog:
-        {"braveAccountForgotPasswordDialogTitle",
-         IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE},
-        {"braveAccountForgotPasswordDialogDescription",
-         IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION},
-        {"braveAccountAlertMessage", IDS_BRAVE_ACCOUNT_ALERT_MESSAGE},
-        {"braveAccountResetPasswordButtonLabel",
-         IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
-        // 'Error' dialog:
-        {"braveAccountErrorDialogTitle", IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE},
-        {"braveAccountErrorDialogDescription",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION},
-        {"braveAccountError", IDS_BRAVE_ACCOUNT_ERROR},
-        {"braveAccountClientError", IDS_BRAVE_ACCOUNT_CLIENT_ERROR},
-        {"braveAccountServerError", IDS_BRAVE_ACCOUNT_SERVER_ERROR},
-        {"braveAccountErrorDialogIncorrectEmail",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL},
-        {"braveAccountErrorDialogIncorrectPassword",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD},
-        {"braveAccountErrorDialogAccountExists",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS},
-        {"braveAccountErrorDialogEmailDomainNotSupported",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED},
-        {"braveAccountErrorDialogTooManyVerifications",
-         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS},
-        // Common:
-        {"braveAccountBackButtonLabel", IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL},
-        {"braveAccountEmailInputLabel", IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
-        {"braveAccountEmailInputPlaceholder",
-         IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER},
-        {"braveAccountPasswordInputPlaceholder",
-         IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER},
-    };
-
-    source->AddLocalizedStrings(kStrings);
-
+    source->AddLocalizedStrings(webui::kBraveAccountStrings);
     source->AddString(
-        "braveAccountSelfCustodyDescription",
+        "BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION",
         l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
                                    kBraveAccountSelfCustodyLearnMoreURL));
     source->AddString(
-        "braveAccountConsentCheckboxLabel",
+        "BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL",
         l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL,
                                    kBraveAccountTermsOfServiceURL,
                                    kBraveAccountPrivacyAgreementURL));
