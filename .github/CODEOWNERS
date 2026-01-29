@@ -209,8 +209,12 @@ android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/And
 browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 
 # Brave Account
-*brave_account* @szilardszaloki
-*BraveAccount* @szilardszaloki
+*brave_account* @brave/brave-accounts
+*BraveAccount* @brave/brave-accounts
+**/android/**/*brave_account* @brave/brave-accounts @brave/Android
+**/android/**/*BraveAccount* @brave/brave-accounts @brave/Android
+**/ios/**/*brave_account* @brave/brave-accounts @brave/ios
+**/ios/**/*BraveAccount* @brave/brave-accounts @brave/ios
 
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
