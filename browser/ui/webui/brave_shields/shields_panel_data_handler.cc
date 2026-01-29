@@ -277,7 +277,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.is_brave_shields_enabled =
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_ad_block_only_mode_enabled =
-      active_shields_data_controller_->IsBraveShieldsAdBlockOnlyModeEnabled();
+      active_shields_data_controller_->IsBraveShieldsAdBlockOnlyModeEnabled()
+          .value_or(false);
   site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();

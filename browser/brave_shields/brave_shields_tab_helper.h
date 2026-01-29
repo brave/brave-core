@@ -65,7 +65,10 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
-  bool IsBraveShieldsAdBlockOnlyModeEnabled();
+  // Returns std::nullopt if ad block only mode feature is disabled or current
+  // locale is not supported, otherwise returns true if ad block only mode is
+  // enabled, false otherwise.
+  std::optional<bool> IsBraveShieldsAdBlockOnlyModeEnabled();
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
   bool ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   void SetBraveShieldsAdBlockOnlyModePromptDismissed();
