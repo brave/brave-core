@@ -95,7 +95,7 @@ class BraveAccountUIBase {
     source->AddResourcePath("", IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
     static constexpr webui::LocalizedString kStrings[] = {
-        {"braveAccountPageTitle", IDS_BRAVE_ACCOUNT_PAGE_TITLE},
+        {"braveAccountTitle", IDS_BRAVE_ACCOUNT_TITLE},
         // 'Entry' dialog:
         {"braveAccountEntryDialogTitle", IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
         {"braveAccountEntryDialogDescription",
