@@ -355,6 +355,11 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   NOTREACHED() << "Unknown keyring: " << keyring_id;
 }
 
+bool IsAccountBasedCoin(mojom::CoinType coin) {
+  return (coin == mojom::CoinType::ETH) || (coin == mojom::CoinType::SOL) ||
+         (coin == mojom::CoinType::FIL) || (coin == mojom::CoinType::DOT);
+}
+
 mojom::CoinType GetCoinTypeFromTxDataUnion(
     const mojom::TxDataUnion& tx_data_union) {
   if (tx_data_union.is_eth_tx_data_1559() || tx_data_union.is_eth_tx_data()) {

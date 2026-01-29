@@ -13,6 +13,7 @@
 
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
+#include "brave/components/brave_wallet/browser/blockchain_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -70,8 +71,11 @@ std::optional<std::string> SolanaKeyring::AddNewHDAccount(uint32_t index) {
   }
 
   auto address = GetAddressInternal(*new_account);
-  accounts_.push_back(std::move(new_account));
+  if (IsOfacAddress(address)) {
+    return std::nullopt;
+  }
 
+  accounts_.push_back(std::move(new_account));
   return address;
 }
 
@@ -95,6 +99,9 @@ std::optional<std::string> SolanaKeyring::ImportAccount(
   }
 
   std::string address = GetAddressInternal(*hd_key);
+  if (IsOfacAddress(address)) {
+    return std::nullopt;
+  }
 
   if (imported_accounts_.contains(address)) {
     return std::nullopt;

@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hardware_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
@@ -2085,6 +2086,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
   std::vector<mojom::AccountInfoPtr> accounts_added;
   for (const auto& info : infos) {
+    if (IsAccountBasedCoin(GetCoinForKeyring(info->keyring_id)) &&
+        BlockchainRegistry::GetInstance()->IsOfacAddress(info->address)) {
+      continue;
+    }
+
     mojom::KeyringId keyring_id = info->keyring_id;
     DCHECK(info->hardware_vendor == mojom::HardwareVendor::kLedger ||
            info->hardware_vendor == mojom::HardwareVendor::kTrezor);
@@ -2112,6 +2118,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
     accounts_added.push_back(std::move(account_info));
   }
+
+  if (accounts_added.empty()) {
+    return {};
+  }
+
   NotifyAccountsChanged();
 
   // TODO(apaymyshev): ui should select account after importing.

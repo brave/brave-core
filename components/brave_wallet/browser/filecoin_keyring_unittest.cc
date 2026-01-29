@@ -9,6 +9,7 @@
 #include "base/containers/to_vector.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -191,6 +192,97 @@ TEST(FilecoinKeyring, SignTransaction) {
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_EQ(address, imported_address);
   EXPECT_TRUE(keyring.SignTransaction(address, transaction.value()));
+}
+
+TEST(FilecoinKeyring, AddNewHDAccount_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
+                          mojom::KeyringId::kFilecoinTestnet);
+
+  // Add an account to get its address.
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Remove the account.
+  EXPECT_TRUE(keyring.RemoveHDAccount(0));
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to add account again - should fail because it generates the same
+  // address.
+  auto result = keyring.AddNewHDAccount(0);
+  EXPECT_FALSE(result) << "OFAC sanctioned Filecoin address should be rejected";
+}
+
+TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  std::string private_key_base64 =
+      "rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=";
+  std::string input_key;
+  ASSERT_TRUE(base::Base64Decode(private_key_base64, &input_key));
+  ASSERT_FALSE(input_key.empty());
+  std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
+
+  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
+                          mojom::KeyringId::kFilecoinTestnet);
+
+  // Import account to get its address
+  auto address = keyring.ImportFilecoinAccount(
+      private_key, mojom::FilecoinAddressProtocol::SECP256K1);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Remove the account.
+  EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to import account again - should fail.
+  auto result = keyring.ImportFilecoinAccount(
+      private_key, mojom::FilecoinAddressProtocol::SECP256K1);
+  EXPECT_FALSE(result)
+      << "OFAC sanctioned Filecoin SECP256K1 address should be rejected";
+}
+
+TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  std::string private_key_hex =
+      "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f38"
+      "55616b53516f777858742b345a75393257586d424d526e74716d6448696136724853453d"
+      "227d";
+  std::vector<uint8_t> private_key;
+  mojom::FilecoinAddressProtocol protocol;
+  ASSERT_TRUE(FilecoinKeyring::DecodeImportPayload(private_key_hex,
+                                                   &private_key, &protocol));
+  EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
+
+  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
+                          mojom::KeyringId::kFilecoinTestnet);
+
+  // Import account to get its address.
+  auto address = keyring.ImportFilecoinAccount(private_key, protocol);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Remove the account.
+  EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to import account again - should fail.
+  auto result = keyring.ImportFilecoinAccount(private_key, protocol);
+  EXPECT_FALSE(result)
+      << "OFAC sanctioned Filecoin BLS address should be rejected";
 }
 
 }  // namespace brave_wallet

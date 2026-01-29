@@ -9,6 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -251,6 +252,57 @@ TEST(SolanaKeyringUnitTest, GetAssociatedMetadataAccount) {
   ASSERT_TRUE(addr);
 
   EXPECT_EQ(*addr, "586XgHr69ZhbUkkGJsQqGt16mf7jpFS6uhnvCAwb68Qq");
+}
+
+TEST(SolanaKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece));
+
+  // Add an account to get its address.
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Remove the account.
+  EXPECT_TRUE(keyring.RemoveHDAccount(0));
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to add account again - should fail because it generates the same
+  // address.
+  auto result = keyring.AddNewHDAccount(0);
+  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+}
+
+TEST(SolanaKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece));
+
+  std::vector<uint8_t> private_key;
+  ASSERT_TRUE(base::HexStringToBytes(
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7"
+      "a4b2856bfec510abab89753fac1ac0e1112364e7d250545963f135f2a33188ed",
+      &private_key));
+
+  // Import account to get its address
+  auto address = keyring.ImportAccount(private_key);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Remove the account.
+  EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to import account again - should fail.
+  auto result = keyring.ImportAccount(private_key);
+  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
 }
 
 }  // namespace brave_wallet
