@@ -541,7 +541,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
         if (mVariantBPager != null) {
-            mVariantBPager.setUserInputEnabled(true);
+            mVariantBPager.setUserInputEnabled(false);
             mPageBounceAnimator = new PageBounceAnimator(mVariantBPager);
             mVariantBAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
             mVariantBPager.setAdapter(mVariantBAdapter);
