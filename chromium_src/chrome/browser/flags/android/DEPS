@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/ai_chat/core/common/features.h",
   "+brave/components/brave_account/features.h",
+  "+brave/components/brave_ads/buildflags/buildflags.h",
   "+brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h",
   "+brave/components/brave_news/common/features.h",
   "+brave/components/brave_origin/features.h",

@@ -498,6 +498,7 @@ if (is_android) {
   brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
   brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
   brave_chrome_browser_deps += brave_browser_brave_account_android_deps
+  brave_chrome_browser_deps += brave_browser_brave_rewards_android_deps
 
   if (enable_brave_wallet) {
     brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
