@@ -55,7 +55,7 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         if (toolbarContainer != null) toolbarContainer.setVisibility(View.GONE);
 
         TextView title = new TextView(this);
-        title.setText(R.string.prefs_brave_account);
+        title.setText(R.string.brave_account_title);
         title.setTextAppearance(R.style.TextAppearance_Headline_Primary);
         title.setGravity(Gravity.CENTER);
         FrameLayout.LayoutParams titleParams =
