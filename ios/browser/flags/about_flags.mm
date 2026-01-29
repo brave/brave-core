@@ -227,6 +227,13 @@
               brave_sync::features::kBraveSyncDefaultPasswords),               \
       },                                                                       \
       {                                                                        \
+          "brave-use-chromium-webviews-autofill",                              \
+          "Chromium WebView's Autofill",                                        \
+          "Enable Chromium WebView's Autofill",                                 \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViewsAutofill),   \
+      },                                                                       \
+      {                                                                        \
           "brave-translate-enabled",                                           \
           "Use Brave Translate",                                               \
           "Enables page translation",                                          \
