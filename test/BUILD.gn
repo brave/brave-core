@@ -920,6 +920,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_perf_predictor/common",
+    "//brave/components/brave_policy:policy_pref_interceptor",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
   ]
