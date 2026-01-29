@@ -126,7 +126,7 @@ public class BraveToolbarManager extends ToolbarManager
     private ActionModeController mActionModeController;
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
-    private MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;

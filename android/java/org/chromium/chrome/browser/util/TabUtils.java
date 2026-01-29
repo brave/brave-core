@@ -33,6 +33,7 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -60,7 +61,7 @@ public class TabUtils {
     public static void showBookmarkTabPopupMenu(
             Context context,
             View view,
-            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel,
             BookmarkManagerOpener bookmarkManagerOpener) {
         Context wrapper = new ContextThemeWrapper(context, R.style.BookmarkTabPopupMenu);

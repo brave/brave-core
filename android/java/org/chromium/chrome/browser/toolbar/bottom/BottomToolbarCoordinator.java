@@ -22,6 +22,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
@@ -80,7 +81,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private MaterialButton mNewTabButton;
     private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
-    private final MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private final LocationBarModel mLocationBarModel;
     private final HomepageManager mHomepageManager;
     private final BookmarkManagerOpener mBookmarkManagerOpener;
@@ -99,7 +100,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             MonotonicObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator,
-            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel) {
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));

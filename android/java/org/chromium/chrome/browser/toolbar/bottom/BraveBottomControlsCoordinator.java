@@ -54,7 +54,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private final Callback<Integer> mSetUrlBarFocusAction;
     private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private final ScrollingBottomViewResourceFrameLayout mRoot;
-    private final MonotonicObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private final LocationBarModel mLocationBarModel;
 
     public BraveBottomControlsCoordinator(
@@ -65,7 +65,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             Callback<Integer> setUrlBarFocusAction,
             MonotonicObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             ThemeColorProvider themeColorProvider,
-            MonotonicObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel,
             /* Below are parameters from BottomControlsCoordinator */
             WindowAndroid windowAndroid,
