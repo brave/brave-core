@@ -38,11 +38,13 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
     return;
   }
 
-  int start = kMarginForVerticalTabContainers;
+  int start =
+      kMarginForVerticalTabContainers;  // margin before the first unpinned tab
   if (!result->empty()) {
     // This means pinned tabs are already laid out. So start from the bottom of
     // the last pinned tab and add spacing and separator height.
-    start += result->back().bottom() + kVerticalTabsSpacing +
+    start += result->back().bottom() +
+             kVerticalTabsSpacing /* spacing after the last pinned tab */ +
              kPinnedUnpinnedSeparatorHeight;
   }
 
