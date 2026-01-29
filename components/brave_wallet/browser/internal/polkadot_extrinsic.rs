@@ -67,6 +67,7 @@ mod ffi {
         type CxxPolkadotChainMetadataResult;
 
         fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16;
+        fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata>;
 
         fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
@@ -176,6 +177,7 @@ impl fmt::Display for Error {
     }
 }
 
+#[derive(Clone, Copy)]
 struct CxxPolkadotChainMetadata {
     balances_pallet_index: u8,
     transfer_allow_death_call_index: u8,
@@ -184,6 +186,12 @@ struct CxxPolkadotChainMetadata {
 
 fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16 {
     chain_metadata.ss58_prefix
+}
+
+impl CxxPolkadotChainMetadata {
+    fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata> {
+        Box::new(*self)
+    }
 }
 
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
