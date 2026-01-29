@@ -571,6 +571,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
+          "object": "chat.completion.chunk",
           "model": "chat-claude-sonnet",
           "choices": [{
             "delta": {"content": "chunk text"}
@@ -696,6 +697,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
+          "object": "chat.completion.chunk",
           "choices": [{
             "delta": {"content": "chunk text"},
           }]
@@ -777,6 +779,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
         {
           // Send response with both content and tool calls
           auto chunk = base::test::ParseJsonDict(R"({
+            "object": "chat.completion.chunk",
             "model": "llama-3-8b-instruct",
             "choices": [{
               "delta": {
@@ -890,6 +893,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
           [&](DataReceivedCallback data_received_callback,
               ResultCallback result_callback) {
             auto chunk = base::test::ParseJsonDict(R"({
+              "object": "chat.completion.chunk",
               "choices": [{
                 "delta": {
                   "content": "This is a test completion",
@@ -1189,6 +1193,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
+          "object": "chat.completion.chunk",
           "model": "llama-3-8b-instruct",
           "choices": [{
             "delta": {"content": "This is a test completion"}
@@ -1331,6 +1336,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
                     const api_request_helper::APIRequestOptions& options) {
         // Simulate completion
         auto completion_dict = base::test::ParseJsonDict(R"({
+          "object": "chat.completion.chunk",
           "model": "llama-3-8b-instruct",
           "choices": [{
             "delta": {"content": "Verified response"}
@@ -1511,6 +1517,315 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
   testing::Mock::VerifyAndClearExpectations(client_.get());
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
+  // Test content receipt event parsing in OnQueryDataReceived
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  // Case 1: Normal case with both total_tokens and trimmed_tokens present
+  {
+    SCOPED_TRACE("Both total_tokens and trimmed_tokens present");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct",
+      "total_tokens": 1234567890,
+      "trimmed_tokens": 987654321
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    1234567890u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    987654321u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 2: Both values missing (should default to 0)
+  {
+    SCOPED_TRACE("Both total_tokens and trimmed_tokens missing");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    0u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    0u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 3: Only total_tokens present
+  {
+    SCOPED_TRACE("Only total_tokens present");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct",
+      "total_tokens": 5000
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    5000u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    0u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 4: Only trimmed_tokens present
+  {
+    SCOPED_TRACE("Only trimmed_tokens present");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct",
+      "trimmed_tokens": 3000
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    0u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    3000u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 5: Negative values (should default to 0)
+  {
+    SCOPED_TRACE("Negative values default to 0");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct",
+      "total_tokens": -100,
+      "trimmed_tokens": -50
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    0u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    0u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 6: Mixed values (one positive, one negative)
+  {
+    SCOPED_TRACE("Mixed values - positive total, negative trimmed");
+    auto content_receipt = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.contentReceipt",
+      "model": "llama-3-8b-instruct",
+      "total_tokens": 8000,
+      "trimmed_tokens": -200
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_content_receipt_event());
+          EXPECT_EQ(result.event->get_content_receipt_event()->total_tokens,
+                    8000u);
+          EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
+                    0u);
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(content_receipt))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
+  // Test streaming completion chunk parsing in OnQueryDataReceived
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  // Case 1: Normal chat.completion.chunk with delta content
+  {
+    SCOPED_TRACE("Normal chunk with delta content");
+    auto chunk = base::test::ParseJsonDict(R"({
+      "id": "chatcmpl-123",
+      "object": "chat.completion.chunk",
+      "created": 1677652288,
+      "model": "llama-3-8b-instruct",
+      "choices": [{
+        "index": 0,
+        "delta": {
+          "role": "assistant",
+          "content": "This is a chunk."
+        },
+        "finish_reason": null
+      }]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_completion_event());
+          EXPECT_EQ(result.event->get_completion_event()->completion,
+                    "This is a chunk.");
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(chunk))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 2: Chunk with empty content (should not call callback)
+  {
+    SCOPED_TRACE("Chunk with empty content - no callback");
+    auto chunk = base::test::ParseJsonDict(R"({
+      "id": "chatcmpl-456",
+      "object": "chat.completion.chunk",
+      "created": 1677652288,
+      "model": "llama-3-8b-instruct",
+      "choices": [{
+        "index": 0,
+        "delta": {
+          "content": ""
+        },
+        "finish_reason": null
+      }]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(chunk))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 3: Chunk without model (model_key should be nullopt)
+  {
+    SCOPED_TRACE("Chunk without model field");
+    auto chunk = base::test::ParseJsonDict(R"({
+      "id": "chatcmpl-789",
+      "object": "chat.completion.chunk",
+      "created": 1677652288,
+      "choices": [{
+        "index": 0,
+        "delta": {
+          "content": "Chunk without model."
+        },
+        "finish_reason": null
+      }]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_completion_event());
+          EXPECT_EQ(result.event->get_completion_event()->completion,
+                    "Chunk without model.");
+          EXPECT_FALSE(result.model_key.has_value());
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(chunk))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 4: Chunk with unknown model name (model_key should be nullopt)
+  {
+    SCOPED_TRACE("Chunk with unknown model name");
+    auto chunk = base::test::ParseJsonDict(R"({
+      "id": "chatcmpl-999",
+      "object": "chat.completion.chunk",
+      "created": 1677652288,
+      "model": "unknown-model-name",
+      "choices": [{
+        "index": 0,
+        "delta": {
+          "content": "Chunk with unknown model."
+        },
+        "finish_reason": null
+      }]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_completion_event());
+          EXPECT_EQ(result.event->get_completion_event()->completion,
+                    "Chunk with unknown model.");
+          EXPECT_FALSE(result.model_key.has_value());
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(chunk))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
 }
 
 }  // namespace ai_chat

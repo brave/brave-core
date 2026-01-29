@@ -88,6 +88,10 @@ class ConversationAPIV2Client {
  private:
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,
                            SerializeOAIMessages_ContentBlocks);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_ContentReceipt);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_CompletionChunk);
 
   void PerformRequestWithCredentials(
       std::vector<OAIMessage> messages,
