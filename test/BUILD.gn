@@ -263,6 +263,7 @@ test("brave_unit_tests") {
     "//brave/components/safebrowsing",
     "//brave/components/script_injector/renderer:unit_tests",
     "//brave/components/search_engines:unit_tests",
+    "//brave/components/serp_metrics:unit_tests",
     "//brave/components/sessions/content:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
     "//brave/components/skus/browser:unit_tests",

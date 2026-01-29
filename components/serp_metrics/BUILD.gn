@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("serp_metrics") {
+  sources = [
+    "pref_names.h",
+    "pref_registry.cc",
+    "pref_registry.h",
+    "serp_metrics.cc",
+    "serp_metrics.h",
+    "serp_metrics_feature.cc",
+    "serp_metrics_feature.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/time_period_storage",
+  ]
+
+  deps = [
+    "//brave/components/constants",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "serp_metrics_feature_unittest.cc",
+    "serp_metrics_unittest.cc",
+  ]
+
+  deps = [
+    ":serp_metrics",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "serp_metrics_mock.cc",
+    "serp_metrics_mock.h",
+  ]
+
+  deps = [
+    ":serp_metrics",
+    "//components/prefs",
+    "//testing/gmock",
+  ]
+}
