@@ -1,0 +1,9 @@
+[package]
+name = "candle-embedder-ffi"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+candle-embedder = { path = "../lib" }
+libc = "0.2"

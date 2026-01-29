@@ -28,6 +28,8 @@ challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
 anonymous-credentials = "0.1"
 document-extractor = "0.1"
+candle-embedder = "0.1"
+candle-embedder-ffi = "0.1"
 
 [patch.crates-io.idna_v1]
 path = "../idna/v1/crate"
@@ -92,6 +94,14 @@ package = "anonymous-credentials"
 [patch.crates-io.document-extractor_v0_1]
 path = "../../../components/web_discovery/browser/document_extractor"
 package = "document-extractor"
+
+[patch.crates-io.candle-embedder_v0_1]
+path = "../../../components/local_ai/rust/lib"
+package = "candle-embedder"
+
+[patch.crates-io.candle-embedder-ffi_v0_1]
+path = "../../../components/local_ai/rust/ffi"
+package = "candle-embedder-ffi"
 
 [patch.crates-io.anstyle]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anstyle-v1"

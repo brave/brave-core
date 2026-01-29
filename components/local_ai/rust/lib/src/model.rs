@@ -21,20 +21,13 @@
  * limitations under the License.
  */
 
-// Embedding Gemma inference implementation,
-// modified from 'https://github.com/huggingface/text-embeddings-inference/blob/main/backends/candle/src/models/gemma3.rs'
-
-use candle_core::{DType, Device, IndexOp, Tensor, D};
-use candle_nn::{Embedding, Module, VarBuilder};
-use serde::Deserialize;
-use tokenizers::Tokenizer;
-use wasm_bindgen::prelude::*;
-
 use candle_core::quantized::gguf_file;
 use candle_core::quantized::{QMatMul, QTensor};
+use candle_core::{DType, Device, IndexOp, Tensor, D};
+use candle_nn::{Embedding, Module, VarBuilder};
 
-// each 'dim' dimensional vector is split into even and odd indexed vectors.
-// 1 / base ^ (i / dim) is calculated for each position.
+use crate::config::{Batch, Gemma3Config, HiddenAct, ModelType, Pool};
+
 pub fn get_inv_freqs(dim: usize, base: f32) -> candle_core::Result<Tensor> {
     let inv_freq: Vec<_> =
         (0..dim).step_by(2).map(|i| 1f32 / base.powf(i as f32 / dim as f32)).collect();
@@ -42,7 +35,6 @@ pub fn get_inv_freqs(dim: usize, base: f32) -> candle_core::Result<Tensor> {
     Tensor::from_vec(inv_freq, (1, inv_freq_len), &Device::Cpu)
 }
 
-// sine and cosine of each freq is calculated and multipled with Q/K values.
 pub fn get_cos_sin(
     length: usize,
     inv_freqs: &Tensor,
@@ -61,8 +53,6 @@ pub fn get_cos_sin(
     Ok((cos, sin))
 }
 
-// Position info is injected fresh at every attention layer by rotating Q and K
-// vectors before computing attention scores.
 pub fn apply_rotary(
     x: &Tensor,
     cos: &Tensor,
@@ -77,28 +67,6 @@ pub fn apply_rotary(
     Ok(rope)
 }
 
-#[derive(Debug, Deserialize, PartialEq, Clone)]
-#[serde(rename_all = "lowercase")]
-pub enum HiddenAct {
-    #[serde(alias = "gelu_pytorch_tanh")]
-    Gelu,
-    Relu,
-    Silu,
-    Swiglu,
-}
-
-impl HiddenAct {
-    pub fn forward(&self, x: &Tensor) -> candle_core::Result<Tensor> {
-        match self {
-            Self::Gelu => x.gelu(),
-            Self::Relu => x.relu(),
-            Self::Silu => x.silu(),
-            Self::Swiglu => candle_nn::ops::swiglu(x),
-        }
-    }
-}
-
-// Linear layer modified to support quantization
 #[derive(Debug, Clone)]
 pub struct QLinear {
     inner: QMatMul,
@@ -111,10 +79,8 @@ impl QLinear {
     }
 
     pub fn forward(&self, x: &Tensor) -> candle_core::Result<Tensor> {
-        // Quantized matmul (weights remain quantized internally)
         let mut y = self.inner.forward(x)?;
 
-        // Bias always stays FP32
         if let Some(bias) = &self.bias {
             y = y.broadcast_add(bias)?;
         }
@@ -130,7 +96,6 @@ pub struct Linear {
     act: Option<HiddenAct>,
 }
 
-/// FP linear layer for final dense layers
 impl Linear {
     pub fn new(weight: Tensor, bias: Option<Tensor>, act: Option<HiddenAct>) -> Self {
         Self { weight, bias, act }
@@ -159,68 +124,6 @@ impl Linear {
             Ok(x)
         }
     }
-}
-
-#[derive(Debug)]
-pub struct Batch {
-    pub input_ids: Vec<u32>,
-    pub token_type_ids: Vec<u32>,
-    pub position_ids: Vec<u32>,
-    pub cumulative_seq_lengths: Vec<u32>,
-    pub max_length: u32,
-    pub pooled_indices: Vec<u32>,
-}
-
-impl Batch {
-    pub fn len(&self) -> usize {
-        self.cumulative_seq_lengths.len() - 1
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-}
-
-/// Model type, only embeddings are supported in Gemma.
-#[derive(Debug, PartialEq, Clone)]
-pub enum ModelType {
-    Classifier,
-    Embedding(Pool),
-}
-
-/// Supported pooling strategies.
-#[derive(Debug, PartialEq, Clone, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum Pool {
-    /// Take the CLS token embedding
-    Cls,
-    /// Mean pool across tokens
-    Mean,
-    /// SPLADE (sparse lexical embeddings, not supported in Gemma)
-    Splade,
-    /// Take the last token embedding
-    LastToken,
-}
-
-#[derive(Debug, Clone, PartialEq, Deserialize)]
-pub struct Gemma3Config {
-    pub attention_bias: bool,
-    pub pad_token_id: u32,
-    pub head_dim: Option<usize>,
-    pub hidden_activation: HiddenAct,
-    pub hidden_size: usize,
-    pub max_position_embeddings: usize,
-    pub num_attention_heads: usize,
-    pub num_hidden_layers: usize,
-    pub num_key_value_heads: usize,
-    pub query_pre_attn_scalar: usize,
-    pub rms_norm_eps: f32,
-    pub rope_local_base_freq: f32,
-    pub rope_theta: f32,
-    pub sliding_window: Option<usize>,
-    #[serde(rename(deserialize = "_sliding_window_pattern"))]
-    pub sliding_window_pattern: usize,
-    pub vocab_size: usize,
 }
 
 #[derive(Debug)]
@@ -266,9 +169,6 @@ impl Gemma3RMSNorm {
         let hidden_states_normed =
             hidden_states.broadcast_div(&(norm_hidden_states + self.epsilon as f64)?.sqrt()?)?;
 
-        // NOTE: Gemma3 multiplies by (1.0 + weight) for scaling after normalization
-        // but quant model weights are already scaled, so DO NOT add 1 if using quant
-        // model
         let output =
             hidden_states_normed.to_dtype(hidden_states_dtype)?.broadcast_mul(&self.weight)?;
 
@@ -311,20 +211,15 @@ impl Gemma3Attention {
             config.head_dim.unwrap_or(config.hidden_size / num_attention_heads);
         let num_key_value_heads = config.num_key_value_heads;
 
-        // ---- Quantized Q/K/V weights ----
         let q_w = ct.tensor(reader, &format!("{prefix}.attn_q.weight"), &Device::Cpu)?;
         let k_w = ct.tensor(reader, &format!("{prefix}.attn_k.weight"), &Device::Cpu)?;
         let v_w = ct.tensor(reader, &format!("{prefix}.attn_v.weight"), &Device::Cpu)?;
         let o_w = ct.tensor(reader, &format!("{prefix}.attn_output.weight"), &Device::Cpu)?;
 
-        // q-k-v weight concatenation cannot be used for quantized models
-
         let q_proj = QLinear::new(q_w, None)?;
         let k_proj = QLinear::new(k_w, None)?;
         let v_proj = QLinear::new(v_w, None)?;
         let o_proj = QLinear::new(o_w, None)?;
-
-        // not using q-k-v bias as attention_bias is false in this config
 
         let q_norm = Gemma3RMSNorm::load_from_gguf(
             ct,
@@ -384,8 +279,6 @@ impl Gemma3Attention {
         };
 
         let mask: Vec<u8> = if let Some(window_size) = sliding_window {
-            // Bi-directional sliding window mask, meaning a token can attend to any
-            // other token if their absolute distance is within half the sliding window size
             let half_window = window_size / 2;
             (0..seq_len)
                 .flat_map(|i| {
@@ -396,7 +289,6 @@ impl Gemma3Attention {
                 })
                 .collect()
         } else {
-            // Full attention mask, meaning a token can attend to all tokens
             vec![1u8; seq_len * seq_len]
         };
 
@@ -461,7 +353,6 @@ impl Gemma3Attention {
         let q = apply_rotary(&q, cos, sin, self.attention_head_size)?;
         let k = apply_rotary(&k, cos, sin, self.attention_head_size)?;
 
-        // For simplicity, expand k and v to match number of q heads if needed (GQA)
         let k = self.repeat_kv(&k)?;
         let v = self.repeat_kv(&v)?;
 
@@ -638,16 +529,12 @@ impl Gemma3Embedding {
         reader: &mut R,
         config: &Gemma3Config,
     ) -> candle_core::Result<Self> {
-        // Load quantized embedding weights from GGUF
         let qweight = ct.tensor(reader, "token_embd.weight", &Device::Cpu)?;
 
-        // Dequantize to FP32
         let weight = qweight.dequantize(&Device::Cpu)?;
 
-        // Build embedding with FP32 weights
         let embedding = Embedding::new(weight, config.hidden_size);
 
-        // Gemma3 embedding scale
         let scale = (config.hidden_size as f64).sqrt();
 
         Ok(Self { embedding, scale })
@@ -896,122 +783,9 @@ impl Gemma3Model {
 
         let output_before_norm = self.dense2.forward(&dense1_hidden)?;
 
-        // L2 normalize the tensor (before converting to Vec)
         let norm = output_before_norm.sqr()?.sum_keepdim(1)?.sqrt()?;
         let normalized = output_before_norm.broadcast_div(&norm)?;
 
-        // Return normalized tensor
         Ok(Some(normalized))
-    }
-}
-
-#[wasm_bindgen]
-pub struct Gemma3Embedder {
-    model: Gemma3Model,
-    tokenizer: Tokenizer,
-}
-
-#[wasm_bindgen]
-impl Gemma3Embedder {
-    /// Load model + tokenizer from HF hub or local path
-    #[wasm_bindgen(constructor)]
-    pub fn new(
-        weights: Vec<u8>,
-        weights_dense1: Vec<u8>,
-        weights_dense2: Vec<u8>,
-        tokenizer: Vec<u8>,
-        config: Vec<u8>,
-    ) -> Result<Gemma3Embedder, JsError> {
-        console_error_panic_hook::set_once();
-
-        let tokenizer =
-            Tokenizer::from_bytes(&tokenizer).map_err(|e| JsError::new(&e.to_string()))?;
-
-        let config: Gemma3Config =
-            serde_json::from_slice(&config).map_err(|e| JsError::new(&e.to_string()))?;
-
-        let mut cursor = std::io::Cursor::new(weights);
-
-        let content = gguf_file::Content::read(&mut cursor)
-            .map_err(|e| JsError::new(&format!("GGUF parse error: {e}")))?;
-
-        let vb_dense1 =
-            VarBuilder::from_buffered_safetensors(weights_dense1, DType::F32, &Device::Cpu)
-                .map_err(|e| JsError::new(&e.to_string()))?;
-
-        let vb_dense2 =
-            VarBuilder::from_buffered_safetensors(weights_dense2, DType::F32, &Device::Cpu)
-                .map_err(|e| JsError::new(&e.to_string()))?;
-
-        let model = Gemma3Model::load(
-            content,
-            &mut cursor,
-            vb_dense1,
-            vb_dense2,
-            &config,
-            ModelType::Embedding(Pool::Mean),
-        )
-        .map_err(|e| JsError::new(&e.to_string()))?;
-
-        Ok(Self { model, tokenizer })
-    }
-
-    /// Embed a single sentence
-    pub fn embed(&self, text: &str) -> Result<Vec<f32>, JsError> {
-        let batch = self.encode_batch(&[text.to_string()])?;
-        let normed_output = self.model.forward(batch).map_err(|e| JsError::new(&e.to_string()))?;
-        let normed_output =
-            normed_output.ok_or_else(|| JsError::new("Embedding generation failed!"))?;
-        let normed_output =
-            normed_output.to_vec2::<f32>().map_err(|e| JsError::new(&e.to_string()))?;
-        let emb = normed_output[0].clone();
-
-        Ok(emb)
-    }
-
-    /// Embed multiple sentences - returns flattened array
-    pub fn embed_batch(&self, texts: Vec<String>) -> Result<Vec<f32>, JsError> {
-        let batch = self.encode_batch(&texts)?;
-        let normed_output = self.model.forward(batch).map_err(|e| JsError::new(&e.to_string()))?;
-        let normed_output =
-            normed_output.ok_or_else(|| JsError::new("Embedding generation failed!"))?;
-        let embeddings =
-            normed_output.to_vec2::<f32>().map_err(|e| JsError::new(&e.to_string()))?;
-
-        // Flatten: [batch_size, 768] -> [batch_size * 768]
-        Ok(embeddings.into_iter().flatten().collect())
-    }
-
-    /// Internal helper: convert texts -> Batch
-    fn encode_batch(&self, texts: &[String]) -> Result<Batch, JsError> {
-        let mut all_ids = Vec::new();
-        let mut all_positions = Vec::new();
-        let mut cumulative = vec![0];
-        let mut max_len = 0;
-
-        for text in texts {
-            let encoding = self
-                .tokenizer
-                .encode(text.as_str(), true)
-                .map_err(|e| JsError::new(&format!("Tokenization failed: {e}")))?;
-
-            let ids = encoding.get_ids().to_vec();
-            let len = ids.len();
-            max_len = max_len.max(len);
-
-            all_ids.extend(ids.iter().cloned());
-            all_positions.extend((0..len as u32).collect::<Vec<u32>>());
-            cumulative.push(cumulative.last().unwrap() + len as u32);
-        }
-
-        let token_len = all_ids.len();
-        Ok(Batch {
-            input_ids: all_ids,
-            token_type_ids: vec![0; token_len],
-            position_ids: all_positions,
-            cumulative_seq_lengths: cumulative,
-            max_length: max_len as u32,
-            pooled_indices: (0..texts.len() as u32).collect(),
-        })
     }
 }
