@@ -136,6 +136,18 @@ const runTests = async (
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
+    // Upstream tests expect to be run from the output directory
+    runOptions.cwd = config.outputDir
+
+    // Set ASAN_OPTIONS if not already set by the user.
+    if (config.isAsan() || !runOptions.env.ASAN_OPTIONS) {
+      if (config.isLsan()) {
+        runOptions.env.ASAN_OPTIONS = 'detect_odr_violation=0:detect_leaks=1'
+      } else {
+        runOptions.env.ASAN_OPTIONS = 'detect_odr_violation=0'
+      }
+    }
+
     // Filter out upstream tests that are known to fail for Brave
     const filterFilePaths = getApplicableFilters(Config, testSuite)
     if (filterFilePaths.length > 0) {
