@@ -44,7 +44,7 @@ class BraveTabTest : public ChromeViewsTestBase {
 
 TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
 
   // Our tab should have extra padding always.
   // See the comment at BraveTab::GetInsets().
@@ -58,10 +58,11 @@ TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
 // Check tab's region inside of vertical padding.
 TEST_F(BraveTabTest, TabHeightTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
-  tab.SetBoundsRect({0, 0, 100, GetLayoutConstant(TAB_STRIP_HEIGHT)});
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
+  tab.SetBoundsRect(
+      {0, 0, 100, GetLayoutConstant(LayoutConstant::kTabStripHeight)});
   EXPECT_EQ(tab.GetLocalBounds().height() -
-                GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+                GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
             tab.GetContentsBounds().height());
 
   SkPath mask = tab.tab_style_views()->GetPath(
@@ -75,25 +76,25 @@ TEST_F(BraveTabTest, TabHeightTest) {
   // Check outside of tab region.
   gfx::Rect rect(50, 0, 1, 1);
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) - 1);
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) - 1);
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
 
   // Check inside of tab region.
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING));
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_TRUE(mask_region.intersects(RectToSkIRect(rect)));
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) +
-             GetLayoutConstant(TAB_HEIGHT) - 1);
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+             GetLayoutConstant(LayoutConstant::kTabHeight) - 1);
   EXPECT_TRUE(mask_region.intersects(RectToSkIRect(rect)));
 
   // Check outside of tab region.
-  rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) +
-             GetLayoutConstant(TAB_HEIGHT));
+  rect.set_y(GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+             GetLayoutConstant(LayoutConstant::kTabHeight));
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
 }
 
 TEST_F(BraveTabTest, TabStyleTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
 
   // We use same width for split and non-split tab.
   auto* tab_style = tab.tab_style();
@@ -137,7 +138,8 @@ class BraveTabRenamingUnitTest : public BraveTabTest {
 
   void SetUp() override {
     BraveTabTest::SetUp();
-    tab_ = std::make_unique<BraveTab>(&tab_slot_controller_);
+    tab_ =
+        std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller_);
     LayoutAndCheckBorder(tab_.get(), {0, 0, 100, 50});
   }
 
@@ -275,7 +277,7 @@ TEST_F(BraveTabRenamingUnitTest, ClickingOutsideRenamingTabCommitsRename) {
 
 TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
   tab_slot_controller.set_active_tab(&tab);
 
   ASSERT_FALSE(tab_slot_controller.ShouldAlwaysHideCloseButton());
@@ -292,7 +294,8 @@ TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
 TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
   testing::NiceMock<BraveTabRenamingUnitTest::MockTabSlotController>
       tab_slot_controller;
-  auto tab = std::make_unique<BraveTab>(&tab_slot_controller);
+  auto tab =
+      std::make_unique<BraveTab>(tabs::TabHandle(2), &tab_slot_controller);
   tab_slot_controller.set_active_tab(tab.get());
 
   // Create a widget to host the tab

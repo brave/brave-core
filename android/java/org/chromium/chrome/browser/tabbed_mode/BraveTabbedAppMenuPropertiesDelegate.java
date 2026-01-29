@@ -546,13 +546,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 0)));
 
         // Add to Group
-        if (ChromeFeatureList.sTabGroupParityBottomSheetAndroid.isEnabled()) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
-        }
+        modelList.add(
+                new MVCListAdapter.ListItem(
+                        AppMenuHandler.AppMenuItemType.STANDARD,
+                        buildModelForStandardMenuItem(
+                                R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
 
         // New Window
         if (!DeviceInfo.isAutomotive()) {

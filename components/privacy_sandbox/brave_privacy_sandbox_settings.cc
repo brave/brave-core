@@ -14,13 +14,11 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
-#include "components/privacy_sandbox/tracking_protection_settings.h"
 
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     std::unique_ptr<Delegate> delegate,
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
-    privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
     PrefService* pref_service)
     : pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox.
@@ -101,8 +99,7 @@ bool BravePrivacySandboxSettings::MaySendAttributionReport(
 bool BravePrivacySandboxSettings::
     IsAttributionReportingTransitionalDebuggingAllowed(
         const url::Origin& top_frame_origin,
-        const url::Origin& reporting_origin,
-        bool& can_bypass) const {
+        const url::Origin& reporting_origin) const {
   return false;
 }
 
@@ -162,23 +159,6 @@ bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
 bool BravePrivacySandboxSettings::IsPrivateAggregationDebugModeAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& reporting_origin) const {
-  return false;
-}
-
-privacy_sandbox::TpcdExperimentEligibility
-BravePrivacySandboxSettings::GetCookieDeprecationExperimentCurrentEligibility()
-    const {
-  return privacy_sandbox::TpcdExperimentEligibility(
-      privacy_sandbox::TpcdExperimentEligibility::Reason::k3pCookiesBlocked);
-}
-
-bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowed() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowedForContext(
-    const url::Origin& top_frame_origin,
-    const url::Origin& context_origin) const {
   return false;
 }
 

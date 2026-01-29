@@ -17,7 +17,7 @@ namespace android {
 
 static void JNI_WalletNativeUtils_ResetWallet(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   DCHECK(profile);
 
@@ -30,7 +30,7 @@ static void JNI_WalletNativeUtils_ResetWallet(
 
 static jboolean JNI_WalletNativeUtils_IsUnstoppableDomainsTld(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& domain) {
+    const base::android::JavaRef<jstring>& domain) {
   auto domain_string = base::android::ConvertJavaStringToUTF8(env, domain);
 
   return decentralized_dns::IsUnstoppableDomainsTLD(domain_string);
@@ -38,7 +38,7 @@ static jboolean JNI_WalletNativeUtils_IsUnstoppableDomainsTld(
 
 static jboolean JNI_WalletNativeUtils_IsEnsTld(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& domain) {
+    const base::android::JavaRef<jstring>& domain) {
   auto domain_string = base::android::ConvertJavaStringToUTF8(env, domain);
 
   return decentralized_dns::IsENSTLD(domain_string);
@@ -46,7 +46,7 @@ static jboolean JNI_WalletNativeUtils_IsEnsTld(
 
 static jboolean JNI_WalletNativeUtils_IsSnsTld(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& domain) {
+    const base::android::JavaRef<jstring>& domain) {
   auto domain_string = base::android::ConvertJavaStringToUTF8(env, domain);
 
   return decentralized_dns::IsSnsTLD(domain_string);
@@ -54,3 +54,5 @@ static jboolean JNI_WalletNativeUtils_IsSnsTld(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(WalletNativeUtils)

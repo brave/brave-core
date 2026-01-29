@@ -8,16 +8,26 @@ package org.chromium.chrome.browser.vpn.activities;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import android.graphics.Color;
+
 import androidx.test.filters.SmallTest;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveVpnParentActivityTest {
+    private static final int DEFAULT_BG_COLOR = Color.LTGRAY;
+
+    @Before
+    public void setUp() {
+        SemanticColorUtils.setDefaultBgColorForTesting(DEFAULT_BG_COLOR);
+    }
 
     @Test
     @SmallTest

@@ -23,56 +23,65 @@ def normalize_channel(original_function, channel):
     return original_function(channel)
 
 
-# This override adds or modifies the following context values:
-# - PACKAGEANDCHANNEL: required by our templates (drops channel name for stable)
-# - VERSION/VERSIONFULL: drops MAJOR from the version string
-@override_utils.override_method(Installer)
-def initialize(self, original_method):
-    original_method(self)
-    self.context["PACKAGEANDCHANNEL"] = self.context["PACKAGE"]
-    self.context["VERSION"] = (f"{self.context['MINOR']}."
-                               f"{self.context['BUILD']}."
-                               f"{self.context['PATCH']}")
-    self.context["VERSIONFULL"] = (f"{self.context['MINOR']}."
-                                   f"{self.context['BUILD']}."
-                                   f"{self.context['PATCH']}")
+# This override adds or modifies the following data values:
+# - package_and_channel: required by our templates (drops channel name for stable)
+# - version/versionfull: drops MAJOR from the version string
+@override_utils.override_function(InstallerConfig)
+def _load_branding_and_version(original_method, output_dir, branding,
+                               channel) -> dict[str, typing.Any]:
+    data = original_method(output_dir, branding, channel)
 
+    data["package_and_channel"] = data["info_vars"]["PACKAGE"]
+
+    version = (f"{data['version_vars']['MINOR']}."
+               f"{data['version_vars']['BUILD']}."
+               f"{data['version_vars']['PATCH']}")
+    data["version"] = version
+    data["versionfull"] = version
+    return data
 
 # This override stages Brave resources
-@override_utils.override_method(Installer)
-def _stage_resources(self, original_method, install_dir):
-    original_method(self, install_dir)
-    self._install_into_dir(
-        self.output_dir / "installer/common/LICENSE",
-        install_dir,
-        mode=0o644,
-        strip=False,
-    )
-    self._install_into_dir(
-        self.output_dir / "brave_resources.pak",
-        install_dir,
-        mode=0o644,
-        strip=False,
-    )
-    self._install_into_dir(
-        self.output_dir / "brave_100_percent.pak",
-        install_dir,
-        mode=0o644,
-    )
-    self._install_into_dir(
-        self.output_dir / "brave_200_percent.pak",
-        install_dir,
-        mode=0o644,
-    )
+@override_utils.override_method(InstallerConfig)
+def get_resource_artifacts(self, original_method) -> list[Artifact]:
+    artifacts = original_method(self)
+    artifacts.append(
+        Artifact(
+            "installer/common/LICENSE",
+            "LICENSE",
+            ArtifactType.RESOURCE,
+            StandardPermissions.REGULAR,
+        ))
+    artifacts.append(
+        Artifact(
+            "brave_resources.pak",
+            "brave_resources.pak",
+            ArtifactType.RESOURCE,
+            StandardPermissions.REGULAR,
+        ))
+    artifacts.append(
+        Artifact(
+            "brave_100_percent.pak",
+            "brave_100_percent.pak",
+            ArtifactType.RESOURCE,
+            StandardPermissions.REGULAR,
+        ))
+    artifacts.append(
+        Artifact(
+            "brave_200_percent.pak",
+            "brave_200_percent.pak",
+            ArtifactType.RESOURCE,
+            StandardPermissions.REGULAR,
+        ))
     # localization files for Brave extension
-    locales_dir = install_dir / "resources/brave_extension/_locales"
-    locales_dir.mkdir(parents=True, exist_ok=True)
-    locales_dir.chmod(0o755)
-    for locale in (self.output_dir / "locales").glob("*"):
-        if not locale.is_dir():
-            continue
-        locale_dir = locales_dir / locale.name
-        locale_dir.mkdir(parents=True, exist_ok=True)
-        locale_dir.chmod(0o755)
+    locales_dir = self.output_dir / pathlib.Path(
+        "resources/brave_extension/_locales")
+    for locale in locales_dir.iterdir():
         locale_file = locale / "messages.json"
-        self._install_into_dir(locale_file, locale_dir, mode=0o644)
+        artifacts.append(
+            Artifact(
+                locale_file,
+                locale_file.relative_to(self.output_dir),
+                ArtifactType.RESOURCE,
+                StandardPermissions.REGULAR,
+            ))
+    return artifacts

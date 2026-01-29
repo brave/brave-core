@@ -18,7 +18,7 @@ namespace chrome::android {
 
 static jlong JNI_BraveAccountServiceFactory_GetInterfaceToBraveAccountService(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto* brave_account_service =
       brave_account::BraveAccountServiceFactory::GetFor(profile);
@@ -34,3 +34,5 @@ static jlong JNI_BraveAccountServiceFactory_GetInterfaceToBraveAccountService(
 }
 
 }  // namespace chrome::android
+
+DEFINE_JNI(BraveAccountServiceFactory)

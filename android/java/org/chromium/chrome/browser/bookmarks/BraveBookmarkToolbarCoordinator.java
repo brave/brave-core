@@ -10,6 +10,7 @@ import android.view.View;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
@@ -39,6 +40,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             Runnable endSearchRunnable,
             BooleanSupplier incognitoEnabledSupplier,
             BookmarkManagerOpener bookmarkManagerOpener,
+            SnackbarManager snackbarManager,
             View nextFocusableView) {
         super(
                 context,
@@ -56,6 +58,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 endSearchRunnable,
                 incognitoEnabledSupplier,
                 bookmarkManagerOpener,
+                snackbarManager,
                 nextFocusableView);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {

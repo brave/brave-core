@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index d2fe80077721e0adc7628f235fd34b3bbf20cfb3..ff49669647ee963b34e5bd5a706fd781232669fc 100644
+index 164aa78ca9e0e398454e56cceab549b5de106bdd..4047976cbf840e87aed853988730984d717ddcae 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
-@@ -326,5 +326,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
+@@ -355,5 +355,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
      local_state_->SetTime(variations::prefs::kVariationsSeedDate,
                            base::Time::Now());
    }

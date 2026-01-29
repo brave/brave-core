@@ -9,7 +9,6 @@
 
 #include "base/functional/callback.h"
 #include "base/logging.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/engine/syncer_proto_util.h"
 #include "components/sync/protocol/sync.pb.h"
@@ -41,7 +40,7 @@ void BraveSyncServerCommands::PermanentlyDeleteAccount(
   if (post_result.type() != SyncerError::Type::kSuccess) {
     VLOG(1) << "[BraveSync] " << __func__
             << " Post ClearServerData failed post_result="
-            << base::to_underlying(post_result.type()) << " "
+            << std::to_underlying(post_result.type()) << " "
             << post_result.ToString();
   }
 

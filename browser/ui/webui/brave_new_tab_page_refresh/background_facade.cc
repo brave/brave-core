@@ -11,6 +11,7 @@
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"

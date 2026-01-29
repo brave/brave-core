@@ -11,7 +11,6 @@ namespace privacy_sandbox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnforcePrivacySandboxAttestations, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kFingerprintingProtectionUx, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOverridePrivacySandboxSettingsLocalTesting,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},

@@ -61,9 +61,9 @@ std::unique_ptr<CommandItem> ItemForTitle(const std::u16string& title,
 std::optional<tab_groups::TabGroupId> IneligibleGroupForSelected(
     TabStripModel* tab_strip_model) {
   std::optional<tab_groups::TabGroupId> excluded_group = std::nullopt;
-  for (int index : tab_strip_model->selection_model().selected_indices()) {
-    auto group = tab_strip_model->GetTabGroupForTab(index);
-    if (group.has_value()) {
+  for (tabs::TabInterface* tab :
+       tab_strip_model->selection_model().selected_tabs()) {
+    if (auto group = tab->GetGroup(); group.has_value()) {
       if (!excluded_group.has_value()) {
         excluded_group = group;
       } else if (group != excluded_group) {
@@ -117,7 +117,10 @@ void MoveTabsToExistingWindow(base::WeakPtr<Browser> source,
     return;
   }
   const ui::ListSelectionModel::SelectedIndices& sel =
-      source->tab_strip_model()->selection_model().selected_indices();
+      source->tab_strip_model()
+          ->selection_model()
+          .GetListSelectionModel()
+          .selected_indices();
   chrome::MoveTabsToExistingWindow(source.get(), target.get(),
                                    std::vector<int>(sel.begin(), sel.end()));
 }
@@ -125,7 +128,7 @@ void MoveTabsToExistingWindow(base::WeakPtr<Browser> source,
 void AddSelectedToNewGroup(Browser* browser) {
   TabStripModel* model = browser->tab_strip_model();
   const ui::ListSelectionModel::SelectedIndices& sel =
-      model->selection_model().selected_indices();
+      model->selection_model().GetListSelectionModel().selected_indices();
   model->AddToNewGroup(std::vector<int>(sel.begin(), sel.end()));
 }
 
@@ -210,7 +213,10 @@ void AddTabsToGroup(base::WeakPtr<Browser> browser,
     return;
   }
   const ui::ListSelectionModel::SelectedIndices& sel =
-      browser->tab_strip_model()->selection_model().selected_indices();
+      browser->tab_strip_model()
+          ->selection_model()
+          .GetListSelectionModel()
+          .selected_indices();
   browser->tab_strip_model()->AddToExistingGroup(
       std::vector<int>(sel.begin(), sel.end()), group);
 }

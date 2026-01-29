@@ -15,7 +15,7 @@ def PathInNodeModules(*args):
     return os.path.join(NODE_MODULES, *args)
 
 
-def RunNode(cmd_parts, include_command_in_error=True):
+def RunNodeRaw(cmd_parts):
     cmd = ['node'] + cmd_parts
     process = subprocess.Popen(cmd,
                                cwd=os.getcwd(),
@@ -23,11 +23,16 @@ def RunNode(cmd_parts, include_command_in_error=True):
                                stderr=subprocess.PIPE,
                                universal_newlines=True)
     stdout, stderr = process.communicate()
+    return process.returncode, stdout, stderr
 
-    if process.returncode != 0:
+
+def RunNode(cmd_parts, include_command_in_error=True):
+    returncode, stdout, stderr = RunNodeRaw(cmd_parts)
+    if returncode != 0:
         err = stderr if len(stderr) > 0 else stdout
-        raise RuntimeError(f"Command '{' '.join(cmd)}' failed\n{err}"
-                           if include_command_in_error else err)
+        raise RuntimeError(
+            f"Command '{' '.join(['node'] + cmd_parts)}' failed\n{err}"
+            if include_command_in_error else err)
 
     return stdout
 

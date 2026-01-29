@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/playlist_active_tab_tracker.h"
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"

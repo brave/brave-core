@@ -38,53 +38,54 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
 std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   const bool touch = ui::TouchUiController::Get()->touch_ui();
   switch (constant) {
-    case TAB_HEIGHT: {
+    case LayoutConstant::kTabHeight: {
       if (HorizontalTabsUpdateEnabled()) {
         return tabs::GetHorizontalTabHeight();
       }
-      return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+      return (touch ? 41 : 30) +
+             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
     }
-    case TAB_STRIP_HEIGHT: {
+    case LayoutConstant::kTabStripHeight: {
       if (HorizontalTabsUpdateEnabled()) {
         return tabs::GetHorizontalTabStripHeight() +
-               GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+               GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
       }
       return std::nullopt;
     }
-    case TAB_STRIP_PADDING: {
+    case LayoutConstant::kTabStripPadding: {
       if (HorizontalTabsUpdateEnabled()) {
         return tabs::kHorizontalTabVerticalSpacing;
       }
       return std::nullopt;
     }
-    case TABSTRIP_TOOLBAR_OVERLAP: {
+    case LayoutConstant::kTabstripToolbarOverlap: {
       if (!HorizontalTabsUpdateEnabled()) {
         return std::nullopt;
       }
       return 1;
     }
-    case LOCATION_BAR_CHILD_CORNER_RADIUS:
+    case LayoutConstant::kLocationBarChildCornerRadius:
       return 4;
-    case TAB_SEPARATOR_HEIGHT: {
+    case LayoutConstant::kTabSeparatorHeight: {
       return 16;
     }
-    case TOOLBAR_BUTTON_HEIGHT: {
+    case LayoutConstant::kToolbarButtonHeight: {
       // See also SidebarButtonView::kSidebarButtonSize
       return touch ? 48 : 28;
     }
-    case TOOLBAR_CORNER_RADIUS:
+    case LayoutConstant::kToolbarCornerRadius:
       return 8;
 
-    case LOCATION_BAR_HEIGHT:
+    case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
       return 32;
-    case LOCATION_BAR_TRAILING_ICON_SIZE:
+    case LayoutConstant::kLocationBarTrailingIconSize:
       return 18;
-    case LOCATION_BAR_ICON_SIZE:
+    case LayoutConstant::kLocationBarIconSize:
       return 16;
-    case LOCATION_BAR_ELEMENT_PADDING:
-    case LOCATION_BAR_PAGE_INFO_ICON_VERTICAL_PADDING:
-    case LOCATION_BAR_TRAILING_DECORATION_EDGE_PADDING:
+    case LayoutConstant::kLocationBarElementPadding:
+    case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
+    case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
       return 2;
     default:
       break;
@@ -95,19 +96,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
 }  // namespace
 
 // Forward declaration
-int GetLayoutConstant_ChromiumImpl(LayoutConstant constant);
 gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
-
-#define LayoutConstant LayoutConstant constant) {                            \
-    const std::optional<int> braveOption = GetBraveLayoutConstant(constant); \
-    if (braveOption) {                                                       \
-      return braveOption.value();                                            \
-    }                                                                        \
-                                                                             \
-    return GetLayoutConstant_ChromiumImpl(constant);                         \
-  }                                                                          \
-                                                                             \
-  int GetLayoutConstant_ChromiumImpl(LayoutConstant
 
 #define LayoutInset LayoutInset inset) {           \
     const std::optional<gfx::Insets> braveOption = \
@@ -121,9 +110,19 @@ gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
                                                    \
   gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset
 
+// Use our own version of GetLayoutConstant to include Brave values.
+#define GetLayoutConstant GetLayoutConstant_ChromiumImpl
 #include <chrome/browser/ui/layout_constants.cc>
+#undef GetLayoutConstant
 #undef LayoutInset
-#undef LayoutConstant
+
+int GetLayoutConstant(LayoutConstant constant) {
+  const std::optional<int> brave_option = GetBraveLayoutConstant(constant);
+  if (brave_option) {
+    return brave_option.value();
+  }
+  return GetLayoutConstant_ChromiumImpl(constant);
+}
 
 namespace tabs {
 

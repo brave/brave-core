@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/postinst b/chrome/installer/linux/debian/postinst
-index c1db53387a9c834ac744a18a918fe0ebe9ab4c12..4a028a4eab095ca6b355e1f68f5e7bea51c23990 100755
+index f767a80e0046a66dd1b1d467933da2ec6616e3ab..a179eb086f5c66e12ad2a21b03a00f0427534c88 100755
 --- a/chrome/installer/linux/debian/postinst
 +++ b/chrome/installer/linux/debian/postinst
 @@ -45,6 +45,7 @@ case $CHANNEL in
@@ -9,4 +9,4 @@ index c1db53387a9c834ac744a18a918fe0ebe9ab4c12..4a028a4eab095ca6b355e1f68f5e7bea
 +PRIORITY="`expr $PRIORITY + 1`"
  
  update-alternatives --install /usr/bin/x-www-browser x-www-browser \
-   /usr/bin/@@USR_BIN_SYMLINK_NAME@@ $PRIORITY
+   /usr/bin/@@usr_bin_symlink_name $PRIORITY

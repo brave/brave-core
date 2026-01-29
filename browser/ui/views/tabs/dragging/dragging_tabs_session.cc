@@ -14,13 +14,16 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
 
-DraggingTabsSession::DraggingTabsSession(DragSessionData drag_data,
-                                         TabDragContext* attached_context,
-                                         float offset_to_width_ratio,
-                                         bool initial_move,
-                                         gfx::Point point_in_screen)
+DraggingTabsSession::DraggingTabsSession(
+    DragSessionData drag_data,
+    TabDragContext& attached_context,
+    TabDragPositioningDelegate& drag_position_delegate,
+    float offset_to_width_ratio,
+    bool initial_move,
+    gfx::Point point_in_screen)
     : DraggingTabsSessionChromium(drag_data,
                                   attached_context,
+                                  drag_position_delegate,
                                   offset_to_width_ratio,
                                   initial_move,
                                   point_in_screen) {}
@@ -33,9 +36,9 @@ gfx::Point DraggingTabsSession::GetAttachedDragPoint(
     return DraggingTabsSessionChromium::GetAttachedDragPoint(point_in_screen);
   }
 
-  DCHECK(attached_context_);  // The tab must be attached.
   gfx::Point tab_loc(point_in_screen);
-  views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
+  views::View::ConvertPointFromScreen(base::to_address(attached_context_),
+                                      &tab_loc);
   const int x = drag_data_.tab_drag_data_.front().pinned
                     ? tab_loc.x() - mouse_offset_
                     : 0;
@@ -51,7 +54,8 @@ void DraggingTabsSession::MoveAttached(gfx::Point point_in_screen) {
 
   // Unlike upstream, We always update coordinate, as we use y coordinate. Since
   // we don't have threshold there's no any harm for this.
-  views::View::ConvertPointFromScreen(attached_context_, &point_in_screen);
+  views::View::ConvertPointFromScreen(base::to_address(attached_context_),
+                                      &point_in_screen);
   last_move_attached_context_loc_ = point_in_screen.y();
 }
 
@@ -73,8 +77,9 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
   // Pinned tabs cannot be grouped, so we only change the group membership of
   // unpinned tabs.
   std::vector<int> selected_unpinned;
-  for (size_t selected_index :
-       attached_model->selection_model().selected_indices()) {
+  for (size_t selected_index : attached_model->selection_model()
+                                   .GetListSelectionModel()
+                                   .selected_indices()) {
     if (!attached_model->IsTabPinned(selected_index)) {
       selected_unpinned.push_back(selected_index);
     }
@@ -110,15 +115,17 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
   // next of the gap. If the tab is centered in the gap, make the tab
   // ungrouped.
 
-  const Tab* top_most_selected_tab =
-      attached_context_->GetTabAt(selected_unpinned[0]);
+  const TabSlotView* top_most_selected_tab =
+      drag_position_delegate_->GetTabAt(selected_unpinned[0]);
 
   const int buffer = top_most_selected_tab->height() / 4;
 
   const auto tab_bounds_in_drag_context_coords = [this](int model_index) {
-    const Tab* const tab = attached_context_->GetTabAt(model_index);
+    const TabSlotView* const tab =
+        drag_position_delegate_->GetTabAt(model_index);
     return ToEnclosingRect(views::View::ConvertRectToTarget(
-        tab->parent(), attached_context_, gfx::RectF(tab->bounds())));
+        tab->parent(), base::to_address(attached_context_),
+        gfx::RectF(tab->bounds())));
   };
 
   // Use the top edge for a reliable fallback, e.g. if this is the topmost

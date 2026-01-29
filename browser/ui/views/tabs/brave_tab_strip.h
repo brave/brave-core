@@ -30,10 +30,9 @@ class BraveTabStrip : public TabStrip {
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
   void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
-  void MaybeStartDrag(
-      TabSlotView* source,
-      const ui::LocatedEvent& event,
-      const ui::ListSelectionModel& original_selection) override;
+  void MaybeStartDrag(TabSlotView* source,
+                      const ui::LocatedEvent& event,
+                      ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
   std::optional<int> GetCustomBackgroundId(
       BrowserFrameActiveState active_state) const override;
@@ -70,12 +69,6 @@ class BraveTabStrip : public TabStrip {
   void OnAlwaysHideCloseButtonPrefChanged();
 
   TabContainer* GetTabContainerForTesting();
-
-  // TabStrip overrides:
-  bool ShouldDrawStrokes() const override;
-
-  // Exposed for testing.
-  static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

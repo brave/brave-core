@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/BUILD.gn b/chrome/browser/ui/browser_window/BUILD.gn
-index 73161aa440890c3b9d5bfdced9b898fe8288e71b..104094f7d93419b6ec9328406b2b1ac25f050f44 100644
+index b5678cdd869df5cdc03b2831454737fed14b98c3..2cca263624d655dcab3172003f7a44faa0a4facd 100644
 --- a/chrome/browser/ui/browser_window/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/BUILD.gn
-@@ -35,6 +35,7 @@ source_set("browser_window") {
+@@ -33,6 +33,7 @@ source_set("browser_window") {
        "//ui/base:types",
      ]
    }

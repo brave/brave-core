@@ -1,12 +1,12 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index ab3059e214a8226bd9a3e35ffbc09b39063a64f9..60aed113a7b6f605708f9954a30a7ae478be3068 100644
+index 16a512f4c7c392720414e5f37cb4661e6894a231..181b36b6872bc55fdf75f6a382bcba7d79100fbd 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1368,6 +1368,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -1366,6 +1366,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // via `HasContentSettingChangedViaPageInfo(type)`.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {
 +  BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
-   // For the Loud Clapper experiment Chrome should display NOTIFICATIONS
+   // For the Clapper experiment Chrome should display NOTIFICATIONS
    // permission while it is being requested.
  #if BUILDFLAG(IS_ANDROID)

@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
+#include <utility>
+
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -54,7 +55,7 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
   }
 
   NOTREACHED() << "Unexpected value for mojom::AdType: "
-               << base::to_underlying(mojom_ad_type);
+               << std::to_underlying(mojom_ad_type);
 }
 
 }  // namespace brave_ads

@@ -247,17 +247,18 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
   }
 
   render_widget_host_view->CopyFromSurface(
-      {}, output_size,
+      {}, output_size, base::TimeDelta(),
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
              scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
              base::Value callback_id,
-             const viz::CopyOutputBitmapWithMetadata& result) {
+             const content::CopyFromSurfaceResult& result) {
+            CHECK(result.has_value());
             ui_task_runner->PostTask(
-                FROM_HERE,
-                base::BindOnce(&WebcompatReporterDOMHandler::
-                                   HandleCapturedScreenshotBitmap,
-                               handler, result.bitmap, std::move(callback_id)));
+                FROM_HERE, base::BindOnce(&WebcompatReporterDOMHandler::
+                                              HandleCapturedScreenshotBitmap,
+                                          handler, result->bitmap,
+                                          std::move(callback_id)));
           },
           weak_ptr_factory_.GetWeakPtr(), ui_task_runner_, args[0].Clone()));
 }

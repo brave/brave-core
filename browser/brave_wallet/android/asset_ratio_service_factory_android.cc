@@ -14,7 +14,7 @@ namespace chrome {
 namespace android {
 static jlong JNI_AssetRatioServiceFactory_GetInterfaceToAssetRatioService(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
       brave_wallet::AssetRatioServiceFactory::GetInstance()->GetForContext(
@@ -25,3 +25,5 @@ static jlong JNI_AssetRatioServiceFactory_GetInterfaceToAssetRatioService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(AssetRatioServiceFactory)

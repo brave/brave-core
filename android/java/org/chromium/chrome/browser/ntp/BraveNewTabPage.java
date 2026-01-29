@@ -10,6 +10,7 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.EnsuresNonNull;
@@ -42,7 +43,9 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
 
@@ -57,12 +60,13 @@ public class BraveNewTabPage extends NewTabPage {
 
     private @Nullable Supplier<Toolbar> mToolbarSupplier;
     private @Nullable BottomSheetController mBottomSheetController;
-    private @Nullable ObservableSupplier<Integer> mTabStripHeightSupplier;
+    private @Nullable NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable Tab> activityTabProvider,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -77,8 +81,9 @@ public class BraveNewTabPage extends NewTabPage {
             WindowAndroid windowAndroid,
             Supplier<Toolbar> toolbarSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
+            ActivityResultTracker activityResultTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
-            ObservableSupplier<Integer> tabStripHeightSupplier,
+            NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
@@ -88,6 +93,7 @@ public class BraveNewTabPage extends NewTabPage {
                 activity,
                 browserControlsStateProvider,
                 activityTabProvider,
+                modalDialogManagerSupplier,
                 snackbarManager,
                 lifecycleDispatcher,
                 tabModelSelector,
@@ -102,6 +108,7 @@ public class BraveNewTabPage extends NewTabPage {
                 windowAndroid,
                 toolbarSupplier,
                 homeSurfaceTracker,
+                activityResultTracker,
                 tabContentManagerSupplier,
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,

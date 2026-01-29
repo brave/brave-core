@@ -50,11 +50,12 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
     : TabStrip(std::move(controller)) {
   always_hide_close_button_.Init(
       brave_tabs::kAlwaysHideTabCloseButton,
-      controller_->GetProfile()->GetPrefs(),
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged,
                           base::Unretained(this)));
-  middle_click_close_tab_enabled_.Init(brave_tabs::kMiddleClickCloseTabEnabled,
-                                       controller_->GetProfile()->GetPrefs());
+  middle_click_close_tab_enabled_.Init(
+      brave_tabs::kMiddleClickCloseTabEnabled,
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -65,7 +66,7 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
     return false;
   }
 
-  auto* browser = GetBrowser();
+  auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser));
@@ -107,46 +108,6 @@ bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
   return *middle_click_close_tab_enabled_;
 }
 
-bool BraveTabStrip::ShouldDrawStrokes() const {
-  if (ShouldShowVerticalTabs()) {
-    // Prevent root view from drawing lines. For vertical tabs stroke , we
-    // ignore this method and always draw strokes in GetStrokeThickness().
-    return false;
-  }
-
-  // TODO(simonhong): We can return false always here as horizontal tab design
-  // doesn't need additional stroke.
-  // Delete all below code when horizontal tab feature flag is removed.
-  if (tabs::HorizontalTabsUpdateEnabled()) {
-    // We never automatically draw strokes around tabs. For pinned tabs, we draw
-    // the stroke when generating the tab drawing path.
-    return false;
-  }
-
-  if (!TabStrip::ShouldDrawStrokes()) {
-    return false;
-  }
-
-  // Use a little bit lower minimum contrast ratio as our ratio is 1.08162
-  // between default tab background and frame color of light theme.
-  // With upstream's 1.3f minimum ratio, strokes are drawn and it causes weird
-  // border lines in the tab group.
-  // Set 1.0816f as a minimum ratio to prevent drawing stroke.
-  // We don't need the stroke for our default light theme.
-  // NOTE: We don't need to check features::kTabOutlinesInLowContrastThemes
-  // enabled state. Although TabStrip::ShouldDrawStrokes() has related code,
-  // that feature is already expired since cr82. See
-  // chrome/browser/flag-metadata.json.
-  const SkColor background_color = TabStyle::Get()->GetTabBackgroundColor(
-      TabStyle::TabSelectionState::kActive, /*hovered=*/false,
-      /*frame_active*/ true, *GetColorProvider());
-  const SkColor frame_color =
-      controller_->GetFrameColor(BrowserFrameActiveState::kActive);
-  const float contrast_ratio =
-      color_utils::GetContrastRatio(background_color, frame_color);
-  return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
-}
-
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
   // Chromium asks hover style to all split tabs but we only set hover style
   // to hovered tab.
@@ -159,16 +120,16 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
-  if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
+  if (brave_tabs::AreTooltipsEnabled(
+          controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs())) {
     return;
   }
   TabStrip::UpdateHoverCard(tab, update_type);
 }
 
-void BraveTabStrip::MaybeStartDrag(
-    TabSlotView* source,
-    const ui::LocatedEvent& event,
-    const ui::ListSelectionModel& original_selection) {
+void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
+                                   const ui::LocatedEvent& event,
+                                   ui::ListSelectionModel original_selection) {
   if (ShouldShowVerticalTabs()) {
     // When it's vertical tab strip, all the dragged tabs are either pinned or
     // unpinned.
@@ -189,14 +150,14 @@ void BraveTabStrip::MaybeStartDrag(
     if (source->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
         static_cast<Tab*>(source)->data().pinned) {
       auto index = GetModelIndexOf(source).value();
-      auto* browser = controller_->GetBrowser();
+      auto* browser = controller_->GetBrowserWindowInterface();
       DCHECK(browser);
 
       auto* shared_pinned_tab_service =
-          SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+          SharedPinnedTabServiceFactory::GetForProfile(browser->GetProfile());
       DCHECK(shared_pinned_tab_service);
       if (shared_pinned_tab_service->IsDummyContents(
-              browser->tab_strip_model()->GetWebContentsAt(index))) {
+              browser->GetTabStripModel()->GetWebContentsAt(index))) {
         return;
       }
     }
@@ -208,7 +169,7 @@ void BraveTabStrip::MaybeStartDrag(
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
 
-  if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
+  if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
     // Schedule UpdateOrientation(). At this point, BrowserWindow could still
@@ -273,8 +234,10 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
     // "Hide Completely When Collapsed" is enabled. In this case, pinned tabs
     // are not visible at all, so we don't need to care about the jumping issue.
     should_layout_pinned_tabs_in_grid =
-        controller_->GetProfile()->GetPrefs()->GetBoolean(
-            brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+        controller_->GetBrowserWindowInterface()
+            ->GetProfile()
+            ->GetPrefs()
+            ->GetBoolean(brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
   }
 
   return should_layout_pinned_tabs_in_grid;
@@ -282,7 +245,7 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 
 void BraveTabStrip::UpdateOrientation() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
-  auto* browser = GetBrowser();
+  auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
 
   if (using_vertical_tabs) {
@@ -315,7 +278,7 @@ void BraveTabStrip::UpdateOrientation() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowser());
+  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserWindowInterface());
 }
 
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {

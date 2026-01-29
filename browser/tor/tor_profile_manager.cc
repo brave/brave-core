@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"

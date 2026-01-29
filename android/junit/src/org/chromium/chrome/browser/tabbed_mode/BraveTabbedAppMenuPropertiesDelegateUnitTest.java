@@ -72,7 +72,6 @@ import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabGroupModelFilter;
-import org.chromium.chrome.browser.tabmodel.TabGroupModelFilterProvider;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
@@ -131,7 +130,6 @@ import java.util.List;
 public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private ActivityTabProvider mActivityTabProvider;
     @Mock private Tab mTab;
     @Mock private WebContents mWebContents;
     @Mock private NativePage mNativePage;
@@ -153,7 +151,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private SigninManager mSigninManager;
     @Mock private IdentityManager mIdentityManager;
     @Mock private IdentityServicesProvider mIdentityService;
-    @Mock private TabGroupModelFilterProvider mTabGroupModelFilterProvider;
     @Mock private TabGroupModelFilter mTabGroupModelFilter;
     @Mock private IncognitoUtils.Natives mIncognitoUtilsJniMock;
     @Mock public WebsitePreferenceBridge.Natives mWebsitePreferenceBridgeJniMock;
@@ -179,6 +176,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             new ObservableSupplierImpl<>();
     private final ObservableSupplierImpl<ReadAloudController> mReadAloudControllerSupplier =
             new ObservableSupplierImpl<>();
+    private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
 
@@ -213,10 +211,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mTabModelSelector.getModel(true)).thenReturn(mIncognitoTabModel);
         when(mTabModel.isIncognito()).thenReturn(false);
         when(mIncognitoTabModel.isIncognito()).thenReturn(true);
-        when(mTabModelSelector.getTabGroupModelFilterProvider())
-                .thenReturn(mTabGroupModelFilterProvider);
-        when(mTabGroupModelFilterProvider.getCurrentTabGroupModelFilter())
-                .thenReturn(mTabGroupModelFilter);
+        when(mTabModelSelector.getCurrentTabGroupModelFilter()).thenReturn(mTabGroupModelFilter);
         when(mTabGroupModelFilter.getTabModel()).thenReturn(mTabModel);
         when(mTabModel.getProfile()).thenReturn(mProfile);
         ManagedBrowserUtilsJni.setInstanceForTesting(mManagedBrowserUtilsJniMock);
@@ -445,7 +440,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     }
 
     private void setUpMocksForPageMenu() {
-        when(mActivityTabProvider.get()).thenReturn(mTab);
+        mActivityTabProvider.setForTesting(mTab);
         when(mLayoutStateProvider.isLayoutVisible(LayoutType.TAB_SWITCHER)).thenReturn(false);
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)

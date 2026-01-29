@@ -13,6 +13,8 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
@@ -23,7 +25,7 @@
 // Overrides TabContainer::TabInsertionParams construction in
 // TabStrip::AddTabsAt
 #define param(TAB, MODEL_INDEX, PINNED) \
-  param(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
+  param(std::make_unique<BraveTab>(tab_data.handle, this), MODEL_INDEX, PINNED)
 
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
@@ -34,7 +36,8 @@
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX                \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) {  \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                              \
+          tab_strip_->GetBrowserWindowInterface())) {                        \
     tabs::UpdateInsertionIndexForVerticalTabs(                               \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
         GetTabAt(first_dragged_tab_index)->group().has_value(),              \
@@ -45,21 +48,20 @@
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(tab_strip_->GetBrowser())) { \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                             \
+          tab_strip_->GetBrowserWindowInterface())) {                       \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
+#define TabDragController TabDragControllerChromium
 #include <chrome/browser/ui/views/tabs/tab_strip.cc>
+#undef TabDragController
 
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
 #undef TabContainerImpl
 #undef param
-
-const Browser* TabStrip::GetBrowser() const {
-  return controller_->GetBrowser();
-}
 
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
   return false;

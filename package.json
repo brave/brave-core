@@ -77,7 +77,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "144.0.7559.110",
+        "tag": "145.0.7632.31",
         "repository": {
           "url": "https://github.com/brave/chromium"
         },
@@ -88,8 +88,7 @@
         "custom_vars": {
           "checkout_clang_coverage_tools": true,
           "checkout_clangd": true,
-          "download_reclient": true,
-          "siso_version": "git_revision:75bb90e390e42de9f1b1044f18b71297c5ba82bd"
+          "download_reclient": true
         }
       },
       "depot_tools": {

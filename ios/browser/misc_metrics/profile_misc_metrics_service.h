@@ -38,7 +38,7 @@ class ProfileMiscMetricsService : public KeyedService {
  private:
   raw_ptr<PrefService> profile_prefs_;
 
-  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
+  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
 };
 
 }  // namespace misc_metrics

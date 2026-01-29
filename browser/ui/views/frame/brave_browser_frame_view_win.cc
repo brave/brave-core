@@ -43,7 +43,7 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
 bool BraveBrowserFrameViewWin::ShouldCaptionButtonsBeDrawnOverToolbar() const {
-  auto* browser = browser_view()->browser();
+  auto* browser = GetBrowserView()->browser();
   return tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
          !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
 }
@@ -71,7 +71,7 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
-  if (auto* browser = browser_view()->browser();
+  if (auto* browser = GetBrowserView()->browser();
       tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
     if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
       if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
@@ -80,12 +80,12 @@ int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
 
       // In case maximized with Mica enabled, we should return system borders
       // thickness.
-      return ShouldBrowserCustomDrawTitlebar(browser_view())
+      return ShouldBrowserCustomDrawTitlebar(GetBrowserView())
                  ? 0
                  : FrameTopBorderThickness(/*restored*/ false);
     }
 
-    if (!ShouldBrowserCustomDrawTitlebar(browser_view())) {
+    if (!ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
       // In case Mica enabled, we should extend top insets so that title bar can
       // be visible.
       return TopAreaHeight(restored) +
@@ -116,7 +116,7 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto overridden_result = brave::NonClientHitTest(browser_view(), point);
+  if (auto overridden_result = brave::NonClientHitTest(GetBrowserView(), point);
       overridden_result != HTNOWHERE) {
     return overridden_result;
   }
@@ -125,11 +125,11 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
 }
 
 bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {
-  if (auto* browser = browser_view()->browser();
+  if (auto* browser = GetBrowserView()->browser();
       tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser) &&
       type == TitlebarType::kCustom &&
-      !ShouldBrowserCustomDrawTitlebar(browser_view())) {
+      !ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
     // When using Mica, title won't be drawn by the OS. In this case, we
     // should use our custom title
     // TODO(sko) Possibly, there's code that setting HWND wndclass that
@@ -149,7 +149,7 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
   // show custom caption buttons over toolbar. We're forcing them visible in
   // chromium_src/.../browser_caption_button_container_win.cc
   if (ShouldCaptionButtonsBeDrawnOverToolbar() &&
-      !ShouldBrowserCustomDrawTitlebar(browser_view())) {
+      !ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
     caption_button_container_->SetX(
         CaptionButtonsOnLeadingEdge()
             ? 0

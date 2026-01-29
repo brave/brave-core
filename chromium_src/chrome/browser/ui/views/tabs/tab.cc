@@ -30,14 +30,15 @@
                alert_indicator_button_->width() + after_title_padding;
 
 // `UpdateIconVisibility` currently has an early return when the tab view's
-// height is less than `GetLayoutConstant(TAB_HEIGHT)`. Unfortunately, when in
-// vertical tabs mode this will prevent the favicon and close button from
-// appearing. As a workaround, use `tabs::kVerticalTabHeight` instead of
-// TAB_HEIGHT when in vertical tabs mode.
-#define GetLayoutConstant(COMPONENT)                                      \
-  ((COMPONENT == TAB_HEIGHT &&                                            \
-    tabs::utils::ShouldShowBraveVerticalTabs(controller()->GetBrowser())) \
-       ? tabs::kVerticalTabHeight                                         \
+// height is less than `GetLayoutConstant(LayoutConstant::kTabHeight)`.
+// Unfortunately, when in vertical tabs mode this will prevent the favicon and
+// close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
+// instead of LayoutConstant::kTabHeight when in vertical tabs mode.
+#define GetLayoutConstant(COMPONENT)                \
+  ((COMPONENT == LayoutConstant::kTabHeight &&      \
+    tabs::utils::ShouldShowBraveVerticalTabs(       \
+        controller()->GetBrowserWindowInterface())) \
+       ? tabs::kVerticalTabHeight                   \
        : GetLayoutConstant(COMPONENT))
 
 #include <chrome/browser/ui/views/tabs/tab.cc>
@@ -64,13 +65,13 @@ ControllableCloseButtonState::operator bool() const {
 }
 
 bool Tab::IsTabMuteIndicatorNotClickable() {
-  auto* browser = controller()->GetBrowser();
+  auto* browser = controller()->GetBrowserWindowInterface();
   // We have clickable mute indicators enabled by default. Thus, if our pref is
   // disabled we can force the indicator off.
   // Note: We have a test which checks the feature is enabled by default. If
   // that changes this may need to as well.
   // Note: |browser| is |nullptr| in some unit_tests.
-  return browser && browser->profile()->GetPrefs()->GetBoolean(
+  return browser && browser->GetProfile()->GetPrefs()->GetBoolean(
                         kTabMuteIndicatorNotClickable);
 }
 

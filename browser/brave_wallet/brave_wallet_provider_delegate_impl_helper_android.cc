@@ -14,7 +14,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
-using base::android::JavaParamRef;
+using base::android::JavaRef;
 
 namespace brave_wallet {
 
@@ -62,9 +62,9 @@ bool IsWeb3NotificationAllowed() {
 
 static void JNI_BraveWalletProviderDelegateImplHelper_IsSolanaConnected(
     JNIEnv* env,
-    const JavaParamRef<jobject>& jweb_contents,
-    const base::android::JavaParamRef<jstring>& jaccount,
-    const JavaParamRef<jobject>& jcallback) {
+    const JavaRef<jobject>& jweb_contents,
+    const base::android::JavaRef<jstring>& jaccount,
+    const JavaRef<jobject>& jcallback) {
   content::RenderFrameHost* rfh = nullptr;
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
@@ -90,3 +90,5 @@ static void JNI_BraveWalletProviderDelegateImplHelper_IsSolanaConnected(
 }
 
 }  // namespace brave_wallet
+
+DEFINE_JNI(BraveWalletProviderDelegateImplHelper)

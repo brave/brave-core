@@ -12,22 +12,14 @@
 // BrowserTabStripController::ExecuteContextMenuCommand().
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-#define ExecuteContextMenuCommand(...)            \
-  virtual ExecuteContextMenuCommand(__VA_ARGS__); \
-  friend class BraveTabMenuBrowserTest;           \
-  friend class VerticalTabStripStringBrowserTest; \
+#define OnDiscardRingTreatmentEnabledChanged(...)    \
+  OnDiscardRingTreatmentEnabledChanged(__VA_ARGS__); \
+  friend class BraveTabMenuBrowserTest;              \
+  friend class VerticalTabStripStringBrowserTest;    \
   friend class BraveBrowserTabStripController
-
-#define IsContextMenuCommandChecked(...) \
-  virtual IsContextMenuCommandChecked(__VA_ARGS__)
-
-#define IsContextMenuCommandEnabled(...) \
-  virtual IsContextMenuCommandEnabled(__VA_ARGS__)
 
 #include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.h>  // IWYU pragma: export
 
-#undef IsContextMenuCommandEnabled
-#undef IsContextMenuCommandChecked
-#undef ExecuteContextMenuCommand
+#undef OnDiscardRingTreatmentEnabledChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_BROWSER_TAB_STRIP_CONTROLLER_H_

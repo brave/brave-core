@@ -14,7 +14,7 @@ namespace chrome {
 namespace android {
 static jlong JNI_SwapServiceFactory_GetInterfaceToSwapService(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
       brave_wallet::SwapServiceFactory::GetInstance()->GetForContext(profile);
@@ -24,3 +24,5 @@ static jlong JNI_SwapServiceFactory_GetInterfaceToSwapService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(SwapServiceFactory)

@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_
 
-#define CancelWebTokenFetch                                   \
+#define StartWebWrappedKeyFetch                               \
   Unused();                                                   \
   friend class BraveMutableProfileOAuth2TokenServiceDelegate; \
-  void CancelWebTokenFetch
+  void StartWebWrappedKeyFetch
 
 #include <components/signin/internal/identity_manager/mutable_profile_oauth2_token_service_delegate.h>  // IWYU pragma: export
 
-#undef CancelWebTokenFetch
+#undef StartWebWrappedKeyFetch
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_

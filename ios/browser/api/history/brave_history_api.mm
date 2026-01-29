@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"

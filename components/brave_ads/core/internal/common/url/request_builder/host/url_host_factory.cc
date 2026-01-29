@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_factory.h"
 
 #include <ostream>  // IWYU pragma: keep
+#include <utility>
 
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_search_url_host.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_url_host.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/geo_url_host.h"
@@ -41,7 +41,7 @@ std::unique_ptr<UrlHostInterface> UrlHostFactory::Build(UrlHostType type) {
   }
 
   NOTREACHED() << "Unexpected value for UrlHostType: "
-               << base::to_underlying(type);
+               << std::to_underlying(type);
 }
 
 }  // namespace brave_ads

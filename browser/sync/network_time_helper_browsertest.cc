@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_sync/network_time_helper.h"
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "build/build_config.h"

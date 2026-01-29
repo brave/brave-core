@@ -190,12 +190,11 @@ class ClientTest : public testing::TestWithParam<TestCase<Request, Response>> {
 
       if constexpr (base::is_instantiation<Response, WithHeaders>) {
         if (status_code) {
-          const char* phrase = net::GetHttpReasonPhrase(*status_code);
-          CHECK(phrase);
-
           response.headers =
               net::HttpResponseHeaders::Builder(
-                  {1, 1}, absl::StrFormat("%d %s", *status_code, phrase))
+                  {1, 1},
+                  absl::StrFormat("%d %s", *status_code,
+                                  net::GetHttpReasonPhrase(*status_code)))
                   .AddHeader("X-Test-Header", "test-value")
                   .Build();
         }

@@ -16,7 +16,7 @@ namespace youtube_script_injector {
 // static
 void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   YouTubeScriptInjectorTabHelper* helper =
@@ -31,7 +31,7 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
 // static
 jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
@@ -47,7 +47,7 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
 // static
 jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
@@ -68,3 +68,5 @@ void EnterPictureInPicture(content::WebContents* web_contents) {
 }
 
 }  // namespace youtube_script_injector
+
+DEFINE_JNI(BraveYouTubeScriptInjectorNativeHelper)

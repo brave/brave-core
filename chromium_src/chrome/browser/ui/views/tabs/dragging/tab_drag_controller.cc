@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "ui/views/widget/widget.h"
 
 // Prevent unrelated StackAtTop re-define.

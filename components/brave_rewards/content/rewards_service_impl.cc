@@ -71,6 +71,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/icu/source/common/unicode/locid.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -1206,7 +1207,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
 void RewardsServiceImpl::OnFetchFavIconCompleted(FetchFavIconCallback callback,
                                                  const std::string& favicon_key,
                                                  const GURL& url,
-                                                 const SkBitmap& image) {
+                                                 SkBitmap image) {
   GURL favicon_url(favicon_key);
   gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
 

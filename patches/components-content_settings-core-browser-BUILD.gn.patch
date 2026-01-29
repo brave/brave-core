@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 98422cd2565c93f7f2739d2209d2c0c8ff90e77d..81cf5461be0a3ef04a1f913cd84d3f3649b7ec79 100644
+index 32fdf21142bdba3d19e198fe258a87bcc74e22c0..fb31f4a39e4ebbda7f62e9134a4090f9629c5eaa 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -81,6 +81,7 @@ static_library("browser") {
-   }
- 
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
+@@ -87,6 +87,7 @@ static_library("browser") {
+   # for PageInfoRelatedWebsiteSetsTest tests.
+   # TODO(crbug.com/40145057): remove deprecated RWS and this include.
+   public_deps += [ "//components/privacy_sandbox:privacy_sandbox_prefs" ]
 +  sources += brave_components_content_settings_core_browser_sources deps += brave_components_content_settings_core_browser_deps
  }
  

@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
@@ -214,7 +213,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   command->command = query;
 
   const std::string formatted_month =
-      absl::StrFormat("%02d", base::to_underlying(month));
+      absl::StrFormat("%02d", std::to_underlying(month));
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, base::NumberToString(year));

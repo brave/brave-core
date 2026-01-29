@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 863dad75158761a4fc02623ac096d93abef7b24a..e9db37f1c049b694161e884ae7fc65c271687d77 100644
+index cfe7efedb177e0fe8be5be821927e11cae5954ba..e041acf3780e24b1d5fe03132e6dd32705c5383e 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -242,6 +242,7 @@ class BrowserProcessImpl : public BrowserProcess,
-   void CreateGlobalFeaturesForTesting() override;
+@@ -250,6 +250,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   GlobalFeatures* GetFeatures() override;
  
   private:
 +  friend class BraveBrowserProcessImpl;

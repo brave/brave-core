@@ -1,13 +1,13 @@
 diff --git a/third_party/libaddressinput/chromium/chrome_metadata_source.cc b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
-index 5054de5bd4e403fcbaa8cdd6abae42a4f0e89692..837dbf87822842c54809589c08be3b7ef5c187c3 100644
+index 735634c701ee3dc9f022f02b90adfbc38b5e0334..5c4e5e784c40e9166fa6c6ff1f1941761972dde2 100644
 --- a/third_party/libaddressinput/chromium/chrome_metadata_source.cc
 +++ b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
-@@ -57,7 +57,7 @@ ChromeMetadataSource::Request::Request(
+@@ -60,7 +60,7 @@ ChromeMetadataSource::Request::Request(
  void ChromeMetadataSource::Download(const std::string& key,
                                      const Callback& downloaded) {
    GURL resource(validation_data_url_ + key);
 -  if (!resource.SchemeIsCryptographic()) {
-+  if (1) { // feature disabled in Brave
-     downloaded(false, key, NULL);
++  if (/*!resource.SchemeIsCryptographic()*/ true) {  // bailing out early, feature disabled in Brave
+     downloaded(false, key, std::nullopt);
      return;
    }

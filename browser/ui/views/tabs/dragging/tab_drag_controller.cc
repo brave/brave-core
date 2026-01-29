@@ -59,18 +59,19 @@ TabDragController::Liveness TabDragController::Init(
     TabDragContext* source_context,
     TabSlotView* source_view,
     const std::vector<TabSlotView*>& dragging_views,
-    const gfx::Point& mouse_offset,
-    int source_view_offset,
+    const gfx::Point& offset_from_first_dragged_view,
+    const gfx::Point& offset_from_source_view,
     ui::ListSelectionModel initial_selection_model,
     ui::mojom::DragEventSource event_source) {
   if (TabDragControllerChromium::Init(
-          source_context, source_view, dragging_views, mouse_offset,
-          source_view_offset, initial_selection_model, event_source) ==
+          source_context, source_view, dragging_views,
+          offset_from_first_dragged_view, offset_from_source_view,
+          initial_selection_model, event_source) ==
       TabDragController::TabDragController::Liveness::kDeleted) {
     return TabDragController::TabDragController::Liveness::kDeleted;
   }
 
-  mouse_offset_ = mouse_offset;
+  offset_from_first_dragged_view_ = offset_from_first_dragged_view;
 
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
@@ -104,11 +105,10 @@ TabDragController::Liveness TabDragController::Init(
   was_source_fullscreen_ = top_level_widget->IsFullscreen();
 
   // Adjust coordinate for vertical mode.
-  const int x =
-      mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
-                             dragging_views, drag_data_.source_view_index_);
-  source_view_offset = mouse_offset.y();
-  start_point_in_screen_ = gfx::Point(x, source_view_offset);
+  const int x = offset_from_first_dragged_view.x() -
+                GetXCoordinateAdjustmentForMultiSelectedTabs(
+                    dragging_views, drag_data_.source_view_index_);
+  start_point_in_screen_ = gfx::Point(x, offset_from_first_dragged_view.y());
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
@@ -138,7 +138,8 @@ void TabDragController::StartDraggingTabsSession(
   TabDragControllerChromium::StartDraggingTabsSession(initial_move,
                                                       start_point_in_screen);
   CHECK(dragging_tabs_session_);
-  dragging_tabs_session_->set_mouse_y_offset(mouse_offset_.y());
+  dragging_tabs_session_->set_mouse_y_offset(
+      offset_from_first_dragged_view_.y());
   dragging_tabs_session_->set_is_showing_vertical_tabs(
       is_showing_vertical_tabs_);
 }
@@ -224,7 +225,7 @@ void TabDragController::DetachAndAttachToNewContext(
 
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.
-  attached_context_->ForceLayout();
+  attached_context_->GetPositioningDelegate()->ForceLayout();
 }
 
 gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {

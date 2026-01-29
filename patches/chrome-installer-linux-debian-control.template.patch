@@ -1,18 +1,18 @@
 diff --git a/chrome/installer/linux/debian/control.template b/chrome/installer/linux/debian/control.template
-index 93c075c8822ff843cc44199669b59664a9cd2a8e..588bab340769807ac1c36da570d52dcf836fc0e6 100644
+index 1d7dff3e689edee2018347eb1afccfa13601caf5..ed99efab3aa76cf997c1c54363ae0d20ed7657c5 100644
 --- a/chrome/installer/linux/debian/control.template
 +++ b/chrome/installer/linux/debian/control.template
 @@ -1,11 +1,11 @@
--Source: @@PACKAGE@@-@@CHANNEL@@
-+Source: @@PACKAGEANDCHANNEL@@
+-Source: @@PACKAGE-@@channel
++Source: @@package_and_channel
  Section: web
  Priority: optional
- Maintainer: @@MAINTNAME@@ <@@MAINTMAIL@@>
+ Maintainer: @@MAINTNAME <@@MAINTMAIL>
  Build-Depends: dpkg-dev, devscripts, fakeroot, xz-utils
  Standards-Version: 3.8.0
  
--Package: @@PACKAGE@@-@@CHANNEL@@
-+Package: @@PACKAGEANDCHANNEL@@
- Provides: @@PROVIDES@@
- Pre-Depends: @@PREDEPENDS@@
- Depends: @@DEPENDS@@
+-Package: @@PACKAGE-@@channel
++Package: @@package_and_channel
+ Provides: @@deb_provides
+ Pre-Depends: @@deb_pre_depends
+ Depends: @@deb_depends

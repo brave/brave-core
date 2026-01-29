@@ -9,6 +9,7 @@ import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
 import { FileUploadErrorType, FileUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
+import { InputState } from 'gen/ui/webui/resources/tsc/mojo/components/omnibox/composebox/composebox_query.mojom-webui';
 
 interface Context {
   open: boolean,
@@ -85,6 +86,7 @@ class SearchPage implements PageInterface {
   updateAimEligibility(eligible: boolean): void {}
   onShowAiModePrefChanged(canShow: boolean): void {}
   updateContentSharingPolicy(enabled: boolean): void {}
+  onInputStateChanged(inputState: InputState): void {}
 }
 
 export const search = new SearchPage()

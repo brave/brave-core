@@ -14,9 +14,11 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 
+import java.util.Collections;
 import java.util.List;
 
 @NullMarked
@@ -102,11 +104,13 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                 if (multiInstanceManager instanceof MultiInstanceManagerApi31) {
                     MultiInstanceManagerApi31 multiInstanceManagerApi31 =
                             ((MultiInstanceManagerApi31) multiInstanceManager);
-                    List<InstanceInfo> allInstances = multiInstanceManagerApi31.getInstanceInfo();
+                    List<InstanceInfo> allInstances =
+                            multiInstanceManagerApi31.getInstanceInfo(PersistedInstanceType.ANY);
                     if (allInstances != null && allInstances.size() > 1) {
                         for (int i = 1; i < allInstances.size(); i++) {
-                            multiInstanceManagerApi31.closeWindow(
-                                    allInstances.get(i).instanceId, allInstances.get(i).taskId);
+                            multiInstanceManagerApi31.closeWindows(
+                                    Collections.singletonList(allInstances.get(i).instanceId),
+                                    allInstances.get(i).taskId);
                         }
                     }
                 }

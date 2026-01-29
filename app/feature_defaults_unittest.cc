@@ -14,7 +14,6 @@
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_debug_features.h"
@@ -53,6 +52,7 @@
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
+#include "components/variations/net/omnibox_autofocus_http_headers.h"
 #include "components/webapps/browser/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
@@ -147,7 +147,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
-      &features::kCookieDeprecationFacilitatedTesting,
       &features::kDevToolsAiCodeCompletion,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
@@ -163,7 +162,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kShortcutsNotApps,
 #endif
       &features::kHttpsFirstBalancedMode,
-      &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
@@ -200,7 +198,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
+#if !BUILDFLAG(IS_ANDROID)
       &legion::kLegion,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
@@ -226,7 +226,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
-      &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationHints,
       &permissions::features::kCpssUseTfliteSignatureRunner,
@@ -237,7 +236,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
-      &privacy_sandbox::kFingerprintingProtectionUx,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
@@ -252,9 +250,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
-#if !BUILDFLAG(IS_ANDROID)
-      &translate::kTFLiteLanguageDetectionEnabled,
-#endif
+      &variations::kReportOmniboxAutofocusHeader,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
@@ -287,8 +283,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
-      &features::kCloseActiveTabInSplitViewViaHotkey,
-      &features::kReloadSelectionModel,
       &features::kSideBySide,
       &sharing_hub::kDesktopScreenshots,
 #endif

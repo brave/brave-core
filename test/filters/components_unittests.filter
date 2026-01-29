@@ -104,6 +104,7 @@
 # consent level
 -AccountUtilsTest.*
 -ContextualTasksServiceImplTest.CreateTaskFromUrl_MatchesPrimaryAccount
+-WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
 
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
@@ -126,9 +127,24 @@
 # GetUkmSourceId override.
 -Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
 
+# These tests fail because we override WalletHttpClientImpl.
+-WalletHttpClientImplTest.*
+
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
+-RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
+-RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
+-SuspiciousSiteTriggerTest.MonitorMode_SuspiciousHitDuringLoad
+-TriggerManagerTest.AdSamplerTrigger
+-TriggerManagerTest.CollectionWhenSBERDisabledByPolicy_WithSBERDeprecation
+-TriggerManagerTest.DataCollection_SBEROptInDisallowed_WithSBERDeprecation_ESB
+-TriggerManagerTest.NoCollectionWhenOutOfQuota
 -TriggerManagerTest.ReportSentWhenEsbIsEnabled
+-TriggerManagerTest.StartAndFinishCollectingThreatDetails
+-TriggerManagerTest.UserOptedOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
+-TriggerManagerTest.UserOptsInToESB_DataCollected_ReportSent
+-TriggerManagerTest.UserOptsOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
 
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)

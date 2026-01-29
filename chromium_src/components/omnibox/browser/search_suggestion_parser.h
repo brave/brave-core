@@ -6,13 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTION_PARSER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTION_PARSER_H_
 
-#define ParseSuggestResults                                                   \
-  ParseSuggestResults(                                                        \
-      const base::Value::List& root_list, const AutocompleteInput& input,     \
-      const AutocompleteSchemeClassifier& scheme_classifier,                  \
-      int default_result_relevance, bool is_keyword_result, Results* results, \
-      bool is_brave_rich_suggestion = false);                                 \
-  static bool ParseSuggestResults_Chromium
+#define ParseSuggestResults(...)               \
+  ParseSuggestResults_Chromium(__VA_ARGS__);   \
+  static bool ParseSuggestResults(__VA_ARGS__, \
+                                  bool is_brave_rich_suggestion = false)
 
 #include <components/omnibox/browser/search_suggestion_parser.h>  // IWYU pragma: export
 

@@ -11,7 +11,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 
@@ -45,7 +44,7 @@ std::optional<std::string> ToString(const base::Value& value) {
   }
 
   NOTREACHED() << "Unexpected value for base::Value::Type: "
-               << base::to_underlying(value.type());
+               << std::to_underlying(value.type());
 }
 
 std::optional<base::Value> MaybeGetRootPrefValue(
