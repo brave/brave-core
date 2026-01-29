@@ -1,0 +1,13 @@
+diff --git a/build/sanitizers/sanitizer_options.cc b/build/sanitizers/sanitizer_options.cc
+index f131e1c7b5f29a9f0b1faaef569e482f7203bbfc..3827d469a222b6baeb0b44b041e15bfc1a6fad21 100644
+--- a/build/sanitizers/sanitizer_options.cc
++++ b/build/sanitizers/sanitizer_options.cc
+@@ -44,7 +44,7 @@ SANITIZER_HOOK_ATTRIBUTE void _sanitizer_options_link_helper() {}
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) | BUILDFLAG(IS_APPLE)
+ const char kAsanDefaultOptions[] =
+     "strip_path_prefix=/../../ fast_unwind_on_fatal=1 "
+-    "detect_stack_use_after_return=1 symbolize=1 detect_leaks=0 "
++    "detect_stack_use_after_return=1 symbolize=1 detect_leaks=1 "
+     "external_symbolizer_path=%d/../../third_party/llvm-build/Release+Asserts/"
+     "bin/llvm-symbolizer";
+ #elif BUILDFLAG(IS_WIN)
