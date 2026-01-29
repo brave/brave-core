@@ -17,6 +17,7 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { getTransactionMemo } from '../../../utils/tx-utils'
 
 // Hooks
 import {
@@ -155,9 +156,7 @@ export function ConfirmSendTransaction() {
     return originInfo.originSpec === 'chrome://wallet'
   }, [originInfo])
 
-  const memoText = React.useMemo(() => {
-    return String.fromCharCode(...(transactionDetails?.zcashMemo ?? []))
-  }, [transactionDetails])
+  const memoText = getTransactionMemo(selectedPendingTransaction)
 
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
