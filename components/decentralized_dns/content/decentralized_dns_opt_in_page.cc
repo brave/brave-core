@@ -69,10 +69,10 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
-  const std::u16string infura = u"Infura";
-  const std::u16string infura_tou = u"https://consensys.net/terms-of-use/";
-  const std::u16string infura_privacy_policy =
-      u"https://consensys.net/privacy-policy/";
+  const std::u16string provider = u"Chainstack";
+  const std::u16string provider_tou = u"https://chainstack.com/tos/";
+  const std::u16string provider_privacy_policy =
+      u"https://chainstack.com/privacy/";
   const std::u16string sns_wiki_link =
       u"https://github.com/brave/brave-browser/wiki/"
       u"Resolve-Methods-for-Solana-Name-Service";
@@ -90,9 +90,9 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
         base::ReplaceStringPlaceholders(
             l10n_util::GetStringUTF16(
                 IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-            {infura, base::ASCIIToUTF16(GetUnstoppableDomainSuffixFullList()),
+            {provider, base::ASCIIToUTF16(GetUnstoppableDomainSuffixFullList()),
              l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
-             infura_tou, infura_privacy_policy},
+             provider_tou, provider_privacy_policy},
             nullptr));
   } else if (IsENSTLD(request_url_.host())) {
     load_time_data.Set("tabTitle",
@@ -104,9 +104,9 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
         base::ReplaceStringPlaceholders(
             l10n_util::GetStringUTF16(
                 IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-            {infura, eth_domain,
+            {provider, eth_domain,
              l10n_util::GetStringUTF16(IDS_ENS_DOMAIN_PROVIDER_NAME),
-             infura_tou, infura_privacy_policy},
+             provider_tou, provider_privacy_policy},
             nullptr));
   } else if (IsSnsTLD(request_url_.host())) {
     load_time_data.Set("tabTitle",
@@ -132,7 +132,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
         base::ReplaceStringPlaceholders(
             l10n_util::GetStringUTF16(
                 IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_PROVIDER_BUTTON),
-            infura, nullptr));
+            provider, nullptr));
   }
   load_time_data.Set("dontProceedButtonText",
                      l10n_util::GetStringUTF16(
