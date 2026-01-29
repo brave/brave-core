@@ -38,7 +38,7 @@ class ChromeMetadataSourceTest : public testing::Test {
 
   void OnDownloaded(bool success,
                     const std::string& url,
-                    std::string* data) {
+                    std::optional<std::string> data) {
     EXPECT_FALSE(success);
   }
 

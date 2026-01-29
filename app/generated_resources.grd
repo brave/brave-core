@@ -278,6 +278,9 @@ are declared in tools/grit/grit_args.gni.
       <!-- Access Code Cast specific strings -->
       <part file="access_code_cast_strings.grdp" />
 
+      <!-- Actor specific strings -->
+      <part file="actor_strings.grdp" />
+
       <!-- App Management specific strings -->
       <part file="app_management_strings.grdp" />
 
@@ -618,6 +621,9 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
            Close
           </message>
+          <message name="IDS_CONTENT_CONTEXT_ARCHIVE_GLIC" desc="Context menu item to archive Glic conversation">
+           Archive
+          </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
           </message>
@@ -936,6 +942,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
            Close
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_ARCHIVE_GLIC" desc="Context menu item to archive a Glic conversation">
+           Archive
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -2220,7 +2229,7 @@ are declared in tools/grit/grit_args.gni.
         Your organization's policies aren't met
       </message>
       <message name="IDS_FORCED_SAVE_TO_GDRIVE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to GDrive">
-        Failed - Local download blocked
+        Your organization's policies aren't met
       </message>
       <message name="IDS_BLOCKED_TOO_LARGE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is too large for deep scanning">
         This file is too big for a security check. You can open files up to 50 MB.
@@ -3145,6 +3154,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_WEBAPP_UPDATE_REVIEW_IGNORE_BUTTON" desc="The text content of the ignore button for the PWA app update review dialog. Clicking on this button ignores the update and closes the dialog.">
           Ignore
         </message>
+        <message name="IDS_WEBAPP_UPDATE_REVIEW_ACCEPT_BUTTON_MIGRATION" desc="The text content of the acceptance button for the PWA app update review dialog, but for app migrations. Clicking on this button confirms the user wants to migrate to a new app, pointing to a new url.">
+          Relaunch to update
+        </message>
       </if>
 
       <!-- Bookmark app bubble -->
@@ -3218,6 +3230,9 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_GUEST_MODE" desc="Title for the dialog shown when a web app cannot be installed in Guest Mode.">
         Web app installs aren't supported in Guest mode
       </message>
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_POLICY_MODE" desc="Title of the dialog shown when the web app cannot be installed by Policy setting.">
+        Web app installation is blocked by administrator policy.
+      </message>
 
       <!-- WebApp name/icon update dialog -->
       <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME" desc="The title at the top of the web app update dialog when only the name changed." formatter_data="android_java">
@@ -3236,20 +3251,23 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_LOGO" desc="The title at the top of the web app update dialog when the name and icon changed.">
           Review logo and name updates
         </message>
-        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_URL" desc="The title at the top of an web app update dialog when only the name changed.">
-          Review URL update
+        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_URL" desc="The title at the top of an web app update dialog when only the url of the app changed.">
+          A new version of this app is available
         </message>
-        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_URL" desc="The title at the top of the web app update dialog when only the name changed.">
+        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_URL" desc="The title at the top of the web app update dialog when the name and url changed.">
           Review name and URL updates
         </message>
-        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_LOGO_AND_URL" desc="The title at the top of the web app update dialog when only the icon changed.">
+        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_LOGO_AND_URL" desc="The title at the top of the web app update dialog when the icon and url changed.">
           Review logo and URL updates
         </message>
-        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_LOGO_AND_URL" desc="The title at the top of the web app update dialog when the name and icon changed.">
+        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_LOGO_AND_URL" desc="The title at the top of the web app update dialog when the name, icon and url changed.">
           Review logo, name, and URL updates
         </message>
         <message name="IDS_WEBAPP_UPDATE_NEW_EXPLANATION" desc="The text at the top of the web app update dialog, explaining what to do when an app changes its identity.">
           Apps sometimes update their branding. Review all changes to make sure you're comfortable with them before updating.
+        </message>
+        <message name="IDS_WEBAPP_UPDATE_URL_ONLY_NEW_EXPLANATION" desc="The text at the top of the web app update dialog, explaining what to do when an app changes only its url.">
+          Review the URL change to make sure you're comfortable with it before updating.
         </message>
       </if>
       <message name="IDS_WEBAPP_UPDATE_EXPLANATION" desc="The text at the top of the dialog, explaining what to do when an app changes its identity." formatter_data="android_java">
@@ -3557,9 +3575,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_ACCESSED_ON_DEVICE_SITE_DATA_MESSAGE" desc="Tooltip and bubble info header text when a page saves site data while saving all site data is blocked.">
         This site is allowed to save data on your device.
       </message>
-      <message name="IDS_BLOCKED_COOKIES_INFO" desc="Info link to a dialog showing the blocked/allowed cookies, displayed in bubble when a page tries to write cookies or other site data.">
-        Show cookies and other site data...
-      </message>
       <message name="IDS_BLOCKED_IMAGES_TITLE" desc="Tooltip and bubble info header text when a page is not allowed to display images.">
         Images blocked
       </message>
@@ -3745,12 +3760,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the trackings protection bubble mentioning the option to enable third-party cookies and mentions the trade off of doing so.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
-      <message name="IDS_TRACKING_PROTECTION_BUBBLE_LIMITING_RESTART_TITLE" desc="Subtitle shown on the tracking protection bubble indicating how long until cookies will be limited again.">
-        {COUNT, plural,
-              =0 {Brave will limit cookies again today}
-              =1 {Brave will limit cookies again tomorrow}
-              other {# days until Brave limits cookies again}}
-      </message>
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_BLOCKING_RESTART_TITLE" desc="Subtitle shown on the tracking protection bubble indicating how long until cookies are blocked again.">
         {COUNT, plural,
               =0 {Cookies will be blocked again today}
@@ -3786,12 +3795,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_COOKIE_CONTROLS_PAGE_ACTION_COOKIES_BLOCKED_LABEL" desc="Label in the Page Action (omnibox) icon indicating that cookies are blocked on the current site.">
         Third-party cookies blocked
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_PAGE_ACTION_COOKIES_LIMITED_LABEL" desc="Label in the Page Action (omnibox) icon indicating that cookies are limited on the current site.">
-        Third-party cookies limited
-      </message>
-      <message name="IDS_TRACKING_PROTECTION_PAGE_ACTION_SITE_NOT_WORKING_LABEL" desc="Label for the Page Action (omnibox) icon that highlights the Tracking Protection bubble entrypoint when cookies are blocked and we have high confidence that this is breaking the current site.">
-        Site not working?
       </message>
       <message name="IDS_COOKIE_CONTROLS_PROMO_TITLE" desc="Title of the in-product-help bubble shown for the cookie controls bubble. Indicates that cookies are blocked on the current site.">
         Third-party cookies blocked
@@ -4794,6 +4797,14 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
         Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
       </message>
+      <if expr="enable_pdf">
+        <message name="IDS_TASK_MANAGER_PDF_SUBFRAME_PREFIX" desc="The prefix for a PDF subframe row in the Task Manager">
+          PDF Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://example.com/document.pdf</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_PDF_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private PDF subframe row in the Task Manager">
+          Private PDF Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://example.com/document.pdf</ex></ph>
+        </message>
+      </if>
       <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
         Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
       </message>
@@ -5055,12 +5066,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
 
       <if expr="enable_extensions_core">
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_ALERT_HEADING" desc="The title of the section that describes an extension load error.">
-          Error Loading Extension
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
-          Failed to load extension from:
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_FULL_ACCESS" desc="Permission string for full access to the computer and all websites.">
           Read and change all your data on your computer and all websites
         </message>
@@ -7455,9 +7460,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CONFIRM_MSG_RESTORE_ENTERPRISE_DEFAULTS" desc="The text label of the restore default shortcuts button when editing an enterprise shortcuts. (On the New Tab Page)">
         Restore organization shortcuts
       </message>
-      <message name="IDS_NTP_CUSTOM_BG_CHROME_WALLPAPERS" desc="The text label of the Brave backgrounds option for background customization.(On the New Tab Page)">
-        Brave backgrounds
-      </message>
       <message name="IDS_NTP_CUSTOM_BG_UPLOAD_AN_IMAGE" desc="The text label of the upload an image option for background customization. (On the New Tab Page)">
         Upload an image
       </message>
@@ -7562,9 +7564,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_MANAGED_NEW_TAB_PAGE_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="Accessibility label for the button that shows on the customize chrome UI when a 3rd party manages the new tab page.">
         <ph name="THIRD_PARTY_NTP_MANAGER">$1<ex>ZomboCom</ex></ph> is managing your new tab page, opens in a new tab
-      </message>
-      <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_LABEL" desc="The label for the button for resetting theme back to default chrome in the New Tab Page customize chrome side panel.">
-        Reset to Default Brave
       </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_COMPLETE" desc="Text for a screenreader to read aloud when the user's theme has finished changing to classic chrome in the Customize Brave side panel.">
         Theme updated to Default Brave
@@ -7778,6 +7777,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_SHOW_LESS_BUTTON_LABEL" desc="Label for a button that allows the user to see fewer most visited tiles on the New Tab Page.">
         Show less
+      </message>
+      <message name="IDS_NTP_THREADS_HISTORY_LABEL" desc="Label for listing the user's AI Mode threads history.">
+        AI Mode history
+      </message>
+      <message name="IDS_NTP_THREADS_NEW_SEARCH_LABEL" desc="Label for starting a new AI Mode query.">
+        Start new search
       </message>
       <message name="IDS_NTP_WEBSTORE_SHOPPING_CATEOGRY_LABEL" desc="The message displayed on the button that redirects users to the 'shopping' category page of the Brave webstore.">
         Find coupons
@@ -8259,13 +8264,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_RESET_TO_DEFAULT_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Accessibility announcement communicating that the pinned toolbar buttons have been reset to their default state.">
         Toolbar buttons were reset
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
+        Navigation
+      </message>
       <if expr="use_titlecase">
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
-          Navigation
-        </message>
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
-          Your Brave
-        </message>
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_SIDE_PANELS" desc="The label for the category of actions that open side panels, such as reading mode and show all bookmarks.">
           Side Panels
         </message>
@@ -8277,12 +8279,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
-          Navigation
-        </message>
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
-          Your Brave
-        </message>
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_SIDE_PANELS" desc="The label for the category of actions that open side panels, such as reading mode and show all bookmarks.">
           Side panels
         </message>
@@ -8389,6 +8385,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_COMPOSE_CREATE_IMAGES" desc="The label for the create images button in the context menu in the composebox as well as the chip that indicates that the user is in create images mode.">
         Create images
+      </message>
+      <message name="IDS_NTP_COMPOSE_CANVAS" desc="The label for the canvas button in the context menu in the composebox as well as the chip that indicates that the user is in canvas mode.">
+        Canvas
+      </message>
+      <message name="IDS_NTP_COMPOSE_MODELS_LABEL" desc="The label for the models label in the context menu in the composebox.">
+        Models
+      </message>
+      <message name="IDS_NTP_COMPOSE_AUTO_MODEL" desc="The label for the Auto model button in the context menu in the composebox as well as the chip that indicates that the user is using the Auto model.">
+        Auto
+      </message>
+      <message name="IDS_NTP_COMPOSE_THINKING_3_PRO" desc="The label for the Thinking 3 Pro model button in the context menu in the composebox as well as the chip that indicates that the user is using the Thinking 3 Pro model.">
+        Thinking (3 Pro)
       </message>
       <message name="IDS_COMPOSE_DEEP_SEARCH_PLACEHOLDER" desc="Placeholder text for the composebox when in deep search mode.">
         Research anything
@@ -9334,6 +9342,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_ENABLE_LINKS_BUTTON_LABEL" desc="Accessibility label for the button that enables all links in reading mode content.">
         Enable links
       </message>
+      <message name="IDS_READING_MODE_IMAGES_LABEL" desc="Accessibility label for the enable images menu item in reading mode.">
+        Images
+      </message>
       <message name="IDS_READING_MODE_DISABLE_IMAGES_BUTTON_LABEL" desc="Accessibility label for the button that disables showing images in reading mode content.">
         Disable images
       </message>
@@ -9407,6 +9418,42 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Sentence
       </message>
       <message name="IDS_READING_MODE_OFF_HIGHLIGHT_LABEL" desc="Dropdown option for turning off highlighting in Read Aloud.">
+        Off
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_WINDOW_HEADING" desc="Heading in dropdown menu for the sliding window line focus options.">
+        Highlight
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_STYLE_HEADING" desc="Heading in dropdown menu for choosing the line focus visual style.">
+        Style
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_SMALL_FOCUS_LABEL" desc="Dropdown option for the small height window line focus option.">
+        Small focus
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_MEDIUM_FOCUS_LABEL" desc="Dropdown option for the medium height window line focus option.">
+        Medium focus
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_LARGE_FOCUS_LABEL" desc="Dropdown option for the large height window line focus option.">
+        Large focus
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_UNDERLINE_LABEL" desc="Dropdown option for the single-line underline line focus option.">
+        Underline
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_LINE_HEADING" desc="Heading in dropdown menu for the single underline line focus options.">
+        Line
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_MOVEMENT_HEADING" desc="Heading in dropdown menu for choosing the line focus movement type.">
+        Movement
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_STATIC_LABEL" desc="Dropdown option for the line focus option of staying in the middle of the panel.">
+        Static
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_STATIC_LINE_LABEL" desc="Dropdown option for the line focus option of a single static line in the middle of the panel.">
+        Static line
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_CURSOR_LINE_LABEL" desc="Dropdown option for the line focus option of a single line following the cursor.">
+        Follow cursor
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_OFF_LABEL" desc="Dropdown option for turning off line focus.">
         Off
       </message>
       <message name="IDS_READ_ANYTHING_LOADING" desc="Message to show while Read Anything is figuring out what text to display.">
@@ -9549,6 +9596,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
      <message name="IDS_READING_MODE_FONT_LOADING_STRING" desc="Text added to a font name in the Reading Mode font dropdown when the font style hasn't loaded yet.">
          (loading)
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_LABEL" desc="Accessibility label for the line focus menu item in reading mode.">
+        Line focus
+      </message>
+      <message name="IDS_READING_MODE_SIDE_PANEL_LABEL" desc="Accessibility label for the Side panel option in view menu for reading mode.">
+        Side panel
+      </message>
+      <message name="IDS_READING_MODE_VIEW_FULL_PAGE_LABEL" desc="Accessibility label for the Full page option in view menu for reading mode.">
+        Full page
+      </message>
+      <message name="IDS_READING_MODE_FULL_SCREEN_LABEL" desc="Accessibility label for the Full screen option in view menu for reading mode.">
+        Full screen
+      </message>
+      <message name="IDS_READING_MODE_VIEW_LABEL" desc="Accessibility label for the view menu item in reading mode.">
+        View
+      </message>
+      <message name="IDS_READING_MODE_LINKS_LABEL" desc="Accessibility label for the links menu item in reading mode.">
+        Links
       </message>
 
       <!-- Google Lens side panel -->
@@ -9913,12 +9978,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_BODY_IPH" desc="The body text of the IPH describing pinning split view.">
         Quickly create a split view when you need it
       </message>
-      <message name="IDS_SPLIT_VIEW_PIN_ACTION_IPH" desc="The pin confirmation button of the IPH describing split view.">
-        Pin split view
-      </message>
-      <message name="IDS_SPLIT_VIEW_DISMISS_ACTION_IPH" desc="The pin confirmation button of the IPH describing split view.">
-        No thanks
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SPLIT_VIEW_PIN_ACTION_2_IPH" desc="In Title Case: The pin confirmation button of the IPH describing split view.">
+          Pin Split View
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SPLIT_VIEW_PIN_ACTION_2_IPH" desc="The pin confirmation button of the IPH describing split view.">
+          Pin split view
+        </message>
+      </if>
       <message name="IDS_SPLIT_VIEW_TAB_SWITCH_ENTRY_IPH_TITLE" desc="The title for intro of quick tab switch split view IPH tutorial.">
         Split view makes it easier to multitask
       </message>
@@ -9939,16 +10008,58 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Vertical Tab Strings -->
-      <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
-          Show tabs to the side
-      </message>
-      <message name="IDS_SWITCH_TO_HORIZONTAL_TAB" desc="The button in context menu that switches to horizontal tab view.">
-          Show tabs at the top
-      </message>
-      <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="The tooltip for the button in the top container that collapses the vertical tab strip.">
-          Collapse vertical tabs
-      </message>
+      <if expr="use_titlecase">
+        <then>
+          <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="In Title Case: The button in context menu that switches to vertical tab view.">
+            Move Tabs To The Side
+          </message>
+          <message name="IDS_SWITCH_TO_HORIZONTAL_TAB" desc="In Title Case: The button in context menu that switches to horizontal tab view.">
+            Move Tabs To The Top
+          </message>
+          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that collapses the vertical tab strip.">
+            Collapse Vertical Tabs
+          </message>
+          <message name="IDS_EXPAND_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that expands the vertical tab strip.">
+            Expand Vertical Tabs
+          </message>
+        </then>
+        <else>
+          <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
+            Move tabs to the side
+          </message>
+          <message name="IDS_SWITCH_TO_HORIZONTAL_TAB" desc="The button in context menu that switches to horizontal tab view.">
+            Move tabs to the top
+          </message>
+          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="The tooltip for the button in the top container that collapses the vertical tab strip.">
+            Collapse vertical tabs
+          </message>
+          <message name="IDS_EXPAND_VERTICAL_TABS" desc="The tooltip for the button in the top container that expands the vertical tab strip.">
+            Expand vertical tabs
+          </message>
+        </else>
+      </if>
       <!-- /Vertical Tab Strings -->
+
+      <!-- Projects Panel Strings -->
+      <if expr="use_titlecase">
+        <then>
+          <message name="IDS_VIEW_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that shows the projects panel.">
+            View Projects
+          </message>
+          <message name="IDS_HIDE_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the projects panel.">
+            Hide Projects
+          </message>
+        </then>
+        <else>
+          <message name="IDS_VIEW_PROJECTS_PANEL" desc="The tooltip for the button in the top container that shows the projects panel.">
+            View projects
+          </message>
+          <message name="IDS_HIDE_PROJECTS_PANEL" desc="The tooltip for the button in the top container that hides the projects panel.">
+            Hide projects
+          </message>
+        </else>
+      </if>
+      <!-- /Projects Panel Strings -->
 
       <!-- Strings for intent picker -->
       <if expr="not is_android">
@@ -10023,38 +10134,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_IOS_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_GENERIC" desc="The description for the iOS promo bubble footer which lets the user know how to use their saved passwords on their phone: download Brave for iOS and sign in to their account.">
             To use your saved passwords on your phone, download Brave for iOS and sign in to your Brave sync chain.
           </message>
-          <message name="IDS_IOS_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS promo bubble footer which lets the user know how to use their saved passwords on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
-            To use your saved passwords on your phone, follow the QR code, download Brave for iOS and sign in to your Brave sync chain.
-          </message>
         </if>
       </if>
 
       <!--Desktop to iOS promo strings-->
       <if expr="not is_android">
-        <if expr="use_titlecase">
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_DECLINE" desc="In Title Case: The text inside the iOS promo bubble button allowing the user to decline.">
-            No Thanks
-          </message>
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_TITLE" desc="The title text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their iOS device.">
-            Reminder Sent to Your <ph name="DEVICE_TYPE">$1<ex>iPad</ex></ph>
-          </message>
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_BUTTON" desc="The button text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their phone.">
-            Got It
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the iOS promo bubble button allowing the user to decline.">
-            No thanks
-          </message>
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_TITLE" desc="The title text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their iOS device.">
-            Reminder sent to your <ph name="DEVICE_TYPE">$1<ex>iPad</ex></ph>
-          </message>
-          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_BUTTON" desc="The button text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their phone.">
-            Got it
-          </message>
-        </if>
-        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
-          Get the app
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the iOS promo bubble button allowing the user to decline.">
+          No thanks
+        </message>
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_TITLE" desc="The title text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their iOS device.">
+          Reminder sent to your <ph name="DEVICE_TYPE">$1<ex>iPad</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_REMINDER_CONFIRMATION_BUTTON" desc="The button text for the iOS promo bubble button that confirms the user will recieve a reminder sent to their phone.">
+          Got it
         </message>
         <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_REMINDER" desc="The text inside the iOS promo bubble button allowing the user to accept by getting a reminder.">
           Remind me on iOS
@@ -10075,39 +10167,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!--Desktop to iOS password promo strings-->
       <if expr="not is_android">
-        <if expr="use_titlecase">
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_TITLE" desc="In Title Case: The title for the iOS desktop password promo bubble letting users know their password is saved.">
-            Your Password Is Saved
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="In Title Case: The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
-            Use This Password On Your iPhone
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE_REMINDER" desc="In Title Case: The title for the footer of the iOS desktop password promo bubble.">
-            Use Your Passwords On Your iOS Devices
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_BUTTON_DECLINE" desc="In Title Case: The text inside the button allowing the user to decline.">
-            No Thanks
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_TITLE" desc="The title for the iOS desktop password promo bubble letting users know their password is saved.">
-            Your password is saved
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
-            Use this password on your iPhone
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE_REMINDER" desc="The title for the footer of the iOS desktop password promo bubble.">
-            Use your passwords on your iOS devices
-          </message>
-          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the button allowing the user to decline.">
-            No thanks
-          </message>
-        </if>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_TITLE" desc="The title for the iOS desktop password promo bubble letting users know their password is saved.">
+          Your password is saved
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE_REMINDER" desc="The title for the footer of the iOS desktop password promo bubble.">
+          Use your passwords on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the button allowing the user to decline.">
+          No thanks
+        </message>
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_SUBTITLE" desc="The subtitle for the iOS desktop password promo bubble which lets the user know they can access their saved password on the Brave Password Manager.">
           You can access it on Brave Password Manager.
         </message>
-        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS desktop password promo bubble footer which lets the user know how to use their saved passwords on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
-          Download Brave with this QR code, and sign in to your Brave sync chain.
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Password promo notification.">
+          Save and autofill your passwords to easily sign in to sites and apps
         </message>
       </if>
 
@@ -10177,34 +10250,27 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!--Desktop to iOS Enhanced Browsing promo strings-->
       <if expr="not is_android">
-        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop ESB promo bubble with a QR code.">
-          Extend Enhanced Safe Browsing
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop ESB promo bubble with a QR code.">
+          Add an extra layer of protection when you're on the go
         </message>
         <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop ESB promo bubble with a reminder button.">
-          Enhanced Safe Browsing
+          Enhance Safe Browsing on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFE_BROWSING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Enhanced Safe Browsing promo notification.">
+          Add an extra layer of protection against online threats
         </message>
       </if>
 
       <!--Desktop to iOS Lens promo strings-->
       <if expr="not is_android">
-        <if expr="use_titlecase">
-          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_QR" desc="In Title Case: The title for the iOS desktop Lens promo bubble with a QR code.">
-            Try Google Lens On Your Phone
-          </message>
-          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_REMINDER" desc="In Title Case: The title for the iOS desktop Lens promo bubble with a reminder button.">
-            Try Google Lens On iOS
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Lens promo bubble with a QR code.">
-            Try Google Lens on your phone
-          </message>
-          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Lens promo bubble with a reminder button.">
-            Try Google Lens on iOS
-          </message>
-        </if>
-        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_DESCRIPTION" desc="The description for the iOS desktop Lens promo bubble.">
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Lens promo bubble with a QR Code.">
           Shop, translate and identify what you see with your camera on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Lens promo bubble with a reminder button.">
+          Try Google Lens on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Lens promo notification.">
+          Shop, translate, and identify what you see with your camera.
         </message>
       </if>
 
@@ -10656,17 +10722,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_SUCCESS_BODY" desc="The description of the body text in the 'success' step in side panel reading list tutorial">
         Try using the side panel for bookmarks, journeys, and more
-      </message>
-
-      <!-- Customize Brave Refresh IPH Strings -->
-      <message name="IDS_IPH_CUSTOMIZE_CHROME_REFRESH_BODY" desc="The description of the body in the customize chrome refresh IPH">
-        Brave theme colors have been refreshed to work better for everyone, whether you’re in dark or light mode
-      </message>
-      <message name="IDS_IPH_CUSTOMIZE_CHROME_REFRESH_POINTER_BODY" desc="The description of the body in the customize chrome refresh IPH pointer">
-        Customize the appearance of Brave and this page
-      </message>
-      <message name="IDS_IPH_CUSTOMIZE_CHROME_REFRESH_CUSTOM_ACTION" desc="The description of the button to show the refresh IPH">
-        Customize themes
       </message>
 
       <!-- Customize Brave Tutorial Strings -->
@@ -11382,7 +11437,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Live Caption
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_REPLAY_10_TEXT" desc="Text label of the replay 10 seconds button. The button appears when the user hovers over the Picture-in-Picture window.">
-        Replay 10 seconds
+        Rewind 10 seconds
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_FORWARD_10_TEXT" desc="Text label of the forward 10 seconds button. The button appears when the user hovers over the Picture-in-Picture window.">
         Forward 10 seconds
@@ -11461,6 +11516,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_NEWTABTOLEFT" desc="The label of the 'New Tab to the Left' Tab context menu item. Translate this verbatim, do not localize for RTL languages (we have separate strings for RTL).">
           New tab to the left
         </message>
+        <message name="IDS_TAB_CXMENU_NEWTABBELOW" desc="The label of the 'New Tab below' Tab context menu item.">
+          New tab below
+        </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="The label of the 'Reload' Tab context menu item.">
           Reload
         </message>
@@ -11478,6 +11536,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTOLEFT" desc="The label of the 'Close Tabs to the Left' Tab context menu item. Translate this verbatim, do not localize for RTL languages (we have separate strings for RTL).">
           Close tabs to the left
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSBELOW" desc="The label of the 'Close Tabs Below' Tab context menu item.">
+          Close tabs below
         </message>
         <message name="IDS_TAB_CXMENU_CLOSEALLTABS" desc="The label of the 'Close All Tabs' Tab context menu item.">
           Close all tabs
@@ -11574,6 +11635,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_NEWTABTOLEFT" desc="In Title Case: The label of the 'New Tab to the Left' Tab context menu item. Translate this verbatim, do not localize for RTL languages (we have separate strings for RTL).">
           New Tab to the Left
         </message>
+        <message name="IDS_TAB_CXMENU_NEWTABBELOW" desc="The label of the 'New Tab Below' Tab context menu item.">
+          New Tab Below
+        </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="In Title Case: The label of the 'Reload' Tab context menu item.">
           Reload
         </message>
@@ -11591,6 +11655,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTOLEFT" desc="In Title Case: The label of the 'Close Tabs to the Left' Tab context menu item. Translate this verbatim, do not localize for RTL languages (we have separate strings for RTL).">
           Close Tabs to the Left
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSBELOW" desc="In Title Case: The label of the 'Close Tabs Below' Tab context menu item.">
+          Close Tabs Below
         </message>
         <message name="IDS_TAB_CXMENU_CLOSEALLTABS" desc="In Title Case: The label of the 'Close All Tabs' Tab context menu item.">
           Close All Tabs
@@ -13131,6 +13198,15 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
   Would you like to start <ph name="CONTROL_PANEL_APPLET_NAME">$1<ex>Add/Remove Programs</ex></ph>?
         </message>
       </if>
+      <message name="IDS_DEFAULT_BROWSER_CHANGED_TITLE" desc="Title of the notification shown when the default browser setting changes.">
+        Your default browser was changed
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_CHANGED_YES_BUTTON" desc="Label of the yes button on the notification shown when the default browser setting changes.">
+        Yes
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_CHANGED_NO_THANKS_BUTTON" desc="Label of the no button on the notification shown when the default browser setting changes.">
+        No, thanks
+      </message>
 
       <!-- chrome://help -->
       <if expr="not is_android">
@@ -14557,9 +14633,6 @@ This can include information about installed software, files, your browser, the 
       <message name="IDS_PROFILE_ERROR_FEEDBACK_DESCRIPTION" desc="The prepopulated text filled in the feedback report reporting a profile error. The triple single quotes are needed to preserve the line break.">
 Please help our engineers fix this problem. Tell us what happened right before you got the profile error message:
 '''
-      </message>
-      <message name="IDS_COULDNT_STARTUP_PROFILE_ERROR" desc="Error displayed when Brave cannot start because profiles were not opened correctly.">
-        Cannot start Brave because something went wrong when opening your profile. Try to restart Brave.
       </message>
       <message name="IDS_REFUSE_TO_RUN_AS_ROOT" desc="Short error message displayed in an error dialog on startup if the user tries to run Brave as root.">
         <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> can not be run as root.
@@ -16165,8 +16238,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_SYSTEM_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a screen.">
         Also share system audio
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_APPLICATION_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a window.">
-        Also share application audio
+      <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_APPLICATION_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a window. The last part in the text: (from all its windows) emphasizes that audio will be shared from all windows belonging to the same application.">
+        Also share application audio (from all its windows)
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_ALL_AUDIO_OUTPUT" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a screen. This string is used when we share all output audio devices, rather than just the default device">
         Also share all audio outputs
@@ -16573,6 +16646,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_DEVICE_LOG_TYPE_LOGIN" desc="Checkbox to enable showing events of type LOGIN">
         Login
+      </message>
+      <message name="IDS_DEVICE_LOG_TYPE_MEMORY" desc="Checkbox to enable showing events of type MEMORY">
+        Memory
       </message>
       <message name="IDS_DEVICE_LOG_TYPE_NETWORK" desc="Checkbox to enable showing events of type NETWORK">
         Network
@@ -17366,9 +17442,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_PAIR_PHONE" desc="Menu item text. The user selects this to begin the process of pairing with a previously unknown smartphone.">
-        Pair with new phone
-      </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
         Check your phone
       </message>
@@ -17377,9 +17450,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
         A notification was sent to your phone to confirm it's you.
-      </message>
-      <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DEVICE_NAME_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
-        A notification was sent to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph>
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_CONNECTING_TITLE" desc="The title of a dialog that is shown when the computer is connecting to a phone or tablet.">
         Connecting to your device
@@ -17399,9 +17469,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_PASSKEY_PHONE_TABLET_OR_SECURITY_KEY_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. Users can also insert and tap their security key on the QR code screen.">
         Use a phone, tablet, or security key
-      </message>
-      <message name="IDS_WEBAUTHN_PHONE_CONFIRMATION_TITLE" desc="The title of a dialog shown when a user can use a passkey from a phone or tablet they have already paired with Brave to sign in to a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-        Use a passkey from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph> to sign in to <ph name="WEBSITE">$2<ex>accounts.google.com</ex></ph>
       </message>
 
       <!-- WebAuthn authenticator PIN entry/setup -->
@@ -18029,8 +18096,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_LABEL" desc="Button text to allow the user to save a file to cloud storage">
       Save to cloud storage
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_FILENAME_PLACEHOLDER" desc="Placeholder for the case where filename does not exist">
+      This file
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
-      This file has sensitive or dangerous data. Your organization will let you save it to cloud storage or discard it
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your organization will let you save it to cloud storage or discard it
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18903,13 +18973,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Installing...
     </message>
     <message name="IDS_IWA_INSTALLER_SHOW_METADATA_SUBTITLE" desc="Subtitle of the pre-installation app info summary screen of the Isolated Web App installer">
-      This application will be installed on your currently used Brave profile
+      This application will be installed on your device
     </message>
     <message name="IDS_IWA_INSTALLER_SHOW_METADATA_APP_NAME_LABEL" desc="Label before the Isolated Web App name in the pre-install app info summary screen">
       Application: <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
     </message>
     <message name="IDS_IWA_INSTALLER_SHOW_METADATA_APP_VERSION_LABEL" desc="Label before the Isolated Web App version in the pre-install app info summary screen">
       Version: <ph name="APP_VERSION">$1<ex>1.0.0</ex></ph>
+    </message>
+    <message name="IDS_IWA_INSTALLER_SHOW_METADATA_APP_ENTERPRISE_NAME_LABEL" desc="Label before the Isolated Web App enterprise name in the pre-install app info summary screen">
+      Offered by: <ph name="ENTERPRISE_NAME">$1<ex>Brave</ex></ph>
     </message>
     <message name="IDS_IWA_INSTALLER_CONFIRM_TITLE" desc="Title of the confirmation popup that appears immediately before Isolated Web App installation">
       Do you want to continue and allow this software to make changes to your device?
@@ -18966,21 +19039,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Isolated Web Apps Window Management notification. -->
-    <message name="IDS_ISOLATED_WEB_APPS_OPENED_TABS_COUNTER_NOTIFICATION_TITLE" desc="Title for the notification displayed when an Isolated Web App opens multiple tabs.">
-            <ph name="APP_NAME">$1<ex>Example App</ex></ph> has opened multiple tabs.
-          </message>
-
-    <message name="IDS_ISOLATED_WEB_APPS_OPENED_TABS_COUNTER_NOTIFICATION_MESSAGE" desc="Message for the notification displaying the count of open tabs for an Isolated Web App.">
-      <ph name="OPENINGS_COUNT">$1</ph> new Brave tabs have been opened by this app. You can manage this behavior under "Pop-ups and Redirects" permission.
-    </message>
-
-    <message name="IDS_ISOLATED_WEB_APPS_OPENED_TABS_COUNTER_NOTIFICATION_BUTTON_SETTINGS" desc="Text for the button on the multiple tabs opened notification that opens the app's content settings.">
-      Change permissions
-    </message>
-
-    <message name="IDS_ISOLATED_WEB_APPS_OPENED_TABS_COUNTER_NOTIFICATION_CLOSE_BUTTON" desc="Text for the button on the multiple tabs opened notification that closes all additional tabs opened by the app.">
-      Close opened tabs
-    </message>
+<message name="IDS_ISOLATED_WEB_APPS_WINDOW_OPEN_PERMISSION_NOTIFICATION_TITLE" desc="Title for the notification displayed when an Isolated Web App opens multiple tabs.">
+        <ph name="APP_NAME">$1<ex>IWA</ex></ph> automatically opens new windows.
+      </message>
+      <message name="IDS_ISOLATED_WEB_APPS_WINDOW_OPEN_PERMISSION_NOTIFICATION_MESSAGE" desc="Message for the notification informing the user of Isolated Web App's window opening capability.">
+        This allows the app to run as expected.
+      </message>
+      <message name="IDS_ISOLATED_WEB_APPS_WINDOW_OPEN_PERMISSION_NOTIFICATION_BUTTON_SETTINGS" desc="Text for the button on the multiple tabs opened notification that opens the app's content settings.">
+        Manage permissions
+      </message>
 
     <!-- Web App Protocol Handler Picker Dialog. -->
     <if expr="is_chromeos">
@@ -19041,13 +19108,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           =1 {Found 1 compromised password}
           other {Found {NUM_SITES} compromised passwords}}
         </message>
-    </if>
-
-    <!-- Quick Delete elements. -->
-    <if expr="is_android">
-        <message name="IDS_QUICK_DELETE_PROMPT_SURVEY_CUSTOM_INVITATION" desc="The invitation shown to a user, which allows the user to accept taking a survey.">
-        You just deleted data in Brave. We’d love to hear about your experience to improve Brave.
-      </message>
     </if>
 
     <!-- PDF Ink Signatures elements. -->
@@ -19212,14 +19272,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- New Tab Page browser feature promotions. -->
     <if expr="not is_android">
-      <message name="IDS_NTP_CUSTOMIZATION_PROMO" desc="The text shown in the body of the New Tab Page browser customization promotion">
-        Customize Brave to give your browser a new look
-      </message>
       <message name="IDS_NTP_EXTENSIONS_PROMO" desc="The text shown in the body of the New Tab Page extensions promotion">
         Add extensions to stay organized, simplify tasks, and enhance your browsing
-      </message>
-      <message name="IDS_NTP_SIGN_IN_PROMO_WITH_BOOKMARKS" desc="The text shown in the body of the New Tab Page sign in promotion">
-        Sign in to Brave to get your passwords, bookmarks, and more on all your devices
       </message>
     </if>
 
@@ -19277,6 +19331,208 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_TIPS_NOTIFICATIONS_BOTTOM_OMNIBOX_SUBTITLE" desc="Subtitle for the bottom omnibox tip notification.">
       Switch the position of your address bar for a customized browsing experience
     </message>
+
+    <!-- chrome://updater -->
+    <if expr="is_linux or is_macosx or is_win">
+      <message name="IDS_UPDATER_ACTIVATION_FAILED" desc="Summary of a failed attempt by the Brave Updater to become authoritative in managing updates on the machine.">
+        Activation failed
+      </message>
+      <message name="IDS_UPDATER_ACTIVATION_SUCCEEDED" desc="Summary of a successful attempt by the Brave Updater to become authoritative in managing updates on the machine.">
+        Activation succeeded
+      </message>
+      <message name="IDS_UPDATER_ADD_FILTER" desc="In Title Case: Title of the button to add a filter over a list of Brave Updater logs.">
+        Add Filter
+      </message>
+      <message name="IDS_UPDATER_APP" desc="In Title Case: Title of the chip which filters logs by application (e.g. 'Brave').">
+        App
+      </message>
+      <message name="IDS_UPDATER_APPLY" desc="Label on a button to apply the selected filters.">
+        Apply
+      </message>
+      <message name="IDS_UPDATER_APP_NAME_OR_ID" desc="Placeholder text in a search box asking the user to enter an application name or identifier string.">
+        App Name or ID
+      </message>
+      <message name="IDS_UPDATER_CANCEL" desc="Label on a button to cancel the current action or close a menu.">
+        Cancel
+      </message>
+      <message name="IDS_UPDATER_CLEAR_ALL_FILTERS" desc="Tooltip or accessibility label for a button that removes all active search filters.">
+        Clear all filters
+      </message>
+      <message name="IDS_UPDATER_COLLAPSE_ALL" desc="Label for a button that collapses all expanded items in a list.">
+        Collapse All
+      </message>
+      <message name="IDS_UPDATER_COMMAND_LINE" desc="Label preceding the command line of an executed program in the summary of a logged Brave Updater event">
+        Command line:
+      </message>
+      <message name="IDS_UPDATER_COMMAND_OUTCOME" desc="Summary of an event in which a command line program was executed.">
+        Command exited with code <ph name="EXIT_CODE">$1<ex>0</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_COMMON" desc="Header string for a section of common options in a filter menu.">
+        Common
+      </message>
+      <message name="IDS_UPDATER_DATE" desc="Label for a filter category allowing the user to filter logs by date.">
+        Date
+      </message>
+      <message name="IDS_UPDATER_DATE_FILTER_AFTER" desc="Text displayed in a filter chip indicating logs are shown after a specific date.">
+        After <ph name="START_DATE">$1<ex>Jan 1, 2025</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_DATE_FILTER_BEFORE" desc="Text displayed in a filter chip indicating logs are shown before a specific date.">
+        Before <ph name="END_DATE">$1<ex>Jan 1, 2025</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_DATE_FILTER_RANGE" desc="Text displayed in a filter chip indicating logs are shown within a date range.">
+        <ph name="START_DATE">$1<ex>Jan 1, 2025</ex></ph> to <ph name="END_DATE">$2<ex>Feb 1, 2025</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_DISPLAYED_EVENTS_COUNT" desc="Text displayed above a filtered list of events in the Brave Updater log indicating how many events match the filter and are displayed. The number of displayed events is greater than or equal to zero. The number of total events is one or more.">
+        Displaying <ph name="NUM_DISPLAYED_EVENTS">$1<ex>17</ex></ph> of <ph name="NUM_TOTAL_EVENTS">$2<ex>1149</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_DURATION" desc="Text indicating the duration of a Brave Updater event in a log.">
+        Duration: <ph name="DURATION">$1<ex>1m 12s</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_END_DATE" desc="Label for the end date input field.">
+        End Date:
+      </message>
+      <message name="IDS_UPDATER_ERROR_DETAILS" desc="Details of an error encountered by the updater, including numeric category, code, and extra code values.">
+        Error: Category: <ph name="CATEGORY">$1<ex>1</ex></ph>, Code: <ph name="CODE">$2<ex>2</ex></ph>, Extra Code: <ph name="EXTRA_CODE">$3<ex>0</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE" desc="Label for a filter category allowing the user to filter logs by the type of event.">
+        Event Type
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_ACTIVATE" desc="Label for an action carried out by the Brave Updater in which a particular version of the software becomes authoritative in managing updates on the machine.">
+        Activate
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_APP_COMMAND" desc="Label for an action carried out by the Brave Updater in which it executes a command on behalf of another application.">
+        App Command
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_INSTALL" desc="Label for an action carried out by the Brave Updater in which it attempts installation of software.">
+        Install
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_LOAD_POLICY" desc="Label for an action carried out by the Brave Updater in which it loads enterprise policies from external sources that govern the behavior of the updater.">
+        Load Policy
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_PERSISTED_DATA" desc="Label for an action carried out by the Brave Updater in which it records a snapshot of its internal data structures.">
+        Persisted Data
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_POST_REQUEST" desc="Label for an action carried out by the Brave Updater in which it performs an HTTP POST request.">
+        POST Request
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_QUALIFY" desc="Label for an action carried out by the Brave Updater in which a new version of the software performs self-health checks before becoming the authoritative updater on the system.">
+        Self Test
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_UNINSTALL" desc="Label for an action carried out by the Brave Updater in which it notices the removal of a piece of software from the system.">
+        Uninstall
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_UPDATE" desc="Label for an action carried out by the Brave Updater in which it attempts to update a piece of software from the system.">
+        Update
+      </message>
+      <message name="IDS_UPDATER_EVENT_TYPE_UPDATER_PROCESS" desc="Label for an action carried out by the Brave Updater in which it starts or stops a local system process.">
+        Updater Process
+      </message>
+      <message name="IDS_UPDATER_EXPAND_ALL" desc="Label for a button that expands all collapsed items in a list.">
+        Expand All
+      </message>
+      <message name="IDS_UPDATER_FILTER_CHIP_APP" desc="Text displayed in a filter chip showing the selected application's names or identifier strings.">
+        App: <ph name="APPS">$1<ex>Brave, Brave Beta, Brave Canary, {6BBAE539-2232-434A-A4E5-9A33560C6284}</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_FILTER_CHIP_DATE" desc="Text displayed in a filter chip showing the selected date range.">
+        Date: <ph name="DATE_RANGE">$1<ex>Jan 1, 2025 to Feb 1, 2025</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_FILTER_CHIP_EVENT_TYPE" desc="Text displayed in a filter chip showing the selected event types.">
+        Event Type: <ph name="EVENT_TYPES">$1<ex>Update, Install</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_FILTER_CHIP_UPDATE_OUTCOME" desc="Text displayed in a filter chip showing the selected update outcomes.">
+        Update Outcome: <ph name="OUTCOMES">$1<ex>Updated, Update Error</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_FILTER_CHIP_UPDATER_SCOPE" desc="Text displayed in a filter chip showing the selected updater scopes.">
+        Updater Scope: <ph name="OUTCOMES">$1<ex>Per-system updater, Per-user updater</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_INSTALL_SUMMARY" desc="Summary of an event in which software was installed, including the version.">
+        Installed version <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_INTERNAL" desc="Label used to indicate that a logged Brave Updater event pertains to the updater itself and not an app managed by the updater (e.g. Brave).">
+        Internal
+      </message>
+      <message name="IDS_UPDATER_NEXT_VERSION" desc="Label indicating the version of a software installation that the Brave Updater tried to update to.">
+        Next version: <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_NO_UPDATE" desc="Summary of an update event where the server indicated that no update was available. The text should indicate that the service was successfully able to check for an update. Not being offered an update is a normal occurance, the text should not suggest that any sort of error occured.">
+        Update check completed successfully. No update was available
+      </message>
+      <message name="IDS_UPDATER_OMAHA_REQUEST" desc="Label for a collapsible section displaying or chip indicating the presence of Omaha protocol request data in JSON format.">
+        Omaha Request
+      </message>
+      <message name="IDS_UPDATER_OMAHA_RESPONSE" desc="Label for a collapsible section displaying the Omaha protocol request data in JSON format.">
+        Omaha Response
+      </message>
+      <message name="IDS_UPDATER_OTHER" desc="Header string for a section of miscellaneous options in a filter menu.">
+        Other
+      </message>
+      <message name="IDS_UPDATER_OUTCOME" desc="Summary of an event with a specific outcome.">
+        Operation completed with outcome: <ph name="OUTCOME">$1<ex>DISK_FULL</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_OUTCOME_UNKNOWN" desc="Summary of an event carried out by the Brave Updater where the outcome is unknown.">
+        Operation completed with unknown outcome
+      </message>
+      <message name="IDS_UPDATER_PARSE_ERROR_EVENTS" desc="Message indicating that one or more events could not be parsed and are hidden from the Brave Updater event log.">
+        {NUM_EVENTS, plural, =1 {1 event could not be parsed and is not shown} other {# events could not be parsed and are not shown}}
+      </message>
+      <message name="IDS_UPDATER_PERSISTED_DATA_SUMMARY" desc="Summary of an event indicating how many apps are registered.">
+        <ph name="APP_COUNT">$1<ex>5</ex></ph> apps registered
+      </message>
+      <message name="IDS_UPDATER_PROCESS_SUMMARY" desc="Summary of an event that involved executing a command on the system, including the numeric exit code.">
+        Process exited with code <ph name="EXIT_CODE">$1<ex>0</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_QUALIFICATION_FAILED" desc="Summary of an event in which the Brave Updater's self-check failed, indicating that the program is not working as intended and should not manage updates for Brave.">
+        Self test failed
+      </message>
+      <message name="IDS_UPDATER_QUALIFICATION_SUCCEEDED" desc="Summary of an event in which the Brave Updater's self-check succeeded, indicating that the program is working as intended and should manage updates for Brave">
+        Self test succeeded
+      </message>
+      <message name="IDS_UPDATER_REMOVE_FILTER" desc="Accessibility label for the button that removes a specific filter chip.">
+        Remove filter
+      </message>
+      <message name="IDS_UPDATER_SCOPE" desc="Label for a filter category allowing the user to filter Brave Updater logs by the scope of the updater. Brave Updater may be scoped per-user or per-system.">
+        Updater Scope
+      </message>
+      <message name="IDS_UPDATER_SCOPE_SYSTEM" desc="Tooltip explaining that an event belongs to a per-system installation of the updater as opposed to a per-user installation.">
+        Per-system updater
+      </message>
+      <message name="IDS_UPDATER_SCOPE_USER" desc="Tooltip explaining that an event belongs to a per-user installation of the updater as opposed to a per-system installation.">
+        Per-user updater
+      </message>
+      <message name="IDS_UPDATER_START_DATE" desc="Label for the start date input field.">
+        Start Date:
+      </message>
+      <message name="IDS_UPDATER_UNDATED_EVENTS" desc="Message indicating that the timestamp of one or more events was not able to determined. Events without timestamps can't be displayed in the Brave Updater event log.">
+        {NUM_EVENTS, plural, =1 {1 event could not be dated and is not shown} other {# events could not be dated and are not shown}}
+      </message>
+      <message name="IDS_UPDATER_UNINSTALL_SUMMARY" desc="Summary of an uninstall event, including version and reason.">
+        Uninstalled version <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>, reason: <ph name="REASON">$2<ex>NO_APPS_REMAINING</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_UPDATED_TO" desc="Summary of an update event that succeeded, including the new version.">
+        Updated to version <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_UPDATER_VERSION" desc="Label indicating the version of the updater itself.">
+        Updater version: <ph name="VERSION">$1<ex>1.2.3.4</ex></ph>
+      </message>
+      <message name="IDS_UPDATER_UPDATE_ERROR" desc="Summary of an update event that failed.">
+        Update operation failed
+      </message>
+      <message name="IDS_UPDATER_UPDATE_OUTCOME" desc="Label for a filter category allowing the user to filter logs by the outcome of the update attempt.">
+        Update Outcome
+      </message>
+      <message name="IDS_UPDATER_UPDATE_OUTCOME_NO_UPDATE" desc="Label for the outcome of an update attempt in which no update was avaialble.">
+        No Update
+      </message>
+      <message name="IDS_UPDATER_UPDATE_OUTCOME_UPDATED" desc="Label for the outcome of an update attempt in which an update was successfully applied.">
+        Updated
+      </message>
+      <message name="IDS_UPDATER_UPDATE_OUTCOME_UPDATE_ERROR" desc="Label for the outcome of an update attempt in which the update could not complete because of an error.">
+        Update Error
+      </message>
+      <message name="IDS_UPDATER_VIEW_RAW_DETAILS" desc="Title of the button to display the contents of a Brave Updater log in JSON format">
+        Source
+      </message>
+    </if>
   </messages>
 </release>
 </grit>

@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
+index 75d98ddc10ab0050ee1943e666b22cf1d2cfed49..88370d3cec871b7da2a37fea23c609e60ed34f30 100644
+--- a/components/permissions/permission_uma_util.cc
++++ b/components/permissions/permission_uma_util.cc
+@@ -743,6 +743,7 @@ std::string GetPermissionStringForUma(
+     case ContentSettingsType::LOOPBACK_NETWORK:
+       return "LoopbackNetwork";
+     default:
++      BRAVE_GET_PERMISSION_STRING_FOR_UMA
+       break;
+   }
+   // The user is not prompted for these permissions thus there is no

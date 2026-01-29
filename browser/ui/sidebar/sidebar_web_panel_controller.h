@@ -43,7 +43,7 @@ class SidebarWebPanelController : public TabStripModelObserver {
   bool IsShowingWebPanel() const;
 
   // TabStripModelObesrver:
-  void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
+  void OnTabWillBeRemoved(tabs::TabInterface* tab, int index) override;
 
   raw_ref<BrowserView> browser_view_;
   raw_ptr<content::WebContents> panel_contents_ = nullptr;

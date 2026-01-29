@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 7da4a13cc3286d0690db50d8e8b6cd9426946942..a7c9a641d8865f788c0cd6113fb7254cebcebf25 100644
+index 3ee708f3a330e914081ce11c2ca4051ed8181cdf..349f62683ed1058d870ab02dd8ae3502a50b7e12 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -375,6 +375,7 @@ void GetChromeProgIdEntries(
@@ -10,15 +10,15 @@ index 7da4a13cc3286d0690db50d8e8b6cd9426946942..a7c9a641d8865f788c0cd6113fb7254c
  
    // Get ProgId entries for PDF documents.
    app_info.prog_id = GetPDFProgId(suffix);
-@@ -480,6 +481,7 @@ void GetShellIntegrationEntries(
-   // file association.
-   for (int i = 0;
-        UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]) != nullptr; i++) {
+@@ -478,6 +479,7 @@ void GetShellIntegrationEntries(
+   const std::wstring html_prog_id(GetBrowserProgId(suffix));
+   // Associate ordinary files with the HTML Prog ID (e.g., "ChromeHTML").
+   for (auto association : ShellUtil::kPotentialFileAssociations) {
 +    BRAVE_GET_SHELL_INTEGRATION_ENTRIES
      entries->push_back(std::make_unique<RegistryEntry>(
-         capabilities + L"\\FileAssociations",
-         UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]),
-@@ -510,6 +512,7 @@ void GetAppExtRegistrationEntries(
+         capabilities + L"\\FileAssociations", std::wstring(association),
+         html_prog_id));
+@@ -517,6 +519,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});

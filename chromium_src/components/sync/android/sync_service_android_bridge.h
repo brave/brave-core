@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ANDROID_SYNC_SERVICE_ANDROID_BRIDGE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ANDROID_SYNC_SERVICE_ANDROID_BRIDGE_H_
 
-#define KeepAccountSettingsPrefsOnlyForUsers                                   \
-  KeepAccountSettingsPrefsOnlyForUsers_Unused(                                 \
-      JNIEnv* env, const base::android::JavaParamRef<jobjectArray>& gaia_ids); \
+#define KeepAccountSettingsPrefsOnlyForUsers                              \
+  KeepAccountSettingsPrefsOnlyForUsers_Unused(                            \
+      JNIEnv* env, const base::android::JavaRef<jobjectArray>& gaia_ids); \
   void KeepAccountSettingsPrefsOnlyForUsers
 
 #include <components/sync/android/sync_service_android_bridge.h>  // IWYU pragma: export

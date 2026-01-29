@@ -75,6 +75,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       SpecificsToPhoneAsASecurityKeyInfo(specifics),
       specifics.invalidation_fields().instance_id_token(), data_types,
       SpecificsToAutoSignOutLastSigninTimestamp(specifics),
+      specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());

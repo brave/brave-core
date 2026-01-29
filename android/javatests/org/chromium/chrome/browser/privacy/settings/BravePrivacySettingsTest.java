@@ -49,7 +49,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
             "allow_elements_blocking_on_private_tabs";
 
-    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 28;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 27;
 
     private int mItemsLeft;
 

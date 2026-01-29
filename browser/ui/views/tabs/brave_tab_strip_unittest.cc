@@ -102,7 +102,7 @@ TEST_F(BraveTabStripUnitTest,
 
   // When a tab in a collapsed group is selected while the tabstrip is not
   // editable, the group should remain collapsed.
-  tab_strip_->SetTabStripNotEditableForTesting();
+  tab_strip_->DisableTabStripEditingForTesting();
   ASSERT_FALSE(tab_strip_->IsTabStripEditable());
   controller_->ToggleTabGroupCollapsedState(
       group_id, ToggleTabGroupCollapsedStateOrigin::kMouse);

@@ -37,7 +37,7 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
     public void showPasswordSettings(
             Context context,
             @ManagePasswordsReferrer int referrer,
-            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
             boolean managePasskeys,
             @Nullable String account,
             SettingsCustomTabLauncher settingsCustomTabLauncher) {

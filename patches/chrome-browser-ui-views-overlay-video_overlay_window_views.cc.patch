@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index eb7e9f8d400b709a597e2f61a01fb88e66b0bd38..29143355c6da9db43b2a6e506cba6f9e2190c52e 100644
+index 8ccc5385ede42f3dd771c9fe143cf630ae0709f1..a6c29b1c9c4a5b7b2ab047dd200127fc7af997ad 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -353,7 +353,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
@@ -11,7 +11,7 @@ index eb7e9f8d400b709a597e2f61a01fb88e66b0bd38..29143355c6da9db43b2a6e506cba6f9e
  
    overlay_window->SetColorModeOverride(ui::ColorProviderKey::ColorMode::kDark);
  
-@@ -992,6 +992,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+@@ -994,6 +994,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  

@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
-#include "components/privacy_sandbox/tpcd_experiment_eligibility.h"
 
 class HostContentSettingsMap;
 class PrefService;
@@ -35,7 +34,6 @@ class BravePrivacySandboxSettings
       std::unique_ptr<Delegate> delegate,
       HostContentSettingsMap* host_content_settings_map,
       content_settings::CookieSettings* cookie_settings,
-      privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
       PrefService* pref_service);
   ~BravePrivacySandboxSettings() override;
 
@@ -64,8 +62,7 @@ class BravePrivacySandboxSettings
       content::RenderFrameHost* console_frame = nullptr) const override;
   bool IsAttributionReportingTransitionalDebuggingAllowed(
       const url::Origin& top_frame_origin,
-      const url::Origin& reporting_origin,
-      bool& can_bypass) const override;
+      const url::Origin& reporting_origin) const override;
   void SetFledgeJoiningAllowed(const std::string& top_frame_etld_plus1,
                                bool allowed) override;
   void ClearFledgeJoiningAllowedSettings(base::Time start_time,
@@ -101,13 +98,7 @@ class BravePrivacySandboxSettings
   bool IsPrivateAggregationDebugModeAllowed(
       const url::Origin& top_frame_origin,
       const url::Origin& reporting_origin) const override;
-  privacy_sandbox::TpcdExperimentEligibility
-  GetCookieDeprecationExperimentCurrentEligibility() const override;
 
-  bool IsCookieDeprecationLabelAllowed() const override;
-  bool IsCookieDeprecationLabelAllowedForContext(
-      const url::Origin& top_frame_origin,
-      const url::Origin& context_origin) const override;
   void SetAllPrivacySandboxAllowedForTesting() override;
   void SetTopicsBlockedForTesting() override;
   bool IsPrivacySandboxRestricted() const override;

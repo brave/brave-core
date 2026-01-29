@@ -112,7 +112,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     public void destroy() {
         super.destroy();
 
-        mActivity.unregisterComponentCallbacks(mComponentCallbacks);
+        if (mActivity != null) {
+            mActivity.unregisterComponentCallbacks(mComponentCallbacks);
+        }
     }
 
     private void maybeUpdateBottomMarginForContainerView() {

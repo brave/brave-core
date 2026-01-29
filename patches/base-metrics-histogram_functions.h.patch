@@ -1,8 +1,8 @@
 diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
-index 063dca5ce9a772d22c01d695a26037a7319d25b7..267b7bea97062e7a011dcd876bbf389162565f26 100644
+index 9c0912d6314af55d31eca30e16c57b84400e0e5a..969577a42696ac3a19cddb49c13894ca506b637c 100644
 --- a/base/metrics/histogram_functions.h
 +++ b/base/metrics/histogram_functions.h
-@@ -81,6 +81,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
+@@ -82,6 +82,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
    static_assert(static_cast<uintmax_t>(T::kMaxValue) <=
                      static_cast<uintmax_t>(INT_MAX) - 1,
                  "Enumeration's kMaxValue is out of range of INT_MAX!");

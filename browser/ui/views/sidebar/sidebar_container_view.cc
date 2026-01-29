@@ -814,10 +814,9 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   }
 }
 
-void SidebarContainerView::OnTabWillBeRemoved(content::WebContents* contents,
+void SidebarContainerView::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                               int index) {
   // At this time, we can stop observing as TabFeatures is available.
-  auto* tab = tabs::TabInterface::GetFromContents(contents);
   if (!tab->GetTabFeatures()) {
     return;
   }

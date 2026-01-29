@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
+#include "base/functional/callback_helpers.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"

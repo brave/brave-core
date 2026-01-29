@@ -10,7 +10,9 @@
 namespace legion {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if !BUILDFLAG(IS_ANDROID)
     {kLegion, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // !BUILDFLAG(IS_ANDROID)
 }});
 
 }  // namespace legion

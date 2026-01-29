@@ -5,6 +5,7 @@
 
 #include <optional>
 
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -281,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderDisabledRendererTest,
 
   auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
   EXPECT_EQ(base::Value(false), result);
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Incognito) {
@@ -358,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
 
   auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
   EXPECT_EQ(base::Value(true), result);
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, AttachIfWalletCreated) {
@@ -368,7 +369,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, AttachIfWalletCreated) {
 
   auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
   EXPECT_EQ(base::Value(true), result);
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NonWritableCardanoBrave) {

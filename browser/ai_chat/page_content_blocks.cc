@@ -395,11 +395,12 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
       attributes = BuildAttributes(attrs);
       break;
 
-    case ContentAttributeType::CONTENT_ATTRIBUTE_SVG:
+    case ContentAttributeType::CONTENT_ATTRIBUTE_SVG_ROOT:
       tag_name = "svg";
       attributes = BuildAttributes(attrs);
-      if (attrs.has_svg_data() && attrs.svg_data().has_inner_text()) {
-        inner_content = XmlEscapeAndSanitizeText(attrs.svg_data().inner_text());
+      if (attrs.has_svg_root_data() && attrs.svg_root_data().has_inner_text()) {
+        inner_content =
+            XmlEscapeAndSanitizeText(attrs.svg_root_data().inner_text());
       }
       break;
 

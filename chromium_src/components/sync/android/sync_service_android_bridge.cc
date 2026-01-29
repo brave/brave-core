@@ -28,6 +28,6 @@ namespace syncer {
 // To avoid this, override with empty implementation.
 void SyncServiceAndroidBridge::KeepAccountSettingsPrefsOnlyForUsers(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobjectArray>& gaia_ids) {}
+    const base::android::JavaRef<jobjectArray>& gaia_ids) {}
 
 }  // namespace syncer

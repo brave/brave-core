@@ -10,6 +10,7 @@
 package org.chromium.chrome.browser.password_manager.settings;
 
 import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.PASSWORD_SETTINGS_EXPORT_METRICS_ID;
 
 import android.app.Activity;
@@ -33,6 +34,7 @@ import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.build.annotations.Initializer;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -44,6 +46,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
+import org.chromium.components.browser_ui.settings.SearchViewProvider;
 import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
@@ -61,6 +64,7 @@ import java.util.Locale;
 @NullMarked
 public class PasswordSettings extends ChromeBaseSettingsFragment
         implements PasswordListObserver,
+                SearchViewProvider,
                 Preference.OnPreferenceChangeListener,
                 Preference.OnPreferenceClickListener {
 
@@ -112,6 +116,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     /** For controlling the UX flow of importing passwords. */
     private final ImportFlow mImportFlow = new ImportFlow();
+
+    private @MonotonicNonNull SearchViewProvider.Observer mSearchViewObserver;
 
     public ExportFlow getExportFlowForTesting() {
         return mExportFlow;
@@ -299,6 +305,11 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         getListView().setItemAnimator(null);
     }
 
+    @Override
+    public void setSearchViewObserver(SearchViewProvider.Observer observer) {
+        mSearchViewObserver = observer;
+    }
+
     @Initializer
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -311,7 +322,11 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         mSearchItem.setVisible(true);
         mHelpItem = menu.findItem(R.id.menu_id_targeted_help);
         SearchUtils.initializeSearchView(
-                mSearchItem, mSearchQuery, getActivity(), this::filterPasswords);
+                mSearchItem,
+                mSearchQuery,
+                getActivity(),
+                assumeNonNull(mSearchViewObserver),
+                this::filterPasswords);
     }
 
     @Override

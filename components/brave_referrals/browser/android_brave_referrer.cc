@@ -32,3 +32,5 @@ void BraveReferrer::OnReferrerReady(JNIEnv* env) {
 }
 
 }  // namespace android_brave_referrer
+
+DEFINE_JNI(BraveReferrer)

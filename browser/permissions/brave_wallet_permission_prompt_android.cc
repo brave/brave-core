@@ -61,7 +61,7 @@ void BraveWalletPermissionPrompt::Delegate::Closing() {
   if (!permission_prompt_) {
     return;
   }
-  permission_prompt_->Closing();
+  permission_prompt_->Dismiss();
 }
 
 BraveWalletPermissionPrompt::Delegate::~Delegate() {

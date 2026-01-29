@@ -17,7 +17,7 @@ namespace android {
 static jlong
 JNI_BraveOriginServiceFactory_GetInterfaceToBraveOriginSettingsHandler(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   mojo::PendingRemote<brave_origin::mojom::BraveOriginSettingsHandler> pending;
   if (profile) {
@@ -38,3 +38,5 @@ JNI_BraveOriginServiceFactory_GetInterfaceToBraveOriginSettingsHandler(
 
 }  // namespace android
 }  // namespace brave
+
+DEFINE_JNI(BraveOriginServiceFactory)

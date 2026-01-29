@@ -44,18 +44,15 @@ void DeleteBraveFileKeys(HKEY root) {
   // http://msdn.microsoft.com/en-us/library/bb166549
   std::wstring file_assoc_key;
   std::wstring open_with_progids_key;
-  for (int i = 0;
-       UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]) != nullptr; ++i) {
-    file_assoc_key.assign(ShellUtil::kRegClasses);
-    file_assoc_key.push_back(base::FilePath::kSeparators[0]);
-    file_assoc_key.append(
-        UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]));
-    file_assoc_key.push_back(base::FilePath::kSeparators[0]);
+  for (auto association : ShellUtil::kPotentialFileAssociations) {
+    file_assoc_key.clear();
+    base::StrAppend(&file_assoc_key,
+                    {ShellUtil::kRegClasses, L"\\", association, L"\\"});
 
-    open_with_progids_key.assign(file_assoc_key);
-    open_with_progids_key.append(ShellUtil::kRegOpenWithProgids);
-    if (ShouldUseFileTypeProgId(
-            UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]))) {
+    open_with_progids_key.clear();
+    base::StrAppend(&open_with_progids_key,
+                    {file_assoc_key, ShellUtil::kRegOpenWithProgids});
+    if (ShouldUseFileTypeProgId(association)) {
       DeleteRegistryValue(root, open_with_progids_key, WorkItem::kWow64Default,
                           GetProgIdForFileType());
     }

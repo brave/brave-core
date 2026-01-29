@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index 213e4a7be4d71f0750bad8399bab5a8391aa48da..c8ade623ce6cd46923dd4112cd1b60ba2f12929c 100644
+index 2b86c30365644624728013f87612d01bdfec8e8b..06165c8bb59fff73571f7394a9f9ded14dd23643 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
 @@ -136,7 +136,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
@@ -11,12 +11,3 @@ index 213e4a7be4d71f0750bad8399bab5a8391aa48da..c8ade623ce6cd46923dd4112cd1b60ba
              let msg = format!("Downloading {}", crate_dirname.display());
              println!("{msg}");
              download_crate(p.name(), p.version(), paths).context(msg)?;
-@@ -465,7 +465,7 @@ fn apply_patches(
-     let crate_dir = get_vendor_dir_for_package(paths, name, version);
- 
-     let mut patches = Vec::new();
--    let Ok(patch_dir) = std::fs::read_dir(paths.third_party_cargo_root.join("patches").join(name))
-+    let Ok(patch_dir) = std::fs::read_dir(paths.third_party_cargo_root.join("patches").join(format!("{name}-{version}")))
-     else {
-         // No patches for this crate.
-         return Ok(());

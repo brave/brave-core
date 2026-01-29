@@ -467,8 +467,13 @@ class PageContentFetcherInternal {
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 void OnScreenshot(FetchPageContentCallback callback,
-                  const viz::CopyOutputBitmapWithMetadata& result) {
-  const SkBitmap& bitmap = result.bitmap;
+                  const content::CopyFromSurfaceResult& result) {
+  if (!result.has_value()) {
+    std::move(callback).Run("", false, "");
+    return;
+  }
+
+  const SkBitmap& bitmap = result->bitmap;
   GetOCRText(bitmap,
              base::BindOnce(
                  [](FetchPageContentCallback callback, std::string text) {
@@ -564,7 +569,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
     if (view) {
       gfx::Size content_size = web_contents_->GetSize();
       gfx::Rect capture_area(0, 0, content_size.width(), content_size.height());
-      view->CopyFromSurface(capture_area, content_size,
+      view->CopyFromSurface(capture_area, content_size, base::TimeDelta(),
                             base::BindOnce(&OnScreenshot, std::move(callback)));
       return;
     }

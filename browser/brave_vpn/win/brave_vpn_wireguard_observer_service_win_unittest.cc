@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"

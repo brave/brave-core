@@ -53,9 +53,8 @@ class BraveRewardsNativeWorker
 
   bool ShouldShowSelfCustodyInvite(JNIEnv* env);
 
-  void CreateRewardsWallet(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& country_code);
+  void CreateRewardsWallet(JNIEnv* env,
+                           const base::android::JavaRef<jstring>& country_code);
 
   void GetRewardsParameters(JNIEnv* env);
 
@@ -69,7 +68,7 @@ class BraveRewardsNativeWorker
 
   void GetPublisherInfo(JNIEnv* env,
                         int tabId,
-                        const base::android::JavaParamRef<jstring>& host);
+                        const base::android::JavaRef<jstring>& host);
 
   base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
 
@@ -94,12 +93,12 @@ class BraveRewardsNativeWorker
                                                               uint64_t tabId);
   base::android::ScopedJavaLocalRef<jstring> GetCaptchaSolutionURL(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& paymentId,
-      const base::android::JavaParamRef<jstring>& captchaId);
+      const base::android::JavaRef<jstring>& paymentId,
+      const base::android::JavaRef<jstring>& captchaId);
   base::android::ScopedJavaLocalRef<jstring> GetAttestationURL(JNIEnv* env);
   base::android::ScopedJavaLocalRef<jstring> GetAttestationURLWithPaymentId(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& paymentId);
+      const base::android::JavaRef<jstring>& paymentId);
 
   base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
                                                             uint64_t tabId);
@@ -115,7 +114,7 @@ class BraveRewardsNativeWorker
   void RemovePublisherFromMap(JNIEnv* env, uint64_t tabId);
 
   void Donate(JNIEnv* env,
-              const base::android::JavaParamRef<jstring>& publisher_key,
+              const base::android::JavaRef<jstring>& publisher_key,
               double amount,
               bool recurring);
 
@@ -123,13 +122,13 @@ class BraveRewardsNativeWorker
 
   void DeleteNotification(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& notification_id);
+      const base::android::JavaRef<jstring>& notification_id);
 
   void GetRecurringDonations(JNIEnv* env);
 
   bool IsCurrentPublisherInRecurrentDonations(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& publisher);
+      const base::android::JavaRef<jstring>& publisher);
 
   void GetReconcileStamp(JNIEnv* env);
 
@@ -137,10 +136,10 @@ class BraveRewardsNativeWorker
 
   double GetPublisherRecurrentDonationAmount(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& publisher);
+      const base::android::JavaRef<jstring>& publisher);
 
   void RemoveRecurring(JNIEnv* env,
-                       const base::android::JavaParamRef<jstring>& publisher);
+                       const base::android::JavaRef<jstring>& publisher);
 
   int GetAdsPerHour(JNIEnv* env);
 
@@ -156,9 +155,8 @@ class BraveRewardsNativeWorker
 
   void GetAvailableCountries(JNIEnv* env);
 
-  void GetPublisherBanner(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& publisher_key);
+  void GetPublisherBanner(JNIEnv* env,
+                          const base::android::JavaRef<jstring>& publisher_key);
 
   void GetPublishersVisitedCount(JNIEnv* env);
 
@@ -166,9 +164,8 @@ class BraveRewardsNativeWorker
 
   void DisconnectWallet(JNIEnv* env);
 
-  void RefreshPublisher(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& publisher_key);
+  void RefreshPublisher(JNIEnv* env,
+                        const base::android::JavaRef<jstring>& publisher_key);
 
   void RecordPanelTrigger(JNIEnv* env);
 

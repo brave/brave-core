@@ -34,12 +34,13 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
@@ -173,7 +174,8 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   TabStrip* GetTabStrip(Browser* browser) {
-    return BrowserView::GetBrowserViewForBrowser(browser)->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser)
+        ->horizontal_tab_strip_for_testing();
   }
 
   Tab* GetTabAt(Browser* browser, int index) {
@@ -248,8 +250,8 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  TabStripRegionView* tab_strip_region_view() {
-    return views::AsViewClass<TabStripRegionView>(
+  HorizontalTabStripRegionView* tab_strip_region_view() {
+    return views::AsViewClass<HorizontalTabStripRegionView>(
         BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
   }
 
@@ -264,19 +266,19 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
   // The default orientation is horizontal.
   ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
   ASSERT_EQ(browser_view()->GetWidget(),
-            browser_view()->tabstrip()->GetWidget());
+            browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 
   // Show vertical tab strip. This will move tabstrip to its own widget.
   ToggleVerticalTabStrip();
   EXPECT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
   EXPECT_NE(browser_view()->GetWidget(),
-            browser_view()->tabstrip()->GetWidget());
+            browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 
   // Hide vertical tab strip and restore to the horizontal tabstrip.
   ToggleVerticalTabStrip();
   EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
   EXPECT_EQ(browser_view()->GetWidget(),
-            browser_view()->tabstrip()->GetWidget());
+            browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
@@ -335,13 +337,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_FALSE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -542,7 +547,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
   ASSERT_EQ(2, model->count());
   model->SetTabPinned(0, true);
 
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Test if every tabs are laid out inside tab strip region -------------------
   // This is a regression test for
@@ -580,17 +585,18 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   model->SetTabPinned(0, true);
   ASSERT_EQ(1, model->count());
 
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // At this point, the contents_view_height already contains spacing after the
   // last pinned tab
   int contents_view_height = region_view->original_region_view_->height();
   AppendTab(browser());  // Add first unpinned tab
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
   ASSERT_FALSE(brave_tab_container->GetTabAtModelIndex(1)->data().pinned);
   EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
@@ -606,12 +612,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   // Check first unpinned tab's position in floating mode.
   region_view->SetState(BraveVerticalTabStripRegionView::State::kFloating);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
 
   EXPECT_EQ(contents_view_height, region_view->original_region_view_->height());
   region_view->SetState(BraveVerticalTabStripRegionView::State::kExpanded);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
 
   // Check if separator is laid out correctly
@@ -621,7 +627,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                 tabs::kPinnedUnpinnedSeparatorHeight);
 
   AppendTab(browser());  // Add second unpinned tab
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
 
   // When second tab is added, height should be increased with tab height plus
@@ -642,7 +648,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
 
   EXPECT_TRUE(brave_tab_container);
@@ -676,7 +683,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
   ToggleVerticalTabStrip();
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
 
   EXPECT_TRUE(brave_tab_container);
@@ -685,7 +693,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
   for (int i = 0; i < 30; i++) {
     AppendTab(browser());
   }
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   brave_tab_container->SetScrollOffset(
       brave_tab_container->GetMaxScrollOffset());
   InvalidateAndRunLayoutForVerticalTabStrip();
@@ -700,29 +708,30 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                        BraveTabContainerSeparator) {
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
   EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
 
   auto* model = browser()->tab_strip_model();
   model->SetTabPinned(0, true);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
 
   AppendTab(browser());
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
 
   ToggleVerticalTabStrip();
   EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
 
-  auto* tab_strip = browser_view()->tabstrip();
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
   EXPECT_EQ(
       tab_strip->tab_at(0)->bounds().bottom() + tabs::kVerticalTabsSpacing,
       brave_tab_container->separator_->bounds().y());
 
   model->SetTabPinned(0, false);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   EXPECT_FALSE(brave_tab_container->separator_->GetVisible());
 
   // Add enough pinned tabs to move separator bounds by creating unpinned tab
@@ -731,7 +740,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   for (int i = 0; i < 20; i++) {
     AppendTab(browser());
     model->SetTabPinned(model->count() - 1, true);
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
     EXPECT_EQ(tab_strip->tab_at(model->IndexOfFirstNonPinnedTab() - 1)
                       ->bounds()
                       .bottom() +
@@ -743,7 +752,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   const int tab_count = model->count();
   for (int i = 0; i < tab_count; i++) {
     model->SetTabPinned(i, false);
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
     const int first_unpinned_tab_index = model->IndexOfFirstNonPinnedTab();
     if (first_unpinned_tab_index == 0) {
@@ -876,25 +885,11 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
       int tab_index) {
     auto* controller = static_cast<BraveBrowserTabStripController*>(
         BrowserView::GetBrowserViewForBrowser(browser())
-            ->tabstrip()
+            ->horizontal_tab_strip_for_testing()
             ->controller());
 
-    auto context_menu_controller = std::make_unique<TabContextMenuController>(
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::GetContextMenuAccelerator,
-            base::Unretained(controller)));
+    auto context_menu_controller =
+        std::make_unique<TabContextMenuController>(tab_index, controller);
 
     return context_menu_controller;
   }
@@ -980,11 +975,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   AddTabToExistingGroup(browser(), 3, group);
 
   browser()->tab_strip_model()->SetTabPinned(1, true);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
 
   browser()->tab_strip_model()->SetTabPinned(2, true);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(1)->group(), std::nullopt);
 
   ASSERT_TRUE(GetTabStrip(browser())->tab_at(2)->group().has_value());
@@ -1031,7 +1026,7 @@ class VerticalTabStripDragAndDropBrowserTest
   }
 
   bool IsDraggingTabStrip(Browser* b) {
-    return GetTabStrip(b)->GetDragContext()->IsDragSessionActive();
+    return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
   // VerticalTabStripBrowserTest:
@@ -1153,7 +1148,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                   }));
         auto* new_browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
         auto* browser_view = BrowserView::GetBrowserViewForBrowser(new_browser);
-        auto* tab = browser_view->tabstrip()->tab_at(0);
+        auto* tab = browser_view->horizontal_tab_strip_for_testing()->tab_at(0);
         ASSERT_TRUE(tab);
         // During the tab detaching, mouse should be over the dragged
         // tab.
@@ -1239,12 +1234,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   ToggleVerticalTabStrip();
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
   ASSERT_TRUE(brave_tab_container);
 
   auto* model = browser()->tab_strip_model();
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Pre-condition: With only one tab, max scroll offset should be 0
   ASSERT_EQ(1, model->count());
@@ -1254,7 +1250,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   // the height, max scroll offset should be greater than 0.
   while (brave_tab_container->GetMaxScrollOffset() <= 0) {
     AppendTab(browser());
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   }
 
   // ## Basic test -------------------------------------------------------------
@@ -1284,7 +1280,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   while (brave_tab_container->GetMaxScrollOffset() <
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
     InvalidateAndRunLayoutForVerticalTabStrip();
   }
   // Make sure that the container has a reasonable height.
@@ -1299,7 +1295,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
          "equal to the max scroll offset";
 
   model->SetTabPinned(model->count() - 1, true);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   ASSERT_EQ(1, model->IndexOfFirstNonPinnedTab());
   EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
             tabs::kVerticalTabHeight +
@@ -1319,7 +1315,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   // Pin the last tab again, so that the max scroll offset could be smaller
   scroll_offset_before_pinning = brave_tab_container->scroll_offset_;
   model->SetTabPinned(model->count() - 1, true);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Then, current scroll offset should be clamped to the max scroll offset.
   EXPECT_GT(scroll_offset_before_pinning, brave_tab_container->scroll_offset_);
@@ -1329,7 +1325,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   // ## Unpin the tab
   model->SetTabPinned(0, false);
   model->SetTabPinned(0, false);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   ASSERT_EQ(0, brave_tab_container->GetPinnedTabsAreaBottom());
 
   // Max scroll offset should be restored after unpinning
@@ -1343,7 +1339,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   int scroll_offset_before_removing = brave_tab_container->scroll_offset_;
   model->SelectLastTab();
   model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_USER_GESTURE);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   ASSERT_EQ(model->GetIndexOfWebContents(model->GetActiveWebContents()),
             model->count() - 1);
 
@@ -1361,20 +1357,21 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   ToggleVerticalTabStrip();
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
   ASSERT_TRUE(brave_tab_container);
 
   auto* model = browser()->tab_strip_model();
   model->SetTabPinned(0, true);
 
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Add enough tabs to make the tab strip scrollable
   while (brave_tab_container->GetMaxScrollOffset() <=
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
     InvalidateAndRunLayoutForVerticalTabStrip();
   }
@@ -1389,7 +1386,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
 
   // Set scroll offset to 0 (top)
   brave_tab_container->SetScrollOffset(0);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Verify that UpdateClipPathForSlotViews() was called by checking clip paths
   // All unpinned tabs should have clip path set when pinned tabs exist
@@ -1430,7 +1427,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   // Set scroll offset to maximum (bottom)
   const int max_offset = brave_tab_container->GetMaxScrollOffset();
   brave_tab_container->SetScrollOffset(max_offset);
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Verify clip paths are updated after scrolling to bottom
   // The clip path should still match the visible area bounds
@@ -1468,7 +1465,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   ToggleVerticalTabStrip();
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
-      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
           ->GetTabContainerForTesting());
   ASSERT_TRUE(brave_tab_container);
 
@@ -1479,13 +1477,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   service->SetIsInitializedForTesting(true);
 
   auto* model = browser()->tab_strip_model();
-  browser_view()->tabstrip()->StopAnimating();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
   // Create enough tabs to make the tab strip scrollable
   while (brave_tab_container->GetMaxScrollOffset() <=
          5 * tabs::kVerticalTabHeight) {
     AppendTab(browser());
-    browser_view()->tabstrip()->StopAnimating();
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
     InvalidateAndRunLayoutForVerticalTabStrip();
   }
@@ -1499,10 +1497,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   last_max_scroll_offset = brave_tab_container->GetMaxScrollOffset();
 
   // Collapse the group
-  browser_view()->tabstrip()->controller()->ToggleTabGroupCollapsedState(
-      group1);
-  ASSERT_TRUE(
-      browser_view()->tabstrip()->controller()->IsGroupCollapsed(group1));
+  browser_view()
+      ->horizontal_tab_strip_for_testing()
+      ->controller()
+      ->ToggleTabGroupCollapsedState(group1);
+  ASSERT_TRUE(browser_view()
+                  ->horizontal_tab_strip_for_testing()
+                  ->controller()
+                  ->IsGroupCollapsed(group1));
 
   EXPECT_EQ(brave_tab_container->GetMaxScrollOffset(),
             last_max_scroll_offset - tabs::kVerticalTabHeight -

@@ -234,7 +234,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
     }
 
     memory_pressure_listener_registration_ =
-        std::make_unique<base::MemoryPressureListenerRegistration>(
+        std::make_unique<base::AsyncMemoryPressureListenerRegistration>(
             FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase, this);
 
     is_initialized_ = true;

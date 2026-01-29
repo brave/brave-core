@@ -60,7 +60,7 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
         // Make the button checkable so it can show the tonal background when checked
         mBookmarkButton.setCheckable(true);
         Drawable bookmarkIcon =
-                AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp);
+                AppCompatResources.getDrawable(getContext(), R.drawable.ic_star_24dp);
         DrawableCompat.setTintList(
                 bookmarkIcon,
                 AppCompatResources.getColorStateList(
@@ -168,7 +168,7 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
             mBookmarkButton.setChecked(true);
         } else {
             mBookmarkButton.setIcon(
-                    AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp));
+                    AppCompatResources.getDrawable(getContext(), R.drawable.ic_star_24dp));
             mBookmarkButton.setContentDescription(
                     getContext().getString(R.string.accessibility_menu_bookmark));
             // Set unchecked state - this removes the tonal background
