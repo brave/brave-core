@@ -26,6 +26,8 @@ void AddBraveServicesKeyHeader(network::ResourceRequest* url_request) {
   if (brave::ShouldAddBraveServicesKeyHeader(url_request->url)) {
     url_request->headers.SetHeaderIfMissing(kBraveServicesKeyHeader,
                                             BUILDFLAG(BRAVE_SERVICES_KEY));
+    url_request->headers.SetHeaderIfMissing("Brave-Key",
+                                            BUILDFLAG(BRAVE_SERVICES_KEY));
   }
   return;
 }
