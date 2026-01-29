@@ -74,55 +74,55 @@
     height: auto;
   }
 
-  :host-context(#brave-element-picker.minimized) {
-    #main-section.desktop {
-      width: 56px;
-      padding: 0px;
-      height: 56px;
-      min-width: auto;
-      border-radius: 12px;
-      background-color: var(--primary);
-    }
+  #main-section.minimized.desktop {
+    width: 56px;
+    padding: 0px;
+    height: 56px;
+    min-width: auto;
+    border-radius: 12px;
+    background-color: var(--primary);
+  }
 
-    #main-section:not(.desktop) {
-      width: 30px;
-      padding: 0px;
-      height: 30px;
-      margin-inline: auto;
-      margin-bottom: 24px;
-      margin-right: 24px;
-      border-radius: 28px;
-      background-color: var(--dynamic-color-rgb);
-    }
+  #main-section.minimized:not(.desktop) {
+    width: 30px;
+    padding: 0px;
+    height: 30px;
+    margin-inline: auto;
+    margin-bottom: 24px;
+    margin-right: 24px;
+    border-radius: 28px;
+    background-color: var(--dynamic-color-rgb);
+  }
 
-    .card-header {
-      display: none;
-    }
+  #main-section.minimized .card-header {
+    display: none;
+  }
 
-    .minimized-icon {
-      display: block;
-      height: 18px;
-      width: 18px;
-      cursor: pointer;
-      margin: 6px;
-    }
-    .minimized-icon path {
-      fill: var(--primary);
-    }
+  #main-section.minimized .minimized-icon {
+    display: block;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 6px;
+  }
 
-    .desktop .minimized-icon {
-      height: 25px;
-      width: 25px;
-      margin: 15px;
-    }
+  #main-section.minimized .minimized-icon path {
+    fill: var(--primary);
+  }
 
-    .desktop .minimized-icon path {
-      fill: var(--dynamic-color-rgb);
-    }
+  #main-section.minimized.desktop .minimized-icon {
+    height: 25px;
+    width: 25px;
+    margin: 15px;
+  }
 
-    .desktop #slider-container, #buttons {
-      display: none;;
-    }
+  #main-section.minimized.desktop .minimized-icon path {
+    fill: var(--dynamic-color-rgb);
+  }
+
+  #main-section.minimized.desktop #slider-container,
+  #main-section.minimized #buttons {
+    display: none;
   }
 
   @media (orientation: portrait) {
@@ -175,7 +175,7 @@
   .desktop .collapse-button {
       display: none;
   }
-  
+
   #title {
     display: none;
   }
