@@ -77,7 +77,8 @@
         "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*"
       ],
       "$web-common/*": ["components/common/*"],
-      "$web-components/*": ["components/web-components/*"]
+      "$web-components/*": ["components/web-components/*"],
+      "$wallet/*": ["components/brave_wallet_ui/*"]
     },
     "typeRoots": ["./node_modules/@types", "./components/definitions"],
     // optional

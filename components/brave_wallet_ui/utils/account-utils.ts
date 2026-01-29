@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
-import { getLocale } from '../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // types
 import {
@@ -13,13 +13,13 @@ import {
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
-} from '../constants/types'
+} from '$wallet/constants/types'
 
 // constants
-import registry from '../common/constants/registry'
+import registry from '$wallet/common/constants/registry'
 
 // utils
-import { reduceAddress } from './reduce-address'
+import { reduceAddress } from '$wallet/utils/reduce-address'
 import { EntityState } from '@reduxjs/toolkit'
 
 export const sortAccountsByName = (accounts: BraveWallet.AccountInfo[]) => {

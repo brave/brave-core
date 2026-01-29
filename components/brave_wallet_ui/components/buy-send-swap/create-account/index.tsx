@@ -6,27 +6,27 @@
 import * as React from 'react'
 
 // Redux
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useSafeWalletSelector } from '$wallet/common/hooks/use-safe-selector'
+import { WalletSelectors } from '$wallet/common/selectors'
 import {
   useAddAccountMutation,
   useGetNetworkQuery,
-} from '../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '$wallet/constants/types'
 
 // Components
-import { NavButton } from '../../extension/buttons/nav-button/index'
+import { NavButton } from '$wallet/components/extension/buttons/nav-button/index'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import { suggestNewAccountName } from '../../../utils/address-utils'
-import { keyringIdForNewAccount } from '../../../utils/account-utils'
+import { getLocale } from '$web-common/locale'
+import { suggestNewAccountName } from '$wallet/utils/address-utils'
+import { keyringIdForNewAccount } from '$wallet/utils/account-utils'
 
 // Styled Components
 import { StyledWrapper, Description, ButtonRow } from './style'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+import { useAccountsQuery } from '$wallet/common/slices/api.slice.extra'
 
 export interface Props {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
