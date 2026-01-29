@@ -1541,6 +1541,89 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   EXPECT_THAT(allowed_accounts, ElementsAre(address_0));
 }
 
+TEST_F(EthereumProviderImplUnitTest,
+       RequestEthereumPermissionsLockedCallbackCaching) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Allowing 1 account should return that account for allowed accounts
+  AddEthereumPermission(account_0->account_id);
+  Lock();
+  // Allowed accounts are empty when locked
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
+  std::vector<std::string> allowed_accounts;
+  base::RunLoop run_loop;
+
+  // Test that two requests from two separate origins have their callbacks
+  // cached and they don't see any failures. Also test that we de-deduplicate
+  // per origin as well, which prevents a single origin from overwhelming the
+  // provider.
+  int num_reqs = 3;
+
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            if (response->formed_response.GetList().size() != 0) {
+              std::string stylesheet = "";
+              for (auto& account : response->formed_response.GetList()) {
+                allowed_accounts.push_back(account.GetString());
+              }
+            }
+
+            if (--num_reqs == 0) {
+              run_loop.Quit();
+            }
+          }),
+      base::Value(), "", GetOrigin());
+
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            EXPECT_TRUE(response->reject);
+
+            if (--num_reqs == 0) {
+              run_loop.Quit();
+            }
+          }),
+      // Duplicated origin.
+      base::Value(), "", GetOrigin());
+
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            if (response->formed_response.GetList().size() != 0) {
+              std::string stylesheet = "";
+              for (auto& account : response->formed_response.GetList()) {
+                allowed_accounts.push_back(account.GetString());
+              }
+            }
+
+            if (--num_reqs == 0) {
+              run_loop.Quit();
+            }
+          }),
+      base::Value(), "", url::Origin::Create(GURL("https://www.google.com")));
+
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  browser_task_environment_.RunUntilIdle();
+
+  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
+  // Allowed accounts are still empty when locked
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
+  Unlock();
+  run_loop.Run();
+
+  EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
+  EXPECT_THAT(allowed_accounts, ElementsAre(address_0, address_0));
+}
+
 TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
