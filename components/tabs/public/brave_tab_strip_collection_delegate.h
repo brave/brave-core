@@ -44,6 +44,8 @@ class BraveTabStripCollectionDelegate {
       const std::set<TabCollection::Type>& retain_collection_types) const = 0;
 
  protected:
+  base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;
+
   // owner of this delegate.
   raw_ref<BraveTabStripCollection> collection_;
 };

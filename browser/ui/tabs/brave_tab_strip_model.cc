@@ -17,6 +17,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
@@ -192,15 +193,9 @@ void BraveTabStripModel::BuildTreeTabs() {
                   &BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed,
                   base::Unretained(this))));
 
-  auto* unpinned = contents_data_->unpinned_collection();
-  CHECK(unpinned);
-
-  tabs::TreeTabNodeTabCollection::BuildTreeTabs(
-      *unpinned,
-      base::BindRepeating(&TreeTabModel::AddTreeTabNode,
-                          tree_tab_model_->GetWeakPtr()),
-      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode,
-                          tree_tab_model_->GetWeakPtr()));
+  contents_data()->SetDelegate(
+      std::make_unique<BraveTreeTabStripCollectionDelegate>(
+          *contents_data(), tree_tab_model_->GetWeakPtr()));
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
@@ -210,14 +205,7 @@ void BraveTabStripModel::FlattenTreeTabs() {
     return;
   }
 
-  auto* unpinned = contents_data_->unpinned_collection();
-  CHECK(unpinned);
-
-  tabs::TreeTabNodeTabCollection::FlattenTreeTabs(*unpinned);
-
-  tree_tab_node_created_subscription_.reset();
-  tree_tab_node_will_be_destroyed_subscription_.reset();
-  tree_tab_model_.reset();
+  contents_data()->SetDelegate(nullptr);
 }
 
 void BraveTabStripModel::NotifyTreeTabNodeCreated(

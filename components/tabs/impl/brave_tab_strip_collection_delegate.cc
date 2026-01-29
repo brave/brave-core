@@ -13,4 +13,9 @@ BraveTabStripCollectionDelegate::BraveTabStripCollectionDelegate(
 
 BraveTabStripCollectionDelegate::~BraveTabStripCollectionDelegate() = default;
 
+base::PassKey<BraveTabStripCollectionDelegate>
+BraveTabStripCollectionDelegate::GetPassKey() const {
+  return {};
+}
+
 }  // namespace tabs

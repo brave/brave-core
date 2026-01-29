@@ -6,6 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
 
+// Overload to AddTabRecursive() with an additional parameter and make it
+// virtual.
+#define AddTabRecursive(...)                                  \
+  virtual AddTabRecursive(__VA_ARGS__, TabInterface* opener); \
+  void AddTabRecursive(__VA_ARGS__)
+
 // Creates a wrapper method to avoid crash due to Brave specific customization,
 // especially in the case of tree tabs.
 #define RemoveTabAtIndexRecursive(...)             \
@@ -13,7 +19,6 @@
   virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(__VA_ARGS__)
 
 // Make methods virtual for BraveTabStripCollection.
-#define AddTabRecursive virtual AddTabRecursive
 #define MoveTabRecursive virtual MoveTabRecursive
 #define MoveTabsRecursive virtual MoveTabsRecursive
 
@@ -23,5 +28,6 @@
 #undef MoveTabRecursive
 #undef AddTabRecursive
 #undef RemoveTabAtIndexRecursive
+#undef AddTabRecursive
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
