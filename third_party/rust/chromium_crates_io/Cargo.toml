@@ -28,6 +28,8 @@ challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
 anonymous-credentials = "0.1"
 document-extractor = "0.1"
+candle-core = "=0.9.1"
+candle-nn = "=0.9.1"
 
 [patch.crates-io.idna_v1]
 path = "../idna/v1/crate"

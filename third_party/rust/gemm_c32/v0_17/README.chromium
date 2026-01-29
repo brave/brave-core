@@ -1,0 +1,10 @@
+Name: gemm-c32
+URL: https://crates.io/crates/gemm-c32
+Version: 0.17.1
+Revision: 8f52cc1ae3569000d753369a7e61c97bc1f4ae2a
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/gemm-c32-v0_17/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Playground for matrix multiplication algorithms

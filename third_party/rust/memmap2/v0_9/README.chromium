@@ -1,0 +1,10 @@
+Name: memmap2
+URL: https://crates.io/crates/memmap2
+Version: 0.9.9
+Revision: cc94666eabb82a3a1647f8dc1d949a9ffc6babff
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/memmap2-v0_9/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: Cross-platform Rust API for memory-mapped file IO

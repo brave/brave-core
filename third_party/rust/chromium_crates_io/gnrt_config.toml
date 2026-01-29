@@ -208,11 +208,23 @@ extra_kv = { allow_unsafe = false }
 [crate.byte-slice-cast]
 extra_kv = { allow_unsafe = true }
 
+[crate.bytemuck]
+extra_kv = { allow_unsafe = true }
+
+[crate.bytemuck_derive]
+extra_kv = { allow_unsafe = false }
+
 [crate.byteorder]
 extra_kv = { allow_unsafe = true }
 
 [crate.bytes]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1/LICENSE']
+extra_kv = { allow_unsafe = true }
+
+[crate.candle-core]
+extra_kv = { allow_unsafe = true }
+
+[crate.candle-nn]
 extra_kv = { allow_unsafe = true }
 
 [crate.cbc]
@@ -285,6 +297,18 @@ if (is_apple && target_cpu == "arm64") {
 }
 ''' , allow_unsafe = true }
 
+[crate.crc32fast]
+extra_kv = { allow_unsafe = true }
+
+[crate.crossbeam-deque]
+extra_kv = { allow_unsafe = true }
+
+[crate.crossbeam-epoch]
+extra_kv = { allow_unsafe = true }
+
+[crate.crossbeam-utils]
+extra_kv = { allow_unsafe = true }
+
 [crate.crunchy]
 build_script_outputs = [ "lib.rs" ]
 extra_kv = { raw_gn = '''
@@ -343,6 +367,9 @@ extra_kv = { allow_unsafe = false }
 [crate.digest]
 extra_kv = { allow_unsafe = false }
 
+[crate.displaydoc]
+extra_kv = { allow_unsafe = false }
+
 [crate.document-extractor]
 extra_kv = { allow_unsafe = false }
 
@@ -353,6 +380,12 @@ extra_kv = { allow_unsafe = true }
 license_files = ['LICENSE']
 extra_kv = { allow_unsafe = true }
 
+[crate.dyn-stack]
+extra_kv = { allow_unsafe = true }
+
+[crate.dyn-stack-macros]
+extra_kv = { allow_unsafe = false }
+
 [crate.ego-tree]
 extra_kv = { allow_unsafe = true }
 
@@ -362,6 +395,9 @@ extra_kv = { allow_unsafe = true }
 [crate.encoding_rs]
 license_files = ['LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
+
+[crate.enum-as-inner]
+extra_kv = { allow_unsafe = false }
 
 [crate.equivalent]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1/LICENSE-APACHE']
@@ -436,6 +472,27 @@ extra_kv = { allow_unsafe = true }
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
+[crate.gemm]
+extra_kv = { allow_unsafe = false }
+
+[crate.gemm-c32]
+extra_kv = { allow_unsafe = true }
+
+[crate.gemm-c64]
+extra_kv = { allow_unsafe = true }
+
+[crate.gemm-common]
+extra_kv = { allow_unsafe = true }
+
+[crate.gemm-f16]
+extra_kv = { allow_unsafe = true }
+
+[crate.gemm-f32]
+extra_kv = { allow_unsafe = false }
+
+[crate.gemm-f64]
+extra_kv = { allow_unsafe = false }
+
 [crate.generic-array]
 extra_kv = { allow_unsafe = true }
 
@@ -469,6 +526,9 @@ extra_kv = { allow_unsafe = false }
 [crate.hashbrown]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
+
+[crate.heck]
+extra_kv = { allow_unsafe = false }
 
 [crate.hex]
 extra_kv = { allow_unsafe = false }
@@ -535,6 +595,9 @@ extra_kv = { allow_unsafe = true }
 [crate.libc]
 extra_kv = { allow_unsafe = true }
 
+[crate.libloading]
+extra_kv = { allow_unsafe = true }
+
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ], allow_unsafe = true }
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2/LICENSE.txt']
@@ -573,6 +636,9 @@ extra_kv = { allow_unsafe = false }
 [crate.memchr]
 extra_kv = { allow_unsafe = true }
 
+[crate.memmap2]
+extra_kv = { allow_unsafe = true }
+
 [crate.memuse]
 extra_kv = { allow_unsafe = false }
 
@@ -598,6 +664,9 @@ extra_kv = { allow_unsafe = true }
 [crate.nonempty]
 extra_kv = { allow_unsafe = false }
 
+[crate.num]
+extra_kv = { allow_unsafe = false }
+
 [crate.num-bigint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { raw_gn = '''
@@ -617,13 +686,31 @@ rustflags += [
 ]
 ''', allow_unsafe = true }
 
+[crate.num-complex]
+extra_kv = { allow_unsafe = true }
+
 [crate.num-integer]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.num-iter]
+extra_kv = { allow_unsafe = false }
+
+[crate.num-rational]
 extra_kv = { allow_unsafe = false }
 
 [crate.num-traits]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] , allow_unsafe = false }
+
+[crate.num_cpus]
+extra_kv = { allow_unsafe = true }
+
+[crate.num_enum]
+extra_kv = { allow_unsafe = false }
+
+[crate.num_enum_derive]
+extra_kv = { allow_unsafe = false }
 
 [crate.once_cell]
 extra_kv = { allow_unsafe = true }
@@ -706,10 +793,16 @@ extra_kv = { allow_unsafe = true }
 [crate.precomputed-hash]
 extra_kv = { allow_unsafe = false }
 
+[crate.proc-macro-crate]
+extra_kv = { allow_unsafe = false }
+
 [crate.proc-macro-hack]
 extra_kv = { allow_unsafe = false }
 
 [crate.proc-macro2]
+extra_kv = { allow_unsafe = true }
+
+[crate.pulp]
 extra_kv = { allow_unsafe = true }
 
 [crate.quick-xml]
@@ -734,11 +827,26 @@ extra_kv = { allow_unsafe = true }
 license_files = ['LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
 
+[crate.rand_distr]
+extra_kv = { allow_unsafe = false }
+
 [crate.rand_pcg]
 extra_kv = { allow_unsafe = false }
 
+[crate.raw-cpuid]
+extra_kv = { allow_unsafe = true }
+
+[crate.rayon]
+extra_kv = { allow_unsafe = true }
+
+[crate.rayon-core]
+extra_kv = { allow_unsafe = true }
+
 [crate.readability]
 license_files = ['../../../../../../brave/components/speedreader/rust/lib/src/readability/LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.reborrow]
 extra_kv = { allow_unsafe = false }
 
 [crate.reddsa]
@@ -776,6 +884,9 @@ extra_kv = { allow_unsafe = false }
 [crate.ryu]
 extra_kv = { allow_unsafe = true }
 
+[crate.safetensors]
+extra_kv = { allow_unsafe = false }
+
 [crate.schnorrkel]
 extra_kv = { allow_unsafe = false }
 
@@ -795,6 +906,9 @@ extra_kv = { allow_unsafe = true }
 
 [crate.semver]
 extra_kv = { allow_unsafe = true }
+
+[crate.seq-macro]
+extra_kv = { allow_unsafe = false }
 
 [crate.serde]
 build_script_outputs = [ "private.rs" ]
@@ -897,6 +1011,9 @@ if (target_name == "buildrs_support" && epoch == "1") {
 [crate.synstructure]
 extra_kv = { allow_unsafe = true }
 
+[crate.sysctl]
+extra_kv = { allow_unsafe = true }
+
 [crate.tap]
 license_files = ['LICENSE.txt']
 extra_kv = { allow_unsafe = false }
@@ -914,6 +1031,15 @@ if (epoch == "2") {
 }
 ''' , allow_unsafe = false }
 
+[crate.toml_datetime]
+extra_kv = { allow_unsafe = false }
+
+[crate.toml_edit]
+extra_kv = { allow_unsafe = false }
+
+[crate.toml_parser]
+extra_kv = { allow_unsafe = true }
+
 [crate.tracing]
 extra_kv = { allow_unsafe = true }
 
@@ -930,6 +1056,9 @@ extra_kv = { allow_unsafe = true }
 extra_build_script_src_roots = [ "../build" ]
 build_script_outputs = [ "consts.rs", "op.rs" ]
 extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir, root_build_dir) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir, root_build_dir) + \"/lib/op.rs" ], allow_unsafe = false }
+
+[crate.ug]
+extra_kv = { allow_unsafe = true }
 
 [crate.uint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -970,6 +1099,9 @@ extra_kv = { allow_unsafe = false }
 [crate.wasi]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.windows-link]
+extra_kv = { allow_unsafe = false }
+
 [crate.windows-targets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
@@ -986,9 +1118,18 @@ extra_kv = { allow_unsafe = false }
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
+[crate.winnow]
+extra_kv = { allow_unsafe = true }
+
 [crate.wyz]
 license_files = ['LICENSE.txt']
 extra_kv = { allow_unsafe = true }
+
+[crate.yoke]
+extra_kv = { allow_unsafe = true }
+
+[crate.yoke-derive]
+extra_kv = { allow_unsafe = false }
 
 [crate.zcash]
 license_files = ['../../../../../common/licenses/MPL-2.0']
@@ -1020,10 +1161,19 @@ extra_kv = { allow_unsafe = false }
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = true }
 
+[crate.zerofrom]
+extra_kv = { allow_unsafe = false }
+
+[crate.zerofrom-derive]
+extra_kv = { allow_unsafe = false }
+
 [crate.zeroize]
 extra_kv = { allow_unsafe = true }
 
 [crate.zeroize_derive]
+extra_kv = { allow_unsafe = false }
+
+[crate.zip]
 extra_kv = { allow_unsafe = false }
 
 [crate.zip32]

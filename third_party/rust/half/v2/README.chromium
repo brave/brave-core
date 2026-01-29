@@ -3,7 +3,7 @@ URL: https://crates.io/crates/half
 Version: 2.6.0
 Revision: b1894e955031e0b1be2b06e5bbab4c3cdc65e883
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/half-v2/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/half-v2/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

@@ -1,0 +1,10 @@
+Name: libloading
+URL: https://crates.io/crates/libloading
+Version: 0.8.9
+Revision: f4ec9e702de2d0778bccff8525dc44e4cacac2d1
+License: ISC
+License File: //brave/third_party/rust/chromium_crates_io/vendor/libloading-v0_8/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Bindings around the platform's dynamic library loading primitives with greatly improved memory safety.

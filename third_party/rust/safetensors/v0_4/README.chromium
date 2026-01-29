@@ -1,0 +1,15 @@
+Name: safetensors
+URL: https://crates.io/crates/safetensors
+Version: 0.4.5
+Revision: 1725e366dde0516e05a3d3e44a13df9d2c6dbb7f
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/safetensors-v0_4/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Provides functions to read and write safetensors which aim to be safer than
+their PyTorch counterpart.
+The format is 8 bytes which is an unsized int, being the size of a JSON header,
+the JSON header refers the `dtype` the `shape` and `data_offsets` which are the offsets
+for the values in the rest of the file.
+
