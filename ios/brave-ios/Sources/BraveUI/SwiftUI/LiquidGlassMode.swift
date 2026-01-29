@@ -22,3 +22,31 @@ public enum LiquidGlassMode {
     return false
   }
 }
+
+extension UIView {
+  /// Returns the appropriate layout guide for horizontal constraints, accounting for iOS 26+ Liquid Glass mode
+  /// When Liquid Glass is enabled, returns a layout guide with corner adaptation for horizontal constraints suitable for window controls
+  public var liquidGlassHorizontalSafeAreaLayoutGuide: UILayoutGuide {
+    if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+      return layoutGuide(for: .safeArea(cornerAdaptation: .horizontal))
+    }
+    return safeAreaLayoutGuide
+  }
+}
+
+struct LiquidGlassLayoutTrafficLightPadding: ViewModifier {
+  func body(content: Content) -> some View {
+    if #available(iOS 26.0, *) {
+      content
+        .containerCornerOffset(.leading, sizeToFit: true)
+    } else {
+      content
+    }
+  }
+}
+
+extension View {
+  public func liquidGlassLayoutTrafficLightPadding() -> some View {
+    modifier(LiquidGlassLayoutTrafficLightPadding())
+  }
+}

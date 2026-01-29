@@ -423,6 +423,7 @@ struct TabGridView: View {
       .imageScale(.large)
       .labelStyle(.iconOnly)
     }
+    .liquidGlassLayoutTrafficLightPadding()
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
@@ -533,6 +534,7 @@ struct TabGridView: View {
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
     }
+    .liquidGlassLayoutTrafficLightPadding()
     .padding(.vertical, 4)
   }
 
