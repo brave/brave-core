@@ -295,6 +295,33 @@ void PublishersController::EnsurePublishersIsUpdating(
                                 .timeout = GetDefaultRequestTimeout()});
 }
 
+std::string PublishersController::GetFallbackLocale(const std::string& requested_locale, const base::flat_set<std::string>& available_locales) {
+
+  // Exact match
+  if (available_locales.find(requested_locale) != available_locales.end()) {
+    return requested_locale;
+  }
+
+  // Regional fallback
+  std::string country_code = requested_locale.substr(requested_locale.find('_') + 1);
+  for (const auto& locale : available_locales) {
+    if (locale.substr(locale.find('_') + 1) == country_code) {
+      return locale;
+    }
+  }
+
+  // Language fallback
+  std::string language_code = requested_locale.substr(0, requested_locale.find('_'));
+  for (const auto& locale : available_locales) {
+    if (locale.substr(0, locale.find('_')) == language_code) {
+      return locale;
+    }
+  }
+
+  // Default fallback
+  return "en_US";
+}
+
 void PublishersController::UpdateDefaultLocale() {
   auto available_locales = GetPublisherLocales(publishers_);
 
@@ -304,11 +331,7 @@ void PublishersController::UpdateDefaultLocale() {
       base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                     brave_l10n::GetDefaultISOCountryCodeString()});
 
-  // Fallback to en_US, if we can't match anything else.
-  // TODO(fallaciousreasoning): Implement more complicated fallback
-  default_locale_ = base::Contains(available_locales, brave_news_locale)
-                        ? brave_news_locale
-                        : "en_US";
+  default_locale_ = GetFallbackLocale(brave_news_locale, available_locales);
 }
 
 void PublishersController::ClearCache() {
