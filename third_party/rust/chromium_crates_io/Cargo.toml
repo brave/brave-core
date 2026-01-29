@@ -123,6 +123,10 @@ package = "base64"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1"
 package = "bytes"
 
+[patch.crates-io.bytemuck_derive_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bytemuck_derive-v1"
+package = "bytemuck_derive"
+
 [patch.crates-io.bitflags_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v1"
 package = "bitflags"
@@ -134,6 +138,10 @@ package = "bitflags"
 [patch.crates-io.cfg-if_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-v1"
 package = "cfg-if"
+
+[patch.crates-io.crc32fast_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/crc32fast-v1"
+package = "crc32fast"
 
 [patch.crates-io.clap]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/clap-v4"
@@ -346,6 +354,14 @@ package = "windows-sys"
 [patch.crates-io.windows-targets]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/windows-targets-v0_52"
 package = "windows-targets"
+
+[patch.crates-io.yoke-derive_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/yoke-derive-v0_8"
+package = "yoke-derive"
+
+[patch.crates-io.zerofrom-derive_v0_1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zerofrom-derive-v0_1"
+package = "zerofrom-derive"
 
 [patch.crates-io.zcash_v1]
 path = "../../../components/brave_wallet/browser/zcash/rust"

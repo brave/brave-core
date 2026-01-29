@@ -310,7 +310,6 @@ dependencies = [
 [[package]]
 name = "bytemuck_derive"
 version = "1.10.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -645,7 +644,6 @@ dependencies = [
 [[package]]
 name = "crc32fast"
 version = "1.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if",
 ]
@@ -3438,7 +3436,6 @@ dependencies = [
 [[package]]
 name = "yoke-derive"
 version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3544,7 +3541,6 @@ dependencies = [
 [[package]]
 name = "zerofrom-derive"
 version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
