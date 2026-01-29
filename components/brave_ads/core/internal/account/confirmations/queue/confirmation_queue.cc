@@ -15,18 +15,18 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
-ConfirmationQueue::ConfirmationQueue() {
-  GetAdsClient().AddObserver(this);
+ConfirmationQueue::ConfirmationQueue(AdsClient& ads_client)
+    : ads_client_(ads_client) {
+  ads_client_->AddObserver(this);
 }
 
 ConfirmationQueue::~ConfirmationQueue() {
-  GetAdsClient().RemoveObserver(this);
+  ads_client_->RemoveObserver(this);
   delegate_ = nullptr;
 }
 

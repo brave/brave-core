@@ -28,7 +28,7 @@ class BraveAdsConfirmationsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    confirmations_ = std::make_unique<Confirmations>();
+    confirmations_ = std::make_unique<Confirmations>(ads_client_mock_);
   }
 
   std::unique_ptr<Confirmations> confirmations_;

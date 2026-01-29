@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
@@ -30,14 +29,14 @@
 
 namespace brave_ads {
 
-Account::Account() {
-  GetAdsClient().AddObserver(this);
+Account::Account(AdsClient& ads_client) : ads_client_(ads_client) {
+  ads_client_->AddObserver(this);
 
   InitializeConfirmations();
 }
 
 Account::~Account() {
-  GetAdsClient().RemoveObserver(this);
+  ads_client_->RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* const observer) {
@@ -193,7 +192,7 @@ void Account::Initialize() {
 void Account::InitializeConfirmations() {
   BLOG(1, "Initialize confirmations");
 
-  confirmations_ = std::make_unique<Confirmations>();
+  confirmations_ = std::make_unique<Confirmations>(*ads_client_);
   confirmations_->SetDelegate(this);
 }
 

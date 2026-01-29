@@ -12,8 +12,9 @@
 
 namespace brave_ads {
 
-AdsCore::AdsCore(std::unique_ptr<TokenGeneratorInterface> token_generator)
-    : token_generator_(std::move(token_generator)) {
+AdsCore::AdsCore(AdsClient& ads_client,
+                 std::unique_ptr<TokenGeneratorInterface> token_generator)
+    : token_generator_(std::move(token_generator)), account_(ads_client) {
   CHECK(token_generator_);
 }
 

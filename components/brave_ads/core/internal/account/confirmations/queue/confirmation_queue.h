@@ -8,6 +8,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
@@ -18,12 +19,13 @@
 
 namespace brave_ads {
 
+class AdsClient;
 struct ConfirmationInfo;
 
 class ConfirmationQueue final : public AdsClientNotifierObserver,
                                 public RedeemConfirmationDelegate {
  public:
-  ConfirmationQueue();
+  explicit ConfirmationQueue(AdsClient& ads_client);
 
   ConfirmationQueue(const ConfirmationQueue&) = delete;
   ConfirmationQueue& operator=(const ConfirmationQueue&) = delete;
@@ -86,6 +88,8 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
   void OnDidRedeemConfirmation(const ConfirmationInfo& confirmation) override;
   void OnFailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
                                     bool should_retry) override;
+
+  const raw_ref<AdsClient> ads_client_;
 
   raw_ptr<ConfirmationQueueDelegate> delegate_ = nullptr;  // Not owned.
 
