@@ -52,6 +52,7 @@
 #include "brave/components/query_filter/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/serp_metrics/pref_registry.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -572,6 +573,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
     registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
   }
 #endif  // defined(TOOLKIT_VIEWS)
+
+  serp_metrics::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::RegisterProfilePrefs(registry);

@@ -26,20 +26,23 @@ class TimePeriodStorage {
   // Will use a list pref for storage.
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
-                    size_t period_days);
+                    size_t period_days,
+                    bool should_offset_dst = true);
   // Will use a list within a dictionary pref
   // for storage.
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
                     const char* dict_key,
-                    size_t period_days);
+                    size_t period_days,
+                    bool should_offset_dst = true);
 
   // For tests.
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
                     const char* dict_key,
                     size_t period_days,
-                    std::unique_ptr<base::Clock> clock);
+                    std::unique_ptr<base::Clock> clock,
+                    bool should_offset_dst = true);
   ~TimePeriodStorage();
 
   TimePeriodStorage(const TimePeriodStorage&) = delete;
@@ -71,6 +74,7 @@ class TimePeriodStorage {
   const char* pref_name_ = nullptr;
   const char* dict_key_ = nullptr;
   size_t period_days_;
+  const bool should_offset_dst_;
 
   std::list<DailyValue> daily_values_;
 };

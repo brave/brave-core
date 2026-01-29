@@ -1,0 +1,82 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("serp_metrics") {
+  public = [ "serp_metrics.h" ]
+
+  sources = [ "serp_metrics.cc" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/time_period_storage",
+    "//url",
+  ]
+
+  deps = [
+    ":features",
+    ":prefs",
+    "//brave/components/constants",
+    "//components/prefs",
+    "//components/search_engines",
+  ]
+}
+
+static_library("prefs") {
+  public = [
+    "pref_names.h",
+    "pref_registry.h",
+  ]
+
+  sources = [ "pref_registry.cc" ]
+
+  deps = [ "//components/prefs" ]
+}
+
+static_library("features") {
+  public = [ "serp_metrics_feature.h" ]
+
+  sources = [ "serp_metrics_feature.cc" ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "serp_metrics_unittest.cc" ]
+
+  deps = [
+    ":features",
+    ":prefs",
+    ":serp_metrics",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/search_engines",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/search_engines",
+    "//components/search_engines:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "serp_metrics_mock.cc",
+    "serp_metrics_mock.h",
+  ]
+
+  deps = [
+    ":serp_metrics",
+    "//components/prefs",
+    "//testing/gmock",
+  ]
+}
