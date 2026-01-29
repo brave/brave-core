@@ -203,7 +203,8 @@ public class OnboardingStepAdapter
                 mSendCrashReports.setChecked(crashReportingChecked);
                 mSendCrashReports.setOnCheckedChangeListener(
                         (buttonView, isChecked) ->
-                                WelcomeOnboardingActivity.setMetricsReportingConsent(isChecked, false));
+                                WelcomeOnboardingActivity.setMetricsReportingConsent(
+                                        isChecked, false));
             }
 
             mSendP3a = itemView.findViewById(R.id.send_p3a_reports);

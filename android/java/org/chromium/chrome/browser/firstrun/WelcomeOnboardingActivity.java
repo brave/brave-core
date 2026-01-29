@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.viewpager2.widget.ViewPager2;
@@ -85,6 +86,10 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 @NullMarked
 public class WelcomeOnboardingActivity extends FirstRunActivityBase
         implements OnboardingStepAdapter.OnboardingNavigationListener {
+    interface DefaultBrowserDelegate {
+        boolean isDefaultBrowser(final WelcomeOnboardingActivity activity);
+        void requestSetDefaultBrowser(final WelcomeOnboardingActivity activity);
+    }
     private static final String P3A_URL =
             "https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
     private static final String WDP_LINK =
@@ -128,6 +133,17 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Nullable private PageBounceAnimator mPageBounceAnimator;
     private boolean mIsP3aManaged;
     private boolean mIsCrashReportingManaged;
+    private DefaultBrowserDelegate mDefaultBrowserDelegate = new DefaultBrowserDelegate() {
+        @Override
+        public boolean isDefaultBrowser(final WelcomeOnboardingActivity activity) {
+            return isBraveSetAsDefaultBrowser(activity);
+        }
+
+        @Override
+        public void requestSetDefaultBrowser(final WelcomeOnboardingActivity activity) {
+            setDefaultBrowser(activity);
+        }
+    };
 
     private enum CurrentOnboardingPage {
         SET_AS_DEFAULT,
@@ -233,9 +249,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private void handleSetAsDefaultStep() {
         mCurrentOnboardingPage = CurrentOnboardingPage.SET_AS_DEFAULT;
-        if (!isBraveSetAsDefaultBrowser(this)) {
-            setDefaultBrowser(this);
-        } else {
+        if (!maybeRequestDefaultBrowser()) {
             nextOnboardingStepForDefaultVariant();
         }
     }
@@ -362,7 +376,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
     }
 
-    public static void setMetricsReportingConsent(final boolean consent, final boolean markAsShown) {
+    public static void setMetricsReportingConsent(
+            final boolean consent, final boolean markAsShown) {
         try {
             // Updates reporting consent for first run.
             UmaSessionStats.changeMetricsReportingConsent(
@@ -577,8 +592,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
-                            setDefaultBrowser(this);
+                        if (mCurrentStep == 0 && maybeRequestDefaultBrowser()) {
+                            return;
                         } else {
                             enableWebDiscoverPreference();
                             nextOnboardingStepForDefaultVariant();
@@ -740,9 +755,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                     mVariantBPager.setVisibility(View.VISIBLE);
                                 }
 
-                                if (!isBraveSetAsDefaultBrowser(WelcomeOnboardingActivity.this)) {
-                                    setDefaultBrowser(WelcomeOnboardingActivity.this);
-                                }
+                                maybeRequestDefaultBrowser();
                             }
 
                             @Override
@@ -756,6 +769,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                             }
                         })
                 .start();
+    }
+
+    @VisibleForTesting
+    boolean maybeRequestDefaultBrowser() {
+        if (!mDefaultBrowserDelegate.isDefaultBrowser(this)) {
+            mDefaultBrowserDelegate.requestSetDefaultBrowser(this);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -785,5 +807,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Override
     public void onWebDiscoverPreferenceEnabled() {
         enableWebDiscoverPreference();
+    }
+
+    @VisibleForTesting
+    void setDefaultBrowserDelegateForTesting(final DefaultBrowserDelegate delegate) {
+        mDefaultBrowserDelegate = delegate;
     }
 }
