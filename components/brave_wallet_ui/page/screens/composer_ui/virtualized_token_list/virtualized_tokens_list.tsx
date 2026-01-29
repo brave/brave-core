@@ -57,7 +57,7 @@ const getListItemKey = (
   return getAssetIdKey(token)
 }
 
-const ListItem = (props: ListItemProps) => {
+const ListItem = React.memo((props: ListItemProps) => {
   const {
     index,
     data,
@@ -135,98 +135,104 @@ const ListItem = (props: ListItemProps) => {
       />
     </div>
   )
-}
+})
+// Identifies the component in DevTools when wrapped in React.memo
+ListItem.displayName = 'ListItem'
 
-export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const {
-    tokenList,
-    onSelectToken,
-    selectedFromToken,
-    selectedToToken,
-    selectingFromOrTo,
-    spotPrices,
-    isLoadingSpotPrices,
-    firstNoBalanceTokenKey,
-    modalType,
-    userTokenBalances,
-    onViewTokenDetails,
-    getAllAccountsWithBalance,
-  } = props
+export const VirtualizedTokenList = React.memo(
+  (props: VirtualizedTokensListProps) => {
+    const {
+      tokenList,
+      onSelectToken,
+      selectedFromToken,
+      selectedToToken,
+      selectingFromOrTo,
+      spotPrices,
+      isLoadingSpotPrices,
+      firstNoBalanceTokenKey,
+      modalType,
+      userTokenBalances,
+      onViewTokenDetails,
+      getAllAccountsWithBalance,
+    } = props
 
-  // Refs
-  const listRef = React.useRef<List | null>(null)
-  const itemSizes = React.useRef<number[]>(
-    new Array(tokenList.length).fill(listItemInitialHeight),
-  )
+    // Refs
+    const listRef = React.useRef<List | null>(null)
+    const itemSizes = React.useRef<number[]>(
+      new Array(tokenList.length).fill(listItemInitialHeight),
+    )
 
-  // Methods
-  const onListMount = React.useCallback(
-    (ref: List | null) => {
-      if (ref) {
-        // Set ref on mount
-        listRef.current = ref
-        // Clear cached data and rerender
-        listRef.current.resetAfterIndex(0)
-      }
-    },
-    [listRef],
-  )
-
-  const setSize = React.useCallback(
-    (index: number, size: number) => {
-      // Performance: Only update the sizeMap and reset cache if an actual value
-      // changed
-      if (itemSizes.current[index] !== size && size > -1) {
-        itemSizes.current[index] = size
-        if (listRef.current) {
+    // Methods
+    const onListMount = React.useCallback(
+      (ref: List | null) => {
+        if (ref) {
+          // Set ref on mount
+          listRef.current = ref
           // Clear cached data and rerender
           listRef.current.resetAfterIndex(0)
         }
-      }
-    },
-    [itemSizes, listRef],
-  )
+      },
+      [listRef],
+    )
 
-  const getSize = React.useCallback(
-    (index: number) => {
-      return itemSizes.current[index] || listItemInitialHeight
-    },
-    [itemSizes],
-  )
+    const setSize = React.useCallback(
+      (index: number, size: number) => {
+        // Performance: Only update the sizeMap and reset cache if an
+        // actual value changed
+        if (itemSizes.current[index] !== size && size > -1) {
+          itemSizes.current[index] = size
+          if (listRef.current) {
+            // Clear cached data and rerender
+            listRef.current.resetAfterIndex(0)
+          }
+        }
+      },
+      [itemSizes, listRef],
+    )
 
-  return (
-    <AutoSizer style={AutoSizerStyle}>
-      {function ({ height, width }: { height: number; width: number }) {
-        return (
-          <List
-            ref={onListMount}
-            width={width}
-            height={height}
-            itemData={tokenList}
-            itemCount={tokenList.length}
-            itemSize={getSize}
-            itemKey={getListItemKey}
-            overscanCount={10}
-            children={(itemProps) => (
-              <ListItem
-                {...itemProps}
-                selectedFromToken={selectedFromToken}
-                selectedToToken={selectedToToken}
-                selectingFromOrTo={selectingFromOrTo}
-                onSelectToken={onSelectToken}
-                setSize={setSize}
-                spotPrices={spotPrices}
-                isLoadingSpotPrices={isLoadingSpotPrices}
-                getAllAccountsWithBalance={getAllAccountsWithBalance}
-                firstNoBalanceTokenKey={firstNoBalanceTokenKey}
-                onViewTokenDetails={onViewTokenDetails}
-                modalType={modalType}
-                userTokenBalances={userTokenBalances}
-              />
-            )}
-          />
-        )
-      }}
-    </AutoSizer>
-  )
-}
+    const getSize = React.useCallback(
+      (index: number) => {
+        return itemSizes.current[index] || listItemInitialHeight
+      },
+      [itemSizes],
+    )
+
+    return (
+      <AutoSizer style={AutoSizerStyle}>
+        {function ({ height, width }: { height: number; width: number }) {
+          return (
+            <List
+              ref={onListMount}
+              width={width}
+              height={height}
+              itemData={tokenList}
+              itemCount={tokenList.length}
+              itemSize={getSize}
+              itemKey={getListItemKey}
+              overscanCount={10}
+              children={(itemProps) => (
+                <ListItem
+                  {...itemProps}
+                  selectedFromToken={selectedFromToken}
+                  selectedToToken={selectedToToken}
+                  selectingFromOrTo={selectingFromOrTo}
+                  onSelectToken={onSelectToken}
+                  setSize={setSize}
+                  spotPrices={spotPrices}
+                  isLoadingSpotPrices={isLoadingSpotPrices}
+                  getAllAccountsWithBalance={getAllAccountsWithBalance}
+                  firstNoBalanceTokenKey={firstNoBalanceTokenKey}
+                  onViewTokenDetails={onViewTokenDetails}
+                  modalType={modalType}
+                  userTokenBalances={userTokenBalances}
+                />
+              )}
+            />
+          )
+        }}
+      </AutoSizer>
+    )
+  },
+)
+// Identifies the component in DevTools when wrapped in React.memo
+VirtualizedTokenList.displayName = 'VirtualizedTokenList'
