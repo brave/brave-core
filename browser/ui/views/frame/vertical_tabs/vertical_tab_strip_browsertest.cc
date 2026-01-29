@@ -582,29 +582,43 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   browser_view()->tabstrip()->StopAnimating();
 
+  // At this point, the contents_view_height already contains spacing after the
+  // last pinned tab
   int contents_view_height = region_view->original_region_view_->height();
-  AppendTab(browser());
+  AppendTab(browser());  // Add first unpinned tab
   browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
 
-  // When first tab is added, height should have tab's height plus top & bottom
-  // margin and separator's height as both pinned and unpinned tabs are used.
-  contents_view_height +=
-      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2) +
-      tabs::kPinnedUnpinnedSeparatorHeight;
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->original_region_view_->height() == contents_view_height;
-  }));
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
+  ASSERT_FALSE(brave_tab_container->GetTabAtModelIndex(1)->data().pinned);
+  EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
+            brave_tab_container->GetIdealBounds(1).y() -
+                /*spacing before the first unpinned tab*/
+                tabs::kMarginForVerticalTabContainers)
+      << "The firs unpinned tabs y should be aligned to the pinned tab + "
+         "separator's bottom";
+  contents_view_height += tabs::kPinnedUnpinnedSeparatorHeight;
+  contents_view_height += tabs::kVerticalTabsSpacing +
+                          tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing;
+  EXPECT_EQ(contents_view_height, region_view->original_region_view_->height());
 
-  AppendTab(browser());
+  // Check if separator is laid out correctly
+  EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
+  EXPECT_EQ(brave_tab_container->separator_->bounds().y(),
+            brave_tab_container->GetPinnedTabsAreaBottom() -
+                tabs::kPinnedUnpinnedSeparatorHeight);
+
+  AppendTab(browser());  // Add second unpinned tab
   browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
 
   // When second tab is added, height should be increased with tab height plus
   // tab spacing.
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->original_region_view_->height() == contents_view_height;
-  }));
+  ASSERT_EQ(region_view->original_region_view_->height(), contents_view_height);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
@@ -1280,8 +1294,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   EXPECT_EQ(brave_tab_container->GetPinnedTabsAreaBottom(),
             tabs::kVerticalTabHeight +
                 2 * tabs::kMarginForVerticalTabContainers +
-                tabs::kPinnedUnpinnedSeparatorHeight +
-                tabs::kMarginForVerticalTabContainers);
+                tabs::kPinnedUnpinnedSeparatorHeight);
 
   // Also max scroll offset should be updated.
   EXPECT_EQ(max_scroll_offset_before_pinning - tabs::kVerticalTabHeight -

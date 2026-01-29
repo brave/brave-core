@@ -1113,12 +1113,14 @@ int BraveTabContainer::GetPinnedTabsAreaBottom() const {
   // last pinned tab because the pinned tab could be being dragged over
   // unpinned tab area.
   int bottom = GetIdealBounds(pinned_tab_count - 1).bottom() +
-               tabs::kMarginForVerticalTabContainers;
+               tabs::kMarginForVerticalTabContainers;  // spacing after the last
+                                                       // pinned tab
 
   // Add separator height if we have both pinned and unpinned tabs
   if (pinned_tab_count < GetTabCount()) {
-    bottom += tabs::kPinnedUnpinnedSeparatorHeight +
-              tabs::kMarginForVerticalTabContainers;
+    // Note that we don't add spacing after the separator as unpinned tabs will
+    // be laid out with spacing regardless of the separator.
+    bottom += tabs::kPinnedUnpinnedSeparatorHeight;
   }
 
   return bottom;
@@ -1244,7 +1246,6 @@ int BraveTabContainer::GetMaxScrollOffset() const {
         tabs_view_model_.ideal_bounds(pinned_tab_count - 1).bottom();
     visible_height -= tabs::kMarginForVerticalTabContainers;
     visible_height -= tabs::kPinnedUnpinnedSeparatorHeight;
-    visible_height -= tabs::kMarginForVerticalTabContainers;
   }
 
   return std::max(0, total_height - visible_height);
@@ -1394,8 +1395,7 @@ void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {
   // Position separator between pinned and unpinned tabs
   // GetPinnedTabsAreaBottom() gives the start of unpinned tabs.
   const int separator_y =
-      GetPinnedTabsAreaBottom() - (tabs::kMarginForVerticalTabContainers +
-                                   tabs::kPinnedUnpinnedSeparatorHeight);
+      GetPinnedTabsAreaBottom() - tabs::kPinnedUnpinnedSeparatorHeight;
   gfx::Rect separator_bounds(0, separator_y, width(),
                              tabs::kPinnedUnpinnedSeparatorHeight);
   separator_bounds.Inset(
