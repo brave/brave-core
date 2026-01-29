@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
 import android.animation.LayoutTransition;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.viewpager2.widget.ViewPager2;
@@ -86,10 +88,15 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 @NullMarked
 public class WelcomeOnboardingActivity extends FirstRunActivityBase
         implements OnboardingStepAdapter.OnboardingNavigationListener {
+    /** Abstraction for default-browser checks/requests so tests can stub out platform behavior. */
     interface DefaultBrowserDelegate {
-        boolean isDefaultBrowser(final WelcomeOnboardingActivity activity);
-        void requestSetDefaultBrowser(final WelcomeOnboardingActivity activity);
+        /** Returns true when Brave is already the system default browser. */
+        boolean isDefaultBrowser(final Context context);
+
+        /** Requests that the system set Brave as the default browser. */
+        void requestSetDefaultBrowser(final AppCompatActivity activity);
     }
+
     private static final String P3A_URL =
             "https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
     private static final String WDP_LINK =
@@ -133,17 +140,18 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Nullable private PageBounceAnimator mPageBounceAnimator;
     private boolean mIsP3aManaged;
     private boolean mIsCrashReportingManaged;
-    private DefaultBrowserDelegate mDefaultBrowserDelegate = new DefaultBrowserDelegate() {
-        @Override
-        public boolean isDefaultBrowser(final WelcomeOnboardingActivity activity) {
-            return isBraveSetAsDefaultBrowser(activity);
-        }
+    private DefaultBrowserDelegate mDefaultBrowserDelegate =
+            new DefaultBrowserDelegate() {
+                @Override
+                public boolean isDefaultBrowser(final Context context) {
+                    return isBraveSetAsDefaultBrowser(context);
+                }
 
-        @Override
-        public void requestSetDefaultBrowser(final WelcomeOnboardingActivity activity) {
-            setDefaultBrowser(activity);
-        }
-    };
+                @Override
+                public void requestSetDefaultBrowser(final AppCompatActivity activity) {
+                    setDefaultBrowser(activity);
+                }
+            };
 
     private enum CurrentOnboardingPage {
         SET_AS_DEFAULT,

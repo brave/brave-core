@@ -9,6 +9,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -56,12 +60,12 @@ public class WelcomeOnboardingDefaultBrowserTest {
         }
 
         @Override
-        public boolean isDefaultBrowser(WelcomeOnboardingActivity activity) {
+        public boolean isDefaultBrowser(final Context context) {
             return mIsDefault;
         }
 
         @Override
-        public void requestSetDefaultBrowser(WelcomeOnboardingActivity activity) {
+        public void requestSetDefaultBrowser(final AppCompatActivity activity) {
             mRequestCount++;
         }
     }
