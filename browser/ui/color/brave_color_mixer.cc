@@ -776,16 +776,16 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   // Toolbar
   postprocessing_mixer[kColorToolbarButtonIcon] = {
-      nala::kColorPrimitiveNeutral40};
-  postprocessing_mixer[kColorToolbarButtonIconPressed] = {
       nala::kColorPrimitiveNeutral50};
+  postprocessing_mixer[kColorToolbarButtonIconPressed] = {
+      nala::kColorPrimitiveNeutral60};
   postprocessing_mixer[kColorToolbarButtonIconInactive] = {
       SkColorSetA(postprocessing_mixer.GetResultColor(kColorToolbarButtonIcon),
                   0xff * 0.6)};
   postprocessing_mixer[kColorToolbarButtonIconHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral50);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
   postprocessing_mixer[kColorToolbarButtonActivated] = {
-      nala::kColorPrimitivePrimary50};
+      nala::kColorPrimitivePrimary60};
   postprocessing_mixer[kColorToolbarInkDrop] = {nala::kColorPrimitiveNeutral10};
   postprocessing_mixer[kColorToolbarInkDropHover] = {
       nala::kColorPrimitiveNeutral10};

@@ -235,13 +235,13 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   // Tab foreground - such as title text
   // : active/inactive tab X active/inactive frame
   postprocessing_mixer[kColorTabForegroundActiveFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral80);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral90);
   postprocessing_mixer[kColorTabForegroundActiveFrameInactive] = {
       kColorTabForegroundActiveFrameActive};
   postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
   postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
 
   // Tab hovered background
   postprocessing_mixer[kColorTabBackgroundInactiveHoverFrameActive] =
