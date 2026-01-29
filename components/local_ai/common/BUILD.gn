@@ -1,7 +1,9 @@
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("common") {
   sources = [
@@ -10,4 +12,24 @@ source_set("common") {
   ]
 
   deps = [ "//base" ]
+}
+
+mojom_component("mojom") {
+  output_prefix = "local_ai_mojom"
+  macro_prefix = "LOCAL_AI_MOJOM"
+
+  generate_java = true
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "candle.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}
+
+mojom("local_ai_internals") {
+  sources = [ "local_ai_internals.mojom" ]
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "chrome://local-ai-internals/"
 }

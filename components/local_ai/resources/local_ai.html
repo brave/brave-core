@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Local AI Internals</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 20px;
+      }
+      .info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Local AI Internals</h1>
+    <div class="info" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+      <p><strong>⚠️ Developer Feature:</strong> This feature is intended for developers. See <a href="https://github.com/brave/brave-core/pull/32261" target="_blank">brave-core#32261</a> for more details.</p>
+    </div>
+    <div class="info">
+      <p><strong>Architecture:</strong></p>
+      <p>The Embedding Gemma model runs in a shared CandleService (per-profile) that owns a hidden WebContents with the WASM. This service is shared by History Embeddings and this debug UI.</p>
+      <p>The model is automatically loaded on service creation. Check the console for logs.</p>
+    </div>
+
+    <h2>Embedding Gemma Status:</h2>
+    <div class="model-config">
+      <div id="serviceStatus"
+        style="padding: 15px; margin: 10px 0; border-radius: 4px;
+        background: #f5f5f5; border-left: 4px solid #2196f3;">
+        <strong>Initializing CandleService...</strong>
+      </div>
+
+      <h3>Compare Embeddings:</h3>
+      <p>Compare similarity between two texts:</p>
+      <div class="input-group">
+        <label>Text 1:
+          <input type="text" id="text1"
+            placeholder="Enter first text..."
+            value="What is the capital of France?"
+            style="width: 100%; padding: 8px; margin: 5px 0;">
+        </label>
+      </div>
+      <div class="input-group">
+        <label>Text 2:
+          <input type="text" id="text2"
+            placeholder="Enter second text..."
+            value="Paris is the capital of France"
+            style="width: 100%; padding: 8px; margin: 5px 0;">
+        </label>
+      </div>
+      <button id="compareBtn"
+        style="padding: 10px 20px; margin: 10px 0; cursor: pointer;
+        background: #1a73e8; color: white; border: none;
+        border-radius: 4px;" disabled>
+        Compare Embeddings
+      </button>
+      <div id="result"
+        style="padding: 15px; margin: 10px 0; border-radius: 4px;
+        background: #f5f5f5; white-space: pre-wrap; font-family: monospace;
+        display: none;"></div>
+
+      <h3>Example Comparisons:</h3>
+      <button class="example-compare"
+        data-text1="What is the capital of France?"
+        data-text2="Paris is the capital of France"
+        style="padding: 8px 12px; margin: 5px; cursor: pointer;
+        background: #e8f5e9; border: 1px solid #4caf50;
+        border-radius: 4px;">
+        Similar: Question & Answer
+      </button>
+      <button class="example-compare"
+        data-text1="The weather is sunny today"
+        data-text2="It's raining heavily outside"
+        style="padding: 8px 12px; margin: 5px; cursor: pointer;
+        background: #fff3e0; border: 1px solid #ff9800;
+        border-radius: 4px;">
+        Different: Opposite weather
+      </button>
+      <button class="example-compare"
+        data-text1="I love programming in Python"
+        data-text2="Python is my favorite programming language"
+        style="padding: 8px 12px; margin: 5px; cursor: pointer;
+        background: #e8f5e9; border: 1px solid #4caf50;
+        border-radius: 4px;">
+        Similar: Same topic
+      </button>
+    </div>
+    <script type="module" src="local_ai.bundle.js"></script>
+  </body>
+</html>
