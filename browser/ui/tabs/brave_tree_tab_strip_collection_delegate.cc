@@ -172,8 +172,8 @@ void BraveTreeTabStripCollectionDelegate::AddTabAsTreeNodeToCollection(
 #if DCHECK_IS_ON()
   // Recursing index could be expensive, so we only check it when DCHECK is
   // on.
-  CHECK_EQ(expected_recursive_index,
-           *collection_->GetIndexOfTabRecursive(tab_ptr))
+  DCHECK_EQ(expected_recursive_index,
+            *collection_->GetIndexOfTabRecursive(tab_ptr))
       << "This must be match so we make sure that we inserted the tab at "
          "the specified |index|.";
 #endif
