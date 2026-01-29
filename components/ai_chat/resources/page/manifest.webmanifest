@@ -9,7 +9,7 @@
     }
   ],
   "start_url": "/?source=pwa",
-  "id": "chrome://leo-ai/",
+  "id": "brave://leo-ai/",
   "display": "standalone",
-  "scope": "chrome://leo-ai/"
+  "scope": "brave://leo-ai/"
 }
