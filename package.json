@@ -213,7 +213,7 @@
     "@ledgerhq/hw-transport-webhid": "6.29.0",
     "@mozilla/readability": "0.6.0",
     "@reduxjs/toolkit": "1.9.0",
-    "@solana/web3.js": "1.98.2",
+    "@solana/web3.js": "1.98.4",
     "@trezor/connect": "9.6.4",
     "@trezor/connect-web": "9.6.4",
     "array-move": "2.2.2",
