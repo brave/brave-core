@@ -90,10 +90,11 @@ void ContentAgentToolBaseTest::RunWithExpectedError(
   EXPECT_CALL(*mock_task_provider_, GetOrCreateTabHandleForTask).Times(0);
   EXPECT_CALL(*mock_task_provider_, ExecuteActions).Times(0);
 
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   tool_->UseTool(input_json, future.GetCallback());
 
-  auto result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
 }
 

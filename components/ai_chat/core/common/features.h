@@ -123,6 +123,8 @@ extern const base::FeatureParam<std::string> kRichSearchWidgetsOrigin;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCodeExecutionTool);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kCodeExecutionToolCharts;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCodeExecutionToolEnabled();
 
 }  // namespace ai_chat::features

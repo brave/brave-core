@@ -318,13 +318,13 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
-                                    nullptr);
+                                    std::nullopt, nullptr);
   }
 
   mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
                                             const std::string& tool_id) {
     return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
-                                    nullptr);
+                                    std::nullopt, nullptr);
   }
 
   raw_ptr<Profile> agent_profile_ = nullptr;
@@ -639,7 +639,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
-                    CreateContentBlocksForText("1st tool result"));
+                    CreateContentBlocksForText("1st tool result"), {});
               },
               std::move(callback));
         }));
@@ -680,7 +680,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
-                    CreateContentBlocksForText("2nd tool result"));
+                    CreateContentBlocksForText("2nd tool result"), {});
               },
               std::move(callback));
         }));

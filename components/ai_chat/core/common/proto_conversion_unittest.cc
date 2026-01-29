@@ -207,7 +207,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_ValidData) {
   // Create mojom ToolUseEvent
   auto mojom_event = mojom::ToolUseEvent::New(
       "test_tool", "tool_id_123", "anything for arguments_json",
-      std::vector<mojom::ContentBlockPtr>(), nullptr);
+      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr);
 
   // mixed content blocks
   auto text_block = mojom::TextContentBlock::New();
@@ -247,10 +247,38 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_ValidData) {
   EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
+TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
+  const std::string content_json = R"({"data": [1, 2, 3]})";
+  // Create mojom ToolUseEvent with artifacts
+  auto mojom_event =
+      mojom::ToolUseEvent::New("test_tool", "tool_id_123", "{}", std::nullopt,
+                               std::vector<mojom::ToolArtifactPtr>(), nullptr);
+
+  auto artifact = mojom::ToolArtifact::New();
+  artifact->type = mojom::kLineChartArtifactType;
+  artifact->content_json = content_json;
+  mojom_event->artifacts->push_back(std::move(artifact));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  EXPECT_EQ(proto_event.artifacts_size(), 1);
+  EXPECT_EQ(proto_event.artifacts(0).type(), mojom::kLineChartArtifactType);
+  EXPECT_EQ(proto_event.artifacts(0).content_json(), content_json);
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  // Verify deserialized data
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_NoOutput) {
   // Create mojom ToolUseEvent without output
-  auto mojom_event = mojom::ToolUseEvent::New("test_tool", "tool_id_123", "{}",
-                                              std::nullopt, nullptr);
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "test_tool", "tool_id_123", "{}", std::nullopt, std::nullopt, nullptr);
 
   // Serialize to proto
   store::ToolUseEventProto proto_event;
@@ -269,8 +297,8 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_NoOutput) {
 TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidId) {
   store::ToolUseEventProto proto_event;
 
-  auto mojom_event =
-      mojom::ToolUseEvent::New("test_tool", "", "{}", std::nullopt, nullptr);
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "test_tool", "", "{}", std::nullopt, std::nullopt, nullptr);
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
 
   EXPECT_FALSE(success);
@@ -282,8 +310,8 @@ TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidId) {
 TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidToolName) {
   store::ToolUseEventProto proto_event;
 
-  auto mojom_event =
-      mojom::ToolUseEvent::New("", "tool_id_123", "{}", std::nullopt, nullptr);
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "", "tool_id_123", "{}", std::nullopt, std::nullopt, nullptr);
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
 
   EXPECT_FALSE(success);

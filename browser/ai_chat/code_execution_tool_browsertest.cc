@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/code_execution_tool.h"
+#include "brave/browser/ai_chat/tools/code_execution_tool.h"
 
 #include <memory>
 #include <string>
@@ -51,26 +51,37 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
     return http_server_.GetURL("/test").spec();
   }
 
-  void ExecuteCodeRaw(const std::string& input_json, std::string* output) {
+  void ExecuteCodeRaw(
+      const std::string& input_json,
+      std::string* output,
+      std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::RunLoop run_loop;
     tool_->UseTool(
         input_json,
         base::BindLambdaForTesting(
-            [&run_loop, output](std::vector<mojom::ContentBlockPtr> result) {
+            [&run_loop, output, artifacts](
+                std::vector<mojom::ContentBlockPtr> result,
+                std::vector<mojom::ToolArtifactPtr> result_artifacts) {
               ASSERT_FALSE(result.empty());
               ASSERT_TRUE(result[0]->is_text_content_block());
               *output = result[0]->get_text_content_block()->text;
+
+              if (artifacts) {
+                *artifacts = std::move(result_artifacts);
+              }
               run_loop.Quit();
             }));
     run_loop.Run();
   }
 
-  void ExecuteCode(const std::string& script, std::string* output) {
+  void ExecuteCode(const std::string& script,
+                   std::string* output,
+                   std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
     base::Value::Dict input;
     input.Set("script", script);
     std::string input_json;
     base::JSONWriter::Write(input, &input_json);
-    ExecuteCodeRaw(input_json, output);
+    ExecuteCodeRaw(input_json, output, artifacts);
   }
 
  protected:
@@ -208,6 +219,50 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   std::string output;
   ExecuteCode("console.log(new BigNumber(0.1).plus(0.2).toString())", &output);
   EXPECT_EQ(output, "0.3");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
+  std::string script = R"(
+    const data = [
+      {x: 'Jan', sales: 100, profit: 30},
+      {x: 'Feb', sales: 150, profit: 45},
+      {x: 'Mar', sales: 120, profit: 35}
+    ];
+    const labels = {sales: 'Sales ($)', profit: 'Profit ($)'};
+    chartUtil.createLineChart(data, labels);
+    console.log('Chart created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_EQ(output, "Chart created");
+  ASSERT_EQ(artifacts.size(), 1u);
+
+  const auto& artifact = artifacts[0];
+  EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
+  EXPECT_FALSE(artifact->content_json.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       UnsupportedArtifactType) {
+  std::string script = R"(
+    codeExecArtifacts.push({
+      type: 'unsupported_type',
+      content: {data: 'some data'}
+    });
+    console.log('Artifact created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_THAT(
+      output,
+      HasSubstr("Error: Artifact type 'unsupported_type' is not supported"));
+  EXPECT_TRUE(artifacts.empty());
 }
 
 }  // namespace ai_chat

@@ -3,17 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/code_execution_tool.h"
+#include "brave/browser/ai_chat/tools/code_execution_tool.h"
 
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -37,24 +39,16 @@ namespace {
 
 constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 constexpr char kScriptProperty[] = "script";
-
-std::string WrapScript(const std::string& script) {
-  auto bignumber_js =
-      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-          IDR_AI_CHAT_BIGNUMBER_JS);
-
-  return base::StrCat({"(async function() { ", bignumber_js, " try { ", script,
-                       " } catch (error) { console.error(error.toString()); } "
-                       "return true; })()"});
-}
+constexpr char kArtifactTypeKey[] = "type";
+constexpr char kArtifactContentKey[] = "content";
 
 }  // namespace
 
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
     Profile* profile,
-    const std::string& script,
+    std::string script,
     base::TimeDelta execution_time_limit)
-    : content::WebContentsObserver(nullptr), wrapped_js_(WrapScript(script)) {
+    : content::WebContentsObserver(nullptr), script_(std::move(script)) {
   auto otr_profile_id = Profile::OTRProfileID::AIChatCodeExecutionID();
   auto* otr_profile = profile->GetOffTheRecordProfile(
       otr_profile_id, /*create_if_needed=*/true);
@@ -79,19 +73,19 @@ CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() {
 void CodeExecutionTool::CodeExecutionRequest::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (!render_frame_host->GetParent() || wrapped_js_.empty()) {
+  if (!render_frame_host->GetParent() || script_.empty()) {
     return;
   }
 
   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&injector_);
 
-  auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js_);
+  auto script_utf16 = base::UTF8ToUTF16(script_);
 
   // Clear the wrapped script to avoid re-using it.
-  wrapped_js_ = {};
+  script_ = {};
 
   injector_->RequestAsyncExecuteScript(
-      content::ISOLATED_WORLD_ID_GLOBAL, wrapped_js_utf16,
+      content::ISOLATED_WORLD_ID_GLOBAL, script_utf16,
       blink::mojom::UserActivationOption::kActivate,
       blink::mojom::PromiseResultOption::kAwait,
       base::BindOnce(&CodeExecutionRequest::HandleResult,
@@ -109,29 +103,129 @@ void CodeExecutionTool::CodeExecutionRequest::OnDidAddMessageToConsole(
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleResult(base::Value result) {
-  if (!result.is_bool() || !result.GetBool()) {
-    std::move(resolve_callback_).Run("Error: Syntax error");
+  if (!result.is_list()) {
+    std::move(resolve_callback_).Run("Error: Syntax error", {});
     return;
   }
 
-  std::move(resolve_callback_).Run(base::JoinString(console_logs_, "\n"));
+  std::string console_logs_str = base::JoinString(console_logs_, "\n");
+  std::move(resolve_callback_)
+      .Run(std::move(console_logs_str), std::move(result).TakeList());
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleTimeout() {
-  std::move(resolve_callback_).Run("Error: Time limit exceeded");
+  std::move(resolve_callback_).Run("Error: Time limit exceeded", {});
 }
 
 void CodeExecutionTool::ResolveRequest(
     std::list<CodeExecutionRequest>::iterator request_it,
     UseToolCallback callback,
-    std::string output) {
+    std::string console_logs,
+    base::Value::List artifacts) {
   requests_.erase(request_it);
-  std::move(callback).Run(CreateContentBlocksForText(output));
+
+  std::vector<mojom::ToolArtifactPtr> artifact_ptrs;
+  std::optional<std::string> error;
+
+  // Process artifacts
+  for (const auto& artifact : artifacts) {
+    const auto* artifact_dict = artifact.GetIfDict();
+    if (!artifact_dict) {
+      error = "Error: Artifact must be an object";
+      break;
+    }
+
+    const auto* type = artifact_dict->FindString(kArtifactTypeKey);
+    const auto* content = artifact_dict->Find(kArtifactContentKey);
+    if (!type || !content) {
+      error = "Error: Artifact missing required 'type' or 'content' field";
+      break;
+    }
+
+    // Find matching plugin and validate artifact
+    bool plugin_found = false;
+    for (const auto& plugin : code_plugins_) {
+      if (plugin->ArtifactType() != *type) {
+        continue;
+      }
+      plugin_found = true;
+      if (auto validation_error = plugin->ValidateArtifact(*content)) {
+        error = base::StrCat({"Error: ", *validation_error});
+      }
+      break;
+    }
+
+    if (!plugin_found) {
+      error =
+          base::StrCat({"Error: Artifact type '", *type, "' is not supported"});
+      break;
+    }
+
+    if (error) {
+      break;
+    }
+
+    // Serialize content to JSON string for storage
+    std::string content_json;
+    if (!base::JSONWriter::Write(*content, &content_json)) {
+      error = "Error: Failed to serialize artifact content";
+      break;
+    }
+
+    // Add artifact
+    artifact_ptrs.push_back(
+        mojom::ToolArtifact::New(*type, std::move(content_json)));
+  }
+
+  // Construct final content blocks
+  std::vector<mojom::ContentBlockPtr> content_blocks;
+
+  // If error occurred, use error message instead of console logs
+  if (error) {
+    content_blocks = CreateContentBlocksForText(std::move(*error));
+    artifact_ptrs.clear();
+  } else {
+    content_blocks = CreateContentBlocksForText(std::move(console_logs));
+  }
+
+  std::move(callback).Run(std::move(content_blocks), std::move(artifact_ptrs));
 }
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
-      execution_time_limit_(kExecutionTimeLimit) {}
+      execution_time_limit_(kExecutionTimeLimit) {
+  if (ChartCodePlugin::IsEnabled()) {
+    code_plugins_.push_back(std::make_unique<ChartCodePlugin>());
+  }
+
+  // Build the description with plugin information
+  std::vector<std::string_view> plugin_descriptions;
+  for (const auto& plugin : code_plugins_) {
+    plugin_descriptions.emplace_back(plugin->Description());
+  }
+
+  tool_description_ = base::StrCat(
+      {"Execute JavaScript code and capture console output. "
+       "Use only when the task requires code execution for providing an "
+       "accurate answer. "
+       "Do not use this if you are able to answer without executing code. "
+       "Do not use this for content generation. "
+       "Do not use this for fetching information from the internet. "
+       "Use console.log() to output results. "
+       "The code will be executed in a sandboxed environment. "
+       "Network requests are not allowed. "
+       "bignumber.js is available in the global scope. Use it for any "
+       "decimal math (i.e. financial calculations). "
+       "Do not use require to import bignumber.js, as it is not needed. ",
+       base::JoinString(plugin_descriptions, " "),
+       "\nExample tasks that require code execution:\n"
+       " - Financial calculations (e.g. compound interest)\n"
+       " - Analyzing data or web content\n"
+       "Example tasks that do not require code execution:\n"
+       " - Very simple calculations (e.g. 2 + 2)\n"
+       " - Finding the 4th prime number\n"
+       " - Retrieving weather information for a location"});
+}
 
 CodeExecutionTool::~CodeExecutionTool() = default;
 
@@ -140,25 +234,7 @@ std::string_view CodeExecutionTool::Name() const {
 }
 
 std::string_view CodeExecutionTool::Description() const {
-  return "Execute JavaScript code and capture console output. "
-         "Use only when the task requires code execution for providing an "
-         "accurate answer. "
-         "Do not use this if you are able to answer without executing code. "
-         "Do not use this for content generation. "
-         "Do not use this for fetching information from the internet. "
-         "Use console.log() to output results. "
-         "The code will be executed in a sandboxed environment. "
-         "Network requests are not allowed. "
-         "bignumber.js is available in the global scope. Use it for any "
-         "decimal math (i.e. financial calculations). "
-         "Do not use require to import bignumber.js, as it is not needed.\n"
-         "Example tasks that require code execution:\n"
-         " - Financial calculations (e.g. compound interest)\n"
-         " - Analyzing data or web content\n"
-         "Example tasks that do not require code execution:\n"
-         " - Very simple calculations (e.g. 2 + 2)\n"
-         " - Finding the 4th prime number\n"
-         " - Retrieving weather information for a location";
+  return tool_description_;
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
@@ -190,13 +266,34 @@ void CodeExecutionTool::SetExecutionTimeLimitForTesting(
   execution_time_limit_ = time_limit;
 }
 
+std::string CodeExecutionTool::WrapScript(const std::string& script) const {
+  auto bignumber_js =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_AI_CHAT_BIGNUMBER_JS);
+
+  std::vector<std::string_view> plugin_scripts;
+  for (const auto& plugin : code_plugins_) {
+    if (script.find(plugin->InclusionKeyword()) != std::string::npos) {
+      plugin_scripts.push_back(plugin->SetupScript());
+    }
+  }
+
+  return base::StrCat({"(async function() { let codeExecArtifacts = []; ",
+                       bignumber_js, base::StrCat(plugin_scripts), " try { ",
+                       script,
+                       " } catch (error) { console.error(error.toString()); } "
+                       "return codeExecArtifacts; })()"});
+}
+
 void CodeExecutionTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
   auto input_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: Invalid JSON input, input must be a JSON object"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: Invalid JSON input, input must be a JSON object"),
+        {});
     return;
   }
 
@@ -204,11 +301,14 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 
   if (!script || script->empty()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: Missing or empty 'script' field"));
+        CreateContentBlocksForText("Error: Missing or empty 'script' field"),
+        {});
     return;
   }
 
-  requests_.emplace_back(profile_, *script, execution_time_limit_);
+  std::string wrapped_script = WrapScript(*script);
+  requests_.emplace_back(profile_, std::move(wrapped_script),
+                         execution_time_limit_);
 
   auto request_it = std::prev(requests_.end());
   request_it->SetResolveCallback(

@@ -89,8 +89,10 @@ void MemoryStorageTool::UseTool(const std::string& input_json,
   auto input_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: Invalid JSON input, input must be a JSON object"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: Invalid JSON input, input must be a JSON object"),
+        {});
     return;
   }
 
@@ -98,16 +100,19 @@ void MemoryStorageTool::UseTool(const std::string& input_json,
 
   if (!memory_content || memory_content->empty()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: Missing or empty 'memory' field"));
+        CreateContentBlocksForText("Error: Missing or empty 'memory' field"),
+        {});
     return;
   }
 
   // Validate memory length
   if (memory_content->length() > mojom::kMaxMemoryRecordLength) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        base::StrCat({"Error: Memory content exceeds ",
-                      base::NumberToString(mojom::kMaxMemoryRecordLength),
-                      " character limit"})));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            base::StrCat({"Error: Memory content exceeds ",
+                          base::NumberToString(mojom::kMaxMemoryRecordLength),
+                          " character limit"})),
+        {});
     return;
   }
 
@@ -115,7 +120,7 @@ void MemoryStorageTool::UseTool(const std::string& input_json,
   prefs::AddMemoryToPrefs(*memory_content, *pref_service_);
 
   // Return empty result to signal the completion of this tool to AI agents.
-  std::move(callback).Run(CreateContentBlocksForText(""));
+  std::move(callback).Run(CreateContentBlocksForText(""), {});
 }
 
 }  // namespace ai_chat

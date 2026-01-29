@@ -99,9 +99,10 @@ GetMockMessagesAndExpectedMessagesJson() {
         mojom::TextContentBlock::New("Going to use a tool...")));
     message.tool_calls.push_back(mojom::ToolUseEvent::New(
         "get_weather", "123", "{\"location\":\"New York\"}", std::nullopt,
-        nullptr));
-    message.tool_calls.push_back(mojom::ToolUseEvent::New(
-        "get_screenshot", "456", "{\"type\":\"tab\"}", std::nullopt, nullptr));
+        std::nullopt, nullptr));
+    message.tool_calls.push_back(
+        mojom::ToolUseEvent::New("get_screenshot", "456", "{\"type\":\"tab\"}",
+                                 std::nullopt, std::nullopt, nullptr));
     messages.push_back(std::move(message));
   }
 
@@ -827,10 +828,11 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
       .WillOnce([&](EngineConsumer::GenerationResultData result) {
         ASSERT_TRUE(result.event);
         ASSERT_TRUE(result.event->is_tool_use_event());
-        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
-                        mojom::ToolUseEvent::New("get_weather", "call_123",
-                                                 "{\"location\":\"New York\"}",
-                                                 std::nullopt, nullptr));
+        EXPECT_MOJOM_EQ(
+            result.event->get_tool_use_event(),
+            mojom::ToolUseEvent::New("get_weather", "call_123",
+                                     "{\"location\":\"New York\"}",
+                                     std::nullopt, std::nullopt, nullptr));
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -842,7 +844,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
             result.event->get_tool_use_event(),
             mojom::ToolUseEvent::New("search_web", "call_456",
                                      "{\"query\":\"Hello, world!\"}",
-                                     std::nullopt, nullptr));
+                                     std::nullopt, std::nullopt, nullptr));
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))

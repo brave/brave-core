@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_CODE_EXECUTION_TOOL_H_
-#define BRAVE_BROWSER_AI_CHAT_CODE_EXECUTION_TOOL_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_TOOLS_CODE_EXECUTION_TOOL_H_
+#define BRAVE_BROWSER_AI_CHAT_TOOLS_CODE_EXECUTION_TOOL_H_
 
 #include <list>
 #include <memory>
@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/tools/code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -32,8 +33,6 @@ class RenderFrameHost;
 }  // namespace content
 
 namespace ai_chat {
-
-class CodeSandboxWebContentsObserver;
 
 // Tool for executing JavaScript code and returning console.log output.
 // This tool is provided by the browser and allows AI assistants to run
@@ -66,10 +65,11 @@ class CodeExecutionTool : public Tool {
  private:
   class CodeExecutionRequest : public content::WebContentsObserver {
    public:
-    using ResolveCallback = base::OnceCallback<void(std::string)>;
+    using ResolveCallback = base::OnceCallback<void(std::string console_logs,
+                                                    base::Value::List output)>;
 
     CodeExecutionRequest(Profile* profile,
-                         const std::string& script,
+                         std::string script,
                          base::TimeDelta execution_time_limit);
     ~CodeExecutionRequest() override;
 
@@ -93,7 +93,7 @@ class CodeExecutionTool : public Tool {
     void HandleTimeout();
 
     std::unique_ptr<content::WebContents> web_contents_;
-    std::string wrapped_js_;
+    std::string script_;
     mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
     base::OneShotTimer timeout_timer_;
     ResolveCallback resolve_callback_;
@@ -101,15 +101,20 @@ class CodeExecutionTool : public Tool {
     base::WeakPtrFactory<CodeExecutionRequest> weak_ptr_factory_{this};
   };
 
+  std::string WrapScript(const std::string& script) const;
+
   void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
                       UseToolCallback callback,
-                      std::string output);
+                      std::string console_logs,
+                      base::Value::List output);
 
   raw_ptr<Profile> profile_;
+  std::vector<std::unique_ptr<CodePlugin>> code_plugins_;
+  std::string tool_description_;
   std::list<CodeExecutionRequest> requests_;
   base::TimeDelta execution_time_limit_;
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_CODE_EXECUTION_TOOL_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_TOOLS_CODE_EXECUTION_TOOL_H_
