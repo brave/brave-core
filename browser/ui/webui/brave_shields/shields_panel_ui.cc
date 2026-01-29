@@ -10,10 +10,13 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_localized_strings.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
+#include "brave/components/brave_shields/resources/panel_new/grit/brave_shields_panel_new_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -25,6 +28,7 @@
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -75,8 +79,17 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                     profile_, chrome::FaviconUrlFormat::kFavicon2));
   content::URLDataSource::Add(profile_,
                               std::make_unique<ThemeSource>(profile_));
-  webui::SetupWebUIDataSource(source, kBraveShieldsPanelGenerated,
-                              IDR_SHIELDS_PANEL_HTML);
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
+
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    source->AddLocalizedStrings(webui::kBraveShieldsStrings);
+    webui::SetupWebUIDataSource(source, kBraveShieldsPanelNewGenerated,
+                                IDR_SHIELDS_PANEL_NEW_HTML);
+  } else {
+    webui::SetupWebUIDataSource(source, kBraveShieldsPanelGenerated,
+                                IDR_SHIELDS_PANEL_HTML);
+  }
 }
 
 ShieldsPanelUI::~ShieldsPanelUI() = default;

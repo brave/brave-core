@@ -156,7 +156,7 @@ void BraveShieldsPageInfoView::ChildPreferredSizeChanged(View* child) {
 gfx::Size BraveShieldsPageInfoView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size size = views::View::CalculatePreferredSize(available_size);
-  constexpr int kMinWebViewHeight = 290;
+  constexpr int kMinWebViewHeight = 200;
   size.set_height(std::max(size.height(), kMinWebViewHeight));
   return size;
 }
