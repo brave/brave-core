@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
 namespace brave_wallet {
@@ -46,14 +47,6 @@ std::optional<std::string> PolkadotAddress::ToString() const {
   }
 
   return "0x" + base::HexEncodeLower(pubkey);
-}
-
-mojom::uint128Ptr Uint128ToMojom(uint128_t x) {
-  return mojom::uint128::New(x >> 64, x & 0xffffffffffffffff);
-}
-
-uint128_t MojomToUint128(const mojom::uint128Ptr& x) {
-  return (uint128_t{x->high} << 64) | uint128_t{x->low};
 }
 
 }  // namespace brave_wallet

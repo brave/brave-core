@@ -203,20 +203,16 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     EXPECT_EQ(account_info->sufficients, 0u);
 
     uint128_t free = 13'350'505'137;
-    EXPECT_TRUE((uint128_t{account_info->data->free->high} << 64 |
-                 account_info->data->free->low) == free);
+    EXPECT_TRUE(account_info->data->free == free);
 
     uint128_t reserved = 199'532'850'000'000;
-    EXPECT_TRUE((uint128_t{account_info->data->reserved->high} << 64 |
-                 account_info->data->reserved->low) == reserved);
+    EXPECT_TRUE(account_info->data->reserved == reserved);
 
     uint128_t frozen = 0;
-    EXPECT_TRUE((uint128_t{account_info->data->frozen->high} << 64 |
-                 account_info->data->frozen->low) == frozen);
+    EXPECT_TRUE(account_info->data->frozen == frozen);
 
     uint128_t flags = uint128_t{0x8000000000000000} << 64;
-    EXPECT_TRUE((uint128_t{account_info->data->flags->high} << 64 |
-                 account_info->data->flags->low) == flags);
+    EXPECT_TRUE(account_info->data->flags == flags);
   }
 
   {
@@ -249,20 +245,16 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     EXPECT_EQ(account_info->sufficients, 0u);
 
     uint128_t free = 0;
-    EXPECT_TRUE((uint128_t{account_info->data->free->high} << 64 |
-                 account_info->data->free->low) == free);
+    EXPECT_TRUE(account_info->data->free == free);
 
     uint128_t reserved = 0;
-    EXPECT_TRUE((uint128_t{account_info->data->reserved->high} << 64 |
-                 account_info->data->reserved->low) == reserved);
+    EXPECT_TRUE(account_info->data->reserved == reserved);
 
     uint128_t frozen = 0;
-    EXPECT_TRUE((uint128_t{account_info->data->frozen->high} << 64 |
-                 account_info->data->frozen->low) == frozen);
+    EXPECT_TRUE(account_info->data->frozen == frozen);
 
     uint128_t flags = uint128_t{0x8000000000000000} << 64;
-    EXPECT_TRUE((uint128_t{account_info->data->flags->high} << 64 |
-                 account_info->data->flags->low) == flags);
+    EXPECT_TRUE(account_info->data->flags == flags);
   }
 
   {
@@ -412,21 +404,17 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     EXPECT_EQ(account_info->sufficients, std::numeric_limits<uint32_t>::max());
 
     uint128_t free = std::numeric_limits<uint128_t>::max();
-    EXPECT_TRUE((uint128_t{account_info->data->free->high} << 64 |
-                 account_info->data->free->low) == free);
+    EXPECT_TRUE(account_info->data->free == free);
 
     uint128_t reserved = std::numeric_limits<uint128_t>::max();
 
-    EXPECT_TRUE((uint128_t{account_info->data->reserved->high} << 64 |
-                 account_info->data->reserved->low) == reserved);
+    EXPECT_TRUE(account_info->data->reserved == reserved);
 
     uint128_t frozen = std::numeric_limits<uint128_t>::max();
-    EXPECT_TRUE((uint128_t{account_info->data->frozen->high} << 64 |
-                 account_info->data->frozen->low) == frozen);
+    EXPECT_TRUE(account_info->data->frozen == frozen);
 
     uint128_t flags = std::numeric_limits<uint128_t>::max();
-    EXPECT_TRUE((uint128_t{account_info->data->flags->high} << 64 |
-                 account_info->data->flags->low) == flags);
+    EXPECT_TRUE(account_info->data->flags == flags);
   }
 }
 
