@@ -15,4 +15,7 @@
     <dimen name="new_tab_page_incognito_title_text_size">40sp</dimen>
     <dimen name="new_tab_page_incognito_logo_size">56sp</dimen>
     <dimen name="new_tab_page_incognito_icon_size">48sp</dimen>
+
+    <!-- Match this value with the upstream for Accessibility -->
+    <dimen name="omnibox_search_engine_logo_composed_size">24dp</dimen>
 </resources>
