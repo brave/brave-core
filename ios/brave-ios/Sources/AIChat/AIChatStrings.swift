@@ -1078,5 +1078,246 @@ extension Strings {
       comment:
         "The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode."
     )
+    public static let customModelFormLabelFieldTitle = NSLocalizedString(
+      "aichat.customModelFormLabelFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Label",
+      comment: "The label for the custom model name field in the custom model form"
+    )
+    public static let customModelFormLabelFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormLabelFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter a label for this model",
+      comment: "The placeholder text for the custom model name field"
+    )
+    public static let customModelFormRequiredFieldIndicator = NSLocalizedString(
+      "aichat.customModelFormRequiredFieldIndicator",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Required",
+      comment: "The indicator text shown next to required fields in forms"
+    )
+    public static let customModelFormLabelFieldFooter = NSLocalizedString(
+      "aichat.customModelFormLabelFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Model name to use in Leo's model selector.",
+      comment: "The footer text explaining the purpose of the label field"
+    )
+    public static let customModelFormRequestNameFieldTitle = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Model request name",
+      comment: "The label for the model request name field"
+    )
+    public static let customModelFormRequestNameFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter model request name",
+      comment: "The placeholder text for the model request name field"
+    )
+    public static let customModelFormRequestNameFieldFooter = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn't match exactly what is expected by the serving framework the integration won't work).",
+      comment:
+        "The footer text explaining what the model request name is used for and providing an example"
+    )
+    public static let customModelFormServerEndpointFieldTitle = NSLocalizedString(
+      "aichat.customModelFormServerEndpointFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Server endpoint",
+      comment: "The label for the server endpoint URL field"
+    )
+    public static let customModelFormDetailsFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormDetailsFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter details",
+      comment: "The placeholder text for generic detail input fields"
+    )
+    public static let customModelFormServerEndpointFieldFooter = NSLocalizedString(
+      "aichat.customModelFormServerEndpointFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The URL where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, it is always `http://localhost:11434/v1/chat/completions`. Brave doesn't proxy these requests, please read privacy terms of the chosen provider.",
+      comment:
+        "The footer text explaining what the server endpoint is and providing an example URL for Ollama"
+    )
+    public static let customModelFormUnsafeEndpointWarning = NSLocalizedString(
+      "aichat.customModelFormUnsafeEndpointWarning",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "This endpoint is potentially unsafe.",
+      comment: "Warning message shown when user enters an HTTP (not HTTPS) endpoint"
+    )
+    public static let customModelFormContextSizeFieldTitle = NSLocalizedString(
+      "aichat.customModelFormContextSizeFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Context size",
+      comment: "The label for the context size field"
+    )
+    public static let customModelFormContextSizeFieldFooter = NSLocalizedString(
+      "aichat.customModelFormContextSizeFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The maximum number of tokens the model can process in a single interaction. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.",
+      comment: "The footer text explaining what context size means for AI models"
+    )
+    public static let customModelFormApiKeyFieldTitle = NSLocalizedString(
+      "aichat.customModelFormApiKeyFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "API Key",
+      comment: "The label for the API key field"
+    )
+    public static let customModelFormApiKeyFieldFooter = NSLocalizedString(
+      "aichat.customModelFormApiKeyFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.",
+      comment: "The footer text explaining when and how API keys are used"
+    )
+    public static let customModelFormVisionSupportFieldTitle = NSLocalizedString(
+      "aichat.customModelFormVisionSupportFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Vision support",
+      comment: "The label for the vision support toggle"
+    )
+    public static let customModelFormVisionSupportFieldDescription = NSLocalizedString(
+      "aichat.customModelFormVisionSupportFieldDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "If this model takes image as input, e.g. llama 3.2b vision",
+      comment: "The description text explaining what vision support means with an example"
+    )
+    public static let customModelFormSystemPromptFieldTitle = NSLocalizedString(
+      "aichat.customModelFormSystemPromptFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "System prompt",
+      comment: "The label for the system prompt field"
+    )
+    public static let customModelFormSystemPromptFieldFooter = NSLocalizedString(
+      "aichat.customModelFormSystemPromptFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Custom instructions and/or context given to the model to guide its responses. Use %datetime% where you would like the current date and time to be inserted.",
+      comment:
+        "The footer text explaining what a system prompt is and noting the %datetime% placeholder"
+    )
+    public static let customModelFormAddModelNavigationTitle = NSLocalizedString(
+      "aichat.customModelFormAddModelNavigationTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Add Model",
+      comment: "The navigation bar title when adding a new custom model"
+    )
+    public static let customModelFormEditModelNavigationTitle = NSLocalizedString(
+      "aichat.customModelFormEditModelNavigationTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Model",
+      comment: "The navigation bar title when editing an existing custom model"
+    )
+    public static let customModelFormSaveButtonTitle = NSLocalizedString(
+      "aichat.customModelFormSaveButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Save",
+      comment: "The button title for saving a custom model"
+    )
+    public static let customModelFormDoneButtonTitle = NSLocalizedString(
+      "aichat.customModelFormDoneButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Done",
+      comment: "The button title for dismissing the keyboard"
+    )
+    public static let customModelFormFailedToSaveAlertTitle = NSLocalizedString(
+      "aichat.customModelFormFailedToSaveAlertTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Failed to Save Model",
+      comment: "The alert title shown when saving a custom model fails"
+    )
+    public static let customModelFormInvalidUrlErrorMessage = NSLocalizedString(
+      "aichat.customModelFormInvalidUrlErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Invalid URL",
+      comment: "The error message shown when the server endpoint URL is invalid"
+    )
+    public static let customModelFormInvalidContextSizeErrorMessage = NSLocalizedString(
+      "aichat.customModelFormInvalidContextSizeErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Invalid context size",
+      comment: "The error message shown when the context size is invalid"
+    )
+    public static let customModelFormPrivateEndpointErrorMessage = NSLocalizedString(
+      "aichat.customModelFormPrivateEndpointErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: """
+        The address you entered appears to be from a private network—like your router or a local server. Brave blocks these automatically to keep you safe, but you can enable them if you're confident it's secure.
+
+        To proceed, visit brave://flags/, search for "brave-ai-chat-allow-private-ips," and enable the feature. Once enabled, you can use private network addresses in Leo settings.
+        """,
+      comment:
+        "The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it"
+    )
+    public static let byomSectionHeaderTitle = NSLocalizedString(
+      "aichat.byomSectionHeaderTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Bring Your Own Model",
+      comment: "The section header title for the Bring Your Own Model feature"
+    )
+    public static let byomSectionHeaderDescription = NSLocalizedString(
+      "aichat.byomSectionHeaderDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: """
+        Connect your self-hosted or third-party hosted LLM to Leo and use them within the browser. Use any OpenAI Chat Protocol compatible framework such as Ollama. [Learn more](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)
+        """,
+      comment:
+        "The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated."
+    )
+    public static let byomEmptyStateTitle = NSLocalizedString(
+      "aichat.byomEmptyStateTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "You haven't connected a model yet",
+      comment: "The title shown when no custom models have been added yet"
+    )
+    public static let byomEmptyStateDescription = NSLocalizedString(
+      "aichat.byomEmptyStateDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Start by tapping \"Add new model\"",
+      comment:
+        "The description shown when no custom models have been added, prompting the user to add one"
+    )
+    public static let byomAddNewModelButtonTitle = NSLocalizedString(
+      "aichat.byomAddNewModelButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Add New Model",
+      comment: "The button title for adding a new custom model"
+    )
   }
 }

@@ -31,6 +31,7 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",

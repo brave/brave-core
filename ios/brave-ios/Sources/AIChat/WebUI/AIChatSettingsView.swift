@@ -19,6 +19,7 @@ public struct AIChatSettingsView: View {
 
   @State private var isResetConfirmationDialogPresented: Bool = false
   @State private var isPaywallPresented: Bool = false
+  @State private var isNewCustomModelFormPresented: Bool = false
 
   public init(viewModel: AIChatSettingsViewModel) {
     self.viewModel = viewModel
@@ -80,6 +81,59 @@ public struct AIChatSettingsView: View {
           Text(Strings.AIChat.resetLeoDataErrorDescription)
         }
       }
+
+      Section {
+        if viewModel.customModels.isEmpty {
+          VStack(alignment: .leading) {
+            Text(Strings.AIChat.byomEmptyStateTitle)
+            Text(Strings.AIChat.byomEmptyStateDescription)
+              .font(.subheadline.weight(.regular))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        ForEach(viewModel.customModels, id: \.key) { model in
+          NavigationLink {
+            CustomModelForm(initialModel: model, helper: viewModel.helper)
+          } label: {
+            VStack(alignment: .leading) {
+              Text(model.displayName)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+              if let requestName = model.options.customModelOptions?.modelRequestName {
+                Text(requestName)
+                  .font(.subheadline.weight(.regular))
+                  .foregroundStyle(Color(braveSystemName: .textSecondary))
+              }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        .onDelete { indexSet in
+          guard let index = indexSet.first else { return }
+          withAnimation {
+            viewModel.helper.deleteCustomModel(at: index)
+          }
+        }
+        Button {
+          isNewCustomModelFormPresented = true
+        } label: {
+          Text(Strings.AIChat.byomAddNewModelButtonTitle)
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .sheet(isPresented: $isNewCustomModelFormPresented) {
+          NavigationStack {
+            CustomModelForm(helper: viewModel.helper)
+          }
+        }
+      } header: {
+        VStack(alignment: .leading) {
+          Text(Strings.AIChat.byomSectionHeaderTitle)
+          // Contains markdown
+          Text(LocalizedStringKey(Strings.AIChat.byomSectionHeaderDescription))
+            .textCase(.none)
+        }
+      }
     }
     .navigationTitle(Strings.AIChat.leoNavigationTitle)
     .navigationBarTitleDisplayMode(.inline)
@@ -107,9 +161,15 @@ public struct AIChatSettingsView: View {
                 VStack(alignment: .leading) {
                   Text(model.displayName)
                     .foregroundStyle(Color(braveSystemName: .textPrimary))
-                  Text(modelWithSubtitle.subtitle)
-                    .foregroundStyle(Color(braveSystemName: .textTertiary))
-                    .font(.callout)
+                  Group {
+                    if let customModelOptions = model.options.customModelOptions {
+                      Text(customModelOptions.modelRequestName)
+                    } else {
+                      Text(modelWithSubtitle.subtitle)
+                    }
+                  }
+                  .foregroundStyle(Color(braveSystemName: .textTertiary))
+                  .font(.callout)
                 }
                 Spacer()
                 if model.options.leoModelOptions?.access == .premium {
