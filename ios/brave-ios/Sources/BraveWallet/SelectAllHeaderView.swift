@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import SwiftUI
 
 /// Header view for Wallet v2 with an optional `Select All` / `Deselect All` button.
@@ -10,9 +11,26 @@ struct SelectAllHeaderView<T: Identifiable>: View {
 
   let title: String
   let showsSelectAllButton: Bool
+  let verticalPadding: CGFloat
   let allModels: [T]
   let selectedModels: [T]
   let select: (T) -> Void
+
+  init(
+    title: String,
+    showsSelectAllButton: Bool,
+    verticalPadding: CGFloat = 12,
+    allModels: [T],
+    selectedModels: [T],
+    select: @escaping (T) -> Void
+  ) {
+    self.title = title
+    self.showsSelectAllButton = showsSelectAllButton
+    self.verticalPadding = verticalPadding
+    self.allModels = allModels
+    self.selectedModels = selectedModels
+    self.select = select
+  }
 
   var body: some View {
     HStack {
@@ -29,7 +47,7 @@ struct SelectAllHeaderView<T: Identifiable>: View {
       }
     }
     .padding(.horizontal)
-    .padding(.vertical, 12)
+    .padding(.vertical, verticalPadding)
   }
 
   private var allSelected: Bool {

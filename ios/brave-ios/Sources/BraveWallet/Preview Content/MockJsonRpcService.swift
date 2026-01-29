@@ -144,7 +144,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
 extension BraveWallet.NetworkInfo {
   static let mockMainnet: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.MainnetChainId,
-    chainName: "Mainnet",
+    chainName: "Ethereum Mainnet",
     blockExplorerUrls: ["https://etherscan.io"],
     iconUrls: [],
     activeRpcEndpointIndex: 0,

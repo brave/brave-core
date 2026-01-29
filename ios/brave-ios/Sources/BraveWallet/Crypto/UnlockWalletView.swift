@@ -86,6 +86,7 @@ struct UnlockWalletView: View {
             NavigationLink(
               destination: RestoreWalletView(
                 keyringStore: keyringStore,
+                setupSelections: .init(setupOption: .restore, networks: []),
                 dismissAction: dismissAction
               )
             ) {
