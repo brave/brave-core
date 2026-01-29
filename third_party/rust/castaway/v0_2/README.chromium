@@ -1,0 +1,10 @@
+Name: castaway
+URL: https://crates.io/crates/castaway
+Version: 0.2.4
+Revision: c6cb7e3086001a01d976d27c76fb52da93214511
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/castaway-v0_2/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Safe, zero-cost downcasting for limited compile-time specialization.

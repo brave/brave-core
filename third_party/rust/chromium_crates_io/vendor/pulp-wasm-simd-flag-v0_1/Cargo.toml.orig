@@ -1,0 +1,12 @@
+[package]
+name = "pulp-wasm-simd-flag"
+version = "0.1.0"
+edition = "2021"
+authors = ["sarah quiñones <sarah@veganb.tw>"]
+description = "safe generic simd"
+readme = "../README.md"
+repository = "https://github.com/sarah-quinones/pulp/"
+license = "MIT"
+keywords = ["simd"]
+
+[dependencies]

@@ -1,0 +1,17 @@
+Name: onig_sys
+URL: https://crates.io/crates/onig_sys
+Version: 69.9.1
+Revision: ed05d7ac1a1a138c6d9c46b451b9d9bea0fbe0b1
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/onig_sys-v69/LICENSE.md
+Shipped: yes
+Security Critical: yes
+
+Description: The `onig_sys` crate contains raw rust bindings to the
+oniguruma library. This crate exposes a set of unsafe
+functions which can then be used by other crates to
+create safe wrappers around Oniguruma.
+
+You probably don't want to link to this crate directly;
+instead check out the `onig` crate.
+

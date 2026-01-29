@@ -61,7 +61,7 @@ mod test_none_delimited_single_lifetime {
     macro_rules! m {
         ($life:lifetime) => {
             paste! {
-                pub struct S<$life>(&$life ());
+                pub struct S<$life>(#[allow(dead_code)] pub &$life ());
                 impl<$life> S<$life> {
                     fn f() {}
                 }
@@ -177,7 +177,7 @@ mod test_doc_expr {
         };
     }
 
-    doc_expr!(stringify!());
+    doc_expr!(stringify!(...));
 
     #[test]
     fn test_doc_expr() {

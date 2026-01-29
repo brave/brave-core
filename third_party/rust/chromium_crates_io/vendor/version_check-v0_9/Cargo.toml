@@ -11,14 +11,28 @@
 
 [package]
 name = "version_check"
-version = "0.9.4"
+version = "0.9.5"
 authors = ["Sergio Benitez <sb@sergio.bz>"]
+build = false
 exclude = ["static"]
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Tiny crate to check the version of the installed/running rustc."
 documentation = "https://docs.rs/version_check/"
 readme = "README.md"
-keywords = ["version", "rustc", "minimum", "check"]
+keywords = [
+    "version",
+    "rustc",
+    "minimum",
+    "check",
+]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/SergioBenitez/version_check"
+
+[lib]
+name = "version_check"
+path = "src/lib.rs"
 
 [dependencies]

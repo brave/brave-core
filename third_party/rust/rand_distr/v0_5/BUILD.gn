@@ -1,0 +1,105 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "rand_distr"
+  epoch = "0.5"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/beta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/binomial.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/cauchy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/chi_squared.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/dirichlet.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/exponential.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/fisher_f.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/frechet.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/gamma.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/geometric.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/gumbel.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/hypergeometric.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/inverse_gaussian.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/normal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/normal_inverse_gaussian.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/pareto.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/pert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/poisson.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/skew_normal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/student_t.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/triangular.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/unit_ball.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/unit_circle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/unit_disc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/unit_sphere.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/weibull.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/weighted/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/weighted/weighted_alias.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/weighted/weighted_tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/zeta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/ziggurat_tables.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_distr-v0_5/src/zipf.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "The Rand Project Developers"
+  cargo_pkg_name = "rand_distr"
+  cargo_pkg_description = "Sampling from random number distributions"
+  cargo_pkg_repository = "https://github.com/rust-random/rand_distr"
+  cargo_pkg_version = "0.5.1"
+
+  allow_unsafe = false
+
+  deps = [
+    "//brave/third_party/rust/num_traits/v0_2:lib",
+    "//brave/third_party/rust/rand/v0_9:lib",
+  ]
+  features = [
+    "alloc",
+    "default",
+    "std",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

@@ -1,0 +1,12 @@
+Name: unicode-segmentation
+URL: https://crates.io/crates/unicode-segmentation
+Version: 1.12.0
+Revision: 9e3f88c06ca275294ef4cb1daf0789f06a28611d
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-segmentation-v1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: This crate provides Grapheme Cluster, Word and Sentence boundaries
+according to Unicode Standard Annex #29 rules.
+

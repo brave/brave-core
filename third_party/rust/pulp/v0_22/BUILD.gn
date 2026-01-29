@@ -1,0 +1,109 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "pulp"
+  epoch = "0.22"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/aarch64/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/raw_cpuid_detect.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/wasm/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx512bw.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx512cd.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx512dq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx512f.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/avx512ifma.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/fma.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/sse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/sse2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/sse3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/sse41.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/sse42.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/core_arch/x86/ssse3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/wasm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/x86/v1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/x86/v2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/x86/v3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/src/x86/v4.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "sarah quiñones <sarah@veganb.tw>"
+  cargo_pkg_name = "pulp"
+  cargo_pkg_description = "safe generic simd"
+  cargo_pkg_repository = "https://github.com/sarah-quinones/pulp/"
+  cargo_pkg_version = "0.22.2"
+
+  allow_unsafe = true
+
+  deps = [
+    "//brave/third_party/rust/bytemuck/v1:lib",
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/libm/v0_2:lib",
+    "//brave/third_party/rust/num_complex/v0_4:lib",
+    "//brave/third_party/rust/paste/v1:lib",
+    "//brave/third_party/rust/pulp_wasm_simd_flag/v0_1:lib",
+    "//brave/third_party/rust/reborrow/v0_5:lib",
+  ]
+  if (current_cpu == "x64" || current_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/raw_cpuid/v11:lib" ]
+  }
+  build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
+  features = [ "std" ]
+  build_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/pulp-v0_22/build.rs",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

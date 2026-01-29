@@ -1,0 +1,10 @@
+Name: esaxx-rs
+URL: https://crates.io/crates/esaxx-rs
+Version: 0.1.10
+Revision: dacdea35f18b551cb23bd3bf6ab58363784a94f4
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/esaxx-rs-v0_1/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Wrapping around sentencepiece's esaxxx library.

@@ -1,0 +1,72 @@
+[package]
+name = "pulp"
+version = "0.22.2"
+edition = "2021"
+authors = ["sarah quiñones <sarah@veganb.tw>"]
+description = "safe generic simd"
+readme = "../README.md"
+repository = "https://github.com/sarah-quinones/pulp/"
+license = "MIT"
+keywords = ["simd"]
+
+[dependencies]
+pulp-macro = { version = "0.1.1", path = "../pulp-macro", optional = true }
+pulp-wasm-simd-flag = { version = "0.1", path = "../pulp-wasm-simd-flag" }
+bytemuck = { version = "1.15", features = ["aarch64_simd", "wasm_simd"] }
+num-complex = { version = "0.4.4", default-features = false, features = ["bytemuck"] }
+libm = { version = "0.2", default-features = false }
+reborrow = "0.5"
+cfg-if = "1.0.0"
+paste = "1"
+
+[target.'cfg(any(target_arch = "x86", target_arch = "x86_64"))'.dependencies]
+raw-cpuid = { version = "11.5.0", default-features = false }
+
+[features]
+default = [
+  "std",
+  "x86-v3",
+]
+nightly = [
+  "bytemuck/nightly_stdsimd",
+]
+std = []
+
+x86-v3 = []
+x86-v4 = [
+  "bytemuck/avx512_simd",
+]
+
+macro = ["dep:pulp-macro"]
+
+[dev-dependencies]
+aligned-vec = "0.6.0"
+assert_approx_eq = "1.1.0"
+criterion = "0.5.0"
+diol = { version = "0.8.3", default-features = false }
+rand = "0.8.5"
+
+[build-dependencies]
+version_check = "0.9.5"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[[example]]
+name = "dot_product"
+doc-scrape-examples = true
+
+[[example]]
+name = "basic"
+doc-scrape-examples = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+targets = [
+  "x86_64-unknown-linux-gnu",
+  "aarch64-apple-darwin",
+  "wasm32-unknown-unknown",
+]

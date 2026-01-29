@@ -1,0 +1,10 @@
+Name: monostate-impl
+URL: https://crates.io/crates/monostate-impl
+Version: 0.1.18
+Revision: f31ba9ffb9ac4f90631742b529f7418613e4b071
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/monostate-impl-v0_1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Implementation detail of the monostate crate

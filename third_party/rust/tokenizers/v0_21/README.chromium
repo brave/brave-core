@@ -1,0 +1,12 @@
+Name: tokenizers
+URL: https://crates.io/crates/tokenizers
+Version: 0.21.4
+Revision: e892882fd4608b468dcf9dc33ea95283882b8e6d
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Provides an implementation of today's most used tokenizers,
+with a focus on performances and versatility.
+

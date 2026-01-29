@@ -1,0 +1,11 @@
+Name: encode_unicode
+URL: https://crates.io/crates/encode_unicode
+Version: 1.0.0
+Revision: b764bc1cec904d2198b052c5a564963a930a0bcb
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/encode_unicode-v1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: UTF-8 and UTF-16 character types, iterators and related methods for char, u8 and u16.
+

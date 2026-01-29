@@ -1,0 +1,10 @@
+Name: pulp-wasm-simd-flag
+URL: https://crates.io/crates/pulp-wasm-simd-flag
+Version: 0.1.0
+Revision: 28ba9b9a75da773d9426f18019fed63eff0e591f
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: safe generic simd

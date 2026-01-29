@@ -1,0 +1,169 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "tokenizers"
+  epoch = "0.21"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/bpe.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/byte_fallback.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/ctc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/fuse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/sequence.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/strip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/decoders/wordpiece.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/bpe/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/bpe/model.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/bpe/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/bpe/trainer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/bpe/word.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/lattice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/model.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/trainer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/unigram/trie.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordlevel/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordlevel/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordlevel/trainer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordpiece/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordpiece/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/models/wordpiece/trainer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/bert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/byte_level.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/precompiled.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/prepend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/replace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/strip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/unicode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/normalizers/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/bert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/byte_level.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/delimiter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/digits.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/fixed_length.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/metaspace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/punctuation.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/sequence.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/split.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/unicode_scripts/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/unicode_scripts/pre_tokenizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/unicode_scripts/scripts.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/pre_tokenizers/whitespace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/processors/bert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/processors/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/processors/roberta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/processors/sequence.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/processors/template.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/added_vocabulary.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/normalizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/pre_tokenizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/tokenizer/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/fancy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/from_pretrained.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/onig.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/padding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/parallelism.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/progress.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tokenizers-v0_21/src/utils/truncation.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_authors = "Anthony MOI <m.anthony.moi@gmail.com>, Nicolas Patry <patry.nicolas@protonmail.com>"
+  cargo_pkg_name = "tokenizers"
+  cargo_pkg_description = "Provides an implementation of today's most used tokenizers, with a focus on performances and versatility."
+  cargo_pkg_repository = "https://github.com/huggingface/tokenizers"
+  cargo_pkg_version = "0.21.4"
+
+  allow_unsafe = true
+
+  deps = [
+    "//brave/third_party/rust/ahash/v0_8:lib",
+    "//brave/third_party/rust/aho_corasick/v1:lib",
+    "//brave/third_party/rust/compact_str/v0_9:lib",
+    "//brave/third_party/rust/dary_heap/v0_3:lib",
+    "//brave/third_party/rust/derive_builder/v0_20:lib",
+    "//brave/third_party/rust/esaxx_rs/v0_1:lib",
+    "//brave/third_party/rust/getrandom/v0_3:lib",
+    "//brave/third_party/rust/indicatif/v0_17:lib",
+    "//brave/third_party/rust/itertools/v0_14:lib",
+    "//brave/third_party/rust/log/v0_4:lib",
+    "//brave/third_party/rust/macro_rules_attribute/v0_2:lib",
+    "//brave/third_party/rust/monostate/v0_1:lib",
+    "//brave/third_party/rust/onig/v6:lib",
+    "//brave/third_party/rust/paste/v1:lib",
+    "//brave/third_party/rust/rand/v0_9:lib",
+    "//brave/third_party/rust/rayon/v1:lib",
+    "//brave/third_party/rust/rayon_cond/v0_4:lib",
+    "//brave/third_party/rust/regex/v1:lib",
+    "//brave/third_party/rust/regex_syntax/v0_8:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
+    "//brave/third_party/rust/spm_precompiled/v0_1:lib",
+    "//brave/third_party/rust/thiserror/v2:lib",
+    "//brave/third_party/rust/unicode_categories/v0_1:lib",
+    "//brave/third_party/rust/unicode_normalization_alignments/v0_1:lib",
+    "//brave/third_party/rust/unicode_segmentation/v1:lib",
+  ]
+  features = [
+    "default",
+    "esaxx_fast",
+    "indicatif",
+    "onig",
+    "progressbar",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

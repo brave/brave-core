@@ -1,0 +1,10 @@
+Name: number_prefix
+URL: https://crates.io/crates/number_prefix
+Version: 0.4.0
+Revision: eb6ebd215d50df1b199737f0356b988bebaedc84
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Library for numeric prefixes (kilo, giga, kibi).

@@ -1,0 +1,14 @@
+Name: spm_precompiled
+URL: https://crates.io/crates/spm_precompiled
+Version: 0.1.4
+Revision: effe52a6d6f5d8312b1d096ab712cf4cc20b59b6
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/spm_precompiled-v0_1/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: This crate aims to emulate https://github.com/google/sentencepiece Dart::DoubleArray
+struct and it's Normalizer. 
+
+This crate is highly specialized and not intended for general use.
+

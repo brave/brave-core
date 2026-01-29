@@ -1,0 +1,142 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "darling_core"
+  epoch = "0.20"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/ast/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/ast/generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/ast/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/attr_extractor.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/attrs_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/default_expr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_attributes_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_derive_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_meta_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_type_param.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/from_variant_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/outer_from_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/postfix_transform.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/trait_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/codegen/variant_data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/error/child.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/error/kind.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/error/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_derive_input.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_generic_param.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_meta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_type_param.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/from_variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/macros_private.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/macros_public.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/core.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/forward_attrs.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/forwarded_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_meta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_type_param.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/from_variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/input_field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/input_variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/outer_from.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/options/shape.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/generics_ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/ident_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/lifetimes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/options.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/usage/type_params.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/callable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/flag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/ident_string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/ignored.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/over_ride.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/parse_attribute.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/parse_expr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/path_list.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/path_to_string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/shape.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/spanned_value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/darling_core-v0_20/src/util/with_original.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Ted Driggs <ted.driggs@outlook.com>"
+  cargo_pkg_name = "darling_core"
+  cargo_pkg_description = "Helper crate for proc-macro library for reading attributes into structs when implementing custom derives. Use https://crates.io/crates/darling in your code."
+  cargo_pkg_repository = "https://github.com/TedDriggs/darling"
+  cargo_pkg_version = "0.20.11"
+
+  allow_unsafe = false
+
+  deps = [
+    "//brave/third_party/rust/fnv/v1:lib",
+    "//brave/third_party/rust/ident_case/v1:lib",
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/strsim/v0_11:lib",
+    "//brave/third_party/rust/syn/v2:lib",
+  ]
+  features = [
+    "strsim",
+    "suggestions",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

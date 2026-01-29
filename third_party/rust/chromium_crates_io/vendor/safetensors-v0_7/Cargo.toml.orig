@@ -1,0 +1,45 @@
+[package]
+name = "safetensors"
+version = "0.7.0"
+edition = "2021"
+rust-version = "1.80"
+homepage = "https://github.com/huggingface/safetensors"
+repository = "https://github.com/huggingface/safetensors"
+documentation = "https://docs.rs/safetensors/"
+license = "Apache-2.0"
+keywords = ["safetensors", "huggingface", "Tensors", "Pytorch", "Tensorflow"]
+readme = "./README.md"
+description = """
+Provides functions to read and write safetensors which aim to be safer than
+their PyTorch counterpart.
+The format is 8 bytes which is an unsized int, being the size of a JSON header,
+the JSON header refers the `dtype` the `shape` and `data_offsets` which are the offsets
+for the values in the rest of the file.
+"""
+exclude = ["rust-toolchain", "target/*", "Cargo.lock"]
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0", default-features = false, features = [
+    "derive",
+    "alloc",
+] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+hashbrown = { version = "0.16", features = ["serde"] }
+
+[dev-dependencies]
+criterion = "0.6"
+memmap2 = "0.9"
+proptest = "1.7"
+
+[features]
+default = ["std"]
+std = ["serde/default", "serde_json/default"]
+# Kept for backward compatibility - no-op since alloc is always available
+alloc = []
+
+[[bench]]
+name = "benchmark"
+harness = false

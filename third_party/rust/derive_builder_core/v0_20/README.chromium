@@ -1,0 +1,10 @@
+Name: derive_builder_core
+URL: https://crates.io/crates/derive_builder_core
+Version: 0.20.2
+Revision: fc18dd236a6dc6b5b49970efdb1b78f40bb3b998
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/derive_builder_core-v0_20/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Internal helper library for the derive_builder crate.

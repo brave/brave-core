@@ -1,0 +1,10 @@
+Name: dyn-stack
+URL: https://crates.io/crates/dyn-stack
+Version: 0.13.2
+Revision: e6b946658df54173dca852a54723115aab7a4a92
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/dyn-stack-v0_13/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Dynamic stack wrapper for unsized allocations

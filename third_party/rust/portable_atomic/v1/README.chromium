@@ -1,0 +1,11 @@
+Name: portable-atomic
+URL: https://crates.io/crates/portable-atomic
+Version: 1.13.0
+Revision: 7aa29538b1c34507a92b182640bc368d3e262700
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/portable-atomic-v1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Portable atomic types including support for 128-bit atomics, atomic float, etc.
+

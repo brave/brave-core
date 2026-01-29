@@ -1,0 +1,63 @@
+[package]
+name = "float8"
+version = "0.6.0"
+rust-version = "1.70"
+edition = "2021"
+description = "8-bit floating point types for Rust"
+homepage = "https://github.com/EricLBuehler/float8"
+repository = "https://github.com/EricLBuehler/float8"
+keywords = ["float8", "f8e4m3", "fp8e5m2", "no_std"]
+categories = ["science"]
+license = "MIT"
+
+[dependencies]
+half = { version = "2.4.1", default-features = false }
+bytemuck = { version = "1.4.1", default-features = false, features = [
+    "derive",
+], optional = true }
+serde = { version = "1.0", default-features = false, features = [
+    "derive",
+], optional = true }
+num-traits = { version = "0.2.14", default-features = false, features = [
+    "libm",
+], optional = true }
+zerocopy = { version = "0.6.0", default-features = false, optional = true }
+rand = { version = "0.9.0", default-features = false, features = [
+    "std",
+    "std_rng",
+    "thread_rng",
+], optional = true }
+rand_distr = { version = "0.5.0", default-features = false, optional = true }
+rkyv = { version = "0.7", optional = true }
+cudarc = { version = "0.19.0", features = [
+    "std",
+    "cublas",
+    "cublaslt",
+    "curand",
+    "driver",
+    "nvrtc",
+    "f16",
+    "cuda-version-from-build-system",
+    "dynamic-linking",
+], default-features = false, optional = true }
+
+[features]
+default = ["std"]
+std = ["half/std"]
+cuda = ["dep:cudarc"]
+all = [
+    "std",
+    "num-traits",
+    "rand_distr",
+    "bytemuck",
+    "zerocopy",
+    "rkyv",
+    "serde",
+    "cuda",
+]
+num-traits = ["dep:num-traits"]
+rand_distr = ["dep:rand_distr", "dep:rand", "std"]
+bytemuck = ["dep:bytemuck"]
+zerocopy = ["dep:zerocopy"]
+rkyv = ["dep:rkyv"]
+serde = ["dep:serde"]

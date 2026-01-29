@@ -137,7 +137,7 @@
 //! method_new!(Paste);  // expands to #[doc = "Create a new `Paste` object"]
 //! ```
 
-#![doc(html_root_url = "https://docs.rs/paste/1.0.12")]
+#![doc(html_root_url = "https://docs.rs/paste/1.0.15")]
 #![allow(
     clippy::derive_partial_eq_without_eq,
     clippy::doc_markdown,

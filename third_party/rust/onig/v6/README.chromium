@@ -1,0 +1,14 @@
+Name: onig
+URL: https://crates.io/crates/onig
+Version: 6.5.1
+Revision: ed05d7ac1a1a138c6d9c46b451b9d9bea0fbe0b1
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/onig-v6/LICENSE.md
+Shipped: yes
+Security Critical: yes
+
+Description: Rust-Onig is a set of Rust bindings for the
+Oniguruma regular expression library. Oniguruma
+is a modern regex library with support for
+multiple character encodings and regex syntaxes.
+
