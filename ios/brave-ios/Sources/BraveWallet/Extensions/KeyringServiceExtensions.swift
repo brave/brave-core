@@ -40,6 +40,14 @@ extension BraveWalletKeyringService {
     if checkZcashTestnet, !Preferences.Wallet.isZcashTestnetEnabled.value {
       accounts = accounts.filter({ $0.keyringId != BraveWallet.KeyringId.zCashTestnet })
     }
+    if FeatureList.kBraveWalletCardanoEnabled?.enabled == true,
+      FeatureList.kBraveWalletWebUIIOS?.enabled != true
+    {
+      accounts = accounts.filter({
+        $0.keyringId != BraveWallet.KeyringId.cardanoMainnet
+          && $0.keyringId != BraveWallet.KeyringId.cardanoTestnet
+      })
+    }
     return accounts
   }
 }
