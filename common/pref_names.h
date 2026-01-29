@@ -13,4 +13,8 @@
 inline constexpr char kWebViewRoundedCorners[] =
     "brave.web_view_rounded_corners";
 
+// Boolean pref indicating whether the app menu button should use the subtle
+// (outline-only) Brave logo instead of the full color logo.
+inline constexpr char kBraveSubtleAppMenuLogo[] = "brave.subtle_app_menu_logo";
+
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

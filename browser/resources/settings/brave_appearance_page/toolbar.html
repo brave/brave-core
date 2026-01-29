@@ -45,6 +45,11 @@
     </settings-radio-group>
   </div>
 </template>
+<settings-toggle-button class="hr"
+  hidden="[[!isShowBraveShieldsInPageInfoEnabled_]]"
+  pref="{{prefs.brave.subtle_app_menu_logo}}"
+  label="$i18n{appearanceSettingsSubtleAppMenuLogo}">
+</settings-toggle-button>
 <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
 </settings-brave-appearance-bookmark-bar>
 <settings-toggle-button class="hr" id="showSavedTabGroups"
