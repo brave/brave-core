@@ -139,13 +139,15 @@ const runTests = async (
     // Upstream tests expect to be run from the output directory
     runOptions.cwd = config.outputDir
 
-    // Set ASAN_OPTIONS if not already set by the user.
+    // Set ASAN_OPTIONS (if not already set) only for test launching.
+    // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
+    // LSAN failures. Chromium uses the same approach.
     if (config.isAsan() || !runOptions.env.ASAN_OPTIONS) {
+      let asanOptions = ['detect_odr_violation=0']
       if (config.isLsan()) {
-        runOptions.env.ASAN_OPTIONS = 'detect_odr_violation=0:detect_leaks=1'
-      } else {
-        runOptions.env.ASAN_OPTIONS = 'detect_odr_violation=0'
+        asanOptions.push('detect_leaks=1')
       }
+      runOptions.env.ASAN_OPTIONS = asanOptions.join(' ')
     }
 
     // Filter out upstream tests that are known to fail for Brave

@@ -344,7 +344,9 @@ Config.prototype.isAsan = function () {
 
 Config.prototype.isLsan = function () {
   // LSAN only works with ASAN and has very low overhead.
-  return this.isAsan() && ['android', 'linux'].includes(this.targetOS)
+  // Chromium supports LeakSanitizer is supported on x86_64 Linux only.
+  // See https://www.chromium.org/developers/testing/leaksanitizer/
+  return this.isAsan() && this.targetOS === 'linux'
 }
 
 Config.prototype.isOfficialBuild = function () {
