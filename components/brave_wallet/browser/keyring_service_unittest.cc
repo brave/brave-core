@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -2141,6 +2142,222 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
 
   // First account gets selected.
   ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
+}
+
+TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_OfacSanctionedAddress) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+  const std::string ofac_eth_address = "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78";
+  const std::string ofac_sol_address = "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
+  const std::string ofac_fil_address = "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
+  const std::string ofac_dot_address = "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty";
+  const std::string valid_eth_address = "0x1111111111111111111111111111111111111111";
+  const std::string valid_btc_address = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+
+  // Update OFAC list with sanctioned addresses
+  registry->UpdateOfacAddressesList({
+      base::ToLowerASCII(ofac_eth_address),
+      base::ToLowerASCII(ofac_sol_address),
+      base::ToLowerASCII(ofac_fil_address),
+      base::ToLowerASCII(ofac_dot_address),
+  });
+
+  // Test: Ethereum OFAC address should be rejected
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        ofac_eth_address, "m/44'/60'/0'/0/0", "OFAC ETH",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_TRUE(result.empty()) << "OFAC sanctioned Ethereum address should be rejected";
+  }
+
+  // Test: Solana OFAC address should be rejected
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        ofac_sol_address, "m/44'/501'/0'/0'", "OFAC SOL",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kSolana));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_TRUE(result.empty()) << "OFAC sanctioned Solana address should be rejected";
+  }
+
+  // Test: Filecoin OFAC address should be rejected
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        ofac_fil_address, "m/44'/461'/0'/0/0", "OFAC FIL",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kFilecoin));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_TRUE(result.empty()) << "OFAC sanctioned Filecoin address should be rejected";
+  }
+
+  // Test: Polkadot OFAC address should be rejected
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        ofac_dot_address, "//0", "OFAC DOT",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kPolkadotMainnet));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_TRUE(result.empty()) << "OFAC sanctioned Polkadot address should be rejected";
+  }
+
+  // Test: Valid Ethereum address should be accepted
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        valid_eth_address, "m/44'/60'/0'/0/0", "Valid ETH",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_FALSE(result.empty()) << "Valid Ethereum address should be accepted";
+    EXPECT_EQ(result[0]->address, valid_eth_address);
+  }
+
+  // Test: Mixed accounts - one OFAC, one valid (OFAC should be filtered out)
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> accounts;
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        ofac_eth_address, "m/44'/60'/0'/0/0", "OFAC ETH",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
+    accounts.push_back(mojom::HardwareWalletAccount::New(
+        valid_eth_address, "m/44'/60'/1'/0/0", "Valid ETH",
+        mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
+    auto result = service.AddHardwareAccountsSync(std::move(accounts));
+    EXPECT_EQ(result.size(), 1u) << "Only valid address should be added";
+    EXPECT_EQ(result[0]->address, valid_eth_address);
+  }
+
+  // Clear OFAC list
+  registry->UpdateOfacAddressesList({});
+}
+
+TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_OfacSanctionedAddress) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Use a known private key that generates a known address from existing testsю
+  const std::string known_private_key = 
+      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5";
+
+  // First, import to get the actual address, then add it to OFAC listю
+  auto first_import = ImportEthereumAccount(&service, "Test Account", known_private_key);
+  ASSERT_TRUE(first_import);
+  const std::string address_to_sanction = first_import->address;
+
+  // Remove the account firstю
+  service.RemoveAccount(first_import->account_id.Clone(), "brave", base::DoNothing());
+  task_environment_.RunUntilIdle();
+
+  // Update OFAC list with the address
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Test: Import with OFAC sanctioned address should fail
+  auto result = ImportEthereumAccount(&service, "OFAC Account", known_private_key);
+  EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
+
+  // Test: Import with different private key (non-OFAC address) should succeed
+  const std::string valid_private_key = 
+      "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912";
+  auto valid_result = ImportEthereumAccount(&service, "Valid Account", valid_private_key);
+  EXPECT_TRUE(valid_result) << "Non-OFAC Ethereum address should be accepted";
+}
+
+TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_OfacSanctionedAddress) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  
+  // Use a known private key from existing tests
+  const std::string known_private_key = 
+      "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+      "YbQtaJQKLXET9jVjepWXe";
+  const std::string known_address = "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ";
+
+  // First, import to get the actual address, then add it to OFAC list
+  auto first_import = ImportSolanaAccount(&service, "Test Account", known_private_key);
+  ASSERT_TRUE(first_import);
+  const std::string address_to_sanction = first_import->address;
+
+  // Remove the account first
+  service.RemoveAccount(first_import->account_id.Clone(), "brave", base::DoNothing());
+  task_environment_.RunUntilIdle();
+
+  // Update OFAC list with the address
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Test: Import with OFAC sanctioned address should fail
+  auto result = ImportSolanaAccount(&service, "OFAC Account", known_private_key);
+  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+
+  // Clear OFAC list
+  registry->UpdateOfacAddressesList({});
+}
+
+TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  const std::string ofac_address = "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
+  
+  // Use a known private key from existing tests (Filecoin testnet SECP256K1)
+  const std::string known_private_key = 
+      "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
+      "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
+      "58533535794b383d227d";
+  const std::string known_address = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+
+  // First, import to get the actual address, then add it to OFAC list
+  auto first_import = ImportFilecoinAccount(&service, "Test Account", known_private_key,
+                                            mojom::kFilecoinTestnet);
+  ASSERT_TRUE(first_import);
+  const std::string address_to_sanction = first_import->address;
+
+  // Remove the account first
+  service.RemoveAccount(first_import->account_id.Clone(), "brave", base::DoNothing());
+  task_environment_.RunUntilIdle();
+
+  // Update OFAC list with the address
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Test: Import with OFAC sanctioned address should fail
+  auto result = ImportFilecoinAccount(&service, "OFAC Account", known_private_key,
+                                      mojom::kFilecoinTestnet);
+  EXPECT_FALSE(result) << "OFAC sanctioned Filecoin address should be rejected";
+
+  // Test: Import with different network (mainnet) should work if address is different
+  // or use a different private key for a valid import
+  // For this test, we verify the OFAC check works for the testnet address
+
+  // Clear OFAC list
+  registry->UpdateOfacAddressesList({});
+}
+
+TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_OfacSanctionedAddress) {
+  base::test::ScopedFeatureList feature_list{
+                                             features::kBraveWalletPolkadotFeature};
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList({
+    base::ToLowerASCII("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
+    base::ToLowerASCII("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
+    base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
+    base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
+
+  EXPECT_FALSE(AddAccount(&service, mojom::CoinType::ETH,
+                          mojom::KeyringId::kDefault, "Account 1"));
+  EXPECT_FALSE(AddAccount(&service, mojom::CoinType::SOL,
+                          mojom::KeyringId::kSolana, "Account 1"));
+  EXPECT_FALSE(AddAccount(&service, mojom::CoinType::FIL,
+                          mojom::KeyringId::kFilecoin, "Account 1"));
+  EXPECT_FALSE(AddAccount(&service, mojom::CoinType::DOT,
+                          mojom::KeyringId::kPolkadotMainnet, "Account 1"));
 }
 
 TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {

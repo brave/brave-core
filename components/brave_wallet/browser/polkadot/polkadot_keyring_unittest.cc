@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -766,6 +767,42 @@ TEST(PolkadotKeyring, MissingParts) {
     EXPECT_FALSE(
         PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
+}
+
+TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  // Add an account to get its address.
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  const std::string address_to_sanction = *address;
+
+  // Add address to OFAC list.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+
+  // Try to add account again - should fail because it generates the same address
+  // Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by trying
+  // to add at index 1, which should succeed, then try index 0 again.
+  auto result1 = keyring.AddNewHDAccount(1);
+  EXPECT_TRUE(result1) << "Non-OFAC address should succeed";
+
+  // Now try to add at index 0 again - this should fail because the address
+  // at index 0 is already in the OFAC list
+  // Actually, we can't test this directly because AddNewHDAccount doesn't
+  // allow adding at an index that's already been used. Instead, let's test
+  // by creating a new keyring and trying to add at index 0.
+  PolkadotKeyring keyring2(base::span(seed).first<kPolkadotSeedSize>(),
+                           mojom::KeyringId::kPolkadotMainnet);
+  auto result2 = keyring2.AddNewHDAccount(0);
+  EXPECT_FALSE(result2) << "OFAC sanctioned Polkadot address should be rejected";
+
+  // Clear OFAC list
+  registry->UpdateOfacAddressesList({});
 }
 
 }  // namespace brave_wallet

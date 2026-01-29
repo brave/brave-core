@@ -15,6 +15,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -150,7 +151,11 @@ HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
 }
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
-  return GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
+  auto addr = GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(addr)) {
+    return std::nullopt;
+  }
+  return addr;
 }
 
 void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST

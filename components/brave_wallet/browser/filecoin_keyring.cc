@@ -20,6 +20,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
@@ -217,6 +218,12 @@ std::optional<std::string> FilecoinKeyring::ImportBlsAccount(
     return std::nullopt;
   }
   std::string address = fil_address.EncodeAsString();
+
+  // Check if the imported address is on the OFAC sanctions list
+  // Filecoin is an account-based coin
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(address)) {
+    return std::nullopt;
+  }
 
   if (base::Contains(imported_bls_accounts_, address)) {
     return std::nullopt;

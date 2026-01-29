@@ -10,6 +10,7 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/map_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
 namespace brave_wallet {
 
@@ -44,6 +45,10 @@ std::optional<std::string> Secp256k1HDKeyring::AddNewHDAccount(uint32_t index) {
   }
 
   auto address = GetAddressInternal(*new_account);
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(address)) {
+    return std::nullopt;
+  }
+
   accounts_.push_back(std::move(new_account));
 
   return address;
@@ -71,6 +76,12 @@ std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
   }
 
   std::string address = GetAddressInternal(*hd_key);
+
+  // Check if the imported address is on the OFAC sanctions list
+  // Filecoin is an account-based coin
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(address)) {
+    return std::nullopt;
+  }
 
   if (base::Contains(imported_accounts_, address)) {
     return std::nullopt;
