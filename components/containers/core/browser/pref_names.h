@@ -8,8 +8,8 @@
 
 namespace containers::prefs {
 
-// Preference key for storing the list of containers.
-inline constexpr char kContainersList[] = "brave.containers.list";
+// Preference key for storing containers as a map of id -> container.
+inline constexpr char kContainersDict[] = "brave.containers.dict";
 
 }  // namespace containers::prefs
 
